@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="7450557937477381864">關閉 Chrome</translation>
 <translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
-<translation id="5735465527556462863">關閉 Brave (舊版)</translation>
-<translation id="7737066986958447692">若要完成匯入作業，請關閉所有 Brave (舊版) 視窗。</translation>
-<translation id="6447842834002726250">Cookie</translation>
-<translation id="4983925687993168579">統計數據</translation>
-<translation id="6165477144235978006">Brave Payments</translation>
-<translation id="3489524616427966890">開啟視窗和分頁</translation>
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4726634924419692905">當網站要求安裝 Widevine 到您的電腦時先詢問</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
 
 安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
-<translation id="6499845530162974140">Brave (舊版)</translation>
-<translation id="3198814717959506569">自 Brave 匯入</translation>
 <translation id="453977518730680921">自動播放媒體</translation>
 <translation id="410351446219883937">自動播放</translation>
 <translation id="2240268017737062801">當網站想要自動播放媒體時詢問我</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">簡式瀏覽</translation>
 <translation id="2360360976480535628">進階瀏覽</translation>
 <translation id="5709627087332022422">封鎖跨站追蹤器</translation>
-<translation id="9075744464571452108">裝置識別</translation>
+<translation id="6447842834002726250">Cookie</translation>
+<translation id="6522412052085018663">指紋</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="4824468494729001999">封鎖指令碼</translation>
-<translation id="8526521192921341404">允許 Google 登入</translation>
+<translation id="519861640102428255">外觀</translation>
+<translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
+<translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="4699812599455071925">僅封鎖跨站 cookies</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
-<translation id="3084022390368021391">僅封鎖跨站裝置識別嘗試</translation>
-<translation id="1847422622180531843">允許所有裝置識別嘗試</translation>
-<translation id="8375051111011093523">封鎖所有裝置識別嘗試</translation>
+<translation id="5572437114858031185">僅封鎖跨站指紋嘗試</translation>
+<translation id="5079032039521408559">允許所有指紋嘗試</translation>
+<translation id="6447141055227658942">封鎖所有指紋嘗試</translation>
 <translation id="8942080017911802454">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8798099450830957504">預設</translation>
@@ -179,4 +174,9 @@
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
+<translation id="4989337484121655457">需要完整的硬碟存取權限</translation>
+<translation id="8025559074845816210">Brave 需要完整的硬碟存取權限，以從 Safari 匯入您的書籤。</translation>
+<translation id="8515328844674404333">了解如何從您的系統偏好設定中，允許完整的硬碟存取權限。</translation>
+<translation id="6414878884710400018">開啟系統偏好設定</translation>
+<translation id="5570470519803062774">網站與 Shields 設定</translation>
 </translationbundle>

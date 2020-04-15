@@ -47,7 +47,7 @@ import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
-import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class NTPUtil {
 	private static final int BOTTOM_TOOLBAR_HEIGHT = 56;

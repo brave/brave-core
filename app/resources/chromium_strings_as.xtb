@@ -3,7 +3,7 @@
 <translationbundle lang="as">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave হৈছে ৱেবপৃষ্ঠা আৰু এপ্লিকেশ্বনসমূহক বিজুলী বেগেৰে চলোৱা এক ৱেব ব্ৰাউজাৰ। এইটো ক্ষিপ্ৰ, স্থিৰ আৰু ব্যৱহাৰৰ বাবে সুবিধাজনক। মালৱেৰ আৰু ফিশ্বিঙৰ পৰা বিশেষভাৱে সুৰক্ষা পোৱা সুবিধাৰে নির্মিত Brave ৰ জৰিয়তে অতি সুৰক্ষিতভাৱে ৱেব ব্ৰাউজিং কৰক।</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Braveৰ ল’গ’</translation>
 <translation id="7339898014177206373">নতুন ৱিণ্ড'</translation>
 <translation id="5516268345616100622">কাৰ্য পৰিচালক - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="8121009781989288430">স্বত্ত্বাধিকাৰ <ph name="YEAR"/> The Brave Authors. সর্বস্বত্ব সংৰক্ষিত।</translation>
-<translation id="2310890394934209120">অতিৰিক্ত <ph name="BEGIN_LINK_CROS_OSS"/>মুক্ত উৎসৰ ছফ্টৱেৰ<ph name="END_LINK_CROS_OSS"/>ৰ জৰিয়তে Brave OSক ব্যৱহাৰযোগ্য কৰা হৈছে।</translation>
-<translation id="8160794320557846790">Brave OS ক <ph name="BEGIN_LINK_CROS_OSS"/>Linux (বিটা)<ph name="END_LINK_CROS_OSS"/>ৰ দৰেই অতিৰিক্ত <ph name="BEGIN_LINK_LINUX_OSS"/>মুক্ত উৎসৰ ছফ্টৱেৰ<ph name="END_LINK_LINUX_OSS"/>ৰ জৰিয়তে সম্ভৱ কৰি তোলা হৈছে৷</translation>
+<translation id="6368958679917195344">অতিৰিক্ত <ph name="BEGIN_LINK_CROS_OSS"/>মুক্ত উৎসৰ ছফ্টৱেৰ<ph name="END_LINK_CROS_OSS"/>ৰ জৰিয়তে Brave OSক ব্যৱহাৰযোগ্য কৰা হৈছে।</translation>
+<translation id="1662639173275167396">Brave OS ক <ph name="BEGIN_LINK_CROS_OSS"/>Linux (বিটা)<ph name="END_LINK_CROS_OSS"/>ৰ দৰেই অতিৰিক্ত <ph name="BEGIN_LINK_LINUX_OSS"/>মুক্ত উৎসৰ ছফ্টৱেৰ<ph name="END_LINK_LINUX_OSS"/>ৰ জৰিয়তে সম্ভৱ কৰি তোলা হৈছে৷</translation>
 <translation id="6913582816347128893">Braveএ সঠিকভাৱে কাম নকৰিবও পাৰে কাৰণ এই সংস্কৰণটো আৰু Mac OS X 10.9 ত সমৰ্থিত নহয়।</translation>
 <translation id="7977787072794666032">Braveএ সঠিকভাৱে কাম নকৰিবও পাৰে কাৰণ এই সংস্কৰণটো Windows XP বা Windows Vistaত আৰু নচলে</translation>
 <translation id="189297655255130768">Braveএ সঁহাৰি জনোৱা নাই। এতিয়াই পুনৰ লঞ্চ কৰিবনে?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">আপুনি Brave আনইনষ্টল কৰিবলৈ বিচৰাটো নিশ্চিতনে?</translation>
 <translation id="5590013613412457132">Brave আনইনষ্টল কৰক</translation>
 <translation id="5019879183386042809">Braveক ডিফ’ল্ট ব্ৰাউজাৰ বনাওক</translation>
-<translation id="5063987220091207247">Brave OSএ এই পৃষ্ঠাটো খুলিব নোৱাৰে।</translation>
+<translation id="707769633889902835">Brave OSএ এই পৃষ্ঠাটো খুলিব নোৱাৰে।</translation>
 <translation id="4065288863231444640">Braveক নেপথ্যত চলিবলৈ দিয়ক</translation>
 <translation id="6797402139308059782">Braveক নেপথ্যত চলিবলৈ দিয়ক</translation>
 <translation id="2585240446624043880">Braveএ ইয়াৰ ডেটা ডাইৰেক্টৰী পঢ়িব আৰু তাত লিখিব নোৱাৰে:
@@ -94,8 +94,7 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="9071554113102421877">&amp;Braveত খোলক</translation>
 <translation id="2176825726964012531">&amp;Braveৰ বিষয়ে</translation>
 <translation id="5450493308072741203">&amp;Brave আপডে’ট কৰক</translation>
-<translation id="1421502046520299169">&amp;Brave OSৰ বিষয়ে</translation>
-<translation id="2534623228451928732">&amp;Brave OS আপডে’ট কৰক</translation>
+<translation id="61852838583753520">&amp;Brave OS আপডে’ট কৰক</translation>
 <translation id="8447483940522230788">Brave সহায়ক</translation>
 <translation id="5477319665405831211">আপোনাৰ সমগ্ৰ ডিভাইচতে Braveক ছিংক কৰি ব্যক্তিকৃত কৰক</translation>
 <translation id="8132634101975074716">আপুনি Braveত ছাইন ইন হৈ আছে!</translation>
@@ -109,19 +108,18 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="5380963249588143069">আপোনাৰ ছিষ্টেমৰ প্ৰশাসকে Braveক <ph name="TARGET_URL_HOSTNAME"/> এক্সেছ কৰিবলৈ <ph name="ALTERNATIVE_BROWSER_NAME"/> খুলিবলৈ কনফিগাৰ কৰিছে।</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>এ আগতে Brave ব্যৱহাৰ কৰি আছিল</translation>
 <translation id="1384923383737428730">আপোনাৰ কম্পিউটাৰত কোনো ক্ষতিকাৰক ছফ্‌টৱেৰ আছে। Braveএ আপোনাৰ ব্ৰাউজাৰে সাধাৰণভাৱে কাম কৰিবলৈ এইটো আঁতৰাব পাৰে, আপোনাৰ ছেটিং পুনঃস্থাপন কৰিব পাৰে আৰু এক্সটেনশ্বন অক্ষম কৰিব পাৰে।</translation>
-<translation id="8919921662052966648">Braveএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে। অনুগ্ৰহ কৰি আপোনাৰ ছিংক পাছফ্ৰে’জটো আপডে’ট কৰক।</translation>
 <translation id="2262856633481902138">আপোনাৰ একাউণ্টৰ ছাইন ইনৰ সবিশেষ তথ্যৰ ম্যাদ উকলি যোৱাৰ বাবে ক্ৰ’মিয়ামে আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে৷</translation>
 <translation id="5419189641394808652">আপোনাৰ ড‘মেইনত ছিংক কৰাৰ সুবিধা নথকাৰ বাবে Braveএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
 <translation id="2577755334620061182">ছাইন ইন কৰোঁতে কিবা আসোঁৱাহ হোৱাৰ কাৰণে Braveএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
-<translation id="8583885258305961947">Brave OS ছিষ্টেম</translation>
-<translation id="3968006371075376562">Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে। অনুগ্ৰহ কৰি আপোনাৰ ছিংক পাছফ্ৰেজ আপডে'ট কৰক।</translation>
-<translation id="6746636977031158624">আপোনাৰ একাউণ্টৰ ছাইন ইনৰ সবিশেষ তথ্যৰ ম্যাদ উকলি যোৱাৰ বাবে Brave OS আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
-<translation id="2999152167963026588">আপোনাৰ ড‘মেইনত ছিংক কৰাৰ সুবিধা নথকাৰ বাবে Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
-<translation id="1459786048951724030">ছাইন ইন কৰোঁতে আসোঁৱাহ হোৱাৰ কাৰণে Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
-<translation id="6813094029720377619">আপুনি Braveৰ পৰা বাহিৰ হ'লে কুকীসমূহ মচে। ছিংক কৰি থাকিবলৈ, এই <ph name="COOKIE_SETTINGS_LINK"/> সলনি কৰক।</translation>
-<translation id="3340978935015468852">ছেটিংসমূহ</translation>
+<translation id="2644798301485385923">Brave OS ছিষ্টেম</translation>
+<translation id="7916016681687251387">Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে। এতিয়াই সমাধান কৰক।</translation>
+<translation id="2341767445688917208">Brave OSএ আপোনাৰ পাছৱৰ্ডসমূহ ছিংক কৰিব নোৱাৰিলে। এতিয়াই সমাধান কৰক।</translation>
+<translation id="123620459398936149">Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে। অনুগ্ৰহ কৰি আপোনাৰ ছিংক পাছফ্ৰেজ আপডে'ট কৰক।</translation>
+<translation id="9026991721384951619">আপোনাৰ একাউণ্টৰ ছাইন ইনৰ সবিশেষ তথ্যৰ ম্যাদ উকলি যোৱাৰ বাবে Brave OS আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
+<translation id="7419046106786626209">আপোনাৰ ড‘মেইনত ছিংক কৰাৰ সুবিধা নথকাৰ বাবে Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
+<translation id="4480040274068703980">ছাইন ইন কৰোঁতে আসোঁৱাহ হোৱাৰ কাৰণে Brave OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
 <translation id="300669147395456190">Brave এপ্</translation>
-<translation id="3421950102518690868">আপুনি এই ডিভাইচ ব্যৱহাৰ কৰাৰ পূর্বে আপুনি তলত উল্লেখ কৰা সেৱাৰ চর্তাৱলী পঢ়ি সন্মত হোৱাটো <ph name="DOMAIN"/>এ বিচাৰে। এই চর্তাৱলীয়ে Brave OSৰ চর্তাৱলী সম্প্ৰসাৰণ, সংশোধন বা সীমিত নকৰে।</translation>
+<translation id="2398566204186296120">আপুনি এই ডিভাইচ ব্যৱহাৰ কৰাৰ পূর্বে আপুনি তলত উল্লেখ কৰা সেৱাৰ চর্তাৱলী পঢ়ি সন্মত হোৱাটো <ph name="DOMAIN"/>এ বিচাৰে। এই চর্তাৱলীয়ে Brave OSৰ চর্তাৱলী সম্প্ৰসাৰণ, সংশোধন বা সীমিত নকৰে।</translation>
 <translation id="3293668930608086049">Braveএ আপোনাৰ কেমেৰা আৰু মাইক্ৰ'ফ'ন ব্যৱহাৰ কৰি আছে।</translation>
 <translation id="8919461291440820124">Braveএ আপোনাৰ মাইক্ৰ’ফ’ন ব্যৱহাৰ কৰি আছে।</translation>
 <translation id="3205074487970075628">Braveএ আপোনাৰ কেমেৰা ব্যৱহাৰ কৰি আছে।</translation>
@@ -154,12 +152,9 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="4805806622840861220">Brave পুনৰ লঞ্চ কৰক</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Braveৰ এটা নতুন আপডে’ট আহিছে আৰু আপুনি Brave পুনৰ লঞ্চ কৰিলেই সেইটো প্ৰযোজ্য হ’ব।}=1{Braveৰ এটা নতুন আপডে’ট আহিছে আৰু আপুনি Brave পুনৰ লঞ্চ কৰিলেই সেইটো প্ৰযোজ্য হ’ব। আপোনাৰ.ইনক’গনিট' ৱিণ্ড'খন পুনৰ খুলিব নোৱাৰিব।}one{Braveৰ এটা নতুন আপডে’ট আহিছে আৰু আপুনি Brave পুনৰ লঞ্চ কৰিলেই সেইটো প্ৰযোজ্য হ’ব। আপোনাৰ #খন.ইনক’গনিট' ৱিণ্ড' পুনৰ খুলিব নোৱাৰিব।}other{Braveৰ এটা নতুন আপডে’ট আহিছে আৰু আপুনি Brave পুনৰ লঞ্চ কৰিলেই সেইটো প্ৰযোজ্য হ’ব। আপোনাৰ #খন.ইনক’গনিট' ৱিণ্ড' পুনৰ খুলিব নোৱাৰিব।}}</translation>
 <translation id="2799223571221894425">পুনৰ লঞ্চ কৰক</translation>
-<translation id="2522086024276534909">Brave OS ৰিষ্টার্ট কৰক</translation>
-<translation id="8183252473547465084">আপডে’টবোৰ প্ৰয়োগ কৰিবলৈ Brave OS ৰিষ্টাৰ্ট কৰাৰ প্ৰয়োজন।</translation>
+<translation id="5062123544085870375">Brave OS ৰিষ্টার্ট কৰক</translation>
+<translation id="2063848847527508675">আপডে’টবোৰ প্ৰয়োগ কৰিবলৈ Brave OS ৰিষ্টাৰ্ট কৰাৰ প্ৰয়োজন।</translation>
 <translation id="5895138241574237353">ৰিষ্টাৰ্ট কৰক</translation>
-<translation id="8887390605192156061">Braveৰ সকলো প্ৰতিলিপিৰ পৰা বাহিৰ হওক।</translation>
-<translation id="1801551749768408825">Braveৰ অন্য প্ৰতিলিপিসমূহ চলি আছে। আপডে'ট কৰিবলৈ সেইবোৰ বন্ধ কৰক।</translation>
-<translation id="2632141563911437138">আপডে'ট কৰিবলৈ এই কম্পিউটাৰত Brave বন্ধ হ'ব লাগিব। ইয়াৰ ফলত এই কম্পিউটাৰত লগ ইন কৰা অন্য ব্যৱহাৰকাৰীসকলে নিজৰ ছেভ নকৰা সাল সলনি কার্যসমূহ হেৰুৱাব পাৰে।</translation>
 <translation id="5875673934455379806">Brave ৰিইনষ্টল কৰক</translation>
 <translation id="2097604701283463988">Braveটো অতি পুৰণি</translation>
 <translation id="5173820533850252773">Braveটো অতি পুৰণি</translation>
@@ -180,7 +175,7 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="7798069806040634998">ফাইল ডাউনল'ড কৰিবলৈ Braveক ষ্ট'ৰেজৰ এক্সেছৰ আৱশ্যক</translation>
 <translation id="7685904775439037072">Braveএ এক্সেছ পোৱাৰ পাছতেই ৱেবছাইটসমূহে আপোনাক এক্সেছৰ বাবে অনুমতি বিচাৰিব পাৰিব।</translation>
 <translation id="1744365871163268756">Braveএ শেহতীয়া ছিষ্টেম আপডে’ট ইনষ্টল কৰালৈ কিছুসময় অপেক্ষা কৰক।</translation>
-<translation id="7808415789955822133">Brave OSৰ চৰ্তাৱলী</translation>
+<translation id="7408085963519505752">Brave OSৰ চৰ্তাৱলী</translation>
 <translation id="7207456302801184289">Brave লৈ স্বাগতম</translation>
 <translation id="3507835409099344374">Braveৰ জাননীৰ ছেটিংসমূহ-লৈ চাওক</translation>
 <translation id="1026406809507858026">{0,plural, =0{Braveৰ এটা আপডে'ট আছে}=1{Braveৰ এটা আপডে'ট আছে}one{Braveৰ এটা আপডে’ট # দিনৰ বাবে উপলব্ধ}other{Braveৰ এটা আপডে’ট # দিনৰ বাবে উপলব্ধ}}</translation>
@@ -199,9 +194,9 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="1786715389543715322">Brave আপডে’ট কৰি থকা হৈছে (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">প্ৰায় আপ-টু-ডে’ট কৰা হৈছে! আপডে’ট সম্পূৰ্ণ কৰিবলৈ Brave পুনৰ লঞ্চ কৰক৷</translation>
 <translation id="8208853227947884571">Brave একেবাৰে শেহতীয়া অৱস্থাত আছে</translation>
-<translation id="6686872257969654608">Brave OSৰ বিষয়ে</translation>
-<translation id="7674116293463255181">আপোনাৰ ডিভাইচটো আপ-টু-ডে’ট হৈ আছেনে নাই সেয়া চাবলৈ <ph name="LINK_BEGIN"/>Brave OSৰ ছেটিংসমূহ<ph name="LINK_END"/>লৈ যাওক</translation>
-<translation id="2280363356796735201">Brave OSৰ ক্ষেত্ৰত সহায় লাভ কৰক</translation>
+<translation id="573759479754913123">Brave OSৰ বিষয়ে</translation>
+<translation id="7573289029918943991">আপোনাৰ ডিভাইচটো আপ-টু-ডে’ট হৈ আছেনে নাই সেয়া চাবলৈ <ph name="LINK_BEGIN"/>Brave OSৰ ছেটিংসমূহ<ph name="LINK_END"/>লৈ যাওক</translation>
+<translation id="3395323229510056640">Brave OSৰ ক্ষেত্ৰত সহায় লাভ কৰক</translation>
 <translation id="38898988211673781">আপুনি Braveৰ পৰা বাহিৰ হোৱা সময়ত কুকীসমূহ আৰু ছাইট ডেটা মচক</translation>
 <translation id="5253815230176279256">Brave Software Pay (Braveলৈ প্ৰতিলিপি কৰা হ’ল)</translation>
 <translation id="5468853758063275923">Brave হৈছে আপোনাৰ ডিফ’ল্ট ব্ৰাউজাৰ</translation>
@@ -209,7 +204,7 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="6915252145142862992">এয়া Braveৰ এক গৌণ ইনষ্টলেশ্বন আৰু ইয়াক আপোনাৰ ডিফ’ল্ট ব্ৰাউজাৰ কৰিব নোৱাৰি।</translation>
 <translation id="6235873178214143377">এই পৃষ্ঠাখনত যদি কোনোটো ছেটিং দেখা পোৱা নাযায়, তেন্তে আপোনাৰ <ph name="LINK_BEGIN"/>
     Brave ব্ৰাউজাৰৰ ছেটিংসমূহ<ph name="LINK_END"/>ত চাওক</translation>
-<translation id="4459296183696059108">এই পৃষ্ঠাখনত যদি কোনোটো ছেটিং দেখা পোৱা নাযায়, তেন্তে আপোনাৰ <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">এই পৃষ্ঠাখনত যদি কোনোটো ছেটিং দেখা পোৱা নাযায়, তেন্তে আপোনাৰ <ph name="LINK_BEGIN"/>
     Brave ব্ৰাউজাৰৰ ছেটিংসমূহ<ph name="LINK_END"/>ত চাওক</translation>
 <translation id="2312399718665761438">বানান শুদ্ধ কৰিবলৈ Braveএ আপুনি পাঠ অন্তৰ্ভুক্ত কৰিবলৈ থকা ক্ষেত্ৰসমূহত টাইপ কৰা পাঠখিনি Brave Softwareলৈ পঠিয়ায়</translation>
 <translation id="8586264863973514035">আপুনি কৰা সলনি কার্যসমূহ প্ৰযোজ্য কৰিবলৈ Brave পুনৰ লঞ্চ কৰক</translation>
@@ -219,7 +214,6 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="5853262807109651878">ইয়ে এই ডিভাইচটোৰ পৰা <ph name="ITEMS_COUNT"/>টা বস্তু মচিব। আপোনাৰ ডেটা পাছত পুনৰুদ্ধাৰ কৰিবলৈ Braveত <ph name="USER_EMAIL"/> হিচাপে ছাইন ইন কৰক।</translation>
 <translation id="4784414698887946907">এই কাৰ্যই এই ডিভাইচটোৰ পৰা আপোনাৰ ব্ৰাউজিং ডেটা মচি পেলাব। আপোনাৰ ডেটা পাছত পুনৰুদ্ধাৰ কৰিবলৈ Braveত <ph name="USER_EMAIL"/> হিচাপে ছাইন ইন কৰক।</translation>
 <translation id="4518479204315969707">Braveৰ নাম আৰু ছবি</translation>
-<translation id="82609232232243542">Braveত ছাইন ইন কৰক</translation>
 <translation id="8372880274820509128">অতিৰিক্ত সুৰক্ষাৰ বাবে Braveএ আপোনাৰ ডেটা এনক্ৰিপ্ট কৰিব।</translation>
 <translation id="7445061995866044926">Braveৰ পৰা ছাইন আউট কৰিবনে?</translation>
 <translation id="7453070689008684791">Braveএ ঠিকনা বাৰত পৰামর্শ দিবলৈ আপোনাৰ Driveত এক্সেছ কৰিব</translation>

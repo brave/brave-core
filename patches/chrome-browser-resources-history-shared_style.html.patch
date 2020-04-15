@@ -1,10 +1,8 @@
 diff --git a/chrome/browser/resources/history/shared_style.html b/chrome/browser/resources/history/shared_style.html
-index c915d823deba82b930f25f8d67e8c7fd02ffa6f3..0c4dca553bdad35ed97df1e5239ed48d7a7e3eb1 100644
+index fb85d9ee6a1691b99c65cf4aec3c62df6d160c77..e028bca52e5aa09f38c6d7f4df8a94592565bf28 100644
 --- a/chrome/browser/resources/history/shared_style.html
 +++ b/chrome/browser/resources/history/shared_style.html
-@@ -4,7 +4,7 @@
- 
- <dom-module id="shared-style">
+@@ -1,5 +1,5 @@
    <template>
 -    <style include="cr-hidden-style">
 +    <style include="cr-hidden-style br-shared-style">

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/lifetime_browser_proxy.js b/chrome/browser/resources/settings/lifetime_browser_proxy.js
-index 396539708ffed08cc0fc084fde54bba2496598fe..afa73c21c35d4ab6d54797b63a96eec993d93f73 100644
+index dae61c384ea5472bb178c855daf314284d023377..cb4a029ffdcb68f0a73f53e9bc8e975aa9df65a4 100644
 --- a/chrome/browser/resources/settings/lifetime_browser_proxy.js
 +++ b/chrome/browser/resources/settings/lifetime_browser_proxy.js
 @@ -11,6 +11,13 @@ cr.define('settings', function() {

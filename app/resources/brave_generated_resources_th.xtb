@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="7450557937477381864">ปิด Chrome</translation>
 <translation id="7008934821596358692">เพื่อเสร็จสิ้นการนำเข้า ปิดหน้าต่าง Chrome ทั้งหมด</translation>
-<translation id="5735465527556462863">ปิด Brave (เก่า)</translation>
-<translation id="7737066986958447692">เพื่อให้การนำเข้าเสร็จสิ้น โปรดปิดหน้าต่าง Brave (เก่า) ทั้งหมด</translation>
-<translation id="6447842834002726250">คุกกี้</translation>
-<translation id="4983925687993168579">สถิติ</translation>
-<translation id="6165477144235978006">การชำระเงิน Brave</translation>
-<translation id="3489524616427966890">เปิดหน้าต่างและแท็บ</translation>
 <translation id="3699882589215410581">ติดตั้งและเปิดใช้งาน Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="4726634924419692905">ถามเมื่อเว็บไซต์ต้องการติดตั้ง Widevine บนคอมพิวเตอร์ของคุณ</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
 
 โดยการติดตั้งส่วนขยายนี้ คุณได้ยอมรับข้อตกลงการใช้งาน Google Widevine คุณได้ตกลงว่า Brave จะไม่รับผิดชอบต่อความเสียหายหรือสูญหายในการเชื่อมต่อการใช้ Google Widevine ของคุณ</translation>
-<translation id="6499845530162974140">Brave (เก่า)</translation>
-<translation id="3198814717959506569">นำเข้าจาก Brave</translation>
 <translation id="453977518730680921">เล่นสื่ออัตโนมัติ</translation>
 <translation id="410351446219883937">เล่นอัตโนมัติ</translation>
 <translation id="2240268017737062801">ถามเมื่อเว็บต้องการเล่นสื่ออัตโนมัติ</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">มุมมองอย่างง่าย</translation>
 <translation id="2360360976480535628">มุมมองขั้นสูง</translation>
 <translation id="5709627087332022422">บล็อกตัวติดตามข้ามไซต์</translation>
-<translation id="9075744464571452108">การจดจำอุปกรณ์</translation>
+<translation id="6447842834002726250">คุกกี้</translation>
+<translation id="6522412052085018663">การพิมพ์ลายนิ้วมือ</translation>
 <translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 <translation id="4824468494729001999">บล็อกสคริปต์</translation>
-<translation id="8526521192921341404">อนุญาตให้เข้าสู่ระบบ Google</translation>
+<translation id="519861640102428255">ดูและรู้สึก</translation>
+<translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
+<translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
 <translation id="4699812599455071925">บล็อกเฉพาะคุกกี้ข้ามไซต์</translation>
 <translation id="5657156137487675418">อนุญาตคุกกี้ทั้งหมด</translation>
 <translation id="6883611015375728278">บล็อกคุกกี้ทั้งหมด</translation>
-<translation id="3084022390368021391">บล็อกเฉพาะการพยายามจดจำอุปกรณ์ข้ามไซต์</translation>
-<translation id="1847422622180531843">อนุญาตการพยายามจดจำอุปกรณ์ทั้งหมด</translation>
-<translation id="8375051111011093523">บล็อกการพยายามจดจำอุปกรณ์ทั้งหมด</translation>
+<translation id="5572437114858031185">บล็อคเฉพาะการพิมพ์ลายนิ้วมือระหว่างเว็บไซต์</translation>
+<translation id="5079032039521408559">อนุญาตการพิมพ์ลายนิ้วมือทั้งหมด</translation>
+<translation id="6447141055227658942">บล็อคการพิมพ์ลายนิ้วมือทั้งหมด</translation>
 <translation id="8942080017911802454">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
@@ -104,6 +99,7 @@
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">ผู้ให้บริการ Web3 สำหรับใช้งาน Dapps</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="1765684547504191670">ใช้คอมโพเนนต์ Media Router เพื่อเปิดใช้งาน Chromecast ในเบราว์เซอร์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
@@ -164,6 +160,7 @@
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="6469509880167172749">ส่งผลการวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ให้ Brave โดยอัตโนมัติ</translation>
 <translation id="7090566321964540749">ข้อมูลแบบไม่ระบุตัวตนนี้จะช่วยให้ Brave คาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่างได้เท่านั้น</translation>
+<translation id="9111960429693394744">คุณต้องการใช้ Crypto Wallet ของ Brave หรือ MetaMask สำหรับ Dapps</translation>
 <translation id="7583735190612229830">ตั้งค่ากระเป๋าสตางค์ดิจิตอลเพื่อโต้ตอบกับแอปนี้และแอปอื่นๆ ที่คล้ายกันนี้</translation>
 <translation id="8337117349965899723">ใช้กระเป๋าสตางค์ดิจิตอล</translation>
 <translation id="5756155765711979898">ใช้ MetaMask</translation>
@@ -177,4 +174,9 @@
 <translation id="4474155171896946103">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
+<translation id="4989337484121655457">จำเป็นต้องให้สิทธิ์เข้าถึงดิสก์ทั้งหมด</translation>
+<translation id="8025559074845816210">Brave จำเป็นต้องได้รับสิทธิ์เข้าถึงดิสก์ทั้งหมดเพื่อนำเข้าบุ๊กมาร์กจาก Safari</translation>
+<translation id="8515328844674404333">เรียนรู้วิธีการให้สิทธิ์เข้าถึงดิสก์ทั้งหมดผ่านการกำหนดลักษณะของระบบ</translation>
+<translation id="6414878884710400018">เปิดการกำหนดลักษณะของระบบ</translation>
+<translation id="5570470519803062774">การตั้งค่าเว็บไซต์และชิลด์</translation>
 </translationbundle>

@@ -48,7 +48,7 @@
         We could not reach your parents at the moment. Please try again.
       </message>
       <message name="IDS_BLOCK_INTERSTITIAL_SEND_FEEDBACK" desc="The text for a link to submit feedback about a blocked site.">
-        Was this unexpected? <ph name="BEGIN_LINK">&lt;a href="#" id="feedback-link"&gt;</ph>Let us know<ph name="END_LINK">&lt;/a&gt;</ph>
+        Was this result unexpected? <ph name="BEGIN_LINK">&lt;a href="#" id="feedback-link"&gt;</ph>Send feedback<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_BLOCK_INTERSTITIAL_SHOW_DETAILS" desc="The text for the link to show details about the interstitial.">
         Details
@@ -57,7 +57,7 @@
         Hide details
       </message>
       <message name="IDS_SUPERVISED_USER_BLOCK_HEADER" desc="Header for the message to be shown when a site was blocked.">
-        This site is blocked
+        This site is blocked because it may have mature content
       </message>
       <message name="IDS_CHILD_BLOCK_MESSAGE_DEFAULT_SINGLE_PARENT" desc="Message to be shown when a site was blocked due to the default fallback behavior and the child has one parent.">
         Your parent hasn't approved it yet

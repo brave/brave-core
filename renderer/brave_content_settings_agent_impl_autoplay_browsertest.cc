@@ -20,6 +20,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/permissions/permission_request.h"
 #include "net/dns/mock_host_resolver.h"
 
 const char kVideoPlaying[] = "Video playing";
@@ -118,7 +119,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
   NavigateToURLUntilLoadStop(whitelisted_url());
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
-              PermissionRequestType::PERMISSION_AUTOPLAY));
+      permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   WaitForPlaying();
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
@@ -142,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
   NavigateToURLUntilLoadStop(whitelisted_url());
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
-              PermissionRequestType::PERMISSION_AUTOPLAY));
+      permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));

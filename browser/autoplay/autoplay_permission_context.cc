@@ -10,9 +10,9 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
-#include "chrome/browser/permissions/permission_request_id.h"
 #include "chrome/common/chrome_features.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/permissions/permission_request_id.h"
 #include "third_party/blink/public/mojom/feature_policy/feature_policy.mojom.h"
 
 AutoplayPermissionContext::AutoplayPermissionContext(Profile* profile)
@@ -36,7 +36,7 @@ ContentSetting AutoplayPermissionContext::GetPermissionStatusInternal(
 }
 
 void AutoplayPermissionContext::UpdateTabContext(
-    const PermissionRequestID& id,
+    const permissions::PermissionRequestID& id,
     const GURL& requesting_frame,
     bool allowed) {
   TabSpecificContentSettings* content_settings =
@@ -51,7 +51,7 @@ void AutoplayPermissionContext::UpdateTabContext(
 }
 
 void AutoplayPermissionContext::NotifyPermissionSet(
-    const PermissionRequestID& id,
+    const permissions::PermissionRequestID& id,
     const GURL& requesting_origin,
     const GURL& embedding_origin,
     BrowserPermissionCallback callback,

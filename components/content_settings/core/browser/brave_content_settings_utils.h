@@ -17,6 +17,9 @@ const std::vector<std::string>& GetShieldsResourceIDs();
 
 bool IsShieldsResourceID(const ResourceIdentifier& resource_identifier);
 
+base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
+    const ContentSettingsPattern& pattern);
+
 }  // namespace content_settings
 
 #endif  // BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_UTILS_H_

@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_WIDEVINE_WIDEVINE_PERMISSION_REQUEST_H_
 #define BRAVE_BROWSER_WIDEVINE_WIDEVINE_PERMISSION_REQUEST_H_
 
-#include "chrome/browser/permissions/permission_request.h"
+#include "components/permissions/permission_request.h"
 
 #include "url/gurl.h"
 
@@ -14,7 +14,7 @@ namespace content {
 class WebContents;
 }
 
-class WidevinePermissionRequest : public PermissionRequest {
+class WidevinePermissionRequest : public permissions::PermissionRequest {
  public:
   explicit WidevinePermissionRequest(content::WebContents* web_contents);
   ~WidevinePermissionRequest() override;
@@ -26,14 +26,14 @@ class WidevinePermissionRequest : public PermissionRequest {
 
  private:
   // PermissionRequest overrides:
-  PermissionRequest::IconId GetIconId() const override;
+  permissions::PermissionRequest::IconId GetIconId() const override;
   base::string16 GetMessageTextFragment() const override;
   GURL GetOrigin() const override;
   void PermissionGranted() override;
   void PermissionDenied() override;
   void Cancelled() override;
   void RequestFinished() override;
-  PermissionRequestType GetPermissionRequestType() const override;
+  permissions::PermissionRequestType GetPermissionRequestType() const override;
 
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.

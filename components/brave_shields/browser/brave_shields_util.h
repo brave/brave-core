@@ -25,8 +25,7 @@ namespace brave_shields {
 
 enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
 
-ContentSettingsPattern GetPatternFromURL(const GURL& url,
-                                         bool scheme_wildcard = false);
+ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
 

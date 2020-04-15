@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Pengenalan perangkat cross-site diblokir",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Identifikasi pengguna (fingerprinting) lintas situs diblokir",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Upaya pengenalan perangkat diblokir",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Usaha identifikasi pengguna diblokir",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Semua upaya pengenalan perangkat diizinkan",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Semua upaya identifikasi pengguna (fingerprinting) diperbolehkan",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Percobaan pengenalan peranti",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Upaya identifikasi pengguna (fingerprinting)\n",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Skrip pada situs ini",

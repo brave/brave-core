@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Разпознаването на устройства от различни сайтове е блокирано",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Снемането на пръстови отпечатъци от други сайтове е блокирано",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Опитите за разпознаване на устройство са блокирани",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Опитите за снемане на пръстови отпечатъци са блокирани",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Всички опити за разпознаване на устройства са разрешени",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Разрешени са всички опити за снемане на отпечатъци",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Опити за разпознаване на устройството",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Опити за снемане на пръстови отпечатъци",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Скриптове на този сайт",

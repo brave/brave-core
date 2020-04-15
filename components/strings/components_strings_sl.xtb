@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Brez povezave</translation>
 <translation id="5171045022955879922">Poiščite ali vnesite URL</translation>
 <translation id="803771048473350947">Datoteka</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="2982481275546140226">Počisti podatke</translation>
 <translation id="8425213833346101688">Spremeni</translation>
 <translation id="8009225694047762179">Upravljanje gesel</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Urejanje datotek</translation>
 <translation id="6545864417968258051">Iskanje naprav Bluetooth</translation>
 <translation id="534295439873310000">Naprave s tehnologijo NFC</translation>
+<translation id="4943703118917034429">Navidezna resničnost</translation>
+<translation id="3513704683820682405">Razširjena resničnost</translation>
 <translation id="5039804452771397117">Dovoli</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
 <translation id="57838592816432529">Izklopi zvok</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Aktivno</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="6915804003454593391">Uporabnik:</translation>
-<translation id="5916664084637901428">Vklopljeno</translation>
-<translation id="5860033963881614850">Izklopljeno</translation>
+<translation id="5921185718311485855">Vklopljeno</translation>
+<translation id="1019413721762100891">Izklopljeno</translation>
 <translation id="7961015016161918242">Nikoli</translation>
 <translation id="8294431847097064396">Vir</translation>
 <translation id="1056898198331236512">Opozorilo</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Naprava</translation>
 <translation id="4728558894243024398">Okolje</translation>
 <translation id="2380886658946992094">Pravno</translation>
-<translation id="5939847200023027600">Storitev sestavljalnika PDF-jev</translation>
 <translation id="1588438908519853928">Običajen</translation>
 <translation id="1974060860693918893">Napredno</translation>
 <translation id="5308380583665731573">Poveži</translation>

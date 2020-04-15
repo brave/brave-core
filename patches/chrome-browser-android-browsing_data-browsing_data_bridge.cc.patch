@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/android/browsing_data/browsing_data_bridge.cc b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
-index cd5bfb077e93e2e9904ebf4287860c966776b869..e4b9ac42077e5dc5651f5dab96820ec9e69df6cf 100644
+index 5fa2c2806cd255fc594edce9015fae1fdec07b14..65497dadda403df2ea749f9a37b06b2b42e52b9d 100644
 --- a/chrome/browser/android/browsing_data/browsing_data_bridge.cc
 +++ b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
 @@ -123,6 +123,7 @@ static void JNI_BrowsingDataBridge_ClearBrowsingData(

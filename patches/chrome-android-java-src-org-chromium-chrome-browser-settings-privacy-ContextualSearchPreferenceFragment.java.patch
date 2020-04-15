@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ContextualSearchPreferenceFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ContextualSearchPreferenceFragment.java
-index f5fa3525c2fe54d1387c1429216e7b3ec54d3808..19304567939fc7e7acaaf01a517d9838f55bc0b4 100644
+index 97ffc0cd5175f273967f649fc3770cc855ba9d15..2386682a957ec819205b5e8bc564980302c3b718 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ContextualSearchPreferenceFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ContextualSearchPreferenceFragment.java
-@@ -16,7 +16,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
  /**
   * Fragment to manage the Contextual Search preference and to explain to the user what it does.
   */

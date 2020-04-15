@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-index 59779e52d496ce2ae9c5a405035e45933ff0cb68..d981ff103b66e5631fa85a6335ea748935a907db 100644
+index 511b472cc01a1ec134689edbd6e5bf33b9ad6e52..03edfbfd9a8488cf83647b195c270e0275845277 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-@@ -469,6 +469,7 @@ void AvatarToolbarButton::MaybeHideIdentityAnimation() {
+@@ -223,6 +223,7 @@ void AvatarToolbarButton::OnHighlightChanged() {
  }
  
  base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
 +  GET_AVATAR_TOOLTIP_TEXT_
-   switch (GetState()) {
+   switch (delegate_->GetState()) {
      case State::kIncognitoProfile:
        return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);

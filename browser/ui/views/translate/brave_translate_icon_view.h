@@ -22,8 +22,10 @@
 // is only used when ENABLE_BRAVE_TRANSLATE_EXTENSION is true.
 class BraveTranslateIconView : public TranslateIconView {
  public:
-  BraveTranslateIconView(CommandUpdater* command_updater,
-                         PageActionIconView::Delegate* delegate);
+  BraveTranslateIconView(
+      CommandUpdater* command_updater,
+      IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
+      PageActionIconView::Delegate* page_action_icon_delegate);
   ~BraveTranslateIconView() override;
 
   void UpdateImpl() override;

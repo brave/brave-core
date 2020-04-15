@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/accessibility/AccessibilitySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/accessibility/AccessibilitySettings.java
-index a6c3cd1e1d2c64cfc9e05b43b6c975a988eb1d99..337d01f3ab0741108139add40acddea1b2db1675 100644
+index fd479e83dbb210f3f713700b89c3cf2aeaa073bd..103d475ca789086ae73ffe8adb12d8afbcea4222 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/accessibility/AccessibilitySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/accessibility/AccessibilitySettings.java
-@@ -28,7 +28,7 @@ import java.text.NumberFormat;
+@@ -25,7 +25,7 @@ import org.chromium.chrome.browser.util.AccessibilityUtil;
   * Fragment to keep track of all the accessibility related preferences.
   */
  public class AccessibilitySettings

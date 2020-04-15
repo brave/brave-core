@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Офлайн</translation>
 <translation id="5171045022955879922">Знайдіть або введіть URL-адресу</translation>
 <translation id="803771048473350947">Файл</translation>
-<translation id="6268185425799226387">Диск Brave Software</translation>
 <translation id="2982481275546140226">Очистити дані</translation>
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="8009225694047762179">Керувати паролями</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Редагування файлу</translation>
 <translation id="6545864417968258051">Пошук пристроїв Bluetooth</translation>
 <translation id="534295439873310000">Пристрої NFC</translation>
+<translation id="4943703118917034429">Віртуальна реальність</translation>
+<translation id="3513704683820682405">Доповнена реальність</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="7053983685419859001">Заблокувати</translation>
 <translation id="57838592816432529">Вимкнути звук</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Активний клієнт</translation>
 <translation id="7805768142964895445">Статус</translation>
 <translation id="6915804003454593391">Користувач:</translation>
-<translation id="5916664084637901428">Увімкнути</translation>
-<translation id="5860033963881614850">Вимкнено</translation>
+<translation id="5921185718311485855">Увімкнути</translation>
+<translation id="1019413721762100891">Вимкнено</translation>
 <translation id="7961015016161918242">Ніколи</translation>
 <translation id="8294431847097064396">Джерело</translation>
 <translation id="1056898198331236512">Застереження</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Пристрій</translation>
 <translation id="4728558894243024398">Платформа</translation>
 <translation id="2380886658946992094">Легальний</translation>
-<translation id="5939847200023027600">Служба компонування PDF</translation>
 <translation id="1588438908519853928">Звичайний</translation>
 <translation id="1974060860693918893">Розширені</translation>
 <translation id="5308380583665731573">Під’єднатися</translation>

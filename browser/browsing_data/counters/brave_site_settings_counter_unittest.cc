@@ -100,7 +100,7 @@ TEST_F(BraveSiteSettingsCounterTest, Count) {
       kBatURL, GURL(), ContentSettingsType::PLUGINS,
       brave_shields::kFingerprinting, CONTENT_SETTING_ALLOW);
   map()->SetContentSettingCustomScope(
-      brave_shields::GetPatternFromURL(kGoogleURL, true),
+      brave_shields::GetPatternFromURL(kGoogleURL),
       ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
   map()->SetContentSettingDefaultScope(

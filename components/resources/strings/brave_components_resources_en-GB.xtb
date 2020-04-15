@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Ads and Trackers Blocked</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="7679428712334662192">Estimated Time Saved</translation>
+<translation id="8411095021655121794">Estimated bandwidth saved</translation>
 <translation id="5206618227023752085">Top site removed.</translation>
 <translation id="2079545284768500474">Undo</translation>
 <translation id="6040143037577758943">Close</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">hours</translation>
 <translation id="7100907433458266664">day</translation>
 <translation id="4971389353431353387">days</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Photo by</translation>
 <translation id="7108338896283013870">Hide</translation>
 <translation id="7115515527894388910">Edit Preferences</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Browse safe and sound</translation>
 <translation id="2188651882929633653">Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to “down” if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Ads</translation>
-<translation id="2364310432103707426">Earn {{currency}} by viewing Brave ads. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
+<translation id="2128226640852355533">Earn {{currency}} by viewing Brave Ads. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</translation>
-<translation id="8949527283651381130">Allow ad conversion detection</translation>
-<translation id="2184191362610545393">This will anonymously let Brave know that there was a response to an ad on this browser. Enabling this will increase earnings.</translation>
 <translation id="20281847067919078">Estimated rewards pending</translation>
 <translation id="8593551638387217772">Next payment date</translation>
 <translation id="319209088187794725">Ad notifications received this month</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Wallet created</translation>
 <translation id="5094577350232361255">about</translation>
 <translation id="4918086044614829423">Accept</translation>
-<translation id="6832986780040139899">© 2016 © 2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
+<translation id="5916290544882167205">Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
 <translation id="9026369588205476247">To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.</translation>
 <translation id="1036277985068412734">add funds</translation>
 <translation id="3587482841069643663">All</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Saved</translation>
 <translation id="2155330833364281539">Ads you've received in the past {{totalDays}} days</translation>
 <translation id="8863685593846905344">Ads history</translation>
+<translation id="2777306694585938662">Ads rewards received</translation>
 <translation id="5212777575344695266">Mark as inappropriate</translation>
 <translation id="2111256234277361810">Mark as inappropriate ✓</translation>
 <translation id="8988332871810963281">There is currently no Brave ads history</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Opening Balance</translation>
 <translation id="532275381857891532">7-day ads history</translation>
 <translation id="4923459931733593730">Payment</translation>
-<translation id="4021593982164260556">Payment made every {{day}}th day in each month.</translation>
+<translation id="5693657857413982604">Payment made every {{day}}th each month.</translation>
 <translation id="6104680658798556671">Payment not made.</translation>
-<translation id="2834888581291358924">When your balance is not enough to cover the combined total of Auto-Contribute and your monthly contributions, these payments are skipped for this period.</translation>
 <translation id="3138528956349114724">Pinned sites are now</translation>
 <translation id="2337632028350283479">Here's how monthly contributions work:</translation>
 <translation id="6457273203091513039">Monthly contributions do not come out of your Auto-Contribute payment. They're separate.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Token grant received</translation>
 <translation id="9212459913845238740">Point Grants Claimed</translation>
 <translation id="768850953428043522">points</translation>
 <translation id="3043542281656021374">Point</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Verified</translation>
 <translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
 <translation id="723054503945711909">Brave Software Inc. does not process, store or access any of the personal information that you provide to Uphold when you create an account with them.</translation>
+<translation id="7404779623219601861">Redeem BAT for gift cards</translation>
+<translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
+<translation id="526152301446370337">Visit TAP.</translation>
+<translation id="6915065518766963119">* Requires Uphold verification.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about Brave Rewards</translation>
 <translation id="5826706758731195747">By turning on Rewards, you agree to the <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Estimated earnings so far this month</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Get paid to view this sponsored background image.</translation>
 <translation id="2542495049135486284">Try Brave Rewards again and pay it forward as you earn!</translation>
 <translation id="53513464591392992">Turn on Brave Rewards and get paid to view privacy-respecting ads.</translation>
+<translation id="8463996294416161140">Turn on <ph name="PRODUCT_NAME"/> to claim your share. You can also choose to <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Way to Go!</translation>
 <translation id="764235488372037377">Your rewards from Ads are here</translation>
 <translation id="7091215606170476659">You have a UGP grant from Brave.</translation>

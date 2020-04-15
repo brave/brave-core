@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index 1bc9a3799ccd90700ec1ff6d3e76e1c054756bf5..cc4b0028af13f41b355cb5a92ca39504e0127e74 100644
+index 2a0e9282adbefc9c9ba32e459013ee0fbaec8b35..5d14c8243952f41d23f997b31b00c8d25ec34edb 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
-@@ -107,7 +107,7 @@ ContentSetting PermissionStatusToContentSetting(PermissionStatus status) {
+@@ -109,7 +109,7 @@ ContentSetting PermissionStatusToContentSetting(PermissionStatus status) {
  // Helper method to convert PermissionType to ContentSettingType.
  // If PermissionType is not supported or found, returns
  // ContentSettingsType::DEFAULT.
@@ -11,9 +11,9 @@ index 1bc9a3799ccd90700ec1ff6d3e76e1c054756bf5..cc4b0028af13f41b355cb5a92ca39504
      PermissionType permission) {
    switch (permission) {
      case PermissionType::MIDI:
-@@ -157,6 +157,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
-     case PermissionType::NFC:
-       return ContentSettingsType::NFC;
+@@ -163,6 +163,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
+     case PermissionType::AR:
+       return ContentSettingsType::AR;
      case PermissionType::NUM:
 +    default:
        break;

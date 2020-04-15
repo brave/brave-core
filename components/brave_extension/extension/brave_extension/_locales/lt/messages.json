@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Kelių svetainių įrenginio atpažinimo bandymai užblokuoti",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Kontrolinių kodų tarp kelių svetainių kūrimo funkcija užblokuota",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Įrenginio atpažinimo bandymai užblokuoti",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Kontrolinių kodų kūrimo bandymai užblokuoti",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Visi įrenginio atpažinimo bandymai leidžiami",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Visi kontrolinių kodų kūrimo bandymai leidžiami",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Bandymai atpažinti įrenginį",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Kontrolinių kodų kūrimo bandymai",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Scenarijai šioje svetainėje",

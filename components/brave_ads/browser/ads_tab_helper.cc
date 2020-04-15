@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/session_tab_helper.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
 #include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -31,7 +31,7 @@ namespace brave_ads {
 
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
-      tab_id_(SessionTabHelper::IdForTab(web_contents)),
+      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
       ads_service_(nullptr),
       is_active_(false),
       is_browser_active_(true),

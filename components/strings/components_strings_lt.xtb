@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Neprisijungus</translation>
 <translation id="5171045022955879922">Ieškokite ar įveskite URL</translation>
 <translation id="803771048473350947">Failas</translation>
-<translation id="6268185425799226387">„Brave Software“ diskas</translation>
 <translation id="2982481275546140226">Išvalyti duomenis</translation>
 <translation id="8425213833346101688">Keisti</translation>
 <translation id="8009225694047762179">Tvarkyti slaptažodžius</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Failo redagavimas</translation>
 <translation id="6545864417968258051">„Bluetooth“ nuskaitymas</translation>
 <translation id="534295439873310000">ALR įrenginiai</translation>
+<translation id="4943703118917034429">Virtualioji realybė</translation>
+<translation id="3513704683820682405">Išplėstoji realybė</translation>
 <translation id="5039804452771397117">Leisti</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
 <translation id="57838592816432529">Nutildyti</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Aktyvus</translation>
 <translation id="7805768142964895445">Būsena</translation>
 <translation id="6915804003454593391">Naudotojas:</translation>
-<translation id="5916664084637901428">Įjungta</translation>
-<translation id="5860033963881614850">Išjungta</translation>
+<translation id="5921185718311485855">Įjungta</translation>
+<translation id="1019413721762100891">Išjungta</translation>
 <translation id="7961015016161918242">Niekada</translation>
 <translation id="8294431847097064396">Šaltinis</translation>
 <translation id="1056898198331236512">Įspėjimas</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Įrenginys</translation>
 <translation id="4728558894243024398">Platforma</translation>
 <translation id="2380886658946992094">Teisė</translation>
-<translation id="5939847200023027600">PDF rengyklės paslauga</translation>
 <translation id="1588438908519853928">Įprastas</translation>
 <translation id="1974060860693918893">Išplėstiniai</translation>
 <translation id="5308380583665731573">Prisijungti</translation>

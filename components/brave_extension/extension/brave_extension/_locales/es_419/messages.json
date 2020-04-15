@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Bloquear reconocimiento de dispositivos entre sitios",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Bloquear reconocimiento de huellas digitales entre sitios",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Bloquear intentos de reconocimiento de dispositivos",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Bloquear intentos de reconocimiento de huellas digitales",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Permitir todos los intentos de reconocimiento de dispositivos",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Permitir todos los intentos de reconocimiento de huellas digitales",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Intentos de reconocimiento de dispositivos",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Intentos de reconocimiento de huellas digitales",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Secuencias de comandos en este sitio",

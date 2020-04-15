@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 7d02af7f8f60dc68ff41ac9c5a2d3ace9ab60646..d71a7325fe58c9d29d205a3c4feed0967791874d 100644
+index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f84235f792ff 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
-@@ -146,7 +146,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -148,7 +148,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Get the name of the last used profile, or if that's undefined, the default
    // profile.
@@ -11,7 +11,7 @@ index 7d02af7f8f60dc68ff41ac9c5a2d3ace9ab60646..d71a7325fe58c9d29d205a3c4feed096
  
    // Get the Profiles which are currently open, i.e. have open browsers or were
    // open the last time Chrome was running. Profiles that fail to initialize are
-@@ -227,7 +227,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -229,7 +229,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Initializes user prefs of |profile|. This includes profile name and
    // avatar values.
@@ -20,7 +20,7 @@ index 7d02af7f8f60dc68ff41ac9c5a2d3ace9ab60646..d71a7325fe58c9d29d205a3c4feed096
  
    // Register and add testing profile to the ProfileManager. Use ONLY in tests.
    // This allows the creation of Profiles outside of the standard creation path
-@@ -269,6 +269,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -271,6 +271,7 @@ class ProfileManager : public content::NotificationObserver,
    }
  
   private:
@@ -28,7 +28,7 @@ index 7d02af7f8f60dc68ff41ac9c5a2d3ace9ab60646..d71a7325fe58c9d29d205a3c4feed096
    friend class TestingProfileManager;
    FRIEND_TEST_ALL_PREFIXES(ProfileManagerBrowserTest, DeleteAllProfiles);
    FRIEND_TEST_ALL_PREFIXES(ProfileManagerBrowserTest, SwitchToProfile);
-@@ -293,6 +294,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -295,6 +296,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Does final initial actions.
    void DoFinalInit(ProfileInfo* profile_info, bool go_off_the_record);
@@ -36,7 +36,7 @@ index 7d02af7f8f60dc68ff41ac9c5a2d3ace9ab60646..d71a7325fe58c9d29d205a3c4feed096
    void DoFinalInitForServices(Profile* profile, bool go_off_the_record);
    void DoFinalInitLogging(Profile* profile);
  
-@@ -356,7 +358,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -358,7 +360,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Apply settings for profiles created by the system rather than users: The
    // (desktop) Guest User profile and (desktop) System Profile.

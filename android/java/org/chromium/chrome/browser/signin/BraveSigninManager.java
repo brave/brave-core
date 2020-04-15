@@ -9,6 +9,7 @@ import android.content.Context;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
+import org.chromium.chrome.browser.externalauth.ExternalAuthUtils;
 import org.chromium.components.signin.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
@@ -16,9 +17,10 @@ import org.chromium.components.sync.AndroidSyncSettings;
 
 public class BraveSigninManager extends SigninManager {
     BraveSigninManager(long nativeSigninManagerAndroid, AccountTrackerService accountTrackerService,
-            IdentityManager identityManager, IdentityMutator identityMutator) {
+            IdentityManager identityManager, IdentityMutator identityMutator,
+            AndroidSyncSettings androidSyncSettings, ExternalAuthUtils externalAuthUtils) {
         super(nativeSigninManagerAndroid, accountTrackerService, identityManager, identityMutator,
-                AndroidSyncSettings.get());
+                androidSyncSettings, externalAuthUtils);
     }
 
     @Override
@@ -40,6 +42,7 @@ public class BraveSigninManager extends SigninManager {
         assert identityManager != null;
         assert identityMutator != null;
         return new BraveSigninManager(nativeSigninManagerAndroid, accountTrackerService,
-                identityManager, identityMutator);
+                identityManager, identityMutator,
+                AndroidSyncSettings.get(), ExternalAuthUtils.getInstance());
     }
 }

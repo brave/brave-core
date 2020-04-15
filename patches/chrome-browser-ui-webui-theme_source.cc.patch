@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index 536f075a8352a8a8a0234981a5c36bc8a931a9dc..5f26e2a75159641aed77e7466c0e0d39f87603e7 100644
+index 2ace3bf2c47c0f4af3c00f15d2540a68bfb59877..0a2d47b0dc464f3d9bff7b511a54d42619222131 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
-@@ -106,7 +106,7 @@ void ThemeSource::StartDataRequest(
+@@ -105,7 +105,7 @@ void ThemeSource::StartDataRequest(
    int resource_id = -1;
    if (parsed_path == "current-channel-logo") {
      switch (chrome::GetChannel()) {
@@ -11,7 +11,7 @@ index 536f075a8352a8a8a0234981a5c36bc8a931a9dc..5f26e2a75159641aed77e7466c0e0d39
        case version_info::Channel::CANARY:
          resource_id = IDR_PRODUCT_LOGO_32_CANARY;
          break;
-@@ -128,7 +128,11 @@ void ThemeSource::StartDataRequest(
+@@ -127,7 +127,11 @@ void ThemeSource::StartDataRequest(
          FALLTHROUGH;
  #endif
        case version_info::Channel::UNKNOWN:

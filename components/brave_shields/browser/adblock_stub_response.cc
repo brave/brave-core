@@ -15,7 +15,7 @@
 #include "net/base/data_url.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/resource_response.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace brave_shields {
 namespace {
@@ -77,12 +77,12 @@ std::string GetContentForMimeType(const std::string& mime_type) {
 
 void MakeStubResponse(const base::Optional<std::string>& data_url,
                       const network::ResourceRequest& request,
-                      network::ResourceResponseHead* response,
+                      network::mojom::URLResponseHeadPtr* response,
                       std::string* data) {
-  DCHECK(response);
+  DCHECK(response && *response);
   DCHECK(data);
 
-  response->mime_type = "text/html";
+  (*response)->mime_type = "text/html";
   *data = {};
 
   // Possibly overwrite mime and stub data.
@@ -95,9 +95,9 @@ void MakeStubResponse(const base::Optional<std::string>& data_url,
     // If the entry looks like "*/*", use the default value. Otherwise, use
     // the value from 'Accept', even if it looks like "audio/*".
     if (mime_types.front()[0] != '*') {
-      response->mime_type = mime_types.front();
+      (*response)->mime_type = mime_types.front();
     }
-    *data = GetContentForMimeType(response->mime_type);
+    *data = GetContentForMimeType((*response)->mime_type);
   }
 
   if (data_url.has_value() && !data_url->empty()) {
@@ -110,7 +110,7 @@ void MakeStubResponse(const base::Optional<std::string>& data_url,
     } else {
       *data = std::move(url_data);
       if (!mime_type.empty() && data_url.value().find("data:,") != 0) {
-        response->mime_type = mime_type;
+        (*response)->mime_type = mime_type;
       }
     }
   }
@@ -122,8 +122,8 @@ void MakeStubResponse(const base::Optional<std::string>& data_url,
       "HTTP/1.1 200 OK\r\n"
       "Access-Control-Allow-Origin: *\r\n"
       "Content-Type: " +
-      response->mime_type + "\r\n";
-  response->headers = new net::HttpResponseHeaders(
+      (*response)->mime_type + "\r\n";
+  (*response)->headers = new net::HttpResponseHeaders(
       net::HttpUtil::AssembleRawHeaders(raw_headers));
 }
 

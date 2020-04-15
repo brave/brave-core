@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
-import static org.chromium.chrome.browser.settings.MainPreferences.PREF_UI_THEME;
+import static org.chromium.chrome.browser.settings.MainSettings.PREF_UI_THEME;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.ChromeFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;

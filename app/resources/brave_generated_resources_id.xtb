@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
-<translation id="5735465527556462863">Tutup Brave (lama)</translation>
-<translation id="7737066986958447692">Untuk menyelesaikan impor, tutup semua jendela Brave (lama)</translation>
-<translation id="6447842834002726250">Kuki</translation>
-<translation id="4983925687993168579">Statistik</translation>
-<translation id="6165477144235978006">Brave Payments</translation>
-<translation id="3489524616427966890">Jendela dan tab terbuka</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="4726634924419692905">Tanyakan saat suatu situs ingin menginstal Widevine di komputer Anda.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
 
 Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Widevine. Anda setuju bahwa Brave tidak bertanggung jawab untuk setiap kerusakan atau kerugian sehubungan dengan penggunaan Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (lama)</translation>
-<translation id="3198814717959506569">Diimpor dari Brave</translation>
 <translation id="453977518730680921">Otomatis putar media</translation>
 <translation id="410351446219883937">Putar otomatis</translation>
 <translation id="2240268017737062801">Tanya ketika situs ingin memutar otomatis media</translation>
@@ -70,19 +62,22 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="130615081792797568">Tampilan sederhana</translation>
 <translation id="2360360976480535628">Tampilan lanjut</translation>
 <translation id="5709627087332022422">Blokir pelacak cross-site</translation>
-<translation id="9075744464571452108">Pengenalan perangkat</translation>
+<translation id="6447842834002726250">Kuki</translation>
+<translation id="6522412052085018663">Identifikasi Pengguna (Fingerprinting)</translation>
 <translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="4824468494729001999">Blokir skrip</translation>
-<translation id="8526521192921341404">Izinkan login Google</translation>
+<translation id="519861640102428255">Tampilan &amp; Rasa</translation>
+<translation id="4800195524776354947">Tampilkan jumlah objek yang diblokir pada ikon Perisai</translation>
+<translation id="7498695072878479744">Izinkan tombol login Google di situs pihak ketiga</translation>
 <translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
 <translation id="5165042248369837294">Izinkan tweet tersemat Twitter</translation>
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
 <translation id="4699812599455071925">Hanya blokir cookie cross-site</translation>
 <translation id="5657156137487675418">Izinkan semua kuki</translation>
 <translation id="6883611015375728278">Blokir semua kuki</translation>
-<translation id="3084022390368021391">Hanya blokir upaya pengenalan perangkat cross-site</translation>
-<translation id="1847422622180531843">Izinkan semua upaya pengenalan perangkat</translation>
-<translation id="8375051111011093523">Blokir semua upaya pengenalan perangkat</translation>
+<translation id="5572437114858031185">Hanya memblokir upaya identifikasi pengguna (fingerprinting) lintas situs</translation>
+<translation id="5079032039521408559">Izinkan semua usaha identifikasi pengguna (fingerprinting)</translation>
+<translation id="6447141055227658942">Blokir semua upaya identifikasi pengguna</translation>
 <translation id="8942080017911802454">Kebijakan Penanganan IP WebRTC</translation>
 <translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -104,6 +99,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="7701040980221191251">Tidak ada</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Penyedia Web3 untuk menggunakan Dapps</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
 <translation id="1765684547504191670">Menggunakan komponen Media Router untuk mengaktifkan Chromecast dalam peramban.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
@@ -164,6 +160,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="6469509880167172749">Secara otomatis mengirim analisis produk pribadi ke Brave</translation>
 <translation id="7090566321964540749">Info anonim ini hanya memungkinkan Brave memperkirakan penggunaan keseluruhan dari fitur tertentu.</translation>
+<translation id="9111960429693394744">Apakah Anda ingin menggunakan Dompet Kripto milik Brave atau MetaMask untuk Dapps?</translation>
 <translation id="7583735190612229830">Atur agar Dompet Kripto berinteraksi dengan aplikasi ini dan lainnya yang serupa.</translation>
 <translation id="8337117349965899723">Gunakan Dompet Kripto</translation>
 <translation id="5756155765711979898">Gunakan MetaMask</translation>
@@ -177,4 +174,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4474155171896946103">Bookmark semua tab...</translation>
 <translation id="2336228925368920074">Bookmark Semua Tab...</translation>
 <translation id="796831669370432378">Untuk menambah bookmark, klik tombol bookmark di sebelah bilah alamat</translation>
+<translation id="4989337484121655457">Memerlukan Akses Disk Penuh</translation>
+<translation id="8025559074845816210">Brave membutuhkan Akses Disk Penuh untuk mengimpor Penanda Anda dari Safari.</translation>
+<translation id="8515328844674404333">Pelajari cara memberikan Akses Disk Penuh dari Preferensi Sistem Anda.</translation>
+<translation id="6414878884710400018">Preferensi Sistem Terbuka</translation>
+<translation id="5570470519803062774">Pengaturan Situs dan Perisai</translation>
 </translationbundle>

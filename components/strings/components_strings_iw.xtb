@@ -112,7 +112,6 @@
 <translation id="981121421437150478">לא מקוון</translation>
 <translation id="5171045022955879922">טקסט או כתובת אתר לחיפוש</translation>
 <translation id="803771048473350947">קובץ</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="2982481275546140226">נקה נתונים</translation>
 <translation id="8425213833346101688">שנה</translation>
 <translation id="8009225694047762179">ניהול סיסמאות</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">עריכת קובץ</translation>
 <translation id="6545864417968258051">‏סריקת Bluetooth</translation>
 <translation id="534295439873310000">‏מכשירי NFC</translation>
+<translation id="4943703118917034429">מציאות מדומה</translation>
+<translation id="3513704683820682405">מציאות רבודה</translation>
 <translation id="5039804452771397117">אפשר</translation>
 <translation id="7053983685419859001">חסום</translation>
 <translation id="57838592816432529">השתק</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">פעיל</translation>
 <translation id="7805768142964895445">סטטוס</translation>
 <translation id="6915804003454593391">משתמש:</translation>
-<translation id="5916664084637901428">פועל</translation>
-<translation id="5860033963881614850">כבוי</translation>
+<translation id="5921185718311485855">פועל</translation>
+<translation id="1019413721762100891">כבוי</translation>
 <translation id="7961015016161918242">אף פעם</translation>
 <translation id="8294431847097064396">מקור</translation>
 <translation id="1056898198331236512">אזהרה</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">התקן</translation>
 <translation id="4728558894243024398">פלטפורמה</translation>
 <translation id="2380886658946992094">משפטי</translation>
-<translation id="5939847200023027600">‏שירות מחבר של מסמכי PDF</translation>
 <translation id="1588438908519853928">רגיל</translation>
 <translation id="1974060860693918893">מתקדם</translation>
 <translation id="5308380583665731573">התחברות</translation>

@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is in Brave niet toegestaan.</translation>
 <translation id="7450557937477381864">Chrome Sluiten</translation>
 <translation id="7008934821596358692">Om de importering te voltooien, moet je alle Chrome vensters sluiten.</translation>
-<translation id="5735465527556462863">Brave (oud) sluiten</translation>
-<translation id="7737066986958447692">Sluit alle Brave-vensters (oud) om het importeren te voltooien.</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Statistieken</translation>
-<translation id="6165477144235978006">Brave-betalingen</translation>
-<translation id="3489524616427966890">Geopende vensters en tabbladen</translation>
 <translation id="3699882589215410581">Widevine installeren en uitvoeren</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="4726634924419692905">Vraag wanneer een site Widevine op je computer wilt installeren.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine is een voorbeeld van Digital Rights Management (DRM) code die wij bij Brave Software niet bezitten en niet kunnen inspecteren. De Google Widevine code wordt geladen vna de Google-servers, en niet van die van ons. Het wordt alleen geladen als je deze optie aanzet. We raden het gebruik van DRM af, maar we respecteren de keuzes van onze gebruikers en begrijpen dat sommige Brave-gebruikers graag diensten willen gebruiken waarvoor DRM nodig is.
 
 Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruikersvoorwaarden. Je gaat er mee akkoord dat Brave niet verantwoordelijk is voor enige schade of verliezen gerelateerd aan je gebruik van Google Widevine</translation>
-<translation id="6499845530162974140">Brave (oud)</translation>
-<translation id="3198814717959506569">Geïmporteerd Vanuit Brave</translation>
 <translation id="453977518730680921">Speel media automatisch af</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
 <translation id="2240268017737062801">Vraag als een site media automatisch wil afspelen</translation>
@@ -70,19 +62,22 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="130615081792797568">Eenvoudig overzicht</translation>
 <translation id="2360360976480535628">Geavanceerde weergave</translation>
 <translation id="5709627087332022422">Blokkeer cross-site trackers</translation>
-<translation id="9075744464571452108">Apparaatherkenning</translation>
-<translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Vingerafdruk aan het nemen</translation>
+<translation id="3570081523466826008">Waardeer verbindingen op naar HTTPS</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
-<translation id="8526521192921341404">Google logins toestaan</translation>
+<translation id="519861640102428255">Look &amp; Feel</translation>
+<translation id="4800195524776354947">Toon het aantal geblokkeerde items op het schild-icoontje</translation>
+<translation id="7498695072878479744">Sta Google-inlogknoppen toe op sites van externe partijen</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
 <translation id="4699812599455071925">Blokkeer alleen cross-site cookies</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
-<translation id="3084022390368021391">Blokkeer alleen cross-site pogingen tot apparaatherkenning</translation>
-<translation id="1847422622180531843">Alle pogingen tot apparaatherkenning toestaan</translation>
-<translation id="8375051111011093523">Blokkeer alle pogingen tot apparaatherkenning</translation>
+<translation id="5572437114858031185">Blokkeer alleen vingerafdrukpogingen tussen sites</translation>
+<translation id="5079032039521408559">Sta alle vingerafdrukpogingen toe</translation>
+<translation id="6447141055227658942">Blokkeer alle vingerafdrukpogingen</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8798099450830957504">Standaard</translation>
@@ -104,6 +99,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="7701040980221191251">Geen</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Web3 provider voor het gebruik van Dapps</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
 <translation id="1765684547504191670">Gebruikt Media Router-component om Chromecast in de browser in te schakelen.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
@@ -164,6 +160,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="6469509880167172749">Stuur automatisch volledig privé productanalyses naar Brave</translation>
 <translation id="7090566321964540749">Met deze anonieme info kan Brave alleen het algehele gebruik van bepaalde functies schatten.</translation>
+<translation id="9111960429693394744">Wil je Brave's Crypto Wallets of MetaMask voor Dapps gebruiken?</translation>
 <translation id="7583735190612229830">Stel Crypto Wallets in om te communiceren met deze en vergelijkbare apps.</translation>
 <translation id="8337117349965899723">Gebruik Crypto Wallets</translation>
 <translation id="5756155765711979898">Gebruik MetaMask</translation>
@@ -177,4 +174,9 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="4474155171896946103">Bladwijzer toevoegen aan alle tabbladen...</translation>
 <translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
 <translation id="796831669370432378">Om een bladwijzer toe te voegen, klik je op de bladwijzerknop naast de adresbalk</translation>
+<translation id="4989337484121655457">Volledige toegang tot de schijf vereist</translation>
+<translation id="8025559074845816210">Brave heeft volledige schijftoegang nodig om uw bladwijzers uit Safari te importeren.</translation>
+<translation id="8515328844674404333">Leer hoe je volledige schijftoegang verleent vanuit je systeemvoorkeuren.</translation>
+<translation id="6414878884710400018">Open systeemvoorkeuren</translation>
+<translation id="5570470519803062774">Site- en Shields-instellingen</translation>
 </translationbundle>

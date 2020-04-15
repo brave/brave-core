@@ -15,8 +15,8 @@ public class BraveIntentHandler extends IntentHandler {
     private static final String BRAVE_CONNECTION_INFO_HELP_URL =
             "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
-    public BraveIntentHandler(IntentHandlerDelegate delegate, String packageName) {
-        super(delegate, packageName);
+    public BraveIntentHandler(Activity activity, IntentHandlerDelegate delegate) {
+        super(activity, delegate);
     }
 
     public boolean onNewIntent(Intent intent) {

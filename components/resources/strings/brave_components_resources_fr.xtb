@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Publicités et traceurs bloqués</translation>
 <translation id="2313532038420432247">Redirection en connexions sécurisées (HTTPS)</translation>
 <translation id="7679428712334662192">Temps économisé estimé</translation>
+<translation id="8411095021655121794">Estimation de la bande passante économisée</translation>
 <translation id="5206618227023752085">Site du haut supprimé.</translation>
 <translation id="2079545284768500474">Annuler</translation>
 <translation id="6040143037577758943">Fermer</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">heures</translation>
 <translation id="7100907433458266664">jour</translation>
 <translation id="4971389353431353387">jours</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">Ko</translation>
+<translation id="977224059380370527">Mo</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Photo par</translation>
 <translation id="7108338896283013870">Cacher</translation>
 <translation id="7115515527894388910">Modifier les préférences</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Naviguez en toute sécurité</translation>
 <translation id="2188651882929633653">Le bouclier de Brave bloque les choses terrifiantes qui tentent de vous suivre sur le Web, y compris la plupart des publicités. Désactivez le bouclier si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analyse de produit entièrement privée<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cette fonction dans <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Paramètres<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annonces</translation>
-<translation id="2364310432103707426">Gagnez {{currency}} en regardant des annonces Brave. Les annonces présentées sont basées sur vos centres d'intérêts, tels qu'ils ressortent de votre comportement de navigation. Aucune donnée personnelle ou historique de navigation ne quitte jamais votre navigateur.</translation>
+<translation id="2128226640852355533">Gagnez {{currency}} en consultant des annonces Brave Ads. Les annonces sont présentées en fonction de vos centres d'intérêt, tels qu'ils sont déduits de votre comportement de navigation. Vos données personnelles ou votre historique de navigation ne quittent jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
 <translation id="3742599705619405136">Un moyen automatique de soutenir les éditeurs et les créateurs de contenu. Établissez un paiement mensuel et naviguez normalement. Les sites Brave Verified que vous visitez recevront automatiquement vos contributions, en fonction de votre niveau d'attention mesuré par Brave.</translation>
-<translation id="8949527283651381130">Autoriser la détection de la conversion d'annonce</translation>
-<translation id="2184191362610545393">Cela permettra à Brave de savoir anonymement qu'il y a eu une réponse à une annonce sur ce navigateur. L'activation de ce réglage augmentera les revenus.</translation>
 <translation id="20281847067919078">Estimation des récompenses en attente</translation>
 <translation id="8593551638387217772">Prochaine date de paiement</translation>
 <translation id="319209088187794725">Notifications de publicités reçues ce mois-ci</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Portefeuille créé</translation>
 <translation id="5094577350232361255">environ</translation>
 <translation id="4918086044614829423">Accepter</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave est une marque déposée de Brave Software.  Les noms des sites peuvent être des marques ou des marques déposées du propriétaire du site.</translation>
+<translation id="5916290544882167205">Brave Software. Brave est une marque commerciale de Brave Software. Les noms du site peuvent être des marques commerciales ou des marques déposées du propriétaire du site.</translation>
 <translation id="9026369588205476247">Afin de protéger votre vie privée, ce relevé de Récompenses Brave n'est pas sauvegardé, ni archivé ou enregistré ailleurs que sur votre appareil (cet ordinateur). Brave ne peut pas le récupérer en cas de perte de données sur votre appareil.</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
 <translation id="3587482841069643663">Tous</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Enregistré</translation>
 <translation id="2155330833364281539">Publicités que vous avez reçues dans les derniers {{totalDays}} jours</translation>
 <translation id="8863685593846905344">Historique des publicités</translation>
+<translation id="2777306694585938662">Récompenses d'annonces reçues</translation>
 <translation id="5212777575344695266">Marquer comme inapproprié</translation>
 <translation id="2111256234277361810">Marquer comme inapproprié ✓</translation>
 <translation id="8988332871810963281">Il n'y a actuellement aucune histoire de Brave Publicités</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Solde à l'ouverture</translation>
 <translation id="532275381857891532">Historique des publicités des sept derniers jours</translation>
 <translation id="4923459931733593730">Paiement</translation>
-<translation id="4021593982164260556">Le paiement est effectué le {{day}} de chaque mois.</translation>
+<translation id="5693657857413982604">Paiement effectué le {{day}} de chaque mois.</translation>
 <translation id="6104680658798556671">Paiement non effectué.</translation>
-<translation id="2834888581291358924">Lorsque votre solde n'est pas suffisant pour couvrir le total combiné d'Auto-contribution et de vos contributions mensuelles, ces versements sont ignorés pour cette période.</translation>
 <translation id="3138528956349114724">Les sites épinglés sont maintenant</translation>
 <translation id="2337632028350283479">Voici comment les contributions mensuelles fonctionnent :</translation>
 <translation id="6457273203091513039">Les contributions mensuelles ne sont pas déduites de votre versement d'Auto-contribution. Elles sont distinctes.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Attribution de jetons reçue</translation>
 <translation id="9212459913845238740">Attributions de points réclamées</translation>
 <translation id="768850953428043522">points</translation>
 <translation id="3043542281656021374">Point</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Vérifié</translation>
 <translation id="8465442795593991224">Uphold peut vous demander de vérifier votre identité en fonction des services demandés.</translation>
 <translation id="723054503945711909">Brave Software Inc. ne traite, ne stocke et n'accède à aucun des renseignements personnels que vous fournissez à Uphold lorsque vous créez un compte chez eux.</translation>
+<translation id="7404779623219601861">Échangez des BAT contre des cartes cadeaux</translation>
+<translation id="6215565499749144110">Avec le réseau TAP, vous pouvez échanger vos BAT contre des cartes cadeaux de grandes marques.</translation>
+<translation id="526152301446370337">Visitez TAP.</translation>
+<translation id="6915065518766963119">* Nécessite une vérification Uphold.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/> à propos des Récompenses Brave</translation>
 <translation id="5826706758731195747">En activant les Récompenses, vous acceptez les <ph name="LINK_BEGIN"/>conditions de service<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Estimation des gains jusqu'à présent ce mois-ci</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Soyez payé pour voir cette image d'arrière-plan sponsorisée.</translation>
 <translation id="2542495049135486284">Essayez encore une fois les récompenses Brave et payez-les à mesure que vous gagnez !</translation>
 <translation id="53513464591392992">Activez les Récompenses Brave et soyez payé(e) pour voir des annonces respectueuses de la vie privée.</translation>
+<translation id="8463996294416161140">Activez <ph name="PRODUCT_NAME"/> pour réclamer votre part. Vous pouvez aussi choisir de <ph name="LINK_BEGIN"/>cacher les images sponsorisées<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Bien joué !</translation>
 <translation id="764235488372037377">Vos récompenses provenant des annonces sont ici</translation>
 <translation id="7091215606170476659">Vous avez une bourse UGP de Brave.</translation>

@@ -82,7 +82,7 @@ std::string GenerateTokenPayload(
       continue;
     }
 
-    credentials.GetList().push_back(std::move(token));
+    credentials.Append(std::move(token));
   }
 
   base::Value payload(base::Value::Type::DICTIONARY);

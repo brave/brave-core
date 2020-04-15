@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Blokirano prepoznavanje uređaja na više mjesta",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Blokirano pritiskanje prstima na više mjesta",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Blokirani pokušaji prepoznavanja uređaja",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Blokirani su pokušaji pritiskanja prstima",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Svi su pokušaji prepoznavanja uređaja dopušteni",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Svi su pokušaji pritiskanja prstima dopušteni",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Pokušaji prepoznavanja uređaja",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Pokušaji pritiskanja prstima",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Skripte na ovom mrežnom mjestu",

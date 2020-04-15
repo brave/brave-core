@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 8b76fc6199a1f4a6881b4b2bca45515682595b1a..2d68c130bf2c5ac7678c597686b4a0337be084eb 100644
+index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..dd6cff83b144e5e7a572b97d883e4db6e8e302aa 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -35,7 +35,7 @@ import("java_sources.gni")
@@ -11,7 +11,7 @@ index 8b76fc6199a1f4a6881b4b2bca45515682595b1a..2d68c130bf2c5ac7678c597686b4a033
  chrome_public_test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables =
-@@ -136,6 +136,7 @@ android_resources("chrome_app_java_resources") {
+@@ -162,6 +162,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:com_android_support_preference_v7_java",
      "//third_party/android_deps:com_android_support_recyclerview_v7_java",
    ]
@@ -19,7 +19,7 @@ index 8b76fc6199a1f4a6881b4b2bca45515682595b1a..2d68c130bf2c5ac7678c597686b4a033
    custom_package = "org.chromium.chrome"
  }
  
-@@ -356,6 +357,7 @@ android_library("chrome_java") {
+@@ -377,6 +378,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -27,7 +27,7 @@ index 8b76fc6199a1f4a6881b4b2bca45515682595b1a..2d68c130bf2c5ac7678c597686b4a033
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -406,6 +408,7 @@ android_library("chrome_java") {
+@@ -427,6 +429,7 @@ android_library("chrome_java") {
      "//content/public/browser:contacts_picker_properties_requested_javagen",
      "//net:effective_connection_type_java",
    ]
@@ -35,7 +35,7 @@ index 8b76fc6199a1f4a6881b4b2bca45515682595b1a..2d68c130bf2c5ac7678c597686b4a033
  
    android_manifest_for_lint = chrome_public_android_manifest
  
-@@ -508,6 +511,7 @@ group("jni_headers") {
+@@ -532,6 +535,7 @@ group("jni_headers") {
      "//chrome/browser/touch_to_fill/android:jni_headers",
      "//chrome/browser/util:jni_headers",
    ]
@@ -43,7 +43,7 @@ index 8b76fc6199a1f4a6881b4b2bca45515682595b1a..2d68c130bf2c5ac7678c597686b4a033
  }
  
  action("chrome_android_java_google_api_keys_srcjar") {
-@@ -1397,6 +1401,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1392,6 +1396,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

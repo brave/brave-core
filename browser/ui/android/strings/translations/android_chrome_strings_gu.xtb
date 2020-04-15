@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="gu">
-<translation id="6910211073230771657">કાઢી નાખ્યું</translation>
-<translation id="6965382102122355670">બરાબર, સમજાઇ ગયું</translation>
-<translation id="5301954838959518834">બરાબર, સમજાઇ ગયું</translation>
-<translation id="7658239707568436148">રદ કરો</translation>
-<translation id="3479552764303398839">હમણાં નહીં</translation>
-<translation id="5317780077021120954">સાચવો</translation>
-<translation id="4570913071927164677">વિગતો</translation>
-<translation id="8730621377337864115">થઈ ગયું</translation>
-<translation id="8261506727792406068">ડિલીટ કરો</translation>
-<translation id="1181037720776840403">કાઢી નાખો</translation>
-<translation id="5939518447894949180">રીસેટ કરો</translation>
-<translation id="4002066346123236978">શીર્ષક</translation>
-<translation id="5916664084637901428">ચાલુ</translation>
-<translation id="5860033963881614850">બંધ</translation>
-<translation id="6165508094623778733">વધુ જાણો</translation>
-<translation id="6042308850641462728">વધુ</translation>
-<translation id="6040143037577758943">બંધ કરો</translation>
-<translation id="780301667611848630">નહીં, આભાર</translation>
-<translation id="1201402288615127009">આગલું</translation>
-<translation id="2359808026110333948">આગળ વધો</translation>
-<translation id="2653659639078652383">સબમિટ કરો</translation>
-<translation id="2079545284768500474">છેલ્લો ફેરફાર રદ કરો</translation>
-<translation id="7649070708921625228">સહાય</translation>
-<translation id="2148716181193084225">આજે</translation>
-<translation id="7781829728241885113">ગઈ કાલે</translation>
-<translation id="6945221475159498467">પસંદ કરો</translation>
-<translation id="7791543448312431591">ઉમેરો</translation>
-<translation id="6527303717912515753">શેર કરો</translation>
-<translation id="1383876407941801731">શોધો</translation>
-<translation id="3115898365077584848">માહિતી બતાવો</translation>
-<translation id="3295602654194328831">માહિતી છુપાવો</translation>
-<translation id="3987993985790029246">લિંક કૉપિ કરો</translation>
-<translation id="2704606927547763573">કૉપિ કર્યું</translation>
-<translation id="8725066075913043281">ફરી પ્રયાસ કરો</translation>
-<translation id="385051799172605136">પાછળ</translation>
-<translation id="8131740175452115882">પુષ્ટિ કરો</translation>
-<translation id="5300589172476337783">બતાવો</translation>
-<translation id="1124772482545689468">વપરાશકર્તા</translation>
-<translation id="8609465669617005112">ઉપર ખસેડો</translation>
-<translation id="6746124502594467657">નીચે ખસેડો</translation>
-<translation id="8249310407154411074">ટોચે ખસેડો</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="2498359688066513246">સહાય અને પ્રતિસાદ</translation>
 <translation id="8378714024927312812">તમારી સંસ્થા દ્વારા મેનેજ કરેલ</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">જે કોઈપણ તમારી નિકાસ કરેલ પાસવર્ડની ફાઇલને જોઈ શકશે, તેમને તમારા પાસવર્ડ પણ દૃશ્યક્ષમ થશે.</translation>
 <translation id="2321086116217818302">પાસવર્ડ તૈયાર કરી રહ્યાં છીએ…</translation>
 <translation id="8445448999790540984">બધા પાસવર્ડ નિકાસ કરી શકાતાં નથી</translation>
-<translation id="3066461326500799725">Brave Software ડ્રાઇવનો ઉપયોગ કેવી રીતે કરવો તે જાણો</translation>
+<translation id="5139940364318403933">Brave Software ડ્રાઇવનો ઉપયોગ કેવી રીતે કરવો તે જાણો</translation>
 <translation id="729975465115245577">તમારા ઉપકરણ પાસે પાસવર્ડ ફાઇલને સ્ટોર કરવા માટેની ઍપ નથી.</translation>
 <translation id="7682724950699840886">નીચેની ટિપ અજમાવી જુઓ: ખાતરી કરો કે તમારા ઉપકરણ પર પૂરતી સ્પેસ છે, ફરીથી નિકાસ કરવાનો પ્રયાસ કરો.</translation>
 <translation id="1129510026454351943">વિગતો: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Brave પાસવર્ડ</translation>
 <translation id="6075798973483050474">હોમ પેજમાં ફેરફાર કરો</translation>
 <translation id="854522910157234410">આ પૃષ્ઠ ખોલો</translation>
+<translation id="8127542551745560481">હોમપેજમાં ફેરફાર કરો</translation>
 <translation id="2482878487686419369">સૂચનાઓ</translation>
 <translation id="6255999984061454636">કન્ટેન્ટ માટેના સૂચનો</translation>
 <translation id="805047784848435650">તમારા બ્રાઉઝિંગ ઇતિહાસના આધારે</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">જોખમી ઍપ અને સાઇટ શોધી કાઢવા માટે, Brave તમે મુલાકાત લો તે કેટલાક પેજના URLs, સિસ્ટમ વિશેની સીમિત માહિતી અને પેજનું કેટલુંક કન્ટેન્ટ Brave Softwareને મોકલે છે</translation>
 <translation id="3181954750937456830">Safe Browsing (તમારું અને તમારા ડિવાઇસનું જોખમી સાઇટથી રક્ષણ કરે છે)</translation>
 <translation id="7315322926489145388">તમારી સુરક્ષા જોખમમાં હોય ત્યારે, તમે મુલાકાત લેતા હો તે કેટલાક પેજના URLs Brave Softwareને મોકલે છે</translation>
-<translation id="2063713494490388661">શોધવા માટે ટેપ કરો</translation>
-<translation id="2369463299479365221">પેજ છોડ્યાં વગર વેબસાઇટ પરના મુદ્દાઓ વિશે જાણો. શોધને ટૅપ કરવાથી એક શબ્દ અને તેની આસપાસનો સંદર્ભ Brave Software શોધને મોકલે છે, જે વ્યાખ્યાઓ, ફોટોો, શોધ પરિણામો અને અન્ય વિગતો પરત કરે છે.
+<translation id="3738139272394829648">શોધવા માટે ટચ કરો</translation>
+<translation id="7865281998841143447">પેજને છોડ્યા વિના વેબસાઇટ પરના વિષયો વિશે જાણો. 'શોધો'ને સ્પર્શ કરવાથી કોઈ શબ્દ અને તેની આસપાસના સંદર્ભને Brave Software શોધને મોકલવામાં આવે છે, જે વ્યાખ્યાઓ, છબીઓ, શોધ પરિણામો અને અન્ય વિગતો પરત કરે છે.
 
-તમારા શોધ શબ્દને બંધબેસતો કરવા, પસંદ કરવા માટે થોડીવાર દબાવી રાખવું. તમારી શોધને સુધારવા માટે, પૅનલને આખી ઉપર સ્લાઇડ કરો અને શોધ બૉક્સને ટૅપ કરો.</translation>
-<translation id="2930742481329940825">શોધવા માટે ટૅપ કરો પસંદ કરાયેલ શબ્દ અને હાલના પેજને સંદર્ભ તરીકે Brave Software શોધને મોકલે છે. તમે તેને <ph name="BEGIN_LINK"/>સેટિંગ<ph name="END_LINK"/>માં બંધ કરી શકો છો.</translation>
+કોઈપણ શબ્દથી શોધવા માટે, તેને ટૅપ કરો. તમારા શોધ શબ્દમાં ફેરફાર કરવા માટે, પસંદ કરવા થોડીવાર દબાવી રાખો. તમારી શોધમાં સુધારોવધારો કરવા પૅનલને સ્લાઇડ કરીને ખોલો, નવું ટૅબ બનાવવા માટે મોટા કરવાના આઇકનને અને પછી શોધ બૉક્સમાં ટૅપ કરો.</translation>
+<translation id="3292859206215580147">પેજને છોડ્યા વિના વેબસાઇટ પરના વિષયો વિશે જાણો. 'શોધો'ને સ્પર્શ કરવાથી કોઈ શબ્દ અને તેની આસપાસના સંદર્ભને Brave Software શોધને મોકલવામાં આવે છે, જે વ્યાખ્યાઓ, છબીઓ, શોધ પરિણામો અને અન્ય વિગતો પરત કરે છે.
+
+કોઈપણ શબ્દને શોધવા માટે, તેને થોડીવાર દબાવી રાખો. તમારી શોધમાં સુધારાવધારા કરવા માટે, પસંદગીની ગોઠવણી કરો. તમે પૅનલ સ્લાઇડ કરીને પણ ખોલી શકશો, નવું ટૅબ બનાવવા માટે મોટા કરવાના આઇકનને અને પછી શોધ બૉક્સમાં ટૅપ કરો.</translation>
+<translation id="6209156474097347789">શોધો ને ટચ પસંદ કરાયેલ શબ્દ અને હાલના પૃષ્ઠને સંદર્ભ તરીકે Brave Software શોધને મોકલે છે. તમે તેને <ph name="BEGIN_LINK"/>સેટિંગ્સ<ph name="END_LINK"/> માં બંધ કરી શકો છો.</translation>
 <translation id="5039804452771397117">મંજૂરી આપો</translation>
+<translation id="780301667611848630">નહીં, આભાર</translation>
 <translation id="1406000523432664303">“ટ્રેક કરશો નહીં”</translation>
 <translation id="6232535412751077445">'ટ્રૅક કરશો નહીં’ ને સક્ષમ કરવાનો અર્થ છે કે તમારા બ્રાઉઝિંગ ટ્રાફિકમાં વિનંતી શામેલ કરવામાં આવશે. કોઈ વેબસાઇટ, વિનંતી પર પ્રતિસાદ કરે છે કે નહીં અને વિનંતીનું અર્થઘટન કેવી રીતે કર્યું તેના પર કોઈ પણ અસર આધારિત હોય છે.
 
@@ -242,6 +206,7 @@
 <translation id="6295158916970320988">બધી સાઇટ્સ</translation>
 <translation id="8380167699614421159">આ સાઇટ ઘૃણાસ્પદ અથવા ભ્રામક જાહેરાતો બતાવે છે</translation>
 <translation id="1919345977826869612">જાહેરાતો</translation>
+<translation id="3513704683820682405">ઑગ્મેન્ટેડ રિયાલિટી</translation>
 <translation id="6447842834002726250">કૂકીઝ</translation>
 <translation id="6196640612572343990">તૃતીય પક્ષની કુકીઝ અવરોધિત કરો</translation>
 <translation id="6782111308708962316">તૃતીય-પક્ષ વેબસાઇટને કુકી ડેટા સાચવવા અને વાંચવાથી અટકાવો</translation>
@@ -259,6 +224,7 @@
 <translation id="5649053991847567735">આપમેળે ડાઉનલોડ્સ</translation>
 <translation id="6181444274883918285">સાઇટ અપવાદ ઉમેરો</translation>
 <translation id="5313967007315987356">સાઈટ ઉમેરો</translation>
+<translation id="7791543448312431591">ઉમેરો</translation>
 <translation id="1369915414381695676">સાઈટ <ph name="SITE_NAME"/> ઉમેરવામાં આવી</translation>
 <translation id="2621115761605608342">ચોક્કસ સાઇટ માટે JavaScript ની મંજૂરી આપો.</translation>
 <translation id="8801436777607969138">કોઈ ચોક્કસ સાઇટ માટે JavaScriptને બ્લૉક કરો.</translation>
@@ -266,6 +232,7 @@
 <translation id="358794129225322306">એકથી વધુ ફાઇલો ઑટોમૅટિક રીતે ડાઉનલોડ કરવાની મંજૂરી સાઇટને આપો.</translation>
 <translation id="4008040567710660924">કોઈ ચોક્કસ સાઇટ માટે કુકીને મંજૂરી આપો.</translation>
 <translation id="8958424370300090006">કોઈ ચોક્કસ સાઇટ માટે કુકીને બ્લૉક કરો.</translation>
+<translation id="2537296579376733324">માત્ર આ સાઇટની બધી કુકી</translation>
 <translation id="7882806643839505685">કોઈ એક ચોક્કસ સાઇટ માટે અવાજ ચલાવવાની મંજૂરી આપો.</translation>
 <translation id="4468959413250150279">કોઈ એક ચોક્કસ સાઇટ માટે અવાજ બંધ કરો.</translation>
 <translation id="1994173015038366702">સાઈટ URL</translation>
@@ -292,8 +259,12 @@
 <translation id="2107397443965016585">સાઇટને સંરક્ષિત કન્ટેન્ટ ચલાવવાની મંજૂરી આપતા પહેલાંં પૂછો (સુઝાવ આપેલ)</translation>
 <translation id="2910701580606108292">સાઇટને સંરક્ષિત કન્ટેન્ટ ચલાવવાની મંજૂરી આપતા પહેલાંં પૂછો</translation>
 <translation id="757524316907819857">સાઇટને સંરક્ષિત કન્ટેન્ટ ચલાવવાથી બ્લૉક કરો</translation>
+<translation id="4935305910887312910">કોઈ સાઇટને તમારા કૅમેરાની સ્થિતી મેળવવા અથવા તમારા રૂમનો નકશો બનાવવાની મંજૂરી આપતા પહેલાં પૂછો (સુઝાવ આપેલો છે)</translation>
+<translation id="884828189055900810">સાઇટને કૅમેરાની સ્થિતી મેળવવાથી અથવા રૂમનો નકશો બનાવવાથી બ્લૉક કરો</translation>
 <translation id="5710871682236653961">જ્યારે તમે NFC ડિવાઇસ પર ટૅપ કરો ત્યારે સાઇટને માહિતી મોકલવા અને પ્રાપ્ત કરવાની મંજૂરી આપતા પહેલાં પૂછો (સુઝાવ આપેલો છે)</translation>
 <translation id="7572498721684305250">જ્યારે તમે NFC ડિવાઇસ પર ટૅપ કરો ત્યારે સાઇટને માહિતી મોકલવા અને પ્રાપ્ત કરવાથી બ્લૉક કરો</translation>
+<translation id="3312292613668865961">કોઈ સાઇટને તમારું વર્ચ્યુઅલ રિયાલિટી ડિવાઇસ અને ડેટા ઍક્સેસ કરવાની મંજૂરી આપતા પહેલાં પૂછો (સુઝાવ આપેલો છે)</translation>
+<translation id="8698438463325761328">સાઇટને તમારું વર્ચ્યુઅલ રિયાલિટી ડિવાઇસ અને ડેટા ઍક્સેસ કરવાથી બ્લૉક કરો</translation>
 <translation id="3277252321222022663">સાઇટને સેન્સરના ઍક્સેસની મંજૂરી આપો (સુઝાવ આપેલ)</translation>
 <translation id="5048398596102334565">સાઇટને મોશન સેન્સરના ઍક્સેસની મંજૂરી આપો (સુઝાવ આપેલ)</translation>
 <translation id="8816026460808729765">સાઇટને સેન્સરને ઍક્સેસ કરવાથી બ્લૉક કરો</translation>
@@ -325,7 +296,7 @@
 <translation id="119944043368869598">બધા દૂર કરો</translation>
 <translation id="2490684707762498678"><ph name="APP_NAME"/> દ્વારા સંચાલિત</translation>
 <translation id="5516455585884385570">નોટિફિકેશનના સેટિંગ ખોલો</translation>
-<translation id="1404122904123200417"><ph name="WEBSITE_URL"/> માં એમ્બેડ કર્યું</translation>
+<translation id="1242008676835033345"><ph name="WEBSITE_URL"/> પર શામેલ કર્યું</translation>
 <translation id="129382876167171263">વેબસાઇટ દ્વારા સાચવવામાં આવેલી ફાઇલો અહી દેખાશે</translation>
 <translation id="4181841719683918333">ભાષાઓ</translation>
 <translation id="2647434099613338025">ભાષા ઉમેરો</translation>
@@ -380,6 +351,7 @@
 <translation id="4913161338056004800">આંકડા રીસેટ કરો</translation>
 <translation id="1856325424225101786">લાઇટ મોડને રીસેટ કરીએ?</translation>
 <translation id="3658159451045945436">રીસેટ કરવાથી મુલાકાત લીધેલી સાઇટની સૂચિ સહિત તમારા ડેટા બચતના ઇતિહાસને કાઢી નાખે છે.</translation>
+<translation id="5939518447894949180">રીસેટ કરો</translation>
 <translation id="3295530008794733555">વધુ ઝડપથી બ્રાઉઝ કરો. ઓછા ડેટાનો ઉપયોગ કરો.</translation>
 <translation id="7340390500800578919">લાઇટ મોડમાં, Brave પેજને વધુ ઝડપથી લોડ કરે છે અને તે 60 ટકા ઓછા ડેટાનો વપરાશ કરે છે. તમે જે પેજની મુલાકાત લેતા હો તેને ઑપ્ટિમાઇઝ કરવા માટે, Brave તમારો વેબ ટ્રાફિક Brave Softwareને મોકલે છે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">લાઇટ મોડ ચાલુ કરો</translation>
@@ -443,9 +415,6 @@
 <translation id="4256782883801055595">ઓપન સોર્સ લાઇસન્સ</translation>
 <translation id="1138681184697033370">Brave સેવાની શરતો</translation>
 <translation id="7392539049993970338">Brave ગોપનીયતા સૂચના</translation>
-<translation id="2677748264148917807">છોડો</translation>
-<translation id="5556459405103347317">ફરિથી લોડ કરો</translation>
-<translation id="1623104350909869708">આ પૃષ્ઠને વધારાના સંવાદો બનાવતા અટકાવો</translation>
 <translation id="2968755619301702150">પ્રમાણપત્ર દર્શક</translation>
 <translation id="1360432990279830238">સાઇન આઉટ કરી સિંકનો વિકલ્પ બંધ કરવો છે?</translation>
 <translation id="8581481290581777242">આ ડિવાઇસમાંથી તમારા Brave ડેટાને સાફ કરીએ?</translation>
@@ -532,6 +501,7 @@
 <translation id="7998918019931843664">બંધ કરેલ ટેબ ફરીથી ખોલો</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, ટેબ</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> ટૅબ બંધ કરો</translation>
+<translation id="6040143037577758943">બંધ કરો</translation>
 <translation id="7243308994586599757">સ્ક્રીનના તળિયા નજીક વિકલ્પો ઉપલબ્ધ છે</translation>
 <translation id="4060598801229743805">સ્ક્રીનની ટોચ પર વિકલ્પો ઉપલબ્ધ છે</translation>
 <translation id="2810645512293415242">ડેટા બચાવવા અને વધુ ઝડપથી પેજ લોડ કરવા માટે પેજ સરળ બનાવ્યું.</translation>
@@ -566,6 +536,7 @@
 <translation id="4432792777822557199">હવેથી <ph name="SOURCE_LANGUAGE"/>માં છે તે પેજનો અનુવાદ <ph name="TARGET_LANGUAGE"/>માં થશે</translation>
 <translation id="8339163506404995330"><ph name="LANGUAGE"/>માં છે તે પેજનો અનુવાદ થશે નહીં</translation>
 <translation id="5447765697759493033">આ સાઇટનો અનુવાદ થશે નહીં</translation>
+<translation id="7658239707568436148">રદ કરો</translation>
 <translation id="4880127995492972015">અનુવાદ કરો…</translation>
 <translation id="641643625718530986">પ્રિન્ટ…</translation>
 <translation id="8909135823018751308">શેર કરો…</translation>
@@ -599,6 +570,7 @@
 <translation id="8073388330009372546">નવા ટેબમાં છબી ખોલો</translation>
 <translation id="6649642165559792194">છબીને પ્રીવ્યૂ કરો <ph name="BEGIN_NEW"/>નવું<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">છબી લોડ કરો</translation>
+<translation id="6671495933530132209">છબી કૉપિ કરો</translation>
 <translation id="3845332215609790146">Brave Software લેન્સ વડે શોધો <ph name="BEGIN_NEW"/>નવું<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">આ છબી માટે <ph name="SEARCH_ENGINE"/> માં શોધો</translation>
 <translation id="3384347053049321195">છબી શેર કરો</translation>
@@ -606,6 +578,7 @@
 <translation id="6475951671322991020">વીડિયો ડાઉનલોડ કરો</translation>
 <translation id="2317945146070194624">નવા Brave ટૅબમાં ખોલો</translation>
 <translation id="7975379999046275268">પેજને પ્રીવ્યૂ કરો <ph name="BEGIN_NEW"/>નવું<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">ઝડપી સાઇટ</translation>
 <translation id="6112702117600201073">પૃષ્ઠ તાજું કરી રહ્યું છે</translation>
 <translation id="6990079615885386641">Brave Software Play Store માંથી ઍપ્લિકેશન મેળવો: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">ઘાટું</translation>
@@ -615,8 +588,6 @@
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">મોનોસ્પેસ</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">બીમ કરવા માટે એક ટેબ પસંદ કરો</translation>
-<translation id="8719023831149562936">વર્તમાન ટેબને બીમ કરી શકતાં નથી</translation>
 <translation id="2139186145475833000">હોમસ્ક્રીન પર ઉમેરો</translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/> ખોલો</translation>
 <translation id="2122601567107267586">ઍપ ખોલી ન શક્યાં</translation>
@@ -702,6 +673,7 @@
 <translation id="3616113530831147358">ઑડિઓ</translation>
 <translation id="9219103736887031265">છબીઓ</translation>
 <translation id="656065428026159829">વધુ જુઓ</translation>
+<translation id="6042308850641462728">વધુ</translation>
 <translation id="8250920743982581267">દસ્તાવેજો</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# ફાઇલ}one{# ફાઇલો}other{# ફાઇલો}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# છબી}one{# છબીઓ}other{# છબીઓ}}</translation>
@@ -792,15 +764,11 @@
 <translation id="7542481630195938534">સૂચનો મેળવી શકતાં નથી</translation>
 <translation id="5013696553129441713">કોઈ નવા સૂચનો નથી</translation>
 <translation id="7444811645081526538">વધુ કૅટેગરી</translation>
-<translation id="6709133671862442373">News</translation>
-<translation id="1264974993859112054">રમત-ગમત</translation>
-<translation id="9139318394846604261">ખરીદી</translation>
 <translation id="3912508018559818924">વેબમાંથી શ્રેષ્ઠ શોધવું…</translation>
 <translation id="526421993248218238">આ પેજ લોડ કરી શકાતું નથી</translation>
 <translation id="614940544461990577">પ્રયાસ કરો:</translation>
 <translation id="3288003805934695103">પૃષ્ઠ ફરીથી લોડ કરીને</translation>
 <translation id="2353636109065292463">તમારું ઇન્ટરનેટ કનેક્શન તપાસી રહ્યાં છીએ</translation>
-<translation id="2858138569776157458">લોકપ્રિય સાઇટ</translation>
 <translation id="8364299278605033898">લોકપ્રિય વેબસાઇટ જુઓ</translation>
 <translation id="1171770572613082465">"લોકપ્રિય સાઇટ" બટન પર ટૅપ કરીને લોકપ્રિય વેબસાઇટ જુઓ</translation>
 <translation id="5233638681132016545">નવું ટૅબ</translation>
@@ -834,8 +802,10 @@
 <translation id="4452548195519783679"><ph name="FOLDER_NAME"/> પર બુકમાર્ક કર્યું</translation>
 <translation id="8063895661287329888">બુકમાર્ક ઉમેરવામાં નિષ્ફળ થયાં.</translation>
 <translation id="2842985007712546952">પેરન્ટ ફોલ્ડર</translation>
+<translation id="6945221475159498467">પસંદ કરો</translation>
 <translation id="9065203028668620118">ફેરફાર કરો</translation>
 <translation id="4405224443901389797">આમાં ખસેડો…</translation>
+<translation id="8261506727792406068">ડિલીટ કરો</translation>
 <translation id="5170568018924773124">ફોલ્ડરમાં બતાવો</translation>
 <translation id="8035133914807600019">નવું ફોલ્ડર...</translation>
 <translation id="4532845899244822526">ફોલ્ડર પસંદ કરો</translation>
@@ -871,16 +841,14 @@
 <translation id="1113597929977215864">સરળ દૃશ્ય બતાવો</translation>
 <translation id="1513352483775369820">બુકમાર્ક્સ અને વેબ ઇતિહાસ</translation>
 <translation id="4939482511480190003">Braveને બહેતર બનાવવામાં સહાય કરો. <ph name="BEGIN_LINK"/>સર્વેક્ષણમાં ભાગ લો<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">પાછા જાઓ</translation>
-<translation id="5596627076506792578">વધુ વિકલ્પો</translation>
 <translation id="3522247891732774234">અપડેટ ઉપલબ્ધ છે. વધુ વિકલ્પો</translation>
 <translation id="6773423637732432200">Brave અપડેટ કરી શકાતું નથી. વધુ વિકલ્પો</translation>
+<translation id="1383876407941801731">શોધો</translation>
 <translation id="3328801116991980348">સાઇટ માહિતી</translation>
 <translation id="5391532827096253100">આ સાઇટ સાથેનું તમારું કનેક્શન સુરક્ષિત નથી. સાઇટની માહિતી</translation>
 <translation id="6206551242102657620">કનેક્શન સુરક્ષિત છે. સાઇટની માહિતી</translation>
 <translation id="6963642900430330478">આ પેજ જોખમી છે. સાઇટની માહિતી</translation>
 <translation id="9070377983101773829">વૉઇસ શોધ પ્રારંભ કરો</translation>
-<translation id="8676374126336081632">ઇનપુટ સાફ કરો</translation>
 <translation id="4968908871398201967">ખાનગી મોડ</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> ખુલ્લી ટૅબ, ટૅબને સ્વિચ કરવા માટે ટૅપ કરો}one{<ph name="OPEN_TABS_MANY"/> ખુલ્લી ટૅબ, ટૅબને સ્વિચ કરવા માટે ટૅપ કરો}other{<ph name="OPEN_TABS_MANY"/> ખુલ્લી ટૅબ, ટૅબને સ્વિચ કરવા માટે ટૅપ કરો}}</translation>
 <translation id="2369533728426058518">ટૅબ્સ ખોલો</translation>
@@ -888,6 +856,7 @@
 <translation id="932327136139879170">હોમ</translation>
 <translation id="2707726405694321444">પેજ રિફ્રેશ કરો</translation>
 <translation id="2891154217021530873">પૃષ્ઠ લોડ કરવાનું રોકો</translation>
+<translation id="1201402288615127009">આગલું</translation>
 <translation id="6710213216561001401">પાછલી</translation>
 <translation id="9080642952018487277">ખાનગી મોડ દાખલ કરો</translation>
 <translation id="4883379392681899581">ખાનગી મોડ છોડો</translation>
@@ -896,18 +865,12 @@
 <translation id="3377025655491224618">ખાનગી મોડ</translation>
 <translation id="584427517463557805">ખાનગી મોડ પસંદ થઈ ગયું</translation>
 <translation id="2268044343513325586">સુધારો</translation>
-<translation id="7846076177841592234">પસંદગી રદ કરો</translation>
-<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/>ના વિકલ્પો</translation>
-<translation id="7087918508125750058"><ph name="ITEM_COUNT"/>ની પસંદગી કરી. સ્ક્રીનના ટોચની નજીક વિકલ્પો ઉપલબ્ધ છે</translation>
-<translation id="7250468141469952378"><ph name="ITEM_COUNT"/>ની પસંદગી કરી</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{પસંદ કરેલ 1 આઇટમ શેર કરો}one{પસંદ કરેલ # આઇટમ શેર કરો}other{પસંદ કરેલ # આઇટમ શેર કરો}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{પસંદ કરેલ 1 આઇટમ દૂર કરો}one{પસંદ કરેલ # આઇટમ દૂર કરો}other{પસંદ કરેલ # આઇટમ દૂર કરો}}</translation>
 <translation id="1283039547216852943">વિસ્તૃત કરવા માટે ટૅપ કરો</translation>
 <translation id="5962718611393537961">સંકુચિત કરવા માટે ટૅપ કરો</translation>
 <translation id="3123734510202723619">ઘોષણાઓ</translation>
 <translation id="8076492880354921740">ટૅબ્સ</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 પસંદ કરી}one{# પસંદ કરી}other{# પસંદ કરી}}</translation>
-<translation id="6818926723028410516">આઇટમ પસંદ કરો</translation>
 <translation id="4797039098279997504"><ph name="URL_OF_THE_CURRENT_TAB"/> પર પાછા આવવા માટે ટચ કરો</translation>
 <translation id="6766758767654711248">સાઇટ પર જવા માટે ટૅપ કરો</translation>
 <translation id="429312253194641664">સાઇટ મીડિયા ચલાવી રહી છે</translation>
@@ -1024,13 +987,12 @@
 <translation id="1875543012935658554">Brave ફરીથી ખોલો.</translation>
 <translation id="79859296434321399">ઑગ્મેન્ટેડ રિયાલિટી કન્ટેન્ટ જોવા માટે, ARCore ઇન્સ્ટૉલ કરો</translation>
 <translation id="8558485628462305855">ઑગ્મેન્ટેડ રિયાલિટી કન્ટેન્ટ જોવા માટે ARCore અપડેટ કરો</translation>
-<translation id="3513704683820682405">ઑગ્મેન્ટેડ રિયાલિટી</translation>
-<translation id="5475862044948910901">ઑગ્મેન્ટેડ રિયાલિટી સત્ર શરૂ કરીએ?</translation>
-<translation id="7365126855094612066">આ સત્રના સમયગાળા દરમ્યાન, સાઇટ નીચે જણાવેલી પ્રવૃત્તિ કરી શકશે:
+<translation id="6410973561433500075"><ph name="DOMAIN"/>માંથી ARમાં દાખલ થવું છે?</translation>
+<translation id="3849365399446680203">તમે AR મોડમાં હો, ત્યારે આ સાઇટ:
 • તમારી આસપાસનો 3D નકશો બનાવી શકે છે
 • કૅમેરા મોશનને ટ્રૅક કરી શકે છે
 
-સાઇટ કૅમેરાને ઍક્સેસ કરતી નથી. કૅમેરામાં રહેલા ફોટાને માત્ર તમે જ જોઈ શકશો.</translation>
+તમારો કૅમેરા શું જોઈ રહ્યો છે તે માત્ર તમે જ જોઈ શકો છો. સાઇટ તમારા કૅમેરાની છબીઓને જોઈ શકતી નથી.</translation>
 <translation id="1188239144602654184">AR દાખલ કરો</translation>
 <translation id="473775607612524610">અપડેટ કરો</translation>
 <translation id="3133489217401741157">Brave માટે <ph name="MODULE"/> ઇન્સ્ટૉલ કરી રહ્યાં છે…</translation>
@@ -1098,6 +1060,7 @@
 <translation id="723171743924126238">છબીઓ પસંદ કરો</translation>
 <translation id="8751914237388039244">છબી પસંદ કરો</translation>
 <translation id="1989112275319619282">બ્રાઉઝ કરો</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="7055152154916055070">રીડાયરેક્ટ કરવાનું બ્લૉક કરવામાં આવ્યું છે:</translation>
 <translation id="5524843473235508879">રીડાયરેક્ટ કરવાનું અવરોધિત.</translation>
 <translation id="6573096386450695060">હંમેશાં મંજૂરી આપો</translation>
@@ -1106,6 +1069,7 @@
 <translation id="9137013805542155359">મૂળ બતાવો</translation>
 <translation id="6361779936989026201">Braveમાં Brave Software આસિસ્ટંટ</translation>
 <translation id="7291387454912369099">આસિસ્ટંટે ચેકઆઉટ ટ્રિગર કર્યું</translation>
+<translation id="9037412730408024068">કામને પૂર્ણ કરવામાં તમારી સહાય માટે, Brave Softwareને તમે જેના પર આસિસ્ટંટનો ઉપયોગ કરો છો તે URLs અને સાઇટના કન્ટેન્ટ તેમજ તમે આસિસ્ટંટ મારફતે સબમિટ કરો છો તે માહિતી મળશે</translation>
 <translation id="4565206163201411670">શું તમારી Braveની પ્રવૃત્તિ ડિજિટલ લાઇફસ્ટાઇલમાં બતાવીએ?</translation>
 <translation id="9055113864158719823">તમે Braveમાં મુલાકાત લીધેલી સાઇટ જોઈ શકશો અને તેના માટે ટાઇમર પણ સેટ કરી શકશો.\n\nતમે જે સાઇટ માટે ટાઇમર સેટ કરો છો અને કેટલા સમય માટે તેની મુલાકાત લો છો, તે માહિતી Brave Software મેળવે છે. આ માહિતી ડિજિટલ લાઇફસ્ટાઇલને બહેતર બનાવવા માટે ઉપયોગમાં લેવામાં આવે છે.</translation>
 <translation id="4596514158372210596">ડિજિટલ લાઇફસ્ટાઇલમાંથી તમારી Braveની પ્રવૃત્તિને કેવી રીતે કાઢવી</translation>
@@ -1121,10 +1085,20 @@
 <translation id="246532703174860178">શેર કરો</translation>
 <translation id="2517472476991765520">સ્કૅન કરો</translation>
 <translation id="8628973420740315031">નજીકના લોકો સાથે શેર કરવા માટે, તેમને આ QR કોડ તપાસવા દો</translation>
+<translation id="3987993985790029246">લિંક કૉપિ કરો</translation>
+<translation id="4250229828105606438">સ્ક્રીનશૉટ</translation>
+<translation id="6201345951596836663">લિંક કૉપિ કરી</translation>
+<translation id="6597891566292541626">QR/બારકોડને આ ફ્રેમમાં મૂકો.</translation>
+<translation id="3140134512074889489">કોઈ QR કોડ સ્કૅન કરવા માટે, કૃપા કરીને તમારો કૅમેરા ચાલુ કરો</translation>
+<translation id="2359808026110333948">આગળ વધો</translation>
 <translation id="7339921667754113786">Brave Software નોટિફિકેશન પ્લૅટફૉર્મ</translation>
 <translation id="8516012719330875537">ઇમેજ એડિટર</translation>
+<translation id="6092062101542170135">ચાલુ રાખવા માટે, Android સેટિંગમાં NFC ચાલુ કરો</translation>
+<translation id="5860491529813859533">ચાલુ કરો</translation>
+<translation id="8926666909099850184">આ ડિવાઇસ માટે NFC સેવા બંધ કરેલી છે. તેને <ph name="BEGIN_LINK"/>Android સેટિંગ<ph name="END_LINK"/>માં ચાલુ કરો.</translation>
 <translation id="4808319664292298116"><ph name="DOMAIN"/>માંથી VRમાં દાખલ થવું છે?</translation>
 <translation id="4353114845960720315">જ્યારે તમે VRમાં હો, ત્યારે આ સાઇટ આના વિશે જાણી શકે છે:</translation>
-<translation id="118069123878619799">- તમારા શારીરિક લક્ષણો, જેમ કે ઊંચાઈ</translation>
-<translation id="5819762621475381970">- તમારા રૂમનો લેઆઉટ</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">તમારા શારીરિક લક્ષણો, જેમ કે ઊંચાઈ</translation>
+<translation id="4660838440047236328">તમારા રૂમનો લેઆઉટ</translation>
 </translationbundle>

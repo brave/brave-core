@@ -562,7 +562,7 @@
     "description": "CTA for completing wallet verification"
   },
   "set": {
-    "message": "Установить...",
+    "message": "Настроить...",
     "description": "Button text for setting monthly contribution"
   },
   "tokens":  {

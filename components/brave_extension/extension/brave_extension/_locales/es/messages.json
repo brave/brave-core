@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "La extensión Brave",
+    "message": "La Extensión Brave",
     "description": "The name of the the extension."
   },
   "shields": {
@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Si un sitio web parece roto, prueba a desactivar los escudos",
+    "message": "Si un sitio web no funciona correctamente, prueba a desactivar los escudos",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Reportar un Sitio Roto",
+    "message": "Notificar un error...",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -52,7 +52,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Rastreadores de terceros bloqueados",
+    "message": "Bloquear rastreadores",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -80,27 +80,27 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Reconocimiento del dispositivo de terceros bloqueado",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Huella dactilar entre sitios bloqueada",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Intentos de reconocimiento del dispositivo bloqueados",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Intentos de tomar huellas dactilares bloqueados\n",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Intentos totales de reconocimiento del dispositivo permitidos.",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Se permiten todos los intentos de tomar huellas dactilares",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Intentos de reconocimiento del dispositivo",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Intentos de tomar huellas dactilares",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Scripts en este sitio web",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Scripts bloqueados",
+    "message": "Bloquear scripts",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
@@ -176,7 +176,7 @@
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Rastreadores entre páginas y otros elementos amenazadores bloqueados",
+    "message": "Rastreadores y otros elementos amenazantes bloqueados",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
@@ -188,7 +188,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Saber más",
+    "message": "Más información",
     "description": "Message inviting the user to learn more about Shields"
   }
 }

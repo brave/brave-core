@@ -42,5 +42,6 @@ group("modulize") {
   deps = [
     ":rollup_overrides",
     "br_elements:polymer3_elements",
+    "page_specific:polymer3_elements",
   ]
 }

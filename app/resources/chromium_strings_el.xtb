@@ -6,7 +6,7 @@
 <translation id="4947625801334180582">Brave Beta</translation>
 <translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Το Brave είναι ένα πρόγραμμα περιήγησης ιστού που εκτελεί εφαρμογές και ιστοσελίδες με απίστευτη ταχύτητα. Είναι γρήγορο, σταθερό και εύχρηστο. Περιηγηθείτε στον ιστό με μεγαλύτερη ασφάλεια με την ενσωματωμένη προστασία από κακόβουλα προγράμματα και ηλεκτρονικό "ψάρεμα" (phishing).</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Λογότυπο Brave</translation>
 <translation id="7339898014177206373">Νέο παράθυρο</translation>
 <translation id="5516268345616100622">Διαχείριση Εργασιών - Brave</translation>
@@ -18,8 +18,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">Οι συντάκτες του Brave</translation>
 <translation id="8121009781989288430">Πνευματικά δικαιώματα <ph name="YEAR"/> Οι συντάκτες του Brave. Με επιφύλαξη παντός δικαιώματος.</translation>
-<translation id="2310890394934209120">Το Brave OS υλοποιήθηκε με τη βοήθεια επιπλέον <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικού ανοιχτού κώδικα<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Το Brave OS έγινε πραγματικότητα χάρη στα πρόσθετα <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικά ανοικτού κώδικα<ph name="END_LINK_CROS_OSS"/>, όπως το <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="6368958679917195344">Το Brave OS υλοποιήθηκε με τη βοήθεια επιπλέον <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικού ανοιχτού κώδικα<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Το Brave OS έγινε πραγματικότητα χάρη στα πρόσθετα <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικά ανοικτού κώδικα<ph name="END_LINK_CROS_OSS"/>, όπως το <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="6913582816347128893">Το Brave μπορεί να μην λειτουργεί σωστά επειδή δεν υποστηρίζεται πλέον στο Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Το Brave μπορεί να μην λειτουργεί σωστά, επειδή δεν υποστηρίζεται πια σε Windows XP και Windows Vista</translation>
 <translation id="189297655255130768">Το Brave δεν ανταποκρίνεται. Να γίνει επανεκκίνηση τώρα;</translation>
@@ -27,7 +27,7 @@
 <translation id="335632367599648646">Είστε βέβαιοι ότι θέλετε να απεγκαταστήσετε του Brave;</translation>
 <translation id="5590013613412457132">Απεγκατάσταση Brave</translation>
 <translation id="5019879183386042809">Ορισμός Brave ως προεπιλεγμένο πρόγραμμα</translation>
-<translation id="5063987220091207247">Το Brave OS δεν μπορεί να ανοίξει αυτήν τη σελίδα.</translation>
+<translation id="707769633889902835">Το Brave OS δεν μπορεί να ανοίξει αυτήν τη σελίδα.</translation>
 <translation id="4065288863231444640">Να επιτρέπεται στο Brave να εκτελείται στο παρασκήνιο</translation>
 <translation id="6797402139308059782">Να επιτρέπεται στο Brave να εκτελείται στο παρασκήνιο</translation>
 <translation id="2585240446624043880">Το Brave δεν έχει δυνατότητα ανάγνωσης και εγγραφής στον κατάλογο δεδομένων του:
@@ -95,8 +95,7 @@
 <translation id="9071554113102421877">&amp;Άνοιγμα στο Brave</translation>
 <translation id="2176825726964012531">Σχετικά με το &amp;Brave</translation>
 <translation id="5450493308072741203">Ενημέρωση &amp;Brave</translation>
-<translation id="1421502046520299169">Σχετικά με το &amp;Brave OS</translation>
-<translation id="2534623228451928732">Ενημέρωση &amp;Brave OS</translation>
+<translation id="61852838583753520">Ενημέρωση &amp;Brave OS</translation>
 <translation id="8447483940522230788">Πρόγραμμα βοήθειας Brave</translation>
 <translation id="5477319665405831211">Συγχρονίστε και εξατομικεύστε το Brave στις συσκευές σας</translation>
 <translation id="8132634101975074716">Έχετε συνδεθεί στο Brave!</translation>
@@ -110,19 +109,18 @@
 <translation id="5380963249588143069">Ο διαχειριστής συστήματος έχει διαμορφώσει το Brave ώστε να ανοίγει το <ph name="ALTERNATIVE_BROWSER_NAME"/> για την πρόσβαση σε <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">Η διεύθυνση <ph name="USER_EMAIL_ADDRESS"/> χρησιμοποιούσε το Brave στο παρελθόν</translation>
 <translation id="1384923383737428730">Υπάρχει επιβλαβές λογισμικό στον υπολογιστή σας. Το Brave μπορεί να το καταργήσει, να επαναφέρει τις ρυθμίσεις σας και να απενεργοποιήσει τις επεκτάσεις, προκειμένου το πρόγραμμα περιήγησής σας να επιστρέψει σε φυσιολογική λειτουργία.</translation>
-<translation id="8919921662052966648">Το Brave δεν κατάφερε να συγχρονίσει τα δεδομένα σας. Ενημερώστε τη φράση πρόσβασης συγχρονισμού.</translation>
 <translation id="2262856633481902138">Το Brave δεν κατάφερε να συγχρονίσει τα δεδομένα σας επειδή τα στοιχεία σύνδεσης στο λογαριασμό σας δεν έχουν ενημερωθεί.</translation>
 <translation id="5419189641394808652">Το Brave δεν κατάφερε να συγχρονίσει τα δεδομένα σας επειδή ο συγχρονισμός δεν είναι διαθέσιμος για τον τομέα σας.</translation>
 <translation id="2577755334620061182">Το Brave δεν κατάφερε να συγχρονίσει τα δεδομένα σας λόγω σφάλματος κατά τη σύνδεση.</translation>
-<translation id="8583885258305961947">Σύστημα Brave OS</translation>
-<translation id="3968006371075376562">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας. Ενημερώστε τη φράση πρόσβασης συγχρονισμού.</translation>
-<translation id="6746636977031158624">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας, επειδή τα στοιχεία σύνδεσης στο λογαριασμό σας δεν είναι ενημερωμένα.</translation>
-<translation id="2999152167963026588">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας, επειδή ο συγχρονισμός δεν είναι διαθέσιμος για τον τομέα σας.</translation>
-<translation id="1459786048951724030">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας λόγω σφάλματος κατά τη σύνδεση.</translation>
-<translation id="6813094029720377619">Τα cookie διαγράφονται κατά τον τερματισμό του Brave. Αλλάξτε τις <ph name="COOKIE_SETTINGS_LINK"/> για να συνεχίσετε τον συγχρονισμό.</translation>
-<translation id="3340978935015468852">ρυθμίσεις</translation>
+<translation id="2644798301485385923">Σύστημα Brave OS</translation>
+<translation id="7916016681687251387">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας. Άμεση επιδιόρθωση.</translation>
+<translation id="2341767445688917208">Το Brave OS δεν μπόρεσε να συγχρονίσει τους κωδικούς πρόσβασής σας. Άμεση επιδιόρθωση.</translation>
+<translation id="123620459398936149">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας. Ενημερώστε τη φράση πρόσβασης συγχρονισμού.</translation>
+<translation id="9026991721384951619">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας, επειδή τα στοιχεία σύνδεσης στο λογαριασμό σας δεν είναι ενημερωμένα.</translation>
+<translation id="7419046106786626209">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας, επειδή ο συγχρονισμός δεν είναι διαθέσιμος για τον τομέα σας.</translation>
+<translation id="4480040274068703980">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας λόγω σφάλματος κατά τη σύνδεση.</translation>
 <translation id="300669147395456190">Εφαρμογές Brave</translation>
-<translation id="3421950102518690868">Το <ph name="DOMAIN"/> απαιτεί να διαβάσετε και να αποδεχτείτε τους ακόλουθους Όρους Παροχής Υπηρεσιών πριν από τη χρήση αυτής της συσκευής. Οι συγκεκριμένοι όροι δεν επεκτείνουν, τροποποιούν ή περιορίζουν τους όρους του Brave OS.</translation>
+<translation id="2398566204186296120">Το <ph name="DOMAIN"/> απαιτεί να διαβάσετε και να αποδεχτείτε τους ακόλουθους Όρους Παροχής Υπηρεσιών πριν από τη χρήση αυτής της συσκευής. Οι συγκεκριμένοι όροι δεν επεκτείνουν, τροποποιούν ή περιορίζουν τους όρους του Brave OS.</translation>
 <translation id="3293668930608086049">Το Brave χρησιμοποιεί την κάμερα και το μικρόφωνό σας.</translation>
 <translation id="8919461291440820124">Το Brave χρησιμοποιεί το μικρόφωνό σας.</translation>
 <translation id="3205074487970075628">Το Brave χρησιμοποιεί την κάμερά σας.</translation>
@@ -161,12 +159,9 @@
 <translation id="4805806622840861220">Επανεκκίνηση Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Υπάρχει νέα διαθέσιμη ενημέρωση για το Brave και θα εφαρμοστεί μόλις κάνετε επανεκκίνηση.}=1{Υπάρχει νέα διαθέσιμη ενημέρωση για το Brave και θα εφαρμοστεί μόλις κάνετε επανεκκίνηση. Το παράθυρο για ανώνυμη περιήγηση δεν θα ανοίξει ξανά.}other{Υπάρχει νέα διαθέσιμη ενημέρωση για το Brave και θα εφαρμοστεί μόλις κάνετε επανεκκίνηση. Τα # παράθυρα για ανώνυμη περιήγηση δεν θα ανοίξουν ξανά.}}</translation>
 <translation id="2799223571221894425">Επανεκκίνηση</translation>
-<translation id="2522086024276534909">Επανεκκίνηση Brave OS</translation>
-<translation id="8183252473547465084">Για να εφαρμοστεί η ενημέρωση, πρέπει να γίνει επανεκκίνηση του Brave OS.</translation>
+<translation id="5062123544085870375">Επανεκκίνηση Brave OS</translation>
+<translation id="2063848847527508675">Για να εφαρμοστεί η ενημέρωση, πρέπει να γίνει επανεκκίνηση του Brave OS.</translation>
 <translation id="5895138241574237353">Επανεκκίνηση</translation>
-<translation id="8887390605192156061">Κλείσιμο όλων των αντιγράφων του Brave.</translation>
-<translation id="1801551749768408825">Εκτελούνται άλλα αντίγραφα του Brave. Για να τα ενημερώσετε, κλείστε τα.</translation>
-<translation id="2632141563911437138">Για να ενημερωθεί το Brave, θα πρέπει να σταματήσει η εκτέλεσή του σε αυτόν τον υπολογιστή. Αυτό μπορεί να προκαλέσει την απώλεια μη αποθηκευμένων αλλαγών που έχουν πραγματοποιήσει άλλοι χρήστες, οι οποίοι είναι συνδεδεμένοι σε αυτόν τον υπολογιστή.</translation>
 <translation id="5875673934455379806">Επανεγκατάσταση του Brave</translation>
 <translation id="2097604701283463988">Το Brave δεν είναι ενημερωμένο</translation>
 <translation id="5173820533850252773">Το Brave δεν είναι ενημερωμένο</translation>
@@ -187,7 +182,7 @@
 <translation id="7798069806040634998">Το Brave χρειάζεται πρόσβαση στον αποθηκευτικό χώρο για τη λήψη αρχείων</translation>
 <translation id="7685904775439037072">Όταν το Brave αποκτήσει πρόσβαση, οι ιστότοποι θα μπορούν να σας ζητήσουν πρόσβαση.</translation>
 <translation id="1744365871163268756">Περιμένετε μέχρι να γίνει εγκατάσταση των πιο πρόσφατων ενημερώσεων συστήματος από το Brave.</translation>
-<translation id="7808415789955822133">Όροι του Brave OS</translation>
+<translation id="7408085963519505752">Όροι του Brave OS</translation>
 <translation id="7207456302801184289">Καλώς ήρθατε στο Brave</translation>
 <translation id="3507835409099344374">Μετάβαση στις ρυθμίσεις ειδοποιήσεων του Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Υπάρχει μια διαθέσιμη ενημέρωση του Brave}=1{Υπάρχει μια διαθέσιμη ενημέρωση του Brave}other{Υπάρχει μια διαθέσιμη ενημέρωση του Brave για # ημέρες}}</translation>
@@ -206,9 +201,9 @@
 <translation id="1786715389543715322">Ενημέρωση του Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">Η ενημέρωση σχεδόν ολοκληρώθηκε! Εκτελέστε ξανά το Brave για να ολοκληρωθεί η ενημέρωση.</translation>
 <translation id="8208853227947884571">Το Brave έχει ενημερωθεί</translation>
-<translation id="6686872257969654608">Σχετικά με το Brave OS</translation>
-<translation id="7674116293463255181">Για να διαπιστώσετε εάν η συσκευή σας είναι ενημερωμένη, μεταβείτε στις <ph name="LINK_BEGIN"/>Ρυθμίσεις του Brave OS<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Λήψη βοήθειας σχετικά με το Brave OS</translation>
+<translation id="573759479754913123">Σχετικά με το Brave OS</translation>
+<translation id="7573289029918943991">Για να διαπιστώσετε εάν η συσκευή σας είναι ενημερωμένη, μεταβείτε στις <ph name="LINK_BEGIN"/>Ρυθμίσεις του Brave OS<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Λήψη βοήθειας σχετικά με το Brave OS</translation>
 <translation id="38898988211673781">Διαγραφή cookie και δεδομένων ιστοτόπου κατά τον τερματισμό του Brave.</translation>
 <translation id="5253815230176279256">Brave Software Pay (αντιγράφηκε στο Brave)</translation>
 <translation id="5468853758063275923">Το Brave είναι το προεπιλεγμένο πρόγραμμα περιήγησης</translation>
@@ -216,7 +211,7 @@
 <translation id="6915252145142862992">Αυτή είναι μια δευτερεύουσα εγκατάσταση του Brave και δεν μπορεί να γίνει το προεπιλεγμένο πρόγραμμα περιήγησης.</translation>
 <translation id="6235873178214143377">Εάν μια ρύθμιση δεν εμφανίζεται σε αυτήν τη σελίδα, αναζητήστε την στις <ph name="LINK_BEGIN"/>
       Ρυθμίσεις προγράμματος περιήγησης Brave<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">Εάν μια ρύθμιση δεν εμφανίζεται σε αυτήν τη σελίδα, αναζητήστε την στις <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">Εάν μια ρύθμιση δεν εμφανίζεται σε αυτήν τη σελίδα, αναζητήστε την στις <ph name="LINK_BEGIN"/>
       ρυθμίσεις του Brave OS<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">Για τη διόρθωση ορθογραφικών λαθών, το Brave στέλνει το κείμενο που πληκτρολογείτε σε πεδία κειμένου στο Brave Software</translation>
 <translation id="8586264863973514035">Για να εφαρμόσετε τις αλλαγές σας, επανεκκινήστε το Brave</translation>
@@ -226,7 +221,6 @@
 <translation id="5853262807109651878">Με αυτήν την ενέργεια θα διαγραφούν <ph name="ITEMS_COUNT"/> στοιχεία από αυτήν τη συσκευή. Για να ανακτήσετε τα δεδομένα σας αργότερα, συνδεθείτε στο Brave ως <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Με αυτήν την ενέργεια θα διαγραφούν τα δεδομένα περιήγησης από αυτήν τη συσκευή. Για να ανακτήσετε τα δεδομένα σας αργότερα, συνδεθείτε στο Brave ως <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Όνομα και εικόνα στο Brave</translation>
-<translation id="82609232232243542">Σύνδεση στο Brave</translation>
 <translation id="8372880274820509128">Για επιπλέον ασφάλεια, το Brave θα κρυπτογραφήσει τα δεδομένα σας.</translation>
 <translation id="7445061995866044926">Θέλετε να αποσυνδεθείτε από το Brave;</translation>
 <translation id="7453070689008684791">Το Brave θα αποκτήσει πρόσβαση στο Drive, για να κάνει προτάσεις στη γραμμή διευθύνσεων</translation>

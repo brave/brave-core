@@ -107,7 +107,6 @@
 <translation id="981121421437150478">Vanlyn</translation>
 <translation id="5171045022955879922">Soek of tik URL in</translation>
 <translation id="803771048473350947">Lêer</translation>
-<translation id="6268185425799226387">Brave Drive</translation>
 <translation id="2982481275546140226">Wis Data</translation>
 <translation id="8425213833346101688">Verander</translation>
 <translation id="8009225694047762179">Bestuur Wagwoorde</translation>
@@ -135,6 +134,8 @@
 <translation id="2215727959747642672">Lêerwysiging</translation>
 <translation id="6545864417968258051">Bluetooth-opsporing</translation>
 <translation id="534295439873310000">NFC-toestelle</translation>
+<translation id="4943703118917034429">Virtuele realiteit</translation>
+<translation id="3513704683820682405">Aangevulde realiteit</translation>
 <translation id="5039804452771397117">Staan Toe</translation>
 <translation id="7053983685419859001">Versper</translation>
 <translation id="57838592816432529">Demp</translation>
@@ -184,8 +185,8 @@
 <translation id="5565735124758917034">Aktief</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="6915804003454593391">Gebruiker:</translation>
-<translation id="5916664084637901428">Aan</translation>
-<translation id="5860033963881614850">Af</translation>
+<translation id="5921185718311485855">Aan</translation>
+<translation id="1019413721762100891">Af</translation>
 <translation id="7961015016161918242">Nooit</translation>
 <translation id="8294431847097064396">Bron</translation>
 <translation id="1056898198331236512">Waarskuwing</translation>
@@ -193,7 +194,6 @@
 <translation id="5720705177508910913">Huidige gebruiker</translation>
 <translation id="6965978654500191972">Toestel</translation>
 <translation id="4728558894243024398">Platform</translation>
-<translation id="5939847200023027600">PDF-samestellerdiens</translation>
 <translation id="1588438908519853928">Normaal</translation>
 <translation id="1974060860693918893">Gevorderd</translation>
 <translation id="5308380583665731573">Verbind</translation>

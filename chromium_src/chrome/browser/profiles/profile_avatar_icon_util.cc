@@ -8,6 +8,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/grit/theme_resources.h"
+#include "ui/native_theme/native_theme.h"
 
 // First, define anything that patches will rely on.
 namespace profiles {
@@ -45,12 +46,14 @@ size_t GetBraveAvatarIconStartIndex();
 #define GetDefaultProfileAvatarIconsAndLabels \
     GetDefaultProfileAvatarIconsAndLabels_ChromiumImpl
 #define IsDefaultAvatarIconUrl IsDefaultAvatarIconUrl_ChromiumImpl
+#define GetGuestAvatar GetGuestAvatar_ChromiumImpl
 
 #include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 #undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
 #undef GetDefaultProfileAvatarIconsAndLabels
 #undef IsDefaultAvatarIconUrl
+#undef GetGuestAvatar
 
 namespace profiles {
 
@@ -178,6 +181,13 @@ bool IsDefaultAvatarIconUrl(const std::string& url, size_t* icon_index) {
     return true;
   }
   return IsDefaultAvatarIconUrl_ChromiumImpl(url, icon_index);
+}
+
+gfx::ImageSkia GetGuestAvatar(int size) {
+  return gfx::CreateVectorIcon(
+      kUserMenuGuestIcon, size,
+      ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
+          ui::NativeTheme::kColorId_DefaultIconColor));
 }
 
 }  // namespace profiles

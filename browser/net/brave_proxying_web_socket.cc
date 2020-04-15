@@ -19,6 +19,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
+#include "net/cookies/site_for_cookies.h"
 
 BraveProxyingWebSocket::BraveProxyingWebSocket(
     WebSocketFactory factory,
@@ -55,7 +56,7 @@ BraveProxyingWebSocket* BraveProxyingWebSocket::ProxyWebSocket(
     content::RenderFrameHost* frame,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const base::Optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {

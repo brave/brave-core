@@ -11,12 +11,6 @@
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="7450557937477381864">Isara ang Chrome</translation>
 <translation id="7008934821596358692">Upang matapos ang pag-import, isara ang lahat ng window ng Chrome.</translation>
-<translation id="5735465527556462863">Isara ang Brave (luma)</translation>
-<translation id="7737066986958447692">Para matapos ang pag-import, isara ang lahat ng window ng Brave (luma).</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Mga istatistika</translation>
-<translation id="6165477144235978006">Mga Pagbabayad sa Brave</translation>
-<translation id="3489524616427966890">Mga nakabukas na window at tab</translation>
 <translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="4726634924419692905">Magtanong kapag gusto ng isang site na i-install ang Widevine sa iyong computer.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
 
 Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntunin ng Paggamit ng Google Widevine. Sumasang-ayon kang walang pananagutan ang Brave para sa anumang pinsala o pagkalugi na nauugnay sa paggamit mo ng Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (luma)</translation>
-<translation id="3198814717959506569">Na-import mula sa Brave</translation>
 <translation id="453977518730680921">Mag-autoplay ng media</translation>
 <translation id="410351446219883937">Pag-autoplay</translation>
 <translation id="2240268017737062801">Magtanong kapag gustong mag-autoplay ng media ang isang site</translation>
@@ -70,19 +62,22 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="130615081792797568">Simpleng view</translation>
 <translation id="2360360976480535628">Advanced na view</translation>
 <translation id="5709627087332022422">I-block ang mga cross-site tracker</translation>
-<translation id="9075744464571452108">Pagkilala ng device</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Pag-fingerprint</translation>
 <translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
 <translation id="4824468494729001999">I-block ang mga script</translation>
-<translation id="8526521192921341404">Payagan ang mga pag-login sa Google</translation>
+<translation id="519861640102428255">Hitsura at Dating</translation>
+<translation id="4800195524776354947">Ipakita ang bilang ng naka-block na item sa icon na Mga Shield</translation>
+<translation id="7498695072878479744">Payagan ang mga Google login button sa mga third party na site</translation>
 <translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
 <translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
 <translation id="4699812599455071925">I-block lang ang cross-site cookies</translation>
 <translation id="5657156137487675418">Payagan ang lahat ng cookie</translation>
 <translation id="6883611015375728278">I-block ang lahat ng cookie</translation>
-<translation id="3084022390368021391">I-block lang ang mga cross-site na pagtangkang kilalanin ang device</translation>
-<translation id="1847422622180531843">Payagan ang lahat ng pagtangkang kilalanin ang device</translation>
-<translation id="8375051111011093523">I-block ang lahat ng pagtangkang kilalanin ang device</translation>
+<translation id="5572437114858031185">I-block lang ang mga cross-site na pagsubok na mag-fingerprint</translation>
+<translation id="5079032039521408559">Payagan ang lahat ng pagsubok na mag-fingerprint</translation>
+<translation id="6447141055227658942">I-block ang lahat ng pagsubok sa mag-fingerprint</translation>
 <translation id="8942080017911802454">Patakaran sa Pangangasiwa ng IP ng WebRTC</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -104,6 +99,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="7701040980221191251">Wala</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Provider ng Web3 para sa paggamit ng Dapps</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
 <translation id="1765684547504191670">Gumagamit ng Media Router na bahagi upang ma-enable ang Chromecast sa browser.</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
@@ -164,6 +160,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4394049700291259645">Huwag paganahin</translation>
 <translation id="6469509880167172749">Awtomatikong magpadala ng ganap na pribadong analytics ng produkto sa Brave</translation>
 <translation id="7090566321964540749">Pinapayagan lang ng hindi kilalang impormasyon na ito ang Brave na tantyahin ang kabuuang paggamit ng ilang partikular na feature.</translation>
+<translation id="9111960429693394744">Gusto mo bang gamitin ang Crypto Wallets o MetaMask for Dapps ng Brave?</translation>
 <translation id="7583735190612229830">I-set up ang Crypto Wallets para makaugnayan ang app na ito at ang iba pang tulad nito.</translation>
 <translation id="8337117349965899723">Gamitin ang Crypto Wallets</translation>
 <translation id="5756155765711979898">Gamitin ang MetaMask</translation>
@@ -177,4 +174,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4474155171896946103">I-bookmark ang lahat ng tab...</translation>
 <translation id="2336228925368920074">I-bookmark ang Lahat ng Mga Tab...</translation>
 <translation id="796831669370432378">Para magdagdag ng bookmark, i-click ang button ng bookmark sa tabi ng address bar</translation>
+<translation id="4989337484121655457">Kailangan ng Full Disk Access</translation>
+<translation id="8025559074845816210">Kailangan ng Brave ng Full Disk Access para i-import ang iyong Mga Bookmark mula sa Safari.</translation>
+<translation id="8515328844674404333">Alamin kung paano magbigay ng Full Disk Access mula sa iyong Mga Kagustuhan sa System.</translation>
+<translation id="6414878884710400018">Buksan ang Mga Kagustuhan sa System</translation>
+<translation id="5570470519803062774">Mga Setting ng Site at Mga Shield</translation>
 </translationbundle>

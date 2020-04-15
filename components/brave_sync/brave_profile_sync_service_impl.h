@@ -127,7 +127,7 @@ class BraveProfileSyncServiceImpl
       std::unique_ptr<brave_sync::RecordsList> records) override;
 
   // syncer::SyncService implementation
-  int GetDisableReasons() const override;
+  syncer::SyncService::DisableReasonSet GetDisableReasons() const override;
   CoreAccountInfo GetAuthenticatedAccountInfo() const override;
   bool IsAuthenticatedAccountPrimary() const override;
 

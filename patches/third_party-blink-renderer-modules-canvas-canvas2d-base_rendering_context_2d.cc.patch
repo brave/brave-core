@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 7883321438694881b00363ed26b652dcab71fedd..63be1531a07aae594c604d9b3dca7d5d9a709c32 100644
+index 9ce2506096723d04b7aab6267d5c452cfe0424e8..7f391d85fce6472b50d8a08eb74bb8cc05c99dd8 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -10,6 +10,7 @@
@@ -10,7 +10,7 @@ index 7883321438694881b00363ed26b652dcab71fedd..63be1531a07aae594c604d9b3dca7d5d
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
-@@ -344,7 +345,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
+@@ -351,7 +352,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
    ModifiableState().SetShadowColor(color.Rgb());
  }
  
@@ -24,7 +24,7 @@ index 7883321438694881b00363ed26b652dcab71fedd..63be1531a07aae594c604d9b3dca7d5d
    return GetState().LineDash();
  }
  
-@@ -772,16 +778,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -779,16 +785,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -53,7 +53,7 @@ index 7883321438694881b00363ed26b652dcab71fedd..63be1531a07aae594c604d9b3dca7d5d
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -806,13 +822,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -813,13 +829,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
@@ -79,7 +79,7 @@ index 7883321438694881b00363ed26b652dcab71fedd..63be1531a07aae594c604d9b3dca7d5d
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1517,11 +1543,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1545,11 +1571,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 85291b0e4635d261bed90e5499af4ffa8e0d34f0..87a6d3a3b14195c3b416e3caf65ed5cab924eb44 100755
+index ffbf9ec0727b9a81eb4b8488ae67b797ec81a437..cdd0f6769f6629b855a56f267724673a79fec836 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -20,7 +20,7 @@ import os
@@ -19,7 +19,7 @@ index 85291b0e4635d261bed90e5499af4ffa8e0d34f0..87a6d3a3b14195c3b416e3caf65ed5ca
  
    if include_snapshotblob == '1':
      CopySectionFilesToStagingDir(config, 'SNAPSHOTBLOB', staging_dir, build_dir,
-@@ -540,6 +541,7 @@ def main(options):
+@@ -551,6 +552,7 @@ def main(options):
    if prev_version:
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
@@ -27,7 +27,7 @@ index 85291b0e4635d261bed90e5499af4ffa8e0d34f0..87a6d3a3b14195c3b416e3caf65ed5ca
  
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-@@ -611,6 +613,7 @@ def _ParseOptions():
+@@ -622,6 +624,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)

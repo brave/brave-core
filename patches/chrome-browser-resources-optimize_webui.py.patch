@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
-index 3055403e032612510b3fb488b3d9478d226f83e4..b333e7585a60a2d9784f63fa9a4a3c20c22b17d2 100755
+index 5c11a65a912faacc7378e640fadbd59d063a5c1b..5c918403669fb376ee5462312d56474b4aebfd7b 100755
 --- a/chrome/browser/resources/optimize_webui.py
 +++ b/chrome/browser/resources/optimize_webui.py
-@@ -55,6 +55,8 @@ _POLYMER_PATH = os.path.join(
+@@ -56,6 +56,8 @@ _POLYMER_PATH = os.path.join(
      '').replace('\\', '/')
  
  
@@ -11,7 +11,7 @@ index 3055403e032612510b3fb488b3d9478d226f83e4..b333e7585a60a2d9784f63fa9a4a3c20
  # These files are already combined and minified.
  _BASE_EXCLUDES = [
    # Common excludes for both Polymer 2 and 3.
-@@ -64,6 +66,8 @@ _BASE_EXCLUDES = [
+@@ -65,6 +67,8 @@ _BASE_EXCLUDES = [
    'chrome://resources/css/text_defaults.css',
    'chrome://resources/css/text_defaults_md.css',
    'chrome://resources/mojo/mojo/public/js/mojo_bindings_lite.html',
@@ -20,7 +20,7 @@ index 3055403e032612510b3fb488b3d9478d226f83e4..b333e7585a60a2d9784f63fa9a4a3c20
  
    # Excludes applying only to Polymer 2.
    'chrome://resources/html/polymer.html',
-@@ -91,7 +95,8 @@ _URL_MAPPINGS = [
+@@ -92,7 +96,8 @@ _URL_MAPPINGS = [
      ('chrome://resources/html/', _HTML_RESOURCES_PATH),
      ('chrome://resources/js/', _JS_RESOURCES_PATH),
      ('chrome://resources/polymer/v1_0/', _POLYMER_PATH),

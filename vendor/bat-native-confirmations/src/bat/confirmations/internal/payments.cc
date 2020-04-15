@@ -108,7 +108,7 @@ base::Value Payments::GetAsList() {
     dictionary.SetKey("transaction_count",
         base::Value(std::to_string(payment.transaction_count)));
 
-    list.GetList().push_back(std::move(dictionary));
+    list.Append(std::move(dictionary));
   }
 
   return list;

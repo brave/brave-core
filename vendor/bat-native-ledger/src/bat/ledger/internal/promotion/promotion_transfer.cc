@@ -118,7 +118,7 @@ void PromotionTransfer::SendTokens(
       continue;
     }
 
-    credentials.GetList().push_back(std::move(token));
+    credentials.Append(std::move(token));
     tokens_ids.push_back(std::to_string(item->id));
   }
 

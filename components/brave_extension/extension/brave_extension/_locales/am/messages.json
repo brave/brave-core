@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "ድረ ገጽ ተሻጋሪ የመሳሪያ ማወቂያ ታግዷል",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "ድረ ገጽ ተሻጋሪ የጣት አሻራ መውሰድ ታግዷል",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "የመሳሪያ ማወቂያ ሙከራዎች ታግደዋል",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "የጣት አሻራ የመውሰድ ሙከራዎች ታግደዋል",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "ሁሉም የመሳሪያ ማወቂያ ሙከራዎች ተፈቅደዋል።",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "ሁሉም የጣት አሻራ የመውሰድ ሙከራዎች ተፈቅደዋል",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "የመሣሪያ ማወቂያ ሙከራዎች",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "የጣት አሻራ የመውሰድ ሙከራዎች",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "በዚህ ገፅ ላይ ያሉ ስክሪፕቶች",

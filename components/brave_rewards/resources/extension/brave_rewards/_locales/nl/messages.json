@@ -40,7 +40,7 @@
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Je wallet",
+    "message": "Jouw wallet",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
@@ -80,7 +80,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Deelname aan Auto-Contribute",
+    "message": "Deelname aan Auto-Contributie",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Sta fooi toe",
+    "message": "Sta fooien toe",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "loopt af op",
+    "message": "vervalt op",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {

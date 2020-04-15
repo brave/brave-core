@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index 4f740aac382b2b2f5013006f0cdf1007b330759b..111e3e98df8f29eda695e6f39f809b955ac2a133 100644
+index 19475da4bf833ec8f517497cd413499769ce32ec..a1af2ff1d1cfe05c2c8c818bd8dbb6230eafb870 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 @@ -28,7 +28,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;

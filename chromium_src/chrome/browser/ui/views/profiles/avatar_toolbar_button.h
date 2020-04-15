@@ -23,11 +23,9 @@
 #include "ui/base/material_design/material_design_controller_observer.h"
 #include "ui/events/event.h"
 
-#define GetState virtual GetState
 #define GetAvatarIcon virtual GetAvatarIcon
-#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button.h" // NOLINT
+#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #undef GetAvatarIcon
-#undef GetState
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_AVATAR_TOOLBAR_BUTTON_H_
 

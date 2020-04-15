@@ -11,12 +11,6 @@
 <translation id="120759863357279975">Laiendus <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ei ole Brave''is lubatud.</translation>
 <translation id="7450557937477381864">Sulge Chrome</translation>
 <translation id="7008934821596358692">Importimise lõpetamiseks sulgege kõik Chrome'i vahelehed.</translation>
-<translation id="5735465527556462863">Sulge Brave (vana)</translation>
-<translation id="7737066986958447692">Importimise lõpetamiseks sulgege kõik (vana) Brave'i vahelehed.</translation>
-<translation id="6447842834002726250">Küpsised</translation>
-<translation id="4983925687993168579">Statistika</translation>
-<translation id="6165477144235978006">Brave'i maksed</translation>
-<translation id="3489524616427966890">Ava aknad ja vahekaardid</translation>
 <translation id="3699882589215410581">Installi ja käivita Widevine</translation>
 <translation id="8926389886865778422">Ära enam küsi</translation>
 <translation id="4726634924419692905">Küsi, kui sait soovib Widevine’i arvutisse installida.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
 
 Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. Nõustute, et Brave ei vastuta mis tahes kahjude eest, mis tulenevad Google Widevine'i kasutamisest.</translation>
-<translation id="6499845530162974140">Brave (vana)</translation>
-<translation id="3198814717959506569">Imporditud Brave'ist</translation>
 <translation id="453977518730680921">Meedia automaatesitamine</translation>
 <translation id="410351446219883937">Automaatesitus</translation>
 <translation id="2240268017737062801">Küsi, kui veebisait tahab meediat automaatesitada</translation>
@@ -70,19 +62,15 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="130615081792797568">Lihtvaade</translation>
 <translation id="2360360976480535628">Täpsem vaade</translation>
 <translation id="5709627087332022422">Blokeeri saitidevahelised jälitajad</translation>
-<translation id="9075744464571452108">Seadme tuvastamine</translation>
+<translation id="6447842834002726250">Küpsised</translation>
 <translation id="3570081523466826008">Täienda ühendused HTTPS-ile</translation>
 <translation id="4824468494729001999">Blokeeri skriptid</translation>
-<translation id="8526521192921341404">Luba Google’iga sisselogimisi</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
 <translation id="5165042248369837294">Luba Twitteri manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
 <translation id="4699812599455071925">Blokeeri ainult saitidevahelised küpsised</translation>
 <translation id="5657156137487675418">Luba kõik küpsised</translation>
 <translation id="6883611015375728278">Blokeeri kõik küpsised</translation>
-<translation id="3084022390368021391">Blokeeri ainult saitidevahelised seadme tuvastamise katsed</translation>
-<translation id="1847422622180531843">Luba kõik seadme tuvastamise katsed</translation>
-<translation id="8375051111011093523">Blokeeri kõik seadme tuvastamise katsed</translation>
 <translation id="8942080017911802454">WebRTC IP lahendamise kord</translation>
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="8798099450830957504">Vaikimisi</translation>
@@ -104,6 +92,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="7701040980221191251">Mitte ükski</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Web3 pakkuja Dapps kasutamiseks</translation>
 <translation id="6554397389149987360">Kasutab Hangouts-komponenti kuva jagamise ja muude funktsioonide aktiveerimiseks brauseris.</translation>
 <translation id="1765684547504191670">Kasutab meedia marsruuteri komponenti, et lubada brauseris Chromecast.</translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
@@ -164,6 +153,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4394049700291259645">Keela</translation>
 <translation id="6469509880167172749">Saada täielikult privaatne tooteanalüüs automaatselt Brave’ile</translation>
 <translation id="7090566321964540749">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
+<translation id="9111960429693394744">Kas soovid Dapps jaoks kasutada Brave'i krüptorahakotte või MetaMask'i?</translation>
 <translation id="7583735190612229830">Seadistage krüptorahakotid suhtlema selle rakenduse ja teiste sarnaste rakendustega.</translation>
 <translation id="8337117349965899723">Kasuta krüptorahakotte</translation>
 <translation id="5756155765711979898">Kasuta MetaMaski</translation>

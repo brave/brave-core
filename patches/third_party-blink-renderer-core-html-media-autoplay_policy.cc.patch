@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index ad5f2bf069270b6ed411e937e762d4d87580a9a7..b93a088be0d14e679730db188544ed061fe3d434 100644
+index 955e551050111da593ca52f63a6dcc1d3dd221d4..d2c4aa013bcf89985111b817db754780a151c718 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -137,6 +137,7 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {

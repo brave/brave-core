@@ -20,10 +20,10 @@ class AutoplayPermissionContext : public PermissionContextBase {
       content::RenderFrameHost* render_frame_host,
       const GURL& requesting_origin,
       const GURL& embedding_origin) const override;
-  void UpdateTabContext(const PermissionRequestID& id,
+  void UpdateTabContext(const permissions::PermissionRequestID& id,
                         const GURL& requesting_frame,
                         bool allowed) override;
-  void NotifyPermissionSet(const PermissionRequestID& id,
+  void NotifyPermissionSet(const permissions::PermissionRequestID& id,
                            const GURL& requesting_origin,
                            const GURL& embedding_origin,
                            BrowserPermissionCallback callback,

@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fil">
-<translation id="6910211073230771657">Na-delete</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="5301954838959518834">OK, nakuha ko</translation>
-<translation id="7658239707568436148">Kanselahin</translation>
-<translation id="3479552764303398839">Hindi ngayon</translation>
-<translation id="5317780077021120954">I-save</translation>
-<translation id="4570913071927164677">Mga Detalye</translation>
-<translation id="8730621377337864115">Tapos na</translation>
-<translation id="8261506727792406068">I-delete</translation>
-<translation id="1181037720776840403">Alisin</translation>
-<translation id="5939518447894949180">I-reset</translation>
-<translation id="4002066346123236978">Pamagat</translation>
-<translation id="5916664084637901428">Naka-on</translation>
-<translation id="5860033963881614850">Naka-off</translation>
-<translation id="6165508094623778733">Matuto pa</translation>
-<translation id="6042308850641462728">Higit pa</translation>
-<translation id="6040143037577758943">Isara</translation>
-<translation id="780301667611848630">Hindi salamat</translation>
-<translation id="1201402288615127009">Susunod</translation>
-<translation id="2359808026110333948">Magpatuloy</translation>
-<translation id="2653659639078652383">Isumite</translation>
-<translation id="2079545284768500474">I-undo</translation>
-<translation id="7649070708921625228">Tulong</translation>
-<translation id="2148716181193084225">Ngayon</translation>
-<translation id="7781829728241885113">Kahapon</translation>
-<translation id="6945221475159498467">Pumili</translation>
-<translation id="7791543448312431591">Idagdag</translation>
-<translation id="6527303717912515753">Ibahagi</translation>
-<translation id="1383876407941801731">Hanapin</translation>
-<translation id="3115898365077584848">Ipakita ang Impormasyon</translation>
-<translation id="3295602654194328831">Itago ang Impormasyon</translation>
-<translation id="3987993985790029246">Kopyahin ang link</translation>
-<translation id="2704606927547763573">Kinopya</translation>
-<translation id="8725066075913043281">Muling subukan</translation>
-<translation id="385051799172605136">Bumalik</translation>
-<translation id="8131740175452115882">Kumpirmahin</translation>
-<translation id="5300589172476337783">Ipakita</translation>
-<translation id="1124772482545689468">User</translation>
-<translation id="8609465669617005112">Lumipat</translation>
-<translation id="6746124502594467657">Ibaba</translation>
-<translation id="8249310407154411074">Ilipat sa itaas</translation>
 <translation id="8428213095426709021">Mga Setting</translation>
 <translation id="2498359688066513246">Tulong at feedback</translation>
 <translation id="8378714024927312812">Pinapamahalaan ng iyong organisasyon</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Makikita ng sinumang makakatingin sa na-export na file ang iyong mga password.</translation>
 <translation id="2321086116217818302">Inihahanda ang mga password…</translation>
 <translation id="8445448999790540984">Hindi ma-export ang mga password</translation>
-<translation id="3066461326500799725">Alamin kung paano gamitin ang Brave Software Drive</translation>
+<translation id="5139940364318403933">Alamin kung paano gamitin ang Brave Software Drive</translation>
 <translation id="729975465115245577">Walang app sa iyong device upang ma-store ang file ng mga password.</translation>
 <translation id="7682724950699840886">Subukan ang mga sumusunod na tip: tiyaking may sapat na espasyo sa iyong device, at subukang mag-export muli.</translation>
 <translation id="1129510026454351943">Mga Detalye: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Mga Password sa Brave</translation>
 <translation id="6075798973483050474">I-edit ang home page</translation>
 <translation id="854522910157234410">Buksan ang page na ito</translation>
+<translation id="8127542551745560481">I-edit ang homepage</translation>
 <translation id="2482878487686419369">Mga Abiso</translation>
 <translation id="6255999984061454636">Mga suhestyong content</translation>
 <translation id="805047784848435650">Batay sa iyong history ng pag-browse</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">Para matukoy ang mapapanganib na app at site, nagpapadala ang Brave ng mga URL ng ilang page na binibisita mo, limitadong impormasyon ng system, at ilang content ng page sa Brave Software</translation>
 <translation id="3181954750937456830">Ligtas na Pag-browse (pinoprotektahan ka at ang iyong device mula sa mga mapanganib na site)</translation>
 <translation id="7315322926489145388">Ipadala ang mga URL ng ilang page na binibisita mo sa Brave Software kapag nanganganib ang iyong seguridad</translation>
-<translation id="2063713494490388661">Mag-tap upang Maghanap</translation>
-<translation id="2369463299479365221">Matuto tungkol sa mga paksa sa mga website nang hindi umaalis sa page. Ipinapadala sa Brave Software Search ng I-tap para Maghanap ang salita at ang konteksto nito, na nagbibigay ng mga kahulugan, larawan, resulta ng paghahanap, at iba pang detalye.
+<translation id="3738139272394829648">Pindutin upang Hanapin</translation>
+<translation id="7865281998841143447">Alamin ang tungkol sa mga paksa sa mga website nang hindi umaalis sa page. Nagpapadala ang Touch to Search ng salita at ng konteksto nito sa Brave Software Search, at magbibigay ito ng mga pagpapakahulugan, larawan, resulta ng paghahanap, at iba pang detalye.
 
-Para isaayos ang iyong termino para sa paghahanap, pumindot nang matagal para pumili. Para pinuhin ang iyong paghahanap, i-slide ang panel hanggang sa pinakaitaas at i-tap ang box para sa paghahanap.</translation>
-<translation id="2930742481329940825">Ipinapadala sa Brave Software Search ng I-tap para Maghanap ang napiling salita at ang kasalukuyang page bilang konteksto. Maaari mo itong i-off sa <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
+I-tap ang anumang salita para hanapin ito. Para isaayos ang iyong termino para sa paghahanap, pindutin ito nang matagal para piliin. Para pinuhin ang iyong paghahanap, i-slide pabukas ang panel, i-tap ang icon ng i-expand para gumawa ng bagong tab, at pagkatapos ay i-tap ang box para sa paghahanap.</translation>
+<translation id="3292859206215580147">Alamin ang tungkol sa mga paksa sa mga website nang hindi umaalis sa page. Nagpapadala ang Touch to Search ng salita at ng konteksto nito sa Brave Software Search, at magbibigay ito ng mga pagpapakahulugan, larawan, resulta ng paghahanap, at iba pang detalye.
+
+Pindutin nang matagal ang anumang salita para hanapin ito. Para pinuhin ang iyong paghahanap, isaayos ang pagpipilian. Puwede mo ring i-slide pabukas ang panel, i-tap ang icon ng i-expand para gumawa ng bagong tab, at pagkatapos ay i-tap ang box para sa paghahanap.</translation>
+<translation id="6209156474097347789">Ipinadadala ng Pindutin upang Hanapin ang piniling salita at ang kasalukuyang page bilang konteksto sa Paghahanap sa Brave Software. Maaari mo itong i-off sa <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Payagan</translation>
+<translation id="780301667611848630">Hindi salamat</translation>
 <translation id="1406000523432664303">“Huwag Subaybayan”</translation>
 <translation id="6232535412751077445">Kapag na-enable mo ang “Huwag Subaybayan,” magsasama ng isang kahilingan sa trapiko ng iyong pagba-browse. Ang anumang magiging epekto ay dedepende sa pagtugon at pagbibigay-kahulugan ng website sa nabanggit na kahilingan.
 
@@ -242,6 +206,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="6295158916970320988">Lahat ng site</translation>
 <translation id="8380167699614421159">Nagpapakita ang site na ito ng mga nakakasagabal o nakakapanlinlang na ad</translation>
 <translation id="1919345977826869612">Mga Ad</translation>
+<translation id="3513704683820682405">Augmented Reality</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">I-block ang mga third-party na cookie</translation>
 <translation id="6782111308708962316">Pigilan ang mga third-party na website na mag-save at magbasa ng data ng cookie</translation>
@@ -259,6 +224,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="5649053991847567735">Mga awtomatikong pag-download</translation>
 <translation id="6181444274883918285">Magdagdag ng pagbubukod ng site</translation>
 <translation id="5313967007315987356">Magdagdag ng site</translation>
+<translation id="7791543448312431591">Idagdag</translation>
 <translation id="1369915414381695676">Nadagdag na ang site ng <ph name="SITE_NAME"/></translation>
 <translation id="2621115761605608342">Payagan ang JavaScript para sa isang partikular na site.</translation>
 <translation id="8801436777607969138">I-block ang JavaScript para sa isang partikular na site.</translation>
@@ -266,6 +232,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="358794129225322306">Payagan ang isang site na awtomatikong mag-download ng maraming file.</translation>
 <translation id="4008040567710660924">Payagan ang cookies para sa isang partikular na site.</translation>
 <translation id="8958424370300090006">Mag-block ng cookies para sa isang partikular na site.</translation>
+<translation id="2537296579376733324">Lahat ng cookies, sa site na ito lang</translation>
 <translation id="7882806643839505685">Payagan ang tunog para sa isang partikular na site.</translation>
 <translation id="4468959413250150279">I-mute ang tunog para sa isang partikular na site.</translation>
 <translation id="1994173015038366702">URL ng site</translation>
@@ -292,8 +259,12 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="2107397443965016585">Magtanong bago pahintulutan ang mga site na mag-play ng pinoprotektahang content (inirerekomenda)</translation>
 <translation id="2910701580606108292">Magtanong bago payagan ang mga site na mag-play ng pinoprotektahang content</translation>
 <translation id="757524316907819857">I-block ang mga site sa pag-play ng pinoprotektahang content</translation>
+<translation id="4935305910887312910">Magtanong bago payagan ang mga site na tumanggap ng posisyon ng camera o imapa ang iyong kwarto (inirerekomenda)</translation>
+<translation id="884828189055900810">I-block ang mga site sa pagtanggap ng posisyon ng camera o pagmamapa ng iyong kwarto</translation>
 <translation id="5710871682236653961">Magtanong bago pahintulutan ang mga site na magpadala at tumanggap ng impormasyon kapag na-tap mo ang mga NFC device (inirerekomenda)</translation>
 <translation id="7572498721684305250">I-block ang mga site sa pagpapadala at pagtanggap ng impormasyon kapag na-tap mo ang mga NFC device</translation>
+<translation id="3312292613668865961">Magtanong bago payagan ang mga site na i-access ang iyong virtual reality device at data (inirerekomenda)</translation>
+<translation id="8698438463325761328">I-block ang mga site sa pag-access sa iyong virtual reality device at data</translation>
 <translation id="3277252321222022663">Payagan ang mga site na i-access ang mga sensor (inirerekomenda)</translation>
 <translation id="5048398596102334565">Payagan ang mga site na i-access ang mga sensor ng paggalaw (inirerekomenda)</translation>
 <translation id="8816026460808729765">I-block ang mga site sa pag-access sa mga sensor</translation>
@@ -325,7 +296,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="119944043368869598">I-clear lahat</translation>
 <translation id="2490684707762498678">Pinapamahalaan ng <ph name="APP_NAME"/></translation>
 <translation id="5516455585884385570">Buksan ang mga setting ng notification</translation>
-<translation id="1404122904123200417">Naka-embed sa <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Naka-embed sa <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">Lalabas dito ang mga file na na-save ng mga website</translation>
 <translation id="4181841719683918333">Mga Wika</translation>
 <translation id="2647434099613338025">Magdagdag ng wika</translation>
@@ -380,6 +351,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="4913161338056004800">I-reset ang mga istatistika</translation>
 <translation id="1856325424225101786">I-reset ang Lite mode?</translation>
 <translation id="3658159451045945436">Kapag na-reset, mabubura ang iyong history ng pagtitipid ng data, kabilang ang listahan ng mga binisitang site.</translation>
+<translation id="5939518447894949180">I-reset</translation>
 <translation id="3295530008794733555">Mag-browse nang mas mabilis. Gumamit ng mas kaunting data.</translation>
 <translation id="7340390500800578919">Sa Lite mode, mas mabilis na naglo-load ng mga page ang Brave at gumagamit ito ng hanggang 60 porsyentong mas kaunting data. Para i-optimize ang mga page na binibisita mo, ipinapadala ng Brave ang iyong trapiko sa web sa Brave Software. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">I-on ang Lite mode</translation>
@@ -443,9 +415,6 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="4256782883801055595">Mga lisensya ng open source</translation>
 <translation id="1138681184697033370">Mga Tuntunin ng Serbisyo ng Brave</translation>
 <translation id="7392539049993970338">Notification ng Privacy ng Brave</translation>
-<translation id="2677748264148917807">Umalis</translation>
-<translation id="5556459405103347317">I-reload</translation>
-<translation id="1623104350909869708">Pigilan ang pahinang ito sa paggawa ng mga karagdagang dialog</translation>
 <translation id="2968755619301702150">Viewer ng certificate</translation>
 <translation id="1360432990279830238">Mag-sign out at i-off ang pag-sync?</translation>
 <translation id="8581481290581777242">I-clear ang iyong data sa Brave sa device na ito?</translation>
@@ -532,6 +501,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="7998918019931843664">Muling buksan ang isinarang tab</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, tab</translation>
 <translation id="4452411734226507615">Isara ang tab na <ph name="TAB_TITLE"/></translation>
+<translation id="6040143037577758943">Isara</translation>
 <translation id="7243308994586599757">May mga opsyon malapit sa ibaba ng screen</translation>
 <translation id="4060598801229743805">Available ang mga opsyon malapit sa bandang itaas ng screen</translation>
 <translation id="2810645512293415242">Pinasimple ang page upang ma-save ang data at mag-load nang mas mabilis.</translation>
@@ -566,6 +536,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="4432792777822557199">Simula ngayon ay isasalin na sa <ph name="TARGET_LANGUAGE"/> ang mga page na nasa <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="8339163506404995330">Hindi isasalin ang mga page na nasa <ph name="LANGUAGE"/></translation>
 <translation id="5447765697759493033">Hindi isasalin ang site na ito</translation>
+<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="4880127995492972015">Isalin…</translation>
 <translation id="641643625718530986">I-print…</translation>
 <translation id="8909135823018751308">Ibahagi…</translation>
@@ -599,6 +570,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="8073388330009372546">Buksan ang larawan sa bagong tab</translation>
 <translation id="6649642165559792194">I-preview ang larawang <ph name="BEGIN_NEW"/>Bago<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">I-load ang larawan</translation>
+<translation id="6671495933530132209">Kopyahin ang larawan</translation>
 <translation id="3845332215609790146">Hanapin gamit ang Brave Software Lens <ph name="BEGIN_NEW"/>Bago<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Hanapin sa <ph name="SEARCH_ENGINE"/> ang larawan</translation>
 <translation id="3384347053049321195">Magbahagi ng larawan</translation>
@@ -606,6 +578,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="6475951671322991020">I-download ang video</translation>
 <translation id="2317945146070194624">Buksan sa bagong tab ng Brave</translation>
 <translation id="7975379999046275268">I-preview ang page na <ph name="BEGIN_NEW"/>Bago<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Mabilis na site</translation>
 <translation id="6112702117600201073">Nire-refresh ang page</translation>
 <translation id="6990079615885386641">Kunin ang app mula sa Brave Software Play Store: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Madilim</translation>
@@ -615,8 +588,6 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Monospace</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">Pumili ng tab upang mag-beam</translation>
-<translation id="8719023831149562936">Hindi ma-beam ang kasalukuyang tab</translation>
 <translation id="2139186145475833000">Idagdag sa Home screen</translation>
 <translation id="4616150815774728855">Buksan ang <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">Hindi mabuksan ang app</translation>
@@ -702,6 +673,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="3616113530831147358">Audio</translation>
 <translation id="9219103736887031265">Mga Larawan</translation>
 <translation id="656065428026159829">Tumingin pa</translation>
+<translation id="6042308850641462728">Higit pa</translation>
 <translation id="8250920743982581267">Mga Dokumento</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# File}one{# File}other{# na File}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# Larawan}one{# Larawan}other{# na Larawan}}</translation>
@@ -792,15 +764,11 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="7542481630195938534">Hindi makakuha ng mga suhestyon</translation>
 <translation id="5013696553129441713">Walang bagong suhestyon</translation>
 <translation id="7444811645081526538">Higit pang kategorya</translation>
-<translation id="6709133671862442373">Balita</translation>
-<translation id="1264974993859112054">Pampalakasan</translation>
-<translation id="9139318394846604261">Shopping</translation>
 <translation id="3912508018559818924">Hinahanap ang pinakamahusay mula sa web…</translation>
 <translation id="526421993248218238">Hindi ma-load ang page na ito</translation>
 <translation id="614940544461990577">Subukang:</translation>
 <translation id="3288003805934695103">I-reload ang page</translation>
 <translation id="2353636109065292463">Sinusuri ang iyong koneksyon sa internet</translation>
-<translation id="2858138569776157458">Top na sites</translation>
 <translation id="8364299278605033898">Tingnan ang mga sikat na website</translation>
 <translation id="1171770572613082465">Tingnan ang mga sikat na website sa pamamagitan ng pag-tap sa button na "Mga nangungunang site"</translation>
 <translation id="5233638681132016545">Bagong tab</translation>
@@ -834,8 +802,10 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="4452548195519783679">Na-bookmark sa <ph name="FOLDER_NAME"/></translation>
 <translation id="8063895661287329888">Hindi naidagdag ang bookmark.</translation>
 <translation id="2842985007712546952">Pangunahing folder</translation>
+<translation id="6945221475159498467">Pumili</translation>
 <translation id="9065203028668620118">I-edit</translation>
 <translation id="4405224443901389797">Ilipat sa…</translation>
+<translation id="8261506727792406068">I-delete</translation>
 <translation id="5170568018924773124">Ipinakita sa folder</translation>
 <translation id="8035133914807600019">Bagong folder…</translation>
 <translation id="4532845899244822526">Pumili ng folder</translation>
@@ -871,16 +841,14 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="1113597929977215864">Ipakita ang pinasimpleng view</translation>
 <translation id="1513352483775369820">Bookmark at history ng web</translation>
 <translation id="4939482511480190003">Tumulong na pahusayin ang Brave. <ph name="BEGIN_LINK"/>Sagutan ang survey<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">Bumalik</translation>
-<translation id="5596627076506792578">Higit pang opsyon</translation>
 <translation id="3522247891732774234">May available na update. Higit pang mga opsyon</translation>
 <translation id="6773423637732432200">Hindi ma-update ang Brave. Higit pang opsyon</translation>
+<translation id="1383876407941801731">Hanapin</translation>
 <translation id="3328801116991980348">Impormasyon ng site</translation>
 <translation id="5391532827096253100">Hindi secure ang iyong koneksyon sa site na ito. Impormasyon ng site</translation>
 <translation id="6206551242102657620">Secure ang koneksyon. Impormasyon ng site</translation>
 <translation id="6963642900430330478">Mapanganib ang page na ito. Impormasyon ng site</translation>
 <translation id="9070377983101773829">Simulan ang paghahanap gamit ang boses</translation>
-<translation id="8676374126336081632">I-clear ang input</translation>
 <translation id="4968908871398201967">Private mode</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> nakabukas na tab, i-tap para lumipat ng tab}one{<ph name="OPEN_TABS_MANY"/> nakabukas na tab, i-tap para lumipat ng tab}other{<ph name="OPEN_TABS_MANY"/> na nakabukas na tab, i-tap para lumipat ng tab}}</translation>
 <translation id="2369533728426058518">magbukas ng mga tab</translation>
@@ -888,6 +856,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="932327136139879170">Home</translation>
 <translation id="2707726405694321444">I-refresh ang page</translation>
 <translation id="2891154217021530873">Ihinto ang pag-load ng page</translation>
+<translation id="1201402288615127009">Susunod</translation>
 <translation id="6710213216561001401">Nakaraan</translation>
 <translation id="9080642952018487277">Pumasok sa private mode</translation>
 <translation id="4883379392681899581">Umalis sa private mode</translation>
@@ -896,18 +865,12 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="3377025655491224618">Pribadong Tab</translation>
 <translation id="584427517463557805">Napiling Pribadong Tab</translation>
 <translation id="2268044343513325586">Pinuhin</translation>
-<translation id="7846076177841592234">Kanselahin ang pinili</translation>
-<translation id="6216432067784365534">Mga Opsyon sa <ph name="NAME_OF_LIST_ITEM"/></translation>
-<translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ang napili.  Available ang mga opsyon malapit sa itaas ng screen</translation>
-<translation id="7250468141469952378"><ph name="ITEM_COUNT"/> ang napili</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Ibahagi ang 1 piniling item}one{Ibahagi ang # piniling item}other{Ibahagi ang # na piniling item}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Alisin ang 1 piniling item}one{Alisin ang # piniling item}other{Alisin ang # na piniling item}}</translation>
 <translation id="1283039547216852943">I-tap upang palawakin</translation>
 <translation id="5962718611393537961">I-tap upang i-collapse</translation>
 <translation id="3123734510202723619">Mga Anunsyo</translation>
 <translation id="8076492880354921740">Mga Tab</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 ang napili}one{# ang napili}other{# ang napili}}</translation>
-<translation id="6818926723028410516">Pumili ng mga item</translation>
 <translation id="4797039098279997504">Pindutin upang bumalik sa <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">I-tap para pumunta sa site</translation>
 <translation id="429312253194641664">May site na nagpe-play ng media</translation>
@@ -1024,13 +987,12 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="1875543012935658554">Muling buksan ang Brave.</translation>
 <translation id="79859296434321399">Para matingnan ang augmented reality na content, i-install ang ARCore</translation>
 <translation id="8558485628462305855">Para matingnan ang augmented reality na content, i-update ang ARCore</translation>
-<translation id="3513704683820682405">Augmented Reality</translation>
-<translation id="5475862044948910901">Magsimula ng session ng Augmented Reality?</translation>
-<translation id="7365126855094612066">Para sa tagal ng session na ito, magagawa ng site na:
+<translation id="6410973561433500075">Pumasok sa AR mula sa <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">Habang nasa AR ka, posibleng magawa ng site na ito ang mga sumusunod:
 • gumawa ng 3D na mapa ng iyong kapaligiran
 • subaybayan ang paggalaw ng camera
 
-HINDI magkakaroon ng access sa camera ang site. Ikaw lang ang makakakita ng mga larawan ng camera.</translation>
+Ikaw lang ang makakakita kung ano ang tinitingnan ng iyong camera. Hindi makikita ng site ang mga larawan ng iyong camera.</translation>
 <translation id="1188239144602654184">Pumasok sa AR</translation>
 <translation id="473775607612524610">I-update</translation>
 <translation id="3133489217401741157">Ini-install ang <ph name="MODULE"/> para sa Brave…</translation>
@@ -1098,6 +1060,7 @@ HINDI magkakaroon ng access sa camera ang site. Ikaw lang ang makakakita ng mga 
 <translation id="723171743924126238">Pumili ng mga larawan</translation>
 <translation id="8751914237388039244">Pumili ng larawan</translation>
 <translation id="1989112275319619282">Mag-browse</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Na-block ang pag-redirect:</translation>
 <translation id="5524843473235508879">Na-block ang pag-redirect.</translation>
 <translation id="6573096386450695060">Payagan sa lahat ng oras</translation>
@@ -1106,6 +1069,7 @@ HINDI magkakaroon ng access sa camera ang site. Ikaw lang ang makakakita ng mga 
 <translation id="9137013805542155359">Ipakita ang orihinal</translation>
 <translation id="6361779936989026201">Brave Software Assistant sa Brave</translation>
 <translation id="7291387454912369099">Assistant Triggered na Pag-check out</translation>
+<translation id="9037412730408024068">Para tulungan kang tapusin ang mga gawain, matatanggap ng Brave Software ang mga URL at content ng mga site kung saan ka gumamit ng Assistant, gayundin ang impormasyong isinumite mo sa pamamagitan ng Assistant</translation>
 <translation id="4565206163201411670">Ipakita sa Digital Wellness ang aktibidad mo sa Brave?</translation>
 <translation id="9055113864158719823">Puwede mong makita ang mga site na binibisita mo sa Brave at puwede kang magtakda ng mga timer para sa mga ito.\n\nKumukuha ng impormasyon ang Brave Software tungkol sa mga site kung saan ka nagtakda ng mga timer at inaalam nito kung gaano mo katagal binisita ang mga ito. Ginagamit ang impormasyong ito para pahusayin ang Digital Wellness.</translation>
 <translation id="4596514158372210596">Alisin sa Digital Wellness ang iyong aktibidad sa Brave</translation>
@@ -1121,10 +1085,20 @@ HINDI magkakaroon ng access sa camera ang site. Ikaw lang ang makakakita ng mga 
 <translation id="246532703174860178">Ibahagi</translation>
 <translation id="2517472476991765520">I-scan</translation>
 <translation id="8628973420740315031">Para magbahagi sa mga taong nasa malapit, ipa-scan sa kanila ang QR code na ito</translation>
+<translation id="3987993985790029246">Kopyahin ang link</translation>
+<translation id="4250229828105606438">Screenshot</translation>
+<translation id="6201345951596836663">Nakopya ang Link</translation>
+<translation id="6597891566292541626">Iposisyon ang QR/barcode sa frame na ito.</translation>
+<translation id="3140134512074889489">Paki-enable ang iyong camera para mag-scan ng QR code</translation>
+<translation id="2359808026110333948">Magpatuloy</translation>
 <translation id="7339921667754113786">Brave Software Notifications Platform</translation>
 <translation id="8516012719330875537">Editor ng Larawan</translation>
+<translation id="6092062101542170135">Para magpatuloy, i-on ang NFC sa mga setting ng Android</translation>
+<translation id="5860491529813859533">I-on</translation>
+<translation id="8926666909099850184">Naka-off ang NFC para sa device na ito. I-on ito sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Ilagay ang VR mula sa <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Habang nasa VR ka, posibleng malaman ng site na ito ang tungkol sa:</translation>
-<translation id="118069123878619799">- iyong mga pisikal na katangian, gaya ng tangkad</translation>
-<translation id="5819762621475381970">- layout ng iyong kuwarto</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">iyong mga pisikal na katangian, tulad ng tangkad</translation>
+<translation id="4660838440047236328">ang layout ng iyong kwarto</translation>
 </translationbundle>

@@ -1,8 +1,8 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index 8b0ea0bc1d6a315088d42bf2d760802cc5a97b14..d244c7a86db67f130f285cabcc9bf149459dc7bc 100644
+index b0da2ecbd260f477692d17850b7f163c8c588b83..ae1184157136a8190b1968f8102826b28709a602 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
-@@ -439,7 +439,8 @@ void RestrictedCookieManager::SetCookieFromString(
+@@ -443,7 +443,8 @@ void RestrictedCookieManager::SetCookieFromString(
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
  
    std::unique_ptr<net::CanonicalCookie> parsed_cookie =

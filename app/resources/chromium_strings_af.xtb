@@ -3,7 +3,7 @@
 <translationbundle lang="af">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave is 'n webblaaier wat webbladsye en programme blitsvinning laat loop. Dis vinnig, stabiel en maklik om te gebruik. Blaai veiliger deur die web met beskerming teen wanware en uitvissing wat by Brave ingebou is.</translation>
-<translation id="680297041157509674">Brave-bedryfstelsel</translation>
+<translation id="4331809312908958774">Brave-bedryfstelsel</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="7339898014177206373">Nuwe venster</translation>
 <translation id="5516268345616100622">Taakbestuurder – Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">Die Brave-outeurs</translation>
 <translation id="8121009781989288430">Kopiereg <ph name="YEAR"/> Die Brave-outeurs. Alle regte voorbehou.</translation>
-<translation id="2310890394934209120">Brave-bedryfstelsel word moontlik gemaak deur bykomende <ph name="BEGIN_LINK_CROS_OSS"/>oopbronsagteware<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Brave-bedryfstelsel word moontlik gemaak deur bykomende <ph name="BEGIN_LINK_CROS_OSS"/>oopbronsagteware<ph name="END_LINK_CROS_OSS"/> en <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/> ook.</translation>
+<translation id="6368958679917195344">Brave-bedryfstelsel word moontlik gemaak deur bykomende <ph name="BEGIN_LINK_CROS_OSS"/>oopbronsagteware<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Brave-bedryfstelsel word moontlik gemaak deur bykomende <ph name="BEGIN_LINK_CROS_OSS"/>oopbronsagteware<ph name="END_LINK_CROS_OSS"/> en <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/> ook.</translation>
 <translation id="6913582816347128893">Brave sal dalk nie reg werk nie omdat dit nie meer in Mac OS X 10.9 gesteun word nie.</translation>
 <translation id="7977787072794666032">Brave sal dalk nie reg werk nie omdat dit nie meer in Windows XP en Windows Vista gesteun word nie</translation>
 <translation id="189297655255130768">Brave reageer nie. Herbegin nou?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Is jy seker jy wil Brave deïnstalleer?</translation>
 <translation id="5590013613412457132">Deïnstalleer Brave</translation>
 <translation id="5019879183386042809">Maak Brave die verstekblaaier</translation>
-<translation id="5063987220091207247">Brave OS kan nie hierdie bladsy oopmaak nie.</translation>
+<translation id="707769633889902835">Brave OS kan nie hierdie bladsy oopmaak nie.</translation>
 <translation id="4065288863231444640">Laat Brave in die agtergrond loop</translation>
 <translation id="6797402139308059782">Laat Brave in die agtergrond loop</translation>
 <translation id="2585240446624043880">Brave kan nie sy datagids lees of daarheen skryf nie:
@@ -94,8 +94,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="9071554113102421877">&amp;Maak in Brave oop</translation>
 <translation id="2176825726964012531">Meer oor Brave</translation>
 <translation id="5450493308072741203">Dateer Brave op</translation>
-<translation id="1421502046520299169">Meer oor Brave-bedryfstelsel</translation>
-<translation id="2534623228451928732">Dateer Brave-bedryfstelsel op</translation>
+<translation id="61852838583753520">Dateer Brave-bedryfstelsel op</translation>
 <translation id="8447483940522230788">Brave-helper</translation>
 <translation id="5477319665405831211">Sinkroniseer en personaliseer Brave op al jou toestelle</translation>
 <translation id="8132634101975074716">Jy is by Brave aangemeld!</translation>
@@ -109,19 +108,18 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="5380963249588143069">Jou stelseladministrateur het Brave opgestel om <ph name="ALTERNATIVE_BROWSER_NAME"/> oop te maak om by <ph name="TARGET_URL_HOSTNAME"/> in te gaan.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> het voorheen Brave gebruik</translation>
 <translation id="1384923383737428730">Daar is skadelike sagteware op jou rekenaar. Brave kan dit verwyder, jou instellings teruglaai en uitbreidings deaktiveer om jou blaaier weer normaal te laat werk.</translation>
-<translation id="8919921662052966648">Brave kon nie jou data sinkroniseer nie. Dateer asseblief jou Sinkronisering-wagfrase op.</translation>
 <translation id="2262856633481902138">Brave kon nie jou data sinkroniseer nie, want jou rekening se aanmeldbesonderhede is verouderd.</translation>
 <translation id="5419189641394808652">Brave kon nie jou data sinkroniseer nie, omdat Sinkronisering nie vir jou domein beskikbaar is nie.</translation>
 <translation id="2577755334620061182">Brave kon nie jou data sinkroniseer nie weens 'n fout tydens aanmelding.</translation>
-<translation id="8583885258305961947">Brave-bedryfstelsel</translation>
-<translation id="3968006371075376562">Brave-bedryfstelsel kon nie jou data sinkroniseer nie. Dateer asseblief jou Sinkroniseringwagfrase op.</translation>
-<translation id="6746636977031158624">Brave-bedryfstelsel kon nie jou data sinkroniseer nie, omdat jou rekening se aanmeldbesonderhede verouderd is.</translation>
-<translation id="2999152167963026588">Brave-bedryfstelsel kon nie jou data sinkroniseer nie, omdat Sinkronisering nie vir jou domein beskikbaar is nie.</translation>
-<translation id="1459786048951724030">Brave-bedryfstelsel kon nie jou data sinkroniseer nie weens 'n fout met aanmelding.</translation>
-<translation id="6813094029720377619">Jy vee webkoekies uit wanneer jy Brave verlaat. Verander hierdie <ph name="COOKIE_SETTINGS_LINK"/> om aan te hou sinkroniseer.</translation>
-<translation id="3340978935015468852">instellings</translation>
+<translation id="2644798301485385923">Brave-bedryfstelsel</translation>
+<translation id="7916016681687251387">Brave-bedryfstelsel kon nie jou data sinkroniseer nie. Maak nou reg.</translation>
+<translation id="2341767445688917208">Brave-bedryfstelsel kon nie jou wagwoorde sinkroniseer nie. Maak nou reg.</translation>
+<translation id="123620459398936149">Brave-bedryfstelsel kon nie jou data sinkroniseer nie. Dateer asseblief jou Sinkroniseringwagfrase op.</translation>
+<translation id="9026991721384951619">Brave-bedryfstelsel kon nie jou data sinkroniseer nie, omdat jou rekening se aanmeldbesonderhede verouderd is.</translation>
+<translation id="7419046106786626209">Brave-bedryfstelsel kon nie jou data sinkroniseer nie, omdat Sinkronisering nie vir jou domein beskikbaar is nie.</translation>
+<translation id="4480040274068703980">Brave-bedryfstelsel kon nie jou data sinkroniseer nie weens 'n fout met aanmelding.</translation>
 <translation id="300669147395456190">Brave-programme</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> vereis dat jy die volgende diensbepalings lees en aanvaar voor jy hierdie toestel gebruik. Hierdie bepalings verander, beperk of brei nie die Brave-bedryfstelseldiensbepalings uit nie.</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/> vereis dat jy die volgende diensbepalings lees en aanvaar voor jy hierdie toestel gebruik. Hierdie bepalings verander, beperk of brei nie die Brave-bedryfstelseldiensbepalings uit nie.</translation>
 <translation id="3293668930608086049">Brave gebruik tans jou kamera en mikrofoon.</translation>
 <translation id="8919461291440820124">Brave gebruik tans jou mikrofoon.</translation>
 <translation id="3205074487970075628">Brave gebruik tans jou kamera.</translation>
@@ -154,12 +152,9 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="4805806622840861220">Herbegin Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin.}=1{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou incognitovenster sal nie weer oopgemaak word nie.}other{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="2799223571221894425">Begin weer</translation>
-<translation id="2522086024276534909">Herbegin Brave OS</translation>
-<translation id="8183252473547465084">Brave-bedryfstelsel moet herbegin word om die opdatering toe te pas.</translation>
+<translation id="5062123544085870375">Herbegin Brave OS</translation>
+<translation id="2063848847527508675">Brave-bedryfstelsel moet herbegin word om die opdatering toe te pas.</translation>
 <translation id="5895138241574237353">Herbegin</translation>
-<translation id="8887390605192156061">Maak alle kopieë van Brave toe.</translation>
-<translation id="1801551749768408825">Ander kopieë van Brave loop tans. Maak hulle toe om op te dateer.</translation>
-<translation id="2632141563911437138">Om op te dateer, moet Brave ophou om op hierdie rekenaar te loop. Dit kan veroorsaak dat ander gebruikers wat by hierdie rekenaar aangemeld is, veranderinge verloor wat nie gestoor is nie.</translation>
 <translation id="5875673934455379806">Herinstalleer Brave</translation>
 <translation id="2097604701283463988">Brave is verouderd</translation>
 <translation id="5173820533850252773">Brave is verouderd</translation>
@@ -180,7 +175,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="7798069806040634998">Brave het bergingtoegang nodig om lêers af te laai</translation>
 <translation id="7685904775439037072">Sodra Brave toegang het, sal webwerwe jou kan vra vir toegang.</translation>
 <translation id="1744365871163268756">Wag terwyl Brave die jongste stelselopdaterings installeer.</translation>
-<translation id="7808415789955822133">Brave-bedryfstel se bepalings</translation>
+<translation id="7408085963519505752">Brave-bedryfstel se bepalings</translation>
 <translation id="7207456302801184289">Welkom by Brave</translation>
 <translation id="3507835409099344374">Gaan na Brave se kennisgewinginstellings</translation>
 <translation id="1026406809507858026">{0,plural, =0{'n Brave-opdatering is beskikbaar}=1{'n Brave-opdatering is beskikbaar}other{'n Brave-opdatering is al # dae lank beskikbaar}}</translation>
@@ -199,9 +194,9 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="1786715389543715322">Dateer Brave tans op (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">Amper op datum! Herbegin Brave om opdatering te voltooi.</translation>
 <translation id="8208853227947884571">Brave is op datum</translation>
-<translation id="6686872257969654608">Meer oor Brave-bedrystelsel</translation>
-<translation id="7674116293463255181">Gaan na <ph name="LINK_BEGIN"/>Brave OS-instellings<ph name="LINK_END"/> om te sien of jou toestel op datum is</translation>
-<translation id="2280363356796735201">Kry hulp met Brave-bedryfstelsel</translation>
+<translation id="573759479754913123">Meer oor Brave-bedrystelsel</translation>
+<translation id="7573289029918943991">Gaan na <ph name="LINK_BEGIN"/>Brave OS-instellings<ph name="LINK_END"/> om te sien of jou toestel op datum is</translation>
+<translation id="3395323229510056640">Kry hulp met Brave-bedryfstelsel</translation>
 <translation id="38898988211673781">Vee webkoekies en werfdata uit wanneer jy Brave verlaat</translation>
 <translation id="5253815230176279256">Brave Software Pay (na Brave gekopieer)</translation>
 <translation id="5468853758063275923">Brave is jou verstekblaaier</translation>
@@ -209,7 +204,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="6915252145142862992">Dit is 'n sekondêre installering van Brave en kan nie jou verstekblaaier gemaak word nie.</translation>
 <translation id="6235873178214143377">As 'n instelling nie op hierdie bIadsy verskyn nie, moet jy in jou <ph name="LINK_BEGIN"/>
       Brave-blaaierinstellings<ph name="LINK_END"/> kyk</translation>
-<translation id="4459296183696059108">As 'n instelling nie op hierdie bIadsy verskyn nie, moet jy in jou <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">As 'n instelling nie op hierdie bIadsy verskyn nie, moet jy in jou <ph name="LINK_BEGIN"/>
       Brave-bedryfstelselinstellings<ph name="LINK_END"/> kyk</translation>
 <translation id="2312399718665761438">Brave stuur die teks wat jy in teksvelde intik na Brave Software toe om spelfoute reg te maak</translation>
 <translation id="8586264863973514035">Herbegin Brave om jou veranderinge toe te pas</translation>
@@ -219,7 +214,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="5853262807109651878">Dit sal <ph name="ITEMS_COUNT"/> items op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="4784414698887946907">Dit sal jou blaaierdata op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="4518479204315969707">Brave-naam en -prent</translation>
-<translation id="82609232232243542">Meld by Brave aan</translation>
 <translation id="8372880274820509128">Brave sal jou data enkripteer vir bykomende sekuriteit.</translation>
 <translation id="7445061995866044926">Meld by Brave af?</translation>
 <translation id="7453070689008684791">Brave sal by jou Drive ingaan om voorstelle in die adresbalk te maak</translation>

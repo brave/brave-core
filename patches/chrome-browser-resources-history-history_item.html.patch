@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/history/history_item.html b/chrome/browser/resources/history/history_item.html
-index 8c6543d238b86536f1c3c9b232ed454ade011af1..61449fcd86e734d32b37ee012fe593de18748767 100644
+index e4b706737d1865ce183ae7a47ce33a1184424c9c..d289108dbde8ebb5045e6df1b833149535a93c37 100644
 --- a/chrome/browser/resources/history/history_item.html
 +++ b/chrome/browser/resources/history/history_item.html
-@@ -14,11 +14,12 @@
- <link rel="import" href="chrome://resources/html/util.html">
- <link rel="import" href="chrome://resources/polymer/v1_0/iron-icon/iron-icon.html">
- 
-+<link rel="import" href="chrome://brave-resources/page_specific/history/brave_history_item.html">
- <!-- Lazy loaded: cr-icon-button. -->
- 
- <dom-module id="history-item">
-   <template>
+@@ -1,4 +1,4 @@
 -    <style include="shared-style cr-icons">
 +    <style include="shared-style cr-icons brave-history-item">
        :host {

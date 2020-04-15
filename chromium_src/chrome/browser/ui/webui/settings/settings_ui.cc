@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/settings/brave_about_handler.h"
-#include "brave/browser/ui/webui/settings/brave_settings_import_data_handler.h"
+#include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "chrome/browser/ui/webui/settings/about_handler.h"
 
 #define AboutHandler BraveAboutHandler

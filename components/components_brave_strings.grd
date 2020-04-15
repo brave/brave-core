@@ -5,6 +5,35 @@
     <output filename="grit/components_chromium_strings.h" type="rc_header">
       <emit emit_type="prepend" />
     </output>
+    <if expr="is_android">
+      <output filename="components_chromium_strings_af.pak" type="data_package" lang="af" />
+      <output filename="components_chromium_strings_as.pak" type="data_package" lang="as" />
+      <output filename="components_chromium_strings_az.pak" type="data_package" lang="az" />
+      <output filename="components_chromium_strings_be.pak" type="data_package" lang="be" />
+      <output filename="components_chromium_strings_bs.pak" type="data_package" lang="bs" />
+      <output filename="components_chromium_strings_eu.pak" type="data_package" lang="eu" />
+      <output filename="components_chromium_strings_fr-CA.pak" type="data_package" lang="fr-CA" />
+      <output filename="components_chromium_strings_gl.pak" type="data_package" lang="gl" />
+      <output filename="components_chromium_strings_hy.pak" type="data_package" lang="hy" />
+      <output filename="components_chromium_strings_is.pak" type="data_package" lang="is" />
+      <output filename="components_chromium_strings_ka.pak" type="data_package" lang="ka" />
+      <output filename="components_chromium_strings_kk.pak" type="data_package" lang="kk" />
+      <output filename="components_chromium_strings_km.pak" type="data_package" lang="km" />
+      <output filename="components_chromium_strings_ky.pak" type="data_package" lang="ky" />
+      <output filename="components_chromium_strings_lo.pak" type="data_package" lang="lo" />
+      <output filename="components_chromium_strings_mk.pak" type="data_package" lang="mk" />
+      <output filename="components_chromium_strings_mn.pak" type="data_package" lang="mn" />
+      <output filename="components_chromium_strings_my.pak" type="data_package" lang="my" />
+      <output filename="components_chromium_strings_ne.pak" type="data_package" lang="ne" />
+      <output filename="components_chromium_strings_or.pak" type="data_package" lang="or" />
+      <output filename="components_chromium_strings_pa.pak" type="data_package" lang="pa" />
+      <output filename="components_chromium_strings_si.pak" type="data_package" lang="si" />
+      <output filename="components_chromium_strings_sq.pak" type="data_package" lang="sq" />
+      <output filename="components_chromium_strings_ur.pak" type="data_package" lang="ur" />
+      <output filename="components_chromium_strings_uz.pak" type="data_package" lang="uz" />
+      <output filename="components_chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
+      <output filename="components_chromium_strings_zu.pak" type="data_package" lang="zu" />
+    </if>
     <output filename="components_chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="components_chromium_strings_ar.pak" type="data_package" lang="ar" />
     <output filename="components_chromium_strings_bg.pak" type="data_package" lang="bg" />

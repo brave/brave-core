@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") não é permitida no Brave.</translation>
 <translation id="7450557937477381864">Fechar Chrome</translation>
 <translation id="7008934821596358692">Para terminar a importação, fechar todas as janelas do windows Chrome.</translation>
-<translation id="5735465527556462863">Fechar Brave (versão anterior)</translation>
-<translation id="7737066986958447692">Para concluir a importação, feche todas as janelas do Brave (versão anterior)</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Estatísticas</translation>
-<translation id="6165477144235978006">Pagamentos do Brave</translation>
-<translation id="3489524616427966890">Abrir janelas e separadores</translation>
 <translation id="3699882589215410581">Instalar e correr Widevine</translation>
 <translation id="8926389886865778422">Não voltar a perguntar</translation>
 <translation id="4726634924419692905">Perguntar quando um site quer instalar o Widevine no seu computador.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">O Google Widevine é parte do código da Gestão de Direitos Digitais (GDD) que nós na Brave Software não detemos e não podemos inspecionar. O código do Google Widevine é carregado a partir de servidores da Google, não a partir dos nossos servidores. É carregado apenas quando tem essa opção permitida. Desencorajamos a utilização da GDD, mas respeitamos a escolha do utilizador e reconhecemos que alguns utilizadores do Brave gostariam de utilizar serviços que o requerem.
 
 Ao instalar esta extensão, está a concordar com os Termos de Utilização do Google Widevine. Concorda que a Brave não é responsável por quaisquer danos ou perdas relacionados à sua utilização do Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (versão anterior)</translation>
-<translation id="3198814717959506569">Importado Do Brave</translation>
 <translation id="453977518730680921">Reprodução automática de media</translation>
 <translation id="410351446219883937">Reprodução automática</translation>
 <translation id="2240268017737062801">Perguntar quando um site quiser auto-reproduzir media</translation>
@@ -70,19 +62,22 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="130615081792797568">Vista simples</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
 <translation id="5709627087332022422">Bloquear rastreadores cross-site</translation>
-<translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Impressões digitais</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="8526521192921341404">Autorizar logins do Google</translation>
+<translation id="519861640102428255">Aparência e funcionalidade</translation>
+<translation id="4800195524776354947">Mostrar o número de itens bloqueados no ícone de Escudo</translation>
+<translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
 <translation id="4699812599455071925">Bloquear apenas cookies de cross-site</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
-<translation id="3084022390368021391">Bloquear apenas tentativas de reconhecimento de dispositivos  cross-site</translation>
-<translation id="1847422622180531843">Permitir todas as tentativas de reconhecimento de dispositivos</translation>
-<translation id="8375051111011093523">Bloquear todas as tentativas de reconhecimento de dispositivos</translation>
+<translation id="5572437114858031185">Bloquear apenas tentativas de impressão digital entre sites</translation>
+<translation id="5079032039521408559">Permitir todas as tentativas de impressão digital</translation>
+<translation id="6447141055227658942">Bloquear todas as tentativas de impressão digital</translation>
 <translation id="8942080017911802454">Tratamento de reclamações do WebRTC IP</translation>
 <translation id="6165508094623778733">Aprenda mais</translation>
 <translation id="8798099450830957504">Predefinição</translation>
@@ -103,6 +98,8 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2896916411183256228">Utiliza WebTorrent para exibir torrents diretamente no navegador. É compatível com ficheiros de torrents e magnet links.</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="7701040980221191251">Nenhum</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Provedor Web3 para utilização de aplicações descentralizadas (Dapps)</translation>
 <translation id="6554397389149987360">Utiliza um componente de Hangouts para permitir a partilha de ecrã e outras funcionalidades no navegador.</translation>
 <translation id="1765684547504191670">Utilizar o componente do Media Router para ativar o Chromecast no navegador.</translation>
 <translation id="9156965752763025780">As alterações serão aplicadas da próxima vez que reiniciar o Brave.</translation>
@@ -163,6 +160,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4394049700291259645">Desactivar</translation>
 <translation id="6469509880167172749">Envie automaticamente análises de produtos totalmente confidenciais à Brave</translation>
 <translation id="7090566321964540749">Esta informação anónima apenas permite que o Brave estime a utilização geral de certas funcionalidades.</translation>
+<translation id="9111960429693394744">Deseja utilizar as carteiras de criptomoedas da Brave ou o MetaMask para aplicações descentralizadas (Dapps)?</translation>
 <translation id="7583735190612229830">Configure as Crypto Wallets para que interajam com a presente aplicação e outras que lhe sejam idênticas.</translation>
 <translation id="8337117349965899723">Use Crypto Wallets</translation>
 <translation id="5756155765711979898">Use MetaMask</translation>
@@ -176,4 +174,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4474155171896946103">Adicionar todos os separadores aos marcadores...</translation>
 <translation id="2336228925368920074">Adicionar todos os separadores aos marcadores...</translation>
 <translation id="796831669370432378">Para adicionar um marcador, clique no botão Marcadores ao lado da barra de endereço</translation>
+<translation id="4989337484121655457">É necessário acesso total ao disco</translation>
+<translation id="8025559074845816210">O Brave precisa de acesso total ao disco para importar os seus favoritos do Safari.</translation>
+<translation id="8515328844674404333">Saiba como conceder acesso total ao disco nas Preferências do Sistema.</translation>
+<translation id="6414878884710400018">Abrir Preferências do Sistema</translation>
+<translation id="5570470519803062774">Configurações de sites e escudos</translation>
 </translationbundle>

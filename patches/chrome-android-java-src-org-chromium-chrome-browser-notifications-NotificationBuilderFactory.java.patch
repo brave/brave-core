@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java
-index 779ca00150bcf9ac11e6143c969a4e57a9aa0aa3..bd21920181886eb0afda01031298cb17dba2ddef 100644
+index 815ac904b36127df58dbe8312642b6011c2c6543..90b2b18756ec375edf15d4db3e6fb947dfea3043 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java
 @@ -67,7 +67,7 @@ public class NotificationBuilderFactory {

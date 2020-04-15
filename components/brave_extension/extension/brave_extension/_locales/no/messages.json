@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Tredjeparts enhetsgjenkjennelse blokkert",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Fingeravtrykk på tvers av nettsteder er blokkert",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Forsøk på enhetsgjenkjennelse blokkert",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Forsøk på fingeravtrykk er blokkert",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Alle forsøk på enhetsgjenkjennelse tillatt",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Alle forsøk på fingeravtrykk er tillatt",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Forsøk på enhetsgjenkjenning ",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Forsøk på fingeravtrykk",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Skript på denne siden",

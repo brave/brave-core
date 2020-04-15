@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/get_updates_processor.cc b/components/sync/engine_impl/get_updates_processor.cc
-index faeff075cf940e8c1db7941f4c3dca27bf63f580..af6143ed5625e060ca17e5ebf93fbbd4a85061d2 100644
+index 0b0e5423569f053b8694a994587141709d1dd59a..fe931cbee8d1ba29a6c98c9fbfd1a14b47492428 100644
 --- a/components/sync/engine_impl/get_updates_processor.cc
 +++ b/components/sync/engine_impl/get_updates_processor.cc
-@@ -225,6 +225,7 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
+@@ -237,6 +237,7 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
  
    SyncerError result = SyncerProtoUtil::PostClientToServerMessage(
        *msg, &update_response, cycle, &partial_failure_data_types);

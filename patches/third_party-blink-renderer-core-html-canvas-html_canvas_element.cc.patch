@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..45f4ea7f453f18c74d90db222f852c3b31928fef 100644
+index 9015447c56c096afe8930dd8a09fe62157844598..c2f4b74bfc0a461c817ee5dfb46e625df53bb0b6 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -883,6 +883,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -879,6 +879,7 @@ String HTMLCanvasElement::ToDataURLInternal(
    scoped_refptr<StaticBitmapImage> image_bitmap =
        Snapshot(source_buffer, kPreferNoAcceleration);
    if (image_bitmap) {
@@ -10,7 +10,7 @@ index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..45f4ea7f453f18c74d90db222f852c3b
      std::unique_ptr<ImageDataBuffer> data_buffer =
          ImageDataBuffer::Create(image_bitmap);
      if (!data_buffer)
-@@ -972,6 +973,7 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -968,6 +969,7 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
    scoped_refptr<StaticBitmapImage> image_bitmap =
        Snapshot(kBackBuffer, kPreferNoAcceleration);
    if (image_bitmap) {

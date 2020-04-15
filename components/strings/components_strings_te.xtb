@@ -109,7 +109,6 @@
 <translation id="981121421437150478">ఆఫ్‌లైన్</translation>
 <translation id="5171045022955879922">URLను వెతకండి లేదా టైప్ చేయండి</translation>
 <translation id="803771048473350947">ఫైల్</translation>
-<translation id="6268185425799226387">Brave Software డిస్క్</translation>
 <translation id="8425213833346101688">మార్చు</translation>
 <translation id="8009225694047762179">పాస్‌వర్డ్‌లను నిర్వహించండి</translation>
 <translation id="3810973564298564668">నిర్వహించు</translation>
@@ -136,6 +135,8 @@
 <translation id="2215727959747642672">ఫైల్‌ను సవరించడం</translation>
 <translation id="6545864417968258051">బ్లూటూత్ స్కానింగ్</translation>
 <translation id="534295439873310000">NFC పరికరాలు</translation>
+<translation id="4943703118917034429">వర్చువల్ రియాలిటీ</translation>
+<translation id="3513704683820682405">అగ్‌మెంటెడ్ రియాలిటీ</translation>
 <translation id="5039804452771397117">అనుమతించు</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
 <translation id="57838592816432529">మ్యూట్ చేయి</translation>
@@ -186,8 +187,8 @@
 <translation id="5565735124758917034">సక్రియం</translation>
 <translation id="7805768142964895445">స్థితి</translation>
 <translation id="6915804003454593391">వినియోగదారు:</translation>
-<translation id="5916664084637901428">ఆన్ చేయి</translation>
-<translation id="5860033963881614850">ఆఫ్ అయ్యింది</translation>
+<translation id="5921185718311485855">ఆన్ చేయి</translation>
+<translation id="1019413721762100891">ఆఫ్ అయ్యింది</translation>
 <translation id="7961015016161918242">ఎప్పుడూ లేదు</translation>
 <translation id="8294431847097064396">మూలం</translation>
 <translation id="1056898198331236512">హెచ్చరిక</translation>
@@ -196,7 +197,6 @@
 <translation id="5720705177508910913">ప్రస్తుత వినియోగదారు</translation>
 <translation id="6965978654500191972">పరికరం</translation>
 <translation id="4728558894243024398">ప్లాట్‌ఫారమ్</translation>
-<translation id="5939847200023027600">PDF కంపోజిటర్ సేవ</translation>
 <translation id="1588438908519853928">సాధారణ</translation>
 <translation id="1974060860693918893">ఆధునిక</translation>
 <translation id="5308380583665731573">కనెక్ట్ చేయండి</translation>

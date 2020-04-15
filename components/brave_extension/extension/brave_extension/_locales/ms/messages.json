@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Pengecaman peranti merentas laman disekat",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Pengecapan jari cross-site disekat",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Percubaan pengecaman peranti disekat",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Percubaan pengecapan jari disekat",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Semua percubaan pengecaman peranti dibenarkan",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Semua percubaan pengecapan jari dibenarkan",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Cubaan mengenalpasti peranti",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Percubaan pengecapan jari",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Skrip pada laman ini",

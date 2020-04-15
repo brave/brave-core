@@ -13,7 +13,7 @@
 TEST(BraveContentClientTest, AdditionalSchemesTest) {
   BraveContentClient content_client;
   content::SetContentClient(&content_client);
-  content::RegisterContentSchemes(true);
+  content::ReRegisterContentSchemesForTests();
 
   const GURL sync_url("brave://sync");
   EXPECT_TRUE(sync_url.is_valid());

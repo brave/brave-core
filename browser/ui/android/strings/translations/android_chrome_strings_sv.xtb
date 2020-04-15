@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
-<translation id="6910211073230771657">Borttagen</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="5301954838959518834">Ok, jag förstår</translation>
-<translation id="7658239707568436148">Avbryt</translation>
-<translation id="3479552764303398839">Inte nu</translation>
-<translation id="5317780077021120954">Spara</translation>
-<translation id="4570913071927164677">Information</translation>
-<translation id="8730621377337864115">Klart</translation>
-<translation id="8261506727792406068">Radera</translation>
-<translation id="1181037720776840403">Ta bort</translation>
-<translation id="5939518447894949180">Återställ</translation>
-<translation id="4002066346123236978">Titel</translation>
-<translation id="5916664084637901428">På</translation>
-<translation id="5860033963881614850">Av</translation>
-<translation id="6165508094623778733">Läs mer</translation>
-<translation id="6042308850641462728">Mer</translation>
-<translation id="6040143037577758943">Stäng</translation>
-<translation id="780301667611848630">Nej tack</translation>
-<translation id="1201402288615127009">Nästa</translation>
-<translation id="2359808026110333948">Fortsätt</translation>
-<translation id="2653659639078652383">Skicka</translation>
-<translation id="2079545284768500474">Ångra</translation>
-<translation id="7649070708921625228">Hjälp</translation>
-<translation id="2148716181193084225">Idag</translation>
-<translation id="7781829728241885113">Igår</translation>
-<translation id="6945221475159498467">Välj</translation>
-<translation id="7791543448312431591">Lägg till</translation>
-<translation id="6527303717912515753">Dela</translation>
-<translation id="1383876407941801731">Sök</translation>
-<translation id="3115898365077584848">Visa info</translation>
-<translation id="3295602654194328831">Dölj info</translation>
-<translation id="3987993985790029246">Kopiera länk</translation>
-<translation id="2704606927547763573">Kopierat</translation>
-<translation id="8725066075913043281">Försök igen</translation>
-<translation id="385051799172605136">Bakåt</translation>
-<translation id="8131740175452115882">Bekräfta</translation>
-<translation id="5300589172476337783">Visa</translation>
-<translation id="1124772482545689468">Användare</translation>
-<translation id="8609465669617005112">Flytta upp</translation>
-<translation id="6746124502594467657">Flytta ned</translation>
-<translation id="8249310407154411074">Flytta högst upp</translation>
 <translation id="8428213095426709021">Inställningar</translation>
 <translation id="2498359688066513246">Hjälp och feedback</translation>
 <translation id="8378714024927312812">Hanteras av organisationen</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Alla med tillgång till den exporterade filen kan läsa dina lösenord.</translation>
 <translation id="2321086116217818302">Lösenorden förbereds …</translation>
 <translation id="8445448999790540984">Det gick inte att exportera lösenord</translation>
-<translation id="3066461326500799725">Lär dig använda Brave Software Drive</translation>
+<translation id="5139940364318403933">Lär dig använda Brave Software Drive</translation>
 <translation id="729975465115245577">Det finns ingen app som kan spara lösenordsfilen på enheten.</translation>
 <translation id="7682724950699840886">Testa följande: kontrollera att det finns tillräckligt mycket utrymme på enheten, gör om exporten.</translation>
 <translation id="1129510026454351943">Mer information: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Lösenord i Brave</translation>
 <translation id="6075798973483050474">Redigera startsidan</translation>
 <translation id="854522910157234410">Öppna sidan</translation>
+<translation id="8127542551745560481">Redigera startsida</translation>
 <translation id="2482878487686419369">Aviseringar</translation>
 <translation id="6255999984061454636">Förslag på innehåll</translation>
 <translation id="805047784848435650">Utifrån din webbhistorik</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">För att kunna upptäcka farliga appar och webbplatser skickar Brave webbadresser till vissa sidor som du besöker, vissa systemuppgifter och visst sidinnehåll till Brave Software</translation>
 <translation id="3181954750937456830">Säker webbsökning (skyddar dig och enheten från skadliga webbplatser)</translation>
 <translation id="7315322926489145388">Webbadresser till vissa sidor som du besöker skickas till Brave Software när din säkerhet är utsatt för risk.</translation>
-<translation id="2063713494490388661">Tryck för att söka</translation>
-<translation id="2369463299479365221">Läs om olika ämnen på webbplatser utan att lämna sidan. Med funktionen Tryck för att söka skickas ett ord och dess kontext till Brave Software Sök. Sedan visas definitioner, bilder, sökresultat och annan information.
+<translation id="3738139272394829648">Tryck för att söka</translation>
+<translation id="7865281998841143447">Läs om olika ämnen på webbplatser utan att lämna sidan. Med funktionen Tryck för att söka skickas ett ord och dess kontext till Brave Software Sök. Sedan visas definitioner, bilder, sökresultat och annan information.
 
-Om du vill ändra söktermen trycker du länge för att välja. Om du vill finjustera sökningen drar du panelen ända upp och trycker på sökrutan.</translation>
-<translation id="2930742481329940825">Med funktionen Tryck för att söka skickas det markerade ordet till Brave Software Sök med den aktuella sidan som kontext. Du kan stänga av funktionen i <ph name="BEGIN_LINK"/>inställningarna<ph name="END_LINK"/>.</translation>
+Tryck på ett ord du vill söka efter. Om du vill ändra söktermen trycker du länge för att markera. Om du vill finjustera sökningen öppnar du panelen genom att dra den uppåt. Tryck på expanderingsikonen för att skapa en ny flik och tryck sedan på sökrutan.</translation>
+<translation id="3292859206215580147">Läs om olika ämnen på webbplatser utan att lämna sidan. Med funktionen Tryck för att söka skickas ett ord och dess kontext till Brave Software Sök. Sedan visas definitioner, bilder, sökresultat och annan information.
+
+Tryck länge på ett ord för att söka efter det. Om du vill finjustera sökningen ändrar du markeringen. Du kan också öppna panelen genom att dra den uppåt. Tryck på expanderingsikonen för att skapa en ny flik och tryck sedan på sökrutan.</translation>
+<translation id="6209156474097347789">Funktionen Tryck för att söka skickar det markerade ordet till Brave Software Sök med den aktuella sidan som kontext. Du kan stänga av funktionen i <ph name="BEGIN_LINK"/>Inställningar<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Tillåt</translation>
+<translation id="780301667611848630">Nej tack</translation>
 <translation id="1406000523432664303">Do Not Track</translation>
 <translation id="6232535412751077445">Om du aktiverar Do Not Track inkluderas en begäran i din surftrafik. Eventuella effekter beror på om webbplatsen svarar på begäran och hur begäran tolkas.
 
@@ -242,6 +206,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="6295158916970320988">Alla webbplatser</translation>
 <translation id="8380167699614421159">Påträngande eller vilseledande annonser visas på den här webbplatsen</translation>
 <translation id="1919345977826869612">Annonser</translation>
+<translation id="3513704683820682405">Förstärkt verklighet</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">Blockera cookies från tredje part</translation>
 <translation id="6782111308708962316">Hindra att webbplatser från tredje part sparar och läser cookiedata</translation>
@@ -259,6 +224,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="5649053991847567735">Automatiska nedladdningar</translation>
 <translation id="6181444274883918285">Lägg till en webbplats i undantagen</translation>
 <translation id="5313967007315987356">Lägg till webbplats</translation>
+<translation id="7791543448312431591">Lägg till</translation>
 <translation id="1369915414381695676">Webbplatsen <ph name="SITE_NAME"/> har lagts till</translation>
 <translation id="2621115761605608342">Tillåt Javascript på en specifik webbplats.</translation>
 <translation id="8801436777607969138">Blockera JavaScript på en enskild webbplats.</translation>
@@ -266,6 +232,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="358794129225322306">Tillåt att en webbplats laddar ned flera filer automatiskt.</translation>
 <translation id="4008040567710660924">Tillåt cookies för en enskild webbplats.</translation>
 <translation id="8958424370300090006">Blockera cookies för en enskild webbplats.</translation>
+<translation id="2537296579376733324">Alla cookies, endast på den här webbplatsen</translation>
 <translation id="7882806643839505685">Tillåt ljud för en webbplats.</translation>
 <translation id="4468959413250150279">Stäng av ljudet för en webbplats.</translation>
 <translation id="1994173015038366702">Webbadress</translation>
@@ -292,8 +259,12 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="2107397443965016585">Fråga innan webbplatser tillåts att spela upp skyddat innehåll (rekommenderas)</translation>
 <translation id="2910701580606108292">Fråga innan webbplatser tillåts att spela upp skyddat innehåll</translation>
 <translation id="757524316907819857">Blockera webbplatser från att spela upp skyddat innehåll</translation>
+<translation id="4935305910887312910">Fråga innan webbplatser tillåts att få kamerans position eller kartlägga rummet (rekommenderas)</translation>
+<translation id="884828189055900810">Blockera webbplatser från att hämta kamerans position eller kartlägga rummet</translation>
 <translation id="5710871682236653961">Fråga innan webbplatser tillåts att skicka och ta emot uppgifter när du snuddar vid NFC-enheter (rekommenderas)</translation>
 <translation id="7572498721684305250">Blockera webbplatser från att skicka och ta emot uppgifter när du snuddar vid NFC-enheter.</translation>
+<translation id="3312292613668865961">Fråga innan webbplatser tillåts att få åtkomst till VR-enheter och VR-data (rekommenderas)</translation>
+<translation id="8698438463325761328">Blockera webbplatser från att komma åt VR-enheter och VR-data</translation>
 <translation id="3277252321222022663">Tillåt att webbplatser får åtkomst till enhetens sensorer (rekommenderas)</translation>
 <translation id="5048398596102334565">Tillåt webbplatser att använda enhetens rörelsesensorer (rekommenderas)</translation>
 <translation id="8816026460808729765">Blockera webbplatser från att använda enhetens sensorer</translation>
@@ -325,7 +296,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="119944043368869598">Ta bort alla</translation>
 <translation id="2490684707762498678">Hanteras av <ph name="APP_NAME"/></translation>
 <translation id="5516455585884385570">Öppna aviseringsinställningar</translation>
-<translation id="1404122904123200417">Inbäddad i <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Inbäddad på <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">Filer som webbplatser har sparat visas här</translation>
 <translation id="4181841719683918333">Språk</translation>
 <translation id="2647434099613338025">Lägg till språk</translation>
@@ -380,6 +351,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="4913161338056004800">Återställ statistik</translation>
 <translation id="1856325424225101786">Vill du återställa begränsat läge?</translation>
 <translation id="3658159451045945436">Om du återställer begränsat läge raderas databesparingshistoriken, inklusive listan med webbplatser som du har besökt.</translation>
+<translation id="5939518447894949180">Återställ</translation>
 <translation id="3295530008794733555">Surfa snabbare. Förbruka mindre data.</translation>
 <translation id="7340390500800578919">I begränsat läge läses sidorna in snabbare och dataförbrukningen minskar med upp till 60 procent. Webbtrafiken skickas till Brave Software från Brave för att optimera sidorna du besöker. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">Aktivera begränsat läge</translation>
@@ -443,9 +415,6 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="4256782883801055595">Licenser för öppen källkod</translation>
 <translation id="1138681184697033370">Braves användarvillkor</translation>
 <translation id="7392539049993970338">Braves sekretessmeddelande</translation>
-<translation id="2677748264148917807">Lämna</translation>
-<translation id="5556459405103347317">Hämta igen</translation>
-<translation id="1623104350909869708">Hindra sidan från att skapa fler dialogrutor</translation>
 <translation id="2968755619301702150">Certifikatvisare</translation>
 <translation id="1360432990279830238">Logga ut och inaktivera synkronisering?</translation>
 <translation id="8581481290581777242">Vill du rensa din data i Brave från den här enheten?</translation>
@@ -532,6 +501,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="7998918019931843664">Öppna en stängd flik på nytt</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, flik</translation>
 <translation id="4452411734226507615">Stäng fliken <ph name="TAB_TITLE"/></translation>
+<translation id="6040143037577758943">Stäng</translation>
 <translation id="7243308994586599757">Alternativ visas nära skärmens nedre kant</translation>
 <translation id="4060598801229743805">Alternativ finns högt upp på skärmen</translation>
 <translation id="2810645512293415242">Förenklad sida visades för att spara data och minska inläsningstiden.</translation>
@@ -566,6 +536,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="4432792777822557199">Sidor på <ph name="SOURCE_LANGUAGE"/> översätts till <ph name="TARGET_LANGUAGE"/> från och med nu</translation>
 <translation id="8339163506404995330">Sidor på <ph name="LANGUAGE"/> översätts inte</translation>
 <translation id="5447765697759493033">Den här webbplatsen översätts inte</translation>
+<translation id="7658239707568436148">Avbryt</translation>
 <translation id="4880127995492972015">Översätt …</translation>
 <translation id="641643625718530986">Skriv ut …</translation>
 <translation id="8909135823018751308">Dela …</translation>
@@ -599,6 +570,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="8073388330009372546">Öppna bild i ny flik</translation>
 <translation id="6649642165559792194">Förhandsgranska bild <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">Läs in bild</translation>
+<translation id="6671495933530132209">Kopiera bild</translation>
 <translation id="3845332215609790146">Sök med Brave Software Lens <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Sök på <ph name="SEARCH_ENGINE"/> efter denna bild</translation>
 <translation id="3384347053049321195">Dela bild</translation>
@@ -606,6 +578,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="6475951671322991020">Ladda ned video</translation>
 <translation id="2317945146070194624">Öppna på ny flik i Brave</translation>
 <translation id="7975379999046275268">Förhandsgranska sida <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Snabb webbplats</translation>
 <translation id="6112702117600201073">Uppdaterar sidan</translation>
 <translation id="6990079615885386641">Hämta appen från Brave Software Play Butik: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Mörk</translation>
@@ -615,8 +588,6 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Monospace</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">Välj en flik som du vill överföra</translation>
-<translation id="8719023831149562936">Den aktuella fliken kan inte överföras</translation>
 <translation id="2139186145475833000">Lägg till på startskärmen</translation>
 <translation id="4616150815774728855">Öppna <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">Det gick inte att öppna appen</translation>
@@ -702,6 +673,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="3616113530831147358">Ljud</translation>
 <translation id="9219103736887031265">Bilder</translation>
 <translation id="656065428026159829">Visa fler</translation>
+<translation id="6042308850641462728">Mer</translation>
 <translation id="8250920743982581267">Dokument</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# fil}other{# filer}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# bild}other{# bilder}}</translation>
@@ -792,15 +764,11 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="7542481630195938534">Det går inte att få förslag</translation>
 <translation id="5013696553129441713">Inga nya förslag</translation>
 <translation id="7444811645081526538">Fler kategorier</translation>
-<translation id="6709133671862442373">Nyheter</translation>
-<translation id="1264974993859112054">Sport</translation>
-<translation id="9139318394846604261">Shopping</translation>
 <translation id="3912508018559818924">Letar efter det bästa på webben …</translation>
 <translation id="526421993248218238">Det går inte att läsa in den här sidan</translation>
 <translation id="614940544461990577">Testa att</translation>
 <translation id="3288003805934695103">läsa in sidan igen</translation>
 <translation id="2353636109065292463">Kontrollera internetanslutningen</translation>
-<translation id="2858138569776157458">Populärt</translation>
 <translation id="8364299278605033898">Visa populära webbplatser</translation>
 <translation id="1171770572613082465">Visa populära webbplatser genom att trycka på Populärt</translation>
 <translation id="5233638681132016545">Ny flik</translation>
@@ -834,8 +802,10 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="4452548195519783679">Bokmärkt i <ph name="FOLDER_NAME"/></translation>
 <translation id="8063895661287329888">Det gick inte att lägga till bokmärket.</translation>
 <translation id="2842985007712546952">Överordnad mapp</translation>
+<translation id="6945221475159498467">Välj</translation>
 <translation id="9065203028668620118">Redigera</translation>
 <translation id="4405224443901389797">Flytta till …</translation>
+<translation id="8261506727792406068">Radera</translation>
 <translation id="5170568018924773124">Visa i mapp</translation>
 <translation id="8035133914807600019">Ny mapp …</translation>
 <translation id="4532845899244822526">Välj mapp</translation>
@@ -871,16 +841,14 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="1113597929977215864">Använd förenklad visning</translation>
 <translation id="1513352483775369820">Bokmärken och webbhistorik</translation>
 <translation id="4939482511480190003">Hjälp till att förbättra Brave. <ph name="BEGIN_LINK"/>Fyll i enkäten<ph name="END_LINK"/>.</translation>
-<translation id="2501278716633472235">Föregående</translation>
-<translation id="5596627076506792578">Fler alternativ</translation>
 <translation id="3522247891732774234">Det finns en tillgänglig uppdatering. Fler alternativ</translation>
 <translation id="6773423637732432200">Det går inte att uppdatera Brave. Fler alternativ</translation>
+<translation id="1383876407941801731">Sök</translation>
 <translation id="3328801116991980348">Platsinformation</translation>
 <translation id="5391532827096253100">Anslutningen till webbplatsen är inte säker. Webbplatsinformation</translation>
 <translation id="6206551242102657620">Anslutningen är säker. Webbplatsinformation</translation>
 <translation id="6963642900430330478">Sidan är farlig. Webbplatsinformation</translation>
 <translation id="9070377983101773829">Starta röstsökning</translation>
-<translation id="8676374126336081632">Radera inmatning</translation>
 <translation id="4968908871398201967">Privat läge</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> flik öppen, tryck här om du vill byta flik}other{<ph name="OPEN_TABS_MANY"/> flikar öppna, tryck här om du vill byta flik}}</translation>
 <translation id="2369533728426058518">öppna flikar</translation>
@@ -888,6 +856,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="932327136139879170">Startsida</translation>
 <translation id="2707726405694321444">Uppdatera sidan</translation>
 <translation id="2891154217021530873">Avbryt inläsningen av sidan</translation>
+<translation id="1201402288615127009">Nästa</translation>
 <translation id="6710213216561001401">Föregående</translation>
 <translation id="9080642952018487277">Byt till privat läge</translation>
 <translation id="4883379392681899581">Lämna privat läge</translation>
@@ -896,18 +865,12 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="3377025655491224618">Privat flik</translation>
 <translation id="584427517463557805">Vald privat flik</translation>
 <translation id="2268044343513325586">Finjustera</translation>
-<translation id="7846076177841592234">Rensa val</translation>
-<translation id="6216432067784365534">Alternativ för <ph name="NAME_OF_LIST_ITEM"/></translation>
-<translation id="7087918508125750058"><ph name="ITEM_COUNT"/> har valts. Alternativ finns högt upp på skärmen</translation>
-<translation id="7250468141469952378"><ph name="ITEM_COUNT"/> har valts</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Dela 1 markerat objekt}other{Dela # markerade objekt}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Ta bort 1 markerat objekt}other{Ta bort # markerade objekt}}</translation>
 <translation id="1283039547216852943">Tryck och utöka</translation>
 <translation id="5962718611393537961">Tryck här om du vill komprimera</translation>
 <translation id="3123734510202723619">Meddelanden</translation>
 <translation id="8076492880354921740">Flikar</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 har valts}other{# har valts}}</translation>
-<translation id="6818926723028410516">Välj objekt</translation>
 <translation id="4797039098279997504">Tryck här om du vill återgå till <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">Tryck här för att besöka webbplatsen</translation>
 <translation id="429312253194641664">Media spelas upp på en webbplats</translation>
@@ -1024,13 +987,12 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="1875543012935658554">Öppna Brave igen.</translation>
 <translation id="79859296434321399">Installera ARCore om du vill visa innehåll med förstärkt verklighet</translation>
 <translation id="8558485628462305855">Uppdatera ARCore om du vill visa innehåll med förstärkt verklighet</translation>
-<translation id="3513704683820682405">Förstärkt verklighet</translation>
-<translation id="5475862044948910901">Vill du starta en session med förstärkt verklighet?</translation>
-<translation id="7365126855094612066">Webbplatsen kan göra följande under återstoden av sessionen:
+<translation id="6410973561433500075">Vill du starta AR från <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">Webbplatsen kan göra följande när AR är aktiverat:
 • skapa en karta över omgivningen i 3D
 • spåra kamerans rörelser
 
-Webbplatsen får INTE tillgång till kameran. Bara du kan se kamerabilderna.</translation>
+Det är endast du som kan se det kameran avbildar. Bilderna från kameran visas inte för webbplatsen.</translation>
 <translation id="1188239144602654184">Starta AR</translation>
 <translation id="473775607612524610">Uppdatera</translation>
 <translation id="3133489217401741157"><ph name="MODULE"/> installeras i Brave …</translation>
@@ -1098,6 +1060,7 @@ Webbplatsen får INTE tillgång till kameran. Bara du kan se kamerabilderna.</tr
 <translation id="723171743924126238">Välj bilder</translation>
 <translation id="8751914237388039244">Välj en bild</translation>
 <translation id="1989112275319619282">Bläddra</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Omdirigeringen blockerades:</translation>
 <translation id="5524843473235508879">Omdirigeringen blockerades.</translation>
 <translation id="6573096386450695060">Tillåt alltid</translation>
@@ -1106,6 +1069,7 @@ Webbplatsen får INTE tillgång till kameran. Bara du kan se kamerabilderna.</tr
 <translation id="9137013805542155359">Visa original</translation>
 <translation id="6361779936989026201">Brave Software-assistenten i Brave</translation>
 <translation id="7291387454912369099">Betalning med assistenten</translation>
+<translation id="9037412730408024068">Innehållet på en webbplats där du använder Brave Software Assistent, dess webbadress samt information som du skickar via assistenten överförs till Brave Software så att du kan få uppgifterna utförda</translation>
 <translation id="4565206163201411670">Vill du att din aktivitet i Brave ska visas i Digitalt välmående?</translation>
 <translation id="9055113864158719823">Du kan se vilka webbplatser du besökt i Brave och ställa in en timer för dem.\n\nBrave Software får information om vilka webbplatser du har ställt in en timer för och hur länge du har stannat på dem. Informationen används för att förbättra Digitalt välmående.</translation>
 <translation id="4596514158372210596">Ta bort din aktivitet i Brave från Digitalt välmående</translation>
@@ -1121,10 +1085,20 @@ Webbplatsen får INTE tillgång till kameran. Bara du kan se kamerabilderna.</tr
 <translation id="246532703174860178">Dela</translation>
 <translation id="2517472476991765520">Sök</translation>
 <translation id="8628973420740315031">Be andra att skanna QR-koden om du vill dela med personer i närheten</translation>
+<translation id="3987993985790029246">Kopiera länk</translation>
+<translation id="4250229828105606438">Skärmdump</translation>
+<translation id="6201345951596836663">Länken har kopierats</translation>
+<translation id="6597891566292541626">Rama in QR-koden/streckkoden i den här rutan.</translation>
+<translation id="3140134512074889489">Aktivera kameran så att den kan läsa av en QR-kod</translation>
+<translation id="2359808026110333948">Fortsätt</translation>
 <translation id="7339921667754113786">Brave Softwares aviseringsplattform</translation>
 <translation id="8516012719330875537">Bildredigeringsverktyget</translation>
+<translation id="6092062101542170135">Fortsätt genom att aktivera NFC i Android-inställningarna</translation>
+<translation id="5860491529813859533">Aktivera</translation>
+<translation id="8926666909099850184">NFC är inte aktiverat på enheten. Aktivera det i <ph name="BEGIN_LINK"/>Android-inställningarna<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Vill du låta <ph name="DOMAIN"/> aktivera VR-läget?</translation>
 <translation id="4353114845960720315">Medan du använder VR-läget kan den här webbplatsen ta reda på följande om dig:</translation>
-<translation id="118069123878619799">– din fysiska egenskaper, t.ex. hur lång du är</translation>
-<translation id="5819762621475381970">– hur ditt rum ser ut</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">dina fysiska egenskaper, t.ex. hur lång du är</translation>
+<translation id="4660838440047236328">hur ditt rum ser ut</translation>
 </translationbundle>

@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
-<translation id="6910211073230771657">Slettet</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="5301954838959518834">Greit</translation>
-<translation id="7658239707568436148">Avbryt</translation>
-<translation id="3479552764303398839">Ikke nå</translation>
-<translation id="5317780077021120954">Lagre</translation>
-<translation id="4570913071927164677">Detaljer</translation>
-<translation id="8730621377337864115">Ferdig</translation>
-<translation id="8261506727792406068">Slett</translation>
-<translation id="1181037720776840403">Fjern</translation>
-<translation id="5939518447894949180">Tilbakestill</translation>
-<translation id="4002066346123236978">Tittel</translation>
-<translation id="5916664084637901428">På</translation>
-<translation id="5860033963881614850">Av</translation>
-<translation id="6165508094623778733">Finn ut mer</translation>
-<translation id="6042308850641462728">Mer</translation>
-<translation id="6040143037577758943">Lukk</translation>
-<translation id="780301667611848630">Nei takk</translation>
-<translation id="1201402288615127009">Neste</translation>
-<translation id="2359808026110333948">Fortsett</translation>
-<translation id="2653659639078652383">Send</translation>
-<translation id="2079545284768500474">Angre</translation>
-<translation id="7649070708921625228">Hjelp</translation>
-<translation id="2148716181193084225">I dag</translation>
-<translation id="7781829728241885113">I går</translation>
-<translation id="6945221475159498467">Velg</translation>
-<translation id="7791543448312431591">Legg til</translation>
-<translation id="6527303717912515753">Del</translation>
-<translation id="1383876407941801731">Søk</translation>
-<translation id="3115898365077584848">Vis informasjon</translation>
-<translation id="3295602654194328831">Skjul informasjonen</translation>
-<translation id="3987993985790029246">Kopiér link</translation>
-<translation id="2704606927547763573">Kopiert</translation>
-<translation id="8725066075913043281">Prøv igjen</translation>
-<translation id="385051799172605136">Tilbake</translation>
-<translation id="8131740175452115882">Bekreft</translation>
-<translation id="5300589172476337783">Vis</translation>
-<translation id="1124772482545689468">Bruker</translation>
-<translation id="8609465669617005112">Flytt opp</translation>
-<translation id="6746124502594467657">Flytt ned</translation>
-<translation id="8249310407154411074">Flytt til toppen</translation>
 <translation id="8428213095426709021">Innstillinger</translation>
 <translation id="2498359688066513246">Hjelp og tilbakemelding</translation>
 <translation id="8378714024927312812">Administreres av organisasjonen din</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Passordene dine blir synlige for alle som kan se den eksporterte filen.</translation>
 <translation id="2321086116217818302">Klargjør passordene …</translation>
 <translation id="8445448999790540984">Kan ikke eksportere passordene</translation>
-<translation id="3066461326500799725">Finn ut hvordan du bruker Brave Software Disk</translation>
+<translation id="5139940364318403933">Finn ut hvordan du bruker Brave Software Disk</translation>
 <translation id="729975465115245577">Enheten din har ingen app som kan lagre passordfilen.</translation>
 <translation id="7682724950699840886">Prøv dette: Sørg for at det er nok plass på enheten, og prøv å eksportere på nytt.</translation>
 <translation id="1129510026454351943">Detaljer: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Brave-passord</translation>
 <translation id="6075798973483050474">Endre startsiden</translation>
 <translation id="854522910157234410">Åpne denne siden</translation>
+<translation id="8127542551745560481">Endre startsiden</translation>
 <translation id="2482878487686419369">Varsler</translation>
 <translation id="6255999984061454636">Innholdsforslag</translation>
 <translation id="805047784848435650">Basert på nettlesingsloggen din</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">For å oppdage farlige apper og nettsteder sender Brave nettadressene til noen av sidene du besøker, begrenset systeminformasjon og noe sideinnhold til Brave Software.</translation>
 <translation id="3181954750937456830">Safe Browsing (beskytter deg og enheten din mot farlige nettsteder)</translation>
 <translation id="7315322926489145388">Sender Brave Software nettadressene til noen av sidene du besøker, når sikkerheten din står i fare</translation>
-<translation id="2063713494490388661">Trykk for å søke</translation>
-<translation id="2369463299479365221">Finn ut om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender et ord og omkringliggende kontekst til Brave Software Søk, slik at definisjoner, bilder, søkeresultater og annen informasjon returneres.
+<translation id="3738139272394829648">Trykk for å søke</translation>
+<translation id="7865281998841143447">Finn ut mer om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender ord til Brave Software Søk sammen med den omkringliggende konteksten, og definisjoner, bilder, søkeresultater og annen informasjon returneres.
 
-Hvis du vil endre søkeordet, kan du trykke og holde inne for å merke. Hvis du vil avgrense søket, drar du panelet hele veien opp og trykker på søkeboksen.</translation>
-<translation id="2930742481329940825">«Trykk for å søke» sender det valgte ordet og den aktive siden som kontekst til Brave Software Søk. Du kan slå av dette i <ph name="BEGIN_LINK"/>Innstillinger<ph name="END_LINK"/>.</translation>
+Trykk på ord for å søke etter dem. For å justere søketermen, utfør et langt trykk for å merke tekst. For å finstemme søket, dra panelet så det åpnes, trykk på utvid-ikonet for å åpne en ny fane, og trykk så på søkefeltet.</translation>
+<translation id="3292859206215580147">Finn ut mer om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender ord til Brave Software Søk sammen med den omkringliggende konteksten, og definisjoner, bilder, søkeresultater og annen informasjon returneres.
+
+Utfør lange trykk på ord for å søke etter dem. For å finstemme søket, juster merkingen. Du kan også dra panelet så det åpnes, trykke på utvid-ikonet for å åpne en ny fane og så trykke på søkefeltet.</translation>
+<translation id="6209156474097347789">Trykk for å søke sender det valgte ordet og den aktive siden som kontekst til Brave Software Søk. Du kan slå av dette i <ph name="BEGIN_LINK"/>Innstillinger<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Tillat</translation>
+<translation id="780301667611848630">Nei takk</translation>
 <translation id="1406000523432664303">«Ingen sporing»</translation>
 <translation id="6232535412751077445">Hvis du slår på «Deaktivering av sporing», blir det sendt en forespørsel sammen med nettrafikken din. Hvilke virkninger dette eventuelt får, avhenger av om det aktuelle nettstedet svarer på forespørselen eller ikke, samt hvordan forespørselen tolkes.
 
@@ -242,6 +206,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="6295158916970320988">Alle nettsteder</translation>
 <translation id="8380167699614421159">Dette nettstedet viser forstyrrende eller villedende annonser</translation>
 <translation id="1919345977826869612">Annonser</translation>
+<translation id="3513704683820682405">Utvidet virkelighet</translation>
 <translation id="6447842834002726250">Informasjonskapsler</translation>
 <translation id="6196640612572343990">Blokkér informasjonskapsler fra tredjeparter</translation>
 <translation id="6782111308708962316">Forhindrer at nettsteder fra tredjeparter lagrer og leser data i informasjonskapsler</translation>
@@ -259,6 +224,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="5649053991847567735">Automatiske nedlastinger</translation>
 <translation id="6181444274883918285">Legg til et nettsted som unntak</translation>
 <translation id="5313967007315987356">Legg til et nettsted</translation>
+<translation id="7791543448312431591">Legg til</translation>
 <translation id="1369915414381695676">Nettstedet <ph name="SITE_NAME"/> er lagt til</translation>
 <translation id="2621115761605608342">Tillat JavaScript for et bestemt nettsted.</translation>
 <translation id="8801436777607969138">Blokkér JavaScript for et bestemt nettsted.</translation>
@@ -266,6 +232,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="358794129225322306">Tillat at et nettsted kan laste ned flere filer automatisk.</translation>
 <translation id="4008040567710660924">Tillat informasjonskapsler for et spesifikt nettsted.</translation>
 <translation id="8958424370300090006">Blokkér informasjonskapsler for et spesifikt nettsted.</translation>
+<translation id="2537296579376733324">Alle informasjonskapsler, kun på dette nettstedet</translation>
 <translation id="7882806643839505685">Tillat lyd for et bestemt nettsted.</translation>
 <translation id="4468959413250150279">Kutt lyden for et bestemt nettsted.</translation>
 <translation id="1994173015038366702">Nettadressen til nettstedet</translation>
@@ -292,8 +259,12 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="2107397443965016585">Spør før nettsteder får tillatelse til å spille beskyttet innhold (anbefalt)</translation>
 <translation id="2910701580606108292">Spør før nettsteder kan spille av beskyttet innhold</translation>
 <translation id="757524316907819857">Blokkér nettsteder fra å spille av beskyttet innhold</translation>
+<translation id="4935305910887312910">Spør før nettsteder får tillatelse til å motta kameraposisjonen din eller kartlegge rommet ditt (anbefales)</translation>
+<translation id="884828189055900810">Blokkér nettsteder fra å motta kameraposisjonen din eller kartlegge rommet ditt</translation>
 <translation id="5710871682236653961">Spør før nettsteder får tillatelse til å sende og motta info når du berører NFC-enheter (anbefales)</translation>
 <translation id="7572498721684305250">Blokkér nettsteder fra å sende og motta info når du berører NFC-enheter</translation>
+<translation id="3312292613668865961">Spør før nettsteder får tilgang til virtuell virkelighet-enheten din eller -dataene dine (anbefales)</translation>
+<translation id="8698438463325761328">Blokkér nettsteder fra å få tilgang til virtuell virkelighet-enheten din og -dataene dine</translation>
 <translation id="3277252321222022663">Gi nettsteder tilgang til sensorer (anbefalt)</translation>
 <translation id="5048398596102334565">Gi nettsteder tilgang til bevegelsessensorer (anbefalt)</translation>
 <translation id="8816026460808729765">Blokkér nettsteder fra å få tilgang til sensorer</translation>
@@ -325,7 +296,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="119944043368869598">Fjern alle</translation>
 <translation id="2490684707762498678">Administreres av <ph name="APP_NAME"/></translation>
 <translation id="5516455585884385570">Åpne innstillingene for varsler</translation>
-<translation id="1404122904123200417">Innbygd i <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Innebygd på <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">Filer som nettsteder har lagret, vises her</translation>
 <translation id="4181841719683918333">Språk</translation>
 <translation id="2647434099613338025">Legg til språk</translation>
@@ -380,6 +351,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="4913161338056004800">Tilbakestill statistikken</translation>
 <translation id="1856325424225101786">Vil du tilbakestille forenklet modus?</translation>
 <translation id="3658159451045945436">Tilbakestilling fjerner historikken for datasparing, inkludert listen over besøkte nettsteder.</translation>
+<translation id="5939518447894949180">Tilbakestill</translation>
 <translation id="3295530008794733555">Surf raskere. Bruk mindre data.</translation>
 <translation id="7340390500800578919">I forenklet modus laster Brave inn sider raskere og bruker opptil 60 prosent mindre data. For å optimalisere sidene du besøker, sender Brave nettrafikken din til Brave Software. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">Slå på forenklet modus</translation>
@@ -443,9 +415,6 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="4256782883801055595">Lisenser for åpen kildekode</translation>
 <translation id="1138681184697033370">Vilkår for bruk av Brave</translation>
 <translation id="7392539049993970338">Merknad om personvern for Brave</translation>
-<translation id="2677748264148917807">Gå ut</translation>
-<translation id="5556459405103347317">Last inn på nytt</translation>
-<translation id="1623104350909869708">Hindre denne siden i å opprette flere dialogruter</translation>
 <translation id="2968755619301702150">Visningsprogram for sertifikater</translation>
 <translation id="1360432990279830238">Vil du logge av og slå av synkronisering?</translation>
 <translation id="8581481290581777242">Vil du fjerne Brave-dataene dine fra denne enheten?</translation>
@@ -532,6 +501,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="7998918019931843664">Åpne lukkede faner igjen</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/> – fane</translation>
 <translation id="4452411734226507615">Lukk <ph name="TAB_TITLE"/>-fanen</translation>
+<translation id="6040143037577758943">Lukk</translation>
 <translation id="7243308994586599757">Du finner alternativer ved bunnen av skjermen</translation>
 <translation id="4060598801229743805">Du finner alternativene oppe på skjermen</translation>
 <translation id="2810645512293415242">Siden er forenklet for å spare data og laste den inn raskere.</translation>
@@ -566,6 +536,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="4432792777822557199">Fra nå av oversettes sider på <ph name="SOURCE_LANGUAGE"/> til <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="8339163506404995330">Sider på <ph name="LANGUAGE"/> oversettes ikke</translation>
 <translation id="5447765697759493033">Dette nettstedet oversettes ikke</translation>
+<translation id="7658239707568436148">Avbryt</translation>
 <translation id="4880127995492972015">Oversett</translation>
 <translation id="641643625718530986">Skriv ut</translation>
 <translation id="8909135823018751308">Del</translation>
@@ -599,6 +570,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="8073388330009372546">Åpne bildet i en ny fane</translation>
 <translation id="6649642165559792194">Forhåndsvis bildet <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">Last inn bildet</translation>
+<translation id="6671495933530132209">Kopiér bildet</translation>
 <translation id="3845332215609790146">Søk med Brave Software Lens <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Søk etter dette bildet i <ph name="SEARCH_ENGINE"/></translation>
 <translation id="3384347053049321195">Del bildet</translation>
@@ -606,6 +578,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="6475951671322991020">Last ned videoen</translation>
 <translation id="2317945146070194624">Åpne i en ny Brave-fane</translation>
 <translation id="7975379999046275268">Forhåndsvis siden <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Raskt nettsted</translation>
 <translation id="6112702117600201073">Oppdaterer siden.</translation>
 <translation id="6990079615885386641">Last ned appen fra Brave Software Play Butikk: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Mørk</translation>
@@ -615,8 +588,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Monospace</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">Velg en fane for beaming</translation>
-<translation id="8719023831149562936">Kan ikke beame gjeldende fane</translation>
 <translation id="2139186145475833000">Legg til på startsiden</translation>
 <translation id="4616150815774728855">Åpne <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">Kunne ikke åpne appen</translation>
@@ -702,6 +673,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="3616113530831147358">Lyd</translation>
 <translation id="9219103736887031265">Bilder</translation>
 <translation id="656065428026159829">Se mer</translation>
+<translation id="6042308850641462728">Mer</translation>
 <translation id="8250920743982581267">Dokumenter</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# fil}other{# filer}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# bilde}other{# bilder}}</translation>
@@ -792,15 +764,11 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="7542481630195938534">Kan ikke hente forslag</translation>
 <translation id="5013696553129441713">Ingen nye forslag</translation>
 <translation id="7444811645081526538">Flere kategorier</translation>
-<translation id="6709133671862442373">Nyheter</translation>
-<translation id="1264974993859112054">Sport</translation>
-<translation id="9139318394846604261">Shopping</translation>
 <translation id="3912508018559818924">Vi finner det beste fra nettet …</translation>
 <translation id="526421993248218238">Kan ikke laste inn denne siden</translation>
 <translation id="614940544461990577">Prøv dette:</translation>
 <translation id="3288003805934695103">Last inn siden på nytt</translation>
 <translation id="2353636109065292463">Sjekker internettilkoblingen din</translation>
-<translation id="2858138569776157458">Populært</translation>
 <translation id="8364299278605033898">Se populære nettsteder</translation>
 <translation id="1171770572613082465">Se populære nettsteder ved å trykke på «Populært»-knappen</translation>
 <translation id="5233638681132016545">Ny fane</translation>
@@ -834,8 +802,10 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="4452548195519783679">Satt som bokmerke i <ph name="FOLDER_NAME"/></translation>
 <translation id="8063895661287329888">Kunne ikke legge til bokmerket.</translation>
 <translation id="2842985007712546952">Overordnet mappe</translation>
+<translation id="6945221475159498467">Velg</translation>
 <translation id="9065203028668620118">Endre</translation>
 <translation id="4405224443901389797">Flytt til …</translation>
+<translation id="8261506727792406068">Slett</translation>
 <translation id="5170568018924773124">Vis i mappen</translation>
 <translation id="8035133914807600019">Ny mappe</translation>
 <translation id="4532845899244822526">Velg en mappe</translation>
@@ -871,16 +841,14 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="1113597929977215864">Vis forenklet visning</translation>
 <translation id="1513352483775369820">Bokmerker og nettlogg</translation>
 <translation id="4939482511480190003">Hjelp til med å forbedre Brave. <ph name="BEGIN_LINK"/>Delta i undersøkelsen<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">Gå tilbake</translation>
-<translation id="5596627076506792578">Flere alternativer</translation>
 <translation id="3522247891732774234">En oppdatering er tilgjengelig. Flere alternativer</translation>
 <translation id="6773423637732432200">Kan ikke oppdatere Brave. Flere alternativer</translation>
+<translation id="1383876407941801731">Søk</translation>
 <translation id="3328801116991980348">Informasjon om nettstedet</translation>
 <translation id="5391532827096253100">Tilkoblingen din til dette nettstedet er ikke sikker. Informasjon om nettstedet</translation>
 <translation id="6206551242102657620">Tilkoblingen er sikker. Informasjon om nettstedet</translation>
 <translation id="6963642900430330478">Denne siden er farlig. Informasjon om nettstedet</translation>
 <translation id="9070377983101773829">Start talesøk</translation>
-<translation id="8676374126336081632">Slett teksten</translation>
 <translation id="4968908871398201967">Privat modus</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> åpen fane – trykk for å bytte fane}other{<ph name="OPEN_TABS_MANY"/> åpne faner – trykk for å bytte fane}}</translation>
 <translation id="2369533728426058518">åpne faner</translation>
@@ -888,6 +856,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="932327136139879170">Gå til startsiden</translation>
 <translation id="2707726405694321444">Last inn siden på nytt</translation>
 <translation id="2891154217021530873">Stopp innlastingen av siden</translation>
+<translation id="1201402288615127009">Neste</translation>
 <translation id="6710213216561001401">Forrige</translation>
 <translation id="9080642952018487277">Gå inn i privat modus</translation>
 <translation id="4883379392681899581">Gå ut av privat modus</translation>
@@ -896,18 +865,12 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="3377025655491224618">Privat fane</translation>
 <translation id="584427517463557805">Valgt privat fane</translation>
 <translation id="2268044343513325586">Finstem</translation>
-<translation id="7846076177841592234">Opphev valget</translation>
-<translation id="6216432067784365534">Alternativer for <ph name="NAME_OF_LIST_ITEM"/></translation>
-<translation id="7087918508125750058"><ph name="ITEM_COUNT"/> er valgt. Du finner alternativer oppe på skjermen</translation>
-<translation id="7250468141469952378"><ph name="ITEM_COUNT"/> er valgt</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Del 1 valgt element}other{Del # valgte elementer}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Fjern 1 valgt element}other{Fjern # valgte elementer}}</translation>
 <translation id="1283039547216852943">Trykk for å vise</translation>
 <translation id="5962718611393537961">Trykk for å skjule</translation>
 <translation id="3123734510202723619">Kunngjøringer</translation>
 <translation id="8076492880354921740">Faner</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 er valgt}other{# er valgt}}</translation>
-<translation id="6818926723028410516">Velg elementer</translation>
 <translation id="4797039098279997504">Trykk for å gå tilbake til <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">Trykk for å gå til nettstedet</translation>
 <translation id="429312253194641664">Et nettsted spiller av medier</translation>
@@ -1024,13 +987,12 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="1875543012935658554">Åpne Brave på nytt.</translation>
 <translation id="79859296434321399">Du må installere ARCore for å se innhold med utvidet virkelighet</translation>
 <translation id="8558485628462305855">Du må oppdatere ARCore for å se innhold med utvidet virkelighet</translation>
-<translation id="3513704683820682405">Utvidet virkelighet</translation>
-<translation id="5475862044948910901">Vil du starte en økt med utvidet virkelighet?</translation>
-<translation id="7365126855094612066">Så lenge denne økten pågår, kan dette nettstedet
-• lage et 3D-kart av omgivelsene dine
+<translation id="6410973561433500075">Vil du starte AR fra <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">Når du er i AR, kan det hende at dette nettstedet kan
+• lage et 3D-kart over omgivelsene dine
 • spore kamerabevegelser
 
-Nettstedet får IKKE tilgang til kameraet. Kamerabildene er kun synlige for deg.</translation>
+Det er bare du som kan se hva kameraet ditt ser på. Nettstedet kan ikke se bildene fra kameraet.</translation>
 <translation id="1188239144602654184">Start utvidet virkelighet</translation>
 <translation id="473775607612524610">Oppdater</translation>
 <translation id="3133489217401741157">Installerer <ph name="MODULE"/> for Brave …</translation>
@@ -1098,6 +1060,7 @@ Nettstedet får IKKE tilgang til kameraet. Kamerabildene er kun synlige for deg.
 <translation id="723171743924126238">Velg bilder</translation>
 <translation id="8751914237388039244">Velg et bilde</translation>
 <translation id="1989112275319619282">Bla gjennom</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Viderekoblingen er blokkert:</translation>
 <translation id="5524843473235508879">Viderekobling blokkert.</translation>
 <translation id="6573096386450695060">Tillat alltid</translation>
@@ -1106,6 +1069,7 @@ Nettstedet får IKKE tilgang til kameraet. Kamerabildene er kun synlige for deg.
 <translation id="9137013805542155359">Vis original</translation>
 <translation id="6361779936989026201">Brave Software-assistenten i Brave</translation>
 <translation id="7291387454912369099">Assistent-aktivert betaling</translation>
+<translation id="9037412730408024068">For å hjelpe deg med å fullføre oppgaver mottar Brave Software nettadressene til og innholdet på nettsteder der du bruker assistenten, i tillegg til informasjon som du sender inn gjennom assistenten</translation>
 <translation id="4565206163201411670">Vil du vise Brave-aktiviteten din i Digital balanse?</translation>
 <translation id="9055113864158719823">Du kan se nettstedene du besøker i Brave, og angi tidtakere for dem.\n\nBrave Software får informasjon om nettstedene du angir tidtakere for, og hvor lenge du besøker dem. Denne informasjonen brukes til å gjøre Digital balanse bedre.</translation>
 <translation id="4596514158372210596">Fjerne Brave-aktiviteten din fra Digital balanse</translation>
@@ -1121,10 +1085,20 @@ Nettstedet får IKKE tilgang til kameraet. Kamerabildene er kun synlige for deg.
 <translation id="246532703174860178">Del</translation>
 <translation id="2517472476991765520">Skann</translation>
 <translation id="8628973420740315031">For å dele med personer i nærheten, la dem skanne denne QR-koden</translation>
+<translation id="3987993985790029246">Kopiér link</translation>
+<translation id="4250229828105606438">Skjermdump</translation>
+<translation id="6201345951596836663">Linken er kopiert</translation>
+<translation id="6597891566292541626">Plassér QR-/strekkoden i denne rammen.</translation>
+<translation id="3140134512074889489">Slå på kameraet for å skanne QR-koder</translation>
+<translation id="2359808026110333948">Fortsett</translation>
 <translation id="7339921667754113786">Brave Software Notifications Platform</translation>
 <translation id="8516012719330875537">Bilderedigeringsprogram</translation>
+<translation id="6092062101542170135">For å fortsette, slå på NFC i Android-innstillingene</translation>
+<translation id="5860491529813859533">Slå på</translation>
+<translation id="8926666909099850184">NFC er av for denne enheten. Slå det på i <ph name="BEGIN_LINK"/>Android-innstillingene<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Vil du at <ph name="DOMAIN"/> skal slå på VR-modus?</translation>
 <translation id="4353114845960720315">Når du er i VR, kan dette nettstedet finne ut mer om følgende:</translation>
-<translation id="118069123878619799">– fysiske kjennetegn, som hvor høy du er</translation>
-<translation id="5819762621475381970">– hvordan rommet ditt ser ut</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">fysiske kjennetegn, for eksempel hvor høy du er</translation>
+<translation id="4660838440047236328">hvordan rommet ditt ser ut</translation>
 </translationbundle>

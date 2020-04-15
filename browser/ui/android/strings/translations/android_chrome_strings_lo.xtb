@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lo">
-<translation id="6910211073230771657">ລຶບແລ້ວ</translation>
-<translation id="6965382102122355670">ຕົກລົງ</translation>
-<translation id="5301954838959518834">ຕົກລົງ, ເຂົ້າໃຈແລ້ວ</translation>
-<translation id="7658239707568436148">ຍົກ​ເລີກ​</translation>
-<translation id="3479552764303398839">ບໍ່ແມ່ນດຽວນີ້</translation>
-<translation id="5317780077021120954">ບັນທຶກ</translation>
-<translation id="4570913071927164677">ລາຍ​ລະ​ອຽດ</translation>
-<translation id="8730621377337864115">ສໍາເລັດ</translation>
-<translation id="8261506727792406068">ລຶບ</translation>
-<translation id="1181037720776840403">ລຶບອອກ</translation>
-<translation id="5939518447894949180">ຕັ້ງຄ່າຄືນໃໝ່</translation>
-<translation id="4002066346123236978">ຫົວຂໍ້</translation>
-<translation id="5916664084637901428">ເປີດ</translation>
-<translation id="5860033963881614850">ປິດ</translation>
-<translation id="6165508094623778733">ສຶກສາ​ເພີ່ມ​ເຕີມ</translation>
-<translation id="6042308850641462728">ເພີ່ມເຕີມ</translation>
-<translation id="6040143037577758943">ປິດ</translation>
-<translation id="780301667611848630">ບໍ່​, ​ຂອບ​ໃຈ</translation>
-<translation id="1201402288615127009">ຕໍ່ໄປ</translation>
-<translation id="2359808026110333948">ສືບຕໍ່</translation>
-<translation id="2653659639078652383">ສົ່ງ</translation>
-<translation id="2079545284768500474">ບໍ່ເຮັດ</translation>
-<translation id="7649070708921625228">ຊ່ວຍ​ເຫຼືອ</translation>
-<translation id="2148716181193084225">ມື້​ນີ້</translation>
-<translation id="7781829728241885113">ມື້​ວານ​ນີ້</translation>
-<translation id="6945221475159498467">ເລືອກ</translation>
-<translation id="7791543448312431591">ເພີ່ມ</translation>
-<translation id="6527303717912515753">ແຊຣ໌</translation>
-<translation id="1383876407941801731">ຄົ້ນຫາ</translation>
-<translation id="3115898365077584848">ສະແດງຂໍ້ມູນ</translation>
-<translation id="3295602654194328831">ເຊື່ອງຂໍ້ມູນ</translation>
-<translation id="3987993985790029246">ອັດ​ສຳ​ເນົາລິ້ງເຊື່ອມໂຍງ</translation>
-<translation id="2704606927547763573">ອັດ​ສຳ​ເນົາ​ແລ້ວ</translation>
-<translation id="8725066075913043281">ລອງໃໝ່ອີກ</translation>
-<translation id="385051799172605136">ກັບ​ຄືນ​</translation>
-<translation id="8131740175452115882">ຢືນ​ຢັນ</translation>
-<translation id="5300589172476337783">ສະ​ແດງ​</translation>
-<translation id="1124772482545689468">ຜູ້​ໃຊ້</translation>
-<translation id="8609465669617005112">ຍ້າຍຂຶ້ນ</translation>
-<translation id="6746124502594467657">ຍ້າຍ​ລົງ</translation>
-<translation id="8249310407154411074">ຍ້າຍໄປເທິງສຸດ</translation>
 <translation id="8428213095426709021">ການ​ຕັ້ງຄ່າ</translation>
 <translation id="2498359688066513246">ຊ່ວຍເຫຼືອ ​ແລະ ຄໍາ​ຄິດ​ເຫັນຕິ​ຊົມ</translation>
 <translation id="8378714024927312812">ຈັດການໂດຍອົງການຂອງທ່ານ</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">ລະຫັດຜ່ານຂອງທ່ານຈະເບິ່ງເຫັນໄດ້ຕໍ່ກັບທຸກຄົນທີ່ສາມາດເຫັນໄຟລ໌ທີ່ສົ່ງອອກ.</translation>
 <translation id="2321086116217818302">ກຳລັງກະກຽມລະຫັດຜ່ານ…</translation>
 <translation id="8445448999790540984">ບໍ່ສາມາດສົ່ງລະຫັດຜ່ານອອກໄດ້</translation>
-<translation id="3066461326500799725">ຮຽນຮູ້ວິທີໃຊ້ Brave Software Drive</translation>
+<translation id="5139940364318403933">ຮຽນຮູ້ວິທີໃຊ້ Brave Software Drive</translation>
 <translation id="729975465115245577">ອຸປະກອນຂອງທ່ານບໍ່ມີແອັບເພື່ອເກັບໄຟລ໌ລະຫັດຜ່ານໄວ້.</translation>
 <translation id="7682724950699840886">ລອງຄຳແນະນຳຕໍ່ໄປນີ້: ກວດໃຫ້ແນ່ໃຈວ່າມີພື້ນທີ່ຫວ່າງພຽງພໍໃນອຸປະກອນຂອງທ່ານ, ລອງສົ່ງອອກອີກຄັ້ງ.</translation>
 <translation id="1129510026454351943">ລາຍລະອຽດ: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">ລະຫັດຜ່ານຂອງ Brave</translation>
 <translation id="6075798973483050474">ແກ້ໄຂໜ້າຫຼັກ</translation>
 <translation id="854522910157234410">ເປີດໜ້ານີ້</translation>
+<translation id="8127542551745560481">ແກ້ໄຂໜ້າຫຼັກ</translation>
 <translation id="2482878487686419369">ການແຈ້ງເຕືອນ</translation>
 <translation id="6255999984061454636">ການແນະນຳເນື້ອຫາ</translation>
 <translation id="805047784848435650">ອີງໃສ່ປະຫວັດການທ່ອງເວັບຂອງທ່ານ</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">ເພື່ອກວດຫາແອັບ ແລະ ເວັບໄຊອັນຕະລາຍ, Brave ສົ່ງ URL ຂອງບາງໜ້າເວັບທີ່ທ່ານເຂົ້າເບິ່ງ, ຂໍ້ມູນລະບົບແບບຈຳກັດ ແລະ ບາງເນື້ອຫາໜ້າເວັບໄປໃຫ້ Brave Software</translation>
 <translation id="3181954750937456830">Safe Browsing (ປົກປ້ອງທ່ານ ແລະ ອຸປະກອນຂອງທ່ານຈາກເວັບໄຊອັນຕະລາຍ)</translation>
 <translation id="7315322926489145388">ສົ່ງ URL ຂອງບາງໜ້າເວັບທີ່ທ່ານເຂົ້າເບິ່ງໃຫ້ Brave Software, ເມື່ອຄວາມປອດໄພຂອງທ່ານມີຄວາມສ່ຽງ</translation>
-<translation id="2063713494490388661">ແຕະເພື່ອຄົ້ນຫາ</translation>
-<translation id="2369463299479365221">ຮຽນຮູ້ກ່ຽວກັບຫົວຂໍ້ຕ່າງໆໃນເວັບໄຊໂດຍບໍ່ຕ້ອງອອກຈາກໜ້ານັ້ນ. ແຕະເພື່ອຊອກຫາ ສົ່ງຄຳສັບ ແລະ ຮູບປະໂຫຍກທີ່ກ່ຽວຂ້ອງຂອງມັນໄປໃຫ້ Brave Software ຊອກຫາ ເຊິ່ງຈະສົ່ງຄຳນິຍາມ, ຮູບພາບ, ຜົນການຊອກຫາ ແລະ ລາຍລະອຽດອື່ນໆຄືນມາ.
+<translation id="3738139272394829648">ສໍາຜັດເພື່ອຄົ້ນຫາ</translation>
+<translation id="7865281998841143447">ຮຽນຮູ້ກ່ຽວກັບຫົວຂໍ້ຢູ່ໃນເວັບໄຊໂດຍບໍ່ຕ້ອງອອກໄປຈາກໜ້າ. ແຕະເພື່ອຊອກຫາ ສົ່ງຄຳສັບ ແລະ ບໍລິບົດທີ່ກ່ຽວຂ້ອງຂອງມັນໄປໃຫ້ Brave Software ຊອກຫາ ເຊິ່ງຈະສົ່ງຄຳນິຍາມ, ຮູບ, ຜົນການຊອກຫາ ແລະ ລາຍລະອຽດອື່ນໆຄືນມາ.
 
-ເພື່ອປັບຄຳຊອກຫາຂອງທ່ານ, ກະລຸນາກົດຄ້າງເພື່ອເລືອກ. ເພື່ອປັບປຸງການຊອກຫາຂອງທ່ານ, ກະລຸນາເລື່ອນແຜງຂຶ້ນເທິງທັງໝົດ ແລ້ວແຕະກ່ອງຊອກຫາ.</translation>
-<translation id="2930742481329940825">ແຕະເພື່ອຊອກຫາ ສົ່ງຄຳສັບທີ່ເລືອກ ແລະ ໜ້າປັດຈຸບັນໃຫ້ Brave Software ຊອກຫາ. ທ່ານສາມາດປິດມັນໄດ້ໃນ <ph name="BEGIN_LINK"/>ການຕັ້ງຄ່າ<ph name="END_LINK"/>.</translation>
+ແຕະຄຳສັບໃດໆກໍໄດ້ເພື່ອສ້າງການຊອກຫາມັນ. ເພື່ອປັບຄຳສັບຊອກຫາຂອງທ່ານ, ກະລຸນາກົດຄ້າງໄວ້ເພື່ອເລືອກ. ເພື່ອປັບປ່ຽນການຊອກຫາຂອງທ່ານ ກະລຸນາເລື່ອນເພື່ອເປີດແຜງ, ແຕະໄອຄອນຂະຫຍາຍເພື່ອສ້າງແຖບໃໝ່ ແລ້ວແຕະກ່ອງຊອກຫາ.</translation>
+<translation id="3292859206215580147">ຮຽນຮູ້ກ່ຽວກັບຫົວຂໍ້ຢູ່ໃນເວັບໄຊໂດຍບໍ່ຕ້ອງອອກໄປຈາກໜ້າ. ແຕະເພື່ອຊອກຫາ ສົ່ງຄຳສັບ ແລະ ບໍລິບົດທີ່ກ່ຽວຂ້ອງຂອງມັນໄປໃຫ້ Brave Software ຊອກຫາ ເຊິ່ງຈະສົ່ງຄຳນິຍາມ, ຮູບ, ຜົນການຊອກຫາ ແລະ ລາຍລະອຽດອື່ນໆຄືນມາ.
+
+ກົດຄຳສັບໃດໆກໍໄດ້ຄ້າງໄວ້ເພື່ອສ້າງການຊອກຫາມັນ. ເພື່ອປັບປ່ຽນການຊອກຫາຂອງທ່ານ ກະລຸນາປັບການເລືອກ. ທ່ານສາມາດເລື່ອນເພື່ອເປີດແຜງ, ແຕະໄອຄອນຂະຫຍາຍເພື່ອສ້າງແຖບໃໝ່ ແລ້ວແຕະກ່ອງຊອກຫາ.</translation>
+<translation id="6209156474097347789">ສຳ​ພັດ​ ເພື່ອຄົ້ນ​ຫາ​ ຈະສົ່ງ​ຄຳ​ສັບ​ທີ່​ເລືອກ​ໄວ້ ແລະ​ໜ້າ​ປະ​ຈຸ​ບັນ​ຕາມ​ເນື້ອ​ໃນ​ຫາ Brave Software Search. ທ່ານ​ສາ​ມາດ​ປິດ​ມັນ​ໄດ້​ຢູ່​ໃນ <ph name="BEGIN_LINK"/>ການ​ຕັ້ງ​ຄ່າ<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">ອະ​ນຸ​ຍາດ​</translation>
+<translation id="780301667611848630">ບໍ່​, ​ຂອບ​ໃຈ</translation>
 <translation id="1406000523432664303">“ຢ່າ​ຕິດຕາມ”</translation>
 <translation id="6232535412751077445">ການເປີດໃຊ້ “ຢ່າຕິດຕາມ” ໝາຍຄວາມວ່າ ຄຳຮ້ອງຂໍຈະຖືກເອົາຮວມເຂົ້າກັບການຮັບສົ່ງຂໍ້ມູນການທ່ອງເວັບຂອງທ່ານ. ຜົນຕາມມາແມ່ນຂຶ້ນກັບວ່າເວັບໄຊຕອບສະໜອງຕໍ່ກັບຄຳຮ້ອງຂໍນັ້ນແນວໃດ ແລະຄຳຮ້ອງຂໍນັ້ນຖືກຕີຄວາມໝາຍແນວໃດ.
 
@@ -242,6 +206,7 @@
 <translation id="6295158916970320988">ທຸກ​ເວັບ​ໄຊ​ທ໌</translation>
 <translation id="8380167699614421159">ເວັບໄຊນີ້ສະແດງໂຄສະນາທີ່ລົບກວນ ຫຼື ຫຼອກລວງ</translation>
 <translation id="1919345977826869612">ໂຄສະນາ</translation>
+<translation id="3513704683820682405">ອາກິວເມັນ ຣີອາລິຕີ</translation>
 <translation id="6447842834002726250">ຄຸກກີ້</translation>
 <translation id="6196640612572343990">ບລັອກຄຸກກີ້ພາກສ່ວນທີສາມ</translation>
 <translation id="6782111308708962316">ປ້ອງກັນບໍ່ໃຫ້ເວັບໄຊພາກສ່ວນທີສາມບັນທຶກ ແລະ ອ່ານຂໍ້ມູນຄຸກກີ້</translation>
@@ -259,6 +224,7 @@
 <translation id="5649053991847567735">ດາວ​ໂຫຼດ​ອັດ​ຕະ​ໂນ​ມັດ</translation>
 <translation id="6181444274883918285">ເພີ່ມຂໍ້ຍົກເວັ້ນເວັບໄຊ</translation>
 <translation id="5313967007315987356">ເພີ່ມ​ເວັບ​ໄຊ​ທ໌</translation>
+<translation id="7791543448312431591">ເພີ່ມ</translation>
 <translation id="1369915414381695676">ເພີ່ມ <ph name="SITE_NAME"/> ເວັບ​ໄຊ​ທ໌​ແລ້ວ</translation>
 <translation id="2621115761605608342">ອະນຸຍາດ JavaScript ສຳລັບເວັບໄຊສະເພາະໃດໜຶ່ງ.</translation>
 <translation id="8801436777607969138">ບລັອກ JavaScript ສຳລັບເວັບໄຊສະເພາະ.</translation>
@@ -266,6 +232,7 @@
 <translation id="358794129225322306">ອະນຸຍາດໃຫ້ເວັບໄຊດາວໂຫຼດຫຼາຍໄຟລ໌ໂດຍອັດຕະໂນມັດ.</translation>
 <translation id="4008040567710660924">ອະນຸຍາດຄຸກກີ້ສຳລັບເວັບໄຊສະເພາະ.</translation>
 <translation id="8958424370300090006">ບລັອກຄຸກກີ້ສຳລັບເວັບໄຊສະເພາະ.</translation>
+<translation id="2537296579376733324">ຄຸກກີ້ທັງໝົດ, ໃນເວັບໄຊນີ້ເທົ່ານັ້ນ</translation>
 <translation id="7882806643839505685">ອະນຸຍາດສຽງສຳລັບເວັບໄຊສະເພາະໃດໜຶ່ງ.</translation>
 <translation id="4468959413250150279">ປິດສຽງສຳລັບເວັບໄຊສະເພາະໃດໜຶ່ງ.</translation>
 <translation id="1994173015038366702">URL ​ເວັບ​ໄຊທ໌</translation>
@@ -292,8 +259,12 @@
 <translation id="2107397443965016585">ຖາມກ່ອນທີ່ຈະອະນຸຍາດໃຫ້ເວັບໄຊຫຼິ້ນເນື້ອຫາທີ່ມີການປົກປ້ອງ (ແນະນຳ)</translation>
 <translation id="2910701580606108292">ຖາມກ່ອນທີ່ຈະອະນຸຍາດໃຫ້ເວັບໄຊຫຼິ້ນເນື້ອຫາທີ່ມີການປ້ອງກັນໄວ້</translation>
 <translation id="757524316907819857">ບລັອກເວັບໄຊບໍ່ໃຫ້ຫຼິ້ນເນື້ອຫາທີ່ມີການປ້ອງກັນໄວ້</translation>
+<translation id="4935305910887312910">ຖາມກ່ອນທີ່ຈະອະນຸຍາດໃຫ້ເວັບໄຊຮັບຂໍ້ມູນຕຳແໜ່ງກ້ອງ ຫຼື ສ້າງແຜນທີ່ຫ້ອງຂອງທ່ານ (ແນະນຳ)</translation>
+<translation id="884828189055900810">ບລັອກບໍ່ໃຫ້ເວັບໄຊຮັບຂໍ້ມູນຕຳແໜ່ງກ້ອງ ຫຼື ສ້າງແຜນທີ່ຫ້ອງຂອງທ່ານ</translation>
 <translation id="5710871682236653961">ຖາມກ່ອນທີ່ຈະອະນຸຍາດໃຫ້ເວັບໄຊສົ່ງ ແລະ ຮັບຂໍ້ມູນໃນເວລາທີ່ທ່ານແຕະອຸປະກອນ NFC (ແນະນຳ)</translation>
 <translation id="7572498721684305250">ບລັອກບໍ່ໃຫ້ເວັບໄຊສົ່ງ ແລະ ຮັບຂໍ້ມູນໃນເວລາທີ່ທ່ານແຕະອຸປະກອນ NFC</translation>
+<translation id="3312292613668865961">ຖາມກ່ອນທີ່ຈະອະນຸຍາດໃຫ້ເວັບໄຊເຂົ້າເຖິງອຸປະກອນ ແລະ ຂໍ້ມູນ ເວີຊົວ ຣິອາລິຕີຂອງທ່ານ (ແນະນຳ)</translation>
+<translation id="8698438463325761328">ບລັອກບໍ່ໃຫ້ເວັບໄຊເຂົ້າເຖິງອຸປະກອນ ແລະ ຂໍ້ມູນເວີຊົວ ຣິອາລິຕີຂອງທ່ານ</translation>
 <translation id="3277252321222022663">ອະນຸຍາດໃຫ້ເວັບໄຊເຂົ້າເຖິງເຊັນເຊີ (ແນະນຳ)</translation>
 <translation id="5048398596102334565">ອະນຸຍາດໃຫ້ເວັບໄຊເຂົ້າເຖິງເຊັນເຊີກວດຈັບການເຄື່ອນໄຫວ (ແນະນຳ)</translation>
 <translation id="8816026460808729765">ບລັອກເວັບໄຊບໍ່ໃຫ້ເຂົາເຖິງເຊັນເຊີ</translation>
@@ -325,7 +296,7 @@
 <translation id="119944043368869598">ລຶບທັງ​ຫມົດ</translation>
 <translation id="2490684707762498678">ຈັດການໂດຍ <ph name="APP_NAME"/></translation>
 <translation id="5516455585884385570">ເປີດການຕັ້ງຄ່າການແຈ້ງເຕືອນ</translation>
-<translation id="1404122904123200417">ຝັງ​ຢູ່​ໃນ <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">ຝັງຕິດໃນ <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">ໄຟລ໌ທີ່ບັນທຶກໄວ້ໂດຍເວັບໄຊປາກົດຢູ່ບ່ອນນີ້</translation>
 <translation id="4181841719683918333">ພາສາ</translation>
 <translation id="2647434099613338025">ເພີ່ມພາສາ</translation>
@@ -380,6 +351,7 @@
 <translation id="4913161338056004800">ຣີເຊັດສະຖິຕິ</translation>
 <translation id="1856325424225101786">ຣີເຊັດໂໝດ Lite ບໍ?</translation>
 <translation id="3658159451045945436">ການຣີເຊັດຈະລຶບປະຫວັດການປະຢັດອິນເຕີເນັດຂອງທ່ານ ຮວມທັງລາຍການເວັບໄຊທີ່ທ່ານເຂົ້າເບິ່ງ.</translation>
+<translation id="5939518447894949180">ຕັ້ງຄ່າຄືນໃໝ່</translation>
 <translation id="3295530008794733555">ທ່ອງເວັບໄດ້ໄວກວ່າ. ໃຊ້ອິນເຕີເນັດໜ້ອຍກວ່າ.</translation>
 <translation id="7340390500800578919">ໃນໂໝດ Lite, Brave ໂຫຼດໜ້າໄດ້ໄວກວ່າ ແລະ ໃຊ້ອິນເຕີເນັດບໍ່ເກີນ 60 ເປີເຊັນ. ເພື່ອປັບໜ້າເວັບທີ່ທ່ານເຂົ້າເບິ່ງໃຫ້ເໝາະສົມ, Brave ສົ່ງການຮັບສົ່ງຂໍ້ມູນເວັບຂອງທ່ານໃຫ້ Brave Software. <ph name="BEGIN_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">ເປີດໂໝດ Lite</translation>
@@ -443,9 +415,6 @@
 <translation id="4256782883801055595">ໃບ​ອະ​ນຸ​ຍາດ Open source</translation>
 <translation id="1138681184697033370">ຂໍ້​ກຳ​ນົດ​ການ​ບໍ​ລິ​ການ​ຂອງ Brave</translation>
 <translation id="7392539049993970338">ແຈ້ງ​ການ​ຄວາມ​ເປັນ​ສ່ວນ​ຕົວ​ຂອງ Brave</translation>
-<translation id="2677748264148917807">ອອກ​ໄປ</translation>
-<translation id="5556459405103347317">ໂຫຼດຄືນໃໝ່</translation>
-<translation id="1623104350909869708">ປ້ອງກັນບໍ່ໃຫ້ໜ້ານີ້ສ້າງກ່ອງເພີ່ມເຕີມ</translation>
 <translation id="2968755619301702150">ຕົວເບິ່ງໃບຢັ້ງຢືນ</translation>
 <translation id="1360432990279830238">ອອກຈາກະລະບົບ ແລະ ປິດການຊິ້ງຂໍ້ມູນບໍ?</translation>
 <translation id="8581481290581777242">ລຶບລ້າງຂໍ້ມູນ Brave ຂອງທ່ານຈາກອຸປະກອນນີ້?</translation>
@@ -532,6 +501,7 @@
 <translation id="7998918019931843664">ເປີດ​ແຖບ​ປິດຄືນໃໝ່</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, ແຖບ​</translation>
 <translation id="4452411734226507615">ປິດແຖບ <ph name="TAB_TITLE"/></translation>
+<translation id="6040143037577758943">ປິດ</translation>
 <translation id="7243308994586599757">ທາງ​ເລືອກ​ມີ​ໃຫ້​ໃກ້​ປຸ່ມ​ຂອງ​ໜ້າ​ຈໍ</translation>
 <translation id="4060598801229743805">ຕົວເລືອກຕ່າງໆມີໃຫ້ນຳໃຊ້ຢູ່ໃກ້ສ່ວນເທິງຂອງໜ້າຈໍ</translation>
 <translation id="2810645512293415242">ໜ້າເວັບທີ່ປັບໃຫ້ງ່າຍດາຍເພື່ອປະຢັດຂໍ້ມູນ ແລະ ໂຫຼດໄວຂຶ້ນ.</translation>
@@ -566,6 +536,7 @@
 <translation id="4432792777822557199">ໜ້າຕ່າງໆຢູ່ໃນ <ph name="SOURCE_LANGUAGE"/> ຈະຖືກແປເປັນ <ph name="TARGET_LANGUAGE"/> ຈາກນີ້ເປັນຕົ້ນໄປ</translation>
 <translation id="8339163506404995330">ໜ້າຕ່າງໆໃນ <ph name="LANGUAGE"/> ຈະບໍ່ຖືກແປ</translation>
 <translation id="5447765697759493033">ເວັບໄຊນີ້ຈະບໍ່ຖືກແປ</translation>
+<translation id="7658239707568436148">ຍົກ​ເລີກ​</translation>
 <translation id="4880127995492972015">ແປພາສາ…</translation>
 <translation id="641643625718530986">ພິມ</translation>
 <translation id="8909135823018751308">ແຊຣ໌...</translation>
@@ -599,6 +570,7 @@
 <translation id="8073388330009372546">ເປີດຮູບຢູ່ໃນແຖບໃໝ່</translation>
 <translation id="6649642165559792194">ເບິ່ງຕົວຢ່າງຮູບ <ph name="BEGIN_NEW"/>ໃໝ່<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">ໂຫຼດ​ຮູບ</translation>
+<translation id="6671495933530132209">ກັອບປີ້ຮູບ</translation>
 <translation id="3845332215609790146">ຊອກຫາດ້ວຍ Brave Software Lens <ph name="BEGIN_NEW"/>ໃໝ່<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">ຄົ້ນ​ຫາ <ph name="SEARCH_ENGINE"/> ​ຮູບ​ນີ້</translation>
 <translation id="3384347053049321195">ແບ່ງ​ປັນ​ຮູບ</translation>
@@ -606,6 +578,7 @@
 <translation id="6475951671322991020">ດາວໂຫຼດວິດີໂອ</translation>
 <translation id="2317945146070194624">ເປີດໃນແຖບໃໝ່ຂອງ Brave</translation>
 <translation id="7975379999046275268">ສະແດງຕົວຢ່າງໜ້າ <ph name="BEGIN_NEW"/>ໃໝ່<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">ເວັບໄຊໄວ</translation>
 <translation id="6112702117600201073">ການ​ຣີ​ເຟ​ຣ​ຊ​ໜ້າ</translation>
 <translation id="6990079615885386641">ເອົາ​ແອັບ​ຈາກ Brave Software Play Store: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">ມືດ</translation>
@@ -615,8 +588,6 @@
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Monospace</translation>
 <translation id="9206873250291191720">ກ</translation>
-<translation id="654446541061731451">ເລືອກ​ແຖບ​ເພື່ອ​ບີມ</translation>
-<translation id="8719023831149562936">ບໍ່ສາມາດບີມແຖບ​ປະ​ຈຸ​ບັນໄດ້</translation>
 <translation id="2139186145475833000">ເພີ່ມໃສ່ໜ້າຈໍຫຼັກ</translation>
 <translation id="4616150815774728855">ເປີດ <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">ບໍ່ສາມາດເປີດແອັບໄດ້</translation>
@@ -702,6 +673,7 @@
 <translation id="3616113530831147358">ສຽງ</translation>
 <translation id="9219103736887031265">ຮູບ</translation>
 <translation id="656065428026159829">ເບິ່ງເພີ່ມເຕີມ</translation>
+<translation id="6042308850641462728">ເພີ່ມເຕີມ</translation>
 <translation id="8250920743982581267">ເອກະສານ</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# ໄຟລ໌}other{# ໄຟລ໌}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# ຮູບ}other{# ຮູບ}}</translation>
@@ -791,15 +763,11 @@
 <translation id="7542481630195938534">ບໍ່ສາມາດຮັບເອົາຄຳແນະນຳໄດ້</translation>
 <translation id="5013696553129441713">ບໍ່ມີການແນະນຳໃໝ່</translation>
 <translation id="7444811645081526538">ໝວດໝູ່ເພີ່ມເຕີມ</translation>
-<translation id="6709133671862442373">ຂ່າວ</translation>
-<translation id="1264974993859112054">ກິລາ</translation>
-<translation id="9139318394846604261">ການຊື້ເຄື່ອງ</translation>
 <translation id="3912508018559818924">ກຳລັງຊອກຫາສິ່ງທີ່ດີສຸດຈາກເວັບ...</translation>
 <translation id="526421993248218238">ບໍ່ສາມາດໂຫຼດໜ້ານີ້ໄດ້</translation>
 <translation id="614940544461990577">ລອງ:</translation>
 <translation id="3288003805934695103">ກຳລັງໂຫຼດໜ້າຄືນໃໝ່</translation>
 <translation id="2353636109065292463">ກຳລັງກວດການເຊື່ອມຕໍ່ອິນເຕີເນັດຂອງທ່ານ</translation>
-<translation id="2858138569776157458">ເວັບໄຊຍອດນິຍົມ</translation>
 <translation id="8364299278605033898">ເບິ່ງເວັບໄຊຍອດນິຍົມ</translation>
 <translation id="1171770572613082465">ເບິ່ງເວັບໄຊຍອດນິຍົມໂດຍການແຕະປຸ່ມ "ເວັບໄຊຍອດນິຍົມ"</translation>
 <translation id="5233638681132016545">ແຖບ​ໃຫມ່</translation>
@@ -833,8 +801,10 @@
 <translation id="4452548195519783679">ເພີ່ມບຸກມາກໃສ່ <ph name="FOLDER_NAME"/> ແລ້ວ</translation>
 <translation id="8063895661287329888">ເພີ່ມບຸກມາກບໍ່ສຳເລັດ</translation>
 <translation id="2842985007712546952">ໂຟ​ລ​ເດີ​ພໍ່​ແມ່</translation>
+<translation id="6945221475159498467">ເລືອກ</translation>
 <translation id="9065203028668620118">ແກ້ໄຂ</translation>
 <translation id="4405224443901389797">ຍ້າຍໄປໃສ່…</translation>
+<translation id="8261506727792406068">ລຶບ</translation>
 <translation id="5170568018924773124">ສະ​ແດງ​ຢູ່​ໃນ​ໂຟລ​ເດີ</translation>
 <translation id="8035133914807600019">ໂຟ​ລ​ເດີ​ໃໝ່...</translation>
 <translation id="4532845899244822526">ເລືອກ​ໂຟລເດີ</translation>
@@ -870,16 +840,14 @@
 <translation id="1113597929977215864">ສະແດງມຸມມອງງ່າຍດາຍ</translation>
 <translation id="1513352483775369820">ບຸກມາກສ໌ ​ແລະ​ປະ​ຫວັດ​ເວັບ​</translation>
 <translation id="4939482511480190003">ຊ່ວຍປັບປຸງ Brave. <ph name="BEGIN_LINK"/>ເຮັດການສຳຫຼວດ<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">ກັບ​ຄືນ​ໄປ</translation>
-<translation id="5596627076506792578">ໂຕ​ເລືອກ​ເພີ່ມ​ເຕີມ</translation>
 <translation id="3522247891732774234">ອັບເດດມີໃຫ້ແລ້ວ. ຕົວເລືອກເພີ່ມເຕີມ</translation>
 <translation id="6773423637732432200">Brave ບໍ່ສາມາດອັບເດດໄດ້. ຕົວເລືອກເພີ່ມເຕີມ</translation>
+<translation id="1383876407941801731">ຄົ້ນຫາ</translation>
 <translation id="3328801116991980348">ຂໍ້​ມູນ​ເວັບ​ໄຊທ໌</translation>
 <translation id="5391532827096253100">ການເຊື່ອມຕໍ່ຂອງທ່ານກັບເວັບໄຊນີ້ບໍ່ປອດໄພ. ຂໍ້ມູນເວັບໄຊ</translation>
 <translation id="6206551242102657620">ການເຊື່ອມຕໍ່ປອດໄພ. ຂໍ້ມູນເວັບໄຊ</translation>
 <translation id="6963642900430330478">ໜ້ານີ້ອັນຕະລາຍ. ຂໍ້ມູນເວັບໄຊ</translation>
 <translation id="9070377983101773829">ເລີ່ມ​ການຄົ້ນຫາ​ສຽງ</translation>
-<translation id="8676374126336081632">ລຶບການປ້ອນເຂົ້າ</translation>
 <translation id="4968908871398201967">ໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນ</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> ແຖບທີ່ເປີດຢູ່, ແຕະເພື່ອປ່ຽນແຖບ}other{<ph name="OPEN_TABS_MANY"/> ແຖບທີ່ເປີດຢູ່, ແຕະເພື່ອປ່ຽນແຖບ}}</translation>
 <translation id="2369533728426058518">ເປີດແຖບ</translation>
@@ -887,6 +855,7 @@
 <translation id="932327136139879170">ບ້ານ</translation>
 <translation id="2707726405694321444">ຣີ​ເຟ​ຣ​ຊຫນ້າ</translation>
 <translation id="2891154217021530873">ຢຸດ​ການໂຫຼດ​ຫນ້າ</translation>
+<translation id="1201402288615127009">ຕໍ່ໄປ</translation>
 <translation id="6710213216561001401">ຜ່ານມາ</translation>
 <translation id="9080642952018487277">ປ້ອນໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນ</translation>
 <translation id="4883379392681899581">ອອກຈາກໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນ</translation>
@@ -895,18 +864,12 @@
 <translation id="3377025655491224618">ແຖບທີ່ Incognito</translation>
 <translation id="584427517463557805">ແຖບບໍ່ເປີດເຜີຍຕົວຕົນທີ່ເລືອກໄວ້</translation>
 <translation id="2268044343513325586">ກັ່ນ​ຕອງ</translation>
-<translation id="7846076177841592234">ຍົກ​ເລີກ​ການ​ເລືອກ</translation>
-<translation id="6216432067784365534">ຕົວເລືອກ <ph name="NAME_OF_LIST_ITEM"/></translation>
-<translation id="7087918508125750058">ເລືອກ <ph name="ITEM_COUNT"/> ລາຍການແລ້ວ.  ມີຕົວເລືອກໃຫ້ນຳໃຊ້ຢູ່ໃກ້ສ່ວນເທິງຂອງໜ້າຈໍ</translation>
-<translation id="7250468141469952378">ເລືອກ <ph name="ITEM_COUNT"/> ລາຍການແລ້ວ</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{ແບ່ງປັນ 1 ລາຍການທີ່ເລືອກ}other{ແບ່ງປັນ # ລາຍການທີ່ເລືອກ}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{ລຶບ 1 ລາຍການທີ່ເລືອກອອກ}other{ລຶບ # ລາຍການທີ່ເລືອກອອກ}}</translation>
 <translation id="1283039547216852943">ແຕະເພື່ອຂະຫຍາຍ</translation>
 <translation id="5962718611393537961">ແຕະເພື່ອຫຍໍ້ລົງ</translation>
 <translation id="3123734510202723619">ການປະກາດ</translation>
 <translation id="8076492880354921740">ແຖບ</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{ເລືອກ 1 ລາຍການແລ້ວ}other{ເລືອກ # ລາຍການແລ້ວ}}</translation>
-<translation id="6818926723028410516">ເລືອກລາຍການ</translation>
 <translation id="4797039098279997504">ສຳພັດເພື່ອກັບຄືນຫາ <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">ແຕະເພື່ອໄປຫາເວັບໄຊ</translation>
 <translation id="429312253194641664">ເວັບໄຊກຳລັງຫຼິ້ນສື່ຢູ່</translation>
@@ -1023,13 +986,12 @@
 <translation id="1875543012935658554">ເປີດ Brave ຄືນໃໝ່.</translation>
 <translation id="79859296434321399">ເພື່ອເບິ່ງເນື້ອຫາອາກິວເມັນ ຣີອາລິຕີ, ກະລຸນາຕິດຕັ້ງ ARCore ກ່ອນ</translation>
 <translation id="8558485628462305855">ເພື່ອເບິ່ງເນື້ອຫາອາກິວເມັນ ຣີອາລິຕີ, ກະລຸນາອັບເດດ ARCore</translation>
-<translation id="3513704683820682405">ອາກິວເມັນ ຣີອາລິຕີ</translation>
-<translation id="5475862044948910901">ເລີ່ມເຊດຊັນ Augmented Reality ບໍ?</translation>
-<translation id="7365126855094612066">ສຳລັບໄລຍະເວລາຂອງເຊດຊັນນີ້, ເວັບໄຊຈະສາມາດ:
-• ສ້າງແຜນທີ່ 3D ຂອງສະພາບແວດລ້ອມຂອງທ່ານ
-• ຕິດຕາມການເຄື່ອນໄຫວຂອງກ້ອງຖ່າຍຮູບ
+<translation id="6410973561433500075">ເຂົ້າສູ່ໂໝດ AR ຈາກ <ph name="DOMAIN"/> ບໍ?</translation>
+<translation id="3849365399446680203">ໃນຂະນະທີ່ທ່ານຢູ່ໃນໂໝດ AR, ເວັບໄຊນີ້ອາດຈະສາມາດ:
+• ສ້າງແຜນທີ່ 3 ມິຕິກ່ຽວກັບສະພາບແວດລ້ອມຂອງທ່ານ
+• ຕິດຕາມການເຄື່ອນໄຫວຂອງກ້ອງ
 
-ເວັບໄຊນີ້ບໍ່ໄດ້ຮັບສິດເຂົ້າເຖິງກ້ອງຖ່າຍຮູບ. ມີແຕ່ທ່ານເທົ່ານັ້ນສາມາດເຫັນຮູບພາບຈາກກ້ອງຖ່າຍຮູບໄດ້.</translation>
+ມີແຕ່ທ່ານເທົ່ານັ້ນສາມາດເຫັນສິ່ງທີ່ກ້ອງຂອງທ່ານເບິ່ງຢູ່. ເວັບໄຊບໍ່ສາມາດເຫັນພາບຂອງກ້ອງໄດ້.</translation>
 <translation id="1188239144602654184">ເຂົ້າຫາ AR</translation>
 <translation id="473775607612524610">ອັບເດດ</translation>
 <translation id="3133489217401741157">ກຳລັງຕິດຕັ້ງ <ph name="MODULE"/> ສໍາລັບ Brave…</translation>
@@ -1097,6 +1059,7 @@
 <translation id="723171743924126238">ເລືອກຮູບ</translation>
 <translation id="8751914237388039244">ເລືອກຮູບ</translation>
 <translation id="1989112275319619282">ເປີດ​ເບິ່ງ</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="7055152154916055070">ບລັອກການປ່ຽນເສັ້ນທາງແລ້ວ:</translation>
 <translation id="5524843473235508879">ບລັອກການປ່ຽນເສັ້ນທາງແລ້ວ.</translation>
 <translation id="6573096386450695060">ອະນຸຍາດທຸກເທື່ອ</translation>
@@ -1105,6 +1068,7 @@
 <translation id="9137013805542155359">ສະແດງຕົ້ນສະບັບ</translation>
 <translation id="6361779936989026201">ຜູ້ຊ່ວຍ Brave Software ໃນ Brave</translation>
 <translation id="7291387454912369099">ການຈ່າຍຄ່າສິນຄ້າທີ່ດຳເນີນໂດຍຜູ້ຊ່ວຍ</translation>
+<translation id="9037412730408024068">ເພື່ອຊ່ວຍທ່ານເຮັດສຳເລັດໜ້າວຽກ, Brave Software ຈະໄດ້ຮັບ URL ແລະ ເນື້ອຫາຂອງເວັບໄຊທີ່ທ່ານໃຊ້ຜູ້ຊ່ວຍ, ພ້ອມກັບຂໍ້ມູນທີ່ທ່ານສົ່ງຜ່ານຜູ້ຊ່ວຍ</translation>
 <translation id="4565206163201411670">ສະແດງການເຄື່ອນໄຫວໃນ Brave ຂອງທ່ານຢູ່ໃນ Digital Wellbeing ບໍ?</translation>
 <translation id="9055113864158719823">ທ່ານສາມາດເຫັນເວັບໄຊທີ່ທ່ານເຂົ້າເຖິງໃນ Brave ແລະ ຕັ້ງຄ່າໂມງນັບຖອຍຫຼັງສຳລັບພວກມັນໄດ້.\n\nBrave Software ຮັບເອົາຂໍ້ມູນກ່ຽວກັບເວັບໄຊທີ່ທ່ານຕັ້ງຄ່າໂມງນັບຖອຍຫຼັງສຳລັບ ແລະ ທ່ານເຂົ້າເບິ່ງພວກມັນດົນປານໃດ. ຂໍ້ມູນນີ້ຖືກໃຊ້ເພື່ອເຮັດໃຫ້ Digital Wellbeing ດີຂຶ້ນ.</translation>
 <translation id="4596514158372210596">ລຶບການເຄື່ອນໄຫວໃນ Brave ຂອງທ່ານອອກຈາກ Digital Wellbeing</translation>
@@ -1120,10 +1084,20 @@
 <translation id="246532703174860178">ແຊຣ໌</translation>
 <translation id="2517472476991765520">ສະແກນ</translation>
 <translation id="8628973420740315031">ອະນຸຍາດໃຫ້ເຂົາເຈົ້າສະແກນລະຫັດ QR ນີ້ເພື່ອແບ່ງປັນກັບຄົນທີ່ຢູ່ໃກ້ຄຽງ</translation>
+<translation id="3987993985790029246">ອັດ​ສຳ​ເນົາລິ້ງເຊື່ອມໂຍງ</translation>
+<translation id="4250229828105606438">ຮູບຖ່າຍໜ້າຈໍ</translation>
+<translation id="6201345951596836663">ສຳເນົາລິ້ງແລ້ວ</translation>
+<translation id="6597891566292541626">ປັບຕຳແໜ່ງ QR/ບາໂຄດໃນເຟຣມນີ້.</translation>
+<translation id="3140134512074889489">ກະລຸນາເປີດການນຳໃຊ້ກ້ອງຂອງທ່ານເພື່ອສະແກນລະຫັດ QR</translation>
+<translation id="2359808026110333948">ສືບຕໍ່</translation>
 <translation id="7339921667754113786">ແພລດຟອມການແຈ້ງເຕືອນຂອງ Brave Software</translation>
 <translation id="8516012719330875537">ໂປຣແກຣມແກ້ໄຂຮູບພາບ</translation>
+<translation id="6092062101542170135">ເພື່ອສືບຕໍ່, ກະລຸນາເປີດ NFC ໃນການຕັ້ງຄ່າ Android</translation>
+<translation id="5860491529813859533">ເປີດ</translation>
+<translation id="8926666909099850184">NFC ປິດຢູ່ສຳລັບອຸປະກອນນີ້. ກະລຸນາເປີດມັນໃນ <ph name="BEGIN_LINK"/>ການຕັ້ງຄ່າ Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">ເຂົ້າຫາ VR ຈາກ <ph name="DOMAIN"/> ບໍ?</translation>
 <translation id="4353114845960720315">ໃນຂະນະທີ່ທ່ານຢູ່ໃນ VR, ເວັບໄຊນີ້ອາດຈະສາມາດຮຽນຮູ້ກ່ຽວກັບ:</translation>
-<translation id="118069123878619799">- ລັກສະນະຮ່າງກາຍຂອງທ່ານ ເຊັ່ນ: ລວງສູງ</translation>
-<translation id="5819762621475381970">- ແຜນຜັງຂອງຫ້ອງຂອງທ່ານ</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">ລັກສະນະຮ່າງກາຍຂອງທ່ານ ເຊັ່ນ: ລວງສູງ</translation>
+<translation id="4660838440047236328">ແຜນຜັງຫ້ອງຂອງທ່ານ</translation>
 </translationbundle>

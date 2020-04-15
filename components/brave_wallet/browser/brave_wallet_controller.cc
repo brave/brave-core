@@ -30,6 +30,7 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/shared_user_script_master.h"
+#include "extensions/browser/unloaded_extension_reason.h"
 
 namespace {
   bool ResetCryptoWalletsOnFileTaskRunner(

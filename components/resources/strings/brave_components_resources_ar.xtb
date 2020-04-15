@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">تمَّ حجب الإعلانات والتعقب</translation>
 <translation id="2313532038420432247">ترقيات HTTPS</translation>
 <translation id="7679428712334662192">تم حفظ الوقت المقدر</translation>
+<translation id="8411095021655121794">مقدر النطاق الترددي الذي تم توفيره</translation>
 <translation id="5206618227023752085">تمت إزالة أفضل موقع.</translation>
 <translation id="2079545284768500474">تراجع</translation>
 <translation id="6040143037577758943">إغلاق</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">ساعات</translation>
 <translation id="7100907433458266664">يوم</translation>
 <translation id="4971389353431353387">أيام</translation>
+<translation id="2116364690062294218">بايت</translation>
+<translation id="3123243061080120667">كيلوبايت</translation>
+<translation id="977224059380370527">ميغابايت</translation>
+<translation id="8776285424728638733">غيغابايت</translation>
 <translation id="8427933533533814946">صورة بواسطة</translation>
 <translation id="7108338896283013870">إخفاء</translation>
 <translation id="7115515527894388910">تعديل التفضيلات</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">قم بتصفح آمن وسليم</translation>
 <translation id="2188651882929633653">تقوم دروع Brave بحظر العناصر المريبة التي تحاول تتبعك عبر الويب  بما في ذلك معظم الإعلانات. عيّن الدروع إلى "مُعطلة" إذا كان الموقع لا يبدو أنه يعمل. يستخدم Brave  <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> لتقدير الاستخدام الكلي لبعض الميزات. يمكنك إيقاف تشغيل هذا من <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">إعلانات</translation>
-<translation id="2364310432103707426">اربح {{currency}} عن طريق عرض إعلانات Brave. تعتمد الإعلانات المقدمة على اهتماماتك، كما يستدل عليها من سلوك التصفح الخاص بك. لا تذهب أي بيانات شخصية أو سجل تصفح خارج متصفحك.</translation>
+<translation id="2128226640852355533">اكسب {{currency}} عبر مشاهدة إعلانات Brave. تستند الإعلانات المعروضة إلى اهتماماتك كما يُستدل من سلوك تصفحك. لا تُستخرج من متصفحك أية بيانات شخصية أو سجلات تصفح أبداً.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="3742599705619405136">طريقة تلقائية لدعم الناشرين ومنشئي المحتوى. قم بتعيين دفعة شهرية وتصفح بشكل طبيعي. ستتلقى المواقع المتحقَق منها من Brave التي تزورها مساهماتك تلقائيًا، بناءً على انتباهك كما يتم قياسه بواسطة Brave.</translation>
-<translation id="8949527283651381130">السماح باكتشاف تحويل الإعلانات</translation>
-<translation id="2184191362610545393">سيؤدي هذا إلى إعلام Brave بشكل مجهول بأنه كانت هناك استجابة لإعلان ما على هذا المتصفح. سيزيد تمكين هذا من الأرباح.</translation>
 <translation id="20281847067919078">تقدير المكافآت المعلقة</translation>
 <translation id="8593551638387217772">تاريخ الدفع التالي</translation>
 <translation id="319209088187794725">إشعارات الإعلانات التي وردت هذا الشهر</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">أُنشئت المحفظة</translation>
 <translation id="5094577350232361255">معلومات</translation>
 <translation id="4918086044614829423">قبول</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave هي علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لمالك الموقع.</translation>
+<translation id="5916290544882167205">Brave Software. تعتبر Brave علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لصاحب الموقع.</translation>
 <translation id="9026369588205476247">لحماية خصوصيتك، لا يتم حفظ بيان مكافآت Brave أو تسجيله في أي مكان آخر بخلاف جهازك (هذا الكمبيوتر). لا يمكن استرداده من Brave في حالة فقدان البيانات من جهازك.</translation>
 <translation id="1036277985068412734">إضافة الأموال.</translation>
 <translation id="3587482841069643663">الكل</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">تم الحفظ</translation>
 <translation id="2155330833364281539">الإعلانات التي تلقيتها في الأيام {{totalDays}} الماضية</translation>
 <translation id="8863685593846905344">إضافة إلى السجل</translation>
+<translation id="2777306694585938662">تم استلام مكافآت الإعلانات</translation>
 <translation id="5212777575344695266">وضع علامة كإعلان غير لائق</translation>
 <translation id="2111256234277361810">ضع علامة كإعلان غير لائق ✓</translation>
 <translation id="8988332871810963281">لا يوجد حالياً أي سجل إعلانات Brave</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">الرصيد الافتتاحي</translation>
 <translation id="532275381857891532">سجل الإعلانات لمدة 7 أيام</translation>
 <translation id="4923459931733593730">دفعة</translation>
-<translation id="4021593982164260556">يتم عمل الدفع في اليوم {{day}} في كل شهر.</translation>
+<translation id="5693657857413982604">يتم سداد الدفع كل {{day}} من كل شهر.</translation>
 <translation id="6104680658798556671">لم يتم الدفع.</translation>
-<translation id="2834888581291358924">عندما لا يكون رصيدك كافيًا لتغطية إجمالي المساهمة التلقائية والمساهمات الشهرية، يتم تخطي هذه الدفعات لهذه الفترة.</translation>
 <translation id="3138528956349114724">المواقع المثبّتة الآن</translation>
 <translation id="2337632028350283479">إليك آلية عمل المساهمات الشهرية:</translation>
 <translation id="6457273203091513039">لا تتم الاشتراكات الشهرية من خلال دفع اشتراكك التلقائي. فهما منفصلان.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">بيتكوين (BTC)</translation>
 <translation id="4837149400263828922">إيثريوم (ETH)</translation>
 <translation id="8746837129291133068">لايتكوين (LTC)</translation>
+<translation id="6367285596431004439">تم استلام منحة الرموز المميزة</translation>
 <translation id="9212459913845238740">تم تحصيل النقاط الممنوحة</translation>
 <translation id="768850953428043522">النقاط</translation>
 <translation id="3043542281656021374">نقطة</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">محقَّق</translation>
 <translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
 <translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
+<translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
+<translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
+<translation id="526152301446370337">قم بزيارة TAP.</translation>
+<translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>أعرف أكثر<ph name="LINK_END"/> عن Brave Rewards</translation>
 <translation id="5826706758731195747">بتشغيلك لـ Rewards، فإنك توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">الأرباح المقدرة لغاية الوقت الحالي من هذا الشهر</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">الحصول على أموال لعرض هذه الصورة الدعائية بالخلفية.</translation>
 <translation id="2542495049135486284">جرب مكافآت Brave مرة أخرى ورد الصنيع أثناء كسبك!</translation>
 <translation id="53513464591392992">قم بتشغيل Brave Rewards واحصل على أموال لعرض إعلانات تحترم الخصوصية.</translation>
+<translation id="8463996294416161140">قم بتشغيل <ph name="PRODUCT_NAME"/> لتقاضي نصيبك. يمكنك كذلك اختيار <ph name="LINK_BEGIN"/>إخفاء صور الرعاة الدعائية<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">أ!</translation>
 <translation id="764235488372037377">ها قد وصلتك مكافآتك من Ads</translation>
 <translation id="7091215606170476659">لديك منحة مستودع إنماء المستخدمين من Brave.</translation>

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index 441ed6d50d5cb4edcd665665fca7887f034ff6a0..54a22d11c380ee31e12440900cf2a365781fe8d9 100644
+index 81969fb4994f01110e17385acfe7f2bfaf3f9302..49374ed4823b68dd7534f1ca0385bef6fbd6b623 100644
 --- a/chrome/installer/util/google_update_settings.cc
 +++ b/chrome/installer/util/google_update_settings.cc
 @@ -29,7 +29,11 @@ using base::win::RegKey;

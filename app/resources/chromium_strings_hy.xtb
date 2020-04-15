@@ -3,7 +3,7 @@
 <translationbundle lang="hy">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave-ը վեբ դիտարկիչ է, որը կայծակի արագությամբ է բացում վեբէջերն ու հավելվածները: Այն արագ է, կայուն և պարզ՝ օգտագործման մեջ: Ավելի ապահով աշխատեք համացանցում՝ վնասագրերի և խաբկայքերի դեմ ներկառուցված պաշտպանության շնորհիվ:</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Brave-ի պատկերանշանը</translation>
 <translation id="7339898014177206373">Նոր պատուհան</translation>
 <translation id="5516268345616100622">Խնդիրների կառավարիչ - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">Brave Authors</translation>
 <translation id="8121009781989288430">© <ph name="YEAR"/> The Brave Authors: Բոլոր իրավունքները պահպանված են:</translation>
-<translation id="2310890394934209120">Brave OS-ը մատչելի է լրացուցիչ <ph name="BEGIN_LINK_CROS_OSS"/>բաց կոդով ծրագրակազմի<ph name="END_LINK_CROS_OSS"/> շնորհիվ:</translation>
-<translation id="8160794320557846790">Brave OS-ը ստեղծվել է <ph name="BEGIN_LINK_CROS_OSS"/>բաց կոդով ծրագրակազմի<ph name="END_LINK_CROS_OSS"/> շնորհիվ, ինչպիսին է <ph name="BEGIN_LINK_LINUX_OSS"/>Լինուքսը (բետա)<ph name="END_LINK_LINUX_OSS"/>:</translation>
+<translation id="6368958679917195344">Brave OS-ը մատչելի է լրացուցիչ <ph name="BEGIN_LINK_CROS_OSS"/>բաց կոդով ծրագրակազմի<ph name="END_LINK_CROS_OSS"/> շնորհիվ:</translation>
+<translation id="1662639173275167396">Brave OS-ը ստեղծվել է <ph name="BEGIN_LINK_CROS_OSS"/>բաց կոդով ծրագրակազմի<ph name="END_LINK_CROS_OSS"/> շնորհիվ, ինչպիսին է <ph name="BEGIN_LINK_LINUX_OSS"/>Լինուքսը (բետա)<ph name="END_LINK_LINUX_OSS"/>:</translation>
 <translation id="6913582816347128893">Brave-ը հնարավոր է չաշխատի ինչպես հարկն է, քանի որ այն այլևս չի աջակցվում Mac OS X 10.9 համակարգում:</translation>
 <translation id="7977787072794666032">Brave-ը հնարավոր է չաշխատի ինչպես հարկն է, քանի որ այն այլևս չի աջակցվում Windows XP և Windows Vista համակարգերում</translation>
 <translation id="189297655255130768">Brave-ը չի պատասխանում: Վերագործարկե՞լ:</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Հեռացնե՞լ Brave-ը:</translation>
 <translation id="5590013613412457132">Ապատեղադրել Brave-ը</translation>
 <translation id="5019879183386042809">Դարձնել Brave-ը կանխադրված դիտարկիչ</translation>
-<translation id="5063987220091207247">Brave OS-ը չի կարող բացել այս էջը:</translation>
+<translation id="707769633889902835">Brave OS-ը չի կարող բացել այս էջը:</translation>
 <translation id="4065288863231444640">Թույլատրել Brave-ին աշխատել ֆոնային ռեժիմում</translation>
 <translation id="6797402139308059782">Թույլ տալ Brave-ին աշխատել հետնաշերտում</translation>
 <translation id="2585240446624043880">Brave-ը չի կարող կարդալ և գրել իր տվյալների գրացուցակում՝
@@ -94,8 +94,7 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="9071554113102421877">&amp;Բացել Brave-ում</translation>
 <translation id="2176825726964012531">&amp;Brave-ի մասին</translation>
 <translation id="5450493308072741203">Թարմացնել &amp;Brave-ը</translation>
-<translation id="1421502046520299169">Տեղեկություններ &amp;Brave OS-ի մասին</translation>
-<translation id="2534623228451928732">Թարմացնել &amp;Brave OS-ը</translation>
+<translation id="61852838583753520">Թարմացնել &amp;Brave OS-ը</translation>
 <translation id="8447483940522230788">Brave օգնական</translation>
 <translation id="5477319665405831211">Համաժամացրեք և անհատականացրեք Brave-ը ձեր բոլոր սարքերում</translation>
 <translation id="8132634101975074716">Դուք մուտք եք գործել Brave:</translation>
@@ -109,19 +108,18 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="5380963249588143069">Ձեր համակարգի ադմինիստրատորն այնպես է կարգավորել Brave-ը, որ <ph name="TARGET_URL_HOSTNAME"/> կայքը բացվի <ph name="ALTERNATIVE_BROWSER_NAME"/> դիտարկիչով։</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>-ը նախկինում Brave է օգտագործել</translation>
 <translation id="1384923383737428730">Ձեր համակարգչում վնասաբեր ծրագիր է հայտնաբերվել։ Ձեր դիտարկիչի կայուն աշխատանքը վերականգնելու համար Brave-ը կարող է ջնջել ծրագիրը և վերականգնել ձեր կարգավորումները։</translation>
-<translation id="8919921662052966648">Brave-ը չկարողացավ համաժամացնել ձեր տվյալները: Թարմացրեք ձեր Համաժամացման անցաբառը:</translation>
 <translation id="2262856633481902138">Brave-ը չկարողացավ համաժամացնել ձեր տվյալները, քանի որ ձեր հաշվի մուտքի տվյալները հնացած են:</translation>
 <translation id="5419189641394808652">Brave-ը չկարողացավ համաժամացնել ձեր տվյալները, քանի որ համաժամացումը մատչելի չէ ձեր տիրույթի համար:</translation>
 <translation id="2577755334620061182">Brave-ին չհաջողվեց համաժամացնել ձեր տվյալները՝ մուտք գործելիս առաջացած սխալի պատճառով:</translation>
-<translation id="8583885258305961947">Brave OS համակարգ</translation>
-<translation id="3968006371075376562">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները: Թարմացրեք Sync-ի անցաբառը:</translation>
-<translation id="6746636977031158624">Brave OS-ին չհաջողվեց համաժամացնել ձեր տվյալները, քանի որ ձեր հաշվի տվյալները հնացել են:</translation>
-<translation id="2999152167963026588">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները, քանի որ Sync-ը մատչելի չէ ձեր տիրույթի համար:</translation>
-<translation id="1459786048951724030">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները՝ մուտքի սխալի պատճառով:</translation>
-<translation id="6813094029720377619">Երբ Brave-ից դուրս եք գալիս, քուքիները մաքրվում են: Համաժամացումը շարունակելու համար փոխեք <ph name="COOKIE_SETTINGS_LINK"/>ը:</translation>
-<translation id="3340978935015468852">կարգավորումներ</translation>
+<translation id="2644798301485385923">Brave OS համակարգ</translation>
+<translation id="7916016681687251387">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները։ Շտկել խնդիրը։</translation>
+<translation id="2341767445688917208">Brave OS-ը չկարողացավ համաժամացնել ձեր գաղտնաբառերը։ Շտկել խնդիրը։</translation>
+<translation id="123620459398936149">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները: Թարմացրեք Sync-ի անցաբառը:</translation>
+<translation id="9026991721384951619">Brave OS-ին չհաջողվեց համաժամացնել ձեր տվյալները, քանի որ ձեր հաշվի տվյալները հնացել են:</translation>
+<translation id="7419046106786626209">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները, քանի որ Sync-ը մատչելի չէ ձեր տիրույթի համար:</translation>
+<translation id="4480040274068703980">Brave OS-ը չկարողացավ համաժամացնել ձեր տվյալները՝ մուտքի սխալի պատճառով:</translation>
 <translation id="300669147395456190">Brave հավելվածներ</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/>-ը պահանջում է, որ նախքան սարքն օգտագործելը կարդաք և ընդունեք հետևյալ Օգտագործման պայմանները: Այս պայմանները չեն ընդլայնում, փոփոխում կամ սահմանափակում Brave OS-ի պայմանները:</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/>-ը պահանջում է, որ նախքան սարքն օգտագործելը կարդաք և ընդունեք հետևյալ Օգտագործման պայմանները: Այս պայմանները չեն ընդլայնում, փոփոխում կամ սահմանափակում Brave OS-ի պայմանները:</translation>
 <translation id="3293668930608086049">Brave-ն օգտագործում է ձեր տեսախցիկն ու խոսափողը:</translation>
 <translation id="8919461291440820124">Brave-ն օգտագործում է ձեր խոսափողը:</translation>
 <translation id="3205074487970075628">Brave-ն օգտագործում է ձեր տեսախցիկը:</translation>
@@ -154,12 +152,9 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="4805806622840861220">Brave-ի վերագործարկում</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave-ի այս տարբերակի համար առկա է թարմացում: Այն կտեղադրվի, երբ դիտարկիչը վերագործարկվի։}=1{Brave-ի այս տարբերակի համար առկա է թարմացում: Այն կտեղադրվի, երբ դիտարկիչը վերագործարկվի։ Ձեր ինկոգնիտո պատուհանը նորից չի բացվի։}one{Brave-ի այս տարբերակի համար առկա է թարմացում: Այն կտեղադրվի, երբ դիտարկիչը վերագործարկվի։ Ձեր # ինկոգնիտո պատուհանը նորից չի բացվի։}other{Brave-ի այս տարբերակի համար առկա է թարմացում: Այն կտեղադրվի, երբ դիտարկիչը վերագործարկվի։ Ձեր # ինկոգնիտո պատուհանները նորից չեն բացվի։}}</translation>
 <translation id="2799223571221894425">Վերագործարկել</translation>
-<translation id="2522086024276534909">Վերագործարկեք Brave OS-ը</translation>
-<translation id="8183252473547465084">Թարմացումը կիրառելու համար հարկավոր է վերագործարկել Brave OS-ը:</translation>
+<translation id="5062123544085870375">Վերագործարկեք Brave OS-ը</translation>
+<translation id="2063848847527508675">Թարմացումը կիրառելու համար հարկավոր է վերագործարկել Brave OS-ը:</translation>
 <translation id="5895138241574237353">Վերագործարկել</translation>
-<translation id="8887390605192156061">Փակեք Brave-ի բոլոր օրինակները</translation>
-<translation id="1801551749768408825">Brave-ի այլ օրինակներ են աշխատում: Թարմացնելու համար փակեք դրանք։</translation>
-<translation id="2632141563911437138">Թարմացման համար անհրաժեշտ է փակել Brave-ն այս համակարգչում։ Այս համակարգչում մյուս օգտատերերի չպահված փոփոխությունները կարող են կորել։</translation>
 <translation id="5875673934455379806">Նորից տեղադրել Brave-ը</translation>
 <translation id="2097604701283463988">Brave-ը հնացած է</translation>
 <translation id="5173820533850252773">Brave-ը հնացել է</translation>
@@ -180,7 +175,7 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="7798069806040634998">Ֆայլեր ներբեռնելու համար Brave-ին անհրաժեշտ է պահեստի օգտագործման թույլտվություն</translation>
 <translation id="7685904775439037072">Երբ Brave-ը հասանելիություն ստանա, կայքերը կկարողանան ձեզնից հասանելիություն խնդրել։</translation>
 <translation id="1744365871163268756">Սպասեք` մինչ Brave-ը տեղադրում է համակարգի նորագույն թարմացումները:</translation>
-<translation id="7808415789955822133">Brave OS-ի պայմաններ</translation>
+<translation id="7408085963519505752">Brave OS-ի պայմաններ</translation>
 <translation id="7207456302801184289">Բարի գալուստ Brave</translation>
 <translation id="3507835409099344374">Անցնել Brave-ի ծանուցումների կարգավորումներ</translation>
 <translation id="1026406809507858026">{0,plural, =0{Հասանելի է Brave-ի նոր տարբերակը}=1{Հասանելի է Brave-ի նոր տարբերակը}one{Brave-ի նոր տարբերակը # օր է հասանելի է}other{Brave-ի նոր տարբերակը # օր է հասանելի է}}</translation>
@@ -199,9 +194,9 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="1786715389543715322">Brave-ի թարմացում (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">Գրեթե պատրաստ է: Վերագործարկեք Brave-ը՝ թարմացումն ավարտելու համար:</translation>
 <translation id="8208853227947884571">Brave-ը թարմացված է</translation>
-<translation id="6686872257969654608">Brave OS-ի մասին</translation>
-<translation id="7674116293463255181">Սարքի ծրագրակազմի տարբերակը տեսնելու համար անցեք <ph name="LINK_BEGIN"/>Brave OS-ի կարգավորումներ<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Brave OS-ի օգնության էջ</translation>
+<translation id="573759479754913123">Brave OS-ի մասին</translation>
+<translation id="7573289029918943991">Սարքի ծրագրակազմի տարբերակը տեսնելու համար անցեք <ph name="LINK_BEGIN"/>Brave OS-ի կարգավորումներ<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Brave OS-ի օգնության էջ</translation>
 <translation id="38898988211673781">Brave-ից դուրս գալիս մաքրել քուքիները և կայքերի տվյալները</translation>
 <translation id="5253815230176279256">Brave Software Pay (պատճենվել է Brave-ում)</translation>
 <translation id="5468853758063275923">Brave-ը ձեր կանխադրված դիտարկիչն է</translation>
@@ -209,7 +204,7 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="6915252145142862992">Սա Brave-ի երկրորդային տեղադրումն է: Այն չի կարող դառնալ ձեր կանխադրված դիտարկիչը:</translation>
 <translation id="6235873178214143377">Եթե որևէ կարգավորում չտեսնեք այս էջում, փնտրեք այն ձեր <ph name="LINK_BEGIN"/>
       Brave դիտարկիչի կարգավորումներում<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">Եթե որևէ կարգավորում չտեսնեք այս էջում, փնտրեք այն ձեր <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">Եթե որևէ կարգավորում չտեսնեք այս էջում, փնտրեք այն ձեր <ph name="LINK_BEGIN"/>
       Brave OS-ի կարգավորումներում<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">Ուղղագրական սխալները շտկելու համար Brave-ը Brave Software-ին է ուղարկում տեքստային դաշտերում ձեր մուտքագրած տեքստը</translation>
 <translation id="8586264863973514035">Փոփոխությունները կիրառելու համար վերագործարկեք Brave-ը</translation>
@@ -219,7 +214,6 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> տարր կջնջվի այս սարքից: Հետագայում ձեր տվյալներն առբերելու համար մուտք գործեք Brave <ph name="USER_EMAIL"/> հաշվով:</translation>
 <translation id="4784414698887946907">Ձեր այցելությունների պատմությունը կջնջվի այս սարքից: Հետագայում ձեր տվյալներն առբերելու համար մուտք գործեք Brave <ph name="USER_EMAIL"/> հաշվով:</translation>
 <translation id="4518479204315969707">Brave պրոֆիլի անունն ու պատկերը</translation>
-<translation id="82609232232243542">Մուտք գործել Brave</translation>
 <translation id="8372880274820509128">Լրացուցիչ անվտանգության համար Brave-ը կգաղտնագրի ձեր տվյալները:</translation>
 <translation id="7445061995866044926">Դուրս գա՞լ Brave-ից:</translation>
 <translation id="7453070689008684791">Brave-ը կօգտագործի ձեր Drive-ը՝ հասցեագոտում հուշումներ ցուցադրելու համար</translation>

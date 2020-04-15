@@ -1,0 +1,9 @@
+import("//tools/polymer/polymer.gni")
+
+# Targets for auto-generating Polymer 3 JS Modules.
+
+polymer_modulizer("brave_history_item") {
+  js_file = "brave_history_item.js"
+  html_file = "brave_history_item.html"
+  html_type = "dom-module"
+}

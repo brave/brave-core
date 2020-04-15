@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
-index ba38018fb9f29fb1fd2ce3eb48c300fd61b4b730..153664acc0edf457374f5dfc2fcb19ef08a2c6a6 100644
+index c64faf29bb5a310ce8ed1b9c7ad19df522f34563..e03cbb87255505d5788a720c0dcce92b4e3b9682 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
-@@ -40,6 +40,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+@@ -38,6 +38,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
    void BuildMenu() override;
  
   private:
@@ -10,27 +10,3 @@ index ba38018fb9f29fb1fd2ce3eb48c300fd61b4b730..153664acc0edf457374f5dfc2fcb19ef
    friend class ProfileMenuViewExtensionsTest;
  
    // views::BubbleDialogDelegateView:
-@@ -53,6 +54,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
-   void OnAddressesButtonClicked();
-   void OnGuestProfileButtonClicked();
-   void OnManageProfilesButtonClicked();
-+  virtual
-   void OnExitProfileButtonClicked();
-   void OnSyncSettingsButtonClicked();
-   void OnSyncErrorButtonClicked(sync_ui_util::AvatarSyncErrorType error);
-@@ -101,6 +103,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
-   void AddGuestProfileView();
-   void AddOptionsView(bool display_lock, AvatarMenu* avatar_menu);
-   void AddSupervisedUserDisclaimerView();
-+  virtual
-   void AddAutofillHomeView();
-   void AddManageGoogleAccountButton();
- 
-@@ -125,6 +128,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
-   // TODO(crbug.com/1021587): Remove after ProfileMenuRevamp.
-   // Adds a view showing the profile associated with |avatar_item| and an error
-   // button below, when dice is enabled.
-+  virtual
-   void AddDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
-                             sync_ui_util::AvatarSyncErrorType error,
-                             int button_string_id);

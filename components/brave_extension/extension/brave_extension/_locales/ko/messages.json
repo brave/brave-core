@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "사이트 간 기기 인식이 차단됨",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "교차 사이트 핑거프린팅 차단됨",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "기기 인식 시도가 차단됨",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "핑거프린팅 시도 차단됨",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "모든 기기 인식 시도가 허용됨",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "모든 핑거프린팅 시도 허용됨",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "기기 인식 시도",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "핑거프린팅 시도",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "이 사이트상에 있는 스크립트",
