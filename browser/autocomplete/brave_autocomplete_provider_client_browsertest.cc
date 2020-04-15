@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/autocomplete/brave_autocomplete_provider_client.h"
+#include "brave/browser/autocomplete/brave_autocomplete_provider_client_for_classifier.h"
 
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,15 +18,15 @@ using BraveAutocompleteProviderClientTest = InProcessBrowserTest;
 IN_PROC_BROWSER_TEST_F(BraveAutocompleteProviderClientTest,
                        DependentServiceCheckTest) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetOffTheRecordProfile();
+  Profile* otr_profile = profile->GetOffTheRecordProfile();
 
   // Brave initiates different AutocompleteClassifier service for
   // normal/incognito profile.
   EXPECT_NE(AutocompleteClassifierFactory::GetForProfile(profile),
-            AutocompleteClassifierFactory::GetForProfile(incognito_profile));
+            AutocompleteClassifierFactory::GetForProfile(otr_profile));
 
-  BraveAutocompleteProviderClient normal_client(profile);
-  BraveAutocompleteProviderClient incognito_client(incognito_profile);
+  BraveAutocompleteProviderClientForClassifier normal_client(profile);
+  BraveAutocompleteProviderClientForClassifier incognito_client(otr_profile);
 
   // Check different TemplateURLService is used.
   EXPECT_NE(normal_client.GetTemplateURLService(),
