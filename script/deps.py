@@ -11,9 +11,9 @@ import sys
 import tarfile
 import tempfile
 import time
-import urllib2
 import zipfile
 
+from six.moves import urllib
 
 def DownloadUrl(url, output_file):
     """Download url into output_file."""
@@ -26,7 +26,7 @@ def DownloadUrl(url, output_file):
         try:
             sys.stdout.write('Downloading %s ' % url)
             sys.stdout.flush()
-            response = urllib2.urlopen(url)
+            response = urllib.request.urlopen(url)
             total_size = int(response.info().getheader('Content-Length').strip())
             bytes_done = 0
             dots_printed = 0
@@ -41,13 +41,13 @@ def DownloadUrl(url, output_file):
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
-                raise urllib2.URLError("only got %d of %d bytes" % (bytes_done, total_size))
+                raise urllib.error.URLError("only got %d of %d bytes" % (bytes_done, total_size))
             print ' Done.'
             return
-        except urllib2.URLError as e:
+        except urllib.error.URLError as e:
             sys.stdout.write('\n')
             print e
-            if num_retries == 0 or isinstance(e, urllib2.HTTPError) and e.code == 404:
+            if num_retries == 0 or isinstance(e, urllib.error.HTTPError) and e.code == 404:
                 raise e
             num_retries -= 1
             print 'Retrying in %d s ...' % retry_wait_s

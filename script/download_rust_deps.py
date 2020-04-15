@@ -5,13 +5,15 @@
 
 """Script to download rust_deps."""
 
+
 import argparse
 import os
 import re
 import subprocess
 import sys
-import urllib2
 import pipes
+
+from six.moves import urllib
 
 import deps
 from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
@@ -56,7 +58,7 @@ def download_and_unpack_rust_deps(platform):
 
     try:
         deps.DownloadAndUnpack(url, RUSTUP_PATH)
-    except urllib2.URLError:
+    except urllib.error.URLError:
         print('Failed to download Rust deps: %s' % url)
         print('Exiting.')
         sys.exit(1)
