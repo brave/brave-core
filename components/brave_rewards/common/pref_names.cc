@@ -8,6 +8,7 @@
 namespace brave_rewards {
 namespace prefs {
 
+const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kBraveRewardsEnabled[] = "brave.rewards.enabled";
 const char kBraveRewardsEnabledMigrated[] = "brave.rewards.enabled_migrated";
 const char kRewardsNotifications[] = "brave.rewards.notifications";

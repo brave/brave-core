@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/common/brave_wallet_constants.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -58,7 +59,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kHideBraveRewardsButton));
+      browser()->profile()->GetPrefs()->GetBoolean(
+          brave_rewards::prefs::kHideBraveRewardsButton));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
   EXPECT_EQ(

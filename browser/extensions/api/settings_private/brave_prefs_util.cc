@@ -7,6 +7,7 @@
 
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
@@ -65,7 +66,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kHideBraveRewardsButton] =
+  (*s_brave_whitelist)[brave_rewards::prefs::kHideBraveRewardsButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

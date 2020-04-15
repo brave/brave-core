@@ -155,7 +155,7 @@ void BraveActionsContainer::Init() {
       base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
                  base::Unretained(this)));
   hide_brave_rewards_button_.Init(
-      kHideBraveRewardsButton, browser_->profile()->GetPrefs(),
+      brave_rewards::prefs::kHideBraveRewardsButton, browser_->profile()->GetPrefs(),
       base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
                  base::Unretained(this)));
 }
@@ -180,7 +180,7 @@ bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
   }
   const PrefService* prefs = browser_->profile()->GetPrefs();
   return prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled) ||
-         !prefs->GetBoolean(kHideBraveRewardsButton);
+         !prefs->GetBoolean(brave_rewards::prefs::kHideBraveRewardsButton);
 }
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension) {

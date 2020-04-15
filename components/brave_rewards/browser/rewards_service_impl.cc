@@ -39,7 +39,6 @@
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"

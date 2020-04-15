@@ -12,6 +12,7 @@
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -91,7 +92,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
+  registry->RegisterBooleanPref(
+      brave_rewards::prefs::kHideBraveRewardsButton,
+      false);
 
   brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 

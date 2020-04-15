@@ -8,7 +8,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 
 #include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -37,7 +36,7 @@ void OverridePrefsForPrivateProfileUserPrefs(Profile* profile) {
 
   // rewards button should be hidden on guest and tor profile.
   PrefService* pref_service = profile->GetPrefs();
-  pref_service->SetBoolean(kHideBraveRewardsButton, true);
+  pref_service->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, true);
   pref_service->SetBoolean(brave_rewards::prefs::kBraveRewardsEnabled, false);
 }
 #endif
