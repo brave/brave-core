@@ -37,7 +37,7 @@ class RedeemToken {
   ~RedeemToken();
 
   void Redeem(
-      const AdInfo& info,
+      const AdInfo& ad,
       const ConfirmationType confirmation_type);
   void Redeem(
       const std::string& creative_instance_id,
@@ -49,10 +49,10 @@ class RedeemToken {
  private:
   void CreateConfirmation(
       const ConfirmationInfo& confirmation);
-  void CreateConfirmation(
-      const AdInfo& ad_info,
+  ConfirmationInfo CreateConfirmationInfo(
+      const AdInfo& ad,
       const ConfirmationType confirmation_type,
-      const TokenInfo& token_info);
+      const TokenInfo& token);
   void OnCreateConfirmation(
       const std::string& url,
       const int response_status_code,
@@ -73,6 +73,11 @@ class RedeemToken {
       const Result result,
       const ConfirmationInfo& confirmation,
       const bool should_retry = true);
+
+  void CreateAndAppendNewConfirmationToRetryQueue(
+      const ConfirmationInfo& confirmation);
+  void AppendConfirmationToRetryQueue(
+      const ConfirmationInfo& confirmation);
 
   bool Verify(
      const ConfirmationInfo& confirmation) const;
