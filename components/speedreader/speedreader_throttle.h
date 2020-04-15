@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_H_
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
@@ -23,8 +25,8 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   // |task_runner| is used to bind the right task runner for handling incoming
   // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
   // current sequence.
-  explicit SpeedReaderThrottle(
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+  SpeedReaderThrottle(SpeedreaderWhitelist* whitelist,
+                      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
   ~SpeedReaderThrottle() override;
 
   SpeedReaderThrottle(const SpeedReaderThrottle&) = delete;
@@ -39,6 +41,7 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   void Resume();
 
  private:
+  SpeedreaderWhitelist* speedreader_whitelist_;  // not owned
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   base::WeakPtrFactory<SpeedReaderThrottle> weak_factory_{this};
 };

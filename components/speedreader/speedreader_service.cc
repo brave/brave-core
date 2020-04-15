@@ -6,15 +6,14 @@
 #include "brave/components/speedreader/speedreader_service.h"
 
 #include "base/command_line.h"
-#include "components/prefs/pref_registry_simple.h"
-#include "components/prefs/pref_service.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_switches.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace speedreader {
 
-SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {
-}
+SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {}
 
 SpeedreaderService::~SpeedreaderService() {}
 
@@ -36,6 +35,5 @@ bool SpeedreaderService::IsEnabled() {
 
   return prefs_->GetBoolean(kSpeedreaderEnabled);
 }
-
 
 }  // namespace speedreader

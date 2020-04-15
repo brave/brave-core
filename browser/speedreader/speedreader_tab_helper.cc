@@ -38,6 +38,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
     auto* whitelist = g_brave_browser_process->speedreader_whitelist();
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         whitelist->IsWhitelisted(handle->GetURL())) {
+      VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
       active_ = true;
       return;
     }

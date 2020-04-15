@@ -5,8 +5,8 @@
 
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 
-#include <memory>
 #include <cstring>
+#include <memory>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -84,7 +84,8 @@ TEST(SpeedreaderFFITest, FindRewriterType) {
 TEST(SpeedreaderFFITest, HeuristicsRewriterType) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
-  std::string url_str = "https://anotherexample.com/news/article/topic/index.html";
+  std::string url_str =
+      "https://anotherexample.com/news/article/topic/index.html";
   EXPECT_EQ(sr.RewriterTypeForURL(url_str), RewriterType::RewriterHeuristics);
 }
 
@@ -111,7 +112,8 @@ TEST(SpeedreaderFFITest, RewriterCallback) {
   const char* content2 = "hello world</div></html>";
   ASSERT_EQ(rewriter->Write(content2, strlen(content2)), 0);
   ASSERT_EQ(rewriter->End(), 0);
-  EXPECT_EQ(output, "<html><div class=\"article-body\">hello world</div></html>");
+  EXPECT_EQ(output,
+            "<html><div class=\"article-body\">hello world</div></html>");
   EXPECT_EQ(*rewriter->GetOutput(), "");
 }
 

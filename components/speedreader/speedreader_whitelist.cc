@@ -77,6 +77,10 @@ bool SpeedreaderWhitelist::IsWhitelisted(const GURL& url) {
   return speedreader_->ReadableURL(url.spec());
 }
 
+std::unique_ptr<Rewriter> SpeedreaderWhitelist::MakeRewriter(const GURL& url) {
+  return speedreader_->RewriterNew(url.spec());
+}
+
 void SpeedreaderWhitelist::OnGetDATFileData(GetDATFileDataResult result) {
   speedreader_ = std::move(result.first);
 }

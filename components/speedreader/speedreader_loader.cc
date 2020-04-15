@@ -5,18 +5,20 @@
 
 #include "brave/components/speedreader/speedreader_loader.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
+#include "brave/components/speedreader/speedreader_switches.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "components/grit/brave_components_resources.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "brave/components/speedreader/rust/ffi/speedreader.h"
 
 namespace speedreader {
 
@@ -41,7 +43,8 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
 SpeedReaderURLLoader::CreateLoader(
     base::WeakPtr<SpeedReaderThrottle> throttle,
     const GURL& response_url,
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
+    scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    SpeedreaderWhitelist* whitelist) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
   mojo::PendingRemote<network::mojom::URLLoaderClient> url_loader_client;
   mojo::PendingReceiver<network::mojom::URLLoaderClient>
@@ -50,7 +53,7 @@ SpeedReaderURLLoader::CreateLoader(
 
   auto loader = base::WrapUnique(new SpeedReaderURLLoader(
       std::move(throttle), response_url, std::move(url_loader_client),
-      std::move(task_runner)));
+      std::move(task_runner), whitelist));
   SpeedReaderURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
@@ -63,7 +66,8 @@ SpeedReaderURLLoader::SpeedReaderURLLoader(
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner)
+    scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    SpeedreaderWhitelist* whitelist)
     : throttle_(throttle),
       destination_url_loader_client_(std::move(destination_url_loader_client)),
       response_url_(response_url),
@@ -73,7 +77,8 @@ SpeedReaderURLLoader::SpeedReaderURLLoader(
                              task_runner),
       body_producer_watcher_(FROM_HERE,
                              mojo::SimpleWatcher::ArmingPolicy::MANUAL,
-                             std::move(task_runner)) {}
+                             std::move(task_runner)),
+      whitelist_(whitelist) {}
 
 SpeedReaderURLLoader::~SpeedReaderURLLoader() = default;
 
@@ -236,7 +241,7 @@ void SpeedReaderURLLoader::OnBodyWritable(MojoResult r) {
 
 void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
   DCHECK_EQ(State::kLoading, state_);
-  if (!throttle_) {
+  if (!throttle_ || !whitelist_) {
     Abort();
     return;
   }
@@ -249,14 +254,9 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
     base::PostTaskAndReplyWithResult(
         FROM_HERE, {base::ThreadPool(), base::TaskPriority::USER_BLOCKING},
         base::BindOnce(
-            [](GURL url, std::string data) -> auto {
+            [](GURL url, std::string data,
+               std::unique_ptr<Rewriter> rewriter) -> auto {
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
-              SpeedReader speedreader;
-              if (!speedreader.ReadableURL(url.spec())) {
-                VLOG(2) << __func__ << " URL not readable " << url.spec();
-                return data;
-              }
-              auto rewriter = speedreader.RewriterNew(url.spec());
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
               if (written != 0) {
@@ -268,7 +268,8 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 
               return GetDistilledPageResources() + transformed;
             },
-            response_url_, std::move(buffered_body_)),
+            response_url_, std::move(buffered_body_),
+            whitelist_->MakeRewriter(response_url_)),
         base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,
                        weak_factory_.GetWeakPtr()));
     return;

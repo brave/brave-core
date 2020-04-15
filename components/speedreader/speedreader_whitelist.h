@@ -15,7 +15,8 @@
 
 namespace speedreader {
 class SpeedReader;
-}
+class Rewriter;
+}  // namespace speedreader
 
 class GURL;
 
@@ -30,6 +31,7 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
   SpeedreaderWhitelist& operator=(const SpeedreaderWhitelist&) = delete;
 
   bool IsWhitelisted(const GURL& url);
+  std::unique_ptr<Rewriter> MakeRewriter(const GURL& url);
 
  private:
   // brave_component_updater::BraveComponent:

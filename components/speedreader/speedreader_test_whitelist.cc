@@ -33,8 +33,8 @@ std::vector<std::string> GetHardcodedWhitelist() {
 bool IsWhitelistedForTest(const GURL& url) {
   const auto* cmd_line = base::CommandLine::ForCurrentProcess();
   if (!cmd_line->HasSwitch(kSpeedreaderWhitelist)) {
-    // Everything whitelisted.
-    return true;
+    // Nothing whitelisted.
+    return false;
   }
   const std::string whitelist_str =
       cmd_line->GetSwitchValueASCII(kSpeedreaderWhitelist);

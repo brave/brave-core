@@ -14,6 +14,8 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_piece.h"
+#include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -50,9 +52,8 @@ class SpeedReaderThrottle;
 // kAborted: Unexpected behavior happens. Watchers, pipes and the binding from
 //           the source loader to |this| are stopped. All incoming messages from
 //           the destination (through network::mojom::URLLoader) are ignored in
-class SpeedReaderURLLoader
-    : public network::mojom::URLLoaderClient,
-      public network::mojom::URLLoader {
+class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
+                             public network::mojom::URLLoader {
  public:
   ~SpeedReaderURLLoader() override;
 
@@ -72,15 +73,16 @@ class SpeedReaderURLLoader
                     SpeedReaderURLLoader*>
   CreateLoader(base::WeakPtr<SpeedReaderThrottle> throttle,
                const GURL& response_url,
-               scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+               scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+               SpeedreaderWhitelist* whitelist);
 
  private:
-  SpeedReaderURLLoader(
-      base::WeakPtr<SpeedReaderThrottle> throttle,
-      const GURL& response_url,
-      mojo::PendingRemote<network::mojom::URLLoaderClient>
-          destination_url_loader_client,
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+  SpeedReaderURLLoader(base::WeakPtr<SpeedReaderThrottle> throttle,
+                       const GURL& response_url,
+                       mojo::PendingRemote<network::mojom::URLLoaderClient>
+                           destination_url_loader_client,
+                       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+                       SpeedreaderWhitelist* whitelist);
 
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
@@ -144,6 +146,9 @@ class SpeedReaderURLLoader
   mojo::ScopedDataPipeProducerHandle body_producer_handle_;
   mojo::SimpleWatcher body_consumer_watcher_;
   mojo::SimpleWatcher body_producer_watcher_;
+
+  // Not Owned
+  SpeedreaderWhitelist* whitelist_;
 
   base::WeakPtrFactory<SpeedReaderURLLoader> weak_factory_{this};
 };
