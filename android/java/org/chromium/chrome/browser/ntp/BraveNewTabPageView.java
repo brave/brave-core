@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Color;
+import android.view.ContextMenu;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.view.Gravity;
@@ -58,6 +59,9 @@ import org.chromium.chrome.browser.ntp_background_images.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.native_page.ContextMenuManager;
+import org.chromium.chrome.browser.native_page.ContextMenuManager.ContextMenuItemId;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -65,7 +69,7 @@ import org.chromium.content_public.browser.LoadUrlParams;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-public class BraveNewTabPageView extends NewTabPageView {
+public class BraveNewTabPageView extends NewTabPageView implements ContextMenuManager.Delegate{
     private static final String TAG = "BraveNewTabPageView";
 
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
@@ -269,14 +273,36 @@ public class BraveNewTabPageView extends NewTabPageView {
         return result;
     }
 
+    private boolean isReferralEnabled() {
+        boolean isReferralEnabled = BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
+        return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
+    }
+
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
 
-        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+        if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
+                && isReferralEnabled()) {
+            setBackgroundImage(ntpImage);
+            Log.e("NTP", "Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
+            Log.e("NTP", "Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
+            FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
+            int floatingButtonIcon = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                    ? R.drawable.qrcode_dark
+                    : R.drawable.qrcode_light;
+            mSuperReferralLogo.setImageResource(floatingButtonIcon);
+            mSuperReferralLogo.setVisibility(View.VISIBLE);
+            mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SuperReferralShareDialogFragment mSuperReferralShareDialogFragment = new SuperReferralShareDialogFragment();
+                    mSuperReferralShareDialogFragment.show(mTabImpl.getActivity().getSupportFragmentManager(), "SuperReferralShareDialogFragment");
+                }
+            });
+        } else if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
-            if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
-                && !mNTPBackgroundImagesBridge.isSuperReferral()) {
+            if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
                 NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
                 if (mWallpaper.getLogoPath() != null ) {
                     try {
@@ -298,19 +324,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                         Log.e("NTP", exc.getMessage());
                     }
                 }
-            } else if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
-                && mNTPBackgroundImagesBridge.isSuperReferral()) {
-                Log.e("NTP", "Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-                Log.e("NTP", "Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
-                FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
-                mSuperReferralLogo.setVisibility(View.VISIBLE);
-                mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SuperReferralShareDialogFragment mSuperReferralShareDialogFragment = new SuperReferralShareDialogFragment();
-                        mSuperReferralShareDialogFragment.show(mTabImpl.getActivity().getSupportFragmentManager(), "SuperReferralShareDialogFragment");
-                    }
-                });
             } else if (ntpImage instanceof BackgroundImage){
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
                 ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
@@ -356,7 +369,7 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption 
-            && !mNTPBackgroundImagesBridge.isSuperReferral()) {
+            && !isReferralEnabled()) {
             NTPUtil.showNonDistruptiveBanner(mTabImpl.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
         }
     }
@@ -455,7 +468,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
-            tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
+            tileViewTitleTv.setTextColor(getResources().getColor(R.color.standard_mode_tint));
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
             iconIv.setImageBitmap(NTPUtil.getTopSiteBitmap(topSite.getImagePath()));
@@ -468,7 +481,7 @@ public class BraveNewTabPageView extends NewTabPageView {
             iconIv.setForeground(getResources().getDrawable(outValue.resourceId));
 
             // iconIv.setBackgroundColor(Color.parseColor(topSite.getBackgroundColor()));
-            iconIv.setClickable(true);
+            // iconIv.setClickable(true);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -489,8 +502,49 @@ public class BraveNewTabPageView extends NewTabPageView {
             layoutParams.weight = 0.25f;
             layoutParams.gravity = Gravity.CENTER;
             view.setLayoutParams(layoutParams);
+            view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                    // mContextMenuManager.createContextMenu(contextMenu, view, BraveNewTabPageView.this);
+                }
+            });
 
             superReferralSitesLayout.addView(view);
         }
     }
+
+    @Override
+    public void openItem(int windowDisposition) {}
+
+    @Override
+    public void removeItem() {}
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
+
+    @Override
+    public String getContextMenuTitle() {
+        return null;
+    }
+
+    @Override
+    public boolean isItemSupported(@ContextMenuItemId int menuItemId) {
+        switch (menuItemId) {
+            // Personalized tiles are the only tiles that can be removed.  Additionally, the
+            // Explore tile counts as a personalized tile but cannot be removed.
+            case ContextMenuItemId.REMOVE:
+                return true;
+            case ContextMenuItemId.OPEN_IN_INCOGNITO_TAB:
+                return true;
+            case ContextMenuItemId.LEARN_MORE:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    @Override
+    public void onContextMenuCreated() {}
 }

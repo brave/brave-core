@@ -101,6 +101,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/privacy/BravePrivacySettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveRadioButtonGroupThemePreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveRadioButtonGroupCustomHomepageThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveThemePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/website/BraveSiteSettingsPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/website/DesktopModePreferences.java",
