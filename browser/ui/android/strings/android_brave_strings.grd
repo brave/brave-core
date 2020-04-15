@@ -1017,6 +1017,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_UI_PANEL_CONNECTED_TEXT" desc="A message on tipping page when a creator is not verified yet">
         This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.
       </message>
+      <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
+        Brave Default
+      </message>
     </messages>
   </release>
 </grit>
