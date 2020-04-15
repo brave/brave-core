@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 40a9642a4160877f3d79dc55cfe5181fecb0049d..cc0e54c48722b2bbf6dc515c39db27a60580c811 100644
+index 1fc3e9ae1c57f287fb7badb80b915ba8703c6da4..d8ea07ec461d4ec20d1b5a4650789f141527f577 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
 @@ -6,6 +6,7 @@
@@ -10,7 +10,7 @@ index 40a9642a4160877f3d79dc55cfe5181fecb0049d..cc0e54c48722b2bbf6dc515c39db27a6
  #include "mojo/public/cpp/bindings/remote.h"
  #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -74,6 +75,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state,
+@@ -76,6 +77,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state,
                                        "Current frame is detached.");
      return ScriptPromise();
    }

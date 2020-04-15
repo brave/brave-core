@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java
-index e3ad44adfd849b0d390cb8e797e2049aab40decf..aa03e6403e64ce52b7d5aa8a7f2d7a935c0da9cf 100644
+index 737380516e3f72f0580644f6aa61a987e0f43bde..2f148b0b102ab3210a2cd5ac4753e76501038d59 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java
-@@ -134,7 +134,7 @@ public class ChosenObjectSettings extends SiteSettingsPreferenceFragment {
-                     null);
+@@ -131,7 +131,7 @@ public class ChosenObjectSettings extends SiteSettingsPreferenceFragment {
+                     getActivity(), getString(R.string.help_context_settings));
              return true;
          }
 -        return false;
