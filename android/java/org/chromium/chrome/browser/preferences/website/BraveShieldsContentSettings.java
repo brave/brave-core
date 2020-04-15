@@ -5,14 +5,11 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
-import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 
 import java.util.ArrayList;
 import java.util.List;

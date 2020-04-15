@@ -15,8 +15,6 @@ import android.content.Intent;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 
-import java.util.Calendar;
-
 public class BravePreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

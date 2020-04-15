@@ -2,31 +2,24 @@
 package org.chromium.chrome.browser.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
 import com.google.android.gms.safetynet.SafetyNetClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import org.chromium.base.ApplicationStatus;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.ContextUtils;

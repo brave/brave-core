@@ -8,10 +8,6 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;

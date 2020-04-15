@@ -18,10 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.StrictMode;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -30,13 +27,8 @@ import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.base.Log;
-import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
-import org.chromium.ui.base.LocalizationUtils;
-
-import java.util.Date;
 
 /**
  * Builds a notification according to BraveAds spec.

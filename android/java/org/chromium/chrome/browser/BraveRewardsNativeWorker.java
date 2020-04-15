@@ -8,7 +8,6 @@ package org.chromium.chrome.browser;
 
 import android.os.Handler;
 
-import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.BraveRewardsHelper;

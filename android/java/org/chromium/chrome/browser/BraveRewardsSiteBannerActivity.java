@@ -4,20 +4,16 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -25,26 +21,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.text.Spanned;
-import android.content.Context;
 import android.view.MotionEvent;
 import org.chromium.chrome.browser.util.IntentUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.favicon.RoundedIconGenerator;
-import org.chromium.base.task.AsyncTask;
-import android.graphics.BitmapFactory;
-import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.ContextUtils;
 
-import java.io.IOException;
 import java.math.RoundingMode;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Locale;
 

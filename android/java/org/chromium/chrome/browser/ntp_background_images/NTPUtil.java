@@ -10,7 +10,6 @@ import android.os.Build;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import android.view.ViewGroup;
 import android.view.View;

@@ -5,16 +5,10 @@
 
 package org.chromium.chrome.browser.settings.privacy;
 
-import android.support.v4.util.ArraySet;
-
 import androidx.annotation.DrawableRes;
 
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.R;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 public class BraveClearBrowsingDataPreferencesAdvanced extends ClearBrowsingDataFragmentAdvanced {
     private static final int CLEAR_DOWNLOADS = DialogOption.NUM_ENTRIES;

@@ -9,9 +9,6 @@ import android.content.res.ColorStateList;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
@@ -21,9 +18,6 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.ThemeColorProvider.ThemeColorObserver;
 import org.chromium.chrome.browser.ThemeColorProvider.TintObserver;
-import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
-import org.chromium.chrome.browser.flags.FeatureUtilities;
-import org.chromium.ui.widget.ChromeImageButton;
 
 /**
  * The bookmarks button.
@@ -38,6 +32,7 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_bookmark));
     }
 
+    @Override
     public void destroy() {
         if (mThemeColorProvider != null) {
             mThemeColorProvider.removeThemeColorObserver(this);
@@ -46,6 +41,7 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         }
     }
 
+    @Override
     public void setThemeColorProvider(ThemeColorProvider themeColorProvider) {
         mThemeColorProvider = themeColorProvider;
         mThemeColorProvider.addThemeColorObserver(this);
@@ -76,13 +72,16 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         setEnabled(editingAllowed);
     }
 
+    @Override
     public void setActivityTabProvider(ActivityTabProvider activityTabProvider) {
         // sergz: Do nothing here, was added just to avoid extra patching
     }
     
+    @Override
     public void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
     }
     
+    @Override
     public void updateButtonEnabledState(Tab tab) {
     }
 }

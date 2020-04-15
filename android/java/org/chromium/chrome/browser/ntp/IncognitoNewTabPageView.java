@@ -11,25 +11,15 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.StringRes;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
-import org.chromium.ui.text.SpanApplier;
-import org.chromium.ui.widget.ChromeBulletSpan;
 
 /**
  * The New Tab Page for use in the incognito profile.

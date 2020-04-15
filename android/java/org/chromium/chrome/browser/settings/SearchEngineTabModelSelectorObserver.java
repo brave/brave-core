@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;

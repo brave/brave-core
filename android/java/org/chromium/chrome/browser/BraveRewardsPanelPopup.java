@@ -6,16 +6,13 @@
 
 package org.chromium.chrome.browser;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Build;
 import android.text.Html;
@@ -43,41 +40,29 @@ import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.widget.Toast;
 
-import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tabmodel.TabModelImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorImpl;
-import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.base.ContextUtils;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.math.RoundingMode;
-import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;

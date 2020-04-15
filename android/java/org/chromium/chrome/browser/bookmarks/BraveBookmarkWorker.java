@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;

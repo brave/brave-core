@@ -6,10 +6,8 @@ package org.chromium.chrome.browser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -24,32 +22,19 @@ import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
 
-
-import org.chromium.base.ApplicationStatus;
 import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.Log;
-import org.chromium.base.SysUtils;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.favicon.IconType;
 import org.chromium.chrome.browser.favicon.LargeIconBridge;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.tabmodel.TabModelImpl;
 import org.chromium.chrome.browser.favicon.RoundedIconGenerator;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Locale;
-
 
 public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp

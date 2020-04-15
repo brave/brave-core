@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.settings;
 import android.content.Context;
 import android.view.View;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.settings.search_engine.SearchEngineAdapter;
 import org.chromium.components.search_engines.TemplateUrl;
 

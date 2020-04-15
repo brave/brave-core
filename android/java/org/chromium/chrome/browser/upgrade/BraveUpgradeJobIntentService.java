@@ -26,14 +26,12 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
-import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 import org.chromium.content_public.browser.BrowserStartupController;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String TAG = "BraveUpgradeJobIntentService";

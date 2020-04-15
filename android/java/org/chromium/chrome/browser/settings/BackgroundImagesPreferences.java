@@ -16,7 +16,6 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.profiles.Profile;
 
 /**
  * Fragment to keep track of all the display related preferences.
