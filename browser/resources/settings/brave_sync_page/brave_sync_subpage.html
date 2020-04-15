@@ -29,10 +29,10 @@
       }
 
     </style>
-    <template is="dom-if" if="[[shouldShowSyncAccountControl_(
-        syncStatus.syncSystemEnabled, syncStatus.signinAllowed)]]">
-      <settings-brave-sync-control embedded-in-subpage
-          sync-status="[[syncStatus]]" prefs="{{prefs}}"
+    <template is="dom-if" if="[[shouldShowSyncControl_(
+        syncStatus.syncSystemEnabled)]]">
+      <settings-brave-sync-control sync-status="[[syncStatus]]"
+          prefs="{{prefs}}"
           passphrase ="{{passphrase_}}"
           on-sync-setup-done="onSyncSetupDone_">
       </settings-brave-sync-control>
@@ -42,16 +42,12 @@
 
     <div id="sync-section" hidden="[[syncSectionDisabled_]]">
       <div class="settings-box first">
-        <h2 class="cr-title-text start">$i18n{sync}</h2>
+        <h2 class="cr-title-text start">$i18n{braveSyncSettingsTitle}</h2>
       </div>
 
       <div id="[[pages_.SPINNER]]" class="settings-box first settings-box-text"
           hidden$="[[!isStatus_(pages_.SPINNER, pageStatus_)]]">
         $i18n{syncLoading}
-      </div>
-      <div id="[[pages_.TIMEOUT]]" class="settings-box first settings-box-text"
-          hidden$="[[!isStatus_(pages_.TIMEOUT, pageStatus_)]]">
-        $i18n{syncTimeout}
       </div>
       <div id="[[pages_.CONFIGURE]]"
            hidden$="[[!isStatus_(pages_.CONFIGURE, pageStatus_)]]">

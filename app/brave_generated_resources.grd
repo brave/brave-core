@@ -469,8 +469,74 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
         Sync
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL" desc="Brave Sync link label">
-        Access Sync via
+      <message name="IDS_SETTINGS_BRAVE_SYNC_SUBPAGE_LABEL" desc="Brave Sync subpage label">
+        Start using sync
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
+        Sync Manager
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_TITLE" desc="Brave Sync settings title">
+        Sync Settings
+      </message>
+      <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Brave Sync title.">
+        Sync Setup
+      </message>
+      <message name="IDS_BRAVE_SYNC_SETUP_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">
+        To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.
+      </message>
+      <message name="IDS_BRAVE_SYNC_START_NEW_CHAIN_BUTTON" desc="The Sync button that triggers a modal to start a new sync chian">
+        Start a new Sync Chain
+      </message>
+      <message name="IDS_BRAVE_SYNC_ENTER_CODE_BUTTON" desc="The Sync button that triggers a modal asking for the sync chain code passphrase">
+        I have a Sync Code
+      </message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">
+        View Sync Code
+      </message>
+      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_MOBILE_TITLE" desc="The Sync Phone/tablet word below the phone/tablet image. Appears in the `choose device type` modal">
+        Phone/Tablet
+      </message>
+      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_COMPUTER_TITLE" desc="The Sync Computer word below the computer image. Appears in the `choose device type` modal">
+        Computer
+      </message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_TITLE" desc="The Sync title for the `scan sync code` modal">
+        Sync Chain QR Code
+      </message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `scan sync code` modal partial phrase (1)">
+        On your mobile device, navigate to Brave Sync in the Settings panel and click the button
+      </message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `scan sync code` modal partial phrase (2)">
+        “Scan Sync Code”.
+      </message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `scan sync code` modal partial phrase (3)">
+        Use your camera to scan the QR Code below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_TITLE" desc="The Sync title for the `view sync code` modal">
+        Sync Chain Code
+      </message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `view sync code` modal partial phrase (1)">
+        On your target computer, navigate to Brave Sync in settings and click the button
+      </message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `view sync code` modal partial phrase (2)">
+        “I have a Sync Code”.
+      </message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `view sync code` modal partial phrase (3)">
+        Enter the sync chain code words shown below. Treat this code like a password. If someone gets ahold of it, they can read and modify your synced data.
+      </message>
+      <message name="IDS_BRAVE_SYNC_ENTER_CODE_TITLE" desc="The Sync modal title for `enter sync code`">
+        Enter a sync code
+      </message>
+      <message name="IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION" desc="The Sync modal text for `enter sync code`">
+        Type your supplied sync chain code words into the form below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">
+        Add New Device
+      </message>
+      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_TITLE" desc="The Sync title to sync a new device. Appears in the `choose device type` modal">
+        Choose Device Type
+      </message>
+      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_DESCRIPTION" desc="The Sync title to select which device to sync. Appears in the `choose device type` modal">
+        Choose the type of device you would like to sync to.
       </message>
       <!-- Help Tips Page -->
       <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help Tips' section of Brave Settings">
