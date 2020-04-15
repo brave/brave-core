@@ -33,7 +33,7 @@ SpeedReader::~SpeedReader() {
   speedreader_free(raw);
 }
 
-bool SpeedReader::ReadableURL(const std::string& url) {
+bool SpeedReader::IsReadableURL(const std::string& url) {
   return url_readable(raw, url.c_str(), url.length());
 }
 
@@ -41,16 +41,17 @@ RewriterType SpeedReader::RewriterTypeForURL(const std::string& url) {
   return find_type(raw, url.c_str(), url.length());
 }
 
-std::unique_ptr<Rewriter> SpeedReader::RewriterNew(const std::string& url) {
+std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(const std::string& url) {
   return std::make_unique<Rewriter>(raw, url, RewriterType::RewriterUnknown);
 }
 
-std::unique_ptr<Rewriter> SpeedReader::RewriterNew(const std::string& url,
-                                                   RewriterType rewriter_type) {
+std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
+    const std::string& url,
+    RewriterType rewriter_type) {
   return std::make_unique<Rewriter>(raw, url, rewriter_type);
 }
 
-std::unique_ptr<Rewriter> SpeedReader::RewriterNew(
+std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
     const std::string& url,
     RewriterType rewriter_type,
     void (*output_sink)(const char*, size_t, void*),
@@ -74,22 +75,15 @@ std::string SpeedReader::TakeLastError() {
 Rewriter::Rewriter(C_SpeedReader* speedreader,
                    const std::string& url,
                    RewriterType rewriter_type)
-    : output_(""),
-      ended_(false),
-      poisoned_(false),
-      config_raw(
-          get_rewriter_opaque_config(speedreader, url.c_str(), url.length())),
-      raw(rewriter_new(
+    : Rewriter(
           speedreader,
-          url.c_str(),
-          url.length(),
+          url,
+          rewriter_type,
           [](const char* chunk, size_t chunk_len, void* user_data) {
             std::string* out = static_cast<std::string*>(user_data);
             out->append(chunk, chunk_len);
           },
-          &output_,
-          config_raw,
-          rewriter_type)) {}
+          &output_) {}
 
 Rewriter::Rewriter(C_SpeedReader* speedreader,
                    const std::string& url,
@@ -138,8 +132,8 @@ int Rewriter::End() {
   }
 }
 
-const std::string* Rewriter::GetOutput() {
-  return &output_;
+const std::string& Rewriter::GetOutput() {
+  return output_;
 }
 
 }  // namespace speedreader

@@ -264,7 +264,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               }
 
               rewriter->End();
-              std::string transformed = *rewriter->GetOutput();
+              const std::string& transformed = rewriter->GetOutput();
 
               return GetDistilledPageResources() + transformed;
             },
@@ -308,7 +308,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   destination_url_loader_client_->OnStartLoadingResponseBody(
       std::move(body_to_send));
 
-  // DCHECK(bytes_remaining_in_buffer_);
+  DCHECK(bytes_remaining_in_buffer_);
   if (bytes_remaining_in_buffer_) {
     SendReceivedBodyToClient();
     return;

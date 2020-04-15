@@ -44,9 +44,8 @@ SpeedreaderWhitelist::SpeedreaderWhitelist(Delegate* delegate)
     // Register component
     Register(kComponentName, kComponentId, kComponentPublicKey);
   } else {
-    const std::string whitelist_str =
-        cmd_line->GetSwitchValueASCII(speedreader::kSpeedreaderWhitelistPath);
-    const base::FilePath whitelist_path(FILE_PATH_LITERAL(whitelist_str));
+    const base::FilePath whitelist_path(
+        cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderWhitelistPath));
     VLOG(2) << "Speedreader whitelist from " << whitelist_path;
 
     base::PostTaskAndReplyWithResult(
@@ -74,11 +73,11 @@ void SpeedreaderWhitelist::OnComponentReady(const std::string& component_id,
 }
 
 bool SpeedreaderWhitelist::IsWhitelisted(const GURL& url) {
-  return speedreader_->ReadableURL(url.spec());
+  return speedreader_->IsReadableURL(url.spec());
 }
 
 std::unique_ptr<Rewriter> SpeedreaderWhitelist::MakeRewriter(const GURL& url) {
-  return speedreader_->RewriterNew(url.spec());
+  return speedreader_->MakeRewriter(url.spec());
 }
 
 void SpeedreaderWhitelist::OnGetDATFileData(GetDATFileDataResult result) {

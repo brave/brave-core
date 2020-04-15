@@ -23,7 +23,7 @@ markup5ever_rcdom = "0.1.0"
 regex = "1"
 lol_html = { version = "0.2.0" }
 thiserror = "1.0.2"
-adblock = "0.1.38"
+adblock = "0.2.7"
 serde =  { version = "1.0.104", features = ["derive"] }
 serde_json = "1.0.48"
 flate2 = { version = "1.0.12", features = ["rust_backend"], default-features = false }

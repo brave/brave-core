@@ -17,26 +17,28 @@ config("external_config") {
 #
 cargo_build("rust_lib") {
   inputs = [
-    "../src/build.rs",
-    "../src/Cargo.lock",
-    "../src/Cargo.toml",
-    "../src/src/classifier/feature_extractor.rs",
-    "../src/src/classifier/mod.rs",
-    "../src/src/classifier/model.c",
-    "../src/src/classifier/model.rs",
-    "../src/src/classifier/model.rs",
-    "../src/src/lib.rs",
-    "../src/src/readability/Cargo.toml",
-    "../src/src/readability/src/dom.rs",
-    "../src/src/readability/src/error.rs",
-    "../src/src/readability/src/extractor.rs",
-    "../src/src/readability/src/lib.rs",
-    "../src/src/readability/src/scorer.rs",
-    "../src/src/rewriter_config_builder.rs",
-    "../src/src/speedreader_heuristics.rs",
-    "../src/src/speedreader_streaming.rs",
-    "../src/src/speedreader.rs",
-    "../src/src/whitelist.rs",
+    # Underlying library code
+    "../lib/build.rs",
+    "../lib/Cargo.lock",
+    "../lib/Cargo.toml",
+    "../lib/src/classifier/feature_extractor.rs",
+    "../lib/src/classifier/mod.rs",
+    "../lib/src/classifier/model.c",
+    "../lib/src/classifier/model.rs",
+    "../lib/src/classifier/model.rs",
+    "../lib/src/lib.rs",
+    "../lib/src/readability/Cargo.toml",
+    "../lib/src/readability/src/dom.rs",
+    "../lib/src/readability/src/error.rs",
+    "../lib/src/readability/src/extractor.rs",
+    "../lib/src/readability/src/lib.rs",
+    "../lib/src/readability/src/scorer.rs",
+    "../lib/src/rewriter_config_builder.rs",
+    "../lib/src/speedreader_heuristics.rs",
+    "../lib/src/speedreader_streaming.rs",
+    "../lib/src/speedreader.rs",
+    "../lib/src/whitelist.rs",
+    # FFI
     "Cargo.lock",
     "Cargo.toml",
     "charbuf.rs",
@@ -57,9 +59,8 @@ cargo_cbindgen("ffi_header") {
   output = "speedreader_ffi.h"
 
   sources = [
-    "../src/src/whitelist.rs",
-    "Cargo.toml",
     "Cargo.lock",
+    "Cargo.toml",
     "cbindgen.toml",
     "charbuf.rs",
     "errors.rs",
@@ -79,6 +80,7 @@ static_library("speedreader_ffi") {
 
   deps = [
     "//base",
+    ":rust_lib",
     ":ffi_header",
   ]
 

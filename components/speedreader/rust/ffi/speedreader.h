@@ -49,7 +49,7 @@ class Rewriter {
 
   /// Returns accumulated output. Output is only accumulated if no explicit
   /// callback was provided, otherwise will return an empty string.
-  const std::string* GetOutput();
+  const std::string& GetOutput();
 
  private:
   std::string output_;
@@ -71,7 +71,7 @@ class SpeedReader {
   bool deserialize(const char* data, size_t data_size);
 
   /// Checks if the provided URL matches whitelisted readable URLs.
-  bool ReadableURL(const std::string& url);
+  bool IsReadableURL(const std::string& url);
 
   /// Returns type of SpeedReader that would be applied by default for the given
   /// URL. `RewriterUnknown` if no match in the whitelist.
@@ -79,22 +79,22 @@ class SpeedReader {
 
   /// Create a buffering `Rewriter`. Output will be accumulated by the
   /// `Rewriter` instance.
-  std::unique_ptr<Rewriter> RewriterNew(const std::string& url);
+  std::unique_ptr<Rewriter> MakeRewriter(const std::string& url);
 
   /// Create a buffering `Rewriter` wih a specific `RewriterType`. Output will
   /// be accumulated by the `Rewriter` instance. Using `RewriterUnknown` for
   /// `RewriterType` is equivalent to skipping the parameter.
-  std::unique_ptr<Rewriter> RewriterNew(const std::string& url,
-                                        RewriterType rewriter_type);
+  std::unique_ptr<Rewriter> MakeRewriter(const std::string& url,
+                                         RewriterType rewriter_type);
 
   /// Create a `Rewriter` that calls provided callback with every new chunk of
   /// output available.
-  std::unique_ptr<Rewriter> RewriterNew(const std::string& url,
-                                        RewriterType rewriter_type,
-                                        void (*output_sink)(const char*,
-                                                            size_t,
-                                                            void*),
-                                        void* output_sink_user_data);
+  std::unique_ptr<Rewriter> MakeRewriter(const std::string& url,
+                                         RewriterType rewriter_type,
+                                         void (*output_sink)(const char*,
+                                                             size_t,
+                                                             void*),
+                                         void* output_sink_user_data);
 
   static std::string TakeLastError();
 
