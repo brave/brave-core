@@ -12,6 +12,7 @@ public class BraveClassAdapter {
         chain = new BraveBookmarkModelClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveAndroidSyncSettingsClassAdapter(chain);
+        chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
         return chain;
     }
 }
