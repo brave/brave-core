@@ -19,8 +19,8 @@ extern const char kBraveAdblockCosmeticFilteringName[];
 extern const char kBraveAdblockCosmeticFilteringDescription[];
 extern const char kBraveSyncName[];
 extern const char kBraveSyncDescription[];
-extern const char kBraveCustomHomepageName[];
-extern const char kBraveCustomHomepageDescription[];
+extern const char kBraveSuperReferralName[];
+extern const char kBraveSuperReferralDescription[];
 }  // namespace flag_descriptions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

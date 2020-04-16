@@ -26,6 +26,7 @@ const char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
 const char kBraveSyncName[] = "Enable Brave Sync";
 const char kBraveSyncDescription[] = "Brave Sync is disabled by default";
-const char kBraveCustomHomepageName[] = "Enable Brave Custom Homepage";
-const char kBraveCustomHomepageDescription[] = "Show Brave Custom Homepage";
+const char kBraveSuperReferralName[] = "Enable Brave Super Referral";
+const char kBraveSuperReferralDescription[] =
+    "Use custom theme for Brave Super Referral";
 }  // namespace flag_descriptions

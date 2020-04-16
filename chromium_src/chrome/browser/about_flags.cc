@@ -41,9 +41,9 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveSyncName,                                    \
      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
      FEATURE_VALUE_TYPE(kBraveSync)},                                      \
-    {"brave-custom-homepage",                                              \
-     flag_descriptions::kBraveCustomHomepageName,                          \
-     flag_descriptions::kBraveCustomHomepageDescription,                   \
+    {"brave-super-referral",                                               \
+     flag_descriptions::kBraveSuperReferralName,                           \
+     flag_descriptions::kBraveSuperReferralDescription,                    \
      flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
      FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},
 
