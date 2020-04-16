@@ -5,7 +5,6 @@
 
 """This script is used to download deps."""
 
-import argparse
 import os
 import sys
 import tarfile
@@ -42,7 +41,8 @@ def DownloadUrl(url, output_file):
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
-                raise urllib.error.URLError("only got %d of %d bytes" % (bytes_done, total_size))
+                raise urllib.error.URLError(
+                    "only got %d of %d bytes" % (bytes_done, total_size))
             print(' Done.')
             return
         except urllib.error.URLError as e:
@@ -75,7 +75,8 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
             t = tarfile.open(mode='r:gz', fileobj=f)
             members = None
             if path_prefix is not None:
-                members = [m for m in t.getmembers() if m.name.startswith(path_prefix)]
+                members = [m for m in t.getmembers(
+                ) if m.name.startswith(path_prefix)]
             t.extractall(path=output_dir, members=members)
 
 
