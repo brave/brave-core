@@ -624,7 +624,7 @@ export const Balance = styled<StyleProps, 'span'>('span')`
 export const Converted = styled<StyleProps, 'span'>('span')`
   display: block;
   font-size: ${p => p.isBTC ? '16' : '14'}px;
-  color: rgba(70, 70, 70);
+  color: #7d7d7d;
   margin-left: ${p => p.isBTC ? 0 : 10}px;
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
