@@ -20,5 +20,6 @@ source_set("browser") {
         "//content/public/browser",
         "//components/prefs",
         "//components/user_prefs",
+        "//extensions/browser",
     ]
 }
