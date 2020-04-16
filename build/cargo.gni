@@ -45,6 +45,10 @@ template("cargo_cbindgen") {
 
     forward_variables_from(invoker, ["config", "sources", "output"])
 
+    assert(defined(config), "Must specify cbindgen.toml config to use")
+    assert(defined(sources), "Must specify sources to generate bindings for")
+    assert(defined(output), "Must specify output header file")
+
     sources += [
       config,
     ]
@@ -53,7 +57,7 @@ template("cargo_cbindgen") {
     args = [
       "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
       "--cargo_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
-      "--target=" + rustc_target,
+      "--target=" + rustc_target,   # defined by //brave/build/rust/config.gni
       "--config=" + rebase_path(config, root_build_dir),
       "--path=" + rebase_path(get_path_info(config, "dir"), root_build_dir),
       "--output=" + rebase_path("$target_gen_dir/$output", root_build_dir),

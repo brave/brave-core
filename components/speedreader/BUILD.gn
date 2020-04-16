@@ -9,6 +9,10 @@ buildflag_header("buildflags") {
 }
 
 source_set("speedreader") {
+  public_deps = [
+    "//brave/components/speedreader/rust/ffi:speedreader_ffi_lib",
+  ]
+
   sources = [
     "speedreader_loader.cc",
     "speedreader_loader.h",

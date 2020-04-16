@@ -7,14 +7,7 @@ import("//brave/build/cargo.gni")
 import("//brave/build/rust/config.gni")
 import("//brave/test/testing.gni")
 
-config("external_config") {
-  defines = [
-    "NO_CXXEXCEPTIONS=1"
-  ]
-}
-
-# Run Cargo build for the Rust project
-#
+# Cargo build for the Rust project
 cargo_build("rust_lib") {
   inputs = [
     # Underlying library code
@@ -47,6 +40,10 @@ cargo_build("rust_lib") {
     "speedreader.rs",
   ]
 
+  if (rust_shared_lib && !is_component_build) {
+    lib_install_name = "@loader_path/../../Libraries/libspeedreader_ffi${cargo_lib_suffix}"
+    rust_flags += " -C link-args=-Wl,-install_name,$lib_install_name "
+  }
   output = "${target_out_dir}/${cargo_lib_prefix}speedreader_ffi${cargo_lib_suffix}"
   manifest_path = "Cargo.toml"
   build_path = "$target_out_dir"
@@ -70,9 +67,7 @@ cargo_cbindgen("ffi_header") {
 }
 
 # Build the FFI wrapper as a static library
-static_library("speedreader_ffi") {
-  public_configs = [ ":external_config" ]
-
+source_set("speedreader_ffi") {
   sources = [
     "speedreader.cc",
     "speedreader.h"
@@ -85,4 +80,28 @@ static_library("speedreader_ffi") {
   ]
 
   libs = get_target_outputs(":rust_lib")
+}
+
+if (is_mac) {
+  bundle_data("speedreader_ffi_lib") {
+    sources = get_target_outputs(":rust_lib")
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      ":rust_lib",
+    ]
+  }
+} else {
+  group("speedreader_ffi_lib") {}
+}
+
+if (rust_shared_lib && !is_component_build) {
+  fix_testing_install_name("test_install_name_speedreader") {
+    current_path = "@loader_path/../../Libraries/libspeedreader_ffi${cargo_lib_suffix}"
+    lib_paths = get_target_outputs(":rust_lib")
+    new_path = "@executable_path/" + rebase_path(lib_paths[0], root_build_dir)
+  }
+} else {
+  group("test_install_name_speedreader") {}
 }

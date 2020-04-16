@@ -13,10 +13,9 @@ cbindgen = "0.13.1"
 cc = "1.0.46"
 
 [profile.release]
-panic = "unwind"
-lto = true
+panic = "abort"
 
 [lib]
 name = "speedreader_ffi"
 path = "lib.rs"
-crate-type = ["staticlib"]
+crate-type = ["staticlib", "cdylib"]

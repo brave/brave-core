@@ -11,6 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace {
 
@@ -52,26 +53,26 @@ TEST(SpeedreaderFFITest, URLReadable) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://example.com/news/article/topic/index.html";
-  EXPECT_TRUE(sr.ReadableURL(url_str));
+  EXPECT_TRUE(sr.IsReadableURL(url_str));
 }
 
 TEST(SpeedreaderFFITest, URLNotReadable) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://unknown.com/news/article/topic/index.html";
-  EXPECT_FALSE(sr.ReadableURL(url_str));
+  EXPECT_FALSE(sr.IsReadableURL(url_str));
 }
 
 TEST(SpeedreaderFFITest, URLInvalid) {
   SpeedReader sr;
   std::string url_str = "brave://about";
-  EXPECT_FALSE(sr.ReadableURL(url_str));
+  EXPECT_FALSE(sr.IsReadableURL(url_str));
 }
 
 TEST(SpeedreaderFFITest, URLEmpty) {
   SpeedReader sr;
   std::string url_str = "";
-  EXPECT_FALSE(sr.ReadableURL(url_str));
+  EXPECT_FALSE(sr.IsReadableURL(url_str));
 }
 
 TEST(SpeedreaderFFITest, FindRewriterType) {
@@ -105,37 +106,37 @@ TEST(SpeedreaderFFITest, RewriterCallback) {
     std::string* out = static_cast<std::string*>(user_data);
     out->append(chunk, chunk_len);
   };
-  auto rewriter =
-      sr.RewriterNew(url_str, RewriterType::RewriterUnknown, callback, &output);
+  auto rewriter = sr.MakeRewriter(url_str, RewriterType::RewriterUnknown,
+                                  callback, &output);
   const char* content1 = "<html><div class=\"article-body\">";
   ASSERT_EQ(rewriter->Write(content1, strlen(content1)), 0);
   const char* content2 = "hello world</div></html>";
   ASSERT_EQ(rewriter->Write(content2, strlen(content2)), 0);
   ASSERT_EQ(rewriter->End(), 0);
-  EXPECT_EQ(output,
-            "<html><div class=\"article-body\">hello world</div></html>");
-  EXPECT_EQ(*rewriter->GetOutput(), "");
+  EXPECT_STREQ(output.c_str(),
+               "<html><div class=\"article-body\">hello world</div></html>");
+  EXPECT_STREQ(rewriter->GetOutput().c_str(), "");
 }
 
 TEST(SpeedreaderFFITest, RewriterBufering) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://example.com/news/article/topic/index.html";
-  auto rewriter = sr.RewriterNew(url_str);
+  auto rewriter = sr.MakeRewriter(url_str);
   const char* content1 = "<html><div class=\"article-body\">";
   ASSERT_EQ(rewriter->Write(content1, strlen(content1)), 0);
   const char* content2 = "hello world</div></html>";
   ASSERT_EQ(rewriter->Write(content2, strlen(content2)), 0);
   ASSERT_EQ(rewriter->End(), 0);
-  EXPECT_EQ(*rewriter->GetOutput(),
-            "<html><div class=\"article-body\">hello world</div></html>");
+  EXPECT_STREQ(rewriter->GetOutput().c_str(),
+               "<html><div class=\"article-body\">hello world</div></html>");
 }
 
 TEST(SpeedreaderFFITest, RewriterBadSequence) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://example.com/news/article/topic/index.html";
-  auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
+  auto rewriter = sr.MakeRewriter(url_str, RewriterType::RewriterUnknown);
   ASSERT_EQ(rewriter->End(), 0);
   const char* content = "hello";
   ASSERT_NE(rewriter->Write(content, strlen(content)), 0);
@@ -145,7 +146,7 @@ TEST(SpeedreaderFFITest, RewriterDoubleEnd) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://example.com/news/article/topic/index.html";
-  auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
+  auto rewriter = sr.MakeRewriter(url_str, RewriterType::RewriterUnknown);
   ASSERT_EQ(rewriter->End(), 0);
   ASSERT_NE(rewriter->End(), 0);
 }
@@ -156,7 +157,7 @@ TEST(SpeedreaderFFITest, RewriterParsingAmbiguity) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://example.com/news/article/topic/index.html";
-  auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
+  auto rewriter = sr.MakeRewriter(url_str, RewriterType::RewriterUnknown);
   int write_ret = rewriter->Write(ambiguity, strlen(ambiguity));
   if (write_ret == 0) {
     int end_ret = rewriter->End();

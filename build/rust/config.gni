@@ -8,6 +8,7 @@ declare_args() {
   rustc_target = ""
   cargo_lib_prefix = ""
   cargo_lib_suffix = ""
+  rust_shared_lib = is_mac
 }
 
 # See https://forge.rust-lang.org/platform-support.html for possible targets
@@ -65,5 +66,9 @@ if (is_win) {
   cargo_lib_suffix = ".a"
 } else if (is_mac) {
   cargo_lib_prefix += "/lib"
-  cargo_lib_suffix = ".a"
+  if (rust_shared_lib) {
+    cargo_lib_suffix = ".dylib"
+  } else {
+    cargo_lib_suffix = ".a"
+  }
 }

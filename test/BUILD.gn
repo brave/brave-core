@@ -26,6 +26,12 @@ group("fix_brave_test_install_name") {
   deps = [
     "//brave/vendor/challenge_bypass_ristretto_ffi:test_install_name",
   ]
+
+  if (enable_speedreader) {
+    deps += [
+      "//brave/components/speedreader/rust/ffi:test_install_name_speedreader",
+    ]
+  }
 }
 
 group("fix_brave_test_install_name_adblock") {
@@ -486,7 +492,7 @@ test("brave_unit_tests") {
     ]
 
     deps += [
-      "//brave/components/speedreader/rust/ffi:speedreader_ffi"
+      "//brave/components/speedreader:speedreader"
     ]
   }
 }
@@ -733,10 +739,6 @@ test("brave_browser_tests") {
   if (enable_speedreader) {
     sources += [
       "//brave/browser/speedreader/speedreader_browsertest.cc",
-    ]
-
-    deps += [
-      "//brave/components/speedreader/rust/ffi:speedreader_ffi"
     ]
   }
 
