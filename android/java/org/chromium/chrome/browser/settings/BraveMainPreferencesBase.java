@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.settings.privacy.BravePrivacySettings;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
 
@@ -123,7 +124,11 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         // and we deleted original 0 ~ 2 ordered preferences.
         // Advanced section will be located below our controls section.
         int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
-        findPreference(PREF_USE_CUSTOM_TABS).setOrder(++order);
+        if (DeviceFormFactor.isTablet()) {
+            removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
+        } else {
+            findPreference(PREF_USE_CUSTOM_TABS).setOrder(++order);
+        }
         findPreference(PREF_ADVANCED_SECTION).setOrder(++order);
         findPreference(PREF_PRIVACY).setOrder(++order);
         findPreference(PREF_BRAVE_REWARDS).setOrder(++order);
