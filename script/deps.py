@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (c) 2012 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -14,6 +14,7 @@ import time
 import zipfile
 
 from six.moves import urllib
+from six import print_
 
 def DownloadUrl(url, output_file):
     """Download url into output_file."""
@@ -42,15 +43,18 @@ def DownloadUrl(url, output_file):
                 dots_printed = num_dots
             if bytes_done != total_size:
                 raise urllib.error.URLError("only got %d of %d bytes" % (bytes_done, total_size))
-            print ' Done.'
+            six.print_(' Done.')
+            print(' Done.')
             return
         except urllib.error.URLError as e:
             sys.stdout.write('\n')
-            print e
+            six.print_(e)
+            print(e)
             if num_retries == 0 or isinstance(e, urllib.error.HTTPError) and e.code == 404:
                 raise e
             num_retries -= 1
-            print 'Retrying in %d s ...' % retry_wait_s
+            six.print_('Retrying in %d s ...' % retry_wait_s)
+            print('Retrying in %d s ...' % retry_wait_s)
             time.sleep(retry_wait_s)
             retry_wait_s *= 2
 
