@@ -252,29 +252,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
-            if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-                NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
-                if (mWallpaper.getLogoPath() != null ) {
-                    try {
-                        ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                        sponsoredLogo.setVisibility(View.VISIBLE);
-                        Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
-                        InputStream inputStream = mTabImpl.getActivity().getContentResolver().openInputStream(logoFileUri);
-                        Bitmap logoBitmap = BitmapFactory.decodeStream(inputStream);
-                        sponsoredLogo.setImageBitmap(logoBitmap);
-                        sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (mWallpaper.getLogoDestinationUrl() != null) {
-                                    NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
-                                }
-                            }
-                        });
-                    } catch(FileNotFoundException exc) {
-                        Log.e("NTP", exc.getMessage());
-                    }
-                }
-            } else {
+            if (ntpImage instanceof BackgroundImage) {
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
                 ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
                 sponsoredLogo.setVisibility(View.GONE);
@@ -305,15 +283,15 @@ public class BraveNewTabPageView extends NewTabPageView {
         bgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
         ViewTreeObserver observer = bgImageView.getViewTreeObserver();
-            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    mWorkerTask = new FetchWallpaperWorkerTask(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight(), wallpaperRetrievedCallback);
-                    mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mWorkerTask = new FetchWallpaperWorkerTask(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight(), wallpaperRetrievedCallback);
+                mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                    bgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
+                bgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
@@ -381,8 +359,23 @@ public class BraveNewTabPageView extends NewTabPageView {
     };
     private FetchWallpaperWorkerTask.WallpaperRetrievedCallback wallpaperRetrievedCallback= new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
         @Override
-        public void wallpaperRetrieved(Bitmap wallpaperBitmap) {
-            bgImageView.setImageBitmap(wallpaperBitmap);
+        public void bgWallpaperRetrieved(Bitmap bgWallpaper) {
+            bgImageView.setImageBitmap(bgWallpaper);
+        }
+
+        @Override
+        public void logoRetrieved(NTPBackgroundImagesBridge.Wallpaper mWallpaper, Bitmap logoWallpaper) {
+            ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+            sponsoredLogo.setVisibility(View.VISIBLE);
+            sponsoredLogo.setImageBitmap(logoWallpaper);
+            sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mWallpaper.getLogoDestinationUrl() != null) {
+                        NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                    }
+                }
+            });
         }
     };
 }
