@@ -34,9 +34,11 @@ class BinanceJSONParser {
                                        std::string *error_message,
                                        bool* success_status);
   static bool GetConvertAssetsFromJSON(const std::string& json,
-    std::map<std::string, std::vector<std::string>>* assets);
+      std::map<std::string, std::vector<std::string>>* assets);
   static bool RevokeTokenFromJSON(const std::string& json,
                                   bool* success_status);
+  static bool GetCoinNetworksFromJSON(const std::string& json,
+      std::map<std::string, std::string>* networks);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_JSON_PARSER_H_

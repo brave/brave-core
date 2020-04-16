@@ -29,6 +29,7 @@ import { SortEnd } from 'react-sortable-hoc'
 import * as newTabActions from '../../actions/new_tab_actions'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 import { getLocale } from '../../../common/locale'
+import currencyData from '../../components/default/binance/data'
 
 interface Props {
   newTabData: NewTab.State
@@ -395,6 +396,23 @@ class NewTabPage extends React.Component<Props, State> {
     this.getConvertAssets()
   }
 
+  getCurrencyList = () => {
+    const { accountBalances, userTLD } = this.props.newTabData.binanceState
+    const { usCurrencies, comCurrencies } = currencyData
+    const baseList = userTLD === 'us' ? usCurrencies : comCurrencies
+
+    if (!accountBalances) {
+      return baseList
+    }
+
+    const accounts = Object.keys(accountBalances)
+    const nonHoldingList = baseList.filter((symbol: string) => {
+      return !accounts.includes(symbol)
+    })
+
+    return accounts.concat(nonHoldingList)
+  }
+
   getConvertAssets = () => {
     chrome.binance.getConvertAssets((assets: any) => {
       for (let asset in assets) {
@@ -434,11 +452,19 @@ class NewTabPage extends React.Component<Props, State> {
           this.setAssetUSDPrice(ticker, price)
         })
       }
-      chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
-        this.setAssetDepositInfo(ticker, address, url)
-        generateQRData(address, ticker, this.setAssetDepositQRCodeSrc)
-      })
     }
+
+    chrome.binance.getCoinNetworks((networks: Record<string, string>) => {
+      const currencies = this.getCurrencyList()
+      for (let ticker in networks) {
+        if (currencies.includes(ticker)) {
+          chrome.binance.getDepositInfo(ticker, networks[ticker], (address: string, url: string) => {
+            this.setAssetDepositInfo(ticker, address, url)
+            generateQRData(address, ticker, this.setAssetDepositQRCodeSrc)
+          })
+        }
+      }
+    })
 
     setTimeout(() => {
       this.setBinanceBalances(balances)
@@ -574,6 +600,7 @@ class NewTabPage extends React.Component<Props, State> {
         onUpdateActions={this.updateActions}
         onDismissAuthInvalid={this.dismissAuthInvalid}
         onSetSelectedView={this.setSelectedView}
+        getCurrencyList={this.getCurrencyList}
       />
     )
   }

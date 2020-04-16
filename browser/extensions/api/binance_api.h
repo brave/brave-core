@@ -162,6 +162,19 @@ class BinanceRevokeTokenFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetCoinNetworksFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getCoinNetworks", UNKNOWN)
+
+ protected:
+  ~BinanceGetCoinNetworksFunction() override {}
+  void OnGetCoinNetworks(
+      const std::map<std::string, std::string>& networks);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

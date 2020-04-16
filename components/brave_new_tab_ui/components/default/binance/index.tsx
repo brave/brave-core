@@ -154,12 +154,11 @@ interface Props {
   onUpdateActions: () => void
   onDismissAuthInvalid: () => void
   onSetSelectedView: (view: string) => void
+  getCurrencyList: () => string[]
 }
 
 class Binance extends React.PureComponent<Props, State> {
   private fiatList: string[]
-  private usCurrencies: string[]
-  private comCurrencies: string[]
   private currencyNames: Record<string, string>
   private cryptoColors: Record<string, string>
   private convertTimer: any
@@ -195,8 +194,6 @@ class Binance extends React.PureComponent<Props, State> {
     }
     this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
-    this.usCurrencies = currencyData.usCurrencies
-    this.comCurrencies = currencyData.comCurrencies
     this.currencyNames = {
       'BAT': 'Basic Attent...',
       'BTC': 'Bitcoin',
@@ -584,22 +581,6 @@ class Binance extends React.PureComponent<Props, State> {
     }
   }
 
-  getCurrencyList = () => {
-    const { accountBalances, userTLD } = this.props
-    const baseList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
-
-    if (!accountBalances) {
-      return baseList
-    }
-
-    const accounts = Object.keys(accountBalances)
-    const nonHoldingList = baseList.filter((symbol: string) => {
-      return !accounts.includes(symbol)
-    })
-
-    return accounts.concat(nonHoldingList)
-  }
-
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = this.cryptoColors[key] || '#fff'
 
@@ -817,7 +798,7 @@ class Binance extends React.PureComponent<Props, State> {
   renderDepositView = () => {
     const { currencyNames } = this
     const { currentDepositSearch, currentDepositAsset } = this.state
-    const currencyList = this.getCurrencyList()
+    const currencyList = this.props.getCurrencyList()
 
     if (currentDepositAsset) {
       return this.renderCurrentDepositAsset()
@@ -872,9 +853,10 @@ class Binance extends React.PureComponent<Props, State> {
       hideBalance,
       accountBTCValue,
       accountBTCUSDValue,
-      assetUSDValues
+      assetUSDValues,
+      getCurrencyList
     } = this.props
-    const currencyList = this.getCurrencyList()
+    const currencyList = getCurrencyList()
     const totalBTCUSDValue = accountBTCUSDValue || '0.00'
     const totalBTCValue = accountBTCValue ? this.formatCryptoBalance(accountBTCValue) : '0.000000'
 
@@ -1163,15 +1145,16 @@ class Binance extends React.PureComponent<Props, State> {
       initialAsset,
       initialFiat,
       initialAmount,
-      userAuthed
+      userAuthed,
+      getCurrencyList
     } = this.props
     const {
       fiatShowing,
       currenciesShowing
     } = this.state
     const isUS = userTLD === 'us'
-    const currencies = this.getCurrencyList()
     const ButtonComponent = userAuthed ? ActionButton : ConnectButton
+    const currencies = getCurrencyList()
 
     return (
       <>

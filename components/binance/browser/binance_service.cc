@@ -39,6 +39,7 @@ namespace {
 
 const char oauth_host[] = "accounts.binance.com";
 const char api_host[] = "api.binance.com";
+const char gateway_host[] = "www.binance.com";
 const char oauth_callback[] = "com.brave.binance://authorization";
 const char oauth_scope[] =
     "user:email,user:address,asset:balance,asset:ocbs";
@@ -87,6 +88,7 @@ BinanceService::BinanceService(content::BrowserContext* context)
     : client_id_(BINANCE_CLIENT_ID),
       oauth_host_(oauth_host),
       api_host_(api_host),
+      gateway_host_(gateway_host),
       context_(context),
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context_)
@@ -396,12 +398,32 @@ void BinanceService::OnGetTickerVolume(
   std::move(callback).Run(symbol_pair_volume);
 }
 
+bool BinanceService::GetCoinNetworks(GetCoinNetworksCallback callback) {
+  auto internal_callback = base::BindOnce(&BinanceService::OnGetCoinNetworks,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(gateway_host_, gateway_path_networks);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback));
+}
+
+void BinanceService::OnGetCoinNetworks(
+  GetCoinNetworksCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::map<std::string, std::string> networks;
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetCoinNetworksFromJSON(body, &networks);
+  }
+  std::move(callback).Run(networks);
+}
+
 bool BinanceService::GetDepositInfo(const std::string& symbol,
+                                    const std::string& ticker_network,
                                     GetDepositInfoCallback callback) {
   auto internal_callback = base::BindOnce(&BinanceService::OnGetDepositInfo,
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(oauth_host_, oauth_path_deposit_info);
   url = net::AppendQueryParameter(url, "coin", symbol);
+  url = net::AppendQueryParameter(url, "network", ticker_network);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
   return OAuthRequest(url, "GET", "", std::move(internal_callback));
 }
@@ -509,4 +531,8 @@ void BinanceService::SetOAuthHostForTest(const std::string& oauth_host) {
 
 void BinanceService::SetAPIHostForTest(const std::string& api_host) {
   api_host_ = api_host;
+}
+
+void BinanceService::SetGatewayHostForTest(const std::string& gateway_host) {
+  gateway_host_ = gateway_host;
 }

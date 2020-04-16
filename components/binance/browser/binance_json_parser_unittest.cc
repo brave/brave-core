@@ -12,16 +12,16 @@
 
 namespace {
 
-std::string GetBalanceFromAssets(
-    const std::map<std::string, std::string>& balances,
-    const std::string& asset) {
-  std::string balance;
+std::string GetValueFromStringMap(
+    const std::map<std::string, std::string>& map,
+    const std::string& key) {
+  std::string value;
   std::map<std::string, std::string>::const_iterator it =
-      balances.find(asset);
-  if (it != balances.end()) {
-    balance = it->second;
+      map.find(key);
+  if (it != map.end()) {
+    value = it->second;
   }
-  return balance;
+  return value;
 }
 
 typedef testing::Test BinanceJSONParserTest;
@@ -50,8 +50,8 @@ TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
         ]
       })", &balances));
 
-  std::string bnb_balance = GetBalanceFromAssets(balances, "BNB");
-  std::string btc_balance = GetBalanceFromAssets(balances, "BTC");
+  std::string bnb_balance = GetValueFromStringMap(balances, "BNB");
+  std::string btc_balance = GetValueFromStringMap(balances, "BTC");
   ASSERT_EQ(bnb_balance, "10114.00000000");
   ASSERT_EQ(btc_balance, "2.45000000");
 }
@@ -209,6 +209,52 @@ TEST_F(BinanceJSONParserTest, RevokeTokenFromJSONFail) {
         "success": false
       })", &success));
   ASSERT_FALSE(success);
+}
+
+TEST_F(BinanceJSONParserTest, GetCoinNetworksFromJSON) {
+  std::map<std::string, std::string> networks;
+  ASSERT_TRUE(BinanceJSONParser::GetCoinNetworksFromJSON(R"(
+      {
+        "code": "000000",
+        "message": null,
+        "data": [
+          {
+            "coin": "BAT",
+            "networkList": [
+              {
+                "coin": "BAT",
+                "network": "ETH",
+                "isDefault": true
+              },
+              {
+                "coin": "BAT",
+                "network": "BNB",
+                "isDefault": false
+              }
+            ]
+          },
+          {
+            "coin": "GAS",
+            "networkList": [
+              {
+                "coin": "GAS",
+                "network": "BTC",
+                "isDefault": false
+              },
+              {
+                "coin": "GAS",
+                "network": "NEO",
+                "isDefault": true
+              }
+            ]
+          }
+        ]
+      })", &networks));
+
+  std::string bat_network = GetValueFromStringMap(networks, "BAT");
+  std::string gas_network = GetValueFromStringMap(networks, "GAS");
+  ASSERT_EQ(bat_network, "ETH");
+  ASSERT_EQ(gas_network, "NEO");
 }
 
 }  // namespace
