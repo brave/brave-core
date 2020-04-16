@@ -19,6 +19,7 @@ public class BraveIntentHandler extends IntentHandler {
         super(activity, delegate);
     }
 
+    @Override
     public boolean onNewIntent(Intent intent) {
         // Redirect requests if necessary
         String url = getUrlFromIntent(intent);

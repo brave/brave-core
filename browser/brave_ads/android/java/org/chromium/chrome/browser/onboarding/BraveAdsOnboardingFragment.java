@@ -8,10 +8,6 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -35,14 +31,17 @@ public class BraveAdsOnboardingFragment extends Fragment {
     private int progress;
     private int endTime = 3;
 
-    private TextView tvTitle, tvTimer;
+    private TextView tvTitle;
+    private TextView tvTimer;
 
     private ProgressBar progressBarView;
 
     private CountDownTimer countDownTimer;
-    private LinearLayout countDownLayout, actionLayout;
+    private LinearLayout countDownLayout;
+    private LinearLayout actionLayout;
 
-    private Button btnStartBrowsing, btnDidntSeeAd;
+    private Button btnStartBrowsing;
+    private Button btnDidntSeeAd;
 
     private boolean fromSettings;
 

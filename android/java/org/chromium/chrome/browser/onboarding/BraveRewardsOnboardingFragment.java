@@ -7,16 +7,10 @@
 
 package org.chromium.chrome.browser.onboarding;
 
-import android.app.AlarmManager;
 import android.app.Fragment;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -25,16 +19,10 @@ import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
@@ -53,9 +41,12 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
     private ImageView bgImage;
 
-    private TextView tvTitle, tvText, tvAgree;
+    private TextView tvTitle;
+    private TextView tvText;
+    private TextView tvAgree;
 
-    private Button btnSkip, btnNext;
+    private Button btnSkip;
+    private Button btnNext;
 
     private static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";

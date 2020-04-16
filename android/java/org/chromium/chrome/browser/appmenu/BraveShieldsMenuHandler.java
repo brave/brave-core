@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.appmenu;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.Menu;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -15,7 +14,6 @@ import android.view.ContextThemeWrapper;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.ListPopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
@@ -26,17 +24,12 @@ import android.animation.AnimatorSet;
 import android.os.Build;
 import android.view.ViewGroup;
 import android.view.Surface;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.widget.TextView;
-import android.text.Html;
 
-import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.R;
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.AnimationFrameTimeHistogram;
 
 import java.util.ArrayList;

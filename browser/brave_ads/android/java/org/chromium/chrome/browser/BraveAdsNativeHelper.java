@@ -6,7 +6,6 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.profiles.Profile;
 

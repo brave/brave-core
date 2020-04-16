@@ -12,15 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.widget.FrameLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import java.io.InputStream;
 import java.io.FileNotFoundException;
@@ -47,7 +44,6 @@ import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";

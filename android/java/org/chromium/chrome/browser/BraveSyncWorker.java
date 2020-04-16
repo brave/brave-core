@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -18,18 +17,14 @@ import android.util.JsonToken;
 import android.webkit.JavascriptInterface;
 
 import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.url_formatter.UrlFormatter;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
-import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge.BookmarkItem;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge.BookmarkModelObserver;
 import org.chromium.chrome.browser.bookmarks.BraveBookmarkModel;
 import org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils;
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmarksShim;
@@ -39,10 +34,7 @@ import org.chromium.content_public.browser.JavascriptInjector;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.components.embedder_support.view.ContentView;
-import org.chromium.content_public.browser.ViewEventSink;
 import org.chromium.content.browser.ViewEventSinkImpl;
-import org.chromium.chrome.browser.ChromeVersionInfo;
-import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.ViewAndroidDelegate;
 import org.chromium.ui.base.WindowAndroid;
 

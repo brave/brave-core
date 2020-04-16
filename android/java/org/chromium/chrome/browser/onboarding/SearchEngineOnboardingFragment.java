@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
@@ -28,18 +27,13 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class SearchEngineOnboardingFragment extends Fragment {
     private RadioGroup radioGroup;
 
-    private Button btnSkip, btnNext;
+    private Button btnSkip;
+    private Button btnNext;
 
     private OnViewPagerAction onViewPagerAction;
 

@@ -34,7 +34,6 @@ import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.util.ConfigurationUtils;

@@ -15,7 +15,6 @@
  */
 package org.chromium.chrome.browser.qrreader;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;

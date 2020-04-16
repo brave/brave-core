@@ -24,7 +24,8 @@ import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 public class BraveShieldsOnboardingFragment extends Fragment {
     private TextView tvText;
 
-    private Button btnSkip, btnNext;
+    private Button btnSkip;
+    private Button btnNext;
 
     private OnViewPagerAction onViewPagerAction;
 

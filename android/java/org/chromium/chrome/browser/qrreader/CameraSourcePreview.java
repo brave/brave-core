@@ -15,7 +15,6 @@
  */
 package org.chromium.chrome.browser.qrreader;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.RequiresPermission;

@@ -5,9 +5,6 @@
 
 package org.chromium.chrome.browser.signin;
 
-import android.content.Context;
-
-import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.externalauth.ExternalAuthUtils;
 import org.chromium.components.signin.AccountTrackerService;

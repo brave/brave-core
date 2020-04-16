@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
 import android.os.Build;
@@ -27,8 +26,6 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.homepage.BraveHomepageSettings;
 import org.chromium.chrome.browser.settings.privacy.BravePrivacySettings;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.components.search_engines.TemplateUrl;
-import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;

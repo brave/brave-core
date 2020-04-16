@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.partnercustomizations;
 import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.ntp.NewTabPage;
 
 public class CloseBraveManager {
     private static final String CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";

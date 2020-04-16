@@ -7,8 +7,6 @@ package org.chromium.chrome.browser.sync;
 
 import java.util.ArrayList;
 
-import org.chromium.chrome.browser.sync.BraveSyncServiceObserver;
-
 public class BraveSyncService {
     public static final int NICEWARE_WORD_COUNT = 16;
     public static final int BIP39_WORD_COUNT = 24;
