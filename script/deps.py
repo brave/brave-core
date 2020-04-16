@@ -5,14 +5,18 @@
 
 """This script is used to download deps."""
 
-import argparse
 import os
 import sys
 import tarfile
 import tempfile
 import time
-import urllib2
 import zipfile
+
+try:
+    from urllib2 import HTTPError, URLError, urlopen
+except ImportError:  # For Py3 compatibility
+    from urllib.error import HTTPError, URLError
+    from urllib.request import urlopen
 
 
 def DownloadUrl(url, output_file):
@@ -26,8 +30,8 @@ def DownloadUrl(url, output_file):
         try:
             sys.stdout.write('Downloading %s ' % url)
             sys.stdout.flush()
-            response = urllib2.urlopen(url)
-            total_size = int(response.info().getheader('Content-Length').strip())
+            response = urlopen(url)
+            total_size = int(response.info().get('Content-Length').strip())
             bytes_done = 0
             dots_printed = 0
             while True:
@@ -37,20 +41,21 @@ def DownloadUrl(url, output_file):
                 output_file.write(chunk)
                 bytes_done += len(chunk)
                 num_dots = TOTAL_DOTS * bytes_done / total_size
-                sys.stdout.write('.' * (num_dots - dots_printed))
+                sys.stdout.write('.' * int(num_dots - dots_printed))
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
-                raise urllib2.URLError("only got %d of %d bytes" % (bytes_done, total_size))
-            print ' Done.'
+                raise URLError("only got %d of %d bytes" %
+                               (bytes_done, total_size))
+            print(' Done.')
             return
-        except urllib2.URLError as e:
+        except URLError as e:
             sys.stdout.write('\n')
-            print e
-            if num_retries == 0 or isinstance(e, urllib2.HTTPError) and e.code == 404:
+            print(e)
+            if num_retries == 0 or isinstance(e, HTTPError) and e.code == 404:
                 raise e
             num_retries -= 1
-            print 'Retrying in %d s ...' % retry_wait_s
+            print('Retrying in %d s ...' % retry_wait_s)
             time.sleep(retry_wait_s)
             retry_wait_s *= 2
 
@@ -74,7 +79,8 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
             t = tarfile.open(mode='r:gz', fileobj=f)
             members = None
             if path_prefix is not None:
-                members = [m for m in t.getmembers() if m.name.startswith(path_prefix)]
+                members = [m for m in t.getmembers(
+                ) if m.name.startswith(path_prefix)]
             t.extractall(path=output_dir, members=members)
 
 
