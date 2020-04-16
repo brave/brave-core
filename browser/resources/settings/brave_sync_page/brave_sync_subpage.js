@@ -87,6 +87,12 @@ Polymer({
       type: Boolean,
       value: false,
     },
+
+    /** @private */
+    showInvalidSyncCodeDialog_: {
+      type: Boolean,
+      value: false,
+    },
   },
 
   /** @private {?settings.SyncBrowserProxy} */
@@ -195,7 +201,7 @@ Polymer({
   onSetupCancelDialogConfirm_: function() {
     this.setupCancelConfirmed_ = true;
     this.$$('#setupCancelDialog').close();
-    settings.navigateTo(settings.routes.BASIC);
+    settings.navigateTo(settings.routes.BRAVE_SYNC);
     chrome.metricsPrivate.recordUserAction(
         'Signin_Signin_ConfirmCancelAdvancedSyncSettings');
   },
@@ -203,6 +209,16 @@ Polymer({
   /** @private */
   onSetupCancelDialogClose_: function() {
     this.showSetupCancelDialog_ = false;
+  },
+
+  /** @private */
+  onInvalidSyncCodeDialogClose_: function() {
+    this.showInvalidSyncCodeDialog_ = false;
+  },
+
+  /** @private */
+  onInvalidSyncCodeDialogConfirm_: function() {
+    this.$$('#invalidSyncCodeDialog').close();
   },
 
   /** @protected */
@@ -342,7 +358,8 @@ Polymer({
       case settings.PageStatus.PASSPHRASE_FAILED:
         if (this.pageStatus_ == this.pages_.CONFIGURE && this.syncPrefs &&
             this.syncPrefs.passphraseRequired) {
-          // TODO(darkdh): Handle valid but wrong sync code
+          // This won't happen because client need valid seed/passphrase to be
+          // able to get data from server.
         }
         return;
     }
@@ -361,17 +378,25 @@ Polymer({
 
   /**
    * @param {!CustomEvent<boolean>} e The event passed from
-   *     settings-sync-account-control.
+   *     settings-sync-control.
    * @private
    */
   onSyncSetupDone_: function(e) {
     if (e.detail) {
-      this.didAbort_ = false;
-      this.browserProxy_.setSyncCode(this.passphrase_);
+      this.browserProxy_.setSyncCode(this.passphrase_).then((success) => {
+        if (success) {
+          this.didAbort_ = false;
+          settings.navigateTo(settings.routes.BRAVE_SYNC);
+        } else {
+          this.passphrase_ = '';
+          this.showInvalidSyncCodeDialog_ = true;
+          Polymer.dom.flush();
+          this.$$('#invalidSyncCodeDialog').showModal();
+        }
+      });
     } else {
-      this.setupCancelConfirmed_ = true;
+      settings.navigateTo(settings.routes.BRAVE_SYNC);
     }
-    settings.navigateTo(settings.routes.BRAVE_SYNC);
   },
 });
 

@@ -34,26 +34,28 @@
         </cr-button>
     </div>
 
-    <cr-dialog id="syncSetup" on-close="onSyncSetupDialogClose_"
-                              hidden="[[!showSetupDialog_]]">
-      <div slot="title">$i18n{braveSyncSetupTitle}</div>
-      <div slot="body">$i18n{braveSyncSetupDesc}</div>
-      <div slot="button-container">
-        <cr-button class="action-button"
-                   on-click="onStartANewSyncChain_">
-          $i18n{braveSyncStartNewChain}
-        </cr-button>
-        <cr-button on-click="onHaveSyncCode_">
-          $i18n{braveSyncEnterCode}
-        </cr-button>
-      </div>
-    </cr-dialog>
+    <template is="dom-if" if="[[showSetupDialog_]]" restamp>
+      <cr-dialog id="syncSetup" on-close="onSetupCancel_"
+                                ignore-popstate>
+        <div slot="title">$i18n{braveSyncSetupTitle}</div>
+        <div slot="body">$i18n{braveSyncSetupDesc}</div>
+        <div slot="button-container">
+          <cr-button class="action-button"
+                     on-click="onStartANewSyncChain_">
+            $i18n{braveSyncStartNewChain}
+          </cr-button>
+          <cr-button on-click="onHaveSyncCode_">
+            $i18n{braveSyncEnterCode}
+          </cr-button>
+        </div>
+      </cr-dialog>
+    </template>
 
     <template is="dom-if" if="[[showDeviceTypeDialog_]]" restamp>
       <cr-dialog id="deviceType" on-close="onDeviceTypeDialogClose_"
                                  ignore-popstate>
         <div slot="title">$i18n{braveSyncChooseDeviceTitle}
-          <cr-icon-button iron-icon="cr:close" on-tap="onDeviceTypeDialogClose_">
+          <cr-icon-button iron-icon="cr:close" on-tap="onDeviceTypeDialogCancel_">
           </cr-icon-button>
         </div>
         <!-- <div slot="body">Choose the type of device you would like to sync to</div> -->
@@ -80,7 +82,7 @@
           $i18n{braveSyncScanCodeDesc3}
         </div>
         <div slot="button-container">
-          <cr-button on-click="onQRCodeCancel_">
+          <cr-button on-click="onQRCodeDialogCancel_">
             $i18n{cancel}
           </cr-button>
           <cr-button on-click="onViewSyncCode_">
@@ -113,7 +115,10 @@
           </div>
         </div>
         <div slot="button-container">
-          <cr-button on-click="onSyncCodeDialogClose_">$i18n{cancel}</cr-button>
+          <cr-button on-click="onSyncCodeDialogCancel_">$i18n{cancel}</cr-button>
+          <cr-button on-click="onViewQRCode_">
+            $i18n{braveSyncViewCodeQRCodeButton}
+          </cr-button>
           <cr-button class="action-button" on-click="onSetupConfirm_"
                                            hidden="[[!showSetupDialog_]]">
             $i18n{confirm}
@@ -131,7 +136,7 @@
           <textarea id="enterSyncCode"></textarea>
         </div>
         <div slot="button-container">
-          <cr-button on-click="onHaveSyncCodeDialogClose_">$i18n{cancel}</cr-button>
+          <cr-button on-click="onHaveSyncCodeDialogCancel_">$i18n{cancel}</cr-button>
           <cr-button class="action-button" on-click="onSetupConfirm_">
             $i18n{confirm}
           </cr-button>

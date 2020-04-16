@@ -75,6 +75,20 @@
       </cr-dialog>
     </template>
 </if>
+    <template is="dom-if" if="[[showInvalidSyncCodeDialog_]]" restamp>
+      <cr-dialog id="invalidSyncCodeDialog"
+                 on-close="onInvalidSyncCodeDialogClose_"
+                 ignore-popstate>
+        <div slot="title">$i18n{braveSyncInvalidSyncCodeTitle}</div>
+        <div slot="body">$i18n{braveSyncInvalidSyncCodeDesc}</div>
+        <div slot="button-container">
+          <cr-button class="action-button"
+              on-click="onInvalidSyncCodeDialogConfirm_">
+            $i18n{ok}
+          </cr-button>
+        </div>
+      </cr-dialog>
+    </template>
   </template>
   <script src="brave_sync_subpage.js"></script>
 </dom-module>

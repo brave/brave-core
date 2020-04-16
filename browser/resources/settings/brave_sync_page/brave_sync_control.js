@@ -46,12 +46,6 @@ Polymer({
     },
 
     /** @private */
-    showSyncSetupDialog_: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** @private */
     showDeviceTypeDialog_: {
       type: Boolean,
       value: false,
@@ -84,15 +78,21 @@ Polymer({
   },
 
   attached: function() {
-    // TODO(darkdh): need a way to recreate this component, otherwise nagigate
-    // out of subpage and back will not show correct state
-    Polymer.dom.flush();
-    this.$$('#syncSetup').showModal();
+    if (this.showSetupDialog_) {
+      Polymer.dom.flush();
+      this.$$('#syncSetup').showModal();
+    }
   },
 
   /** @protected */
   currentRouteChanged: function() {
-    if (settings.getCurrentRoute() != settings.routes.BRAVE_SYNC_SETUP) {
+    if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
+      // This is for reentry after setup aborted.
+      if (this.$$('#syncSetup') && !this.$$('#syncSetup').open) {
+        Polymer.dom.flush();
+        this.$$('#syncSetup').showModal();
+      }
+    } else {
       this.showSyncCodeDialog_ = false;
       this.showHaveSyncCodeDialog_ = false;
       this.showDeviceTypeDialog_ = false;
@@ -126,15 +126,31 @@ Polymer({
     this.syncBrowserProxy_.getSyncCode().then((syncCode) => {
       this.passphrase = syncCode;
     })
-    this.showDeviceTypeDialog_ = false;
+    if (this.$$('#syncCodeDialog'))
+      this.$$('#syncCodeDialog').close();
+    if (this.$$('#deviceType'))
+      this.$$('#deviceType').close();
     this.showQRCodeDialog_ = true;
     Polymer.dom.flush();
     this.$$('#QRCode').showModal();
   },
 
   /** @private */
-  onQRCodeCancel_: function() {
-    this.showQRCodeDialog_ = false;
+  onQRCodeDialogCancel_: function() {
+    this.$$('#QRCode').cancel();
+  },
+
+  /** @private */
+  onDeviceTypeDialogCancel_: function() {
+    this.$$('#deviceType').cancel();
+  },
+
+  onSyncCodeDialogCancel_: function() {
+    this.$$('#syncCodeDialog').cancel();
+  },
+
+  onHaveSyncCodeDialogCancel_: function() {
+    this.$$('#haveSyncCode').cancel();
   },
 
   /** @private */
@@ -142,8 +158,11 @@ Polymer({
     this.syncBrowserProxy_.getSyncCode().then((syncCode) => {
       this.passphrase = syncCode;
     })
-    this.showDeviceTypeDialog_ = false;
-    this.showQRCodeDialog_ = false;
+
+    if (this.$$('#QRCode'))
+      this.$$('#QRCode').close();
+    if (this.$$('#deviceType'))
+      this.$$('#deviceType').close();
     this.showSyncCodeDialog_ = true;
     Polymer.dom.flush();
     this.$$('#syncCodeDialog').showModal();
@@ -160,12 +179,8 @@ Polymer({
   },
 
   /** @private */
-  onSyncSetupDialogClose_: function() {
-    if (!this.passphrase) {
-      this.onSetupCancel_();
-    } else {
-      this.onSetupConfirm_();
-    }
+  onQRCodeDialogClose_: function() {
+    this.showQRCodeDialog_ = false;
   },
 
   /** @private */
