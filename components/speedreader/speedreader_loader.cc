@@ -13,7 +13,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "components/grit/brave_components_resources.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -254,8 +253,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
     base::PostTaskAndReplyWithResult(
         FROM_HERE, {base::ThreadPool(), base::TaskPriority::USER_BLOCKING},
         base::BindOnce(
-            [](GURL url, std::string data,
-               std::unique_ptr<Rewriter> rewriter) -> auto {
+            [](std::string data, std::unique_ptr<Rewriter> rewriter) -> auto {
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
@@ -268,8 +266,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 
               return GetDistilledPageResources() + transformed;
             },
-            response_url_, std::move(buffered_body_),
-            whitelist_->MakeRewriter(response_url_)),
+            std::move(buffered_body_), whitelist_->MakeRewriter(response_url_)),
         base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,
                        weak_factory_.GetWeakPtr()));
     return;

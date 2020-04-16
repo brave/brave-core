@@ -59,12 +59,9 @@ def run(args):
     cargo_args.append(args.output)
     cargo_args.append(args.path)
 
-    print("args", cargo_args, os.getcwd())
-
     try:
         subprocess.check_call(cargo_args, env=env)
     except subprocess.CalledProcessError as e:
-        print(e.output)
         raise e
 
 def parse_args():

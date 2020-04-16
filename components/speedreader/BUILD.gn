@@ -10,6 +10,7 @@ buildflag_header("buildflags") {
 
 source_set("speedreader") {
   public_deps = [
+    ":buildflags",
     "//brave/components/speedreader/rust/ffi:speedreader_ffi_lib",
   ]
 
@@ -31,7 +32,6 @@ source_set("speedreader") {
   deps = [
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
-    "//brave/components/speedreader:buildflags",
     "//brave/components/speedreader/rust/ffi:speedreader_ffi",
     "//services/network/public/cpp",
     "//services/network/public/mojom",

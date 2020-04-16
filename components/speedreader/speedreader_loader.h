@@ -14,8 +14,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_piece.h"
-#include "brave/components/speedreader/speedreader_switches.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -30,6 +28,7 @@
 namespace speedreader {
 
 class SpeedReaderThrottle;
+class SpeedreaderWhitelist;
 
 // Loads the whole response body and tries to Speedreader-distill it.
 // Cargoculted from |`SniffingURLLoader|.
