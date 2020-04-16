@@ -14,7 +14,7 @@ import time
 import zipfile
 
 from six.moves import urllib
-from six import print_
+
 
 def DownloadUrl(url, output_file):
     """Download url into output_file."""
@@ -28,7 +28,7 @@ def DownloadUrl(url, output_file):
             sys.stdout.write('Downloading %s ' % url)
             sys.stdout.flush()
             response = urllib.request.urlopen(url)
-            total_size = int(response.info().getheader('Content-Length').strip())
+            total_size = response.length
             bytes_done = 0
             dots_printed = 0
             while True:
@@ -38,22 +38,19 @@ def DownloadUrl(url, output_file):
                 output_file.write(chunk)
                 bytes_done += len(chunk)
                 num_dots = TOTAL_DOTS * bytes_done / total_size
-                sys.stdout.write('.' * (num_dots - dots_printed))
+                sys.stdout.write('.' * int(num_dots - dots_printed))
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
                 raise urllib.error.URLError("only got %d of %d bytes" % (bytes_done, total_size))
-            six.print_(' Done.')
             print(' Done.')
             return
         except urllib.error.URLError as e:
             sys.stdout.write('\n')
-            six.print_(e)
             print(e)
             if num_retries == 0 or isinstance(e, urllib.error.HTTPError) and e.code == 404:
                 raise e
             num_retries -= 1
-            six.print_('Retrying in %d s ...' % retry_wait_s)
             print('Retrying in %d s ...' % retry_wait_s)
             time.sleep(retry_wait_s)
             retry_wait_s *= 2
