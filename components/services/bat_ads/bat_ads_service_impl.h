@@ -39,10 +39,6 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
       const ads::Environment environment,
       SetEnvironmentCallback callback) override;
 
-  void SetTesting(
-      const bool is_testing,
-      SetTestingCallback callback) override;
-
   void SetDebug(
       const bool is_debug,
       SetDebugCallback callback) override;

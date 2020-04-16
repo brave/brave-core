@@ -345,28 +345,6 @@ void AdsClientMojoBridge::URLRequest(
 }
 
 // static
-void AdsClientMojoBridge::OnLoadSampleBundle(
-    CallbackHolder<LoadSampleBundleCallback>* holder,
-    const ads::Result result,
-    const std::string& value) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(value));
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::LoadSampleBundle(
-    LoadSampleBundleCallback callback) {
-  // this gets deleted in OnLoadSampleBundle
-  auto* holder = new CallbackHolder<LoadSampleBundleCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->LoadSampleBundle(
-      std::bind(AdsClientMojoBridge::OnLoadSampleBundle, holder, _1, _2));
-}
-
 void AdsClientMojoBridge::ShowNotification(
     const std::string& notification_info) {
   auto info = std::make_unique<ads::AdNotificationInfo>();

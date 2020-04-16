@@ -79,10 +79,6 @@ void BatAdsImpl::OnPageLoaded(
   ads_->OnPageLoaded(url, content);
 }
 
-void BatAdsImpl::ServeSampleAd() {
-  ads_->ServeSampleAd();
-}
-
 void BatAdsImpl::OnUnIdle() {
   ads_->OnUnIdle();
 }

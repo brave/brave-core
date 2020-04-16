@@ -54,9 +54,6 @@ using GetCreativeAdNotificationsCallback = std::function<void(const Result,
 using GetAdConversionsCallback = std::function<void(const Result,
     const AdConversionList&)>;
 
-using LoadSampleBundleCallback = std::function<void(const Result,
-    const std::string&)>;
-
 using URLRequestCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>&)>;
 
@@ -206,12 +203,6 @@ class ADS_EXPORT AdsClient {
   // contract for the JSON data and how that data can be modified
   virtual std::string LoadJsonSchema(
       const std::string& name) = 0;
-
-  // Should load the sample bundle from persistent storage. The callback takes 2
-  // arguments — |Result| should be set to |SUCCESS| if successful; otherwise,
-  // should be set to |FAILED|. |value| should contain the sample bundle
-  virtual void LoadSampleBundle(
-      LoadSampleBundleCallback callback) = 0;
 
   // Should reset a previously persisted value. The callback takes one argument
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be

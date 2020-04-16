@@ -34,14 +34,6 @@ minutes instead of 2 hours as defined by `kDebugCatalogPing` in
 --brave-ads-debug
 ```
 
-Enable testing of notifications while viewing `www.iab.com` so that page
-refreshes force a notification to be displayed after 30 seconds as defined by
-`kNextEasterEggStartsInSeconds` in `static_values.h`
-
-```
---brave-ads-testing
-```
-
 Enable diagnostic logging, where `#` should set to a minimum log level. Valid
 values are from 0 to 3 where INFO = 0, WARNING = 1, ERROR = 2 and FATAL = 3. So
 if you want INFO, WARNING and ERROR you would choose 2

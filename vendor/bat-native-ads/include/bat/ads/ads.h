@@ -37,19 +37,14 @@ extern Environment _environment;
 // arguments
 extern bool _is_debug;
 
-// |_is_testing| should be set to |true| if the --is-testing Easter Egg
-// command-line argument is passed; otherwise, should be set to |false|.
-//
-// If |_is_testing| is set to |true| ads are served every
-// kNextEasterEggStartsInSeconds seconds. Visit www.iab.com and manually refresh
-// the page to serve the next easter egg
-extern bool _is_testing;
-
 // Bundle schema resource name
 extern const char _bundle_schema_resource_name[];
 
 // Catalog schema resource name
 extern const char _catalog_schema_resource_name[];
+
+// Sample bundle resource name
+extern const char _sample_bundle_resource_name[];
 
 // Catalog resource name
 extern const char _catalog_resource_name[];
@@ -132,9 +127,6 @@ class ADS_EXPORT Ads {
   virtual void OnPageLoaded(
       const std::string& url,
       const std::string& html) = 0;
-
-  // Should be called when the user invokes "Show Sample Ad" on the Client
-  virtual void ServeSampleAd() = 0;
 
   // Should be called when a user is no longer idle. This call is optional for
   // mobile devices

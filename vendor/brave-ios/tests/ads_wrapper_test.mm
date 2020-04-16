@@ -46,7 +46,6 @@
 - (void)setUp
 {
   [BATBraveAds setDebug:YES];
-  [BATBraveAds setTesting:YES];
   const auto path = [self stateStoragePath];
   [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
   self.ads = [[BATBraveAds alloc] initWithStateStoragePath:path];
@@ -72,21 +71,6 @@
     
     [expect fulfill];
   });
-  
-  [self waitForExpectations:@[expect] timeout: 4.0];
-}
-
-- (void)testServeSampleAd
-{
-  self.ads.enabled = YES;
-  
-  const auto expect = [self expectationWithDescription:@"Serving Sample Ad"];
-  const auto mockHandler = [[_MockNotificationHandler alloc] init];
-  mockHandler.showNotification = ^(BATAdNotification *) {
-    [expect fulfill];
-  };
-  self.ads.notificationsHandler = mockHandler;
-  [self.ads serveSampleAd];
   
   [self waitForExpectations:@[expect] timeout: 4.0];
 }

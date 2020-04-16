@@ -13,7 +13,6 @@ interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
          pending_associated_receiver<BatAds> database) => ();
   SetEnvironment(ads.mojom.Environment environment) => ();
-  SetTesting(bool is_testing) => ();
   SetDebug(bool is_debug) => ();
 };
 
@@ -54,7 +53,6 @@ interface BatAdsClient {
   Save(string name, string value) => (int32 result);
   SaveBundleState(string bundle_state) => (int32 result);
   Load(string name) => (int32 result, string value);
-  LoadSampleBundle() => (int32 result, string value);
   Reset(string name) => (int32 result);
   GetCreativeAdNotifications(array<string> categories) => (int32 result, array<string> categories, array<string> json_list);
   GetAdConversions() => (int32 result, array<string> json_list);
@@ -67,7 +65,6 @@ interface BatAds {
   SetConfirmationsIsReady(bool is_ready);
   ChangeLocale(string locale);
   OnPageLoaded(string url, string html);
-  ServeSampleAd();
   OnUnIdle();
   OnIdle();
   OnForeground();

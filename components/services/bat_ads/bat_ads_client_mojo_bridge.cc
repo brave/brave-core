@@ -369,24 +369,6 @@ std::string BatAdsClientMojoBridge::LoadJsonSchema(
   return json;
 }
 
-void OnLoadSampleBundle(
-    const ads::LoadSampleBundleCallback& callback,
-    const int32_t result,
-    const std::string& value) {
-  callback(ToAdsResult(result), value);
-}
-
-void BatAdsClientMojoBridge::LoadSampleBundle(
-    ads::LoadSampleBundleCallback callback) {
-  if (!connected()) {
-    callback(ads::Result::FAILED, "");
-    return;
-  }
-
-  bat_ads_client_->LoadSampleBundle(
-      base::BindOnce(&OnLoadSampleBundle, std::move(callback)));
-}
-
 void OnSaveBundleState(
     const ads::ResultCallback& callback,
     const int32_t result) {

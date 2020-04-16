@@ -92,11 +92,7 @@ std::string Reports::GenerateAdNotificationEventReport(
   writer.EndArray();
 
   writer.String("adCatalog");
-  if (ads_->IsCreativeSetFromSampleCatalog(info.creative_set_id)) {
-    writer.String("sample-catalog");
-  } else {
-    writer.String(info.creative_set_id.c_str());
-  }
+  writer.String(info.creative_set_id.c_str());
 
   writer.String("targetUrl");
   writer.String(info.target_url.c_str());

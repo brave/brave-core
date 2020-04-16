@@ -14,7 +14,6 @@
 namespace ads {
 
 bool _is_debug = false;
-bool _is_testing = false;
 Environment _environment = Environment::DEVELOPMENT;
 
 const char _bundle_schema_resource_name[] = "bundle-schema.json";

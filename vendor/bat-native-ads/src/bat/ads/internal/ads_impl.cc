@@ -673,8 +673,6 @@ void AdsImpl::OnPageLoaded(
   }
 
   MaybeClassifyPage(url, content);
-
-  CheckEasterEgg(url);
 }
 
 void AdsImpl::ExtractPurchaseIntentSignal(
@@ -870,95 +868,6 @@ AdsImpl::GetWinningPurchaseIntentCategories() {
       purchase_intent_signal_history, kPurchaseIntentMaxSegments);
 
   return winning_categories;
-}
-
-void AdsImpl::ServeSampleAd() {
-  if (!IsInitialized()) {
-    BLOG(WARNING) << "ServeSampleAd failed as not initialized";
-    return;
-  }
-
-  auto callback = std::bind(&AdsImpl::OnLoadSampleBundle, this, _1, _2);
-  ads_client_->LoadSampleBundle(callback);
-}
-
-void AdsImpl::OnLoadSampleBundle(
-    const Result result,
-    const std::string& json) {
-  if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to load sample bundle";
-
-    return;
-  }
-
-  BLOG(INFO) << "Successfully loaded sample bundle";
-
-  BundleState state;
-  std::string error_description;
-  std::string json_schema =
-      ads_client_->LoadJsonSchema(_bundle_schema_resource_name);
-  auto json_result = state.FromJson(json, json_schema, &error_description);
-  if (json_result != SUCCESS) {
-    BLOG(ERROR) << "Failed to parse sample bundle (" << error_description
-        << "): " << json;
-
-    return;
-  }
-
-  // TODO(Terry Mancey): Sample bundle state should be persisted on the Client
-  // in a database so that sample ads can be fetched from the database rather
-  // than parsing the JSON each time, and be consistent with GetAds, therefore
-  // the below code should be abstracted into GetAdForSampleCategory once the
-  // necessary changes have been made in Brave Core by Brian Johnson
-
-  auto categories = state.creative_ad_notifications.begin();
-  auto categories_count = state.creative_ad_notifications.size();
-  if (categories_count == 0) {
-    BLOG(INFO) << "Notification not made: No sample bundle ad notification "
-        "categories";
-
-    return;
-  }
-
-  auto category_rand = base::RandInt(0, categories_count - 1);
-  std::advance(categories, static_cast<int64_t>(category_rand));
-
-  auto category = categories->first;
-  auto ads = categories->second;
-
-  auto ads_count = ads.size();
-  if (ads_count == 0) {
-    BLOG(INFO) << "Notification not made: No sample bundle ads found for \""
-        << category << "\" sample category";
-
-    return;
-  }
-
-  auto ad_rand = base::RandInt(0, ads_count - 1);
-  auto ad = ads.at(ad_rand);
-  ShowAdNotification(ad);
-}
-
-void AdsImpl::CheckEasterEgg(
-    const std::string& url) {
-  if (!_is_testing) {
-    return;
-  }
-
-  auto now_in_seconds = Time::NowInSeconds();
-
-  if (helper::Uri::MatchesDomainOrHost(url, kEasterEggUrl) &&
-      next_easter_egg_timestamp_in_seconds_ < now_in_seconds) {
-    BLOG(INFO) << "Collect easter egg";
-
-    ServeAdNotificationIfReady(true);
-
-    next_easter_egg_timestamp_in_seconds_ =
-        now_in_seconds + kNextEasterEggStartsInSeconds;
-
-    BLOG(INFO) << "Next easter egg available in "
-        << next_easter_egg_timestamp_in_seconds_ << " seconds";
-  }
 }
 
 void AdsImpl::ServeAdNotificationIfReady(
@@ -1575,12 +1484,6 @@ bool AdsImpl::IsStillViewingAdNotification() const {
 void AdsImpl::ConfirmAd(
     const AdInfo& info,
     const ConfirmationType confirmation_type) {
-  if (IsCreativeSetFromSampleCatalog(info.creative_set_id)) {
-    BLOG(INFO) << "Confirmation not made: Sample Ad";
-
-    return;
-  }
-
   const Reports reports(this);
   const std::string report = reports.GenerateConfirmationEventReport(
       info.creative_instance_id, confirmation_type);
@@ -1593,12 +1496,6 @@ void AdsImpl::ConfirmAction(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const ConfirmationType confirmation_type) {
-  if (IsCreativeSetFromSampleCatalog(creative_set_id)) {
-    BLOG(INFO) << "Confirmation not made: Sample Ad";
-
-    return;
-  }
-
   const Reports reports(this);
   const std::string report = reports.GenerateConfirmationEventReport(
       creative_instance_id, confirmation_type);
@@ -1625,11 +1522,6 @@ void AdsImpl::AppendAdNotificationToHistory(
   ad_history.category_content.category = info.category;
 
   client_->AppendAdHistoryToAdsShownHistory(ad_history);
-}
-
-bool AdsImpl::IsCreativeSetFromSampleCatalog(
-  const std::string& creative_set_id) const {
-  return creative_set_id.empty();
 }
 
 bool AdsImpl::IsSupportedUrl(

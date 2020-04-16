@@ -123,7 +123,6 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 }
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
-BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 + (int)environment
 {
@@ -242,12 +241,6 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 {
   if (![self isAdsServiceRunning]) { return; }
   ads->RemoveAllHistory(completion);
-}
-
-- (void)serveSampleAd
-{
-  if (![self isAdsServiceRunning]) { return; }
-  ads->ServeSampleAd();
 }
 
 #pragma mark - Confirmations
@@ -502,23 +495,6 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
     return "";
   }
   return std::string(contents.UTF8String);
-}
-
-- (void)loadSampleBundle:(ads::LoadSampleBundleCallback)callback
-{
-  const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
-  const auto path = [bundle pathForResource:@"sample_bundle" ofType:@"json"];
-  if (!path || path.length == 0) {
-    callback(ads::Result::FAILED, "");
-    return;
-  }
-  NSError *error = nil;
-  const auto contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-  if (!contents || error) {
-    callback(ads::Result::FAILED, "");
-    return;
-  }
-  callback(ads::Result::SUCCESS, std::string(contents.UTF8String));
 }
 
 - (void)loadUserModelForLanguage:(const std::string &)language callback:(ads::LoadCallback)callback
