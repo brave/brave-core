@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 
-#include "brave/common/brave_farbling_constants.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
 #define BRAVE_WEB_CONTENT_SETTINGS_CLIENT_H                                \
   virtual bool AllowAutoplay(bool default_value) { return default_value; } \

@@ -6,9 +6,10 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/renderer/brave_content_settings_agent_impl_farbling_helper.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -60,9 +61,10 @@ double BraveSessionCache::GetFudgeFactor() {
 scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
     blink::LocalFrame* frame,
     scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
-  if (!frame)
+  if (!frame || !frame->GetContentSettingsClient()) {
     return image_bitmap;
-  switch (GetBraveFarblingLevel(frame)) {
+  }
+  switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED: {

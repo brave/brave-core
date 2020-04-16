@@ -4,8 +4,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("renderer") {
+  sources = [
+    "brave_farbling_constants.h",
+  ]
+
   deps = [
     "//brave/components/brave_drm:brave_drm_blink",
   ]
 }
-

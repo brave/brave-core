@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMMON_BRAVE_FARBLING_CONSTANTS_H_
-#define BRAVE_COMMON_BRAVE_FARBLING_CONSTANTS_H_
+#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_
+#define BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_
 
 enum BraveFarblingLevel {
   BALANCED = 0,
@@ -12,4 +12,4 @@ enum BraveFarblingLevel {
   MAXIMUM
 };
 
-#endif  // BRAVE_COMMON_BRAVE_FARBLING_CONSTANTS_H_
+#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_
