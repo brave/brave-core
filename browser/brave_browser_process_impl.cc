@@ -237,9 +237,7 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
         std::make_unique<NTPBackgroundImagesService>(
             component_updater(),
             local_state(),
-            user_data_dir,
-            SystemNetworkContextManager::GetInstance()->
-                GetSharedURLLoaderFactory());
+            user_data_dir);
     ntp_background_images_service_->Init();
   }
 

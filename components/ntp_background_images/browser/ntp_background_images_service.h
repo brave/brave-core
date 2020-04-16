@@ -22,11 +22,6 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-namespace network {
-class SharedURLLoaderFactory;
-class SimpleURLLoader;
-}  // network
-
 class PrefService;
 
 namespace ntp_background_images {
@@ -46,8 +41,7 @@ class NTPBackgroundImagesService {
   NTPBackgroundImagesService(
       component_updater::ComponentUpdateService* cus,
       PrefService* local_pref,
-      const base::FilePath& user_data_dir,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      const base::FilePath& user_data_dir);
   virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
@@ -112,15 +106,14 @@ class NTPBackgroundImagesService {
                         const base::FilePath& installed_dir);
   void OnGetComponentJsonData(bool is_super_referral,
                               const std::string& json_string);
+  void OnMappingTableComponentReady(const base::FilePath& installed_dir);
   void OnPreferenceChanged(const std::string& pref_name);
-  void OnGetMappingTableData(std::unique_ptr<std::string> json_string);
+  void OnGetMappingTableData(const std::string& json_string);
 
   std::string GetReferralPromoCode() const;
 
   void CacheTopSitesFaviconList();
   void RestoreCachedTopSitesFaviconList();
-
-  void ScheduleMappingTabRetryTimer();
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();
@@ -141,10 +134,7 @@ class NTPBackgroundImagesService {
   base::ObserverList<Observer>::Unchecked observer_list_;
   std::unique_ptr<NTPBackgroundImagesData> si_images_data_;
   std::unique_ptr<NTPBackgroundImagesData> sr_images_data_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> loader_;
   PrefChangeRegistrar pref_change_registrar_;
-  std::unique_ptr<base::OneShotTimer> mapping_table_retry_timer_;
   // This is only used for registration during initial(first) SR component
   // download. After initial download is done, it's cached to
   // |kNewTabPageCachedSuperReferralComponentInfo|. At next launch, this cached

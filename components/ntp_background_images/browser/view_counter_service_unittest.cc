@@ -18,7 +18,6 @@
 #include "components/prefs/testing_pref_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {
@@ -64,8 +63,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     service_ = std::make_unique<NTPBackgroundImagesService>(
         nullptr,
         &local_pref_,
-        base::FilePath(),
-        base::MakeRefCounted<network::TestSharedURLLoaderFactory>());
+        base::FilePath());
     view_counter_ = std::make_unique<ViewCounterService>(
         service_.get(), prefs(), true);
 

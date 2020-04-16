@@ -29,25 +29,29 @@
 #include "brave/components/ntp_background_images/browser/switches.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
-#include "net/base/load_flags.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "url/gurl.h"
 
 namespace ntp_background_images {
 
 namespace {
 
-constexpr int kMappingTableRetryIntervalInHours = 5;
-constexpr int kMaxBodySize = 1024 * 1024;
-
 constexpr char kNTPSIManifestFile[] = "photo.json";
 constexpr char kNTPSRManifestFile[] = "data.json";
+constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
+
+constexpr char kNTPSRMappingTableComponentPublicKey[] = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp7IWv7wzH/KLrxx7BKWOIIUMDylQNzxwM5Fig2WHc16BoMW9Kaya/g17Bpfp0YIvxdcmDBcB9kFALqQLxi1WQfa9d7YxqcmAGUKo407RMwEa6dQVkIPMFz2ZPGSfFgr526gYOqWh3Q4h8oN94qxBLgFyT25SMK5zQDGyq96ntME4MQRNwpDBUv7DDK7Npwe9iE8cBgzYTvf0taAFn2ZZi1RhS0RzpdynucpKosnc0sVBLTXy+HDvnMr+77T48zM0YmpjIh8Qmrp9CNbKzZUsZzNfnHpL9IZnjwQ51EOYdPGX2r1obChVZN19HzpK5scZEMRKoCMfCepWpEkMSIoPzQIDAQAB";  // NOLINT
+constexpr char kNTPSRMappingTableComponentID[] =
+    "heplpbhjcbmiibdlchlanmdenffpiibo";
+constexpr char kNTPSRMappingTableComponentName[] =
+    "NTP Super Referral mapping table";
+
+std::string GetMappingTableData(const base::FilePath& installed_dir) {
+  std::string contents;
+  const auto json_path = installed_dir.AppendASCII(kNTPSRMappingTableFile);
+  base::ReadFileToString(json_path, &contents);
+  return contents;
+}
 
 void CacheSuperReferralData(const std::string& data_json,
                             const base::FilePath& installed_dir,
@@ -111,48 +115,16 @@ std::string HandleComponentData(
   return contents;
 }
 
-const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
-  static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
-      net::DefineNetworkTrafficAnnotation("ntp_background_images_service", R"(
-        semantics {
-          sender:
-            "Brave NTP Background Images Service"
-          description:
-            "Download Super referral component mapping table"
-          trigger:
-            "When the browser needs to check whether this installation was by
-             a 'super referral'"
-          data: "component mapping table"
-          destination: WEBSITE
-        }
-        policy {
-          cookies_allowed: NO
-          policy_exception_justification:
-            "Not implemented."
-        })");
-  return network_traffic_annotation_tag;
-}
-
-std::string GetSuperReferralMappingTableURL() {
-  const base::CommandLine& command_line =
-        *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(::switches::kUseGoUpdateDev))
-    return kSuperReferralMappingTableDevURL;
-  return kSuperReferralMappingTableURL;
-}
-
 }  // namespace
 
 NTPBackgroundImagesService::NTPBackgroundImagesService(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_pref,
-    const base::FilePath& user_data_dir,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    const base::FilePath& user_data_dir)
     : component_update_service_(cus),
       local_pref_(local_pref),
       super_referral_cache_dir_(
           user_data_dir.AppendASCII("SuperReferralCache")),
-      url_loader_factory_(std::move(url_loader_factory)),
       weak_factory_(this) {
 }
 
@@ -354,42 +326,47 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 }
 
 void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(GetSuperReferralMappingTableURL());
-  request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
-  loader_ = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  loader_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&NTPBackgroundImagesService::OnGetMappingTableData,
-                     base::Unretained(this)),
-      kMaxBodySize);
+  DVLOG(2) << __func__ << ": Try to download super referral mapping table.";
+
+  if (!component_update_service_)
+    return;
+
+  RegisterNTPBackgroundImagesComponent(
+      component_update_service_,
+      kNTPSRMappingTableComponentPublicKey,
+      kNTPSRMappingTableComponentID,
+      kNTPSRMappingTableComponentName,
+      base::BindRepeating(
+          &NTPBackgroundImagesService::OnMappingTableComponentReady,
+          weak_factory_.GetWeakPtr()));
 }
 
-void NTPBackgroundImagesService::ScheduleMappingTabRetryTimer() {
-  mapping_table_retry_timer_ = std::make_unique<base::OneShotTimer>();
-  mapping_table_retry_timer_->Start(
-      FROM_HERE,
-      base::TimeDelta::FromHours(kMappingTableRetryIntervalInHours),
-      base::BindOnce(
-          &NTPBackgroundImagesService::DownloadSuperReferralMappingTable,
-          base::Unretained(this)));
+void NTPBackgroundImagesService::OnMappingTableComponentReady(
+    const base::FilePath& installed_dir) {
+  if (!local_pref_->FindPreference(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)->
+              IsDefaultValue()) {
+    DVLOG(2) << __func__
+             << ": We don't need to handle mapping table update now.";
+    return;
+  }
+
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&GetMappingTableData, installed_dir),
+      base::BindOnce(&NTPBackgroundImagesService::OnGetMappingTableData,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void NTPBackgroundImagesService::OnGetMappingTableData(
-    std::unique_ptr<std::string> json_string) {
-  if (!json_string) {
-    DVLOG(2) << __func__ << ": Failed to fetch mapping table.";
-    DVLOG(2) << __func__ << ": Schedule re-trying mapping table download.";
-    ScheduleMappingTabRetryTimer();
+    const std::string& json_string) {
+  if (json_string.empty()) {
+    DVLOG(2) << __func__ << ": Mapping table is empty.";
     return;
   }
 
   base::Optional<base::Value> mapping_table_value =
-      base::JSONReader::Read(*json_string);
+      base::JSONReader::Read(json_string);
 
   if (!mapping_table_value) {
     DVLOG(2) << __func__ << ": has invalid mapping table.";

@@ -12,10 +12,6 @@ const char kLogoPath[] = "logo.png";
 const char kWallpaperPathPrefix[] = "wallpaper-";
 const char kSuperReferralPath[] = "super-referral/";
 const char kSponsoredImagesPath[] = "sponsored-images/";
-const char kSuperReferralMappingTableURL[] =
-    "https://mobile-data.s3.brave.com/superreferrer/map-table.json";
-const char kSuperReferralMappingTableDevURL[] =
-    "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json";
 
 const char kPublicKey[] = "publicKey";
 const char kComponentID[] = "componentID";

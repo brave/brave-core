@@ -15,7 +15,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
-#include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {
@@ -123,8 +122,7 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
   void Init() {
     service_.reset(new TestNTPBackgroundImagesService(
-        nullptr, &pref_service_, base::FilePath(),
-        base::MakeRefCounted<network::TestSharedURLLoaderFactory>()));
+        nullptr, &pref_service_, base::FilePath()));
     service_->Init();
   }
 
@@ -372,8 +370,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
   // If it's not super-referral, we mark this install is not a valid SR.
-  service_->OnGetMappingTableData(
-      std::make_unique<std::string>(kTestMappingTable));
+  service_->OnGetMappingTableData(kTestMappingTable);
 
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   EXPECT_FALSE(service_->super_referral_component_started_);
@@ -403,8 +400,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
-  service_->OnGetMappingTableData(
-      std::make_unique<std::string>(kTestMappingTable));
+  service_->OnGetMappingTableData(kTestMappingTable);
   EXPECT_TRUE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress));
   EXPECT_EQ("BRV003",

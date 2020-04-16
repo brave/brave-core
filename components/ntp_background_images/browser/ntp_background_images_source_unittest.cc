@@ -15,7 +15,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
-#include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {
@@ -29,8 +28,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     ntp_background_images::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
     service_.reset(new NTPBackgroundImagesService(
-        nullptr, &local_pref_, base::FilePath(),
-        base::MakeRefCounted<network::TestSharedURLLoaderFactory>()));
+        nullptr, &local_pref_, base::FilePath()));
     source_.reset(new NTPBackgroundImagesSource(service_.get()));
     local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));
