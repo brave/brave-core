@@ -27,6 +27,10 @@ def main():
     repo_dir = args.repo_dir
     dist_dir = os.path.join(repo_dir, 'dist')
     gpg_full_key_id = args.gpg_full_key_id
+
+    if args.skip_github and args.github_token:
+        exit("Error: --skip_github and --github_token are mutually exclusive, only one allowed")
+
     if args.unmount is not False and channel in ['beta', 'dev', 'nightly']:
         unmount = args.unmount
     if channel in ['release']:
@@ -92,10 +96,11 @@ def main():
             'Error: could not change directory to {}: {}'.format(dist_dir, ose))
         exit(message)
 
-    logging.info(
-        "Downloading RPM/DEB packages to directory: {}".format(dist_dir))
+    if not args.skip_github:
+        logging.info(
+            "Downloading RPM/DEB packages to directory: {}".format(dist_dir))
 
-    file_list = download_linux_pkgs_from_github(args, logging)
+        file_list = download_linux_pkgs_from_github(args, logging)
 
     try:
         os.chdir(repo_dir)
@@ -333,9 +338,12 @@ def parse_args():
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug output')
     parser.add_argument('-g', '--github_token',
-                        help='GitHub token to use for downloading releases', required=True)
+                        help='GitHub token to use for downloading releases(cannot be combined with --skip_github)',
+                        action='store_true')
     parser.add_argument('-k', '--gpg_full_key_id', help='GPG full key id to use for signing '
                         'packages', required=True)
+    parser.add_argument('-n', '--skip_github', help='Skip downloading from GitHub, assume packages are '
+                        'in the repo_dir already(cannot be combined with --github_token)', action='store_true')
     parser.add_argument(
         '-t', '--tag', help='The branch (actually tag) to download packages from GitHub. (i.e. v1.5.18)',
         required=True)
