@@ -33,38 +33,18 @@ hooks = [
     'action': ['python', 'src/brave/script/bootstrap.py'],
   },
   {
-    'name': 'list_python_deps',
-    'pattern': '.',
-    'action': ['python', '-m', 'pip', 'list'],
-  },
-  {
-    'name': 'list_python3_deps',
-    'pattern': '.',
-    'action': ['python3', '-m', 'pip', 'list'],
-  },
-  {
-    'name': 'list_vpython_deps',
-    'pattern': '.',
-    'action': ['vpython', '-m', 'pip', 'list'],
-  },
-  {
-    'name': 'list_vpython3_deps',
-    'pattern': '.',
-    'action': ['vpython3', '-m', 'pip', 'list'],
-  },
-  {
     # Download rust deps if necessary for Android
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_android',
-    'action': ['python3', 'src/brave/script/download_rust_deps.py', '--platform', 'android'],
+    'action': ['vpython3', 'src/brave/script/download_rust_deps.py', '--platform', 'android'],
   },
   {
     # Download rust deps if necessary for macOS, Windows and Linux
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'not checkout_android',
-    'action': ['python3', 'src/brave/script/download_rust_deps.py'],
+    'action': ['vpython3', 'src/brave/script/download_rust_deps.py'],
   },
   {
     # Build brave-sync

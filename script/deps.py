@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # Copyright (c) 2012 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -12,7 +12,11 @@ import tempfile
 import time
 import zipfile
 
-from six.moves import urllib
+try:
+    from urllib2 import HTTPError, URLError, urlopen
+except ImportError:  # For Py3 compatibility
+    from urllib.error import HTTPError, URLError
+    from urllib.request import urlopen
 
 
 def DownloadUrl(url, output_file):
@@ -26,8 +30,8 @@ def DownloadUrl(url, output_file):
         try:
             sys.stdout.write('Downloading %s ' % url)
             sys.stdout.flush()
-            response = urllib.request.urlopen(url)
-            total_size = response.length
+            response = urlopen(url)
+            total_size = int(response.info().get('Content-Length').strip())
             bytes_done = 0
             dots_printed = 0
             while True:
@@ -41,14 +45,14 @@ def DownloadUrl(url, output_file):
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
-                raise urllib.error.URLError(
-                    "only got %d of %d bytes" % (bytes_done, total_size))
+                raise URLError("only got %d of %d bytes" %
+                               (bytes_done, total_size))
             print(' Done.')
             return
-        except urllib.error.URLError as e:
+        except URLError as e:
             sys.stdout.write('\n')
             print(e)
-            if num_retries == 0 or isinstance(e, urllib.error.HTTPError) and e.code == 404:
+            if num_retries == 0 or isinstance(e, HTTPError) and e.code == 404:
                 raise e
             num_retries -= 1
             print('Retrying in %d s ...' % retry_wait_s)
