@@ -219,6 +219,13 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     this.props.saveShowBinance(!showBinance)
+
+    // If we are about to hide the widget, disconnect
+    if (showBinance) {
+      chrome.binance.revokeToken(() => {
+        this.disconnectBinance()
+      })
+    }
   }
 
   setBinanceBalances = (balances: Record<string, string>) => {
