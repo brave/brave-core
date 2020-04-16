@@ -200,6 +200,8 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.actions.setCurrentStackWidget('binance')
     } else if (!showBinance) {
       this.props.actions.setCurrentStackWidget('rewards')
+    } else if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('rewards')
     }
 
     this.props.saveShowRewards(!showRewards)
@@ -215,6 +217,8 @@ class NewTabPage extends React.Component<Props, State> {
     if (currentStackWidget === 'binance' && showBinance) {
       this.props.actions.setCurrentStackWidget('rewards')
     } else if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('binance')
+    } else if (!showBinance) {
       this.props.actions.setCurrentStackWidget('binance')
     }
 
