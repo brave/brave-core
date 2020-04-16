@@ -369,7 +369,7 @@ export const CopyButton = styled(GenButton)`
 `
 
 export const DetailLabel = styled<{}, 'span'>('span')`
-  color: rgb(70, 70, 70);
+  color: #7d7d7d;
   font-weight: bold;
   display: block;
   font-size: 15px;
