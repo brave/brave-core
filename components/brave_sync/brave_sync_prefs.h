@@ -30,6 +30,7 @@ namespace brave_sync {
 namespace prefs {
 // Stored as bip39 keywords
 extern const char kSyncSeed[];
+// Used for override DisableReasons in ProfileSyncService
 extern const char kSyncEnabled[];
 
 // Deprecated

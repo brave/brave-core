@@ -11,7 +11,6 @@
       base::BindRepeating(&PeopleHandler::HandleGetSyncCode, \
                           base::Unretained(this)));
 
-// Used for override DisableReasons in ProfileSyncService
 #define BRAVE_HANDLE_SHOW_SETUP_UI \
   profile_->GetPrefs()->SetBoolean(brave_sync::prefs::kSyncEnabled, true);
 
@@ -27,11 +26,20 @@
 #define BRAVE_IS_SYNC_SUBPAGE \
   return (current_url == chrome::GetSettingsUrl("braveSync/setup"));
 
+// IsSetupInProgress isn't accurate in brave sync flow especially for the first
+// time setup, we rely on it to display setup dialog
+#define BRAVE_GET_SYNC_STATUS_DICTIONARY  \
+  sync_status->SetBoolean(                \
+      "firstSetupInProgress",             \
+      service && !disallowed_by_policy && \
+          !service->GetUserSettings()->IsFirstSetupComplete());
+
 #include "../../../../../../../chrome/browser/ui/webui/settings/people_handler.cc"
 #undef BRAVE_REGISTER_MESSAGES
 #undef BRAVE_HANDLE_SHOW_SETUP_UI
 #undef BRAVE_CLOSE_SYNC_SETUP
 #undef BRAVE_IS_SYNC_SUBPAGE
+#undef BRAVE_GET_SYNC_STATUS_DICTIONARY
 
 namespace settings {
 
@@ -53,16 +61,20 @@ void PeopleHandler::HandleGetSyncCode(const base::ListValue* args) {
 }
 
 void PeopleHandler::HandleSetSyncCode(const base::ListValue* args) {
-  CHECK_EQ(1U, args->GetSize());
+  CHECK_EQ(2U, args->GetSize());
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
   const base::Value* sync_code;
-  CHECK(args->Get(0, &sync_code));
+  CHECK(args->Get(1, &sync_code));
 
   std::vector<uint8_t> seed;
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
-    LOG(ERROR) << "invalid sync code";
+    LOG(ERROR) << "invalid sync code:" << sync_code->GetString();
+    ResolveJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
   profile_->GetPrefs()->SetString(brave_sync::prefs::kSyncSeed,
                                   sync_code->GetString());
+  ResolveJavascriptCallback(*callback_id, base::Value(true));
 }
 }  // namespace settings
