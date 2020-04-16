@@ -1249,29 +1249,57 @@ class BrowserViewController: UIViewController {
             }
             tab.userScriptManager?.isU2FEnabled = webView.hasOnlySecureContent
             tab.userScriptManager?.isPaymentRequestEnabled = webView.hasOnlySecureContent
-            if tab.contentIsSecure && !webView.hasOnlySecureContent {
-                tab.contentIsSecure = false
+            if tab.secureContentState == .secure && !webView.hasOnlySecureContent {
+                tab.secureContentState = .insecure
             }
             
-            topToolbar.contentIsSecure = tab.contentIsSecure
+            topToolbar.secureContentState = tab.secureContentState
         case .serverTrust:
             guard let tab = tabManager[webView] else {
                 break
             }
 
-            tab.contentIsSecure = false
-            topToolbar.contentIsSecure = tab.contentIsSecure
-
+            tab.secureContentState = .insecure
+            
             guard let serverTrust = tab.webView?.serverTrust else {
+                if let url = tab.webView?.url {
+                    if url.isAboutHomeURL || url.isAboutURL {
+                        tab.secureContentState = .localHost
+                        topToolbar.secureContentState = .localHost
+                        break
+                    }
+                    
+                    if url.isErrorPageURL {
+                        if ErrorPageHelper.certificateError(for: url) != 0 {
+                            tab.secureContentState = .insecure
+                            topToolbar.secureContentState = .insecure
+                            break
+                        }
+                    }
+                    
+                    if url.isReaderModeURL || url.isLocal {
+                        tab.secureContentState = .unknown
+                        topToolbar.secureContentState = .unknown
+                        break
+                    }
+                }
+                
+                topToolbar.secureContentState = tab.secureContentState
                 break
             }
-
+            
+            let policies = [
+                SecPolicyCreateBasicX509(),
+                SecPolicyCreateSSL(true, tab.webView?.url?.host as CFString?)
+            ]
+            
+            SecTrustSetPolicies(serverTrust, policies as CFTypeRef)
             SecTrustEvaluateAsync(serverTrust, DispatchQueue.global()) { _, secTrustResult in
                 switch secTrustResult {
                 case .proceed, .unspecified:
-                    tab.contentIsSecure = true
+                    tab.secureContentState = .secure
                 default:
-                    tab.contentIsSecure = false
+                    tab.secureContentState = .insecure
                 }
 
                 DispatchQueue.main.async {
@@ -1329,8 +1357,7 @@ class BrowserViewController: UIViewController {
         updateRewardsButtonState()
         
         topToolbar.currentURL = tab.url?.displayURL
-        
-        topToolbar.contentIsSecure = tab.contentIsSecure
+        topToolbar.secureContentState = tab.secureContentState
         
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
         navigationToolbar.updatePageStatus(isPage)

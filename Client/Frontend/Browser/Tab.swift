@@ -34,6 +34,13 @@ protocol URLChangeDelegate {
     func tab(_ tab: Tab, urlDidChangeTo url: URL)
 }
 
+enum TabSecureContentState {
+    case localHost
+    case secure
+    case insecure
+    case unknown
+}
+
 class Tab: NSObject {
     var id: String?
     
@@ -46,8 +53,8 @@ class Tab: NSObject {
     var isPrivate: Bool {
         return type.isPrivate
     }
-    
-    var contentIsSecure = false
+
+    var secureContentState: TabSecureContentState = .insecure
 
     // PageMetadata is derived from the page content itself, and as such lags behind the
     // rest of the tab.
