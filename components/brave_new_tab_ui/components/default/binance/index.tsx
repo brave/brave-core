@@ -214,9 +214,7 @@ class Binance extends React.PureComponent<Props, State> {
 
     if (this.props.userAuthed) {
       this.props.onUpdateActions()
-      this.refreshInterval = setInterval(() => {
-        this.props.onUpdateActions()
-      }, 30000)
+      this.checkSetRefreshInterval()
     }
 
     if (this.props.authInProgress) {
@@ -246,10 +244,20 @@ class Binance extends React.PureComponent<Props, State> {
   componentDidUpdate (prevProps: Props) {
     if (!prevProps.userAuthed && this.props.userAuthed) {
       this.props.onUpdateActions()
+      this.checkSetRefreshInterval()
     }
 
     if (prevProps.userAuthed && !this.props.userAuthed) {
       this.getClientURL()
+      this.clearIntervals()
+    }
+  }
+
+  checkSetRefreshInterval = () => {
+    if (!this.refreshInterval) {
+      this.refreshInterval = setInterval(() => {
+        this.props.onUpdateActions()
+      }, 30000)
     }
   }
 
@@ -266,6 +274,11 @@ class Binance extends React.PureComponent<Props, State> {
         }
       })
     }
+  }
+
+  clearIntervals = () => {
+    clearInterval(this.convertTimer)
+    clearInterval(this.refreshInterval)
   }
 
   connectBinance = () => {
@@ -313,6 +326,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   finishDisconnect = () => {
+    this.clearIntervals()
     chrome.binance.revokeToken(() => {
       this.props.onDisconnectBinance()
       this.cancelDisconnect()
