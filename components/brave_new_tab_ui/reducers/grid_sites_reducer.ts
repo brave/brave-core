@@ -45,6 +45,13 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
       // New profiles just store what comes from Chromium
       state = gridSitesState
         .gridSitesReducerSetFirstRenderData(state, payload.topSites)
+
+      // Handle default top sites data only once.
+      if (payload.defaultSuperReferralTopSites && !storage.isDefaultSuperReferralTopSitesAddedToPinnedSites()) {
+        state = gridSitesState
+          .gridSitesReducerSetDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
+        storage.setDefaultSuperReferralTopSitesAddedToPinnedSites()
+      }
       break
     }
 

@@ -17,9 +17,12 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
+
 namespace extensions {
 
-using ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
+using
+    ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 
 namespace settings_api = api::settings_private;
@@ -66,8 +69,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kNewTabPageSuperReferralThemesOption] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
   // new tab prefs
-  (*s_brave_whitelist)[kNewTabPageShowBrandedBackgroundImage] =
+  (*s_brave_whitelist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowBackgroundImage] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;

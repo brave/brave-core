@@ -29,17 +29,19 @@
       <div class="flex">
         <div class="label primary-title">$i18n{braveNewTabCustomizeDashboard}</div>
         <div class="normalize-margin">
-          <settings-toggle-button id="showBackgroundImageControlType"
-              class="secondary borderless"
-              pref="{{prefs.brave.new_tab_page.show_background_image}}"
-              label="$i18n{braveNewTabBackgroundImages}">
-          </settings-toggle-button>
-          <settings-toggle-button
-              class="nested-section borderless"
-              pref="[[toggleBrandedBackgroundOption_(prefs.brave.new_tab_page.show_background_image.value, prefs.brave.new_tab_page.show_branded_background_image)]]"
-              disabled="{{!prefs.brave.new_tab_page.show_background_image.value}}"
-              label="$i18n{braveNewTabSponsoredImages}">
-          </settings-toggle-button>
+          <template is="dom-if" if="[[shouldShowBackgroundImageOptions_()]]">
+            <settings-toggle-button id="showBackgroundImageControlType"
+                class="secondary borderless"
+                pref="{{prefs.brave.new_tab_page.show_background_image}}"
+                label="$i18n{braveNewTabBackgroundImages}">
+            </settings-toggle-button>
+            <settings-toggle-button
+                class="nested-section borderless"
+                pref="[[toggleBrandedBackgroundOption_(prefs.brave.new_tab_page.show_background_image.value, prefs.brave.new_tab_page.show_branded_background_image)]]"
+                disabled="{{!prefs.brave.new_tab_page.show_background_image.value}}"
+                label="$i18n{braveNewTabSponsoredImages}">
+            </settings-toggle-button>
+        </template>
         </div>
       </div>
     </div>

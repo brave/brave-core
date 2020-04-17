@@ -20,6 +20,12 @@
       this.browserProxy_ = settings.BraveNewTabBrowserProxyImpl.getInstance();
     },
 
+    shouldShowBackgroundImageOptions_: function() {
+      // Only show background image options if user doesn't use SR theme.
+      // With SR theme, user can't off bg images.
+      return !loadTimeData.getBoolean('isSuperReferralActive');
+    },
+
     toggleBrandedBackgroundOption_: function(isBackgroundEnabled, isBrandedBackgroundEnabled) {
       // If background image setting is not turned ON,
       // inform the back-end to also disable the branded wallpaper setting.

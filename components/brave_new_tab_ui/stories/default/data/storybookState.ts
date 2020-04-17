@@ -36,8 +36,8 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
 function shouldShowBrandedWallpaperData (shouldShow: boolean) {
   if (shouldShow === false) {
     return {
-      BrandedWallpaper: '',
       wallpaperImageUrl: '',
+      isSponsored: false,
       logo: { image: '', companyName: '', alt: '', destinationUrl: '' }
     }
   }

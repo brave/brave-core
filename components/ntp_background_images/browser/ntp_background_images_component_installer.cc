@@ -12,10 +12,9 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/ntp_background_images/browser/regional_component_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -26,16 +25,22 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr char kNTPSponsoredImagesDisplayName[] = "NTP sponsored images";
 constexpr size_t kHashSize = 32;
 
 class NTPBackgroundImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   explicit NTPBackgroundImagesComponentInstallerPolicy(
-      const RegionalComponentData& regional_component_data,
+      const std::string& component_public_key,
+      const std::string& component_id,
+      const std::string& component_name,
       OnComponentReadyCallback callback);
   ~NTPBackgroundImagesComponentInstallerPolicy() override;
+
+  NTPBackgroundImagesComponentInstallerPolicy(
+      const NTPBackgroundImagesComponentInstallerPolicy&) = delete;
+  NTPBackgroundImagesComponentInstallerPolicy& operator=(
+      const NTPBackgroundImagesComponentInstallerPolicy&) = delete;
 
   // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -56,26 +61,29 @@ class NTPBackgroundImagesComponentInstallerPolicy
   std::vector<std::string> GetMimeTypes() const override;
 
  private:
-  const RegionalComponentData data_;
+  const std::string component_id_;
+  const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
-
-  DISALLOW_COPY_AND_ASSIGN(NTPBackgroundImagesComponentInstallerPolicy);
 };
 
 NTPBackgroundImagesComponentInstallerPolicy::
 NTPBackgroundImagesComponentInstallerPolicy(
-    const RegionalComponentData& data, OnComponentReadyCallback callback)
-    : data_(data),
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& component_name,
+    OnComponentReadyCallback callback)
+    : component_id_(component_id),
+      component_name_(component_name),
       ready_callback_(callback) {
   // Generate hash from public key.
   std::string decoded_public_key;
-  base::Base64Decode(data.component_base64_public_key, &decoded_public_key);
+  base::Base64Decode(component_public_key, &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
 NTPBackgroundImagesComponentInstallerPolicy::
-~NTPBackgroundImagesComponentInstallerPolicy() {}
+~NTPBackgroundImagesComponentInstallerPolicy() = default;
 
 bool NTPBackgroundImagesComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
@@ -111,7 +119,7 @@ bool NTPBackgroundImagesComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath NTPBackgroundImagesComponentInstallerPolicy::
     GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(data_.component_id);
+  return base::FilePath::FromUTF8Unsafe(component_id_);
 }
 
 void NTPBackgroundImagesComponentInstallerPolicy::GetHash(
@@ -120,8 +128,7 @@ void NTPBackgroundImagesComponentInstallerPolicy::GetHash(
 }
 
 std::string NTPBackgroundImagesComponentInstallerPolicy::GetName() const {
-  return base::StringPrintf(
-      "%s (%s)", kNTPSponsoredImagesDisplayName, data_.region.c_str());
+  return component_name_;
 }
 
 update_client::InstallerAttributes
@@ -142,13 +149,22 @@ void OnRegistered(const std::string& component_id) {
 
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* cus,
-    const RegionalComponentData& data,
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& component_name,
     OnComponentReadyCallback callback) {
+  // In test, |cus| could be nullptr.
+  if (!cus)
+    return;
+
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<NTPBackgroundImagesComponentInstallerPolicy>(
-          data, callback));
+          component_public_key,
+          component_id,
+          component_name,
+          callback));
   installer->Register(cus,
-                      base::BindOnce(&OnRegistered, data.component_id));
+                      base::BindOnce(&OnRegistered, component_id));
 }
 
 }  // namespace ntp_background_images

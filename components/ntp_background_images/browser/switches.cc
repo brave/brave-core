@@ -11,7 +11,12 @@ namespace ntp_background_images {
 
 namespace switches {
 
-const char kNTPBrandedDataPathForTesting[] = "ntp-branded-data-path";
+// Allows forcing sponsored images to use a local directory to find
+// the photo json rule file and associated images.
+const char kNTPSponsoredImagesDataPathForTesting[] =
+    "ntp-sponsored-images-data-path";
+const char kNTPSuperReferralDataPathForTesting[] =
+    "ntp-super-referral-data-path";
 
 }  // namespace switches
 
