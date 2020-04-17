@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_stats_updater.h"
 
-#include <string>
 #include <utility>
 
 #include "base/system/sys_info.h"
@@ -80,14 +79,14 @@ void BraveStatsUpdater::Start() {
   DCHECK(!server_ping_startup_timer_);
   server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile)) {
+  if (pref_service_->GetBoolean(kReferralInitialization)) {
     StartServerPingStartupTimer();
   } else {
     pref_change_registrar_.reset(new PrefChangeRegistrar());
     pref_change_registrar_->Init(pref_service_);
     pref_change_registrar_->Add(
-        kReferralCheckedForPromoCodeFile,
-        base::Bind(&BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged,
+        kReferralInitialization,
+        base::Bind(&BraveStatsUpdater::OnReferralInitialization,
                    base::Unretained(this)));
   }
 #else
@@ -153,7 +152,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
   SendServerPing();
 }
 
-void BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged() {
+void BraveStatsUpdater::OnReferralInitialization() {
   StartServerPingStartupTimer();
 }
 

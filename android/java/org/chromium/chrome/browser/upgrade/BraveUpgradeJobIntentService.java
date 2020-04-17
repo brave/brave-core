@@ -254,6 +254,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         if (urpc != null && !urpc.isEmpty()) {
             BravePrefServiceBridge.getInstance().setReferralPromoCode(urpc);
             BravePrefServiceBridge.getInstance().setReferralCheckedForPromoCodeFile(true);
+            BravePrefServiceBridge.getInstance().setReferralInitialization(true);
             String downloadId = prefStatsFromTabs.getString(PREF_STATS_DOWNLOAD_ID_NAME, "");
             BravePrefServiceBridge.getInstance().setReferralDownloadId(downloadId);
             PackageInfo info = null;

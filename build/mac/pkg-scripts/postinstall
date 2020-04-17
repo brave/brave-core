@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This postinstall script is run on macOS pkg installers
 
 # Extract a referral / promo code from the installer path of the format /dir/path/Setup-Brave-Anything-xxx001.pkg
@@ -9,12 +9,16 @@ installationPath=$2
 promoCode=""
 
 # Detect if installer contained a referral promotion code within the filename
-installerPathPromoCodeRegex='.+-(([a-zA-Z0-9]{3}[0-9]{3})|([a-zA-Z]{1,}-[a-zA-Z]{1,}))([[:blank:]]?\([0-9]+\))?\.pkg$'
+standardPromoCodeRegex='[a-zA-Z0-9]{3}[0-9]{3}'
+installerPathPromoCodeRegex=".+-((${standardPromoCodeRegex})|([a-zA-Z]{1,}-[a-zA-Z]{1,}))([[:blank:]]?\([0-9]+\))?\.pkg$"
 if [[ $installerPath =~ $installerPathPromoCodeRegex ]]; then
   n=${#BASH_REMATCH[*]}
   rematch=${BASH_REMATCH[1]}
   if [[ $n -ge 1 && ! ${rematch} =~ ^Browser-.*$ ]]; then
     promoCode=${rematch}
+    if [[ $promoCode =~ $standardPromoCodeRegex ]]; then
+      promoCode=$(tr a-z A-Z <<< $promoCode)
+    fi
     echo "Got promo code: $promoCode"
   fi
 fi
