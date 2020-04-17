@@ -8,6 +8,7 @@
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,    \
       const GURL& sync_service_url);                                        \
   void DeriveSigningKeys(const std::string& seed);                          \
+  void ResetKeys();                                                         \
   void OnGetTokenSuccess(                                                   \
       const brave_sync::AccessTokenConsumer::TokenResponse& token_response) \
       override;                                                             \

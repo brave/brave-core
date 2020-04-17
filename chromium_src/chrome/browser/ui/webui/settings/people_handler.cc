@@ -2,15 +2,18 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 
-#define BRAVE_REGISTER_MESSAGES                              \
-  web_ui()->RegisterMessageCallback(                         \
-      "SyncSetupSetSyncCode",                                \
-      base::BindRepeating(&PeopleHandler::HandleSetSyncCode, \
-                          base::Unretained(this)));          \
-  web_ui()->RegisterMessageCallback(                         \
-      "SyncSetupGetSyncCode",                                \
-      base::BindRepeating(&PeopleHandler::HandleGetSyncCode, \
-                          base::Unretained(this)));
+#define BRAVE_REGISTER_MESSAGES                                          \
+  web_ui()->RegisterMessageCallback(                                     \
+      "SyncSetupSetSyncCode",                                            \
+      base::BindRepeating(&PeopleHandler::HandleSetSyncCode,             \
+                          base::Unretained(this)));                      \
+  web_ui()->RegisterMessageCallback(                                     \
+      "SyncSetupGetSyncCode",                                            \
+      base::BindRepeating(&PeopleHandler::HandleGetSyncCode,             \
+                          base::Unretained(this)));                      \
+  web_ui()->RegisterMessageCallback(                                     \
+      "SyncSetupReset", base::BindRepeating(&PeopleHandler::HandleReset, \
+                                            base::Unretained(this)));
 
 #define BRAVE_HANDLE_SHOW_SETUP_UI \
   profile_->GetPrefs()->SetBoolean(brave_sync::prefs::kSyncEnabled, true);
@@ -77,5 +80,18 @@ void PeopleHandler::HandleSetSyncCode(const base::ListValue* args) {
   profile_->GetPrefs()->SetString(brave_sync::prefs::kSyncSeed,
                                   sync_code->GetString());
   ResolveJavascriptCallback(*callback_id, base::Value(true));
+}
+
+void PeopleHandler::HandleReset(const base::ListValue* args) {
+
+  syncer::SyncService* sync_service = GetSyncService();
+  if (sync_service) {
+    sync_service->GetUserSettings()->SetSyncRequested(false);
+    sync_service->StopAndClear();
+  }
+  profile_->GetPrefs()->ClearPref(brave_sync::prefs::kSyncEnabled);
+  profile_->GetPrefs()->ClearPref(brave_sync::prefs::kSyncSeed);
+
+  // Sync prefs will be clear in ProfileSyncService::StopImpl
 }
 }  // namespace settings

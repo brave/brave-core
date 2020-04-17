@@ -54,6 +54,11 @@
         <settings-sync-controls sync-status="[[syncStatus]]">
         </settings-sync-controls>
       </div>
+      <cr-button class="action-button"
+                 hidden="[[syncStatus.firstSetupInProgress]]"
+                 on-click="onResetSyncChain_">
+        $i18n{braveSyncResetButton}
+      </cr-button>
     </div>
 
 <if expr="not chromeos">
