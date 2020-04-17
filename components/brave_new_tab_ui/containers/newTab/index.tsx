@@ -387,7 +387,11 @@ class NewTabPage extends React.Component<Props, State> {
 
   fetchBalance = () => {
     chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
-      if (!success) {
+      const hasBalances = Object.keys(balances).length
+
+      if (!hasBalances) {
+        return
+      } else if (!success) {
         this.setAuthInvalid()
         return
       }
