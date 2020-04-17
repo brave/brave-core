@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index f3956a3fcd7cbcfe74d81be242b2877075a9b189..a5bc7e9864f06f68d9ef71dd3aaa1def8c844c6b 100644
+index f3956a3fcd7cbcfe74d81be242b2877075a9b189..cd507cd53e93a45cddf6d4787c4266b423502933 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
 @@ -193,6 +193,8 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
@@ -27,7 +27,15 @@ index f3956a3fcd7cbcfe74d81be242b2877075a9b189..a5bc7e9864f06f68d9ef71dd3aaa1def
      auth_manager_->ConnectionOpened();
    }
  
-@@ -940,6 +944,7 @@ void ProfileSyncService::OnEngineInitialized(
+@@ -663,6 +667,7 @@ void ProfileSyncService::StopImpl(SyncStopDataFate data_fate) {
+       // Note: We do this after shutting down, so that notifications about the
+       // changed pref values don't mess up our state.
+       sync_prefs_.ClearPreferences();
++      BRAVE_STOP_IMPL
+       break;
+   }
+ }
+@@ -940,6 +945,7 @@ void ProfileSyncService::OnEngineInitialized(
      }
    }
  
@@ -35,7 +43,7 @@ index f3956a3fcd7cbcfe74d81be242b2877075a9b189..a5bc7e9864f06f68d9ef71dd3aaa1def
    NotifyObservers();
  }
  
-@@ -1214,6 +1219,7 @@ void ProfileSyncService::TriggerRefresh(const ModelTypeSet& types) {
+@@ -1214,6 +1220,7 @@ void ProfileSyncService::TriggerRefresh(const ModelTypeSet& types) {
  }
  
  bool ProfileSyncService::IsSignedIn() const {
@@ -43,7 +51,7 @@ index f3956a3fcd7cbcfe74d81be242b2877075a9b189..a5bc7e9864f06f68d9ef71dd3aaa1def
    // Sync is logged in if there is a non-empty account id.
    return !GetAuthenticatedAccountInfo().account_id.empty();
  }
-@@ -1517,6 +1523,7 @@ void ProfileSyncService::OnSyncManagedPrefChange(bool is_sync_managed) {
+@@ -1517,6 +1524,7 @@ void ProfileSyncService::OnSyncManagedPrefChange(bool is_sync_managed) {
  
  void ProfileSyncService::OnFirstSetupCompletePrefChange(
      bool is_first_setup_complete) {

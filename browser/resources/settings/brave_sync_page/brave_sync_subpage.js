@@ -398,6 +398,12 @@ Polymer({
       settings.navigateTo(settings.routes.BRAVE_SYNC);
     }
   },
+
+  onResetSyncChain_: function() {
+    this.browserProxy_.resetSyncChain();
+    this.didAbort_ = true;
+    settings.navigateTo(settings.routes.BRAVE_SYNC);
+  }
 });
 
 })();

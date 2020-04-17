@@ -31,14 +31,19 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
 #define BRAVE_ON_ENGINE_INITIALIZED                                           \
   std::string sync_code =                                                     \
     sync_client_->GetPrefService()->GetString(brave_sync::prefs::kSyncSeed);  \
-  GetUserSettings()->EnableEncryptEverything();                               \
-  if (GetUserSettings()->IsPassphraseRequired()) {                            \
-    if (!GetUserSettings()->SetDecryptionPassphrase(sync_code))               \
-    LOG(ERROR) << "Set decryption passphrase failed";                         \
-  } else {                                                                    \
-    if (!GetUserSettings()->IsUsingSecondaryPassphrase())                     \
-    GetUserSettings()->SetEncryptionPassphrase(sync_code);                    \
+  if (!sync_code.empty()) {                                                   \
+    GetUserSettings()->EnableEncryptEverything();                             \
+    if (GetUserSettings()->IsPassphraseRequired()) {                          \
+      if (!GetUserSettings()->SetDecryptionPassphrase(sync_code))             \
+      LOG(ERROR) << "Set decryption passphrase failed";                       \
+    } else {                                                                  \
+      if (!GetUserSettings()->IsUsingSecondaryPassphrase())                   \
+      GetUserSettings()->SetEncryptionPassphrase(sync_code);                  \
+    }                                                                         \
   }
+
+#define BRAVE_STOP_IMPL \
+  auth_manager_->ResetKeys();
 
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
 #undef BRAVE_SET_POLL_INTERVAL
@@ -47,3 +52,4 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
 #undef BRAVE_START_UP_SLOW_ENGINE_COMPONENTS
 #undef BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
 #undef BRAVE_ON_ENGINE_INITIALIZED
+#undef BRAVE_STOP_IMPL

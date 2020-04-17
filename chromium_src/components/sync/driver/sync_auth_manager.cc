@@ -47,6 +47,12 @@ void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
                                                 &public_key_, &private_key_);
 }
 
+void SyncAuthManager::ResetKeys() {
+  VLOG(1) << __func__;
+  public_key_.clear();
+  private_key_.clear();
+}
+
 void SyncAuthManager::OnGetTokenSuccess(
     const brave_sync::AccessTokenConsumer::TokenResponse& token_response) {
   AccessTokenFetched(GoogleServiceAuthError(GoogleServiceAuthError::NONE),
