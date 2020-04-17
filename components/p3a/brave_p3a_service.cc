@@ -19,6 +19,7 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"

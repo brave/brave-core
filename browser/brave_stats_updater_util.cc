@@ -11,7 +11,6 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "chrome/common/channel_info.h"
 
 namespace brave {
 
@@ -20,13 +19,6 @@ std::string GetDateAsYMD(const base::Time& time) {
   time.LocalExplode(&exploded);
   return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
                             exploded.day_of_month);
-}
-
-std::string GetChannelName() {
-  std::string channel = chrome::GetChannelName();
-  if (channel.empty())
-    channel = "release";
-  return channel;
 }
 
 std::string GetPlatformIdentifier() {

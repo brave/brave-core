@@ -75,6 +75,7 @@ source_set("bat-native-confirmations") {
     "src/bat/confirmations/internal/grant_rewards_serve_helper.cc",
     "src/bat/confirmations/internal/grant_rewards_serve_helper.h",
     "src/bat/confirmations/internal/logging.h",
+    "src/bat/confirmations/internal/platform_info.h",
     "src/bat/confirmations/internal/payment_info.h",
     "src/bat/confirmations/internal/payments.cc",
     "src/bat/confirmations/internal/payments.h",
@@ -103,6 +104,36 @@ source_set("bat-native-confirmations") {
     "src/bat/confirmations/internal/unblinded_tokens.cc",
     "src/bat/confirmations/internal/unblinded_tokens.h",
   ]
+
+  if (is_android) {
+    sources += [
+      "src/bat/confirmations/internal/platform_info_android.cc",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "src/bat/confirmations/internal/platform_info_linux.cc",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [
+      "src/bat/confirmations/internal/platform_info_mac.mm",
+    ]
+  }
+
+  if (is_ios) {
+    sources += [
+      "src/bat/confirmations/internal/platform_info_ios.mm",
+    ]
+  }
+
+  if (is_win) {
+    sources += [
+      "src/bat/confirmations/internal/platform_info_win.cc",
+    ]
+  }
 
   public_deps = [
     ":challenge_bypass_libs",

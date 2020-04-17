@@ -33,6 +33,8 @@ class ConfirmationsImpl : public Confirmations {
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
 
+  ConfirmationsClient* get_client() const;
+
   void Initialize(OnInitializeCallback callback) override;
 
   // Wallet

@@ -47,6 +47,8 @@ source_set("switches") {
 
 source_set("common") {
   sources = [
+    "brave_channel_info.cc",
+    "brave_channel_info.h",
     "brave_content_client.cc",
     "brave_content_client.h",
     "brave_features.cc",

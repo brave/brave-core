@@ -1295,6 +1295,7 @@ bool AdsImpl::ShowAdNotification(
   ad_notification->title = info.title;
   ad_notification->body = info.body;
   ad_notification->target_url = helper::Uri::GetUri(info.target_url);
+  ad_notification->geo_target = info.geo_targets.at(0);
 
   BLOG(INFO) << "Ad notification shown:"
       << std::endl << "  uuid: " << ad_notification->uuid

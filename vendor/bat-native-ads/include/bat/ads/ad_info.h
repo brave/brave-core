@@ -29,6 +29,7 @@ struct ADS_EXPORT AdInfo {
   std::string creative_set_id;
   std::string category;
   std::string target_url;
+  std::string geo_target;
 };
 
 }  // namespace ads

@@ -12,6 +12,7 @@
 #include "brave/browser/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"

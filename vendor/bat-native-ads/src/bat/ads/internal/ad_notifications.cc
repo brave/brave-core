@@ -31,6 +31,7 @@ const char kNotificationCategoryKey[] = "category";
 const char kNotificationTitleKey[] = "advertiser";
 const char kNotificationBodyKey[] = "text";
 const char kNotificationTargetUrlKey[] = "url";
+const char kNotificationGeoTargetKey[] = "geo_target";
 
 AdNotifications::AdNotifications(
     AdsImpl* ads,
@@ -214,6 +215,10 @@ bool AdNotifications::GetNotificationFromDictionary(
     return false;
   }
 
+  if (!GetGeoTargetFromDictionary(dictionary, &notification_info.geo_target)) {
+    return false;
+  }
+
   *info = notification_info;
 
   return true;
@@ -267,6 +272,12 @@ bool AdNotifications::GetTargetUrlFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
   return GetStringFromDictionary(kNotificationTargetUrlKey, dictionary, value);
+}
+
+bool AdNotifications::GetGeoTargetFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::string* value) const {
+  return GetStringFromDictionary(kNotificationGeoTargetKey, dictionary, value);
 }
 
 bool AdNotifications::GetStringFromDictionary(

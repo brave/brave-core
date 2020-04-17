@@ -15,8 +15,6 @@ namespace brave {
 
 std::string GetDateAsYMD(const base::Time& time);
 
-std::string GetChannelName();
-
 std::string GetPlatformIdentifier();
 
 int GetIsoWeekNumber(const base::Time& time);

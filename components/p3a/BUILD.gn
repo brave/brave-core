@@ -26,6 +26,7 @@ source_set("p3a") {
   ]
 
   deps = [
+    "//brave/common",
     "//brave/components/p3a:buildflags",
     "//brave/components/brave_prochlo",
     "//brave/components/brave_prochlo:prochlo_proto",
