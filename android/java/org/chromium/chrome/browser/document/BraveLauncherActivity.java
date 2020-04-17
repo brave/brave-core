@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.flags.FeatureUtilities;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 /**
  * Base class for ChromeLauncherActivity
@@ -18,6 +19,8 @@ public class BraveLauncherActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
 
         FeatureUtilities.isBottomToolbarEnabled();
         BraveHelper.DisableFREDRP();
