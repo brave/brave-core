@@ -24,20 +24,19 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
 
 namespace {
 
-constexpr char kNTPSIManifestFile[] = "photo.json";
-constexpr char kNTPSRManifestFile[] = "data.json";
+constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
 
 constexpr char kNTPSRMappingTableComponentPublicKey[] = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp7IWv7wzH/KLrxx7BKWOIIUMDylQNzxwM5Fig2WHc16BoMW9Kaya/g17Bpfp0YIvxdcmDBcB9kFALqQLxi1WQfa9d7YxqcmAGUKo407RMwEa6dQVkIPMFz2ZPGSfFgr526gYOqWh3Q4h8oN94qxBLgFyT25SMK5zQDGyq96ntME4MQRNwpDBUv7DDK7Npwe9iE8cBgzYTvf0taAFn2ZZi1RhS0RzpdynucpKosnc0sVBLTXy+HDvnMr+77T48zM0YmpjIh8Qmrp9CNbKzZUsZzNfnHpL9IZnjwQ51EOYdPGX2r1obChVZN19HzpK5scZEMRKoCMfCepWpEkMSIoPzQIDAQAB";  // NOLINT
@@ -84,17 +83,7 @@ std::string HandleComponentData(
     const base::FilePath& installed_dir,
     const base::FilePath& super_referral_cache_dir,
     bool is_super_referral) {
-  const auto ntp_si_manifest_path =
-      installed_dir.AppendASCII(kNTPSIManifestFile);
-  const auto ntp_sr_manifest_path =
-      installed_dir.AppendASCII(kNTPSRManifestFile);
-
-  base::FilePath json_path;
-  if (base::PathExists(ntp_si_manifest_path))
-    json_path = ntp_si_manifest_path;
-  else if (base::PathExists(ntp_sr_manifest_path))
-    json_path = ntp_sr_manifest_path;
-
+  base::FilePath json_path = installed_dir.AppendASCII(kNTPManifestFile);
   std::string contents;
 
   if (json_path.empty()) {
@@ -116,6 +105,21 @@ std::string HandleComponentData(
 }
 
 }  // namespace
+
+// static
+void NTPBackgroundImagesService::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  registry->RegisterStringPref(
+      prefs::kNewTabPageCachedSuperReferralComponentData, std::string());
+  registry->RegisterStringPref(
+      prefs::kNewTabPageCachedSuperReferralCode, std::string());
+  registry->RegisterListPref(
+      prefs::kNewTabPageCachedSuperReferralFaviconList);
+  registry->RegisterBooleanPref(
+      prefs::kNewTabPageGetInitialSRComponentInProgress, false);
+}
 
 NTPBackgroundImagesService::NTPBackgroundImagesService(
     component_updater::ComponentUpdateService* cus,
@@ -536,6 +540,21 @@ void NTPBackgroundImagesService::RestoreCachedTopSitesFaviconList() {
       prefs::kNewTabPageCachedSuperReferralFaviconList);
   for (const auto& file : value->GetList())
       cached_top_site_favicon_list_.push_back(file.GetString());
+}
+
+bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
+    const base::Value& component_info) const {
+  if (!component_info.is_dict())
+    return false;
+
+  if (!component_info.FindStringKey(kPublicKey))
+    return false;
+  if (!component_info.FindStringKey(kComponentID))
+    return false;
+  if (!component_info.FindStringKey(kThemeName))
+    return false;
+
+  return true;
 }
 
 std::vector<std::string>

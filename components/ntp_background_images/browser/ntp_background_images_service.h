@@ -22,6 +22,7 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+class PrefRegistrySimple;
 class PrefService;
 
 namespace ntp_background_images {
@@ -37,6 +38,8 @@ class NTPBackgroundImagesService {
    protected:
     virtual ~Observer() {}
   };
+
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   NTPBackgroundImagesService(
       component_updater::ComponentUpdateService* cus,
@@ -111,6 +114,8 @@ class NTPBackgroundImagesService {
   void OnGetMappingTableData(const std::string& json_string);
 
   std::string GetReferralPromoCode() const;
+  bool IsValidSuperReferralComponentInfo(
+      const base::Value& component_info) const;
 
   void CacheTopSitesFaviconList();
   void RestoreCachedTopSitesFaviconList();

@@ -12,7 +12,6 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -58,7 +57,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     ViewCounterService::RegisterProfilePrefs(registry);
     auto* local_registry = local_pref_.registry();
     brave::RegisterPrefsForBraveReferralsService(local_registry);
-    RegisterLocalStatePrefs(local_registry);
+    NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);
 
     service_ = std::make_unique<NTPBackgroundImagesService>(
         nullptr,

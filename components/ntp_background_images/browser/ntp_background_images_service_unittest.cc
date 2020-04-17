@@ -12,7 +12,6 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -116,7 +115,7 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
   void SetUp() override {
     auto* registry = pref_service_.registry();
-    RegisterLocalStatePrefs(registry);
+    NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
   }
 
@@ -398,7 +397,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_TRUE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-  EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
+  EXPECT_FALSE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   service_->OnGetMappingTableData(kTestMappingTable);
   EXPECT_TRUE(pref_service_.GetBoolean(
@@ -417,7 +416,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_FALSE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress));
   auto* data = service_->GetBackgroundImagesData(true);
-  EXPECT_TRUE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
+  EXPECT_TRUE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(data->IsSuperReferral());
   EXPECT_FALSE(pref_service_.GetString(
@@ -427,7 +426,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   service_->OnGetComponentJsonData(true, kTestEmptyComponent);
   EXPECT_TRUE(pref_service_.GetString(
       prefs::kNewTabPageCachedSuperReferralCode).empty());
-  EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
+  EXPECT_FALSE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(pref_service_.GetString(
                   prefs::kNewTabPageCachedSuperReferralComponentData).empty());

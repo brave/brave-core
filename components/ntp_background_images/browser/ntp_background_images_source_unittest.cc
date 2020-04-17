@@ -12,7 +12,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -25,7 +24,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
 
   void SetUp() override {
     auto* registry = local_pref_.registry();
-    ntp_background_images::RegisterLocalStatePrefs(registry);
+    NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
     service_.reset(new NTPBackgroundImagesService(
         nullptr, &local_pref_, base::FilePath()));
