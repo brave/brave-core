@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.15.1](https://github.com/brave/brave-ios/releases/tag/v1.15.1)
+
+ - Migrated rewards database to new code base to improve stability and performance. ([#2378](https://github.com/brave/brave-ios/issues/2378))
+ - [Security] Updated Minimist package. ([#2423](https://github.com/brave/brave-ios/issues/2423))
+ - Fixed claiming grant from the rewards panel not always working on the first attempt. ([#2329](https://github.com/brave/brave-ios/issues/2329))
+
+## [1.15](https://github.com/brave/brave-ios/releases/tag/v1.15)
+ 
+ - Implemented Safari / iOS User Agent. ([#2210](https://github.com/brave/brave-ios/issues/2210))
+ - Added haptic feedback. ([#2283](https://github.com/brave/brave-ios/issues/2283))
+ - Added detailed view of pending contributions for rewards. ([#1670](https://github.com/brave/brave-ios/issues/1670))
+ - Added ability to restore individual publishers from the "Sites Excluded" list. ([#1674](https://github.com/brave/brave-ios/issues/1674))
+ - Added "Open Brave Rewards Settings" under rewards settings. ([#1966](https://github.com/brave/brave-ios/issues/1966))
+ - Improved New Tab Page Sponsored Images modals. ([#2363](https://github.com/brave/brave-ios/issues/2363))
+ - Changed settings header from "BRAVE SHIELD DEFAULTS" to "SHIELDS DEFAULTS". ([#1196](https://github.com/brave/brave-ios/issues/1196))
+ - Fixed crash when downloading New Tab Page Sponsored Images in certain cases. ([#2375](https://github.com/brave/brave-ios/issues/2375))
+ - Fixed tabs opened using "window.open" not being restored when restarting Brave. ([#1397](https://github.com/brave/brave-ios/issues/1397))
+ - Fixed "Claim my rewards" button under the New Tab Page Sponsored Images modal not always working on the first attempt. ([#2280](https://github.com/brave/brave-ios/issues/2280))
+ - Fixed custom images not being displayed under the publisher tipping banner. ([#2164](https://github.com/brave/brave-ios/issues/2164))
+ - Fixed on-screen keyboard being dismissed while typing. ([#2016](https://github.com/brave/brave-ios/issues/2016))
+ - Fixed rendering glitch affecting the tab bar on iPadOS. ([#2124](https://github.com/brave/brave-ios/issues/2124))
+ - Fixed spacing issues between sync text and warning message under "Enter the sync code" screen. ([#2006](https://github.com/brave/brave-ios/issues/2006))
+
 ## [1.14.3](https://github.com/brave/brave-ios/releases/tag/v1.14.3)
  
   - Added New Tab Page Sponsored Images. ([#2151](https://github.com/brave/brave-ios/issues/2151))
