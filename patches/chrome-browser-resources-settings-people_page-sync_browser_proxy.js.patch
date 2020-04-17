@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
-index e9043c8a6a138d0f791c44a6c9018985eb5a6e02..3cf1aaa75e5b9a045acc9c492591a3501997e755 100644
+index e9043c8a6a138d0f791c44a6c9018985eb5a6e02..cd21557ca48d2377c19a7b4e51ef30a24bb67493 100644
 --- a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
 +++ b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
-@@ -173,6 +173,10 @@ cr.define('settings', function() {
+@@ -173,6 +173,12 @@ cr.define('settings', function() {
       */
      getSyncStatus() {}
  
@@ -10,10 +10,12 @@ index e9043c8a6a138d0f791c44a6c9018985eb5a6e02..3cf1aaa75e5b9a045acc9c492591a350
 +
 +    setSyncCode(syncCode) {}
 +
++    resetSyncChain() {}
++
      /**
       * Gets a list of stored accounts.
       * @return {!Promise<!Array<!settings.StoredAccount>>}
-@@ -281,6 +285,16 @@ cr.define('settings', function() {
+@@ -281,6 +287,21 @@ cr.define('settings', function() {
        return cr.sendWithPromise('SyncSetupGetSyncStatus');
      }
  
@@ -25,6 +27,11 @@ index e9043c8a6a138d0f791c44a6c9018985eb5a6e02..3cf1aaa75e5b9a045acc9c492591a350
 +    /** @override */
 +    setSyncCode(syncCode) {
 +      return cr.sendWithPromise('SyncSetupSetSyncCode', syncCode);
++    }
++
++    /** @override */
++    resetSyncChain() {
++      chrome.send('SyncSetupReset');
 +    }
 +
      /** @override */
