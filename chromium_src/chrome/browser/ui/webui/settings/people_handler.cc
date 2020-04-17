@@ -1,3 +1,4 @@
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 
@@ -24,7 +25,7 @@
   }
 
 #define BRAVE_IS_SYNC_SUBPAGE \
-  return (current_url == chrome::GetSettingsUrl("braveSync/setup"));
+  return (current_url == chrome::GetSettingsUrl(kBraveSyncSetupPath));
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
