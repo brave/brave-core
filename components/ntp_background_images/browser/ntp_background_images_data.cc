@@ -16,6 +16,7 @@
 namespace ntp_background_images {
 
 namespace {
+constexpr char kThemeNamePath[] = "themeName";
 constexpr char kLogoImageURLPath[] = "logo.imageUrl";
 constexpr char kLogoAltPath[] = "logo.alt";
 constexpr char kLogoCompanyNamePath[] = "logo.companyName";
@@ -24,6 +25,11 @@ constexpr char kWallpapersPath[] = "wallpapers";
 constexpr char kWallpaperImageURLPath[] = "imageUrl";
 constexpr char kWallpaperFocalPointXPath[] = "focalPoint.x";
 constexpr char kWallpaperFocalPointYPath[] = "focalPoint.y";
+constexpr char kTopSitesPath[] = "topSites";
+constexpr char kTopSiteNamePath[] = "name";
+constexpr char kTopSiteDestinationURLPath[] = "destinationUrl";
+constexpr char kTopSiteBackgroundColorPath[] = "backgroundColor";
+constexpr char kTopSiteIconURLPath[] = "iconUrl";
 constexpr char kSchemaVersionPath[] = "schemaVersion";
 
 constexpr int kExpectedSchemaVersion = 1;
@@ -34,51 +40,98 @@ const std::string default_url_prefix =  // NOLINT
                        kBrandedWallpaperHost);
 }  // namespace
 
+TopSite::TopSite() = default;
+TopSite::TopSite(
+    const std::string& i_name, const std::string i_destination_url,
+    const std::string& i_image_path, const base::FilePath& i_image_file)
+    : name(i_name), destination_url(i_destination_url),
+      image_path(i_image_path), image_file(i_image_file) {}
+
+TopSite& TopSite::operator=(const TopSite& data) = default;
+TopSite::TopSite(const TopSite& data) = default;
+TopSite::TopSite(TopSite&& data) = default;
+TopSite::~TopSite() = default;
+
+bool TopSite::IsValid() const {
+  return !name.empty() && !destination_url.empty() && !image_file.empty();
+}
+
 NTPBackgroundImagesData::NTPBackgroundImagesData()
     : url_prefix(default_url_prefix) {}
 
 NTPBackgroundImagesData::NTPBackgroundImagesData(
-    const std::string& photo_json,
-    const base::FilePath& base_dir)
+    const std::string& json_string,
+    const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
-  base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
-  if (!photo_value)
+  base::Optional<base::Value> json_value = base::JSONReader::Read(json_string);
+  if (!json_value) {
+    DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
+  }
 
   base::Optional<int> incomingSchemaVersion =
-      photo_value->FindIntPath(kSchemaVersionPath);
+      json_value->FindIntPath(kSchemaVersionPath);
   const bool schemaVersionIsValid = incomingSchemaVersion &&
       *incomingSchemaVersion == kExpectedSchemaVersion;
   if (!schemaVersionIsValid) {
-    VLOG(2) << "Incoming NTP Background images data was not valid."
-            << " Schema version was "
-            << (incomingSchemaVersion ? std::to_string(*incomingSchemaVersion)
-                                      : "missing")
-            << ", but we expected " << kExpectedSchemaVersion;
+    DVLOG(2) << __func__ << "Incoming NTP background images data was not valid."
+             << " Schema version was "
+             << (incomingSchemaVersion ? std::to_string(*incomingSchemaVersion)
+                                       : "missing")
+             << ", but we expected " << kExpectedSchemaVersion;
     return;
   }
 
-  if (auto* url = photo_value->FindStringPath(kLogoImageURLPath))
-    logo_image_file = base_dir.AppendASCII(*url);
+  if (auto* name = json_value->FindStringPath(kThemeNamePath)) {
+    theme_name = *name;
+    DVLOG(2) << __func__ << ": Theme name: " << theme_name;
+  }
 
-  if (auto* alt_text = photo_value->FindStringPath(kLogoAltPath))
+  if (auto* url = json_value->FindStringPath(kLogoImageURLPath))
+    logo_image_file = installed_dir.AppendASCII(*url);
+
+  if (auto* alt_text = json_value->FindStringPath(kLogoAltPath))
     logo_alt_text = *alt_text;
 
-  if (auto* name = photo_value->FindStringPath(kLogoCompanyNamePath))
+  if (auto* name = json_value->FindStringPath(kLogoCompanyNamePath))
     logo_company_name = *name;
 
-  if (auto* url = photo_value->FindStringPath(kLogoDestinationURLPath)) {
+  if (auto* url = json_value->FindStringPath(kLogoDestinationURLPath)) {
     logo_destination_url = *url;
   }
 
-  if (auto* wallpapers = photo_value->FindListPath(kWallpapersPath)) {
+  if (auto* wallpapers = json_value->FindListPath(kWallpapersPath)) {
     for (const auto& wallpaper : wallpapers->GetList()) {
       backgrounds.push_back({
-        base_dir.AppendASCII(
+        installed_dir.AppendASCII(
             *wallpaper.FindStringPath(kWallpaperImageURLPath)),
         { wallpaper.FindIntPath(kWallpaperFocalPointXPath).value_or(0),
           wallpaper.FindIntPath(kWallpaperFocalPointYPath).value_or(0) }
       });
+    }
+  }
+
+  if (auto* sites = json_value->FindListPath(kTopSitesPath)) {
+    for (const auto& top_site_value : sites->GetList()) {
+      TopSite site;
+      if (auto* name = top_site_value.FindStringPath(kTopSiteNamePath))
+        site.name = *name;
+
+      if (auto* url = top_site_value.FindStringPath(kTopSiteDestinationURLPath))
+        site.destination_url = *url;
+
+      if (auto* color =
+              top_site_value.FindStringPath(kTopSiteBackgroundColorPath))
+        site.background_color = *color;
+
+      if (auto* url = top_site_value.FindStringPath(kTopSiteIconURLPath)) {
+        site.image_path = *url;
+        site.image_file = installed_dir.AppendASCII(*url);
+      }
+
+      // TopSite should have all properties.
+      DCHECK(site.IsValid());
+      top_sites.push_back(site);
     }
   }
 }
@@ -92,17 +145,24 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
 NTPBackgroundImagesData::~NTPBackgroundImagesData() = default;
 
 bool NTPBackgroundImagesData::IsValid() const {
-  return (!backgrounds.empty() && !logo_destination_url.empty());
+  return !backgrounds.empty();
 }
 
-base::Value NTPBackgroundImagesData::GetValueAt(size_t index) {
+bool NTPBackgroundImagesData::IsSuperReferral() const {
+  return IsValid() && !theme_name.empty();
+}
+
+base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   DCHECK(index >= 0 && index < wallpaper_image_urls().size());
 
   base::Value data(base::Value::Type::DICTIONARY);
   if (!IsValid())
     return data;
 
-  data.SetBoolKey("isSponsorship", true);
+  if (!theme_name.empty())
+    data.SetStringKey("themeName", theme_name);
+
+  data.SetBoolKey("isSponsored", !IsSuperReferral());
   data.SetStringKey("wallpaperImageUrl",
                     wallpaper_image_urls()[index]);
   data.SetStringKey("wallpaperImagePath",
@@ -117,14 +177,38 @@ base::Value NTPBackgroundImagesData::GetValueAt(size_t index) {
   return data;
 }
 
+std::string NTPBackgroundImagesData::GetURLPrefix() const {
+  return url_prefix + (IsSuperReferral() ? kSuperReferralPath
+                                         : kSponsoredImagesPath);
+}
+
+base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
+  base::Value top_sites_list_value(base::Value::Type::LIST);
+  int index = 0;
+  for (const auto& top_site : top_sites) {
+    base::Value top_site_value(base::Value::Type::DICTIONARY);
+    top_site_value.SetStringKey(for_webui ? "title" : "name", top_site.name);
+    top_site_value.SetStringKey(for_webui ? "url" : "destinationUrl",
+                                top_site.destination_url);
+    top_site_value.SetStringKey(for_webui? "favicon" : "iconUrl",
+                                GetURLPrefix() + top_site.image_path);
+    if (for_webui)
+      top_site_value.SetIntKey("pinnedIndex", index++);
+    if (!for_webui)
+      top_site_value.SetStringKey("backgroundColor", top_site.background_color);
+    top_sites_list_value.Append(std::move(top_site_value));
+  }
+  return top_sites_list_value;
+}
+
 std::string NTPBackgroundImagesData::logo_image_url() const {
-  return url_prefix + kLogoPath;
+  return GetURLPrefix() + kLogoPath;
 }
 
 std::vector<std::string> NTPBackgroundImagesData::wallpaper_image_urls() const {
   std::vector<std::string> wallpaper_image_urls;
   for (size_t i = 0; i < backgrounds.size(); i++) {
-    const std::string wallpaper_image_url = url_prefix + base::StringPrintf(
+    const std::string wallpaper_image_url = GetURLPrefix() + base::StringPrintf(
         "%s%zu.jpg", kWallpaperPathPrefix, i);
     wallpaper_image_urls.push_back(wallpaper_image_url);
   }

@@ -49,7 +49,8 @@ interface State {
 }
 
 function GetBackgroundImageSrc (props: Props) {
-  if (!props.newTabData.showBackgroundImage) {
+  if (!props.newTabData.showBackgroundImage &&
+      (!props.newTabData.brandedWallpaperData || props.newTabData.brandedWallpaperData.isSponsored)) {
     return undefined
   }
   if (props.newTabData.brandedWallpaperData) {
@@ -522,7 +523,7 @@ class NewTabPage extends React.Component<Props, State> {
               showRewards={newTabData.showRewards}
               showBinance={newTabData.showBinance}
               brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
-              allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
+              allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
               toggleShowRewards={this.toggleShowRewards}
               toggleShowBinance={this.toggleShowBinance}
               binanceSupported={binanceState.binanceSupported}

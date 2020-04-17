@@ -14,6 +14,7 @@ export type InitialData = {
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
   topSites: chrome.topSites.MostVisitedURL[]
+  defaultSuperReferralTopSites: undefined | NewTab.DefaultSuperReferralTopSite[]
   brandedWallpaperData: undefined | NewTab.BrandedWallpaper
 }
 
@@ -40,12 +41,14 @@ export async function getInitialData (): Promise<InitialData> {
       stats,
       privateTabData,
       topSites,
+      defaultSuperReferralTopSites,
       brandedWallpaperData
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
       topSitesAPI.getTopSites(),
+      !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
       !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
     ])
     console.timeStamp('Got all initial data.')
@@ -54,6 +57,7 @@ export async function getInitialData (): Promise<InitialData> {
       stats,
       privateTabData,
       topSites,
+      defaultSuperReferralTopSites,
       brandedWallpaperData
     }
   } catch (e) {

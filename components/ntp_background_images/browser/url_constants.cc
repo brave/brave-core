@@ -10,5 +10,11 @@ namespace ntp_background_images {
 const char kBrandedWallpaperHost[] = "branded-wallpaper";
 const char kLogoPath[] = "logo.png";
 const char kWallpaperPathPrefix[] = "wallpaper-";
+const char kSuperReferralPath[] = "super-referral/";
+const char kSponsoredImagesPath[] = "sponsored-images/";
+
+const char kPublicKey[] = "publicKey";
+const char kComponentID[] = "componentID";
+const char kThemeName[] = "themeName";
 
 }  // namespace ntp_background_images

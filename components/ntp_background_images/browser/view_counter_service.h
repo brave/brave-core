@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -17,6 +18,10 @@
 
 class PrefService;
 
+namespace content {
+class WebUIDataSource;
+}  // namespace content
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
@@ -24,6 +29,7 @@ class PrefRegistrySyncable;
 namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
+struct TopSite;
 
 class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
@@ -45,8 +51,28 @@ class ViewCounterService : public KeyedService,
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
+  base::Value GetTopSites(bool for_webui = false) const;
+  std::vector<TopSite> GetTopSitesVectorData() const;
+
+  bool IsSuperReferral() const;
+  std::string GetSuperReferralThemeName() const;
+  std::string GetSuperReferralCode() const;
+
+  // Gets the current data for branded wallpaper, if there
+  // is a wallpaper active. Does not consider user opt-in
+  // status, or consider whether the wallpaper should be shown.
+  NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
+
+  void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
  private:
+  // Sync with themeValues in brave_appearance_page.js
+  enum ThemesOption {
+    DEFAULT,
+    SUPER_REFERRAL,
+  };
+
+  friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -57,6 +83,8 @@ class ViewCounterService : public KeyedService,
                            IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           ActiveOptedInWithNTPBackgoundOption);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
@@ -67,17 +95,16 @@ class ViewCounterService : public KeyedService,
   void OnUpdated(NTPBackgroundImagesData* data) override;
 
   void ResetNotificationState();
-  bool IsBrandedWallpaperOptedIn() const;
-  // Do we have a sponsored wallpaper to show and has the user
+  bool IsSponsoredImagesWallpaperOptedIn() const;
+  bool IsSuperReferralWallpaperOptedIn() const;
+  // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool IsBrandedWallpaperActive() const;
-  // Should we show the sponsored wallpaper right now, in addition
-  // to the result from `IsSponsoredWallpaperActive()`.
+  // Should we show the branded wallpaper right now, in addition
+  // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;
-  // Gets the current data for branded wallpaper, if there
-  // is a wallpaper active. Does not consider user opt-in
-  // status, or consider whether the wallpaper should be shown.
-  NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
+
+  void ResetModel();
 
   NTPBackgroundImagesService* service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned
@@ -89,3 +116,4 @@ class ViewCounterService : public KeyedService,
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
+

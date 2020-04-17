@@ -8,15 +8,22 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/timer/timer.h"
+#include "base/values.h"
+#include "components/prefs/pref_change_registrar.h"
 
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
+
+class PrefRegistrySimple;
+class PrefService;
 
 namespace ntp_background_images {
 
@@ -26,28 +33,64 @@ class NTPBackgroundImagesService {
  public:
   class Observer {
    public:
-    // Called whenever ntp sponsored images component is updated.
+    // Called whenever ntp background images component is updated.
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
    protected:
     virtual ~Observer() {}
   };
 
-  explicit NTPBackgroundImagesService(
-      component_updater::ComponentUpdateService* cus);
-  ~NTPBackgroundImagesService();
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+
+  NTPBackgroundImagesService(
+      component_updater::ComponentUpdateService* cus,
+      PrefService* local_pref,
+      const base::FilePath& user_data_dir);
+  virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
   NTPBackgroundImagesService& operator=(
       const NTPBackgroundImagesService&) = delete;
 
+  void Init();
+
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   bool HasObserver(Observer* observer);
 
-  NTPBackgroundImagesData* GetBackgroundImagesData() const;
+  NTPBackgroundImagesData* GetBackgroundImagesData(bool super_referral) const;
+
+  bool test_data_used() const { return test_data_used_; }
+
+  bool IsSuperReferral() const;
+  std::string GetSuperReferralThemeName() const;
+  std::string GetSuperReferralCode() const;
+
+  std::vector<std::string> GetCachedTopSitesFaviconList() const;
 
  private:
+  friend class TestNTPBackgroundImagesService;
+  friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithDefaultReferralCodeTest1);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithDefaultReferralCodeTest2);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithNonSuperReferralCodeTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithSuperReferralCodeTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           BasicSuperReferralTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           CheckReferralServiceInitStatusTest);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      CheckRecoverShutdownWhileMappingTableFetchingWithDefaultCode);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           ActiveOptedInWithNTPBackgoundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -58,14 +101,57 @@ class NTPBackgroundImagesService {
                            IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
+                           BasicSuperReferralDataTest);
 
-  void OnComponentReady(const base::FilePath& installed_dir);
-  void OnGetPhotoJsonData(const std::string& photo_json);
-  void NotifyObservers();
+  void OnComponentReady(bool is_super_referral,
+                        const base::FilePath& installed_dir);
+  void OnGetComponentJsonData(bool is_super_referral,
+                              const std::string& json_string);
+  void OnMappingTableComponentReady(const base::FilePath& installed_dir);
+  void OnPreferenceChanged(const std::string& pref_name);
+  void OnGetMappingTableData(const std::string& json_string);
 
-  base::FilePath installed_dir_;
+  std::string GetReferralPromoCode() const;
+  bool IsValidSuperReferralComponentInfo(
+      const base::Value& component_info) const;
+
+  void CacheTopSitesFaviconList();
+  void RestoreCachedTopSitesFaviconList();
+
+  // virtual for test.
+  virtual void CheckSuperReferralComponent();
+  virtual void RegisterSponsoredImagesComponent();
+  virtual void RegisterSuperReferralComponent();
+  virtual void DownloadSuperReferralMappingTable();
+  virtual void MonitorReferralPromoCodeChange();
+  virtual void UnRegisterSuperReferralComponent();
+  virtual void MarkThisInstallIsNotSuperReferralForever();
+
+  std::vector<std::string> cached_top_site_favicon_list_;
+  bool test_data_used_ = false;
+  component_updater::ComponentUpdateService* component_update_service_;
+  PrefService* local_pref_;
+  const base::FilePath super_referral_cache_dir_;
+  base::FilePath si_installed_dir_;
+  base::FilePath sr_installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPBackgroundImagesData> images_data_;
+  std::unique_ptr<NTPBackgroundImagesData> si_images_data_;
+  std::unique_ptr<NTPBackgroundImagesData> sr_images_data_;
+  PrefChangeRegistrar pref_change_registrar_;
+  // This is only used for registration during initial(first) SR component
+  // download. After initial download is done, it's cached to
+  // |kNewTabPageCachedSuperReferralComponentInfo|. At next launch, this cached
+  // info is used for registering SR component.
+  // Why component info is temporarily stored to |initial_sr_component_info_|
+  // when mapping table is fetched instead of directly store it into that prefs?
+  // The reason is |kNewTabPageCachedSuperReferralComponentInfo| is used to
+  // check whether initial download is finished or not. Knowing initial download
+  // is done is important for super referral. If this is SR install, we should
+  // not show SI images until user chooses Brave default images. So, we should
+  // know the exact timing whether SR assets is ready to use or not.
+  base::Value initial_sr_component_info_;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

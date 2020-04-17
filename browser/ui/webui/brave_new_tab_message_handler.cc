@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -29,7 +30,7 @@
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -72,7 +73,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
-      prefs->GetBoolean(kNewTabPageShowBrandedBackgroundImage));
+      prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
@@ -121,8 +122,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   } else {
     is_ads_supported_locale_ = ads_service_->IsSupportedLocale();
   }
+
   source->AddBoolean(
-      "featureFlagBraveNTPBrandedWallpaper",
+      "featureFlagBraveNTPSponsoredImagesWallpaper",
       base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
       is_ads_supported_locale_);
   // Private Tab info
@@ -183,6 +185,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "getDefaultSuperReferralTopSitesData",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleGetDefaultSuperReferralTopSitesData,
+      base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -219,7 +226,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowBrandedBackgroundImage,
+  pref_change_registrar_.Add(kNewTabPageShowSponsoredImagesBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowClock,
@@ -296,7 +303,9 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
   } else if (settingsKeyInput == "brandedWallpaperOptIn") {
-    settingsKey = kNewTabPageShowBrandedBackgroundImage;
+    // TODO(simonhong): I think above |brandedWallpaperOptIn| should be changed
+    // to |sponsoredImagesWallpaperOptIn|.
+    settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showTopSites") {
@@ -333,6 +342,16 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   ResolveJavascriptCallback(
       args->GetList()[0],
       service ? service->GetCurrentWallpaperForDisplay() : base::Value());
+}
+
+void BraveNewTabMessageHandler::HandleGetDefaultSuperReferralTopSitesData(
+    const base::ListValue* args) {
+  AllowJavascript();
+
+  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+      service ? service->GetTopSites(true) : base::Value());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

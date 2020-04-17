@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/sparkle_buildflags.h"
@@ -18,6 +20,7 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/browser/version_info.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -29,6 +32,8 @@
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
 #endif
+
+using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
                                  const std::string& host)
@@ -65,4 +70,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddString("braveProductVersion",
     version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source);
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile))
+    service->InitializeWebUIDataSource(html_source);
 }

@@ -9,20 +9,16 @@
 
 namespace ntp_background_images {
 
-namespace {
-
-constexpr int kInitialCountToBrandedWallpaper = 1;
-constexpr int kRegularCountToBrandedWallpaper = 3;
-
-}  // namespace
-
-ViewCounterModel::ViewCounterModel()
-    : count_to_branded_wallpaper_(kInitialCountToBrandedWallpaper) {
+ViewCounterModel::ViewCounterModel() {
+  Reset();
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
 
 bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
+  if (ignore_count_to_branded_wallpaper_)
+    return true;
+
   return count_to_branded_wallpaper_ == 0;
 }
 
@@ -32,6 +28,12 @@ void ViewCounterModel::ResetCurrentWallpaperImageIndex() {
 
 void ViewCounterModel::RegisterPageView() {
   DCHECK_NE(-1, total_image_count_);
+
+  if (ignore_count_to_branded_wallpaper_) {
+    current_wallpaper_image_index_++;
+    current_wallpaper_image_index_ %= total_image_count_;
+    return;
+  }
 
   // When count is `0` then UI is free to show
   // the branded wallpaper, until the next time `RegisterPageView`
@@ -45,6 +47,13 @@ void ViewCounterModel::RegisterPageView() {
     current_wallpaper_image_index_++;
     current_wallpaper_image_index_ %= total_image_count_;
   }
+}
+
+void ViewCounterModel::Reset() {
+  count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+  current_wallpaper_image_index_ = 0;
+  total_image_count_ = -1;
+  ignore_count_to_branded_wallpaper_ = false;
 }
 
 }  // namespace ntp_background_images
