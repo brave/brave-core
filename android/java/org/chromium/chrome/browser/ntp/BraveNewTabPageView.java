@@ -19,12 +19,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import java.io.InputStream;
-import java.io.FileNotFoundException;
-import android.graphics.BitmapFactory;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;

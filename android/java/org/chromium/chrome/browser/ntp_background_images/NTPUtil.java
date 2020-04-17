@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.os.Handler;
 import android.net.Uri;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -261,7 +261,8 @@ public class NTPUtil {
                 Uri imageFileUri = Uri.parse("file://"+mWallpaper.getImagePath());
                 InputStream inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
                 imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-            } catch(FileNotFoundException exc) {
+                inputStream.close();
+            } catch(IOException exc) {
                 Log.e("NTP", exc.getMessage());
                 return null;
             }

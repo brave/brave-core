@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.util.Pair;
 import android.net.Uri;
 import java.io.InputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import android.graphics.BitmapFactory;
 
 import org.chromium.base.Log;
@@ -51,7 +51,8 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
                     Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
                     InputStream inputStream = mContext.getContentResolver().openInputStream(logoFileUri);
                     logoBitmap = BitmapFactory.decodeStream(inputStream);
-                } catch(FileNotFoundException exc) {
+                    inputStream.close();
+                } catch(IOException exc) {
                     Log.e("NTP", exc.getMessage());
                 }
             }
