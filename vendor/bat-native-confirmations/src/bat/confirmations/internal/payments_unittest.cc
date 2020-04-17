@@ -21,16 +21,16 @@ namespace confirmations {
 
 class ConfirmationsPaymentsTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsClientMock> confirmations_client_mock_;
   std::unique_ptr<ConfirmationsImpl> confirmations_;
   std::unique_ptr<Payments> payments_;
 
   ConfirmationsPaymentsTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_client_mock_(std::make_unique<ConfirmationsClientMock>()),
       confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
+          confirmations_client_mock_.get())),
       payments_(std::make_unique<Payments>(confirmations_.get(),
-          mock_confirmations_client_.get())) {
+          confirmations_client_mock_.get())) {
     // You can do set-up work for each test here
   }
 

@@ -65,12 +65,13 @@ bool Payments::SetFromDictionary(base::DictionaryValue* dictionary) {
     PaymentInfo payment;
 
     // Balance
-    auto* balance_value = dictionary->FindKey("balance");
-    if (!balance_value || !balance_value->is_double()) {
+    const base::Optional<double> balance_value =
+        dictionary->FindDoubleKey("balance");
+    if (!balance_value) {
       return false;
     }
 
-    payment.balance = balance_value->GetDouble();
+    payment.balance = balance_value.value_or(0.0);
 
     // Month
     auto* month_value = dictionary->FindKey("month");

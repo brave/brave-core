@@ -3,41 +3,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
-#include <fstream>
-#include <sstream>
 
 #include "bat/confirmations/internal/confirmations_client_mock.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/security_helper.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
-
-#include "base/files/file_path.h"
+#include "bat/confirmations/internal/unittest_utils.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=Confirmations*
 
 using ::testing::_;
-using ::testing::Invoke;
-
-using std::placeholders::_1;
 
 namespace confirmations {
 
 class ConfirmationsUnblindedTokensTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsClientMock> confirmations_client_mock_;
   std::unique_ptr<ConfirmationsImpl> confirmations_;
 
   std::unique_ptr<UnblindedTokens> unblinded_tokens_;
 
   ConfirmationsUnblindedTokensTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_client_mock_(std::make_unique<ConfirmationsClientMock>()),
       confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
+          confirmations_client_mock_.get())),
       unblinded_tokens_(std::make_unique<UnblindedTokens>(
           confirmations_.get())) {
     // You can do set-up work for each test here
@@ -53,39 +47,11 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    EXPECT_CALL(*mock_confirmations_client_, LoadState(_, _))
-        .WillRepeatedly(
-            Invoke([this](
-                const std::string& name,
-                LoadCallback callback) {
-              auto path = GetTestDataPath();
-              path = path.AppendASCII(name);
 
-              std::string value;
-              if (!Load(path, &value)) {
-                callback(FAILED, value);
-                return;
-              }
+    MockLoadState(confirmations_client_mock_.get());
+    MockSaveState(confirmations_client_mock_.get());
 
-              callback(SUCCESS, value);
-            }));
-
-    ON_CALL(*mock_confirmations_client_, SaveState(_, _, _))
-        .WillByDefault(
-            Invoke([](
-                const std::string& name,
-                const std::string& value,
-                ResultCallback callback) {
-              callback(SUCCESS);
-            }));
-
-    auto callback = std::bind(
-        &ConfirmationsUnblindedTokensTest::OnInitialize, this, _1);
-    confirmations_->Initialize(callback);
-  }
-
-  void OnInitialize(const bool success) {
-    EXPECT_EQ(true, success);
+    Initialize(confirmations_.get());
   }
 
   void TearDown() override {
@@ -94,27 +60,6 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
   }
 
   // Objects declared here can be used by all tests in the test case
-  base::FilePath GetTestDataPath() {
-    return base::FilePath(FILE_PATH_LITERAL(
-        "brave/vendor/bat-native-confirmations/test/data"));
-  }
-
-  bool Load(const base::FilePath path, std::string* value) {
-    if (!value) {
-      return false;
-    }
-
-    std::ifstream ifs{path.value().c_str()};
-    if (ifs.fail()) {
-      *value = "";
-      return false;
-    }
-
-    std::stringstream stream;
-    stream << ifs.rdbuf();
-    *value = stream.str();
-    return true;
-  }
 
   TokenList GetUnblindedTokens(const int count) {
     std::vector<std::string> tokens_base64 = {
@@ -326,7 +271,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetTokensAsList_EmptyList) {
 
 TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Exist) {
   // Arrange
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto unblinded_tokens = GetUnblindedTokens(10);
@@ -352,7 +297,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Exist) {
 
 TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Count) {
   // Arrange
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto unblinded_tokens = GetUnblindedTokens(4);
@@ -367,7 +312,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Count) {
 
 TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_NoTokens) {
   // Arrange
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto unblinded_tokens = GetUnblindedTokens(0);
@@ -382,7 +327,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_NoTokens) {
 
 TEST_F(ConfirmationsUnblindedTokensTest, SetTokensFromList) {
   // Arrange
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto list = GetUnblindedTokensAsList(5);
@@ -423,7 +368,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokensFromList) {
 
 TEST_F(ConfirmationsUnblindedTokensTest, SetTokensFromList_EmptyList) {
   // Arrange
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto list = GetUnblindedTokensAsList(0);
@@ -442,7 +387,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, AddTokens_Added) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto tokens = GetRandomUnblindedTokens(5);
@@ -464,7 +409,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, AddTokens_ShouldNotAddDuplicates) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto duplicate_unblinded_tokens = GetUnblindedTokens(1);
@@ -481,7 +426,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, AddTokens_Count) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto tokens = GetRandomUnblindedTokens(3);
@@ -498,7 +443,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, AddTokens_NoTokens) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   auto tokens = GetUnblindedTokens(0);
@@ -515,7 +460,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_Count) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
@@ -537,7 +482,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_Removed) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
@@ -558,7 +503,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_UnknownToken) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(0);
 
   std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";  // NOLINT
@@ -580,7 +525,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_SameTokenTwice) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
@@ -603,7 +548,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveAllTokens) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   unblinded_tokens_->RemoveAllTokens();
@@ -619,7 +564,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveAllTokens_NoTokens) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+  EXPECT_CALL(*confirmations_client_mock_, SaveState(_, _, _))
       .Times(1);
 
   unblinded_tokens_->RemoveAllTokens();

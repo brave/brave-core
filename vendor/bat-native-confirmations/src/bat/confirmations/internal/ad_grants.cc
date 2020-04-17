@@ -45,12 +45,13 @@ bool AdGrants::SetFromJson(const std::string& json) {
 bool AdGrants::SetFromDictionary(base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
-  auto* value = dictionary->FindKey("grants_balance");
-  if (!value || !value->is_double()) {
+  const base::Optional<double> balance =
+      dictionary->FindDoubleKey("grants_balance");
+  if (!balance) {
     return false;
   }
 
-  balance_ = value->GetDouble();
+  balance_ = balance.value_or(0.0);
 
   return true;
 }

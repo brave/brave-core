@@ -20,15 +20,15 @@ namespace confirmations {
 
 class ConfirmationsFetchPaymentTokenRequestTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsClientMock> confirmations_client_mock_;
   std::unique_ptr<ConfirmationsImpl> confirmations_;
 
   std::unique_ptr<FetchPaymentTokenRequest> request_;
 
   ConfirmationsFetchPaymentTokenRequestTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_client_mock_(std::make_unique<ConfirmationsClientMock>()),
       confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
+          confirmations_client_mock_.get())),
       request_(std::make_unique<FetchPaymentTokenRequest>()) {
     // You can do set-up work for each test here
   }

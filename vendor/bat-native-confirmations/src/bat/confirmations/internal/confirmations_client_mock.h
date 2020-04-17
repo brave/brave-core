@@ -48,10 +48,10 @@ class MockVerboseLogStreamImpl : public ledger::LogStream {
   MockVerboseLogStreamImpl& operator=(const MockVerboseLogStreamImpl&) = delete;
 };
 
-class MockConfirmationsClient : public ConfirmationsClient {
+class ConfirmationsClientMock : public ConfirmationsClient {
  public:
-  MockConfirmationsClient();
-  ~MockConfirmationsClient() override;
+  ConfirmationsClientMock();
+  ~ConfirmationsClientMock() override;
 
   MOCK_METHOD1(OnWalletInitialized, void(
       ledger::Result result));
