@@ -69,13 +69,17 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     // Get and save user referal program code
                     String urpc = uri.getQueryParameter("urpc");
                     if (urpc != null && !urpc.isEmpty()) {
+                        FileOutputStream outputStreamWriter = null;
                         try {
                             File promoCodeFile = new File(promoCodeFilePath);
-                            FileOutputStream outputStreamWriter = new FileOutputStream(promoCodeFile);
+                            outputStreamWriter = new FileOutputStream(promoCodeFile);
                             outputStreamWriter.write(urpc.getBytes());
-                            outputStreamWriter.close();
                         } catch (IOException e) {
                             Log.e(TAG, "Could not write to file (" + promoCodeFilePath + "): " + e.getMessage());
+                        } finally {
+                            try {
+                              if (outputStreamWriter != null) outputStreamWriter.close();
+                            } catch (IOException exception) {}
                         }
                     }
                     referrerClient.endConnection();
