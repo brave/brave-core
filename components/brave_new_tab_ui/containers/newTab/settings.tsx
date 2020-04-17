@@ -30,6 +30,7 @@ export interface Props {
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
   toggleShowBinance: () => void
+  toggleShowContribute: () => void
   toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
   showStats: boolean
@@ -39,7 +40,9 @@ export interface Props {
   allowBrandedWallpaperUI: boolean
   showRewards: boolean
   showBinance: boolean
+  showContribute: boolean
   binanceSupported: boolean
+  contributeSupported: boolean
 }
 
 export default class Settings extends React.PureComponent<Props, {}> {
@@ -91,8 +94,11 @@ export default class Settings extends React.PureComponent<Props, {}> {
       allowBrandedWallpaperUI,
       onClick,
       toggleShowBinance,
+      toggleShowContribute,
       showBinance,
-      binanceSupported
+      showContribute,
+      binanceSupported,
+      contributeSupported
     } = this.props
     return (
       <SettingsWrapper
@@ -143,6 +149,18 @@ export default class Settings extends React.PureComponent<Props, {}> {
                   <Toggle
                     onChange={toggleShowBinance}
                     checked={showBinance}
+                    size='small'
+                  />
+                </SettingsRow>
+              : null
+            }
+            {
+              contributeSupported
+              ? <SettingsRow>
+                  <SettingsText>{getLocale('showContribute')}</SettingsText>
+                  <Toggle
+                    onChange={toggleShowContribute}
+                    checked={showContribute}
                     size='small'
                   />
                 </SettingsRow>

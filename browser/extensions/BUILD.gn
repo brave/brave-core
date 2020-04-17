@@ -1,5 +1,6 @@
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//brave/components/contribute/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
@@ -66,6 +67,13 @@ source_set("extensions") {
     sources += [
       "api/binance_api.cc",
       "api/binance_api.h",
+    ]
+  }
+
+  if (contribute_enabled) {
+    sources += [
+      "api/contribute_api.cc",
+      "api/contribute_api.h",
     ]
   }
 

@@ -28,6 +28,7 @@ interface Props {
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
   toggleShowBinance: () => void
+  toggleShowContribute: () => void
   toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
   showClock: boolean
@@ -35,9 +36,11 @@ interface Props {
   showTopSites: boolean
   showRewards: boolean
   showBinance: boolean
+  showContribute: boolean
   brandedWallpaperOptIn: boolean
   allowBrandedWallpaperUI: boolean
   binanceSupported: boolean
+  contributeSupported: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -64,8 +67,11 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       toggleShowRewards,
       showRewards,
       toggleShowBinance,
+      toggleShowContribute,
       showBinance,
-      binanceSupported
+      showContribute,
+      binanceSupported,
+      contributeSupported
     } = this.props
 
     return (
@@ -101,8 +107,11 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               toggleShowRewards={toggleShowRewards}
               showRewards={showRewards}
               toggleShowBinance={toggleShowBinance}
+              toggleShowContribute={toggleShowContribute}
               showBinance={showBinance}
+              showContribute={showContribute}
               binanceSupported={binanceSupported}
+              contributeSupported={contributeSupported}
             />
             <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
               <SettingsAdvancedIcon />

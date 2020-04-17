@@ -7,7 +7,7 @@ import getActions from './api/getActions'
 import * as preferencesAPI from './api/preferences'
 import * as statsAPI from './api/stats'
 import * as privateTabDataAPI from './api/privateTabData'
-import { getInitialData, getRewardsInitialData, getRewardsPreInitialData, getBinanceBlackList } from './api/initialData'
+import { getInitialData, getRewardsInitialData, getRewardsPreInitialData, getBinanceBlackList, getContributeBlackList } from './api/initialData'
 
 async function updatePreferences (prefData: preferencesAPI.Preferences) {
   getActions().preferencesUpdated(prefData)
@@ -38,6 +38,7 @@ export function wireApiEventsToStore () {
       setRewardsFetchInterval()
     }
     binanceInitData()
+    contributeInitData()
     getActions().setInitialData(initialData)
     getActions().setFirstRenderGridSitesData(initialData)
     getActions().updateGridSitesBookmarkInfo(initialData.topSites)
@@ -79,6 +80,20 @@ function binanceInitData () {
   })
   .catch(e => {
     console.error('Error fetching binance init data')
+  })
+}
+
+function contributeInitData () {
+  getContributeBlackList()
+  .then(({ isSupportedRegion, onlyAnonWallet }) => {
+    if (onlyAnonWallet || !isSupportedRegion) {
+      getActions().setCurrentStackWidget('rewards')
+    }
+    getActions().setOnlyAnonWallet(onlyAnonWallet)
+    getActions().setContributeSupported(isSupportedRegion && !onlyAnonWallet)
+  })
+  .catch(e => {
+    console.error('Error fetching contribute init data')
   })
 }
 

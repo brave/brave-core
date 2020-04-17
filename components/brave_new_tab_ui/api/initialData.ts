@@ -84,6 +84,28 @@ export async function getBinanceBlackList (): Promise<any> {
   }
 }
 
+export async function getContributeBlackList (): Promise<any> {
+  try {
+    const [
+      onlyAnonWallet,
+      isSupportedRegion
+    ] = await Promise.all([
+      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
+        resolve(!!onlyAnonWallet)
+      })),
+      new Promise(resolve => chrome.contribute.isSupportedRegion((supported: boolean) => {
+        resolve(!!supported)
+      }))
+    ])
+    return {
+      isSupportedRegion,
+      onlyAnonWallet
+    }
+  } catch (err) {
+    throw Error(err)
+  }
+}
+
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
   try {
     const [

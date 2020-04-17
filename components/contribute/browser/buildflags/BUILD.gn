@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/contribute/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "CONTRIBUTE_ENABLED=$contribute_enabled",
+  ]
+}

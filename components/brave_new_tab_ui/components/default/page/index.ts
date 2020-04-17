@@ -18,6 +18,7 @@ interface PageProps {
   showStats: boolean
   showRewards: boolean
   showBinance: boolean
+  showContribute: boolean
   showTopSites: boolean
   showBrandedWallpaper: boolean
 }
