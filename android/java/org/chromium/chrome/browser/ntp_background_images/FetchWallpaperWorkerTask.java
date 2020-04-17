@@ -47,13 +47,22 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
         if (mNTPImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
             NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) mNTPImage;
             if (mWallpaper.getLogoPath() != null ) {
+                InputStream inputStream = null;
                 try {
                     Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
-                    InputStream inputStream = mContext.getContentResolver().openInputStream(logoFileUri);
+                    inputStream = mContext.getContentResolver().openInputStream(logoFileUri);
                     logoBitmap = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
                 } catch(IOException exc) {
                     Log.e("NTP", exc.getMessage());
+                } finally {
+                  try {
+                    if (inputStream != null) {
+                      inputStream.close();
+                    }
+                  } catch (IOException exception) {
+                    Log.e("NTP", exception.getMessage());
+                  }
                 }
             }
         }        
