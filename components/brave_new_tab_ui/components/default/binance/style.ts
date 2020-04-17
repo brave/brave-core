@@ -21,17 +21,19 @@ interface StyleProps {
   hideBalance?: boolean
   isFirstView?: boolean
   hideOverflow?: boolean
+  userAuthed?: boolean
   position?: 'left' | 'right'
 }
 
-export const WidgetWrapper = styled<{}, 'div'>('div')`
+export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   color: white;
-  padding: 6px 20px 12px 20px;
+  padding: 6px 15px 12px 15px;
   border-radius: 6px;
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
   overflow: hidden;
   min-width: 284px;
+  min-height: ${p => p.userAuthed ? '360px' : 'initial'};
   background-image: linear-gradient(140deg, #1F2327 0%, #000000 85%);
 `
 
@@ -188,17 +190,17 @@ export const ConnectButton = styled<StyleProps, 'a'>('a')`
   }
 `
 
-export const ConvertButton = styled<{}, 'button'>('button')`
+export const ActionButton = styled<{}, 'button'>('button')`
   font-size: 13px;
   font-weight: bold;
   border-radius: 20px;
   width: 100%;
   background: #D9B227;
   border: 0;
-  padding: 10px 65px;
+  padding: 10px 60px;
   cursor: pointer;
   color: #000;
-  margin-bottom: -10px;
+  margin-top: 20px;
 `
 
 export const BinanceIcon = styled<{}, 'div'>('div')`
@@ -239,7 +241,7 @@ export const TLDSwitch = styled<StyleProps, 'div'>('div')`
 
 export const NavigationBar = styled<{}, 'div'>('div')`
   height: 30px;
-  margin-top: 10px;
+  margin-top: 15px;
 `
 
 export const NavigationItem = styled<StyleProps, 'div'>('div')`
@@ -264,7 +266,7 @@ export const NavigationItem = styled<StyleProps, 'div'>('div')`
 export const SelectedView = styled<StyleProps, 'div'>('div')`
   border: 1px solid rgb(70, 70, 70);
   overflow-y: ${p => p.hideOverflow ? 'hidden' : 'scroll'};
-  height: 170px;
+  height: 260px;
   width: 250px;
   margin-left: 4px;
 `
@@ -526,12 +528,6 @@ export const BuySellButton = styled(ConnectButton)`
   background: ${p => p.isBuy ? '#3BB260' : '#DD5353'};
 `
 
-export const AvailableLabel = styled<{}, 'span'>('span')`
-  float: right;
-  margin-top: -27px;
-  font-size: 13px;
-`
-
 export const ConvertLabel = styled<{}, 'span'>('span')`
   float: left;
   width: 45%;
@@ -624,7 +620,7 @@ export const Balance = styled<StyleProps, 'span'>('span')`
 export const Converted = styled<StyleProps, 'span'>('span')`
   display: block;
   font-size: ${p => p.isBTC ? '16' : '14'}px;
-  color: #7d7d7d;
+  color: rgb(95, 95, 95);
   margin-left: ${p => p.isBTC ? 0 : 10}px;
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
