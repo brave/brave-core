@@ -590,6 +590,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.SET_SELECTED_VIEW:
+      const { view } = payload
+      state = { ...state }
+      state.binanceState = {
+        ...state.binanceState,
+        selectedView: view
+      }
+      break
+
     default:
       break
   }
