@@ -162,6 +162,10 @@ export const StyledWidgetIcon = styled<WidgetIconProps, 'div'>('div')`
   width: 13px;
   margin: ${p => p.isBinance ? '0px 13px 0 12px' : '-7px 15px 0 10px'};
   margin-left: ${p => p.isRefresh ? '13px' : p.isBinance ? '12px' : '10px'};
+
+  svg {
+    fill: ${p => p.theme.color.contextMenuForeground};
+  }
 `
 export const StyledSpan = styled<{}, 'span'>('span')`
   height: 13px;
