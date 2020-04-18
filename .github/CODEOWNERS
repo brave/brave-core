@@ -49,3 +49,6 @@ script/brave_license_helper.py @fmarier
 # Crypto Wallets
 browser/brave_wallet/ @bbondy @ryanml
 components/brave_wallet/ @bbondy @ryanml
+
+# Brave Referrals Service
+components/brave_referrals/browser/brave_referrals_service* @simonhong

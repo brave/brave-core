@@ -218,22 +218,20 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     // If not, this install will be act as a non SR install forever.
     // To resolve that situation,
     // |kNewTabPageGetInitialSRComponentInProgress| introduced.
-    // If |kReferralCheckedForPromoCodeFile| is true and
-    // |kNewTabPageCheckingMappingTableInProgress| is false, this means not
-    // first launch. So, we can mark this install as non-SR.
-    // If both |kReferralCheckedForPromoCodeFile| and
-    // |kNewTabPageCheckingMappingTableInProgress| are true, browser had some
-    // trouble at first launch.
+    // If |kReferralCheckedForPromoCodeFile| or |kReferralInitialization|
+    // is true and |kNewTabPageCheckingMappingTableInProgress| is false,
+    // this means not first launch. Then, we can mark this install as non-SR.
+    // If both (|kReferralCheckedForPromoCodeFile| or |kReferralInitialization|)
+    // and |kNewTabPageCheckingMappingTableInProgress| are true,
+    // browser had some trouble at first run.
     // If |kNewTabPageGetInitialSRComponentInProgress| is true, we assume that
-    // initial component downloading is not finished properly.
+    // initial component downloading is in-progress
     // So, We will try initialization again.
     // If referral code is non empty, that means browser is shutdown after
     // getting referal code. In this case, we should start downloading mapping
     // table.
-    // If both |kReferralCheckedForPromoCodeFile| and
-    // |kNewTabPageCheckingMappingTableInProgress| are true, browser had some
-    // troublewhile getting mapping table at first fresh launch.
-    if (local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) &&
+    if ((local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
+         local_pref_->GetBoolean(kReferralInitialization)) &&
         !local_pref_->GetBoolean(
              prefs::kNewTabPageGetInitialSRComponentInProgress)) {
       MarkThisInstallIsNotSuperReferralForever();
