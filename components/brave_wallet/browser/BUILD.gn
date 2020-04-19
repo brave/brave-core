@@ -11,7 +11,6 @@ source_set("browser") {
     sources = [
         "brave_wallet_service.h",
         "brave_wallet_service.cc",
-        "brave_wallet_delegate.h",
     ]
 
     deps = [
@@ -21,5 +20,6 @@ source_set("browser") {
         "//content/public/browser",
         "//components/prefs",
         "//components/user_prefs",
+        "//extensions/browser",
     ]
 }

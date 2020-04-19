@@ -168,8 +168,7 @@ BraveWalletGetProjectIDFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletResetWalletFunction::Run() {
   auto* service = GetBraveWalletService(browser_context());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  service->ResetCryptoWallets(profile->GetPath());
+  service->ResetCryptoWallets();
   return RespondNow(NoArguments());
 }
 
