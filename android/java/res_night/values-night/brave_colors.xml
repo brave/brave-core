@@ -29,4 +29,5 @@
 
     <color name="brave_set_default_dialog_text_color">@android:color/white</color>
 
+    <color name="qr_button_color">@color/modern_grey_800</color>
 </resources>

@@ -285,7 +285,6 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
-
         if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
                 && isReferralEnabled()) {
             setBackgroundImage(ntpImage);
@@ -307,29 +306,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         } else if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
-            if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-                NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
-                if (mWallpaper.getLogoPath() != null ) {
-                    try {
-                        ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                        sponsoredLogo.setVisibility(View.VISIBLE);
-                        Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
-                        InputStream inputStream = mTabImpl.getActivity().getContentResolver().openInputStream(logoFileUri);
-                        Bitmap logoBitmap = BitmapFactory.decodeStream(inputStream);
-                        sponsoredLogo.setImageBitmap(logoBitmap);
-                        sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (mWallpaper.getLogoDestinationUrl() != null) {
-                                    NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
-                                }
-                            }
-                        });
-                    } catch(FileNotFoundException exc) {
-                        Log.e("NTP", exc.getMessage());
-                    }
-                }
-            } else if (ntpImage instanceof BackgroundImage){
+            if (ntpImage instanceof BackgroundImage){
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
                 ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
                 sponsoredLogo.setVisibility(View.GONE);
