@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp_background_images;
+package org.chromium.chrome.browser.ntp_background_images.model;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
-import org.chromium.chrome.browser.ntp_background_images.NTPImage;
-import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
-public class SponsoredTab{
+public class SponsoredTab {
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private NTPImage ntpImage;
     private int tabIndex;
