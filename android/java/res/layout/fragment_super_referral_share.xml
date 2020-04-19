@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/brave_sync_qr_rounded"
         android:layout_gravity="center"
         android:layout_margin="16dp" >
 
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/share_brave_with_your_friends"
-            android:textColor="@android:color/black"
+            android:textColor="@color/standard_mode_tint"
             android:fontFamily="sans-serif"
             android:textStyle="bold"/>
 
