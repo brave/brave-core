@@ -9,10 +9,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import java.util.List;
 
 import org.chromium.chrome.R;
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.suggestions.tile.SiteSection;
 import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
@@ -20,11 +18,11 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mBraveStatsView;
