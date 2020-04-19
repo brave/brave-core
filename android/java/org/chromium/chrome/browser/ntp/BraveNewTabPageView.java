@@ -33,6 +33,7 @@ import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import java.util.List;
 import android.util.TypedValue;
+import android.view.MenuItem;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
@@ -66,10 +67,14 @@ import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.local_database.TopSiteTable;
+import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
+import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-public class BraveNewTabPageView extends NewTabPageView implements ContextMenuManager.Delegate{
+public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
 
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
@@ -460,15 +465,21 @@ public class BraveNewTabPageView extends NewTabPageView implements ContextMenuMa
     };
 
     private void loadTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        for(NTPBackgroundImagesBridge.TopSite topSite : topSites) {
+            databaseHelper.insertTopSite(topSite);
+        }
+
         LinearLayout superReferralSitesLayout = (LinearLayout) mNewTabPageLayout.findViewById(R.id.ntp_super_referral_sites_layout);
         LayoutInflater inflater = (LayoutInflater) mTabImpl.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for(NTPBackgroundImagesBridge.TopSite topSite : topSites) {
-            View view = inflater.inflate(R.layout.suggestions_tile_view, null);
+        for(TopSiteTable topSite : databaseHelper.getAllTopSites()) {
+            Log.e("NTP", topSite.getName());
+            final View view = inflater.inflate(R.layout.suggestions_tile_view, null);
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
-            tileViewTitleTv.setTextColor(getResources().getColor(R.color.standard_mode_tint));
+            tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
             iconIv.setImageBitmap(NTPUtil.getTopSiteBitmap(topSite.getImagePath()));
@@ -479,9 +490,7 @@ public class BraveNewTabPageView extends NewTabPageView implements ContextMenuMa
             mContext.getTheme().resolveAttribute( 
                 android.R.attr.selectableItemBackground, outValue, true);        
             iconIv.setForeground(getResources().getDrawable(outValue.resourceId));
-
-            // iconIv.setBackgroundColor(Color.parseColor(topSite.getBackgroundColor()));
-            // iconIv.setClickable(true);
+            iconIv.setClickable(false);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -504,47 +513,42 @@ public class BraveNewTabPageView extends NewTabPageView implements ContextMenuMa
             view.setLayoutParams(layoutParams);
             view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                 @Override
-                public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-                    // mContextMenuManager.createContextMenu(contextMenu, view, BraveNewTabPageView.this);
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                    menu.add(R.string.contextmenu_open_in_new_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Log.e("NTP", "normal tab");
+                            return true;
+                        }
+                    });
+                    menu.add(R.string.contextmenu_open_in_incognito_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Log.e("NTP", "incognito");
+                            return true;
+                        }
+                    });
+                    menu.add(R.string.contextmenu_save_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Log.e("NTP", "save");
+                            RequestCoordinatorBridge.getForProfile(mProfile).savePageLater(
+                                topSite.getDestinationUrl(), OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, true /* userRequested */);
+                            return true;
+                        }
+                    });
+                    menu.add(R.string.remove).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Log.e("NTP", "remove");
+                            databaseHelper.deleteTopSite(topSite.getDestinationUrl());
+                            superReferralSitesLayout.removeView(view);
+                            return true;
+                        }
+                    });
                 }
             });
-
             superReferralSitesLayout.addView(view);
         }
     }
-
-    @Override
-    public void openItem(int windowDisposition) {}
-
-    @Override
-    public void removeItem() {}
-
-    @Override
-    public String getUrl() {
-        return null;
-    }
-
-    @Override
-    public String getContextMenuTitle() {
-        return null;
-    }
-
-    @Override
-    public boolean isItemSupported(@ContextMenuItemId int menuItemId) {
-        switch (menuItemId) {
-            // Personalized tiles are the only tiles that can be removed.  Additionally, the
-            // Explore tile counts as a personalized tile but cannot be removed.
-            case ContextMenuItemId.REMOVE:
-                return true;
-            case ContextMenuItemId.OPEN_IN_INCOGNITO_TAB:
-                return true;
-            case ContextMenuItemId.LEARN_MORE:
-                return false;
-            default:
-                return true;
-        }
-    }
-
-    @Override
-    public void onContextMenuCreated() {}
 }
