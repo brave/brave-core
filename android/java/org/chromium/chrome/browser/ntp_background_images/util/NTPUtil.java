@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp_background_images;
+package org.chromium.chrome.browser.ntp_background_images.util;
 
 import android.os.Bundle;
 import android.os.Build;
@@ -37,16 +37,20 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.chrome.browser.ntp_background_images.NTPImage;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.ImageUtils;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
+import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.RewardsBottomSheetDialogFragment;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -141,18 +145,18 @@ public class NTPUtil {
         if (sponsoredTab.shouldShowBanner()) {
             if (BraveRewardsPanelPopup.isBraveRewardsEnabled()) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {
-                    if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+                    if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_ON;
                     }
                 } else if(BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())) {
-                    if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+                    if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_OFF ;
                     } else {
                         return SponsoredImageUtil.BR_ON_ADS_OFF_BG_IMAGE;
                     }
                 }
             } else {
-                if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper && !mBraveRewardsNativeWorker.IsCreateWalletInProcess()) {
+                if (ntpImage instanceof Wallpaper && !mBraveRewardsNativeWorker.IsCreateWalletInProcess()) {
                     return SponsoredImageUtil.BR_OFF;
                 }
             }
@@ -256,8 +260,8 @@ public class NTPUtil {
         float centerPointX;
         float centerPointY;
 
-        if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-            NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
+        if (ntpImage instanceof Wallpaper) {
+            Wallpaper mWallpaper = (Wallpaper) ntpImage;
             InputStream inputStream = null;
             try {
                 Uri imageFileUri = Uri.parse("file://"+mWallpaper.getImagePath());
@@ -367,7 +371,7 @@ public class NTPUtil {
     }
 
     public static NTPImage getNTPImage(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
-    	NTPBackgroundImagesBridge.Wallpaper mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper();
+    	Wallpaper mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper();
     	if (mWallpaper != null) {
     		return mWallpaper;
     	} else {

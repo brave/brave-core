@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.graphics.Color;
 import android.view.ContextMenu;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
@@ -24,12 +23,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import java.io.InputStream;
-import java.io.FileNotFoundException;
-import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import java.util.List;
 import android.util.TypedValue;
@@ -48,22 +41,21 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.ntp_background_images.NTPImage;
-import org.chromium.chrome.browser.ntp_background_images.BackgroundImage;
-import org.chromium.chrome.browser.ntp_background_images.NewTabPageListener;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.FetchWallpaperWorkerTask;
-import org.chromium.chrome.browser.tab.EmptyTabObserver;
-import org.chromium.chrome.browser.tab.TabObserver;
-import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredTab;
-import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
+import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
+import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
+import org.chromium.chrome.browser.tab.EmptyTabObserver;
+import org.chromium.chrome.browser.tab.TabObserver;
+import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.native_page.ContextMenuManager;
-import org.chromium.chrome.browser.native_page.ContextMenuManager.ContextMenuItemId;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -71,8 +63,6 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
-
-import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -146,8 +136,8 @@ public class BraveNewTabPageView extends NewTabPageView {
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
             if(ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            } else if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-                NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
+            } else if (ntpImage instanceof Wallpaper) {
+                Wallpaper mWallpaper = (Wallpaper) ntpImage;
                 if(mWallpaper == null) {
                     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
                 }
@@ -285,7 +275,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
-        if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
+        if (ntpImage instanceof Wallpaper 
                 && isReferralEnabled()) {
             setBackgroundImage(ntpImage);
             Log.e("NTP", "Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
@@ -360,8 +350,8 @@ public class BraveNewTabPageView extends NewTabPageView {
         NTPImage ntpImage = sponsoredTab.getTabNTPImage();
         if(ntpImage == null) {
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-        } else if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-            NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
+        } else if (ntpImage instanceof Wallpaper) {
+            Wallpaper mWallpaper = (Wallpaper) ntpImage;
             if(mWallpaper == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             }
@@ -414,7 +404,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
 
         @Override
-        public void updateTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
+        public void updateTopSites(List<TopSite> topSites) {
             loadTopSites(topSites);
         }
     };
@@ -426,7 +416,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
 
         @Override
-        public void logoRetrieved(NTPBackgroundImagesBridge.Wallpaper mWallpaper, Bitmap logoWallpaper) {
+        public void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper) {
             ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
             sponsoredLogo.setVisibility(View.VISIBLE);
             sponsoredLogo.setImageBitmap(logoWallpaper);
@@ -441,9 +431,9 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
     };
 
-    private void loadTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
+    private void loadTopSites(List<TopSite> topSites) {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
-        for(NTPBackgroundImagesBridge.TopSite topSite : topSites) {
+        for(TopSite topSite : topSites) {
             databaseHelper.insertTopSite(topSite);
         }
 

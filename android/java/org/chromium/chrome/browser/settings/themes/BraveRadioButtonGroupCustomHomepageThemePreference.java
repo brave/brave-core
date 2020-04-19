@@ -13,16 +13,16 @@ import android.widget.RadioGroup;
 
 import org.chromium.chrome.R;
 import org.chromium.base.BuildInfo;
-import org.chromium.base.Log;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioButtonGroupThemePreference {
 
-    private RadioButtonWithDescription braveDefaultView, refView;
+    private RadioButtonWithDescription braveDefaultView;
+    private RadioButtonWithDescription refView;
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
     public BraveRadioButtonGroupCustomHomepageThemePreference(Context context, AttributeSet attrs) {
