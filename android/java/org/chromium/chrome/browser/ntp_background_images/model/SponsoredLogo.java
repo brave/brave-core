@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp_background_images;
+package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class SponsoredLogo {
-
     private String imageUrl;
     private String alt;
     private String companyName;

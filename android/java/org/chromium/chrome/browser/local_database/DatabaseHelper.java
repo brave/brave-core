@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -69,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	    return true;
     }
 
-    public void insertTopSite(NTPBackgroundImagesBridge.TopSite topSite) {
+    public void insertTopSite(TopSite topSite) {
     	if(!isTopSiteAlreadyAdded(topSite.getDestinationUrl())) {
     		// get writable database as we want to write data
 	        SQLiteDatabase db = this.getWritableDatabase();
