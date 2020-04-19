@@ -143,6 +143,6 @@
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
         android:visibility="gone"
-        app:backgroundTint="@android:color/white"/>
+        app:backgroundTint="@color/qr_button_color"/>
 
 </org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>
