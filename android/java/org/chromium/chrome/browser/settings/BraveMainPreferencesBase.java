@@ -105,7 +105,8 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP 
-            || mNTPBackgroundImagesBridge.isSuperReferral()) {
+            || (mNTPBackgroundImagesBridge.isSuperReferral() 
+                && BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false)) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
     }
