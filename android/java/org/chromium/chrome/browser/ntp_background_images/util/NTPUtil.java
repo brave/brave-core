@@ -59,6 +59,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class NTPUtil {
 	private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
+    private static final String REMOVED_SITES = "removed_sites";
 
     public static void openImageCredit(String url) {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
@@ -367,7 +368,7 @@ public class NTPUtil {
 
     private static Set<String> getTopSiteUrls() {
         SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        return mSharedPreferences.getStringSet("removed_sites", new HashSet<String>());
+        return mSharedPreferences.getStringSet(REMOVED_SITES, new HashSet<String>());
     }
 
     public static boolean isInRemovedTopSite(String url) {
@@ -386,7 +387,7 @@ public class NTPUtil {
         
         SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putStringSet("removed_sites", urlSet);
+        sharedPreferencesEditor.putStringSet(REMOVED_SITES, urlSet);
         sharedPreferencesEditor.apply();
     }
 
