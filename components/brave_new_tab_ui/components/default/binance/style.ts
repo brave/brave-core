@@ -9,7 +9,6 @@ interface StyleProps {
   itemsShowing?: boolean
   isActive?: boolean
   isSmall?: boolean
-  isInTab?: boolean
   isLast?: boolean
   disabled?: boolean
   isFiat?: boolean
@@ -27,7 +26,7 @@ interface StyleProps {
 
 export const WidgetWrapper = styled<{}, 'div'>('div')`
   color: white;
-  padding: 10px 15px;
+  padding: 6px 20px 12px 20px;
   border-radius: 6px;
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
@@ -36,8 +35,7 @@ export const WidgetWrapper = styled<{}, 'div'>('div')`
   background-image: linear-gradient(140deg, #1F2327 0%, #000000 85%);
 `
 
-export const Header = styled<StyleProps, 'div'>('div')`
-  margin-top: ${p => p.isInTab ? 0 : 10}px;
+export const Header = styled<{}, 'div'>('div')`
   text-align: left;
 `
 
@@ -206,8 +204,8 @@ export const ConvertButton = styled<{}, 'button'>('button')`
 export const BinanceIcon = styled<{}, 'div'>('div')`
   width: 27px;
   height: 27px;
-  margin-right: 9px;
-  margin-left: -4px;
+  margin-right: 11px;
+  margin-left: -2px;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
@@ -215,7 +213,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   color: #fff;
   font-family: ${p => p.theme.fontFamily.heading};
