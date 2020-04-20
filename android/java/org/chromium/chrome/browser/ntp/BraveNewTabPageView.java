@@ -33,6 +33,7 @@ import org.chromium.chrome.R;
 import org.chromium.base.Log;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -63,6 +64,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -90,10 +92,9 @@ public class BraveNewTabPageView extends NewTabPageView {
     private BitmapDrawable imageDrawable;
 
     private FetchWallpaperWorkerTask mWorkerTask;
-
     private boolean isFromBottomSheet;
-
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private DatabaseHelper mDatabaseHelper;
 
     // TODO - call NTPBackgroundImagesBridge.getCurrentWallpaper
     // if null then display regular background image
@@ -104,6 +105,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mNewTabPageLayout = getNewTabPageLayout();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
+        mDatabaseHelper = DatabaseHelper.getInstance();
     }
 
     @Override
@@ -405,7 +407,24 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         @Override
         public void updateTopSites(List<TopSite> topSites) {
-            loadTopSites(topSites);
+            new AsyncTask<Void>() {
+                @Override
+                protected Void doInBackground() {
+                    for(TopSite topSite : topSites) {
+                        mDatabaseHelper.insertTopSite(topSite);
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    assert ThreadUtils.runningOnUiThread();
+                    if (isCancelled()) return;
+
+                    List<TopSiteTable> topSites = mDatabaseHelper.getAllTopSites();
+                    loadTopSites(topSites);
+                }
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     };
 
@@ -431,16 +450,11 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
     };
 
-    private void loadTopSites(List<TopSite> topSites) {
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
-        for(TopSite topSite : topSites) {
-            databaseHelper.insertTopSite(topSite);
-        }
-
+    private void loadTopSites(List<TopSiteTable> topSites) {
         LinearLayout superReferralSitesLayout = (LinearLayout) mNewTabPageLayout.findViewById(R.id.ntp_super_referral_sites_layout);
         LayoutInflater inflater = (LayoutInflater) mTabImpl.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for(TopSiteTable topSite : databaseHelper.getAllTopSites()) {
+        for(TopSiteTable topSite : topSites) {
             Log.e("NTP", topSite.getName());
             final View view = inflater.inflate(R.layout.suggestions_tile_view, null);
 
@@ -450,13 +464,6 @@ public class BraveNewTabPageView extends NewTabPageView {
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
             iconIv.setImageBitmap(NTPUtil.getTopSiteBitmap(topSite.getImagePath()));
-
-            Context mContext = ContextUtils.getApplicationContext();
-
-            TypedValue outValue = new TypedValue();
-            mContext.getTheme().resolveAttribute( 
-                android.R.attr.selectableItemBackground, outValue, true);        
-            iconIv.setForeground(getResources().getDrawable(outValue.resourceId));
             iconIv.setClickable(false);
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -471,8 +478,7 @@ public class BraveNewTabPageView extends NewTabPageView {
             });
 
             int paddingTop = getResources().getDimensionPixelSize(R.dimen.tile_grid_layout_no_logo_padding_top);
-            view.setPadding(
-                0, paddingTop, 0, view.getPaddingBottom());
+            view.setPadding(0, paddingTop, 0, view.getPaddingBottom());
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
             layoutParams.weight = 0.25f;
@@ -485,6 +491,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Log.e("NTP", "normal tab");
+                            openNewTab(false, topSite.getDestinationUrl());
                             return true;
                         }
                     });
@@ -492,6 +499,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Log.e("NTP", "incognito");
+                            openNewTab(true, topSite.getDestinationUrl());
                             return true;
                         }
                     });
@@ -508,7 +516,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Log.e("NTP", "remove");
-                            databaseHelper.deleteTopSite(topSite.getDestinationUrl());
+                            mDatabaseHelper.deleteTopSite(topSite.getDestinationUrl());
                             NTPUtil.addToRemovedTopSite(topSite.getDestinationUrl());
                             superReferralSitesLayout.removeView(view);
                             return true;
@@ -517,6 +525,13 @@ public class BraveNewTabPageView extends NewTabPageView {
                 }
             });
             superReferralSitesLayout.addView(view);
+        }
+    }
+
+    private void openNewTab(boolean isIncognito, String url) {
+        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+        if(chromeTabbedActivity != null) {
+            chromeTabbedActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 }
