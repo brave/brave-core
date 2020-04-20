@@ -68,7 +68,8 @@ function GetBackgroundImageSrc (props: Props) {
 
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
-  return newTabData.brandedWallpaperData ? true : false
+  return (newTabData.brandedWallpaperData &&
+          newTabData.brandedWallpaperData.isSponsored) ? true : false
 }
 
 function GetShouldShowBrandedWallpaperNotification (props: Props) {
