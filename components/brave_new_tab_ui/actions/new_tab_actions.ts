@@ -176,3 +176,7 @@ export const setDisconnectInProgress = (inProgress: boolean) => action(types.SET
 export const setAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_INVALID, {
   authInvalid
 })
+
+export const setSelectedView = (view: string) => action(types.SET_SELECTED_VIEW, {
+  view
+})

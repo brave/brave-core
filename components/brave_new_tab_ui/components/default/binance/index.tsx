@@ -90,7 +90,6 @@ import { getUSDPrice } from '../../../binance-utils'
 interface State {
   fiatShowing: boolean
   currenciesShowing: boolean
-  selectedView: string
   currentDepositSearch: string
   currentDepositAsset: string
   currentTradeSearch: string
@@ -138,6 +137,7 @@ interface Props {
   accountBTCUSDValue: string
   disconnectInProgress: boolean
   authInvalid: boolean
+  selectedView: string
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -154,6 +154,7 @@ interface Props {
   onValidAuthCode: () => void
   onUpdateActions: () => void
   onDismissAuthInvalid: () => void
+  onSetSelectedView: (view: string) => void
 }
 
 class Binance extends React.PureComponent<Props, State> {
@@ -170,7 +171,6 @@ class Binance extends React.PureComponent<Props, State> {
     this.state = {
       fiatShowing: false,
       currenciesShowing: false,
-      selectedView: 'summary',
       currentDepositSearch: '',
       currentDepositAsset: '',
       currentTradeSearch: '',
@@ -334,8 +334,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderRoutes = () => {
-    const { selectedView } = this.state
-    const { userAuthed } = this.props
+    const { userAuthed, selectedView } = this.props
 
     if (userAuthed) {
       if (selectedView === 'buy') {
@@ -359,9 +358,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   setSelectedView (view: string) {
-    this.setState({
-      selectedView: view
-    })
+    this.props.onSetSelectedView(view)
   }
 
   setCurrentDepositAsset (asset: string) {
@@ -460,7 +457,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   finishConvert = () => {
     this.cancelConvert()
-    this.setState({ selectedView: 'summary' })
+    this.props.onSetSelectedView('summary')
   }
 
   setCurrentDepositSearch = ({ target }: any) => {
@@ -1110,7 +1107,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderSelectedView = () => {
-    const { selectedView } = this.state
+    const { selectedView } = this.props
 
     switch (selectedView) {
       case 'deposit':
@@ -1118,12 +1115,14 @@ class Binance extends React.PureComponent<Props, State> {
       case 'summary':
         return this.renderSummaryView()
       default:
-        return null
+        return this.renderSummaryView()
     }
   }
 
   renderAccountView = () => {
-    const { selectedView, currentDepositAsset } = this.state
+    const { selectedView } = this.props
+    const { currentDepositAsset } = this.state
+    const isSummaryView = !selectedView || selectedView === 'summary'
     const hideOverflow = currentDepositAsset && selectedView === 'deposit'
 
     return (
@@ -1131,7 +1130,7 @@ class Binance extends React.PureComponent<Props, State> {
         <NavigationBar>
           <NavigationItem
             isLeading={true}
-            isActive={selectedView === 'summary'}
+            isActive={isSummaryView}
             onClick={this.setSelectedView.bind(this, 'summary')}
           >
             {getLocale('binanceWidgetSummary')}
