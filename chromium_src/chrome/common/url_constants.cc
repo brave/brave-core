@@ -111,6 +111,10 @@ const char kContentSettingsExceptionsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018205431-How-do-I-change-site-permissions-";
 
+const char kCookiesSettingsHelpCenterURL[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018205431-How-do-I-change-site-permissions-";
+
 const char kCrashReasonURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
@@ -172,6 +176,8 @@ const char kPageInfoHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
+const char kPasswordCheckLearnMoreURL[] = "https://support.brave.com/";
+
 const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185951-How-do-I-use-the-built-in-password-manager-";
@@ -192,6 +198,9 @@ const char kRemoveNonCWSExtensionURL[] =
 const char kResetProfileSettingsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
+
+const char kSafeBrowsingHelpCenterURL[] =
+    "https://support.brave.com/";
 
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/";
