@@ -28,6 +28,8 @@ import org.chromium.chrome.browser.settings.homepage.BraveHomepageSettings;
 import org.chromium.chrome.browser.settings.privacy.BravePrivacySettings;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 import java.util.HashMap;
 
@@ -51,6 +53,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
+    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
         overrideChromiumPreferences();
         initWelcomeTourPreference();
+        Profile mProfile = Profile.getLastUsedProfile();
+        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 
     @Override
@@ -97,7 +102,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP 
-            || BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false) {
+            || mNTPBackgroundImagesBridge.isSuperReferral()) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
     }
