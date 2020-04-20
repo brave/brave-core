@@ -14,5 +14,9 @@ const base::Feature kBraveAdblockCosmeticFiltering{
     "BraveAdblockCosmeticFiltering",
     base::FEATURE_ENABLED_BY_DEFAULT};
 
+const base::Feature kFingerprintingProtectionV2{
+    "BraveFingerprintingProtectionV2",
+    base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace brave_shields

@@ -47,7 +47,6 @@ class BraveContentSettingsAgentImpl
     const base::string16& details);
 
  private:
-  GURL GetOriginOrURL(const blink::WebFrame* frame);
 
   ContentSetting GetFPContentSettingFromRules(
       const ContentSettingsForOneType& rules,

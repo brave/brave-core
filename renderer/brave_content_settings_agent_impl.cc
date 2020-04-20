@@ -10,10 +10,12 @@
 #include <vector>
 
 #include "base/bind_helpers.h"
+#include "base/feature_list.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -26,9 +28,53 @@
 #include "third_party/blink/public/mojom/permissions/permission.mojom-blink-forward.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
+#include "third_party/blink/public/web/web_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
 
+namespace {
+
+GURL GetOriginOrURL(
+    const blink::WebFrame* frame) {
+  url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
+  // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
+  // document URL as the primary URL in those cases.
+  // TODO(alexmos): This is broken for --site-per-process, since top() can be a
+  // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
+  // URL is not replicated.  See https://crbug.com/628759.
+  if (top_origin.opaque() && frame->Top()->IsWebLocalFrame())
+    return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
+  return top_origin.GetURL();
+}
+
+// This method can only be used for brave plugin content settings because
+// they are implemented incorrectly and swap primary/secondary url
+template <typename URL>
+ContentSetting GetBraveContentSettingFromRules(
+    const ContentSettingsForOneType& rules,
+    const blink::WebFrame* frame,
+    const URL& secondary_url) {
+  // If there is only one rule, it's the default rule and we don't need to match
+  // the patterns.
+  if (rules.size() == 1) {
+    DCHECK(rules[0].primary_pattern == ContentSettingsPattern::Wildcard());
+    DCHECK(rules[0].secondary_pattern == ContentSettingsPattern::Wildcard());
+    return rules[0].GetContentSetting();
+  }
+  const GURL& primary_url = GetOriginOrURL(frame);
+  const GURL& secondary_gurl = secondary_url;
+  for (const auto& rule : rules) {
+    // this swap is intentional - see comment at the beginning of the method
+    if (rule.primary_pattern.Matches(secondary_gurl) &&
+        rule.secondary_pattern.Matches(primary_url)) {
+      return rule.GetContentSetting();
+    }
+  }
+  NOTREACHED();
+  return CONTENT_SETTING_DEFAULT;
+}
+
+}
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
     bool should_whitelist,
@@ -140,19 +186,6 @@ void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
 
-GURL BraveContentSettingsAgentImpl::GetOriginOrURL(
-    const blink::WebFrame* frame) {
-  url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
-  // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
-  // document URL as the primary URL in those cases.
-  // TODO(alexmos): This is broken for --site-per-process, since top() can be a
-  // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
-  // URL is not replicated.  See https://crbug.com/628759.
-  if (top_origin.opaque() && frame->Top()->IsWebLocalFrame())
-    return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
-  return top_origin.GetURL();
-}
-
 ContentSetting BraveContentSettingsAgentImpl::GetFPContentSettingFromRules(
     const ContentSettingsForOneType& rules,
     const blink::WebFrame* frame,
@@ -242,26 +275,26 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
 
 BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  const GURL& primary_url = GetOriginOrURL(frame);
-  const GURL& secondary_url =
-    url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
-  if (IsBraveShieldsDown(frame, secondary_url)) {
-    return BraveFarblingLevel::OFF;
-  }
-  for (const auto& rule : content_setting_rules_->farbling_rules) {
-    if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
-      continue;
-    if (rule.primary_pattern.Matches(primary_url) &&
-        (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
-         rule.secondary_pattern.Matches(secondary_url))) {
-      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
-        return BraveFarblingLevel::MAXIMUM;
-      } else if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
-        return BraveFarblingLevel::OFF;
-      }
+  ContentSetting setting = GetBraveContentSettingFromRules(
+        content_setting_rules_->fingerprinting_rules, frame,
+        url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+
+  if (base::FeatureList::IsEnabled(
+      brave_shields::features::kFingerprintingProtectionV2)) {
+    if (setting == CONTENT_SETTING_BLOCK) {
+      return BraveFarblingLevel::MAXIMUM;
+    } else if (setting == CONTENT_SETTING_ALLOW) {
+      return BraveFarblingLevel::OFF;
+    } else {
+      return BraveFarblingLevel::BALANCED;
+    }
+  } else {
+    if (setting == CONTENT_SETTING_ALLOW) {
+      return BraveFarblingLevel::OFF;
+    } else {
+      return BraveFarblingLevel::BALANCED;
     }
   }
-  return BraveFarblingLevel::BALANCED;
 }
 
 bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {

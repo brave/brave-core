@@ -12,11 +12,6 @@
       base::Value::FromUniquePtrValue(                                        \
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),    \
       std::string(), incognito));                                             \
-  rules->farbling_rules.push_back(ContentSettingPatternSource(                \
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(), \
-      base::Value::FromUniquePtrValue(                                        \
-          content_settings::ContentSettingToValue(CONTENT_SETTING_DEFAULT)),  \
-      std::string(), incognito));                                             \
   rules->brave_shields_rules.push_back(ContentSettingPatternSource(           \
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(), \
       base::Value::FromUniquePtrValue(                                        \

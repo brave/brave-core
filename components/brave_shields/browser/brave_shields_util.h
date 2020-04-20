@@ -55,11 +55,6 @@ void SetFingerprintingControlType(Profile* profile,
                                   const GURL& url);
 ControlType GetFingerprintingControlType(Profile* profile, const GURL& url);
 
-void SetFarblingControlType(Profile* profile,
-                            ControlType type,
-                            const GURL& url);
-ControlType GetFarblingControlType(Profile* profile, const GURL& url);
-
 void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
 // reset to the default value
 void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
