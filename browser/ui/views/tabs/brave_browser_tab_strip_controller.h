@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
 class BraveTabContextMenuContents;
@@ -25,9 +26,28 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
                              const gfx::Point& p,
                              ui::MenuSourceType source_type) override;
 
+  void StartMRUCycling(BraveTabStripModel* brave_tab_strip_model) override;
+
  private:
+  // To capture the release of the Ctrl key when doing a MRU cycling with
+  // Ctrl-tab
+  class CtrlReleaseHandler : public ui::EventHandler {
+   public:
+    explicit CtrlReleaseHandler(BraveTabStripModel* model,
+                                BrowserView* browser_view);
+    ~CtrlReleaseHandler() override;
+
+   private:
+    void OnKeyEvent(ui::KeyEvent* event) override;
+    BraveTabStripModel* model_;
+    BrowserView* browser_view_;
+    DISALLOW_COPY_AND_ASSIGN(CtrlReleaseHandler);
+  };
+
   // If non-NULL it means we're showing a menu for the tab.
   std::unique_ptr<BraveTabContextMenuContents> context_menu_contents_;
+
+  std::unique_ptr<CtrlReleaseHandler> ctrl_released_event_handler_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserTabStripController);
 };
