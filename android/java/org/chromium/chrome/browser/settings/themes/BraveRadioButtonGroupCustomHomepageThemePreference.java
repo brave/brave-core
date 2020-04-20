@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.RadioGroup;
 
 import org.chromium.chrome.R;
-import org.chromium.base.BuildInfo;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -36,9 +35,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        if (!BuildInfo.isAtLeastQ()) {
-            holder.findViewById(R.id.system_default).setVisibility(View.GONE);
-        }
+        holder.findViewById(R.id.system_default).setVisibility(View.GONE);
 
         RadioButtonWithDescription braveDefaultView = (RadioButtonWithDescription)holder.findViewById(R.id.light);
         RadioButtonWithDescription refView = (RadioButtonWithDescription)holder.findViewById(R.id.dark);
