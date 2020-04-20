@@ -283,7 +283,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   connectBinance = () => {
     const { binanceClientUrl } = this.props
-    window.open(binanceClientUrl, '_self')
+    window.open(binanceClientUrl, '_self', 'noopener')
     this.props.onConnectBinance()
   }
 
