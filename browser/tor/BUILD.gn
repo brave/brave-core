@@ -39,13 +39,23 @@ source_set("tor") {
     ]
 
     deps += [
-      "//brave/components/brave_referrals/buildflags",
       "//brave/components/services/tor/public/interfaces",
       "//content/public/common",
       "//extensions/common:common_constants",
       "//net",
       "//services/service_manager",
       "//url",
+    ]
+
+    # Below dep list are not directly used tor target.
+    # Only added to fix intermittent build failure.
+    # Most of the case comes from including brave_browser_process_impl.h`
+    # headers. That header includes some buildflags but sometimes they are
+    # not generated before evaluating tor target.
+    deps += [
+      "//brave/components/brave_referrals/buildflags",
+      "//brave/components/greaselion/browser/buildflags",
+      "//brave/components/speedreader:buildflags",
     ]
   }
 }
