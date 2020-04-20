@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/base64.h"
+#include "components/os_crypt/os_crypt.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -103,12 +105,32 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 }
 
 std::string Prefs::GetSeed() const {
-  return pref_service_->GetString(kSyncSeed);
+  const std::string encoded_seed = pref_service_->GetString(kSyncSeed);
+  std::string encrypted_seed;
+  if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
+    LOG(ERROR) << "base64 decode sync seed failure";
+    return std::string();
+  }
+  std::string seed;
+  if (!OSCrypt::DecryptString(encrypted_seed, &seed)) {
+    LOG(ERROR) << "Decrypt sync seed failure";
+    return std::string();
+  }
+  return seed;
 }
 
-void Prefs::SetSeed(const std::string& seed) {
+bool Prefs::SetSeed(const std::string& seed) {
   DCHECK(!seed.empty());
-  pref_service_->SetString(kSyncSeed, seed);
+  std::string encrypted_seed;
+  if (!OSCrypt::EncryptString(seed, &encrypted_seed)) {
+    LOG(ERROR) << "Encrypt sync seed failure";
+    return false;
+  }
+  // String stored in prefs has to be UTF8 string so we use base64 to encode it.
+  std::string encoded_seed;
+  base::Base64Encode(encrypted_seed, &encoded_seed);
+  pref_service_->SetString(kSyncSeed, encoded_seed);
+  return true;
 }
 
 int Prefs::GetMigratedBookmarksVersion() {

@@ -54,8 +54,9 @@ void PeopleHandler::HandleGetSyncCode(const base::ListValue* args) {
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
 
+  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs());
   std::string sync_code =
-      profile_->GetPrefs()->GetString(brave_sync::prefs::kSyncSeed);
+    brave_sync_prefs.GetSeed();
   if (sync_code.empty()) {
     std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
     sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
@@ -77,8 +78,11 @@ void PeopleHandler::HandleSetSyncCode(const base::ListValue* args) {
     ResolveJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
-  profile_->GetPrefs()->SetString(brave_sync::prefs::kSyncSeed,
-                                  sync_code->GetString());
+  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs());
+  if (!brave_sync_prefs.SetSeed(sync_code->GetString())) {
+    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
   ResolveJavascriptCallback(*callback_id, base::Value(true));
 }
 
@@ -89,8 +93,8 @@ void PeopleHandler::HandleReset(const base::ListValue* args) {
     sync_service->GetUserSettings()->SetSyncRequested(false);
     sync_service->StopAndClear();
   }
-  profile_->GetPrefs()->ClearPref(brave_sync::prefs::kSyncEnabled);
-  profile_->GetPrefs()->ClearPref(brave_sync::prefs::kSyncSeed);
+  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.Clear();
 
   // Sync prefs will be clear in ProfileSyncService::StopImpl
 }

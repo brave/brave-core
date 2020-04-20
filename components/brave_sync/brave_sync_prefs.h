@@ -66,7 +66,7 @@ class Prefs {
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   std::string GetSeed() const;
-  void SetSeed(const std::string& seed);
+  bool SetSeed(const std::string& seed);
 
   int GetMigratedBookmarksVersion();
   void SetMigratedBookmarksVersion(const int);
