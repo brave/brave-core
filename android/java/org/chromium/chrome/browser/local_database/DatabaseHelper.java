@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -70,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertTopSite(TopSite topSite) {
-    	if(!isTopSiteAlreadyAdded(topSite.getDestinationUrl())) {
+    	if(!isTopSiteAlreadyAdded(topSite.getDestinationUrl()) && !NTPUtil.isInRemovedTopSite(topSite.getDestinationUrl())) {
     		// get writable database as we want to write data
 	        SQLiteDatabase db = this.getWritableDatabase();
 

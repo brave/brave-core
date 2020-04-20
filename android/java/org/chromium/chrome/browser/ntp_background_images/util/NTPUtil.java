@@ -25,6 +25,9 @@ import android.os.Handler;
 import android.net.Uri;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import android.content.SharedPreferences;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -360,6 +363,31 @@ public class NTPUtil {
             Log.e("NTP", exc.getMessage());
             return null;
         }
+    }
+
+    private static Set<String> getTopSiteUrls() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        return mSharedPreferences.getStringSet("removed_sites", new HashSet<String>());
+    }
+
+    public static boolean isInRemovedTopSite(String url) {
+        Set<String> urlSet = getTopSiteUrls();
+        if (urlSet.contains(url)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void addToRemovedTopSite(String url) {
+        Set<String> urlSet = getTopSiteUrls();
+        if (!urlSet.contains(url)) {
+            urlSet.add(url);
+        }
+        
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putStringSet("removed_sites", urlSet);
+        sharedPreferencesEditor.apply();
     }
 
     public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {
