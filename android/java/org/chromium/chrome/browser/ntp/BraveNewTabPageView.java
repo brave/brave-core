@@ -25,14 +25,12 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.support.design.widget.FloatingActionButton;
 import java.util.List;
-import android.util.TypedValue;
 import android.view.MenuItem;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
@@ -278,17 +276,18 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
+        ImageView mSponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+        FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
         if (ntpImage instanceof Wallpaper 
                 && isReferralEnabled()) {
             setBackgroundImage(ntpImage);
             Log.e("NTP", "Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
             Log.e("NTP", "Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
-            FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
+            mSuperReferralLogo.setVisibility(View.VISIBLE);
             int floatingButtonIcon = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                     ? R.drawable.qrcode_dark
                     : R.drawable.qrcode_light;
             mSuperReferralLogo.setImageResource(floatingButtonIcon);
-            mSuperReferralLogo.setVisibility(View.VISIBLE);
             mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -301,8 +300,8 @@ public class BraveNewTabPageView extends NewTabPageView {
             setBackgroundImage(ntpImage);
             if (ntpImage instanceof BackgroundImage){
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
-                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                sponsoredLogo.setVisibility(View.GONE);
+                mSponsoredLogo.setVisibility(View.GONE);
+                mSuperReferralLogo.setVisibility(View.GONE);
                 if (backgroundImage.getImageCredit() != null) {
                     String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
 
@@ -437,17 +436,22 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         @Override
         public void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper) {
-            ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-            sponsoredLogo.setVisibility(View.VISIBLE);
-            sponsoredLogo.setImageBitmap(logoWallpaper);
-            sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mWallpaper.getLogoDestinationUrl() != null) {
-                        NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+            if(!isReferralEnabled()) {
+                FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
+                mSuperReferralLogo.setVisibility(View.GONE);
+
+                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                sponsoredLogo.setVisibility(View.VISIBLE);
+                sponsoredLogo.setImageBitmap(logoWallpaper);
+                sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mWallpaper.getLogoDestinationUrl() != null) {
+                            NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     };
 
