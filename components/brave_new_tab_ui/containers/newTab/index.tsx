@@ -271,9 +271,9 @@ class NewTabPage extends React.Component<Props, State> {
     const refParams = `ref=${refCode}&utm_source=brave`
 
     if (userTLD === 'us') {
-      window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
+      window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     } else {
-      window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
+      window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     }
   }
 
@@ -356,11 +356,11 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   learnMoreRewards = () => {
-    window.open('https://brave.com/brave-rewards/', '_blank')
+    window.open('https://brave.com/brave-rewards/', '_blank', 'noopener')
   }
 
   learnMoreBinance = () => [
-    window.open('https://brave.com/binance/', '_blank')
+    window.open('https://brave.com/binance/', '_blank', 'noopener')
   ]
 
   setAssetDepositQRCodeSrc = (asset: string, src: string) => {

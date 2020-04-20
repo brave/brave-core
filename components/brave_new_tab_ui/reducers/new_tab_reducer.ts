@@ -17,7 +17,7 @@ import { registerViewCount } from '../api/brandedWallpaper'
 import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage/new_tab_storage'
 import { getTotalContributions } from '../rewards-utils'
-import { getUSDPrice } from '../binance-utils'
+import { getUSDPrice, isValidClientURL } from '../binance-utils'
 
 const initialState = storage.load()
 
@@ -456,8 +456,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
 
     case types.ON_BINANCE_CLIENT_URL:
+      const { clientUrl } = payload
+
+      if (!isValidClientURL(clientUrl)) {
+        break
+      }
+
       state = { ...state }
-      state.binanceState.binanceClientUrl = payload.clientUrl
+      state.binanceState.binanceClientUrl = clientUrl
       break
 
     case types.ON_BTC_USD_PRICE:

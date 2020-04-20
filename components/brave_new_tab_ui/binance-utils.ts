@@ -31,3 +31,40 @@ export const getUSDPrice = (accountBTCBalance: string, btcUSDPrice: string) => {
 
   return (btcUSDPriceNumber * btcBalanceNumber).toFixed(2)
 }
+
+export const isValidClientURL = (url: string) => {
+  if (!url) {
+    return false
+  }
+
+  let urlObj
+  try {
+    urlObj = new URL(url)
+  } catch (err) {
+    return false
+  }
+
+  if (urlObj.protocol !== 'https:') {
+    return false
+  }
+
+  if (urlObj.host !== 'accounts.binance.com') {
+    return false
+  }
+
+  const { pathname } = urlObj
+  const pathSplit = pathname.split('/')
+
+  // The first level of path is the locale, so the second and
+  // third levels should be checked for equality to 'oauth' and
+  // 'authorize' respectively. ex: '/en/oauth/authorize'
+  if (pathSplit.length !== 4) {
+    return false
+  }
+
+  if (pathSplit[2] !== 'oauth' || pathSplit[3] !== 'authorize') {
+    return false
+  }
+
+  return true
+}
