@@ -23,6 +23,7 @@ import org.chromium.chrome.R;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
 public class SuperReferralShareDialogFragment extends DialogFragment implements View.OnClickListener{
 	private static final String TAG = "SUPER-REFERRAL";
@@ -47,9 +48,6 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 	
 	public static SuperReferralShareDialogFragment newInstance(String title) {
 		SuperReferralShareDialogFragment mSuperReferralShareDialogFragment = new SuperReferralShareDialogFragment();
-		// Bundle args = new Bundle();
-		// args.putString("title", title);
-		// frag.setArguments(args);
 		return mSuperReferralShareDialogFragment;
 	}
 
@@ -90,6 +88,8 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 
     private void generateQRCode() {
         final String qrDataFinal = BRAVE_REF_URL + mNTPBackgroundImagesBridge.getSuperReferralCode();
+        final int WHITE = GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? 0xFFFFFFFF : 0xFF000000;
+        final int BLACK = GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? 0x613C4043 : 0xFFFFFFFF;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -107,7 +107,7 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
                 for (int y = 0; y < h; y++) {
                     int offset = y * w;
                     for (int x = 0; x < w; x++) {
-                        pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                        pixels[offset + x] = result.get(x, y) ? WHITE : BLACK;
                     }
                 }
                 Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
