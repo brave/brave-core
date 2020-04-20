@@ -33,7 +33,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"

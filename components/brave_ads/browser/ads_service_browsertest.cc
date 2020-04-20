@@ -18,7 +18,7 @@
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT

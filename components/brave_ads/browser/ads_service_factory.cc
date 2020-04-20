@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #endif
 
 class PrefStore;

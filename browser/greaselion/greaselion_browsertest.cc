@@ -12,7 +12,7 @@
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"

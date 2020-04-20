@@ -24,8 +24,6 @@ source_set("browser") {
     "rewards_p3a.h",
     "rewards_service.cc",
     "rewards_service.h",
-    "rewards_service_factory.cc",
-    "rewards_service_factory.h",
     "rewards_service_observer.h",
     "wallet_properties.cc",
     "wallet_properties.h",
@@ -103,12 +101,15 @@ source_set("browser") {
       "//brave/components/brave_ads/browser/buildflags",
       "//brave/components/resources",
       "//brave/components/services/bat_ledger/public/cpp",
-      "//brave/vendor/bat-native-ledger",
       "//mojo/public/cpp/bindings",
       "//net",
       "//services/network/public/cpp",
       "//services/service_manager/public/cpp",
       "//url",
+    ]
+
+    public_deps += [
+      "//brave/vendor/bat-native-ledger:headers",
     ]
 
     if (is_android) {
@@ -121,7 +122,7 @@ source_set("testutil") {
   testonly = true
 
   deps = [
-    "//brave/vendor/bat-native-ledger",
+    "//brave/vendor/bat-native-ledger:headers",
     ":browser",
     "//base",
     "//content/public/browser",

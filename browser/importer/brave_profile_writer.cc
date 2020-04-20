@@ -17,7 +17,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/utility/importer/brave_importer.h"

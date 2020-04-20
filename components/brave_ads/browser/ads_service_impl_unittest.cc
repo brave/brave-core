@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/test_util.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"

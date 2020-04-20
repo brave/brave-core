@@ -141,7 +141,7 @@ source_set("testutil") {
 
   if (brave_rewards_enabled) {
     deps += [
-      "//brave/vendor/bat-native-ledger",
+      "//brave/vendor/bat-native-ledger:headers",
     ]
 
     configs += [
