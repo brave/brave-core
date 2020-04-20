@@ -61,12 +61,11 @@ import {
   ConvertInfoItem,
   ConvertValue,
   ConvertLabel,
-  AvailableLabel,
   NavigationBar,
   NavigationItem,
   SelectedView,
   TickerLabel,
-  ConvertButton,
+  ActionButton,
   AssetIcon,
   QRImage,
   CopyButton,
@@ -334,17 +333,9 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderRoutes = () => {
-    const { userAuthed, selectedView } = this.props
+    const { userAuthed } = this.props
 
     if (userAuthed) {
-      if (selectedView === 'buy') {
-        return this.renderBuyView()
-      }
-
-      if (selectedView === 'convert') {
-        return this.renderConvertView()
-      }
-
       return this.renderAccountView()
     }
 
@@ -1004,11 +995,8 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <>
         <Copy>
-          {getLocale('binanceWidgetConvert')}
-        </Copy>
-        <AvailableLabel>
           {`${getLocale('binanceWidgetAvailable')} ${convertFromAmount} ${currentConvertFrom}`}
-        </AvailableLabel>
+        </Copy>
         <BuyPromptWrapper>
           <FiatInputWrapper>
             <FiatInputField
@@ -1095,12 +1083,9 @@ class Binance extends React.PureComponent<Props, State> {
           }
         </BuyPromptWrapper>
         <ActionsWrapper>
-          <ConvertButton onClick={this.shouldShowConvertPreview}>
+          <ActionButton onClick={this.shouldShowConvertPreview}>
             {getLocale('binanceWidgetPreviewConvert')}
-          </ConvertButton>
-          <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
-            {getLocale('binanceWidgetCancel')}
-          </DismissAction>
+          </ActionButton>
         </ActionsWrapper>
       </>
     )
@@ -1114,6 +1099,10 @@ class Binance extends React.PureComponent<Props, State> {
         return this.renderDepositView()
       case 'summary':
         return this.renderSummaryView()
+      case 'convert':
+        return this.renderConvertView()
+      case 'buy':
+        return this.renderBuyView()
       default:
         return this.renderSummaryView()
     }
@@ -1156,9 +1145,13 @@ class Binance extends React.PureComponent<Props, State> {
             {getLocale('binanceWidgetBuy')}
           </NavigationItem>
         </NavigationBar>
-        <SelectedView hideOverflow={!!hideOverflow}>
-          {this.renderSelectedView()}
-        </SelectedView>
+        {
+          selectedView === 'convert' || selectedView === 'buy'
+          ? this.renderSelectedView()
+          : <SelectedView hideOverflow={!!hideOverflow}>
+              {this.renderSelectedView()}
+            </SelectedView>
+        }
       </>
     )
   }
@@ -1178,6 +1171,7 @@ class Binance extends React.PureComponent<Props, State> {
     } = this.state
     const isUS = userTLD === 'us'
     const currencies = this.getCurrencyList()
+    const ButtonComponent = userAuthed ? ActionButton : ConnectButton
 
     return (
       <>
@@ -1282,16 +1276,9 @@ class Binance extends React.PureComponent<Props, State> {
           }
         </BuyPromptWrapper>
         <ActionsWrapper isFirstView={!userAuthed}>
-          <ConnectButton onClick={onBuyCrypto.bind(this, initialAsset, initialAmount, initialFiat)}>
+          <ButtonComponent onClick={onBuyCrypto.bind(this, initialAsset, initialAmount, initialFiat)}>
             {`${getLocale('binanceWidgetBuy')} ${initialAsset}`}
-          </ConnectButton>
-          {
-            userAuthed
-            ? <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
-                {'Cancel'}
-              </DismissAction>
-            : null
-          }
+          </ButtonComponent>
           {
             !userAuthed && !isUS
             ? <ConnectAction onClick={this.connectBinance}>
@@ -1337,14 +1324,14 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { showContent } = this.props
+    const { showContent, userAuthed } = this.props
 
     if (!showContent) {
       return this.renderTitleTab()
     }
 
     return (
-      <WidgetWrapper onClick={this.unpersistDropdowns}>
+      <WidgetWrapper userAuthed={userAuthed} onClick={this.unpersistDropdowns}>
         {
           this.renderIndexView()
           ? this.renderIndexView()
