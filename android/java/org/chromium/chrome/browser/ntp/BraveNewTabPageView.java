@@ -504,6 +504,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         public boolean onMenuItemClick(MenuItem item) {
                             Log.e("NTP", "remove");
                             databaseHelper.deleteTopSite(topSite.getDestinationUrl());
+                            NTPUtil.addToRemovedTopSite(topSite.getDestinationUrl());
                             superReferralSitesLayout.removeView(view);
                             return true;
                         }
