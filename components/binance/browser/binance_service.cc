@@ -22,10 +22,10 @@
 #include "base/token.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/binance_json_parser.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/country_codes/country_codes.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "crypto/random.h"
@@ -211,9 +211,8 @@ bool BinanceService::OAuthRequest(const GURL &url,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  Profile* profile = Profile::FromBrowserContext(context_);
   auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(profile);
+      content::BrowserContext::GetDefaultStoragePartition(context_);
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 
@@ -275,21 +274,19 @@ bool BinanceService::SetAccessTokens(const std::string& access_token,
   base::Base64Encode(
       encrypted_refresh_token, &encoded_encrypted_refresh_token);
 
-  Profile* profile = Profile::FromBrowserContext(context_);
-  profile->GetPrefs()->SetString(
-      kBinanceAccessToken, encoded_encrypted_access_token);
-  profile->GetPrefs()->SetString(kBinanceRefreshToken,
-      encoded_encrypted_refresh_token);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  prefs->SetString(kBinanceAccessToken, encoded_encrypted_access_token);
+  prefs->SetString(kBinanceRefreshToken, encoded_encrypted_refresh_token);
 
   return true;
 }
 
 bool BinanceService::LoadTokensFromPrefs() {
-  Profile* profile = Profile::FromBrowserContext(context_);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   std::string encoded_encrypted_access_token =
-      profile->GetPrefs()->GetString(kBinanceAccessToken);
+      prefs->GetString(kBinanceAccessToken);
   std::string encoded_encrypted_refresh_token =
-      profile->GetPrefs()->GetString(kBinanceRefreshToken);
+      prefs->GetString(kBinanceRefreshToken);
 
   std::string encrypted_access_token;
   std::string encrypted_refresh_token;
@@ -314,10 +311,9 @@ bool BinanceService::LoadTokensFromPrefs() {
 }
 
 std::string BinanceService::GetBinanceTLD() {
-  Profile* profile = Profile::FromBrowserContext(context_);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   const std::string us_code = "US";
-  const int32_t user_country_id =
-      country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+  const int32_t user_country_id = country_codes::GetCountryIDFromPrefs(prefs);
   const int32_t us_id = country_codes::CountryCharsToCountryID(
       us_code.at(0), us_code.at(1));
   return (user_country_id == us_id) ? "us" : "com";
