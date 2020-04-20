@@ -316,8 +316,10 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   }
 
   renderTitle = () => {
+    const { showContent } = this.props
+
     return (
-      <RewardsTitle>
+      <RewardsTitle isInTab={!showContent}>
         <BatIcon>
           <BatColorIcon />
         </BatIcon>

@@ -10,7 +10,8 @@ import confettiImageUrl from './confetti.png'
 
 interface StyleProps {
   isLast?: boolean
-  isActionPrompt: boolean
+  isActionPrompt?: boolean
+  isInTab?: boolean
 }
 
 interface WidgetProps {
@@ -51,12 +52,12 @@ export const BatIcon = styled<{}, 'div'>('div')`
   margin-right: 8px;
 `
 
-export const RewardsTitle = styled<{}, 'div'>('div')`
-  margin-top: 6px;
+export const RewardsTitle = styled<StyleProps, 'div'>('div')`
+  margin-top: ${p => p.isInTab ? 6 : 0}px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   font-family: Poppins, sans-serif;
 `
