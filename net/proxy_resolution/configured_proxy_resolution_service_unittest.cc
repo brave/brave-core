@@ -13,6 +13,7 @@
 #include "net/base/test_completion_callback.h"
 #include "net/log/test_net_log.h"
 #include "net/proxy_resolution/mock_proxy_resolver.h"
+#include "net/proxy_resolution/proxy_resolution_request.h"
 #include "net/test/gtest_util.h"
 #include "net/test/test_with_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -52,7 +53,7 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
   ProxyInfo info;
   TestCompletionCallback callback;
   RecordingBoundTestNetLog log;
-  std::unique_ptr<ConfiguredProxyResolutionService::Request> request;
+  std::unique_ptr<ProxyResolutionRequest> request;
   int rv =
       service->ResolveProxy(site_url, std::string(), NetworkIsolationKey(),
                             &info, callback.callback(), &request, log.bound());
