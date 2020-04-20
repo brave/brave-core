@@ -22,6 +22,7 @@ source_set("prefs") {
 
   deps = [
     "//base",
+    "//components/os_crypt",
     "//components/prefs",
     "//components/pref_registry",
   ]
