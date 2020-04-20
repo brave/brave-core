@@ -68,6 +68,16 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         ContentSettingsPattern::FromString("http://a.com/*");
     first_party_pattern_ =
         ContentSettingsPattern::FromString("https://firstParty/*");
+
+    wordpress_top_url_ = https_server_
+        .GetURL("example.wordpress.com", "/cookie_iframe.html");
+    wordpress_frame_url_ = https_server_
+        .GetURL("example.wordpress.com", "/set-cookie?frame=true");
+    wp_top_url_ = https_server_
+        .GetURL("example.wp.com", "/cookie_iframe.html");
+    wp_frame_url_ = https_server_
+        .GetURL("example.wp.com", "/set-cookie?frame=true");
+    a_frame_url_ = https_server_.GetURL("a.com", "/set-cookie?frame=true");
   }
 
   HostContentSettingsMap* content_settings() {
@@ -149,6 +159,11 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL https_cookie_iframe_url_;
   GURL third_party_cookie_url_;
   GURL google_oauth_cookie_url_;
+  GURL wordpress_top_url_;
+  GURL wordpress_frame_url_;
+  GURL wp_top_url_;
+  GURL wp_frame_url_;
+  GURL a_frame_url_;
 
  private:
   ContentSettingsPattern top_level_page_pattern_;
@@ -453,3 +468,68 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
 }
 
+// Test to ensure that we treat wp.com and wordpress.com as equal first parties
+// for the purposes of ability to set / send storage.
+// The following tests check each of the following.
+//
+// top level URL | iframe url    | iframe gets storage
+// ---------------------------------------------------
+// a.com         | wp.com        | no
+// a.com         | wordpress.com | no
+// wp.com        | a.com         | no
+// wordpress.com | a.com         | no
+// wp.com        | wordpress.com | yes
+// wordpress.com | wp.com        | yes
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyNoCookiesWpComInACom) {
+  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  ExpectCookiesOnHost(GURL("https://example.wp.com"), "");
+
+  NavigateFrameTo(wp_frame_url_);
+  ExpectCookiesOnHost(GURL("https://example.wp.com"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyNoCookiesWordpressComInACom) {
+  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "");
+
+  NavigateFrameTo(wordpress_frame_url_);
+  ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyNoCookiesAComInWpCom) {
+  NavigateToPageWithFrame(wp_top_url_);
+  ExpectCookiesOnHost(GURL("https://a.com"), "");
+
+  NavigateFrameTo(a_frame_url_);
+  ExpectCookiesOnHost(GURL("https://a.com"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyNoCookiesAComInWordpressCom) {
+  NavigateToPageWithFrame(wordpress_top_url_);
+  ExpectCookiesOnHost(GURL("https://a.com"), "");
+
+  NavigateFrameTo(a_frame_url_);
+  ExpectCookiesOnHost(GURL("https://a.com"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyYesCookiesWpComInWordpressCom) {
+  NavigateToPageWithFrame(wordpress_top_url_);
+  ExpectCookiesOnHost(GURL("https://example.wp.com"), "");
+
+  NavigateFrameTo(wp_frame_url_);
+  ExpectCookiesOnHost(GURL("https://example.wp.com"), "frame=true");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyYesCookiesnWordpressComInWpCom) {
+  NavigateToPageWithFrame(wp_top_url_);
+  ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "");
+
+  NavigateFrameTo(wordpress_frame_url_);
+  ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "frame=true");
+}
