@@ -89,30 +89,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	}
     }
 
-    // public Note getNote(long id) {
-    //     // get readable database as we are not inserting anything
-    //     SQLiteDatabase db = this.getReadableDatabase();
-
-    //     Cursor cursor = db.query(Note.TABLE_NAME,
-    //             new String[]{Note.COLUMN_ID, Note.COLUMN_NOTE, Note.COLUMN_TIMESTAMP},
-    //             Note.COLUMN_ID + "=?",
-    //             new String[]{String.valueOf(id)}, null, null, null, null);
-
-    //     if (cursor != null)
-    //         cursor.moveToFirst();
-
-    //     // prepare note object
-    //     Note note = new Note(
-    //             cursor.getInt(cursor.getColumnIndex(Note.COLUMN_ID)),
-    //             cursor.getString(cursor.getColumnIndex(Note.COLUMN_NOTE)),
-    //             cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTAMP)));
-
-    //     // close the db connection
-    //     cursor.close();
-
-    //     return note;
-    // }
-
     public List<TopSiteTable> getAllTopSites() {
         List<TopSiteTable> topSites = new ArrayList<>();
 
