@@ -215,7 +215,6 @@ class AdsServiceImpl : public AdsService,
       const std::string& url);
 
   void NotificationTimedOut(
-      const uint32_t timer_id,
       const std::string& uuid);
 
   void OnURLLoaderComplete(
@@ -351,10 +350,6 @@ class AdsServiceImpl : public AdsService,
   void OnPrefsChanged(
       const std::string& pref);
 
-  uint32_t next_timer_id();
-  void KillTimer(
-      const uint32_t timer_id);
-
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
 
@@ -381,6 +376,10 @@ class AdsServiceImpl : public AdsService,
   void ShowNotification(
       std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
+  void StartNotificationTimeoutTimer(
+      const std::string& uuid);
+  bool StopNotificationTimeoutTimer(
+      const std::string& uuid);
   void CloseNotification(
       const std::string& uuid) override;
 
@@ -460,8 +459,8 @@ class AdsServiceImpl : public AdsService,
 
   const base::FilePath base_path_;
 
-  std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
-  uint32_t next_timer_id_;
+  std::map<std::string, std::unique_ptr<base::OneShotTimer>>
+      notification_timers_;
 
   std::string retry_viewing_ad_notification_with_uuid_;
 

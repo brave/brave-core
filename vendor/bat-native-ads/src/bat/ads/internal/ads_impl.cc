@@ -407,6 +407,9 @@ void AdsImpl::OnAdNotificationEvent(
 
   AdNotificationInfo info;
   if (!ad_notifications_->Get(uuid, &info)) {
+    BLOG(ERROR) << "Failed to trigger ad event as ad notification was not "
+        "found for uuid " << uuid;
+
     return;
   }
 
