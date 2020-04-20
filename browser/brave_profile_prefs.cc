@@ -6,6 +6,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -226,6 +227,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterPrefs(registry);
 #endif
+
+  BraveOmniboxClientImpl::RegisterPrefs(registry);
 
   RegisterProfilePrefsForMigration(registry);
 }

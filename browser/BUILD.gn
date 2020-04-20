@@ -144,6 +144,7 @@ source_set("browser_process") {
     "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//brave/components/speedreader:buildflags",
+    "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
     "//chrome/common",
     "//components/autofill/core/common",
