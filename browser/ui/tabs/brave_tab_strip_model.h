@@ -35,21 +35,6 @@ class BraveTabStripModel : public TabStripModel {
   void StopMRUCycling();
 
  private:
-  // To capture the release of the Ctrl key when doing a MRU cycling with
-  // Ctrl-tab
-  class CtrlReleaseHandler : public ui::EventHandler {
-   public:
-    explicit CtrlReleaseHandler(BraveTabStripModel* tab_strip);
-    ~CtrlReleaseHandler() override;
-
-   private:
-    void OnKeyEvent(ui::KeyEvent* event) override;
-    BraveTabStripModel* tab_strip;
-    DISALLOW_COPY_AND_ASSIGN(CtrlReleaseHandler);
-  };
-
-  std::unique_ptr<CtrlReleaseHandler> ctrl_released_event_handler;
-
   // Current index when we are MRU cycling, set to -1 when not cycling
   int current_mru_cycling_index = -1;
 

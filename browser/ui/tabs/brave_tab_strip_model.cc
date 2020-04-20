@@ -74,19 +74,9 @@ void BraveTabStripModel::SelectTabMRU(bool backward,
 
     current_mru_cycling_index = 0;
 
-    // Create an event handler eating all keyboard events while tabing
-    ctrl_released_event_handler = std::make_unique<CtrlReleaseHandler>(this);
-
-    // Add the event handler
-    gfx::NativeWindow window =
-        this->GetActiveWebContents()->GetTopLevelNativeWindow();
-#if defined(OS_MACOSX)
-    views::Widget::GetWidgetForNativeWindow(window)
-        ->GetRootView()
-        ->AddPreTargetHandler(ctrl_released_event_handler.get());
-#else
-    window->AddPreTargetHandler(ctrl_released_event_handler.get());
-#endif
+    // Tell the controllers that we start cycling to handle tabs keys
+    for (auto& observer : observers_)
+      observer.StartMRUCycling(this);
   }
 
   int tabCount = mru_cycle_list.size();
@@ -105,42 +95,4 @@ void BraveTabStripModel::SelectTabMRU(bool backward,
 void BraveTabStripModel::StopMRUCycling() {
   current_mru_cycling_index = -1;
   mru_cycle_list.clear();
-
-  if (ctrl_released_event_handler) {
-    // Remove the event handler
-    gfx::NativeWindow window =
-        this->GetActiveWebContents()->GetTopLevelNativeWindow();
-#if defined(OS_MACOSX)
-    views::Widget::GetWidgetForNativeWindow(window)
-        ->GetRootView()
-        ->RemovePreTargetHandler(ctrl_released_event_handler.get());
-#else
-    window->RemovePreTargetHandler(ctrl_released_event_handler.get());
-#endif
-
-    ctrl_released_event_handler.reset();
-  }
-}
-
-BraveTabStripModel::CtrlReleaseHandler::CtrlReleaseHandler(
-    BraveTabStripModel* tab_strip)
-    : tab_strip(tab_strip) {}
-
-BraveTabStripModel::CtrlReleaseHandler::~CtrlReleaseHandler() {}
-
-void BraveTabStripModel::CtrlReleaseHandler::OnKeyEvent(ui::KeyEvent* event) {
-  if (event->key_code() == ui::VKEY_CONTROL &&
-      event->type() == ui::ET_KEY_RELEASED) {
-    // Ctrl key was released, stop the MRU cycling
-    tab_strip->StopMRUCycling();
-  } else if ((event->key_code() == ui::VKEY_TAB &&
-              event->type() == ui::ET_KEY_PRESSED) ||
-             (event->key_code() == ui::VKEY_PRIOR &&
-              event->type() == ui::ET_KEY_PRESSED) ||
-             (event->key_code() == ui::VKEY_NEXT &&
-              event->type() == ui::ET_KEY_PRESSED)) {
-    // Block all keys while cycling except tab,pg previous, pg next keys
-  } else {
-    event->StopPropagation();
-  }
 }
