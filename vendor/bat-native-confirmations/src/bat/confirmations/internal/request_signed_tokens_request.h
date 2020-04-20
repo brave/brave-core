@@ -14,9 +14,9 @@
 
 #include "wrapper.hpp"
 
-using challenge_bypass_ristretto::BlindedToken;
-
 namespace confirmations {
+
+using challenge_bypass_ristretto::BlindedToken;
 
 class RequestSignedTokensRequest {
  public:

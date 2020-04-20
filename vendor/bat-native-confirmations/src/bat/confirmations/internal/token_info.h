@@ -11,9 +11,9 @@
 
 #include "wrapper.hpp"  // NOLINT
 
-using challenge_bypass_ristretto::UnblindedToken;
-
 namespace confirmations {
+
+using challenge_bypass_ristretto::UnblindedToken;
 
 struct TokenInfo {
   TokenInfo();
