@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 
 public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioButtonGroupThemePreference {
 
@@ -58,5 +59,6 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         super.onCheckedChanged(group, checkedId);
         BravePrefServiceBridge.getInstance().setInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION, checkedId == R.id.light ? 0 : 1 );
+        BraveRelaunchUtils.askForRelaunch(getContext());
     }
 }
