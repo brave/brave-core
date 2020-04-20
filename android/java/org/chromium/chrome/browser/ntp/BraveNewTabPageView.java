@@ -460,7 +460,13 @@ public class BraveNewTabPageView extends NewTabPageView {
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
-            tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
+
+            if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)) {
+                tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
+            } else {
+                tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
+            }
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
             iconIv.setImageBitmap(NTPUtil.getTopSiteBitmap(topSite.getImagePath()));
