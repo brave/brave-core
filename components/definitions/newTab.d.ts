@@ -165,6 +165,7 @@ declare namespace NewTab {
     accountBTCUSDValue: string
     disconnectInProgress: boolean
     authInvalid: boolean
+    selectedView: string
   }
 
   export type BinanceTLD = 'us' | 'com'

@@ -370,6 +370,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onConvertableAssets(asset, assets)
   }
 
+  setSelectedView = (view: string) => {
+    this.props.actions.setSelectedView(view)
+  }
+
   updateActions = () => {
     this.fetchBalance()
     this.getConvertAssets()
@@ -553,6 +557,7 @@ class NewTabPage extends React.Component<Props, State> {
         onSetUserTLDAutoSet={this.setUserTLDAutoSet}
         onUpdateActions={this.updateActions}
         onDismissAuthInvalid={this.dismissAuthInvalid}
+        onSetSelectedView={this.setSelectedView}
       />
     )
   }
