@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.os.Handler;
 import android.net.Uri;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import android.content.SharedPreferences;
 import java.util.Set;
 import java.util.HashSet;
@@ -356,14 +355,27 @@ public class NTPUtil {
 
     public static Bitmap getTopSiteBitmap(String iconPath) {
         Context mContext = ContextUtils.getApplicationContext();
+        InputStream inputStream = null;
+        Bitmap topSiteIcon = null;
         try {
             Uri imageFileUri = Uri.parse("file://"+ iconPath);
-            InputStream inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
-            return BitmapFactory.decodeStream(inputStream);
-        } catch(FileNotFoundException exc) {
+            inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+            topSiteIcon = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+        } catch(IOException exc) {
             Log.e("NTP", exc.getMessage());
-            return null;
+            topSiteIcon = null;
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException exception) {
+                Log.e("NTP", exception.getMessage());
+                topSiteIcon = null;
+            }
         }
+        return topSiteIcon;
     }
 
     private static Set<String> getTopSiteUrls() {
