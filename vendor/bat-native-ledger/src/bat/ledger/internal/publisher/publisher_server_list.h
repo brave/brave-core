@@ -57,8 +57,8 @@ class PublisherServerList {
       ParsePublisherListCallback callback);
 
   void ParsePublisherBanner(
-      base::DictionaryValue* dictionary,
-      ledger::PublisherBanner* banner);
+      ledger::PublisherBanner* banner,
+      base::Value* dictionary);
 
   void SaveParsedData(
       const ledger::Result result,
