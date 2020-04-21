@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.h b/chrome/browser/ui/webui/settings/people_handler.h
-index 1573a3ce552a1e5abc4982d33aa1fad69e8faede..9d44c6440b9293a69dc8de648b4d8e007e4bc985 100644
+index 2f4824bd8d6bf10e28d0b5a4907147c7774d40e9..ccf7f79107bd7b7941b9d3b1bc06c74694f24abb 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.h
 +++ b/chrome/browser/ui/webui/settings/people_handler.h
-@@ -167,6 +167,7 @@ class PeopleHandler : public SettingsPageUIHandler,
- #endif
-   void HandleStartKeyRetrieval(const base::ListValue* args);
-   void HandleGetSyncStatus(const base::ListValue* args);
-+  BRAVE_PEOPLE_HANDLER_H_
+@@ -65,6 +65,7 @@ class PeopleHandler : public SettingsPageUIHandler,
  
- #if !defined(OS_CHROMEOS)
-   // Displays the GAIA login form.
+   bool is_configuring_sync() const { return configuring_sync_; }
+ 
++ BRAVE_PEOPLE_HANDLER_H_
+  private:
+   friend class PeopleHandlerTest;
+   FRIEND_TEST_ALL_PREFIXES(PeopleHandlerTest,

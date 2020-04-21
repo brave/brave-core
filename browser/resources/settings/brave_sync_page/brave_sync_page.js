@@ -37,7 +37,8 @@ Polymer({
   /** @private */
   onSyncTap_: function() {
     // Users can go to sync subpage regardless of sync status.
-    settings.navigateTo(settings.routes.BRAVE_SYNC_SETUP);
+    const router = settings.Router.getInstance();
+    router.navigateTo(router.getRoutes().BRAVE_SYNC_SETUP);
   },
 
 });

@@ -1,39 +1,33 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
-index e9043c8a6a138d0f791c44a6c9018985eb5a6e02..cd21557ca48d2377c19a7b4e51ef30a24bb67493 100644
+index e722941579e7334776ccf566fe8306a0625fa939..5901610f97ae4b554c6e3a48d5d138f8de320761 100644
 --- a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
 +++ b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
-@@ -173,6 +173,12 @@ cr.define('settings', function() {
+@@ -219,6 +219,9 @@ cr.define('settings', function() {
+      * @return {!Promise<!HistoryRecordingEnabled>}
       */
-     getSyncStatus() {}
- 
+     queryIsHistoryRecordingEnabled() {}
 +    getSyncCode() {}
-+
 +    setSyncCode(syncCode) {}
-+
 +    resetSyncChain() {}
-+
-     /**
-      * Gets a list of stored accounts.
-      * @return {!Promise<!Array<!settings.StoredAccount>>}
-@@ -281,6 +287,21 @@ cr.define('settings', function() {
-       return cr.sendWithPromise('SyncSetupGetSyncStatus');
-     }
+   }
  
+   /**
+@@ -321,6 +324,18 @@ cr.define('settings', function() {
+     queryIsHistoryRecordingEnabled() {
+       return cr.sendWithPromise('GetIsHistoryRecordingEnabledAndCanBeUsed');
+     }
 +    /** @override */
 +    getSyncCode() {
 +      return cr.sendWithPromise('SyncSetupGetSyncCode');
 +    }
-+
 +    /** @override */
 +    setSyncCode(syncCode) {
 +      return cr.sendWithPromise('SyncSetupSetSyncCode', syncCode);
 +    }
-+
 +    /** @override */
 +    resetSyncChain() {
 +      chrome.send('SyncSetupReset');
 +    }
-+
-     /** @override */
-     getStoredAccounts() {
-       return cr.sendWithPromise('SyncSetupGetStoredAccounts');
+   }
+ 
+   cr.addSingletonGetter(SyncBrowserProxyImpl);
