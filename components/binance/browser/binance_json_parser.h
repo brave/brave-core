@@ -24,7 +24,7 @@ class BinanceJSONParser {
                                       std::string* symbol_pair_volume);
   static bool GetDepositInfoFromJSON(const std::string& json,
                                      std::string* address,
-                                     std::string *url);
+                                     std::string* tag);
   static bool GetQuoteInfoFromJSON(const std::string& json,
                                    std::string* quote_id,
                                    std::string* quote_price,

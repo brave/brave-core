@@ -211,7 +211,7 @@
                 "type": "string"
               },
               {
-                "name": "depositURL",
+                "name": "depositTag",
                 "type": "string"
               }
             ]

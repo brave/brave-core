@@ -268,11 +268,11 @@ BinanceGetDepositInfoFunction::Run() {
 
 void BinanceGetDepositInfoFunction::OnGetDepositInfo(
     const std::string& deposit_address,
-    const std::string& deposit_url,
+    const std::string& deposit_tag,
     bool success) {
   Respond(TwoArguments(
       std::make_unique<base::Value>(deposit_address),
-      std::make_unique<base::Value>(deposit_url)));
+      std::make_unique<base::Value>(deposit_tag)));
 }
 
 ExtensionFunction::ResponseAction

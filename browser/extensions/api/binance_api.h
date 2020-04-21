@@ -119,7 +119,7 @@ class BinanceGetDepositInfoFunction :
  protected:
   ~BinanceGetDepositInfoFunction() override {}
   void OnGetDepositInfo(const std::string& deposit_address,
-                        const std::string& deposit_url,
+                        const std::string& deposit_tag,
                         bool success);
 
   ResponseAction Run() override;

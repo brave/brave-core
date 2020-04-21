@@ -433,15 +433,15 @@ void BinanceService::OnGetDepositInfo(
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
   std::string deposit_address;
-  std::string deposit_url;
+  std::string deposit_tag;
   bool success = status >= 200 && status <= 299;
   if (success) {
     BinanceJSONParser::GetDepositInfoFromJSON(
-        body, &deposit_address, &deposit_url);
+        body, &deposit_address, &deposit_tag);
   }
 
   std::move(callback).Run(
-      deposit_address, deposit_url, success);
+      deposit_address, deposit_tag, success);
 }
 
 bool BinanceService::ConfirmConvert(const std::string& quote_id,

@@ -217,9 +217,9 @@ bool BinanceJSONParser::GetTickerVolumeFromJSON(
 //    "success": true
 // }
 bool BinanceJSONParser::GetDepositInfoFromJSON(
-    const std::string& json, std::string *address, std::string *url) {
+    const std::string& json, std::string *address, std::string *tag) {
   DCHECK(address);
-  DCHECK(url);
+  DCHECK(tag);
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -241,16 +241,11 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
     return false;
   }
 
-  std::string deposit_url;
-  std::string deposit_address;
-
-  if (!data_dict->GetString("url", &deposit_url) ||
-      !data_dict->GetString("address", &deposit_address)) {
+  if (!data_dict->GetString("tag", tag) ||
+      !data_dict->GetString("address", address)) {
     return false;
   }
 
-  *url = deposit_url;
-  *address = deposit_address;
   return true;
 }
 

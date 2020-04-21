@@ -323,24 +323,24 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
-  void OnGetDepositInfo(const std::string& address, const std::string& url,
+  void OnGetDepositInfo(const std::string& address, const std::string& tag,
       bool success) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
     ASSERT_EQ(expected_address_, address);
-    ASSERT_EQ(expected_url_, url);
+    ASSERT_EQ(expected_tag_, tag);
     ASSERT_EQ(expected_success_, success);
   }
 
   void WaitForGetDepositInfo(
-      const std::string& expected_address, const std::string& expected_url,
+      const std::string& expected_address, const std::string& expected_tag,
       bool expected_success) {
     if (wait_for_request_) {
       return;
     }
     expected_address_ = expected_address;
-    expected_url_ = expected_url;
+    expected_tag_ = expected_tag;
     expected_success_ = expected_success;
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
@@ -484,7 +484,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   std::string expected_total_fee_;
   std::string expected_total_amount_;
   std::string expected_address_;
-  std::string expected_url_;
+  std::string expected_tag_;
   std::string expected_error_message_;
   std::string expected_symbol_pair_price_;
   std::string expected_symbol_pair_volume_;
@@ -645,8 +645,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfo) {
           &BinanceAPIBrowserTest::OnGetDepositInfo,
           base::Unretained(this))));
   std::string address = "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW";
-  std::string url = "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW";
-  WaitForGetDepositInfo(address, url, true);
+  std::string tag = "";
+  WaitForGetDepositInfo(address, tag, true);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfoUnauthorized) {

@@ -105,20 +105,40 @@ TEST_F(BinanceJSONParserTest, GetTickerVolumeFromJSON) {
 
 TEST_F(BinanceJSONParserTest, GetDepositInfoFromJSON) {
   std::string deposit_address;
-  std::string deposit_url;
+  std::string deposit_tag;
   ASSERT_TRUE(BinanceJSONParser::GetDepositInfoFromJSON(R"(
       {
         "code": "0000",
         "message": "null",
         "data": {
           "coin": "BTC",
+          "tag": "",
           "address": "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
           "url": "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
           "time": 1566366289000
         }
-      })", &deposit_address, &deposit_url));
+      })", &deposit_address, &deposit_tag));
   ASSERT_EQ(deposit_address, "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
-  ASSERT_EQ(deposit_url, "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
+  ASSERT_EQ(deposit_tag, "");
+}
+
+TEST_F(BinanceJSONParserTest, GetDepositInfoFromJSONWithTag) {
+  std::string deposit_address;
+  std::string deposit_tag;
+  ASSERT_TRUE(BinanceJSONParser::GetDepositInfoFromJSON(R"(
+      {
+        "code": "0000",
+        "message": "null",
+        "data": {
+          "coin": "EOS",
+          "tag": "0902394082",
+          "address": "binancecleos",
+          "url": "",
+          "time": 1566366289000
+        }
+      })", &deposit_address, &deposit_tag));
+  ASSERT_EQ(deposit_address, "binancecleos");
+  ASSERT_EQ(deposit_tag, "0902394082");
 }
 
 TEST_F(BinanceJSONParserTest, GetQuoteInfoFromJSON) {

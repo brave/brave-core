@@ -740,8 +740,11 @@ class Binance extends React.PureComponent<Props, State> {
     const { assetDepositInfo } = this.props
     const addressInfo = assetDepositInfo[currentDepositAsset]
     const address = addressInfo && addressInfo.address
+    const tag = addressInfo && addressInfo.tag
     const cleanName = this.currencyNames[currentDepositAsset]
     const cleanNameDisplay = cleanName ? `(${cleanName})` : ''
+    const depositData = tag || address
+    const label = tag ? 'binanceWidgetDepositMemo' : 'binanceWidgetDepositAddress'
 
     return (
       <>
@@ -761,7 +764,7 @@ class Binance extends React.PureComponent<Props, State> {
             {cleanNameDisplay}
           </AssetLabel>
           {
-            address
+            depositData
             ? <AssetQR onClick={this.setQR.bind(this, currentDepositAsset)}>
                 <img style={{ width: '25px', marginRight: '5px' }} src={qrIcon} />
               </AssetQR>
@@ -772,19 +775,19 @@ class Binance extends React.PureComponent<Props, State> {
           <MemoArea>
             <MemoInfo>
               <DetailLabel>
-                {`${currentDepositAsset} ${getLocale('binanceWidgetDepositAddress')}`}
+                {`${currentDepositAsset} ${getLocale(label)}`}
               </DetailLabel>
               <DetailInfo>
                 {
-                  address
-                  ? address
+                  depositData
+                  ? depositData
                   : getLocale('binanceWidgetAddressUnavailable')
                 }
               </DetailInfo>
             </MemoInfo>
             {
-              address
-              ? <CopyButton onClick={this.copyToClipboard.bind(this, address)}>
+              depositData
+              ? <CopyButton onClick={this.copyToClipboard.bind(this, depositData)}>
                   {getLocale('binanceWidgetCopy')}
                 </CopyButton>
               : null
