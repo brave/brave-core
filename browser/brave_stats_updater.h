@@ -65,8 +65,8 @@ class BraveStatsUpdater {
   void SendServerPing();
 
   friend class ::BraveStatsUpdaterBrowserTest;
-  static void SetBaseUpdateURLForTest(const GURL& base_update_url);
-  static GURL g_base_update_url_;
+  static void SetBaseUpdateURLForTest(const std::string& base_update_url);
+  static std::string g_base_update_url_;
 
   PrefService* pref_service_;
   StatsUpdatedCallback stats_updated_callback_;
