@@ -130,6 +130,7 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+
 def cargo_install(tool):
     # Set environment variables for rustup
     env = os.environ.copy()
@@ -151,6 +152,7 @@ def cargo_install(tool):
     except subprocess.CalledProcessError as e:
         print(e.output)
         raise e
+
 
 def main():
     download_and_unpack_rust_deps(sys.platform)
