@@ -200,16 +200,22 @@ void PublisherServerList::ParsePublisherList(
     return;
   }
 
+  base::ListValue* values;
   for (auto& item : *publishers) {
-    base::ListValue* values = nullptr;
+    values = nullptr;
     if (!item.GetAsList(&values)) {
       continue;
     }
 
-    ledger::ServerPublisherPartial publisher;
+    if (!values) {
+      continue;
+    }
+
+    list_publisher.push_back(ledger::ServerPublisherPartial());
+    auto& publisher = list_publisher[list_publisher.size()-1];
 
     // Publisher key
-    std::string publisher_key = "";
+    std::string publisher_key;
     if (!values->GetList()[0].is_string()) {
       continue;
     }
@@ -240,15 +246,18 @@ void PublisherServerList::ParsePublisherList(
     publisher.address = values->GetList()[3].GetString();
 
     // Banner
-    base::DictionaryValue* banner = nullptr;
-    if (values->GetList()[4].GetAsDictionary(&banner)) {
-      auto parsed_banner = ParsePublisherBanner(publisher_key, banner);
-      if (!parsed_banner.publisher_key.empty()) {
-        list_banner.push_back(parsed_banner);
+    base::DictionaryValue* banner_dict = nullptr;
+    if (values->GetList()[4].GetAsDictionary(&banner_dict)) {
+      if (banner_dict->empty()) {
+        continue;
       }
-    }
 
-    list_publisher.push_back(publisher);
+      list_banner.push_back(ledger::PublisherBanner());
+      auto& banner = list_banner[list_banner.size()-1];
+
+      ParsePublisherBanner(banner_dict, &banner);
+      banner.publisher_key = publisher_key;
+    }
   }
 
   if (list_publisher.empty()) {
@@ -266,78 +275,52 @@ void PublisherServerList::ParsePublisherList(
   ledger_->ClearServerPublisherList(clear_callback);
 }
 
-ledger::PublisherBanner PublisherServerList::ParsePublisherBanner(
-    const std::string& publisher_key,
-    base::DictionaryValue* dictionary) {
-  ledger::PublisherBanner banner;
-  if (!dictionary->is_dict()) {
-    return banner;
-  }
+void PublisherServerList::ParsePublisherBanner(
+    base::DictionaryValue* dictionary,
+    ledger::PublisherBanner* banner) {
+  DCHECK(dictionary && banner);
 
-  bool empty = true;
   const auto* title = dictionary->FindStringKey("title");
   if (title) {
-    banner.title = *title;
-    if (!banner.title.empty()) {
-      empty = false;
-    }
+    banner->title = *title;
   }
 
   const auto* description = dictionary->FindStringKey("description");
   if (description) {
-    banner.description = *description;
-    if (!banner.description.empty()) {
-      empty = false;
-    }
+    banner->description = *description;
   }
 
   const auto* background = dictionary->FindStringKey("backgroundUrl");
   if (background) {
-    banner.background = *background;
+    banner->background = *background;
 
-    if (!banner.background.empty()) {
-      banner.background = "chrome://rewards-image/" + banner.background;
-      empty = false;
+    if (!banner->background.empty()) {
+      banner->background = "chrome://rewards-image/" + banner->background;
     }
   }
 
   const auto* logo = dictionary->FindStringKey("logoUrl");
   if (logo) {
-    banner.logo = *logo;
+    banner->logo = *logo;
 
-    if (!banner.logo.empty()) {
-      banner.logo = "chrome://rewards-image/" + banner.logo;
-      empty = false;
+    if (!banner->logo.empty()) {
+      banner->logo = "chrome://rewards-image/" + banner->logo;
     }
   }
 
   const auto* amounts = dictionary->FindListKey("donationAmounts");
   if (amounts) {
     for (const auto& it : amounts->GetList()) {
-      banner.amounts.push_back(it.GetInt());
-    }
-
-    if (banner.amounts.size() != 0) {
-      empty = false;
+      banner->amounts.push_back(it.GetInt());
     }
   }
 
   const auto* links = dictionary->FindDictKey("socialLinks");
   if (links) {
     for (const auto& it : links->DictItems()) {
-      banner.links.insert(std::make_pair(it.first, it.second.GetString()));
-    }
-
-    if (banner.links.size() != 0) {
-      empty = false;
+      banner->links.insert(std::make_pair(it.first, it.second.GetString()));
     }
   }
-
-  if (!empty) {
-    banner.publisher_key = publisher_key;
-  }
-
-  return banner;
 }
 
 void PublisherServerList::SaveParsedData(

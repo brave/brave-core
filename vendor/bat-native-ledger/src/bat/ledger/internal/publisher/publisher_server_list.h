@@ -56,9 +56,9 @@ class PublisherServerList {
       const std::string& data,
       ParsePublisherListCallback callback);
 
-  ledger::PublisherBanner ParsePublisherBanner(
-      const std::string& publisher_key,
-      base::DictionaryValue* dictionary);
+  void ParsePublisherBanner(
+      base::DictionaryValue* dictionary,
+      ledger::PublisherBanner* banner);
 
   void SaveParsedData(
       const ledger::Result result,
