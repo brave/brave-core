@@ -20,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 
 public class BraveReferrer implements InstallReferrerStateListener {
     private static final String TAG = "BraveReferrer";
@@ -58,6 +60,29 @@ public class BraveReferrer implements InstallReferrerStateListener {
         }
     }
 
+    private class SaveReferrerRunnable implements Runnable {
+      private String mUrpc;
+      public SaveReferrerRunnable(String urpc) {
+         mUrpc = urpc;
+      }
+
+      @Override
+      public void run() {
+        FileOutputStream outputStreamWriter = null;
+        try {
+            File promoCodeFile = new File(promoCodeFilePath);
+            outputStreamWriter = new FileOutputStream(promoCodeFile);
+            outputStreamWriter.write(mUrpc.getBytes());
+        } catch (IOException e) {
+            Log.e(TAG, "Could not write to file (" + promoCodeFilePath + "): " + e.getMessage());
+        } finally {
+            try {
+              if (outputStreamWriter != null) outputStreamWriter.close();
+            } catch (IOException exception) {}
+        }
+      }
+    }
+
     @Override
     public void onInstallReferrerSetupFinished(int responseCode) {
         switch (responseCode) {
@@ -69,18 +94,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     // Get and save user referal program code
                     String urpc = uri.getQueryParameter("urpc");
                     if (urpc != null && !urpc.isEmpty()) {
-                        FileOutputStream outputStreamWriter = null;
-                        try {
-                            File promoCodeFile = new File(promoCodeFilePath);
-                            outputStreamWriter = new FileOutputStream(promoCodeFile);
-                            outputStreamWriter.write(urpc.getBytes());
-                        } catch (IOException e) {
-                            Log.e(TAG, "Could not write to file (" + promoCodeFilePath + "): " + e.getMessage());
-                        } finally {
-                            try {
-                              if (outputStreamWriter != null) outputStreamWriter.close();
-                            } catch (IOException exception) {}
-                        }
+                        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                            new SaveReferrerRunnable(urpc));
                     }
                     referrerClient.endConnection();
                     // Set flag to not repeat this procedure
