@@ -162,9 +162,6 @@ TEST(SpeedreaderFFITest, RewriterParsingAmbiguity) {
   if (write_ret == 0) {
     int end_ret = rewriter->End();
     EXPECT_NE(end_ret, 0);
-    EXPECT_NE(SpeedReader::TakeLastError(), "");
-  } else {
-    EXPECT_NE(SpeedReader::TakeLastError(), "");
   }
 }
 

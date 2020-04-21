@@ -96,8 +96,6 @@ class SpeedReader {
                                                              void*),
                                          void* output_sink_user_data);
 
-  static std::string TakeLastError();
-
  private:
   C_SpeedReader* raw;
 };

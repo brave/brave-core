@@ -73,8 +73,7 @@ macro_rules! unwrap_or_ret {
     ($expr:expr, $ret_val:expr) => {
         match $expr {
             Ok(v) => v,
-            Err(err) => {
-                crate::errors::SPEEDREADER_LAST_ERROR.with(|cell| *cell.borrow_mut() = Some(err.into()));
+            Err(_err) => {
                 return $ret_val;
             }
         }
@@ -93,7 +92,6 @@ macro_rules! unwrap_or_ret_null {
     };
 }
 
-mod errors;
 mod speedreader;
 mod charbuf;
 

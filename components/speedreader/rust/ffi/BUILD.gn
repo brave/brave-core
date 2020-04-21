@@ -39,7 +39,6 @@ cargo_build("speedreader_rust_lib") {
     "Cargo.lock",
     "Cargo.toml",
     "charbuf.rs",
-    "errors.rs",
     "lib.rs",
     "speedreader.rs",
   ]
@@ -64,7 +63,6 @@ cargo_cbindgen("speedreader_ffi_header") {
     "Cargo.toml",
     "cbindgen.toml",
     "charbuf.rs",
-    "errors.rs",
     "lib.rs",
     "speedreader.rs",
   ]

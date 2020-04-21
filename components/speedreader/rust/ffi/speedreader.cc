@@ -24,7 +24,7 @@ bool SpeedReader::deserialize(const char* data, size_t data_size) {
     raw = new_raw;
     return true;
   } else {
-    VLOG(2) << __func__ << " deserialization failed: " << TakeLastError();
+    VLOG(2) << __func__ << " deserialization failed";
     return false;
   }
 }
@@ -58,18 +58,6 @@ std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
     void* output_sink_user_data) {
   return std::make_unique<Rewriter>(raw, url, rewriter_type, output_sink,
                                     output_sink_user_data);
-}
-
-// static
-std::string SpeedReader::TakeLastError() {
-  auto* error = take_last_speedreader_error();
-  if (error) {
-    std::string err(error->data, error->len);
-    speedreader_str_free(*error);
-    return err;
-  } else {
-    return "";
-  }
 }
 
 Rewriter::Rewriter(C_SpeedReader* speedreader,
