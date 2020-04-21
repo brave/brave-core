@@ -142,6 +142,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->AddObserver(&observer);
 
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  pref_service_.SetBoolean(kReferralInitialization, true);
 
   // Check with json file w/o schema version with empty object.
   service_->si_images_data_.reset();
@@ -460,6 +461,7 @@ TEST_F(NTPBackgroundImagesServiceTest,
        CheckRecoverShutdownWhileMappingTableFetchingWithDefaultCode) {
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  pref_service_.SetBoolean(kReferralInitialization, true);
   pref_service_.SetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress, true);
   pref_service_.SetString(kReferralPromoCode, "BRV001");
@@ -481,6 +483,7 @@ TEST_F(NTPBackgroundImagesServiceTest,
        CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode) {
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  pref_service_.SetBoolean(kReferralInitialization, true);
   pref_service_.SetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress, true);
   pref_service_.SetString(kReferralPromoCode, "BRV003");
