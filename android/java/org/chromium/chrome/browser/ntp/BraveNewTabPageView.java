@@ -281,8 +281,6 @@ public class BraveNewTabPageView extends NewTabPageView {
         if (ntpImage instanceof Wallpaper 
                 && isReferralEnabled()) {
             setBackgroundImage(ntpImage);
-            Log.e("NTP", "Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-            Log.e("NTP", "Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
             mSuperReferralLogo.setVisibility(View.VISIBLE);
             int floatingButtonIcon = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                     ? R.drawable.qrcode_dark
@@ -460,7 +458,6 @@ public class BraveNewTabPageView extends NewTabPageView {
         LayoutInflater inflater = (LayoutInflater) mTabImpl.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for(TopSiteTable topSite : topSites) {
-            Log.e("NTP", topSite.getName());
             final View view = inflater.inflate(R.layout.suggestions_tile_view, null);
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
@@ -502,7 +499,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.contextmenu_open_in_new_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Log.e("NTP", "normal tab");
                             openNewTab(false, topSite.getDestinationUrl());
                             return true;
                         }
@@ -510,7 +506,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.contextmenu_open_in_incognito_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Log.e("NTP", "incognito");
                             openNewTab(true, topSite.getDestinationUrl());
                             return true;
                         }
@@ -518,7 +513,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.contextmenu_save_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Log.e("NTP", "save");
                             RequestCoordinatorBridge.getForProfile(mProfile).savePageLater(
                                 topSite.getDestinationUrl(), OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, true /* userRequested */);
                             return true;
@@ -527,7 +521,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.remove).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Log.e("NTP", "remove");
                             mDatabaseHelper.deleteTopSite(topSite.getDestinationUrl());
                             NTPUtil.addToRemovedTopSite(topSite.getDestinationUrl());
                             superReferralSitesLayout.removeView(view);
