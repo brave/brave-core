@@ -134,8 +134,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
 
-  gfx::NativeWindow window = test_api_->GetPromptWindow();
-  auto* widget = views::Widget::GetWidgetForNativeWindow(window);
+  views::Widget* widget = test_api_->GetPromptWindow();
   DCHECK(widget);
 
   auto* delegate_view =
