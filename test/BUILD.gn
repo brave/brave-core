@@ -530,6 +530,8 @@ test("brave_installer_unittests") {
       "//chrome/install_static:install_static_util",
       "//chrome/install_static/test:test_support",
       "//chrome/installer/mini_installer:lib",
+    ]
+    public_deps = [
       "//testing/gmock",
       "//testing/gtest",
     ]
@@ -551,9 +553,7 @@ group("brave_browser_tests_deps") {
 
 static_library("browser_test_support") {
   testonly = true
-  deps = [
-    "//chrome/test:test_support",
-  ]
+  public_deps = [ "//chrome/test:test_support" ]
 
   sources = [
     "base/brave_test_launcher_delegate.cc",
@@ -564,13 +564,11 @@ static_library("browser_test_support") {
 static_library("browser_tests_runner") {
   testonly = true
 
-  deps = [
-    ":browser_test_support",
-  ]
-
   if (is_win) {
-    deps += [ "//chrome/installer/util:strings" ]
+    deps = [ "//chrome/installer/util:strings" ]
   }
+
+  public_deps = [ ":browser_test_support" ]
 
   sources = [
     "base/browser_tests_main.cc",
@@ -786,10 +784,11 @@ test("brave_browser_tests") {
     "//content/test:test_support",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
-    ":browser_tests_runner",
-    "//testing/gmock",
     "//third_party/blink/public/common",
   ]
+
+  public_deps = [ ":browser_tests_runner" ]
+
   # enable_plugins should be used here
   if (!is_android) {
   data_deps = [
