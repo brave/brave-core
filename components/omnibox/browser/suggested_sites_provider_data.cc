@@ -7,8 +7,9 @@
 
 #include "base/strings/utf_string_conversions.h"
 
-std::vector<SuggestedSitesMatch>
-SuggestedSitesProvider::suggested_sites_ = {
+const std::vector<SuggestedSitesMatch>&
+SuggestedSitesProvider::GetSuggestedSites() {
+  static const std::vector<SuggestedSitesMatch> suggested_sites = {
   {
     SuggestedSitesMatch(
       "binance.com",
@@ -143,4 +144,7 @@ SuggestedSitesProvider::suggested_sites_ = {
                          "?offer_id=24&aff_id=3494"),
       true)
   },
-};
+  };
+
+  return suggested_sites;
+}

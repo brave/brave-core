@@ -65,7 +65,7 @@ GURL GetUpdateURL(const GURL& base_update_url,
 
 namespace brave {
 
-GURL BraveStatsUpdater::g_base_update_url_(
+std::string BraveStatsUpdater::g_base_update_url_(
     "https://laptop-updates.brave.com/1/usage/brave-core");
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
@@ -188,7 +188,7 @@ void BraveStatsUpdater::SendServerPing() {
   auto stats_updater_params =
       std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
   resource_request->url =
-      GetUpdateURL(g_base_update_url_, *stats_updater_params);
+      GetUpdateURL(GURL(g_base_update_url_), *stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -205,7 +205,8 @@ void BraveStatsUpdater::SendServerPing() {
 }
 
 // static
-void BraveStatsUpdater::SetBaseUpdateURLForTest(const GURL& base_update_url) {
+void BraveStatsUpdater::SetBaseUpdateURLForTest(
+    const std::string& base_update_url) {
   g_base_update_url_ = base_update_url;
 }
 

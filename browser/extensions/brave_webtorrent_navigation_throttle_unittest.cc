@@ -53,8 +53,17 @@ class MockBrowserClient : public content::ContentBrowserClient {
   }
 };
 
-GURL magnet_url("magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent");  // NOLINT
-GURL torrent_url("https://webtorrent.io/torrents/big-buck-bunny.torrent");
+const GURL& GetMagnetUrl() {
+  static const GURL magnet_url(
+    "magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent");  // NOLINT
+  return magnet_url;
+}
+
+const GURL& GetTorrentUrl() {
+  static const GURL torrent_url(
+      "https://webtorrent.io/torrents/big-buck-bunny.torrent");
+  return torrent_url;
+}
 
 }  // namespace
 
@@ -141,12 +150,12 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
   content::RenderFrameHost* host =
       render_frame_host_tester(main_rfh())->AppendChild("child");
-  content::MockNavigationHandle test_handle(torrent_url, host);
+  content::MockNavigationHandle test_handle(GetTorrentUrl(), host);
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
-      << torrent_url;
+      << GetTorrentUrl();
 }
 
 // Tests the case of loading a torrent without having the extension
@@ -156,12 +165,12 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
   content::RenderFrameHost* host =
       render_frame_host_tester(main_rfh())->AppendChild("child");
-  content::MockNavigationHandle test_handle(magnet_url, host);
+  content::MockNavigationHandle test_handle(GetMagnetUrl(), host);
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
-      << magnet_url;
+      << GetMagnetUrl();
 }
 
 
@@ -172,12 +181,12 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest, WebTorrentUrlInstalled) {
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
   content::RenderFrameHost* host =
       render_frame_host_tester(main_rfh())->AppendChild("child");
-  content::MockNavigationHandle test_handle(magnet_url, host);
+  content::MockNavigationHandle test_handle(GetMagnetUrl(), host);
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
-      << magnet_url;
+      << GetMagnetUrl();
 }
 
 // Tests the case of loading a torrent when the WebTorrent is explicitly
@@ -187,12 +196,12 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest, WebTorrentDisabledByPref) {
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
   content::RenderFrameHost* host =
       render_frame_host_tester(main_rfh())->AppendChild("child");
-  content::MockNavigationHandle test_handle(magnet_url, host);
+  content::MockNavigationHandle test_handle(GetMagnetUrl(), host);
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
   EXPECT_EQ(NavigationThrottle::PROCEED,
-      throttle->WillStartRequest().action()) << magnet_url;
+      throttle->WillStartRequest().action()) << GetMagnetUrl();
 }
 
 }  // namespace extensions

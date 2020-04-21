@@ -198,7 +198,11 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceIframe) {
 constexpr char kJavascriptSetParams[] =
     "[\"block\", \"https://www.brave.com/\"]";
 constexpr char kJavascriptGetParams[] = "[\"https://www.brave.com/\"]";
-const GURL kBraveURL("https://www.brave.com");
+
+const GURL& GetBraveURL() {
+  static const GURL kBraveURL("https://www.brave.com");
+  return kBraveURL;
+}
 
 // Test javascript content setting works properly via braveShields api.
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
@@ -225,7 +229,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
   // Check Block is set.
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(kBraveURL, GURL(),
+          ->GetContentSetting(GetBraveURL(), GURL(),
                               ContentSettingsType::JAVASCRIPT, "");
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
@@ -235,12 +239,13 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
                        PRE_ShieldSettingsPersistTest) {
   HostContentSettingsMapFactory::GetForProfile(browser()->profile())
       ->SetContentSettingDefaultScope(
-          kBraveURL, GURL(), ContentSettingsType::PLUGINS,
+          GetBraveURL(), GURL(), ContentSettingsType::PLUGINS,
           brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_ALLOW);
 
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(kBraveURL, GURL(), ContentSettingsType::PLUGINS,
+          ->GetContentSetting(GetBraveURL(), GURL(),
+                              ContentSettingsType::PLUGINS,
                               brave_shields::kHTTPUpgradableResources);
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 }
@@ -248,7 +253,8 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, ShieldSettingsPersistTest) {
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(kBraveURL, GURL(), ContentSettingsType::PLUGINS,
+          ->GetContentSetting(GetBraveURL(), GURL(),
+                              ContentSettingsType::PLUGINS,
                               brave_shields::kHTTPUpgradableResources);
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 }
@@ -256,13 +262,13 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, ShieldSettingsPersistTest) {
 // Checks flash configuration isn't persisted across the sessions.
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, PRE_FlashPersistTest) {
   HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-      ->SetContentSettingDefaultScope(kBraveURL, GURL(),
+      ->SetContentSettingDefaultScope(GetBraveURL(), GURL(),
                                       ContentSettingsType::PLUGINS,
                                       std::string(), CONTENT_SETTING_ALLOW);
 
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(kBraveURL, GURL(),
+          ->GetContentSetting(GetBraveURL(), GURL(),
                               ContentSettingsType::PLUGINS, std::string());
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 }
@@ -270,7 +276,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, PRE_FlashPersistTest) {
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, FlashPersistTest) {
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(kBraveURL, GURL(),
+          ->GetContentSetting(GetBraveURL(), GURL(),
                               ContentSettingsType::PLUGINS, std::string());
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
