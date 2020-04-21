@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/sync_auth_manager.cc b/components/sync/driver/sync_auth_manager.cc
-index 3287a32ed1ca6ed5aada26928592ad278f8046a6..7e7f4d0a1dad502d5734e1cf6b1053714f3fe14b 100644
+index 03080dd8c7205cc0ebaf8aa9516131a94a727170..85a592c12f43cb30297a8f65325974c0843cd8e5 100644
 --- a/components/sync/driver/sync_auth_manager.cc
 +++ b/components/sync/driver/sync_auth_manager.cc
-@@ -410,6 +410,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
+@@ -409,6 +409,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
  
  SyncAccountInfo SyncAuthManager::DetermineAccountToUse() const {
    DCHECK(registered_for_auth_notifications_);
@@ -10,7 +10,7 @@ index 3287a32ed1ca6ed5aada26928592ad278f8046a6..7e7f4d0a1dad502d5734e1cf6b105371
    return syncer::DetermineAccountToUse(identity_manager_);
  }
  
-@@ -481,6 +482,7 @@ void SyncAuthManager::RequestAccessToken() {
+@@ -480,6 +481,7 @@ void SyncAuthManager::RequestAccessToken() {
    // Finally, kick off a new access token fetch.
    partial_token_status_.token_request_time = base::Time::Now();
    partial_token_status_.token_response_time = base::Time();
