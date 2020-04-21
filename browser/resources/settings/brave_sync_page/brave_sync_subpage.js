@@ -145,14 +145,16 @@ Polymer({
     this.addWebUIListener(
         'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
 
-    if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
+    const router = settings.Router.getInstance();
+    if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
       this.onNavigateToPage_();
     }
   },
 
   /** @override */
   detached: function() {
-    if (settings.routes.BRAVE_SYNC_SETUP.contains(settings.getCurrentRoute())) {
+    const router = settings.Router.getInstance();
+    if (router.getRoutes().BRAVE_SYNC_SETUP.contains(router.getCurrentRoute())) {
       this.onNavigateAwayFromPage_();
     }
 
@@ -201,7 +203,8 @@ Polymer({
   onSetupCancelDialogConfirm_: function() {
     this.setupCancelConfirmed_ = true;
     this.$$('#setupCancelDialog').close();
-    settings.navigateTo(settings.routes.BRAVE_SYNC);
+    const router = settings.Router.getInstance();
+    router.navigateTo(router.getRoutes().BRAVE_SYNC);
     chrome.metricsPrivate.recordUserAction(
         'Signin_Signin_ConfirmCancelAdvancedSyncSettings');
   },
@@ -223,16 +226,17 @@ Polymer({
 
   /** @protected */
   currentRouteChanged: function() {
-    if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
+    const router = settings.Router.getInstance();
+    if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
       this.onNavigateToPage_();
       return;
     }
 
-    if (settings.routes.BRAVE_SYNC_SETUP.contains(settings.getCurrentRoute())) {
+    if (router.getRoutes().BRAVE_SYNC_SETUP.contains(router.getCurrentRoute())) {
       return;
     }
 
-    const searchParams = settings.getQueryParameters().get('search');
+    const searchParams = router.getQueryParameters().get('search');
     if (searchParams) {
       // User navigated away via searching. Cancel sync without showing
       // confirmation dialog.
@@ -251,7 +255,7 @@ Polymer({
       // firing). Triggering navigation from within an observer leads to some
       // undefined behavior and runtime errors.
       requestAnimationFrame(() => {
-        settings.navigateTo(settings.routes.BRAVE_SYNC_SETUP);
+        router.navigateTo(router.getRoutes().BRAVE_SYNC_SETUP);
         this.showSetupCancelDialog_ = true;
         // Flush to make sure that the setup cancel dialog is attached.
         Polymer.dom.flush();
@@ -277,7 +281,8 @@ Polymer({
 
   /** @private */
   onNavigateToPage_: function() {
-    assert(settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP);
+    const router = settings.Router.getInstance();
+    assert(router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP);
 
     this.browserProxy_.getSyncStatus().then(
         this.handleSyncStatus_.bind(this));
@@ -351,8 +356,9 @@ Polymer({
         this.pageStatus_ = pageStatus;
         return;
       case settings.PageStatus.DONE:
-        if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
-          settings.navigateTo(settings.routes.BRAVE_SYNC);
+        const router = settings.Router.getInstance();
+        if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
+          router.navigateTo(router.getRoutes().BRAVE_SYNC);
         }
         return;
       case settings.PageStatus.PASSPHRASE_FAILED:
@@ -382,11 +388,12 @@ Polymer({
    * @private
    */
   onSyncSetupDone_: function(e) {
+    const router = settings.Router.getInstance();
     if (e.detail) {
       this.browserProxy_.setSyncCode(this.passphrase_).then((success) => {
         if (success) {
           this.didAbort_ = false;
-          settings.navigateTo(settings.routes.BRAVE_SYNC);
+          router.navigateTo(router.getRoutes().BRAVE_SYNC);
         } else {
           this.passphrase_ = '';
           this.showInvalidSyncCodeDialog_ = true;
@@ -395,14 +402,15 @@ Polymer({
         }
       });
     } else {
-      settings.navigateTo(settings.routes.BRAVE_SYNC);
+      router.navigateTo(router.getRoutes().BRAVE_SYNC);
     }
   },
 
   onResetSyncChain_: function() {
     this.browserProxy_.resetSyncChain();
     this.didAbort_ = true;
-    settings.navigateTo(settings.routes.BRAVE_SYNC);
+    const router = settings.Router.getInstance();
+    router.navigateTo(router.getRoutes().BRAVE_SYNC);
   }
 });
 

@@ -86,7 +86,8 @@ Polymer({
 
   /** @protected */
   currentRouteChanged: function() {
-    if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
+    const router = settings.Router.getInstance();
+    if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
       // This is for reentry after setup aborted.
       if (this.$$('#syncSetup') && !this.$$('#syncSetup').open) {
         Polymer.dom.flush();

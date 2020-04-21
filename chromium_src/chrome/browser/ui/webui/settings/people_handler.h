@@ -1,7 +1,8 @@
 
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_PEOPLE_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_PEOPLE_HANDLER_H_
-#define BRAVE_PEOPLE_HANDLER_H_ \
+#define BRAVE_PEOPLE_HANDLER_H_                        \
+ private:                                              \
   void HandleGetSyncCode(const base::ListValue* args); \
   void HandleSetSyncCode(const base::ListValue* args); \
   void HandleReset(const base::ListValue* args);
