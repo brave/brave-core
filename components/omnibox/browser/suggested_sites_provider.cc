@@ -69,7 +69,8 @@ void SuggestedSitesProvider::Start(const AutocompleteInput& input,
     }
   };
 
-  std::for_each(suggested_sites_.begin(), suggested_sites_.end(),
+  const auto& suggested_sites = GetSuggestedSites();
+  std::for_each(suggested_sites.begin(), suggested_sites.end(),
       check_add_match);
 }
 

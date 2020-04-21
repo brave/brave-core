@@ -28,10 +28,10 @@ class SuggestedSitesProvider : public AutocompleteProvider {
 
  private:
   ~SuggestedSitesProvider() override;
-  static std::vector<SuggestedSitesMatch> suggested_sites_;
 
   static const int kRelevance;
 
+  const std::vector<SuggestedSitesMatch>& GetSuggestedSites();
   void AddMatch(const SuggestedSitesMatch& match,
                 const ACMatchClassifications& styles);
 
