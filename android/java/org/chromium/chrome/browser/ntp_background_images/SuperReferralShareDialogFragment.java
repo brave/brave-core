@@ -64,7 +64,6 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 		super.onViewCreated(view, savedInstanceState);
 		mQRImage = view.findViewById(R.id.share_qr_code_image);
 		mShareButton = view.findViewById(R.id.btn_share);
-
 		mShareButton.setOnClickListener(this);
 
 		generateQRCode();
@@ -81,9 +80,8 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
     private void openShareIntent() {
     	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My App Name");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Brave app");
-        getActivity().startActivity(Intent.createChooser(sharingIntent, "Share app via"));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, BRAVE_REF_URL + mNTPBackgroundImagesBridge.getSuperReferralCode());
+        getActivity().startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_link_chooser_title)));
     }
 
     private void generateQRCode() {
