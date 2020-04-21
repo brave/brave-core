@@ -42,22 +42,38 @@ public class BraveReferrer implements InstallReferrerStateListener {
         return sInstance;
     }
 
-    public void initReferrer(Context context) {
-        promoCodeFilePath = context.getApplicationInfo().dataDir +
-                File.separator + APP_CHROME_DIR + File.separator + PROMO_CODE_FILE_NAME;
+    private class InitReferrerRunnable implements Runnable {
+        private Context mContext;
+        private BraveReferrer mBraveReferrer;
+        public InitReferrerRunnable(Context context, BraveReferrer braveReferrer) {
+          mContext = context;
+          mBraveReferrer = braveReferrer;
+        }
 
-        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-        if (!sharedPref.getBoolean(BRAVE_REFERRER_RECEIVED, false) &&
-            PackageUtils.isFirstInstall(context)) {
-            referrerClient = InstallReferrerClient.newBuilder(context).build();
-            // This seems to be known issue, for now just wrapping it into try/catch block
-            // https://issuetracker.google.com/issues/72926755
-            try {
-                referrerClient.startConnection(this);
-            } catch (SecurityException e) {
-                Log.e(TAG, "Unable to start connection for referrer client: " + e);
+        @Override
+        public void run() {
+            promoCodeFilePath = mContext.getApplicationInfo().dataDir +
+                    File.separator + APP_CHROME_DIR + File.separator + PROMO_CODE_FILE_NAME;
+            SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+            if (!sharedPref.getBoolean(BRAVE_REFERRER_RECEIVED, false) &&
+                PackageUtils.isFirstInstall(mContext)) {
+                referrerClient = InstallReferrerClient.newBuilder(mContext).build();
+                // This seems to be known issue, for now just wrapping it into try/catch block
+                // https://issuetracker.google.com/issues/72926755
+                try {
+                    referrerClient.startConnection(mBraveReferrer);
+                } catch (SecurityException e) {
+                    Log.e(TAG, "Unable to start connection for referrer client: " + e);
+                }
             }
         }
+    }
+
+    public void initReferrer(Context context) {
+        // On some devices InstallReferrerClient.startConnection causes file IO,
+        // so run it in IO task
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,
+            new InitReferrerRunnable(context, this));
     }
 
     private class SaveReferrerRunnable implements Runnable {
