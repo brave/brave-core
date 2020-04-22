@@ -39,7 +39,6 @@ export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.body};
   width: ${p => p.isMobile ? '100%' : '373px'};
   background: ${p => wrapperBackgroundRules(p.notification)};
-  min-height: ${p => p.compact ? 'unset' : '715px'};
   border-radius: ${p => p.compact ? '0' : '6px'};
   display: flex;
   flex-direction: column;

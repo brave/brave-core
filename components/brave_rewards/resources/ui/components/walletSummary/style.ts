@@ -63,9 +63,9 @@ export const StyledActivityIcon = styled<{}, 'span'>('span')`
   display: inline-block;
 `
 
-export const StyledNoActivityWrapper = styled<{}, 'div'>('div')`
+export const StyledNoActivityWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
-  margin-top: 80px;
+  margin-top: ${p => p.compact ? '80px' : '30px'};
   text-align: center;
 `
 

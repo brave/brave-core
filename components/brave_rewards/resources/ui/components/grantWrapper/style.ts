@@ -37,9 +37,7 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
   padding: 0 52px 36px;
   border-radius: 6px;
-  min-height: ${p => (p.fullScreen || p.isPanel)
-    ? '100%'
-    : p.overlay ? '710px' : 'auto'};
+  min-height: ${p => (p.fullScreen || p.isPanel) ? '100%' : 'auto'};
   min-width: 373px;
   overflow-y: ${p => p.fullScreen ? 'scroll' : 'hidden'};
   background: ${p => getBackground(p)};
@@ -48,7 +46,7 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
 export const StyledHeader = styled<{}, 'div'>('div')`
   text-align: center;
   width: 100%;
-  margin: 59px 0;
+  margin: 30px 0;
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
