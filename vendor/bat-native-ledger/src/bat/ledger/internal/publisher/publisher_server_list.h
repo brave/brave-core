@@ -23,6 +23,11 @@ class LedgerImpl;
 
 namespace braveledger_publisher {
 
+using SharedServerPublisherPartial =
+    std::shared_ptr<std::vector<ledger::ServerPublisherPartial>>;
+using SharedPublisherBanner =
+    std::shared_ptr<std::vector<ledger::PublisherBanner>>;
+
 class PublisherServerList {
  public:
   explicit PublisherServerList(bat_ledger::LedgerImpl* ledger);
@@ -56,24 +61,23 @@ class PublisherServerList {
       const std::string& data,
       ParsePublisherListCallback callback);
 
-  ledger::PublisherBanner ParsePublisherBanner(
-      const std::string& publisher_key,
-      base::DictionaryValue* dictionary);
+  void ParsePublisherBanner(
+      ledger::PublisherBanner* banner,
+      base::Value* dictionary);
 
   void SaveParsedData(
       const ledger::Result result,
-      const std::vector<ledger::ServerPublisherPartial>& list_publisher,
-      const std::vector<ledger::PublisherBanner>& list_banner,
+      const SharedServerPublisherPartial& list_publisher,
+      const SharedPublisherBanner& list_banner,
       ParsePublisherListCallback callback);
 
   void SavePublishers(
-      const std::vector<ledger::ServerPublisherPartial>& list_publisher,
-      const std::vector<ledger::PublisherBanner>& list_banner,
+      const SharedServerPublisherPartial& list_publisher,
+      const SharedPublisherBanner& list_banner,
       ParsePublisherListCallback callback);
 
   void SaveBanners(
-      const std::vector<ledger::ServerPublisherPartial>& list_publisher,
-      const std::vector<ledger::PublisherBanner>& list_banner,
+      const SharedPublisherBanner& list_banner,
       ParsePublisherListCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
