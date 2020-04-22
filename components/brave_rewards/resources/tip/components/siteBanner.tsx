@@ -243,7 +243,7 @@ class Banner extends React.Component<Props, State> {
 
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
     if (internalFavicon.test(publisher.logo)) {
-      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
+      logo = `chrome://favicon/size/160@1x/${publisher.logo}`
     }
 
     if (!checkmark) {
