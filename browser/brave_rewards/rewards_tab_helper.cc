@@ -22,17 +22,7 @@
 #include "content/public/common/resource_load_info.mojom.h"
 #include "content/public/common/resource_type.h"
 
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_service.h"
-#endif
-
 using content::ResourceType;
-
-#if BUILDFLAG(ENABLE_GREASELION)
-using greaselion::GreaselionService;
-using greaselion::GreaselionServiceFactory;
-#endif
 
 // DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsTabHelper);
 
@@ -141,21 +131,6 @@ void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
       TabStripModel::kNoTab) {
     rewards_service_->OnBackground(tab_id_);
   }
-}
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-void RewardsTabHelper::OnRewardsMainEnabled(RewardsService* rewards_service,
-                                            bool rewards_main_enabled) {
-  GreaselionService* greaselion_service =
-      GreaselionServiceFactory::GetForBrowserContext(
-          web_contents()->GetBrowserContext());
-  if (!greaselion_service)
-    return;
-  greaselion_service->SetFeatureEnabled(greaselion::REWARDS,
-                                        rewards_main_enabled);
-  greaselion_service->SetFeatureEnabled(greaselion::TWITTER_TIPS,
-                                        rewards_main_enabled);
 }
 #endif
 
