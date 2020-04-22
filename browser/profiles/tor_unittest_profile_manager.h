@@ -8,12 +8,12 @@
 
 #include <memory>
 
-#include "chrome/browser/profiles/profile_manager.h"
+#include "brave/browser/profiles/brave_profile_manager.h"
 
-class TorUnittestProfileManager : public ProfileManagerWithoutInit {
+class TorUnittestProfileManager : public BraveProfileManagerWithoutInit {
  public:
   explicit TorUnittestProfileManager(const base::FilePath& user_data_dir)
-      : ProfileManagerWithoutInit(user_data_dir) {}
+      : BraveProfileManagerWithoutInit(user_data_dir) {}
   ~TorUnittestProfileManager() override = default;
 
  protected:
