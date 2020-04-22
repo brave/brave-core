@@ -36,6 +36,8 @@ typedef void (^BATNetworkCompletionBlock)(int statusCode,
 
 #pragma mark - Network
 
+@property (nonatomic, copy, nullable) NSString *customUserAgent;
+
 /// Loads a URL request
 - (void)loadURLRequest:(const std::string&)url
                headers:(const std::vector<std::string>&)headers

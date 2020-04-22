@@ -1792,6 +1792,16 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Network
 
+- (NSString *)customUserAgent
+{
+  return self.commonOps.customUserAgent;
+}
+
+- (void)setCustomUserAgent:(NSString *)customUserAgent
+{
+  self.commonOps.customUserAgent = [customUserAgent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
 - (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback
 {
   std::map<ledger::UrlMethod, std::string> methodMap {

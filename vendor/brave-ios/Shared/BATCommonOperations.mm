@@ -97,7 +97,12 @@
       auto value = [split.lastObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
       [request setValue:value forHTTPHeaderField:name];
     }
-   }
+  }
+  
+  if (self.customUserAgent != nil &&
+      self.customUserAgent.length > 0) {
+    [request setValue:self.customUserAgent forHTTPHeaderField:@"User-Agent"];
+  }
 
   if (content_type.length() > 0) {
     [request setValue:[NSString stringWithUTF8String:content_type.c_str()] forHTTPHeaderField:@"Content-Type"];
