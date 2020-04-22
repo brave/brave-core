@@ -22,6 +22,7 @@ interface StyleProps {
   isFirstView?: boolean
   hideOverflow?: boolean
   userAuthed?: boolean
+  clickable?: boolean
   position?: 'left' | 'right'
 }
 
@@ -301,9 +302,9 @@ export const QRImage = styled<{}, 'img'>('img')`
   margin: 0 auto 20px auto;
 `
 
-export const ListLabel = styled<{}, 'div'>('div')`
+export const ListLabel = styled<StyleProps, 'div'>('div')`
   color: #fff;
-  cursor: pointer;
+  cursor: ${p => p.clickable ? 'pointer' : 'initial'};
   margin-top: 5px;
 `
 
