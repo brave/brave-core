@@ -31,7 +31,12 @@ Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   auto secondary_pattern = rule.secondary_pattern;
   if (secondary_pattern ==
       ContentSettingsPattern::FromString("https://firstParty/*")) {
-    secondary_pattern = rule.primary_pattern;
+    if (!rule.primary_pattern.MatchesAllHosts()) {
+      secondary_pattern = ContentSettingsPattern::FromString(
+          "*://[*.]" + rule.primary_pattern.GetHost() + "/*");
+    } else {
+      secondary_pattern = rule.primary_pattern;
+    }
   }
 
   // brave plugin rules incorrectly use the embedded url as the primary
