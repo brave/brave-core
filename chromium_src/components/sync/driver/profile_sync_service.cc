@@ -9,9 +9,9 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
   sync_prefs_.SetPollInterval(  \
       base::TimeDelta::FromSeconds(syncer::kBraveDefaultPollIntervalSeconds));
 
-#define BRAVE_IS_SIGNED_IN                           \
-  return sync_client_->GetPrefService()->GetBoolean( \
-      brave_sync::prefs::kSyncEnabled);
+#define BRAVE_IS_SIGNED_IN                                                   \
+  brave_sync::prefs::Prefs brave_sync_prefs(sync_client_->GetPrefService()); \
+  return brave_sync_prefs.IsSyncEnabled();
 
 #define BRAVE_PROFILE_SYNC_SERVICE                             \
   auth_manager_->CreateAccessTokenFetcher(url_loader_factory_, \

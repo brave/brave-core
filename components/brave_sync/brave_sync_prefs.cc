@@ -14,6 +14,8 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {
+  prefs->ClearPref(brave_sync::prefs::kSyncSeed);
+  prefs->ClearPref(brave_sync::prefs::kSyncEnabled);
   prefs->ClearPref(brave_sync::prefs::kSyncPrevSeed);
   prefs->ClearPref(brave_sync::prefs::kDuplicatedBookmarksRecovered);
   prefs->ClearPref(brave_sync::prefs::kSyncDeviceId);
@@ -32,22 +34,26 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(brave_sync::prefs::kSyncMigrateBookmarksVersion);
   prefs->ClearPref(brave_sync::prefs::kSyncRecordsToResend);
   prefs->ClearPref(brave_sync::prefs::kSyncRecordsToResendMeta);
+  prefs->ClearPref(brave_sync::prefs::kDuplicatedBookmarksMigrateVersion);
 }
 
 namespace brave_sync {
 namespace prefs {
 
-const char kSyncSeed[] = "brave_sync.seed";
+const char kSyncV2Seed[] = "brave_sync_v2.seed";
+const char kSyncV2Enabled[] = "brave_sync_v2.enabled";
+const char kSyncV2Migrated[] = "brave_sync_v2.migrated";
 
 // Deprecated
 // ============================================================================
+const char kSyncSeed[] = "brave_sync.seed";
+const char kSyncEnabled[] = "brave_sync.enabled";
 const char kSyncDeviceId[] = "brave_sync.device_id";
 const char kSyncDeviceIdV2[] = "brave_sync.device_id_v2";
 const char kSyncDeviceObjectId[] = "brave_sync.device_object_id";
 const char kSyncPrevSeed[] = "brave_sync.previous_seed";
 const char kSyncDeviceName[] = "brave_sync.device_name";
 const char kSyncBookmarksBaseOrder[] = "brave_sync.bookmarks_base_order";
-const char kSyncEnabled[] = "brave_sync.enabled";
 const char kSyncBookmarksEnabled[] = "brave_sync.bookmarks_enabled";
 const char kSyncSiteSettingsEnabled[] = "brave_sync.site_settings_enabled";
 const char kSyncHistoryEnabled[] = "brave_sync.history_enabled";
@@ -72,32 +78,31 @@ const char kDuplicatedBookmarksMigrateVersion[] =
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
 void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterStringPref(prefs::kSyncSeed, std::string());
+  registry->RegisterStringPref(prefs::kSyncV2Seed, std::string());
+  registry->RegisterBooleanPref(prefs::kSyncV2Enabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncV2Migrated, false);
 
 // Deprecated
 // ============================================================================
+  registry->RegisterStringPref(prefs::kSyncSeed, std::string());
+  registry->RegisterBooleanPref(prefs::kSyncEnabled, false);
   registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceIdV2, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceObjectId, std::string());
   registry->RegisterStringPref(prefs::kSyncPrevSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceName, std::string());
   registry->RegisterStringPref(prefs::kSyncBookmarksBaseOrder, std::string());
-
-  registry->RegisterBooleanPref(prefs::kSyncEnabled, false);
   registry->RegisterBooleanPref(prefs::kSyncBookmarksEnabled, false);
   registry->RegisterBooleanPref(prefs::kSyncSiteSettingsEnabled, false);
   registry->RegisterBooleanPref(prefs::kSyncHistoryEnabled, false);
-
   registry->RegisterTimePref(prefs::kSyncLatestRecordTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLatestDeviceRecordTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLastFetchTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLastCompactTimeBookmarks,
                              base::Time());
-
   registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
   registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
   registry->RegisterIntegerPref(prefs::kSyncMigrateBookmarksVersion, 0);
-
   registry->RegisterListPref(prefs::kSyncRecordsToResend);
   registry->RegisterDictionaryPref(prefs::kSyncRecordsToResendMeta);
   registry->RegisterBooleanPref(kDuplicatedBookmarksRecovered, false);
@@ -105,7 +110,7 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 }
 
 std::string Prefs::GetSeed() const {
-  const std::string encoded_seed = pref_service_->GetString(kSyncSeed);
+  const std::string encoded_seed = pref_service_->GetString(kSyncV2Seed);
   std::string encrypted_seed;
   if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
     LOG(ERROR) << "base64 decode sync seed failure";
@@ -129,21 +134,28 @@ bool Prefs::SetSeed(const std::string& seed) {
   // String stored in prefs has to be UTF8 string so we use base64 to encode it.
   std::string encoded_seed;
   base::Base64Encode(encrypted_seed, &encoded_seed);
-  pref_service_->SetString(kSyncSeed, encoded_seed);
+  pref_service_->SetString(kSyncV2Seed, encoded_seed);
   return true;
 }
 
-int Prefs::GetMigratedBookmarksVersion() {
-  return pref_service_->GetInteger(kSyncMigrateBookmarksVersion);
+bool Prefs::IsSyncEnabled() const {
+  return pref_service_->GetBoolean(kSyncV2Enabled);
+}
+void Prefs::SetSyncEnabled(bool is_enabled) {
+  pref_service_->SetBoolean(kSyncV2Enabled, is_enabled);
 }
 
-void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
-  pref_service_->SetInteger(kSyncMigrateBookmarksVersion, migrate_bookmarks);
+bool Prefs::IsSyncV2Migrated() const {
+  return pref_service_->GetBoolean(kSyncV2Migrated);
+}
+
+void Prefs::SetSyncV2Migrated(bool is_migrated) {
+  pref_service_->SetBoolean(kSyncV2Migrated, is_migrated);
 }
 
 void Prefs::Clear() {
-  pref_service_->ClearPref(kSyncSeed);
-  pref_service_->ClearPref(kSyncEnabled);
+  pref_service_->ClearPref(kSyncV2Seed);
+  pref_service_->ClearPref(kSyncV2Enabled);
 }
 
 }  // namespace prefs
