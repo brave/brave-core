@@ -4,12 +4,22 @@
 
  cr.define('settings', function() {
   /** @interface */
-  class BraveNewTabBrowserProxy {}
+  class BraveNewTabBrowserProxy {
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    getIsSuperReferralActive() {}
+  }
 
   /**
    * @implements {settings.BraveNewTabBrowserProxy}
    */
-  class BraveNewTabBrowserProxyImpl {}
+  class BraveNewTabBrowserProxyImpl {
+    /** @override */
+    getIsSuperReferralActive() {
+      return cr.sendWithPromise('getIsSuperReferralActive');
+    }
+  }
 
   cr.addSingletonGetter(BraveNewTabBrowserProxyImpl);
 

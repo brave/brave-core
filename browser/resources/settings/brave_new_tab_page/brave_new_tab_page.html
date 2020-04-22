@@ -29,7 +29,7 @@
       <div class="flex">
         <div class="label primary-title">$i18n{braveNewTabCustomizeDashboard}</div>
         <div class="normalize-margin">
-          <template is="dom-if" if="[[shouldShowBackgroundImageOptions_()]]">
+          <template is="dom-if" if="[[!isSuperReferralActive_]]">
             <settings-toggle-button id="showBackgroundImageControlType"
                 class="secondary borderless"
                 pref="{{prefs.brave.new_tab_page.show_background_image}}"

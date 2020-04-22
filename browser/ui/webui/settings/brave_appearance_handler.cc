@@ -7,10 +7,35 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
+
+using ntp_background_images::ViewCounterServiceFactory;
+using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
+
+namespace {
+
+bool IsSuperReferralActive(Profile* profile) {
+  bool isSuperReferralActive = false;
+  auto* service = ViewCounterServiceFactory::GetForProfile(profile);
+  if (service) {
+    auto* data = service->GetCurrentBrandedWallpaperData();
+    if (data && data->IsSuperReferral()) {
+      isSuperReferralActive = true;
+    }
+  }
+
+  return isSuperReferralActive;
+}
+
+}  // namespace
 
 BraveAppearanceHandler::BraveAppearanceHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
@@ -23,6 +48,13 @@ BraveAppearanceHandler::BraveAppearanceHandler() {
 BraveAppearanceHandler::~BraveAppearanceHandler() = default;
 
 void BraveAppearanceHandler::RegisterMessages() {
+  profile_ = Profile::FromWebUI(web_ui());
+  profile_state_change_registrar_.Init(profile_->GetPrefs());
+  profile_state_change_registrar_.Add(
+      kNewTabPageSuperReferralThemesOption,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+
   web_ui()->RegisterMessageCallback(
       "setBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,
@@ -30,6 +62,10 @@ void BraveAppearanceHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::GetBraveThemeType,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsSuperReferralActive",
+      base::BindRepeating(&BraveAppearanceHandler::GetIsSuperReferralActive,
                           base::Unretained(this)));
 }
 
@@ -54,6 +90,15 @@ void BraveAppearanceHandler::GetBraveThemeType(const base::ListValue* args) {
       base::Value(static_cast<int>(dark_mode::GetBraveDarkModeType())));
 }
 
+void BraveAppearanceHandler::GetIsSuperReferralActive(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0],
+                            base::Value(IsSuperReferralActive(profile_)));
+}
+
 void BraveAppearanceHandler::OnBraveDarkModeChanged() {
   // GetBraveThemeType() should be used because settings option displays all
   // available options including default.
@@ -61,5 +106,13 @@ void BraveAppearanceHandler::OnBraveDarkModeChanged() {
     FireWebUIListener(
         "brave-theme-type-changed",
         base::Value(static_cast<int>(dark_mode::GetBraveDarkModeType())));
+  }
+}
+
+void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
+  DCHECK_EQ(kNewTabPageSuperReferralThemesOption, pref_name);
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener("super-referral-active-state-changed",
+                      base::Value(IsSuperReferralActive(profile_)));
   }
 }
