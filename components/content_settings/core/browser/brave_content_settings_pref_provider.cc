@@ -343,6 +343,27 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   rules.push_back(CloneRule(wp_com_rule));
   brave_cookie_rules_[incognito].push_back(CloneRule(wp_com_rule));
 
+  // Add ability for google properties to send cookies to each other,
+  // especially needed for google drive playback.
+  //
+  // Partial fix for https://github.com/brave/brave-browser/issues/1122
+  const auto googleapis_com_pattern = ContentSettingsPattern::FromString(
+      "https://[*.]googleapis.com/*");
+  const auto google_com_pattern = ContentSettingsPattern::FromString(
+      "https://[*.]google.com/*");
+  const std::vector<ContentSettingsPattern> patterns = {
+      googleapis_com_pattern, google_com_pattern};
+  for (const auto &outer : patterns) {
+    for (const auto &inner : patterns) {
+      const auto a_rule = Rule(
+          outer,
+          inner,
+          ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
+      rules.push_back(CloneRule(a_rule));
+      brave_cookie_rules_[incognito].push_back(CloneRule(a_rule));
+    }
+  }
+
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
       ContentSettingsType::COOKIES,
