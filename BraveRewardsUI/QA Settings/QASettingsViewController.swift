@@ -48,6 +48,15 @@ public class QASettingsViewController: TableViewController {
     $0.placeholder = "0"
   }
   
+  private let customUserAgentTextField = UITextField().then {
+    $0.borderStyle = .roundedRect
+    $0.autocorrectionType = .no
+    $0.autocapitalizationType = .none
+    $0.spellCheckingType = .no
+    $0.returnKeyType = .done
+    $0.textAlignment = .right
+  }
+  
   @objc private func reconcileTimeEditingEnded() {
     guard let value = Int32(reconcileTimeTextField.text ?? "") else {
       let alert = UIAlertController(title: "Invalid value", message: "Time has been reset to 0 (no override)", preferredStyle: .alert)
@@ -74,6 +83,10 @@ public class QASettingsViewController: TableViewController {
   @objc private func adsDismissalEditingEnded() {
     let value = Int(adsDismissalTextField.text ?? "") ?? 0
     Preferences.Rewards.adsDurationOverride.value = value > 0 ? value : nil
+  }
+  
+  @objc private func customUserAgentEditingEnded() {
+    rewards.ledger.customUserAgent = customUserAgentTextField.text
   }
   
   private var numpadDismissalToolbar: UIToolbar {
@@ -111,6 +124,12 @@ public class QASettingsViewController: TableViewController {
     adsDismissalTextField.inputAccessoryView = numpadDismissalToolbar
     adsDismissalTextField.text = "\(Preferences.Rewards.adsDurationOverride.value ?? 0)"
     
+    customUserAgentTextField.addTarget(self, action: #selector(customUserAgentEditingEnded), for: .editingDidEnd)
+    customUserAgentTextField.delegate = self
+    customUserAgentTextField.frame = CGRect(x: 0, y: 0, width: 125, height: 32)
+    customUserAgentTextField.inputAccessoryView = numpadDismissalToolbar
+    customUserAgentTextField.text = rewards.ledger.customUserAgent
+    
     KeyboardHelper.defaultHelper.addDelegate(self)
     
     dataSource.sections = [
@@ -132,7 +151,8 @@ public class QASettingsViewController: TableViewController {
           Row(text: "Use Short Retries", accessory: .switchToggle(value: BraveLedger.useShortRetries, { value in
             BraveLedger.useShortRetries = value
           })),
-          Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self)
+          Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self),
+          Row(text: "Custom User Agent", detailText: "Non-persistant. Empty = default", accessory: .view(customUserAgentTextField), cellClass: MultilineSubtitleCell.self)
         ]
       ),
       Section(
@@ -278,6 +298,13 @@ extension QASettingsViewController: KeyboardHelperDelegate {
     self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
   }
   public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardDidShowWithState state: KeyboardState) {
+  }
+}
+
+extension QASettingsViewController: UITextFieldDelegate {
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
 }
 
