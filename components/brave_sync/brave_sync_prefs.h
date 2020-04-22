@@ -29,12 +29,16 @@ namespace brave_sync {
 
 namespace prefs {
 // Stored as bip39 keywords
-extern const char kSyncSeed[];
+extern const char kSyncV2Seed[];
 // Used for override DisableReasons in ProfileSyncService
-extern const char kSyncEnabled[];
+extern const char kSyncV2Enabled[];
+// Indicate whether migration has been done from v1 to v2
+extern const char kSyncV2Migrated[];
 
 // Deprecated
 // ============================================================================
+extern const char kSyncSeed[];
+extern const char kSyncEnabled[];
 extern const char kSyncDeviceId[];
 extern const char kSyncDeviceIdV2[];
 extern const char kSyncDeviceObjectId[];
@@ -53,11 +57,8 @@ extern const char kSyncMigrateBookmarksVersion[];
 extern const char kSyncRecordsToResend[];
 extern const char kSyncRecordsToResendMeta[];
 extern const char kDuplicatedBookmarksRecovered[];
-// ============================================================================
-
-// Version indicates had recovered duplicated bookmarks object ids:
-// 2 - we had migrated object ids
 extern const char kDuplicatedBookmarksMigrateVersion[];
+// ============================================================================
 
 class Prefs {
  public:
@@ -68,8 +69,11 @@ class Prefs {
   std::string GetSeed() const;
   bool SetSeed(const std::string& seed);
 
-  int GetMigratedBookmarksVersion();
-  void SetMigratedBookmarksVersion(const int);
+  bool IsSyncEnabled() const;
+  void SetSyncEnabled(bool is_enabled);
+
+  bool IsSyncV2Migrated() const;
+  void SetSyncV2Migrated(bool is_migrated);
 
   void Clear();
 
