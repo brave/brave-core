@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <vector>
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
@@ -137,13 +138,12 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
       ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
                                                         : ""),
-      ConvertUTF8ToJavaString(env, *theme_name), 
+      ConvertUTF8ToJavaString(env, *theme_name),
       is_sponsored ? *is_sponsored : 0);
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
-
   std::vector<ntp_background_images::TopSite> top_sites = view_counter_service_
       ? view_counter_service_->GetTopSitesVectorData()
       : std::vector<ntp_background_images::TopSite>{};
@@ -157,7 +157,7 @@ void NTPBackgroundImagesBridge::GetTopSites(
       ConvertUTF8ToJavaString(env, top_site.image_file.AsUTF8Unsafe()));
   }
 
-  Java_NTPBackgroundImagesBridge_topSitesLoaded(env);  
+  Java_NTPBackgroundImagesBridge_topSitesLoaded(env);
 }
 
 bool NTPBackgroundImagesBridge::IsSuperReferral(
@@ -171,7 +171,8 @@ base::android::ScopedJavaLocalRef<jstring>
 NTPBackgroundImagesBridge::GetSuperReferralThemeName(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
   if (view_counter_service_)
-    return ConvertUTF8ToJavaString(env, view_counter_service_->GetSuperReferralThemeName());
+    return ConvertUTF8ToJavaString(env,
+      view_counter_service_->GetSuperReferralThemeName());
   return ConvertUTF8ToJavaString(env, "");
 }
 
@@ -179,7 +180,8 @@ base::android::ScopedJavaLocalRef<jstring>
 NTPBackgroundImagesBridge::GetSuperReferralCode(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
   if (view_counter_service_)
-    return ConvertUTF8ToJavaString(env,view_counter_service_->GetSuperReferralCode());
+    return ConvertUTF8ToJavaString(env,
+      view_counter_service_->GetSuperReferralCode());
   return ConvertUTF8ToJavaString(env, "");
 }
 
