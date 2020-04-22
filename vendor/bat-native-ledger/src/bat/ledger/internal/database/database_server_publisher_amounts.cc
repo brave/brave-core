@@ -5,7 +5,6 @@
 
 #include <map>
 #include <utility>
-#include <vector>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/database/database_server_publisher_amounts.h"
@@ -173,30 +172,56 @@ bool DatabaseServerPublisherAmounts::MigrateToV15(
   return true;
 }
 
-void DatabaseServerPublisherAmounts::InsertOrUpdate(
+void DatabaseServerPublisherAmounts::InsertOrUpdateList(
     ledger::DBTransaction* transaction,
-    const ledger::PublisherBanner& info) {
+    const std::vector<ledger::PublisherBanner>& list) {
   DCHECK(transaction);
 
-  // It's ok if social links are empty
-  if (info.amounts.empty()) {
+  if (list.empty()) {
     return;
   }
 
-  for (const auto& amount : info.amounts) {
-    const std::string query = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(publisher_key, amount) VALUES (?, ?)",
+  const std::string base_query = base::StringPrintf(
+      "INSERT OR REPLACE INTO %s VALUES ",
       table_name_);
 
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
-    command->command = query;
+  size_t i = 0;
+  std::string query;
+  for (const auto& info : list) {
+    // It's ok if amounts are empty
+    if (info.amounts.empty()) {
+      continue;
+    }
 
-    BindString(command.get(), 0, info.publisher_key);
-    BindDouble(command.get(), 1, amount);
-    transaction->commands.push_back(std::move(command));
+    if (i == 0) {
+      query += base_query;
+    }
+
+    for (const auto& amount : info.amounts) {
+      if (i == kBatchLimit) {
+        query += base_query;
+        i = 0;
+      }
+
+      query += base::StringPrintf(
+        R"(("%s",%g))",
+        info.publisher_key.c_str(),
+        amount);
+      query += (i == kBatchLimit - 1) ? ";" : ",";
+      i++;
+    }
   }
+
+  if (query.empty()) {
+    return;
+  }
+
+  query.pop_back();
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
 }
 
 void DatabaseServerPublisherAmounts::GetRecord(

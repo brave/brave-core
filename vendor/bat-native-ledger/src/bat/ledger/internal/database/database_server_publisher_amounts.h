@@ -7,6 +7,7 @@
 #define BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_AMOUNTS_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_table.h"
 
@@ -19,9 +20,9 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
 
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
-  void InsertOrUpdate(
+  void InsertOrUpdateList(
       ledger::DBTransaction* transaction,
-      const ledger::PublisherBanner& info);
+      const std::vector<ledger::PublisherBanner>& list);
 
   void GetRecord(
       const std::string& publisher_key,

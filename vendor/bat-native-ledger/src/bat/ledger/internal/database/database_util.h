@@ -15,6 +15,8 @@
 
 namespace braveledger_database {
 
+const size_t kBatchLimit = 999;
+
 bool DropTable(
     ledger::DBTransaction* transaction,
     const std::string& table_name);

@@ -208,8 +208,9 @@ void DatabaseServerPublisherBanner::InsertOrUpdateList(
       "VALUES (?, ?, ?, ?, ?)",
       table_name_);
 
+  ledger::DBCommandPtr command;
   for (const auto& info : list) {
-    auto command = ledger::DBCommand::New();
+    command = ledger::DBCommand::New();
     command->type = ledger::DBCommand::Type::RUN;
     command->command = query;
 
@@ -220,10 +221,10 @@ void DatabaseServerPublisherBanner::InsertOrUpdateList(
     BindString(command.get(), 4, info.logo);
 
     transaction->commands.push_back(std::move(command));
-
-    links_->InsertOrUpdate(transaction.get(), info);
-    amounts_->InsertOrUpdate(transaction.get(), info);
   }
+
+  links_->InsertOrUpdateList(transaction.get(), list);
+  amounts_->InsertOrUpdateList(transaction.get(), list);
 
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
