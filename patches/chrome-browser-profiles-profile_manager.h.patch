@@ -1,47 +1,12 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 3e1e28ea7d0e9c90d0c2189dae6ba6a394582aac..e67f1e0d57cfd01f56a0291fd2d3cff8c86b1180 100644
+index 3e1e28ea7d0e9c90d0c2189dae6ba6a394582aac..7a7746905e152dcdabaf7c3de24a31f8528fd662 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
-@@ -148,7 +148,7 @@ class ProfileManager : public content::NotificationObserver,
- 
-   // Get the name of the last used profile, or if that's undefined, the default
-   // profile.
--  std::string GetLastUsedProfileName();
-+  virtual std::string GetLastUsedProfileName();
- 
-   // Get the Profiles which are currently open, i.e. have open browsers or were
-   // open the last time Chrome was running. Profiles that fail to initialize are
-@@ -229,7 +229,7 @@ class ProfileManager : public content::NotificationObserver,
- 
-   // Initializes user prefs of |profile|. This includes profile name and
-   // avatar values.
--  void InitProfileUserPrefs(Profile* profile);
-+  virtual void InitProfileUserPrefs(Profile* profile);
- 
-   // Register and add testing profile to the ProfileManager. Use ONLY in tests.
-   // This allows the creation of Profiles outside of the standard creation path
-@@ -271,6 +271,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -269,6 +269,7 @@ class ProfileManager : public content::NotificationObserver,
+   void set_do_final_services_init(bool do_final_services_init) {
+     do_final_services_init_ = do_final_services_init;
    }
++  BRAVE_PROFILE_MANAGER_H
  
   private:
-+  friend class BraveProfileManager;
    friend class TestingProfileManager;
-   FRIEND_TEST_ALL_PREFIXES(ProfileManagerBrowserTest, DeleteAllProfiles);
-   FRIEND_TEST_ALL_PREFIXES(ProfileManagerBrowserTest, SwitchToProfile);
-@@ -295,6 +296,7 @@ class ProfileManager : public content::NotificationObserver,
- 
-   // Does final initial actions.
-   void DoFinalInit(ProfileInfo* profile_info, bool go_off_the_record);
-+  virtual
-   void DoFinalInitForServices(Profile* profile, bool go_off_the_record);
-   void DoFinalInitLogging(Profile* profile);
- 
-@@ -361,7 +363,7 @@ class ProfileManager : public content::NotificationObserver,
- 
-   // Apply settings for profiles created by the system rather than users: The
-   // (desktop) Guest User profile and (desktop) System Profile.
--  void SetNonPersonalProfilePrefs(Profile* profile);
-+  virtual void SetNonPersonalProfilePrefs(Profile* profile);
- 
-   // Determines if profile should be OTR.
-   bool ShouldGoOffTheRecord(Profile* profile);
