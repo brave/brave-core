@@ -13,6 +13,7 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/ad_conversion_queue_item_info.h"
+#include "bat/ads/internal/timer.h"
 
 #include "base/values.h"
 
@@ -37,16 +38,13 @@ class AdConversions {
 
   void StartTimerIfReady();
 
-  bool OnTimer(
-      const uint32_t timer_id);
-
  private:
   bool is_initialized_;
   InitializeCallback callback_;
 
   AdConversionQueueItemList queue_;
 
-  uint32_t timer_id_;
+  Timer timer_;
 
   void OnGetAdConversions(
       const std::string& url,
@@ -71,10 +69,10 @@ class AdConversions {
       const std::string& creative_instance_id);
   void ProcessQueueItem(
       const AdConversionQueueItemInfo& info);
+  void ProcessQueue();
 
   void StartTimer(
       const AdConversionQueueItemInfo& info);
-  void StopTimer();
 
   void SaveState();
   void OnStateSaved(

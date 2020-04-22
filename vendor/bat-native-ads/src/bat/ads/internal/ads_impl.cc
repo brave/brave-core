@@ -81,12 +81,10 @@ namespace ads {
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : is_foreground_(false),
       active_tab_id_(0),
-      collect_activity_timer_id_(0),
-      delivering_ad_notifications_timer_id_(0),
       next_easter_egg_timestamp_in_seconds_(0),
       client_(std::make_unique<Client>(this, ads_client)),
       bundle_(std::make_unique<Bundle>(this, ads_client)),
-      ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
+      ads_serve_(std::make_unique<AdsServe>(ads_client, bundle_.get())),
       frequency_capping_(std::make_unique<FrequencyCapping>(client_.get())),
       ad_conversions_(std::make_unique<AdConversions>(
           this, ads_client, client_.get())),
@@ -96,16 +94,11 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
               kPurchaseIntentSignalDecayTimeWindow)),
       is_initialized_(false),
       is_confirmations_ready_(false),
-      sustained_ad_notification_interaction_timer_id_(0),
       ad_notifications_(std::make_unique<AdNotifications>(this, ads_client)),
       ads_client_(ads_client) {
 }
 
-AdsImpl::~AdsImpl() {
-  StopCollectingActivity();
-  StopDeliveringAdNotifications();
-  StopSustainingAdNotificationInteraction();
-}
+AdsImpl::~AdsImpl() = default;
 
 AdsClient* AdsImpl::get_ads_client() const {
   return ads_client_;
@@ -210,12 +203,6 @@ void AdsImpl::InitializeStep5(
     } else {
       StartDeliveringAdNotifications();
     }
-  }
-
-  if (_is_debug) {
-    StartCollectingActivity(kDebugOneHourInSeconds);
-  } else {
-    StartCollectingActivity(base::Time::kSecondsPerHour);
   }
 
   ads_serve_->DownloadCatalog();
@@ -350,7 +337,7 @@ void AdsImpl::OnBackground() {
   ads_client_->EventLog(report);
 
   if (IsMobile() && !ads_client_->CanShowBackgroundNotifications()) {
-    StopDeliveringAdNotifications();
+    deliver_ad_notification_timer_.Stop();
   }
 }
 
@@ -679,8 +666,7 @@ void AdsImpl::OnPageLoaded(
         last_sustained_ad_notification_url_)) {
       last_sustained_ad_notification_url_ = url;
 
-      StartSustainingAdNotificationInteraction(
-          kSustainAdNotificationInteractionAfterSeconds);
+      StartSustainingAdNotificationInteraction();
     } else {
       BLOG(INFO) << "Already sustaining ad notification interaction for "
           << url;
@@ -1525,76 +1511,23 @@ bool AdsImpl::IsAllowedToServeAdNotifications() {
   return is_allowed;
 }
 
-void AdsImpl::StartCollectingActivity(
-    const uint64_t start_timer_in) {
-  StopCollectingActivity();
-
-  collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
-  if (collect_activity_timer_id_ == 0) {
-    BLOG(ERROR) <<
-        "Failed to start collecting activity due to an invalid timer";
-
-    return;
-  }
-
-  BLOG(INFO) << "Start collecting activity in " << start_timer_in << " seconds";
-}
-
-void AdsImpl::CollectActivity() {
-  if (!IsInitialized()) {
-    BLOG(WARNING) << "CollectActivity failed as not initialized";
-    return;
-  }
-
-  BLOG(INFO) << "Collect activity";
-
-  ads_serve_->DownloadCatalog();
-}
-
-void AdsImpl::StopCollectingActivity() {
-  if (!IsCollectingActivity()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped collecting activity";
-
-  ads_client_->KillTimer(collect_activity_timer_id_);
-  collect_activity_timer_id_ = 0;
-}
-
-bool AdsImpl::IsCollectingActivity() const {
-  if (collect_activity_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
 void AdsImpl::StartDeliveringAdNotifications() {
-  StopDeliveringAdNotifications();
-
   auto now_in_seconds = Time::NowInSeconds();
   auto next_check_serve_ad_timestamp_in_seconds =
       client_->GetNextCheckServeAdNotificationTimestampInSeconds();
 
-  uint64_t start_timer_in;
+  uint64_t delay;
   if (now_in_seconds >= next_check_serve_ad_timestamp_in_seconds) {
     // Browser was launched after the next check to serve an ad
-    start_timer_in = 1 * base::Time::kSecondsPerMinute;
+    delay = 1 * base::Time::kSecondsPerMinute;
   } else {
-    start_timer_in = next_check_serve_ad_timestamp_in_seconds - now_in_seconds;
+    delay = next_check_serve_ad_timestamp_in_seconds - now_in_seconds;
   }
 
-  delivering_ad_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
-  if (delivering_ad_notifications_timer_id_ == 0) {
-    BLOG(ERROR) <<
-        "Failed to start delivering ad notifications due to an invalid timer";
+  const base::Time time = deliver_ad_notification_timer_.Start(delay,
+      base::BindOnce(&AdsImpl::DeliverAdNotification, base::Unretained(this)));
 
-    return;
-  }
-
-  BLOG(INFO) << "Start delivering ad notifications in "
-      << start_timer_in << " seconds";
+  BLOG(INFO) << "Deliver ad notification at " << time;
 }
 
 void AdsImpl::StartDeliveringAdNotificationsAfterSeconds(
@@ -1610,25 +1543,6 @@ void AdsImpl::DeliverAdNotification() {
   MaybeServeAdNotification(true);
 }
 
-void AdsImpl::StopDeliveringAdNotifications() {
-  if (!IsDeliveringAdNotifications()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped delivering ad notifications";
-
-  ads_client_->KillTimer(delivering_ad_notifications_timer_id_);
-  delivering_ad_notifications_timer_id_ = 0;
-}
-
-bool AdsImpl::IsDeliveringAdNotifications() const {
-  if (delivering_ad_notifications_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
 bool AdsImpl::IsCatalogOlderThanOneDay() {
   auto catalog_last_updated_timestamp_in_seconds =
     bundle_->GetCatalogLastUpdatedTimestampInSeconds();
@@ -1642,10 +1556,6 @@ bool AdsImpl::IsCatalogOlderThanOneDay() {
   }
 
   return false;
-}
-
-void AdsImpl::BundleUpdated() {
-  ads_serve_->UpdateNextCatalogCheck();
 }
 
 void AdsImpl::MaybeServeAdNotification(
@@ -1695,22 +1605,14 @@ void AdsImpl::set_last_shown_ad_notification(
   last_shown_ad_notification_ = info;
 }
 
-void AdsImpl::StartSustainingAdNotificationInteraction(
-    const uint64_t start_timer_in) {
-  StopSustainingAdNotificationInteraction();
+void AdsImpl::StartSustainingAdNotificationInteraction() {
+  const uint64_t delay = kSustainAdNotificationInteractionAfterSeconds;
 
-  sustained_ad_notification_interaction_timer_id_ =
-      ads_client_->SetTimer(start_timer_in);
-  if (sustained_ad_notification_interaction_timer_id_ == 0) {
-    BLOG(ERROR) <<
-        "Failed to start sustaining ad notification interaction due to an "
-            "invalid timer";
+  const base::Time time = sustain_ad_notification_interaction_timer_.Start(
+      delay, base::BindOnce(&AdsImpl::SustainAdNotificationInteractionIfNeeded,
+          base::Unretained(this)));
 
-    return;
-  }
-
-  BLOG(INFO) << "Start sustaining ad notification interaction in "
-      << start_timer_in << " seconds";
+  BLOG(INFO) << "Sustain ad notification interaction at " << time;
 }
 
 void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
@@ -1727,27 +1629,6 @@ void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
   BLOG(INFO) << "Sustained ad notification interaction";
 
   ConfirmAd(last_shown_ad_notification_, ConfirmationType::kLanded);
-}
-
-void AdsImpl::StopSustainingAdNotificationInteraction() {
-  if (!IsSustainingAdNotificationInteraction()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped sustaining ad notification interaction";
-
-  ads_client_->KillTimer(sustained_ad_notification_interaction_timer_id_);
-  sustained_ad_notification_interaction_timer_id_ = 0;
-
-  last_sustained_ad_notification_url_ = "";
-}
-
-bool AdsImpl::IsSustainingAdNotificationInteraction() const {
-  if (sustained_ad_notification_interaction_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
 }
 
 bool AdsImpl::IsStillViewingAdNotification() const {
@@ -1794,25 +1675,7 @@ void AdsImpl::ConfirmAction(
 void AdsImpl::OnTimer(
     const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer: " << std::endl
-      << "  timer_id: " << std::to_string(timer_id) << std::endl
-      << "  collect_activity_timer_id_: "
-      << std::to_string(collect_activity_timer_id_) << std::endl
-      << "  delivering_ad_notifications_timer_id_: "
-      << std::to_string(delivering_ad_notifications_timer_id_) << std::endl
-      << "  sustained_ad_notification_interaction_timer_id_: "
-      << std::to_string(sustained_ad_notification_interaction_timer_id_);
-
-  if (timer_id == collect_activity_timer_id_) {
-    CollectActivity();
-  } else if (timer_id == delivering_ad_notifications_timer_id_) {
-    DeliverAdNotification();
-  } else if (timer_id == sustained_ad_notification_interaction_timer_id_) {
-    SustainAdNotificationInteractionIfNeeded();
-  } else if (ad_conversions_->OnTimer(timer_id)) {
-    return;
-  } else {
-    BLOG(WARNING) << "Unexpected OnTimer: " << std::to_string(timer_id);
-  }
+      << "  timer_id: " << timer_id;
 }
 
 void AdsImpl::AppendAdNotificationToHistory(

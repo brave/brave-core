@@ -38,7 +38,6 @@ AdConversions::AdConversions(
     AdsClient* ads_client,
     Client* client)
     : is_initialized_(false),
-      timer_id_(0),
       ads_(ads),
       ads_client_(ads_client),
       client_(client) {
@@ -47,9 +46,7 @@ AdConversions::AdConversions(
   DCHECK(client_);
 }
 
-AdConversions::~AdConversions() {
-  StopTimer();
-}
+AdConversions::~AdConversions() = default;
 
 void AdConversions::Initialize(
     InitializeCallback callback) {
@@ -77,7 +74,7 @@ void AdConversions::Check(
 void AdConversions::StartTimerIfReady() {
   DCHECK(is_initialized_);
 
-  if (timer_id_ != 0) {
+  if (timer_.IsRunning()) {
     return;
   }
 
@@ -88,25 +85,6 @@ void AdConversions::StartTimerIfReady() {
 
   AdConversionQueueItemInfo ad_conversion = queue_.front();
   StartTimer(ad_conversion);
-}
-
-bool AdConversions::OnTimer(
-    const uint32_t timer_id) {
-  if (timer_id != timer_id_) {
-    return false;
-  }
-
-  timer_id_ = 0;
-
-  DCHECK(!queue_.empty());
-  if (queue_.empty()) {
-    return true;
-  }
-
-  AdConversionQueueItemInfo ad_conversion = queue_.front();
-  ProcessQueueItem(ad_conversion);
-
-  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -283,44 +261,36 @@ void AdConversions::ProcessQueueItem(
   StartTimerIfReady();
 }
 
+void AdConversions::ProcessQueue() {
+  if (queue_.empty()) {
+    return;
+  }
+
+  AdConversionQueueItemInfo ad_conversion = queue_.front();
+  ProcessQueueItem(ad_conversion);
+}
+
 void AdConversions::StartTimer(
     const AdConversionQueueItemInfo& info) {
   DCHECK(is_initialized_);
-  DCHECK_EQ(0UL, timer_id_);
-
-  StopTimer();
+  DCHECK(!timer_.IsRunning());
 
   const uint64_t now = Time::NowInSeconds();
 
-  uint64_t start_timer_in;
+  uint64_t delay;
   if (now < info.timestamp_in_seconds) {
-    start_timer_in = info.timestamp_in_seconds - now;
+    delay = info.timestamp_in_seconds - now;
   } else {
-    start_timer_in = brave_base::random::Geometric(
-        kExpiredAdConversionFrequency);
+    delay = brave_base::random::Geometric(kExpiredAdConversionFrequency);
   }
 
-  timer_id_ = ads_client_->SetTimer(start_timer_in);
-  if (timer_id_ == 0) {
-    BLOG(ERROR) << "Failed to start ad conversion timer";
-    return;
-  }
+  timer_.Start(delay, base::BindOnce(&AdConversions::ProcessQueue,
+      base::Unretained(this)));
 
   BLOG(INFO) << "Started ad conversion timer for creative_instance_id "
       << info.creative_instance_id << " with creative set id "
           << info.creative_set_id << " which will trigger on "
               << Time::FromDoubleT(info.timestamp_in_seconds);
-}
-
-void AdConversions::StopTimer() {
-  if (timer_id_ == 0) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped ad conversion timer";
-
-  ads_client_->KillTimer(timer_id_);
-  timer_id_ = 0;
 }
 
 void AdConversions::SaveState() {

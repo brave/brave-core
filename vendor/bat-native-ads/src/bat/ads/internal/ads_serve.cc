@@ -11,7 +11,6 @@
 #include "bat/ads/internal/logging.h"
 
 #include "base/time/time.h"
-#include "brave_base/random.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -19,18 +18,52 @@ using std::placeholders::_3;
 
 namespace ads {
 
-AdsServe::AdsServe(AdsImpl* ads, AdsClient* ads_client, Bundle* bundle) :
-    url_(""),
-    next_catalog_check_timestamp_in_seconds(0),
-    next_retry_start_timer_in_(0),
-    catalog_last_updated_(0),
-    ads_(ads),
-    ads_client_(ads_client),
-    bundle_(bundle) {
+AdsServe::AdsServe(
+    AdsClient* ads_client,
+    Bundle* bundle)
+    : catalog_last_updated_(0),
+      ads_client_(ads_client),
+      bundle_(bundle) {
   BuildUrl();
 }
 
 AdsServe::~AdsServe() = default;
+
+void AdsServe::DownloadCatalog() {
+  if (retry_timer_.IsRunning()) {
+    return;
+  }
+
+  BLOG(INFO) << "Download catalog";
+
+  auto callback = std::bind(&AdsServe::OnCatalogDownloaded,
+      this, url_, _1, _2, _3);
+
+  ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
+}
+
+void AdsServe::DownloadCatalogAfterDelay() {
+  const uint64_t delay = _is_debug ? kDebugCatalogPing :
+      bundle_->GetCatalogPing();
+
+  const base::Time time = timer_.StartWithPrivacy(delay,
+      base::BindOnce(&AdsServe::DownloadCatalog, base::Unretained(this)));
+
+  BLOG(INFO) << "Download catalog at " << time;
+}
+
+uint64_t AdsServe::CatalogLastUpdated() const {
+  return catalog_last_updated_;
+}
+
+void AdsServe::Reset() {
+  timer_.Stop();
+  retry_timer_.Stop();
+
+  ResetCatalog();
+}
+
+//////////////////////////////////////////////////////////////////////////////
 
 void AdsServe::BuildUrl() {
   switch (_environment) {
@@ -53,13 +86,6 @@ void AdsServe::BuildUrl() {
   url_ += CATALOG_PATH;
 }
 
-void AdsServe::DownloadCatalog() {
-  auto callback = std::bind(&AdsServe::OnCatalogDownloaded,
-      this, url_, _1, _2, _3);
-
-  ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
-}
-
 void AdsServe::OnCatalogDownloaded(
     const std::string& url,
     const int response_status_code,
@@ -76,9 +102,7 @@ void AdsServe::OnCatalogDownloaded(
       should_retry = true;
     }
   } else if (response_status_code == 304) {
-    BLOG(INFO) << "Catalog is already up to dates";
-
-    UpdateNextCatalogCheck();
+    BLOG(INFO) << "Catalog is up to date";
   } else {
     std::string formatted_headers = "";
     for (auto header = headers.begin(); header != headers.end(); ++header) {
@@ -101,44 +125,11 @@ void AdsServe::OnCatalogDownloaded(
     RetryDownloadingCatalog();
     return;
   }
+
+  retry_timer_.Stop();
+
+  DownloadCatalogAfterDelay();
 }
-
-uint64_t AdsServe::CatalogLastUpdated() const {
-  return catalog_last_updated_;
-}
-
-void AdsServe::Reset() {
-  ads_->StopCollectingActivity();
-
-  next_retry_start_timer_in_ = 0;
-
-  next_catalog_check_timestamp_in_seconds = 0;
-
-  ResetCatalog();
-}
-
-void AdsServe::UpdateNextCatalogCheck() {
-  next_retry_start_timer_in_ = 0;
-
-  uint64_t ping;
-  if (_is_debug) {
-    ping = kDebugCatalogPing;
-  } else {
-    ping = bundle_->GetCatalogPing();
-  }
-
-  // Choose a geometrically distributed number of seconds so that from
-  // the server's perspective, at any given time, every client has the
-  // same distribution on when its next check will be, so knowing
-  // which client made the last one when reveals nothing about which
-  // client will make the next one.
-  auto rand_delay = brave_base::random::Geometric(ping);
-  next_catalog_check_timestamp_in_seconds = rand_delay;
-
-  ads_->StartCollectingActivity(next_catalog_check_timestamp_in_seconds);
-}
-
-//////////////////////////////////////////////////////////////////////////////
 
 bool AdsServe::ProcessCatalog(const std::string& json) {
   // TODO(Terry Mancey): Refactor function to use callbacks
@@ -156,8 +147,6 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   if (!catalog.HasChanged(bundle_->GetCatalogId())) {
     BLOG(WARNING) << "Catalog id " << catalog.GetId() <<
         " matches current catalog id " << bundle_->GetCatalogId();
-
-    UpdateNextCatalogCheck();
 
     return true;
   }
@@ -181,8 +170,8 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 
 void AdsServe::OnCatalogSaved(const Result result) {
   if (result != SUCCESS) {
-    // If the catalog fails to save, we will retry the next time we collect
-    // activity
+    // If the catalog fails to save, we will retry the next time we download the
+    // catalog
 
     BLOG(ERROR) << "Failed to save catalog";
 
@@ -193,22 +182,11 @@ void AdsServe::OnCatalogSaved(const Result result) {
 }
 
 void AdsServe::RetryDownloadingCatalog() {
-  BLOG(INFO) << "Retry downloading catalog";
+  const base::Time time = retry_timer_.StartWithBackoff(
+      kRetryDownloadingCatalogAfterSeconds,
+          base::BindOnce(&AdsServe::DownloadCatalog, base::Unretained(this)));
 
-  if (next_retry_start_timer_in_ == 0) {
-    if (ads_->IsMobile()) {
-      next_retry_start_timer_in_ = 2 * base::Time::kSecondsPerMinute;
-    } else {
-      next_retry_start_timer_in_ = base::Time::kSecondsPerMinute;
-    }
-  } else {
-    next_retry_start_timer_in_ *= 2;
-  }
-
-  auto rand_delay = brave_base::random::Geometric(next_retry_start_timer_in_);
-  next_retry_start_timer_in_ = rand_delay;
-
-  ads_->StartCollectingActivity(next_retry_start_timer_in_);
+  BLOG(INFO) << "Retry downloading catalog at " << time;
 }
 
 void AdsServe::ResetCatalog() {
