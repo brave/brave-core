@@ -25,6 +25,11 @@ using ::testing::_;
 
 namespace ads {
 
+const std::vector<std::string> audi_a4_segments = {
+  "automotive purchase intent by make-audi",
+  "automotive purchase intent by category-entry luxury car"
+};
+
 const std::vector<std::string> audi_a6_segments = {
   "automotive purchase intent by make-audi",
   "automotive purchase intent by category-mid luxury car"
@@ -65,6 +70,10 @@ std::vector<TestTriplets> kTestSearchQueries = {
       no_segments, 0},
   {"https://creators.brave.com/",
       no_segments, 0},
+  {"https://www.google.com/search?ei=bY2CXvHBMK2tytMPqYq--A4&q=audi+a4",
+      audi_a4_segments, 1},
+  {"https://www.google.com/search?source=hp&ei=y2eDXsWuI6fIrgThwZuQDw&q=audi+a4",  // NOLINT
+      audi_a4_segments, 1},
 };
 
 class AdsPurchaseIntentClassifierTest : public ::testing::Test {
