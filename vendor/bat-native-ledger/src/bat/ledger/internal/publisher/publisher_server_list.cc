@@ -5,7 +5,6 @@
 
 #include <algorithm>
 #include <utility>
-#include <vector>
 
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/common/time_util.h"
@@ -185,73 +184,56 @@ ledger::PublisherStatus PublisherServerList::ParsePublisherStatus(
 void PublisherServerList::ParsePublisherList(
     const std::string& data,
     ParsePublisherListCallback callback) {
-  std::vector<ledger::ServerPublisherPartial> list_publisher;
-  std::vector<ledger::PublisherBanner> list_banner;
+  auto list_publisher =
+      std::make_shared<std::vector<ledger::ServerPublisherPartial>>();
+  auto list_banner = std::make_shared<std::vector<ledger::PublisherBanner>>();
 
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Data is not correct";
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  base::ListValue* publishers = nullptr;
-  if (!value->GetAsList(&publishers)) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
+  list_publisher->reserve(value->GetList().size());
+  list_banner->reserve(value->GetList().size());
 
-  for (auto& item : *publishers) {
-    base::ListValue* values = nullptr;
-    if (!item.GetAsList(&values)) {
+  for (auto& item : value->GetList()) {
+    if (!item.is_list()) {
       continue;
     }
 
-    ledger::ServerPublisherPartial publisher;
+    const auto& list = item.GetList();
 
-    // Publisher key
-    std::string publisher_key = "";
-    if (!values->GetList()[0].is_string()) {
-      continue;
-    }
-    publisher_key = values->GetList()[0].GetString();
-
-    if (publisher_key.empty()) {
+    if (list.size() != 5) {
       continue;
     }
 
-    publisher.publisher_key = publisher_key;
-
-    // Status
-    if (!values->GetList()[1].is_string()) {
+    if (!list[0].is_string() || list[0].GetString().empty()  // Publisher key
+        || !list[1].is_string()                              // Status
+        || !list[2].is_bool()                                // Excluded
+        || !list[3].is_string()) {                           // Address
       continue;
     }
-    publisher.status = ParsePublisherStatus(values->GetList()[1].GetString());
 
-    // Excluded
-    if (!values->GetList()[2].is_bool()) {
-      continue;
-    }
-    publisher.excluded = values->GetList()[2].GetBool();
-
-    // Address
-    if (!values->GetList()[3].is_string()) {
-      continue;
-    }
-    publisher.address = values->GetList()[3].GetString();
+    list_publisher->emplace_back(
+        list[0].GetString(),
+        ParsePublisherStatus(list[1].GetString()),
+        list[2].GetBool(),
+        list[3].GetString());
 
     // Banner
-    base::DictionaryValue* banner = nullptr;
-    if (values->GetList()[4].GetAsDictionary(&banner)) {
-      auto parsed_banner = ParsePublisherBanner(publisher_key, banner);
-      if (!parsed_banner.publisher_key.empty()) {
-        list_banner.push_back(parsed_banner);
-      }
+    if (!list[4].is_dict() || list[4].DictEmpty()) {
+      continue;
     }
 
-    list_publisher.push_back(publisher);
+    list_banner->push_back(ledger::PublisherBanner());
+    auto& banner = list_banner->back();
+    ParsePublisherBanner(&banner, &list[4]);
+    banner.publisher_key = list[0].GetString();
   }
 
-  if (list_publisher.empty()) {
+  if (list_publisher->empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -266,97 +248,70 @@ void PublisherServerList::ParsePublisherList(
   ledger_->ClearServerPublisherList(clear_callback);
 }
 
-ledger::PublisherBanner PublisherServerList::ParsePublisherBanner(
-    const std::string& publisher_key,
-    base::DictionaryValue* dictionary) {
-  ledger::PublisherBanner banner;
+void PublisherServerList::ParsePublisherBanner(
+    ledger::PublisherBanner* banner,
+    base::Value* dictionary) {
+  DCHECK(dictionary && banner);
   if (!dictionary->is_dict()) {
-    return banner;
+    return;
   }
 
-  bool empty = true;
   const auto* title = dictionary->FindStringKey("title");
   if (title) {
-    banner.title = *title;
-    if (!banner.title.empty()) {
-      empty = false;
-    }
+    banner->title = *title;
   }
 
   const auto* description = dictionary->FindStringKey("description");
   if (description) {
-    banner.description = *description;
-    if (!banner.description.empty()) {
-      empty = false;
-    }
+    banner->description = *description;
   }
 
   const auto* background = dictionary->FindStringKey("backgroundUrl");
-  if (background) {
-    banner.background = *background;
-
-    if (!banner.background.empty()) {
-      banner.background = "chrome://rewards-image/" + banner.background;
-      empty = false;
-    }
+  if (background && !background->empty()) {
+    banner->background = "chrome://rewards-image/" + *background;
   }
 
   const auto* logo = dictionary->FindStringKey("logoUrl");
-  if (logo) {
-    banner.logo = *logo;
-
-    if (!banner.logo.empty()) {
-      banner.logo = "chrome://rewards-image/" + banner.logo;
-      empty = false;
-    }
+  if (logo && !logo->empty()) {
+    banner->logo = "chrome://rewards-image/" + *logo;
   }
 
   const auto* amounts = dictionary->FindListKey("donationAmounts");
   if (amounts) {
     for (const auto& it : amounts->GetList()) {
-      banner.amounts.push_back(it.GetInt());
-    }
-
-    if (banner.amounts.size() != 0) {
-      empty = false;
+      if (it.is_int()) {
+        banner->amounts.push_back(it.GetInt());
+      }
     }
   }
 
   const auto* links = dictionary->FindDictKey("socialLinks");
   if (links) {
     for (const auto& it : links->DictItems()) {
-      banner.links.insert(std::make_pair(it.first, it.second.GetString()));
-    }
-
-    if (banner.links.size() != 0) {
-      empty = false;
+      if (it.second.is_string()) {
+        banner->links.insert(std::make_pair(it.first, it.second.GetString()));
+      }
     }
   }
-
-  if (!empty) {
-    banner.publisher_key = publisher_key;
-  }
-
-  return banner;
 }
 
 void PublisherServerList::SaveParsedData(
     const ledger::Result result,
-    const std::vector<ledger::ServerPublisherPartial>& list_publisher,
-    const std::vector<ledger::PublisherBanner>& list_banner,
+    const SharedServerPublisherPartial& list_publisher,
+    const SharedPublisherBanner& list_banner,
     ParsePublisherListCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  if (!list_publisher.empty()) {
+  if (list_publisher && !list_publisher->empty()) {
     SavePublishers(list_publisher, list_banner, callback);
     return;
   }
 
-  if (!list_banner.empty()) {
-    SaveBanners({}, list_banner, callback);
+  if (list_banner && !list_banner->empty()) {
+    SaveBanners(list_banner, callback);
     return;
   }
 
@@ -364,23 +319,29 @@ void PublisherServerList::SaveParsedData(
 }
 
 void PublisherServerList::SavePublishers(
-    const std::vector<ledger::ServerPublisherPartial>& list_publisher,
-    const std::vector<ledger::PublisherBanner>& list_banner,
+    const SharedServerPublisherPartial& list_publisher,
+    const SharedPublisherBanner& list_banner,
     ParsePublisherListCallback callback) {
+  if (!list_publisher) {
+    callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+
   const int max_insert_records_ = 100000;
 
   int32_t interval = max_insert_records_;
-  const auto list_size = list_publisher.size();
+  const auto list_size = list_publisher->size();
   if (list_size < max_insert_records_) {
     interval = list_size;
   }
 
   std::vector<ledger::ServerPublisherPartial> save_list(
-      list_publisher.begin(),
-      list_publisher.begin() + interval);
-  std::vector<ledger::ServerPublisherPartial> new_list_publisher(
-      list_publisher.begin() + interval,
-      list_publisher.end());
+      list_publisher->begin(),
+      list_publisher->begin() + interval);
+  auto new_list_publisher =
+      std::make_shared<std::vector<ledger::ServerPublisherPartial>>(
+          list_publisher->begin() + interval,
+          list_publisher->end());
 
   auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
@@ -393,28 +354,32 @@ void PublisherServerList::SavePublishers(
 }
 
 void PublisherServerList::SaveBanners(
-    const std::vector<ledger::ServerPublisherPartial>& list_publisher,
-    const std::vector<ledger::PublisherBanner>& list_banner,
+    const SharedPublisherBanner& list_banner,
     ParsePublisherListCallback callback) {
+  if (!list_banner) {
+    callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+
   const int max_insert_records_ = 80000;
 
   int32_t interval = max_insert_records_;
-  const auto list_size = list_banner.size();
+  const auto list_size = list_banner->size();
   if (list_size < max_insert_records_) {
     interval = list_size;
   }
 
   std::vector<ledger::PublisherBanner> save_list(
-      list_banner.begin(),
-      list_banner.begin() + interval);
-  std::vector<ledger::PublisherBanner> new_list_banner(
-      list_banner.begin() + interval,
-      list_banner.end());
+      list_banner->begin(),
+      list_banner->begin() + interval);
+  auto new_list_banner = std::make_shared<std::vector<ledger::PublisherBanner>>(
+      list_banner->begin() + interval,
+      list_banner->end());
 
   auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
       _1,
-      list_publisher,
+      nullptr,
       new_list_banner,
       callback);
 
