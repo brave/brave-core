@@ -11,7 +11,7 @@ export const isHttpOrHttps = (url?: string) => {
 }
 
 export const getCharForSite = (
-  topSite: chrome.topSites.MostVisitedURL
+  topSite: chrome.topSites.MostVisitedURL | NewTab.DefaultSuperReferralTopSite
 ): string => {
   let hostname: string = '?'
   if (!topSite.title) {
@@ -50,6 +50,20 @@ export const isExistingGridSite = (
   topOrGridSite: chrome.topSites.MostVisitedURL | NewTab.Site
 ): boolean => {
   return sitesData.some(site => site.url === topOrGridSite.url)
+}
+
+export const generateGridSitePropertiesFromDefaultSuperReferralTopSite = (
+  defaultSuperReferralTopSite: NewTab.DefaultSuperReferralTopSite
+): NewTab.Site => {
+  return {
+    title: defaultSuperReferralTopSite.title,
+    url: defaultSuperReferralTopSite.url,
+    id: generateGridSiteId(),
+    letter: getCharForSite(defaultSuperReferralTopSite),
+    favicon: defaultSuperReferralTopSite.favicon,
+    pinnedIndex: defaultSuperReferralTopSite.pinnedIndex,
+    bookmarkInfo: undefined
+  }
 }
 
 export const generateGridSiteProperties = (

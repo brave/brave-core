@@ -36,7 +36,7 @@ interface Props {
   showRewards: boolean
   showBinance: boolean
   brandedWallpaperOptIn: boolean
-  allowBrandedWallpaperUI: boolean
+  allowSponsoredWallpaperUI: boolean
   binanceSupported: boolean
 }
 
@@ -60,7 +60,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       showStats,
       showTopSites,
       brandedWallpaperOptIn,
-      allowBrandedWallpaperUI,
+      allowSponsoredWallpaperUI,
       toggleShowRewards,
       showRewards,
       toggleShowBinance,
@@ -97,7 +97,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               showStats={showStats}
               showTopSites={showTopSites}
               brandedWallpaperOptIn={brandedWallpaperOptIn}
-              allowBrandedWallpaperUI={allowBrandedWallpaperUI}
+              allowSponsoredWallpaperUI={allowSponsoredWallpaperUI}
               toggleShowRewards={toggleShowRewards}
               showRewards={showRewards}
               toggleShowBinance={toggleShowBinance}

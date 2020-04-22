@@ -306,7 +306,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         if (sharedPreferences.contains(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES)) {
             BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE,
                     sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true));
-            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BRANDED_BACKGROUND_IMAGE,
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE,
                     sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true));
         }
 

@@ -50,6 +50,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         brandedWallpaperData: initialDataPayload.brandedWallpaperData,
         ...initialDataPayload.privateTabData
       }
+      if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
+        // Update feature flag if this is super referral wallpaper.
+        state = {
+          ...state,
+          featureFlagBraveNTPSponsoredImagesWallpaper: false
+        }
+      }
       // TODO(petemill): only get backgroundImage if no sponsored background this time.
       // ...We would also have to set the value at the action
       // the branded wallpaper is turned off. Since this is a cheap string API
@@ -114,7 +121,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // Remove branded wallpaper when opting out or turning wallpapers off
       const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaperData
       const hasTurnedWallpaperOff = !preferences.showBackgroundImage && state.showBackgroundImage
-      if (hasTurnedBrandedWallpaperOff || (state.brandedWallpaperData && hasTurnedWallpaperOff)) {
+      // We always show SR images regardless of background options state.
+      const isSuperReferral = state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored
+      if (!isSuperReferral &&
+          (hasTurnedBrandedWallpaperOff || (state.brandedWallpaperData && hasTurnedWallpaperOff))) {
         newState.brandedWallpaperData = undefined
       }
       // Get a new wallpaper image if turning that feature on

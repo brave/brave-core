@@ -5,6 +5,7 @@
 
 import {
   generateGridSiteProperties,
+  generateGridSitePropertiesFromDefaultSuperReferralTopSite,
   isExistingGridSite,
   getGridSitesWhitelist,
   isGridSitePinned,
@@ -30,6 +31,20 @@ export function gridSitesReducerSetFirstRenderDataFromLegacy (
   if (pinnedTopSites.length > 0) {
     state = gridSitesReducerAddSiteOrSites(state, pinnedTopSites)
   }
+  return state
+}
+
+export function gridSitesReducerSetDefaultSuperReferralTopSites (
+  state: NewTab.GridSitesState,
+  defaultSuperReferralTopSites: NewTab.DefaultSuperReferralTopSite[]
+): NewTab.GridSitesState {
+  const newGridSites: NewTab.Site[] = []
+  for (const defaultSuperReferralTopSite of defaultSuperReferralTopSites) {
+    newGridSites.push(generateGridSitePropertiesFromDefaultSuperReferralTopSite(
+                          defaultSuperReferralTopSite))
+  }
+
+  state = gridSitesReducerAddSiteOrSites(state, newGridSites)
   return state
 }
 
