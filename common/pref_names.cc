@@ -70,6 +70,8 @@ const char kBraveWalletEncryptedSeed[] = "brave.wallet.encrypted_seed";
 const char kBraveWalletEnabledDeprecated[] = "brave.wallet.enabled";
 const char kBraveWalletPrefVersion[] = "brave.wallet.pref_version";
 const char kBraveWalletWeb3Provider[] = "brave.wallet.web3_provider";
+const char kBinanceAccessToken[] = "brave.binance.access_token";
+const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kRemoteDebuggingEnabled[] = "brave.remote_debugging_enabled";

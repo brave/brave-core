@@ -21,6 +21,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -100,6 +101,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_whitelist.h"
 #include "content/public/common/resource_type.h"
+#endif
+
+#if BUILDFLAG(BINANCE_ENABLED)
+#include "brave/components/binance/browser/binance_protocol_handler.h"
 #endif
 
 namespace {
@@ -182,6 +187,14 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   if (brave_rewards::IsRewardsProtocol(url)) {
     brave_rewards::HandleRewardsProtocol(url, std::move(web_contents_getter),
                                          page_transition, has_user_gesture);
+    return true;
+  }
+#endif
+
+#if BUILDFLAG(BINANCE_ENABLED)
+  if (binance::IsBinanceProtocol(url)) {
+    binance::HandleBinanceProtocol(url, std::move(web_contents_getter),
+                                   page_transition, has_user_gesture);
     return true;
   }
 #endif

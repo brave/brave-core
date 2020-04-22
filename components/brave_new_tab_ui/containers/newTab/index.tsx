@@ -22,6 +22,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import VisibilityTimer from '../../helpers/visibilityTimer'
 import arrayMove from 'array-move'
 import { isGridSitePinned } from '../../helpers/newTabUtils'
+import { generateQRData } from '../../binance-utils'
 
 // Types
 import { SortEnd } from 'react-sortable-hoc'
@@ -199,6 +200,8 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.actions.setCurrentStackWidget('binance')
     } else if (!showBinance) {
       this.props.actions.setCurrentStackWidget('rewards')
+    } else if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('rewards')
     }
 
     this.props.saveShowRewards(!showRewards)
@@ -215,9 +218,50 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.actions.setCurrentStackWidget('rewards')
     } else if (!showRewards) {
       this.props.actions.setCurrentStackWidget('binance')
+    } else if (!showBinance) {
+      this.props.actions.setCurrentStackWidget('binance')
     }
 
     this.props.saveShowBinance(!showBinance)
+
+    // If we are about to hide the widget, disconnect
+    if (showBinance) {
+      chrome.binance.revokeToken(() => {
+        this.disconnectBinance()
+      })
+    }
+  }
+
+  setBinanceBalances = (balances: Record<string, string>) => {
+    this.props.actions.onBinanceAccountBalances(balances)
+  }
+
+  onBinanceClientUrl = (clientUrl: string) => {
+    this.props.actions.onBinanceClientUrl(clientUrl)
+  }
+
+  onValidAuthCode = () => {
+    this.props.actions.onValidAuthCode()
+  }
+
+  setHideBalance = (hide: boolean) => {
+    this.props.actions.setHideBalance(hide)
+  }
+
+  disconnectBinance = () => {
+    this.props.actions.disconnectBinance()
+  }
+
+  setDisconnectInProgress = () => {
+    this.props.actions.setDisconnectInProgress(true)
+  }
+
+  cancelDisconnect = () => {
+    this.props.actions.setDisconnectInProgress(false)
+  }
+
+  connectBinance = () => {
+    this.props.actions.connectToBinance()
   }
 
   buyCrypto = (coin: string, amount: string, fiat: string) => {
@@ -226,14 +270,30 @@ class NewTabPage extends React.Component<Props, State> {
     const refParams = `ref=${refCode}&utm_source=brave`
 
     if (userTLD === 'us') {
-      window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
+      window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     } else {
-      window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
+      window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     }
   }
 
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
     this.props.actions.onBinanceUserTLD(userTLD)
+  }
+
+  setBTCUSDPrice = (price: string) => {
+    this.props.actions.onBTCUSDPrice(price)
+  }
+
+  setAssetBTCPrice = (ticker: string, price: string) => {
+    this.props.actions.onAssetBTCPrice(ticker, price)
+  }
+
+  setAssetUSDPrice = (ticker: string, price: string) => {
+    this.props.actions.onAssetUSDPrice(ticker, price)
+  }
+
+  setAssetDepositInfo = (symbol: string, address: string, url: string) => {
+    this.props.actions.onAssetDepositInfo(symbol, address, url)
   }
 
   disableBrandedWallpaper = () => {
@@ -295,12 +355,88 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   learnMoreRewards = () => {
-    window.open('https://brave.com/brave-rewards/', '_blank')
+    window.open('https://brave.com/brave-rewards/', '_blank', 'noopener')
   }
 
   learnMoreBinance = () => [
-    window.open('https://brave.com/binance/', '_blank')
+    window.open('https://brave.com/binance/', '_blank', 'noopener')
   ]
+
+  setAssetDepositQRCodeSrc = (asset: string, src: string) => {
+    this.props.actions.onDepositQRForAsset(asset, src)
+  }
+
+  setConvertableAssets = (asset: string, assets: string[]) => {
+    this.props.actions.onConvertableAssets(asset, assets)
+  }
+
+  setSelectedView = (view: string) => {
+    this.props.actions.setSelectedView(view)
+  }
+
+  updateActions = () => {
+    this.fetchBalance()
+    this.getConvertAssets()
+  }
+
+  getConvertAssets = () => {
+    chrome.binance.getConvertAssets((assets: any) => {
+      for (let asset in assets) {
+        if (assets[asset]) {
+          this.setConvertableAssets(asset, assets[asset])
+        }
+      }
+    })
+  }
+
+  fetchBalance = () => {
+    chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
+      const hasBalances = Object.keys(balances).length
+
+      if (!hasBalances) {
+        return
+      } else if (!success) {
+        this.setAuthInvalid()
+        return
+      }
+
+      chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
+        this.setAssetUSDPrice('BTC', price)
+        this.setBTCUSDPrice(price)
+        this.setBalanceInfo(balances)
+      })
+    })
+  }
+
+  setBalanceInfo = (balances: Record<string, string>) => {
+    for (let ticker in balances) {
+      if (ticker !== 'BTC') {
+        chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
+          this.setAssetBTCPrice(ticker, price)
+        })
+        chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
+          this.setAssetUSDPrice(ticker, price)
+        })
+      }
+      chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
+        this.setAssetDepositInfo(ticker, address, url)
+        generateQRData(address, ticker, this.setAssetDepositQRCodeSrc)
+      })
+    }
+
+    setTimeout(() => {
+      this.setBinanceBalances(balances)
+    }, 1500)
+  }
+
+  setAuthInvalid = () => {
+    this.props.actions.setAuthInvalid(true)
+    this.props.actions.disconnectBinance()
+  }
+
+  dismissAuthInvalid = () => {
+    this.props.actions.setAuthInvalid(false)
+  }
 
   getCryptoContent () {
     const { currentStackWidget } = this.props.newTabData
@@ -382,23 +518,36 @@ class NewTabPage extends React.Component<Props, State> {
   renderBinanceWidget (showContent: boolean) {
     const { newTabData } = this.props
     const { binanceState, showBinance, textDirection } = newTabData
+    const menuActions = { onLearnMore: this.learnMoreBinance }
 
     if (!showBinance || !binanceState.binanceSupported) {
       return null
     }
 
+    if (binanceState.userAuthed) {
+      menuActions['onDisconnect'] = this.setDisconnectInProgress
+      menuActions['onRefreshData'] = this.updateActions
+    }
+
     return (
       <Binance
+        {...menuActions}
         {...binanceState}
         isCrypto={true}
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Binance'}
-        onLearnMore={this.learnMoreBinance}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowBinance}
         showContent={showContent}
+        onSetHideBalance={this.setHideBalance}
+        onBinanceAccountBalances={this.setBinanceBalances}
+        onBinanceClientUrl={this.onBinanceClientUrl}
+        onConnectBinance={this.connectBinance}
+        onDisconnectBinance={this.disconnectBinance}
+        onCancelDisconnect={this.cancelDisconnect}
+        onValidAuthCode={this.onValidAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
         onShowContent={this.toggleStackWidget.bind(this, 'binance')}
@@ -406,6 +555,9 @@ class NewTabPage extends React.Component<Props, State> {
         onSetInitialAsset={this.setInitialAsset}
         onSetInitialFiat={this.setInitialFiat}
         onSetUserTLDAutoSet={this.setUserTLDAutoSet}
+        onUpdateActions={this.updateActions}
+        onDismissAuthInvalid={this.dismissAuthInvalid}
+        onSetSelectedView={this.setSelectedView}
       />
     )
   }

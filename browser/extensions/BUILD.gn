@@ -1,5 +1,5 @@
 import("//brave/browser/tor/buildflags/buildflags.gni")
-import("//brave/components/binance/buildflags.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
