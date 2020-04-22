@@ -88,6 +88,7 @@ def build(args):
     cargo_args.append("--target-dir=" + build_path)
     cargo_args.append("--target=" + target)
     print("cargo args", cargo_args)
+    print("rust flags", env['RUSTFLAGS'])
     try:
         subprocess.check_call(cargo_args, env=env)
     except subprocess.CalledProcessError as e:

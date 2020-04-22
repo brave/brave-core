@@ -31,7 +31,12 @@ template("cargo_build") {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
     }
 
-    if (defined(invoker.rust_flags)) {
+    if (defined(ldflags)) {
+      rust_flags += " -C link-args=${ldflags} "
+    }
+
+    if (defined(rust_flags)) {
+      print("rust flags", rust_flags)
       args += [ "--rust_flags=$rust_flags" ]
     }
 

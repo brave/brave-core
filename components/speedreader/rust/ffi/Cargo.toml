@@ -6,11 +6,7 @@ edition = "2018"
 
 [dependencies]
 speedreader = { path = "../lib/" }
-libc = "0"
-
-[build-dependencies]
-cbindgen = "0.13.1"
-cc = "1.0.46"
+libc = "0.2.7"
 
 [profile.release]
 panic = "abort"
