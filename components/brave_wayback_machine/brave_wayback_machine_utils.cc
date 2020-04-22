@@ -18,5 +18,8 @@ bool IsWaybackMachineDisabledFor(const GURL& url) {
   if (base::EndsWith(url.host(), ".local", base::CompareCase::SENSITIVE))
     return true;
 
+  if (base::EndsWith(url.host(), ".onion", base::CompareCase::SENSITIVE))
+    return true;
+
   return false;
 }

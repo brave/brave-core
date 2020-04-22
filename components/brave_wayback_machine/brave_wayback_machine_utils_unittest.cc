@@ -10,10 +10,12 @@
 TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://localhost/index.html")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://abcd.local")));
+  EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://abcd.onion")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://127.0.0.1")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://[::1]")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(
       GURL("http://127.0045.1.2:8080/index.html")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.local-news.com")));
+  EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.onion-news.com")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.brave.com")));
 }
