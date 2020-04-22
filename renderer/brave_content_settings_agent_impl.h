@@ -47,7 +47,6 @@ class BraveContentSettingsAgentImpl
     const base::string16& details);
 
  private:
-
   ContentSetting GetFPContentSettingFromRules(
       const ContentSettingsForOneType& rules,
       const blink::WebFrame* frame,

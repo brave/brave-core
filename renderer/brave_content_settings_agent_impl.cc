@@ -74,7 +74,8 @@ ContentSetting GetBraveContentSettingFromRules(
   return CONTENT_SETTING_DEFAULT;
 }
 
-}
+}  // namespace
+
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
     bool should_whitelist,
