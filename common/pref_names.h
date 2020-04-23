@@ -67,6 +67,8 @@ extern const char kBraveWalletWeb3Provider[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kRemoteDebuggingEnabled[];
 extern const char kAutocompleteEnabled[];
+extern const char kTopSiteSuggestionsEnabled[];
+extern const char kBraveSuggestedSiteSuggestionsEnabled[];
 extern const char kBraveDarkMode[];
 extern const char kOtherBookmarksMigrated[];
 extern const char kBraveShieldsSettingsVersion[];

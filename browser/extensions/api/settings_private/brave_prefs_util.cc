@@ -67,6 +67,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kHideBraveRewardsButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kTopSiteSuggestionsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kBraveSuggestedSiteSuggestionsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageSuperReferralThemesOption] =

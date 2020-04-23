@@ -40,6 +40,7 @@ class SuggestedSitesProvider : public AutocompleteProvider {
       const std::string &input_text,
       const std::string &site);
 
+  AutocompleteProviderClient* client_;
   DISALLOW_COPY_AND_ASSIGN(SuggestedSitesProvider);
 };
 

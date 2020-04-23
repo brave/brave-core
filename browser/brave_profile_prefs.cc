@@ -214,6 +214,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
+  registry->RegisterBooleanPref(kTopSiteSuggestionsEnabled, true);
+  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, true);
 
   // Password leak detection should be disabled
   registry->SetDefaultPrefValue(

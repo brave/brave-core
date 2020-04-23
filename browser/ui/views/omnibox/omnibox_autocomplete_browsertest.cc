@@ -58,3 +58,14 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   EXPECT_TRUE(popup_model()->result().empty());
   EXPECT_FALSE(popup_view()->IsOpen());
 }
+
+IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, TopSiteSuggestionsEnabledTest) {
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      kTopSiteSuggestionsEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest,
+    BraveSuggestedSiteSuggestionsEnabledTest) {
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      kBraveSuggestedSiteSuggestionsEnabled));
+}
