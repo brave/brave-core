@@ -1,6 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include <memory>
 
 #include "brave/browser/extensions/api/rewards_notifications_api.h"
 
@@ -16,10 +19,12 @@ using brave_rewards::RewardsServiceFactory;
 namespace extensions {
 namespace api {
 
-RewardsNotificationsAddNotificationFunction::~RewardsNotificationsAddNotificationFunction() {
+RewardsNotificationsAddNotificationFunction::
+~RewardsNotificationsAddNotificationFunction() {
 }
 
-ExtensionFunction::ResponseAction RewardsNotificationsAddNotificationFunction::Run() {
+ExtensionFunction::ResponseAction
+RewardsNotificationsAddNotificationFunction::Run() {
   std::unique_ptr<rewards_notifications::AddNotification::Params> params(
       rewards_notifications::AddNotification::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -37,7 +42,8 @@ ExtensionFunction::ResponseAction RewardsNotificationsAddNotificationFunction::R
 RewardsNotificationsDeleteNotificationFunction::
     ~RewardsNotificationsDeleteNotificationFunction() {}
 
-ExtensionFunction::ResponseAction RewardsNotificationsDeleteNotificationFunction::Run() {
+ExtensionFunction::ResponseAction
+RewardsNotificationsDeleteNotificationFunction::Run() {
   std::unique_ptr<rewards_notifications::DeleteNotification::Params> params(
       rewards_notifications::DeleteNotification::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -49,10 +55,12 @@ ExtensionFunction::ResponseAction RewardsNotificationsDeleteNotificationFunction
   return RespondNow(NoArguments());
 }
 
-RewardsNotificationsDeleteAllNotificationsFunction::~RewardsNotificationsDeleteAllNotificationsFunction() {
+RewardsNotificationsDeleteAllNotificationsFunction::
+~RewardsNotificationsDeleteAllNotificationsFunction() {
 }
 
-ExtensionFunction::ResponseAction RewardsNotificationsDeleteAllNotificationsFunction::Run() {
+ExtensionFunction::ResponseAction
+RewardsNotificationsDeleteAllNotificationsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsNotificationService* rewards_notification_service =
       RewardsServiceFactory::GetForProfile(profile)->GetNotificationService();
@@ -62,10 +70,12 @@ ExtensionFunction::ResponseAction RewardsNotificationsDeleteAllNotificationsFunc
   return RespondNow(NoArguments());
 }
 
-RewardsNotificationsGetNotificationFunction::~RewardsNotificationsGetNotificationFunction() {
+RewardsNotificationsGetNotificationFunction::
+~RewardsNotificationsGetNotificationFunction() {
 }
 
-ExtensionFunction::ResponseAction RewardsNotificationsGetNotificationFunction::Run() {
+ExtensionFunction::ResponseAction
+RewardsNotificationsGetNotificationFunction::Run() {
   std::unique_ptr<rewards_notifications::GetNotification::Params> params(
       rewards_notifications::GetNotification::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -77,10 +87,12 @@ ExtensionFunction::ResponseAction RewardsNotificationsGetNotificationFunction::R
   return RespondNow(NoArguments());
 }
 
-RewardsNotificationsGetAllNotificationsFunction::~RewardsNotificationsGetAllNotificationsFunction() {
+RewardsNotificationsGetAllNotificationsFunction::
+~RewardsNotificationsGetAllNotificationsFunction() {
 }
 
-ExtensionFunction::ResponseAction RewardsNotificationsGetAllNotificationsFunction::Run() {
+ExtensionFunction::ResponseAction
+RewardsNotificationsGetAllNotificationsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsNotificationService* rewards_notification_service =
       RewardsServiceFactory::GetForProfile(profile)->GetNotificationService();

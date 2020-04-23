@@ -155,7 +155,8 @@ void BraveActionsContainer::Init() {
       base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
                  base::Unretained(this)));
   hide_brave_rewards_button_.Init(
-      brave_rewards::prefs::kHideBraveRewardsButton, browser_->profile()->GetPrefs(),
+      brave_rewards::prefs::kHideBraveRewardsButton,
+      browser_->profile()->GetPrefs(),
       base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
                  base::Unretained(this)));
 }
