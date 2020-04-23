@@ -44,8 +44,6 @@ RefillTokens::~RefillTokens() = default;
 void RefillTokens::Refill(
     const WalletInfo& wallet_info,
     const std::string& public_key) {
-  DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.private_key.empty());
   DCHECK(!public_key.empty());
 
   if (retry_timer_.IsRunning()) {
@@ -54,7 +52,11 @@ void RefillTokens::Refill(
 
   BLOG(INFO) << "Refill";
 
-  wallet_info_ = WalletInfo(wallet_info);
+  wallet_info_ = wallet_info;
+  if (!wallet_info_.IsValid()) {
+    BLOG(ERROR) << "Failed to refill tokens due to invalid wallet";
+    return;
+  }
 
   public_key_ = public_key;
 

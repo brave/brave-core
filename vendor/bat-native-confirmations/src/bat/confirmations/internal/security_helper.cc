@@ -22,9 +22,9 @@ std::string Security::Sign(
     const std::map<std::string, std::string>& headers,
     const std::string& key_id,
     const std::vector<uint8_t>& private_key) {
-  DCHECK_NE(headers.size(), 0UL);
-  DCHECK(!key_id.empty());
-  DCHECK_NE(private_key.size(), 0UL);
+  if (headers.empty() || key_id.empty() || private_key.empty()) {
+    return "";
+  }
 
   std::string concatenated_header = "";
   std::string concatenated_message = "";
@@ -89,7 +89,9 @@ std::vector<BlindedToken> Security::BlindTokens(
 }
 
 std::vector<uint8_t> Security::GetSHA256(const std::string& string) {
-  DCHECK(!string.empty());
+  if (string.empty()) {
+    return {};
+  }
 
   std::vector<uint8_t> string_sha256(SHA256_DIGEST_LENGTH);
   SHA256((uint8_t*)string.c_str(), string.length(), &string_sha256.front());
@@ -97,7 +99,7 @@ std::vector<uint8_t> Security::GetSHA256(const std::string& string) {
 }
 
 std::string Security::GetBase64(const std::vector<uint8_t>& data) {
-  DCHECK_NE(data.size(), 0UL);
+  DCHECK(!data.empty());
 
   size_t size = 0;
   if (!EVP_EncodedLength(&size, data.size())) {
