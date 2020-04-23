@@ -109,6 +109,11 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/Sparkle",
             "License": "MIT",
         },
+        os.path.join('brave', 'vendor', 'speedreader_rust_ffi'): {
+            "Name": "speedreader-rust-ffi",
+            "URL": "https://github.com/brave-experiments/speedreader-rust-ffi",
+            "License": "MPL-2.0",
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.
