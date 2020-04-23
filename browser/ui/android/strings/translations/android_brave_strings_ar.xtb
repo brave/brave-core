@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
-<translation id="7307834434086582547">تمكين\تعطيل Brave Shields</translation>
+<translation id="7307834434086582547">تمكين\تعطيل طرق حماية Brave</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
 <translation id="7835726359440951858">حجب الإعلانات والتتبع</translation>
 <translation id="520895744850022668">HTTPS في كل مكان</translation>
-<translation id="94154759592465111">حظر البرامج النصية</translation>
+<translation id="94154759592465111">حظر النصوص</translation>
 <translation id="7458422973722236530">حماية البصمات</translation>
 <translation id="252011129655042182">الإعلانات والمتتبعون</translation>
 <translation id="6754976710186182237">طرق تسجيل البصمة</translation>
 <translation id="2313532038420432247">ترقيات HTTPS</translation>
-<translation id="7461425058443653485">البرامج النصية المحظورة</translation>
+<translation id="7461425058443653485">تم حظر النصوص</translation>
 <translation id="3834924998750356151">حجب المراقبة</translation>
 <translation id="1713450908129883784">أدوات التحكم الفردية</translation>
 <translation id="6302422639282249274">إدارة مكافآت Brave</translation>
@@ -20,12 +20,13 @@
 <translation id="3377025655491224618">علامة تبويب للتصفح المتخفي</translation>
 <translation id="9148058034647219655">إنهاء</translation>
 <translation id="8710614491157212477">يفتح المواقع المدعومة باستخدام HTTPS بدلاً من HTTP عندما يكون ذلك ممكناً</translation>
-<translation id="8387201461264842096">Ad Block</translation>
+<translation id="8387201461264842096">حظر الإعلان</translation>
 <translation id="1934885595886623674">يمنع الإعلانات من التحميل</translation>
 <translation id="5787084571334399599">يمنع المتصفح من استخدام البصمة</translation>
 <translation id="7459000603787995422">غلق علامات التبويب عند الخروج</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
 <translation id="4339730410920731698">تمَّ حجب الإعلانات والتعقب</translation>
+<translation id="6761596877474675418">تم حفظ البيانات</translation>
 <translation id="3034562645284925177">تم حفظ الوقت التقديري</translation>
 <translation id="6572660632052512096">نمط سطح المكتب</translation>
 <translation id="1340503115760585811">تمكين عرض سطح المكتب لعلامات التبويب الجديدة</translation>
@@ -269,4 +270,5 @@
 <translation id="5895280237921845725"><ph name="LEARN_MORE"/> حول صور الرعاة الدعائية في مكافآت Brave. يمكنك كذلك اختيار <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="1908278071064820219">يمكنك كذلك اختيار <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="7931660128190969207">تقاضَ مالاً لرؤية صورة الخلفية هذه. قم بتشغيل إعلانات Brave لتقاضي نصيبك.</translation>
+<translation id="213787746370741250">فتح نوافذ التبويب في نوافذ مخصصة</translation>
 </translationbundle>

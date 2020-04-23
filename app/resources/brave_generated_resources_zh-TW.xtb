@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="7450557937477381864">關閉 Chrome</translation>
 <translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
+<translation id="6786747875388722282">擴充功能</translation>
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4726634924419692905">當網站要求安裝 Widevine 到您的電腦時先詢問</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave 未驗證過此擴充套件的安全性。只在您信任此開開發者時才安裝此擴充套件。</translation>
 <translation id="8081858229109418493">設定檔名稱和圖示</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
+<translation id="1692470335103807198">取得更多主題</translation>
+<translation id="2906510232093002459">Brave 預設圖像</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
 <translation id="7635711399568194460">當 Brave Rewards 未啟用時，在網址列隱藏 Brave Rewards 按鈕</translation>
 <translation id="1520361618554057102">總是在新分頁上顯示書籤</translation>
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
+<translation id="7781069478569868053">新分頁</translation>
+<translation id="2467749191278759605">自訂您的 Brave 儀表板</translation>
+<translation id="1717331825806276156">背景圖片</translation>
+<translation id="1820041496463124489">贊助圖片</translation>
+<translation id="8173998484743827990">Brave 統計</translation>
+<translation id="6966052266404721769">幣安</translation>
+<translation id="4643117005422448078">熱門網站</translation>
+<translation id="1776831331757823105">時鐘</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="8511502469534942133">為此網站建立的新 Tor 連線</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">僅封鎖跨站 cookies</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
-<translation id="5572437114858031185">僅封鎖跨站指紋嘗試</translation>
-<translation id="5079032039521408559">允許所有指紋嘗試</translation>
-<translation id="6447141055227658942">封鎖所有指紋嘗試</translation>
+<translation id="5963670684159057574">封鎖跨站指紋追蹤</translation>
+<translation id="769702552748212954">允許所有指紋追蹤</translation>
+<translation id="4540198958192073185">阻擋所有指紋識別</translation>
 <translation id="8942080017911802454">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8798099450830957504">預設</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">與 Linux 相同</translation>
 <translation id="1336940801687497203">與 Windows 相同</translation>
 <translation id="8721331068159819483">與 macOS 相同</translation>
-<translation id="6786747875388722282">擴充功能</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="2356070529366658676">詢問</translation>
 <translation id="7701040980221191251">無</translation>

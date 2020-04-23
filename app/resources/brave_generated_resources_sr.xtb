@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dozvoljeno u Brejvu</translation>
 <translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
 <translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
+<translation id="6786747875388722282">Proširenja</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Vajdvajn</translation>
 <translation id="8926389886865778422">Не питај ме поново</translation>
 <translation id="4726634924419692905">Pitajte kada sajt želi da instalira „Widevine” na Vaš računar.</translation>
@@ -31,11 +32,21 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5883458389055721080">Brave nije pregledao ovu ekstenziju zbog bezbednosti i sigurnosti. Instalirajte ovu ekstenziju samo ako verujete razvojnom programeru.</translation>
 <translation id="8081858229109418493">Ime profila i ikona</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
+<translation id="1692470335103807198">Dobijte više tema</translation>
+<translation id="2906510232093002459">Brave podrazumevane slike</translation>
 <translation id="2814998458708016836">Koristi široku traku sa adresama</translation>
 <translation id="6123134130710658846">Sakrij taster za Brave nagrade</translation>
 <translation id="7635711399568194460">Sakriva taster za Brave nagrade u traci onda kada Brave nagrade nisu omogućene</translation>
 <translation id="1520361618554057102">Uvek prikaži obeleživače na stranici „Nova kartica”</translation>
 <translation id="5802665280774361839">Na traci sa adresama prikaži automatsko dovršavanje</translation>
+<translation id="7781069478569868053">Stranica nove kartice</translation>
+<translation id="2467749191278759605">Prilagodite svoju Brave kontrolnu tablu</translation>
+<translation id="1717331825806276156">Pozadinske slike</translation>
+<translation id="1820041496463124489">Sponzorisane slike</translation>
+<translation id="8173998484743827990">Brave statistika</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Glavne lokacije</translation>
+<translation id="1776831331757823105">Sat</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
 <translation id="8511502469534942133">Nova Tor veza za ovaj sajt</translation>
 <translation id="8784924142044142231">Izađite iz Tor-a</translation>
@@ -75,9 +86,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4699812599455071925">Blokiraj samo višelokacijske kolačiće</translation>
 <translation id="5657156137487675418">Dozvoli sve kolačiće</translation>
 <translation id="6883611015375728278">Blokirati sve kolačiće</translation>
-<translation id="5572437114858031185">Samo blokirajte višelokacijske pokušaje beleženja posebnih obeležja</translation>
-<translation id="5079032039521408559">Dozvoli sve pokušaje beleženja posebnih obeležja</translation>
-<translation id="6447141055227658942">Blokirajte sva beleženje posebnih obeležja</translation>
+<translation id="5963670684159057574">Blokirajte beleženje posebnih obeležja na više lokacija</translation>
+<translation id="769702552748212954">Dozvoli sva beleženja posebnih obeležja</translation>
+<translation id="4540198958192073185">Blokirajte sva posebna obeležja</translation>
 <translation id="8942080017911802454">Smernice za obradu WebRTC IP-a</translation>
 <translation id="6165508094623778733">Nauči više</translation>
 <translation id="8798099450830957504">Подразумевано</translation>
@@ -94,7 +105,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
 <translation id="8721331068159819483">Isto kao macOS</translation>
-<translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
 <translation id="2356070529366658676">Питај</translation>
 <translation id="7701040980221191251">Ниједна</translation>

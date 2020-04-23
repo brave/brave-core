@@ -1625,6 +1625,7 @@
 <translation id="5727851901710884484">‏<ph name="APP_NAME"/> משתף כרטיסיית Brave עם <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338">‏<ph name="APP_NAME"/> משתף כרטיסייה ואודיו של Brave.</translation>
 <translation id="859454237594354073">‏<ph name="APP_NAME"/> משתף כרטיסייה ואודיו של Brave עם <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">הסתרה</translation>
 <translation id="890616557918890486">שינוי המקור</translation>
 <translation id="7792388396321542707">הפסק שיתוף</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> מעוניין בגישה קבועה לאישור כדי לאמת את עצמו בשמך.</translation>
@@ -1658,6 +1659,7 @@
 <translation id="7022562585984256452">דף הבית שלך הוגדר.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">הוסף מדפסות</translation>
+<translation id="9052208328806230490">רשמת את המדפסות שלך ב-<ph name="CLOUD_PRINT_NAME"/> באמצעות החשבון <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">נתק מדפסות</translation>
 <translation id="5038863510258510803">מפעיל...</translation>
 <translation id="8264024885325823677">ההגדרה הזו מנוהלת על-ידי מנהל המערכת שלך.</translation>
@@ -2290,6 +2292,7 @@
 <translation id="6711610692002680394">‏עליך להיכנס מחדש ל-Brave כדי לרשום מכשירים חדשים</translation>
 <translation id="8931394284949551895">מכשירים חדשים</translation>
 <translation id="3752673729237782832">המכשירים שלי</translation>
+<translation id="1721937473331968728">תוכל להוסיף ל-<ph name="CLOUD_PRINT_NAME"/> מדפסות קלאסיות המחוברות למחשב שלך.</translation>
 <translation id="715118844758971915">מדפסות קלאסיות</translation>
 <translation id="4263757076580287579">רישום המדפסת בוטל.</translation>
 <translation id="8152091997436726702">פג הזמן הקצוב של רישום המדפסת. על מנת לרשום מדפסת, עליך לאמת את הרישום במדפסת.</translation>
@@ -2958,9 +2961,11 @@
 <translation id="1871615898038944731">ה-<ph name="DEVICE_TYPE"/> שלך מעודכן</translation>
 <translation id="3688526734140524629">שנה ערוץ</translation>
 <translation id="6410328738210026208">‏החלף ערוץ ובצע Powerwash</translation>
+<translation id="1979280758666859181">אתה עובר לערוץ עם גרסה ישנה יותר של <ph name="PRODUCT_NAME"/>. שינוי הערוץ יוחל כאשר גרסת הערוץ תתאים לגרסה המותקנת כעת במכשיר שלך.</translation>
 <translation id="7728668285692163452">שינוי הערוץ ייכנס לתוקף מאוחר יותר</translation>
 <translation id="5495466433285976480">פעולה זו תסיר את כל המשתמשים, הקבצים והנתונים המקומיים והגדרות מקומיות אחרות לאחר שתבצע הפעלה מחדש בפעם הבאה. כל המשתמשים יצטרכו להיכנס שוב.</translation>
 <translation id="8101987792947961127">‏יש לבצע Powerwash באתחול הבא</translation>
+<translation id="1414648216875402825">אתה מעדכן לגרסה לא יציבה של <ph name="PRODUCT_NAME"/> המכילה תכונות שנמצאות בתהליך. ייתכנו קריסות מחשב ובאגים לא צפויים. המשך בזהירות.</translation>
 <translation id="6103681770816982672">אזהרה: אתה עובר לערוץ מפתחים</translation>
 <translation id="8807632654848257479">יציב</translation>
 <translation id="830868413617744215">ביטא</translation>
@@ -3733,10 +3738,12 @@
 <translation id="5302048478445481009">שפה</translation>
 <translation id="6388429472088318283">חיפוש שפות</translation>
 <translation id="2690024944919328218">הצג אפשרויות שפה</translation>
+<translation id="768549422429443215">הוספת שפות או שינוי סדר הרשימה.</translation>
 <translation id="8218847192766059983">הוספת שפות או שינוי סדר הרשימה. <ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">טקסט מערכת מוצג בשפה הזו</translation>
 <translation id="2366260648632264559">יש להציג את טקסט המערכת בשפה הזו</translation>
 <translation id="8336721153892716270">יש להפעיל מחדש את המכשיר כדי להציג את הטקסט של המערכת ב<ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">סדר את השפות לפי ההעדפות שלך</translation>
 <translation id="5972708806901999743">העבר למעלה</translation>
 <translation id="8609465669617005112">הזז למעלה</translation>
 <translation id="6746124502594467657">הזז למטה</translation>
@@ -4566,6 +4573,7 @@
 <translation id="8143442547342702591">יישום לא חוקי</translation>
 <translation id="720110658997053098">השארת המכשיר הזה במצב קיוסק באופן קבוע</translation>
 <translation id="1909880997794698664">האם אתה בטוח שברצונך להשאיר מכשיר זה במצב קיוסק באופן קבוע?</translation>
+<translation id="1512210426710821809">הדרך היחידה לבטל את הפעולה זו היא להתקין מחדש את <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="8281886186245836920">דלג</translation>
 <translation id="2342740338116612727">סימניות נוספו</translation>
 <translation id="7835178595033117206">הסימניה הוסרה</translation>
@@ -4686,7 +4694,10 @@
 <translation id="1526560967942511387">מסמך ללא שם</translation>
 <translation id="5269977353971873915">ההדפסה נכשלה</translation>
 <translation id="7385854874724088939">משהו השתבש בעת ניסיון הדפסה. בדוק את המדפסת ונסה שוב.</translation>
+<translation id="1197979282329025000">אירעה שגיאה בעת אחזור יכולות של המדפסת <ph name="PRINTER_NAME"/>. לא ניתן לרשום מדפסת זו ב-<ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">התקבלה התראה עבור מדפסת בלתי ידועה.</translation>
+<translation id="2202898655984161076">היתה בעיה ברישום מדפסות. ייתכן שחלק מהמדפסות שלך לא נרשמו בהצלחה ב-<ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">תהליך המחבר <ph name="CLOUD_PRINT_NAME"/> קרס. להפעיל מחדש?</translation>
 <translation id="6904655473976120856">לחץ על לחצן האפליקציה כדי לצאת</translation>
 <translation id="8909833622202089127">האתר עוקב אחרי המיקום שלך</translation>
 <translation id="375636864092143889">האתר משתמש במיקרופון</translation>

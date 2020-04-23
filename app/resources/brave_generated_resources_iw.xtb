@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
+<translation id="6786747875388722282">תוספים</translation>
 <translation id="3699882589215410581">התקינו והפעילו Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="4726634924419692905">שאל כאשר אתר רוצה להתקין Widevine במחשבך.</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave לא בדקה את האבטחה והבטיחות של תוסף זה. התקינו את התוסף רק אם אתם סומכים על המפתח.</translation>
 <translation id="8081858229109418493">שם ואייקון הפרופיל</translation>
 <translation id="2044383478723007273">צבעי Brave</translation>
+<translation id="1692470335103807198">קבל/י ערכות נושא נוספות</translation>
+<translation id="2906510232093002459">תמונות ברירת מחדל של Brave</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="6123134130710658846">הסתר את כפתור Brave Rewards</translation>
 <translation id="7635711399568194460">מסתיר את כפתור Brave Rewards בסרגל המיקום כש-Brave Rewards אינו זמין</translation>
 <translation id="1520361618554057102">הצג סימניות בדף כרטיסייה חדשה תמיד</translation>
 <translation id="5802665280774361839">הצג השלמה אוטומטית בשורת הכתובת</translation>
+<translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
+<translation id="2467749191278759605">התאמה אישית של לוח המחוונים של Brave</translation>
+<translation id="1717331825806276156">תמונות רקע</translation>
+<translation id="1820041496463124489">תמונות ממומנות</translation>
+<translation id="8173998484743827990">נתונים סטטיסטיים של Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">אתרים מובילים</translation>
+<translation id="1776831331757823105">שעון</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="8511502469534942133">חיבור Tor חדש עבור אתר זה</translation>
 <translation id="8784924142044142231">יציאה מ-Tor</translation>
@@ -76,9 +87,9 @@
 <translation id="4699812599455071925">חסום קבצי cookies מרובי-אתרים (cross-site) בלבד</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
-<translation id="5572437114858031185">חסום רק ניסיונות טביעת אצבע חוצי אתרים</translation>
-<translation id="5079032039521408559">אפשר את כל ניסיונות טביעת האצבע</translation>
-<translation id="6447141055227658942">חסום את כל ניסיונות טביעת האצבע</translation>
+<translation id="5963670684159057574">חסום לקיחת טביעות אצבע בכל האתר</translation>
+<translation id="769702552748212954">אפשר כל לקיחת טביעות אצבע</translation>
+<translation id="4540198958192073185">חסימת כל טביעות האצבע</translation>
 <translation id="8942080017911802454">WebRTC IP מדיניות תפעול</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
@@ -95,7 +106,6 @@
 <translation id="1360441190790440400">כמו לינוקס</translation>
 <translation id="1336940801687497203">כמו Windows</translation>
 <translation id="8721331068159819483">כמו macOS</translation>
-<translation id="6786747875388722282">תוספים</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="7701040980221191251">ללא</translation>

@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/>, <ph name="TAB_NAME"/> के साथ Brave टैब को शेयर कर रहा है.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> एक Brave टैब और ऑडियो शेयर कर रहा है.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/>, <ph name="TAB_NAME"/> के साथ Brave टैब और ऑडियो शेयर कर रहा है.</translation>
+<translation id="7108338896283013870">छुपाएं</translation>
 <translation id="890616557918890486">स्रोत बदलें</translation>
 <translation id="7792388396321542707">साझाकरण रोकें</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> को आपकी ओर से स्वयं को प्रमाणीकृत करने के लिए प्रमाणपत्र की स्थायी ऐक्सेस चाहिए.</translation>
@@ -1658,6 +1659,7 @@
 <translation id="7022562585984256452">आपका मुख पेज सेट कर दिया गया है.</translation>
 <translation id="8069615408251337349">Brave Software क्लाउड प्रिंट</translation>
 <translation id="4973307593867026061">प्रिंटर जोड़ें</translation>
+<translation id="9052208328806230490">आपने अपने प्रिंटर को खाता <ph name="EMAIL"/> का उपयोग करके <ph name="CLOUD_PRINT_NAME"/> के साथ पंजीकृत किया है</translation>
 <translation id="3792890930871100565">प्रिंटर डिसकनेक्ट करें</translation>
 <translation id="5038863510258510803">सक्षम किया जा रहा है...</translation>
 <translation id="8264024885325823677">इस सेटिंग को आपका एडमिन प्रबंधित करता है.</translation>
@@ -2290,6 +2292,7 @@
 <translation id="6711610692002680394">नए डिवाइस पंजीकृत करने के लिए आपको Brave में साइन इन करने की आवश्यकता है.</translation>
 <translation id="8931394284949551895">नए डिवाइस</translation>
 <translation id="3752673729237782832">मेरे डिवाइस</translation>
+<translation id="1721937473331968728">आप अपने कंप्यूटर से कनेक्ट क्लासिक प्रिंटर को <ph name="CLOUD_PRINT_NAME"/> से जोड़ सकते हैं.</translation>
 <translation id="715118844758971915">क्‍लासि‍क प्रिंटर</translation>
 <translation id="4263757076580287579">प्रिंटर पंजीकरण को रद्द कर दिया गया है.</translation>
 <translation id="8152091997436726702">प्रिंटर पंजीकरण समयबाह्य हो गया. प्रिंटर को पंजीकृत करने के लिए, आपको प्रिंटर पर पंजीकरण की पुष्टि करनी होगी.</translation>
@@ -2970,9 +2973,11 @@
 <translation id="1871615898038944731">आपका <ph name="DEVICE_TYPE"/> अप टू डेट है</translation>
 <translation id="3688526734140524629">चैनल बदलें</translation>
 <translation id="6410328738210026208">चैनल बदलें और पावरवॉश करें</translation>
+<translation id="1979280758666859181">आप <ph name="PRODUCT_NAME"/> के पुराने वर्शन वाले चैनल में बदल रहे हैं. चैनल बदलाव तब लागू किया जाएगा जब चैनल का वर्शन आपके डिवाइस पर वर्तमान में इंस्टॉल किए गए वर्शन से मिलान करेगा.</translation>
 <translation id="7728668285692163452">चैनल बदलाव बाद में लागू किया जाएगा</translation>
 <translation id="5495466433285976480">इससे, आपके अगली बार फिर से प्रारंभ करने के बाद सभी स्थानीय उपयोगकर्ताओं, फ़ाइलों, डेटा, और अन्य सेटिंग को निकाल दिया जाएगा. सभी उपयोगकर्ताओं को फिर से साइन इन करना होगा.</translation>
 <translation id="8101987792947961127">अगली बार रीबूट करने पर पावरवॉश आवश्यक है</translation>
+<translation id="1414648216875402825">आप <ph name="PRODUCT_NAME"/> के ऐसे अस्थिर वर्शन में अपडेट कर रहे हैं जिसकी सुविधाओं पर काम चल रहा है. क्रैश और अप्रत्याशित बग उत्पन्न होंगे. कृपया सावधानी से आगे बढ़ें.</translation>
 <translation id="6103681770816982672">चेतावनी: आप डेवलपर चैनल पर स्विच कर रहे हैं</translation>
 <translation id="8807632654848257479">स्‍थिर</translation>
 <translation id="830868413617744215">बीटा</translation>
@@ -3745,10 +3750,12 @@
 <translation id="5302048478445481009">भाषा</translation>
 <translation id="6388429472088318283">खोज की भाषाएं</translation>
 <translation id="2690024944919328218">भाषा के विकल्प दिखाएं</translation>
+<translation id="768549422429443215">भाषाएं जोड़ें या सूची का क्रम बदलें.</translation>
 <translation id="8218847192766059983">भाषाएं जोड़ें या सूची का क्रम बदलें. <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">सिस्टम का टेक्स्ट इस भाषा में दिखाया गया है</translation>
 <translation id="2366260648632264559">सिस्टम का टेक्स्ट इस भाषा में दिखाएं</translation>
 <translation id="8336721153892716270"><ph name="LANGUAGE"/> में सिस्टम टेक्स्ट दिखाने के लिए डिवाइस को रीस्टार्ट करें</translation>
+<translation id="7216595297012131718">अपनी प्राथमिकताओं के आधार पर भाषाएं क्रमित करें</translation>
 <translation id="5972708806901999743">शीर्ष पर ले जाएं</translation>
 <translation id="8609465669617005112">ऊपर जाएं</translation>
 <translation id="6746124502594467657">नीचे जाएं</translation>
@@ -4578,6 +4585,7 @@
 <translation id="8143442547342702591">अमान्य ऐप्लिकेशन</translation>
 <translation id="720110658997053098">इस डिवाइस को हमेशा के लिए किओस्क मोड में रखें</translation>
 <translation id="1909880997794698664">क्या आप वाकई इस डिवाइस को स्थायी रूप से कियोस्क मोड में रखना चाहते हैं?</translation>
+<translation id="1512210426710821809">इसे पहले जैसा करने का अकेला तरीका <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> को फिर से इंस्टॉल करना है</translation>
 <translation id="8281886186245836920">अभी नहीं</translation>
 <translation id="2342740338116612727">बुकमार्क जोड़े गए</translation>
 <translation id="7835178595033117206">बुकमार्क हटाया गया</translation>
@@ -4698,7 +4706,10 @@
 <translation id="1526560967942511387">शीर्षक रहित दस्तावेज़</translation>
 <translation id="5269977353971873915">प्रिंट विफल</translation>
 <translation id="7385854874724088939">प्रिंट करने का प्रयास करते समय कुछ ग़लत हो गया.  कृपया अपना प्रिंटर जाँचें और पुन: प्रयास करें.</translation>
+<translation id="1197979282329025000">प्रिंटर <ph name="PRINTER_NAME"/> की प्रिंटर क्षमताएं पुनर्प्राप्त करते समय एक गड़बड़ी आई. इस प्रिंटर को <ph name="CLOUD_PRINT_NAME"/> के साथ पंजीकृत नहीं किया जा सका.</translation>
 <translation id="9004952710076978168">एक अज्ञात प्रिंटर के लिए सूचना प्राप्त हुई.</translation>
+<translation id="2202898655984161076">प्रिंटरों को सूचीबद्ध करने में कोई समस्या थी. आपके प्रिंटरों में से कुछ <ph name="CLOUD_PRINT_NAME"/> के साथ सफलतापूर्वक पंजीकृत नहीं हो सके हैं.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> कनेक्‍टर प्रक्रिया क्रैश हो गई है. फिर से प्रारंभ करें?</translation>
 <translation id="6904655473976120856">बाहर निकलने के लिए ऐप्लिकेशन बटन दबाएं</translation>
 <translation id="8909833622202089127">साइट आपकी जगह को ट्रैक कर रही है</translation>
 <translation id="375636864092143889">साइट आपका माइक्रोफ़ोन इस्तेमाल कर रही है</translation>

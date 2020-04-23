@@ -75,6 +75,7 @@
 <translation id="4250680216510889253">Ei</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
 <translation id="3586931643579894722">Peida üksikasjad</translation>
+<translation id="2166378884831602661">See sait ei saa pakkuda turvalist ühendust</translation>
 <translation id="614940544461990577">Proovige järgmist.</translation>
 <translation id="4943872375798546930">Tulemusi pole</translation>
 <translation id="8688672835843460752">Saadaval</translation>
@@ -108,7 +109,10 @@
 <translation id="413544239732274901">Lisateave</translation>
 <translation id="7554791636758816595">Uus vaheleht</translation>
 <translation id="2079545284768500474">Võta tagasi</translation>
+<translation id="6196640612572343990">Blokeeri kolmanda osapoole küpsised</translation>
 <translation id="17513872634828108">Avatud vahelehed</translation>
+<translation id="4331708818696583467">Pole turvaline</translation>
+<translation id="1074497978438210769">Pole turvaline</translation>
 <translation id="981121421437150478">Võrguühenduseta</translation>
 <translation id="5171045022955879922">Otsige või sisestage URL</translation>
 <translation id="803771048473350947">Fail</translation>
@@ -120,9 +124,14 @@
 <translation id="6831043979455480757">Tõlgi</translation>
 <translation id="2473195200299095979">Selle lehe tõlkimine</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, vastus, <ph name="ANSWER"/></translation>
+<translation id="8211406090763984747">Ühendus on turvaline</translation>
+<translation id="4250431568374086873">Teie ühendus selle saidiga pole täielikult turvaline</translation>
+<translation id="6177128806592000436">Teie ühendus selle saidiga pole turvaline</translation>
+<translation id="4750917950439032686">Teie teave (nt paroolid või krediitkaardi numbrid) on sellele saidile saates privaatne.</translation>
 <translation id="7714464543167945231">Sertifikaat</translation>
 <translation id="4235360514405112390">Kehtiv</translation>
 <translation id="6447842834002726250">Küpsised</translation>
+<translation id="5068778127327928576">{NUM_COOKIES, plural, =1 {(1 kasutuses)} other {(# kasutuses)}}</translation>
 <translation id="1919345977826869612">Reklaamid</translation>
 <translation id="6612358246767739896">Kaitstud sisu</translation>
 <translation id="9219103736887031265">Pildid</translation>
@@ -173,6 +182,7 @@
 <translation id="1826516787628120939">Kontrollimine</translation>
 <translation id="9154194610265714752">Värskendatud</translation>
 <translation id="1743570585616704562">Ei tuvastatud</translation>
+<translation id="9168814207360376865">Luba saitidel kontrollida, kas oled maksemeetodeid salvestanud</translation>
 <translation id="2653659639078652383">Esita</translation>
 <translation id="5045550434625856497">Vale salasõna</translation>
 <translation id="1165039591588034296">Viga</translation>
@@ -210,6 +220,7 @@
 <translation id="1974060860693918893">Täpsemad</translation>
 <translation id="5308380583665731573">Ühendamine</translation>
 <translation id="2501278716633472235">Mine tagasi</translation>
+<translation id="70705239631109039">Teie ühendus ei ole täielikult turvaline</translation>
 <translation id="1736420071277903564">Arvuti</translation>
 <translation id="3906954721959377182">Tahvelarvuti</translation>
 <translation id="7029809446516969842">Paroolid</translation>

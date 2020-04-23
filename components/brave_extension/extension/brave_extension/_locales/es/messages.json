@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "La Extensión Brave",
+    "message": "La extensión Brave",
     "description": "The name of the the extension."
   },
   "shields": {
@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Estás navegando por este sitio sin las protecciones de privacidad y seguridad de Brave. ¿No funciona bien con Shields activado?",
+    "message": "Estás navegando por este sitio sin las protecciones de privacidad y seguridad de Brave. ¿No funciona bien con los Escudos activados?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -68,31 +68,31 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cookies de terceros bloqueadas",
+    "message": "Bloquear cookies de terceros",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Cookies bloqueadas",
+    "message": "Bloquear todas las cookies",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Todas las cookies permitidas",
+    "message": "Permitir todas las cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Huella dactilar entre sitios bloqueada",
+    "message": "Bloquear los intentos de fingerprinting a terceros",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Intentos de tomar huellas dactilares bloqueados\n",
+    "message": "Bloquear los intentos de fingerprinting",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Se permiten todos los intentos de tomar huellas dactilares",
+    "message": "Permitir todos los intentos de fingerprinting",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Intentos de tomar huellas dactilares",
+    "message": "Intentos de fingerprinting",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {

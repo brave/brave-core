@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> กำลังแชร์แท็บใน Brave กับ <ph name="TAB_NAME"/></translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> กำลังแชร์แท็บและเสียงใน Brave</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> กำลังแชร์แท็บและเสียงใน Brave กับ <ph name="TAB_NAME"/></translation>
+<translation id="7108338896283013870">ซ่อน</translation>
 <translation id="890616557918890486">เปลี่ยนแหล่งที่มา</translation>
 <translation id="7792388396321542707">หยุดการแชร์</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> ต้องการสิทธิ์ถาวรในการเข้าถึงใบรับรองเพื่อตรวจสอบสิทธิ์ตัวเองในนามของคุณ</translation>
@@ -1659,6 +1660,7 @@
 <translation id="7022562585984256452">ตั้งค่าหน้าแรกของคุณแล้ว</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">เพิ่มเครื่องพิมพ์</translation>
+<translation id="9052208328806230490">คุณได้ลงทะเบียนเครื่องพิมพ์กับ <ph name="CLOUD_PRINT_NAME"/> โดยใช้บัญชี <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">ยกเลิกการเชื่อมต่อเครื่องพิมพ์</translation>
 <translation id="5038863510258510803">กำลังเปิดใช้งาน...</translation>
 <translation id="8264024885325823677">การตั้งค่านี้จัดการโดยผู้ดูแลระบบ</translation>
@@ -2291,6 +2293,7 @@
 <translation id="6711610692002680394">คุณต้องลงชื่อเข้าใช้ Brave เพื่อลงทะเบียนอุปกรณ์ใหม่</translation>
 <translation id="8931394284949551895">อุปกรณ์ใหม่</translation>
 <translation id="3752673729237782832">อุปกรณ์ของฉัน</translation>
+<translation id="1721937473331968728">คุณสามารถเพิ่มเครื่องพิมพ์แบบเดิมที่เชื่อมต่อกับคอมพิวเตอร์ไปยัง <ph name="CLOUD_PRINT_NAME"/></translation>
 <translation id="715118844758971915">เครื่องพิมพ์แบบเดิม</translation>
 <translation id="4263757076580287579">การลงทะเบียนเครื่องพิมพ์ถูกยกเลิก</translation>
 <translation id="8152091997436726702">หมดเวลาการลงทะเบียนเครื่องพิมพ์ หากต้องการลงทะเบียนเครื่องพิมพ์ คุณต้องยืนยันการลงทะเบียนในเครื่องพิมพ์</translation>
@@ -2971,9 +2974,11 @@
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> ของคุณเป็นเวอร์ชันล่าสุดแล้ว</translation>
 <translation id="3688526734140524629">เปลี่ยนช่อง</translation>
 <translation id="6410328738210026208">เปลี่ยนช่องและ Powerwash</translation>
+<translation id="1979280758666859181">คุณกำลังเปลี่ยนเป็นช่องที่มี <ph name="PRODUCT_NAME"/> เวอร์ชันเก่ากว่า การเปลี่ยนช่องจะถูกนำมาใช้เมื่อเวอร์ชันของช่องตรงกับเวอร์ชันที่ติดตั้งอยู่ในอุปกรณ์ของคุณในปัจจุบัน</translation>
 <translation id="7728668285692163452">ระบบจะนำการเปลี่ยนช่องไปใช้ในภายหลัง</translation>
 <translation id="5495466433285976480">การดำเนินการนี้จะลบผู้ใช้ท้องถิ่น ไฟล์ ข้อมูล และการตั้งค่าอื่นๆ ทั้งหมดหลังจากการรีสตาร์ทครั้งถัดไปของคุณ ผู้ใช้ทุกคนจะต้องลงชื่อเข้าใช้อีกครั้ง</translation>
 <translation id="8101987792947961127">ต้องใช้ Powerwash ในการรีบูตครั้งถัดไป</translation>
+<translation id="1414648216875402825">คุณกำลังอัปเดตไปเป็น <ph name="PRODUCT_NAME"/> ในเวอร์ชันที่ไม่เสถียร ซึ่งมีฟีเจอร์ที่ยังอยู่ระหว่างดำเนินการ จะมีข้อขัดข้องและข้อบกพร่องที่ไม่คาดคิดเกิดขึ้น โปรดดำเนินการต่อด้วยความระมัดระวัง</translation>
 <translation id="6103681770816982672">คำเตือน: คุณกำลังเปลี่ยนเป็นช่องนักพัฒนาซอฟต์แวร์</translation>
 <translation id="8807632654848257479">เสถียร</translation>
 <translation id="830868413617744215">เบต้า</translation>
@@ -3746,10 +3751,12 @@
 <translation id="5302048478445481009">ภาษา</translation>
 <translation id="6388429472088318283">ค้นหาภาษา</translation>
 <translation id="2690024944919328218">แสดงตัวเลือกภาษา</translation>
+<translation id="768549422429443215">เพิ่มภาษาหรือจัดเรียงรายการใหม่</translation>
 <translation id="8218847192766059983">เพิ่มภาษาหรือจัดเรียงรายการใหม่ <ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">ข้อความของระบบแสดงเป็นภาษานี้</translation>
 <translation id="2366260648632264559">แสดงข้อความของระบบเป็นภาษานี้</translation>
 <translation id="8336721153892716270">รีสตาร์ทอุปกรณ์เพื่อแสดงข้อความของระบบในภาษา<ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">เรียงลำดับภาษาตามความต้องการของคุณ</translation>
 <translation id="5972708806901999743">ย้ายไปด้านบน</translation>
 <translation id="8609465669617005112">เลื่อนขึ้น</translation>
 <translation id="6746124502594467657">เลื่อนลง</translation>
@@ -4579,6 +4586,7 @@
 <translation id="8143442547342702591">แอปพลิเคชันไม่ถูกต้อง</translation>
 <translation id="720110658997053098">เก็บอุปกรณ์นี้ไว้ในโหมดคีออสก์อย่างถาวร</translation>
 <translation id="1909880997794698664">คุณต้องการเก็บอุปกรณ์นี้ไว้ในโหมดคีออสก์อย่างถาวรหรือไม่</translation>
+<translation id="1512210426710821809">วิธีเดียวที่จะยกเลิกการทำงานนี้คือการติดตั้ง <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> ใหม่</translation>
 <translation id="8281886186245836920">ข้าม</translation>
 <translation id="2342740338116612727">เพิ่มบุ๊กมาร์กแล้ว</translation>
 <translation id="7835178595033117206">นำบุ๊กมาร์กออกแล้ว</translation>
@@ -4699,7 +4707,10 @@
 <translation id="1526560967942511387">เอกสารที่ไม่ระบุชื่อ</translation>
 <translation id="5269977353971873915">การพิมพ์ล้มเหลว</translation>
 <translation id="7385854874724088939">พบปัญหาขณะสั่งพิมพ์ กรุณาตรวจสอบเครื่องพิมพ์และลองใหม่อีกครั้ง</translation>
+<translation id="1197979282329025000">เกิดข้อผิดพลาดขณะดึงข้อมูลความสามารถของเครื่องพิมพ์ <ph name="PRINTER_NAME"/> ไม่สามารถลงทะเบียนเครื่องพิมพ์นี้กับ <ph name="CLOUD_PRINT_NAME"/></translation>
 <translation id="9004952710076978168">ได้รับการแจ้งเตือนสำหรับเครื่องพิมพ์ที่ไม่รู้จัก</translation>
+<translation id="2202898655984161076">เกิดปัญหาในการแสดงรายการเครื่องพิมพ์ คุณอาจยังลงทะเบียนเครื่องพิมพ์บางเครื่องกับ <ph name="CLOUD_PRINT_NAME"/> ไม่เรียบร้อย</translation>
+<translation id="3220586366024592812">การทำงานของตัวเชื่อมต่อ <ph name="CLOUD_PRINT_NAME"/> ขัดข้อง จะรีสตาร์ทหรือไม่</translation>
 <translation id="6904655473976120856">กดปุ่มแอปเพื่อออก</translation>
 <translation id="8909833622202089127">เว็บไซต์กำลังติดตามตำแหน่งของคุณ</translation>
 <translation id="375636864092143889">เว็บไซต์กำลังใช้ไมโครโฟนของคุณ</translation>

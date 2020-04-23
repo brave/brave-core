@@ -1625,6 +1625,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5727851901710884484"><ph name="APP_NAME"/> jakaa Brave-välilehden välilehdelle <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> jakaa Brave-välilehden ja ääntä.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> jakaa Brave-välilehden ja ääntä välilehdelle <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Piilota</translation>
 <translation id="890616557918890486">Vaihda lähdettä</translation>
 <translation id="7792388396321542707">Lopeta jakaminen</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> haluaa jatkuvan varmenteen käyttöoikeuden voidakseen varmentaa itsensä puolestasi.</translation>
@@ -1655,6 +1656,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7022562585984256452">Etusivusi on asetettu.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Lisää tulostimia</translation>
+<translation id="9052208328806230490">Olet rekisteröinyt tulostimesi palveluun <ph name="CLOUD_PRINT_NAME"/> tilin <ph name="EMAIL"/> avulla</translation>
 <translation id="3792890930871100565">Irrota tulostimet</translation>
 <translation id="5038863510258510803">Otetaan käyttöön...</translation>
 <translation id="8264024885325823677">Järjestelmänvalvojasi ylläpitää tätä asetusta.</translation>
@@ -2287,6 +2289,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6711610692002680394">Sinun on kirjauduttava sisään Braveen, jos haluat rekisteröidä uusia laitteita</translation>
 <translation id="8931394284949551895">Uudet laitteet</translation>
 <translation id="3752673729237782832">Omat laitteet</translation>
+<translation id="1721937473331968728">Voit lisätä perinteisiä tietokoneeseesi liitettyjä tulostimia kohteeseen <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Perinteiset tulostimet</translation>
 <translation id="4263757076580287579">Tulostimen rekisteröinti on peruutettu.</translation>
 <translation id="8152091997436726702">Tulostimen rekisteröinti aikakatkaistiin. Jotta voit rekisteröidä tulostimen, sinun on vahvistettava tulostimen rekisteröinti.</translation>
@@ -2969,9 +2972,11 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> on ajan tasalla.</translation>
 <translation id="3688526734140524629">Vaihda kanavaa</translation>
 <translation id="6410328738210026208">Vaihda kanavaa ja tee Powerwash</translation>
+<translation id="1979280758666859181">Olet vaihtamassa kanavalle, jossa on käytössä tuotteen <ph name="PRODUCT_NAME"/> vanhempi versio. Kanavan muutos otetaan käyttöön, kun kanavaversio vastaa tällä hetkellä laitteellesi asennettua versiota.</translation>
 <translation id="7728668285692163452">Kanavan muutos otetaan käyttöön myöhemmin</translation>
 <translation id="5495466433285976480">Tämä poistaa kaikki paikalliset käyttäjät, tiedostot, tiedot ja muut asetukset seuraavan uudelleenkäynnistyksesi jälkeen. Kaikkien käyttäjien on kirjauduttava sisään uudelleen.</translation>
 <translation id="8101987792947961127">Powerwash vaaditaan seuraavan uudelleenkäynnistyksen yhteydessä</translation>
+<translation id="1414648216875402825">Olet päivittämässä tuotteen <ph name="PRODUCT_NAME"/> epävakaaseen versioon, jossa on vasta kehitysvaiheessa olevia ominaisuuksia. Ohjelman kaatumisia ja odottamattomia virheitä on odotettavissa. Jatka omalla vastuullasi.</translation>
 <translation id="6103681770816982672">Varoitus: olet vaihtamassa kehittäjäkanavalle</translation>
 <translation id="8807632654848257479">Vakaa</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3744,10 +3749,12 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5302048478445481009">Kieli</translation>
 <translation id="6388429472088318283">Hae kieliä</translation>
 <translation id="2690024944919328218">Näytä kieliasetukset</translation>
+<translation id="768549422429443215">Lisää kieliä tai järjestä lista uudelleen.</translation>
 <translation id="8218847192766059983">Lisää kieliä tai järjestä lista uudelleen. <ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Järjestelmäteksti näkyy tällä kielellä</translation>
 <translation id="2366260648632264559">Näytä järjestelmäteksti tällä kielellä</translation>
 <translation id="8336721153892716270">Käynnistä laite uudestaan, niin järjestelmän kielenä on <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Järjestä kielet haluamallasi tavalla.</translation>
 <translation id="5972708806901999743">Siirrä alkuun</translation>
 <translation id="8609465669617005112">Siirrä ylös</translation>
 <translation id="6746124502594467657">Siirrä alas</translation>
@@ -4577,6 +4584,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8143442547342702591">Virheellinen sovellus</translation>
 <translation id="720110658997053098">Pidä tämä laite pysyvästi kioskitilassa</translation>
 <translation id="1909880997794698664">Haluatko varmasti pitää laitteen pysyvästi kioskitilassa?</translation>
+<translation id="1512210426710821809">Tämä voidaan kumota vain asentamalla <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> uudelleen.</translation>
 <translation id="8281886186245836920">Ohita</translation>
 <translation id="2342740338116612727">Kirjanmerkit lisätty</translation>
 <translation id="7835178595033117206">Kirjanmerkki poistettu</translation>
@@ -4697,7 +4705,10 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1526560967942511387">Nimetön asiakirja</translation>
 <translation id="5269977353971873915">Tulostus epäonnistui</translation>
 <translation id="7385854874724088939">Ongelmia tulostuksessa. Tarkista tulostimesi ja yritä uudelleen.</translation>
+<translation id="1197979282329025000">Tapahtui virhe noudettaessa tulostimen <ph name="PRINTER_NAME"/> asetuksia. Tulostinta ei välttämättä ole rekisteröity palveluun <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Vastaanotti ilmoituksen tuntemattomasta tulostimesta.</translation>
+<translation id="2202898655984161076">Tulostimien luetteloinnissa tapahtui virhe. Kaikkia tulostimiasi ei ole välttämättä rekisteröity palveluun <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/>-yhteysohjelman prosessi keskeytyi. Käynnistetäänkö uudelleen?</translation>
 <translation id="6904655473976120856">Sulje painamalla Sovellukset-painiketta.</translation>
 <translation id="8909833622202089127">Sivusto seuraa sijaintiasi</translation>
 <translation id="375636864092143889">Sivusto käyttää mikrofoniasi</translation>

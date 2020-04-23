@@ -770,7 +770,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="3288003805934695103">Odśwież stronę</translation>
 <translation id="2353636109065292463">Sprawdzanie połączenia z internetem</translation>
 <translation id="8364299278605033898">Zobacz najpopularniejsze strony</translation>
-<translation id="1171770572613082465">Zobacz najpopularniejsze strony, klikając przycisk „Popularne”</translation>
+<translation id="1171770572613082465">Zobacz najpopularniejsze strony, klikając przycisk „Popularne strony”</translation>
 <translation id="5233638681132016545">Nowa karta</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="4521874409998847950">Opublikowane na <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>wyświetlone przez Brave Software<ph name="END_DEEMPHASIZED"/></translation>
@@ -845,7 +845,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6773423637732432200">Nie udało się zaktualizować Brave. Więcej opcji</translation>
 <translation id="1383876407941801731">Szukaj</translation>
 <translation id="3328801116991980348">Informacje o witrynie</translation>
-<translation id="5391532827096253100">Twoje połączenie z tą witryną nie jest bezpieczne. Informacje o witrynie</translation>
+<translation id="5391532827096253100">Połączenie z tą stroną nie jest bezpieczne. Informacje o witrynie</translation>
 <translation id="6206551242102657620">Połączenie jest bezpieczne. Informacje o witrynie</translation>
 <translation id="6963642900430330478">Ta strona jest niebezpieczna. Informacje o witrynie</translation>
 <translation id="9070377983101773829">Rozpocznij wyszukiwanie głosowe</translation>
@@ -877,7 +877,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="4958708863221495346"><ph name="URL_OF_THE_CURRENT_TAB"/> udostępnia Twój ekran</translation>
 <translation id="8833831881926404480">Strona udostępnia Twój ekran</translation>
 <translation id="9086455579313502267">Nie można uzyskać dostępu do sieci</translation>
-<translation id="938850635132480979">Błąd: <ph name="ERROR_CODE"/></translation>
+<translation id="938850635132480979">Bład: &lt;ph name="ERROR_CODE"&gt;%1$s&lt;/ph&gt;</translation>
 <translation id="666731172850799929">Otwórz w <ph name="APP_NAME"/></translation>
 <translation id="548278423535722844">Otwórz w aplikacji z mapami</translation>
 <translation id="7698359219371678927">Utwórz e-maila w aplikacji <ph name="APP_NAME"/></translation>

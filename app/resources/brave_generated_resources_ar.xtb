@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
+<translation id="6786747875388722282">الإضافات</translation>
 <translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
 <translation id="4726634924419692905">اسأل عندما يريد موقع ما تثبيت Widevine على جهاز الكمبيوتر الخاص بك.</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">لم يراجع Brave هذا الملحق للأمان والسلامة. قم بتثبيت هذا الملحق فقط إذا كنت تثق في المطور.</translation>
 <translation id="8081858229109418493">اسم ورمز الملف الشخصي</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
+<translation id="1692470335103807198">الحصول على المزيد من السمات</translation>
+<translation id="2906510232093002459">الصور الأساسية لمتصفح Brave</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
 <translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
 <translation id="1520361618554057102">عرض الإشارات المرجعية في صفحة علامة التبويب الجديدة دائماً</translation>
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
+<translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
+<translation id="2467749191278759605">تخصيص لوحة تحكم متصفح Brave الخاصة بك</translation>
+<translation id="1717331825806276156">صور الخلفية</translation>
+<translation id="1820041496463124489">الصور الموجودة ضمن الرعاية</translation>
+<translation id="8173998484743827990">إحصائيات Brave</translation>
+<translation id="6966052266404721769">تبادل العملات المشفرة</translation>
+<translation id="4643117005422448078">المواقع الأولى</translation>
+<translation id="1776831331757823105">الساعة</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
 <translation id="8511502469534942133">اتصال Tor جديد لهذا الموقع</translation>
 <translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">حظر ملفات تعريف الارتباط عبر المواقع فقط</translation>
 <translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
 <translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
-<translation id="5572437114858031185">حظر مسح البصمة عبر المواقع فقط</translation>
-<translation id="5079032039521408559">السماح بجميع محاولات الدخول بالبصمة</translation>
-<translation id="6447141055227658942">حظر جميع محاولات الدخول بالبصمة</translation>
+<translation id="5963670684159057574">حظر أخذ البصمة عبر المواقع</translation>
+<translation id="769702552748212954">السماح بجميع عمليات أخذ البصمات</translation>
+<translation id="4540198958192073185">حظر كل البصمات</translation>
 <translation id="8942080017911802454">سياسة مناولة WebRTC IP</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
 <translation id="8798099450830957504">التلقائي</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">كنظام تشغيل Linux</translation>
 <translation id="1336940801687497203">كنظام تشغيل Windows</translation>
 <translation id="8721331068159819483">تماماً مثل ماك</translation>
-<translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="7701040980221191251">بلا</translation>

@@ -1620,6 +1620,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="5727851901710884484"><ph name="APP_NAME"/> tətbiqi Brave panelini <ph name="TAB_NAME"/> ilə paylaşır.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> Brave tab və audionu paylaşır.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> tətbiqi Brave paneli və audionu <ph name="TAB_NAME"/> ilə paylaşır.</translation>
+<translation id="7108338896283013870">Gizlədin</translation>
 <translation id="890616557918890486">Mənbəni dəyişin</translation>
 <translation id="7792388396321542707">Paylaşımı dayandırın</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> sizin adınıza özü kimlik sənədi daimi çıxış istəyir.</translation>
@@ -1653,6 +1654,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="7022562585984256452">Əsas səhifəniz ayarlandı.</translation>
 <translation id="8069615408251337349">Brave Software Bulud Printi</translation>
 <translation id="4973307593867026061">Printer əlavə edin</translation>
+<translation id="9052208328806230490"><ph name="EMAIL"/> hesabını istifadə etməklə, printerlərinizi <ph name="CLOUD_PRINT_NAME"/> adı ilə qeydiyyatdan keçirdiniz.</translation>
 <translation id="3792890930871100565">Printer bağlantısını kəsin</translation>
 <translation id="5038863510258510803">Aktivləşir...</translation>
 <translation id="8264024885325823677">Bu ayar inzibatçınız tərəfindən idarə edilir.</translation>
@@ -2281,6 +2283,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="6711610692002680394">Yeni cihazları qeydiyyat etmək üçün Brave'a daxil olmalısınız</translation>
 <translation id="8931394284949551895">Yeni cihazlar</translation>
 <translation id="3752673729237782832">Cihazlarım</translation>
+<translation id="1721937473331968728"><ph name="CLOUD_PRINT_NAME"/> bulud çapına qoşulmuş kompüterinizə qoşulu klassik printerləri əlavə edə bilərsiniz.</translation>
 <translation id="715118844758971915">Klassik printerlər</translation>
 <translation id="4263757076580287579">Printer qeydiyyatı ləğv edildi.</translation>
 <translation id="8152091997436726702">Printer qeydiyyatının vaxtı keçdi. Printeri qeydiyyatdan keçirmək üçün qeydiyyatı printerdə təsdiq etməlisiniz.</translation>
@@ -2948,9 +2951,11 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> cihazı güncəldir</translation>
 <translation id="3688526734140524629">Kanalı dəyişin</translation>
 <translation id="6410328738210026208">Kanal və Zavod sıfırlamasını dəyişin</translation>
+<translation id="1979280758666859181">Köhnə versiyalı <ph name="PRODUCT_NAME"/> ilə kanala keçirsiniz.</translation>
 <translation id="7728668285692163452">Kanal dəyişikliyi daha sonra tətbiq ediləcək</translation>
 <translation id="5495466433285976480">Növbəti başlatmanızdan sonra bu bütün yerli istifadəçilər, data və digər ayarlar silinəcək. Bütün istifadəçilər yenidən daxil olmalıdır.</translation>
 <translation id="8101987792947961127">Növbəti yenidən yüklənmə zamanı zavod sıfırlaması tələb olunur</translation>
+<translation id="1414648216875402825"><ph name="PRODUCT_NAME"/> məhsulunun inkişafda olan qeyri-stabil versiyasını güncəlləşdirirsiniz. Gözlənilməyən xətalar ola bilər. Diqqətli olun.</translation>
 <translation id="6103681770816982672">Xəbərdarlıq: developer kanalına keçid edirsiniz</translation>
 <translation id="8807632654848257479">Stabil</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3723,10 +3728,12 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="5302048478445481009">Dil</translation>
 <translation id="6388429472088318283">Dil axtarın</translation>
 <translation id="2690024944919328218">Dil seçimlərini göstərin</translation>
+<translation id="768549422429443215">Dillər əlavə edin və ya siyahını yenidən sıralayın.</translation>
 <translation id="8218847192766059983">Dillər əlavə edin və ya siyahını yenidən sıralayın. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Sistem mətni bu dildə göstərilir</translation>
 <translation id="2366260648632264559">Sistem mətnini bu dildə göstərin</translation>
 <translation id="8336721153892716270">Sistem mətnini <ph name="LANGUAGE"/> dilində göstərmək üçün cihazı yenidən başladın</translation>
+<translation id="7216595297012131718">Tərcihlərə əsasən dil sifariş edin</translation>
 <translation id="5972708806901999743">Yuxarı köçürün</translation>
 <translation id="8609465669617005112">Yuxarı köçürün</translation>
 <translation id="6746124502594467657">Aşağı köçürün</translation>
@@ -4556,6 +4563,7 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="8143442547342702591">Yanlış tətbiq</translation>
 <translation id="720110658997053098">Bu cihazı daimi olaraq kiosk rejimində saxlayın</translation>
 <translation id="1909880997794698664">Bu cihazı hazırda kiosk rejimində saxlamaq istəyirsiniz?</translation>
+<translation id="1512210426710821809">Bunu geri qaytarmağın yeganə yolu <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> məhsulunu yenidən quraşdırmaqdır</translation>
 <translation id="8281886186245836920">Keçin</translation>
 <translation id="2342740338116612727">Əlfəcinlər əlavə edildi</translation>
 <translation id="7835178595033117206">Əlfəcin silindi</translation>
@@ -4676,7 +4684,10 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="1526560967942511387">Başlıqsız Sənəd</translation>
 <translation id="5269977353971873915">Çap alınmadı</translation>
 <translation id="7385854874724088939">Çap etməyə çalışarkən xəta oldu. Printeri yoxlayın və yenidən cəhd edin.</translation>
+<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> printeri üçün printer bacarıqlarını əldə edən zaman xəta oldu. Bu printer <ph name="CLOUD_PRINT_NAME"/> ilə qeydiyyatdan keçə bilməz.</translation>
 <translation id="9004952710076978168">Naməlum printerdən bildiriş alın.</translation>
+<translation id="2202898655984161076">Printerlərin siyahısını tərtib edərkən xəta baş verdi. Bəzi printerləriniz <ph name="CLOUD_PRINT_NAME"/> ilə uğurla qeydiyyat olunmayıb..</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> bağlayıcısında problem oldu. Yenidən başlasın?</translation>
 <translation id="6904655473976120856">Çıxmaq üçün Tətbiq düyməsinə basın</translation>
 <translation id="8909833622202089127">Sayt məkanınızı izləyir</translation>
 <translation id="375636864092143889">Sayt mikrofondan istifadə edir</translation>

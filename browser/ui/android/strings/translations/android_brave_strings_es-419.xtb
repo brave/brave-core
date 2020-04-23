@@ -26,6 +26,7 @@
 <translation id="7459000603787995422">Cierra las pestañas al salir</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="4339730410920731698">Publicidades y rastreadores bloqueados</translation>
+<translation id="6761596877474675418">Datos guardados</translation>
 <translation id="3034562645284925177">Tiempo ahorrado estimado</translation>
 <translation id="6572660632052512096">Modo de escritorio</translation>
 <translation id="1340503115760585811">Activa la vista de escritorio en nuevas pestañas</translation>
@@ -58,6 +59,7 @@
 <translation id="7053983685419859001">Bloquea</translation>
 <translation id="5806601733251372221">Escudos de Brave</translation>
 <translation id="2880356288762235261">anuncios y rastreadores que invaden tu privacidad para que puedas navegar sin que nadie te persiga.</translation>
+<translation id="8537217141725709400">Gane &lt;ph name="TOKEN"&gt;%1$s&lt;ex&gt;token&lt;/ex&gt;&lt;/ph&gt;s</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="1789842587755069541">mirando anuncios que respetan la privacidad. Úsalos para apoyar a tus creadores y sitios favoritos.</translation>
 <translation id="821707262661492716">por ver anuncios que respetan la privacidad.</translation>
@@ -113,6 +115,8 @@
 <translation id="4254029385847607686">DICIEMBRE</translation>
 <translation id="1916285746997567466">Prepárate para disfrutar
 de la Internet del futuro.</translation>
+<translation id="3540580927110899945">Ahora puedes ganar &lt;ph name="TOKEN"&gt;%1$s&lt;ex&gt;token&lt;/ex&gt;&lt;/ph&gt;s por
+ver anuncios que respeten la privacidad.</translation>
 <translation id="1327938628925645979">UNIRME A RECOMPENSAS</translation>
 <translation id="5567439033041178034">MÁS INFORMACIÓN</translation>
 <translation id="3780605330121608425">Tu billetera</translation>
@@ -146,6 +150,7 @@ mes...</translation>
 <translation id="5463954686005964104">Envíe propinas a este sitio mensualmente</translation>
 <translation id="7530570094705720669">Cómo crear una billetera</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4751553692764711651">Has contribuido &lt;ph name="BAT_VALUE"&gt;%1$s&lt;ex&gt;50&lt;/ex&gt;&lt;/ph&gt;  &lt;ph name="BAT_TEXT"&gt;%2$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt;.</translation>
 <translation id="7997676409547731821">Tu pago mensual programado de contribución automática y las propinas mensuales no pudieron enviarse debido a fondos insuficientes. Lo intentaremos de nuevo en 30 días.</translation>
 <translation id="5306913077198665897">Hubo un problema al procesar tu propina. Vuelve a intentarlo.</translation>
 <translation id="2429828319207652823">Hubo un problema al procesar su contribución.</translation>
@@ -164,6 +169,10 @@ mes...</translation>
 <translation id="4292832015778676417">ingresos de publicidades</translation>
 <translation id="683765328936486920">en YouTube</translation>
 <translation id="8969049974285901797">en Twitch</translation>
+<translation id="4376933248999950592">Ha designado &lt;ph name="BAT_VALUE"&gt;%1$s&lt;ex&gt;50&lt;/ex&gt;&lt;/ph&gt;  &lt;ph name="BAT_TEXT"&gt;%2$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt; a los creadores que aún no se han
+inscrito para recibir contribuciones. Tu navegador seguirá intentando contribuir
+hasta que lo verifiquen, o hasta que hayan pasado 90 días.</translation>
+<translation id="3101693828171454453">no son suficientes &lt;ph name="TOKEN"&gt;%1$s&lt;ex&gt;token&lt;/ex&gt;&lt;/ph&gt;s</translation>
 <translation id="1036277985068412734">agregar fondos</translation>
 <translation id="3492491948683276944">Configurar propina mensual</translation>
 <translation id="4162066325465825185">Vaya... Parece que Recompensas Brave no está disponible en tu dispositivo.</translation>
@@ -215,6 +224,7 @@ mes...</translation>
 <translation id="327726072512457161">Salir de Configuración</translation>
 <translation id="8050847734948770789">Activar las Recompensas Brave</translation>
 <translation id="9187185473011056079">Sí, acepto</translation>
+<translation id="8185825081026121627">Gane un Token de Atención Básica por ver los anuncios de Brave Rewards respetando la privacidad.</translation>
 <translation id="5321518976657560663">Error de restablecimiento</translation>
 <translation id="4114170343590425996">Hubo un error al restablecer las Recompensas Brave. Reinicia Brave y vuelve a intentarlo.</translation>
 <translation id="6393502589311632553">Mostrar anuncios cuando Brave no está en uso</translation>
@@ -260,4 +270,5 @@ mes...</translation>
 <translation id="5895280237921845725"><ph name="LEARN_MORE"/> sobre imágenes patrocinadas en Brave Rewards. También puedes optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="1908278071064820219">También puedes optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="7931660128190969207">Gana dinero por ver esta imagen de fondo. Activa Brave Ads para reclamar tu parte.</translation>
+<translation id="213787746370741250">Abrir pestañas en Pestañas Personalizadas</translation>
 </translationbundle>

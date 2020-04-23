@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
+<translation id="6786747875388722282">Razširitve</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="4726634924419692905">Vprašaj, ko želi spletno mesto namestiti Widevine na vaš računalnik</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave ni pregledal zaščito in varnost te razširitve. To razširitev namestite samo, če razvijalcu zaupate.</translation>
 <translation id="8081858229109418493">Profilno ime in ikona</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
+<translation id="1692470335103807198">Pridobi več tem</translation>
+<translation id="2906510232093002459">Privzete slike brskalnika Brave</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
 <translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
 <translation id="1520361618554057102">Na strani novega zavihka vedno pokaži zaznamke</translation>
 <translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
+<translation id="7781069478569868053">Stran »Nov zavihek«</translation>
+<translation id="2467749191278759605">Prilagodite ozadje Brave</translation>
+<translation id="1717331825806276156">Slike ozadja</translation>
+<translation id="1820041496463124489">Sponzorirane slike</translation>
+<translation id="8173998484743827990">Brave statistika</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Najb. prilj.</translation>
+<translation id="1776831331757823105">Ura</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
 <translation id="8511502469534942133">Nova Tor povezava za to spletno mesto</translation>
 <translation id="8784924142044142231">Izhod iz brskalnika Tor</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">Blokiraj piškotke med mesti</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
-<translation id="5572437114858031185">Blokiraj samo poskuse ustvarjanja prstnih odtisov med mesti</translation>
-<translation id="5079032039521408559">Dovoli vse poskuse ustvarjanja prstnih odtisov</translation>
-<translation id="6447141055227658942">Blokiraj vse poskuse ustvarjanja prstnih odtisov</translation>
+<translation id="5963670684159057574">Blokiraj ustvarjanje prstnih odtisov med mesti</translation>
+<translation id="769702552748212954">Dovoli vsa ustvarjanja prstnih odtisov</translation>
+<translation id="4540198958192073185">Blokiraj vsa ustvarjanja prstnih odtisov</translation>
 <translation id="8942080017911802454">Pravila za obravnavanje IP-naslova WebRTC</translation>
 <translation id="6165508094623778733">Več o tem</translation>
 <translation id="8798099450830957504">Privzeto</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">Enako kot Linux</translation>
 <translation id="1336940801687497203">Enako kot Windows</translation>
 <translation id="8721331068159819483">Enako kot MacOs</translation>
-<translation id="6786747875388722282">Razširitve</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="7701040980221191251">Brez</translation>

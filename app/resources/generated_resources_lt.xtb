@@ -1627,6 +1627,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5727851901710884484">„<ph name="APP_NAME"/>“ bendrina „Brave“ skirtuką su <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338">„<ph name="APP_NAME"/>“ bendrina „Brave“ skirtuką ir garsą.</translation>
 <translation id="859454237594354073">„<ph name="APP_NAME"/>“ bendrina „Brave“ skirtuką ir garsą su <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Slėpti</translation>
 <translation id="890616557918890486">Keisti šaltinį</translation>
 <translation id="7792388396321542707">Nebebendrinti</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> nori nuolatinės prieigos prie sertifikato, kad galėtų save autentifikuoti jūsų vardu.</translation>
@@ -1660,6 +1661,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7022562585984256452">Pagrindinis puslapis nustatytas.</translation>
 <translation id="8069615408251337349">„Brave Software“ spausdinimas iš debesies</translation>
 <translation id="4973307593867026061">Pridėti spausdintuvų</translation>
+<translation id="9052208328806230490">Užregistravote spausdintuvus „<ph name="CLOUD_PRINT_NAME"/>“ naudodami <ph name="EMAIL"/> paskyrą</translation>
 <translation id="3792890930871100565">Atjungti spausdintuvus</translation>
 <translation id="5038863510258510803">Įgalinama...</translation>
 <translation id="8264024885325823677">Šį nustatymą tvarko jūsų administratorius.</translation>
@@ -2292,6 +2294,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6711610692002680394">Reikia prisijungti prie „Brave“, kad būtų galima užregistruoti naujus įrenginius</translation>
 <translation id="8931394284949551895">Nauji įrenginiai</translation>
 <translation id="3752673729237782832">Mano įrenginiai</translation>
+<translation id="1721937473331968728">Prie <ph name="CLOUD_PRINT_NAME"/> galite pridėti įprastų spausdintuvų, prijungtų prie jūsų kompiuterio.</translation>
 <translation id="715118844758971915">Įprasti spausdintuvai</translation>
 <translation id="4263757076580287579">Spausdintuvo registracija atšaukta.</translation>
 <translation id="8152091997436726702">Baigėsi spausdintuvo registracijos laikas. Jei norite užregistruoti spausdintuvą, turite patvirtinti registraciją spausdintuve.</translation>
@@ -2972,9 +2975,11 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1871615898038944731">„<ph name="DEVICE_TYPE"/>“ atnaujintas</translation>
 <translation id="3688526734140524629">Keisti kanalą</translation>
 <translation id="6410328738210026208">Pakeisti kanalą ir paleisti „Powerwash“</translation>
+<translation id="1979280758666859181">Keičiate į kanalą, kuriame naudojama senesnė „<ph name="PRODUCT_NAME"/>“ versija. Kanalo pakeitimas bus pritaikytas, kai kanalo versija atitiks šiuo metu įrenginyje įdiegtą versiją.</translation>
 <translation id="7728668285692163452">Kanalo pakeitimas bus pritaikytas vėliau</translation>
 <translation id="5495466433285976480">Jei atliksite šį veiksmą, kitą kartą paleidus iš naujo bus pašalinti visi vietiniai naudotojai, failai, duomenys ir kiti nustatymai. Visiems naudotojams reikės dar kartą prisijungti.</translation>
 <translation id="8101987792947961127">Kitą kartą įkeliant operacinę sistemą iš naujo būtina paleisti „Powerwash“</translation>
+<translation id="1414648216875402825">Atnaujinate į nestabilią „<ph name="PRODUCT_NAME"/>“ versiją, kuri apima vis dar kuriamas funkcijas. Bus strigčių ir netikėtų trikčių. Būkite atsargūs.</translation>
 <translation id="6103681770816982672">Įspėjimas: perjungiate į kūrėjo kanalą</translation>
 <translation id="8807632654848257479">Stabilus</translation>
 <translation id="830868413617744215">Beta versija</translation>
@@ -3747,10 +3752,12 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5302048478445481009">Kalba</translation>
 <translation id="6388429472088318283">Ieškoti kalbų</translation>
 <translation id="2690024944919328218">Rodyti kalbos parinktis</translation>
+<translation id="768549422429443215">Pridėkite kalbų arba pertvarkykite sąrašą.</translation>
 <translation id="8218847192766059983">Pridėkite kalbų arba pertvarkykite sąrašą. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Sistemos tekstas rodomas šia kalba</translation>
 <translation id="2366260648632264559">Rodyti sistemos tekstą šia kalba</translation>
 <translation id="8336721153892716270">Paleiskite įrenginį iš naujo, kad sistemos tekstas būtų rodomas <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Surikiuokite kalbas, kaip pageidaujate</translation>
 <translation id="5972708806901999743">Perkelti į viršų</translation>
 <translation id="8609465669617005112">Perkelti į viršų</translation>
 <translation id="6746124502594467657">Perkelti žemyn</translation>
@@ -4580,6 +4587,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8143442547342702591">Netinkama programa</translation>
 <translation id="720110658997053098">Įgalinti nuolatinį šio įrenginio veikimą viešojo terminalo režimu</translation>
 <translation id="1909880997794698664">Ar tikrai norite šį įrenginį visam laikui nustatyti veikti viešojo terminalo režimu?</translation>
+<translation id="1512210426710821809">Vienintelis būdas tai anuliuoti yra iš naujo įdiegti „<ph name="IDS_SHORT_PRODUCT_OS_NAME"/>“</translation>
 <translation id="8281886186245836920">Praleisti</translation>
 <translation id="2342740338116612727">Žymės pridėtos</translation>
 <translation id="7835178595033117206">Žymė pašalinta</translation>
@@ -4700,7 +4708,10 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1526560967942511387">Dokumentas be pavadinimo</translation>
 <translation id="5269977353971873915">Spausdinant įvyko klaida</translation>
 <translation id="7385854874724088939">Bandant spausdinti atsirado triktis. Patikrinkite spausdintuvą ir bandykite dar kartą.</translation>
+<translation id="1197979282329025000">Nuskaitant „<ph name="PRINTER_NAME"/>“ spausdintuvo charakteristikas įvyko klaida. Šio spausdintuvo nepavyko užregistruoti „<ph name="CLOUD_PRINT_NAME"/>“.</translation>
 <translation id="9004952710076978168">Gautas pranešimas, skirtas nežinomam spausdintuvui.</translation>
+<translation id="2202898655984161076">Sudarant spausdintuvų sąrašą iškilo problema. Kai kurie spausdintuvai galėjo nebūti sėkmingai užregistruoti „<ph name="CLOUD_PRINT_NAME"/>“.</translation>
+<translation id="3220586366024592812">Užstrigo „<ph name="CLOUD_PRINT_NAME"/>“ jungties procesas. Paleisti iš naujo?</translation>
 <translation id="6904655473976120856">Jei norite išeiti, paspauskite mygtuką „Programa“</translation>
 <translation id="8909833622202089127">Svetainė stebi jūsų vietą</translation>
 <translation id="375636864092143889">Svetainė naudoja jūsų mikrofoną</translation>

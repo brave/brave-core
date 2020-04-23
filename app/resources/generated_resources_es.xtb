@@ -36,7 +36,7 @@
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="3089137131053189723">Se ha borrado la búsqueda</translation>
 <translation id="8419098111404128271">Resultados de búsqueda de "<ph name="SEARCH_TEXT"/>"</translation>
-<translation id="6377268785556383139">1 resultado para "<ph name="SEARCH_TEXT"/>"</translation>
+<translation id="6377268785556383139">1 resultado para '<ph name="SEARCH_TEXT"/>'</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> resultados para "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="5359910752122114278">1 resultado</translation>
 <translation id="2295864384543949385"><ph name="NUM_RESULTS"/> resultados</translation>
@@ -107,14 +107,14 @@
 <translation id="8915370057835397490">Cargando sugerencia</translation>
 <translation id="6191804255817539692">No hay más sugerencias de Brave</translation>
 <translation id="1901303067676059328">Seleccionar todo</translation>
-<translation id="3797900183766075808">Search <ph name="SEARCH_ENGINE"/> for “<ph name="SEARCH_TERMS"/>”</translation>
+<translation id="3797900183766075808">Buscar  “<ph name="SEARCH_TERMS"/>” en <ph name="SEARCH_ENGINE"/></translation>
 <translation id="2721037002783622288">Buscar imagen en <ph name="SEARCH_ENGINE"/></translation>
 <translation id="4593021220803146968">Ir a <ph name="URL"/></translation>
 <translation id="8823704566850948458">Sugerir contraseña...</translation>
 <translation id="6042308850641462728">Más</translation>
 <translation id="6268252012308737255">Abrir con <ph name="APP"/></translation>
-<translation id="5509693895992845810">Guardar Como...</translation>
-<translation id="7421925624202799674">Ver Código Fuente de la Página</translation>
+<translation id="5509693895992845810">Guardar como...</translation>
+<translation id="7421925624202799674">Ver código fuente de la página</translation>
 <translation id="1588870296199743671">Abrir enlace con...</translation>
 <translation id="3760460896538743390">Inspeccionar Página en Segundo Plano</translation>
 <translation id="5486561344817861625">Simular reinicio del navegador</translation>
@@ -137,15 +137,15 @@
 <translation id="7966241909927244760">Copiar dirección de imagen</translation>
 <translation id="6206311232642889873">Copiar Imagen</translation>
 <translation id="7849264908733290972">Abrir Imagen en una pestaña nueva</translation>
-<translation id="1054153489933238809">Abrir Imagen Original en una Pestaña Nueva</translation>
+<translation id="1054153489933238809">Abrir la imagen original en una nueva pestaña</translation>
 <translation id="1026822031284433028">Cargar imagen</translation>
 <translation id="1725149567830788547">Mostrar Controles</translation>
 <translation id="5427459444770871191">Girar a la derecha</translation>
 <translation id="7800518121066352902">Girar a la izquierda</translation>
-<translation id="4256316378292851214">Guardar Vídeo Como...</translation>
+<translation id="4256316378292851214">Guardar vídeo como...</translation>
 <translation id="7947962633355574091">Copiar Dirección de Vídeo</translation>
 <translation id="4643612240819915418">Abrir vídeo en una pestaña nueva</translation>
-<translation id="5116628073786783676">Guardar Audio Como...</translation>
+<translation id="5116628073786783676">Guardar audio como...</translation>
 <translation id="1465176863081977902">Copiar Dirección del Audio</translation>
 <translation id="2019718679933488176">Abrir Audio en una pestaña nueva</translation>
 <translation id="8248050856337841185">Pegar</translation>
@@ -180,7 +180,7 @@
 <translation id="5329858601952122676">Eliminar</translation>
 <translation id="4608500690299898628">Buscar...</translation>
 <translation id="3712897371525859903">Guardar página como...</translation>
-<translation id="3200941271596533635">Activar/Desactivar modo de lectura</translation>
+<translation id="3200941271596533635">Cambiar al modo lectura</translation>
 <translation id="6607831829715835317">Más herramientas</translation>
 <translation id="3994878504415702912">Tamaño</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -192,13 +192,13 @@
 <translation id="1689945336726856614">Copiar URL</translation>
 <translation id="2119349053129246860">Abrir en <ph name="APP"/></translation>
 <translation id="7855678561139483478">Mover pestaña a ventana nueva</translation>
-<translation id="3285322247471302225">Nueva Pestaña</translation>
+<translation id="3285322247471302225">Nueva pestaña</translation>
 <translation id="8879284080359814990">Mostrar Como Pestaña</translation>
-<translation id="176587472219019965">Nueva Ventana</translation>
-<translation id="7973394300052703468">Nueva Ventana Privada</translation>
+<translation id="176587472219019965">Nueva ventana</translation>
+<translation id="7973394300052703468">Nueva ventana privada</translation>
 <translation id="5157635116769074044">Fijar esta página a la pantalla de inicio...</translation>
-<translation id="5830720307094128296">Guardar Página Como...</translation>
-<translation id="3608436266458100337">Modo de lectura</translation>
+<translation id="5830720307094128296">Guardar página Como...</translation>
+<translation id="3608436266458100337">Modo lectura</translation>
 <translation id="7853747251428735">Más herramientas</translation>
 <translation id="6390020764191254941">Mover pestaña a ventana nueva</translation>
 <translation id="4109135793348361820">Mover ventana a <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
@@ -214,7 +214,7 @@
 <translation id="1454223536435069390">Hacer captura de pantalla</translation>
 <translation id="175196451752279553">Volver a abrir la pestaña cerrada</translation>
 <translation id="7392915005464253525">Volver a abrir la ventana cerrada</translation>
-<translation id="4508765956121923607">Ver Código Fuente</translation>
+<translation id="4508765956121923607">Ver código fuente</translation>
 <translation id="4792711294155034829">Reportar un Problema...</translation>
 <translation id="5112577000029535889">Herramientas para Desarrolladores</translation>
 <translation id="5184063094292164363">Consola JavaScript</translation>
@@ -246,7 +246,7 @@
 <translation id="4891089016822695758">Foro beta</translation>
 <translation id="7199158086730159431">Obtener ayuda</translation>
 <translation id="630065524203833229">Salir</translation>
-<translation id="3855676282923585394">Importar Marcadores y Configuración...</translation>
+<translation id="3855676282923585394">Importar marcadores y configuración...</translation>
 <translation id="4821935166599369261">Perfiles Habilitados</translation>
 <translation id="3827774300009121996">Pantalla Completa</translation>
 <translation id="3616741288025931835">Borrar datos de navegación</translation>
@@ -254,7 +254,7 @@
 <translation id="7324297612904500502">Foro beta</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">Editar motores de búsqueda...</translation>
-<translation id="5702898740348134351">Editar Motores de Búsqueda...</translation>
+<translation id="5702898740348134351">Editar motores de búsqueda...</translation>
 <translation id="2454247629720664989">Palabra clave</translation>
 <translation id="5327248766486351172">Nombre</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (predeterminado)</translation>
@@ -433,13 +433,13 @@
 <translation id="4756378406049221019">Detener/Volver a cargar</translation>
 <translation id="932327136139879170">Página principal</translation>
 <translation id="4084682180776658562">Añadir a Marcadores</translation>
-<translation id="7554791636758816595">Nueva Pestaña</translation>
+<translation id="7554791636758816595">Nueva pestaña</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD, plural,
         =1 {Descarga en curso} other {Descargas en curso}}</translation>
 <translation id="5425042808445046667">Seguir descargando</translation>
 <translation id="5284445933715251131">Seguir Descargando</translation>
 <translation id="203837651858678035">¿Salir de todas formas del modo privado?</translation>
-<translation id="8951465597020890363">¿Quieres salir del modo invitados de todas formas?</translation>
+<translation id="8951465597020890363">¿Quieres salir del modo invitado de todas formas?</translation>
 <translation id="9148058034647219655">Salir</translation>
 <translation id="7376221878517288144">¿Salir de todas formas del modo privado?</translation>
 <translation id="973473557718930265">Salir</translation>
@@ -515,7 +515,7 @@ other {Acceso a # archivos almacenados en tu ordenador}}</translation>
 <translation id="6181431612547969857">Descarga bloqueada</translation>
 <translation id="3267726687589094446">Seguir permitiendo las descargas automáticas de varios archivos</translation>
 <translation id="8663099077749055505">Bloquear siempre las descargas múltiples automáticas para <ph name="HOST"/></translation>
-<translation id="4627427111733173920">Cookies bloqueadas</translation>
+<translation id="4627427111733173920">Bloquear todas las cookies</translation>
 <translation id="3758842566811519622">Cookies establecidas</translation>
 <translation id="3308116878371095290">Se ha evitado el uso de cookies en esta página.</translation>
 <translation id="2335122562899522968">Esta página almacena cookies</translation>
@@ -569,7 +569,7 @@ other {Acceso a # archivos almacenados en tu ordenador}}</translation>
 <translation id="871606814707918245">La mayoría de los usuarios bloquean las notificaciones de este sitio web</translation>
 <translation id="8108526232944491552">{COUNT,plural, =0{No hay cookies de terceros}=1{Se ha bloqueado 1 cookie de terceros}other{Se han bloqueado # cookies de terceros}}</translation>
 <translation id="561030196642865721">Las cookies de terceros están permitidas en este sitio web</translation>
-<translation id="8823559166155093873">Bloquear cookies</translation>
+<translation id="8823559166155093873">Bloquear todas las cookies</translation>
 <translation id="2325002827435400643">Desactivar para este sitio web</translation>
 <translation id="8800034312320686233">¿El sitio web no funciona?</translation>
 <translation id="3297560592877881986">Algunos sitios web utilizan cookies de terceros para cargar sus páginas. Si un sitio web no funciona, prueba a desactivar el bloqueo de cookies.</translation>
@@ -1389,7 +1389,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2961695502793809356">Haz clic para avanzar una página o pulsa unos segundos para ver el historial</translation>
 <translation id="8581809080475256101">Pulsa para avanzar y acceder al menú contextual para ver el historial</translation>
 <translation id="480990236307250886">Abrir página de inicio</translation>
-<translation id="7221869452894271364">Recargar página</translation>
+<translation id="7221869452894271364">Recargar esta página</translation>
 <translation id="5639549361331209298">Recarga esta página y espera para ver más opciones</translation>
 <translation id="2814489978934728345">Interrumpir la carga de esta página</translation>
 <translation id="813082847718468539">Ver información del sitio</translation>
@@ -1641,6 +1641,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5727851901710884484"><ph name="APP_NAME"/> está compartiendo una pestaña de Brave con <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> está compartiendo una pestaña de Brave y audio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> está compartiendo audio y una pestaña de Brave con <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Ocultar</translation>
 <translation id="890616557918890486">Cambiar fuente</translation>
 <translation id="7792388396321542707">Dejar de compartir</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> quiere acceder de forma permanente a un certificado para autenticarse en tu nombre.</translation>
@@ -1673,6 +1674,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7022562585984256452">Se ha establecido tu página de inicio.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Añadir impresoras</translation>
+<translation id="9052208328806230490">Has registrado tus impresoras en <ph name="CLOUD_PRINT_NAME"/> con la cuenta <ph name="EMAIL"/>.</translation>
 <translation id="3792890930871100565">Desconectar impresoras</translation>
 <translation id="5038863510258510803">Habilitando...</translation>
 <translation id="8264024885325823677">Este ajuste lo gestiona tu administrador.</translation>
@@ -1805,7 +1807,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Almacenamiento en Caché</translation>
 <translation id="2805756323405976993">Aplicaciones</translation>
-<translation id="542872847390508405">Estás navegando como invitado</translation>
+<translation id="542872847390508405">Estás navegando como Invitado</translation>
 <translation id="537813040452600081">Las páginas que aparezcan en esta ventana no se mostrarán en el historial del navegador y no dejarán otros rastros, como cookies, en el ordenador después de cerrar sesión. No se conservarán los archivos que descargues ni los marcadores que crees.</translation>
 <translation id="6390799748543157332">Las páginas que aparezcan en esta ventana no se mostrarán en el historial del navegador y no dejarán otros rastros como cookies en el ordenador después de cerrar todas las ventanas abiertas de la sesión de invitado. No obstante, se conservará cualquier archivo que descargues.</translation>
 <translation id="6602956230557165253">Utiliza las teclas de flecha hacia la izquierda y hacia la derecha para desplazarte.</translation>
@@ -2019,14 +2021,14 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3315158641124845231">Ocultar <ph name="PRODUCT_NAME"/></translation>
 <translation id="881799181680267069">Ocultar otras</translation>
 <translation id="4708849949179781599">Salir de <ph name="PRODUCT_NAME"/></translation>
-<translation id="8795916974678578410">Nueva Ventana</translation>
-<translation id="1676595396635191120">Nueva Ventana Privada</translation>
+<translation id="8795916974678578410">Nueva ventana</translation>
+<translation id="1676595396635191120">Nueva ventana privada</translation>
 <translation id="406070391919917862">Aplicaciones en segundo plano</translation>
 <translation id="3335947283844343239">Volver a abrir pestaña cerrada</translation>
 <translation id="8214489666383623925">Abrir archivo...</translation>
 <translation id="7456847797759667638">Abrir ubicación...</translation>
-<translation id="3265459715026181080">Cerrar Ventana</translation>
-<translation id="3551320343578183772">Cerrar Pestaña</translation>
+<translation id="3265459715026181080">Cerrar ventana</translation>
+<translation id="3551320343578183772">Cerrar pestaña</translation>
 <translation id="4780321648949301421">Guardar página como...</translation>
 <translation id="6212752530110374741">Enviar enlace por correo electrónico</translation>
 <translation id="457386861538956877">Más...</translation>
@@ -2053,7 +2055,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7121728544325372695">Guiones inteligentes</translation>
 <translation id="2653275834716714682">Reemplazo de texto</translation>
 <translation id="5094764494104066239">Mostrar siempre la barra de Marcadores</translation>
-<translation id="8053390638574070785">Recargar página</translation>
+<translation id="8053390638574070785">Recargar esta página</translation>
 <translation id="8651585100578802546">Forzar recarga de esta página</translation>
 <translation id="5143712164865402236">Activar pantalla completa</translation>
 <translation id="2143765403545170146">Mostrar siempre la barra de herramientas en el modo de pantalla completa</translation>
@@ -2082,7 +2084,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="9085256200913095638">Duplicar pestaña seleccionada</translation>
 <translation id="2973324205039581528">Silenciar sitio web</translation>
 <translation id="4025039777635956441">Silenciar el sitio web seleccionado</translation>
-<translation id="21133533946938348">Fijar Pestaña</translation>
+<translation id="21133533946938348">Fijar pestaña</translation>
 <translation id="1296911687402551044">Fijar pestaña seleccionada</translation>
 <translation id="2082187087049518845">Agrupar pestañas</translation>
 <translation id="4811503964269049987">Agrupar pestañas seleccionadas</translation>
@@ -2095,10 +2097,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4443536555189480885">Ayuda</translation>
 <translation id="2113479184312716848">Abrir Archivo...</translation>
 <translation id="8695825812785969222">Abrir Ubicación...</translation>
-<translation id="5449716055534515760">Cerrar Ventana</translation>
-<translation id="4647090755847581616">Cerrar Pestaña</translation>
+<translation id="5449716055534515760">Cerrar ventana</translation>
+<translation id="4647090755847581616">Cerrar pestaña</translation>
 <translation id="1108600514891325577">Detener</translation>
-<translation id="657402800789773160">Recargar página</translation>
+<translation id="657402800789773160">Recargar esta página</translation>
 <translation id="2610260699262139870">Tamaño Actual</translation>
 <translation id="5558129378926964177">Zoom</translation>
 <translation id="1829192082282182671">Reducir Zoom</translation>
@@ -2305,6 +2307,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6711610692002680394">Debes iniciar sesión en Brave para registrar nuevos dispositivos</translation>
 <translation id="8931394284949551895">Nuevos dispositivos</translation>
 <translation id="3752673729237782832">Mis dispositivos</translation>
+<translation id="1721937473331968728">Puedes añadir impresoras clásicas conectadas a tu ordenador a <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Impresoras clásicas</translation>
 <translation id="4263757076580287579">Se ha cancelado el registro en la impresora.</translation>
 <translation id="8152091997436726702">Se ha agotado el tiempo de espera de registro de la impresora. Para registrar una impresora, debes confirmar el registro en ella.</translation>
@@ -2644,7 +2647,7 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
           =1 {Abrir en una &amp;ventana privada}
           other {Abrir todas (#) en una &amp;ventana privada}}</translation>
 <translation id="9024127637873500333">Abrir en una pestaña nueva</translation>
-<translation id="665061930738760572">Abrir en una Nueva Ventana</translation>
+<translation id="665061930738760572">Abrir en una nueva ventana</translation>
 <translation id="1985165269306590797">Abrir en una Ventana Privada</translation>
 <translation id="8824701697284169214">Añadir página...</translation>
 <translation id="2489918096470125693">Añadir carpeta...</translation>
@@ -2721,7 +2724,7 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
       other {Se han copiado # elementos}}</translation>
 <translation id="9115675100829699941">Marcadores</translation>
 <translation id="9023015617655685412">Añadir esta pestaña a marcadores...</translation>
-<translation id="1482626744466814421">Añadir Esta Pestaña a Marcadores...</translation>
+<translation id="1482626744466814421">Añadir esta pestaña a Marcadores...</translation>
 <translation id="4474155171896946103">Añadir todas las pestañas a marcadores...</translation>
 <translation id="2336228925368920074">Añadir todas las pestañas a Marcadores...</translation>
 <translation id="8300011035382349091">Editar marcador de esta pestaña</translation>
@@ -2931,7 +2934,7 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
 <translation id="1608626060424371292">Eliminar este usuario</translation>
 <translation id="493571969993549666">Añadir usuario supervisado</translation>
 <translation id="9101691533782776290">Iniciar aplicación</translation>
-<translation id="5457599981699367932">Navegar como invitado</translation>
+<translation id="5457599981699367932">Navegar como Invitado</translation>
 <translation id="5957613098218939406">Más opciones</translation>
 <translation id="6154697846084421647">Has iniciado sesión</translation>
 <translation id="2220572644011485463">PIN o contraseña</translation>
@@ -2971,11 +2974,11 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
 <translation id="3181825792072797598">Activar sincronización</translation>
 <translation id="2547583314137677375">Desactivar Sincronización</translation>
 <translation id="6985607387932385770">Impresoras</translation>
+<translation id="8818152010000655963">Fondo de pantalla</translation>
 <translation id="7788444488075094252">Idiomas y métodos de entrada</translation>
 <translation id="4181841719683918333">Idiomas</translation>
 <translation id="6785915470941880363">Desplazamiento inverso <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/></translation>
 <translation id="6340526405444716530">Personalización</translation>
-<translation id="8818152010000655963">Fondo de pantalla</translation>
 <translation id="7289225569524511578">Abrir aplicación de fondos de pantalla</translation>
 <translation id="8336739000755212683">Cambiar imagen de cuenta de dispositivo</translation>
 <translation id="9137157311132182254">Buscador preferido</translation>
@@ -3007,9 +3010,11 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
 <translation id="1871615898038944731">Tu <ph name="DEVICE_TYPE"/> está actualizado</translation>
 <translation id="3688526734140524629">Cambiar canal</translation>
 <translation id="6410328738210026208">Cambiar canal y Powerwash</translation>
+<translation id="1979280758666859181">Vas a cambiar a un canal con una versión anterior de <ph name="PRODUCT_NAME"/>. El cambio de canal se aplicará cuando la versión del canal coincida con la versión que esté instalada en ese momento en tu dispositivo.</translation>
 <translation id="7728668285692163452">El cambio del canal se aplicará más tarde</translation>
 <translation id="5495466433285976480">Esta acción eliminará todos los usuarios locales, archivos, datos y otros ajustes la próxima vez que reinicies. Todos los usuarios deberán volver a iniciar sesión.</translation>
 <translation id="8101987792947961127">Se requiere Powerwash en el siguiente reinicio</translation>
+<translation id="1414648216875402825">Vas a actualizar a una versión inestable de <ph name="PRODUCT_NAME"/> que incluye funciones que están en desarrollo. Se producirán fallos y errores inesperados. Utiliza esta versión con precaución.</translation>
 <translation id="6103681770816982672">Advertencia: Vas a cambiar al canal para desarrolladores</translation>
 <translation id="8807632654848257479">Estable</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3201,7 +3206,7 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
 <translation id="492299503953721473">Quitar aplicaciones de Android</translation>
 <translation id="7566118625369982896">Gestionar enlaces de aplicaciones Play</translation>
 <translation id="9117030152748022724">Gestionar tus aplicaciones</translation>
-<translation id="2433507940547922241">Aspecto</translation>
+<translation id="2433507940547922241">Apariencia</translation>
 <translation id="1177863135347784049">Personalizado</translation>
 <translation id="1925021887439448749">Introduce una dirección web personalizada</translation>
 <translation id="5417312524372586921">Temas del navegador</translation>
@@ -3782,10 +3787,12 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
 <translation id="5302048478445481009">Idioma</translation>
 <translation id="6388429472088318283">Buscar idiomas</translation>
 <translation id="2690024944919328218">Mostrar opciones de idioma</translation>
+<translation id="768549422429443215">Añadir o reordenar idiomas</translation>
 <translation id="8218847192766059983">Añade o reordena idiomas. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">El texto del sistema se mostrará en este idioma</translation>
 <translation id="2366260648632264559">Muestra el texto del sistema en este idioma</translation>
 <translation id="8336721153892716270">Reiniciar el dispositivo para mostrar el texto del sistema en <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Ordena los idiomas según tus preferencias</translation>
 <translation id="5972708806901999743">Mover al principio</translation>
 <translation id="8609465669617005112">Subir</translation>
 <translation id="6746124502594467657">Bajar</translation>
@@ -4108,7 +4115,7 @@ other{# cookies}}</translation>
 <translation id="1213037489357051291">Número de huellas configuradas: <ph name="NUM_FINGERPRINTS"/></translation>
 <translation id="6011193465932186973">Huella</translation>
 <translation id="4068776064906523561">Huellas guardadas</translation>
-<translation id="4562155214028662640">Añadir Huella</translation>
+<translation id="4562155214028662640">Añadir huella</translation>
 <translation id="1719312230114180055">Nota: Tu huella puede ser menos segura que una buena contraseña o un buen PIN.</translation>
 <translation id="1582955169539260415">eliminar [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Dedo <ph name="NEW_FINGER_NUMBER"/></translation>
@@ -4478,7 +4485,7 @@ other{# cookies}}</translation>
 <translation id="8705629851992224300">No se ha podido leer tu llave de seguridad</translation>
 <translation id="3076977359333237641">Se han eliminado tus datos de inicio de sesión</translation>
 <translation id="3508492320654304609">No se han podido eliminar tus datos de inicio de sesión</translation>
-<translation id="5173668317844998239">Añade y borra las huellas digitales guardadas en tu llave de seguridad</translation>
+<translation id="5173668317844998239">Añade y elimina las huellas digitales guardadas en tu llave de seguridad</translation>
 <translation id="4836504898754963407">Gestionar huellas digitales</translation>
 <translation id="6028117231645531007">Añadir huella digital</translation>
 <translation id="4814378367953456825">Escribe un nombre para esta huella digital</translation>
@@ -4576,7 +4583,7 @@ other{# cookies}}</translation>
 <translation id="7235716375204803342">Recuperando actividades...</translation>
 <translation id="8314381333424235892">Falta la extensión o no está instalada</translation>
 <translation id="7647403192093989392">Ninguna actividad reciente</translation>
-<translation id="38046578254905003">Encuentra extensiones y temas en el <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Encuentra extensiones y temas en la <ph name="BEGIN_LINK">&amp;lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&amp;gt;</ph>Web Store<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph></translation>
 <translation id="7272674038937250585">No se ha especificado ninguna descripción</translation>
 <translation id="3855441664322950881">Empaquetar extensión</translation>
 <translation id="2958721676848865875">Advertencia sobre el empaquetado de extensión</translation>
@@ -4619,6 +4626,7 @@ other{# cookies}}</translation>
 <translation id="8143442547342702591">La aplicación no es válida</translation>
 <translation id="720110658997053098">Mantener este dispositivo en modo kiosco de forma permanente</translation>
 <translation id="1909880997794698664">¿Seguro que quieres que se utilice el modo kiosco en este dispositivo de forma permanente?</translation>
+<translation id="1512210426710821809">La única forma de deshacer esta acción es volver a instalar <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Saltar</translation>
 <translation id="2342740338116612727">Se han añadido marcadores</translation>
 <translation id="7835178595033117206">Marcador eliminado</translation>
@@ -4739,7 +4747,10 @@ other{# cookies}}</translation>
 <translation id="1526560967942511387">Documento sin título</translation>
 <translation id="5269977353971873915">Error de Impresión</translation>
 <translation id="7385854874724088939">Se ha producido un error al intentar realizar la impresión. Comprueba la impresora e inténtalo de nuevo.</translation>
+<translation id="1197979282329025000">Se ha producido un error al recuperar las funciones de la impresora <ph name="PRINTER_NAME"/>. Esta impresora no se ha podido registrar en <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Se ha recibido una notificación de una impresora desconocida.</translation>
+<translation id="2202898655984161076">Se ha producido un error al mostrar las impresoras. Es posible que algunas impresoras no se hayan registrado correctamente en <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Se ha producido un error en el proceso de conector de <ph name="CLOUD_PRINT_NAME"/>. ¿Reiniciar?</translation>
 <translation id="6904655473976120856">Pulsa el botón de la Aplicación para salir.</translation>
 <translation id="8909833622202089127">El sitio web está registrando tu ubicación</translation>
 <translation id="375636864092143889">El sitio web está usando tu micrófono</translation>

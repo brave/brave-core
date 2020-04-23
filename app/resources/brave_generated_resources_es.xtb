@@ -2,15 +2,16 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="es">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Ad Block de Brave</translation>
+<translation id="7942180974165298215">AdBlock de Brave</translation>
 <translation id="4615489450165434530">Notificar un error...</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Crear un nuevo perfil</translation>
-<translation id="2666990579225592931">Abrir Ventana de Invitado</translation>
+<translation id="2666990579225592931">Abrir ventana de Invitado</translation>
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") no está permitida en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
-<translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Brave.</translation>
+<translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Chrome.</translation>
+<translation id="6786747875388722282">Extensiones</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
 <translation id="8926389886865778422">No preguntar de nuevo</translation>
 <translation id="4726634924419692905">Preguntar cuándo una página quiera instalar Widevine en tu ordenador.</translation>
@@ -21,7 +22,7 @@
 <translation id="8410111618231938546">Google Widevine es una pieza de código de Administración de Derechos Digitales (DRM)  que no es propiedad de Brave Software y por tanto no podemos inspeccionar. El código de Google Widevine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilitas esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y entendemos que a algunos usuarios de Brave les gustaría usar algunos servicios que lo requieran.
 
 Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Aceptas que Brave no es responsable por daños o pérdidas en relación con tu uso de Google Widevine.</translation>
-<translation id="453977518730680921">Reproducir medios automáticamente</translation>
+<translation id="453977518730680921">Reproducción automática de contenido</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
 <translation id="2240268017737062801">Preguntar cuando un sitio web desea reproducir automáticamente contenido multimedia</translation>
 <translation id="3371702087847741961">Preguntar cuando un sitio web desee reproducir automáticamente contenido multimedia (recomendado)</translation>
@@ -31,18 +32,28 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="5883458389055721080">Brave no ha revisado esta extensión por razones de seguridad. Instala esta extensión solo si confías en el desarrollador.</translation>
 <translation id="8081858229109418493">Nombre e icono del perfil</translation>
 <translation id="2044383478723007273">Aspecto de Brave</translation>
-<translation id="2814998458708016836">Usar la barra de direcciones amplia</translation>
+<translation id="1692470335103807198">Obtener más temas</translation>
+<translation id="2906510232093002459">Imágenes por defecto de Brave</translation>
+<translation id="2814998458708016836">Usar la barra de direcciones extendida</translation>
 <translation id="6123134130710658846">Ocultar el botón de Brave Rewards</translation>
 <translation id="7635711399568194460">Oculta el botón de Brave Rewards en la barra de direcciones cuando Brave Rewards está deshabilitado</translation>
 <translation id="1520361618554057102">Mostrar siempre marcadores en la página Pestaña Nueva</translation>
 <translation id="5802665280774361839">Mostrar autocompletar en la barra de direcciones</translation>
+<translation id="7781069478569868053">Página Nueva Pestaña</translation>
+<translation id="2467749191278759605">Personaliza tu Brave Dashboard</translation>
+<translation id="1717331825806276156">Imágenes de fondo</translation>
+<translation id="1820041496463124489">Imágenes patrocinadas</translation>
+<translation id="8173998484743827990">Estadísticas de Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Sitios Top</translation>
+<translation id="1776831331757823105">Reloj</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
 <translation id="8511502469534942133">Nueva Conexión Tor Para Esta Página</translation>
 <translation id="8784924142044142231">Cerrar Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Abrir Ventana Tor</translation>
-<translation id="1434416574322382019">Nueva Ventana Privada con Tor</translation>
-<translation id="4703780849509456860">Abrir Enlace en una Ventana Privada con Tor</translation>
+<translation id="3696187925156352769">Abrir ventana de Tor</translation>
+<translation id="1434416574322382019">Nueva ventana privada con Tor</translation>
+<translation id="4703780849509456860">Abrir enlace en ventana privada con Tor</translation>
 <translation id="3488584642074079080">Abrir enlace en una ventana privada con Tor</translation>
 <translation id="6313675821927505581">Nueva ventana privada con Tor</translation>
 <translation id="2638041073279639246">Abrir enlace en una ventana privada con Tor</translation>
@@ -63,30 +74,30 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2360360976480535628">Vista Avanzada</translation>
 <translation id="5709627087332022422">Bloquear rastreadores de sitios web</translation>
 <translation id="6447842834002726250">Cookies</translation>
-<translation id="6522412052085018663">Huellas dactilares</translation>
+<translation id="6522412052085018663">Huella digital</translation>
 <translation id="3570081523466826008">Mejorar conexiones a HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="519861640102428255">Apariencia</translation>
-<translation id="4800195524776354947">Mostrar el número de elementos bloqueados en el icono de los escudos</translation>
+<translation id="519861640102428255">Aspecto de Escudos</translation>
+<translation id="4800195524776354947">Mostrar el número de elementos bloqueados en el icono de los Escudos</translation>
 <translation id="7498695072878479744">Permitir botones de acceso a Google en sitios externos</translation>
 <translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
 <translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
-<translation id="4699812599455071925">Bloquear sólo cookies de terceros</translation>
-<translation id="5657156137487675418">Permitir cookies</translation>
-<translation id="6883611015375728278">Bloquear cookies</translation>
-<translation id="5572437114858031185">Bloquear solo los intentos de toma de huellas dactilares entre sitios</translation>
-<translation id="5079032039521408559">Permitir todos los intentos de tomar huellas dactilares</translation>
-<translation id="6447141055227658942">Bloquear todos los intentos de tomar huellas dactilares</translation>
+<translation id="4699812599455071925">Bloquear cookies de terceros</translation>
+<translation id="5657156137487675418">Permitir todas las cookies</translation>
+<translation id="6883611015375728278">Bloquear todas las cookies</translation>
+<translation id="5963670684159057574">Bloquear fingerprinting de terceros</translation>
+<translation id="769702552748212954">Permitir cualquier fingerprinting</translation>
+<translation id="4540198958192073185">Bloquear cualquier fingerprinting</translation>
 <translation id="8942080017911802454">Política de gestión de IP de WebRTC</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
-<translation id="1822560017823072927">Interfaz pública y privada por defecto</translation>
+<translation id="1822560017823072927">Interfaces pública y privada por defecto</translation>
 <translation id="5825943197137337319">Solo interfaz pública por defecto</translation>
 <translation id="1689062823386843231">Desactivar el UDP sin proxy</translation>
 <translation id="8502234992433094996">Utilizar Servicios de Google para la mensajería «Push»</translation>
 <translation id="3888068426966679906">Depuración remota</translation>
-<translation id="6645631466045614531">Acceder a la sincronización a través de</translation>
+<translation id="6645631466045614531">Accede a la sincronización a través de</translation>
 <translation id="6696935187608454456">Consejos de Ayuda</translation>
 <translation id="2775956301559569472">Mostrar el mensaje de Wayback Machine en las páginas con error 404</translation>
 <translation id="1807246157184219062">Claro</translation>
@@ -94,7 +105,6 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="1360441190790440400">Mismo que en Linux</translation>
 <translation id="1336940801687497203">Mismo que en Windows</translation>
 <translation id="8721331068159819483">Mismo que en MacOS</translation>
-<translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="7701040980221191251">Ninguno</translation>
@@ -169,14 +179,14 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2609895996619941644">¿Quieres comprobar si hay una versión guardada disponible en la Wayback Machine?</translation>
 <translation id="8053093028263274061">Lo sentimos, no hay una versión guardada disponible.</translation>
 <translation id="8517321676372639828">Comprueae si hay una versión guardada</translation>
-<translation id="191143826155037518">Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
-        You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave está disponible para ti bajo la <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) e incluye <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software de código abierto<ph name="END_LINK_OSS">&lt;/a&gt;</ph> bajo una variedad de otras licencias.
+        Puedes leer las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrucciones sobre cómo descargar y compilar por ti mismo<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> el <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>el código fuente específico utilizado para crear esta copia<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Añadir todas las pestañas a marcadores...</translation>
 <translation id="2336228925368920074">Añadir todas las pestañas a Marcadores...</translation>
-<translation id="796831669370432378">Para añadir un marcador, haz click en el botón de marcapáginas, junto a la barra de direcciones</translation>
+<translation id="796831669370432378">Para añadir un marcador, haz click en el botón de marcadores, junto a la barra de direcciones</translation>
 <translation id="4989337484121655457">Se necesita un acceso completo al disco</translation>
-<translation id="8025559074845816210">Brave necesita acceso completo al disco para importar sus marcadores de Safari.</translation>
-<translation id="8515328844674404333">Aprenda a conceder el acceso al disco completo desde sus preferencias de sistema.</translation>
+<translation id="8025559074845816210">Brave necesita acceso completo al disco para importar tus marcadores de Safari.</translation>
+<translation id="8515328844674404333">Aprende a conceder el acceso al disco completo desde tus preferencias del sistema.</translation>
 <translation id="6414878884710400018">Abrir preferencias del sistema</translation>
-<translation id="5570470519803062774">Configuración del sitio y los escudos</translation>
+<translation id="5570470519803062774">Configuración del sitio y de los Escudos</translation>
 </translationbundle>

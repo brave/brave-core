@@ -55,7 +55,7 @@
 <translation id="4824958205181053313">¿Quieres cancelar la sincronización?</translation>
 <translation id="3058498974290601450">Puedes activar la sincronización en cualquier momento desde la configuración</translation>
 <translation id="3143515551205905069">Cancelar sincronización</translation>
-<translation id="1506061864768559482">Buscador</translation>
+<translation id="1506061864768559482">Motor de búsqueda</translation>
 <translation id="55737423895878184">Las notificaciones y la ubicación están permitidas</translation>
 <translation id="3988213473815854515">Se permite la ubicación</translation>
 <translation id="32895400574683172">Las notificaciones están permitidas</translation>
@@ -114,13 +114,13 @@
 <translation id="6154478581116148741">Activa el bloqueo de pantalla en Configuración para exportar las contraseñas de este dispositivo</translation>
 <translation id="4842092870884894799">Mostrando la ventana emergente de generación de contraseña</translation>
 <translation id="2259659629660284697">Exportar contraseñas…</translation>
-<translation id="133012818630824069">Exportar contraseñas almacenadas en Brave</translation>
+<translation id="133012818630824069">Exportar las contraseñas almacenadas en Brave</translation>
 <translation id="6914783257214138813">Cualquier usuario que pueda ver el archivo exportado podrá ver tus contraseñas.</translation>
 <translation id="2321086116217818302">Preparando contraseñas…</translation>
-<translation id="8445448999790540984">No se pueden exportar las contraseñas</translation>
+<translation id="8445448999790540984">No se han podido exportar las contraseñas</translation>
 <translation id="5139940364318403933">Más información sobre cómo usar Brave Software Drive</translation>
 <translation id="729975465115245577">Tu dispositivo no tiene ninguna aplicación para almacenar el archivo de contraseñas.</translation>
-<translation id="7682724950699840886">Prueba las siguientes sugerencias: deja suficiente espacio en el dispositivo y vuelve a exportar las contraseñas.</translation>
+<translation id="7682724950699840886">Prueba las siguientes sugerencias: asegúrate de que hay suficiente espacio en tu dispositivo y vuelve a exportar las contraseñas.</translation>
 <translation id="1129510026454351943">Detalles: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="6891726759199484455">Desbloquea la pantalla para copiar tu contraseña</translation>
 <translation id="5515439363601853141">Desbloquea la pantalla para ver tu contraseña</translation>
@@ -345,7 +345,7 @@ Es posible que tu cuenta Brave tenga otros tipos de historial de navegación, co
 <translation id="6643649862576733715">Ordenar por cantidad de datos ahorrados</translation>
 <translation id="7302081693174882195">Detalles: ordenados por cantidad de datos ahorrados</translation>
 <translation id="4179980317383591987"><ph name="AMOUNT"/> usados</translation>
-<translation id="5937580074298050696">Ahorro: <ph name="AMOUNT"/></translation>
+<translation id="5937580074298050696">Ahorro: <ph name="amount"/></translation>
 <translation id="2156074688469523661">Sitios web restantes (<ph name="NUMBER_OF_SITES"/>)</translation>
 <translation id="7138678301420049075">Otro</translation>
 <translation id="4913161338056004800">Borrar estadísticas</translation>
@@ -388,7 +388,7 @@ Es posible que tu cuenta Brave tenga otros tipos de historial de navegación, co
 <translation id="3334729583274622784">¿Cambiar la extensión del archivo?</translation>
 <translation id="107147699690128016">Si cambias la extensión del archivo, el archivo podría abrirse en una aplicación diferente y convertirse en un riesgo potencial para tu dispositivo.</translation>
 <translation id="8541922081612557424">Información de Brave</translation>
-<translation id="5311273890481188673">Copyright © <ph name="YEAR"/> The Brave Authors. Todos los derechos reservados.</translation>
+<translation id="5311273890481188673">Copyright © &lt;ph name="year"&gt;%1$d&lt;ex&gt;2014&lt;/ex&gt;&lt;/ph&gt; The Brave Authors. Todos los derechos reservados.</translation>
 <translation id="1416550906796893042">Versión de la aplicación</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (actualizada el <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7596558890252710462">Sistema operativo</translation>

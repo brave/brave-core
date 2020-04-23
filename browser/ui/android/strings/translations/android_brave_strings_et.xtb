@@ -117,6 +117,8 @@ uudset internetti.</translation>
 <translation id="5567439033041178034">LOE LISAKS</translation>
 <translation id="3780605330121608425">Teie rahakott</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="7837083325641186736">&lt;ph name="VALUE"&gt;%1$s&lt;ex&gt;0.0&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Võimalused</translation>
 <translation id="1165667598801520610">Lisa vahendeid</translation>
 <translation id="8428213095426709021">Seaded</translation>
@@ -225,4 +227,17 @@ pole...</translation>
 <translation id="6336451774241870485">Uus privaatne vaheleht</translation>
 <translation id="6199596294742117349">See on privaatne vahekaart</translation>
 <translation id="5858455511731621847">Isegi, kui privaatsetes vahekaartides külastatavaid lehti ei salvestata seadmesse, pole külastatavad lehed peidetud ega anonüümsed internetiteenuse pakkuja, tööandja või külastatavate lehtede eest.</translation>
+<translation id="7127980134843952133">Allalaadimiste ajalugu</translation>
+<translation id="3124090095880236567">Lülita sisse reklaamid</translation>
+<translation id="2975780980638932742">Brave'i reklaamid on saabunud!</translation>
+<translation id="7655723274266132226">Nüüd võid teenida reklaamide vaatamisega.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT-punktid</translation>
+<translation id="4522570452068850558">Üksikasjad</translation>
+<translation id="1486343603936278248">token</translation>
+<translation id="8713995420537272453">punkt</translation>
+<translation id="6678056861663824314">1 &lt;ph name="TIP"&gt;%1$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="4065726515175370979">5 &lt;ph name="TIP"&gt;%1$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="8171148564903208264">10 &lt;ph name="TIP"&gt;%1$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="7781069478569868053">Uus vaheleht</translation>
 </translationbundle>

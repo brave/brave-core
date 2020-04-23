@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484">‏<ph name="APP_NAME"/> ایک Brave ٹیب کا <ph name="TAB_NAME"/> کے ساتھ اشتراک کر رہی ہے۔</translation>
 <translation id="5770515304879261338">‏<ph name="APP_NAME"/> ایک Brave ٹیب اور آڈیو کا اشتراک کر رہی ہے۔</translation>
 <translation id="859454237594354073">‏<ph name="APP_NAME"/> ایک Brave ٹیب اور آڈیو کا <ph name="TAB_NAME"/> کے ساتھ اشتراک کر رہی ہے۔</translation>
+<translation id="7108338896283013870">چھپائیں</translation>
 <translation id="890616557918890486">ماخذ تبدیل کریں</translation>
 <translation id="7792388396321542707">اشتراک روکیں</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> آپ کی جانب سے خود کی توثیق کرنے کیلئے ایک سرٹیفکیٹ پر مستقل رسائی چاہتا ہے۔</translation>
@@ -1659,6 +1660,7 @@
 <translation id="7022562585984256452">آپ کا ہوم صفحہ سیٹ کر دیا گیا ہے۔</translation>
 <translation id="8069615408251337349">‏Brave Software کلاؤڈ پرنٹ</translation>
 <translation id="4973307593867026061">پرنٹرز شامل کریں</translation>
+<translation id="9052208328806230490">آپ نے اپنے پرنٹرز کو <ph name="CLOUD_PRINT_NAME"/> کے ساتھ اکاؤنٹ <ph name="EMAIL"/> استعمال کر کے رجسٹر کیا ہے</translation>
 <translation id="3792890930871100565">پرنٹرز منقطع کریں</translation>
 <translation id="5038863510258510803">فعال کر رہا ہے…</translation>
 <translation id="8264024885325823677">یہ ترتیب آپ کے منتظم کے زیر انتظام ہے۔</translation>
@@ -2291,6 +2293,7 @@
 <translation id="6711610692002680394">‏نئے آلات رجسٹر کرنے کیلئے آپ کو Brave میں سائن ان کرنے کی ضرورت ہے</translation>
 <translation id="8931394284949551895">نئے آلات</translation>
 <translation id="3752673729237782832">میرے آلات</translation>
+<translation id="1721937473331968728">آپ اپنے کمپیوٹر سے منسلک کلاسک پرنٹرز کو <ph name="CLOUD_PRINT_NAME"/> میں شامل کر سکتے ہیں۔</translation>
 <translation id="715118844758971915">کلاسک پرنٹرز</translation>
 <translation id="4263757076580287579">پرنٹر کا رجسٹریشن منسوخ کر دیا گیا ہے۔</translation>
 <translation id="8152091997436726702">پرنٹر رجسٹریشن کا وقت ختم ہوگیا ہے۔ ایک پرنٹر رجسٹر کرنے کیلئے، آپ کو پرنٹر پر رجسٹریشن کی توثیق کرنا ضروری ہے۔</translation>
@@ -2958,9 +2961,11 @@
 <translation id="1871615898038944731">آپ کا <ph name="DEVICE_TYPE"/> اپ ٹو ڈیٹ ہے</translation>
 <translation id="3688526734140524629">چینل تبدیل کریں</translation>
 <translation id="6410328738210026208">چینل اور پاور واش تبدیل کریں</translation>
+<translation id="1979280758666859181">آپ <ph name="PRODUCT_NAME"/> کے ایک پرانے ورژن کے ساتھ ایک چینل میں تبدیل ہو رہے ہیں۔ آپ کے آلہ پر فی الحال انسٹال کردہ ورژن سے اس چینل ورژن کے مماثل ہونے پر چینل کی تبدیلی لاگو ہوگی۔</translation>
 <translation id="7728668285692163452">چینل میں تبدیلی بعد میں لاگو کی جائے گی</translation>
 <translation id="5495466433285976480">اس سے آپ کی جانب سے اگلی بار دوبارہ شروع کرنے کے بعد سبھی مقامی صارفین، فائلیں، ڈیٹا اور دیگر ترتیبات ہٹ جائیں گی۔ سبھی صارفین کو دوبارہ سائن ان کرنے کی ضرورت ہوگی۔</translation>
 <translation id="8101987792947961127">اگلے ریبوٹ پر پاور واش درکار ہوگا</translation>
+<translation id="1414648216875402825">آپ <ph name="PRODUCT_NAME"/> کے ایک ناپائیدار ورژن میں اپ ڈیٹ کر رہے ہیں جس میں ایسی خصوصیات شامل ہیں جو جاری ہیں۔ کریشز اور غیر متوقع بگز پیش آئیں گے۔ براہ کرم احتیاط سے آگے بڑھیں۔</translation>
 <translation id="6103681770816982672">وارننگ: آپ ڈیولپر چینل پر سوئچ کر رہے ہیں</translation>
 <translation id="8807632654848257479">مستحکم</translation>
 <translation id="830868413617744215">بی ٹا</translation>
@@ -3733,10 +3738,12 @@
 <translation id="5302048478445481009">زبان</translation>
 <translation id="6388429472088318283">زبانیں تلاش کریں</translation>
 <translation id="2690024944919328218">زبان کے اختیارات دکھائیں</translation>
+<translation id="768549422429443215">زبانیں شامل کریں یا فہرست دوبارہ ترتیب دیں۔</translation>
 <translation id="8218847192766059983">زبانیں شامل کریں یا فہرست دوبارہ ترتیب دیں۔ <ph name="BEGIN_LINK"/>مزید جانیں<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">اس زبان میں سسٹم ٹیکسٹ ظاہر کیا جاتا ہے</translation>
 <translation id="2366260648632264559">اس زبان میں سسٹم ٹیکسٹ دکھائیں</translation>
 <translation id="8336721153892716270"><ph name="LANGUAGE"/> میں سسٹم کا متن دکھانے کے لیے آلہ ری سٹارٹ کریں</translation>
+<translation id="7216595297012131718">اپنی ترجیح کی بنیاد پر زبانوں کو ترتیب دیں</translation>
 <translation id="5972708806901999743">اوپر منتقل کریں</translation>
 <translation id="8609465669617005112">اوپر منتقل کریں</translation>
 <translation id="6746124502594467657">نیچے منتقل کریں</translation>
@@ -4566,6 +4573,7 @@
 <translation id="8143442547342702591">غلط ایپلیکیشن</translation>
 <translation id="720110658997053098">اس آلہ کو مستقل طور پر کیوسک وضع میں رکھیں</translation>
 <translation id="1909880997794698664">کیا آپ واقعی مستقل طور پر اس آلے کو کیوسک وضع میں رکھنا چاہتے ہیں؟</translation>
+<translation id="1512210426710821809">اس کو کالعدم کرنے کا واحد طریقہ <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> کو دوبارہ انسٹال کرنا ہے</translation>
 <translation id="8281886186245836920">نظر انداز کریں</translation>
 <translation id="2342740338116612727">بُک مارکس شامل کر دیے گئے</translation>
 <translation id="7835178595033117206">بُک مارک ہٹا دیا گیا</translation>
@@ -4686,7 +4694,10 @@
 <translation id="1526560967942511387">بلا عنوان دستاویز</translation>
 <translation id="5269977353971873915">پرنٹ ناکام ہوگیا</translation>
 <translation id="7385854874724088939">پرنٹ کرنے کی کوشش کرتے وقت کچھ غلط ہوگیا۔  براہ کرم اپنا پرنٹر چیک کریں اور دوبارہ کوشش کریں۔</translation>
+<translation id="1197979282329025000">پرنٹر <ph name="PRINTER_NAME"/> کیلئے پرنٹر کی اہلیتیں بازیافت کرنے کے دوران ایک خرابی پیش آ گئی۔ یہ پرنٹر <ph name="CLOUD_PRINT_NAME"/> کے ساتھ رجسٹرڈ نہیں ہو سکا۔</translation>
 <translation id="9004952710076978168">ایک نامعلوم پرنٹر کیلئے ایک اطلاع موصول ہوئی۔</translation>
+<translation id="2202898655984161076">پرنٹرز کی فہرست سازی میں ایک مسئلہ پیش آ گیا۔ ممکن ہے آپ کے کچھ پرنٹرز <ph name="CLOUD_PRINT_NAME"/> کے ساتھ کامیابی سے رجسٹرڈ نہیں ہوئے ہوں۔</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> کنیکٹر کی کارروائی کریش ہوگئی ہے۔ دوبارہ شروع کریں؟</translation>
 <translation id="6904655473976120856">باہر نکلنے کیلئے ایپ بٹن دبائیں</translation>
 <translation id="8909833622202089127">سائٹ آپ کا مقام ٹریک کر رہی ہے</translation>
 <translation id="375636864092143889">سائٹ آپ کا مائیکروفون استعمال کر رہی ہے</translation>
