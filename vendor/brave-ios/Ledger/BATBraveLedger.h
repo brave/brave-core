@@ -284,6 +284,8 @@ NS_SWIFT_NAME(BraveLedger)
 @property (nonatomic, assign) double contributionAmount;
 /// Whether or not the user will automatically contribute
 @property (nonatomic, assign, getter=isAutoContributeEnabled) BOOL autoContributeEnabled;
+/// A custom user agent for network operations on ledger
+@property (nonatomic, copy, nullable) NSString *customUserAgent;
 
 #pragma mark - Ads & Confirmations
 
