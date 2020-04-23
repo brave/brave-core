@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/verify_wallet_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bat_panel_gradient"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:layout_marginTop="@dimen/verify_wallet_margin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:src="@drawable/group"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/verify_wallet_margin1"
+        android:text="@string/verify_wallet_header"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/verify_wallet_header1_font_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/verify_wallet_margin1"
+        android:text="@string/verify_wallet_header1"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/verify_wallet_header2_font_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/verify_wallet_margin2"
+        android:drawableStart="@drawable/check"
+        android:drawablePadding="16dp"
+        android:gravity="start"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/verify_wallet_benefits1"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/verify_wallet_header3_font_size"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/verify_wallet_margin2"
+        android:drawableStart="@drawable/check"
+        android:drawablePadding="16dp"
+        android:gravity="start"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/verify_wallet_benefits2"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/verify_wallet_header3_font_size"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/verify_wallet_margin2"
+        android:drawableStart="@drawable/check"
+        android:drawablePadding="16dp"
+        android:gravity="start"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/verify_wallet_benefits3"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/verify_wallet_header3_font_size"/>
+
+    <Button
+        android:id="@+id/verify_wallet_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/verify_wallet_btn_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/verify_wallet_margin2"
+        android:background="@drawable/rewards_button_orange"
+        android:fontFamily="sans-serif"
+        android:paddingStart="44dp"
+        android:paddingEnd="44dp"
+        android:text="@string/verify_wallet_btn_txt"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/verify_wallet_header3_font_size"/>
+
+    <TextView
+        android:id="@+id/service_provider_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/verify_wallet_margin2"
+        android:drawableEnd="@drawable/uphold_green"
+        android:drawablePadding="6dp"
+        android:text="@string/verify_wallet_service_note"
+        android:textColor="@color/user_wallet_dimmed_note"
+        android:textSize="@dimen/verify_wallet_header4_font_size"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/verify_wallet_margin3"
+        android:text="@string/verify_wallet_uphold_note1"
+        android:textAlignment="textStart"
+        android:textColor="@color/user_wallet_dimmed_note"
+        android:textSize="@dimen/verify_wallet_header4_font_size"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/verify_wallet_margin3"
+        android:text="@string/verify_wallet_brave_note1"
+        android:textAlignment="textStart"
+        android:textColor="@color/user_wallet_dimmed_note"
+        android:textSize="@dimen/verify_wallet_header4_font_size"/>
+</LinearLayout>

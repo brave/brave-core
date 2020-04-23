@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BraveRewardsUserWalletActivity"
+    android:background="@drawable/rect_round_corners_12"
+    android:orientation="vertical"
+    android:layout_margin="12dp"
+    android:fitsSystemWindows="true"
+    android:backgroundTint="@color/user_wallet_background">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_up_round_corners_12"
+        android:backgroundTint="@color/cardview_light_background">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_wallet_activity_name"
+            android:textColor="@android:color/black"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_gravity="center"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_margin="12dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/rect_round_corners_12"
+        android:backgroundTint="@color/cardview_light_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/user_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:padding="12dp"
+                android:drawableStart="@drawable/uphold_green"
+                android:textStyle="bold"
+                android:drawablePadding="12dp">
+            </TextView>
+            <TextView
+                android:id="@+id/user_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:padding="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/user_wallet_status">
+            </TextView>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/user_wallet_background"/>
+
+        <Button
+            android:id="@+id/user_wallet_btn1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_blue_dark"
+            android:padding="12dp">
+        </Button>
+
+        <ImageView
+            android:id="@+id/user_wallet_btn2_separator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/user_wallet_background"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/user_wallet_btn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_blue_dark"
+            android:padding="12dp"
+            android:visibility="gone">
+        </Button>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/user_wallet_background"/>
+
+        <Button
+            android:id="@+id/user_wallet_go_to_uphold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_wallet_goto_uphold"
+            android:background="?android:attr/selectableItemBackground"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_blue_dark"
+            android:padding="12dp">
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/rect_round_corners_12"
+        android:backgroundTint="@color/cardview_light_background">
+        <Button
+            android:id="@+id/user_wallet_disconnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_wallet_disconnect_rewards"
+            android:background="?android:attr/selectableItemBackground"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_red_light"
+            android:padding="12dp">
+        </Button>
+    </LinearLayout>
+</LinearLayout>

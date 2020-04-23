@@ -4,5 +4,6 @@ brave_java_bytecode_files = [
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveLaunchIntentDispatcherClassAdapter.java",
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveAndroidSyncSettingsClassAdapter.java",
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveBookmarkModelClassAdapter.java",
+  "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveExternalNavigationHandlerClassAdapter.java",
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveMainPreferenceBaseClassAdapter.java",
 ]

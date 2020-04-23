@@ -14,6 +14,7 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/android/jni_array.h"
+#include "base/json/json_writer.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -190,18 +191,13 @@ bool BraveRewardsNativeWorker::GetPublisherExcluded(JNIEnv* env,
   return res;
 }
 
-bool BraveRewardsNativeWorker::GetPublisherVerified(JNIEnv* env,
+int BraveRewardsNativeWorker::GetPublisherStatus(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
-  bool res = false;
-
-  PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
+  int res = static_cast<int>(ledger::PublisherStatus::NOT_VERIFIED);
+  PublishersInfoMap::const_iterator iter = map_publishers_info_.find(tabId);
   if (iter != map_publishers_info_.end()) {
-    res = (uint32_t)iter->second->status ==
-              (uint32_t)ledger::PublisherStatus::VERIFIED ||
-          (uint32_t)iter->second->status ==
-              (uint32_t)ledger::PublisherStatus::CONNECTED;
+    res = static_cast<int>(iter->second->status);
   }
-
   return res;
 }
 
@@ -269,9 +265,11 @@ void BraveRewardsNativeWorker::OnBalance(
         weak_java_brave_rewards_native_worker_.get(env), 0);
 }
 
-double BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env,
+base::android::ScopedJavaLocalRef<jstring>
+    BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj) {
-  return balance_.total;
+  std::string json_balance = balance_.toJson();
+  return base::android::ConvertUTF8ToJavaString(env, json_balance);
 }
 
 double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env,
@@ -714,6 +712,84 @@ bool BraveRewardsNativeWorker::IsAnonWallet(JNIEnv* env,
     return brave_rewards_service_->OnlyAnonWallet();
   }
   return false;
+}
+
+void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& wallet_type) {
+  if (brave_rewards_service_) {
+    std::string str_wallet_type =
+        base::android::ConvertJavaStringToUTF8(env, wallet_type);
+    auto callback = base::Bind(
+        &BraveRewardsNativeWorker::OnGetExternalWallet,
+        base::Unretained(this));
+    brave_rewards_service_->GetExternalWallet(str_wallet_type, callback);
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetExternalWallet(int32_t result,
+        std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
+  std::string json_wallet = wallet->toJson();
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnGetExternalWallet(env,
+      weak_java_brave_rewards_native_worker_.get(env), result,
+      base::android::ConvertUTF8ToJavaString(env, json_wallet));
+}
+
+void BraveRewardsNativeWorker::DisconnectWallet(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& wallet_type) {
+  if (brave_rewards_service_) {
+    std::string str_wallet_type =
+        base::android::ConvertJavaStringToUTF8(env, wallet_type);
+    brave_rewards_service_->DisconnectWallet(str_wallet_type);
+  }
+}
+
+void BraveRewardsNativeWorker::OnDisconnectWallet(
+    brave_rewards::RewardsService* rewards_service,
+    int32_t result, const std::string& wallet_type) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnDisconnectWallet(env,
+        weak_java_brave_rewards_native_worker_.get(env), result,
+        base::android::ConvertUTF8ToJavaString(env, wallet_type));
+}
+
+void BraveRewardsNativeWorker::ProcessRewardsPageUrl(JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj,
+        const base::android::JavaParamRef<jstring>& path,
+        const base::android::JavaParamRef<jstring>& query) {
+  if (brave_rewards_service_) {
+    std::string cpath = base::android::ConvertJavaStringToUTF8(env, path);
+    std::string cquery = base::android::ConvertJavaStringToUTF8(env, query);
+    auto callback = base::Bind(
+        &BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
+        base::Unretained(this));
+    brave_rewards_service_->ProcessRewardsPageUrl(cpath, cquery, callback);
+  }
+}
+
+void BraveRewardsNativeWorker::OnProcessRewardsPageUrl(int32_t result,
+        const std::string& wallet_type, const std::string& action,
+        const std::map<std::string, std::string>& args) {
+  std::string json_args = StdStrStrMapToJsonString(args);
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnProcessRewardsPageUrl(env,
+        weak_java_brave_rewards_native_worker_.get(env), result,
+        base::android::ConvertUTF8ToJavaString(env, wallet_type),
+        base::android::ConvertUTF8ToJavaString(env, action),
+        base::android::ConvertUTF8ToJavaString(env, json_args));
+}
+
+std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
+    const std::map<std::string, std::string>& args) {
+    std::string json_args;
+    base::Value dict(base::Value::Type::DICTIONARY);
+    for (const auto & item : args) {
+      dict.SetStringKey(item.first, item.second);
+    }
+    base::JSONWriter::Write(dict, &json_args);
+    return json_args;
 }
 
 static void JNI_BraveRewardsNativeWorker_Init(
