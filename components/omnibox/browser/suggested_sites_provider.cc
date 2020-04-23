@@ -9,7 +9,10 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/pref_names.h"
 #include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_provider_client.h"
+#include "components/prefs/pref_service.h"
 
 // As from autocomplete_provider.h:
 // Search Secondary Provider (suggestion) |  100++
@@ -18,12 +21,17 @@ const int SuggestedSitesProvider::kRelevance = 100;
 
 SuggestedSitesProvider::SuggestedSitesProvider(
     AutocompleteProviderClient* client)
-    : AutocompleteProvider(AutocompleteProvider::TYPE_SEARCH) {
+    : AutocompleteProvider(AutocompleteProvider::TYPE_SEARCH), client_(client) {
 }
 
 void SuggestedSitesProvider::Start(const AutocompleteInput& input,
                             bool minimal_changes) {
   matches_.clear();
+  auto* prefs = client_->GetPrefs();
+  if (!prefs || !prefs->GetBoolean(kBraveSuggestedSiteSuggestionsEnabled)) {
+    return;
+  }
+
   if (input.from_omnibox_focus() ||
       (input.type() == metrics::OmniboxInputType::EMPTY) ||
       (input.type() == metrics::OmniboxInputType::QUERY)) {
