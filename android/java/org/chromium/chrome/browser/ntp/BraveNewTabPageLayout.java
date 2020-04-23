@@ -9,6 +9,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.os.Build;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
@@ -68,7 +69,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
         int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
         if (!mNTPBackgroundImagesBridge.isSuperReferral()
-            || !NTPBackgroundImagesBridge.enableSponsoredImages())
+            || !NTPBackgroundImagesBridge.enableSponsoredImages()
+            || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
