@@ -18,9 +18,6 @@
 #include "chrome/browser/importer/importer_lock_dialog.h"
 #include "chrome/browser/ui/browser_dialogs.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/grit/chromium_strings.h"
-#include "chrome/grit/generated_resources.h"
-#include "chrome/grit/locale_settings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/buildflags.h"
 #include "ui/views/border.h"
@@ -57,7 +54,8 @@ ImportLockDialogView::ImportLockDialogView(
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   DialogDelegate::set_button_label(
-      ui::DIALOG_BUTTON_OK, l10n_util::GetStringUTF16(IDS_IMPORTER_LOCK_OK));
+      ui::DIALOG_BUTTON_OK,
+      l10n_util::GetStringUTF16(IDS_CHROME_IMPORTER_LOCK_OK));
 
   views::Label* description_label;
   DCHECK_EQ(::importer::TYPE_CHROME, source_profile_.importer_type);

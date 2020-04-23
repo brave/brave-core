@@ -75,20 +75,15 @@ void BraveExternalProcessImporterHost::ShowWarningDialog() {
 
 void BraveExternalProcessImporterHost::OnImportLockDialogEnd(bool is_continue) {
   if (is_continue) {
-    // User chose to continue, then we check the lock again to make sure that
-    // the other browser has been closed. Try to import the settings if
-    // successful. Otherwise, show a warning dialog.
-    browser_lock_->Lock();
-    if (browser_lock_->HasAcquired()) {
-      is_source_readable_ = true;
-      LaunchImportIfReady();
-    } else {
-      ShowWarningDialog();
-    }
+    // User chose to continue, then try to import the settings.
+    is_source_readable_ = true;
+    LaunchImportIfReady();
   } else {
+    cancelled_ = true;
     NotifyImportEnded();
   }
 }
+
 bool BraveExternalProcessImporterHost::CheckForFirefoxLock(
     const importer::SourceProfile& source_profile) {
   if (!ExternalProcessImporterHost::CheckForFirefoxLock(source_profile))

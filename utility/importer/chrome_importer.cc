@@ -108,6 +108,27 @@ bool SetEncryptionKeyForPasswordImporting(
 }
 #endif
 
+class CreateCopyFile {
+ public:
+  explicit CreateCopyFile(const base::FilePath& original_file_path) {
+    DCHECK(base::PathExists(original_file_path));
+    if (base::CreateTemporaryFile(&copied_file_path_))
+      base::CopyFile(original_file_path, copied_file_path_);
+  }
+
+  ~CreateCopyFile() {
+    base::DeleteFile(copied_file_path_, false);
+  }
+
+  CreateCopyFile(const CreateCopyFile&) = delete;
+  CreateCopyFile& operator=(const CreateCopyFile&) = delete;
+
+  base::FilePath copied_file_path() const { return copied_file_path_; }
+
+ private:
+  base::FilePath copied_file_path_;
+};
+
 }  // namespace
 
 ChromeImporter::ChromeImporter() {
@@ -147,15 +168,16 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
 }
 
 void ChromeImporter::ImportHistory() {
-  base::FilePath history_path =
-    source_path_.Append(
+  base::FilePath history_path = source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   if (!base::PathExists(history_path))
     return;
 
+  CreateCopyFile copy_history_file(history_path);
   sql::Database db;
-  if (!db.Open(history_path))
+  if (!db.Open(copy_history_file.copied_file_path())) {
     return;
+  }
 
   const char query[] =
     "SELECT u.url, u.title, v.visit_time, u.typed_count, u.visit_count "
@@ -196,7 +218,9 @@ void ChromeImporter::ImportBookmarks() {
   base::FilePath bookmarks_path =
     source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
-  base::ReadFileToString(bookmarks_path, &bookmarks_content);
+  CreateCopyFile copy_bookmark_file(bookmarks_path);
+  base::ReadFileToString(copy_bookmark_file.copied_file_path(),
+                         &bookmarks_content);
   base::Optional<base::Value> bookmarks_json =
     base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
@@ -240,8 +264,10 @@ void ChromeImporter::ImportBookmarks() {
   if (!base::PathExists(favicons_path))
     return;
 
+  CreateCopyFile copy_favicon_file(favicons_path);
+
   sql::Database db;
-  if (!db.Open(favicons_path))
+  if (!db.Open(copy_favicon_file.copied_file_path()))
     return;
 
   FaviconMap favicon_map;
@@ -385,8 +411,10 @@ void ChromeImporter::ImportPasswords() {
   if (!base::PathExists(passwords_path))
     return;
 
+  CreateCopyFile copy_password_file(passwords_path);
   password_manager::LoginDatabase database(
-      passwords_path, password_manager::IsAccountStore(false));
+      copy_password_file.copied_file_path(),
+      password_manager::IsAccountStore(false));
   if (!database.Init()) {
     LOG(ERROR) << "LoginDatabase Init() failed";
     return;

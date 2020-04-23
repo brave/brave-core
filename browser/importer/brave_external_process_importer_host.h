@@ -38,11 +38,11 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
       const importer::SourceProfile& source_profile);
 
   // ShowWarningDialog() asks user to close the application that is owning the
-  // lock. They can retry or skip the importing process.
+  // lock. They can continue or skip the importing process.
   // This method should not be called if the importer is in headless mode.
   void ShowWarningDialog();
 
-  // This is called when when user ends the lock dialog by clicking on either
+  // This is called when when user ends the warning dialog by clicking on either
   // the "Skip" or "Continue" buttons. |is_continue| is true when user clicked
   // the "Continue" button.
   void OnImportLockDialogEnd(bool is_continue);
