@@ -22,6 +22,8 @@ import android.support.v4.app.NotificationCompat;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.util.UrlConstants;
 
@@ -183,31 +185,39 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         }
     }
 
+    private class OnReceiveRunnable implements Runnable {
+        @Override
+        public void run() {
+          boolean deepLinkIsHandled = false;
+          if (mIntent != null
+                  && mIntent.hasExtra(BraveSetDefaultBrowserNotificationService.DEEP_LINK)) {
+              handleBraveSetDefaultBrowserDeepLink(mIntent);
+              deepLinkIsHandled = true;
+          }
+          if (deepLinkIsHandled
+                  || (mIntent != null && mIntent.getAction() != null
+                          && mIntent.getAction().equals(CANCEL_NOTIFICATION))) {
+              int notification_id = mIntent.getIntExtra(NOTIFICATION_ID_EXTRA, 0);
+              NotificationManager notificationManager =
+                      (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+              notificationManager.cancel(notification_id);
+              return;
+          }
+
+          if (shouldShowNotification()) {
+              showNotification();
+          } else if (!hasAskedAt1122()) {
+              setAlarmFor1122();
+          }
+        }
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context;
         mIntent = intent;
-        boolean deepLinkIsHandled = false;
-        if (intent != null
-                && intent.hasExtra(BraveSetDefaultBrowserNotificationService.DEEP_LINK)) {
-            handleBraveSetDefaultBrowserDeepLink(intent);
-            deepLinkIsHandled = true;
-        }
-
-        if (deepLinkIsHandled
-                || (intent != null && intent.getAction() != null
-                        && intent.getAction().equals(CANCEL_NOTIFICATION))) {
-            int notification_id = intent.getIntExtra(NOTIFICATION_ID_EXTRA, 0);
-            NotificationManager notificationManager =
-                    (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(notification_id);
-            return;
-        }
-
-        if (shouldShowNotification()) {
-            showNotification();
-        } else if (!hasAskedAt1122()) {
-            setAlarmFor1122();
-        }
+        // Work is done in IO thread because
+        // ApplicationPackageManager.resolveActivity may cause file IO operation
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, new OnReceiveRunnable());
     }
 }
