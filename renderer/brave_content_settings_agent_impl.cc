@@ -70,7 +70,6 @@ ContentSetting GetBraveContentSettingFromRules(
       return rule.GetContentSetting();
     }
   }
-  NOTREACHED();
   return CONTENT_SETTING_DEFAULT;
 }
 
@@ -276,9 +275,13 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
 
 BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  ContentSetting setting = GetBraveContentSettingFromRules(
+
+  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  if (content_setting_rules_) {
+    setting = GetBraveContentSettingFromRules(
         content_setting_rules_->fingerprinting_rules, frame,
         url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+  }
 
   if (base::FeatureList::IsEnabled(
       brave_shields::features::kFingerprintingProtectionV2)) {
