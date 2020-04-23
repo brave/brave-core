@@ -33,7 +33,9 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
 
         Profile mProfile = Profile.getLastUsedProfile();
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        if (mNTPBackgroundImagesBridge != null && !mNTPBackgroundImagesBridge.isSuperReferral()) {
+        if (!NTPBackgroundImagesBridge.enableSponsoredImages()
+            || (mNTPBackgroundImagesBridge != null
+            && !mNTPBackgroundImagesBridge.isSuperReferral())) {
             Preference superReferralPreference = getPreferenceScreen().findPreference(SUPER_REFERRAL);
             if (superReferralPreference != null) {
                 getPreferenceScreen().removePreference(superReferralPreference);
