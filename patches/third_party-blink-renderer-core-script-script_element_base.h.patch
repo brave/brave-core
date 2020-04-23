@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/core/script/script_element_base.h b/third_party/blink/renderer/core/script/script_element_base.h
+index b3d7d916260c4bc654b037bbdd4750970e0e0907..af53c30eb9f455976deeda8872a36aba222a5aa5 100644
+--- a/third_party/blink/renderer/core/script/script_element_base.h
++++ b/third_party/blink/renderer/core/script/script_element_base.h
+@@ -28,6 +28,11 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#endif
++
+ namespace blink {
+ class Document;
+ class Element;
+@@ -72,6 +77,8 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
+   virtual void DispatchLoadEvent() = 0;
+   virtual void DispatchErrorEvent() = 0;
+ 
++  virtual DOMNodeId GetDOMNodeId() const = 0;
++
+  protected:
+   ScriptLoader* InitializeScriptLoader(bool parser_inserted,
+                                        bool already_started);

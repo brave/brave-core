@@ -1,0 +1,45 @@
+diff --git a/third_party/blink/renderer/core/script/modulator.h b/third_party/blink/renderer/core/script/modulator.h
+index 39b6255073ca8c57d5d583e09f2d97b0623c7dc0..41f2b667c2d9f25b292f7b561beb6f4faec230c5 100644
+--- a/third_party/blink/renderer/core/script/modulator.h
++++ b/third_party/blink/renderer/core/script/modulator.h
+@@ -23,6 +23,12 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ class ModuleScript;
+@@ -100,7 +106,7 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
+   USING_GARBAGE_COLLECTED_MIXIN(Modulator);
+ 
+  public:
+-  static Modulator* From(ScriptState*);
++  static Modulator* From(ScriptState*, ::brave_page_graph::PageGraph*, DOMNodeId);
+   virtual ~Modulator();
+ 
+   static void SetModulator(ScriptState*, Modulator*);
+@@ -172,6 +178,7 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
+   virtual void ResolveDynamically(const String& specifier,
+                                   const KURL&,
+                                   const ReferrerScriptInfo&,
++                                  const ::brave_page_graph::ScriptId,
+                                   ScriptPromiseResolver*) = 0;
+ 
+   virtual ScriptValue CreateTypeError(const String& message) const = 0;
+@@ -216,6 +223,10 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
+ 
+   virtual ModuleScriptFetcher* CreateModuleScriptFetcher(
+       ModuleScriptCustomFetchType) = 0;
++
++  virtual ::brave_page_graph::PageGraph* GetPageGraph() const = 0;
++
++  virtual DOMNodeId GetInitiatingDOMNodeId() const = 0;
+ };
+ 
+ }  // namespace blink

@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc b/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
+index 539f44a94568dd298fb43f1ad091f2db36f8eed9..b292d74e37e8bf980914b0ad16f906a29dbefe41 100644
+--- a/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
++++ b/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
+@@ -467,7 +467,7 @@ void WorkerOrWorkletGlobalScope::FetchModuleScript(
+                              network::mojom::ReferrerPolicy::kDefault,
+                              mojom::FetchImportanceMode::kImportanceAuto);
+ 
+-  Modulator* modulator = Modulator::From(ScriptController()->GetScriptState());
++  Modulator* modulator = Modulator::From(ScriptController()->GetScriptState(), nullptr, 0);
+   // Step 3. "Perform the internal module script graph fetching procedure ..."
+   modulator->FetchTree(
+       module_url_record,

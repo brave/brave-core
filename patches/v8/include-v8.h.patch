@@ -32,18 +32,29 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..218172df2895406de1efcf7fdf17c3c1
  class AccessorSignature;
  class Array;
  class ArrayBuffer;
-@@ -1326,6 +1342,10 @@ class V8_EXPORT Module {
-    * kEvaluated or kErrored.
+@@ -1316,6 +1332,10 @@ class V8_EXPORT ScriptOrModule {
+    * the ScriptOrigin.
+    */
+   Local<PrimitiveArray> GetHostDefinedOptions();
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int GetScriptId() const;
++#endif
+ };
+ 
+ /**
+@@ -1549,6 +1569,10 @@ class V8_EXPORT Module : public Data {
     */
    Local<UnboundModuleScript> GetUnboundModuleScript();
-+
+ 
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetModuleScriptId() const;
 +#endif
- 
++
    /*
     * Callback defined in the embedder.  This is responsible for setting
-@@ -1437,6 +1448,12 @@ class V8_EXPORT ScriptCompiler {
+    * the module's exported values with calls to SetSyntheticModuleExport().
+@@ -1667,6 +1691,12 @@ class V8_EXPORT ScriptCompiler {
      // Source takes ownership of CachedData.
      V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
                       CachedData* cached_data = nullptr);

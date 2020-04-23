@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h b/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h
+index c5081a0153a8b985106f081dd387b1ed024c9c43..d1827fc7b8be6a2327389c6d8729ac0a4e8f7448 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h
++++ b/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h
+@@ -13,6 +13,11 @@
+ #include "third_party/blink/renderer/platform/heap/heap_allocator.h"
+ #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ class ConsoleMessage;
+@@ -54,6 +59,8 @@ class CORE_EXPORT ModuleScriptFetcher : public ResourceClient {
+       Resource* resource,
+       HeapVector<Member<ConsoleMessage>>* error_messages,
+       ModuleScriptCreationParams::ModuleType* module_type);
++
++  ::brave_page_graph::PageGraph* page_graph_;
+ };
+ 
+ }  // namespace blink

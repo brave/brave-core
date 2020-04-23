@@ -1,0 +1,24 @@
+diff --git a/third_party/blink/renderer/core/html/html_script_element.h b/third_party/blink/renderer/core/html/html_script_element.h
+index ca7f9f5f44caa2d3655f97c96e5cfdc4b219ada8..7812903e2f62915f5b178978f9faeb8177c53f91 100644
+--- a/third_party/blink/renderer/core/html/html_script_element.h
++++ b/third_party/blink/renderer/core/html/html_script_element.h
+@@ -31,6 +31,11 @@
+ #include "third_party/blink/renderer/core/script/script_element_base.h"
+ #include "third_party/blink/renderer/core/script/script_loader.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#endif
++
+ namespace blink {
+ 
+ class StringOrTrustedScript;
+@@ -100,6 +105,7 @@ class CORE_EXPORT HTMLScriptElement final : public HTMLElement,
+                                const String& script_content) override;
+   void DispatchLoadEvent() override;
+   void DispatchErrorEvent() override;
++  DOMNodeId GetDOMNodeId() const override { return DOMNodeIds::IdForNode((Node*) this); }
+   void SetScriptElementForBinding(
+       HTMLScriptElementOrSVGScriptElement&) override;
+ 

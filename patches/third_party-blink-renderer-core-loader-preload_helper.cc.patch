@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/loader/preload_helper.cc b/third_party/blink/renderer/core/loader/preload_helper.cc
+index 96fe8650bf340ba65d395204aeea6c84d2c7e98f..b025c4ba3b3b57574961f4804bb6941624a7fe7a 100644
+--- a/third_party/blink/renderer/core/loader/preload_helper.cc
++++ b/third_party/blink/renderer/core/loader/preload_helper.cc
+@@ -367,7 +367,8 @@ void PreloadHelper::ModulePreloadIfNeeded(
+   // relevant settings object.
+   Document* context_document = document.ContextDocument();
+   Modulator* modulator =
+-      Modulator::From(ToScriptStateForMainWorld(context_document->GetFrame()));
++      //TODO link rel=preload will not be registered in PageGraph until this is updated
++      Modulator::From(ToScriptStateForMainWorld(context_document->GetFrame()), nullptr, 0);
+   DCHECK(modulator);
+   if (!modulator)
+     return;

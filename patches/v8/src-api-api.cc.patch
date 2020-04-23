@@ -11,8 +11,22 @@ index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..aa01ab5b63236f862dc967367d17779b
  namespace v8 {
  
  /*
-@@ -2376,12 +2378,27 @@ MaybeLocal<Value> Module::Evaluate(Local<Context> context) {
-                                 i_export_name, i_export_value);
+@@ -2158,6 +2160,13 @@ MaybeLocal<Value> Script::Run(Local<Context> context) {
+   RETURN_ESCAPED(result);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int ScriptOrModule::GetScriptId() const {
++  i::Handle<i::Script> self = Utils::OpenHandle(this);
++  return self->id();
++}
++#endif
++
+ Local<Value> ScriptOrModule::GetResourceName() {
+   i::Handle<i::Script> obj = Utils::OpenHandle(this);
+   i::Isolate* isolate = obj->GetIsolate();
+@@ -2397,12 +2406,27 @@ void Module::SetSyntheticModuleExport(Local<String> export_name,
+                                       i_export_name, i_export_value);
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)

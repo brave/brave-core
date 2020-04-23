@@ -1,0 +1,56 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
+index e2c000bcd97964bf009c5c216f21bdae7aa0a44a..59e70bbcdacdef5d873c8488aa3edaf33d3547ba 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
+@@ -16,6 +16,11 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ // <specdef label="IMSGF"
+ // href="https://html.spec.whatwg.org/C/#internal-module-script-graph-fetching-procedure">
+ 
+@@ -166,7 +171,7 @@ void ModuleTreeLinker::AdvanceState(State new_state) {
+ // #fetch-a-module-worker-script-tree.
+ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+                                  const ScriptFetchOptions& options) {
+-#if DCHECK_IS_ON()
++#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+   original_url_ = original_url;
+   root_is_inline_ = false;
+ #endif
+@@ -184,7 +189,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+   if (modulator_->BuiltInModuleInfraEnabled())
+     url = blink::layered_api::ResolveFetchingURL(*modulator_, url);
+ 
+-#if DCHECK_IS_ON()
++#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+   url_ = url;
+ #endif
+ 
+@@ -242,7 +247,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+ // href="https://html.spec.whatwg.org/C/#fetch-an-inline-module-script-graph">
+ void ModuleTreeLinker::FetchRootInline(ModuleScript* module_script) {
+   DCHECK(module_script);
+-#if DCHECK_IS_ON()
++#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+   original_url_ = module_script->BaseURL();
+   url_ = original_url_;
+   root_is_inline_ = true;
+@@ -444,6 +449,12 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {
+   // fetching procedure should be performed in parallel to each other.
+   // ...</spec>
+   for (wtf_size_t i = 0; i < urls.size(); ++i) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    ::brave_page_graph::PageGraph* page_graph = modulator_->GetPageGraph();
++    if (page_graph) {
++      page_graph->RegisterModuleScriptForDescendant(module_script->SourceURL(), urls[i]);
++    }
++#endif
+     // <spec step="8">... perform the internal module script graph fetching
+     // procedure given url, fetch client settings object, destination, options,
+     // module script's settings object, visited set, and module script's base

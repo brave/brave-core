@@ -1,0 +1,24 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_script_element.h b/third_party/blink/renderer/core/svg/svg_script_element.h
+index cb4b1763331197f74042e8be0c7fb391a6f02acd..fb38d9b1dcac5ca87453052d8ad0d3751c62b1b8 100644
+--- a/third_party/blink/renderer/core/svg/svg_script_element.h
++++ b/third_party/blink/renderer/core/svg/svg_script_element.h
+@@ -28,6 +28,11 @@
+ #include "third_party/blink/renderer/core/svg_names.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#endif
++
+ namespace blink {
+ 
+ class ScriptLoader;
+@@ -95,6 +100,7 @@ class SVGScriptElement final : public SVGElement,
+   Document& GetDocument() const override;
+   void DispatchLoadEvent() override;
+   void DispatchErrorEvent() override;
++  DOMNodeId GetDOMNodeId() const override { return DOMNodeIds::IdForNode((Node*) this); }
+   void SetScriptElementForBinding(
+       HTMLScriptElementOrSVGScriptElement&) override;
+ 

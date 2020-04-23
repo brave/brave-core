@@ -15,7 +15,7 @@ index b13469ab8aa93f53c0940e8cacacb841a8235c5a..4d62855ccae112fe0a3881ec8629482d
  namespace blink {
  
  ModuleRecordProduceCacheData::ModuleRecordProduceCacheData(
-@@ -94,6 +100,22 @@ ModuleRecord ModuleRecord::Compile(
+@@ -82,6 +88,23 @@ v8::Local<v8::Module> ModuleRecord::Compile(
    }
    DCHECK(!try_catch.HasCaught());
  
@@ -27,6 +27,7 @@ index b13469ab8aa93f53c0940e8cacacb841a8235c5a..4d62855ccae112fe0a3881ec8629482d
 +      ScriptSourceCode source_code(source);
 +      int script_id = module->GetModuleScriptId();
 +      if (script_id != 0) {
++        page_graph->RegisterUrlForScriptSource(source_url, ScriptSourceCode(source));
 +        page_graph->RegisterScriptCompilation(
 +            ScriptSourceCode(source), script_id,
 +            brave_page_graph::ScriptType::kScriptTypeModule);
@@ -38,3 +39,12 @@ index b13469ab8aa93f53c0940e8cacacb841a8235c5a..4d62855ccae112fe0a3881ec8629482d
    if (out_produce_cache_data) {
      *out_produce_cache_data =
          MakeGarbageCollected<ModuleRecordProduceCacheData>(
+@@ -188,7 +211,7 @@ v8::MaybeLocal<v8::Module> ModuleRecord::ResolveModuleCallback(
+     v8::Local<v8::String> specifier,
+     v8::Local<v8::Module> referrer) {
+   v8::Isolate* isolate = context->GetIsolate();
+-  Modulator* modulator = Modulator::From(ScriptState::From(context));
++  Modulator* modulator = Modulator::From(ScriptState::From(context), nullptr, 0);
+   DCHECK(modulator);
+ 
+   ExceptionState exception_state(isolate, ExceptionState::kExecutionContext,

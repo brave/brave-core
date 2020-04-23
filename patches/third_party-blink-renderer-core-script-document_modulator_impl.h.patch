@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/script/document_modulator_impl.h b/third_party/blink/renderer/core/script/document_modulator_impl.h
+index dd2153f2954286566cc97c416d48bd1d7c038a34..e7b93e0b1a657eae38cba184eccef4f326fff83e 100644
+--- a/third_party/blink/renderer/core/script/document_modulator_impl.h
++++ b/third_party/blink/renderer/core/script/document_modulator_impl.h
+@@ -9,6 +9,12 @@
+ 
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ class ModuleScriptFetcher;
+@@ -20,7 +26,7 @@ class ScriptState;
+ // ModulatorImplBase.
+ class DocumentModulatorImpl final : public ModulatorImplBase {
+  public:
+-  explicit DocumentModulatorImpl(ScriptState*);
++  explicit DocumentModulatorImpl(ScriptState*, ::brave_page_graph::PageGraph*, DOMNodeId);
+ 
+   // Implements Modulator.
+   ModuleScriptFetcher* CreateModuleScriptFetcher(
