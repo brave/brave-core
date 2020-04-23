@@ -4,12 +4,18 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/internal/get_payment_balance_request.h"
-#include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/string_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
 
-#include "base/logging.h"
+#include <stdint.h>
+
+#include <string>
+#include <vector>
+
+#include "bat/confirmations/internal/ads_serve_helper.h"
+#include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/string_helper.h"
+
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/values.h"
 
 namespace confirmations {
@@ -64,22 +70,30 @@ std::vector<std::string> GetPaymentBalanceRequest::BuildHeaders(
 
 std::string GetPaymentBalanceRequest::BuildDigestHeaderValue(
     const std::string& body) const {
-  auto body_sha256 = helper::Security::GetSHA256(body);
-  auto body_sha256_base64 = helper::Security::GetBase64(body_sha256);
-  return "SHA-256=" + body_sha256_base64;
+  std::string value;
+
+  if (body.empty()) {
+    return value;
+  }
+
+  const std::vector<uint8_t> body_sha256 = helper::Security::GetSHA256(body);
+  const std::string body_sha256_base64 =
+      helper::Security::GetBase64(body_sha256);
+
+  value = "SHA-256=" + body_sha256_base64;
+
+  return value;
 }
 
 std::string GetPaymentBalanceRequest::BuildSignatureHeaderValue(
     const std::string& body,
     const WalletInfo& wallet_info) const {
-  DCHECK(!wallet_info.private_key.empty());
+  const std::string value = BuildDigestHeaderValue(body);
 
-  auto digest_header_value = BuildDigestHeaderValue(body);
+  const std::vector<uint8_t> private_key =
+      helper::String::decode_hex(wallet_info.private_key);
 
-  auto private_key = helper::String::decode_hex(wallet_info.private_key);
-
-  return helper::Security::Sign({{"digest", digest_header_value}}, "primary",
-      private_key);
+  return helper::Security::Sign({{"digest", value}}, "primary", private_key);
 }
 
 std::string GetPaymentBalanceRequest::GetAcceptHeaderValue() const {
