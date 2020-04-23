@@ -25,6 +25,8 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
@@ -243,13 +245,18 @@ public abstract class BraveActivity extends ChromeActivity {
     }
 
     private void setupBraveSetDefaultBrowserNotification() {
-        Context context = ContextUtils.getApplicationContext();
-        if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
-            // Don't ask again
-            return;
-        }
-        Intent intent = new Intent(context, BraveSetDefaultBrowserNotificationService.class);
-        context.sendBroadcast(intent);
+        // Post task to IO thread because isBraveSetAsDefaultBrowser may cause
+        // sqlite file IO operation underneath
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () ->
+        {
+            Context context = ContextUtils.getApplicationContext();
+            if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
+                // Don't ask again
+                return;
+            }
+            Intent intent = new Intent(context, BraveSetDefaultBrowserNotificationService.class);
+            context.sendBroadcast(intent);
+        });
     }
 
     private boolean isNoRestoreState() {
