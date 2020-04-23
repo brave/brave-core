@@ -95,7 +95,7 @@ export const StyledWidgetMenu = styled<WidgetMenuProps, 'div'>('div')`
 
   @media screen and (min-width: 950px) and (max-width: 1150px) {
     ${p => p.textDirection === 'ltr'
-    ? 'left: 8px'
+    ? `left: ${p.menuPosition === 'left' ? -130 : 8}px`
     : 'right: 8px'}
   }
 
