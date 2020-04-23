@@ -73,10 +73,6 @@ source_set("ui") {
       "content_settings/brave_content_setting_image_models.h",
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
-      "tabs/brave_tab_menu_model.cc",
-      "tabs/brave_tab_menu_model.h",
-      "tabs/brave_tab_strip_model.cc",
-      "tabs/brave_tab_strip_model.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "webui/brave_new_tab_message_handler.cc",
@@ -181,6 +177,7 @@ source_set("ui") {
   }
 
   deps = [
+    "tabs",
     "//base",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources",

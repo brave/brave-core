@@ -1,0 +1,19 @@
+source_set("tabs") {
+  sources = [
+  ]
+
+  if (!is_android) {
+    sources += [
+      "brave_tab_menu_model.cc",
+      "brave_tab_menu_model.h",
+      "brave_tab_strip_model.cc",
+      "brave_tab_strip_model.h",
+    ]
+
+  }
+
+  deps = [
+    "//skia",
+    "//content/public/common",
+  ]
+}
