@@ -33,14 +33,15 @@ PayoutTokens::~PayoutTokens() = default;
 
 void PayoutTokens::PayoutAfterDelay(
     const WalletInfo& wallet_info) {
-  DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.private_key.empty());
-
   if (retry_timer_.IsRunning()) {
     return;
   }
 
-  wallet_info_ = WalletInfo(wallet_info);
+  wallet_info_ = wallet_info;
+  if (!wallet_info_.IsValid()) {
+    BLOG(ERROR) << "Failed to payout tokens due to invalid wallet";
+    return;
+  }
 
   const uint64_t delay = CalculatePayoutDelay();
   const base::Time time = timer_.Start(delay,
