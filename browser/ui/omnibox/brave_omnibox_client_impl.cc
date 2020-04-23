@@ -82,9 +82,9 @@ bool BraveOmniboxClientImpl::IsAutocompleteEnabled() const {
 }
 
 void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {
-  // TODO(iefremov): Optimize this.
-  WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
   if (IsSearchEvent(match)) {
+    // TODO(iefremov): Optimize this.
+    WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
     storage.AddDelta(1);
     RecordSearchEventP3A(storage.GetWeeklySum());
   }
