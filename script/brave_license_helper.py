@@ -9,6 +9,14 @@ BRAVE_THIRD_PARTY_DIRS = [
     'vendor',
 ]
 
+ANDROID_ONLY_PATHS = [
+    os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'),
+]
+
+DESKTOP_ONLY_PATHS = [
+    os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'),
+]
+
 
 def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Exclude these specific paths from needing a README.chromium file.
@@ -149,3 +157,14 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     additional_paths = tuple(additional_list)
 
     return (prune_dirs, additional_paths)
+
+
+def CheckBraveMissingLicense(target_os, path, error):
+    if path.startswith('brave'):
+        if (target_os == 'android'):
+            if path in DESKTOP_ONLY_PATHS:
+                return  # Desktop failures are not relevant on Android.
+        else:
+            if path in ANDROID_ONLY_PATHS:
+                return  # Android failures are not relevant on desktop.
+        raise error
