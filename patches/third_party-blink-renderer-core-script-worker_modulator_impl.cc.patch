@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/core/script/worker_modulator_impl.cc b/third_party/blink/renderer/core/script/worker_modulator_impl.cc
+index 6541c78624bdd4185067fbc45fc89b5ed70c2508..61d0f107c5e586155e4c1e6a0d2d39831f80386a 100644
+--- a/third_party/blink/renderer/core/script/worker_modulator_impl.cc
++++ b/third_party/blink/renderer/core/script/worker_modulator_impl.cc
+@@ -12,10 +12,16 @@
+ #include "third_party/blink/renderer/platform/bindings/v8_throw_exception.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+-WorkerModulatorImpl::WorkerModulatorImpl(ScriptState* script_state)
+-    : ModulatorImplBase(script_state) {}
++WorkerModulatorImpl::WorkerModulatorImpl(ScriptState* script_state, ::brave_page_graph::PageGraph* page_graph, DOMNodeId initiator_elm_id)
++    : ModulatorImplBase(script_state, page_graph, initiator_elm_id) {}
+ 
+ ModuleScriptFetcher* WorkerModulatorImpl::CreateModuleScriptFetcher(
+     ModuleScriptCustomFetchType custom_fetch_type,

@@ -24,6 +24,10 @@ EdgeExecute::EdgeExecute(PageGraph* const graph, NodeExtensions* const out_node,
     NodeScript* const in_node) :
       Edge(graph, out_node, in_node) {}
 
+EdgeExecute::EdgeExecute(PageGraph* const graph, NodeScript* const out_node,
+    NodeScript* const in_node) :
+      Edge(graph, out_node, in_node) {}
+
 EdgeExecute::~EdgeExecute() {}
 
 ItemName EdgeExecute::GetItemName() const {

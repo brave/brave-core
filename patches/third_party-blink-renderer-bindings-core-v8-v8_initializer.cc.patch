@@ -1,0 +1,33 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc b/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
+index 696a6170a584c1bb71c8ad253963d9f64395a13e..eb8b8cb3d82a6c9fa8dd7614c3ccc72eca06fe88 100644
+--- a/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
++++ b/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
+@@ -549,7 +549,9 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
+     v8::Local<v8::String> v8_specifier) {
+   ScriptState* script_state = ScriptState::From(context);
+ 
+-  Modulator* modulator = Modulator::From(script_state);
++  ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromContext(context);
++
++  Modulator* modulator = Modulator::From(script_state, page_graph, 0);
+   if (!modulator) {
+     // Inactive browsing context (detached frames) doesn't have a modulator.
+     // We chose to return a rejected promise (which may never get to catch(),
+@@ -598,7 +600,7 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
+   auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
+   ScriptPromise promise = resolver->Promise();
+   modulator->ResolveDynamically(specifier, referrer_resource_url, referrer_info,
+-                                resolver);
++                                v8_referrer->GetScriptId(), resolver);
+   return v8::Local<v8::Promise>::Cast(promise.V8Value());
+ }
+ 
+@@ -610,7 +612,7 @@ static void HostGetImportMetaProperties(v8::Local<v8::Context> context,
+   v8::Isolate* isolate = context->GetIsolate();
+   v8::HandleScope handle_scope(isolate);
+ 
+-  Modulator* modulator = Modulator::From(script_state);
++  Modulator* modulator = Modulator::From(script_state, nullptr, 0);
+   if (!modulator)
+     return;
+ 
