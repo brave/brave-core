@@ -32,7 +32,10 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
  */
 public class BraveRewardsPreferences extends BravePreferenceFragment
         implements OnPreferenceChangeListener, BraveRewardsObserver {
-    private static final String PREF_ADS_SWITCH = "ads_switch";
+    public static final String PREF_ADS_SWITCH = "ads_switch";
+
+    // flag, if exists: default state (off) for background Brave ads has been set
+    public static final String PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET = "ads_switch_default_set";
 
     private ChromeSwitchPreference mAdsSwitch;
 

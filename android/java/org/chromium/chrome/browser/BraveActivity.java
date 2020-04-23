@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -183,6 +185,9 @@ public abstract class BraveActivity extends ChromeActivity {
 
         int appOpenCount = ContextUtils.getAppSharedPreferences().getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0);
         BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT , appOpenCount + 1);
+
+        //set bg ads to off for existing and new installations
+        setBgBraveAdsDefaultOff();
 
         Context app = ContextUtils.getApplicationContext();
         if (null != app && (this instanceof ChromeTabbedActivity)) {
@@ -372,5 +377,24 @@ public abstract class BraveActivity extends ChromeActivity {
         }
 
         return null;
+    }    
+
+    /**
+     * Disable background ads on Android. Issue #8641.
+     */
+    private void setBgBraveAdsDefaultOff() {
+        SharedPreferences sharedPreferences =
+                ContextUtils.getAppSharedPreferences();
+        boolean exists = sharedPreferences.contains(
+                BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET);
+        if (!exists) {
+            SharedPreferences.Editor sharedPreferencesEditor =
+                    sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(
+                    BraveRewardsPreferences.PREF_ADS_SWITCH, false);
+            sharedPreferencesEditor.putBoolean(
+                    BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET, true);
+            sharedPreferencesEditor.apply();
+        }
     }
 }
