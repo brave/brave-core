@@ -199,8 +199,8 @@ public class BraveNewTabPageView extends NewTabPageView {
         mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-            && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs()))
-             || isReferralEnabled()) {
+            || NTPUtil.isReferralEnabled())
+            && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
@@ -269,17 +269,12 @@ public class BraveNewTabPageView extends NewTabPageView {
         return result;
     }
 
-    private boolean isReferralEnabled() {
-        boolean isReferralEnabled = BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
-        return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
-    }
-
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
         ImageView mSponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
         if (ntpImage instanceof Wallpaper 
-                && isReferralEnabled()) {
+                && NTPUtil.isReferralEnabled()) {
             setBackgroundImage(ntpImage);
             mSuperReferralLogo.setVisibility(View.VISIBLE);
             int floatingButtonIcon = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
@@ -341,7 +336,7 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption 
-            && !isReferralEnabled()) {
+            && !NTPUtil.isReferralEnabled()) {
             NTPUtil.showNonDistruptiveBanner(mTabImpl.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
         }
     }
@@ -366,7 +361,9 @@ public class BraveNewTabPageView extends NewTabPageView {
             TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
         }
         sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));
-        mNTPBackgroundImagesBridge.getTopSites();
+        if (mNTPBackgroundImagesBridge.isSuperReferral()
+            && NTPBackgroundImagesBridge.enableSponsoredImages())
+            mNTPBackgroundImagesBridge.getTopSites();
     }
 
     private TabObserver mTabObserver = new EmptyTabObserver() {
@@ -434,7 +431,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         @Override
         public void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper) {
-            if(!isReferralEnabled()) {
+            if(!NTPUtil.isReferralEnabled()) {
                 FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
                 mSuperReferralLogo.setVisibility(View.GONE);
 
@@ -465,7 +462,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
             if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                 && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-                && !isReferralEnabled()) {
+                && !NTPUtil.isReferralEnabled()) {
                 tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
             } else {
                 tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));

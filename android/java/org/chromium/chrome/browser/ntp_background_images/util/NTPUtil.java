@@ -42,7 +42,6 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -418,5 +417,12 @@ public class NTPUtil {
     	} else {
     		return SponsoredImageUtil.getBackgroundImage();
     	}
+    }
+
+    public static boolean isReferralEnabled() {
+        Profile mProfile = Profile.getLastUsedProfile();
+        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+        boolean isReferralEnabled = BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
+        return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
     }
 }
