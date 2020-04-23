@@ -6,8 +6,10 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -57,6 +59,29 @@ double BraveSessionCache::GetFudgeFactor() {
 }
 
 scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
+    blink::LocalFrame* frame,
+    scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
+  if (!frame || !frame->GetContentSettingsClient()) {
+    return image_bitmap;
+  }
+  switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
+    case BraveFarblingLevel::OFF:
+      break;
+    case BraveFarblingLevel::BALANCED: {
+      image_bitmap = PerturbBalanced(image_bitmap);
+      break;
+    }
+    case BraveFarblingLevel::MAXIMUM: {
+      image_bitmap = PerturbMax(image_bitmap);
+      break;
+    }
+    default:
+      NOTREACHED();
+  }
+  return image_bitmap;
+}
+
+scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbBalanced(
     scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
   DCHECK(image_bitmap);
   if (image_bitmap->IsNull())
@@ -85,6 +110,32 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
       // find next pixel to perturb
       v = ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
     }
+  }
+  // convert back to a StaticBitmapImage to return to the caller
+  scoped_refptr<blink::StaticBitmapImage> perturbed_bitmap =
+      blink::UnacceleratedStaticBitmapImage::Create(
+          data_buffer->RetainedImage());
+  return perturbed_bitmap;
+}
+
+scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbMax(
+    scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
+  DCHECK(image_bitmap);
+  if (image_bitmap->IsNull())
+    return image_bitmap;
+  // convert to an ImageDataBuffer to normalize the pixel data to RGBA, 4 bytes
+  // per pixel
+  std::unique_ptr<blink::ImageDataBuffer> data_buffer =
+      blink::ImageDataBuffer::Create(image_bitmap);
+  uint8_t* pixels = const_cast<uint8_t*>(data_buffer->Pixels());
+  const uint64_t count = 4 * data_buffer->Width() * data_buffer->Height();
+  // initial seed based on domain key
+  uint64_t v = *reinterpret_cast<uint64_t*>(domain_key_);
+  const uint64_t zero = 0;
+  // iterate through pixel data and overwrite with next value in PRNG sequence
+  for (uint64_t i = 0; i < count; i++) {
+    pixels[i] = v % 256;
+    v = ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
   }
   // convert back to a StaticBitmapImage to return to the caller
   scoped_refptr<blink::StaticBitmapImage> perturbed_bitmap =

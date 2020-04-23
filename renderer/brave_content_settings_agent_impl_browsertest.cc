@@ -8,6 +8,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_content_client.h"
@@ -44,7 +45,9 @@ const char kGetImageDataScript[] =
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHash = 261040;
+const int kExpectedImageDataHashFarblingBalanced = 261040;
+const int kExpectedImageDataHashFarblingOff = 261120;
+const int kExpectedImageDataHashFarblingMaximum = 127574;
 
 const char kEmptyCookie[] = "";
 
@@ -223,10 +226,14 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
         browser()->profile(), ControlType::BLOCK, top_level_page_url());
   }
 
-  void Block3PFingerprinting() {
+  void BlockThirdPartyFingerprinting() {
     brave_shields::SetFingerprintingControlType(browser()->profile(),
-                                                ControlType::BLOCK_THIRD_PARTY,
-                                                top_level_page_url());
+        ControlType::BLOCK_THIRD_PARTY, top_level_page_url());
+  }
+
+  void SetFingerprintingDefault() {
+    brave_shields::SetFingerprintingControlType(
+        browser()->profile(), ControlType::DEFAULT, top_level_page_url());
   }
 
   void BlockScripts() {
@@ -295,14 +302,21 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 };
 
 // See https://github.com/brave/brave-browser/issues/8937
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       DISABLED_FarbleGetImageData) {
-  NavigateToPageWithIframe();
+// Fails on Linux
+#if defined(OS_LINUX)
+#define MAYBE_FarbleGetImageData DISABLED_FarbleGetImageData
+#else
+#define MAYBE_FarbleGetImageData FarbleGetImageData
+#endif
 
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       MAYBE_FarbleGetImageData) {
+  // Farbling should be balanced by default
+  NavigateToPageWithIframe();
   int hash = -1;
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHash, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
 
   // The iframe should have the same result as the top frame because farbling is
   // based on the top frame's session token.
@@ -310,7 +324,82 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateIframe();
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHash, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+
+  // Farbling should be off if shields is down
+  ShieldsDown();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+
+  // Farbling should be off if shields is up but fingerprinting is allowed
+  // via content settings
+  ShieldsUp();
+  AllowFingerprinting();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+
+  // Farbling should be default if 3rd-party fingerpringint is blocked
+  // via content settings and kBraveFingerpringintV2 is disabled
+  BlockThirdPartyFingerprinting();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+
+  // Farbling should be default if fingerprinting is blocked via
+  // content settings and kBraveFingerpringintV2 is disabled
+  BlockFingerprinting();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+  scoped_feature_list_.InitAndEnableFeature(
+        brave_shields::features::kFingerprintingProtectionV2);
+
+  // Farbling should be default when kBraveFingerpringintV2 is enabled
+  // because it uses a different content setting
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+
+  // Farbling should be maximum if finerprinting is blocked via content settings
+  // and kBraveFingerpringintV2 is enabled
+  BlockFingerprinting();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingMaximum, hash);
+
+  // Farbling should be balanced if fingerprinting is default via
+  // content settings and kBraveFingerpringintV2 is enabled
+  SetFingerprintingDefault();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+
+  // Farbling should be off if fingerprinting is allowed via
+  // content settings and kBraveFingerpringintV2 is enabled
+  AllowFingerprinting();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

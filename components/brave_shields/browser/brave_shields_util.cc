@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -271,16 +273,24 @@ void SetFingerprintingControlType(Profile* profile,
     return;
 
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, kFingerprinting,
-      GetDefaultBlockFromControlType(type));
+  if (base::FeatureList::IsEnabled(
+      features::kFingerprintingProtectionV2)) {
+    map->SetContentSettingCustomScope(
+        primary_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::PLUGINS, kFingerprintingV2,
+        GetDefaultAllowFromControlType(type));
+  } else {
+    map->SetContentSettingCustomScope(
+        primary_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::PLUGINS, kFingerprinting,
+        GetDefaultBlockFromControlType(type));
 
-  map->SetContentSettingCustomScope(
-      primary_pattern,
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, kFingerprinting,
-      GetDefaultAllowFromControlType(type));
+    map->SetContentSettingCustomScope(
+        primary_pattern,
+        ContentSettingsPattern::FromString("https://firstParty/*"),
+        ContentSettingsType::PLUGINS, kFingerprinting,
+        GetDefaultAllowFromControlType(type));
+  }
 
   RecordShieldsSettingChanged();
 }
@@ -288,17 +298,29 @@ void SetFingerprintingControlType(Profile* profile,
 ControlType GetFingerprintingControlType(Profile* profile, const GURL& url) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
 
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kFingerprinting);
-  ContentSetting fp_setting =
-      map->GetContentSetting(url, GURL("https://firstParty/"),
-                             ContentSettingsType::PLUGINS, kFingerprinting);
-
-  if (setting != fp_setting || setting == CONTENT_SETTING_DEFAULT) {
-    return ControlType::BLOCK_THIRD_PARTY;
+  if (base::FeatureList::IsEnabled(
+      features::kFingerprintingProtectionV2)) {
+    ContentSetting setting = map->GetContentSetting(
+          url, GURL(), ContentSettingsType::PLUGINS, kFingerprintingV2);
+    if (setting == CONTENT_SETTING_BLOCK) {
+      return ControlType::BLOCK;
+    } else if (setting == CONTENT_SETTING_ALLOW) {
+      return ControlType::ALLOW;
+    }
+    return ControlType::DEFAULT;
   } else {
-    return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
-                                            : ControlType::BLOCK;
+    ContentSetting setting = map->GetContentSetting(
+        url, GURL(), ContentSettingsType::PLUGINS, kFingerprinting);
+    ContentSetting fp_setting =
+        map->GetContentSetting(url, GURL("https://firstParty/"),
+                               ContentSettingsType::PLUGINS, kFingerprinting);
+
+    if (setting != fp_setting || setting == CONTENT_SETTING_DEFAULT) {
+      return ControlType::BLOCK_THIRD_PARTY;
+    } else {
+      return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
+                                              : ControlType::BLOCK;
+    }
   }
 }
 

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/strings/string16.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "chrome/renderer/content_settings_agent_impl.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -35,6 +36,8 @@ class BraveContentSettingsAgentImpl
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
 
+  BraveFarblingLevel GetBraveFarblingLevel() override;
+
   bool AllowAutoplay(bool default_value) override;
 
   void BraveSpecificDidBlockJavaScript(
@@ -44,8 +47,6 @@ class BraveContentSettingsAgentImpl
     const base::string16& details);
 
  private:
-  GURL GetOriginOrURL(const blink::WebFrame* frame);
-
   ContentSetting GetFPContentSettingFromRules(
       const ContentSettingsForOneType& rules,
       const blink::WebFrame* frame,
