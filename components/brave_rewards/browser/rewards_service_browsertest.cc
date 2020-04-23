@@ -1740,7 +1740,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // contains the expected favicon
   {
     const std::string favicon =
-        "chrome://favicon/size/48@2x/https://" + publisher;
+        "chrome://favicon/size/64@1x/https://" + publisher;
     rewards_service_browsertest_utils::WaitForElementToContainHTML(
         popup_contents,
         "#wallet-panel",
