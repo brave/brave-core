@@ -14,7 +14,7 @@
     return BraveFarblingLevel::OFF;                                        \
   }
 
-#include "../../../../../third_party/blink/public/platform/web_content_settings_client.h"  // NOLINT
+#include "../../../../../../third_party/blink/public/platform/web_content_settings_client.h"  // NOLINT
 
 #undef BRAVE_WEB_CONTENT_SETTINGS_CLIENT_H
 
