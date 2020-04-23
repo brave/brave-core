@@ -888,7 +888,7 @@ void RewardsDOMHandler::RestorePublishers(const base::ListValue *args) {
     return;
   }
 
-  rewards_service_->RestorePublishersUI();
+  rewards_service_->RestorePublishers();
 }
 
 void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
@@ -991,14 +991,14 @@ void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
   CHECK_EQ(1U, args->GetSize());
   if (rewards_service_) {
     const std::string publisherKey = args->GetList()[0].GetString();
-    rewards_service_->RemoveRecurringTipUI(publisherKey);
+    rewards_service_->RemoveRecurringTip(publisherKey);
   }
 }
 
 void RewardsDOMHandler::GetRecurringTips(
     const base::ListValue *args) {
   if (rewards_service_) {
-    rewards_service_->GetRecurringTipsUI(base::BindOnce(
+    rewards_service_->GetRecurringTips(base::BindOnce(
           &RewardsDOMHandler::OnGetRecurringTips,
           weak_factory_.GetWeakPtr()));
   }
@@ -1060,7 +1060,7 @@ void RewardsDOMHandler::OnGetOneTimeTips(
 
 void RewardsDOMHandler::GetOneTimeTips(const base::ListValue *args) {
   if (rewards_service_) {
-    rewards_service_->GetOneTimeTipsUI(base::BindOnce(
+    rewards_service_->GetOneTimeTips(base::BindOnce(
           &RewardsDOMHandler::OnGetOneTimeTips,
           weak_factory_.GetWeakPtr()));
   }
@@ -1322,7 +1322,7 @@ void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
 void RewardsDOMHandler::GetPendingContributionsTotal(
     const base::ListValue* args) {
   if (rewards_service_) {
-    rewards_service_->GetPendingContributionsTotalUI(base::Bind(
+    rewards_service_->GetPendingContributionsTotal(base::Bind(
           &RewardsDOMHandler::OnGetPendingContributionsTotal,
           weak_factory_.GetWeakPtr()));
   }
@@ -1452,7 +1452,7 @@ void RewardsDOMHandler::SetInlineTipSetting(const base::ListValue* args) {
 void RewardsDOMHandler::GetPendingContributions(
     const base::ListValue* args) {
   if (rewards_service_) {
-    rewards_service_->GetPendingContributionsUI(base::Bind(
+    rewards_service_->GetPendingContributions(base::Bind(
           &RewardsDOMHandler::OnGetPendingContributions,
           weak_factory_.GetWeakPtr()));
   }
@@ -1496,13 +1496,13 @@ void RewardsDOMHandler::RemovePendingContribution(
   }
 
   const uint64_t id = args->GetList()[0].GetInt();
-  rewards_service_->RemovePendingContributionUI(id);
+  rewards_service_->RemovePendingContribution(id);
 }
 
 void RewardsDOMHandler::RemoveAllPendingContributions(
     const base::ListValue* args) {
   if (rewards_service_) {
-    rewards_service_->RemoveAllPendingContributionsUI();
+    rewards_service_->RemoveAllPendingContributions();
   }
 }
 

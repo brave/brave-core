@@ -559,7 +559,7 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
           std::make_unique<base::Value>(0.0)));
   }
 
-  rewards_service->GetPendingContributionsTotalUI(base::Bind(
+  rewards_service->GetPendingContributionsTotal(base::Bind(
         &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
         this));
   return RespondLater();
@@ -675,7 +675,7 @@ BraveRewardsSaveRecurringTipFunction::Run() {
     return RespondNow(NoArguments());
   }
 
-  rewards_service_->SaveRecurringTipUI(
+  rewards_service_->SaveRecurringTip(
       params->publisher_key,
       params->new_amount,
       base::Bind(
@@ -707,7 +707,7 @@ BraveRewardsRemoveRecurringTipFunction::Run() {
     RewardsServiceFactory::GetForProfile(profile);
 
   if (rewards_service_) {
-    rewards_service_->RemoveRecurringTipUI(params->publisher_key);
+    rewards_service_->RemoveRecurringTip(params->publisher_key);
   }
 
   return RespondNow(NoArguments());
@@ -727,7 +727,7 @@ BraveRewardsGetRecurringTipsFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service->GetRecurringTipsUI(base::Bind(
+  rewards_service->GetRecurringTips(base::Bind(
         &BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips,
         this));
   return RespondLater();

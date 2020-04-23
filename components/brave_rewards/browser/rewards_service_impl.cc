@@ -715,7 +715,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                          std::move(data));
 }
 
-void RewardsServiceImpl::OnRestorePublishersUI(const ledger::Result result) {
+void RewardsServiceImpl::OnRestorePublishers(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     return;
   }
@@ -726,13 +726,13 @@ void RewardsServiceImpl::OnRestorePublishersUI(const ledger::Result result) {
   }
 }
 
-void RewardsServiceImpl::RestorePublishersUI() {
+void RewardsServiceImpl::RestorePublishers() {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->RestorePublishers(
-    base::BindOnce(&RewardsServiceImpl::OnRestorePublishersUI,
+    base::BindOnce(&RewardsServiceImpl::OnRestorePublishers,
                    AsWeakPtr()));
 }
 
@@ -2102,7 +2102,7 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(new_banner));
 }
 
-void RewardsServiceImpl::OnSaveRecurringTipUI(
+void RewardsServiceImpl::OnSaveRecurringTip(
     SaveRecurringTipCallback callback,
     const ledger::Result result) {
   bool success = result == ledger::Result::LEDGER_OK;
@@ -2114,7 +2114,7 @@ void RewardsServiceImpl::OnSaveRecurringTipUI(
   std::move(callback).Run(success);
 }
 
-void RewardsServiceImpl::SaveRecurringTipUI(
+void RewardsServiceImpl::SaveRecurringTip(
     const std::string& publisher_key,
     const double amount,
     SaveRecurringTipCallback callback) {
@@ -2125,7 +2125,7 @@ void RewardsServiceImpl::SaveRecurringTipUI(
 
   bat_ledger_->SaveRecurringTip(
       std::move(info),
-      base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTipUI,
+      base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
                      AsWeakPtr(),
                      std::move(callback)));
 }
@@ -2160,7 +2160,7 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
                     std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetRecurringTipsUI(
+void RewardsServiceImpl::OnGetRecurringTips(
     GetRecurringTipsCallback callback,
     ledger::PublisherInfoList list) {
     std::unique_ptr<brave_rewards::ContentSiteList> new_list(
@@ -2175,15 +2175,15 @@ void RewardsServiceImpl::OnGetRecurringTipsUI(
   std::move(callback).Run(std::move(new_list));
 }
 
-void RewardsServiceImpl::GetRecurringTipsUI(
+void RewardsServiceImpl::GetRecurringTips(
     GetRecurringTipsCallback callback) {
   bat_ledger_->GetRecurringTips(
-      base::BindOnce(&RewardsServiceImpl::OnGetRecurringTipsUI,
+      base::BindOnce(&RewardsServiceImpl::OnGetRecurringTips,
                      AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetOneTimeTipsUI(
+void RewardsServiceImpl::OnGetOneTimeTips(
     GetRecurringTipsCallback callback,
     ledger::PublisherInfoList list) {
     std::unique_ptr<brave_rewards::ContentSiteList> new_list(
@@ -2198,21 +2198,21 @@ void RewardsServiceImpl::OnGetOneTimeTipsUI(
   std::move(callback).Run(std::move(new_list));
 }
 
-void RewardsServiceImpl::GetOneTimeTipsUI(GetOneTimeTipsCallback callback) {
+void RewardsServiceImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
   bat_ledger_->GetOneTimeTips(
-      base::BindOnce(&RewardsServiceImpl::OnGetOneTimeTipsUI,
+      base::BindOnce(&RewardsServiceImpl::OnGetOneTimeTips,
                      AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnRecurringTipUI(const ledger::Result result) {
+void RewardsServiceImpl::OnRecurringTip(const ledger::Result result) {
   bool success = result == ledger::Result::LEDGER_OK;
   for (auto& observer : observers_) {
     observer.OnRecurringTipRemoved(this, success);
   }
 }
 
-void RewardsServiceImpl::RemoveRecurringTipUI(
+void RewardsServiceImpl::RemoveRecurringTip(
     const std::string& publisher_key) {
   if (!Connected()) {
     return;
@@ -2220,7 +2220,7 @@ void RewardsServiceImpl::RemoveRecurringTipUI(
 
   bat_ledger_->RemoveRecurringTip(
     publisher_key,
-    base::Bind(&RewardsServiceImpl::OnRecurringTipUI,
+    base::Bind(&RewardsServiceImpl::OnRecurringTip,
                AsWeakPtr()));
 }
 
@@ -2537,7 +2537,7 @@ void RewardsServiceImpl::OnTip(
     const double amount,
     const bool recurring) {
   if (recurring) {
-    SaveRecurringTipUI(publisher_key, amount, base::DoNothing());
+    SaveRecurringTip(publisher_key, amount, base::DoNothing());
     return;
   }
 
@@ -2610,7 +2610,7 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
 }
 
-void RewardsServiceImpl::GetPendingContributionsTotalUI(
+void RewardsServiceImpl::GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) {
   bat_ledger_->GetPendingContributionsTotal(std::move(callback));
 }
@@ -2715,7 +2715,7 @@ PendingContributionInfo PendingContributionLedgerToRewards(
   return info;
 }
 
-void RewardsServiceImpl::OnGetPendingContributionsUI(
+void RewardsServiceImpl::OnGetPendingContributions(
     GetPendingContributionsCallback callback,
     ledger::PendingContributionInfoList list) {
   std::unique_ptr<brave_rewards::PendingContributionInfoList> new_list(
@@ -2729,38 +2729,38 @@ void RewardsServiceImpl::OnGetPendingContributionsUI(
   std::move(callback).Run(std::move(new_list));
 }
 
-void RewardsServiceImpl::GetPendingContributionsUI(
+void RewardsServiceImpl::GetPendingContributions(
     GetPendingContributionsCallback callback) {
   bat_ledger_->GetPendingContributions(
-      base::BindOnce(&RewardsServiceImpl::OnGetPendingContributionsUI,
+      base::BindOnce(&RewardsServiceImpl::OnGetPendingContributions,
                      AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnPendingContributionRemovedUI(
+void RewardsServiceImpl::OnPendingContributionRemoved(
   const ledger::Result result) {
   for (auto& observer : observers_) {
     observer.OnPendingContributionRemoved(this, static_cast<int>(result));
   }
 }
 
-void RewardsServiceImpl::RemovePendingContributionUI(const uint64_t id) {
+void RewardsServiceImpl::RemovePendingContribution(const uint64_t id) {
   bat_ledger_->RemovePendingContribution(
       id,
-      base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemovedUI,
+      base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemoved,
                      AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnRemoveAllPendingContributionsUI(
+void RewardsServiceImpl::OnRemoveAllPendingContributions(
   const ledger::Result result) {
   for (auto& observer : observers_) {
     observer.OnPendingContributionRemoved(this, static_cast<int>(result));
   }
 }
 
-void RewardsServiceImpl::RemoveAllPendingContributionsUI() {
+void RewardsServiceImpl::RemoveAllPendingContributions() {
   bat_ledger_->RemoveAllPendingContributions(
-      base::BindOnce(&RewardsServiceImpl::OnRemoveAllPendingContributionsUI,
+      base::BindOnce(&RewardsServiceImpl::OnRemoveAllPendingContributions,
                      AsWeakPtr()));
 }
 

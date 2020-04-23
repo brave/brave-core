@@ -148,7 +148,7 @@ class RewardsService : public KeyedService {
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) = 0;
-  virtual void RestorePublishersUI() = 0;
+  virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;
@@ -213,9 +213,9 @@ class RewardsService : public KeyedService {
       const bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) = 0;
 
-  virtual void RemoveRecurringTipUI(const std::string& publisher_key) = 0;
-  virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
-  virtual void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) = 0;
+  virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
+  virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;
+  virtual void GetOneTimeTips(GetOneTimeTipsCallback callback) = 0;
   virtual void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) = 0;
@@ -223,7 +223,7 @@ class RewardsService : public KeyedService {
   virtual void SetBackupCompleted() = 0;
   virtual void GetAutoContributeProps(
     const GetAutoContributePropsCallback& callback) = 0;
-  virtual void GetPendingContributionsTotalUI(
+  virtual void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
@@ -252,11 +252,11 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       RefreshPublisherCallback callback) = 0;
 
-  virtual void GetPendingContributionsUI(
+  virtual void GetPendingContributions(
     GetPendingContributionsCallback callback) = 0;
 
-  virtual void RemovePendingContributionUI(const uint64_t id) = 0;
-  virtual void RemoveAllPendingContributionsUI() = 0;
+  virtual void RemovePendingContribution(const uint64_t id) = 0;
+  virtual void RemoveAllPendingContributions() = 0;
   virtual void ResetTheWholeState(
       const base::Callback<void(bool)>& callback) = 0;
 
@@ -265,9 +265,10 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  virtual void SaveRecurringTipUI(const std::string& publisher_key,
-                                  const double amount,
-                                  SaveRecurringTipCallback callback) = 0;
+  virtual void SaveRecurringTip(
+      const std::string& publisher_key,
+      const double amount,
+      SaveRecurringTipCallback callback) = 0;
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;
