@@ -275,6 +275,15 @@ source_set("browser_process") {
       "brave_rewards/rewards_service_factory.h",
     ]
 
+    if (enable_extensions) {
+      sources += [
+        "brave_rewards/extension_rewards_service_observer.cc",
+        "brave_rewards/extension_rewards_service_observer.h",
+        "brave_rewards/extension_rewards_notification_service_observer.cc",
+        "brave_rewards/extension_rewards_notification_service_observer.h",
+      ]
+    }
+
     if (is_android) {
       sources += [
         "brave_rewards/android/brave_rewards_native_worker.cc",

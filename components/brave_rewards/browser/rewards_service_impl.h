@@ -24,7 +24,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
-#include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/associated_binding.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -32,10 +31,6 @@
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
-#endif
 
 #if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
 #include "brave/components/brave_rewards/browser/android/safetynet_check.h"
@@ -98,7 +93,11 @@ class RewardsServiceImpl : public RewardsService,
   // KeyedService:
   void Shutdown() override;
 
-  void Init();
+  void Init(
+      std::unique_ptr<RewardsServiceObserver> extension_observer,
+      std::unique_ptr<RewardsServicePrivateObserver> private_observer,
+      std::unique_ptr<RewardsNotificationServiceObserver>
+          notification_observer);
   void StartLedger();
   void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
@@ -675,11 +674,6 @@ class RewardsServiceImpl : public RewardsService,
       bat_ledger_client_binding_;
   bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
   mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  std::unique_ptr<ExtensionRewardsServiceObserver>
-      extension_rewards_service_observer_;
-#endif
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
@@ -689,9 +683,8 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<RewardsDatabase> rewards_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  std::unique_ptr<ExtensionRewardsServiceObserver> private_observer_;
-#endif
+  std::unique_ptr<RewardsServiceObserver> extension_observer_;
+  std::unique_ptr<RewardsServicePrivateObserver> private_observer_;
 
   base::OneShotEvent ready_;
   base::flat_set<network::SimpleURLLoader*> url_loaders_;

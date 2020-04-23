@@ -70,7 +70,6 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/service_manager_connection.h"
-#include "extensions/buildflags/buildflags.h"
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
@@ -89,10 +88,6 @@
 #include "components/grit/brave_components_resources.h"
 #else
 #include "components/grit/components_resources.h"
-#endif
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 #endif
 
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
@@ -345,10 +340,6 @@ const base::FilePath::StringType kRewardsStatePath("rewards_service");
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     : profile_(profile),
       bat_ledger_client_binding_(new bat_ledger::LedgerClientMojoProxy(this)),
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      extension_rewards_service_observer_(
-          std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
-#endif
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::USER_VISIBLE,
@@ -360,10 +351,6 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       rewards_base_path_(profile_->GetPath().Append(kRewardsStatePath)),
       rewards_database_(new RewardsDatabase(publisher_info_db_path_)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      private_observer_(
-          std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
-#endif
       next_timer_id_(0),
       reset_states_(false) {
   file_task_runner_->PostTask(
@@ -385,12 +372,22 @@ void RewardsServiceImpl::ConnectionClosed() {
       base::TimeDelta::FromSeconds(1));
 }
 
-void RewardsServiceImpl::Init() {
+void RewardsServiceImpl::Init(
+    std::unique_ptr<RewardsServiceObserver> extension_observer,
+    std::unique_ptr<RewardsServicePrivateObserver> private_observer,
+    std::unique_ptr<RewardsNotificationServiceObserver> notification_observer) {
+  notification_service_->Init(std::move(notification_observer));
   AddObserver(notification_service_.get());
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  AddObserver(extension_rewards_service_observer_.get());
-  private_observers_.AddObserver(private_observer_.get());
-#endif
+
+  if (extension_observer) {
+    extension_observer_ = std::move(extension_observer);
+    AddObserver(extension_observer_.get());
+  }
+
+  if (private_observer) {
+    private_observer_ = std::move(private_observer);
+    private_observers_.AddObserver(private_observer_.get());
+  }
 
   StartLedger();
 }
@@ -741,10 +738,15 @@ std::string RewardsServiceImpl::URIEncode(const std::string& value) {
 
 void RewardsServiceImpl::Shutdown() {
   RemoveObserver(notification_service_.get());
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  RemoveObserver(extension_rewards_service_observer_.get());
-  private_observers_.RemoveObserver(private_observer_.get());
-#endif
+
+  if (extension_observer_) {
+    RemoveObserver(extension_observer_.get());
+  }
+
+  if (private_observer_) {
+    private_observers_.RemoveObserver(private_observer_.get());
+  }
+
   BitmapFetcherService* image_service =
       BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
   if (image_service) {
