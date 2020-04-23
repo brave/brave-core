@@ -67,7 +67,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
         int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
-        if (!mNTPBackgroundImagesBridge.isSuperReferral())
+        if (!mNTPBackgroundImagesBridge.isSuperReferral()
+            || !NTPBackgroundImagesBridge.enableSponsoredImages())
             mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
