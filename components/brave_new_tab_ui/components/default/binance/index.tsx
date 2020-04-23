@@ -856,7 +856,7 @@ class Binance extends React.PureComponent<Props, State> {
               <ListIcon>
                 {this.renderIconAsset(asset.toLowerCase())}
               </ListIcon>
-              <ListLabel>
+              <ListLabel clickable={true}>
                 {`${asset} ${nameString}`}
               </ListLabel>
             </ListItem>
