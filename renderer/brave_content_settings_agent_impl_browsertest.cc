@@ -303,11 +303,11 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
 // See https://github.com/brave/brave-browser/issues/8937
 // Fails on Linux
-#if defined(OS_LINUX)
+// #if defined(OS_LINUX)
 #define MAYBE_FarbleGetImageData DISABLED_FarbleGetImageData
-#else
-#define MAYBE_FarbleGetImageData FarbleGetImageData
-#endif
+// #else
+// #define MAYBE_FarbleGetImageData FarbleGetImageData
+// #endif
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        MAYBE_FarbleGetImageData) {
