@@ -179,8 +179,13 @@ friend NodeHTMLElement;
   void RegisterScriptCompilationFromAttr(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value,
     const ScriptId script_id);
-  void RegisterScriptCompilationFromEval(ScriptId parent_script_id,
+  void RegisterScriptCompilationFromEval(const ScriptId parent_script_id,
       const ScriptId script_id);
+
+  void RegisterModuleScriptForDescendant(const blink::KURL& parent_location,
+    const blink::KURL& descendant_location);
+  void RegisterModuleScriptForDescendant(const ScriptId parent_id,
+    const blink::KURL& descendant_location);
 
   void GenerateReportForNode(const blink::DOMNodeId node_id,
                              blink::protocol::Array<WTF::String>& report);
@@ -206,6 +211,7 @@ friend NodeHTMLElement;
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
   NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
+  NodeScript* GetScriptNode(const ScriptId script_id) const;
 
   NodeActor* GetCurrentActingNode() const;
   NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;

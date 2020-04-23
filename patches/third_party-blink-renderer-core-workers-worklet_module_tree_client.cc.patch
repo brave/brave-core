@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/workers/worklet_module_tree_client.cc b/third_party/blink/renderer/core/workers/worklet_module_tree_client.cc
+index 6478a7a6a86ab2e8df7f84590b441138afe30714..2ff4a4050f5cab183c6b976b90e747ae0226bfca 100644
+--- a/third_party/blink/renderer/core/workers/worklet_module_tree_client.cc
++++ b/third_party/blink/renderer/core/workers/worklet_module_tree_client.cc
+@@ -71,7 +71,7 @@ void WorkletModuleTreeClient::NotifyModuleTreeLoadFinished(
+ 
+   // Step 5: "Run a module script given script."
+   ModuleEvaluationResult result =
+-      Modulator::From(script_state_)
++      Modulator::From(script_state_, nullptr, 0)
+           ->ExecuteModule(module_script,
+                           Modulator::CaptureEvalErrorFlag::kReport);
+ 

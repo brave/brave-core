@@ -1,0 +1,50 @@
+diff --git a/third_party/blink/renderer/core/script/modulator_impl_base.h b/third_party/blink/renderer/core/script/modulator_impl_base.h
+index fcae74ca78363501c92a90a85602352f9a77bae8..4b958d7f37ff83e5419128b6f43859469f575e83 100644
+--- a/third_party/blink/renderer/core/script/modulator_impl_base.h
++++ b/third_party/blink/renderer/core/script/modulator_impl_base.h
+@@ -12,6 +12,13 @@
+ #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ class DynamicModuleResolver;
+@@ -29,8 +36,12 @@ class ModulatorImplBase : public Modulator {
+   ~ModulatorImplBase() override;
+   void Trace(Visitor*) override;
+ 
++  ::brave_page_graph::PageGraph* GetPageGraph() const override { return this->page_graph_; }
++
++  DOMNodeId GetInitiatingDOMNodeId() const override { return this->initiator_; }
++
+  protected:
+-  explicit ModulatorImplBase(ScriptState*);
++  explicit ModulatorImplBase(ScriptState*, ::brave_page_graph::PageGraph*, DOMNodeId);
+ 
+   ExecutionContext* GetExecutionContext() const;
+ 
+@@ -76,6 +87,7 @@ class ModulatorImplBase : public Modulator {
+   void ResolveDynamically(const String& specifier,
+                           const KURL&,
+                           const ReferrerScriptInfo&,
++                          const ::brave_page_graph::ScriptId,
+                           ScriptPromiseResolver*) override;
+   const ImportMap* GetImportMapForTest() const final { return import_map_; }
+ 
+@@ -115,6 +127,9 @@ class ModulatorImplBase : public Modulator {
+   // Each realm (environment settings object) has a boolean, acquiring import
+   // maps. It is initially true. [spec text]
+   bool acquiring_import_maps_ = true;
++
++  brave_page_graph::PageGraph* page_graph_;
++  DOMNodeId initiator_;
+ };
+ 
+ }  // namespace blink

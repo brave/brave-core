@@ -48,6 +48,10 @@ class ScriptTracker {
     const blink::DOMNodeId node_id);
   void AddScriptSourceForElm(const blink::ScriptSourceCode& code,
     const blink::DOMNodeId node_id);
+  void AddDescendantUrlForParent(const blink::KURL& descendant_location,
+    const blink::KURL& parent_location_norm);
+  void AddDescendantUrlForParent(const blink::KURL& descendant_location,
+    const ScriptId parent_id);
 
   // Method used for step 2 above.
   void AddCodeFetchedFromUrl(const blink::ScriptSourceCode& code,
@@ -64,12 +68,15 @@ class ScriptTracker {
   DOMNodeIdList GetElmsForScriptId(const ScriptId script_id) const;
   ScriptIdList GetScriptIdsForElm(const blink::DOMNodeId node_id) const;
 
+  std::vector<ScriptId> GetModuleScriptParentsForScriptId(const ScriptId script_id) const;
+
   void AddScriptId(const ScriptId script_id, const SourceCodeHash hash);
   void AddScriptIdAlias(const ScriptId script_id,
                         const ScriptId parent_script_id);
 
   ScriptId ResolveScriptId(const ScriptId script_id) const;
 
+  blink::KURL GetModuleScriptSourceUrl(const ScriptId script_id) const;
  private:
 
   // Data structures used for step 1 above (note that values are vectors
@@ -81,6 +88,16 @@ class ScriptTracker {
   std::map<UrlHash, DOMNodeIdList> script_src_hash_to_node_ids_;
   std::map<blink::DOMNodeId, std::vector<SourceCodeHash>> node_id_to_source_hashes_;
   std::map<SourceCodeHash, DOMNodeIdList> source_hash_to_node_ids_;
+
+  std::map<UrlHash, std::vector<blink::KURL>> script_url_to_descendant_module_urls_;
+  std::map<UrlHash, std::vector<blink::KURL>> script_url_to_parent_module_urls_;
+  std::map<ScriptId, std::vector<blink::KURL>> script_id_to_descendant_module_urls_;
+  std::map<UrlHash, std::vector<ScriptId>> script_url_to_parent_module_ids_;
+
+  // We only need to *retrieve* the url for scripts that we are associating as
+  // parents of a particular module script.
+  // Unfortunately, KURL cannot be used directly as a map key.
+  std::map<UrlHash, blink::KURL> url_hashes_to_urls_;
 
   //  Maps used for step 2.
   UrlToSourceMap script_url_hash_to_source_hash_;

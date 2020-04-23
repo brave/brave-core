@@ -318,6 +318,12 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
   return text_nodes_.at(node_id);
 }
 
+NodeScript* PageGraph::GetScriptNode(const ScriptId script_id) const {
+  Log("GetScriptNode) script id: " + to_string(script_id));
+  LOG_ASSERT(script_nodes_.count(script_id) == 1);
+  return script_nodes_.at(script_id);
+}
+
 void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
     const blink::DOMNodeId parent_node_id, const String& tag_name,
     const KURL& url) {
@@ -817,9 +823,40 @@ void PageGraph::RegisterScriptCompilation(
   Log("source: " + string(code.Source().ToString().Utf8().data()));
 
   if (type == ScriptType::kScriptTypeModule) {
+    script_tracker_.AddScriptId(script_id,
+      code.Source().ToString().Impl()->GetHash());
+    script_tracker_.SetScriptIdForCode(script_id, code);
+
     NodeScript* const code_node = new NodeScript(this, script_id, type);
     AddNode(code_node);
     script_nodes_.emplace(script_id, code_node);
+
+    // If this is a root-level module script, it can still be associated with
+    // an HTML script element
+    DOMNodeIdList node_ids = script_tracker_.GetElmsForScriptId(script_id);
+    for (const DOMNodeId node_id : node_ids) {
+      NodeHTMLElement* const script_elm_node = GetHTMLElementNode(node_id);
+      AddEdge(new EdgeExecute(this, script_elm_node, code_node));
+    }
+
+    // Other module scripts are pulled by URL from a parent module script
+    ScriptIdList parent_script_ids = script_tracker_.GetModuleScriptParentsForScriptId(script_id);
+    for (const ScriptId parent_script_id : parent_script_ids) {
+      NodeScript* const parent_node = GetScriptNode(parent_script_id);
+      AddEdge(new EdgeExecute(this, parent_node, code_node));
+    }
+
+    // Dynamically imported module scripts are pulled by URL in a different way
+    //ScriptIdList dynamic_parent_script_ids = script_tracker_.Get
+
+    // The URL for a script only gets set by AddEdge if it comes from a script
+    // element with the src attribute set. We need to add it manually for
+    // scripts pulled in by another module script.
+    if (node_ids.size() == 0) {
+      const blink::KURL source_url = script_tracker_.GetModuleScriptSourceUrl(script_id);
+      code_node->SetURL(source_url.GetString().Utf8());
+    }
+
     return;
   }
 
@@ -880,6 +917,21 @@ void PageGraph::RegisterScriptCompilationFromEval(ScriptId parent_script_id,
       + ", parent script id: " + to_string(parent_script_id));
 
   script_tracker_.AddScriptIdAlias(script_id, parent_script_id);
+}
+
+void PageGraph::RegisterModuleScriptForDescendant(const blink::KURL& parent_location,
+    const blink::KURL& descendant_location) {
+  const KURL parent_location_norm = NormalizeUrl(parent_location);
+  const KURL descendant_location_norm = NormalizeUrl(descendant_location);
+  Log("RegisterModuleScriptForDescendant) parent location: " + URLToString(parent_location) + ", descendant location: " + URLToString(descendant_location));
+  script_tracker_.AddDescendantUrlForParent(descendant_location_norm, parent_location_norm);
+}
+
+void PageGraph::RegisterModuleScriptForDescendant(const ScriptId parent_id,
+    const blink::KURL& descendant_location) {
+  const KURL descendant_location_norm = NormalizeUrl(descendant_location);
+  Log("RegisterModuleScriptForDescendant) parent id: " + to_string(parent_id) + ", descendant location: " + URLToString(descendant_location));
+  script_tracker_.AddDescendantUrlForParent(descendant_location_norm, parent_id);
 }
 
 // Functions for handling storage read, write, and deletion

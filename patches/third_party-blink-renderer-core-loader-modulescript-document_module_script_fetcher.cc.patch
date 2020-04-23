@@ -1,0 +1,75 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc b/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc
+index 2976543643783cbd6d413c192d3da783810100cb..0808f5d90444899a3a13659fd50717f03d6f99ea 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc
+@@ -9,6 +9,14 @@
+ #include "third_party/blink/renderer/platform/heap/heap.h"
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
++#endif
++
+ namespace blink {
+ 
+ DocumentModuleScriptFetcher::DocumentModuleScriptFetcher(
+@@ -18,14 +26,31 @@ DocumentModuleScriptFetcher::DocumentModuleScriptFetcher(
+ void DocumentModuleScriptFetcher::Fetch(
+     FetchParameters& fetch_params,
+     ResourceFetcher* fetch_client_settings_object_fetcher,
++    const Modulator* modulator,
+     ModuleGraphLevel level,
+     ModuleScriptFetcher::Client* client) {
+   DCHECK(fetch_client_settings_object_fetcher);
+   DCHECK(!client_);
+   client_ = client;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  ScriptResource* resource = ScriptResource::Fetch(
++          fetch_params, fetch_client_settings_object_fetcher,
++          this, ScriptResource::kNoStreaming);
++  ::brave_page_graph::PageGraph* page_graph = modulator->GetPageGraph();
++  if (page_graph != nullptr) {
++    this->page_graph_ = page_graph;
++    const auto initiator_elm = modulator->GetInitiatingDOMNodeId();
++    if(initiator_elm > 0) {
++      page_graph->RegisterRequestStartFromElm(initiator_elm, resource->InspectorId(), fetch_params.Url(), brave_page_graph::RequestType::kRequestTypeScriptModule);
++    } else {
++      LOG(ERROR) << "no initiator element for " << fetch_params.Url();
++    }
++  }
++#else
+   ScriptResource::Fetch(fetch_params, fetch_client_settings_object_fetcher,
+                         this, ScriptResource::kNoStreaming);
++#endif
+ }
+ 
+ void DocumentModuleScriptFetcher::NotifyFinished(Resource* resource) {
+@@ -45,6 +70,23 @@ void DocumentModuleScriptFetcher::NotifyFinished(Resource* resource) {
+       script_resource->GetResponse().CurrentRequestUrl(), module_type,
+       script_resource->SourceText(), script_resource->CacheHandler(),
+       script_resource->GetResourceRequest().GetCredentialsMode());
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (page_graph_ != nullptr) {
++      const ResourceResponse& rep = resource->GetResponse();
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
++
++      if (resource->ErrorOccurred()) {
++        page_graph_->RegisterRequestError(resource->InspectorId(), metadata);
++      } else {
++        page_graph_->RegisterRequestComplete(resource->InspectorId(),
++            resource->GetType(), metadata,
++            ::brave_page_graph::ResourceDigest(resource));
++      }
++    }
++  }
++#endif
+   client_->NotifyFetchFinished(params, error_messages);
+ }
+ 

@@ -31,6 +31,8 @@ friend class PageGraph;
   ScriptType GetScriptType() const { return script_type_; }
   std::string GetURL() const { return url_; }
 
+  void SetURL(const std::string url) { url_ = url; }
+
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 

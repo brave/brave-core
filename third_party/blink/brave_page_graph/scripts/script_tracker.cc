@@ -52,6 +52,79 @@ void ScriptTracker::AddScriptSourceForElm(const ScriptSourceCode& code,
   source_hash_to_node_ids_.at(code_hash).push_back(node_id);
 }
 
+void ScriptTracker::AddDescendantUrlForParent(
+    const blink::KURL& descendant_location,
+    const blink::KURL& parent_location) {
+  const UrlHash descendant_url_hash(descendant_location.GetString().Impl()->GetHash());
+  const UrlHash parent_url_hash(parent_location.GetString().Impl()->GetHash());
+
+  if (script_url_to_descendant_module_urls_.count(parent_url_hash) == 0) {
+    script_url_to_descendant_module_urls_.emplace(parent_url_hash, vector<blink::KURL>());
+  }
+  auto& descendant_module_urls = script_url_to_descendant_module_urls_.at(parent_url_hash);
+  bool already_has_descendant = false;
+  for (auto& a_descendant : descendant_module_urls) {
+    if (a_descendant == descendant_location) {
+      already_has_descendant = true;
+      break;
+    }
+  }
+  if (!already_has_descendant) {
+    descendant_module_urls.push_back(descendant_location);
+  }
+
+  if (script_url_to_parent_module_urls_.count(descendant_url_hash) == 0) {
+    script_url_to_parent_module_urls_.emplace(descendant_url_hash, vector<blink::KURL>());
+  }
+  auto& parent_module_urls = script_url_to_parent_module_urls_.at(descendant_url_hash);
+  bool already_has_parent = false;
+  for (auto& a_parent : parent_module_urls) {
+    if (a_parent == parent_location) {
+      already_has_parent = true;
+      break;
+    }
+  }
+  if (!already_has_parent) {
+    parent_module_urls.push_back(parent_location);
+  }
+}
+
+void ScriptTracker::AddDescendantUrlForParent(
+    const blink::KURL& descendant_location,
+    const ScriptId parent_id) {
+  const UrlHash descendant_url_hash(descendant_location.GetString().Impl()->GetHash());
+
+  if (script_id_to_descendant_module_urls_.count(parent_id) == 0) {
+    script_id_to_descendant_module_urls_.emplace(parent_id, vector<blink::KURL>());
+  }
+  auto& descendant_module_urls = script_id_to_descendant_module_urls_.at(parent_id);
+  bool already_has_descendant = false;
+  for (auto& a_descendant : descendant_module_urls) {
+    if (a_descendant == descendant_location) {
+      already_has_descendant = true;
+      break;
+    }
+  }
+  if (!already_has_descendant) {
+    descendant_module_urls.push_back(descendant_location);
+  }
+
+  if (script_url_to_parent_module_ids_.count(descendant_url_hash) == 0) {
+    script_url_to_parent_module_ids_.emplace(descendant_url_hash, vector<ScriptId>());
+  }
+  auto& parent_module_ids = script_url_to_parent_module_ids_.at(descendant_url_hash);
+  bool already_has_parent = false;
+  for (auto& a_parent : parent_module_ids) {
+    if (a_parent == parent_id) {
+      already_has_parent = true;
+      break;
+    }
+  }
+  if (!already_has_parent) {
+    parent_module_ids.push_back(parent_id);
+  }
+}
+
 void ScriptTracker::AddCodeFetchedFromUrl(
     const ScriptSourceCode& code, const KURL& url) {
   const SourceCodeHash code_hash(code.Source().ToString().Impl()->GetHash());
@@ -59,9 +132,10 @@ void ScriptTracker::AddCodeFetchedFromUrl(
 
   // There should be no situations where we're receiving script code
   // from an unknown URL.
-  LOG_ASSERT(script_src_hash_to_node_ids_.count(url_hash) > 0);
   script_url_hash_to_source_hash_.emplace(url_hash, code_hash);
   source_hash_to_script_url_hash_.emplace(code_hash, url_hash);
+
+  url_hashes_to_urls_.emplace(url_hash, url);
 }
 
 void ScriptTracker::AddExtensionCodeFetchedFromUrl(
@@ -173,6 +247,39 @@ ScriptIdList ScriptTracker::GetScriptIdsForElm(
   return script_ids;
 }
 
+std::vector<ScriptId> ScriptTracker::GetModuleScriptParentsForScriptId(
+    const ScriptId script_id) const {
+  std::vector<ScriptId> parent_script_ids;
+
+  // If we've never seen this id before, then we trivially can't know what url
+  // it was fetched from, so return an empty vector.
+  if (script_id_to_source_hash_.count(script_id) == 0) {
+    return parent_script_ids;
+  }
+
+  const SourceCodeHash source_hash = script_id_to_source_hash_.at(script_id);
+
+  if (source_hash_to_script_url_hash_.count(source_hash) > 0) {
+    const UrlHash url_hash = source_hash_to_script_url_hash_.at(source_hash);
+    if (script_url_to_parent_module_ids_.count(url_hash) != 0) {
+      for (const ScriptId& a_parent_script_id : script_url_to_parent_module_ids_.at(url_hash)) {
+        LOG(ERROR) << "found parent script id: " << a_parent_script_id;
+        parent_script_ids.push_back(a_parent_script_id);
+      }
+    }
+    if (script_url_to_parent_module_urls_.count(url_hash) != 0) {
+      for (const blink::KURL& a_parent_url : script_url_to_parent_module_urls_.at(url_hash)) {
+        const UrlHash parent_url_hash(a_parent_url.GetString().Impl()->GetHash());
+        const auto& parent_source_hash = script_url_hash_to_source_hash_.at(parent_url_hash);
+        const auto& parent_script_id = source_hash_to_script_id_.at(parent_source_hash);
+        parent_script_ids.push_back(parent_script_id);
+      }
+    }
+  }
+
+  return parent_script_ids;
+}
+
 void ScriptTracker::AddScriptId(const ScriptId script_id,
     const SourceCodeHash hash) {
   // Make sure we've either never seen this script before, or that it
@@ -198,6 +305,12 @@ ScriptId ScriptTracker::ResolveScriptId(const ScriptId script_id) const {
     return script_id_aliases_.at(script_id);
   }
   return script_id;
+}
+
+blink::KURL ScriptTracker::GetModuleScriptSourceUrl(const ScriptId script_id) const {
+  const SourceCodeHash& source_hash = script_id_to_source_hash_.at(script_id);
+  const UrlHash& url_hash = source_hash_to_script_url_hash_.at(source_hash);
+  return url_hashes_to_urls_.at(url_hash);
 }
 
 }  // namespace brave_page_graph

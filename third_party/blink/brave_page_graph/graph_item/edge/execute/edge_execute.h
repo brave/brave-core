@@ -36,6 +36,9 @@ friend class PageGraph;
     NodeScript* const in_node);
   EdgeExecute(PageGraph* const graph, NodeExtensions* const out_node,
     NodeScript* const in_node);
+  // Used by imported module scripts
+  EdgeExecute(PageGraph* const graph, NodeScript* const out_node,
+    NodeScript* const in_node);
 };
 
 }  // namespace brave_page_graph
