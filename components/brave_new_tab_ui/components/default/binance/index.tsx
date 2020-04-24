@@ -263,10 +263,10 @@ class Binance extends React.PureComponent<Props, State> {
   checkForOauthCode = () => {
     const params = window.location.search
     const urlParams = new URLSearchParams(params)
-    const authCode = urlParams.get('code')
+    const binanceAuth = urlParams.get('binanceAuth')
 
-    if (authCode) {
-      chrome.binance.getAccessToken(authCode, (success: boolean) => {
+    if (binanceAuth) {
+      chrome.binance.getAccessToken((success: boolean) => {
         if (success) {
           this.props.onValidAuthCode()
           this.props.onUpdateActions()

@@ -27,6 +27,7 @@ source_set("browser") {
     "//components/keyed_service/core",
     "//components/user_prefs",
     "//content/public/browser",
+    "//net",
     "//services/network/public/cpp",
     "//url",
   ]

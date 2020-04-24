@@ -72,8 +72,7 @@ class BinanceService : public KeyedService {
   using GetTickerVolumeCallback = base::OnceCallback<void(const std::string&)>;
   using RevokeTokenCallback = base::OnceCallback<void(bool)>;
 
-  bool GetAccessToken(const std::string& code,
-      GetAccessTokenCallback callback);
+  bool GetAccessToken(GetAccessTokenCallback callback);
   bool GetConvertQuote(const std::string& from,
       const std::string& to,
       const std::string& amount,
@@ -93,6 +92,9 @@ class BinanceService : public KeyedService {
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
   static std::string GetCodeChallenge(const std::string& code_verifier);
+  // Used to set a temporary pref with the auth token
+  static bool SetTempAuthToken(content::BrowserContext* browser_context,
+                               const std::string& auth_token);
 
  private:
   static GURL oauth_endpoint_;
@@ -137,6 +139,7 @@ class BinanceService : public KeyedService {
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();
+  std::string LoadAndRevokeAuthToken();
   void OnURLLoaderComplete(
       SimpleURLLoaderList::iterator iter,
       URLRequestCallback callback,
@@ -160,6 +163,8 @@ class BinanceService : public KeyedService {
   base::WeakPtrFactory<BinanceService> weak_factory_;
 
   FRIEND_TEST_ALL_PREFIXES(BinanceAPIBrowserTest, GetOAuthClientURL);
+  FRIEND_TEST_ALL_PREFIXES(BinanceAPIBrowserTest,
+      SetAndGetAuthTokenRevokesPref);
   friend class BinanceAPIBrowserTest;
 
   DISALLOW_COPY_AND_ASSIGN(BinanceService);

@@ -16,7 +16,8 @@ namespace binance {
 void HandleBinanceProtocol(const GURL& url,
                            content::WebContents::OnceGetter web_contents_getter,
                            ui::PageTransition page_transition,
-                           bool has_user_gesture);
+                           bool has_user_gesture,
+                           const base::Optional<url::Origin>& initiator);
 
 bool IsBinanceProtocol(const GURL& url);
 

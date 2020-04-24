@@ -462,7 +462,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetAccessToken("abc123",
+  BinanceService::SetTempAuthToken(browser()->profile(), "abc123");
+  ASSERT_TRUE(service->GetAccessToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
           base::Unretained(this))));
@@ -473,7 +474,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessTokenUnauthorized) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetAccessToken("abc123",
+  BinanceService::SetTempAuthToken(browser()->profile(), "abc123");
+  ASSERT_TRUE(service->GetAccessToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
           base::Unretained(this))));
@@ -484,7 +486,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessTokenServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetAccessToken("abc123",
+  BinanceService::SetTempAuthToken(browser()->profile(), "abc123");
+  ASSERT_TRUE(service->GetAccessToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
           base::Unretained(this))));
@@ -802,4 +805,15 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest,
       ExecuteScriptAndExtractBool(contents(), kBinanceAPIExistsScript,
         &result));
   ASSERT_FALSE(result);
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, SetAndGetAuthTokenRevokesPref) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  std::string expected_auth_token = "abc123";
+  BinanceService::SetTempAuthToken(browser()->profile(), expected_auth_token);
+  auto* service = GetBinanceService();
+  std::string auth_token = service->LoadAndRevokeAuthToken();
+  ASSERT_EQ(expected_auth_token, auth_token);
+  auth_token = service->LoadAndRevokeAuthToken();
+  ASSERT_EQ("", auth_token);
 }

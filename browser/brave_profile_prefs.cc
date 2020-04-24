@@ -213,6 +213,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(BINANCE_ENABLED)
   registry->RegisterStringPref(kBinanceAccessToken, "");
   registry->RegisterStringPref(kBinanceRefreshToken, "");
+  registry->RegisterStringPref(kBinanceAuthToken, "");
 #endif
 
   // Autocomplete in address bar

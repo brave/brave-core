@@ -73,7 +73,7 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
 }
 
 std::string GetHexEncodedCryptoRandomSeed() {
-  const size_t kSeedByteLength = 28;
+  const size_t kSeedByteLength = 32;
   // crypto::RandBytes is fail safe.
   uint8_t random_seed_bytes[kSeedByteLength];
   crypto::RandBytes(random_seed_bytes, kSeedByteLength);
@@ -139,8 +139,8 @@ std::string BinanceService::GetOAuthClientUrl() {
   return url.spec();
 }
 
-bool BinanceService::GetAccessToken(const std::string& code,
-                                    GetAccessTokenCallback callback) {
+bool BinanceService::GetAccessToken(GetAccessTokenCallback callback) {
+  std::string code = LoadAndRevokeAuthToken();
   auto internal_callback = base::BindOnce(&BinanceService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
@@ -308,6 +308,43 @@ bool BinanceService::LoadTokensFromPrefs() {
   }
 
   return true;
+}
+
+bool BinanceService::SetTempAuthToken(content::BrowserContext* browser_context,
+                                      const std::string& auth_token) {
+  std::string encrypted_auth_token;
+  if (!OSCrypt::EncryptString(auth_token, &encrypted_auth_token)) {
+    LOG(ERROR) << "Could not encrypt and save Binance token info";
+    return false;
+  }
+
+  std::string encoded_encrypted_auth_token;
+  base::Base64Encode(encrypted_auth_token, &encoded_encrypted_auth_token);
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
+  prefs->SetString(kBinanceAuthToken, encoded_encrypted_auth_token);
+  return true;
+}
+
+std::string BinanceService::LoadAndRevokeAuthToken() {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  std::string encoded_encrypted_auth_token =
+      prefs->GetString(kBinanceAuthToken);
+
+  std::string encrypted_auth_token;
+  if (!base::Base64Decode(encoded_encrypted_auth_token,
+                          &encrypted_auth_token)) {
+    LOG(ERROR) << "Could not Base64 decode Binance token info.";
+    return "";
+  }
+
+  std::string auth_token;
+  if (!OSCrypt::DecryptString(encrypted_auth_token, &auth_token)) {
+    LOG(ERROR) << "Could not decrypt and save Binance token info.";
+    return "";
+  }
+
+  prefs->SetString(kBinanceAuthToken, "");
+  return auth_token;
 }
 
 std::string BinanceService::GetBinanceTLD() {

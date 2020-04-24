@@ -70,6 +70,7 @@ extern const char kBraveDarkMode[];
 extern const char kOtherBookmarksMigrated[];
 extern const char kBraveShieldsSettingsVersion[];
 extern const char kBinanceAccessToken[];
+extern const char kBinanceAuthToken[];
 extern const char kBinanceRefreshToken[];
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];

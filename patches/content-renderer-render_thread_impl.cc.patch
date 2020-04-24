@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_thread_impl.cc b/content/renderer/render_thread_impl.cc
-index ae1a77a219f153f034c2702447a3ede9d9c9b960..818a139b60421ef79e58db20690d88c639244ff7 100644
+index ae1a77a219f153f034c2702447a3ede9d9c9b960..ab3ed482c1a244df8ae0d905fb3dfc342bcd6936 100644
 --- a/content/renderer/render_thread_impl.cc
 +++ b/content/renderer/render_thread_impl.cc
-@@ -1028,6 +1028,14 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
+@@ -1028,6 +1028,20 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
  }
  
  void RenderThreadImpl::RegisterSchemes() {
@@ -12,6 +12,12 @@ index ae1a77a219f153f034c2702447a3ede9d9c9b960..818a139b60421ef79e58db20690d88c6
 +  WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(brave_scheme);
 +  WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs(
 +      brave_scheme);
++
++  // com.brave.binance:
++  WebString binance_scheme(WebString::FromASCII(kBinanceScheme));
++  WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(binance_scheme);
++  WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs(
++      binance_scheme);
 +#endif
 +
    // chrome:
