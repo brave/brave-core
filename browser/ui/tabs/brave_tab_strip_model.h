@@ -36,7 +36,7 @@ class BraveTabStripModel : public TabStripModel {
 
  private:
   // Current index when we are MRU cycling, set to -1 when not cycling
-  int current_mru_cycling_index = -1;
+  int current_mru_cycling_index_ = -1;
 
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list;

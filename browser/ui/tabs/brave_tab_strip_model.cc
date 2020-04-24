@@ -44,10 +44,7 @@ void BraveTabStripModel::SelectNextTab(UserGestureDetails detail) {
 }
 
 void BraveTabStripModel::SelectPreviousTab(UserGestureDetails detail) {
-  bool isMRUEnabled =
-      Profile::FromBrowserContext(GetActiveWebContents()->GetBrowserContext())
-          ->GetPrefs()
-          ->GetBoolean(kMRUCyclingEnabled);
+  bool isMRUEnabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
 
   if (isMRUEnabled) {
     SelectTabMRU(true, detail);
@@ -58,7 +55,7 @@ void BraveTabStripModel::SelectPreviousTab(UserGestureDetails detail) {
 
 void BraveTabStripModel::SelectTabMRU(bool backward,
                                       UserGestureDetails detail) {
-  if (current_mru_cycling_index == -1) {
+  if (current_mru_cycling_index_ == -1) {
     // Start cycling
 
     // Create a list of tab indexes sorted by time of last activation
@@ -72,7 +69,7 @@ void BraveTabStripModel::SelectTabMRU(bool backward,
                        GetWebContentsAt(b)->GetLastActiveTime();
               });
 
-    current_mru_cycling_index = 0;
+    current_mru_cycling_index_ = 0;
 
     // Tell the controllers that we start cycling to handle tabs keys
     for (auto& observer : observers_)
@@ -82,18 +79,18 @@ void BraveTabStripModel::SelectTabMRU(bool backward,
   int tabCount = mru_cycle_list.size();
 
   if (tabCount == 0) {
-    return
+    return;
   }
 
   int nextCycle = backward ? -1 : 1;
 
-  current_mru_cycling_index =
-      (current_mru_cycling_index + nextCycle % tabCount + tabCount) % tabCount;
+  current_mru_cycling_index_ =
+      (current_mru_cycling_index_ + nextCycle % tabCount + tabCount) % tabCount;
 
-  ActivateTabAt(mru_cycle_list[current_mru_cycling_index], detail);
+  ActivateTabAt(mru_cycle_list[current_mru_cycling_index_], detail);
 }
 
 void BraveTabStripModel::StopMRUCycling() {
-  current_mru_cycling_index = -1;
+  current_mru_cycling_index_ = -1;
   mru_cycle_list.clear();
 }
