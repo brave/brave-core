@@ -27,6 +27,8 @@ import java.io.IOException;
 import android.content.SharedPreferences;
 import java.util.Set;
 import java.util.HashSet;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -43,6 +45,7 @@ import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.util.ImageUtils;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -59,13 +62,8 @@ public class NTPUtil {
 	private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
     private static final String REMOVED_SITES = "removed_sites";
 
-    public static void openImageCredit(String url) {
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
-            LoadUrlParams loadUrlParams = new LoadUrlParams(url);
-            chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
-        }
-    }
+    public static HashMap<String,SoftReference<Bitmap>> imageCache =
+        new HashMap<String,SoftReference<Bitmap>>();
 
     public static void turnOnAds() {
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
@@ -291,6 +289,10 @@ public class NTPUtil {
             centerPointX = mBackgroundImage.getCenterPoint();
             centerPointY = 0;
         }
+        return getCalculatedBitmap(imageBitmap, centerPointX, centerPointY, layoutWidth, layoutHeight);
+    }
+
+    public static Bitmap getCalculatedBitmap(Bitmap imageBitmap, float centerPointX, float centerPointY, int layoutWidth, int layoutHeight) {
         float imageWidth = imageBitmap.getWidth();
         float imageHeight = imageBitmap.getHeight();
 
@@ -377,13 +379,13 @@ public class NTPUtil {
         return topSiteIcon;
     }
 
-    private static Set<String> getTopSiteUrls() {
+    private static Set<String> getRemovedTopSiteUrls() {
         SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
         return mSharedPreferences.getStringSet(REMOVED_SITES, new HashSet<String>());
     }
 
     public static boolean isInRemovedTopSite(String url) {
-        Set<String> urlSet = getTopSiteUrls();
+        Set<String> urlSet = getRemovedTopSiteUrls();
         if (urlSet.contains(url)) {
             return true;
         }
@@ -391,7 +393,7 @@ public class NTPUtil {
     }
 
     public static void addToRemovedTopSite(String url) {
-        Set<String> urlSet = getTopSiteUrls();
+        Set<String> urlSet = getRemovedTopSiteUrls();
         if (!urlSet.contains(url)) {
             urlSet.add(url);
         }
@@ -424,5 +426,20 @@ public class NTPUtil {
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         boolean isReferralEnabled = BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
+    }
+
+    public static void openNewTab(boolean isIncognito, String url) {
+        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+        if(chromeTabbedActivity != null) {
+            chromeTabbedActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        }
+    }
+
+    public static void openUrlInSameTab(String url) {
+        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+        if(chromeTabbedActivity != null) {
+            LoadUrlParams loadUrlParams = new LoadUrlParams(url);
+            chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
+        }
     }
 }

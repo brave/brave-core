@@ -30,7 +30,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.view.ViewTreeObserver;
 
 import org.chromium.chrome.R;
-import org.chromium.content_public.browser.LoadUrlParams;
 
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -44,12 +43,12 @@ import org.chromium.chrome.browser.onboarding.BraveRewardsService;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -160,7 +159,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
             learnMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    braveRewardsLearnMore();
+                    NTPUtil.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
                     dismiss();
                 }
             });
@@ -252,7 +251,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
                 ClickableSpan learnMoreClickableSpan = new ClickableSpan() {
                     @Override
                     public void onClick(@NonNull View textView) {
-                        braveRewardsLearnMore();
+                        NTPUtil.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
                         dismiss();
                     }
                     @Override
@@ -311,15 +310,6 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             TabAttributes.from(currentTab).set(String.valueOf(((TabImpl)currentTab).getId()), sponsoredTab);
             newTabPageListener.updateNTPImage();
-        }
-    }
-
-    private void braveRewardsLearnMore() {
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
-            TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-            LoadUrlParams loadUrlParams = new LoadUrlParams(BRAVE_REWARDS_LEARN_MORE);
-            chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
         }
     }
 }

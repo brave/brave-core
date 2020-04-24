@@ -29,7 +29,6 @@ import android.view.MenuItem;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
-import org.chromium.base.Log;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -55,14 +54,10 @@ import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
-import org.chromium.chrome.browser.tab.TabLaunchType;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -109,23 +104,23 @@ public class BraveNewTabPageView extends NewTabPageView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (sponsoredTab == null)
-                initilizeSponsoredTab();
-            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
-            checkForNonDistruptiveBanner(ntpImage);
-            showNTPImage(ntpImage);
-        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mTabImpl.addObserver(mTabObserver);
-        }
+        if (sponsoredTab == null)
+            initilizeSponsoredTab();
+        checkAndShowNTPImage();
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        Log.i("NTP", "View destroyed");
         if(mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
             mWorkerTask.cancel(true);
             mWorkerTask = null;
+        }
+
+        if(!isFromBottomSheet){
+            mNewTabPageLayout.setBackgroundResource(0);
+            if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
+                imageDrawable.getBitmap().recycle();
+            }
         }
         super.onDetachedFromWindow();
     }
@@ -274,7 +269,8 @@ public class BraveNewTabPageView extends NewTabPageView {
         ImageView mSponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
         if (ntpImage instanceof Wallpaper 
-                && NTPUtil.isReferralEnabled()) {
+                && NTPUtil.isReferralEnabled()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setBackgroundImage(ntpImage);
             mSuperReferralLogo.setVisibility(View.VISIBLE);
             int floatingButtonIcon = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
@@ -308,7 +304,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         @Override
                         public void onClick(View view) {
                             if (backgroundImage.getImageCredit() != null) {
-                                NTPUtil.openImageCredit(backgroundImage.getImageCredit().getUrl());
+                                NTPUtil.openUrlInSameTab(backgroundImage.getImageCredit().getUrl());
                             }
                         }
                     });
@@ -362,7 +358,8 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
         sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));
         if (mNTPBackgroundImagesBridge.isSuperReferral()
-            && NTPBackgroundImagesBridge.enableSponsoredImages())
+            && NTPBackgroundImagesBridge.enableSponsoredImages()
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
@@ -442,7 +439,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                     @Override
                     public void onClick(View view) {
                         if (mWallpaper.getLogoDestinationUrl() != null) {
-                            NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                            NTPUtil.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
                         }
                     }
                 });
@@ -469,17 +466,16 @@ public class BraveNewTabPageView extends NewTabPageView {
             }
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
-            iconIv.setImageBitmap(NTPUtil.getTopSiteBitmap(topSite.getImagePath()));
+            if (NTPUtil.imageCache.get(topSite.getDestinationUrl()) == null) {
+                NTPUtil.imageCache.put(topSite.getDestinationUrl(), new java.lang.ref.SoftReference(NTPUtil.getTopSiteBitmap(topSite.getImagePath())));
+            }
+            iconIv.setImageBitmap(NTPUtil.imageCache.get(topSite.getDestinationUrl()).get());
             iconIv.setClickable(false);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-                    if(chromeTabbedActivity != null) {
-                        LoadUrlParams loadUrlParams = new LoadUrlParams(topSite.getDestinationUrl());
-                        chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
-                    }
+                    NTPUtil.openUrlInSameTab(topSite.getDestinationUrl());
                 }
             });
 
@@ -496,14 +492,14 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.contextmenu_open_in_new_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            openNewTab(false, topSite.getDestinationUrl());
+                            NTPUtil.openNewTab(false, topSite.getDestinationUrl());
                             return true;
                         }
                     });
                     menu.add(R.string.contextmenu_open_in_incognito_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            openNewTab(true, topSite.getDestinationUrl());
+                            NTPUtil.openNewTab(true, topSite.getDestinationUrl());
                             return true;
                         }
                     });
@@ -518,6 +514,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.remove).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
+                            NTPUtil.imageCache.remove(topSite.getDestinationUrl());
                             mDatabaseHelper.deleteTopSite(topSite.getDestinationUrl());
                             NTPUtil.addToRemovedTopSite(topSite.getDestinationUrl());
                             superReferralSitesLayout.removeView(view);
@@ -527,13 +524,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                 }
             });
             superReferralSitesLayout.addView(view);
-        }
-    }
-
-    private void openNewTab(boolean isIncognito, String url) {
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
-            chromeTabbedActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 }
