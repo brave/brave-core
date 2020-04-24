@@ -12,10 +12,10 @@
 
 #include "wrapper.hpp"
 
+namespace helper {
+
 using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
-
-namespace helper {
 
 class Security {
  public:

@@ -14,13 +14,13 @@
 
 #include "wrapper.hpp"  // NOLINT
 
-using challenge_bypass_ristretto::BlindedToken;
-
 namespace confirmations {
 
 class ConfirmationsImpl;
 struct ConfirmationInfo;
 struct TokenInfo;
+
+using challenge_bypass_ristretto::BlindedToken;
 
 class CreateConfirmationRequest {
  public:

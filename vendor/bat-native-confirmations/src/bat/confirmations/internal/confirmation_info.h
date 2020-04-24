@@ -15,10 +15,10 @@
 
 #include "wrapper.hpp"  // NOLINT
 
+namespace confirmations {
+
 using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
-
-namespace confirmations {
 
 struct ConfirmationInfo {
   ConfirmationInfo();

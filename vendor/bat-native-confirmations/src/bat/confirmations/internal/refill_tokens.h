@@ -17,13 +17,13 @@
 
 #include "wrapper.hpp"
 
-using challenge_bypass_ristretto::Token;
-using challenge_bypass_ristretto::BlindedToken;
-
 namespace confirmations {
 
 class ConfirmationsImpl;
 class UnblindedTokens;
+
+using challenge_bypass_ristretto::Token;
+using challenge_bypass_ristretto::BlindedToken;
 
 class RefillTokens {
  public:
