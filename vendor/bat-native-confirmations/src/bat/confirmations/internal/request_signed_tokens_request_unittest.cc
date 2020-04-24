@@ -11,12 +11,15 @@
 
 #include "bat/confirmations/internal/security_helper.h"
 #include "bat/confirmations/wallet_info.h"
+#include "wrapper.hpp"  // NOLINT
 
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=Confirmations*
 
 namespace confirmations {
+
+using challenge_bypass_ristretto::Token;
 
 class ConfirmationsRequestSignedTokensRequestTest : public ::testing::Test {
  protected:
