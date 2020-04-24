@@ -6,7 +6,7 @@
 #include "bat/ads/bundle_state.h"
 
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/uri_helper.h"
+#include "bat/ads/internal/url_util.h"
 
 namespace ads {
 
@@ -93,8 +93,7 @@ Result BundleState::FromJson(
 
         info.title = creative["title"].GetString();
         info.body = creative["body"].GetString();
-        info.target_url = helper::Uri::GetUri(
-             creative["targetUrl"].GetString());
+        info.target_url = GetUrlWithScheme(creative["targetUrl"].GetString());
         info.creative_instance_id = creative["creativeInstanceId"].GetString();
 
         const std::string category = creative_ad_notification.name.GetString();
