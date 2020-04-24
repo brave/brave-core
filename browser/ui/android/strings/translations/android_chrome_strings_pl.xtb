@@ -877,7 +877,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="4958708863221495346"><ph name="URL_OF_THE_CURRENT_TAB"/> udostępnia Twój ekran</translation>
 <translation id="8833831881926404480">Strona udostępnia Twój ekran</translation>
 <translation id="9086455579313502267">Nie można uzyskać dostępu do sieci</translation>
-<translation id="938850635132480979">Bład: &lt;ph name="ERROR_CODE"&gt;%1$s&lt;/ph&gt;</translation>
+<translation id="938850635132480979">Bład: <ph name="ERROR_CODE"/></translation>
 <translation id="666731172850799929">Otwórz w <ph name="APP_NAME"/></translation>
 <translation id="548278423535722844">Otwórz w aplikacji z mapami</translation>
 <translation id="7698359219371678927">Utwórz e-maila w aplikacji <ph name="APP_NAME"/></translation>
