@@ -129,25 +129,41 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
     return;
   }
 
-  const std::string query = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(publisher_key, status, excluded, address) "
-      "VALUES (?, ?, ?, ?)",
+  const std::string base_query = base::StringPrintf(
+      "INSERT OR REPLACE INTO %s VALUES ",
       table_name_);
 
-  auto transaction = ledger::DBTransaction::New();
+  size_t i = 0;
+  std::string main_query = base_query;
   for (const auto& info : list) {
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
-    command->command = query;
+    if (i == kBatchLimit) {
+      main_query += base_query;
+      i = 0;
+    }
 
-    BindString(command.get(), 0, info.publisher_key);
-    BindInt(command.get(), 1, static_cast<int>(info.status));
-    BindBool(command.get(), 2, info.excluded);
-    BindString(command.get(), 3, info.address);
-
-    transaction->commands.push_back(std::move(command));
+    main_query += base::StringPrintf(
+        R"(("%s",%d,%d,"%s"))",
+        info.publisher_key.c_str(),
+        static_cast<int>(info.status),
+        info.excluded,
+        info.address.c_str());
+    main_query += (i == kBatchLimit - 1) ? ";" : ",";
+    i++;
   }
+
+  if (main_query.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  main_query.pop_back();
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = main_query;
+
+  transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
