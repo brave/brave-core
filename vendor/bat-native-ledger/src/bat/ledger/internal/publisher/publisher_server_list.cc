@@ -389,4 +389,8 @@ void PublisherServerList::SaveBanners(
   ledger_->InsertPublisherBannerList(save_list, save_callback);
 }
 
+void PublisherServerList::ClearTimer() {
+  server_list_timer_id_ = 0;
+}
+
 }  // namespace braveledger_publisher
