@@ -40,6 +40,8 @@ class PublisherServerList {
 
   void SetTimer(bool retry_after_error);
 
+  void ClearTimer();
+
  private:
   void OnDownload(
       int response_status_code,

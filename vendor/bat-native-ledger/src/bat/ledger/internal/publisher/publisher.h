@@ -45,7 +45,7 @@ class Publisher {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
-  void SetPublisherServerListTimer();
+  void SetPublisherServerListTimer(const bool rewards_enabled);
 
   bool loadState(const std::string& data);
 
