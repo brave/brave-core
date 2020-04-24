@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -81,13 +81,14 @@ void BraveTabStripModel::SelectTabMRU(bool backward,
 
   int tabCount = mru_cycle_list.size();
 
-  if (backward) {
-    current_mru_cycling_index =
-        (current_mru_cycling_index - 1 % tabCount + tabCount) % tabCount;
-  } else {
-    current_mru_cycling_index =
-        (current_mru_cycling_index + 1 % tabCount + tabCount) % tabCount;
+  if (tabCount == 0) {
+    return
   }
+
+  int nextCycle = backward ? -1 : 1;
+
+  current_mru_cycling_index =
+      (current_mru_cycling_index + nextCycle % tabCount + tabCount) % tabCount;
 
   ActivateTabAt(mru_cycle_list[current_mru_cycling_index], detail);
 }

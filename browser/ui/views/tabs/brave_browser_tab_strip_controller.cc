@@ -85,14 +85,13 @@ void BraveBrowserTabStripController::CtrlReleaseHandler::OnKeyEvent(
 
     model_->StopMRUCycling();
 
-  } else if ((event->key_code() == ui::VKEY_TAB &&
-              event->type() == ui::ET_KEY_PRESSED) ||
-             (event->key_code() == ui::VKEY_PRIOR &&
-              event->type() == ui::ET_KEY_PRESSED) ||
-             (event->key_code() == ui::VKEY_NEXT &&
-              event->type() == ui::ET_KEY_PRESSED)) {
+  } else if (!((event->key_code() == ui::VKEY_TAB &&
+                event->type() == ui::ET_KEY_PRESSED) ||
+               (event->key_code() == ui::VKEY_PRIOR &&
+                event->type() == ui::ET_KEY_PRESSED) ||
+               (event->key_code() == ui::VKEY_NEXT &&
+                event->type() == ui::ET_KEY_PRESSED))) {
     // Block all keys while cycling except tab,pg previous, pg next keys
-  } else {
     event->StopPropagation();
   }
 }
