@@ -10,6 +10,8 @@ import { LocaleContext } from '../components/checkout/localeContext'
 import { DialogFrame } from '../components/checkout/dialogFrame'
 import { PaymentMethodPanel } from '../components/checkout/paymentMethodPanel'
 import { AddFundsPanel } from '../components/checkout/addFundsPanel'
+import { EnableRewardsPanel } from '../components/checkout/enableRewardsPanel'
+import { LoadingPanel } from '../components/checkout/loadingPanel'
 import { PaymentProcessing } from '../components/checkout/paymentProcessing'
 import { PaymentComplete } from '../components/checkout/paymentComplete'
 
@@ -59,7 +61,12 @@ const localeData = {
     addFundsLinkText: 'Add Funds',
     notEnoughFunds: 'You don\'t have enough tokens to buy this item.',
     useTokenBalance: 'Use your token balance',
-    updated: 'Updated'
+    updated: 'Updated',
+    enableRewardsTitle: 'Enable Brave Rewards to continue.',
+    enableRewardsText: 'To purchase this item, you need to earn tokens. Turn on Brave Rewards to earn.',
+    enableRewardsLearnMore: '<a href="javascript:void 0">Learn more.</a>',
+    enableRewardsButtonText: 'Enable Brave Rewards',
+    enableRewardsTerms: 'By clicking Enable Brave Rewards, you agree to <a href="javascript:void 0">Brave Reward’s Terms of Service</a>.'
   },
   get (key: string) {
     return this.strings[key] || 'MISSING'
@@ -77,6 +84,7 @@ storiesOf('Rewards/Checkout', module)
       <LocaleContext.Provider value={localeData}>
         <DialogFrame showBackground={true} showTitle={true} onClose={onDialogClose}>
           <PaymentMethodPanel
+            canUseCreditCard={knobs.boolean('canUseCreditCard', true)}
             rewardsEnabled={knobs.boolean('rewardsEnabled', true)}
             orderDescription={knobs.text('orderDescription', defaultDescription)}
             orderTotal={knobs.text('orderTotal', '45.0')}
@@ -149,6 +157,28 @@ storiesOf('Rewards/Checkout', module)
       <LocaleContext.Provider value={localeData}>
         <DialogFrame onClose={onDialogClose}>
           <PaymentComplete />
+        </DialogFrame>
+      </LocaleContext.Provider>
+    )
+  })
+  .add('Enable Rewards', () => {
+    return (
+      <LocaleContext.Provider value={localeData}>
+        <DialogFrame showBackground={true} onClose={onDialogClose}>
+          <EnableRewardsPanel
+            onEnableRewards={actionLogger('onEnableRewards')}
+          />
+        </DialogFrame>
+      </LocaleContext.Provider>
+    )
+  })
+  .add('Loading', () => {
+    return (
+      <LocaleContext.Provider value={localeData}>
+        <DialogFrame showTitle={true} onClose={onDialogClose}>
+          <LoadingPanel
+            text={knobs.text('text', 'Loading')}
+          />
         </DialogFrame>
       </LocaleContext.Provider>
     )

@@ -12,14 +12,15 @@ import { UseCreditCardPanel } from '../useCreditCardPanel'
 import { CreditCardDetails } from '../creditCardForm'
 
 interface PaymentMethodPanelProps {
-  rewardsEnabled?: boolean
+  canUseCreditCard: boolean
+  rewardsEnabled: boolean
   orderDescription: string
   orderTotal: string
   orderTotalConverted: string
   hasSufficientFunds: boolean
   walletBalance: string
   walletBalanceConverted: string
-  walletVerified?: boolean
+  walletVerified: boolean
   walletLastUpdated: string
   onPayWithCreditCard: (cardDetails: CreditCardDetails) => void
   onPayWithWallet: () => void
@@ -41,6 +42,7 @@ export function PaymentMethodPanel (props: PaymentMethodPanelProps) {
       {
         continueWithCard ? null :
           <UseWalletPanel
+            canAddFunds={props.canUseCreditCard}
             balance={props.walletBalance}
             balanceConverted={props.walletBalanceConverted}
             lastUpdated={props.walletLastUpdated}
@@ -51,14 +53,16 @@ export function PaymentMethodPanel (props: PaymentMethodPanelProps) {
             onPayWithWallet={props.onPayWithWallet}
           />
       }
-      <UseCreditCardPanel
-        hasSufficientFunds={props.hasSufficientFunds}
-        rewardsEnabled={props.rewardsEnabled}
-        walletVerified={props.walletVerified}
-        continueWithCard={continueWithCard}
-        setContinueWithCard={setContinueWithCard}
-        onPayWithCreditCard={props.onPayWithCreditCard}
-      />
+      { !props.canUseCreditCard ? null :
+          <UseCreditCardPanel
+            hasSufficientFunds={props.hasSufficientFunds}
+            rewardsEnabled={props.rewardsEnabled}
+            walletVerified={props.walletVerified}
+            continueWithCard={continueWithCard}
+            setContinueWithCard={setContinueWithCard}
+            onPayWithCreditCard={props.onPayWithCreditCard}
+          />
+      }
     </>
   )
 }

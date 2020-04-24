@@ -4,17 +4,17 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../localeContext'
-import { Container, LoadIcon } from './style'
+import { Container, LoadIcon, Text } from './style'
 
-export function PaymentProcessing () {
-  const locale = React.useContext(LocaleContext)
+interface LoadingPanelProps {
+  text?: string
+}
+
+export function LoadingPanel (props: LoadingPanelProps) {
   return (
     <Container>
       <LoadIcon />
-      <div>
-        {locale.get('paymentProcessing')}
-      </div>
+      {props.text ? <Text>{props.text}</Text> : null}
     </Container>
   )
 }
