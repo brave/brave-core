@@ -42,11 +42,9 @@ class ChromeImporter : public Importer {
  protected:
   ~ChromeImporter() override;
 
-  static base::nix::DesktopEnvironment GetDesktopEnvironment();
-
   void ImportBookmarks();
   void ImportHistory();
-  void ImportPasswords(const base::FilePath& prefs_filename);
+  void ImportPasswords();
 
   double chromeTimeToDouble(int64_t time);
 
