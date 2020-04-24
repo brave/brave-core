@@ -196,13 +196,14 @@ void DatabaseServerPublisherLinks::InsertOrUpdateList(
       continue;
     }
 
-    if (i == 0) {
-      query += base_query;
-    }
 
     for (const auto& link : info.links) {
       if (link.second.empty()) {
         continue;
+      }
+
+      if (i == 0) {
+        query += base_query;
       }
 
       if (i == kBatchLimit) {
