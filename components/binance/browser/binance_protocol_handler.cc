@@ -38,11 +38,12 @@ void LoadNewTabURL(
     return;
   }
 
-  // We should only allow binance scheme to be used from accounts.binance.com
-  const char allowed_origin[] = "accounts.binance.com";
-  if (!web_contents->GetURL().DomainIs(allowed_origin) &&
-      initiating_origin.has_value() &&
-      initiating_origin.value().DomainIs(allowed_origin)) {
+  // We should only allow binance scheme to be used from
+  // https://accounts.binance.com
+  GURL allowed_origin("https://accounts.binance.com");
+  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin ||
+      !initiating_origin.has_value() ||
+      initiating_origin.value().GetURL() != allowed_origin) {
     return;
   }
 
