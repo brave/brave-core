@@ -12,10 +12,10 @@
 #include "bat/ads/internal/filters/ads_history_filter_factory.h"
 #include "bat/ads/internal/sorts/ad_conversions_sort_factory.h"
 #include "bat/ads/internal/sorts/ads_history_sort_factory.h"
-#include "bat/ads/internal/uri_helper.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time.h"
+#include "bat/ads/internal/url_util.h"
 #include "brave_base/random.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -161,7 +161,7 @@ AdConversionList AdConversions::FilterAdConversions(
   AdConversionList new_ad_conversions = ad_conversions;
   const auto iter = std::remove_if(new_ad_conversions.begin(),
       new_ad_conversions.end(), [&](const AdConversionInfo& info) {
-    return !helper::Uri::MatchesWildcard(url, info.url_pattern);
+    return !UrlMatchesPattern(url, info.url_pattern);
   });
   new_ad_conversions.erase(iter, new_ad_conversions.end());
 

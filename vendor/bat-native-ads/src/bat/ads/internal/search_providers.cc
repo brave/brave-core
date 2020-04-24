@@ -4,10 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/search_providers.h"
-#include "bat/ads/internal/uri_helper.h"
+#include "bat/ads/internal/url_util.h"
+#include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
-
 
 namespace ads {
 
@@ -77,7 +77,7 @@ std::string SearchProviders::ExtractSearchQueryKeywords(
       return search_query_keywords;
     }
 
-    search_query_keywords = helper::Uri::GetValueForKeyInQuery(url, key);
+    net::GetValueForKeyInQuery(GURL(url), key, &search_query_keywords);
     break;
   }
 

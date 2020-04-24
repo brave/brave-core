@@ -308,6 +308,7 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/purchase_intent/funnel_sites_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/purchase_intent/keywords_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/purchase_intent/purchase_intent_classifier_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/url_util_unittest.cc",
     ]
   }
 

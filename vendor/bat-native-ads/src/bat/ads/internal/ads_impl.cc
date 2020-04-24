@@ -23,7 +23,6 @@
 #include "bat/ads/internal/reports.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/time.h"
-#include "bat/ads/internal/uri_helper.h"
 #include "bat/ads/internal/ad_events/ad_notification_event_factory.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
@@ -43,6 +42,7 @@
 #include "bat/ads/internal/sorts/ads_history_sort_factory.h"
 #include "bat/ads/internal/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
+#include "bat/ads/internal/url_util.h"
 
 #include "base/guid.h"
 #include "base/rand_util.h"
@@ -644,12 +644,10 @@ void AdsImpl::OnPageLoaded(
 
   ExtractPurchaseIntentSignal(url);
 
-  if (helper::Uri::MatchesDomainOrHost(url,
-      last_shown_ad_notification_.target_url)) {
+  if (SameSite(url, last_shown_ad_notification_.target_url)) {
     BLOG(INFO) << "Visited URL matches the last shown ad notification";
 
-    if (!helper::Uri::MatchesDomainOrHost(url,
-        last_sustained_ad_notification_url_)) {
+    if (!SameSite(url, last_sustained_ad_notification_url_)) {
       last_sustained_ad_notification_url_ = url;
 
       StartSustainingAdNotificationInteraction();
@@ -685,7 +683,7 @@ void AdsImpl::ExtractPurchaseIntentSignal(
   }
 
   if (!SearchProviders::IsSearchEngine(url) &&
-      helper::Uri::MatchesDomainOrHost(url, previous_tab_url_)) {
+      SameSite(url, previous_tab_url_)) {
     return;
   }
 
@@ -1297,7 +1295,7 @@ bool AdsImpl::ShowAdNotification(
   ad_notification->category = info.category;
   ad_notification->title = info.title;
   ad_notification->body = info.body;
-  ad_notification->target_url = helper::Uri::GetUri(info.target_url);
+  ad_notification->target_url = GetUrlWithScheme(info.target_url);
   ad_notification->geo_target = info.geo_targets.at(0);
 
   BLOG(INFO) << "Ad notification shown:"
@@ -1481,8 +1479,7 @@ void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
 }
 
 bool AdsImpl::IsStillViewingAdNotification() const {
-  return helper::Uri::MatchesDomainOrHost(active_tab_url_,
-      last_shown_ad_notification_.target_url);
+  return SameSite(active_tab_url_, last_shown_ad_notification_.target_url);
 }
 
 void AdsImpl::ConfirmAd(
