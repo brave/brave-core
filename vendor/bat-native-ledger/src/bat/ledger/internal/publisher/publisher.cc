@@ -91,7 +91,12 @@ void Publisher::OnRefreshPublisherServerPublisher(
   callback(status);
 }
 
-void Publisher::SetPublisherServerListTimer() {
+void Publisher::SetPublisherServerListTimer(const bool rewards_enabled) {
+  if (!rewards_enabled) {
+    server_list_->ClearTimer();
+    return;
+  }
+
   server_list_->SetTimer(false);
 }
 

@@ -175,36 +175,62 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
   return true;
 }
 
-void DatabaseServerPublisherLinks::InsertOrUpdate(
+void DatabaseServerPublisherLinks::InsertOrUpdateList(
     ledger::DBTransaction* transaction,
-    const ledger::PublisherBanner& info) {
+    const std::vector<ledger::PublisherBanner>& list) {
   DCHECK(transaction);
 
-  // It's ok if links are empty
-  if (info.links.empty()) {
+  if (list.empty()) {
     return;
   }
 
-  for (const auto& link : info.links) {
-    if (link.second.empty()) {
+  const std::string base_query = base::StringPrintf(
+      "INSERT OR REPLACE INTO %s VALUES ",
+      kTableName);
+
+  size_t i = 0;
+  std::string query;
+  for (const auto& info : list) {
+    // It's ok if links are empty
+    if (info.links.empty()) {
       continue;
     }
 
-    const std::string query = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(publisher_key, provider, link) "
-      "VALUES (?, ?, ?)",
-      kTableName);
 
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
-    command->command = query;
+    for (const auto& link : info.links) {
+      if (link.second.empty()) {
+        continue;
+      }
 
-    BindString(command.get(), 0, info.publisher_key);
-    BindString(command.get(), 1, link.first);
-    BindString(command.get(), 2, link.second);
-    transaction->commands.push_back(std::move(command));
+      if (i == 0) {
+        query += base_query;
+      }
+
+      if (i == kBatchLimit) {
+        query += base_query;
+        i = 0;
+      }
+
+      query += base::StringPrintf(
+        R"(("%s","%s","%s"))",
+        info.publisher_key.c_str(),
+        link.first.c_str(),
+        link.second.c_str());
+      query += (i == kBatchLimit - 1) ? ";" : ",";
+      i++;
+    }
   }
+
+  if (query.empty()) {
+    return;
+  }
+
+  query.pop_back();
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
 }
 
 void DatabaseServerPublisherLinks::GetRecord(
