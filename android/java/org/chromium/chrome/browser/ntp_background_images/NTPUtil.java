@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.os.Handler;
 import android.net.Uri;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -257,13 +257,23 @@ public class NTPUtil {
 
         if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
             NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
+            InputStream inputStream = null;
             try {
                 Uri imageFileUri = Uri.parse("file://"+mWallpaper.getImagePath());
-                InputStream inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+                inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
                 imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-            } catch(FileNotFoundException exc) {
+                inputStream.close();
+            } catch(IOException exc) {
                 Log.e("NTP", exc.getMessage());
+            } finally {
+              try {
+                if (inputStream != null) {
+                  inputStream.close();
+                }
+              } catch (IOException exception) {
+                Log.e("NTP", exception.getMessage());
                 return null;
+              }
             }
             centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageBitmap.getWidth()/2) : mWallpaper.getFocalPointX();
             centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageBitmap.getHeight()/2) : mWallpaper.getFocalPointY();
