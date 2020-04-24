@@ -99,7 +99,7 @@ void LedgerImpl::OnWalletInitializedInternal(
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
-    bat_publisher_->SetPublisherServerListTimer();
+    bat_publisher_->SetPublisherServerListTimer(GetRewardsMainEnabled());
     bat_contribution_->SetReconcileTimer();
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
@@ -602,6 +602,7 @@ void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   bat_state_->SetRewardsMainEnabled(enabled);
+  bat_publisher_->SetPublisherServerListTimer(enabled);
 }
 
 void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {  // In seconds
