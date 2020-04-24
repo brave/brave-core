@@ -6,7 +6,7 @@
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"

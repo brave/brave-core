@@ -32,8 +32,6 @@ source_set("browser_process") {
     "autocomplete/brave_autocomplete_provider_client_for_classifier.h",
     "autocomplete/brave_autocomplete_scheme_classifier.cc",
     "autocomplete/brave_autocomplete_scheme_classifier.h",
-    "brave_rewards/rewards_tab_helper.cc",
-    "brave_rewards/rewards_tab_helper.h",
     "brave_shields/ad_block_pref_service_factory.cc",
     "brave_shields/ad_block_pref_service_factory.h",
     "brave_shields/cookie_pref_service_factory.cc",
@@ -133,7 +131,6 @@ source_set("browser_process") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/browser/buildflags",
@@ -206,8 +203,6 @@ source_set("browser_process") {
 
   if (!is_android) {
     sources += [
-      "brave_rewards/tip_dialog.cc",
-      "brave_rewards/tip_dialog.h",
       "p3a/p3a_core_metrics.cc",
       "p3a/p3a_core_metrics.h",
     ]
@@ -226,17 +221,6 @@ source_set("browser_process") {
       "android/brave_sync_worker.cc",
       "android/brave_sync_worker.h",
     ]
-
-    if (brave_rewards_enabled) {
-      sources += [
-        "brave_rewards/android/brave_rewards_native_worker.cc",
-        "brave_rewards/android/brave_rewards_native_worker.h",
-      ]
-
-      deps += [
-        "//brave/vendor/bat-native-ledger",
-      ]
-    }
 
     if (brave_ads_enabled) {
       sources += [
@@ -284,7 +268,40 @@ source_set("browser_process") {
   }
 
   if (brave_rewards_enabled) {
+    sources += [
+      "brave_rewards/rewards_tab_helper.cc",
+      "brave_rewards/rewards_tab_helper.h",
+      "brave_rewards/rewards_service_factory.cc",
+      "brave_rewards/rewards_service_factory.h",
+    ]
+
+    if (enable_extensions) {
+      sources += [
+        "brave_rewards/extension_rewards_service_observer.cc",
+        "brave_rewards/extension_rewards_service_observer.h",
+        "brave_rewards/extension_rewards_notification_service_observer.cc",
+        "brave_rewards/extension_rewards_notification_service_observer.h",
+      ]
+    }
+
+    if (is_android) {
+      sources += [
+        "brave_rewards/android/brave_rewards_native_worker.cc",
+        "brave_rewards/android/brave_rewards_native_worker.h",
+      ]
+
+      deps += [
+        "//brave/vendor/bat-native-ledger:headers",
+      ]
+    } else {
+      sources += [
+        "brave_rewards/tip_dialog.cc",
+        "brave_rewards/tip_dialog.h",
+      ]
+    }
+
     deps += [
+      "//brave/components/brave_rewards/browser",
       "//brave/components/services/bat_ledger/public/cpp:manifest",
     ]
   }

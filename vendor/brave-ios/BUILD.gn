@@ -51,7 +51,7 @@ source_set("rewards_db") {
       "//brave/components/brave_rewards/browser/rewards_database.cc",
     ]
     deps = [
-      "//brave/vendor/bat-native-ledger",
+      "//brave/vendor/bat-native-ledger:headers",
       "//sql",
     ]
 }

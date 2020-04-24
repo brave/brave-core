@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <utility>
 
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 
 #include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -20,9 +20,14 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "extensions/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/event_router_factory.h"
+#include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
+#include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -37,7 +42,7 @@ void OverridePrefsForPrivateProfileUserPrefs(Profile* profile) {
 
   // rewards button should be hidden on guest and tor profile.
   PrefService* pref_service = profile->GetPrefs();
-  pref_service->SetBoolean(kHideBraveRewardsButton, true);
+  pref_service->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, true);
   pref_service->SetBoolean(brave_rewards::prefs::kBraveRewardsEnabled, false);
 }
 #endif
@@ -83,9 +88,26 @@ RewardsServiceFactory::~RewardsServiceFactory() {
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
+  std::unique_ptr<RewardsServicePrivateObserver> private_observer = nullptr;
+  std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
+      nullptr;
+  #if BUILDFLAG(ENABLE_EXTENSIONS)
+    extension_observer = std::make_unique<ExtensionRewardsServiceObserver>(
+          Profile::FromBrowserContext(context));
+    private_observer = std::make_unique<ExtensionRewardsServiceObserver>(
+          Profile::FromBrowserContext(context));
+    notification_observer =
+        std::make_unique<ExtensionRewardsNotificationServiceObserver>(
+          Profile::FromBrowserContext(context));
+  #endif
+
   std::unique_ptr<RewardsServiceImpl> rewards_service(
       new RewardsServiceImpl(Profile::FromBrowserContext(context)));
-  rewards_service->Init();
+  rewards_service->Init(
+      std::move(extension_observer),
+      std::move(private_observer),
+      std::move(notification_observer));
   return rewards_service.release();
 #else
   return NULL;

@@ -60,6 +60,11 @@ source_set("headers") {
     rebase_path("bat-native-confirmations", dep_base),
     # add this only when ads is in the same process
     # rebase_path("bat-native-ads", dep_base),
+    "//brave/browser:browser_process",
+    "//brave/components/brave_rewards/browser:browser",
+    "//brave/components/brave_rewards/browser:testutil",
+    "//brave/components/brave_ads/browser:testutil",
+    "//brave/vendor/brave-ios:rewards_db",
   ]
 
   public_configs = [ ":external_config" ]
@@ -81,6 +86,7 @@ source_set("headers") {
 }
 
 source_set("ledger") {
+  visibility = [ ":*" ]
   configs += [ ":internal_config" ]
 
   output_name = "bat_native_ledger"

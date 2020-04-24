@@ -11,7 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/brave_rewards/common/url_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/escape.h"

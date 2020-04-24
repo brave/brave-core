@@ -24,7 +24,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "chrome/browser/profiles/profile.h"

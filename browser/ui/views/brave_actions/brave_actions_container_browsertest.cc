@@ -65,19 +65,20 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // By default the action should be shown.
   EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled));
-  EXPECT_FALSE(prefs_->GetBoolean(kHideBraveRewardsButton));
+  EXPECT_FALSE(
+      prefs_->GetBoolean(brave_rewards::prefs::kHideBraveRewardsButton));
   CheckBraveRewardsActionShown(true);
 
   // Set to hide.
-  prefs_->SetBoolean(kHideBraveRewardsButton, true);
+  prefs_->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, true);
   CheckBraveRewardsActionShown(false);
 
   // Set to show.
-  prefs_->SetBoolean(kHideBraveRewardsButton, false);
+  prefs_->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, false);
   CheckBraveRewardsActionShown(true);
 
   // Set to hide.
-  prefs_->SetBoolean(kHideBraveRewardsButton, true);
+  prefs_->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, true);
   CheckBraveRewardsActionShown(false);
 
   // Enable Brave Rewards.
@@ -85,8 +86,8 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   CheckBraveRewardsActionShown(true);
 
   // Toggle to show and back to hide.
-  prefs_->SetBoolean(kHideBraveRewardsButton, false);
-  prefs_->SetBoolean(kHideBraveRewardsButton, true);
+  prefs_->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, false);
+  prefs_->SetBoolean(brave_rewards::prefs::kHideBraveRewardsButton, true);
   CheckBraveRewardsActionShown(true);
 
   // Disable Brave Rewards.
@@ -98,7 +99,8 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
                        BraveRewardsActionHiddenInGuestSession) {
     // By default the action should be shown.
   EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled));
-  EXPECT_FALSE(prefs_->GetBoolean(kHideBraveRewardsButton));
+  EXPECT_FALSE(
+      prefs_->GetBoolean(brave_rewards::prefs::kHideBraveRewardsButton));
   CheckBraveRewardsActionShown(true);
 
   // Open a Guest window.

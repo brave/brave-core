@@ -1,27 +1,26 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
-#include "rewards_notification_service.h"
-
-using namespace brave_rewards;
 
 class BraveRewardsNotificationBrowserTest
     : public InProcessBrowserTest,
-      public RewardsNotificationServiceObserver {
+      public brave_rewards::RewardsNotificationServiceObserver {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     rewards_service_ =
-        RewardsServiceFactory::GetForProfile(browser()->profile());
+        brave_rewards::RewardsServiceFactory::GetForProfile(
+            browser()->profile());
     rewards_notification_service_ = rewards_service_->GetNotificationService();
   }
 
@@ -30,14 +29,15 @@ class BraveRewardsNotificationBrowserTest
   }
 
   void OnNotificationAdded(
-      RewardsNotificationService* rewards_notification_service,
-      const RewardsNotificationService::RewardsNotification& notification) override {
-    EXPECT_TRUE(notification.args_.size() == 2);
+      brave_rewards::RewardsNotificationService* rewards_notification_service,
+      const brave_rewards::RewardsNotificationService::RewardsNotification&
+      notification) override {
+    EXPECT_EQ(notification.args_.size(), 2ul);
     EXPECT_STREQ(notification.args_.at(0).c_str(), "foo");
     EXPECT_STREQ(notification.args_.at(1).c_str(), "bar");
 
     EXPECT_STREQ(notification.id_.c_str(), "rewards_notification_grant");
-    EXPECT_TRUE(notification.timestamp_ != 0);
+    EXPECT_NE(notification.timestamp_, 0ul);
 
     notification_id_ = notification.id_;
 
@@ -45,27 +45,30 @@ class BraveRewardsNotificationBrowserTest
   }
 
   void OnNotificationDeleted(
-      RewardsNotificationService* rewards_notification_service,
-      const RewardsNotificationService::RewardsNotification& notification) override {
-
+      brave_rewards::RewardsNotificationService* rewards_notification_service,
+      const brave_rewards::RewardsNotificationService::RewardsNotification&
+      notification) override {
     if (notification.id_ == "not_valid") {
       EXPECT_TRUE(notification.type_ ==
-        RewardsNotificationService::REWARDS_NOTIFICATION_INVALID);
+        brave_rewards::RewardsNotificationService::
+        REWARDS_NOTIFICATION_INVALID);
     } else {
       EXPECT_STREQ(notification.id_.c_str(), "rewards_notification_grant");
-      EXPECT_TRUE(notification.timestamp_ != 0);
+      EXPECT_NE(notification.timestamp_,  0ul);
     }
 
     delete_notification_callback_was_called_ = true;
   }
 
   void OnAllNotificationsDeleted(
-      RewardsNotificationService* rewards_notification_service) override {
+      brave_rewards::RewardsNotificationService* rewards_notification_service)
+      override {
   }
 
   void OnGetNotification(
-      RewardsNotificationService* rewards_notification_service,
-      const RewardsNotificationService::RewardsNotification& notification) override {
+      brave_rewards::RewardsNotificationService* rewards_notification_service,
+      const brave_rewards::RewardsNotificationService::RewardsNotification&
+      notification) override {
   }
 
   void WaitForAddNotificationCallback() {
@@ -82,39 +85,46 @@ class BraveRewardsNotificationBrowserTest
     run_loop.Run();
   }
 
-  RewardsNotificationService* rewards_notification_service_;
-  RewardsService* rewards_service_;
+  brave_rewards::RewardsNotificationService* rewards_notification_service_;
+  brave_rewards::RewardsService* rewards_service_;
 
-  RewardsNotificationService::RewardsNotificationID notification_id_;
+  brave_rewards::RewardsNotificationService::RewardsNotificationID
+  notification_id_;
 
   bool add_notification_callback_was_called_ = false;
   bool delete_notification_callback_was_called_ = false;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationBrowserTest, AddGrantNotification) {
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsNotificationBrowserTest,
+    AddGrantNotification) {
   rewards_notification_service_->AddObserver(this);
 
-  RewardsNotificationService::RewardsNotificationArgs args;
+  brave_rewards::RewardsNotificationService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
 
   rewards_notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
+      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
+      args,
       "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
   rewards_notification_service_->RemoveObserver(this);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationBrowserTest, AddGrantNotificationAndDeleteIt) {
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsNotificationBrowserTest,
+    AddGrantNotificationAndDeleteIt) {
   rewards_notification_service_->AddObserver(this);
 
-  RewardsNotificationService::RewardsNotificationArgs args;
+  brave_rewards::RewardsNotificationService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
 
   rewards_notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
+      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
+      args,
       "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
@@ -126,15 +136,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationBrowserTest, AddGrantNotification
   rewards_notification_service_->RemoveObserver(this);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationBrowserTest, AddGrantNotificationAndFakeItAndDeleteIt) {
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsNotificationBrowserTest,
+    AddGrantNotificationAndFakeItAndDeleteIt) {
   rewards_notification_service_->AddObserver(this);
 
-  RewardsNotificationService::RewardsNotificationArgs args;
+  brave_rewards::RewardsNotificationService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
 
   rewards_notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
+      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
+      args,
       "rewards_notification_grant");
   WaitForAddNotificationCallback();
 

@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_rewards/browser/extension_rewards_notification_service_observer.h"
+#include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
 
 #include "brave/common/extensions/api/rewards_notifications.h"
 #include "chrome/browser/profiles/profile.h"
