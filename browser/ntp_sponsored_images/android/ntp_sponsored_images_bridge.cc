@@ -125,8 +125,8 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
   if (!image_path || !logo_image_path)
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  auto focal_point_x = data.FindIntPath("focalPoint.x");
-  auto focal_point_y = data.FindIntPath("focalPoint.y");
+  auto focal_point_x = data.FindIntPath("wallpaperFocalPointX");
+  auto focal_point_y = data.FindIntPath("wallpaperFocalPointY");
   auto* logo_destination_url = data.FindStringPath("logo.destinationUrl");
 
   return Java_NTPSponsoredImagesBridge_createWallpaper(

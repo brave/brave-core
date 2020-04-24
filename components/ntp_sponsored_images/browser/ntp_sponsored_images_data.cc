@@ -107,6 +107,8 @@ base::Value NTPSponsoredImagesData::GetValueAt(size_t index) {
                     wallpaper_image_urls()[index]);
   data.SetStringKey("wallpaperImagePath",
                     backgrounds[index].image_file.AsUTF8Unsafe());
+  data.SetIntKey("wallpaperFocalPointX", backgrounds[index].focal_point.x());
+  data.SetIntKey("wallpaperFocalPointY", backgrounds[index].focal_point.y());
   base::Value logo_data(base::Value::Type::DICTIONARY);
   logo_data.SetStringKey("image", logo_image_url());
   logo_data.SetStringKey("imagePath", logo_image_file.AsUTF8Unsafe());
