@@ -1,0 +1,12 @@
+diff --git a/chrome/utility/importer/safari_importer.h b/chrome/utility/importer/safari_importer.h
+index 1b585ea85dd695087f492224bab18056188371e7..1ea2a602771b7a9718378e05228d0a8cc3edd88d 100644
+--- a/chrome/utility/importer/safari_importer.h
++++ b/chrome/utility/importer/safari_importer.h
+@@ -46,6 +46,7 @@ class SafariImporter : public Importer {
+                    uint16_t items,
+                    ImporterBridge* bridge) override;
+ 
++  BRAVE_SAFARI_IMPORTER_H
+  private:
+   FRIEND_TEST_ALL_PREFIXES(SafariImporterTest, BookmarkImport);
+   FRIEND_TEST_ALL_PREFIXES(SafariImporterTest,

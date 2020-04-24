@@ -5,6 +5,10 @@
 
 #include "chrome/utility/importer/importer_creator.h"
 
+#if defined(OS_MACOSX)
+#include "brave/utility/importer/brave_safari_importer.h"
+#endif
+
 #define CreateImporterByType CreateImporterByType_ChromiumImpl
 #include "../../../../../chrome/utility/importer/importer_creator.cc"
 #undef CreateImporterByType
@@ -17,6 +21,10 @@ scoped_refptr<Importer> CreateImporterByType(ImporterType type) {
   switch (type) {
     case TYPE_CHROME:
       return new ChromeImporter();
+#if defined(OS_MACOSX)
+    case TYPE_SAFARI:
+      return new BraveSafariImporter(base::mac::GetUserLibraryPath());
+#endif
     default:
       return CreateImporterByType_ChromiumImpl(type);
   }

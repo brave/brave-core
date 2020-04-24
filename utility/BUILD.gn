@@ -38,6 +38,19 @@ source_set("utility") {
     ]
   }
 
+  if (is_mac) {
+    sources += [
+      "importer/brave_safari_importer.mm",
+      "importer/brave_safari_importer.h",
+    ]
+
+    deps += [
+      "//base",
+      "//sql",
+      "//url",
+    ]
+  }
+
   if (enable_tor) {
     deps += [ "//brave/components/services/tor" ]
   }
