@@ -46,7 +46,7 @@ bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
     URLPattern(URLPattern::SCHEME_ALL, "https://public.tableau.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://www.arcgis.com/*"),
   };
-  for (const auto exception : embed_exceptions) {
+  for (const auto& exception : embed_exceptions) {
     if (exception.MatchesURL(subresourceUrl)) {
       return true;
     }
