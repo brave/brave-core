@@ -129,6 +129,20 @@ class NewTabPage extends React.Component<Props, State> {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
     }
 
+    // Handles updates from brave://settings/newTab
+    const oldShowRewards = prevProps.newTabData.showRewards
+    const oldShowBinance = prevProps.newTabData.showBinance
+    const { showRewards, showBinance } = this.props.newTabData
+
+    if (!oldShowRewards && showRewards) {
+      this.props.actions.setCurrentStackWidget('rewards')
+    } else if (!oldShowBinance && showBinance) {
+      this.props.actions.setCurrentStackWidget('binance')
+    } else if (oldShowRewards && !showRewards) {
+      this.props.actions.setCurrentStackWidget('binance')
+    } else if (oldShowBinance && !showBinance) {
+      this.props.actions.setCurrentStackWidget('rewards')
+    }
   }
 
   trackCachedImage () {

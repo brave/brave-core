@@ -21,6 +21,8 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
+// npm run test -- brave_browser_tests --filter=BinanceAPIBrowserTest.*
+
 namespace {
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -211,7 +213,13 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     service->SetOAuthHostForTest(host);
   }
 
-  void OnGetAccessToken(bool unauthorized) {
+  void OnGetAccessToken(bool unauthorized, bool check_set_prefs) {
+    if (check_set_prefs) {
+      ASSERT_FALSE(browser()->profile()->GetPrefs()->GetString(
+          kBinanceAccessToken).empty());
+      ASSERT_FALSE(browser()->profile()->GetPrefs()->GetString(
+          kBinanceRefreshToken).empty());
+    }
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
@@ -374,6 +382,12 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       wait_for_request_->Quit();
     }
     ASSERT_EQ(expected_success_, success);
+    if (success) {
+      ASSERT_TRUE(browser()->profile()->GetPrefs()->GetString(
+          kBinanceAccessToken).empty());
+      ASSERT_TRUE(browser()->profile()->GetPrefs()->GetString(
+          kBinanceRefreshToken).empty());
+    }
   }
 
   void WaitForRevokeToken(bool success) {
@@ -462,10 +476,11 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetAccessToken("abc123",
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->GetAccessToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
-          base::Unretained(this))));
+          base::Unretained(this), true)));
   WaitForGetAccessToken(true);
 }
 
@@ -473,10 +488,11 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessTokenUnauthorized) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetAccessToken("abc123",
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->GetAccessToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
-          base::Unretained(this))));
+          base::Unretained(this), false)));
   WaitForGetAccessToken(false);
 }
 
@@ -484,10 +500,11 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessTokenServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetAccessToken("abc123",
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->GetAccessToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
-          base::Unretained(this))));
+          base::Unretained(this), false)));
   WaitForGetAccessToken(false);
 }
 
@@ -736,6 +753,12 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->GetAccessToken(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnGetAccessToken,
+          base::Unretained(this), true)));
+
   ASSERT_TRUE(service->RevokeToken(
       base::BindOnce(
           &BinanceAPIBrowserTest::OnRevokeToken,
