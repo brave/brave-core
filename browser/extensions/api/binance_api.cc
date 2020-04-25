@@ -12,19 +12,18 @@
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/binance/binance_util.h"
 
 #include "brave/common/extensions/api/binance.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/components/binance/browser/binance_service.h"
-#include "brave/components/binance/browser/static_values.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/country_codes/country_codes.h"
 #include "extensions/browser/extension_util.h"
 
 namespace {
@@ -171,23 +170,11 @@ BinanceIsSupportedRegionFunction::Run() {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  bool is_blacklisted = false;
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  const int32_t user_country_id =
-      country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
-
-  for (const auto& country : ::binance::kBinanceBlacklistRegions) {
-    const int id = country_codes::CountryCharsToCountryID(
-        country.at(0), country.at(1));
-
-    if (id == user_country_id) {
-      is_blacklisted = true;
-      break;
-    }
-  }
+  bool is_supported = ::binance::IsBinanceSupported(profile);
 
   return RespondNow(OneArgument(
-      std::make_unique<base::Value>(!is_blacklisted)));
+      std::make_unique<base::Value>(is_supported)));
 }
 
 ExtensionFunction::ResponseAction
