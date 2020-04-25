@@ -39,19 +39,5 @@
         this.isSuperReferralActive_ = isSuperReferralActive;
       })
     },
-
-    toggleBrandedBackgroundOption_: function(isBackgroundEnabled, isBrandedBackgroundEnabled) {
-      // If background image setting is not turned ON,
-      // inform the back-end to also disable the branded wallpaper setting.
-      // We will later disable interacting with the button as well.
-      if (isBackgroundEnabled === false) {
-        return {
-          key: 'brave.new_tab_page.show_branded_background_image',
-          type: 'BOOLEAN',
-          value: false
-        };
-      }
-      return isBrandedBackgroundEnabled;
-    },
   });
 })();
