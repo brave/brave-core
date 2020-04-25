@@ -119,9 +119,6 @@ def get_transifex_translation_file_content(source_file_path, filename,
     elif ext == '.grd':
         # For .grd and .json files, for some reason Transifex puts a \\" and \'
         content = content.replace('\\"', '"').replace("\\'", "'")
-        content_file = open(r"c:\max\tmp\TransifexCurrent.txt","w")
-        content_file.write(content)
-        content_file.close()
         # Make sure it's parseable
         lxml.etree.fromstring(content)
     return content
