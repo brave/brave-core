@@ -54,10 +54,12 @@
           pref="{{prefs.brave.new_tab_page.show_rewards}}"
           label="$i18n{braveNewTabBraveRewards}">
       </settings-toggle-button>
-      <settings-toggle-button
-          pref="{{prefs.brave.new_tab_page.show_binance}}"
-          label="$i18n{braveNewTabBinance}">
-      </settings-toggle-button>
+      <template is="dom-if" if="[[isBinanceSupported_]]">
+        <settings-toggle-button
+            pref="{{prefs.brave.new_tab_page.show_binance}}"
+            label="$i18n{braveNewTabBinance}">
+        </settings-toggle-button>
+      </template>
       <settings-toggle-button
           pref="{{prefs.brave.new_tab_page.show_top_sites}}"
           label="$i18n{braveNewTabTopSites}">

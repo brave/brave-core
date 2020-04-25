@@ -248,10 +248,13 @@ source_set("browser_process") {
       "binance/binance_protocol_handler.h",
       "binance/binance_util.cc",
       "binance/binance_util.h",
-      "static_values.h",
+      "binance/static_values.h",
     ]
 
-    deps += [ "//brave/components/binance/browser" ]
+    deps += [
+      "//brave/components/binance/browser",
+      "//components/country_codes",
+    ]
   }
 
   if (enable_tor) {

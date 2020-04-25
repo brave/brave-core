@@ -19,6 +19,7 @@ const std::vector<std::string> kBinanceBlacklistRegions = {
   "UA",
   "CU",
   "IR",
+  "JP",
   "LB",
   "LY",
   "KP",

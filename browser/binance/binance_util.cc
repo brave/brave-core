@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/binance/binance_util.h"
+
 #include "chrome/browser/profiles/profile.h"
 #include "components/country_codes/country_codes.h"
-#include "static_values.h"
+#include "brave/browser/binance/static_values.h"
 
 namespace binance {
 

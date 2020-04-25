@@ -9,6 +9,11 @@
      * @return {!Promise<Boolean>}
      */
     getIsSuperReferralActive() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    getIsBinanceSupported() {}
   }
 
   /**
@@ -18,6 +23,11 @@
     /** @override */
     getIsSuperReferralActive() {
       return cr.sendWithPromise('getIsSuperReferralActive');
+    }
+
+    /** @override */
+    getIsBinanceSupported() {
+      return cr.sendWithPromise('getIsBinanceSupported')
     }
   }
 

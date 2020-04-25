@@ -21,18 +21,23 @@
 
     properties: {
       isSuperReferralActive_: Boolean,
+      isBinanceSupported_: Boolean,
     },
 
     /** @override */
     created: function() {
       this.browserProxy_ = settings.BraveNewTabBrowserProxyImpl.getInstance();
       this.isSuperReferralActive_ = false;
+      this.isBinanceSupported_ = false;
     },
 
     /** @override */
     ready: function() {
       this.browserProxy_.getIsSuperReferralActive().then(isSuperReferralActive => {
         this.isSuperReferralActive_ = isSuperReferralActive;
+      })
+      this.browserProxy_.getIsBinanceSupported().then(isBinanceSupported => {
+        this.isBinanceSupported_ = isBinanceSupported;
       })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {
