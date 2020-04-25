@@ -1627,6 +1627,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5727851901710884484"><ph name="APP_NAME"/>, bir Brave sekmesini <ph name="TAB_NAME"/> ile paylaşıyor.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/>, bir Brave sekmesini ve sesi paylaşıyor.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/>, bir Brave sekmesini ve sesi <ph name="TAB_NAME"/> ile paylaşıyor.</translation>
+<translation id="7108338896283013870">Gizle</translation>
 <translation id="890616557918890486">Kaynağı değiştir</translation>
 <translation id="7792388396321542707">Paylaşmayı durdur</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> sizin adınıza kendi kimlik doğrulamasını yapmak için bir sertifikaya kalıcı erişim izni istiyor.</translation>
@@ -1660,6 +1661,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7022562585984256452">Ana sayfanız ayarlandı.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Yazıcı ekle</translation>
+<translation id="9052208328806230490">Yazıcılarınızı, <ph name="EMAIL"/> hesabını kullanarak <ph name="CLOUD_PRINT_NAME"/> hizmetine kaydettirdiniz.</translation>
 <translation id="3792890930871100565">Yazıcıların bağlantısını kes</translation>
 <translation id="5038863510258510803">Etkinleştiriliyor...</translation>
 <translation id="8264024885325823677">Bu ayar, yöneticiniz tarafından yönetilir.</translation>
@@ -2292,6 +2294,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6711610692002680394">Yeni cihazlar kaydettirebilmeniz için Brave'da oturum açmanız gerekir</translation>
 <translation id="8931394284949551895">Yeni cihazlar</translation>
 <translation id="3752673729237782832">Cihazlarım</translation>
+<translation id="1721937473331968728">Bilgisayarınıza bağlı klasik yazıcıları <ph name="CLOUD_PRINT_NAME"/> hizmetine ekleyebilirsiniz.</translation>
 <translation id="715118844758971915">Klasik yazıcılar</translation>
 <translation id="4263757076580287579">Yazıcı kayıt işlemi iptal edildi.</translation>
 <translation id="8152091997436726702">Yazıcı kaydı zaman aşımına uğradı. Bir yazıcıyı kaydetmek için kaydı yazıcı üzerinde onaylamanız gerekir.</translation>
@@ -2972,9 +2975,11 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> cihazınız güncel</translation>
 <translation id="3688526734140524629">Kanal değiştir</translation>
 <translation id="6410328738210026208">Kanal değiştir ve Powerwash işlemini yap</translation>
+<translation id="1979280758666859181"><ph name="PRODUCT_NAME"/> ürününün eski sürümünü destekleyen bir kanala geçiyorsunuz. Kanal değişikliği, kanalın sürümü cihazınızda şu an yüklenmiş olan sürümle eşleştiğinde uygulanacak.</translation>
 <translation id="7728668285692163452">Kanal değişikliği daha sonra uygulanacak</translation>
 <translation id="5495466433285976480">Bu işlem, cihazı tekrar başlattığınızda tüm yerel kullanıcıları, dosyaları, verileri ve diğer ayarları kaldıracak. Tüm kullanıcıların yeniden oturum açması gerekecek.</translation>
 <translation id="8101987792947961127">Gelecek yeniden başlatmada Powerwash gerekli</translation>
+<translation id="1414648216875402825"><ph name="PRODUCT_NAME"/> ürününün kararsız bir sürümüne güncelleme yapıyorsunuz. Bu sürüm geliştirilmekte olan özellikler içerir. Kilitlenmeler ve beklenmeyen hatalar olacaktır. Lütfen dikkatle ilerleyin.</translation>
 <translation id="6103681770816982672">Uyarı: Geliştirici kanalına geçiş yapıyorsunuz</translation>
 <translation id="8807632654848257479">Kararlı</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3747,10 +3752,12 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5302048478445481009">Dil</translation>
 <translation id="6388429472088318283">Dil ara</translation>
 <translation id="2690024944919328218">Dil seçeneklerini göster</translation>
+<translation id="768549422429443215">Dil ekleyin veya listeyi yeniden sıralayın</translation>
 <translation id="8218847192766059983">Dil ekleyin veya listeyi yeniden sıralayın <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Sistem metni bu dilde gösterilir</translation>
 <translation id="2366260648632264559">Sistem metnini bu dilde göster</translation>
 <translation id="8336721153892716270">Sistem metnini <ph name="LANGUAGE"/> dilinde göstermek için cihazı yeniden başlatın</translation>
+<translation id="7216595297012131718">Dilleri tercihinize göre sıralayın</translation>
 <translation id="5972708806901999743">Yukarı taşı</translation>
 <translation id="8609465669617005112">Yukarı taşı</translation>
 <translation id="6746124502594467657">Aşağı taşı</translation>
@@ -4580,6 +4587,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8143442547342702591">Geçersiz uygulama</translation>
 <translation id="720110658997053098">Bu cihazı kalıcı olarak kiosk modunda tut</translation>
 <translation id="1909880997794698664">Bu cihazı kalıcı olarak kiosk modunda tutmak istediğinizden emin misiniz?</translation>
+<translation id="1512210426710821809">Bunu geri almanın tek yolu <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> sistemini yeniden yüklemektir</translation>
 <translation id="8281886186245836920">Atla</translation>
 <translation id="2342740338116612727">Yer işaretleri eklendi</translation>
 <translation id="7835178595033117206">Yer işareti kaldırıldı</translation>
@@ -4700,7 +4708,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1526560967942511387">Adsız Doküman</translation>
 <translation id="5269977353971873915">Yazdırma Başarısız</translation>
 <translation id="7385854874724088939">Yazdırmaya çalışırken bir sorun oluştu. Lütfen yazıcınızı denetleyin ve yeniden deneyin.</translation>
+<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> yazıcısının yazıcı özellikleri alınırken bir hata oluştu. Bu yazıcı <ph name="CLOUD_PRINT_NAME"/> ile kaydettirilemedi.</translation>
 <translation id="9004952710076978168">Bilinmeyen bir yazıcı ile ilgili bildirim alındı.</translation>
+<translation id="2202898655984161076">Yazıcılar listelenirken sorun oluştu. Yazıcılarınızın bazıları <ph name="CLOUD_PRINT_NAME"/> üzerinde başarılı olarak kayıt edilmemiş olabilir.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> bağlayıcı işlemi kilitlendi. Tekrar başlatılsın mı?</translation>
 <translation id="6904655473976120856">Çıkmak için Uygulama düğmesine basın</translation>
 <translation id="8909833622202089127">Site, konumunuzu izliyor</translation>
 <translation id="375636864092143889">Site, mikrofonunuzu kullanıyor</translation>

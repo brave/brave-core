@@ -1624,6 +1624,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/>에서 <ph name="TAB_NAME"/>와(과) Brave 탭을 공유 중입니다.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/>에서 Brave 탭과 오디오를 공유 중입니다.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/>에서 <ph name="TAB_NAME"/>와(과) Brave 탭과 오디오를 공유 중입니다.</translation>
+<translation id="7108338896283013870">숨기기</translation>
 <translation id="890616557918890486">소스 변경</translation>
 <translation id="7792388396321542707">공유 중지</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/>에서 사용자를 대신하여 인증하기 위해 인증서에 대한 영구적인 액세스 권한을 요청합니다.</translation>
@@ -1657,6 +1658,7 @@
 <translation id="7022562585984256452">홈페이지가 설정되었습니다.</translation>
 <translation id="8069615408251337349">Brave Software 클라우드 프린트</translation>
 <translation id="4973307593867026061">프린터 추가</translation>
+<translation id="9052208328806230490"><ph name="EMAIL"/> 계정을 사용하여 프린터를 <ph name="CLOUD_PRINT_NAME"/>에 등록했습니다.</translation>
 <translation id="3792890930871100565">프린터 연결 해제</translation>
 <translation id="5038863510258510803">사용 설정 중...</translation>
 <translation id="8264024885325823677">관리자가 관리하는 설정입니다.</translation>
@@ -2289,6 +2291,7 @@
 <translation id="6711610692002680394">새 기기를 등록하려면 Brave에 로그인하세요.</translation>
 <translation id="8931394284949551895">새 기기</translation>
 <translation id="3752673729237782832">내 기기</translation>
+<translation id="1721937473331968728">컴퓨터에 연결된 일반 프린터를 <ph name="CLOUD_PRINT_NAME"/>에 추가할 수 있습니다.</translation>
 <translation id="715118844758971915">일반 프린터</translation>
 <translation id="4263757076580287579">프린터 등록이 취소되었습니다.</translation>
 <translation id="8152091997436726702">프린터 등록 시간이 초과되었습니다. 프린터를 등록하려면 프린터 등록을 확인해야합니다.</translation>
@@ -2969,9 +2972,11 @@
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/>이(가) 최신 버전</translation>
 <translation id="3688526734140524629">채널 변경</translation>
 <translation id="6410328738210026208">채널 변경 및 Powerwash</translation>
+<translation id="1979280758666859181"><ph name="PRODUCT_NAME"/>의 이전 버전으로 채널을 변경하려 합니다. 채널 버전이 현재 기기에 설치되어 있는 버전과 일치할 때 채널 변경이 적용됩니다.</translation>
 <translation id="7728668285692163452">채널 변경 추후 적용</translation>
 <translation id="5495466433285976480">다음에 다시 시작할 때 모든 로컬 사용자, 파일, 데이터 및 기타 설정이 삭제됩니다. 모든 사용자는 다시 로그인해야 합니다.</translation>
 <translation id="8101987792947961127">다음에 재부팅할 때 Powerwash 필요</translation>
+<translation id="1414648216875402825">개발 중인 기능을 포함하는 <ph name="PRODUCT_NAME"/>의 불안정한 버전으로 업데이트합니다. 기기가 비정상 종료되거나 예기치 않은 버그가 발생할 수 있습니다. 주의해서 진행하시기 바랍니다.</translation>
 <translation id="6103681770816982672">경고: 개발자 채널로 전환</translation>
 <translation id="8807632654848257479">안정</translation>
 <translation id="830868413617744215">베타</translation>
@@ -3744,10 +3749,12 @@
 <translation id="5302048478445481009">언어</translation>
 <translation id="6388429472088318283">언어 검색</translation>
 <translation id="2690024944919328218">언어 옵션 표시</translation>
+<translation id="768549422429443215">언어 추가 또는 목록 재정렬</translation>
 <translation id="8218847192766059983">언어를 추가하거나 목록을 재정렬합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">시스템 텍스트가 이 언어로 표시됩니다.</translation>
 <translation id="2366260648632264559">이 언어로 시스템 텍스트 표시</translation>
 <translation id="8336721153892716270"><ph name="LANGUAGE"/>로 시스템 텍스트를 표시하려면 기기 다시 시작하기</translation>
+<translation id="7216595297012131718">원하는 대로 언어를 정렬하세요.</translation>
 <translation id="5972708806901999743">위로 이동</translation>
 <translation id="8609465669617005112">위로 이동</translation>
 <translation id="6746124502594467657">아래로 이동</translation>
@@ -4577,6 +4584,7 @@
 <translation id="8143442547342702591">잘못된 애플리케이션</translation>
 <translation id="720110658997053098">이 기기를 키오스크 모드로 영구 고정</translation>
 <translation id="1909880997794698664">이 기기를 영구적으로 키오스크 모드로 유지하시겠습니까?</translation>
+<translation id="1512210426710821809">이 작업을 실행취소하려면 <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>을(를) 다시 설치해야 합니다</translation>
 <translation id="8281886186245836920">건너뛰기</translation>
 <translation id="2342740338116612727">북마크 추가됨</translation>
 <translation id="7835178595033117206">북마크가 삭제됨</translation>
@@ -4697,7 +4705,10 @@
 <translation id="1526560967942511387">제목 없는 문서</translation>
 <translation id="5269977353971873915">인쇄 실패</translation>
 <translation id="7385854874724088939">인쇄를 시도하는 동안 문제가 발생했습니다. 프린터를 점검한 다음 다시 시도해 보세요.</translation>
+<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> 프린터의 인쇄 가능 매수를 검색하는 중에 오류가 발생했습니다. 이 프린터를 <ph name="CLOUD_PRINT_NAME"/>(으)로 등록할 수 없습니다.</translation>
 <translation id="9004952710076978168">알 수 없는 프린터에 대한 알림을 받았습니다.</translation>
+<translation id="2202898655984161076">프린터를 나열하는 데 문제가 발생했습니다. <ph name="CLOUD_PRINT_NAME"/>에 성공적으로 등록되지 못한 프린터가 있을 수 있습니다.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> 커넥터 프로세스가 중단되었습니다. 다시 시작하시겠습니까?</translation>
 <translation id="6904655473976120856">앱 버튼을 눌러 종료하세요.</translation>
 <translation id="8909833622202089127">사이트에서 내 위치를 추적하고 있습니다.</translation>
 <translation id="375636864092143889">사이트에서 마이크를 사용하고 있습니다.</translation>

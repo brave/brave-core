@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") não é permitida no Brave.</translation>
 <translation id="7450557937477381864">Fechar Chrome</translation>
 <translation id="7008934821596358692">Para terminar a importação, fechar todas as janelas do windows Chrome.</translation>
+<translation id="6786747875388722282">Extensões</translation>
 <translation id="3699882589215410581">Instalar e correr Widevine</translation>
 <translation id="8926389886865778422">Não voltar a perguntar</translation>
 <translation id="4726634924419692905">Perguntar quando um site quer instalar o Widevine no seu computador.</translation>
@@ -31,11 +32,21 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="5883458389055721080">A Brave não avaliou a segurança e proteção desta extensão. Apenas instale a extensão caso confie no desenvolvedor da mesma.</translation>
 <translation id="8081858229109418493">Nome de perfil e ícone</translation>
 <translation id="2044383478723007273">Cores Brave</translation>
+<translation id="1692470335103807198">Obtenha mais temas</translation>
+<translation id="2906510232093002459">Imagens padrão Brave</translation>
 <translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="6123134130710658846">Ocultar o botão Brave Rewards</translation>
 <translation id="7635711399568194460">Esconde o botão Brave Rewards na barra de localização quando o Brave Rewards não está habilitado</translation>
 <translation id="1520361618554057102">Apresentar sempre marcadores na página Novo Separador</translation>
 <translation id="5802665280774361839">Apresentar o preenchimento automático na barra de endereços</translation>
+<translation id="7781069478569868053">Nova ficha de registo</translation>
+<translation id="2467749191278759605">Personalize o seu Painel de Controlo Brave</translation>
+<translation id="1717331825806276156">Imagens de fundo</translation>
+<translation id="1820041496463124489">Imagens Patrocinadas</translation>
+<translation id="8173998484743827990">Estatísticas Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Principais Sítios</translation>
+<translation id="1776831331757823105">Relógio</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Ligação Tor para este Site</translation>
 <translation id="8784924142044142231">Sair de Tor</translation>
@@ -75,9 +86,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4699812599455071925">Bloquear apenas cookies de cross-site</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
-<translation id="5572437114858031185">Bloquear apenas tentativas de impressão digital entre sites</translation>
-<translation id="5079032039521408559">Permitir todas as tentativas de impressão digital</translation>
-<translation id="6447141055227658942">Bloquear todas as tentativas de impressão digital</translation>
+<translation id="5963670684159057574">Bloquear identificação entre sites</translation>
+<translation id="769702552748212954">Permitir todas as identificações</translation>
+<translation id="4540198958192073185">Bloquear toda a recolha de impressões digitais</translation>
 <translation id="8942080017911802454">Tratamento de reclamações do WebRTC IP</translation>
 <translation id="6165508094623778733">Aprenda mais</translation>
 <translation id="8798099450830957504">Predefinição</translation>
@@ -94,7 +105,6 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1360441190790440400">Igual ao Linux</translation>
 <translation id="1336940801687497203">Igual ao Windows</translation>
 <translation id="8721331068159819483">O mesmo do que em MacOS</translation>
-<translation id="6786747875388722282">Extensões</translation>
 <translation id="2896916411183256228">Utiliza WebTorrent para exibir torrents diretamente no navegador. É compatível com ficheiros de torrents e magnet links.</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="7701040980221191251">Nenhum</translation>

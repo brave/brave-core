@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Sie besuchen diese Website ohne Braves Privatsphären- und Sicherheitsschutz. Funktioniert sie mit aktivierten Shields nicht richtig?",
+    "message": "Sie sind mit dieser Website verbunden, ohne dass Sie Ihre Privatsphäre und Sicherheit durch Brave schützen lassen. Wird Ihnen die Website nicht korrekt angezeigt während der Schutz aktiv ist?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {

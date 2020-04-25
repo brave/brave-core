@@ -1627,6 +1627,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> កំពុងចែករំលែកផ្ទាំង Brave ជាមួយ <ph name="TAB_NAME"/>។</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> កំពុងចែករំលែកផ្ទាំង និងសម្លេង Brave</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> កំពុងចែករំលែកផ្ទាំង និងសម្លេង Brave ជាមួយ <ph name="TAB_NAME"/>។</translation>
+<translation id="7108338896283013870">លាក់</translation>
 <translation id="890616557918890486">ប្ដូរប្រភព</translation>
 <translation id="7792388396321542707">ឈប់ចែករំលែក</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> ចង់ចូលប្រើវិញ្ញាបនបត្រជាអចិន្ត្រៃយ៍ដើម្បីផ្ទៀងផ្ទាត់ដោយខ្លួនវាផ្ទាល់ជំនួសឲ្យអ្នក។</translation>
@@ -1660,6 +1661,7 @@
 <translation id="7022562585984256452">ទំព័រដើមរបស់អ្នកត្រូវបានកំណត់។</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">បន្ថែមម៉ាស៊ីនបោះពុម្ព</translation>
+<translation id="9052208328806230490">អ្នកបានចុះឈ្មោះម៉ាស៊ីនបោះពុម្ពរបស់អ្នកជាមួយ <ph name="CLOUD_PRINT_NAME"/> ដោយប្រើគណនី <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">ផ្តាច់ម៉ាស៊ីនបោះពុម្ព</translation>
 <translation id="5038863510258510803">កំពុងបើកដំណើរការ...</translation>
 <translation id="8264024885325823677">ការកំណត់នេះត្រូវបានគ្រប់គ្រងដោយអ្នកគ្រប់គ្រងរបស់អ្នក។</translation>
@@ -2292,6 +2294,7 @@
 <translation id="6711610692002680394">អ្នកត្រូវចូលទៅ Brave ដើម្បីចុះឈ្មោះឧបករណ៍ថ្មី</translation>
 <translation id="8931394284949551895">ឧបករណ៍ថ្មី</translation>
 <translation id="3752673729237782832">ឧបករណ៍របស់ខ្ញុំ</translation>
+<translation id="1721937473331968728">អ្នកអាចបន្ថែមម៉ាស៊ីនបោះពុម្ពក្លាសិកទៅកុំព្យូទ័ររបស់អ្នកទៅ <ph name="CLOUD_PRINT_NAME"/>។</translation>
 <translation id="715118844758971915">ម៉ាស៊ីនបោះពុម្ពក្លាសិក</translation>
 <translation id="4263757076580287579">ការចុះឈ្មោះម៉ាស៊ីនបោះពុម្ពត្រូវបានបដិសេធ។</translation>
 <translation id="8152091997436726702">ការចុះឈ្មោះម៉ាស៊ីនបោះពុម្ពបានអស់ពេល។ ដើម្បីចុះឈ្មោះម៉ាស៊ីនបោះពុម្ព អ្នកត្រូវតែអះអាងការចុះឈ្មោះនៅលើម៉ាស៊ីនបោះពុម្ព។</translation>
@@ -2959,9 +2962,11 @@
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> របស់អ្នក​ជា​កំណែថ្មី​ហើយ</translation>
 <translation id="3688526734140524629">ប្តូរបណ្តាញ</translation>
 <translation id="6410328738210026208">ប្តូរបណ្តាញ និង Powerwash</translation>
+<translation id="1979280758666859181">អ្នកកំពុងប្តូរទៅបណ្តាញដែលមានកំណែចាស់នៃ <ph name="PRODUCT_NAME"/>។ ការប្តូរបណ្តាញនឹងត្រូវបានអនុវត្ត នៅពេលដែលកំណែបណ្តាញនោះត្រូវគ្នាជាមួយកំណែបច្ចុប្បន្នដែលបានតំឡើងនៅលើឧបករណ៍របស់អ្នក។</translation>
 <translation id="7728668285692163452">ការប្តូរ​បណ្តាញ​នឹង​ត្រូវបាន​អនុវត្ត​នៅ​ពេលក្រោយ</translation>
 <translation id="5495466433285976480">វានឹងដកអ្នកប្រើមូលដ្ឋាន ឯកសារ ទិន្នន័យ និងការកំណត់ផ្សេងទៀតទាំងអស់ចេញ បន្ទាប់ពីការចាប់ផ្តើមឡើងវិញរបស់អ្នកលើកក្រោយ។ អ្នកប្រើទាំងអស់នឹងត្រូវចូលម្តងទៀត។</translation>
 <translation id="8101987792947961127">តម្រូវឲ្យមាន Powerwash នៅលើពេលបិទបើកដំណើរការឡើងវិញនៅពេលបន្ទាប់</translation>
+<translation id="1414648216875402825">អ្នកកំពុងធ្វើបច្ចុប្បន្នភាពកំណែមិនថេរនៃ <ph name="PRODUCT_NAME"/> ដែលផ្ទុកលក្ខណៈពិសេសដែលនៅក្នុងប្រតិបត្តិការនៅឡើយ។ ការគាំង និងកំហុសដែលបានមិនបានរំពឹងទុកនឹងកើតមាន។ សូមបន្តដោយប្រុងប្រយ័ត្ន។</translation>
 <translation id="6103681770816982672">ការព្រមាន៖ អ្នកកំពុងឆ្លាស់ទៅបណ្តាញអ្នកអភិវឌ្ឍន៍</translation>
 <translation id="8807632654848257479">ថេរ</translation>
 <translation id="830868413617744215">បែតា</translation>
@@ -3734,10 +3739,12 @@
 <translation id="5302048478445481009">ភាសា</translation>
 <translation id="6388429472088318283">ភាសា​សម្រាប់​ការ​ស្វែងរក</translation>
 <translation id="2690024944919328218">បង្ហាញជម្រើសភាសា</translation>
+<translation id="768549422429443215">បញ្ចូលភាសា ឬ​តម្រៀបបញ្ជី​ឡើងវិញ។</translation>
 <translation id="8218847192766059983">បញ្ចូលភាសា ឬ​តម្រៀបបញ្ជី​ឡើងវិញ។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">អក្សរប្រព័ន្ធ​បង្ហាញ​ជាភាសានេះ</translation>
 <translation id="2366260648632264559">បង្ហាញ​អក្សរប្រព័ន្ធជាភាសានេះ</translation>
 <translation id="8336721153892716270">ចាប់ផ្ដើម​ឧបករណ៍​ឡើងវិញ ដើម្បី​បង្ហាញ​អក្សរ​ប្រព័ន្ធ​ជា​ភាសា​<ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">បញ្ជាទិញ​ភាសា​ដោយ​ផ្អែក​លើ​ចំណូលចិត្ត​របស់​អ្នក</translation>
 <translation id="5972708806901999743">ផ្លាស់ទីទៅលើ</translation>
 <translation id="8609465669617005112">រំកិលទៅលើ</translation>
 <translation id="6746124502594467657">រំកិលចុះ</translation>
@@ -4567,6 +4574,7 @@
 <translation id="8143442547342702591">កម្មវិធីគ្មានសុពលភាព</translation>
 <translation id="720110658997053098">កំណត់ឧបករណ៍នេះឱ្យដំណើរការមុខងារបញ្ជរជាអចិន្ត្រៃយ៍</translation>
 <translation id="1909880997794698664">តើអ្នកប្រាកដថាចង់រក្សាទុកឧបករណ៍នេះជាអចិន្ត្រៃយ៍នៅក្នុងរបៀបបញ្ជរទេ?</translation>
+<translation id="1512210426710821809">មធ្យោបាយ​តែមួយគត់​ក្នុងការត្រឡប់សកម្មភាពនេះវិញ​គឺត្រូវ​ដំឡើង <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> ឡើងវិញ</translation>
 <translation id="8281886186245836920">រំលង</translation>
 <translation id="2342740338116612727">បានបញ្ចូល​ចំណាំ</translation>
 <translation id="7835178595033117206">បាន​លុប​​​ចំណាំ​</translation>
@@ -4687,7 +4695,10 @@
 <translation id="1526560967942511387">ឯកសារគ្មានចំណងជើង</translation>
 <translation id="5269977353971873915">ការបោះពុម្ពបានបរាជ័យ</translation>
 <translation id="7385854874724088939">Something went wrong when trying to print.  Please check your printer and try again.</translation>
+<translation id="1197979282329025000">កំហុសឆ្គងមួយបានកើតឡើង ខណៈពេលកំពុងទាញយកសមត្ថភាពម៉ាស៊ីនបោះពុម្ពសម្រាប់ម៉ាស៊ីនបោះពុម្ពវិញ <ph name="PRINTER_NAME"/>។ ម៉ាស៊ីនបោះពុម្ពនេះមិនអាចចុះឈ្មោះជាមួយ <ph name="CLOUD_PRINT_NAME"/> ទេ។</translation>
 <translation id="9004952710076978168">បានទទួលការជូនដំណឹងពីម៉ាស៊ីនបោះពុម្ពដែលមិនស្គាល់។</translation>
+<translation id="2202898655984161076">មានបញ្ហាកើតឡើងនៅក្នុងបញ្ជីម៉ាស៊ីនបោះពុម្ពក្នុងបញ្ជី។ ម៉ាស៊ីនបោះពុម្ពរបស់អ្នកមួយចំនួនប្រហែលមិនអាចចុះឈ្មោះដោយជោគជ័យជាមួយ <ph name="CLOUD_PRINT_NAME"/> ទេ។</translation>
+<translation id="3220586366024592812">ដំណើរការឧបករណ៍ភ្ជាប់ <ph name="CLOUD_PRINT_NAME"/> បានគាំង។ ចាប់ផ្តើមឡើងវិញ?</translation>
 <translation id="6904655473976120856">ចុច​ប៊ូតុងកម្មវិធី​ដើម្បី​ចាកចេញ</translation>
 <translation id="8909833622202089127">ទំព័រ​កំពុងតាមដាន​ទីតាំង​របស់អ្នក</translation>
 <translation id="375636864092143889">ទំព័រ​កំពុងប្រើ​មីក្រូហ្វូន​របស់អ្នក</translation>

@@ -11,6 +11,7 @@
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
 <translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
+<translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="4726634924419692905">কোনো সাইট আপনার কম্পিউটারে Widevine ইনস্টল করতে চাইলে জিজ্ঞাসা করুন।</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave সুরক্ষা এবং নিরাপত্তার জন্য এই সম্প্রসারণটি পর্যালোচনা করেনি। আপনি ডেভেলপারকে বিশ্বাস করলেই শুধুমাত্র এই সম্প্রসারণটি ইনস্টল করুন।</translation>
 <translation id="8081858229109418493">প্রোফাইলের নাম ও আইকন</translation>
 <translation id="2044383478723007273">Brave রঙ</translation>
+<translation id="1692470335103807198">আরো থিম পান</translation>
+<translation id="2906510232093002459">Brave ডিফল্ট ছবিসমূহ</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
 <translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
 <translation id="1520361618554057102">নতুন ট্যাব পৃষ্ঠাতে সবর্দা বুকমার্কগুলি দেখান</translation>
 <translation id="5802665280774361839">ঠিকানা বারে স্বতঃসম্পূর্ণ দেখান</translation>
+<translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
+<translation id="2467749191278759605">আপনার Brave ড্যাশবোর্ড কাস্টমাইজ করুন</translation>
+<translation id="1717331825806276156">ব্যাকগ্রাউন্ডের ছবিসমূহ</translation>
+<translation id="1820041496463124489">স্পন্সর করা ছবিগুলি</translation>
+<translation id="8173998484743827990">Brave পরিসংখ্যান</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">সেরা সাইটগুলি</translation>
+<translation id="1776831331757823105">ঘড়ি</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="8511502469534942133">এই সাইটের জন্য নতুন Tor Connection</translation>
 <translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">শুধুমাত্র ক্রশ-সাইট কুকিজগুলি ব্লক করুন</translation>
 <translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
 <translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
-<translation id="5572437114858031185">শুধু ক্রস-সাইট আঙুলের ছাপ দেওয়ার প্রচেষ্টাগুলিই রোধ করুন</translation>
-<translation id="5079032039521408559">সমস্ত আঙুলের ছাপ দেওয়ার প্রচেষ্টার অনুমতি দিন</translation>
-<translation id="6447141055227658942">সমস্ত আঙুলের ছাপ দেওয়ার প্রচেষ্টা রোধ করুন</translation>
+<translation id="5963670684159057574">ক্রশ-সাইট ফিঙ্গারপ্রিন্টিং ব্লক করুন</translation>
+<translation id="769702552748212954">সমস্ত ফিঙ্গারপ্রিন্টিং এর অনুমতি দিন</translation>
+<translation id="4540198958192073185">সমস্ত আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
 <translation id="8942080017911802454">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">Linux এর মতো</translation>
 <translation id="1336940801687497203">Windows এর মতো</translation>
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
-<translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="7701040980221191251">কিছুই নয়</translation>

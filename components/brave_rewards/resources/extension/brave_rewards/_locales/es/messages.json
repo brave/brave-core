@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Recibe recompensas por visualizar anuncios y envíalas por adelantado para apoyar a tus creadores de contenido favoritos.",
+    "message": "Obtén recompensas por visualizar anuncios y envíalas a tus creadores de contenido favoritos para apoyarlos.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -96,7 +96,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Resumen de Recompensas",
+    "message": "Resumen de Rewards",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -174,7 +174,7 @@
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
-    "message": "Propinas únicas.",
+    "message": "Propinas únicas",
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
@@ -236,7 +236,7 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Haz un respaldo de tu monedero Brave.",
+    "message": "Por favor, haz un respaldo de tu monedero Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -252,7 +252,7 @@
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "Ha ocurrido un problema al procesar su contribución.",
+    "message": "Ha ocurrido un problema al procesar tu contribución.",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
@@ -268,7 +268,7 @@
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
-    "message": "Arrastre el icono BAT en",
+    "message": "Arrastra el icono BAT en",
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
@@ -288,11 +288,11 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Concesión Gratuita de Token",
+    "message": "Concesión gratuita de token",
     "description": "Token grant label"
   },
   "grantExpire": {
-    "message": "Fecha de Vencimiento de la Concesión",
+    "message": "Fecha de vencimiento de la concesión",
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
@@ -304,7 +304,7 @@
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "¡Vaya!, algo ha ido mal. Inténtalo de nuevo más tarde.",
+    "message": "¡Vaya!, algo ha ido mal. Por favor, inténtalo de nuevo más tarde.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
@@ -340,7 +340,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Actualmente no estás acumulando ningún beneficio de Rewards mientras navegas. Vuelve a activar Recompensas en",
+    "message": "Actualmente no estás acumulando ningún beneficio de Rewards mientras navegas. Vuelve a activar Rewards en",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -368,7 +368,7 @@
     "description": "Panel notification text for Ads grant"
   },
   "and": {
-    "message": "y la",
+    "message": "y",
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
@@ -376,7 +376,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "Recibe recompensas por visualizar anuncios respetuosos con la privacidad y envíalas por adelantado para apoyar a tus creadores de contenido favoritos.",
+    "message": "Obtén recompensas por visualizar anuncios respetuosos con la privacidad, y envíalas a tus creadores de contenido favoritos para apoyarlos.",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {

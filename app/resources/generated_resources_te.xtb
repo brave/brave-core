@@ -1621,6 +1621,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> ఒక Brave ట్యాబ్‌ని <ph name="TAB_NAME"/>తో భాగస్వామ్యం చేస్తోంది.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> ఒక Brave ట్యాబ్‌ను మరియు ఆడియోను భాగస్వామ్యం చేస్తోంది.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> ఒక Brave ట్యాబ్‌ను మరియు ఆడియోను <ph name="TAB_NAME"/>తో భాగస్వామ్యం చేస్తోంది.</translation>
+<translation id="7108338896283013870">దాచిపెట్టు</translation>
 <translation id="890616557918890486">మూలాధారాన్ని మార్చు</translation>
 <translation id="7792388396321542707">భాగస్వామ్యం చేయడాన్ని ఆపివేయి</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> మీ తరపున దానికదే ప్రామాణీకరించుకోవడం కోసం ఒక ప్రమాణపత్రానికి శాశ్వత ప్రాప్యత కోరుతోంది.</translation>
@@ -1654,6 +1655,7 @@
 <translation id="7022562585984256452">మీ హోమ్ పేజీ సెట్ చేయబడింది.</translation>
 <translation id="8069615408251337349">Brave Software క్లౌడ్ ప్రింట్</translation>
 <translation id="4973307593867026061">ప్రింటర్‌లను జోడించు</translation>
+<translation id="9052208328806230490">మీరు <ph name="EMAIL"/> ఖాతాను ఉపయోగించి <ph name="CLOUD_PRINT_NAME"/>తో మీ ప్రింట‌ర్‌ల‌ను నమోదు చేశారు</translation>
 <translation id="3792890930871100565">ముద్రకాలను డిస్‌కనెక్ట్ చేయి</translation>
 <translation id="5038863510258510803">ప్రారంభిస్తోంది...</translation>
 <translation id="8264024885325823677">ఈ సెట్టింగ్ మీ నిర్వాహకుడి ద్వారా నిర్వహించబడుతుంది.</translation>
@@ -2287,6 +2289,7 @@
 <translation id="6711610692002680394">మీరు కొత్త పరికరాలను నమోదు చేయడానికి Braveకి సైన్ ఇన్ చేయాలి</translation>
 <translation id="8931394284949551895">కొత్త పరికరాలు</translation>
 <translation id="3752673729237782832">నా పరికరాలు</translation>
+<translation id="1721937473331968728">మీరు మీ కంప్యూటర్‌కు కనెక్ట్ చేయబడిన క్లాసిక్ ప్రింటర్‌లను <ph name="CLOUD_PRINT_NAME"/>కి జోడించవచ్చు.</translation>
 <translation id="715118844758971915">క్లాసిక్ ప్రింటర్‌లు</translation>
 <translation id="4263757076580287579">ప్రింటర్ నమోదు రద్దు చేయబడింది.</translation>
 <translation id="8152091997436726702">ప్రింటర్ నమోదు‌కు గడువు ముగిసింది. ప్రింటర్‌ను నమోదు చేయడానికి, మీరు తప్పనిసరిగా ప్రింటర్‌లో నమోదును నిర్ధారించాలి.</translation>
@@ -2954,9 +2957,11 @@
 <translation id="1871615898038944731">మీ <ph name="DEVICE_TYPE"/> తాజాగా ఉంది</translation>
 <translation id="3688526734140524629">ఛానెల్‌ను మార్చు</translation>
 <translation id="6410328738210026208">ఛానెల్ మరియు పవర్‌వాష్‌ను మార్చు</translation>
+<translation id="1979280758666859181">మీరు <ph name="PRODUCT_NAME"/> పాత వెర్షన్ ఉన్న ఛానెల్‌కు మారుతున్నారు. ఈ ఛానెల్ వెర్షన్, మీ పరికరంలో ప్రస్తుతం ఇన్‌స్టాల్ అయిన వెర్షన్‌కు సరిపోలినప్పుడు ఛానెల్ మార్పు వర్తిస్తుంది.</translation>
 <translation id="7728668285692163452">ఛానెల్ మార్పు తర్వాత వర్తింపజేయబడుతుంది</translation>
 <translation id="5495466433285976480">మీరు తదుపరిసారి పునఃప్రారంభించినప్పుడు ఇది స్థానిక వినియోగదారులు, ఫైల్‌లు, డేటా మరియు ఇతర సెట్టింగ్‌లు మొత్తాన్ని తీసివేస్తుంది. వినియోగదారులందరూ మళ్లీ సైన్ ఇన్ చేయాల్సి ఉంటుంది.</translation>
 <translation id="8101987792947961127">తదుపరి రీబూట్‌లో పవర్‌వాష్ అవసరం</translation>
+<translation id="1414648216875402825">మీరు <ph name="PRODUCT_NAME"/> యొక్క అస్థిర వెర్షన్‌కు అప్‌డేట్ చేస్తున్నారు, ఇందులో పురోగతిలో ఉన్న ఫీచర్‌లు ఉంటాయి. క్రాష్‌లు మరియు ఊహించని బగ్‌లు ఏర్పడవచ్చు. దయచేసి జాగ్రత్తగా కొనసాగండి.</translation>
 <translation id="6103681770816982672">హెచ్చరిక: మీరు డెవలపర్ ఛానెల్‌కు మారుతున్నారు</translation>
 <translation id="8807632654848257479">స్థిరత్వం</translation>
 <translation id="830868413617744215">బీటా</translation>
@@ -3728,10 +3733,12 @@
 <translation id="5302048478445481009">భాష</translation>
 <translation id="6388429472088318283">భాషలను వెతకండి</translation>
 <translation id="2690024944919328218">భాష ఎంపికలను చూపు</translation>
+<translation id="768549422429443215">భాషలను జోడించండి లేదా జాబితా క్రమాన్ని మళ్లీ మార్చండి.</translation>
 <translation id="8218847192766059983">భాషలను జోడించండి లేదా జాబితా క్రమాన్ని మళ్లీ మార్చండి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">సిస్టమ్ వచనం ఈ భాషలో చూపబడుతుంది</translation>
 <translation id="2366260648632264559">సిస్టమ్ వచనాన్ని ఈ భాషలో చూపు</translation>
 <translation id="8336721153892716270">సిస్టమ్ వచనాన్ని <ph name="LANGUAGE"/>లో చూపడానికి పరికరాన్ని రీస్టార్ట్ చేయండి</translation>
+<translation id="7216595297012131718">భాషలను మీ ప్రాధాన్యత ఆధారంగా క్రమం చేస్తుంది</translation>
 <translation id="5972708806901999743">పైకి తరలించు</translation>
 <translation id="8609465669617005112">పైకి తరలించు</translation>
 <translation id="6746124502594467657">క్రిందికి తరలించు</translation>
@@ -4070,6 +4077,7 @@
 <translation id="2458379781610688953"><ph name="EMAIL"/> ఖాతాను అప్‌డేట్ చేయండి</translation>
 <translation id="2701737434167469065"><ph name="EMAIL"/>కు సైన్ ఇన్ చేయండి</translation>
 <translation id="2923234477033317484">ఈ ఖాతాను తీసివేయి</translation>
+<translation id="8995603266996330174"><ph name="DOMAIN"/> ద్వారా నిర్వహించబడుతోంది</translation>
 <translation id="4659077111144409915">ప్రాథమిక ఖాతా</translation>
 <translation id="8864458770072227512">ఈ పరికరం నుండి <ph name="EMAIL"/> తీసివేయబడింది</translation>
 <translation id="3158033540161634471">మీ వేలిముద్రను సెటప్ చేయండి</translation>
@@ -4561,6 +4569,7 @@
 <translation id="8143442547342702591">చెల్లని అప్లికేషన్</translation>
 <translation id="720110658997053098">ఈ పరికరాన్ని శాశ్వతంగా కియోస్క్ మోడ్‌లో ఉంచు</translation>
 <translation id="1909880997794698664">మీరు ఖచ్చితంగా ఈ పరికరాన్ని శాశ్వతంగా కియోస్క్ మోడ్‌లో ఉంచాలనుకుంటున్నారా?</translation>
+<translation id="1512210426710821809">దీనిని చర్య రద్దు చేయడానికి <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>ను రీ-ఇన్‌స్టాల్ చేయడమే ఏకైక పాథ్‌</translation>
 <translation id="8281886186245836920">దాటవేయి</translation>
 <translation id="2342740338116612727">బుక్‌మార్క్‌లు జోడించబడ్డాయి</translation>
 <translation id="7835178595033117206">బుక్‌మార్క్ తీసివేయబడింది</translation>
@@ -4681,7 +4690,10 @@
 <translation id="1526560967942511387">శీర్షికలేని పత్రం</translation>
 <translation id="5269977353971873915">ముద్రణ విఫలమైంది</translation>
 <translation id="7385854874724088939">ముద్రించడానికి ప్రయత్నించే సమయంలో ఏదో తప్పు జరిగింది.  దయచేసి కోడ్ను తనిఖీ చేసి, మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="1197979282329025000">ప్రింటర్ <ph name="PRINTER_NAME"/>కు సంబంధించిన ప్రింటర్ సామర్థ్యాలను తిరిగి పొందడంలో ఎర్రర్ ఏర్పడింది. ఈ ప్రింటర్‌ను <ph name="CLOUD_PRINT_NAME"/>తో నమోదు చేయడం సాధ్యం కాలేదు.</translation>
 <translation id="9004952710076978168">తెలియని ప్రింటర్ కోసం నోటిఫికేషన్ స్వీకరించబడింది.</translation>
+<translation id="2202898655984161076">ముద్రణలను జాబితా చెయ్యడంలో సమస్య ఉంది. <ph name="CLOUD_PRINT_NAME"/>తో మీ ముద్రణలలో కొన్ని విజయవంతంగా నమోదు చెయ్యబడకపోయి ఉండవచ్చు.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> కనెక్టర్ విధానం క్రాష్ అయ్యింది. పునఃప్రారంభించాలా?</translation>
 <translation id="6904655473976120856">నిష్క్రమించడానికి అనువర్తన బటన్ నొక్కండి</translation>
 <translation id="8909833622202089127">సైట్ మీ స్థానాన్ని ట్రాక్ చేస్తోంది</translation>
 <translation id="375636864092143889">సైట్ మీ మైక్రోఫోన్‌ని ఉపయోగిస్తోంది</translation>

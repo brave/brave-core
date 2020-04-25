@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="7450557937477381864">Zamknij Chrome</translation>
 <translation id="7008934821596358692">Aby zakończyć importowanie, zamknij wszystkie okna przeglądarki Chrome.</translation>
+<translation id="6786747875388722282">Rozszerzenia</translation>
 <translation id="3699882589215410581">Zainstaluj i uruchom Widevine</translation>
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="4726634924419692905">Pytaj, gdy strona chce zainstalować Widevine na komputerze</translation>
@@ -31,11 +32,21 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="5883458389055721080">Brave nie zweryfikował tego rozszerzenia pod względem bezpieczeństwa i ochrony. Instaluj to rozszerzenie tylko wtedy, gdy ufasz programistom.</translation>
 <translation id="8081858229109418493">Nazwa profilu i zdjęcie</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
+<translation id="1692470335103807198">Pobierz więcej motywów</translation>
+<translation id="2906510232093002459">Obrazy domyślne Brave</translation>
 <translation id="2814998458708016836">Korzystaj z szerokiego paska adresu</translation>
 <translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
 <translation id="7635711399568194460">Ukryj ikonę nagród Brave, kiedy nie są włączone.</translation>
 <translation id="1520361618554057102">Zawsze pokazuj pasek zakładek na stronie nowej karty</translation>
 <translation id="5802665280774361839">Wyświetl elementy automatycznie wypełnione w pasku adresu</translation>
+<translation id="7781069478569868053">Strona nowej karty</translation>
+<translation id="2467749191278759605">Dostosuj pulpit Brave</translation>
+<translation id="1717331825806276156">Obrazy w tle</translation>
+<translation id="1820041496463124489">Obrazy sponsorowane</translation>
+<translation id="8173998484743827990">Statystyki Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Popularne strony</translation>
+<translation id="1776831331757823105">Godzina</translation>
 <translation id="7965178729203412357">Nowa tożsamość Tor</translation>
 <translation id="8511502469534942133">Nowe połączenie z siecią Tor dla tej strony</translation>
 <translation id="8784924142044142231">Wyjdź z sieci Tor</translation>
@@ -63,21 +74,21 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2360360976480535628">Widok zaawansowany</translation>
 <translation id="5709627087332022422">Zablokuj skrypty śledzące</translation>
 <translation id="6447842834002726250">Pliki cookie</translation>
-<translation id="6522412052085018663">Logowanie odciskiem palca</translation>
+<translation id="6522412052085018663">Rozpoznawanie urządzenia</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="4824468494729001999">Zablokuj skrypty</translation>
-<translation id="519861640102428255">Spójrz &amp;amp; Poczuj</translation>
-<translation id="4800195524776354947">Wyświetlaj liczbę zablokowanych elementów na ikonie Shield.</translation>
-<translation id="7498695072878479744">Zezwól na przyciski logowania Google na witrynach innych firm</translation>
+<translation id="519861640102428255">Wygląd i wrażenie</translation>
+<translation id="4800195524776354947">Wyświetlaj liczbę zablokowanych elementów na ikonie tarczy.</translation>
+<translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="4699812599455071925">Zablokuj pliki cookie stron trzecich</translation>
 <translation id="5657156137487675418">Zezwól na wszystkie pliki cookie</translation>
 <translation id="6883611015375728278">Zablokuj wszystkie pliki cookie</translation>
-<translation id="5572437114858031185">Blokuj wyłącznie próby logowania odciskiem palca z innych stron</translation>
-<translation id="5079032039521408559">Zezwalaj na wszystkie próby logowania odciskiem palca</translation>
-<translation id="6447141055227658942">Blokuj wszystkie próby logowania odciskiem palca</translation>
+<translation id="5963670684159057574">Zablokuj rozpoznawanie urządzenia przez strony trzecie</translation>
+<translation id="769702552748212954">Zezwól na rozpoznawanie urządzenia</translation>
+<translation id="4540198958192073185">Zablokuj rozpoznawanie urządzenia</translation>
 <translation id="8942080017911802454">Polityka obsługi WebRTC IP</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8798099450830957504">Domyślne</translation>
@@ -87,14 +98,13 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8502234992433094996">Używaj Usług Google do obsługi wiadomości push</translation>
 <translation id="3888068426966679906">Zdalne usuwanie błędów</translation>
 <translation id="6645631466045614531">Uzyskaj dostęp do synchronizacji przez</translation>
-<translation id="6696935187608454456">Porady pomocy</translation>
-<translation id="2775956301559569472">Pokaż komunikat Wayback Machine na 404 stronach</translation>
+<translation id="6696935187608454456">Wskazówki</translation>
+<translation id="2775956301559569472">Pokaż komunikat archiwum Wayback Machine na stronach z kodem błędu 404</translation>
 <translation id="1807246157184219062">Jasny</translation>
 <translation id="2414886740292270097">Ciemny</translation>
 <translation id="1360441190790440400">Takie same jak w systemie Linux</translation>
 <translation id="1336940801687497203">Takie same jak w systemie Windows</translation>
 <translation id="8721331068159819483">Takie same jak w systemie MacOS</translation>
-<translation id="6786747875388722282">Rozszerzenia</translation>
 <translation id="2896916411183256228">Do prawidłowego wyświetlania torrentów bezpośrednio w przeglądarce używane jest narzędzie WebTorrent. Wspierane są pliki typu torrent i linki magnetyczne.</translation>
 <translation id="2356070529366658676">Pytaj</translation>
 <translation id="7701040980221191251">Brak</translation>
@@ -166,7 +176,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="5756155765711979898">Korzystaj z MetaMask</translation>
 <translation id="6754134632841262799">KONFIGURACJA</translation>
 <translation id="4552520379838695057">Przepraszamy, nie znaleziono tej strony.</translation>
-<translation id="2609895996619941644">Czy chcesz sprawdzić, czy zapisana wersja jest dostępna na Wayback Machine?</translation>
+<translation id="2609895996619941644">Czy chcesz sprawdzić, czy zapisana wersja strony jest dostępna w archiwum Wayback Machine?</translation>
 <translation id="8053093028263274061">Przepraszamy, nie znaleziono zapisanej wersji.</translation>
 <translation id="8517321676372639828">Sprawdź, czy nie ma już zapisanej wersji</translation>
 <translation id="191143826155037518">Przeglądarka Brave powstała na podstawie licencji <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) i zawiera <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>oprogramowanie open source<ph name="END_LINK_OSS">&lt;/a&gt;</ph> na podstawie różnych licencji. Możesz przeczytać <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrukcję jak pobrać i skompilować<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> określony <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>kod źródłowy, aby utworzyć własną kopię kompilacji<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
@@ -177,5 +187,5 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8025559074845816210">Brave wymaga pełnego dostępu do dysku, aby zaimportować Twoje zakładki z przeglądarki Safari.</translation>
 <translation id="8515328844674404333">Dowiedz się, jak udzielić pełnego dostępu do dysku w preferencjach systemowych.</translation>
 <translation id="6414878884710400018">Otwórz Preferencje systemowe</translation>
-<translation id="5570470519803062774">Ustawienia witryny i opcji Shields</translation>
+<translation id="5570470519803062774">Ustawienia stron i tarcz</translation>
 </translationbundle>

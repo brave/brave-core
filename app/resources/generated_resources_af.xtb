@@ -1627,6 +1627,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="5727851901710884484"><ph name="APP_NAME"/> deel tans 'n Brave-oortjie met <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> deel tans 'n Brave-oortjie en oudio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> deel tans 'n Brave-oortjie en oudio met <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Versteek</translation>
 <translation id="890616557918890486">Verander bron</translation>
 <translation id="7792388396321542707">Hou op deel</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> wil permanente toegang hê tot 'n sertifikaat om hom namens jou te staaf.</translation>
@@ -1660,6 +1661,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="7022562585984256452">Jou tuisblad is gestel.</translation>
 <translation id="8069615408251337349">Brave Software Wolkdruk</translation>
 <translation id="4973307593867026061">Voeg drukkers by</translation>
+<translation id="9052208328806230490">Jy het jou drukkers by <ph name="CLOUD_PRINT_NAME"/> geregistreer deur die rekening <ph name="EMAIL"/> te gebruik.</translation>
 <translation id="3792890930871100565">Ontkoppel drukkers</translation>
 <translation id="5038863510258510803">Aktiveer tans …</translation>
 <translation id="8264024885325823677">Jou administrateur bestuur hierdie instelling.</translation>
@@ -2292,6 +2294,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="6711610692002680394">Jy moet by Brave aanmeld om nuwe toestelle te registreer.</translation>
 <translation id="8931394284949551895">Nuwe toestelle</translation>
 <translation id="3752673729237782832">My toestelle</translation>
+<translation id="1721937473331968728">Jy kan klassieke drukkers wat aan jou rekenaar gekoppel is, by <ph name="CLOUD_PRINT_NAME"/> voeg.</translation>
 <translation id="715118844758971915">Klassieke drukkers</translation>
 <translation id="4263757076580287579">Drukkerregistrasie is gekanselleer.</translation>
 <translation id="8152091997436726702">Drukkerregistrasie het uitgetel. Om te registreer, moet jy registrasie op die drukker bevestig.</translation>
@@ -2959,9 +2962,11 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="1871615898038944731">Jou <ph name="DEVICE_TYPE"/> is op datum</translation>
 <translation id="3688526734140524629">Verander kanaal</translation>
 <translation id="6410328738210026208">Verander kanaal en Kragwas</translation>
+<translation id="1979280758666859181">Jy verander tans na 'n kanaal met 'n ouer weergawe van <ph name="PRODUCT_NAME"/>. Die kanaalverandering sal toegepas word wanneer die kanaalweergawe ooreenstem met die weergawe wat tans op jou toestel geïnstalleer is.</translation>
 <translation id="7728668285692163452">Kanaalverandering sal later toegepas word</translation>
 <translation id="5495466433285976480">Dit sal alle plaaslike gebruikers, lêers, data en ander instellings verwyder ná jou volgende herbegin. Alle gebruikers moet weer aanmeld.</translation>
 <translation id="8101987792947961127">Kragwas vereis vir volgende herselflaai</translation>
+<translation id="1414648216875402825">Jy dateer tans na 'n onstabiele weergawe van <ph name="PRODUCT_NAME"/> op wat kenmerke bevat wat tans besig is. Omvalle en onverwagte lêerfoute sal opduik. Gaan met omsigtigheid voort.</translation>
 <translation id="6103681770816982672">Waarskuwing: jy skakel tans na ontwikkelaarkanaal oor</translation>
 <translation id="8807632654848257479">Stabiel</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3734,10 +3739,12 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="5302048478445481009">Taal</translation>
 <translation id="6388429472088318283">Soek tale</translation>
 <translation id="2690024944919328218">Wys taalopsies</translation>
+<translation id="768549422429443215">Voeg tale by of herrangskik lys.</translation>
 <translation id="8218847192766059983">Voeg tale by of herrangskik lys. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Stelselteks word in hierdie taal gewys</translation>
 <translation id="2366260648632264559">Wys stelselteks in hierdie taal</translation>
 <translation id="8336721153892716270">Herbegin toestel om stelselteks in <ph name="LANGUAGE"/> te wys</translation>
+<translation id="7216595297012131718">Rangskik tale op grond van jou voorkeur</translation>
 <translation id="5972708806901999743">Beweeg na die bokant</translation>
 <translation id="8609465669617005112">Skuif op</translation>
 <translation id="6746124502594467657">Skuif af</translation>
@@ -4567,6 +4574,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8143442547342702591">Ongeldige program</translation>
 <translation id="720110658997053098">Hou hierdie toestel permanent in kioskmodus</translation>
 <translation id="1909880997794698664">Is jy seker jy wil hierdie toestel permanent in kioskmodus hou?</translation>
+<translation id="1512210426710821809">Die enigste manier om dit te ontdoen, is om <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> te herinstalleer.</translation>
 <translation id="8281886186245836920">Slaan oor</translation>
 <translation id="2342740338116612727">Boekmerke is bygevoeg</translation>
 <translation id="7835178595033117206">Boekmerk is verwyder</translation>
@@ -4687,7 +4695,10 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="1526560967942511387">Titellose dokument</translation>
 <translation id="5269977353971873915">Kon nie uitdruk nie</translation>
 <translation id="7385854874724088939">Kon nie uitdruk nie. Gaan asseblief jou drukker na en probeer weer.</translation>
+<translation id="1197979282329025000">Kon nie drukkervermoëns vir drukker <ph name="PRINTER_NAME"/> gaan haal nie. Hierdie drukker kon nie by <ph name="CLOUD_PRINT_NAME"/> geregistreer word nie.</translation>
 <translation id="9004952710076978168">Het 'n kennisgewing vir 'n onbekende drukker ontvang.</translation>
+<translation id="2202898655984161076">Kon nie drukkers lys nie. Sommige van jou drukkers het dalk nie suksesvol by <ph name="CLOUD_PRINT_NAME"/> geregistreer nie.</translation>
+<translation id="3220586366024592812">Die <ph name="CLOUD_PRINT_NAME"/>-koppelingproses het omgeval. Herbegin?</translation>
 <translation id="6904655473976120856">Druk Program-knoppie om uit te gaan</translation>
 <translation id="8909833622202089127">Werf spoor tans jou ligging na</translation>
 <translation id="375636864092143889">Werf gebruik tans jou mikrofoon</translation>

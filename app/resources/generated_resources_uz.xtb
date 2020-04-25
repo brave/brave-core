@@ -1625,6 +1625,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5727851901710884484">“<ph name="APP_NAME"/>” ilovasi <ph name="TAB_NAME"/> saytiga Brave sahifasiga kirish uchun ruxsat berdi.</translation>
 <translation id="5770515304879261338">“<ph name="APP_NAME"/>” ilovasi Brave sahifasi va audioga kirishda ruxsat berdi.</translation>
 <translation id="859454237594354073">“<ph name="APP_NAME"/>” ilovasi <ph name="TAB_NAME"/> saytiga Brave sahifasi va audioga kirish uchun ruxsat berdi.</translation>
+<translation id="7108338896283013870">Berkitish</translation>
 <translation id="890616557918890486">Manbani almashtirish</translation>
 <translation id="7792388396321542707">Ruxsatni bekor qilish</translation>
 <translation id="6630752851777525409">“<ph name="EXTENSION_NAME"/>” kengaytmasi sizning nomingizdan o‘zining haqiyligini tekshirish uchun sertifikatdan doimiy foydalanish uchun ruxsat so‘ramoqda.</translation>
@@ -1658,6 +1659,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7022562585984256452">Bosh sahifa sozlandi.</translation>
 <translation id="8069615408251337349">Brave Software virtual printeri</translation>
 <translation id="4973307593867026061">Printerlarni qo‘shish</translation>
+<translation id="9052208328806230490">Printerlaringizni <ph name="EMAIL"/> hisobi yordamida <ph name="CLOUD_PRINT_NAME"/>’da qayddan o‘tkazdingiz</translation>
 <translation id="3792890930871100565">Printerlarni o‘chirish</translation>
 <translation id="5038863510258510803">Yoqilmoqda...</translation>
 <translation id="8264024885325823677">Bu sozlama administrator tomonidan boshqariladi.</translation>
@@ -2290,6 +2292,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="6711610692002680394">Yangi qurilmani ro‘yxatdan o‘tkazish uchun Brave hisobingizga kiring</translation>
 <translation id="8931394284949551895">Yangi qurilmalar</translation>
 <translation id="3752673729237782832">Mening qurilmalarim</translation>
+<translation id="1721937473331968728">Kompyuterga ulangan oddiy printerlarni <ph name="CLOUD_PRINT_NAME"/> xizmatiga qo‘shish mumkin.</translation>
 <translation id="715118844758971915">Oddiy printerlar</translation>
 <translation id="4263757076580287579">Printerni ro‘yxatdan o‘tkazish bekor qilindi.</translation>
 <translation id="8152091997436726702">Printerni ro‘yxatdan o‘tkazish davomida kutish vaqti tugadi. Bu jarayonni tugallash uchun, printerni ro‘yxat o‘tkazishni tasdiqlash zarur.</translation>
@@ -2957,9 +2960,11 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> qurilmangizdagi Brave OS versiyasi yangi</translation>
 <translation id="3688526734140524629">Boshqa versiyani tanlash</translation>
 <translation id="6410328738210026208">Boshqa kanal tanlash va Powerwash amalini ishga tushirish</translation>
+<translation id="1979280758666859181">Siz <ph name="PRODUCT_NAME"/>‘ning ancha eski versiyasidan yangilanish kanaliga o‘tyapsiz. O‘zgartirishlar kuchga kirishi uchun kanal versiyasi qurilmangizdagi joriy versiya bilan bir xil bo‘lishi kerak.</translation>
 <translation id="7728668285692163452">Kanal o‘zgarishi keyinroq tatbiq qilinadi</translation>
 <translation id="5495466433285976480">Qayta o‘chirib yoqishdan so‘ng barcha mahalliy hisoblar, fayllar, ma’lumotlar va boshqa sozlamalar o‘chirib yuboriladi. Barcha foydalanuvchilar hisobga qaytadan kirishlari kerak bo‘ladi.</translation>
 <translation id="8101987792947961127">Qurilmani keyingi marta qayta ishga tushirishda Powerwash amali bajarilishi kerak</translation>
+<translation id="1414648216875402825"><ph name="PRODUCT_NAME"/>’ning beqaror versiyasiga yangilanmoqdasiz, unda yakunlanmagan xususiyatlar bor. Qotib qolishlar va kamchiliklar uchraydi. Ehtiyotkorlik bilan davom eting.</translation>
 <translation id="6103681770816982672">Diqqat! Siz dasturchilar versiyasiga o‘tmoqdasiz.</translation>
 <translation id="8807632654848257479">Barqaror</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3732,10 +3737,12 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5302048478445481009">Til</translation>
 <translation id="6388429472088318283">Tillarni qidirish</translation>
 <translation id="2690024944919328218">Til sozlamalarini ko‘rsatish</translation>
+<translation id="768549422429443215">Tillar kiritish yoki roʻyxatni qayta tartiblash.</translation>
 <translation id="8218847192766059983">Tillar kiritish yoki roʻyxatni qayta tartiblash. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Tizim matni shu tilda chiqadi</translation>
 <translation id="2366260648632264559">Tizim matnlari shu tilda chiqsin</translation>
 <translation id="8336721153892716270">Tizim <ph name="LANGUAGE"/> tilida chiqishi uchun qurilmani qayta ishga tushiring.</translation>
+<translation id="7216595297012131718">Tillar tartibi parametrlaringizga asoslangan</translation>
 <translation id="5972708806901999743">Boshiga ko‘chirish</translation>
 <translation id="8609465669617005112">Tepaga o‘tish</translation>
 <translation id="6746124502594467657">Pastga tushish</translation>
@@ -4565,6 +4572,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8143442547342702591">Yaroqsiz dastur</translation>
 <translation id="720110658997053098">Qurilmani har doim kiosk rejimida ishga tushirish</translation>
 <translation id="1909880997794698664">Qurilma har doim kiosk rejimida ishga tushirilsinmi?</translation>
+<translation id="1512210426710821809">Bu amalni bekor qilish uchun <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> tizimini qaytadan o‘rnatish zarur</translation>
 <translation id="8281886186245836920">Tashlab ketish</translation>
 <translation id="2342740338116612727">Bukmarklar biriktirildi</translation>
 <translation id="7835178595033117206">Xatcho‘p olib tashlandi</translation>
@@ -4685,7 +4693,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1526560967942511387">Nomlanmagan hujjat</translation>
 <translation id="5269977353971873915">Chop etib bo‘lmadi</translation>
 <translation id="7385854874724088939">Chop etish vaqtida xatolik yuz berdi. Printeringizni tekshiring va qaytadan urinib ko‘ring.</translation>
+<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> printeri xususiyatlari haqidagi ma’lumotlarni qabul qilishda xatolik yuz berdi. Printerni <ph name="CLOUD_PRINT_NAME"/> yordamida ro‘yxatdan o‘tkazib bo‘lmadi.</translation>
 <translation id="9004952710076978168">Noma‘lum printer haqidagi bildirishnoma qabul qilindi.</translation>
+<translation id="2202898655984161076">Printerlar ro‘yxatini yuklashda xatolik yuz berdi. Ba’zi printerlar <ph name="CLOUD_PRINT_NAME"/> yordamida ro‘yxatdan o‘tkazilmagan bo‘lishi mumkin.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> konnektori ishdan chiqdi. Qayta ishga tushirilsinmi?</translation>
 <translation id="6904655473976120856">Chiqish uchun ilova tugmasini bosing</translation>
 <translation id="8909833622202089127">Sayt joylashuvingizni kuzatmoqda</translation>
 <translation id="375636864092143889">Sayt mikrofondan foydalanmoqda</translation>

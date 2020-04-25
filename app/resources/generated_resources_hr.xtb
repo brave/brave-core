@@ -1626,6 +1626,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="5727851901710884484"><ph name="APP_NAME"/> dijeli Braveovu karticu s karticom <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> dijeli Braveovu karticu i zvuk.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> dijeli Braveovu karticu i zvuk s karticom <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Sakrij preglednik</translation>
 <translation id="890616557918890486">Promijeni izvor</translation>
 <translation id="7792388396321542707">Zaustavi dijeljenje</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> traži trajan pristup certifikatu za samostalnu autentifikaciju u vaše ime.</translation>
@@ -1659,6 +1660,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="7022562585984256452">Vaša je početna stranica postavljena.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Dodaj pisače</translation>
+<translation id="9052208328806230490">Registrirali ste pisače kod <ph name="CLOUD_PRINT_NAME"/> putem računa <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Isključi pisače</translation>
 <translation id="5038863510258510803">Omogućavanje...</translation>
 <translation id="8264024885325823677">Tom postavkom upravlja vaš administrator.</translation>
@@ -2291,6 +2293,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="6711610692002680394">Morate se prijaviti na Brave da biste registrirali nove uređaje</translation>
 <translation id="8931394284949551895">Novi uređaji</translation>
 <translation id="3752673729237782832">Moji uređaji</translation>
+<translation id="1721937473331968728">Na uslugu <ph name="CLOUD_PRINT_NAME"/> možete dodati klasične pisače povezane s vašim računalom.</translation>
 <translation id="715118844758971915">Klasični pisači</translation>
 <translation id="4263757076580287579">Registracija pisača otkazana je.</translation>
 <translation id="8152091997436726702">Isteklo je vrijeme registracije pisača. Da biste registrirali pisač, morate potvrditi registraciju na pisaču.</translation>
@@ -2971,9 +2974,11 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> je ažuriran</translation>
 <translation id="3688526734140524629">Promijeni kanal</translation>
 <translation id="6410328738210026208">Promijeni kanal i pokreni Powerwash</translation>
+<translation id="1979280758666859181">Prelazite na kanal sa starijom verzijom usluge <ph name="PRODUCT_NAME"/>. Promjena kanala primijenit će se kada se verzija kanala bude podudarala s verzijom koja je trenutačno instalirana na vašem uređaju.</translation>
 <translation id="7728668285692163452">Promjena kanala primijenit će se kasnije</translation>
 <translation id="5495466433285976480">Time će se ukloniti svi lokalni korisnici, datoteke, podaci i ostale postavke nakon sljedećeg ponovnog pokretanja uređaja. Svi će se korisnici morati ponovo prijaviti.</translation>
 <translation id="8101987792947961127">Pri sljedećem ponovnom pokretanju potrebno je izvršiti Powerwash</translation>
+<translation id="1414648216875402825">Ažurirate na nestabilnu verziju usluge <ph name="PRODUCT_NAME"/> koja sadrži značajke na kojima se još radi. Dolazit će do rušenja i neočekivanih programskih pogrešaka. Budite oprezni.</translation>
 <translation id="6103681770816982672">Upozorenje: prelazite na razvojni kanal</translation>
 <translation id="8807632654848257479">Stabilno</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3746,10 +3751,12 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="5302048478445481009">Jezik</translation>
 <translation id="6388429472088318283">Pretražite jezike</translation>
 <translation id="2690024944919328218">Prikaži opcije jezika</translation>
+<translation id="768549422429443215">Dodajte jezike ili promijenite redoslijed popisa.</translation>
 <translation id="8218847192766059983">Dodajte jezike ili promijenite redoslijed popisa. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Tekst sustava prikazuje se na ovom jeziku</translation>
 <translation id="2366260648632264559">Prikaži tekst sustava na ovom jeziku</translation>
 <translation id="8336721153892716270">Ponovno pokrenite uređaj za prikaz teksta sustava na jeziku: <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Poredajte jezike prema svojim preferencijama</translation>
 <translation id="5972708806901999743">Premjesti na vrh</translation>
 <translation id="8609465669617005112">Premjesti gore</translation>
 <translation id="6746124502594467657">Pomakni dolje</translation>
@@ -4579,6 +4586,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8143442547342702591">Nevažeća aplikacija</translation>
 <translation id="720110658997053098">Trajno zadrži uređaj u načinu kioska</translation>
 <translation id="1909880997794698664">Jeste li sigurni da želite trajno zadržati ovaj uređaj u načinu kioska?</translation>
+<translation id="1512210426710821809">To možete poništiti jedino tako da ponovo instalirate <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Preskoči</translation>
 <translation id="2342740338116612727">Oznake su dodane</translation>
 <translation id="7835178595033117206">Oznaka je uklonjena</translation>
@@ -4699,7 +4707,10 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1526560967942511387">Neimenovani dokument</translation>
 <translation id="5269977353971873915">Ispis nije uspio</translation>
 <translation id="7385854874724088939">Tijekom ispisa nešto se pokvarilo.  Provjerite pisač i pokušajte ponovno.</translation>
+<translation id="1197979282329025000">Došlo je do pogreške tijekom dohvata mogućosti pisača za pisač <ph name="PRINTER_NAME"/>. Ovaj se pisač ne može registrirati s nazivom <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Primljena je obavijest za nepoznati pisač.</translation>
+<translation id="2202898655984161076">Postojao je problem s navođenjem pisača. Neki od pisača možda se nisu uspješno prijavili na <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Pao je proces konektora <ph name="CLOUD_PRINT_NAME"/>. Pokrenuti ponovo?</translation>
 <translation id="6904655473976120856">Pritisnite gumb aplikacije za izlazak</translation>
 <translation id="8909833622202089127">Web-lokacija prati vašu lokaciju</translation>
 <translation id="375636864092143889">Web-lokacija upotrebljava vaš mikrofon</translation>
