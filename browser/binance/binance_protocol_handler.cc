@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/binance/browser/binance_protocol_handler.h"
+#include "brave/browser/binance/binance_protocol_handler.h"
 
 #include <string>
 #include <map>
@@ -12,8 +12,10 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "brave/browser/binance/binance_service_factory.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/binance/browser/binance_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -52,9 +54,12 @@ void LoadNewTabURL(
     parts[it.GetKey()] = it.GetUnescapedValue();
   }
   if (parts.find("code") != parts.end()) {
-    std::string auth_code = parts["code"];
-    BinanceService::SetTempAuthToken(web_contents->GetBrowserContext(),
-        auth_code);
+    std::string auth_token = parts["code"];
+    Profile* profile =
+        Profile::FromBrowserContext(web_contents->GetBrowserContext());
+    BinanceServiceFactory::GetInstance()
+      ->GetForProfile(profile)
+      ->SetAuthToken(auth_token);
   }
 
   web_contents->GetController().LoadURL(GURL("chrome://newtab?binanceAuth=1"),

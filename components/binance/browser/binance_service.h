@@ -92,9 +92,7 @@ class BinanceService : public KeyedService {
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
   static std::string GetCodeChallenge(const std::string& code_verifier);
-  // Used to set a temporary pref with the auth token
-  static bool SetTempAuthToken(content::BrowserContext* browser_context,
-                               const std::string& auth_token);
+  void SetAuthToken(const std::string& auth_token);
 
  private:
   static GURL oauth_endpoint_;
@@ -139,7 +137,6 @@ class BinanceService : public KeyedService {
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();
-  std::string LoadAndRevokeAuthToken();
   void OnURLLoaderComplete(
       SimpleURLLoaderList::iterator iter,
       URLRequestCallback callback,
@@ -149,6 +146,7 @@ class BinanceService : public KeyedService {
   void SetAPIHostForTest(const std::string& api_host);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
+  std::string auth_token_;
   std::string access_token_;
   std::string refresh_token_;
   std::string code_challenge_;

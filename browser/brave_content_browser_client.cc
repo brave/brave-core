@@ -104,7 +104,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(BINANCE_ENABLED)
-#include "brave/components/binance/browser/binance_protocol_handler.h"
+#include "brave/browser/binance/binance_protocol_handler.h"
 #endif
 
 namespace {

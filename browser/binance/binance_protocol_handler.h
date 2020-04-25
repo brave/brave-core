@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_PROTOCOL_HANDLER_H_
-#define BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_PROTOCOL_HANDLER_H_
+#ifndef BRAVE_BROWSER_BINANCE_BINANCE_PROTOCOL_HANDLER_H_
+#define BRAVE_BROWSER_BINANCE_BINANCE_PROTOCOL_HANDLER_H_
 
 #include <string>
 
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
-#include "chrome/browser/profiles/profile.h"
 
 namespace binance {
 
@@ -23,4 +22,4 @@ bool IsBinanceProtocol(const GURL& url);
 
 }  // namespace binance
 
-#endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_PROTOCOL_HANDLER_H_
+#endif  // BRAVE_BROWSER_BINANCE_BINANCE_PROTOCOL_HANDLER_H_
