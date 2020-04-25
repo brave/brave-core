@@ -715,11 +715,11 @@ other {# sites}}</translation>
 <translation id="2699302886720511147">Karta të Pranuara</translation>
 <translation id="5261548214279761072">Pagesa u Krye</translation>
 <translation id="4072486802667267160">Pati një gabim gjatë kryerjes së porosisë tënde. Lutemi provo përsëri.</translation>
-<translation id="5610807607761827392">Ti mund të manaxhosh kartat dhe adresat në <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
-<translation id="6394818482013542588">Kartat dhe adresat janë nga Brave dhe Llogaria jote Brave (<ph name="ACCOUNT_EMAIL"/>). Ti mund ti manaxhosh ato në <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
+<translation id="5610807607761827392">Ti mund të manaxhosh kartat dhe adresat në <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.</translation>
+<translation id="6394818482013542588">Kartat dhe adresat janë nga Brave dhe Llogaria jote Brave (<ph name="ACCOUNT_EMAIL"/>). Ti mund ti manaxhosh ato në <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.</translation>
 <translation id="272451190272506600">Prek sensorin që të paguash</translation>
 <translation id="1743570585616704562">Nuk njihet</translation>
-<translation id="1838576226863399477">Kartat dhe adresat janë nga Brave. Ti mund ti manaxhosh ato në <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
+<translation id="1838576226863399477">Kartat dhe adresat janë nga Brave. Ti mund ti manaxhosh ato në <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.</translation>
 <translation id="9168814207360376865">Lejo faqet e internetit që të kontrollojnë se nëse ti ke mënyra pagese të ruajtura</translation>
 <translation id="1377321085342047638">Numri i Kartës</translation>
 <translation id="1803264062614276815">Emri i Kartëmbajtësit</translation>
@@ -885,7 +885,7 @@ other {# sites}}</translation>
 <translation id="4926049483395192435">Duhet të specifikohet.</translation>
 <translation id="2479410451996844060">Kërkim URL i pavlefshëm.</translation>
 <translation id="6060009363608157444">Mënyrë DnsOverHttps e pavlefshme.</translation>
-<translation id="3057676462092457419">Mënyra DnsOverHttps <ph name="SECURE_DNS_MODE_SECURE"/> ende nuk mbështetet, mënyra është vendosur në <ph name="SECURE_DNS_MODE_OFF"/>.</translation>
+<translation id="3057676462092457419">Mënyra DnsOverHttps <ph name="SECURE_DNS_MODE_SECURE">'secure'</ph> ende nuk mbështetet, mënyra është vendosur në <ph name="SECURE_DNS_MODE_OFF">'off'</ph>.</translation>
 <translation id="3428151540071562330">Nje ose më shumë modele URIs DnsOverHttpsTemplates të serverit janë invalide dhe nuk do të përdoren.</translation>
 <translation id="8891727572606052622">Mënyrë proksi invalide.</translation>
 <translation id="4493480324863638523">URL invalide. Duhet të jetë një URL me një skemë standarte, p.sh. http://example.com ose https://example.com.</translation>

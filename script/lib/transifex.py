@@ -119,6 +119,9 @@ def get_transifex_translation_file_content(source_file_path, filename,
     elif ext == '.grd':
         # For .grd and .json files, for some reason Transifex puts a \\" and \'
         content = content.replace('\\"', '"').replace("\\'", "'")
+        content_file = open(r"c:\max\tmp\TransifexCurrent.txt","w")
+        content_file.write(content)
+        content_file.close()
         # Make sure it's parseable
         lxml.etree.fromstring(content)
     return content
@@ -244,7 +247,7 @@ def get_fingerprint_for_xtb(message_tag):
     string_phs = message_tag.findall('ph')
     for string_ph in string_phs:
         string_to_hash = (
-            string_to_hash + string_ph.get('name').upper() + (
+            (string_to_hash or '') + string_ph.get('name').upper() + (
                 string_ph.tail or ''))
     string_to_hash = (string_to_hash or '').strip().encode('utf-8')
     string_to_hash = clean_triple_quoted_string(string_to_hash)

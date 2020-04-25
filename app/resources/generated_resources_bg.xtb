@@ -1627,6 +1627,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> споделя раздел в Brave с/ъс „<ph name="TAB_NAME"/>“.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> споделя раздел в Brave и звук.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> споделя раздел в Brave и звук с/ъс „<ph name="TAB_NAME"/>“.</translation>
+<translation id="7108338896283013870">Скриване</translation>
 <translation id="890616557918890486">Промяна на източника</translation>
 <translation id="7792388396321542707">Спиране на споделянето</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> иска постоянен достъп до сертификат, за да се удостоверява от ваше име.</translation>
@@ -1660,6 +1661,7 @@
 <translation id="7022562585984256452">Началната ви страница е зададена.</translation>
 <translation id="8069615408251337349">Brave Software Отпечатване в облак</translation>
 <translation id="4973307593867026061">Добавяне на принтери</translation>
+<translation id="9052208328806230490">Регистрирахте принтерите си в <ph name="CLOUD_PRINT_NAME"/>, използвайки профила <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Прекъсване на връзката с принтерите</translation>
 <translation id="5038863510258510803">Активира се...</translation>
 <translation id="8264024885325823677">Тази настройка се управлява от администратора ви.</translation>
@@ -2292,6 +2294,7 @@
 <translation id="6711610692002680394">За да регистрирате нови устройства, трябва да влезете в Brave</translation>
 <translation id="8931394284949551895">Нови устройства</translation>
 <translation id="3752673729237782832">Моите устройства</translation>
+<translation id="1721937473331968728">Към <ph name="CLOUD_PRINT_NAME"/> можете да добавите традиционни принтери, свързани с компютъра ви.</translation>
 <translation id="715118844758971915">Традиционни принтери</translation>
 <translation id="4263757076580287579">Регистрацията на принтера е анулирана.</translation>
 <translation id="8152091997436726702">Времето за изчакване на регистрацията на принтера изтече. За да я извършите, трябва да я потвърдите на принтера.</translation>
@@ -2972,9 +2975,11 @@
 <translation id="1871615898038944731">Устройството ви <ph name="DEVICE_TYPE"/> е актуално</translation>
 <translation id="3688526734140524629">Промяна на канала</translation>
 <translation id="6410328738210026208">Промяна на канала и Powerwash</translation>
+<translation id="1979280758666859181">Преминавате към канал с по-стара версия на <ph name="PRODUCT_NAME"/>. Промяната на канала ще се приложи, когато версията в него вече съответства на инсталираната понастоящем на устройството ви.</translation>
 <translation id="7728668285692163452">Промяната на канала ще бъде приложена по-късно</translation>
 <translation id="5495466433285976480">По този начин при следващото рестартиране ще се премахнат всички локални потребители, файлове, данни и други настройки. Всички потребители ще трябва да влязат отново.</translation>
 <translation id="8101987792947961127">При следващото рестартиране се изисква Powerwash</translation>
+<translation id="1414648216875402825">Актуализирате до нестабилна версия на <ph name="PRODUCT_NAME"/>, съдържаща функции, по които се работи. Ще има сривове и неочаквани програмни дефекти. Моля, действайте внимателно.</translation>
 <translation id="6103681770816982672">Предупреждение: превключвате към канала за програмисти</translation>
 <translation id="8807632654848257479">Стабилно</translation>
 <translation id="830868413617744215">Бета</translation>
@@ -3748,10 +3753,12 @@
 <translation id="5302048478445481009">Език</translation>
 <translation id="6388429472088318283">Търсене в езиците</translation>
 <translation id="2690024944919328218">Показване на езиковите опции</translation>
+<translation id="768549422429443215">Добавяне на езици или пренареждане на списъка.</translation>
 <translation id="8218847192766059983">Добавяне на езици или пренареждане на списъка. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Системният текст се показва на този език</translation>
 <translation id="2366260648632264559">Показване на системния текст на този език</translation>
 <translation id="8336721153892716270">Рестартирайте устройството с цел показване на системния текст на <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Подредете езиците според предпочитанието си</translation>
 <translation id="5972708806901999743">Преместване най-горе</translation>
 <translation id="8609465669617005112">Придвижване нагоре</translation>
 <translation id="6746124502594467657">Придвижване надолу</translation>
@@ -4581,6 +4588,7 @@
 <translation id="8143442547342702591">Невалидно приложение</translation>
 <translation id="720110658997053098">Това устройство да е постоянно в павилионен режим</translation>
 <translation id="1909880997794698664">Наистина ли искате това устройство да е постоянно в павилионен режим?</translation>
+<translation id="1512210426710821809">Единственият начин да отмените това е да инсталирате отново <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Пропускане</translation>
 <translation id="2342740338116612727">Отметките бяха добавени</translation>
 <translation id="7835178595033117206">Отметката бе премахната</translation>
@@ -4701,7 +4709,10 @@
 <translation id="1526560967942511387">Неозаглавен документ</translation>
 <translation id="5269977353971873915">Отпечатването не бе успешно</translation>
 <translation id="7385854874724088939">При опита за печат нещо се обърка.  Моля, проверете принтера си и опитайте отново.</translation>
+<translation id="1197979282329025000">Възникна грешка при извличането на функционалностите на принтера <ph name="PRINTER_NAME"/>. Той не можа да бъде регистриран с/ъс <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Получихме известие за неизвестен принтер.</translation>
+<translation id="2202898655984161076">При изреждането на принтерите възникна проблем. Възможно е някои от тях да не са регистрирани успешно с/ъс <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Процесът за връзка с <ph name="CLOUD_PRINT_NAME"/> претърпя срив. Да се рестартира ли?</translation>
 <translation id="6904655473976120856">За изход натиснете бутона на приложението</translation>
 <translation id="8909833622202089127">Сайтът следи местоположението ви</translation>
 <translation id="375636864092143889">Сайтът използва микрофона ви</translation>

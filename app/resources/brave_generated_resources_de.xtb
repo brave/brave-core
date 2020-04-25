@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ist in Brave nicht erlaubt.</translation>
 <translation id="7450557937477381864">Schließen Sie Chrome</translation>
 <translation id="7008934821596358692">Um Ihre Daten vollständig zu importieren, muss Chrome komplett geschlossen werden.</translation>
+<translation id="6786747875388722282">Erweiterungen</translation>
 <translation id="3699882589215410581">Widevine installieren und ausführen</translation>
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
 <translation id="4726634924419692905">Fragen, wenn eine Seite Widevine auf Ihrem Computer installieren möchte.</translation>
@@ -28,14 +29,24 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4988333904713528597">Autoplay auf <ph name="HOST"/> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
-<translation id="5883458389055721080">Brave hat diese Erweiterung nicht auf Sicherheit und Ungefährlichkeit hin begutachtet. Installieren Sie diese Erweiterung nur, wenn Sie dem Entwickler vertrauen.</translation>
+<translation id="5883458389055721080">Diese Erweiterung wurde noch nicht von Brave auf ihre Sicherheit überprüft. Sie sollten sie nur installieren, wenn Sie dem Entwickler vertrauen.</translation>
 <translation id="8081858229109418493">Profilname und -symbol</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
+<translation id="1692470335103807198">Mehr Themen erhalten</translation>
+<translation id="2906510232093002459">Brave-Standardbilder</translation>
 <translation id="2814998458708016836">Breite Adressleiste verwenden</translation>
 <translation id="6123134130710658846">Brave-Rewards-Button ausblenden</translation>
 <translation id="7635711399568194460">Blendet den Brave-Rewards-Button in der Adressleiste aus, wenn Brave Rewards deaktiviert ist</translation>
 <translation id="1520361618554057102">In einem neu geöffneten Tab stets Lesezeichen anzeigen</translation>
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
+<translation id="7781069478569868053">Neuer-Tab-Seite</translation>
+<translation id="2467749191278759605">Passen Sie Ihr Brave-Dashboard an</translation>
+<translation id="1717331825806276156">Hintergrundbilder</translation>
+<translation id="1820041496463124489">Gesponserte Bilder</translation>
+<translation id="8173998484743827990">Brave-Statistiken</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Führende Websites</translation>
+<translation id="1776831331757823105">Uhr</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
 <translation id="8511502469534942133">Neue Tor-Verbindung für diese Seite</translation>
 <translation id="8784924142044142231">Tor verlassen</translation>
@@ -53,7 +64,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4472575034687746823">Start</translation>
 <translation id="3400357268283240774">Erweiterte Einstellungen</translation>
 <translation id="6303294677342628402">Sicherheit</translation>
-<translation id="7133511168130368997">Blockieren Sie Tracker und Werbung, die Sie über das Web hinweg verfolgen.</translation>
+<translation id="7133511168130368997">Werbung und Tracker blockieren.</translation>
 <translation id="2761825942249694703">Dies sind die Standardeinstellungen für den Schutz. Sie gelten für alle Websites, sofern Sie nicht im Schutz-Menü auf einer bestimmten Website Änderungen vornehmen. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen die Sie auf bestimmten Websites bereits gemacht haben</translation>
 <translation id="8754605759692119662">Diese Einstellungen wirken sich auf die meisten Anzeigen aus, jedoch nicht auf Brave-Werbung — diese lässt sich in den</translation>
 <translation id="6388201778088078932">Einstellungen konfigurieren.</translation>
@@ -65,7 +76,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6522412052085018663">Fingerprinting</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
-<translation id="4824468494729001999">Skripte blockieren</translation>
+<translation id="4824468494729001999">JavaScript blockieren</translation>
 <translation id="519861640102428255">Look and Feel</translation>
 <translation id="4800195524776354947">Zahl der blockierten Elemente auf dem Shields-Icon anzeigen</translation>
 <translation id="7498695072878479744">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
@@ -75,9 +86,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4699812599455071925">Nur Seitenübergreifende Cookies blockieren</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="6883611015375728278">Alle Cookies blockieren</translation>
-<translation id="5572437114858031185">Nur Websiteübergreifende Fingerprinting-Versuche blockieren</translation>
-<translation id="5079032039521408559">Alle Fingerprinting-Versuche zulassen</translation>
-<translation id="6447141055227658942">Alle Fingerprinting-Versuche blockieren</translation>
+<translation id="5963670684159057574">Seitenübergreifendes Fingerprinting blockieren</translation>
+<translation id="769702552748212954">Sämtliches Fingerprinting zulassen</translation>
+<translation id="4540198958192073185">Alle Fingerabdrucknahmen sperren</translation>
 <translation id="8942080017911802454">WebRTC-IP-Handhabungs-Richtlinie</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
@@ -94,7 +105,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1360441190790440400">Wie Linux</translation>
 <translation id="1336940801687497203">Wie Windows</translation>
 <translation id="8721331068159819483">Dasselbe wie macOS</translation>
-<translation id="6786747875388722282">Erweiterungen</translation>
 <translation id="2896916411183256228">Verwendet WebTorrent, um Torrents direkt im Browser anzuzeigen. Unterstützt Torrent-Dateien und Magnet-Links.</translation>
 <translation id="2356070529366658676">Fragen</translation>
 <translation id="7701040980221191251">Keine</translation>

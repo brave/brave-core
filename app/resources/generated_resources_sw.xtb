@@ -1625,6 +1625,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="5727851901710884484"><ph name="APP_NAME"/> inashiriki kichupo cha Brave na <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> inashiriki kichupo cha Brave na sauti.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> inashiriki kichupo cha Brave na sauti pamoja na <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Ficha</translation>
 <translation id="890616557918890486">Badilisha chanzo</translation>
 <translation id="7792388396321542707">Acha kushiriki</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> inataka idhini ya kudumu ya kufikia cheti ili kujithibitisha kwa niaba yako.</translation>
@@ -1658,6 +1659,7 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7022562585984256452">Ukurasa wako wa mwanzo umewekwa.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Ongeza printa</translation>
+<translation id="9052208328806230490">Umesajili printa zako kwenye <ph name="CLOUD_PRINT_NAME"/> ukitumia akaunti ya <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Kata muunganisho wa printa</translation>
 <translation id="5038863510258510803">Inawezesha...</translation>
 <translation id="8264024885325823677">Mipangilio hii inadhibitiwa na msimamizi wako.</translation>
@@ -2290,6 +2292,7 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6711610692002680394">Unahitaji kuingia katika akaunti kwenye Brave ili usajili vifaa vipya</translation>
 <translation id="8931394284949551895">Vifaa vipya</translation>
 <translation id="3752673729237782832">Vifaa vyangu</translation>
+<translation id="1721937473331968728">Unaweza kuongeza Printa maarufu zilizounganishwa na kompyuta yako kwenye <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Printa za zamani</translation>
 <translation id="4263757076580287579">Usajili wa printa umeghairiwa.</translation>
 <translation id="8152091997436726702">Muda wa kusajili printa umeisha. Ili kusajili printa, lazima uthibitishe usajili kwenye printa.</translation>
@@ -2970,9 +2973,11 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1871615898038944731">Kifaa chako cha <ph name="DEVICE_TYPE"/> kimesasishwa</translation>
 <translation id="3688526734140524629">Badili kituo</translation>
 <translation id="6410328738210026208">Badilisha kituo na Powerwash</translation>
+<translation id="1979280758666859181">Unabadilisha hadi kituo chenye toleo zee la <ph name="PRODUCT_NAME"/>. Mabadiliko ya kituo yatatumika wakati toleo la kituo linalingana na toleo lililosanidiwa kwenye kifaa chako.</translation>
 <translation id="7728668285692163452">Badiliko la kituo litatumiwa baadaye</translation>
 <translation id="5495466433285976480">Hii itaondoa watumiaji wote wa karibu, faili, data, na mipangilio mingine baada ya kuwasha upya kunakofuata. Watumiaji wote watahitajika kuingia katika akaunti tena.</translation>
 <translation id="8101987792947961127">Powerwash inahitajika kwenye kuwasha kunakofuata</translation>
+<translation id="1414648216875402825">Unasasisha kwenda toleo lisilo imara la <ph name="PRODUCT_NAME"/> ambalo lina vipengele ambavyo vinaendelea kuundwa. Hitilafu zisizotarajiwa na kuacha kufanya kazi kutatokea. Tafadhali endelea kwa tahadhari.</translation>
 <translation id="6103681770816982672">Onyo: unabadilisha kwenda kituo cha msanidi programu</translation>
 <translation id="8807632654848257479">Imara</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3745,10 +3750,12 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="5302048478445481009">Lugha</translation>
 <translation id="6388429472088318283">Tafuta lugha</translation>
 <translation id="2690024944919328218">Onyesha chaguo za lugha</translation>
+<translation id="768549422429443215">Ongeza lugha au panga orodha upya.</translation>
 <translation id="8218847192766059983">Weka lugha au panga orodha upya. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Maandishi ya mfumo yanaonyeshwa katika lugha hii</translation>
 <translation id="2366260648632264559">Onyesha maandishi ya mfumo katika lugha hii</translation>
 <translation id="8336721153892716270">Zima kisha uwashe kifaa ili kionyeshe maandishi ya mfumo katika <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Panga lugha kulingana na mapendeleo yako</translation>
 <translation id="5972708806901999743">Sogeza juu</translation>
 <translation id="8609465669617005112">Songa juu</translation>
 <translation id="6746124502594467657">Songa chini</translation>
@@ -4578,6 +4585,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8143442547342702591">Programu si sahihi</translation>
 <translation id="720110658997053098">Weka kifaa hiki katika hali ya skrini nzima kila wakati</translation>
 <translation id="1909880997794698664">Una uhakika unataka kuweka kifaa hiki kiwe cha kudumu katika modi ya kioski?</translation>
+<translation id="1512210426710821809">Njia pekee ya kutendua hili ni kusakinisha tena <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Ruka</translation>
 <translation id="2342740338116612727">Imeongeza alamisho</translation>
 <translation id="7835178595033117206">Alamisho imeondolewa</translation>
@@ -4698,7 +4706,10 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1526560967942511387">Andiko lisilo na kichwa</translation>
 <translation id="5269977353971873915">Uchapishaji Haukufanikiwa</translation>
 <translation id="7385854874724088939">Hitilafu fulani imetokea wakati wa kuchapisha. Tafadhali chunguza printa yako na ujaribu tena.</translation>
+<translation id="1197979282329025000">Hitilafu imetokea wakati wa kujaribu kuonyesha mambo ambayo printa ya <ph name="PRINTER_NAME"/> inaweza kufanya. Printa hii haikuweza kusajiliwa kwenye <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Imepokea arifa ya printa isiyojulikana.</translation>
+<translation id="2202898655984161076">Kulikuwa na tatizo wakati wa kuongeza printa. Huenda baadhi ya printa zako hazikuweza kusajili kwenye <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Mchakato wa kiunganishi cha <ph name="CLOUD_PRINT_NAME"/> umeharibika. Ungetaka kuzima na uwashe tena?</translation>
 <translation id="6904655473976120856">Bonyeza kitufe cha Programu ili uondoke</translation>
 <translation id="8909833622202089127">Tovuti inafuatilia mahali ulipo</translation>
 <translation id="375636864092143889">Tovuti inatumia maikrofoni yako</translation>

@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID"/>”）。</translation>
 <translation id="7450557937477381864">关闭 Chrome</translation>
 <translation id="7008934821596358692">如要完成导出，请关闭所有 Chrome 窗口。</translation>
+<translation id="6786747875388722282">扩展程序</translation>
 <translation id="3699882589215410581">安装并运行 Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="4726634924419692905">网站希望在计算机上安装 Widevine 时询问。</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave 尚未审查此扩展程序的安全性。如果您信任此开发者，请仅安装此扩展程序。</translation>
 <translation id="8081858229109418493">个人资料姓名和图标</translation>
 <translation id="2044383478723007273">Brave 颜色</translation>
+<translation id="1692470335103807198">获得更多主题</translation>
+<translation id="2906510232093002459">Brave 默认图片</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="6123134130710658846">隐藏 Brave 奖励按钮</translation>
 <translation id="7635711399568194460">未启用 Brave 奖励时，隐藏位置栏中的 Brave 奖励按钮</translation>
 <translation id="1520361618554057102">始终在“新标签”页面显示书签</translation>
 <translation id="5802665280774361839">在地址栏中显示自动完成</translation>
+<translation id="7781069478569868053">新标签页</translation>
+<translation id="2467749191278759605">自定义你的 Brave 仪表板</translation>
+<translation id="1717331825806276156">背景图片</translation>
+<translation id="1820041496463124489">赞助图片</translation>
+<translation id="8173998484743827990">Brave 统计数据</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">热门网站</translation>
+<translation id="1776831331757823105">时钟</translation>
 <translation id="7965178729203412357">新 Tor 身份</translation>
 <translation id="8511502469534942133">为此站点新建的 Tor 连接</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">仅拦截跨站点 cookie</translation>
 <translation id="5657156137487675418">允许所有 cookies</translation>
 <translation id="6883611015375728278">拦截所有 cookies</translation>
-<translation id="5572437114858031185">仅拦截跨站点指纹识别尝试</translation>
-<translation id="5079032039521408559">允许所有指纹识别尝试</translation>
-<translation id="6447141055227658942">拦截所有指纹识别尝试</translation>
+<translation id="5963670684159057574">拦截跨站点指纹识别</translation>
+<translation id="769702552748212954">允许所有指纹识别</translation>
+<translation id="4540198958192073185">阻止所有指纹识别</translation>
 <translation id="8942080017911802454">WebRTC IP 处理策略</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="8798099450830957504">默认</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">与 Linux 相同</translation>
 <translation id="1336940801687497203">与窗口相同</translation>
 <translation id="8721331068159819483">与 macOS 相同</translation>
-<translation id="6786747875388722282">扩展程序</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="7701040980221191251">无</translation>

@@ -881,7 +881,7 @@
 <translation id="4522570452068850558">Üksikasjad</translation>
 <translation id="4340515029017875942"><ph name="ORIGIN"/> tahab suhelda rakendusega „<ph name="EXTENSION_NAME"/>”</translation>
 <translation id="4918021164741308375"><ph name="ORIGIN"/> tahab suhelda laiendusega „<ph name="EXTENSION_NAME"/>”</translation>
-<translation id="8353683614194668312">Rakendus saab teha järgmist.</translation>
+<translation id="8353683614194668312">See saab:</translation>
 <translation id="1485015260175968628">See võib nüüd:</translation>
 <translation id="3788401245189148511">See võiks:</translation>
 <translation id="1965624977906726414">Pole erilubasid.</translation>
@@ -1626,6 +1626,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="5727851901710884484">Rakendus <ph name="APP_NAME"/> jagab Brave'i vahelehte vahelehega <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338">Rakendus <ph name="APP_NAME"/> jagab Brave'i vahelehte ja heli.</translation>
 <translation id="859454237594354073">Rakendus <ph name="APP_NAME"/> jagab Brave'i vahelehte ja heli vahelehega <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Peida</translation>
 <translation id="890616557918890486">Vaheta allikat</translation>
 <translation id="7792388396321542707">Lõpeta jagamine</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> soovib püsijuurdepääsu sertifikaadile, et end teie nimel autentida.</translation>
@@ -1659,6 +1660,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="7022562585984256452">Teie avaleht on määratud.</translation>
 <translation id="8069615408251337349">Brave Software'i pilvprintimine</translation>
 <translation id="4973307593867026061">Lisa printereid</translation>
+<translation id="9052208328806230490">Olete oma printerid registreerinud rakenduse <ph name="CLOUD_PRINT_NAME"/> abil kontot <ph name="EMAIL"/> kasutades</translation>
 <translation id="3792890930871100565">Eemalda printereid</translation>
 <translation id="5038863510258510803">Lubamine ...</translation>
 <translation id="8264024885325823677">Seda seadet haldab administraator.</translation>
@@ -2291,6 +2293,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="6711610692002680394">Uute seadmete registreerimiseks peate Brave'i sisse logima</translation>
 <translation id="8931394284949551895">Uued seadmed</translation>
 <translation id="3752673729237782832">Minu seadmed</translation>
+<translation id="1721937473331968728">Saate ühendada teenusega <ph name="CLOUD_PRINT_NAME"/> teie arvutiga ühendatud tavaprintereid.</translation>
 <translation id="715118844758971915">Tavaprinterid</translation>
 <translation id="4263757076580287579">Printeri registreerimine on tühistatud.</translation>
 <translation id="8152091997436726702">Printeri registreerimine on aegunud. Printeri registreerimiseks peate registreerimise printeris kinnitama.</translation>
@@ -2971,9 +2974,11 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="1871615898038944731">Teie seade <ph name="DEVICE_TYPE"/> on ajakohane</translation>
 <translation id="3688526734140524629">Vaheta kanalit</translation>
 <translation id="6410328738210026208">Muuda kanalit ja Powerwashi</translation>
+<translation id="1979280758666859181">Lülitute teenuse <ph name="PRODUCT_NAME"/> vanema versiooniga kanalile. Kanalivahetus rakendub, kui kanali versioon kattub teie seadmesse parajasti installitud versiooniga.</translation>
 <translation id="7728668285692163452">Kanali muudatus rakendatakse hiljem</translation>
 <translation id="5495466433285976480">See eemaldab pärast taaskäivitamist kõik kohalikud kasutajad, failid, andmed ja muud seaded. Kõik kasutajad peavad uuesti sisse logima.</translation>
 <translation id="8101987792947961127">Järgmisel taaskäivitusel nõutakse Powerwashi</translation>
+<translation id="1414648216875402825">Kavatsete üle minna rakenduse <ph name="PRODUCT_NAME"/> ebastabiilsele versioonile, mis sisaldab pooleliolevaid funktsioone. Tekivad krahhid ja ootamatud vead. Olge jätkamisel ettevaatlik.</translation>
 <translation id="6103681770816982672">Hoiatus: lülitute arendajakanalile</translation>
 <translation id="8807632654848257479">Stabiilne</translation>
 <translation id="830868413617744215">Beeta</translation>
@@ -3746,10 +3751,12 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="5302048478445481009">Keel</translation>
 <translation id="6388429472088318283">Otsige keeli</translation>
 <translation id="2690024944919328218">Kuva keelevalikud</translation>
+<translation id="768549422429443215">Saate keeli lisada või nende loendit ümber järjestada.</translation>
 <translation id="8218847192766059983">Lisage keeli või muutke loendi järjestust. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Süsteemi tekst kuvatakse selles keeles</translation>
 <translation id="2366260648632264559">Kuva süsteemitekst selles keeles</translation>
 <translation id="8336721153892716270">Taaskäivitage seade, et kuvada süsteemi tekst <ph name="LANGUAGE"/> keeles</translation>
+<translation id="7216595297012131718">Keeled järjestatakse teie eelistuste põhjal</translation>
 <translation id="5972708806901999743">Teisalda ülaossa</translation>
 <translation id="8609465669617005112">Liiguta üles</translation>
 <translation id="6746124502594467657">Liiguta alla</translation>
@@ -4579,6 +4586,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="8143442547342702591">Sobimatu rakendus</translation>
 <translation id="720110658997053098">Jäta seade püsivalt kioskirežiimile.</translation>
 <translation id="1909880997794698664">Kas soovite kindlasti jätta seadme jäädavalt kioskirežiimile?</translation>
+<translation id="1512210426710821809">Ainus viis selle tagasivõtmiseks on <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> uuesti installida.</translation>
 <translation id="8281886186245836920">Jäta vahele</translation>
 <translation id="2342740338116612727">Järjehoidjad on lisatud</translation>
 <translation id="7835178595033117206">Järjehoidja on eemaldatud</translation>
@@ -4699,7 +4707,10 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="1526560967942511387">Pealkirjata dokument</translation>
 <translation id="5269977353971873915">Printimine nurjus</translation>
 <translation id="7385854874724088939">Printimisel tekkis mingi tõrge. Kontrollige oma printerit ja proovige uuesti.</translation>
+<translation id="1197979282329025000">Ilmnes viga printeri <ph name="PRINTER_NAME"/> printerivõimaluste toomisel. Printerit ei saanud teenusega <ph name="CLOUD_PRINT_NAME"/> registreerida.</translation>
 <translation id="9004952710076978168">Tundmatult printerilt saabus teatis.</translation>
+<translation id="2202898655984161076">Printerite kirjendamisel oli viga. Mõne printeri registreerimine rakendusega <ph name="CLOUD_PRINT_NAME"/> ei õnnestunud.</translation>
+<translation id="3220586366024592812">Üksuse <ph name="CLOUD_PRINT_NAME"/> ühendusprotsess jooksis kokku. Kas soovite taaskäivitada?</translation>
 <translation id="6904655473976120856">Väljumiseks vajutage rakenduse nuppu</translation>
 <translation id="8909833622202089127">Sait jälgib teie asukohta</translation>
 <translation id="375636864092143889">Sait kasutab teie mikrofoni</translation>

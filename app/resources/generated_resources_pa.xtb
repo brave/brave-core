@@ -1625,6 +1625,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/><ph name="TAB_NAME"/> ਦੇ ਨਾਲ Brave ਟੈਬ ਨੂੰ ਸਾਂਝਾ ਕਰ ਰਹੀ ਹੈ।</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> Brave ਟੈਬ ਅਤੇ ਆਡੀਓ ਸਾਂਝੀ ਕਰ ਰਹੀ ਹੈ।</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/><ph name="TAB_NAME"/> ਦੇ ਨਾਲ Brave ਟੈਬ ਅਤੇ ਆਡੀਓ ਨੂੰ ਸਾਂਝਾ ਕਰ ਰਹੀ ਹੈ।</translation>
+<translation id="7108338896283013870">ਲੁਕਾਓ</translation>
 <translation id="890616557918890486">ਸਰੋਤ ਬਦਲੋ</translation>
 <translation id="7792388396321542707">ਸ਼ੇਅਰਿੰਗ ਰੋਕੋ</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> ਤੁਹਾਡੇ ਵੱਲੋਂ ਖੁਦ ਨੂੰ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਲਈ ਇੱਕ ਸਰਟੀਫਿਕੇਟ ਤੱਕ ਸਥਾਈ ਪਹੁੰਚ ਚਾਹੁੰਦਾ ਹੈ।</translation>
@@ -1658,6 +1659,7 @@
 <translation id="7022562585984256452">ਤੁਹਾਡਾ ਮੁੱਖ ਪੰਨਾ ਸੈੱਟ ਕੀਤਾ ਗਿਆ ਹੈ।</translation>
 <translation id="8069615408251337349">Brave Software ਕਲਾਊਡ ਪ੍ਰਿੰਟ</translation>
 <translation id="4973307593867026061">ਪ੍ਰਿੰਟਰ ਜੋੜੋ</translation>
+<translation id="9052208328806230490">ਤੁਸੀਂ ਆਪਣੇ ਪ੍ਰਿੰਟਰਾਂ ਨੂੰ <ph name="EMAIL"/> ਖਾਤੇ ਦੀ ਵਰਤੋਂ ਕਰਕੇ <ph name="CLOUD_PRINT_NAME"/> ਨਾਲ ਰਜਿਸਟਰ ਕੀਤਾ ਹੈ।</translation>
 <translation id="3792890930871100565">ਪ੍ਰਿੰਟਰਾਂ ਨੂੰ ਡਿਸਕਨੈਕਟ ਕਰੋ</translation>
 <translation id="5038863510258510803">ਸਮਰੱਥ ਬਣਾ ਰਿਹਾ ਹੈ...</translation>
 <translation id="8264024885325823677">ਤੁਹਾਡਾ ਪ੍ਰਸ਼ਾਸਕ ਇਸ ਸੈਟਿੰਗ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਦਾ ਹੈ।</translation>
@@ -2288,6 +2290,7 @@
 <translation id="6711610692002680394">ਤੁਹਾਨੂੰ ਨਵੇਂ ਡੀਵਾਈਸਾਂ ਨੂੰ ਰਜਿਸਟਰ ਕਰਨ ਲਈ Brave 'ਤੇ ਸਾਈਨ-ਇਨ ਕਰਨ ਦੀ ਲੋੜ ਹੈ</translation>
 <translation id="8931394284949551895">ਨਵੀਆਂ ਡਿਵਾਈਸਾਂ</translation>
 <translation id="3752673729237782832">ਮੇਰੀਆਂ ਡਿਵਾਈਸਾਂ</translation>
+<translation id="1721937473331968728">ਤੁਸੀਂ ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਨਾਲ ਕਨੈਕਟ ਕੀਤੇ ਕਲਾਸਿਕ ਪ੍ਰਿੰਟਰਾਂ ਨੂੰ <ph name="CLOUD_PRINT_NAME"/> ਨਾਲ ਜੋੜ ਸਕਦੇ ਹੋ।</translation>
 <translation id="715118844758971915">ਕਲਾਸਿਕ ਪ੍ਰਿੰਟਰ</translation>
 <translation id="4263757076580287579">ਪ੍ਰਿੰਟਰ ਰਜਿਸਟਰੇਸ਼ਨ ਰੱਦ ਕੀਤੀ ਗਈ ਹੈ।</translation>
 <translation id="8152091997436726702">ਪ੍ਰਿੰਟਰ ਰਜਿਸਟਰੇਸ਼ਨ ਦਾ ਸਮਾਂ ਸਮਾਪਤ ਹੋ ਗਿਆ ਹੈ। ਇੱਕ ਪ੍ਰਿੰਟਰ ਰਜਿਸਟਰ ਕਰਨ ਲਈ, ਤੁਹਾਨੂੰ ਪ੍ਰਿੰਟਰ 'ਤੇ ਰਜਿਸਟਰੇਸ਼ਨ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।</translation>
@@ -2955,9 +2958,11 @@
 <translation id="1871615898038944731">ਤੁਹਾਡੀ <ph name="DEVICE_TYPE"/> ਅੱਪ ਟੂ ਡੇਟ ਹੈ</translation>
 <translation id="3688526734140524629">ਚੈਨਲ ਬਦਲੋ</translation>
 <translation id="6410328738210026208">ਚੈਨਲ ਅਤੇ ਪਾਵਰਵਾਸ਼ ਬਦਲੋ</translation>
+<translation id="1979280758666859181">ਤੁਸੀਂ <ph name="PRODUCT_NAME"/> ਦੇ ਇੱਕ ਪੁਰਾਣੇ ਵਰਜਨ ਨਾਲ ਕਿਸੇ ਚੈਨਲ ਤੋਂ ਖਰਚਾ ਲੈ ਰਹੇ ਹੋ। ਜਦੋਂ ਚੈਨਲ ਵਰਜਨ ਤੁਹਾਡੇ ਡੀਵਾਈਸ 'ਤੇ ਇਸ ਵੇਲੇ ਸਥਾਪਤ ਕੀਤੇ ਵਰਜਨ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਹੈ ਤਾਂ ਚੈਨਲ ਤਬਦੀਲੀ ਨੂੰ ਲਾਗੂ ਕੀਤਾ ਜਾਵੇਗਾ।</translation>
 <translation id="7728668285692163452">ਚੈਨਲ ਤਬਦੀਲੀ ਬਾਅਦ ਵਿੱਚ ਲਾਗੂ ਕੀਤੀ ਜਾਵੇਗੀ</translation>
 <translation id="5495466433285976480">ਇੰਝ ਕਰਨ ਨਾਲ ਅਗਲੀ ਵਾਰ ਸਿਸਟਮ ਮੁੜ-ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸਾਰੇ ਸਥਾਨਕ ਵਰਤੋਂਕਾਰਾਂ, ਫ਼ਾਈਲਾਂ, ਡਾਟੇ ਅਤੇ ਹੋਰ ਸੈਟਿੰਗਾਂ ਨੂੰ ਹਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ। ਸਾਰੇ ਵਰਤੋਂਕਾਰਾਂ ਨੂੰ ਦੁਬਾਰਾ ਸਾਈਨ-ਇਨ ਕਰਨ ਦੀ ਲੋੜ ਪਵੇਗੀ।</translation>
 <translation id="8101987792947961127">ਅਗਲੇ ਰੀਬੂਟ 'ਤੇ ਪਾਵਰਵਾਸ਼ ਲੁੜੀਂਦਾ</translation>
+<translation id="1414648216875402825">ਤੁਸੀਂ <ph name="PRODUCT_NAME"/> ਦਾ ਇੱਕ ਅਸਥਿਰ ਰੂਪ ਅੱਪਡੇਟ ਕਰ ਰਹੇ ਹੋ ਜਿਸ ਵਿੱਚ ਉਹ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਸ਼ਾਮਲ ਹਨ ਜੋ ਚਾਲੂ ਹਨ। ਕ੍ਰੈਸ਼ਿਜ ਅਤੇ ਅਚਨਚੇਤ ਬਗਸ ਹੋਣਗੇ। ਕਿਰਪਾ ਕਰਰਕੇ ਸਾਵਧਾਨੀ ਨਾਲ ਅੱਗੇ ਵਧੋ।</translation>
 <translation id="6103681770816982672">ਚਿਤਾਵਨੀ: ਤੁਸੀਂ ਵਿਕਾਸਕਾਰ ਚੈਨਲ 'ਤੇ ਸਵਿੱਚ ਕਰ ਰਹੇ ਹੋ</translation>
 <translation id="8807632654848257479">ਸਥਿਰ</translation>
 <translation id="830868413617744215">ਬੀਟਾ</translation>
@@ -3730,10 +3735,12 @@
 <translation id="5302048478445481009">ਭਾਸ਼ਾ</translation>
 <translation id="6388429472088318283">ਭਾਸ਼ਾਵਾਂ ਖੋਜੋ</translation>
 <translation id="2690024944919328218">ਭਾਸ਼ਾ ਵਿਕਲਪ  ਦਿਖਾਓ</translation>
+<translation id="768549422429443215">ਭਾਸ਼ਾਵਾਂ ਸ਼ਾਮਲ ਕਰੋ ਜਾਂ ਸੂਚੀ ਨੂੰ ਮੁੜ-ਕ੍ਰਮਬੱਧ ਕਰੋ।</translation>
 <translation id="8218847192766059983">ਭਾਸ਼ਾਵਾਂ ਸ਼ਾਮਲ ਕਰੋ ਜਾਂ ਸੂਚੀ ਨੂੰ ਮੁੜ-ਕ੍ਰਮਬੱਧ ਕਰੋ। <ph name="BEGIN_LINK"/>ਹੋਰ ਜਾਣੋ<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">ਸਿਸਟਮ ਲਿਖਤ ਇਸ ਭਾਸ਼ਾ ਵਿੱਚ ਦਿਸ ਰਹੀ ਹੈ</translation>
 <translation id="2366260648632264559">ਸਿਸਟਮ ਲਿਖਤ ਇਸ ਭਾਸ਼ਾ ਵਿੱਚ ਦਿਖਾਓ</translation>
 <translation id="8336721153892716270">ਸਿਸਟਮ ਲਿਖਤ ਨੂੰ <ph name="LANGUAGE"/> ਵਿੱਚ ਦਿਖਾਉਣ ਲਈ ਡੀਵਾਈਸ ਨੂੰ ਮੁੜ-ਸ਼ੁਰੂ ਕਰੋ</translation>
+<translation id="7216595297012131718">ਆਪਣੀ ਤਰਜੀਹ ਦੇ ਆਧਾਰ 'ਤੇ ਭਾਸ਼ਾਵਾਂ ਨੂੰ ਕ੍ਰਮਬੱਧ ਕਰੋ</translation>
 <translation id="5972708806901999743">ਸਿਖਰ 'ਤੇ ਲੈ ਜਾਓ</translation>
 <translation id="8609465669617005112">ਉੱਪਰ ਜਾਓ</translation>
 <translation id="6746124502594467657">ਹੇਠਾਂ ਜਾਓ</translation>
@@ -4563,6 +4570,7 @@
 <translation id="8143442547342702591">ਅਵੈਧ ਐਪਲੀਕੇਸ਼ਨ</translation>
 <translation id="720110658997053098">ਇਸ ਡੀਵਾਈਸ ਨੂੰ ਸਥਾਈ ਤੌਰ 'ਤੇ ਕਿਓਸਕ ਮੋਡ ਵਿੱਚ ਰੱਖੋ</translation>
 <translation id="1909880997794698664">ਕੀ ਤੁਸੀਂ ਪੱਕਾ ਇਸ ਡੀਵਾਈਸ ਨੂੰ ਸਥਾਈ ਤੌਰ 'ਤੇ ਕਿਓਸਕ ਮੋਡ ਵਿੱਚ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
+<translation id="1512210426710821809">ਇਸ ਨੂੰ ਅਣਕੀਤਾ ਕਰਨ ਦਾ ਇੱਕੋ-ਇੱਕ ਤਰੀਕਾ <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> ਨੂੰ ਮੁੜ-ਸਥਾਪਤ ਕਰਨਾ ਹੈ</translation>
 <translation id="8281886186245836920">ਛੱਡੋ</translation>
 <translation id="2342740338116612727">ਬੁੱਕਮਾਰਕ ਸ਼ਾਮਲ ਕੀਤੇ ਗਏ</translation>
 <translation id="7835178595033117206">ਬੁੱਕਮਾਰਕ ਹਟਾਇਆ ਗਿਆ</translation>
@@ -4683,7 +4691,10 @@
 <translation id="1526560967942511387">ਬਿਨਾਂ ਸਿਰਲੇਖ ਦਾ ਦਸਤਾਵੇਜ਼</translation>
 <translation id="5269977353971873915">ਪ੍ਰਿੰਟ ਲੈਣਾ ਅਸਫਲ ਰਿਹਾ</translation>
 <translation id="7385854874724088939">ਪ੍ਰਿੰਟ ਕਰਦੇ ਸਮੇਂ ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਪ੍ਰਿੰਟਰ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</translation>
+<translation id="1197979282329025000">ਪ੍ਰਿੰਟਰ <ph name="PRINTER_NAME"/> ਲਈ ਪ੍ਰਿੰਟਰ ਸਮਰੱਥਤਾਵਾਂ ਮੁੜ ਪ੍ਰਾਪਤ ਕਰਨ ਵੇਲੇ ਇੱਕ ਗੜਬੜ ਹੋਈ ਸੀ। ਇਹ ਪ੍ਰਿੰਟਰ <ph name="CLOUD_PRINT_NAME"/> ਨਾਲ ਰਜਿਸਟਰ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।</translation>
 <translation id="9004952710076978168">ਇੱਕ ਅਗਿਆਤ ਪ੍ਰਿੰਟਰ ਲਈ ਇੱਕ ਸੂਚਨਾ ਪ੍ਰਾਪਤ ਕੀਤੀ।</translation>
+<translation id="2202898655984161076">ਪ੍ਰਿੰਟਰਾਂ ਦੀ ਸੂਚੀ ਬਣਾਉਣ ਵੇਲੇ ਇੱਕ ਸਮੱਸਿਆ ਹੋਈ ਸੀ। ਤੁਹਾਡੇ ਕੁਝ ਪ੍ਰਿੰਟਰ <ph name="CLOUD_PRINT_NAME"/> ਨਾਲ ਸਫਲਤਾਪੂਰਵਕ ਰਜਿਸਟਰ ਨਹੀਂ ਵੀ ਕੀਤੇ ਜਾ ਸਕਦੇ।</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> ਕਨੈਕਟਰ ਪ੍ਰਕਿਰਿਆ ਕ੍ਰੈਸ਼ ਹੋ ਗਈ ਹੈ। ਕੀ ਰੀਸਟਾਰਟ ਕਰਨਾ ਹੈ?</translation>
 <translation id="6904655473976120856">ਬਾਹਰ ਜਾਣ ਲਈ ਐਪ ਬਟਨ ਦਬਾਓ</translation>
 <translation id="8909833622202089127">ਸਾਈਟ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਨੂੰ ਟਰੈਕ ਕਰ ਰਹੀ ਹੈ</translation>
 <translation id="375636864092143889">ਸਾਈਟ ਤੁਹਾਡੇ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਵਰਤੋਂ ਕਰ ਰਹੀ ਹੈ</translation>

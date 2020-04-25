@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> <ph name="TAB_NAME"/> සමග Brave ටැබයක් බෙදා ගනිමින් සිටී.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> Brave ටැබයක් සහ ශ්‍රව්‍යයක් බෙදා ගනිමින් සිටී.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> <ph name="TAB_NAME"/> සමග Brave ටැබයක් සහ ශ්‍රව්‍යයක් බෙදා ගනිමින් සිටී.</translation>
+<translation id="7108338896283013870">සඟවන්න</translation>
 <translation id="890616557918890486">මූලාශ්‍රය වෙනස් කරන්න</translation>
 <translation id="7792388396321542707">බෙදාගැනීම නවතන්න</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> හට ඔබ වෙනුවෙන් සහතිකයක් සත්‍යාපනය කිරීමට සැමවිටම එයට ස්ථිර ප්‍රවේශයක් අවශ්‍යයි.</translation>
@@ -1659,6 +1660,7 @@
 <translation id="7022562585984256452">ඔබේ නිවෙස් පිටුව සකසා ඇත.</translation>
 <translation id="8069615408251337349">Brave Software Cloud මුද්‍රණය</translation>
 <translation id="4973307593867026061">මුද්‍රණ යන්ත්‍ර එක් කරන්න</translation>
+<translation id="9052208328806230490">ඔබ <ph name="EMAIL"/> ගිණුම භාවිතා කර ඔබේ මුද්‍රණ යන්ත්‍රය <ph name="CLOUD_PRINT_NAME"/> හා ලියාපදිංචි කර තිබේ</translation>
 <translation id="3792890930871100565">මුද්‍රණ යන්ත්‍ර එක් කරන්න</translation>
 <translation id="5038863510258510803">සක්‍රිය කෙරෙමින්...</translation>
 <translation id="8264024885325823677">මෙම සැකසුම ඔබේ පරිපාලකයා විසින් කළමනා කෙරේ.</translation>
@@ -2291,6 +2293,7 @@
 <translation id="6711610692002680394">නව උපාංග වෙත ලියාපදිංචි වීමට ඔබ Brave වෙත ලියාපදිංචි විය යුතුය</translation>
 <translation id="8931394284949551895">නව උපාංග</translation>
 <translation id="3752673729237782832">මගේ උපාංග</translation>
+<translation id="1721937473331968728">ඔබට පරිගණකයේ ඇති සාම්ප්‍රදායික මුද්‍රක <ph name="CLOUD_PRINT_NAME"/> වෙත සබඳ කළ හැක.</translation>
 <translation id="715118844758971915">ක්ලැසික් මුද්‍රණ යන්ත්‍ර</translation>
 <translation id="4263757076580287579">මුද්‍රණ යන්ත්‍ර ලියාපදිංචිය අවලංගු කර තිබේ</translation>
 <translation id="8152091997436726702">මුද්‍රක ලියාපදිංචිය කාලය ඉකුත් වී ඇත. මුද්‍රකයක් ලියාපදිංචි කිරීම පිනිස, ඔබ මුද්‍රකයෙහි ලියාපදිංචිය තහවුරු කළ යුතුයි.</translation>
@@ -2956,9 +2959,11 @@
 <translation id="1871615898038944731">ඔබගේ <ph name="DEVICE_TYPE"/> යාවත්කාලීනයි</translation>
 <translation id="3688526734140524629">නාලිකාව වෙනස් කරන්න</translation>
 <translation id="6410328738210026208">නාලිකාව සහ පවර්වොෂ් වෙනස් කරන්න</translation>
+<translation id="1979280758666859181">ඔබ නාලිකාවට මාරු වනුයේ <ph name="PRODUCT_NAME"/> හි පැරණි සංස්කරණයක් මගිනි. නාලිකාවේ සංස්කරණය ඔබේ උපාංගයේ සංස්කරණයත් සමඟ ගැළපෙන විට නාලිකා වෙනස්වීම ඉටුවනු ඇත.</translation>
 <translation id="7728668285692163452">නාලිකා මාරු කිරීම පසුව යොදනු ඇත</translation>
 <translation id="5495466433285976480">මෙය ඔබේ ඊලඟ ආරම්භයේදී සියළු දේශීය පරිශීලකයන්, ගොනු දත්ත හා වෙනත් සැකසුම් ඉවත් කරයි, සියළුම පරීශීලකයන්ට නැවත පිවිසීමට සිදුවේ.</translation>
 <translation id="8101987792947961127">ඊළඟ පණගැන්වීමේදී Powerwash අවශ්‍යයි</translation>
+<translation id="1414648216875402825">ඔබ <ph name="PRODUCT_NAME"/> හි අස්ථාවර අනුවාදයක් යාවත් කරමින් සිටින අතර එහි ඉටු කෙරමින් පවතින විශේෂාංග අඩංගු වේ. පිපිරුම් සහ අනපේක්ෂ බග් හට ගනු ඇත. කරුණාකර අවවාදය පිළිපදින්න.</translation>
 <translation id="6103681770816982672">අවවාදයයි: ඔබ සංවර්ධක නාලිකාවට මාරුවෙමින් පවතී</translation>
 <translation id="8807632654848257479">ස්ථායි</translation>
 <translation id="830868413617744215">බීටා</translation>
@@ -3731,10 +3736,12 @@
 <translation id="5302048478445481009">භාෂාව</translation>
 <translation id="6388429472088318283">භාෂා සොයන්න</translation>
 <translation id="2690024944919328218">භාෂා විකල්ප පෙන්වන්න</translation>
+<translation id="768549422429443215">භාෂා එක් කරන්න හෝ ලැයිස්තුව යළි පෙළගස්වන්න.</translation>
 <translation id="8218847192766059983">භාෂා එක් කරන්න හෝ ලැයිස්තුව යළි පෙළගස්වන්න. <ph name="BEGIN_LINK"/>තවත් දැන ගන්න<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">පද්ධති පාඨය මෙම භාෂාවේ පෙන්වනු ලැබේ</translation>
 <translation id="2366260648632264559">පද්ධති පාඨය මෙම භාෂාවෙන් පෙන්වන්න</translation>
 <translation id="8336721153892716270">පද්ධතියේ පාඨය <ph name="LANGUAGE"/> භාෂාවෙන් පෙන්වීමට උපාංගය යළි අරඹන්න</translation>
+<translation id="7216595297012131718">ඔබේ මනාපය මත පදනම් භාෂා අනුපිළිවෙළට සකසන්න</translation>
 <translation id="5972708806901999743">මුදුනට ගෙන යන්න</translation>
 <translation id="8609465669617005112">ඉහළට යන්න</translation>
 <translation id="6746124502594467657">පහළට ගෙන යන්න</translation>
@@ -4564,6 +4571,7 @@
 <translation id="8143442547342702591">අවලංගු යෙදුමකි</translation>
 <translation id="720110658997053098">මෙම උපාංගය ස්ථිරවම kiosk ප්‍රකාරයෙහි තබා ගන්න</translation>
 <translation id="1909880997794698664">ඔබට මෙම උපාංගය ස්ථිරව කියෝස්ක් ප්‍රකාරය තුළ තබාගැනීමට අවශ්‍ය බව විශ්වාසද?</translation>
+<translation id="1512210426710821809">මෙය පසුගමනය කිරීම සඳහා ඇති එකම ක්‍රමය <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> යළි-ස්ථාපනය කිරීමයි</translation>
 <translation id="8281886186245836920">මඟහරින්න</translation>
 <translation id="2342740338116612727">පිටුසන් එක් කළා</translation>
 <translation id="7835178595033117206">පිටුසන ඉවත් කළා</translation>
@@ -4684,7 +4692,10 @@
 <translation id="1526560967942511387">මාතෘකා රහිත ලේඛන</translation>
 <translation id="5269977353971873915">මුදණය අසාර්ථක විය</translation>
 <translation id="7385854874724088939">මුද්‍රණයේදී යම් කිසි වරදක් සිදුවිය. කරුණාකර ඔබේ මුද්‍රකය පිරික්සා නැවත උත්සහ කරන්න.</translation>
+<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> මුද්‍රණ යන්ත්‍රය සඳහා මුද්‍රණ ධාරිතාවයන් නැවත ලබා ගන්නා අතරතුර දෝෂයක් හට ගැනුණි. මෙම මුද්‍රණ යන්ත්‍රය <ph name="CLOUD_PRINT_NAME"/> හා ලියාපදිංචි කළ නොහැකි විය.</translation>
 <translation id="9004952710076978168">නොදන්නා මුද්‍රකයකින් දැන්වීම් ලැබුනි.</translation>
+<translation id="2202898655984161076">මුද්‍රණ යන්ත්‍ර ලැයිස්තුගත කිරීමේ ගැටළුවක් තිබේ. ඔබේ සමහු මුද්‍රණ යන්ත්‍ර සාර්ථකව <ph name="CLOUD_PRINT_NAME"/> සමඟ ලියාපදිංචි කර නොමැති වන්නට පුළුවන.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> සම්බන්ධක ක්‍රියාවලිය බිඳ වැටින. නැවත අරඹන්නද?</translation>
 <translation id="6904655473976120856">පිට වීමට යෙදුම් බොත්තම ඔබන්න</translation>
 <translation id="8909833622202089127">අඩවිය ඔබේ ස්ථානය සොයමින්</translation>
 <translation id="375636864092143889">අඩවිය ඔබේ මයික්‍රෆෝනය භාවිත කරමින්</translation>

@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
 <translation id="7450557937477381864">Chrome 닫기</translation>
 <translation id="7008934821596358692">가져오기를 완료하려면 모든 Chrome 창을 닫아야 합니다.</translation>
+<translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="4726634924419692905">사이트가 언제 컴퓨터에 Widevine을 설치할지 묻습니다.</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave가 이 확장 프로그램의 보안과 안전을 점검하지 않았습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
 <translation id="8081858229109418493">프로필 이름 및 아이콘</translation>
 <translation id="2044383478723007273">Brave 색상</translation>
+<translation id="1692470335103807198">더 많은 테마 받기</translation>
+<translation id="2906510232093002459">Brave 기본 이미지</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
 <translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
 <translation id="1520361618554057102">항상 새 탭 페이지에 책갈피 표시</translation>
 <translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
+<translation id="7781069478569868053">새 탭 페이지</translation>
+<translation id="2467749191278759605">Brave 대시보드 사용자 정의</translation>
+<translation id="1717331825806276156">배경 이미지</translation>
+<translation id="1820041496463124489">후원된 이미지</translation>
+<translation id="8173998484743827990">Brave Stats</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">최고의 사이트</translation>
+<translation id="1776831331757823105">시계</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="8511502469534942133">이 사이트 대상 새 Tor 연결</translation>
 <translation id="8784924142044142231">Tor 나가기</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">사이트 간 쿠키만 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
-<translation id="5572437114858031185">교차 사이트 핑거프린팅 시도만 차단</translation>
-<translation id="5079032039521408559">모든 핑거프린팅 시도 허용</translation>
-<translation id="6447141055227658942">모든 핑거프린팅 시도 차단</translation>
+<translation id="5963670684159057574">사이트 간 지문 인식 차단</translation>
+<translation id="769702552748212954">모든 지문 인식 허용</translation>
+<translation id="4540198958192073185">모든 지문 정보 차단하기</translation>
 <translation id="8942080017911802454">WebRTC IP 취급 정책</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8798099450830957504">기본값</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">Linux와 동일</translation>
 <translation id="1336940801687497203">Windows와 동일</translation>
 <translation id="8721331068159819483">macOS와 동일</translation>
-<translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="7701040980221191251">없음</translation>

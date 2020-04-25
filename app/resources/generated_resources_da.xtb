@@ -1625,6 +1625,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5727851901710884484"><ph name="APP_NAME"/> deler en Brave-fane med <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> deler en Brave-fane og lyd.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> deler en Brave-fane og lyd med <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Skjul</translation>
 <translation id="890616557918890486">Skift kilde</translation>
 <translation id="7792388396321542707">Stop deling</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> ønsker permanent adgang til et certifikat for at godkende sig selv på dine vegne.</translation>
@@ -1658,6 +1659,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7022562585984256452">Din startside er blevet konfigureret.</translation>
 <translation id="8069615408251337349">Brave Software Cloudprinter</translation>
 <translation id="4973307593867026061">Tilføj printere</translation>
+<translation id="9052208328806230490">Du har registreret dine printere med <ph name="CLOUD_PRINT_NAME"/> via kontoen <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Afbryd printere</translation>
 <translation id="5038863510258510803">Aktiverer...</translation>
 <translation id="8264024885325823677">Denne indstilling administreres af din administrator.</translation>
@@ -2291,6 +2293,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6711610692002680394">Du skal logge ind i Brave for at registrere nye enheder</translation>
 <translation id="8931394284949551895">Nye enheder</translation>
 <translation id="3752673729237782832">Mine enheder</translation>
+<translation id="1721937473331968728">Du kan føje klassiske printere med forbindelse til din computer til <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Klassiske printere</translation>
 <translation id="4263757076580287579">Printerregistreringen er annulleret.</translation>
 <translation id="8152091997436726702">Printerregistreringen har fået timeout, Hvis du vil registrere en printer, skal du bekræfte registreringen på printeren.</translation>
@@ -2972,9 +2975,11 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1871615898038944731">Din <ph name="DEVICE_TYPE"/> er opdateret</translation>
 <translation id="3688526734140524629">Skift kanal</translation>
 <translation id="6410328738210026208">Skift kanal og powerwash</translation>
+<translation id="1979280758666859181">Du er ved at skifte til en kanal med en ældre version af <ph name="PRODUCT_NAME"/>. Kanalskiftet træder i kraft, når kanalversionen matcher den version, der i øjeblikket er installeret på din enhed.</translation>
 <translation id="7728668285692163452">Ændringerne af kanalen træder i kraft senere</translation>
 <translation id="5495466433285976480">Dette vil fjerne alle lokale brugere, filer, data og andre indstillinger, når du genstarter næste gang. Alle brugere skal logge ind igen.</translation>
 <translation id="8101987792947961127">Powerwash er påkrævet ved næste genstart</translation>
+<translation id="1414648216875402825">Du er ved at opdatere til en ustabil version af <ph name="PRODUCT_NAME"/>, der indeholder ufærdige funktioner. Nedbrud og uventede fejl kan forekomme. Vær forsigtig, hvis du fortsætter.</translation>
 <translation id="6103681770816982672">Advarsel! Du er ved at skifte til udviklerkanal</translation>
 <translation id="8807632654848257479">Stabil</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3747,10 +3752,12 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="5302048478445481009">Sprog</translation>
 <translation id="6388429472088318283">Søg efter sprog</translation>
 <translation id="2690024944919328218">Vis sprogindstillinger</translation>
+<translation id="768549422429443215">Tilføj sprog, eller omorganiser listen.</translation>
 <translation id="8218847192766059983">Tilføj sprog, eller omorganiser listen. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Systemteksten vises på dette sprog</translation>
 <translation id="2366260648632264559">Vis systemtekst på dette sprog</translation>
 <translation id="8336721153892716270">Genstart enheden for at se systemtekst på <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Sortér sprog efter dine præferencer</translation>
 <translation id="5972708806901999743">Flyt til toppen</translation>
 <translation id="8609465669617005112">Flyt op</translation>
 <translation id="6746124502594467657">Flyt ned</translation>
@@ -4580,6 +4587,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="8143442547342702591">Ugyldig app</translation>
 <translation id="720110658997053098">Lad kiosktilstand forblive aktiveret på denne enhed</translation>
 <translation id="1909880997794698664">Er du sikker på, at du vil beholde denne enhed permanent i kiosktilstand?</translation>
+<translation id="1512210426710821809">Den eneste måde at fortryde dette på er ved at geninstallere <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Spring over</translation>
 <translation id="2342740338116612727">Bogmærkerne blev tilføjet</translation>
 <translation id="7835178595033117206">Bogmærket blev fjernet</translation>
@@ -4700,7 +4708,10 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1526560967942511387">Unavngivet dokument</translation>
 <translation id="5269977353971873915">Udskrift mislykkedes</translation>
 <translation id="7385854874724088939">Der gik noget galt, da du prøvede at udskrive. Tjek din printer, og prøv igen.</translation>
+<translation id="1197979282329025000">Der opstod en fejl under hentningen af udskriftsegenskaber for printeren <ph name="PRINTER_NAME"/>. Denne printer kunne ikke registreres med <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Modtog en underretning om en ukendt printer.</translation>
+<translation id="2202898655984161076">Der opstod et problem under fortegnelsen af printere. Nogle af dine printere er muligvis ikke registreret korrekt hos <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Behandlingen af forbindelsen til <ph name="CLOUD_PRINT_NAME"/> er gået ned. Vil du genstarte?</translation>
 <translation id="6904655473976120856">Tryk på knappen App for at afslutte</translation>
 <translation id="8909833622202089127">Websitet sporer din placering</translation>
 <translation id="375636864092143889">Websitet anvender din mikrofon</translation>

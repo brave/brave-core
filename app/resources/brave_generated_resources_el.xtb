@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") δεν επιτρέπεται στο Brave.</translation>
 <translation id="7450557937477381864">Κλείστε τον Chrome</translation>
 <translation id="7008934821596358692">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Chrome.</translation>
+<translation id="6786747875388722282">Επεκτάσεις</translation>
 <translation id="3699882589215410581">Εγκατάσταση και άνοιγμα του Widevine</translation>
 <translation id="8926389886865778422">Να μην ερωτηθώ ξανά</translation>
 <translation id="4726634924419692905">Ερώτηση κάθε φορά που ένας ιστότοπος προσπαθείνα εγκαταστήσει το Widevine στον υπολογιστή σας.</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Το Brave δεν έχει αναθεωρήσει αυτή την επέκταση για προστασία και ασφάλεια. Εγκαταστήστε αυτήν την επέκταση μόνο εάν εμπιστεύεστε τον προγραμματιστή.</translation>
 <translation id="8081858229109418493">Όνομα προφίλ και εικονίδιο</translation>
 <translation id="2044383478723007273">Χρώματα Brave</translation>
+<translation id="1692470335103807198">Λάβετε περισσότερα θέματα</translation>
+<translation id="2906510232093002459">Προεπιλεγμένες εικόνες Brave</translation>
 <translation id="2814998458708016836">Χρησιμοποιήστε φαρδιά γραμμή διευθύνσεων</translation>
 <translation id="6123134130710658846">Απόκρυψη πλήκτρου Ανταμοιβών Brave</translation>
 <translation id="7635711399568194460">Απόκρυψη του πλήκτρου Ανταμοιβών Brave στη γραμμή τοποθεσίας όταν οι Ανταμοιβές Brave δεν είναι ενεργοποιημένες</translation>
 <translation id="1520361618554057102">Να εμφανίζονται πάντα σελιδοδείκτες στη σελίδα "Νέα Καρτέλα"</translation>
 <translation id="5802665280774361839">Εμφάνιση αυτόματης συμπλήρωσης στη γραμμή διευθύνσεων</translation>
+<translation id="7781069478569868053">Νέα Καρτέλα Σελίδας</translation>
+<translation id="2467749191278759605">Προσαρμόστε το Brave  Πίνακα Ελέγχου σας</translation>
+<translation id="1717331825806276156">Εικόνες φόντου</translation>
+<translation id="1820041496463124489">Χορηγούμενες εικόνες</translation>
+<translation id="8173998484743827990">Στατιστικά Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Κορυφαίοι Ιστότοποι</translation>
+<translation id="1776831331757823105">Ρολόι</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
 <translation id="8511502469534942133">Νέα Σύνδεση Tor Γι' Αυτήν Την Ιστοσελίδα</translation>
 <translation id="8784924142044142231">Έξοδος από Tor</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">Αποκλεισμός μόνο των cookies μεταξύ ιστοτόπων</translation>
 <translation id="5657156137487675418">Επιτρέψτε όλα τα cookies</translation>
 <translation id="6883611015375728278">Αποκλεισμός όλων των cookies</translation>
-<translation id="5572437114858031185">Αποκλείστε μόνο τις προσπάθειες διατοποθεσιακής αποτύπωσης</translation>
-<translation id="5079032039521408559">Επιτρέψτε όλες τις προσπάθειες αποτύπωσης</translation>
-<translation id="6447141055227658942">Αποκλείστε όλες τις προσπάθειες αποτύπωσης</translation>
+<translation id="5963670684159057574">Αποκλεισμός δακτυλικών αποτυπωμάτων μεταξύ ιστότοπων</translation>
+<translation id="769702552748212954">Επιτρέψτε όλα τα δακτυλικά αποτυπώματα</translation>
+<translation id="4540198958192073185">Αποκλείστε όλα τα δακτυλικά αποτυπώματα</translation>
 <translation id="8942080017911802454">Πολιτική Διαχείρισης IP σε WebRTC</translation>
 <translation id="6165508094623778733">Μάθε περισσότερα</translation>
 <translation id="8798099450830957504">Προεπιλογή</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">Ίδιο με Linux</translation>
 <translation id="1336940801687497203">Ίδιο με Windows</translation>
 <translation id="8721331068159819483">Το ίδιο όπως στο macOS</translation>
-<translation id="6786747875388722282">Επεκτάσεις</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και magnet συνδέσμους.</translation>
 <translation id="2356070529366658676">Να γίνεται ερώτηση</translation>
 <translation id="7701040980221191251">Καμία</translation>

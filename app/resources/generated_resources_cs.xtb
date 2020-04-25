@@ -1626,6 +1626,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5727851901710884484"><ph name="APP_NAME"/> sdílí kartu Brave s kartou <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> sdílí kartu Brave a zvuk.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> sdílí kartu Brave a zvuk s kartou <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Skrýt</translation>
 <translation id="890616557918890486">Změnit zdroj</translation>
 <translation id="7792388396321542707">Ukončit sdílení</translation>
 <translation id="6630752851777525409">Rozšíření <ph name="EXTENSION_NAME"/> požaduje trvalý přístup k certifikátu, aby se vaším jménem mohlo ověřit.</translation>
@@ -1658,6 +1659,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7022562585984256452">Domovská stránka byla nastavena.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Přidat tiskárny</translation>
+<translation id="9052208328806230490">Registrovali jste tiskárny ve službě <ph name="CLOUD_PRINT_NAME"/> pomocí účtu <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Odpojit tiskárny</translation>
 <translation id="5038863510258510803">Aktivování...</translation>
 <translation id="8264024885325823677">Toto nastavení spravuje administrátor.</translation>
@@ -2288,6 +2290,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6711610692002680394">Chcete-li zaregistrovat nová zařízení, musíte se přihlásit do Chromu.</translation>
 <translation id="8931394284949551895">Nová zařízení</translation>
 <translation id="3752673729237782832">Má zařízení</translation>
+<translation id="1721937473331968728">Do služby <ph name="CLOUD_PRINT_NAME"/> můžete přidat klasické tiskárny připojené k počítači.</translation>
 <translation id="715118844758971915">Klasické tiskárny</translation>
 <translation id="4263757076580287579">Registrace tiskárny byla zrušena.</translation>
 <translation id="8152091997436726702">Časový limit registrace tiskárny vypršel. Chcete-li tiskárnu zaregistrovat, musíte registraci potvrdit na tiskárně.</translation>
@@ -2968,9 +2971,11 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1871615898038944731">Vaše zařízení <ph name="DEVICE_TYPE"/> je aktuální</translation>
 <translation id="3688526734140524629">Změnit kanál</translation>
 <translation id="6410328738210026208">Změnit kanál a použít funkci Powerwash</translation>
+<translation id="1979280758666859181">Přepínáte na kanál s nižší verzí <ph name="PRODUCT_NAME"/>. Změna kanálu bude použita, až bude verze v nově zvoleném kanálu odpovídat verzi nainstalované v zařízení.</translation>
 <translation id="7728668285692163452">Změna kanálu bude použita později</translation>
 <translation id="5495466433285976480">Pokud provedete tuto akci, budou po příštím restartu odebráni všichni místní uživatelé, soubory, údaje a další nastavení. Všichni uživatelé se budou muset znovu přihlásit.</translation>
 <translation id="8101987792947961127">Je vyžadováno použití funkce Powerwash při dalším restartu</translation>
+<translation id="1414648216875402825">Provádíte upgrade na nestabilní verzi systému <ph name="PRODUCT_NAME"/>, která obsahuje funkce ve fázi vývoje. Bude docházet k selháním a neočekávaným chybám. Pokračujte s nejvyšší opatrností.</translation>
 <translation id="6103681770816982672">Upozornění: přepínáte na kanál pro vývojáře</translation>
 <translation id="8807632654848257479">Stabilní</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3743,10 +3748,12 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5302048478445481009">Jazyk</translation>
 <translation id="6388429472088318283">Vyhledat jazyky</translation>
 <translation id="2690024944919328218">Zobrazit jazykové možnosti</translation>
+<translation id="768549422429443215">Přidejte jazyky nebo přeuspořádejte seznam.</translation>
 <translation id="8218847192766059983">Přidejte jazyky nebo přeuspořádejte seznam. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">V tomto jazyce je zobrazen text systému</translation>
 <translation id="2366260648632264559">Text systému zobrazit v tomto jazyce</translation>
 <translation id="8336721153892716270">Chcete-li text systému zobrazovat v jazyce <ph name="LANGUAGE"/>, restartujte zařízení</translation>
+<translation id="7216595297012131718">Další jazyky podle vašich požadavků</translation>
 <translation id="5972708806901999743">Přesunout nahoru</translation>
 <translation id="8609465669617005112">Posunout nahoru</translation>
 <translation id="6746124502594467657">Posunout dolů</translation>
@@ -4576,6 +4583,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8143442547342702591">Neplatná aplikace</translation>
 <translation id="720110658997053098">Trvale toto zařízení ponechat v režimu veřejného terminálu</translation>
 <translation id="1909880997794698664">Opravdu chcete toto zařízení trvale ponechat v režimu veřejného terminálu?</translation>
+<translation id="1512210426710821809">Jediný způsob, jak tuto akci vrátit zpět, je přeinstalovat systém <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="8281886186245836920">Přeskočit</translation>
 <translation id="2342740338116612727">Byly přidány záložky</translation>
 <translation id="7835178595033117206">Záložka byla odstraněna</translation>
@@ -4696,7 +4704,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1526560967942511387">Dokument bez názvu</translation>
 <translation id="5269977353971873915">Tisk se nezdařil</translation>
 <translation id="7385854874724088939">Při pokusu o tisk došlo k chybě. Zkontrolujte tiskárnu a zkuste to znovu.</translation>
+<translation id="1197979282329025000">Při načítání funkcí tiskárny <ph name="PRINTER_NAME"/> se vyskytla chyba. Tato tiskárna nemůže být zaregistrována do služby <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Přijato upozornění na neznámou tiskárnu.</translation>
+<translation id="2202898655984161076">Při vytváření seznamu tiskáren se vyskytla chyba. Některé vaše tiskárny možná nebyly ve službě <ph name="CLOUD_PRINT_NAME"/> úspěšně zaregistrovány.</translation>
+<translation id="3220586366024592812">Proces konektoru služby <ph name="CLOUD_PRINT_NAME"/> selhal. Restartovat?</translation>
 <translation id="6904655473976120856">Ukončíte stisknutím tlačítka aplikace</translation>
 <translation id="8909833622202089127">Web sleduje vaši polohu</translation>
 <translation id="375636864092143889">Web používá mikrofon</translation>

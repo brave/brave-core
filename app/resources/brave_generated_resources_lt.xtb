@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (plėtinio ID "<ph name="EXTENSION_ID"/>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="7450557937477381864">Užverti „Chrome“</translation>
 <translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
+<translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="4726634924419692905">Klausti, kai svetainė nori įdiegti „Widevine“ jūsų kompiuteryje.</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">„Brave“ nepatikrino šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
 <translation id="8081858229109418493">Profilio pavadinimas ir piktograma</translation>
 <translation id="2044383478723007273">„Brave“ spalvos</translation>
+<translation id="1692470335103807198">Gauti daugiau temų</translation>
+<translation id="2906510232093002459">„Brave“ numatytieji vaizdai</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
 <translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
 <translation id="7635711399568194460">Jei funkcija „Brave Rewards“ neįjungta, buvimo vietos juostoje esantį mygtuką „Brave Rewards“ paslėpti</translation>
 <translation id="1520361618554057102">Visada rodyti žymes naujos kortelės puslapyje</translation>
 <translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
+<translation id="7781069478569868053">Naujo skirtuko puslapis</translation>
+<translation id="2467749191278759605">Tinkinti „Brave“ ataskaitų sritį</translation>
+<translation id="1717331825806276156">Foniniai vaizdai</translation>
+<translation id="1820041496463124489">Remiami vaizdai</translation>
+<translation id="8173998484743827990">„Brave“ statistiniai duomenys</translation>
+<translation id="6966052266404721769">„Binance“</translation>
+<translation id="4643117005422448078">Populiariausios svetainės</translation>
+<translation id="1776831331757823105">Laikrodis</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
 <translation id="8511502469534942133">Nauja „Tor“ jungtis šioje svetainėje</translation>
 <translation id="8784924142044142231">Išeiti iš „Tor“</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">Blokuoti tik kelių svetainių slapukus</translation>
 <translation id="5657156137487675418">Leisti visus slapukus</translation>
 <translation id="6883611015375728278">Blokuoti visus slapukus</translation>
-<translation id="5572437114858031185">Blokuoti tik tarp kelių svetainių kuriamus kontrolinius kodus</translation>
-<translation id="5079032039521408559">Leisti visus kontrolinių kodų kūrimo bandymus</translation>
-<translation id="6447141055227658942">Blokuoti visus kontrolinių kodų kūrimo bandymus</translation>
+<translation id="5963670684159057574">Blokuoti kontrolinių kodų tarp kelių svetainių kūrimo funkciją</translation>
+<translation id="769702552748212954">Leisti visus kontrolinius kodus</translation>
+<translation id="4540198958192073185">Blokuoti visus kontrolinius kodus</translation>
 <translation id="8942080017911802454">„WebRTC“ IP tvarkymo politika</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">Atitinka „Linux“</translation>
 <translation id="1336940801687497203">Atitinka „Windows“</translation>
 <translation id="8721331068159819483">Atitinka „MacOS“</translation>
-<translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="7701040980221191251">Nieko</translation>

@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
 <translation id="7450557937477381864">Lukk Chrome</translation>
 <translation id="7008934821596358692">For å avslutte importering, lukk alle Chrome-vinduer.</translation>
+<translation id="6786747875388722282">Utvidelser</translation>
 <translation id="3699882589215410581">Installer og kjør Widevine</translation>
 <translation id="8926389886865778422">Ikke spør igjen</translation>
 <translation id="4726634924419692905">Spør når et nettsted vil installere Widevine på datamaskinen din.</translation>
@@ -31,11 +32,21 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5883458389055721080">Brave har ikke fornyet denne utvidelsen for sikkerhet. Kun installer denne utvidelsen dersom du stoler på utvikleren.</translation>
 <translation id="8081858229109418493">Profilnavn og -ikon</translation>
 <translation id="2044383478723007273">Brave farger</translation>
+<translation id="1692470335103807198">Hent flere temaer</translation>
+<translation id="2906510232093002459">Standardbilder for Brave</translation>
 <translation id="2814998458708016836">Bruk vid adresselinje</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
 <translation id="1520361618554057102">Vis alltid bokmerker på Ny fane-siden</translation>
 <translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
+<translation id="7781069478569868053">Ny fane-side</translation>
+<translation id="2467749191278759605">Tilpass Brave-oversikten</translation>
+<translation id="1717331825806276156">Bakgrunnsbilder</translation>
+<translation id="1820041496463124489">Sponsede bilder</translation>
+<translation id="8173998484743827990">Brave-statistikk</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Populære nettsteder</translation>
+<translation id="1776831331757823105">Klokke</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-tilkobling for dette nettstedet</translation>
 <translation id="8784924142044142231">Avslutt Tor</translation>
@@ -75,9 +86,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4699812599455071925">Blokker kun tredjeparts informasjonskapsler</translation>
 <translation id="5657156137487675418">Tillatt alle informasjonskapsler</translation>
 <translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
-<translation id="5572437114858031185">Blokker kun forsøk på fingeravtrykk på tvers av nettsteder</translation>
-<translation id="5079032039521408559">Tillat alle forsøk på fingeravtrykk</translation>
-<translation id="6447141055227658942">Blokker alle forsøk på fingeravtrykk</translation>
+<translation id="5963670684159057574">Blokker bruk av fingeravtrykk på tvers av nettsteder</translation>
+<translation id="769702552748212954">Tillat all bruk av fingeravtrykk</translation>
+<translation id="4540198958192073185">Blokker alle fingeravtrykk</translation>
 <translation id="8942080017911802454">Håndteringspolitikk for WebRTC IP</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -94,7 +105,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1360441190790440400">Samme som Linux</translation>
 <translation id="1336940801687497203">Samme som Windows</translation>
 <translation id="8721331068159819483">Samme som macOS</translation>
-<translation id="6786747875388722282">Utvidelser</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
 <translation id="2356070529366658676">Spør</translation>
 <translation id="7701040980221191251">Ingen</translation>

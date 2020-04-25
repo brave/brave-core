@@ -1626,6 +1626,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="5727851901710884484"><ph name="APP_NAME"/> comparte una pestaña de Brave con <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> comparte una pestaña de Brave y audio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> comparte una pestaña de Brave y audio con <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Ocultar</translation>
 <translation id="890616557918890486">Cambiar la fuente</translation>
 <translation id="7792388396321542707">Dejar de compartir</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> solicita acceso permanente a un certificado para autenticarse en tu nombre.</translation>
@@ -1659,6 +1660,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7022562585984256452">Se configuró tu página principal.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Agregar impresoras</translation>
+<translation id="9052208328806230490">Registraste tus impresoras con <ph name="CLOUD_PRINT_NAME"/> utilizando la cuenta <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Desconectar impresoras</translation>
 <translation id="5038863510258510803">Habilitando...</translation>
 <translation id="8264024885325823677">El administrador controla esta configuración.</translation>
@@ -2291,6 +2293,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6711610692002680394">Debes acceder a Brave para registrar nuevos dispositivos.</translation>
 <translation id="8931394284949551895">Nuevos dispositivos</translation>
 <translation id="3752673729237782832">Mis dispositivos</translation>
+<translation id="1721937473331968728">Puedes agregar a <ph name="CLOUD_PRINT_NAME"/> impresoras clásicas que estén conectadas a tu computadora.</translation>
 <translation id="715118844758971915">Impresoras clásicas</translation>
 <translation id="4263757076580287579">Se canceló el registro de la impresora.</translation>
 <translation id="8152091997436726702">Se agotó el tiempo de espera para el registro de la impresora. Debes confirmar el registro de la impresora si quieres registrarla.</translation>
@@ -2971,9 +2974,11 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="1871615898038944731">Tu <ph name="DEVICE_TYPE"/> está actualizado</translation>
 <translation id="3688526734140524629">Cambiar canal</translation>
 <translation id="6410328738210026208">Cambiar canal y Powerwash</translation>
+<translation id="1979280758666859181">Estás por cambiar a un canal que tiene una versión anterior de <ph name="PRODUCT_NAME"/>. El cambio de canal se aplicará cuando la versión del canal coincida con la versión que esté instalada en ese momento en tu dispositivo.</translation>
 <translation id="7728668285692163452">El cambio del canal se aplicará más tarde</translation>
 <translation id="5495466433285976480">Esta acción eliminará todos los archivos, los datos y los usuarios locales, entre otros parámetros de configuración, la próxima vez que reinicies. Todos los usuarios deberán volver a acceder.</translation>
 <translation id="8101987792947961127">Se requiere Powerwash en el siguiente reinicio</translation>
+<translation id="1414648216875402825">Estás por actualizar a una versión inestable de <ph name="PRODUCT_NAME"/> en la que se incluyen funciones que aún se están desarrollando. Se producirán bloqueos y errores inesperados. Continúa con precaución.</translation>
 <translation id="6103681770816982672">Advertencia: vas a cambiar al canal de programadores</translation>
 <translation id="8807632654848257479">Estable</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3746,10 +3751,12 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="5302048478445481009">Idioma</translation>
 <translation id="6388429472088318283">Buscar idiomas</translation>
 <translation id="2690024944919328218">Mostrar opciones de idioma</translation>
+<translation id="768549422429443215">Agrega idiomas o cambia el orden de la lista.</translation>
 <translation id="8218847192766059983">Agrega idiomas o cambia el orden de la lista. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">El texto del sistema se muestra en este idioma</translation>
 <translation id="2366260648632264559">Mostrar el texto del sistema en este idioma</translation>
 <translation id="8336721153892716270">Reinicia el dispositivo para mostrar el texto del sistema en <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Ordena los idiomas según tus preferencias</translation>
 <translation id="5972708806901999743">Mover al principio</translation>
 <translation id="8609465669617005112">Subir</translation>
 <translation id="6746124502594467657">Mover hacia abajo</translation>
@@ -4579,6 +4586,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8143442547342702591">La app no es válida</translation>
 <translation id="720110658997053098">Mantener este dispositivo en modo kiosco de forma permanente</translation>
 <translation id="1909880997794698664">¿Confirmas que deseas que este dispositivo se mantenga siempre en modo kiosco?</translation>
+<translation id="1512210426710821809">La única forma de deshacer esta acción es volver a instalar <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Omitir</translation>
 <translation id="2342740338116612727">Se agregaron favoritos</translation>
 <translation id="7835178595033117206">Se quitó el favorito</translation>
@@ -4699,7 +4707,10 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="1526560967942511387">Documento sin título</translation>
 <translation id="5269977353971873915">Error de impresión</translation>
 <translation id="7385854874724088939">Algo falló al intentar imprimir. Comprueba tu impresora e inténtalo nuevamente.</translation>
+<translation id="1197979282329025000">Se produjo un error al recuperar las capacidades de la impresora <ph name="PRINTER_NAME"/>. Esta impresora no se pudo registrar con <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Se ha recibido una notificación de una impresora desconocida.</translation>
+<translation id="2202898655984161076">Hubo un problema al enumerar las impresoras. Algunas de tus impresoras pueden no haberse registrado con éxito con <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Se ha producido un bloqueo en el proceso del conector de <ph name="CLOUD_PRINT_NAME"/>. ¿Deseas reiniciarlo?</translation>
 <translation id="6904655473976120856">Presionar el botón de la app para salir</translation>
 <translation id="8909833622202089127">El sitio está haciendo un seguimiento de tu ubicación</translation>
 <translation id="375636864092143889">El sitio está usando el micrófono</translation>

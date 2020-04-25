@@ -1627,6 +1627,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> дели Brave картицу са <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> дели Brave картицу и звук.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> дели Brave картицу и звук са <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Сакриј</translation>
 <translation id="890616557918890486">Промени извор</translation>
 <translation id="7792388396321542707">Заустави дељење</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> жели трајни приступ сертификату да би потврдио сопствену аутентичност у ваше име.</translation>
@@ -1660,6 +1661,7 @@
 <translation id="7022562585984256452">Почетна страница је подешена.</translation>
 <translation id="8069615408251337349">Brave Software Cloud штампање</translation>
 <translation id="4973307593867026061">Додај штампаче</translation>
+<translation id="9052208328806230490">Регистровали сте штампаче за <ph name="CLOUD_PRINT_NAME"/> помоћу налога <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Прекини везу са штампачима</translation>
 <translation id="5038863510258510803">Омогућавање...</translation>
 <translation id="8264024885325823677">Овим подешавањем управља администратор.</translation>
@@ -2292,6 +2294,7 @@
 <translation id="6711610692002680394">Потребно је да се пријавите у Brave да бисте регистровали нове уређаје</translation>
 <translation id="8931394284949551895">Нови уређаји</translation>
 <translation id="3752673729237782832">Моји уређаји</translation>
+<translation id="1721937473331968728">Можете да додајете класичне штампаче повезане са рачунаром у <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Класични штампачи</translation>
 <translation id="4263757076580287579">Регистрација штампача је отказана.</translation>
 <translation id="8152091997436726702">Време за регистрацију штампача је истекло. Да бисте регистровали штампач, морате да потврдите регистрацију на штампачу.</translation>
@@ -2972,9 +2975,11 @@
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> је ажуриран</translation>
 <translation id="3688526734140524629">Промени канал</translation>
 <translation id="6410328738210026208">Промени канал и обави Powerwash</translation>
+<translation id="1979280758666859181">Прелазите на канал са старијом верзијом <ph name="PRODUCT_NAME"/>-а. Промена канала ће се применити када се верзија канала буде подударала са верзијом која је тренутно инсталирана на уређају.</translation>
 <translation id="7728668285692163452">Промена канала ће бити примењена касније</translation>
 <translation id="5495466433285976480">Овим ћете уклонити све локалне кориснике, датотеке, податке и друга подешавања после следећег поновног покретања. Сви корисници ће морати поново да се пријаве.</translation>
 <translation id="8101987792947961127">Powerwash је обавезан при следећем поновном покретању</translation>
+<translation id="1414648216875402825">Ажурирате на нестабилну верзију <ph name="PRODUCT_NAME"/>-а која садржи функције које су у фази развоја. Доћи ће до отказивања и неочекиваних грешака. Наставите опрезно.</translation>
 <translation id="6103681770816982672">Упозорење: Пребацујете на канал за програмере</translation>
 <translation id="8807632654848257479">Стабилно</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3747,10 +3752,12 @@
 <translation id="5302048478445481009">Језик</translation>
 <translation id="6388429472088318283">Претражите језике</translation>
 <translation id="2690024944919328218">Приказуј опције језика</translation>
+<translation id="768549422429443215">Додајте језике или промените редослед ставки на листи.</translation>
 <translation id="8218847192766059983">Додајте језике или промените редослед ставки на листи. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Системски текст се приказује на овом језику</translation>
 <translation id="2366260648632264559">Приказуј системски текст на овом језику</translation>
 <translation id="8336721153892716270">Рестартујте уређај да би се системски текст приказивао на језику <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Распоредите језике по жељи</translation>
 <translation id="5972708806901999743">Премести на врх</translation>
 <translation id="8609465669617005112">Премести нагоре</translation>
 <translation id="6746124502594467657">Премести надоле</translation>
@@ -4580,6 +4587,7 @@
 <translation id="8143442547342702591">Неважећа апликација</translation>
 <translation id="720110658997053098">Трајно задржи овај уређај у режиму киоска</translation>
 <translation id="1909880997794698664">Да ли стварно желите да трајно задржите овај уређај у киоск режиму?</translation>
+<translation id="1512210426710821809">Једини начин да ово опозовете је да поново инсталирате <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Прескочи</translation>
 <translation id="2342740338116612727">Обележивачи су додати</translation>
 <translation id="7835178595033117206">Обележивач је уклоњен</translation>
@@ -4700,7 +4708,10 @@
 <translation id="1526560967942511387">Ненасловљени документ</translation>
 <translation id="5269977353971873915">Штампање није успело</translation>
 <translation id="7385854874724088939">Дошло је до грешке при покушају штампања. Проверите штампач и покушајте поново.</translation>
+<translation id="1197979282329025000">Дошло је до грешке при преузимању могућности за штампач <ph name="PRINTER_NAME"/>. Тај штампач није било могуће регистровати помоћу <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Примљено је обавештење за непознати штампач.</translation>
+<translation id="2202898655984161076">Дошло је до проблема приликом пописа штампача. Неки од штампача можда нису регистровани са <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Процес конектора за <ph name="CLOUD_PRINT_NAME"/> је отказао. Желите ли поново да га покренете?</translation>
 <translation id="6904655473976120856">Притисните дугме за апликацију да бисте изашли</translation>
 <translation id="8909833622202089127">Сајт прати локацију</translation>
 <translation id="375636864092143889">Сајт користи микрофон</translation>
