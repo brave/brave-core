@@ -27,7 +27,7 @@ interface StyleProps {
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   color: white;
-  padding: 6px 15px 12px 15px;
+  padding: 6px 20px 12px 20px;
   border-radius: 6px;
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
@@ -151,13 +151,13 @@ export const AssetItems = styled<StyleProps, 'div'>('div')`
   color: #fff;
   overflow-y: scroll;
   position: absolute;
-  min-width: 254px;
+  min-width: 244px;
   padding: 0px 8px;
   max-height: 75px;
   border: 1px solid rgb(70, 70, 70);
   border-top: none;
   height: ${p => p.isFiat ? 100 : 55}px;
-  left: ${p => p.isFiat ? '15px' : 'auto'};
+  left: ${p => p.isFiat ? '20px' : 'auto'};
 `
 
 export const AssetItem = styled<StyleProps, 'div'>('div')`
@@ -242,6 +242,10 @@ export const TLDSwitch = styled<StyleProps, 'div'>('div')`
 export const NavigationBar = styled<{}, 'div'>('div')`
   height: 30px;
   margin-top: 15px;
+
+  &:first-child {
+    margin-right: 3px;
+  }
 `
 
 export const NavigationItem = styled<StyleProps, 'div'>('div')`
@@ -267,7 +271,7 @@ export const SelectedView = styled<StyleProps, 'div'>('div')`
   border: 1px solid rgb(70, 70, 70);
   overflow-y: ${p => p.hideOverflow ? 'hidden' : 'scroll'};
   height: 260px;
-  width: 250px;
+  width: 240px;
   margin-left: 4px;
 `
 
@@ -395,13 +399,13 @@ export const BackArrow = styled<{}, 'div'>('div')`
 
 export const ListInfo = styled<StyleProps, 'div'>('div')`
   float: ${p => `${p.position}`};
-  min-width: ${p => p.isBTC ? 70 : 83}px;
+  min-width: ${p => p.isBTC ? 60 : 83}px;
   font-size: ${p => p.isAsset ? '16px' : 'inherit'};
   margin-top: ${p => p.isAsset ? '4' : '0'}px;
 
   ${p => {
     if (p.position === 'right') {
-      const width = p.isBTC ? 33 : 40
+      const width = p.isBTC ? 25 : 40
       return `
         width: ${width}%;
         text-align: left;
@@ -589,7 +593,7 @@ export const InvalidCopy = styled(DisconnectCopy)`
 `
 
 export const InvalidWrapper = styled(DisconnectWrapper)`
-  min-width: 255px;
+  min-width: 244px;
 `
 
 export const DismissAction = styled<{}, 'span'>('span')`
@@ -626,7 +630,7 @@ export const Converted = styled<StyleProps, 'span'>('span')`
 `
 
 export const BlurIcon = styled<{}, 'div'>('div')`
-  margin-left: 60%;
+  margin-left: 50%;
   margin-top: 25%;
   cursor: pointer;
   color: rgb(70, 70, 70);
