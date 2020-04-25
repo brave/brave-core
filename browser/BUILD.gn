@@ -259,6 +259,8 @@ source_set("browser_process") {
     sources += [
       "binance/binance_service_factory.cc",
       "binance/binance_service_factory.h",
+      "binance/binance_protocol_handler.cc",
+      "binance/binance_protocol_handler.h",
     ]
 
     deps += [ "//brave/components/binance/browser" ]

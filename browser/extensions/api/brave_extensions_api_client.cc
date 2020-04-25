@@ -7,6 +7,7 @@
 
 #include "base/strings/string_piece.h"
 #include "extensions/common/permissions/permissions_data.h"
+#include "extensions/common/url_pattern.h"
 #include "url/origin.h"
 
 namespace extensions {
@@ -25,6 +26,19 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
                         base::CompareCase::INSENSITIVE_ASCII))) {
     return true;  // protected URL
   }
+
+  URLPattern pattern1(URLPattern::SCHEME_HTTPS,
+      "https://accounts.binance.com/*/oauth/authorize*");
+  URLPattern pattern2(URLPattern::SCHEME_HTTPS,
+      "https://accounts.binance.com/oauth/token*");
+  if (pattern1.MatchesURL(request.url) || pattern2.MatchesURL(request.url)) {
+    return true;
+  }
+
+  if (request.url.SchemeIs("com.brave.binance")) {
+    return true;
+  }
+
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,
                                                                     request);
 }
