@@ -6,9 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_APPEARANCE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_APPEARANCE_HANDLER_H_
 
-#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include <string>
 
+#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
+
+class Profile;
 
 class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
  public:
@@ -25,10 +28,14 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
 
   void OnBraveDarkModeChanged();
+  void OnPreferenceChanged(const std::string& pref_name);
   void SetBraveThemeType(const base::ListValue* args);
   void GetBraveThemeType(const base::ListValue* args);
+  void GetIsSuperReferralActive(const base::ListValue* args);
 
+  Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
+  PrefChangeRegistrar profile_state_change_registrar_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_APPEARANCE_HANDLER_H_

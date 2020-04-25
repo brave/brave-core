@@ -173,11 +173,6 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
 void ViewCounterService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
   html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
-  // Set true if SR is active theme for this profile.
-  bool isSuperReferralActive = false;
-  if (auto* data = GetCurrentBrandedWallpaperData())
-    isSuperReferralActive = data->IsSuperReferral();
-  html_source->AddBoolean("isSuperReferralActive", isSuperReferralActive);
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
