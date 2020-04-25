@@ -1620,6 +1620,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> Brave टॅब <ph name="TAB_NAME"/> सह शेअर करीत आहे.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> Brave टॅब आणि ऑडिओ शेअर करीत आहे.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> Brave टॅब आणि ऑडिओ <ph name="TAB_NAME"/> सह शेअर करीत आहे.</translation>
+<translation id="7108338896283013870">लपवा</translation>
 <translation id="890616557918890486">स्रोत बदला</translation>
 <translation id="7792388396321542707">शेअरिंग थांबवा</translation>
 <translation id="6630752851777525409">आपल्‍यावतीने स्वत:स प्रमाणित करण्‍यासाठी सर्टिफिकेटमध्‍ये <ph name="EXTENSION_NAME"/> कायमचा अॅक्सेस इच्छितो.</translation>
@@ -1653,6 +1654,7 @@
 <translation id="7022562585984256452">तुमचे मुख्यपृष्‍ठ सेट केले गेले आहे.</translation>
 <translation id="8069615408251337349">Brave Software क्लाउड प्रिंट</translation>
 <translation id="4973307593867026061">प्रिंटर जोडा</translation>
+<translation id="9052208328806230490">तुम्ही तुमचे मुद्रक <ph name="EMAIL"/> खाते वापरून <ph name="CLOUD_PRINT_NAME"/> सह नोंदणीकृत केले आहेत</translation>
 <translation id="3792890930871100565">प्रिंटर डिस्कनेक्ट करा</translation>
 <translation id="5038863510258510803">सक्षम करत आहे...</translation>
 <translation id="8264024885325823677">हे सेटिंग तुमच्या अ‍ॅडमिनिस्ट्रेटरद्वारे व्यवस्थापित केले जाते.</translation>
@@ -2286,6 +2288,7 @@
 <translation id="6711610692002680394">नवीन डिव्हाइसेसची नोंदणी करण्यासाठी तुम्हाला Brave वर साइन इन करणे आवश्यक आहे</translation>
 <translation id="8931394284949551895">नवीन डिव्हाइसेस</translation>
 <translation id="3752673729237782832">माझी डिव्हाइसेस</translation>
+<translation id="1721937473331968728">तुम्ही <ph name="CLOUD_PRINT_NAME"/> वर तुमच्या कॉंप्युटरशी कनेक्ट केलेले क्लासिक प्रिंटर जोडू शकता.</translation>
 <translation id="715118844758971915">क्लासिक प्रिंटर</translation>
 <translation id="4263757076580287579">प्रिंटर नोंदणी रद्द केली गेली आहे.</translation>
 <translation id="8152091997436726702">प्रिंटरची नोंदणी कालबाह्य झाली आहे. प्रिंटरची नोंदणी करण्यासाठी, तुम्हाला प्रिंटरवर नोंदणीची पुष्टी करणे आवश्यक आहे.</translation>
@@ -2953,9 +2956,11 @@
 <translation id="1871615898038944731">आपले <ph name="DEVICE_TYPE"/> अद्ययावत आहे</translation>
 <translation id="3688526734140524629">चॅनेल बदला</translation>
 <translation id="6410328738210026208">चॅनेल बदला आणि Powerwash करा</translation>
+<translation id="1979280758666859181">तुम्ही <ph name="PRODUCT_NAME"/> च्या जुन्या आवृत्तीसह एका चॅनेलमध्ये बदलत आहात. आपल्या डिव्हाइसवर सध्या इंस्टॉल आवृत्तीशी चॅनेलची आवृत्ती जुळते तेव्हा चॅनेल बदल लागू होईल.</translation>
 <translation id="7728668285692163452">चॅनेल बदल नंतर लागू होईल</translation>
 <translation id="5495466433285976480">तुम्हाला पुढील रीस्टार्टनंतर हे सर्व स्थानिक वापरकर्ते, फायली, डेटा आणि अन्य सेटिंग्ज काढेल. सर्व वापरकर्त्यांना पुन्हा साइन इन करण्याची आवश्यकता असेल.</translation>
 <translation id="8101987792947961127">पुढील रीबूटवर Powerwash आवश्यक</translation>
+<translation id="1414648216875402825">तुम्ही <ph name="PRODUCT_NAME"/> च्या अस्थिर आवृत्तीवर अपडेट करत आहात ज्यात प्रगतीपथावर असलेली वैशिष्ट्ये आहेत. क्रॅश आणि अनपेक्षित दोष आढळतील. कृपया सावधगिरीसह पुढे जा.</translation>
 <translation id="6103681770816982672">चेतावणी: तुम्ही विकासक चॅनेलवर स्विच करत आहात</translation>
 <translation id="8807632654848257479">स्थिर</translation>
 <translation id="830868413617744215">बीटा</translation>
@@ -3728,10 +3733,12 @@
 <translation id="5302048478445481009">भाषा</translation>
 <translation id="6388429472088318283">भाषा शोधा</translation>
 <translation id="2690024944919328218">भाषा पर्याय दर्शवा</translation>
+<translation id="768549422429443215">भाषा जोडा किंवा सूचीचा क्रम पुन्हा लावा.</translation>
 <translation id="8218847192766059983">भाषा जोडा किंवा सूचीचा क्रम पुन्हा लावा. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">सिस्टम मजकूर या भाषेत दाखवला जातो</translation>
 <translation id="2366260648632264559">सिस्टम मजकूर या भाषेत दाखवा</translation>
 <translation id="8336721153892716270">सिस्टम मजकूर <ph name="LANGUAGE"/> मध्ये दाखवण्यासाठी डिव्हाइस रीस्टार्ट करा</translation>
+<translation id="7216595297012131718">आपल्या प्राधान्याच्या आधारावर भाषांची क्रमवारी लावा</translation>
 <translation id="5972708806901999743">शीर्षस्थानी हलवा</translation>
 <translation id="8609465669617005112">वर हलवा</translation>
 <translation id="6746124502594467657">खाली हलवा</translation>
@@ -4070,6 +4077,7 @@
 <translation id="2458379781610688953"><ph name="EMAIL"/> खाते अपडेट करा</translation>
 <translation id="2701737434167469065"><ph name="EMAIL"/> सह साइन इन करा</translation>
 <translation id="2923234477033317484">हे खाते काढून टाका</translation>
+<translation id="8995603266996330174"><ph name="DOMAIN"/> द्वारे व्यवस्थापित</translation>
 <translation id="4659077111144409915">प्राथमिक खाते</translation>
 <translation id="8864458770072227512">या डिव्हाइसवरून <ph name="EMAIL"/> काढून टाकण्यात आला</translation>
 <translation id="3158033540161634471">तुमचे फिंगरप्रिंट सेट करा</translation>
@@ -4560,6 +4568,7 @@
 <translation id="8143442547342702591">चुकीचे अॅप्लिकेशन</translation>
 <translation id="720110658997053098">हे डिव्हाइस कायमचे कियोस्क मोडमध्ये ठेवा</translation>
 <translation id="1909880997794698664">तुम्हाला खात्री आहे की तुम्ही कियोस्क मोडमध्ये हे डिव्हाइस कायमचे ठेवू इच्छिता?</translation>
+<translation id="1512210426710821809">हे पहिल्यासारखे करण्‍याचा एकमेव मार्ग म्‍हणजे <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> पुन्हा इन्‍स्‍टॉल करणे.</translation>
 <translation id="8281886186245836920">वगळा</translation>
 <translation id="2342740338116612727">बुकमार्क जोडले</translation>
 <translation id="7835178595033117206">बुकमार्क काढून टाकले</translation>
@@ -4680,7 +4689,10 @@
 <translation id="1526560967942511387">अशीर्षकांकित दस्तऐवज</translation>
 <translation id="5269977353971873915">प्रिंट अयशस्वी</translation>
 <translation id="7385854874724088939">प्रिंट करण्याचा प्रयत्न करताना काहीतरी चूक झाली.  कृपया तुमचा प्रिंटर तपासा आणि पुन्हा प्रयत्न करा.</translation>
+<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> प्रिंटरसाठी प्रिंटर क्षमता पुन्हा मिळवताना करताना एरर आली. हा प्रिंटर <ph name="CLOUD_PRINT_NAME"/> सह नोंदणीकृत असू शकत नाही.</translation>
 <translation id="9004952710076978168">अज्ञात मुद्रकासाठी एक सूचना प्राप्त झाली.</translation>
+<translation id="2202898655984161076">प्रिंटर सूचीबद्ध करताना समस्या आली. तुमचे काही प्रिंटर <ph name="CLOUD_PRINT_NAME"/> सह यशस्वीरित्या नोंदणीकृत नाहीत.</translation>
+<translation id="3220586366024592812">कनेक्टर प्रक्रिया <ph name="CLOUD_PRINT_NAME"/> क्रॅश झाली. रीस्टार्ट करायचे?</translation>
 <translation id="6904655473976120856">बाहेर पडण्यासाठी अ‍ॅप बटण दाबा</translation>
 <translation id="8909833622202089127">साइट तुमचे स्थान ट्रॅक करत आहे</translation>
 <translation id="375636864092143889">साइट तुमचा मायक्रोफोन वापरत आहे</translation>

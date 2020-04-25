@@ -174,7 +174,7 @@
 <translation id="4200983522494130825">Nowa &amp;karta</translation>
 <translation id="8418445294933751433">&amp;Pokaż jako kartę</translation>
 <translation id="1723824996674794290">&amp;Nowe okno</translation>
-<translation id="6516243500644829484">Nowe &amp;prywatne okno</translation>
+<translation id="6516243500644829484">Nowe &amp;okno prywatne</translation>
 <translation id="6120205520491252677">Przypnij tę stronę do ekranu startowego...</translation>
 <translation id="9065203028668620118">Edytuj</translation>
 <translation id="5329858601952122676">&amp;Usuń</translation>
@@ -195,7 +195,7 @@
 <translation id="3285322247471302225">Nowa &amp;karta</translation>
 <translation id="8879284080359814990">&amp;Pokaż jako kartę</translation>
 <translation id="176587472219019965">&amp;Nowe okno</translation>
-<translation id="7973394300052703468">Nowe &amp;prywatne okno</translation>
+<translation id="7973394300052703468">Nowe &amp;okno prywatne</translation>
 <translation id="5157635116769074044">Przypnij tę stronę do ekranu startowego...</translation>
 <translation id="5830720307094128296">Zapisz stronę &amp;jako...</translation>
 <translation id="3608436266458100337">Tryb czytnika</translation>
@@ -804,7 +804,7 @@
 <translation id="6508261954199872201">Aplikacja: <ph name="APP_NAME"/></translation>
 <translation id="611296870688433505">Prywatna aplikacja: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Karta: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Prywatna karta: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Karta prywatna: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Aplikacja tła: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Strona w tle: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Wtyczka: <ph name="PLUGIN_NAME"/></translation>
@@ -1124,7 +1124,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7760004034676677601">Czy to oczekiwana strona startowa?</translation>
 <translation id="5956585768868398362">Czy to oczekiwana strona wyszukiwania?</translation>
 <translation id="7857949311770343000">Czy to oczekiwana strona nowej karty?</translation>
-<translation id="6122081475643980456">Twoje połączenie internetowe jest kontrolowane</translation>
+<translation id="6122081475643980456">Połączenie internetowe jest kontrolowane</translation>
 <translation id="4130207949184424187">To rozszerzenie ustawiło inną stronę wyświetlaną po wyszukiwaniu w omniboksie.</translation>
 <translation id="5355926466126177564">Rozszerzenie „<ph name="EXTENSION_NAME"/>” ustawiło inną stronę wyświetlaną po wyszukiwaniu w omniboksie.</translation>
 <translation id="1546280085599573572">To rozszerzenie ustawiło inną stronę wyświetlaną po kliknięciu przycisku strony głównej.</translation>
@@ -1374,7 +1374,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2947605845283690091">Przeglądanie stron internetowych powinno przebiegać bez problemu. Poświęć chwilę na <ph name="BEGIN_LINK"/>sprawdzenie swoich rozszerzeń<ph name="END_LINK"/>.</translation>
 <translation id="3248902735035392926">Dbaj o bezpieczeństwo. Poświęć chwilę na <ph name="BEGIN_LINK"/>sprawdzenie swoich rozszerzeń<ph name="END_LINK"/></translation>
 <translation id="4015163439792426608">Korzystasz z rozszerzeń? <ph name="BEGIN_LINK"/>Zarządzaj nimi<ph name="END_LINK"/> w jednym, łatwo dostępnym miejscu.</translation>
-<translation id="2858138569776157458">Popularne</translation>
+<translation id="2858138569776157458">Popularne strony</translation>
 <translation id="5376169624176189338">Kliknij, aby przejść wstecz. Przytrzymaj, aby wyświetlić historię</translation>
 <translation id="9103868373786083162">Naciśnij, by wrócić, lub otwórz menu kontekstowe, by wyświetlić historię</translation>
 <translation id="2961695502793809356">Kliknij, aby przejść dalej. Przytrzymaj, aby wyświetlić historię</translation>
@@ -1435,8 +1435,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7174199383876220879">Nowość! Sterowanie muzyką, filmami i inne funkcje.</translation>
 <translation id="4369414322596874629">Możesz przeglądać prywatnie, używając prywatnego okna</translation>
 <translation id="3772947852642271642">Korzystaj z sieci bez zapisywania swojej historii przeglądania dzięki prywatnemu oknu</translation>
-<translation id="3871738366246972820">Korzystasz ze wspólnego komputera? Otwórz prywatne okno.</translation>
-<translation id="5808622652939943719">Aby przeglądać prywatnie, kliknij ikonę menu w postaci kropek i otwórz prywatne okno</translation>
+<translation id="3871738366246972820">Korzystasz ze wspólnego komputera? Otwórz okno prywatne.</translation>
+<translation id="5808622652939943719">Aby przeglądać prywatnie, kliknij ikonę menu w postaci kropek i otwórz okno prywatne</translation>
 <translation id="8803953437405899238">Otwórz nową kartę jednym kliknięciem</translation>
 <translation id="3071624960923923138">Kliknij tutaj, by otworzyć nową kartę</translation>
 <translation id="4908811072292128752">Otwórz nową kartę, by przeglądać dwie strony naraz</translation>
@@ -1626,6 +1626,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5727851901710884484"><ph name="APP_NAME"/> udostępnia kartę Brave karcie <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> udostępnia kartę i dźwięk z Brave.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> udostępnia kartę i dźwięk z Brave karcie <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Ukryj</translation>
 <translation id="890616557918890486">Zmień źródło</translation>
 <translation id="7792388396321542707">Zatrzymaj udostępnianie</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> chce stałego dostępu do certyfikatu, by uwierzytelniać się w Twoim imieniu.</translation>
@@ -1659,6 +1660,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7022562585984256452">Strona główna została ustawiona.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Dodaj drukarki</translation>
+<translation id="9052208328806230490">Zarejestrowano drukarki w usłudze <ph name="CLOUD_PRINT_NAME"/> przy użyciu konta <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Odłącz drukarki</translation>
 <translation id="5038863510258510803">Uruchamiam...</translation>
 <translation id="8264024885325823677">Tym ustawieniem zarządza Twój administrator.</translation>
@@ -2006,7 +2008,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="881799181680267069">Ukryj pozostałe</translation>
 <translation id="4708849949179781599">Zamknij przeglądarkę <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Nowe okno</translation>
-<translation id="1676595396635191120">Nowe prywatne okno</translation>
+<translation id="1676595396635191120">Nowe okno prywatne</translation>
 <translation id="406070391919917862">Aplikacje działające w tle</translation>
 <translation id="3335947283844343239">Otwórz ponownie zamkniętą kartę</translation>
 <translation id="8214489666383623925">Otwórz plik...</translation>
@@ -2252,7 +2254,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7339898014177206373">Nowe okno</translation>
 <translation id="7551643184018910560">Przypnij do półki</translation>
 <translation id="8335587457941836791">Odepnij z półki</translation>
-<translation id="4471385409549756595">Nowe prywatne okno</translation>
+<translation id="4471385409549756595">Nowe okno prywatne</translation>
 <translation id="8249048954461686687">Folder OEM</translation>
 <translation id="8440630305826533614">Aplikacje na Linuksa</translation>
 <translation id="29488703364906173">Szybka, prosta i bezpieczna przeglądarka na miarę współczesnego internetu.</translation>
@@ -2291,6 +2293,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6711610692002680394">Aby móc rejestrować nowe urządzenia, musisz się zalogować w Brave</translation>
 <translation id="8931394284949551895">Nowe urządzenia</translation>
 <translation id="3752673729237782832">Moje urządzenia</translation>
+<translation id="1721937473331968728">Tradycyjne drukarki podłączone do komputera możesz dodać do <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Drukarki tradycyjne</translation>
 <translation id="4263757076580287579">Rejestracja drukarki została anulowana.</translation>
 <translation id="8152091997436726702">Upłynął limit czasu rejestracji drukarki. Aby ją zarejestrować, musisz potwierdzić na niej rejestrację.</translation>
@@ -2746,7 +2749,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
       =1 {Prywatne}
       other {Prywatne (#)}
     }</translation>
-<translation id="5070556616376997776">To jest prywatne okno</translation>
+<translation id="5070556616376997776">To jest okno prywatne</translation>
 <translation id="2199298570273670671">Błąd</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: synchronizacja nie działa</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: synchronizacja haseł nie działa</translation>
@@ -2935,11 +2938,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3181825792072797598">Włącz synchronizację</translation>
 <translation id="2547583314137677375">Wyłącz synchronizację</translation>
 <translation id="6985607387932385770">Drukarki</translation>
+<translation id="8818152010000655963">Tapeta</translation>
 <translation id="7788444488075094252">Języki i metody wprowadzania</translation>
 <translation id="4181841719683918333">Języki</translation>
 <translation id="6785915470941880363">Odwrotne przewijanie <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="6340526405444716530">Personalizacja</translation>
-<translation id="8818152010000655963">Tapeta</translation>
 <translation id="7289225569524511578">Otwórz aplikację tapety</translation>
 <translation id="8336739000755212683">Zmień obraz konta na urządzeniu</translation>
 <translation id="9137157311132182254">Preferowana wyszukiwarka</translation>
@@ -2971,9 +2974,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> używa aktualnej wersji oprogramowania</translation>
 <translation id="3688526734140524629">Zmień kanał</translation>
 <translation id="6410328738210026208">Zmień kanał i wykonaj Powerwash</translation>
+<translation id="1979280758666859181">Przechodzisz na kanał, w którym <ph name="PRODUCT_NAME"/> jest w starszej wersji. Zmiana nastąpi wtedy, gdy wersja na wybranym kanale będzie zgodna z tą zainstalowaną na Twoim urządzeniu.</translation>
 <translation id="7728668285692163452">Zmiana wersji nastąpi później</translation>
 <translation id="5495466433285976480">To spowoduje usunięcie wszystkich lokalnych użytkowników, plików, danych i innych ustawień po ponownym uruchomieniu. Wszyscy użytkownicy będą musieli zalogować się od nowa.</translation>
 <translation id="8101987792947961127">Przy następnym uruchomieniu trzeba wykonać Powerwash</translation>
+<translation id="1414648216875402825">Aktualizujesz <ph name="PRODUCT_NAME"/> do niestabilnej wersji zawierającej funkcje, nad którymi wciąż pracujemy. Będą występować awarie i nieoczekiwane błędy. Zachowaj ostrożność.</translation>
 <translation id="6103681770816982672">Ostrzeżenie: przełączasz wersję na deweloperską</translation>
 <translation id="8807632654848257479">Stabilny</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3746,10 +3751,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5302048478445481009">Język</translation>
 <translation id="6388429472088318283">Wyszukaj języki</translation>
 <translation id="2690024944919328218">Pokaż opcje języka</translation>
+<translation id="768549422429443215">Dodaj języki lub zmień kolejność na liście.</translation>
 <translation id="8218847192766059983">Dodaj języki lub zmień kolejność na liście. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">W tym języku wyświetlany jest tekst z systemu</translation>
 <translation id="2366260648632264559">Wyświetlaj tekst z systemu w tym języku</translation>
 <translation id="8336721153892716270">Uruchom ponownie urządzenie, by przełączyć język systemu na <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Ustaw preferowaną kolejność języków</translation>
 <translation id="5972708806901999743">Przenieś na początek</translation>
 <translation id="8609465669617005112">W górę</translation>
 <translation id="6746124502594467657">W dół</translation>
@@ -4098,7 +4105,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7354341762311560488">Czytnik linii papilarnych to klawisz w lewym dolnym rogu klawiatury. Dotknij go delikatnie dowolnym palcem.</translation>
 <translation id="899676909165543803">Czytnik linii papilarnych to klawisz w prawym dolnym rogu klawiatury. Dotknij go delikatnie dowolnym palcem.</translation>
 <translation id="4535767533210902251">Czytnik linii papilarnych to klawisz w prawym górnym rogu klawiatury. Dotknij go delikatnie dowolnym palcem.</translation>
-<translation id="7189965711416741966">Odcisk palca dodany.</translation>
+<translation id="7189965711416741966">Odcisk palca został dodany.</translation>
 <translation id="9220820413868316583">Unieś i spróbuj ponownie.</translation>
 <translation id="4534661889221639075">Spróbuj ponownie.</translation>
 <translation id="3645372836428131288">Przesuń odrobinę, by zeskanować inną część odcisku palca.</translation>
@@ -4579,6 +4586,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8143442547342702591">Nieprawidłowa aplikacja</translation>
 <translation id="720110658997053098">Trwale utrzymuj to urządzenie w trybie kiosku</translation>
 <translation id="1909880997794698664">Czy na pewno chcesz trwale utrzymywać to urządzenie w trybie kiosku?</translation>
+<translation id="1512210426710821809">Jedynym sposobem cofnięcia tej czynności jest ponowna instalacja systemu <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Pomiń</translation>
 <translation id="2342740338116612727">Dodano zakładki</translation>
 <translation id="7835178595033117206">Zakładka została usunięta</translation>
@@ -4699,7 +4707,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1526560967942511387">Dokument bez tytułu</translation>
 <translation id="5269977353971873915">Niepowodzenie drukowania</translation>
 <translation id="7385854874724088939">Wystąpił błąd przy próbie drukowania. Sprawdź drukarkę i spróbuj ponownie.</translation>
+<translation id="1197979282329025000">Podczas pobierania informacji o możliwościach drukarki <ph name="PRINTER_NAME"/> wystąpił błąd. Nie można zarejestrować tej drukarki w usłudze <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Odebrano powiadomienie dla nieznanej drukarki.</translation>
+<translation id="2202898655984161076">Podczas tworzenia listy drukarek wystąpił problem. Niektóre drukarki mogły nie zostać pomyślnie zarejestrowane w usłudze <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Proces oprogramowania sprzęgającego usługi <ph name="CLOUD_PRINT_NAME"/> uległ awarii. Uruchomić go ponownie?</translation>
 <translation id="6904655473976120856">Naciśnij przycisk aplikacji, by wyjść</translation>
 <translation id="8909833622202089127">Strona śledzi Twoją lokalizację</translation>
 <translation id="375636864092143889">Strona używa mikrofonu</translation>
@@ -4735,7 +4746,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6041155700700864984">Zamknij pełny ekran</translation>
 <translation id="6112294629795967147">Dotknij, by zmienić rozmiar</translation>
 <translation id="2453860139492968684">Zakończ</translation>
-<translation id="6336451774241870485">Nowa prywatna karta</translation>
+<translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6610147964972079463">Zamknij prywatne karty</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="4808319664292298116">Włączyć tryb VR z domeny <ph name="DOMAIN"/>?</translation>

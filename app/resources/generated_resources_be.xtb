@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> абагульвае ўкладку Brave з укладкай <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> абагульвае гук і ўкладку Brave.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> абагульвае гук і ўкладку Brave з укладкай <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Схаваць</translation>
 <translation id="890616557918890486">Змяніць крыніцу</translation>
 <translation id="7792388396321542707">Спыніць абагульванне</translation>
 <translation id="6630752851777525409">Пашырэнне <ph name="EXTENSION_NAME"/> хоча атрымаць пастаянны доступ да сертыфіката, каб аўтэнтыфікаваць сябе ад вашага імя.</translation>
@@ -1659,6 +1660,7 @@
 <translation id="7022562585984256452">Галоўная старонка зададзена.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Дадаць прынтары</translation>
+<translation id="9052208328806230490">Вы зарэгістравалі прынтары ў <ph name="CLOUD_PRINT_NAME"/>, выкарыстоўваючы ўліковы запіс <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Адключыць прынтары</translation>
 <translation id="5038863510258510803">Уключаецца...</translation>
 <translation id="8264024885325823677">Гэта налада знаходзіцца пад кіраваннем адміністратара.</translation>
@@ -2291,6 +2293,7 @@
 <translation id="6711610692002680394">Каб рэгістраваць новыя прылады, трэба ўвайсці ў Brave</translation>
 <translation id="8931394284949551895">Новыя прылады</translation>
 <translation id="3752673729237782832">Мае прылады</translation>
+<translation id="1721937473331968728">Вы можаце дадаваць у <ph name="CLOUD_PRINT_NAME"/> звычайныя прынтары, падключаныя да камп'ютара.</translation>
 <translation id="715118844758971915">Класічныя прынтары</translation>
 <translation id="4263757076580287579">Рэгістрацыя прынтара скасавана.</translation>
 <translation id="8152091997436726702">Рэгістрацыя прынтара пратэрмінавана. Для завяршэння неабходна пацвердзіць рэгістрацыю на прынтары.</translation>
@@ -2958,9 +2961,11 @@
 <translation id="1871615898038944731">Абнаўленне прылады <ph name="DEVICE_TYPE"/> не патрабуецца</translation>
 <translation id="3688526734140524629">Змяніць версію</translation>
 <translation id="6410328738210026208">Змяніць версію і прымяніць Powerwash</translation>
+<translation id="1979280758666859181">Вы пераходзіце на канал са старэйшай версіяй <ph name="PRODUCT_NAME"/>. Змена канала адбудзецца, калі версія канала будзе адпавядаць версіі, усталяванай на вашай прыладзе.</translation>
 <translation id="7728668285692163452">Змена канала будзе выканана пазней</translation>
 <translation id="5495466433285976480">Пасля наступнага перазапуску будуць выдалены ўсе лакальныя ўліковыя запісы карыстальнікаў, файлы, даныя і іншыя налады. Усім карыстальнікам трэба будзе зноў увайсці ў свае ўліковыя запісы.</translation>
 <translation id="8101987792947961127">Пры наступнай перазагрузцы патрабуецца Powerwash</translation>
+<translation id="1414648216875402825">Вы абнаўляеце <ph name="PRODUCT_NAME"/> да нестабільнай версіі з функцыямі, якія яшчэ ў распрацоўцы. Могуць адбывацца збоі і нечаканыя памылкі. Будзьце асцярожнымі.</translation>
 <translation id="6103681770816982672">Увага: вы пераключаецеся на версію для распрацоўшчыкаў</translation>
 <translation id="8807632654848257479">Стабільная</translation>
 <translation id="830868413617744215">Бэта-версія</translation>
@@ -3733,10 +3738,12 @@
 <translation id="5302048478445481009">Мова</translation>
 <translation id="6388429472088318283">Пошук моў</translation>
 <translation id="2690024944919328218">Паказаць параметры маўлення</translation>
+<translation id="768549422429443215">Дадайце мовы або змяніце іх парадак у спісе.</translation>
 <translation id="8218847192766059983">Дадайце мовы або змяніце іх парадак у спісе. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Тэкст сістэмы паказаны на гэтай мове</translation>
 <translation id="2366260648632264559">Паказваць тэкст сістэмы на гэтай мове</translation>
 <translation id="8336721153892716270">Перазапусціце прыладу, каб тэксты інтэрфейсу сістэмы пачалі паказвацца на наступнай мове: <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Упарадкуйце мовы, як вам трэба</translation>
 <translation id="5972708806901999743">Перамясціць наверх</translation>
 <translation id="8609465669617005112">Перамясціць уверх</translation>
 <translation id="6746124502594467657">Перамясціць ніжэй</translation>
@@ -4566,6 +4573,7 @@
 <translation id="8143442547342702591">Няправільная праграма</translation>
 <translation id="720110658997053098">Заўсёды ўжываць на гэтай прыладзе рэжым кіёска</translation>
 <translation id="1909880997794698664">Вы ўпэўненыя, што рэжым кіёска павінен быць заўсёды ўключаны на прыладзе?</translation>
+<translation id="1512210426710821809">Адзіны спосаб адрабіць гэта дзеянне – пераўсталяваць <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Прапусціць</translation>
 <translation id="2342740338116612727">Закладкі дададзены</translation>
 <translation id="7835178595033117206">Закладка выдалена</translation>
@@ -4686,7 +4694,10 @@
 <translation id="1526560967942511387">Дакумент без назвы</translation>
 <translation id="5269977353971873915">Збой друку</translation>
 <translation id="7385854874724088939">Падчас друку нешта пайшло не так.  Праверце прынтар і паўтарыце спробу.</translation>
+<translation id="1197979282329025000">Адбылася памылка падчас атрымання функцый прынтара "<ph name="PRINTER_NAME"/>". Гэты прынтар не ўдалося зарэгістраваць у <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Атрымана апавяшчэнне аб невядомым прынтары.</translation>
+<translation id="2202898655984161076">Узнікла праблема пры падрыхтоўцы спіса прынтараў. Магчыма, некаторыя прынтары не ўдалося зарэгістраваць у <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Працэс злучальніка <ph name="CLOUD_PRINT_NAME"/> даў збой. Перазапусціць яго?</translation>
 <translation id="6904655473976120856">Каб выйсці, націсніце кнопку праграмы</translation>
 <translation id="8909833622202089127">Сайт адсочвае ваша месцазнаходжанне</translation>
 <translation id="375636864092143889">Сайт выкарыстоўвае мікрафон</translation>

@@ -1625,6 +1625,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> ກຳລັງແບ່ງປັນແຖບ Brave ກັບ <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> ກຳລັງແບ່ງປັນແຖບ Brave ແລະ ສຽງ.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> ກຳລັງແບ່ງປັນແຖບ Brave ແລະ ສຽງກັບ <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">ເຊື່ອງ</translation>
 <translation id="890616557918890486">ປ່ຽນແຫຼ່ງ</translation>
 <translation id="7792388396321542707">ຢຸດການແຊຣ໌</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> ຕ້ອງການການເຂົ້າເຖິງໃບຢັ້ງຢືນແບບຖາວອນ ເພື່ອຮັບຮອງຄວາມຖືກຕ້ອງຂອງມັນເອງໃນນາມຕາງໜ້າໃຫ້ທ່ານ.</translation>
@@ -1658,6 +1659,7 @@
 <translation id="7022562585984256452">ໜ້າຫຼັກຂອງທ່ານຖືກຕັ້ງຂຶ້ນແລ້ວ.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">ເພີ່ມເຄື່ອງພິມ</translation>
+<translation id="9052208328806230490">ທ່ານ​ໄດ້ລົງທະບຽນເຄື່ອງພິມຂອງທ່ານກັບ <ph name="CLOUD_PRINT_NAME"/> ​ໂດຍການໃຊ້ບັນຊີ <ph name="EMAIL"/> ແລ້ວ</translation>
 <translation id="3792890930871100565">ຕັດເຊື່ອມຕໍ່ເຄື່ອງພິມ</translation>
 <translation id="5038863510258510803">ກຳລັງເປີດນຳໃຊ້...</translation>
 <translation id="8264024885325823677">ການຕັ້ງຄ່ານີ້ຈັດການໂດຍຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານ.</translation>
@@ -2290,6 +2292,7 @@
 <translation id="6711610692002680394">ທ່ານ​ຈໍາ​ເປັນ​ຕ້ອງ​ລົງຊື່ເຂົ້າ​ໃຊ້​ Brave ເພື່ອ​ລົງທະບຽນ​ອຸ​ປະ​ກອນ​ໃໝ່</translation>
 <translation id="8931394284949551895">ອຸ​ປະ​ກອນ​ໃຫມ່</translation>
 <translation id="3752673729237782832">ອຸ​ປະ​ກອນ​ຂອງ​ຂ້ອຍ</translation>
+<translation id="1721937473331968728">ທ່ານສາມາດເພີ່ມເຄື່ອງພິມຄລາສສິກເຊື່ອມຕໍ່ຄອມພິວເຕີຂອງທ່ານກັບ <ph name="CLOUD_PRINT_NAME"/> ແລ້ວ.</translation>
 <translation id="715118844758971915">ເຄື່ອງພິມ​ຄລາ​ສ​ສິກ</translation>
 <translation id="4263757076580287579">ການ​ຈົດ​ທະ​ບຽນ​ເຄື່ອງ​ພິມ​ຖືກ​ຍົກ​ເລີກແລ້ວ​.</translation>
 <translation id="8152091997436726702">ການລົງທະບຽນເຄື່ອງພິມໝົດເວລາແລ້ວ. ເພື່ອລົງທະບຽນເຄື່ອງພິມ, ທ່ານຕ້ອງຢືນຢັນການລົງທະບຽນຢູ່ໃນເຄື່ອງພິມ.</translation>
@@ -2957,9 +2960,11 @@
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> ຂອງທ່ານໃໝ່ຫຼ້າສຸດແລ້ວ</translation>
 <translation id="3688526734140524629">ປ່ຽນຊ່ອງ</translation>
 <translation id="6410328738210026208">ປ່ຽນ​​ຊ່ອງ ​ແລະ Powerwash</translation>
+<translation id="1979280758666859181">ທ່ານກໍາລັງປ່ຽນຊ່ອງດ້ວຍ <ph name="PRODUCT_NAME"/> ລຸ້ນເກົ່າກ່ວາ. ການປ່ຽນຊ່ອງຈະຖືກນໍາໃຊ້ ເມື່ອລຸ້ນຂອງຊ່ອງກົງກັບລຸ້ນທີ່ໄດ້ຕິດຕັ້ງໄວ້ກັບອຸປະກອນຂອງທ່ານໃນປະຈຸບັນ.</translation>
 <translation id="7728668285692163452">ການປ່ຽນຊ່ອງຈະຖືກນຳໃຊ້ໃນພາຍຫຼັງ</translation>
 <translation id="5495466433285976480">ອັນນີ້ຈະເອົາຜູ້ໃຊ້ພາຍໃນ, ໄຟລ໌, ຂໍ້ມູນ ແລະການຕັ້ງຄ່າອື່ນໆທັງໝົດອອກໄປ ຫຼັງຈາກການປິດເປີດໃໝ່ຄັ້ງຕໍ່ໄປຂອງທ່ານ. ຜູ້ໃຊ້ທຸກຄົນຕ້ອງໄດ້ລົງຊື່ເຂົ້າ​ໃຊ້ອີກ.</translation>
 <translation id="8101987792947961127">ຕ້ອງມີ Powerwash ຢູ່ໃນການປິດເປີດໃໝ່ຄັ້ງຕໍ່ໄປ</translation>
+<translation id="1414648216875402825">ທ່ານກໍາລັງອັບເດດເປັນ <ph name="PRODUCT_NAME"/> ລຸ້ນບໍ່ໝັ້ນທ່ຽງ ເຊິ່ງມີຄຸນສົມບັດທີ່ດໍາເນີນການຢູ່. ການຂັດຂ້ອງ ແລະບັນຫາທີ່ບໍ່ຄາດຄິດໄວ້ຈະເກີດຂຶ້ນ. ກະລຸນາດໍາເນີນການຕໍ່ດ້ວຍຄວາມລະມັດລະວັງ.</translation>
 <translation id="6103681770816982672">ຄໍາ​ເຕືອນ​: ທ່ານ​ກໍາ​ລັງ​ປ່ຽນໄປຫາຊ່ອງຜູ້ພັດ​ທະ​ນາ</translation>
 <translation id="8807632654848257479">ໝັ້ນຄົງ</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3732,10 +3737,12 @@
 <translation id="5302048478445481009">ພາ​ສາ</translation>
 <translation id="6388429472088318283">ພາສາໃນການຊອກຫາ</translation>
 <translation id="2690024944919328218">ສະແດງຕົວເລືອກພາສາ</translation>
+<translation id="768549422429443215">ເພີ່ມພາສາ ຫຼື ຈັດລຳດັບລາຍການໃໝ່.</translation>
 <translation id="8218847192766059983">ເພີ່ມພາສາ ຫຼື ຈັດລຳດັບລາຍການໃໝ່. <ph name="BEGIN_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">ຂໍ້ຄວາມລະບົບປາກົດເປັນພາສານີ້</translation>
 <translation id="2366260648632264559">ສະແດງຂໍ້ຄວາມລະບົບເປັນພາສານີ້</translation>
 <translation id="8336721153892716270">ຣິສະຕາດອຸປະກອນເພື່ອສະແດງຂໍ້ຄວາມລະບົບເປັນ <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">ຈັດລຳດັບພາສາອີງຕາມການຕັ້ງຄ່າຂອງທ່ານ</translation>
 <translation id="5972708806901999743">ຍ້າຍໄປສ່ວນເທິງ</translation>
 <translation id="8609465669617005112">ຍ້າຍຂຶ້ນ</translation>
 <translation id="6746124502594467657">ຍ້າຍ​ລົງ</translation>
@@ -4565,6 +4572,7 @@
 <translation id="8143442547342702591">ແອັບພລິເຄຊັນໃຊ້ບໍ່ໄດ້</translation>
 <translation id="720110658997053098">ຮັກສາອຸປະກອນນີ້ຢູ່ໃນໂໝດ kiosk ຢ່າງຖາວອນ</translation>
 <translation id="1909880997794698664">ທ່ານແນ່ໃຈບໍວ່າ ທ່ານຕ້ອງການຮັກສາເຄື່ອງນີ້ໄວ້ຢູ່ໃນໂໝດ kiosk ຢ່າງຖາວອນ?</translation>
+<translation id="1512210426710821809">ວິທີດຽວທີ່ຈະຍົກເລີກສິ່ງນີ້ແມ່ນການຖອນຕິດຕັ້ງ <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">ຂ້າມ</translation>
 <translation id="2342740338116612727">ເພີ່ມບຸກມາກແລ້ວ</translation>
 <translation id="7835178595033117206">ລຶບບຸກມາກອອກແລ້ວ</translation>
@@ -4685,7 +4693,10 @@
 <translation id="1526560967942511387">ເອກະສານບໍ່ມີຫົວຂໍ້</translation>
 <translation id="5269977353971873915">ພິມບໍ່ສໍາເລັດ</translation>
 <translation id="7385854874724088939">ມີບາງອັນຜິດພາດ ເມື່ອພະຍາຍາມພິມ. ກະລຸນາກວດເບິ່ງເຄື່ອງພິມຂອງທ່ານ ແລະລອງໃໝ່ອີກ.</translation>
+<translation id="1197979282329025000">ເກີດຄວາມຜິດພາດຂຶ້ນໃນຂະນະທີ່ກໍາລັງກູ້ຄືນຄວາມສາມາດຂອງເຄື່ອງພິມສໍາລັບເຄື່ອງພິມ <ph name="PRINTER_NAME"/>. ເຄື່ອງພິມນີ້ບໍ່ສາມາດລົງທະບຽນໄດ້ກັບ <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">ໄດ້ຮັບການແຈ້ງເຕືອນສໍາລັບເຄື່ອງພິມທີ່ບໍ່ຮູ້ຈັກ.</translation>
+<translation id="2202898655984161076">ມີບັນຫາການເຮັດລາຍຊື່ເຄື່ອງພິມ. ບາງເຄື່ອງພິມອາດຈະບໍ່ໄດ້ລົງທະບຽນຢ່າງສໍາເລັດກັບ <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">ຂະບວນການຕົວເຊື່ອມຕໍ່ <ph name="CLOUD_PRINT_NAME"/> ​ເກີດຂັດຂ້ອງ​. ເລີ່ມຕົ້ນໃໝ່ບໍ?</translation>
 <translation id="6904655473976120856">ກົດປຸ່ມແອັບເພື່ອອອກ</translation>
 <translation id="8909833622202089127">ເວັບໄຊກຳລັງຕິດຕາມສະຖານທີ່ຂອງທ່ານ</translation>
 <translation id="375636864092143889">ເວັບໄຊກຳລັງໃຊ້ໄມໂຄຣໂຟນຂອງທ່ານ</translation>

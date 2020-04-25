@@ -1626,6 +1626,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5727851901710884484"><ph name="APP_NAME"/> delar en Brave-flik med <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> delar ljud och en flik från Brave.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> delar ljud och en flik i Brave med <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Dölj</translation>
 <translation id="890616557918890486">Ändra källa</translation>
 <translation id="7792388396321542707">Sluta dela</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> vill få permanent tillgång till ett certifikat för att autentisera sig själv för din räkning.</translation>
@@ -1659,6 +1660,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7022562585984256452">Startsidan har ställts in.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Lägg till skrivare</translation>
+<translation id="9052208328806230490">Du har registrerat dina skrivare med <ph name="CLOUD_PRINT_NAME"/> och du använde kontot <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Koppla från skrivare</translation>
 <translation id="5038863510258510803">Aktiverar ...</translation>
 <translation id="8264024885325823677">Den här inställningen hanteras av administratören.</translation>
@@ -2291,6 +2293,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6711610692002680394">Du måste logga in i Brave för att kunna registrera nya enheter</translation>
 <translation id="8931394284949551895">Nya enheter</translation>
 <translation id="3752673729237782832">Mina enheter</translation>
+<translation id="1721937473331968728">Du kan lägga till vanliga skrivare som är anslutna till datorn i <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Vanliga skrivare</translation>
 <translation id="4263757076580287579">Registreringen av skrivaren har avbrutits.</translation>
 <translation id="8152091997436726702">Tidsfristen för skrivarregistrering har gått ut. Om du vill registrera en skrivare måste du bekräfta registreringen på skrivaren.</translation>
@@ -2971,9 +2974,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> är uppdaterad</translation>
 <translation id="3688526734140524629">Byt kanal</translation>
 <translation id="6410328738210026208">Byt kanal och Powerwash</translation>
+<translation id="1979280758666859181">Du byter till en kanal med en äldre version av <ph name="PRODUCT_NAME"/>. Kanalen byts när kanalversionen matchar den version som är installerad på din enhet.</translation>
 <translation id="7728668285692163452">Kanalbytet tillämpas senare</translation>
 <translation id="5495466433285976480">Om du gör detta tas alla lokala användare, filer, data och andra inställningar bort efter nästa omstart. Alla användare måste logga in igen.</translation>
 <translation id="8101987792947961127">Powerwash krävs vid nästa omstart</translation>
+<translation id="1414648216875402825">Du uppdaterar till en instabil version av <ph name="PRODUCT_NAME"/> som innehåller funktioner som inte är klara. Du kommer att råka ut för kraschar och oväntade buggar. Var försiktig.</translation>
 <translation id="6103681770816982672">Varning: du byter till utvecklingskanalen</translation>
 <translation id="8807632654848257479">Stabil</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3746,10 +3751,12 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5302048478445481009">Språk</translation>
 <translation id="6388429472088318283">Sök på språk</translation>
 <translation id="2690024944919328218">Visa språkalternativ</translation>
+<translation id="768549422429443215">Lägg till språk eller ändra ordning på listan.</translation>
 <translation id="8218847192766059983">Lägg till språk eller ändra ordning på listan. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Systemtext visas på det här språket</translation>
 <translation id="2366260648632264559">Visa systemtext på det här språket</translation>
 <translation id="8336721153892716270">Starta om enheten om du vill använda <ph name="LANGUAGE"/> som systemspråk</translation>
+<translation id="7216595297012131718">Sortera språk i prioriteringsordning</translation>
 <translation id="5972708806901999743">Flytta högst upp</translation>
 <translation id="8609465669617005112">Flytta upp</translation>
 <translation id="6746124502594467657">Flytta ned</translation>
@@ -4579,6 +4586,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8143442547342702591">Ogiltig app</translation>
 <translation id="720110658997053098">Behåll enheten permanent i kioskläge</translation>
 <translation id="1909880997794698664">Är du säker på att du vill använda kioskläge på enheten permanent?</translation>
+<translation id="1512210426710821809">Du kan endast ångra det här genom att installera om <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
 <translation id="2342740338116612727">Bokmärkena har lagts till</translation>
 <translation id="7835178595033117206">Bokmärket har tagits bort</translation>
@@ -4699,7 +4707,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1526560967942511387">Namnlöst dokument</translation>
 <translation id="5269977353971873915">Det gick inte att skriva ut dokumentet</translation>
 <translation id="7385854874724088939">Det uppstod ett problem vid utskriften.  Se över skrivaren och försök igen.</translation>
+<translation id="1197979282329025000">Ett fel inträffade när skrivaregenskaper skulle hämtas för skrivaren <ph name="PRINTER_NAME"/>. Skrivaren kunde inte registreras med <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Ett meddelande om en okänd skrivare mottogs.</translation>
+<translation id="2202898655984161076">Ett problem uppstod när skrivare skulle listas. Vissa av dina skrivare kanske inte har registrerats med <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Anslutningen till <ph name="CLOUD_PRINT_NAME"/> har kraschat. Vill du starta om?</translation>
 <translation id="6904655473976120856">Tryck på appknappen för att avsluta</translation>
 <translation id="8909833622202089127">Webbplatsen spårar din plats</translation>
 <translation id="375636864092143889">Webbplatsen använder din mikrofon</translation>

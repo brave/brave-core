@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
+<translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="4726634924419692905">जब कोई साइट आपके कंप्यूटर पर Widevine स्थापित करना चाहती है तब पूछें</translation>
@@ -32,11 +33,54 @@
 <translation id="5883458389055721080">Brave ने बचाव और सुरक्षा के लिए इस एक्सटेंशन की समीक्षा नही की है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
 <translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
+<translation id="1692470335103807198">शुल्क
+घड़ी
+अमान्य प्रविष्टि।
+यूफोल्ड वॉलेट
+किया हुआ
+मूल्यांकन करें
+सत्र समाप्त हुआ
+Binance कनेक्ट सक्षम करें
+क्या आप वाकई डिस्कनेक्ट करना चाहते हैं?
+पुष्टि करें
+जारी रखें
+Binance
+खोज
+इनाम बीएटी
+बिनेंस के साथ खरीद और व्यापार
+प्रतिलिपि
+उपलब्ध
+आपके द्वारा दर्ज की गई राशि आपके वर्तमान में उपलब्ध राशि से अधिक है।
+शीर्ष साइट्स
+रद्द करना
+जमा पता
+जमा BAT
+व्यापार
+आपने रूपांतरित किया
+अपने क्रेडेंशियल्स को मान्य ...
+नहीं धन्यवाद
+पुन: प्रयास करें
+मुझे खर्च करना है...
+मैं रूपांतरित होना चाहता हूं ...
+बहादुर आँकड़े
+आप पाएंगे
+खाता डिस्कनेक्ट किया गया
+प्रायोजित चित्र
+अधिक थीम प्राप्त करें</translation>
+<translation id="2906510232093002459">Brave डिफ़ॉल्ट इमेजिस</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
 <translation id="7635711399568194460">Brave Rewards सक्रिय न हो तो स्थान बार में Brave Rewards बटन छिपाएँ</translation>
 <translation id="1520361618554057102">नए टैब पृष्ठ पर बुकमार्क हमेशा दिखाएँ</translation>
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
+<translation id="7781069478569868053">नया टैब पेज</translation>
+<translation id="2467749191278759605">अपने Brave डैशबोर्ड को कस्टमाइज़ करें</translation>
+<translation id="1717331825806276156">पृष्ठभूमि छवियों</translation>
+<translation id="1820041496463124489">प्रायोजित चित्र</translation>
+<translation id="8173998484743827990">Brave आँकड़े</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">शीर्ष साइट्स</translation>
+<translation id="1776831331757823105">घड़ी</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="8511502469534942133">इस साइट के लिए नया टो कनेक्शन</translation>
 <translation id="8784924142044142231">टॉर से बहार निकलें</translation>
@@ -76,9 +120,9 @@
 <translation id="4699812599455071925">केवल क्रॉस-साइट कुकीज़ को ब्लॉक करें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
-<translation id="5572437114858031185">केवल क्रॉस-साइट फ़िंगरप्रिंटिंग के प्रयासों को ब्लॉक करें</translation>
-<translation id="5079032039521408559">फ़िंगरप्रिंटिंग के सभी प्रयासों की अनुमति दें</translation>
-<translation id="6447141055227658942">फिंगरप्रिंटिंग के सभी प्रयासों को ब्लॉक करें`</translation>
+<translation id="5963670684159057574">क्रॉस साइट-साइट फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
+<translation id="769702552748212954">सभी फिंगरप्रिंटिंग की अनुमति दें</translation>
+<translation id="4540198958192073185">सभी फिंगरप्रिंटिंग को रोकें</translation>
 <translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8798099450830957504">सामान्य</translation>
@@ -95,7 +139,6 @@
 <translation id="1360441190790440400">Linux के जैसे ही</translation>
 <translation id="1336940801687497203">Windows के जैसे ही</translation>
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
-<translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>

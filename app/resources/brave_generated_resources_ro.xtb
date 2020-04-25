@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
+<translation id="6786747875388722282">Extensii</translation>
 <translation id="3699882589215410581">Instalați și rulați Widevine</translation>
 <translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="4726634924419692905">Solicită când un site intenționează să instaleze Widevine pe calculator.</translation>
@@ -31,11 +32,21 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5883458389055721080">Brave nu a analizat securitatea și siguranța acestei extensii. Instalați această extensie numai dacă aveți încredere în dezvoltator.</translation>
 <translation id="8081858229109418493">Nume profil și iconiță</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
+<translation id="1692470335103807198">Obține mai multe teme</translation>
+<translation id="2906510232093002459">Imagini implicite Brave</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
 <translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
 <translation id="7635711399568194460">Ascunde butonul Brave Rewards în bara locației când Brave Rewards nu este activat</translation>
 <translation id="1520361618554057102">Afișează întotdeauna marcajele pe pagina Filă nouă</translation>
 <translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
+<translation id="7781069478569868053">Pagină filă nouă</translation>
+<translation id="2467749191278759605">Particularizează tabloul de bord Brave</translation>
+<translation id="1717331825806276156">Imagini fundal</translation>
+<translation id="1820041496463124489">Imagini sponsorizate</translation>
+<translation id="8173998484743827990">Statistici Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Site-uri de top</translation>
+<translation id="1776831331757823105">Ceas</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
 <translation id="8511502469534942133">Conexiune Tor nouă pentru acest site</translation>
 <translation id="8784924142044142231">Ieșire din Tor</translation>
@@ -75,9 +86,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4699812599455071925">Blocați doar cookie-urile inter-site-uri</translation>
 <translation id="5657156137487675418">Permite toate cookie-urile</translation>
 <translation id="6883611015375728278">Blochează toate cookie-urile</translation>
-<translation id="5572437114858031185">Blochează doar încercările de amprentare inter-site</translation>
-<translation id="5079032039521408559">Permite toate încercările de amprentare</translation>
-<translation id="6447141055227658942">Blochează toate încercările de amprentare</translation>
+<translation id="5963670684159057574">Blochează amprentarea încrucișată</translation>
+<translation id="769702552748212954">Permite toată amprentarea</translation>
+<translation id="4540198958192073185">Blochează toate amprentările</translation>
 <translation id="8942080017911802454">Politica de manevrare a WebRTC IP</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
@@ -94,7 +105,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1360441190790440400">Aceeași cu Linux</translation>
 <translation id="1336940801687497203">Aceeași cu Windows</translation>
 <translation id="8721331068159819483">La fel ca macOS</translation>
-<translation id="6786747875388722282">Extensii</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
 <translation id="2356070529366658676">Întreabă-mă</translation>
 <translation id="7701040980221191251">Niciuna</translation>

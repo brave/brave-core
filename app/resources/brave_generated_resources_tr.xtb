@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") Brave'de izin verilmiyor.</translation>
 <translation id="7450557937477381864">Chrome'u Kapat</translation>
 <translation id="7008934821596358692">İçe aktarmayı bitirmek için tüm Chrome pencerelerini kapatın.</translation>
+<translation id="6786747875388722282">Uzantılar</translation>
 <translation id="3699882589215410581">Widevine'ı yükle ve çalıştır</translation>
 <translation id="8926389886865778422">Bir daha sorma</translation>
 <translation id="4726634924419692905">Bir site bilgisayarınıza Widevine yüklemek istediğinde sorun.</translation>
@@ -31,11 +32,21 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="5883458389055721080">Brave bu eklentiyi, koruma ve güvenlik bakımından henüz değerlendirmedi. Bu eklentiyi yalnızca geliştiricisine güveniyorsanız yükleyin.</translation>
 <translation id="8081858229109418493">Profil adı ve simgesi</translation>
 <translation id="2044383478723007273">Brave renkleri</translation>
+<translation id="1692470335103807198">Daha fazla tema al</translation>
+<translation id="2906510232093002459">Brave varsayılan görselleri</translation>
 <translation id="2814998458708016836">Geniş adres çubuğu kullan</translation>
 <translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
 <translation id="1520361618554057102">Yeni Sekme sayfasında her zaman yer imlerini göster</translation>
 <translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
+<translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
+<translation id="2467749191278759605">Brave Panelinizi Özelleştirin</translation>
+<translation id="1717331825806276156">Arka plan görselleri</translation>
+<translation id="1820041496463124489">Sponsorlu görseller</translation>
+<translation id="8173998484743827990">Brave İstatistikleri</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">En İyi Siteler</translation>
+<translation id="1776831331757823105">Saat</translation>
 <translation id="7965178729203412357">Yeni Tor Kimliği</translation>
 <translation id="8511502469534942133">Bu Site İçin Yeni Tor Bağlantısı</translation>
 <translation id="8784924142044142231">Tor'dan Çıkış</translation>
@@ -75,9 +86,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4699812599455071925">Yalnızca siteler arası çerezleri engelle</translation>
 <translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
 <translation id="6883611015375728278">Tüm çerezleri engelle</translation>
-<translation id="5572437114858031185">Sadece siteler arası parmak izi girişimlerini engelle</translation>
-<translation id="5079032039521408559">Tüm parmak izi girişimlerine izin ver</translation>
-<translation id="6447141055227658942">Tüm parmak izi girişimlerini engelle</translation>
+<translation id="5963670684159057574">Siteler arası parmak izini engelle</translation>
+<translation id="769702552748212954">Tüm parmak izlerine izin ver</translation>
+<translation id="4540198958192073185">Tüm parmak izlerini engelle</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
@@ -94,7 +105,6 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="1360441190790440400">Linux ile aynı</translation>
 <translation id="1336940801687497203">Windows ile aynı</translation>
 <translation id="8721331068159819483">macOS ile aynı</translation>
-<translation id="6786747875388722282">Uzantılar</translation>
 <translation id="2896916411183256228">Torrentleri doğrudan tarayıcıda görüntülemek için WebTorrent'i kullanır. Torrent dosyalarını ve magnet bağlantılarını destekler.</translation>
 <translation id="2356070529366658676">Sor</translation>
 <translation id="7701040980221191251">Yok</translation>

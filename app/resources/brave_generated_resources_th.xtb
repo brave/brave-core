@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="7450557937477381864">ปิด Chrome</translation>
 <translation id="7008934821596358692">เพื่อเสร็จสิ้นการนำเข้า ปิดหน้าต่าง Chrome ทั้งหมด</translation>
+<translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="3699882589215410581">ติดตั้งและเปิดใช้งาน Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="4726634924419692905">ถามเมื่อเว็บไซต์ต้องการติดตั้ง Widevine บนคอมพิวเตอร์ของคุณ</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave ยังไม่ได้ตรวจสอบความมั่นคงและความปลอดภัยของส่วนขยายนี้ ติดตั้งส่วนขยายนี้ถ้าคุณไว้ใจผู้พัฒนาได้เท่านั้น</translation>
 <translation id="8081858229109418493">ชื่อโปรไฟล์และไอคอน</translation>
 <translation id="2044383478723007273">สี Brave</translation>
+<translation id="1692470335103807198">รับธีมเพิ่มเติม</translation>
+<translation id="2906510232093002459">ภาพเริ่มต้นของ Brave</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
 <translation id="6123134130710658846">ซ่อนปุ่ม Brave Rewards</translation>
 <translation id="7635711399568194460">ซ่อนปุ่ม Brave Rewards ในแถบสถานที่ตั้งเมื่อไม่ได้เปิดใช้ Brave Rewards</translation>
 <translation id="1520361618554057102">แสดงบุ๊กมาร์กในหน้าแท็บใหม่เสมอ</translation>
 <translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบแอดเดรส</translation>
+<translation id="7781069478569868053">หน้าแท็บใหม่</translation>
+<translation id="2467749191278759605">ปรับแต่ง Brave Dashboard ของคุณ</translation>
+<translation id="1717331825806276156">ภาพพื้นหลัง</translation>
+<translation id="1820041496463124489">ภาพที่ได้รับการสนับสนุน</translation>
+<translation id="8173998484743827990">สถิติ Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
+<translation id="1776831331757823105">นาฬิกา</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
 <translation id="8511502469534942133">การเชื่อมต่อ Tor ใหม่สำหรับเว็บไซต์นี้</translation>
 <translation id="8784924142044142231">ออกจาก Tor</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">บล็อกเฉพาะคุกกี้ข้ามไซต์</translation>
 <translation id="5657156137487675418">อนุญาตคุกกี้ทั้งหมด</translation>
 <translation id="6883611015375728278">บล็อกคุกกี้ทั้งหมด</translation>
-<translation id="5572437114858031185">บล็อคเฉพาะการพิมพ์ลายนิ้วมือระหว่างเว็บไซต์</translation>
-<translation id="5079032039521408559">อนุญาตการพิมพ์ลายนิ้วมือทั้งหมด</translation>
-<translation id="6447141055227658942">บล็อคการพิมพ์ลายนิ้วมือทั้งหมด</translation>
+<translation id="5963670684159057574">ปิดกั้นการสร้างลายนิ้วมือข้ามไซต์</translation>
+<translation id="769702552748212954">อนุญาตการสร้างลายนิ้วมือทั้งหมด</translation>
+<translation id="4540198958192073185">บล็อกการพิมพ์ลายนิ้วมือทั้งหมด</translation>
 <translation id="8942080017911802454">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">เหมือน Linux</translation>
 <translation id="1336940801687497203">เหมือน Windows</translation>
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
-<translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>

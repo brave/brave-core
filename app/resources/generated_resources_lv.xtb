@@ -1625,6 +1625,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5727851901710884484">Lietotne <ph name="APP_NAME"/> koplieto Brave cilni ar cilni <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338">Lietotne <ph name="APP_NAME"/> koplieto Brave cilni un audio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> koplieto Brave cilni un audio ar cilni <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Slēpt</translation>
 <translation id="890616557918890486">Mainīt avotu</translation>
 <translation id="7792388396321542707">Pārtraukt kopīgošanu</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> vēlas pastāvīgu piekļuvi sertifikātam, lai varētu veikt autentificēšanu jūsu vārdā.</translation>
@@ -1658,6 +1659,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="7022562585984256452">Jūsu sākumlapa ir iestatīta.</translation>
 <translation id="8069615408251337349">Brave Software mākoņdruka</translation>
 <translation id="4973307593867026061">Pievienot printerus</translation>
+<translation id="9052208328806230490">Jūs esat reģistrējis savus printerus ar nosaukumu <ph name="CLOUD_PRINT_NAME"/>, izmantojot kontu <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Atvienot printerus</translation>
 <translation id="5038863510258510803">Notiek iespējošana...</translation>
 <translation id="8264024885325823677">Šo iestatījumu pārvalda jūsu administrators.</translation>
@@ -2290,6 +2292,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="6711610692002680394">Lai reģistrētu jaunas ierīces, jums ir jāpierakstās pārlūkā Brave.</translation>
 <translation id="8931394284949551895">Jaunas ierīces</translation>
 <translation id="3752673729237782832">Manas ierīces</translation>
+<translation id="1721937473331968728">Varat pievienot pakalpojumam <ph name="CLOUD_PRINT_NAME"/> klasiskos printerus, ar kuriem jūsu datoram ir izveidots savienojums.</translation>
 <translation id="715118844758971915">Klasiskie printeri</translation>
 <translation id="4263757076580287579">Printera reģistrācija ir atcelta.</translation>
 <translation id="8152091997436726702">Printera reģistrācijai ir iestājusies noildze. Lai reģistrētu printeri, reģistrācija ir jāapstiprina printerī.</translation>
@@ -2970,9 +2973,11 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> ierīce ir atjaunināta.</translation>
 <translation id="3688526734140524629">Mainīt kanālu</translation>
 <translation id="6410328738210026208">Mainīt kanālu un Powerwash</translation>
+<translation id="1979280758666859181">Jūs gatavojaties pāriet uz kanālu ar vecāku <ph name="PRODUCT_NAME"/> versiju. Kanāla maiņa tiks piemērota, kad kanāla versija atbildīs versijai, kas pašreiz instalēta jūsu ierīcē.</translation>
 <translation id="7728668285692163452">Kanālu maiņa tiks piemērota vēlāk.</translation>
 <translation id="5495466433285976480">Šādi pēc nākamās restartēšanas reizes tiks noņemti visi lokālie lietotāji, faili, dati un citi iestatījumi. Visiem lietotājiem būs atkārtoti jāpierakstās.</translation>
 <translation id="8101987792947961127">Nākamajā atkārtotas palaišanas reizē jāizpilda funkcija Powerwash</translation>
+<translation id="1414648216875402825">Jūs atjaunināt uz nestabilu <ph name="PRODUCT_NAME"/> versiju, kurā ietvertas funkcijas, kas vēl tiek izstrādātas. Radīsies avārijas un neparedzētas kļūdas. Rīkojieties apdomīgi!</translation>
 <translation id="6103681770816982672">Brīdinājums: jūs pārslēdzat izstrādātāja versiju</translation>
 <translation id="8807632654848257479">Stabils</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3745,10 +3750,12 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="5302048478445481009">Valoda</translation>
 <translation id="6388429472088318283">Meklēt valodas</translation>
 <translation id="2690024944919328218">Rādīt valodu iespējas</translation>
+<translation id="768549422429443215">Pievienojiet valodas vai pārkārtojiet sarakstu.</translation>
 <translation id="8218847192766059983">Pievienojiet valodas vai pārkārtojiet sarakstu. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Sistēmas teksts tiek rādīts šajā valodā.</translation>
 <translation id="2366260648632264559">Rādīt sistēmas tekstu šajā valodā</translation>
 <translation id="8336721153892716270">Restartēt ierīci, lai parādītu sistēmas tekstu šādā valodā: <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Kārtojiet valodas atbilstoši preferencei.</translation>
 <translation id="5972708806901999743">Pārvietot uz augšu</translation>
 <translation id="8609465669617005112">Virziet uz augšu</translation>
 <translation id="6746124502594467657">Pārvietot uz leju</translation>
@@ -4578,6 +4585,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8143442547342702591">Nederīga lietojumprogramma</translation>
 <translation id="720110658997053098">Pastāvīgi turēt ierīcei ieslēgtu kioska režīmu</translation>
 <translation id="1909880997794698664">Vai tiešām vēlaties pastāvīgi turēt šo ierīci kioska režīmā?</translation>
+<translation id="1512210426710821809">Šo darbību var atsaukt, tikai atkārtoti instalējot <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Izlaist</translation>
 <translation id="2342740338116612727">Grāmatzīmes pievienotas</translation>
 <translation id="7835178595033117206">Grāmatzīme ir noņemta</translation>
@@ -4698,7 +4706,10 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="1526560967942511387">Dokuments bez nosaukuma</translation>
 <translation id="5269977353971873915">Drukāšana neizdevās</translation>
 <translation id="7385854874724088939">Mēģinot drukāt, radās kļūda. Lūdzu, pārbaudiet printeri un mēģiniet vēlreiz.</translation>
+<translation id="1197979282329025000">Izgūstot printera <ph name="PRINTER_NAME"/> iespējas, radās kļūda. Šo printeri nevarēja reģistrēt pakalpojumā <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Tika saņemts paziņojums par nezināmu printeri.</translation>
+<translation id="2202898655984161076">Radās problēma saistībā ar printeru parādīšanu. Iespējams, daži no printeriem nav sekmīgi reģistrēti pakalpojumā <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> savienotāja process ir avarējis. Vai restartēt?</translation>
 <translation id="6904655473976120856">Lai izietu, nospiediet lietotņu pogu</translation>
 <translation id="8909833622202089127">Vietne izseko jūsu atrašanās vietu.</translation>
 <translation id="375636864092143889">Vietne izmanto jūsu mikrofonu.</translation>
