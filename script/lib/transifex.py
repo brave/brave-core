@@ -244,7 +244,7 @@ def get_fingerprint_for_xtb(message_tag):
     string_phs = message_tag.findall('ph')
     for string_ph in string_phs:
         string_to_hash = (
-            string_to_hash + string_ph.get('name').upper() + (
+            (string_to_hash or '') + string_ph.get('name').upper() + (
                 string_ph.tail or ''))
     string_to_hash = (string_to_hash or '').strip().encode('utf-8')
     string_to_hash = clean_triple_quoted_string(string_to_hash)

@@ -162,6 +162,7 @@
 <translation id="2267047181501709434">Verificando tu identidad...</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="6771143571626203666">Desde Brave Pay</translation>
+<translation id="6846340164947227603">Introduce un número de tarjeta virtual...</translation>
 <translation id="2835170189407361413">Limpiar formulario</translation>
 <translation id="935608979562296692">LIMPIAR FORMULARIO</translation>
 <translation id="5029568752722684782">Borrar copia</translation>
@@ -387,6 +388,8 @@
 <translation id="6203231073485539293">Comprueba tu conexión a Internet</translation>
 <translation id="6146055958333702838">Comprueba los cables y reinicia cualquier router, modems, u otra red
     dispositivos que puedes estar usando.</translation>
+<translation id="1301324364792935241">Comprueba la configuración segura del DNS</translation>
+<translation id="2553853292994445426">Comprueba la configuración segura del DNS. Puede que hayas configurado un servidor DNS seguro al que le fallan las conexiones.</translation>
 <translation id="6321917430147971392">Comprueba tus ajustes del DNS</translation>
 <translation id="8289355894181816810">Contacta con tu administrador de red si no estás seguro de lo que esto significa.</translation>
 <translation id="6328639280570009161">Prueba deshabilitando la predicción de red</translation>
@@ -450,6 +453,7 @@ usar un servidor proxy:
 <translation id="7549584377607005141">Esta página web requiere que los datos que has introducido anteriormente se muestren correctamente. Puedes volver a enviar estos datos, pero al hacerlo repetirás cualquier acción que esta página haya realizado anteriormente.</translation>
 <translation id="614940544461990577">Prueba:</translation>
 <translation id="5610142619324316209">Comprobar la conexión</translation>
+<translation id="3107591622054137333"><ph name="BEGIN_LINK">&lt;a href="#buttons" onclick="toggleHelpBox()"&gt;</ph>Comprobando la configuración segura del DNS<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK">&amp;lt;a href="#buttons" onclick="toggleHelpBox()"&amp;gt;</ph>Comprobar el proxy, firewall, y la configuración del DNS<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph></translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK">&amp;lt;a href="#buttons" onclick="toggleHelpBox()"&amp;gt;</ph>Comprobando el firewall y la configuración del antivirus<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph></translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK">&amp;lt;a href="#buttons" onclick="toggleHelpBox()"&amp;gt;</ph>Comprobar el proxy y el firewall<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph></translation>
@@ -554,6 +558,8 @@ usar un servidor proxy:
 <translation id="1178581264944972037">Pausar</translation>
 <translation id="2277103315734023688">Buscar hacia adelante</translation>
 <translation id="4477350412780666475">Siguiente Pista</translation>
+<translation id="7887885240995164102">Entrar en PIP</translation>
+<translation id="3754210790023674521">Salir de PIP</translation>
 <translation id="7378594059915113390">Controles Multimedia</translation>
 <translation id="1232569758102978740">Sin título</translation>
 <translation id="7514365320538308">Descargar</translation>
@@ -578,7 +584,7 @@ usar un servidor proxy:
 <translation id="2108755909498034140">Reinicia tu ordenador</translation>
 <translation id="4275830172053184480">Reiniciar tu dispositivo</translation>
 <translation id="413544239732274901">Más información</translation>
-<translation id="7554791636758816595">Nueva Pestaña</translation>
+<translation id="7554791636758816595">Nueva pestaña</translation>
 <translation id="2378238891085281592">Te has convertido en privado</translation>
 <translation id="3774752171665127360">Las páginas que veas en las pestañas privadas no se quedarán en el historial de tu navegador, en el almacén de cookies o en el historial una vez hayas cerrado todas tus pestañas privadas. Todos los archivos que descargues o los marcadores que añadas se conservarán.</translation>
 <translation id="9177896974490719854">Sin embargo, no eres invisible. Ser privado no oculta tu navegación a tu empresa, tu proveedor de servicios de Internet o los sitios web que visitas.</translation>
@@ -598,6 +604,7 @@ usar un servidor proxy:
           <ph name="LIST_ITEM">&amp;lt;li&amp;gt;</ph>Tu proveedor de servicios de internet
         <ph name="END_LIST">&amp;lt;/ul&amp;gt;</ph></translation>
 <translation id="8616822740383114808">Este ajuste se aplica por "<ph name="ENFORCING_SETTING"/>" en "<ph name="SETTINGS_PAGE"/>"</translation>
+<translation id="6196640612572343990">Bloquear cookies de terceros</translation>
 <translation id="153384715582417236">Esto es todo por ahora</translation>
 <translation id="7699293099605015246">Los artículos no están disponibles ahora</translation>
 <translation id="5545756402275714221">Artículos para ti</translation>
@@ -634,9 +641,11 @@ usar un servidor proxy:
 <translation id="4914479371620770914">{URL_count, plural, =1 {y 1 página web más} other {y # páginas web más}}</translation>
 <translation id="40103911065039147">{URL_count, plural, =1 {1 página web cerca} other {# páginas web cerca}}</translation>
 <translation id="803771048473350947">Archivo</translation>
+<translation id="9183302530794969518">Google Docs</translation>
 <translation id="85321348617848915">Formularios Brave</translation>
 <translation id="5524011986660000129">Brave Sheets</translation>
 <translation id="8197094463444457125">Brave Slides</translation>
+<translation id="6979158407327259162">Google Drive</translation>
 <translation id="2982481275546140226">Borrar Datos</translation>
 <translation id="711418501679417607">Eliminar los datos del historial de navegación de Brave</translation>
 <translation id="7681101578153515023">Cambia el Motor de Búsqueda</translation>
@@ -748,8 +757,8 @@ usar un servidor proxy:
 <translation id="2215727959747642672">Edición de archivos</translation>
 <translation id="6545864417968258051">Búsqueda de dispositivos Bluetooth</translation>
 <translation id="534295439873310000">Dispositivos NFC</translation>
-<translation id="4943703118917034429">Realidad virtual</translation>
-<translation id="3513704683820682405">Realidad aumentada</translation>
+<translation id="4943703118917034429">Realidad Virtual</translation>
+<translation id="3513704683820682405">Realidad Aumentada</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="57838592816432529">Silenciar</translation>
@@ -894,6 +903,7 @@ usar un servidor proxy:
 <translation id="2183608646556468874">Número de Teléfono</translation>
 <translation id="8625384913736129811">Guardar esta tarjeta en este dispositivo</translation>
 <translation id="2699302886720511147">Tarjetas Aceptadas</translation>
+<translation id="4346197816712207223">Tarjetas de crédito aceptadas</translation>
 <translation id="5261548214279761072">Pago Completado</translation>
 <translation id="4072486802667267160">Se ha producido un error al procesar tu pedido. Inténtalo de nuevo más tarde.</translation>
 <translation id="5610807607761827392">Puedes gestionar las tarjetas y las direcciones en la <ph name="BEGIN_LINK">BEGIN_LINK</ph>Configuración<ph name="END_LINK">END_LINK</ph>.</translation>
@@ -1347,6 +1357,139 @@ Detalles adicionales:
 <translation id="1462245070427461050">JIS B9</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> en el <ph name="SERVER_NAME"/></translation>
+<translation id="624499991300733384">Servicio de composición de impresión</translation>
+<translation id="5984570616552610254">Chamber humidity</translation>
+<translation id="6041777658117377052">Temperatura de la cámara</translation>
+<translation id="7233592378249864828">Print confirmation sheet</translation>
+<translation id="3608932978122581043">Feed orientation</translation>
+<translation id="3799805948399000906">Font requested</translation>
+<translation id="6687335167692595844">Font size requested</translation>
+<translation id="6045164183059402045">Imposition template</translation>
+<translation id="4796594887379589189">Job account ID</translation>
+<translation id="7966803981046576691">Job account type</translation>
+<translation id="2911973620368911614">Job accounting user ID</translation>
+<translation id="1641976391427233992">Delay output until</translation>
+<translation id="1101672080107056897">Error action</translation>
+<translation id="5088142053160410913">Message to operator</translation>
+<translation id="868922510921656628">Pages per set</translation>
+<translation id="5776313857861697733">Priority</translation>
+<translation id="7292031607255951991">Recipient name</translation>
+<translation id="1041998700806130099">Job sheet message</translation>
+<translation id="3531780078352352885">Job sheets</translation>
+<translation id="3002501248619246229">Check input tray media</translation>
+<translation id="5289384342738547352">Multiple documents handling</translation>
+<translation id="3518941727116570328">Multiple objects handling</translation>
+<translation id="3453962258458347894">Number of retries</translation>
+<translation id="3780694243617746492">Contenedor de salida</translation>
+<translation id="7977538094055660992">Output device</translation>
+<translation id="6049488691372270142">Page delivery</translation>
+<translation id="7693583928066320343">Page order received</translation>
+<translation id="8232343881378637145">Temperatura de la plataforma</translation>
+<translation id="2276057643614339130">Print base</translation>
+<translation id="5254043433801397071">Optimize print content</translation>
+<translation id="7647206758853451655">Print quality</translation>
+<translation id="7888575728750733395">Print rendering intent</translation>
+<translation id="2107021941795971877">Print supports</translation>
+<translation id="6180316780098470077">Retry interval</translation>
+<translation id="7687305263118037187">Retry time-out</translation>
+<translation id="568292603005599551">Image X position</translation>
+<translation id="3807366285948165054">Image X shift</translation>
+<translation id="5644090287519800334">Side 1 image X shift</translation>
+<translation id="714064300541049402">Side 2 image X shift</translation>
+<translation id="2807052079800581569">Image Y position</translation>
+<translation id="1746113442205726301">Image Y shift</translation>
+<translation id="4088981014127559358">Side 1 image Y shift</translation>
+<translation id="7581199239021537589">Side 2 image Y shift</translation>
+<translation id="8894794286471754040">Long edge first</translation>
+<translation id="1682696192498422849">Short edge first</translation>
+<translation id="867224526087042813">Signature</translation>
+<translation id="987264212798334818">General</translation>
+<translation id="257674075312929031">Group</translation>
+<translation id="3558573058928565255">Day time</translation>
+<translation id="831997045666694187">Evening</translation>
+<translation id="8457125768502047971">Indefinite</translation>
+<translation id="1070901266639972381">Night</translation>
+<translation id="8676424191133491403">No delay</translation>
+<translation id="5645854190134202180">Second shift</translation>
+<translation id="3113284927548439113">Third shift</translation>
+<translation id="5123063207673082822">Weekend</translation>
+<translation id="8249296373107784235">Abort</translation>
+<translation id="3711895659073496551">Suspend</translation>
+<translation id="2775884851269838147">First print page</translation>
+<translation id="5306593769196050043">Both sheets</translation>
+<translation id="7619838219691048931">End sheet</translation>
+<translation id="1807528111851433570">Start sheet</translation>
+<translation id="7740996059027112821">Estándar</translation>
+<translation id="8269242089528251720">Separate documents/Collated copies</translation>
+<translation id="2544644783021658368">Single document</translation>
+<translation id="9173282814238175921">Single document/New sheet</translation>
+<translation id="484462545196658690">Auto</translation>
+<translation id="2687555958734450033">Mejor ajuste</translation>
+<translation id="8589998999637048520">Best quality</translation>
+<translation id="7865448901209910068">Mejor velocidad</translation>
+<translation id="762844065391966283">One at a time</translation>
+<translation id="3087734570205094154">Bottom</translation>
+<translation id="5701381305118179107">Center</translation>
+<translation id="2701514975700770343">Face down</translation>
+<translation id="5148809049217731050">Face up</translation>
+<translation id="4930153903256238152">Large capacity</translation>
+<translation id="1467432559032391204">Left</translation>
+<translation id="4780366598804516005">Mailbox 1</translation>
+<translation id="6032524144326295339">Mailbox 2</translation>
+<translation id="1717494416764505390">Mailbox 3</translation>
+<translation id="507130231501693183">Mailbox 4</translation>
+<translation id="3533328374079021623">Mailbox 5</translation>
+<translation id="7673278391011283842">Mailbox 6</translation>
+<translation id="5541086400771735334">Mailbox 7</translation>
+<translation id="1752021286346845558">Mailbox 8</translation>
+<translation id="3765588406864124894">Mailbox 9</translation>
+<translation id="1975584088563498795">Mailbox 10</translation>
+<translation id="3587738293690942763">Middle</translation>
+<translation id="2951588413176968965">My mailbox</translation>
+<translation id="4892518386797173871">Rear</translation>
+<translation id="1346748346194534595">Right</translation>
+<translation id="4702504834785592287">Side</translation>
+<translation id="1281476433249504884">Stacker 1</translation>
+<translation id="6615297766614333076">Stacker 2</translation>
+<translation id="3886948180919384617">Stacker 3</translation>
+<translation id="541416427766103491">Stacker 4</translation>
+<translation id="4331519897422864041">Stacker 5</translation>
+<translation id="4270541775497538019">Stacker 6</translation>
+<translation id="1428146450423315676">Stacker 7</translation>
+<translation id="5862579898803147654">Stacker 8</translation>
+<translation id="5161506081086828129">Stacker 9</translation>
+<translation id="8490137692873530638">Stacker 10</translation>
+<translation id="2666092431469916601">Arriba</translation>
+<translation id="9101630580131696064">Tray 1</translation>
+<translation id="1713628304598226412">Tray 2</translation>
+<translation id="22081806969704220">Tray 3</translation>
+<translation id="3487845404393360112">Tray 4</translation>
+<translation id="3634530185120165534">Tray 5</translation>
+<translation id="4542971377163063093">Tray 6</translation>
+<translation id="2042213636306070719">Tray 7</translation>
+<translation id="1529789484829130889">Tray 8</translation>
+<translation id="7083258188081898530">Tray 9</translation>
+<translation id="4142935452406587478">Tray 10</translation>
+<translation id="4644670975240021822">Reverse order face down</translation>
+<translation id="5443468954631487277">Reverse order face up</translation>
+<translation id="8870494189203302833">Same order face down</translation>
+<translation id="7773005668374414287">Same order face up</translation>
+<translation id="3423742043356668186">System specified</translation>
+<translation id="2469153820345007638">1-to-N order</translation>
+<translation id="6008122969617370890">N-to-1 order</translation>
+<translation id="4390472908992056574">Brim</translation>
+<translation id="5539243836947087108">Raft</translation>
+<translation id="7766518757692125295">Skirt</translation>
+<translation id="3080254622891793721">Graphic</translation>
+<translation id="4628948037717959914">Photo</translation>
+<translation id="2161656808144014275">Text</translation>
+<translation id="4101413244023615925">Text and graphic</translation>
+<translation id="3827112369919217609">Absolute</translation>
+<translation id="696703987787944103">Perceptual</translation>
+<translation id="3218181027817787318">Relative</translation>
+<translation id="6689249931105087298">Relative with black point compression</translation>
+<translation id="3329013043687509092">Saturation</translation>
+<translation id="6425092077175753609">Material</translation>
 <translation id="2465688316154986572">Staple</translation>
 <translation id="1442987760062738829">Punch</translation>
 <translation id="5158275234811857234">Cover</translation>
@@ -1585,6 +1728,8 @@ propiedades del sitio.</translation>
 <translation id="3086579638707268289">Tu actividad en la web está siendo monitorizada</translation>
 <translation id="2288422996159078444">Cualquier cosa que escribas, cualquier página que veas o cualquier otra actividad en la web está siendo vigilada. El contenido de los sitios puede ser cambiado sin tu conocimiento.</translation>
 <translation id="3898257577441589237">Este problema se debe a un certificado que tú u otra persona instaló en tu dispositivo. El certificado se está utilizando para supervisar e interceptar redes  y  no es de confianza para Brave. Aunque existen algunos casos legítimos de vigilancia, como en una red de escuelas o empresas. A pesar de que no puedes detenerlo, Brave quiere asegurarse de que eres consciente de que está ocurriendo. La monitorización puede ocurrir en cualquier navegador o aplicación que acceda a la web.</translation>
+<translation id="70705239631109039">Tu conexión no es completamente segura</translation>
+<translation id="87601671197631245">Este sitio web utiliza una configuración de seguridad obsoleta, que puede exponer tu información (por ejemplo, contraseñas o números de tarjetas de crédito) cuando se envía a este sitio web.</translation>
 <translation id="8390490312179389407">Esta página es sospechosa (marcada por Brave).</translation>
 <translation id="8918231688545606538">Está página es sospechosa</translation>
 <translation id="2321540973325616220">Brave ha determinado que este sitio podría ser falso o fraudulento.
@@ -1633,6 +1778,8 @@ propiedades del sitio.</translation>
 <translation id="6957887021205513506">El certificado del servidor parece ser falso.</translation>
 <translation id="8997023839087525404">El servidor presentó un certificado que no fue divulgado públicamente utilizando la política de transparencia de certificados. Este es un requisito para algunos certificados, para asegurar que son dignos de confianza y que protegen contra los atacantes.</translation>
 <translation id="733923710415886693">El certificado del servidor no fue revelado a través del Certificado de Transparencia.</translation>
+<translation id="3377144306166885718">El servidor usaba una versión obsoleta de TLS.</translation>
+<translation id="7156870133441232244">El servidor debería actualizarse a TLS 1.2 o posterior.</translation>
 <translation id="4906192414477726331">Este servidor no ha podido probar que su dominio es <ph name="DOMAIN">&amp;lt;strong&amp;gt;$1&amp;lt;/strong&amp;gt;</ph>; Brave no confía en su certificado de seguridad. Este problema puede deberse a una configuración incorrecta o a que un atacante haya interceptado la conexión</translation>
 <translation id="1763864636252898013">Este servidor no ha podido probar que su dominio es <ph name="DOMAIN">&amp;lt;strong&amp;gt;$1&amp;lt;/strong&amp;gt;</ph>; el sistema operativo de tu dispositivo no confía en su certificado de seguridad. Este problema puede deberse a una configuración incorrecta o a que un atacante haya interceptado la conexión.</translation>
 <translation id="1150979032973867961">Este servidor no ha podido probar que su dominio es <ph name="DOMAIN">&amp;lt;strong&amp;gt;$1&amp;lt;/strong&amp;gt;</ph>; el sistema operativo de tu ordenador no confía en su certificado de seguridad. Este problema puede deberse a una configuración incorrecta o a que un atacante haya interceptado la conexión.</translation>
@@ -1675,6 +1822,8 @@ propiedades del sitio.</translation>
 <translation id="2053111141626950936">No se traducirán las páginas en <ph name="LANGUAGE"/></translation>
 <translation id="4482953324121162758">Este sitio no será traducido</translation>
 <translation id="583281660410589416">Desconocido</translation>
+<translation id="5400836586163650660">Gris</translation>
+<translation id="992256792861109788">Rosa</translation>
 <translation id="9170848237812810038">Deshacer</translation>
 <translation id="2972581237482394796">Rehacer</translation>
 <translation id="4030383055268325496">Deshacer añadir</translation>
@@ -1738,6 +1887,9 @@ propiedades del sitio.</translation>
 <translation id="5284909709419567258">Direcciones de red</translation>
 <translation id="8975263830901772334">Nombres de los archivos que imprimes</translation>
 <translation id="4791134497475588553">Aplicaciones Linux instaladas y cuando fueran usadas por última vez.</translation>
+<translation id="7210993021468939304">Actividad de Linux dentro del contenedor, puedes instalar y ejecutar aplicaciones de Linux dentro del contenedor</translation>
+<translation id="1586541204584340881">Qué extensiones de Google Play tienes instaladas</translation>
+<translation id="7031646650991750659">Qué aplicaciones de Google Play tienes instaladas</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="5663955426505430495">El administrador de este dispositivo ha instalado extensiones para funciones adicionales. Las extensiones tienen acceso a algunos de tus datos.</translation>
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> ha instalado extensiones para funciones adicionales. Las extensiones tienen acceso a algunos de tus datos.</translation>
@@ -1747,12 +1899,15 @@ propiedades del sitio.</translation>
 <translation id="4318566738941496689">Nombre de tu dispositivo y dirección de red</translation>
 <translation id="5474381306981932386">Tu nombre de usuario y de Brave</translation>
 <translation id="3229041911291329567">Información de la versión de tu dispositivo y del navegador</translation>
+<translation id="6443406338865242315">Qué extensiones y plugins tienes instalados</translation>
 <translation id="7313965965371928911"><ph name="BEGIN_LINK">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>Safe Browsing<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph> warnings</translation>
 <translation id="1822540298136254167">Sitios web que has visitado y tiempo gastado en ellos</translation>
 <translation id="7633909222644580952">Datos de rendimiento e informes de fallos</translation>
+<translation id="5196187217592847346">Enterprise Service Hooks</translation>
 <translation id="6826370046007623921">Prevención de pérdida de datos</translation>
 <translation id="1612819149504950095">Escanear el contenido de los archivos que descargas o subes en Brave.</translation>
 <translation id="1298536327547837046">Escaneo de Malware</translation>
 <translation id="6312541937207395104">Escanear archivos que descargas o subes en Brave.</translation>
 <translation id="8220639454292072926">Informes de la empresa</translation>
+<translation id="6312113039770857350">Página web no disponible</translation>
 </translationbundle>

@@ -1626,6 +1626,7 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="5727851901710884484">Aplikacija <ph name="APP_NAME"/> dijeli Brave karticu s karticom <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> dijeli Brave karticu i zvuk.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> dijeli karticu i zvuk Bravea s karticom <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Sakrij</translation>
 <translation id="890616557918890486">Promijeni izvor</translation>
 <translation id="7792388396321542707">Zaustavi dijeljenje</translation>
 <translation id="6630752851777525409">Ekstenzija <ph name="EXTENSION_NAME"/> želi trajni pristup potvrdi kako bi se autentificirala u vaše ime.</translation>
@@ -1659,6 +1660,7 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="7022562585984256452">Vaša početna stranica je postavljena.</translation>
 <translation id="8069615408251337349">Brave Software štampanje u oblaku</translation>
 <translation id="4973307593867026061">Dodaj štampače</translation>
+<translation id="9052208328806230490">Registrirali ste svoje štampače na uslugu <ph name="CLOUD_PRINT_NAME"/> koristeći račun <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Prekini vezu s štampačima</translation>
 <translation id="5038863510258510803">Omogućavanje…</translation>
 <translation id="8264024885325823677">Ovom postavkom upravlja vaš administrator.</translation>
@@ -2291,6 +2293,7 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="6711610692002680394">Morate se prijaviti na Brave da registrirate nove uređaje</translation>
 <translation id="8931394284949551895">Novi uređaji</translation>
 <translation id="3752673729237782832">Moji uređaji</translation>
+<translation id="1721937473331968728">Klasične štampače koji su povezani s vašim računarom možete dodati u uslugu <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Klasični štampači</translation>
 <translation id="4263757076580287579">Registracija štampača je otkazana.</translation>
 <translation id="8152091997436726702">Registracija štampača je istekla. Za registraciju štampača morate potvrditi registraciju na štampaču.</translation>
@@ -2958,9 +2961,11 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="1871615898038944731">Vaš uređaj <ph name="DEVICE_TYPE"/> je ažuriran</translation>
 <translation id="3688526734140524629">Promijeni kanal</translation>
 <translation id="6410328738210026208">Promijeni kanal i pokreni Powerwash</translation>
+<translation id="1979280758666859181">Prelazite na kanal sa starijom verzijom proizvoda <ph name="PRODUCT_NAME"/>. Promjena kanala će se primijeniti kada verzija kanala bude odgovarala verziji koja je trenutno instalirana na vašem uređaju.</translation>
 <translation id="7728668285692163452">Promjena kanala će se primijeniti kasnije</translation>
 <translation id="5495466433285976480">Na ovaj način će se ukloniti svi lokalni korisnici, fajlovi, podaci i druge postavke nakon sljedećeg ponovnog pokretanja uređaja. Svi korisnici će se morati ponovo prijaviti.</translation>
 <translation id="8101987792947961127">Powerwash je obavezan prilikom sljedećeg pokretanja</translation>
+<translation id="1414648216875402825">Upravo ažurirate <ph name="PRODUCT_NAME"/> na nestabilnu verziju koja sadrži funkcije trenutno u upotrebi. Doći će do padova softvera i neočekivanih grešaka. Budite pažljivi.</translation>
 <translation id="6103681770816982672">Upozorenje: prebacujete se na kanal za programere</translation>
 <translation id="8807632654848257479">Stabilno</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3733,10 +3738,12 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="5302048478445481009">Jezik</translation>
 <translation id="6388429472088318283">Pretražite jezike</translation>
 <translation id="2690024944919328218">Prikaži opcije jezika</translation>
+<translation id="768549422429443215">Dodajte jezike ili preuredite listu.</translation>
 <translation id="8218847192766059983">Dodajte jezike ili preuredite listu. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Tekst sistema je prikazan na ovom jeziku</translation>
 <translation id="2366260648632264559">Prikaži tekst na ovom jeziku</translation>
 <translation id="8336721153892716270">Ponovno pokretanje uređaja radi prikazivanja teksta sistema na jeziku <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Poredajte jezike prema vlastitoj želji</translation>
 <translation id="5972708806901999743">Premjesti na vrh</translation>
 <translation id="8609465669617005112">Pomjeri prema gore</translation>
 <translation id="6746124502594467657">Pomjeri dolje</translation>
@@ -4566,6 +4573,7 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="8143442547342702591">Nevažeća aplikacija</translation>
 <translation id="720110658997053098">Trajno zadrži ovaj uređaj u načinu rada kioska</translation>
 <translation id="1909880997794698664">Jeste li sigurni da želite trajno držati ovaj uređaj u načinu rada kioska?</translation>
+<translation id="1512210426710821809">Jedini način da se ovo poništi jeste da ponovo instalirate <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Preskoči</translation>
 <translation id="2342740338116612727">Dodana je oznaka</translation>
 <translation id="7835178595033117206">Oznaka je uklonjena</translation>
@@ -4686,7 +4694,10 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="1526560967942511387">Dokument bez naslova</translation>
 <translation id="5269977353971873915">Štampanje nije uspjelo</translation>
 <translation id="7385854874724088939">Došlo je do problema pri pokušaju štampanja.  Provjerite štampač i pokušajte ponovo.</translation>
+<translation id="1197979282329025000">Došlo je do greške prilikom preuzimanja mogućnosti štampača za štampač <ph name="PRINTER_NAME"/>. Ovaj štampač nije moguće registrirati na <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Primljeno je obavještenje za nepoznati štampač.</translation>
+<translation id="2202898655984161076">Došlo je do problema prilikom navođenja štampača. Moguće je da neki od vaših štampača nisu uspješno registrirani na serveru <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Proces poveznika <ph name="CLOUD_PRINT_NAME"/> je pao. Ponovo pokrenuti?</translation>
 <translation id="6904655473976120856">Pritisnite dugme za aplikaciju da izađete</translation>
 <translation id="8909833622202089127">Web lokacija prati vašu lokaciju</translation>
 <translation id="375636864092143889">Web lokacija koristi vaš mikrofon</translation>

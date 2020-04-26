@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is in Brave niet toegestaan.</translation>
 <translation id="7450557937477381864">Chrome Sluiten</translation>
 <translation id="7008934821596358692">Om de importering te voltooien, moet je alle Chrome vensters sluiten.</translation>
+<translation id="6786747875388722282">Extensies</translation>
 <translation id="3699882589215410581">Widevine installeren en uitvoeren</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="4726634924419692905">Vraag wanneer een site Widevine op je computer wilt installeren.</translation>
@@ -31,11 +32,21 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="5883458389055721080">Brave heeft de beveiliging en veiligheid van deze extensie nog niet beoordeeld. Installeer deze extensie alleen als u de ontwikkelaar vertrouwt.</translation>
 <translation id="8081858229109418493">Profielnaam en pictogram</translation>
 <translation id="2044383478723007273">Brave-kleuren</translation>
+<translation id="1692470335103807198">Krijg meer thema's</translation>
+<translation id="2906510232093002459">brave standaardafbeeldingen</translation>
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
 <translation id="7635711399568194460">Verbergt de Brave Rewards-knop in de locatiebalk wanneer Brave Rewards niet is ingeschakeld</translation>
 <translation id="1520361618554057102">Altijd bladwijzers tonen op nieuwe tabbladpagina</translation>
 <translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
+<translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
+<translation id="2467749191278759605">Pas je Brave Dashboard aan</translation>
+<translation id="1717331825806276156">Achtergrondafbeeldingen</translation>
+<translation id="1820041496463124489">Gesponsorde afbeeldingen</translation>
+<translation id="8173998484743827990">Brave statistieken</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Top websites</translation>
+<translation id="1776831331757823105">Klok</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
 <translation id="8511502469534942133">Nieuwe Tor-verbinding voor deze site</translation>
 <translation id="8784924142044142231">Sluit Tor af</translation>
@@ -75,9 +86,9 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="4699812599455071925">Blokkeer alleen cross-site cookies</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
-<translation id="5572437114858031185">Blokkeer alleen vingerafdrukpogingen tussen sites</translation>
-<translation id="5079032039521408559">Sta alle vingerafdrukpogingen toe</translation>
-<translation id="6447141055227658942">Blokkeer alle vingerafdrukpogingen</translation>
+<translation id="5963670684159057574">Vingerafdrukken tussen sites blokkeren</translation>
+<translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
+<translation id="4540198958192073185">Blokkeer alle vingerafdrukverzoeken</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8798099450830957504">Standaard</translation>
@@ -94,7 +105,6 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="1360441190790440400">Hetzelfde als Linux</translation>
 <translation id="1336940801687497203">Hetzelfde als Windows</translation>
 <translation id="8721331068159819483">Zelfde als macOS</translation>
-<translation id="6786747875388722282">Extensies</translation>
 <translation id="2896916411183256228">Gebruikt WebTorrent om torrents rechtstreeks in je browser weer te geven. Ondersteunt torrentbestanden en magnetlinks.</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="7701040980221191251">Geen</translation>

@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID на разширението "<ph name="EXTENSION_ID"/>") не е разрешено в Brave.</translation>
 <translation id="7450557937477381864">Затваряне на Chrome</translation>
 <translation id="7008934821596358692">За да завършите импортирането, затворете всички прозорци на Chrome.</translation>
+<translation id="6786747875388722282">Разширения</translation>
 <translation id="3699882589215410581">Инсталирайте и стартирайте Widevine</translation>
 <translation id="8926389886865778422">Без повторно питане</translation>
 <translation id="4726634924419692905">Запитване, когато даден сайт иска да инсталира Widevine на вашия компютър.</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave не е прегледал това разширение за сигурност и безопасност. Инсталирайте това разширение само ако имате доверие на разработчика.</translation>
 <translation id="8081858229109418493">Име и икона на профила</translation>
 <translation id="2044383478723007273">Цветове на Brave</translation>
+<translation id="1692470335103807198">Вземете още теми</translation>
+<translation id="2906510232093002459">Изображения по подразбиране в Brave</translation>
 <translation id="2814998458708016836">Използвайте широка адресна лента</translation>
 <translation id="6123134130710658846">Скрий бутона на Brave награди</translation>
 <translation id="7635711399568194460">Скрий бутона за Brave наградите в лентата, ако Brave наградите не са активирани</translation>
 <translation id="1520361618554057102">Винаги показвайте отметки на страницата Нов раздел</translation>
 <translation id="5802665280774361839">Показване на автоматично довършване в адресната лента</translation>
+<translation id="7781069478569868053">Нова страница в раздела</translation>
+<translation id="2467749191278759605">Персонализирайте своето табло за управление Brave</translation>
+<translation id="1717331825806276156">Фонови изображения</translation>
+<translation id="1820041496463124489">Спонсорирани изображения</translation>
+<translation id="8173998484743827990">Статистика за Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Т</translation>
+<translation id="1776831331757823105">Часовник</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
 <translation id="8511502469534942133">Нова Tor връзка за този сайт</translation>
 <translation id="8784924142044142231">Изход от Tor</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">Блокирайте само бисквитките от различни сайтове</translation>
 <translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
 <translation id="6883611015375728278">Блокиране на всички „бисквитки“</translation>
-<translation id="5572437114858031185">Блокирайте само опити за снемане на пръстови отпечатъци от различни сайтове</translation>
-<translation id="5079032039521408559">Разрешаване на всички опити за снемане на отпечатъци</translation>
-<translation id="6447141055227658942">Блокирайте всички опити за снемане на отпечатъци</translation>
+<translation id="5963670684159057574">Блокиране на пръстови отпечатъци между сайтове</translation>
+<translation id="769702552748212954">Разрешаване на всички пръстови отпечатъци</translation>
+<translation id="4540198958192073185">Блокиране на цялото вземане на пръстови отпечатъци</translation>
 <translation id="8942080017911802454">WebRTC IP политика за боравене</translation>
 <translation id="6165508094623778733">Научете повече</translation>
 <translation id="8798099450830957504">По подразбиране</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">Също като Linux</translation>
 <translation id="1336940801687497203">Също като Windows</translation>
 <translation id="8721331068159819483">Също като macOS</translation>
-<translation id="6786747875388722282">Разширения</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="7701040980221191251">Няма</translation>

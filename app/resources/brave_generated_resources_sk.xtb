@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nie je povolené v prehliadači Brave.</translation>
 <translation id="7450557937477381864">Zatvoriť Chrome</translation>
 <translation id="7008934821596358692">Pre dokončenie importovania zatvorte všetky okná Chrome.</translation>
+<translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="3699882589215410581">Nainštalovať a spustiť Widevine</translation>
 <translation id="8926389886865778422">Túto otázku už nezobrazovať</translation>
 <translation id="4726634924419692905">Opýtať sa, keď bude stránka chcieť na vašom počítači nainštalovať Widevine.</translation>
@@ -31,11 +32,21 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5883458389055721080">Toto rozšírenie bezpečnosti a ochrany Brave neprehodnotil. Toto rozšírenie nainštalujte iba ak vývojárovi dôverujete.</translation>
 <translation id="8081858229109418493">Meno a ikonka profilu</translation>
 <translation id="2044383478723007273">Farby Brave</translation>
+<translation id="1692470335103807198">Získať viac tém</translation>
+<translation id="2906510232093002459">Predvolené obrázky Brave</translation>
 <translation id="2814998458708016836">Použite široký riadok adresy</translation>
 <translation id="6123134130710658846">Skryť tlačidlo Brave odmeny</translation>
 <translation id="7635711399568194460">Keď nie sú povolené Brave odmeny, tlačidlo Brave odmeny na paneli lokality sa skryje</translation>
 <translation id="1520361618554057102">Vždy zobrazovať záložky na Novej karte</translation>
 <translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
+<translation id="7781069478569868053">Stránka novej karty</translation>
+<translation id="2467749191278759605">Prispôsobte si svoj informačný panel Brave</translation>
+<translation id="1717331825806276156">Obrázky na pozadí</translation>
+<translation id="1820041496463124489">Sponzorované obrázky</translation>
+<translation id="8173998484743827990">Štatistiky Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Top stránky</translation>
+<translation id="1776831331757823105">Hodiny</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor pripojenie k tejto stránke</translation>
 <translation id="8784924142044142231">Opustiť Tor</translation>
@@ -75,9 +86,9 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4699812599455071925">Iba blokuje cross-site súbory cookie</translation>
 <translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
 <translation id="6883611015375728278">Zakázať všetky cookies</translation>
-<translation id="5572437114858031185">Blokovať len pokusy s odtlačkami prstov na viacerých stránkach</translation>
-<translation id="5079032039521408559">Povoľte všetky pokusy s odtlačkami prstov</translation>
-<translation id="6447141055227658942">Zablokovať všetky pokusy s odtlačkami prstov</translation>
+<translation id="5963670684159057574">Blokovať cross-site odtlačky prstov</translation>
+<translation id="769702552748212954">Povoliť všetky odtlačky prstov</translation>
+<translation id="4540198958192073185">Blokovať fingerprinting</translation>
 <translation id="8942080017911802454">Zásady manipulácie WebRTC IP</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="8798099450830957504">Predvolené</translation>
@@ -94,7 +105,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1360441190790440400">Rovnaký ako Linux</translation>
 <translation id="1336940801687497203">Rovnaký ako Windows</translation>
 <translation id="8721331068159819483">Rovnaké ako macOS</translation>
-<translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="2896916411183256228">Na zobrazenie torrentov priamo v prehliadači používa WebTorrent. Podporuje torrentové súbory a magnetové odkazy.</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="7701040980221191251">Žiadne</translation>

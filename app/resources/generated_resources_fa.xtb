@@ -1625,6 +1625,7 @@
 <translation id="5727851901710884484">‏<ph name="APP_NAME"/> در حال اشتراک‌گذاری یک برگه Brave با <ph name="TAB_NAME"/> است.</translation>
 <translation id="5770515304879261338">‏<ph name="APP_NAME"/> در حال اشتراک‌گذاری یک برگه Brave و صوت است.</translation>
 <translation id="859454237594354073">‏<ph name="APP_NAME"/> درحال اشتراک‌گذاری یک برگه Brave و صوت با <ph name="TAB_NAME"/> است.</translation>
+<translation id="7108338896283013870">عدم نمایش</translation>
 <translation id="890616557918890486">تغییر منبع</translation>
 <translation id="7792388396321542707">توقف اشتراک‌گذاری</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> خواستار دسترسی دائم به یک گواهی است تا خودش را از طرف شما احراز هویت کند.</translation>
@@ -1658,6 +1659,7 @@
 <translation id="7022562585984256452">صفحه اصلی شما تنظیم شد.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">افزودن چاپگرها</translation>
+<translation id="9052208328806230490">شما ثبت چاپگرهای خود را با <ph name="CLOUD_PRINT_NAME"/> از طریق حساب <ph name="EMAIL"/> انجام داده‌اید</translation>
 <translation id="3792890930871100565">قطع ارتباط چاپگرها</translation>
 <translation id="5038863510258510803">در حال فعال‌سازی...</translation>
 <translation id="8264024885325823677">این تنظیم را سرپرست شما مدیریت می‌کند.</translation>
@@ -2290,6 +2292,7 @@
 <translation id="6711610692002680394">‏برای ثبت دستگاه‌های جدید باید به سیستم Brave وارد شوید</translation>
 <translation id="8931394284949551895">دستگاه‌های جدید</translation>
 <translation id="3752673729237782832">دستگاه‌های من</translation>
+<translation id="1721937473331968728">می‌توانید چاپگرهای کلاسیک متصل به رایانه‌تان را به <ph name="CLOUD_PRINT_NAME"/> اضافه کنید.</translation>
 <translation id="715118844758971915">چاپگرهای کلاسیک</translation>
 <translation id="4263757076580287579">ثبت چاپگر لغو شد.</translation>
 <translation id="8152091997436726702">زمان مجاز ثبت‌نام چاپگر پایان یافت. برای ثبت یک چاپگر، باید ثبت را در چاپگر تأیید کنید.</translation>
@@ -2970,9 +2973,11 @@ other {# پنجره خصوصی باز}
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> شما به‌ روز است</translation>
 <translation id="3688526734140524629">تغییر کانال</translation>
 <translation id="6410328738210026208">تغییر کانال و پاکسازی</translation>
+<translation id="1979280758666859181">شما در حال تغییر کانال به نسخه قدیمی‌تر <ph name="PRODUCT_NAME"/> هستید. تغییر کانال زمانی اعمال می‌شود که نسخه کانال با نسخه فعلی نصب شده در دستگاه یکسان باشد.</translation>
 <translation id="7728668285692163452">تغییر کانال بعداً اعمال خواهد شد</translation>
 <translation id="5495466433285976480">با این کار بعد از راه‌اندازی مجدد، همه داده‌ها، فایل‌ها، کاربران محلی و سایر تنظیمات حذف خواهد شد. همه کاربران باید دوباره وارد سیستم شوند.</translation>
 <translation id="8101987792947961127">در راه‌اندازی مجدد بعدی پاکسازی لازم است</translation>
+<translation id="1414648216875402825">شما نسخه ناپایداری از <ph name="PRODUCT_NAME"/> را به‌روزرسانی می‌کنید که حاوی قابلیت‌های در حال توسعه است. خرابی‌ها و اشکال‌های غیرمنتظره‌ای رخ خواهد داد. لطفاُ با احتیاط ادامه دهید.</translation>
 <translation id="6103681770816982672">هشدار: شما به کانال برنامه‌نویس می‌روید</translation>
 <translation id="8807632654848257479">پایدار</translation>
 <translation id="830868413617744215">بتا</translation>
@@ -3745,10 +3750,12 @@ other {# پنجره خصوصی باز}
 <translation id="5302048478445481009">زبان</translation>
 <translation id="6388429472088318283">زبان‌های جستجو</translation>
 <translation id="2690024944919328218">نمایش گزینه‌های زبان</translation>
+<translation id="768549422429443215">افزودن زبان یا مرتب‌سازی مجدد فهرست.</translation>
 <translation id="8218847192766059983">زبان اضافه کنید یا ترتیب فهرست را تغییر دهید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">نوشتار سیستم به این زبان نشان داده می‌شود</translation>
 <translation id="2366260648632264559">نمایش نوشتار سیستم به این زبان</translation>
 <translation id="8336721153892716270">برای نمایش دادن نوشتار سیستم به زبان <ph name="LANGUAGE"/>، دستگاه بازراه‌اندازی شود</translation>
+<translation id="7216595297012131718">زبان‌ها را براساس ترجیحتان مرتب کنید</translation>
 <translation id="5972708806901999743">انتقال به بالا</translation>
 <translation id="8609465669617005112">انتقال به بالا</translation>
 <translation id="6746124502594467657">انتقال به پایین</translation>
@@ -4578,6 +4585,7 @@ other {# پنجره خصوصی باز}
 <translation id="8143442547342702591">برنامه نامعتبر است</translation>
 <translation id="720110658997053098">این دستگاه همیشه در حالت کیوسک نگه داشته شود</translation>
 <translation id="1909880997794698664">آیا مطمئن هستید که می‌خواهید این دستگاه را برای همیشه در حالت کیوسک نگه دارید؟</translation>
+<translation id="1512210426710821809">تنها راه برای واگرد این مورد، نصب مجدد <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> است</translation>
 <translation id="8281886186245836920">رد شدن</translation>
 <translation id="2342740338116612727">نشانک‌ها اضافه شد</translation>
 <translation id="7835178595033117206">نشانک حذف شد</translation>
@@ -4698,7 +4706,10 @@ other {# پنجره خصوصی باز}
 <translation id="1526560967942511387">سند بدون عنوان</translation>
 <translation id="5269977353971873915">چاپ نشد</translation>
 <translation id="7385854874724088939">هنگام سعی برای چاپ، اشتباهی رخ داده است. لطفاً چاپگر خود را بررسی کنید و دوباره امتحان کنید.</translation>
+<translation id="1197979282329025000">هنگام بازیابی قابلیت‌های چاپگر برای چاپگر <ph name="PRINTER_NAME"/>، خطایی روی داد. این چاپگر با <ph name="CLOUD_PRINT_NAME"/> ثبت نمی‌شود.</translation>
 <translation id="9004952710076978168">یک اعلان برای یک چاپگر ناشناس دریافت شد.</translation>
+<translation id="2202898655984161076">هنگام فهرست کردن چاپگرها مشکلی روی داد. برخی از چاپگرهای شما با <ph name="CLOUD_PRINT_NAME"/> با موفقیت ثبت نشده‌اند.</translation>
+<translation id="3220586366024592812">فرآیند رابط <ph name="CLOUD_PRINT_NAME"/> متوقف شد. مجدداً راه‌اندازی شود؟</translation>
 <translation id="6904655473976120856">برای خروج، دکمه «برنامه» را فشار دهید</translation>
 <translation id="8909833622202089127">سایت درحال ردیابی مکان شما است</translation>
 <translation id="375636864092143889">سایت درحال استفاده از میکروفون شما است</translation>

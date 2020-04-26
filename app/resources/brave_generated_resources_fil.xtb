@@ -11,6 +11,7 @@
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="7450557937477381864">Isara ang Chrome</translation>
 <translation id="7008934821596358692">Upang matapos ang pag-import, isara ang lahat ng window ng Chrome.</translation>
+<translation id="6786747875388722282">Mga Extension</translation>
 <translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="4726634924419692905">Magtanong kapag gusto ng isang site na i-install ang Widevine sa iyong computer.</translation>
@@ -31,11 +32,21 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5883458389055721080">Hindi na-review ng Brave ang extension na ito para sa seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
 <translation id="8081858229109418493">Pangalan at icon ng profile</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
+<translation id="1692470335103807198">Kumuha pa ng mga theme</translation>
+<translation id="2906510232093002459">Mga default na image ng Brave</translation>
 <translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
 <translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
 <translation id="7635711399568194460">Itinatago ang Brave Rewards button sa location bar kapag hindi naka-enable ang Brave Rewards</translation>
 <translation id="1520361618554057102">Ipakita palagi ang mga bookmark sa page na Bagong Tab</translation>
 <translation id="5802665280774361839">Ipakita ang awtomatikong pagkumpleto sa address bar.</translation>
+<translation id="7781069478569868053">Page ng Bagong Tab</translation>
+<translation id="2467749191278759605">I-customize ang Brave Dashboard mo</translation>
+<translation id="1717331825806276156">Mga background image</translation>
+<translation id="1820041496463124489">Mga sponsored image</translation>
+<translation id="8173998484743827990">Brave Stats</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Nangungunang Sites</translation>
+<translation id="1776831331757823105">Orasan</translation>
 <translation id="7965178729203412357">Bagong Pagkakakilanlan ng Tor</translation>
 <translation id="8511502469534942133">Bagong Koneksyon sa Tor Para sa Site na Ito</translation>
 <translation id="8784924142044142231">Lumabas sa Tor</translation>
@@ -75,9 +86,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4699812599455071925">I-block lang ang cross-site cookies</translation>
 <translation id="5657156137487675418">Payagan ang lahat ng cookie</translation>
 <translation id="6883611015375728278">I-block ang lahat ng cookie</translation>
-<translation id="5572437114858031185">I-block lang ang mga cross-site na pagsubok na mag-fingerprint</translation>
-<translation id="5079032039521408559">Payagan ang lahat ng pagsubok na mag-fingerprint</translation>
-<translation id="6447141055227658942">I-block ang lahat ng pagsubok sa mag-fingerprint</translation>
+<translation id="5963670684159057574">I-block ang cross-site fingerprinting</translation>
+<translation id="769702552748212954">Payagan ang lahat ng fingerprinting</translation>
+<translation id="4540198958192073185">I-block ang lahat ng fingerprinting</translation>
 <translation id="8942080017911802454">Patakaran sa Pangangasiwa ng IP ng WebRTC</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -94,7 +105,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1360441190790440400">Pareho sa Linux</translation>
 <translation id="1336940801687497203">Pareho sa Windows</translation>
 <translation id="8721331068159819483">Kapareho ng macOS</translation>
-<translation id="6786747875388722282">Mga Extension</translation>
 <translation id="2896916411183256228">Ginagamit ang WebTorrent upang direktang ipakita sa browser ang mga torrent. Sinusuportahan ang mga torrent file at magnet link.</translation>
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="7701040980221191251">Wala</translation>

@@ -1628,6 +1628,7 @@ Pretende pará-lo?</translation>
 <translation id="5727851901710884484"><ph name="APP_NAME"/> está a partilhar um separador do Brave com <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> está a partilhar um separador do Brave e o áudio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> está a partilhar um separador do Brave e o áudio com <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Ocultar</translation>
 <translation id="890616557918890486">Alterar origem</translation>
 <translation id="7792388396321542707">Parar a partilha</translation>
 <translation id="6630752851777525409">A extensão <ph name="EXTENSION_NAME"/> pretende um acesso permanente a um certificado para se autenticar automaticamente em seu nome.</translation>
@@ -1661,6 +1662,7 @@ Pretende pará-lo?</translation>
 <translation id="7022562585984256452">A sua página inicial foi definida.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Adicionar impressoras</translation>
+<translation id="9052208328806230490">Registou as suas impressoras com <ph name="CLOUD_PRINT_NAME"/> utilizando a conta <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Desligar impressoras</translation>
 <translation id="5038863510258510803">A ativar...</translation>
 <translation id="8264024885325823677">Esta definição é gerida pelo seu administrador.</translation>
@@ -2291,6 +2293,7 @@ Pretende pará-lo?</translation>
 <translation id="6711610692002680394">É necessário iniciar sessão no Brave para registar novos dispositivos</translation>
 <translation id="8931394284949551895">Novos dispositivos</translation>
 <translation id="3752673729237782832">Os meus dispositivos</translation>
+<translation id="1721937473331968728">Pode adicionar impressoras clássicas ligadas ao seu computador a <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Impressoras clássicas</translation>
 <translation id="4263757076580287579">O registo da impressora foi cancelado.</translation>
 <translation id="8152091997436726702">O tempo limite do registo da impressora foi excedido. Para registar uma impressora, terá de confirmar o registo na impressora.</translation>
@@ -2971,9 +2974,11 @@ Pretende pará-lo?</translation>
 <translation id="1871615898038944731">O seu <ph name="DEVICE_TYPE"/> está atualizado</translation>
 <translation id="3688526734140524629">Alterar canal</translation>
 <translation id="6410328738210026208">Alterar canal e Powerwash</translation>
+<translation id="1979280758666859181">Está a mudar para um canal com uma versão mais antiga do <ph name="PRODUCT_NAME"/>. A alteração de canal será aplicada quando a versão do canal corresponder à versão atualmente instalada no seu dispositivo.</translation>
 <translation id="7728668285692163452">A alteração do canal será aplicada mais tarde</translation>
 <translation id="5495466433285976480">Isto irá remover todos os utilizadores locais, ficheiros, dados e outras definições depois do próximo reinício. Todos os utilizadores terão de iniciar sessão novamente.</translation>
 <translation id="8101987792947961127">Powerwash necessário no próximo reinício</translation>
+<translation id="1414648216875402825">Está a atualizar para uma versão instável do <ph name="PRODUCT_NAME"/> que contém funcionalidades que estão em curso. Ocorrerão falhas e erros inesperados. Prossiga com cuidado.</translation>
 <translation id="6103681770816982672">Aviso: Está a mudar para um canal do programador</translation>
 <translation id="8807632654848257479">Estável</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3746,10 +3751,12 @@ Pretende pará-lo?</translation>
 <translation id="5302048478445481009">Idioma</translation>
 <translation id="6388429472088318283">Pesquisar idiomas</translation>
 <translation id="2690024944919328218">Mostrar opções de idioma</translation>
+<translation id="768549422429443215">Adicione idiomas ou reordene a lista.</translation>
 <translation id="8218847192766059983">Adicione idiomas ou reordene a lista. <ph name="BEGIN_LINK"/>Saber mais<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">O texto do sistema é apresentado neste idioma.</translation>
 <translation id="2366260648632264559">Mostrar o texto do sistema neste idioma</translation>
 <translation id="8336721153892716270">Reiniciar o dispositivo para apresentar o texto do sistema em <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Ordene idiomas com base na sua preferência</translation>
 <translation id="5972708806901999743">Mover para o início</translation>
 <translation id="8609465669617005112">Mover para cima</translation>
 <translation id="6746124502594467657">Mover para baixo</translation>
@@ -4579,6 +4586,7 @@ Pretende pará-lo?</translation>
 <translation id="8143442547342702591">Aplicação inválida</translation>
 <translation id="720110658997053098">Manter este dispositivo permanentemente no modo quiosque</translation>
 <translation id="1909880997794698664">Tem a certeza de que pretende manter permanentemente este dispositivo no modo de quiosque?</translation>
+<translation id="1512210426710821809">A única forma de anular esta ação é reinstalar o <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="8281886186245836920">Ignorar</translation>
 <translation id="2342740338116612727">Marcadores adicionados</translation>
 <translation id="7835178595033117206">Marcador removido</translation>
@@ -4699,7 +4707,10 @@ Pretende pará-lo?</translation>
 <translation id="1526560967942511387">Documento sem nome</translation>
 <translation id="5269977353971873915">Falha de Impressão</translation>
 <translation id="7385854874724088939">Ocorreu um erro ao tentar imprimir. Verifique a impressora e tente novamente.</translation>
+<translation id="1197979282329025000">Ocorreu um erro ao obter as capacidades da impressora <ph name="PRINTER_NAME"/>. Não foi possível registar esta impressora em <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Recebeu uma notificação para uma impressora desconhecida.</translation>
+<translation id="2202898655984161076">Ocorreu um problema ao listar as impressoras. Algumas impressoras podem não ter sido registadas com êxito no <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">O processo do conector <ph name="CLOUD_PRINT_NAME"/> falhou. Reiniciar?</translation>
 <translation id="6904655473976120856">Premir o botão Aplicação para sair</translation>
 <translation id="8909833622202089127">O site está a monitorizar a sua localização.</translation>
 <translation id="375636864092143889">O site está a utilizar o microfone.</translation>
