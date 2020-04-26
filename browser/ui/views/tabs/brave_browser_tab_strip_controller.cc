@@ -27,6 +27,11 @@ BraveBrowserTabStripController::BraveBrowserTabStripController(
 BraveBrowserTabStripController::~BraveBrowserTabStripController() {
   if (context_menu_contents_)
     context_menu_contents_->Cancel();
+
+  if (ctrl_released_event_handler_.get()) {
+    // We are still MRU cycling so ctrl realase handler is still registered
+    ui::EventHandler::DisableCheckTargets();
+  }
 }
 
 void BraveBrowserTabStripController::ShowContextMenuForTab(
@@ -65,7 +70,8 @@ BraveBrowserTabStripController::CtrlReleaseHandler::CtrlReleaseHandler(
     BrowserView* browser_view)
     : model_(model), browser_view_(browser_view) {}
 
-BraveBrowserTabStripController::CtrlReleaseHandler::~CtrlReleaseHandler() {}
+BraveBrowserTabStripController::CtrlReleaseHandler::~CtrlReleaseHandler() =
+    default
 
 void BraveBrowserTabStripController::CtrlReleaseHandler::OnKeyEvent(
     ui::KeyEvent* event) {
