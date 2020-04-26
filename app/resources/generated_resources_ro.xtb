@@ -1626,6 +1626,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5727851901710884484"><ph name="APP_NAME"/> trimite conținutul unei file Brave către <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> trimite conținutul unei file Brave și conținutul audio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> trimite conținutul unei file Brave și conținutul audio către <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Ascunde</translation>
 <translation id="890616557918890486">Schimbă sursa</translation>
 <translation id="7792388396321542707">Opriți accesul la ecran</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> dorește acces permanent la un certificat pentru a se autentifica în numele tău.</translation>
@@ -1659,6 +1660,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7022562585984256452">Pagina de pornire a fost setată.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Adăugați imprimante</translation>
+<translation id="9052208328806230490">Ai înregistrat imprimantele la <ph name="CLOUD_PRINT_NAME"/> utilizând contul <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Deconectați imprimantele</translation>
 <translation id="5038863510258510803">Se activează...</translation>
 <translation id="8264024885325823677">Această setare este gestionată de administrator.</translation>
@@ -2291,6 +2293,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6711610692002680394">Pentru a înregistra dispozitive noi, este necesar să vă conectați la Brave</translation>
 <translation id="8931394284949551895">Dispozitive noi</translation>
 <translation id="3752673729237782832">Dispozitivele mele</translation>
+<translation id="1721937473331968728">Puteți adăuga la <ph name="CLOUD_PRINT_NAME"/> imprimantele clasice pe care le-ați conectat la computer.</translation>
 <translation id="715118844758971915">Imprimante clasice</translation>
 <translation id="4263757076580287579">Înregistrarea imprimantei a fost anulată.</translation>
 <translation id="8152091997436726702">Înregistrarea imprimantei a expirat. Pentru a înregistra o imprimantă, este necesar să confirmați înregistrarea pe imprimantă.</translation>
@@ -2971,9 +2974,11 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1871615898038944731">Dispozitivul <ph name="DEVICE_TYPE"/> este actualizat</translation>
 <translation id="3688526734140524629">Schimbați canalul</translation>
 <translation id="6410328738210026208">Schimbați canalul și porniți Powerwash</translation>
+<translation id="1979280758666859181">Treceți la un canal cu o versiune <ph name="PRODUCT_NAME"/> mai veche. Schimbarea canalului se va aplica atunci când versiunea canalului va corespunde cu versiunea instalată în prezent pe dispozitiv.</translation>
 <translation id="7728668285692163452">Modificarea canalului va fi aplicată mai târziu</translation>
 <translation id="5495466433285976480">Această acțiune va elimina utilizatorii, fișierele, datele și alte setări locale după următoarea repornire. Va fi necesar ca toți utilizatorii să se conecteze din nou.</translation>
 <translation id="8101987792947961127">Este necesară lansarea Powerwash la următoarea repornire</translation>
+<translation id="1414648216875402825">Faceți actualizarea la o versiune <ph name="PRODUCT_NAME"/> instabilă. Aceasta conține funcții nefinalizate. Vor apărea blocări și erori neașteptate. Continuați cu atenție.</translation>
 <translation id="6103681770816982672">Avertisment: comutați la canalul pentru dezvoltatori</translation>
 <translation id="8807632654848257479">Stabil</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3746,10 +3751,12 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5302048478445481009">Limbă</translation>
 <translation id="6388429472088318283">Caută limbi</translation>
 <translation id="2690024944919328218">Afișează opțiunile de limbă</translation>
+<translation id="768549422429443215">Adaugă limbi sau reordonează lista.</translation>
 <translation id="8218847192766059983">Adaugă limbi sau reordonează lista. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Textul sistemului apare în această limbă</translation>
 <translation id="2366260648632264559">Afișează textul sistemului în această limbă</translation>
 <translation id="8336721153892716270">Repornește dispozitivul ca să afișezi textul sistemului în <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Ordonează limbile pe baza preferințelor tale</translation>
 <translation id="5972708806901999743">Mută în partea de sus</translation>
 <translation id="8609465669617005112">Mutați mai sus</translation>
 <translation id="6746124502594467657">Mutați în jos</translation>
@@ -4579,6 +4586,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="8143442547342702591">Aplicație nevalidă</translation>
 <translation id="720110658997053098">Menține permanent acest dispozitiv în modul chioșc</translation>
 <translation id="1909880997794698664">Sigur doriți să păstrați permanent acest dispozitiv în modul chioșc?</translation>
+<translation id="1512210426710821809">Singura modalitate de anulare este să reinstalezi <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Omite</translation>
 <translation id="2342740338116612727">Au fost adăugate marcaje</translation>
 <translation id="7835178595033117206">Marcajul a fost eliminat</translation>
@@ -4699,7 +4707,10 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1526560967942511387">Document fără titlu</translation>
 <translation id="5269977353971873915">Printarea a eșuat</translation>
 <translation id="7385854874724088939">A apărut o eroare la printare. Verifică imprimanta și încearcă din nou.</translation>
+<translation id="1197979282329025000">A apărut o eroare la preluarea caracteristicilor imprimantei <ph name="PRINTER_NAME"/>. Această imprimantă nu a putut fi înregistrată la <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">A fost primită o notificare pentru o imprimantă necunoscută.</translation>
+<translation id="2202898655984161076">A apărut o problemă la listarea imprimantelor. Este posibil ca unele dintre imprimante să nu fi fost înregistrate la <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Procesul conectorului <ph name="CLOUD_PRINT_NAME"/> s-a blocat. Repornești?</translation>
 <translation id="6904655473976120856">Apasă pe butonul Aplicație pentru ieșire</translation>
 <translation id="8909833622202089127">Site-ul îți urmărește locația</translation>
 <translation id="375636864092143889">Site-ul folosește microfonul</translation>

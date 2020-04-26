@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
+<translation id="6786747875388722282">Proširenja</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
 <translation id="8926389886865778422">Više me ne pitaj</translation>
 <translation id="4726634924419692905">Prikazuje se upozorenje kada se mrežnim mjestom želi instalirati aplikacija Widevine na vašem računalu.</translation>
@@ -31,11 +32,21 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="5883458389055721080">Društvo Brave nije pregledalo razinu sigurnosti i zaštite ovog dodatka. Instalirajte samo ovaj dodatak ako vjerujete programeru.</translation>
 <translation id="8081858229109418493">Naziv profila i ikona</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
+<translation id="1692470335103807198">Dohvati više tema</translation>
+<translation id="2906510232093002459">Zadane slike Brave</translation>
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
 <translation id="1520361618554057102">Uvijek prikaži knjižne oznake na stranici Nova kartica</translation>
 <translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
+<translation id="7781069478569868053">Stranica Nova kartica</translation>
+<translation id="2467749191278759605">Prilagodite svoju nadzornu ploču Brave</translation>
+<translation id="1717331825806276156">Pozadinske slike</translation>
+<translation id="1820041496463124489">Sponzorirane slike</translation>
+<translation id="8173998484743827990">Stanja Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Najpopularnija mrežna mjesta</translation>
+<translation id="1776831331757823105">Sat</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
 <translation id="8511502469534942133">Nova veza tor za ovo mrežno mjesto</translation>
 <translation id="8784924142044142231">Izađi iz funkcije Tor</translation>
@@ -75,9 +86,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4699812599455071925">Blokiraj samo kolačiće za praćenje na više mjesta</translation>
 <translation id="5657156137487675418">Dopusti sve kolačiće</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
-<translation id="5572437114858031185">Blokiraj samo pokušaje pritiskanja prstima na više mjesta</translation>
-<translation id="5079032039521408559">Dopusti sve pokušaje pritiskanja prstima</translation>
-<translation id="6447141055227658942">Blokiraj sve pokušaje pritiskanja prstima</translation>
+<translation id="5963670684159057574">Blokiraj pokušaje pritiskanja prstima na više mjesta</translation>
+<translation id="769702552748212954">Dopusti sve pokušaje pritiskanja prstima</translation>
+<translation id="4540198958192073185">Blokiraj sve izrade digitalnog otiska</translation>
 <translation id="8942080017911802454">Pravila obrade IP-a sučelja WebRTC</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="8798099450830957504">Zadano</translation>
@@ -94,7 +105,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
 <translation id="8721331068159819483">Kao na operativnom sustavu macOS</translation>
-<translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Rabi WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
 <translation id="2356070529366658676">Upitaj</translation>
 <translation id="7701040980221191251">Nema</translation>

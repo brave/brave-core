@@ -1627,6 +1627,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5727851901710884484">A(z) <ph name="APP_NAME"/> megosztja a Brave egy lapját a következővel: <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338">A(z) <ph name="APP_NAME"/> megosztja a Brave egy lapját és a hangot.</translation>
 <translation id="859454237594354073">A(z) <ph name="APP_NAME"/> megosztja a Brave egy lapját és a hangot a következővel: <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Elrejtés</translation>
 <translation id="890616557918890486">Forrás módosítása</translation>
 <translation id="7792388396321542707">Megosztás leállítása</translation>
 <translation id="6630752851777525409">A(z) <ph name="EXTENSION_NAME"/> végleges hozzáférést kér egy tanúsítványhoz, hogy az Ön nevében hitelesíthesse magát.</translation>
@@ -1659,6 +1660,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7022562585984256452">Beállítottuk kezdőoldalát.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Nyomtatók hozzáadása</translation>
+<translation id="9052208328806230490">Nyomtatóit regisztrálta a(z) <ph name="CLOUD_PRINT_NAME"/> szolgáltatásra a következő fiókkal: <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Nyomtatók leválasztása</translation>
 <translation id="5038863510258510803">Engedélyezés...</translation>
 <translation id="8264024885325823677">Ezt a beállítást a rendszergazdája kezeli.</translation>
@@ -2291,6 +2293,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6711610692002680394">Új eszközök regisztrálásához be kell jelentkeznie a Brave-ba</translation>
 <translation id="8931394284949551895">Új eszközök</translation>
 <translation id="3752673729237782832">Saját eszközök</translation>
+<translation id="1721937473331968728">A számítógéphez csatlakoztatott hagyományos nyomtatókat is hozzáadhat a <ph name="CLOUD_PRINT_NAME"/> szolgáltatáshoz.</translation>
 <translation id="715118844758971915">Hagyományos nyomtatók</translation>
 <translation id="4263757076580287579">A nyomtató regisztrálása megszakadt.</translation>
 <translation id="8152091997436726702">A nyomtató regisztrálása során időtúllépés történt. A nyomtató regisztrálásához meg kell erősítenie a regisztrációt a nyomtatón.</translation>
@@ -2971,9 +2974,11 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/>-eszköze naprakész</translation>
 <translation id="3688526734140524629">Csatornaváltás</translation>
 <translation id="6410328738210026208">Csatorna módosítása és Powerwash</translation>
+<translation id="1979280758666859181">A(z) <ph name="PRODUCT_NAME"/> egy régebbi verziójával vált csatornát. A csatornamódosítás akkor lép érvénybe, amikor a csatorna verziószáma megegyezik az eszközön jelenleg telepített verziószámmal.</translation>
 <translation id="7728668285692163452">A csatornamódosítás alkalmazása csak később történik meg</translation>
 <translation id="5495466433285976480">Ezzel a következő újraindítás után eltávolítja az összes helyi felhasználót, valamint minden fájlt, adatot és egyéb beállítást. Az összes felhasználónak újra be kell jelentkeznie.</translation>
 <translation id="8101987792947961127">Powerwash szükséges a következő újraindításkor</translation>
+<translation id="1414648216875402825">A(z) <ph name="PRODUCT_NAME"/> instabil verziójára frissít, amely fejlesztés alatt álló funkciókat tartalmaz. Előfordulhatnak rendszerösszeomlások és váratlan programhibák. Kérjük, fokozott körültekintéssel lépjen tovább.</translation>
 <translation id="6103681770816982672">Figyelem: a fejlesztői csatornára készül átváltani</translation>
 <translation id="8807632654848257479">Stabil</translation>
 <translation id="830868413617744215">Béta</translation>
@@ -3746,10 +3751,12 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5302048478445481009">Nyelv</translation>
 <translation id="6388429472088318283">Nyelv keresése</translation>
 <translation id="2690024944919328218">Nyelvi lehetőségek megjelenítése</translation>
+<translation id="768549422429443215">Hozzáadhat nyelveket és átrendezheti a listát.</translation>
 <translation id="8218847192766059983">Hozzáadhat nyelveket, és átrendezheti a listát. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/>.</translation>
 <translation id="8813969267212093033">A rendszerszövegek ezen a nyelven jelennek meg.</translation>
 <translation id="2366260648632264559">Rendszerszöveg megjelenítése ezen a nyelven</translation>
 <translation id="8336721153892716270">Indítsa újra az eszközt, hogy a rendszer <ph name="LANGUAGE"/> nyelven jelenhessen meg</translation>
+<translation id="7216595297012131718">A nyelveket tetszés szerint rendezheti</translation>
 <translation id="5972708806901999743">Mozgatás a lista tetejére</translation>
 <translation id="8609465669617005112">Mozgatás felfelé</translation>
 <translation id="6746124502594467657">Mozgatás lefelé</translation>
@@ -4580,6 +4587,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8143442547342702591">Érvénytelen alkalmazás</translation>
 <translation id="720110658997053098">Az eszköz állandó kioszk módban tartása</translation>
 <translation id="1909880997794698664">Biztosan állandó kioszk módban szeretné tartani ezt az eszközt?</translation>
+<translation id="1512210426710821809">A visszavonás egyetlen módja a(z) <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> újratelepítése.</translation>
 <translation id="8281886186245836920">Kihagyás</translation>
 <translation id="2342740338116612727">Könyvjelzők hozzáadva</translation>
 <translation id="7835178595033117206">Könyvjelző eltávolítva</translation>
@@ -4700,7 +4708,10 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="1526560967942511387">Név nélküli dokumentum</translation>
 <translation id="5269977353971873915">A nyomtatás nem sikerült</translation>
 <translation id="7385854874724088939">Valami nem sikerült a nyomtatás során. Ellenőrizze a nyomtatót, és próbálkozzon újra.</translation>
+<translation id="1197979282329025000">Hiba történt a(z) <ph name="PRINTER_NAME"/> nyomtató képességeinek lekérésekor. Ez a nyomtató nem regisztrálható itt: <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Értesítés érkezett ismeretlen nyomtatóhoz.</translation>
+<translation id="2202898655984161076">Hiba történt a nyomtatók felsorolása közben. Lehet, hogy néhány nyomtató nem regisztrálható itt: <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">A <ph name="CLOUD_PRINT_NAME"/> csatlakozó folyamat összeomlott. Újraindítja?</translation>
 <translation id="6904655473976120856">Kilépéshez nyomja meg az Alkalmazás gombot</translation>
 <translation id="8909833622202089127">A webhely nyomon követi a tartózkodási helyét</translation>
 <translation id="375636864092143889">A webhely használja a mikrofonját</translation>

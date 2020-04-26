@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
+<translation id="6786747875388722282">Extensions</translation>
 <translation id="3699882589215410581">Instal·la i executa Widevine</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="4726634924419692905">Pregunta quan un lloc vulgui instal·lar Widevine al teu ordinador.</translation>
@@ -32,11 +33,21 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="5883458389055721080">Brave no ha revisat aquesta extensió amb finalitats de seguretat. Instal·la aquesta extensió només si confies en el desenvolupador.</translation>
 <translation id="8081858229109418493">Nom de perfil i imatge</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
+<translation id="1692470335103807198">Obtén més temes</translation>
+<translation id="2906510232093002459">Imatges predeterminades de Brave</translation>
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
 <translation id="6123134130710658846">Amaga el botó de Premis de Brave</translation>
 <translation id="7635711399568194460">Amaga el botó de Premis de Brave a la barra d'ubicació quan Premis de Brave no està habilitat</translation>
 <translation id="1520361618554057102">Mostra sempre les adreces d'interès en una finestra nova</translation>
 <translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
+<translation id="7781069478569868053">Pàgina de pestanyes nova</translation>
+<translation id="2467749191278759605">Personalitza el teu Panell de Brave</translation>
+<translation id="1717331825806276156">Imatges de fons</translation>
+<translation id="1820041496463124489">Imatges patrocinades</translation>
+<translation id="8173998484743827990">Estadístiques de Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Principals llocs</translation>
+<translation id="1776831331757823105">Rellotge</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="8511502469534942133">Nova connexió Tor per a aquest lloc.</translation>
 <translation id="8784924142044142231">Surt de Tor</translation>
@@ -76,9 +87,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4699812599455071925">Bloqueja només les galetes entre llocs</translation>
 <translation id="5657156137487675418">Permet totes les galetes</translation>
 <translation id="6883611015375728278">Bloqueja totes les galetes</translation>
-<translation id="5572437114858031185">Bloquegeu només els intents d'identificació per empremta dactilar de llocs creuats</translation>
-<translation id="5079032039521408559">Permetre tots els intents d'identificació per empremta dactilar</translation>
-<translation id="6447141055227658942">Bloquejar tots els intents d'identificació per empremta dactilar</translation>
+<translation id="5963670684159057574">Bloqueja l’empremta digital en llocs creuats</translation>
+<translation id="769702552748212954">Permet totes les empremtes dactilars</translation>
+<translation id="4540198958192073185">Bloqueja tot el sistema d'empremta digital</translation>
 <translation id="8942080017911802454">Política de gestió del WebRTC IP</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
@@ -95,7 +106,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1360441190790440400">Mateix que Linux</translation>
 <translation id="1336940801687497203">Mateix que Windows</translation>
 <translation id="8721331068159819483">Mateix que MacOS</translation>
-<translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="7701040980221191251">Cap</translation>

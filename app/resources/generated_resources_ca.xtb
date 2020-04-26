@@ -1627,6 +1627,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5727851901710884484"><ph name="APP_NAME"/> està compartint una pestanya de Brave amb <ph name="TAB_NAME"/>.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> està compartint una pestanya de Brave i l'àudio.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> està compartint una pestanya de Brave i àudio amb <ph name="TAB_NAME"/>.</translation>
+<translation id="7108338896283013870">Amaga</translation>
 <translation id="890616557918890486">Canvia la font</translation>
 <translation id="7792388396321542707">Deixa de compartir</translation>
 <translation id="6630752851777525409">L'extensió <ph name="EXTENSION_NAME"/> vol tenir accés permanent a un certificat per autenticar-se en nom vostre.</translation>
@@ -1659,6 +1660,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7022562585984256452">S'ha definit la pàgina d'inici.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Afegeix impressores</translation>
+<translation id="9052208328806230490">Heu registrat les vostres impressores amb <ph name="CLOUD_PRINT_NAME"/> utilitzant el compte <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Desconnecta impressores</translation>
 <translation id="5038863510258510803">S'està activant...</translation>
 <translation id="8264024885325823677">El teu administrador gestiona aquesta opció de configuració.</translation>
@@ -2289,6 +2291,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6711610692002680394">Inicieu la sessió a Brave per registrar dispositius nous</translation>
 <translation id="8931394284949551895">Dispositius nous</translation>
 <translation id="3752673729237782832">Els meus dispositius</translation>
+<translation id="1721937473331968728">Podeu afegir impressores clàssiques que estiguin connectades al vostre ordinador a <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Impressores clàssiques</translation>
 <translation id="4263757076580287579">El registre de la impressora s'ha cancel·lat.</translation>
 <translation id="8152091997436726702">El registre de la impressora ha esgotat el temps d'espera. En aquest tipus d'accions, heu de confirmar el registre a la impressora.</translation>
@@ -2969,9 +2972,11 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1871615898038944731">El dispositiu <ph name="DEVICE_TYPE"/> està actualitzat</translation>
 <translation id="3688526734140524629">Canvia el canal</translation>
 <translation id="6410328738210026208">Canvia el canal i fes Powerwash</translation>
+<translation id="1979280758666859181">Esteu a punt de canviar a un canal amb una versió més antiga de <ph name="PRODUCT_NAME"/>. El canvi de canal s'aplicarà quan la versió del canal coincideixi amb la versió qui hi ha instal·lada actualment en el vostre dispositiu.</translation>
 <translation id="7728668285692163452">El canvi de canal s'aplicarà més tard</translation>
 <translation id="5495466433285976480">Això suprimirà tots els usuaris, els fitxers i les dades locals, així com qualsevol altra configuració la pròxima vegada que reiniciïs. Tots els usuaris hauran de tornar a iniciar la sessió.</translation>
 <translation id="8101987792947961127">Es requereix Powerwash la propera vegada que es reiniciï</translation>
+<translation id="1414648216875402825">Esteu a punt de passar a una versió inestable de <ph name="PRODUCT_NAME"/> que conté funcions en curs. Es produiran bloqueigs i errors inesperats. Continueu amb precaució.</translation>
 <translation id="6103681770816982672">Advertiment: esteu canviant al canal per a desenvolupadors</translation>
 <translation id="8807632654848257479">Estable</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -3744,10 +3749,12 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5302048478445481009">Idioma</translation>
 <translation id="6388429472088318283">Cerca idiomes</translation>
 <translation id="2690024944919328218">Mostra les opcions d'idioma</translation>
+<translation id="768549422429443215">Afegeix idiomes o torna a ordenar la llista.</translation>
 <translation id="8218847192766059983">Afegeix idiomes o torna a ordenar la llista. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">El text del sistema es mostra en aquest idioma</translation>
 <translation id="2366260648632264559">Mostra el text del sistema en aquest idioma</translation>
 <translation id="8336721153892716270">Reinicia el dispositiu per veure el text del sistema en <ph name="LANGUAGE"/></translation>
+<translation id="7216595297012131718">Ordena els idiomes segons les teves preferències</translation>
 <translation id="5972708806901999743">Mou a la part superior</translation>
 <translation id="8609465669617005112">Desplaça cap amunt</translation>
 <translation id="6746124502594467657">Mou avall</translation>
@@ -4577,6 +4584,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8143442547342702591">Aplicació no vàlida</translation>
 <translation id="720110658997053098">Activa permanentment el mode quiosc en aquest dispositiu</translation>
 <translation id="1909880997794698664">Confirmeu que voleu establir permanentment el mode de quiosc en aquest dispositiu?</translation>
+<translation id="1512210426710821809">L'única manera de desfer aquesta acció és tornar a instal·lar <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Omet</translation>
 <translation id="2342740338116612727">Les adreces d'interès s'han afegit</translation>
 <translation id="7835178595033117206">L'adreça d'interès s'ha suprimit</translation>
@@ -4697,7 +4705,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1526560967942511387">Document sense títol</translation>
 <translation id="5269977353971873915">Error d'impressió</translation>
 <translation id="7385854874724088939">S'ha produït un problema en intentar imprimir. Comproveu la impressora i torneu-ho a provar.</translation>
+<translation id="1197979282329025000">S'ha produït un error en recuperar la capacitat de la impressora <ph name="PRINTER_NAME"/>. Aquesta impressora no s'ha pogut registrar a <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Hem rebut la notificació d'una impressora desconeguda.</translation>
+<translation id="2202898655984161076">S'ha produït un problema en enumerar les impressores. Pot ser que algunes impressores no s'hagin registrat correctament a <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">El procés del connector <ph name="CLOUD_PRINT_NAME"/> s'ha bloquejat. Voleu reiniciar-lo?</translation>
 <translation id="6904655473976120856">Prem el botó Aplicació per sortir</translation>
 <translation id="8909833622202089127">El lloc web està fent un seguiment de la teva ubicació</translation>
 <translation id="375636864092143889">El lloc web està utilitzant el micròfon</translation>

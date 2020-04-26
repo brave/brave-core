@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") n'est pas autorisé dans Brave.</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
 <translation id="7008934821596358692">Pour terminer l'importation, fermez toutes les fenêtres Chrome.</translation>
+<translation id="6786747875388722282">Extensions</translation>
 <translation id="3699882589215410581">Installer et exécuter Widevine</translation>
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
 <translation id="4726634924419692905">Demandez quand un site veut installer Widevine sur votre ordinateur.</translation>
@@ -31,11 +32,21 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5883458389055721080">La sécurité et la sûreté de cette extension n'ont pas été examinées par Brave. Installez cette extension seulement si vous faites confiance au développeur.</translation>
 <translation id="8081858229109418493">Nom et icône du profil</translation>
 <translation id="2044383478723007273">Les couleurs de Brave</translation>
+<translation id="1692470335103807198">Obtenir plus de thèmes</translation>
+<translation id="2906510232093002459">Images par défaut de Brave</translation>
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
 <translation id="6123134130710658846">Masquer le bouton Brave Rewards</translation>
 <translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
 <translation id="1520361618554057102">Toujours afficher les signets sur la page « Nouvel onglet »</translation>
 <translation id="5802665280774361839">Afficher la saisie automatique dans la barre d'adresse</translation>
+<translation id="7781069478569868053">Nouvel onglet</translation>
+<translation id="2467749191278759605">Personnalisez votre tableau de bord Brave</translation>
+<translation id="1717331825806276156">Images de fond</translation>
+<translation id="1820041496463124489">Images sponsorisées</translation>
+<translation id="8173998484743827990">Statistiques de Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Meilleurs sites</translation>
+<translation id="1776831331757823105">Horloge</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
 <translation id="8511502469534942133">Nouvelle connexion Tor pour ce site</translation>
 <translation id="8784924142044142231">Quitter Tor</translation>
@@ -75,9 +86,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4699812599455071925">Seulement bloquer les cookies intersites</translation>
 <translation id="5657156137487675418">Autoriser tous les cookies</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
-<translation id="5572437114858031185">Bloquer seulement les tentatives de collecte de l'empreinte digitale d'appareil intersites</translation>
-<translation id="5079032039521408559">Autoriser toutes les tentatives de collecte de l'empreinte digitale d'appareil</translation>
-<translation id="6447141055227658942">Bloquer toutes les tentatives de collecte d'empreinte digitale d'appareil</translation>
+<translation id="5963670684159057574">Bloquer les empreintes digitales intersites</translation>
+<translation id="769702552748212954">Autoriser toutes les empreintes digitales</translation>
+<translation id="4540198958192073185">Bloquer toutes les créations d'empreinte numérique</translation>
 <translation id="8942080017911802454">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="8798099450830957504">Par défaut</translation>
@@ -94,7 +105,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1360441190790440400">Identique à Linux</translation>
 <translation id="1336940801687497203">Identique à Windows</translation>
 <translation id="8721331068159819483">Identique à macOS</translation>
-<translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
 <translation id="2356070529366658676">Demander</translation>
 <translation id="7701040980221191251">Aucun</translation>

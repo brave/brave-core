@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") non è permessa in Brave.</translation>
 <translation id="7450557937477381864">Chiudi Chrome</translation>
 <translation id="7008934821596358692">Per completare l'importazione, chiudi tutte le finestre di Chrome.</translation>
+<translation id="6786747875388722282">Estensioni</translation>
 <translation id="3699882589215410581">Installa ed esegui Widevine</translation>
 <translation id="8926389886865778422">Non visualizzare più questo avviso</translation>
 <translation id="4726634924419692905">Chiedi quando un sito vuole installare Widevine sul tuo computer.</translation>
@@ -31,11 +32,21 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="5883458389055721080">Brave non ha esaminato questa estensione ai fini della sicurezza. Installa questa estensione solo se ti fidi dello sviluppatore.</translation>
 <translation id="8081858229109418493">Nome del profilo e icona</translation>
 <translation id="2044383478723007273">Colori di Brave</translation>
+<translation id="1692470335103807198">Ottieni più temi</translation>
+<translation id="2906510232093002459">Immagini predefinite di Brave</translation>
 <translation id="2814998458708016836">Utilizzare la barra degli indirizzi ampia</translation>
 <translation id="6123134130710658846">Nascondi pulsante Brave Rewards</translation>
 <translation id="7635711399568194460">Nascondi il pulsante Brave Rewards nella barra degli indirizzi quando Brave Rewards non è abilitato</translation>
 <translation id="1520361618554057102">Mostra sempre i segnalibri nella pagina Nuova Scheda</translation>
 <translation id="5802665280774361839">Mostra i suggerimenti del completamento automatico nella barra dell'indirizzo</translation>
+<translation id="7781069478569868053">Nuova pagina</translation>
+<translation id="2467749191278759605">Personalizza il tuo Pannello di Controllo di Brave</translation>
+<translation id="1717331825806276156">Immagini di sfondo</translation>
+<translation id="1820041496463124489">Immagini sponsorizzate</translation>
+<translation id="8173998484743827990">Statistiche di Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">I siti migliori</translation>
+<translation id="1776831331757823105">Orologio</translation>
 <translation id="7965178729203412357">Nuova Identità Tor</translation>
 <translation id="8511502469534942133">Nuova Connessione Tor per questo Sito</translation>
 <translation id="8784924142044142231">Esci da Tor</translation>
@@ -75,9 +86,9 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="4699812599455071925">Blocca solo i cookie cross-site</translation>
 <translation id="5657156137487675418">Consenti tutti i cookie</translation>
 <translation id="6883611015375728278">Blocca tutti i cookie</translation>
-<translation id="5572437114858031185">Blocca solamente i tentativi con impronta digitale cross-site</translation>
-<translation id="5079032039521408559">Permetti tutti i tentavi con impronta digitale</translation>
-<translation id="6447141055227658942">Blocca tutti i tentativi con impronta digitale</translation>
+<translation id="5963670684159057574">Blocca l'analisi delle impronte cross-site</translation>
+<translation id="769702552748212954">Consenti tutte le impronte digirali</translation>
+<translation id="4540198958192073185">Blocca il rilevamento di tutte le impronte</translation>
 <translation id="8942080017911802454">Politica di gestione IP WebRTC</translation>
 <translation id="6165508094623778733">Scopri di più</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -94,7 +105,6 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1360441190790440400">Come per Linux</translation>
 <translation id="1336940801687497203">Come per Windows</translation>
 <translation id="8721331068159819483">Uguale a macOS</translation>
-<translation id="6786747875388722282">Estensioni</translation>
 <translation id="2896916411183256228">Utilizza WebTorrent per visualizzare i torrent direttamente nel browser. Supporta i file torrent e i magnet link.</translation>
 <translation id="2356070529366658676">Chiedi</translation>
 <translation id="7701040980221191251">Nessuno</translation>

@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="7450557937477381864">ክሮም ዝጋ</translation>
 <translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
+<translation id="6786747875388722282">ቅጥያዎች</translation>
 <translation id="3699882589215410581">ዊንድቬን ገጥመው ይክፈቱ</translation>
 <translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
 <translation id="4726634924419692905">አንድ ጣቢያ በኮምፒተርዎ ላይ Widevine ን ለመጫን ሲፈልግ ይጠይቁ።</translation>
@@ -31,11 +32,21 @@
 <translation id="5883458389055721080">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አላጣራም። ይህን ቅጥያ መጫን ያለብህ አዘጋጁን የምታምነው ከሆነ ብቻ ነው።</translation>
 <translation id="8081858229109418493">የገጽ ስም እና አዶ</translation>
 <translation id="2044383478723007273">የብሬቭ ቀለም</translation>
+<translation id="1692470335103807198">ተጨማሪ ገጽታዎችን ያግኙ</translation>
+<translation id="2906510232093002459">የ Brave ነባሪ ምስሎች</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
 <translation id="7635711399568194460">Brave Rewards  ካልበራ በአድራሻው አሞሌ ላይ ያለው የ Brave Rewards መጫኛ ይደበቃል።</translation>
 <translation id="1520361618554057102">ምንጊዜም በአዲስ የትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
 <translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
+<translation id="7781069478569868053">የአዲስ ትር ገጽ</translation>
+<translation id="2467749191278759605">የ Brave ዳሽቦርድዎን ያብጁ</translation>
+<translation id="1717331825806276156">የዳራ ምስሎች</translation>
+<translation id="1820041496463124489">ስፖንሰር የተደረጉ ምስሎች</translation>
+<translation id="8173998484743827990">የ Brave ስታቲስቲክስ</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">ከፍተኛ ጣቢያዎች</translation>
+<translation id="1776831331757823105">ሰዓት</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
 <translation id="8511502469534942133">ለዚህ ድረ ገጽ አዲስ የ Tor ትስስር</translation>
 <translation id="8784924142044142231">ከቶር ይውጡ</translation>
@@ -75,9 +86,9 @@
 <translation id="4699812599455071925">ድረ ገጽ ተሻጋሪ ኩኪዎችን ብቻ አግድ</translation>
 <translation id="5657156137487675418">ለሁሉም ኩኪ ይፍቀዱ</translation>
 <translation id="6883611015375728278">ሁሉን ኩኪ ይከላከሉ</translation>
-<translation id="5572437114858031185">ድረ ገጽ ተሻጋሪ የጣት አሻራ መውሰድ ሙከራዎችን ብቻ አግድ</translation>
-<translation id="5079032039521408559">ሁሉንም የጣት አሻራ መውሰድ ሙከራዎች ይፍቀዱ</translation>
-<translation id="6447141055227658942">ሁሉንም የጣት አሻራ መውሰድ ሙከራዎች ይከልክሉ</translation>
+<translation id="5963670684159057574">ድረ ገጽ ተሻጋሪ የጣት አሻራ መውሰድን አግድ</translation>
+<translation id="769702552748212954">ሁሉም የጣት አሻራ መውሰድን ፍቀድ</translation>
+<translation id="4540198958192073185">ሁሉንም የጣት አሻራ ይከላከሉ</translation>
 <translation id="8942080017911802454">WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="6165508094623778733">የበለጠ ይወቁ</translation>
 <translation id="8798099450830957504">እንደወረደ</translation>
@@ -94,7 +105,6 @@
 <translation id="1360441190790440400">ከ Linux ጋር ተመሳሳይ</translation>
 <translation id="1336940801687497203">ልክ እንደ Windows</translation>
 <translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
-<translation id="6786747875388722282">ቅጥያዎች</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="7701040980221191251">ምንም</translation>

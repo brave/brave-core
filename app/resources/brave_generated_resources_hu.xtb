@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (kiterjesztésazonosító "<ph name="EXTENSION_ID"/>") nem engedélyezett a Brave-ben.</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
+<translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="4726634924419692905">Kérdezzen rá, amikor egy webhely a Widevine-t akarja telepíteni a számítógépére.</translation>
@@ -31,11 +32,21 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5883458389055721080">A Brave még nem ellenőrizte ezt a kiterjesztést biztonság szempontjából. Csak akkor telepítsd ezt a kiterjesztést, ha megbízol a fejlesztőben.</translation>
 <translation id="8081858229109418493">Profilnév és ikon</translation>
 <translation id="2044383478723007273">Brave színek</translation>
+<translation id="1692470335103807198">Több téma beszerzése</translation>
+<translation id="2906510232093002459">Brave alapértelmezett képek</translation>
 <translation id="2814998458708016836">Használj széles címsort</translation>
 <translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
 <translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
 <translation id="1520361618554057102">Mindig mutassa a könyvjelzőket az új fül oldalon</translation>
 <translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
+<translation id="7781069478569868053">Új lap</translation>
+<translation id="2467749191278759605">Brave irányítópult testreszabása</translation>
+<translation id="1717331825806276156">Háttérképek</translation>
+<translation id="1820041496463124489">Szponzorált képek</translation>
+<translation id="8173998484743827990">Brave statisztikák</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Népszerű oldalak</translation>
+<translation id="1776831331757823105">Óra</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
 <translation id="8511502469534942133">Új Tor csatlakozás ehhez az oldalhoz</translation>
 <translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
@@ -75,9 +86,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4699812599455071925">Csak a webhelyközi cookie-k letiltása</translation>
 <translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
-<translation id="5572437114858031185">Csak a más webhelyről érkező ujjlenyomatos azonosítási kísérletek blokkolása</translation>
-<translation id="5079032039521408559">Az összes ujjlenyomatos azonosítási kísérlet engedélyezése</translation>
-<translation id="6447141055227658942">Az összes ujjlenyomatos azonosítási kísérlet blokkolása</translation>
+<translation id="5963670684159057574">Webhelyközi ujjlenyomat-beállítás tiltása</translation>
+<translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
+<translation id="4540198958192073185">Minden ujjlenyomat-leolvasás blokkolása</translation>
 <translation id="8942080017911802454">WebRTC IP kezelési irányelvek</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
@@ -94,7 +105,6 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1360441190790440400">Olyan, mint a Linux</translation>
 <translation id="1336940801687497203">Olyan, mint a Windows</translation>
 <translation id="8721331068159819483">Ugyanaz, mint macOS-en</translation>
-<translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
 <translation id="2356070529366658676">Kérés</translation>
 <translation id="7701040980221191251">Nincs</translation>

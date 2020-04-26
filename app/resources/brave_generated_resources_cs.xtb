@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="7450557937477381864">Zavřít Chrome</translation>
 <translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
+<translation id="6786747875388722282">Rozšíření</translation>
 <translation id="3699882589215410581">Nainstalovat a spustit Widevine</translation>
 <translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
 <translation id="4726634924419692905">Zobrazit dotaz, když bude stránka chtít do vašeho počítače nainstalovat doplněk Widevine.</translation>
@@ -31,11 +32,21 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="5883458389055721080">Brave nepřezkoumal bezpečnost tohoto rozšíření. Toto rozšíření nainstalujte pouze tehdy, pokud důvěřujete vývojáři.</translation>
 <translation id="8081858229109418493">Název profilu a ikona</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
+<translation id="1692470335103807198">Získejte další témata</translation>
+<translation id="2906510232093002459">Výchozí obrázky Brave</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="6123134130710658846">Skrýt tlačítko Brave Rewards</translation>
 <translation id="7635711399568194460">Skryje tlačítko Brave Rewards v adresním řádku, když nejsou Brave Rewards povoleny</translation>
 <translation id="1520361618554057102">Záložky ukázat vždy na stránce Nová záložka</translation>
 <translation id="5802665280774361839">V adresním řádku používat automatické doplňování</translation>
+<translation id="7781069478569868053">Stránka nové karty</translation>
+<translation id="2467749191278759605">Přizpůsobte si Ovládací panel Brave</translation>
+<translation id="1717331825806276156">Obrázky na pozadí</translation>
+<translation id="1820041496463124489">Sponzorované obrázky</translation>
+<translation id="8173998484743827990">Statistiky Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Top weby</translation>
+<translation id="1776831331757823105">Hodiny</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor připojení pro tuto stránku</translation>
 <translation id="8784924142044142231">Opustit Tor</translation>
@@ -75,9 +86,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4699812599455071925">Blokovat pouze soubory cookies třetích stran</translation>
 <translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
-<translation id="5572437114858031185">Blokovat jen pokusy o získání otisku napříč weby</translation>
-<translation id="5079032039521408559">Povolit všechny pokusy o získání otisku</translation>
-<translation id="6447141055227658942">Blokovat všechny pokusy o získání otisku</translation>
+<translation id="5963670684159057574">Blokovat získávání otisku napříč weby</translation>
+<translation id="769702552748212954">Povolit všechna získávání otisku</translation>
+<translation id="4540198958192073185">Blokovat všechny otisky prstů</translation>
 <translation id="8942080017911802454">Pravidla pro zacházení s webovým protokolem WebRTC</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8798099450830957504">Výchozí</translation>
@@ -94,7 +105,6 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1360441190790440400">Stejné jako u Linuxu</translation>
 <translation id="1336940801687497203">Stejná jako u Windows</translation>
 <translation id="8721331068159819483">Stejné jako macOS</translation>
-<translation id="6786747875388722282">Rozšíření</translation>
 <translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="7701040980221191251">Žádné</translation>

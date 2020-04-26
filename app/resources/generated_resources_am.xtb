@@ -1629,6 +1629,7 @@ nil</translation>
 <translation id="5727851901710884484"><ph name="APP_NAME"/> አንድ የBrave ትር ለ<ph name="TAB_NAME"/> እያጋራ ነው።</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> የBrave ትር እና ኦዲዮ እያጋራ ነው።</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> አንድ የBrave ትር እና ኦዲዮ ለ<ph name="TAB_NAME"/> እያጋራ ነው።</translation>
+<translation id="7108338896283013870">ደብቅ</translation>
 <translation id="890616557918890486">ምንጭ ይለውጡ</translation>
 <translation id="7792388396321542707">ማጋራት አቁም</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> እርስዎን ወክሎ እራሱን ለማረጋገጥ የአንድ እውቅና ማረጋገጫ ዘላቂ መዳረሻ ይፈልጋል።</translation>
@@ -1662,6 +1663,7 @@ nil</translation>
 <translation id="7022562585984256452">የእርስዎ መነሻ ገጽ ተዋቅሯል።</translation>
 <translation id="8069615408251337349">Brave Software ዳመና ህትመት</translation>
 <translation id="4973307593867026061">አታሚዎችን ያክሉ</translation>
+<translation id="9052208328806230490"><ph name="EMAIL"/>ን ተጠቅመው አታሚዎችዎን በ<ph name="CLOUD_PRINT_NAME"/> መዝግበዋል።</translation>
 <translation id="3792890930871100565">አታሚዎችን ያላቅቁ</translation>
 <translation id="5038863510258510803">በማንቃት ላይ...</translation>
 <translation id="8264024885325823677">ይህ ቅንብር በአስተዳዳሪዎ የሚቀናበር ነው።</translation>
@@ -2292,6 +2294,7 @@ nil</translation>
 <translation id="6711610692002680394">አዲስ መሣሪያዎችን ለማስመዝገብ በመለያ ወደ Brave መግባት አለብዎት</translation>
 <translation id="8931394284949551895">አዲስ መሣሪያዎች</translation>
 <translation id="3752673729237782832">የእኔ መሣሪያዎች</translation>
+<translation id="1721937473331968728">ከእርስዎ ኮምፒውተር ጋር የተገናኙ የሚታወቁ አይነት አታሚዎችን ወደ <ph name="CLOUD_PRINT_NAME"/> ማከል ይችላሉ።</translation>
 <translation id="715118844758971915">አይነታቸው የሚታወቁ አታሚዎች</translation>
 <translation id="4263757076580287579">የአታሚ ምዝገባ ተሰርዟል።</translation>
 <translation id="8152091997436726702">የአታሚ ምዝገባ እረፍት ወስዷል። አንድ አታሚ ለማስመዝገብ በአታሚው ላይ ምዝገባ ማረጋገጥ አለብዎት።</translation>
@@ -2972,9 +2975,11 @@ nil</translation>
 <translation id="1871615898038944731">የእርስዎ <ph name="DEVICE_TYPE"/> የተዘመነ ነው</translation>
 <translation id="3688526734140524629">ሰርጥ ቀይር</translation>
 <translation id="6410328738210026208">ሰርጥ ቀይር እና Powerwash</translation>
+<translation id="1979280758666859181">የቆየ የ<ph name="PRODUCT_NAME"/> ስሪት ወዳለው ሰርጥ እየቀየሩ ነው። የስርጡ ስሪት አሁን በመሣሪያዎ ላይ ከተጫነው ስሪት ጋር ሲዛመድ ነው የሰርጡ ለውጥ የሚተገበረው።</translation>
 <translation id="7728668285692163452">የሰርጥ ለውጥ በኋላ ላይ ነው የሚተገበረው</translation>
 <translation id="5495466433285976480">ይሄ ዳግም ከአስጀመሩ በኋላ ሁሉንም አካባቢያዊ ተጠቃሚዎችን፣ ፋይሎችን፣ ውሂብ እና ሌሎች ቅንብሮችን ያስወግዳል። ሁሉም ተጠቃሚዎች እንደገና መግባት ይኖርባቸዋል።</translation>
 <translation id="8101987792947961127">በቀጣዩ ዳግም ማስነሳት ላይ Powerwash  ያስፈልጋል</translation>
+<translation id="1414648216875402825">በሂደት ላይ ያሉ ባህሪያትን የያዘ ያልተረጋጋ ወደሆነ የ<ph name="PRODUCT_NAME"/> ስሪት እያዘመኑ ነው። ብልሽቶች እና ያልተጠበቁ ሳንካዎች ያጋጥማሉ። እባክዎ በጥንቃቄ ይቀጥሉ።</translation>
 <translation id="6103681770816982672">ማስጠንቀቂያ፦ ወደ የገንቢ ሰርጥ እየቀየሩ ነው</translation>
 <translation id="8807632654848257479">የረጋ</translation>
 <translation id="830868413617744215">ቅድመ-ይሁንታ</translation>
@@ -3747,10 +3752,12 @@ nil</translation>
 <translation id="5302048478445481009">ቋንቋ</translation>
 <translation id="6388429472088318283">ቋንቋዎችን ይፈልጉ</translation>
 <translation id="2690024944919328218">የቋንቋ አማራጮችን ይጠቀሙ</translation>
+<translation id="768549422429443215">ቋንቋዎችን ያክሉ ወይም ዝርዝርን ዳግም ያደራጁ።</translation>
 <translation id="8218847192766059983">ቋንቋዎችን ያክሉ ወይም ዝርዝርን ዳግም ያደራጁ። <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">የሥርዓት ጽሑፍ በዚህ ቋንቋ ይታያል</translation>
 <translation id="2366260648632264559">በዚህ ቋንቋ የሥርዓት ጽሑፍን አሳይ</translation>
 <translation id="8336721153892716270">ሥርዓት ጽሑፍን በ<ph name="LANGUAGE"/> ለማሳየት መሣሪያን ዳግም ያስጀምሩ</translation>
+<translation id="7216595297012131718">ቋንቋዎችን በእርስዎ ፍላጎት መሠረት ይደርድሩ</translation>
 <translation id="5972708806901999743">ወደ ላይ ሂድ</translation>
 <translation id="8609465669617005112">ወደላይ አውጣ</translation>
 <translation id="6746124502594467657">ወደታች አውርድ</translation>
@@ -4580,6 +4587,7 @@ nil</translation>
 <translation id="8143442547342702591">ልክ ያልሆነ መተግበሪያ</translation>
 <translation id="720110658997053098">ይህን መሣሪያ እስከመጨረሻው በኪዮስክ ሁነታ አቆየው</translation>
 <translation id="1909880997794698664">እርግጠኛ ነዎት ይህን መሣሪያ በኪዮስክ ሁነታ እስከመጨረሻው ማቆየት ይፈልጋሉ?</translation>
+<translation id="1512210426710821809">ይህን መቀልበስ የሚቻልበት ብቸኛው መንገድ <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>ን ዳግም መጫን ነው</translation>
 <translation id="8281886186245836920">ዝለል</translation>
 <translation id="2342740338116612727">ዕልባቶች ታክለዋል</translation>
 <translation id="7835178595033117206">ዕልባት ተወግዷል</translation>
@@ -4700,7 +4708,10 @@ nil</translation>
 <translation id="1526560967942511387">ርዕስ አልባ ሰነድ</translation>
 <translation id="5269977353971873915">ማተም አልተሳካም</translation>
 <translation id="7385854874724088939">ለማተም በሚሞክርበት ጊዜ አንድ ነገር በትክክል እየሄደ አልነበረም። እባክዎ አታሚዎን ይፈትሹና እንደገና ይሞክሩ።</translation>
+<translation id="1197979282329025000">የህትመት ብቃቶች ለአታሚ <ph name="PRINTER_NAME"/> በማምጣት ላይ ሳለ አንድ ስህተት ተከስቷል። ይህ አታሚ <ph name="CLOUD_PRINT_NAME"/> ላይ መመዝገብ አይችልም።</translation>
 <translation id="9004952710076978168">ያልታወቀ አታሚ ማሳወቂያ ደርሷል።</translation>
+<translation id="2202898655984161076">አታሚዎችን መዘርዘር ላይ ችግር ነበር። አንዳንድ አታሚዎችዎ በተሳካ ሁኔታ <ph name="CLOUD_PRINT_NAME"/> ላይ አልተመዘገቡም።</translation>
+<translation id="3220586366024592812">የ<ph name="CLOUD_PRINT_NAME"/> አገናኙ ተሰናክሏል። ዳግም ይጀመር?</translation>
 <translation id="6904655473976120856">ለመውጣት የመተግበሪያ አዝራርን ይጫኑ</translation>
 <translation id="8909833622202089127">ጣቢያ የእርስዎን አካባቢ እየተከታተለ ነው</translation>
 <translation id="375636864092143889">ጣቢያ የእርስዎን ማይክሮፎን እየተጠቀመ ነው</translation>

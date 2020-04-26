@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak dibenarkan dalam Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
+<translation id="6786747875388722282">Sambungan</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="4726634924419692905">Tanya apabila laman mahu memasang Widevine pada komputer anda.</translation>
@@ -31,11 +32,21 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5883458389055721080">Brave belum menyemak sambungan ini untuk perlindungan dan keselamatan. Pasang sambungan ini hanya jika anda mempercayai pembangunnya.</translation>
 <translation id="8081858229109418493">Nama profil dan ikon</translation>
 <translation id="2044383478723007273">Warna-warna Brave</translation>
+<translation id="1692470335103807198">Dapatkan lebih banyak tema</translation>
+<translation id="2906510232093002459">Imej lalai Brave</translation>
 <translation id="2814998458708016836">Gunakan bar alamat lebih lebar</translation>
 <translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
 <translation id="7635711399568194460">Sembunyi butang Brave Rewards dalam bar lokasi apabila Brave Rewatds tidak diaktifkan</translation>
 <translation id="1520361618554057102">Sentiasa tunjukkan penanda buku pada halaman Tab Baharu</translation>
 <translation id="5802665280774361839">Tunjukkan autolengkap dalam bar alamat</translation>
+<translation id="7781069478569868053">Halaman Tab Baharu</translation>
+<translation id="2467749191278759605">Suaikan Papan Pemuka Brave</translation>
+<translation id="1717331825806276156">Imej latar belakang</translation>
+<translation id="1820041496463124489">Imej tajaan</translation>
+<translation id="8173998484743827990">Statistik Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Laman Popular</translation>
+<translation id="1776831331757823105">Jam</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
 <translation id="8511502469534942133">Sambungan Tor baru Untuk Tapak Ini</translation>
 <translation id="8784924142044142231">Keluar Tor</translation>
@@ -75,9 +86,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4699812599455071925">Hanya sekat kuki merentas laman</translation>
 <translation id="5657156137487675418">Benarkan semua kuki</translation>
 <translation id="6883611015375728278">Sekat semua kuki</translation>
-<translation id="5572437114858031185">Hanya menyekat percubaan pengecapan jari cross-site</translation>
-<translation id="5079032039521408559">Membenarkan semua percubaan pengecapan jari</translation>
-<translation id="6447141055227658942">Menyekat semua percubaan pengecapan jari</translation>
+<translation id="5963670684159057574">Sekat pengecapan jari merentas laman</translation>
+<translation id="769702552748212954">Benarkan semua pengecapan jari</translation>
+<translation id="4540198958192073185">Sekat semua cap jari</translation>
 <translation id="8942080017911802454">Dasar Pengendalian IP WebRTC</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="8798099450830957504">Lalai</translation>
@@ -94,7 +105,6 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1360441190790440400">Sama seperti Linux</translation>
 <translation id="1336940801687497203">Sama seperti Windows</translation>
 <translation id="8721331068159819483">Sama seperti macOS</translation>
-<translation id="6786747875388722282">Sambungan</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="7701040980221191251">Tiada</translation>

@@ -80,19 +80,19 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site fingerprinting blocked",
+    "message": "Saitideülene seadmetuvastus blokeeritud",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Fingerprinting attempts blocked",
+    "message": "Seadmetuvastuse katsed blokeeritud",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "All fingerprinting attempts allowed",
+    "message": "Kõik seadmetuvastuse katsed lubatud",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "Seadmetuvastuse katsed",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {

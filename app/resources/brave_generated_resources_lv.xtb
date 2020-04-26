@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
 <translation id="7450557937477381864">Aizvērt Chrome</translation>
 <translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
+<translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
 <translation id="8926389886865778422">Nejautāt atkārtoti</translation>
 <translation id="4726634924419692905">Vaicāt, kad vietne vēlas instalēt Widevine uz jūsu datora.</translation>
@@ -31,11 +32,21 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5883458389055721080">Brave vēl nav pārskatījis šo paplašinājumu attiecībā uz tā aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
 <translation id="8081858229109418493">Profila nosaukums un ikona</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
+<translation id="1692470335103807198">Iegūt vairāk motīvu</translation>
+<translation id="2906510232093002459">Brave noklusējuma attēli</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
 <translation id="7635711399568194460">Slēpj Brave balvu pogu atrašanās vietas joslā, kad Brave balvas nav iespējotas</translation>
 <translation id="1520361618554057102">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
 <translation id="5802665280774361839">Parādīt automātiskās pabeigšanas ierakstus adreses joslā</translation>
+<translation id="7781069478569868053">Jaunas cilnes lapa</translation>
+<translation id="2467749191278759605">Pielāgojiet savu Brave informācijas paneli</translation>
+<translation id="1717331825806276156">Fona attēli</translation>
+<translation id="1820041496463124489">Sponsorētie attēli</translation>
+<translation id="8173998484743827990">Brave statistika</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Populāras vietnes</translation>
+<translation id="1776831331757823105">Pulkstenis</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
 <translation id="8511502469534942133">Jauns Tor savienojums šai vietnei</translation>
 <translation id="8784924142044142231">Iziet no Tor</translation>
@@ -75,9 +86,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4699812599455071925">Bloķēt tikai starpvietņu sīkfailus</translation>
 <translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
 <translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
-<translation id="5572437114858031185">Bloķēt tikai starpvietņu identificējošās ciparvirknes veidošanas mēģinājumus</translation>
-<translation id="5079032039521408559">Atļaut visus identificējošās ciparvirknes veidošanas mēģinājumus</translation>
-<translation id="6447141055227658942">Bloķēt visus identificējošās ciparvirknes veidošanas mēģinājumus</translation>
+<translation id="5963670684159057574">Bloķēt starpvietņu identificējošās dokumenta ciparvirknes veidošanu</translation>
+<translation id="769702552748212954">Atļaut visu identificējošās dokumenta ciparvirknes veidošanu</translation>
+<translation id="4540198958192073185">Bloķēt visu pirkstu nospiedumu ņemšanu</translation>
 <translation id="8942080017911802454">WebRTC IP apstrādes politika</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
@@ -94,7 +105,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1360441190790440400">Tāds pats kā Linux</translation>
 <translation id="1336940801687497203">Tāds pats kā Windows</translation>
 <translation id="8721331068159819483">Tāds pats kā macOS</translation>
-<translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="7701040980221191251">Neviens</translation>

@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> Brave-ის ჩანართს <ph name="TAB_NAME"/>-ს უზიარებს.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> Brave-ის ჩანართსა და აუდიოს აზიარებს.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> Brave-ის ჩანართს და აუდიოს <ph name="TAB_NAME"/>-ს უზიარებს.</translation>
+<translation id="7108338896283013870">დამალვა</translation>
 <translation id="890616557918890486">წყაროს შეცვლა</translation>
 <translation id="7792388396321542707">შეწყვიტეთ გაზიარება</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/>-ს სერტიფიკატზე მუდმივი წვდომის უფლების მიღება სურს, რათა საკუთარი თავის ავტორიზაცია თქვენი სახელით განახორციელოს.</translation>
@@ -1659,6 +1660,7 @@
 <translation id="7022562585984256452">მთავარი გვერდი დაყენდა.</translation>
 <translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">პრინტერების დამატება</translation>
+<translation id="9052208328806230490">თქვენ დაარეგისტრირეთ თქვენი პრინტერები <ph name="CLOUD_PRINT_NAME"/>-ში ანგარიშით <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">გამორთეთ პრინტერები</translation>
 <translation id="5038863510258510803">ჩართვა…</translation>
 <translation id="8264024885325823677">ამ პარამეტრს მართავს თქვენი ადმინისტრატორი.</translation>
@@ -2289,6 +2291,7 @@
 <translation id="6711610692002680394">ახალი მოწყობილობების რეგისრტაციისთვის უნდა შეხვიდეთ Brave-ში</translation>
 <translation id="8931394284949551895">ახალი მოწყობილობები</translation>
 <translation id="3752673729237782832">ჩემი მოწყობილობები</translation>
+<translation id="1721937473331968728">შეგიძლიათ დაამატოთ კლასიკური პრინტერები, რომლებიც დაკავშირებულია თქვენს კომპიუტერთან, <ph name="CLOUD_PRINT_NAME"/>-ში.</translation>
 <translation id="715118844758971915">კლასიკური პრინტერები</translation>
 <translation id="4263757076580287579">პრინტერის რეგისტრაცია გაუქმდა.</translation>
 <translation id="8152091997436726702">პრინტერის რეგისტრაციის ვადა ამოიწურა. პრინტერის დასარეგისტრირებლად საჭიროა მასზე რეგისტრაციის დადასტურება.</translation>
@@ -2956,9 +2959,11 @@
 <translation id="1871615898038944731">თქვენი <ph name="DEVICE_TYPE"/> განახლებულია</translation>
 <translation id="3688526734140524629">არხის შეცვლა</translation>
 <translation id="6410328738210026208">არხის შეცვლა და განახლება</translation>
+<translation id="1979280758666859181">მიმდინარეობს არხის შეცვლა <ph name="PRODUCT_NAME"/>-ის ძველი ვერსიით. არხის ცვლილება გააქტიურდება, როდესაც არხის ვერსია დაემთხვევა მოწყობილობაში ამჟამად დაინსტალირებულ ვერსიას.</translation>
 <translation id="7728668285692163452">არხის ცვლილების მისადაგება მოგვიანებით განხორციელდება</translation>
 <translation id="5495466433285976480">წაიშლება ყველა ლოკალური მომხმარებელი, ფაილი, მონაცემები და სხვა პარამეტრები შემდეგი გადატვირთვის დროს. მომხმარებლებს მოუწევთ ხელახლა შესვლა.</translation>
 <translation id="8101987792947961127">შემდეგი ჩატვირთვის დროს საჭიროა შესრულდეს განახლება</translation>
+<translation id="1414648216875402825">თქვენ ანახლებთ <ph name="PRODUCT_NAME"/>-ის არასტაბილურ ვერსიას, რომელიც შეიცავს პროგრესში მყოფ ფუნქციებს. ავარიები და მოულოდნელი შეცდომები მოხდება. გთხოვთ იმოქმედოთ სიფრთხილით.</translation>
 <translation id="6103681770816982672">გაფრთხილება: თქვენ გადადიხართ დეველოპერის არხზე</translation>
 <translation id="8807632654848257479">სტაბილური</translation>
 <translation id="830868413617744215">ბეტა</translation>
@@ -3731,10 +3736,12 @@
 <translation id="5302048478445481009">ენა</translation>
 <translation id="6388429472088318283">ენებში ძიება</translation>
 <translation id="2690024944919328218">ენის ვარიანტების ჩვენება</translation>
+<translation id="768549422429443215">დაამატეთ ენები, ან შეცვალეთ სიის მიმდევრობა.</translation>
 <translation id="8218847192766059983">დაამატეთ ენები, ან შეცვალეთ სიის მიმდევრობა. <ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">სისტემის ტექსტი ნაჩვენებია ამ ენაზე</translation>
 <translation id="2366260648632264559">სისტემის ტექსტის ჩვენება ამ ენაზე</translation>
 <translation id="8336721153892716270">სისტემის <ph name="LANGUAGE"/> ტექსტის საჩვენებლად გადატვირთეთ მოწყობილობა</translation>
+<translation id="7216595297012131718">დაალაგეთ ენები თქვენი სურვილისამებრ</translation>
 <translation id="5972708806901999743">თავში გადატანა</translation>
 <translation id="8609465669617005112">გადაადგილება ზემოთ</translation>
 <translation id="6746124502594467657">გადაადგილება ქვემოთ</translation>
@@ -4564,6 +4571,7 @@
 <translation id="8143442547342702591">აპლიკაცია არასწორია</translation>
 <translation id="720110658997053098">მოწყობილობის kiosk რეჟიმში სამუდამოდ შენარჩუნება</translation>
 <translation id="1909880997794698664">დარწმუნებული ხართ, რომ გსურთ ამ მოწყობილობის მუდამ kiosk-რეჟიმში დატოვება?</translation>
+<translation id="1512210426710821809">ამ მოქმედების გაუქმების ერთადერთი ხერხია <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>-ის ხელახლა ინსტალაცია</translation>
 <translation id="8281886186245836920">გამოტოვება</translation>
 <translation id="2342740338116612727">სანიშნეები დამატებულია</translation>
 <translation id="7835178595033117206">სანიშნე ამოიშალა</translation>
@@ -4684,7 +4692,10 @@
 <translation id="1526560967942511387">უსათაურო დოკუმენტი</translation>
 <translation id="5269977353971873915">ბეჭვდის შეცდომა</translation>
 <translation id="7385854874724088939">ბეჭდვისას პრობლემა წარმოიქმნა. შეამოწმეთ პრინტერი და ხელახლა სცადეთ.</translation>
+<translation id="1197979282329025000">პრინტერისთვის <ph name="PRINTER_NAME"/> პრინტერის შესაძლებლობების მიღებისას შეცდომა მოხდა. პრინტერის რეგისტრაცია <ph name="CLOUD_PRINT_NAME"/>-ით ვერ მოხერხდა.</translation>
 <translation id="9004952710076978168">მიღებულია შეტყობინება უცნობი პრინტერის შესახებ.</translation>
+<translation id="2202898655984161076">პრინტერების ჩამოთვლისას პრობლემა წარმოიქმნა. შესაძლოა, ზოგიერთი პრინტერი წარმატებით ვერ დარეგისტრირდა <ph name="CLOUD_PRINT_NAME"/>-ში.</translation>
+<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> კონექტორის პროცესი დაზიანდა. გადავტვირთოთ?</translation>
 <translation id="6904655473976120856">გამოსასვლელად დააჭირეთ აპის ღილაკს</translation>
 <translation id="8909833622202089127">საიტი თვალს ადევნებს თქვენს მდებარეობას</translation>
 <translation id="375636864092143889">საიტი იყენებს თქვენს მიკროფონს</translation>

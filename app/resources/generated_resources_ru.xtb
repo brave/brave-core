@@ -1626,6 +1626,7 @@
 <translation id="5727851901710884484">Приложение "<ph name="APP_NAME"/>" предоставило сайту <ph name="TAB_NAME"/> доступ к вкладке Brave.</translation>
 <translation id="5770515304879261338">Приложение "<ph name="APP_NAME"/>" предоставило доступ к вкладке Brave и к аудио.</translation>
 <translation id="859454237594354073">Приложение "<ph name="APP_NAME"/>" предоставило сайту <ph name="TAB_NAME"/> доступ к вкладке Brave и к аудио.</translation>
+<translation id="7108338896283013870">Скрыть</translation>
 <translation id="890616557918890486">Изменить источник</translation>
 <translation id="7792388396321542707">Закрыть доступ</translation>
 <translation id="6630752851777525409">Расширение "<ph name="EXTENSION_NAME"/>" запрашивает постоянный доступ к сертификату для прохождения аутентификации от вашего имени.</translation>
@@ -1659,6 +1660,7 @@
 <translation id="7022562585984256452">Главная страница настроена.</translation>
 <translation id="8069615408251337349">Виртуальный принтер Brave Software</translation>
 <translation id="4973307593867026061">Добавить принтеры</translation>
+<translation id="9052208328806230490">Вы зарегистрировали принтеры в <ph name="CLOUD_PRINT_NAME"/> с использованием аккаунта <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Удалить принтеры</translation>
 <translation id="5038863510258510803">Активация...</translation>
 <translation id="8264024885325823677">Этим параметром управляет администратор.</translation>
@@ -2289,6 +2291,7 @@
 <translation id="6711610692002680394">Войдите в Brave, чтобы зарегистрировать новое устройство</translation>
 <translation id="8931394284949551895">Новые устройства</translation>
 <translation id="3752673729237782832">Мои устройства</translation>
+<translation id="1721937473331968728">В <ph name="CLOUD_PRINT_NAME"/> можно добавлять обычные принтеры, подключенные к компьютеру.</translation>
 <translation id="715118844758971915">Обычные принтеры</translation>
 <translation id="4263757076580287579">Регистрация принтера отменена.</translation>
 <translation id="8152091997436726702">Время ожидания регистрации принтера истекло. Чтобы завершить процедуру, необходимо подтвердить регистрацию на принтере.</translation>
@@ -2969,9 +2972,11 @@ other {Приватное (#)}
 <translation id="1871615898038944731">Вы используете последнюю версию <ph name="DEVICE_TYPE"/></translation>
 <translation id="3688526734140524629">Выбрать другую версию</translation>
 <translation id="6410328738210026208">Выбрать другой канал и включить Powerwash</translation>
+<translation id="1979280758666859181">Вы переходите на канал обновления с более ранней версией <ph name="PRODUCT_NAME"/>. Чтобы изменения вступили в силу, версия канала и текущая версия на вашем устройстве должны совпадать.</translation>
 <translation id="7728668285692163452">Изменение вступит в силу позже</translation>
 <translation id="5495466433285976480">После перезагрузки все локальные аккаунты, файлы, данные и другие настройки будут удалены. Все пользователи должны снова войти в аккаунт.</translation>
 <translation id="8101987792947961127">При следующей перезагрузке устройства необходимо выполнить Powerwash</translation>
+<translation id="1414648216875402825">Вы устанавливаете нестабильную версию <ph name="PRODUCT_NAME"/>, которая содержит разрабатываемые в настоящий момент функции. Будьте осторожны: возможны сбои и неизвестные ошибки.</translation>
 <translation id="6103681770816982672">Внимание! Вы переходите на версию для разработчиков.</translation>
 <translation id="8807632654848257479">Стабильная</translation>
 <translation id="830868413617744215">Бета</translation>
@@ -3744,10 +3749,12 @@ other {Приватное (#)}
 <translation id="5302048478445481009">Язык</translation>
 <translation id="6388429472088318283">Поиск по языкам</translation>
 <translation id="2690024944919328218">Показать языковые настройки</translation>
+<translation id="768549422429443215">Добавьте языки или измените порядок их расположения.</translation>
 <translation id="8218847192766059983">Добавьте языки или измените порядок их расположения. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Текущий язык системы</translation>
 <translation id="2366260648632264559">Установить как язык системы</translation>
 <translation id="8336721153892716270">Чтобы язык системы сменился на <ph name="LANGUAGE"/>, перезапустите устройство</translation>
+<translation id="7216595297012131718">Расположите языки, исходя из своих предпочтений</translation>
 <translation id="5972708806901999743">К началу</translation>
 <translation id="8609465669617005112">Переместить вверх</translation>
 <translation id="6746124502594467657">Переместить вниз</translation>
@@ -4577,6 +4584,7 @@ other {Приватное (#)}
 <translation id="8143442547342702591">Недействительное приложение</translation>
 <translation id="720110658997053098">Всегда запускать устройство в режиме киоска</translation>
 <translation id="1909880997794698664">Всегда запускать устройство в режиме киоска?</translation>
+<translation id="1512210426710821809">Чтобы отменить это действие, необходимо переустановить <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="8281886186245836920">Пропустить</translation>
 <translation id="2342740338116612727">Закладки добавлены</translation>
 <translation id="7835178595033117206">Закладка удалена</translation>
@@ -4697,7 +4705,10 @@ other {Приватное (#)}
 <translation id="1526560967942511387">Документ без имени</translation>
 <translation id="5269977353971873915">Печать не выполнена</translation>
 <translation id="7385854874724088939">При печати произошла ошибка. Проверьте состояние принтера и повторите попытку.</translation>
+<translation id="1197979282329025000">При получении данных о свойствах принтера <ph name="PRINTER_NAME"/> произошла ошибка. Не удалось зарегистрировать принтер при помощи <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Получено уведомление о неопознанном принтере.</translation>
+<translation id="2202898655984161076">Возникла проблема с перечнем принтеров. Возможно, некоторые принтеры не удалось зарегистрировать при помощи <ph name="CLOUD_PRINT_NAME"/>.</translation>
+<translation id="3220586366024592812">Процесс коннектора <ph name="CLOUD_PRINT_NAME"/> завершился с ошибкой. Перезапустить?</translation>
 <translation id="6904655473976120856">Чтобы выйти из полноэкранного режима, нажмите на значок приложения</translation>
 <translation id="8909833622202089127">Сайт отслеживает ваше местоположение</translation>
 <translation id="375636864092143889">Сайт использует микрофон</translation>

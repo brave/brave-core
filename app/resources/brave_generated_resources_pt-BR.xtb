@@ -11,6 +11,7 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (a extenção ID "<ph name="EXTENSION_ID"/>") não é permitida na Brave.</translation>
 <translation id="7450557937477381864">Fechar o Chrome</translation>
 <translation id="7008934821596358692">Para concluir a importação, feche todas as janelas do Chrome.</translation>
+<translation id="6786747875388722282">Extensões</translation>
 <translation id="3699882589215410581">Instalar e iniciar Widevine</translation>
 <translation id="8926389886865778422">Não perguntar novamente</translation>
 <translation id="4726634924419692905">Perguntar quando um website quiser instalar Widevine no seu computador</translation>
@@ -31,11 +32,21 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5883458389055721080">O Brave ainda não analisou a segurança e proteção desta extensão. Apenas instale a extensão caso confie no seu desenvolvedor.</translation>
 <translation id="8081858229109418493">Nome e ícone do perfil</translation>
 <translation id="2044383478723007273">Cores brave</translation>
+<translation id="1692470335103807198">Obtenha mais temas</translation>
+<translation id="2906510232093002459">Imagens padrões do Brave</translation>
 <translation id="2814998458708016836">Usar barra de endereços larga</translation>
 <translation id="6123134130710658846">Ocultar botão Recompensas do Brave</translation>
 <translation id="7635711399568194460">Oculta o botão Recompensas do Brave na barra de localização quando as Recompensas do Brave não estiverem habilitadas</translation>
 <translation id="1520361618554057102">Sempre exibir marcadores na página Nova Guia</translation>
 <translation id="5802665280774361839">Exibir preenchimento automático na barra de endereço</translation>
+<translation id="7781069478569868053">Página Nova guia</translation>
+<translation id="2467749191278759605">Personalize o seu painel do Brave</translation>
+<translation id="1717331825806276156">Imagens de fundo</translation>
+<translation id="1820041496463124489">Imagens patrocinadas</translation>
+<translation id="8173998484743827990">Estatísticas do Brave</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="4643117005422448078">Principais sites</translation>
+<translation id="1776831331757823105">Relógio</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Conexão Tor para Este Site</translation>
 <translation id="8784924142044142231">Sair do Tor</translation>
@@ -75,9 +86,9 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4699812599455071925">Apenas bloquear cookies intersite</translation>
 <translation id="5657156137487675418">Permitir todos os cookies</translation>
 <translation id="6883611015375728278">Bloquear todos os cookies</translation>
-<translation id="5572437114858031185">Bloquear tentativas de impressão digital somente entre sites</translation>
-<translation id="5079032039521408559">Permitir todas as tentativas de impressão digital</translation>
-<translation id="6447141055227658942">Bloquear todas as tentativas de impressão digital</translation>
+<translation id="5963670684159057574">Bloquear impressões digitais entre sites</translation>
+<translation id="769702552748212954">Permitir todas as impressões digitais</translation>
+<translation id="4540198958192073185">Bloquear todas as impressões digitais</translation>
 <translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8798099450830957504">Padrão</translation>
@@ -94,7 +105,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1360441190790440400">Igual a Linux</translation>
 <translation id="1336940801687497203">Igual a Windows</translation>
 <translation id="8721331068159819483">O mesmo que no macOS</translation>
-<translation id="6786747875388722282">Extensões</translation>
 <translation id="2896916411183256228">Usa o WebTorrent para exibir torrents diretamente no navegador. Suporta arquivos torrent e links magnéticos.</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="7701040980221191251">Nenhum</translation>
