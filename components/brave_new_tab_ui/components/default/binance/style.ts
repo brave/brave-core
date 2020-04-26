@@ -89,8 +89,8 @@ export const FiatInputWrapper = styled<{}, 'div'>('div')`
 
 export const FiatDropdown = styled<StyleProps, 'div'>('div')`
   float: right;
-  width: 25%;
-  padding: 7px 3px 0px 7px;
+  width: 30%;
+  padding: 7px 5px 0px 7px;
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
 
@@ -124,7 +124,7 @@ export const FiatInputField = styled(InputField)`
   border-top: none;
   border-left: none;
   border-right: 1px solid rgb(70, 70, 70);
-  width: 75%;
+  width: 70%;
   min-width: unset;
   border-left: none;
   padding-left: 10px;
