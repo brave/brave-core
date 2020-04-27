@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <vector>
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
@@ -19,6 +20,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
@@ -125,6 +127,8 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
   auto focal_point_x = data.FindIntPath("wallpaperFocalPointX");
   auto focal_point_y = data.FindIntPath("wallpaperFocalPointY");
   auto* logo_destination_url = data.FindStringPath("logo.destinationUrl");
+  auto* theme_name = data.FindStringPath("themeName");
+  auto is_sponsored = data.FindBoolPath("isSponsored");
 
   return Java_NTPBackgroundImagesBridge_createWallpaper(
       env,
@@ -133,7 +137,52 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
       focal_point_y ? *focal_point_y : 0,
       ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
-                                                        : ""));
+                                                        : ""),
+      ConvertUTF8ToJavaString(env, *theme_name),
+      is_sponsored ? *is_sponsored : 0);
+}
+
+void NTPBackgroundImagesBridge::GetTopSites(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  std::vector<ntp_background_images::TopSite> top_sites = view_counter_service_
+      ? view_counter_service_->GetTopSitesVectorData()
+      : std::vector<ntp_background_images::TopSite>{};
+
+  for (const auto& top_site : top_sites) {
+    Java_NTPBackgroundImagesBridge_loadTopSitesData(
+      env,
+      ConvertUTF8ToJavaString(env, top_site.name),
+      ConvertUTF8ToJavaString(env, top_site.destination_url),
+      ConvertUTF8ToJavaString(env, top_site.background_color),
+      ConvertUTF8ToJavaString(env, top_site.image_file.AsUTF8Unsafe()));
+  }
+
+  Java_NTPBackgroundImagesBridge_topSitesLoaded(env);
+}
+
+bool NTPBackgroundImagesBridge::IsSuperReferral(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  if (view_counter_service_)
+    return view_counter_service_->IsSuperReferral();
+  return false;
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+NTPBackgroundImagesBridge::GetSuperReferralThemeName(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  if (view_counter_service_)
+    return ConvertUTF8ToJavaString(env,
+      view_counter_service_->GetSuperReferralThemeName());
+  return ConvertUTF8ToJavaString(env, "");
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+NTPBackgroundImagesBridge::GetSuperReferralCode(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  if (view_counter_service_)
+    return ConvertUTF8ToJavaString(env,
+      view_counter_service_->GetSuperReferralCode());
+  return ConvertUTF8ToJavaString(env, "");
 }
 
 base::android::ScopedJavaLocalRef<jobject>
