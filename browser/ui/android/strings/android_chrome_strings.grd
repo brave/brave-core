@@ -653,10 +653,10 @@ CHAR-LIMIT guidelines:
         To detect dangerous apps and sites, Brave sends URLs of some pages you visit, limited system information, and some page content to Brave
       </message>
       <message name="IDS_SAFE_BROWSING_TITLE" desc="Title for safe browsing.">
-        Safe Browsing (protects you and your device from dangerous sites)
+        Google Safe Browsing (protects you and your device from dangerous sites)
       </message>
       <message name="IDS_SAFE_BROWSING_SUMMARY" desc="Summary for safe browsing.">
-        Sends URLs of some pages you visit to Brave, when your security is at risk
+        Sends URLs of some pages you visit to Google, when your security is at risk
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
         Touch to Search
