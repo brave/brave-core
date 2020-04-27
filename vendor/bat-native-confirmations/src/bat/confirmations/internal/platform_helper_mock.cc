@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/confirmations/internal/platform_info.h"
+#include "bat/confirmations/internal/platform_helper_mock.h"
 
 namespace confirmations {
 
-std::string GetPlatformName() {
-  return "windows";
-}
+PlatformHelperMock::PlatformHelperMock() = default;
+
+PlatformHelperMock::~PlatformHelperMock() = default;
 
 }  // namespace confirmations

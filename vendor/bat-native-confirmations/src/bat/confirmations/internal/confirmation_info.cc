@@ -19,4 +19,24 @@ ConfirmationInfo::ConfirmationInfo(
 
 ConfirmationInfo::~ConfirmationInfo() = default;
 
+bool ConfirmationInfo::operator==(
+    const ConfirmationInfo info) const {
+  return id == info.id &&
+      creative_instance_id == info.creative_instance_id &&
+      type == info.type &&
+      token_info == info.token_info &&
+      payment_token.encode_base64() == info.payment_token.encode_base64() &&
+      blinded_payment_token.encode_base64() ==
+          info.blinded_payment_token.encode_base64() &&
+      credential == info.credential &&
+      timestamp_in_seconds == info.timestamp_in_seconds &&
+      country_code == info.country_code &&
+      created == info.created;
+}
+
+bool ConfirmationInfo::operator!=(
+    const ConfirmationInfo info) const {
+  return !(*this == info);
+}
+
 }  // namespace confirmations

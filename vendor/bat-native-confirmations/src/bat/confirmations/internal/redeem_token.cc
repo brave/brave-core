@@ -3,27 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "bat/confirmations/internal/redeem_token.h"
-#include "bat/confirmations/internal/logging.h"
+
+#include <memory>
+#include <vector>
+
+#include "bat/confirmations/confirmation_type.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
-#include "bat/confirmations/internal/static_values.h"
+#include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
-#include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/fetch_payment_token_request.h"
-#include "bat/confirmations/internal/platform_info.h"
+#include "bat/confirmations/internal/logging.h"
+#include "bat/confirmations/internal/platform_helper.h"
+#include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/time.h"
 #include "bat/confirmations/internal/token_info.h"
-#include "bat/confirmations/internal/confirmation_info.h"
+#include "bat/confirmations/internal/unblinded_tokens.h"
+#include "wrapper.hpp"  // NOLINT
 
-#include "base/logging.h"
+#include "base/base64.h"
 #include "base/guid.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/values.h"
-#include "base/base64.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -31,7 +35,6 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::BatchDLEQProof;
 using challenge_bypass_ristretto::VerificationSignature;
@@ -119,7 +122,7 @@ void RedeemToken::CreateConfirmation(
 
   const auto client_info = confirmations_->get_client()->GetClientInfo();
   const std::string build_channel = client_info->channel;
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
 
   auto confirmation_request_dto = request.CreateConfirmationRequestDTO(
       confirmation, build_channel, platform);
@@ -226,7 +229,7 @@ void RedeemToken::OnFetchPaymentToken(
     ConfirmationInfo new_confirmation = confirmation;
     new_confirmation.created = false;
 
-    OnRedeem(FAILED, new_confirmation);
+    OnRedeem(FAILED, new_confirmation, true);
     return;
   }
 
@@ -238,7 +241,7 @@ void RedeemToken::OnFetchPaymentToken(
 
   if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to fetch payment token";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -246,7 +249,7 @@ void RedeemToken::OnFetchPaymentToken(
   base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(ERROR) << "Failed to parse response: " << response;
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -254,7 +257,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* id_value = dictionary->FindKey("id");
   if (!id_value) {
     BLOG(ERROR) << "Response missing id";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -272,7 +275,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* payment_token_value = dictionary->FindKey("paymentToken");
   if (!payment_token_value) {
     BLOG(ERROR) << "Response missing paymentToken";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -283,7 +286,7 @@ void RedeemToken::OnFetchPaymentToken(
     OnRedeem(FAILED, confirmation, false);
 
     // Token is in a bad state so redeem a new token
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -291,7 +294,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* public_key_value = payment_token_dictionary->FindKey("publicKey");
   if (!public_key_value) {
     BLOG(ERROR) << "Response missing publicKey in paymentToken dictionary";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
   auto public_key_base64 = public_key_value->GetString();
@@ -301,7 +304,7 @@ void RedeemToken::OnFetchPaymentToken(
   if (!confirmations_->IsValidPublicKeyForCatalogIssuers(public_key_base64)) {
     BLOG(ERROR) << "Response public_key: " << public_key_base64
         << " was not found in the catalog issuers";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -309,7 +312,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* batch_proof_value = payment_token_dictionary->FindKey("batchProof");
   if (!batch_proof_value) {
     BLOG(ERROR) << "Response missing batchProof in paymentToken dictionary";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -320,14 +323,14 @@ void RedeemToken::OnFetchPaymentToken(
   auto* signed_tokens_value = payment_token_dictionary->FindKey("signedTokens");
   if (!signed_tokens_value) {
     BLOG(ERROR) << "Response missing signedTokens in paymentToken dictionary";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
   base::ListValue signed_token_base64_values(signed_tokens_value->GetList());
   if (signed_token_base64_values.GetSize() != 1) {
     BLOG(ERROR) << "Too many signedTokens";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -368,7 +371,7 @@ void RedeemToken::OnFetchPaymentToken(
 
     BLOG(ERROR) << "  Public key: " << public_key_base64;
 
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, true);
     return;
   }
 
@@ -474,7 +477,7 @@ ConfirmationInfo RedeemToken::CreateConfirmationInfo(
 
   const auto client_info = confirmations_->get_client()->GetClientInfo();
   const std::string build_channel = client_info->channel;
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
 
   CreateConfirmationRequest request(confirmations_);
   auto payload = request.CreateConfirmationRequestDTO(confirmation,
@@ -511,7 +514,7 @@ bool RedeemToken::Verify(
 
   const auto client_info = confirmations_->get_client()->GetClientInfo();
   const std::string build_channel = client_info->channel;
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
 
   CreateConfirmationRequest request(confirmations_);
   auto payload = request.CreateConfirmationRequestDTO(confirmation,

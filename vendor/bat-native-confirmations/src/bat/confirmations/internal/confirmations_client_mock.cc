@@ -33,18 +33,18 @@ std::ostream& MockVerboseLogStreamImpl::stream() {
   return std::cout;
 }
 
-MockConfirmationsClient::MockConfirmationsClient() = default;
+ConfirmationsClientMock::ConfirmationsClientMock() = default;
 
-MockConfirmationsClient::~MockConfirmationsClient() = default;
+ConfirmationsClientMock::~ConfirmationsClientMock() = default;
 
-std::unique_ptr<ledger::LogStream> MockConfirmationsClient::Log(
+std::unique_ptr<ledger::LogStream> ConfirmationsClientMock::Log(
     const char* file,
     int line,
     const ledger::LogLevel log_level) const {
   return std::make_unique<MockLogStreamImpl>(file, line, log_level);
 }
 
-std::unique_ptr<ledger::LogStream> MockConfirmationsClient::VerboseLog(
+std::unique_ptr<ledger::LogStream> ConfirmationsClientMock::VerboseLog(
     const char* file,
     int line,
     int vlog_level) const {

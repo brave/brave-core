@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <memory>
+#include <string>
 #include <vector>
-#include <fstream>
-#include <sstream>
 
 #include "bat/confirmations/wallet_info.h"
 
@@ -15,23 +13,19 @@
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
-
-#include "base/files/file_path.h"
+#include "bat/confirmations/internal/unittest_utils.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=Confirmations*
 
 using ::testing::_;
-using ::testing::Invoke;
-
-using std::placeholders::_1;
 
 namespace confirmations {
 
 class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsClientMock> confirmations_client_mock_;
   std::unique_ptr<ConfirmationsImpl> confirmations_;
 
   std::unique_ptr<UnblindedTokens> unblinded_tokens_;
@@ -39,9 +33,9 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
   std::unique_ptr<RedeemPaymentTokensRequest> request_;
 
   ConfirmationsRedeemPaymentTokensRequestTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_client_mock_(std::make_unique<ConfirmationsClientMock>()),
       confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
+          confirmations_client_mock_.get())),
       unblinded_tokens_(std::make_unique<UnblindedTokens>(
           confirmations_.get())),
       request_(std::make_unique<RedeemPaymentTokensRequest>()) {
@@ -58,39 +52,11 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    EXPECT_CALL(*mock_confirmations_client_, LoadState(_, _))
-        .WillRepeatedly(
-            Invoke([this](
-                const std::string& name,
-                LoadCallback callback) {
-              auto path = GetTestDataPath();
-              path = path.AppendASCII(name);
 
-              std::string value;
-              if (!Load(path, &value)) {
-                callback(FAILED, value);
-                return;
-              }
+    MockLoadState(confirmations_client_mock_.get());
+    MockSaveState(confirmations_client_mock_.get());
 
-              callback(SUCCESS, value);
-            }));
-
-    ON_CALL(*mock_confirmations_client_, SaveState(_, _, _))
-        .WillByDefault(
-            Invoke([](
-                const std::string& name,
-                const std::string& value,
-                ResultCallback callback) {
-              callback(SUCCESS);
-            }));
-
-    auto callback = std::bind(
-        &ConfirmationsRedeemPaymentTokensRequestTest::OnInitialize, this, _1);
-    confirmations_->Initialize(callback);
-  }
-
-  void OnInitialize(const bool success) {
-    EXPECT_EQ(true, success);
+    Initialize(confirmations_.get());
   }
 
   void TearDown() override {
@@ -99,27 +65,6 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
   }
 
   // Objects declared here can be used by all tests in the test case
-  base::FilePath GetTestDataPath() {
-    return base::FilePath(FILE_PATH_LITERAL(
-        "brave/vendor/bat-native-confirmations/test/data"));
-  }
-
-  bool Load(const base::FilePath path, std::string* value) {
-    if (!value) {
-      return false;
-    }
-
-    std::ifstream ifs{path.value().c_str()};
-    if (ifs.fail()) {
-      *value = "";
-      return false;
-    }
-
-    std::stringstream stream;
-    stream << ifs.rdbuf();
-    *value = stream.str();
-    return true;
-  }
 
   TokenList GetUnblindedTokens(const int count) {
     std::vector<std::string> tokens_base64 = {

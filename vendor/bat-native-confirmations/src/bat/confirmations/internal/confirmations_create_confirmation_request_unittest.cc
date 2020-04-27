@@ -12,7 +12,7 @@
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/security_helper.h"
-#include "bat/confirmations/internal/platform_info.h"
+#include "bat/confirmations/internal/platform_helper.h"
 #include "base/strings/stringprintf.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
@@ -25,15 +25,15 @@ namespace confirmations {
 
 class ConfirmationsCreateConfirmationRequestTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsClientMock> confirmations_client_mock_;
   std::unique_ptr<ConfirmationsImpl> confirmations_;
 
   std::unique_ptr<CreateConfirmationRequest> request_;
 
   ConfirmationsCreateConfirmationRequestTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_client_mock_(std::make_unique<ConfirmationsClientMock>()),
       confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
+          confirmations_client_mock_.get())),
       request_(std::make_unique<CreateConfirmationRequest>(
           confirmations_.get())) {
     // You can do set-up work for each test here
@@ -103,7 +103,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody_Viewed) {
   info.blinded_payment_token = blinded_token;
   info.country_code = "US";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "release", platform);
 
@@ -163,7 +163,7 @@ TEST_F(
   info.blinded_payment_token = blinded_token;
   info.country_code = "US";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "release", platform);
 
@@ -220,7 +220,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.blinded_payment_token = blinded_token;
   info.country_code = "US";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "release", platform);
 
@@ -245,7 +245,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.blinded_payment_token = blinded_token;
   info.country_code = "AS";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "release", platform);
 
@@ -270,7 +270,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.blinded_payment_token = blinded_token;
   info.country_code = "KY";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "release", platform);
 
@@ -296,7 +296,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.blinded_payment_token = blinded_token;
   info.country_code = "US";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "non-release", platform);
 
@@ -321,7 +321,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.blinded_payment_token = blinded_token;
   info.country_code = "AS";
 
-  const std::string platform = GetPlatformName();
+  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   auto payload =
       request_->CreateConfirmationRequestDTO(info, "non-release", platform);
 

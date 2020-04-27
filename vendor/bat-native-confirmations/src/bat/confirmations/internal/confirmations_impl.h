@@ -93,7 +93,7 @@ class ConfirmationsImpl : public Confirmations {
       const ConfirmationType confirmation_type) override;
 
   // State
-  void SaveState();
+  virtual void SaveState();
 
  private:
   bool is_initialized_;

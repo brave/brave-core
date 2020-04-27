@@ -6,21 +6,15 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_REDEEM_TOKEN_H_
 #define BAT_CONFIRMATIONS_INTERNAL_REDEEM_TOKEN_H_
 
-#include <string>
-#include <vector>
 #include <map>
+#include <string>
 
 #include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/confirmation_type.h"
-
-#include "wrapper.hpp"  // NOLINT
-
-using challenge_bypass_ristretto::Token;
-using challenge_bypass_ristretto::BlindedToken;
 
 namespace confirmations {
 
 class ConfirmationsImpl;
+class ConfirmationType;
 class UnblindedTokens;
 struct AdInfo;
 struct ConfirmationInfo;
@@ -34,7 +28,7 @@ class RedeemToken {
       UnblindedTokens* unblinded_tokens,
       UnblindedTokens* unblinded_payment_tokens);
 
-  ~RedeemToken();
+  virtual ~RedeemToken();
 
   void Redeem(
       const AdInfo& ad,
@@ -65,10 +59,10 @@ class RedeemToken {
       const std::map<std::string, std::string>& headers,
       const ConfirmationInfo& confirmation);
 
-  void OnRedeem(
+  virtual void OnRedeem(
       const Result result,
       const ConfirmationInfo& confirmation,
-      const bool should_retry = true);
+      const bool should_retry);
 
   void CreateAndAppendNewConfirmationToRetryQueue(
       const ConfirmationInfo& confirmation);

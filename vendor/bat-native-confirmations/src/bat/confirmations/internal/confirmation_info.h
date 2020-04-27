@@ -26,6 +26,11 @@ struct ConfirmationInfo {
       const ConfirmationInfo& info);
   ~ConfirmationInfo();
 
+  bool operator==(
+      const ConfirmationInfo info) const;
+  bool operator!=(
+      const ConfirmationInfo info) const;
+
   std::string id;
   std::string creative_instance_id;
   ConfirmationType type;

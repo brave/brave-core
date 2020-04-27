@@ -21,6 +21,11 @@ struct TokenInfo {
       const TokenInfo& info);
   ~TokenInfo();
 
+  bool operator==(
+      const TokenInfo info) const;
+  bool operator!=(
+      const TokenInfo info) const;
+
   UnblindedToken unblinded_token;
   std::string public_key;
 };
