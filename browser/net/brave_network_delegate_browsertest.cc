@@ -60,19 +60,19 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL("a.com", "/cookie_iframe.html");
 
     third_party_cookie_url_ =
-        embedded_test_server()->GetURL("b.com", "/set-cookie?name=Good");
+        embedded_test_server()->GetURL("b.com", "/set-cookie?name=bcom");
     first_party_cookie_url_ =
         embedded_test_server()->GetURL("a.com",
-                                       "/set-cookie?name=Good");
+                                       "/set-cookie?name=acom");
     subdomain_first_party_cookie_url_ =
         embedded_test_server()->GetURL("subdomain.a.com",
-                                       "/set-cookie?name=Good");
+                                       "/set-cookie?name=subdomainacom");
 
     domain_registry_url_ = embedded_test_server()->GetURL("mobile.twitter.com",
                                                         "/cookie_iframe.html");
     iframe_domain_registry_url_ =
         embedded_test_server()->GetURL("blah.twitter.com",
-                                    "/set-cookie?name=Good;domain=twitter.com");
+                                    "/set-cookie?name=blahtwittercom;domain=twitter.com");
 
     google_oauth_cookie_url_ =
         https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
@@ -149,7 +149,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   void ExpectCookiesOnHost(const GURL url,
                            const std::string& expected) {
     EXPECT_EQ(expected, content::GetCookies(browser()->profile(),
-                                            url)) << url.spec();
+                                            url));
   }
 
   void NavigateFrameTo(const GURL url) {
@@ -273,6 +273,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(third_party_cookie_url_, "");
+
+  NavigateFrameTo(subdomain_first_party_cookie_url_);
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
+
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -290,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("http://b.com"), "name=Good");
+  ExpectCookiesOnHost(GURL("http://b.com"), "name=bcom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -308,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("http://b.com"), "name=Good");
+  ExpectCookiesOnHost(GURL("http://b.com"), "name=bcom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -497,8 +501,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   ExpectCookiesOnHost(third_party_cookie_url_, "");
 
   NavigateFrameTo(first_party_cookie_url_);
-  ExpectCookiesOnHost(cookie_iframe_url_, "name=Good");
-  ExpectCookiesOnHost(first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(cookie_iframe_url_, "name=acom");
+  ExpectCookiesOnHost(first_party_cookie_url_, "name=acom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -513,8 +517,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   ExpectCookiesOnHost(third_party_cookie_url_, "");
 
   NavigateFrameTo(first_party_cookie_url_);
-  ExpectCookiesOnHost(cookie_iframe_url_, "name=Good");
-  ExpectCookiesOnHost(first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(cookie_iframe_url_, "name=acom");
+  ExpectCookiesOnHost(first_party_cookie_url_, "name=acom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -526,7 +530,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(subdomain_first_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -537,8 +541,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateToPageWithFrame(domain_registry_url_);
   NavigateFrameTo(iframe_domain_registry_url_);
 
-  ExpectCookiesOnHost(domain_registry_url_, "name=Good");
-  ExpectCookiesOnHost(iframe_domain_registry_url_, "name=Good");
+  ExpectCookiesOnHost(domain_registry_url_, "name=blahtwittercom");
+  ExpectCookiesOnHost(iframe_domain_registry_url_, "name=blahtwittercom");
 }
 
 // Test to ensure that we treat wp.com and wordpress.com as equal first parties
