@@ -1,8 +1,15 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "chrome/browser/sync/device_info_sync_service_factory.h"
+#include "components/sync_device_info/device_info_sync_service.h"
+#include "components/sync_device_info/device_info_tracker.h"
 
 #define BRAVE_REGISTER_MESSAGES                                          \
+  web_ui()->RegisterMessageCallback(                                     \
+      "SyncGetDeviceList",                                               \
+       base::BindRepeating(&PeopleHandler::HandleGetDeviceList,          \
+                           base::Unretained(this)));                     \
   web_ui()->RegisterMessageCallback(                                     \
       "SyncSetupSetSyncCode",                                            \
       base::BindRepeating(&PeopleHandler::HandleSetSyncCode,             \
@@ -43,6 +50,25 @@
 #undef BRAVE_GET_SYNC_STATUS_DICTIONARY
 
 namespace settings {
+
+void PeopleHandler::HandleGetDeviceList(const base::ListValue* args) {
+  const auto& list = args->GetList();
+  CHECK_EQ(1U, list.size());
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
+
+  syncer::DeviceInfoTracker* tracker =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_)
+          ->GetDeviceInfoTracker();
+  DCHECK(tracker);
+  base::Value device_list(base::Value::Type::LIST);
+  for (const auto& device : tracker->GetAllDeviceInfo()) {
+    device_list.Append(
+        base::Value::FromUniquePtrValue(device->ToValue()));
+  }
+
+  ResolveJavascriptCallback(*callback_id, std::move(device_list));
+}
 
 void PeopleHandler::HandleGetSyncCode(const base::ListValue* args) {
   AllowJavascript();
