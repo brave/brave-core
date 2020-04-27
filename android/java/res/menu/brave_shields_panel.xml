@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this
+     file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <!-- Items shown only in the tab switcher -->
+
+    <group android:id="@+id/shield_main_group">
+        <item android:id="@+id/brave_shields_main_id"
+             android:title=""
+             app:actionLayout="@layout/brave_shields_main_layout" />
+        <item android:id="@+id/brave_shields_toggle_id"
+            android:title=""
+            app:actionLayout="@layout/brave_shields_toggle_layout"/>
+    </group>
+
+    <!-- <group android:id="@+id/brave_shields_menu" >
+         <item android:id="@+id/brave_shields_switcher_id"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_switcher" />
+         <item android:id="@+id/brave_shields_host_id"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_text_item" />
+         <item android:id="@+id/brave_shields_first_group_title_id"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_text_item" />
+         <item android:id="@+id/brave_shields_ads_trackers_blocked"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_menu_item" />
+         <item android:id="@+id/brave_shields_https_upgrades"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_menu_item" />
+         <item android:id="@+id/brave_shields_scripts_blocked"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_menu_item" />
+         <item android:id="@+id/brave_shields_fingerprints_blocked"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_menu_item" />
+         <item android:id="@+id/brave_shields_separator"
+             android:title="" />
+         <item android:id="@+id/brave_shields_bottom"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_text_item" />
+    </group>
+    <group android:id="@+id/brave_shields_switches">
+        <item android:id="@+id/brave_shields_second_group_title_id"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_text_item" />
+         <item android:id="@+id/brave_shields_ads_tracking_switcher"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_ads_tracking_switcher" />
+         <item android:id="@+id/brave_shields_https_everywhere_switcher"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_https_upgrade_switcher" />
+         <item android:id="@+id/brave_shields_block_3rd_party_cookies_switcher"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_3rd_party_cookies_blocked_switcher" />
+         <item android:id="@+id/brave_shields_block_scripts_switcher"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_scripts_blocked_switcher" />
+         <item android:id="@+id/brave_shields_block_fingerprints_switcher"
+             android:title=""
+             android:actionLayout="@layout/brave_shields_fingerprints_blocked_switcher" />
+    </group> -->
+</menu>

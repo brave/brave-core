@@ -20,6 +20,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.PopupWindow;
+import android.view.LayoutInflater;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.widget.LinearLayout;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
@@ -141,7 +146,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveRewardsButton.setOnLongClickListener(this);
       }
 
-      mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(getContext(), R.menu.brave_shields_menu);
+      mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(getContext(), R.menu.brave_shields_panel);
       mBraveShieldsMenuHandler.addObserver(new BraveShieldsMenuObserver() {
           @Override
           public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
@@ -288,6 +293,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               // Just return w/o showing shields popup.
               return;
           }
+        // showPopupWindow(mBraveShieldsButton);
       } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
           if (null != mRewardsPopup) {
               return;
@@ -716,5 +722,40 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             mShieldsLayoutIsColorBackground = true;
         }
         updateModernLocationBarColor(mCurrentToolbarColor);
+    }
+
+    public void showPopupWindow(final View view) {
+        //Create a View object yourself through inflater
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
+
+        //Specify the length and width through constants
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        //Make Inactive Items Outside Of PopupWindow
+        boolean focusable = true;
+
+        //Create a window with our parameters
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        //Set the location of the window on the screen
+        popupWindow.showAsDropDown(view, 0, 0);
+        // popupWindow.setAnchorView(view);
+        // popupWindow.setWidth(500);
+
+        popupWindow.setAnimationStyle(android.R.style.Animation_Toast);
+
+        //Handler for clicking on the inactive zone of the window
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                //Close the window when clicked
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 }

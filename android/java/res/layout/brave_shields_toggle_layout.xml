@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <View
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:background="#c8c7cc"/>
+
+	<LinearLayout
+      	android:id="@+id/advanced_control_layout"
+      	android:layout_width="match_parent"
+      	android:layout_height="wrap_content"
+      	android:gravity="center_horizontal"
+      	android:padding="16dp"
+      	android:background="#f8f9fa"
+      	android:orientation="horizontal">
+
+	    <TextView
+		    android:id="@+id/site_text"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:textSize="16sp"
+		    android:layout_gravity="center_vertical"
+		    android:textColor="@color/standard_mode_tint"
+		    android:text="Advanced controls"/>
+
+		<ImageView 
+	    	android:id="@+id/site_favicon"
+		    android:layout_width="24dp"
+		    android:layout_height="24dp"
+		    android:contentDescription="@null"
+		    android:layout_marginStart="8dp"
+		    android:layout_gravity="center_vertical"
+		    android:src="@drawable/bat_verified"/>
+
+	</LinearLayout>
+
+	<View
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:background="#c8c7cc"/>
+
+</LinearLayout>

@@ -195,10 +195,12 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
                     || !(convertView.getTag() instanceof StandardMenuItemViewHolder)) {
                 holder = new StandardMenuItemViewHolder();
                 if (0 == position) {
-                    convertView = mInflater.inflate(R.layout.brave_shields_switcher, parent, false);
-                    setupSwitchClick((Switch)convertView.findViewById(R.id.brave_shields_switch));
+                    convertView = mInflater.inflate(R.layout.brave_shields_main_layout, parent, false);
+                    // setupSwitchClick((Switch)convertView.findViewById(R.id.brave_shields_switch));
                 // We should set layouts for switch rows
-                } else if (1 == position || 2 == position || 8 == position || 14 == position) {
+                } else if(1 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_toggle_layout, parent, false);
+                } else if (2 == position || 8 == position || 14 == position) {
                     convertView = mInflater.inflate(R.layout.brave_shields_text_item, parent, false);
                     TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
                     if (text != null) {
