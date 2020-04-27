@@ -72,4 +72,17 @@ void ClientMock::GeneratePastPurchaseIntentSignalHistoryFromNow(
   AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
 }
 
+void ClientMock::GeneratePastAdConversionHistoryFromNow(
+    const std::string& creative_set_id,
+    const int64_t time_offset_per_ad_in_seconds,
+    const uint8_t count) {
+  uint64_t now_in_seconds = Time::NowInSeconds();
+
+  for (uint8_t i = 0; i < count; i++) {
+    now_in_seconds -= time_offset_per_ad_in_seconds;
+
+    AppendTimestampToAdConversionHistory(creative_set_id, now_in_seconds);
+  }
+}
+
 }  // namespace ads
