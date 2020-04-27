@@ -73,7 +73,7 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
 }
 
 std::string GetHexEncodedCryptoRandomSeed() {
-  const size_t kSeedByteLength = 28;
+  const size_t kSeedByteLength = 32;
   // crypto::RandBytes is fail safe.
   uint8_t random_seed_bytes[kSeedByteLength];
   crypto::RandBytes(random_seed_bytes, kSeedByteLength);
@@ -139,17 +139,17 @@ std::string BinanceService::GetOAuthClientUrl() {
   return url.spec();
 }
 
-bool BinanceService::GetAccessToken(const std::string& code,
-                                    GetAccessTokenCallback callback) {
+bool BinanceService::GetAccessToken(GetAccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&BinanceService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
   GURL url = base_url;
   url = net::AppendQueryParameter(url, "grant_type", "authorization_code");
-  url = net::AppendQueryParameter(url, "code", code);
+  url = net::AppendQueryParameter(url, "code", auth_token_);
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(url, "code_verifier", code_verifier_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
+  auth_token_.clear();
   return OAuthRequest(
       base_url, "POST", url.query(), std::move(internal_callback));
 }
@@ -308,6 +308,10 @@ bool BinanceService::LoadTokensFromPrefs() {
   }
 
   return true;
+}
+
+void BinanceService::SetAuthToken(const std::string& auth_token) {
+  auth_token_ = auth_token;
 }
 
 std::string BinanceService::GetBinanceTLD() {

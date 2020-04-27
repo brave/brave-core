@@ -69,10 +69,6 @@
         "description": "Facilitates access token creation given a temporary code",
         "parameters": [
           {
-            "type": "string",
-            "name": "code"
-          },
-          {
             "type": "function",
             "name": "callback",
             "parameters": [
