@@ -37,13 +37,14 @@ Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
 
   if (primary_pattern ==
       ContentSettingsPattern::FromString("https://firstParty/*")) {
-    DCHECK(reverse_patterns); // we should only hit this for brave plugin rules
+    DCHECK(reverse_patterns);  // we should only hit this for brave plugin rules
     if (!secondary_pattern.MatchesAllHosts()) {
       primary_pattern = ContentSettingsPattern::FromString(
           "*://[*.]" +
           net::registry_controlled_domains::GetDomainAndRegistry(
               secondary_pattern.GetHost(),
-              net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) + "/*");
+              net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) +
+          "/*");
     } else {
       primary_pattern = secondary_pattern;
     }

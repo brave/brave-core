@@ -70,8 +70,9 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
     domain_registry_url_ = embedded_test_server()->GetURL("mobile.twitter.com",
                                                         "/cookie_iframe.html");
-    iframe_domain_registry_url_ = embedded_test_server()->GetURL("blah.twitter.com",
-                                                      "/set-cookie?name=Good;domain=twitter.com");
+    iframe_domain_registry_url_ =
+        embedded_test_server()->GetURL("blah.twitter.com",
+                                    "/set-cookie?name=Good;domain=twitter.com");
 
     google_oauth_cookie_url_ =
         https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
