@@ -61,9 +61,18 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
     third_party_cookie_url_ =
         embedded_test_server()->GetURL("b.com", "/set-cookie?name=Good");
+    first_party_cookie_url_ =
+        embedded_test_server()->GetURL("a.com",
+                                       "/set-cookie?name=Good");
     subdomain_first_party_cookie_url_ =
         embedded_test_server()->GetURL("subdomain.a.com",
                                        "/set-cookie?name=Good");
+
+    domain_registry_url_ = embedded_test_server()->GetURL("mobile.twitter.com",
+                                                        "/cookie_iframe.html");
+    iframe_domain_registry_url_ = embedded_test_server()->GetURL("blah.twitter.com",
+                                                      "/set-cookie?name=Good;domain=twitter.com");
+
     google_oauth_cookie_url_ =
         https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
 
@@ -139,7 +148,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   void ExpectCookiesOnHost(const GURL url,
                            const std::string& expected) {
     EXPECT_EQ(expected, content::GetCookies(browser()->profile(),
-                                            url));
+                                            url)) << url.spec();
   }
 
   void NavigateFrameTo(const GURL url) {
@@ -161,7 +170,10 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL cookie_iframe_url_;
   GURL https_cookie_iframe_url_;
   GURL third_party_cookie_url_;
+  GURL first_party_cookie_url_;
   GURL subdomain_first_party_cookie_url_;
+  GURL domain_registry_url_;
+  GURL iframe_domain_registry_url_;
   GURL google_oauth_cookie_url_;
   GURL wordpress_top_url_;
   GURL wordpress_frame_url_;
@@ -260,11 +272,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(third_party_cookie_url_, "");
-
-  NavigateFrameTo(subdomain_first_party_cookie_url_);
-
-  ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -337,11 +344,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(GURL("http://b.com"), "");
-
-  NavigateFrameTo(subdomain_first_party_cookie_url_);
-
-  ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -480,6 +482,62 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   NavigateFrameTo(google_oauth_cookie_url_);
   ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ShieldsToggleBlockThirdPartyWithDefaultAllowAll) {
+  DefaultAllowAllCookies();
+
+  BlockThirdPartyCookies(cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
+  NavigateFrameTo(third_party_cookie_url_);
+
+  ExpectCookiesOnHost(cookie_iframe_url_, "name=Good");
+  ExpectCookiesOnHost(third_party_cookie_url_, "");
+
+  NavigateFrameTo(first_party_cookie_url_);
+  ExpectCookiesOnHost(cookie_iframe_url_, "name=Good");
+  ExpectCookiesOnHost(first_party_cookie_url_, "name=Good");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ShieldsToggleBlockThirdPartyWithDefaultBlockAll) {
+  DefaultBlockAllCookies();
+
+  BlockThirdPartyCookies(cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
+  NavigateFrameTo(third_party_cookie_url_);
+
+  ExpectCookiesOnHost(cookie_iframe_url_, "name=Good");
+  ExpectCookiesOnHost(third_party_cookie_url_, "");
+
+  NavigateFrameTo(first_party_cookie_url_);
+  ExpectCookiesOnHost(cookie_iframe_url_, "name=Good");
+  ExpectCookiesOnHost(first_party_cookie_url_, "name=Good");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ShieldsToggleBlockThirdPartyAllowSubdomain) {
+  DefaultBlockAllCookies();
+
+  BlockThirdPartyCookies(cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
+  NavigateFrameTo(subdomain_first_party_cookie_url_);
+
+  ExpectCookiesOnHost(top_level_page_url_, "name=Good");
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ShieldsToggleBlockThirdPartyAllowDomainRegistry) {
+  DefaultBlockAllCookies();
+
+  BlockThirdPartyCookies(domain_registry_url_);
+  NavigateToPageWithFrame(domain_registry_url_);
+  NavigateFrameTo(iframe_domain_registry_url_);
+
+  ExpectCookiesOnHost(domain_registry_url_, "name=Good");
+  ExpectCookiesOnHost(iframe_domain_registry_url_, "name=Good");
 }
 
 // Test to ensure that we treat wp.com and wordpress.com as equal first parties

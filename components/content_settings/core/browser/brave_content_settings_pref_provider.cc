@@ -22,30 +22,34 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace content_settings {
 
 namespace {
 
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
-  auto secondary_pattern = rule.secondary_pattern;
-  if (secondary_pattern ==
+  // brave plugin rules incorrectly use first party url as primary
+  auto primary_pattern = reverse_patterns ? rule.secondary_pattern
+                                          : rule.primary_pattern;
+  auto secondary_pattern = reverse_patterns ? rule.primary_pattern
+                                            : rule.secondary_pattern;
+
+  if (primary_pattern ==
       ContentSettingsPattern::FromString("https://firstParty/*")) {
-    if (!rule.primary_pattern.MatchesAllHosts()) {
-      secondary_pattern = ContentSettingsPattern::FromString(
-          "*://[*.]" + rule.primary_pattern.GetHost() + "/*");
+    DCHECK(reverse_patterns); // we should only hit this for brave plugin rules
+    if (!secondary_pattern.MatchesAllHosts()) {
+      primary_pattern = ContentSettingsPattern::FromString(
+          "*://[*.]" +
+          net::registry_controlled_domains::GetDomainAndRegistry(
+              secondary_pattern.GetHost(),
+              net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) + "/*");
     } else {
-      secondary_pattern = rule.primary_pattern;
+      primary_pattern = secondary_pattern;
     }
   }
 
-  // brave plugin rules incorrectly use the embedded url as the primary
-  if (reverse_patterns)
-    return Rule(secondary_pattern,
-                rule.primary_pattern,
-                rule.value.Clone());
-
-  return Rule(rule.primary_pattern,
+  return Rule(primary_pattern,
               secondary_pattern,
               rule.value.Clone());
 }
@@ -342,27 +346,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
   rules.push_back(CloneRule(wp_com_rule));
   brave_cookie_rules_[incognito].push_back(CloneRule(wp_com_rule));
-
-  // Add ability for google properties to send cookies to each other,
-  // especially needed for google drive playback.
-  //
-  // Partial fix for https://github.com/brave/brave-browser/issues/1122
-  const auto googleapis_com_pattern = ContentSettingsPattern::FromString(
-      "https://[*.]googleapis.com/*");
-  const auto google_com_pattern = ContentSettingsPattern::FromString(
-      "https://[*.]google.com/*");
-  const std::vector<ContentSettingsPattern> patterns = {
-      googleapis_com_pattern, google_com_pattern};
-  for (const auto &outer : patterns) {
-    for (const auto &inner : patterns) {
-      const auto a_rule = Rule(
-          outer,
-          inner,
-          ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
-      rules.push_back(CloneRule(a_rule));
-      brave_cookie_rules_[incognito].push_back(CloneRule(a_rule));
-    }
-  }
 
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
