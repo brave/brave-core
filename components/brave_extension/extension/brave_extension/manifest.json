@@ -52,13 +52,6 @@
       ],
       "run_at": "document_start",
       "all_frames": true
-    }, {
-      "run_at": "document_start",
-      "all_frames": true,
-      "matches": ["https://www.glennbeck.com/*"],
-      "js": [
-        "assets/siteHack-glennbeck.com.js"
-      ]
     }
   ],
   "permissions": [ "contentSettings", "settingsPrivate", "management", "tabs", "storage", "webNavigation", "contextMenus", "cookies", "*://*/*", "chrome://favicon/*" ],
