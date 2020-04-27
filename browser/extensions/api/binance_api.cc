@@ -78,14 +78,9 @@ BinanceGetAccessTokenFunction::Run() {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  std::unique_ptr<binance::GetAccessToken::Params> params(
-      binance::GetAccessToken::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
   auto* service = GetBinanceService(browser_context());
-  bool token_request = service->GetAccessToken(params->code,
-      base::BindOnce(
-          &BinanceGetAccessTokenFunction::OnCodeResult, this));
+  bool token_request = service->GetAccessToken(base::BindOnce(
+      &BinanceGetAccessTokenFunction::OnCodeResult, this));
 
   if (!token_request) {
     return RespondNow(

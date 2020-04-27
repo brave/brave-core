@@ -104,7 +104,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(BINANCE_ENABLED)
-#include "brave/components/binance/browser/binance_protocol_handler.h"
+#include "brave/browser/binance/binance_protocol_handler.h"
 #endif
 
 namespace {
@@ -194,7 +194,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #if BUILDFLAG(BINANCE_ENABLED)
   if (binance::IsBinanceProtocol(url)) {
     binance::HandleBinanceProtocol(url, std::move(web_contents_getter),
-                                   page_transition, has_user_gesture);
+                                   page_transition, has_user_gesture,
+                                   initiating_origin);
     return true;
   }
 #endif
