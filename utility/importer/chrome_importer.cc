@@ -38,7 +38,77 @@
 #include "ui/base/l10n/l10n_util.h"
 #endif  // defined(OS_LINUX)
 
+#if defined(OS_WIN)
+#include "base/base64.h"
+#include "base/win/wincrypt_shim.h"
+#endif
+
 using base::Time;
+
+namespace {
+
+// Most of below code is copied from os_crypt_win.cc
+#if defined(OS_WIN)
+// Contains base64 random key encrypted with DPAPI.
+const char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
+
+// Key prefix for a key encrypted with DPAPI.
+const char kDPAPIKeyPrefix[] = "DPAPI";
+
+bool DecryptStringWithDPAPI(const std::string& ciphertext,
+                            std::string* plaintext) {
+  DATA_BLOB input;
+  input.pbData =
+      const_cast<BYTE*>(reinterpret_cast<const BYTE*>(ciphertext.data()));
+  input.cbData = static_cast<DWORD>(ciphertext.length());
+
+  DATA_BLOB output;
+  BOOL result = CryptUnprotectData(&input, nullptr, nullptr, nullptr, nullptr,
+                                   0, &output);
+  if (!result) {
+    PLOG(ERROR) << "Failed to decrypt";
+    return false;
+  }
+
+  plaintext->assign(reinterpret_cast<char*>(output.pbData), output.cbData);
+  LocalFree(output.pbData);
+  return true;
+}
+
+// Return false if encryption key setting is failed.
+// Fetch chrome's raw encryption key and use it to get chrome's password data.
+bool SetEncryptionKeyForPasswordImporting(
+    const base::FilePath& local_state_path) {
+  std::string local_state_content;
+  base::ReadFileToString(local_state_path, &local_state_content);
+  base::Optional<base::Value> local_state =
+      base::JSONReader::Read(local_state_content);
+  if (auto* base64_encrypted_key =
+          local_state->FindStringPath(kOsCryptEncryptedKeyPrefName)) {
+    std::string encrypted_key_with_header;
+
+    base::Base64Decode(*base64_encrypted_key, &encrypted_key_with_header);
+
+    if (!base::StartsWith(encrypted_key_with_header, kDPAPIKeyPrefix,
+                          base::CompareCase::SENSITIVE)) {
+      return false;
+    }
+    std::string encrypted_key =
+        encrypted_key_with_header.substr(sizeof(kDPAPIKeyPrefix) - 1);
+    std::string key;
+    // This DPAPI decryption can fail if the user's password has been reset
+    // by an Administrator.
+    if (DecryptStringWithDPAPI(encrypted_key, &key)) {
+      OSCrypt::SetRawEncryptionKey(key);
+      return true;
+    }
+  }
+
+  return false;
+}
+#endif
+
+}  // namespace
 
 ChromeImporter::ChromeImporter() {
 }
@@ -69,7 +139,7 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
 
   if ((items & importer::PASSWORDS) && !cancelled()) {
     bridge_->NotifyItemStarted(importer::PASSWORDS);
-    ImportPasswords(base::FilePath(FILE_PATH_LITERAL("Preferences")));
+    ImportPasswords();
     bridge_->NotifyItemEnded(importer::PASSWORDS);
   }
 
@@ -290,7 +360,7 @@ double ChromeImporter::chromeTimeToDouble(int64_t time) {
   return ((time * 10 - 0x19DB1DED53E8000) / 10000) / 1000;
 }
 
-void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
+void ChromeImporter::ImportPasswords() {
 #if defined(OS_LINUX)
   // Set up crypt config.
   std::unique_ptr<os_crypt::Config> config(new os_crypt::Config());
@@ -299,8 +369,21 @@ void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
   config->user_data_path = source_path_;
   OSCrypt::SetConfig(std::move(config));
 #endif
+
+#if defined(OS_WIN)
+  base::FilePath local_state_path = source_path_.DirName().Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
+  if (!base::PathExists(local_state_path))
+    return;
+  if (!SetEncryptionKeyForPasswordImporting(local_state_path))
+    return;
+#endif
+
   base::FilePath passwords_path = source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
+
+  if (!base::PathExists(passwords_path))
+    return;
 
   password_manager::LoginDatabase database(
       passwords_path, password_manager::IsAccountStore(false));
