@@ -276,4 +276,34 @@ describe('new tab util files tests', () => {
       expect(assertion).toHaveLength(1)
     })
   })
+  describe('filterDuplicatedSitesbyIndexOrUrl', () => {
+    const sitesData: NewTab.Site[] = [{
+      id: 'topsite-000',
+      url: 'https://brave.com',
+      title: 'brave',
+      favicon: '',
+      letter: '',
+      pinnedIndex: undefined,
+      bookmarkInfo: undefined
+    }]
+    it('filter sites already included in the sites list', () => {
+      const duplicatedSitesData = [ ...sitesData, ...sitesData ]
+      const assertion = newTabUtils.filterDuplicatedSitesbyIndexOrUrl(duplicatedSitesData)
+      expect(assertion).toHaveLength(1)
+    })
+    it('does not filter sites not included in the sites list', () => {
+      const otherSitesData: NewTab.Site[] = [{
+        id: 'topsite-111',
+        url: 'https://new_site.com',
+        title: 'new_site',
+        favicon: '',
+        letter: '',
+        pinnedIndex: undefined,
+        bookmarkInfo: undefined
+      }]
+      const newSitesData: NewTab.Site[] = [ ...sitesData, ...otherSitesData ]
+      const assertion = newTabUtils.filterDuplicatedSitesbyIndexOrUrl(newSitesData)
+      expect(assertion).toHaveLength(2)
+    })
+  })
 })

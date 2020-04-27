@@ -135,3 +135,29 @@ export function filterFromExcludedSites (
         .every((removedSite: NewTab.Site) => removedSite.url !== site.url)
     })
 }
+
+export function equalsSite (
+  site: NewTab.Site,
+  siteToCompare: NewTab.Site
+): boolean {
+  return (
+    // Ensure there are no duplicated URLs
+    site.url === siteToCompare.url ||
+    // Ensure there are no duplicated IDs
+    site.id === siteToCompare.id
+  )
+}
+
+export function filterDuplicatedSitesbyIndexOrUrl (
+  sitesData: NewTab.Site[]
+): NewTab.Site[] {
+  const newGridSites: NewTab.Site[] = []
+
+  for (const site of sitesData) {
+    const isDuplicate = newGridSites.some(item => equalsSite(item, site))
+    if (!isDuplicate) {
+      newGridSites.push(site)
+    }
+  }
+  return newGridSites
+}
