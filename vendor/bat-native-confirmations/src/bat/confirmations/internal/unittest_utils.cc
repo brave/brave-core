@@ -28,7 +28,8 @@ void Initialize(
 }
 
 base::FilePath GetTestDataPath() {
-  return base::FilePath("brave/vendor/bat-native-confirmations/test/data");
+  return base::FilePath(FILE_PATH_LITERAL(
+      "brave/vendor/bat-native-confirmations/test/data"));
 }
 
 std::string GetPathForRequest(
