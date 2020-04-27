@@ -1,0 +1,14 @@
+diff --git a/components/payments/content/BUILD.gn b/components/payments/content/BUILD.gn
+index ae4e32dbac3471a248d1d16b4a50d04486089ad6..bdfc7835c7c885e0c4084b1e4bc23649bdad61af 100644
+--- a/components/payments/content/BUILD.gn
++++ b/components/payments/content/BUILD.gn
+@@ -69,6 +69,9 @@ jumbo_static_library("content") {
+     ]
+ 
+     deps += [ "//components/payments/core:method_strings" ]
++
++    # TODO(zenparsing): Use brave_chromium_build?
++    deps += [ "//brave/components/payments/content" ]
+   }
+ }
+ 

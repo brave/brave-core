@@ -1,0 +1,13 @@
+diff --git a/components/payments/content/payment_request.cc b/components/payments/content/payment_request.cc
+index dd5ee3b26fd5e749125b164d08e7babf18c9b4de..091159fcf7e01bf1cf5090e77ff925623ef23bc6 100644
+--- a/components/payments/content/payment_request.cc
++++ b/components/payments/content/payment_request.cc
+@@ -669,7 +669,7 @@ void PaymentRequest::OnPaymentResponseAvailable(
+       break;
+     }
+     case PaymentApp::Type::NATIVE_MOBILE_APP:
+-      NOTREACHED();
++      // NOTREACHED();
+       break;
+   }
+   journey_logger_.SetEventOccurred(selected_event);

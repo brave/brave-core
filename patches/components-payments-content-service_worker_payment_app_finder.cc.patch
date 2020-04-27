@@ -1,0 +1,13 @@
+diff --git a/components/payments/content/service_worker_payment_app_finder.cc b/components/payments/content/service_worker_payment_app_finder.cc
+index 72c000a627c9729b958a92bb3ddee293952edb68..2613f9574ab2b199c0f5169f0b368023134b3d48 100644
+--- a/components/payments/content/service_worker_payment_app_finder.cc
++++ b/components/payments/content/service_worker_payment_app_finder.cc
+@@ -349,7 +349,7 @@ void ServiceWorkerPaymentAppFinder::IgnorePaymentMethodForTest(
+ }
+ 
+ ServiceWorkerPaymentAppFinder::ServiceWorkerPaymentAppFinder()
+-    : ignored_methods_({methods::kGooglePlayBilling}),
++    : ignored_methods_({methods::kGooglePlayBilling, BRAVE_SERVICE_WORKER_PAYMENT_APP_IGNORED_METHODS}),
+       test_downloader_(nullptr) {}
+ 
+ ServiceWorkerPaymentAppFinder::~ServiceWorkerPaymentAppFinder() = default;

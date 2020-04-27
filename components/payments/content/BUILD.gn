@@ -1,0 +1,16 @@
+source_set("content") {
+  visibility = [
+    "//components/payments/content",
+    "//chrome/browser/payments",
+  ]
+
+  sources = [
+    "bat_payment_app.cc",
+    "bat_payment_app.h",
+  ]
+
+  deps = [
+    "//components/payments/core",
+    "//skia",
+  ]
+}

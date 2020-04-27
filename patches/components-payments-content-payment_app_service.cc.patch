@@ -1,0 +1,12 @@
+diff --git a/components/payments/content/payment_app_service.cc b/components/payments/content/payment_app_service.cc
+index b0631dd395be2fb9b11e10b6244cf0b8d553e0fa..470de47abbeebe3fea76726fce45fc8bc610d5c5 100644
+--- a/components/payments/content/payment_app_service.cc
++++ b/components/payments/content/payment_app_service.cc
+@@ -13,6 +13,7 @@
+ namespace payments {
+ 
+ PaymentAppService::PaymentAppService() {
++  BRAVE_ADD_BAT_PAYMENT_APP_FACTORY
+   factories_.emplace_back(std::make_unique<AutofillPaymentAppFactory>());
+ 
+   if (base::FeatureList::IsEnabled(::features::kServiceWorkerPaymentApps))
