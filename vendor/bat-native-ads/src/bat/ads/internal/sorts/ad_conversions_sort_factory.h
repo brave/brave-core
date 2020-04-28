@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_CONVERSIONS_SORT_FACTORY_H_
-#define BAT_ADS_INTERNAL_AD_CONVERSIONS_SORT_FACTORY_H_
+#ifndef BAT_ADS_INTERNAL_SORTS_AD_CONVERSIONS_SORT_FACTORY_H_
+#define BAT_ADS_INTERNAL_SORTS_AD_CONVERSIONS_SORT_FACTORY_H_
 
 #include <memory>
 
@@ -20,4 +20,4 @@ class AdConversionsSortFactory {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_CONVERSIONS_SORT_FACTORY_H_
+#endif  // BAT_ADS_INTERNAL_SORTS_AD_CONVERSIONS_SORT_FACTORY_H_

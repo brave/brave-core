@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_PER_HOUR_LIMIT_FREQUENCY_CAP_H_
-#define BAT_ADS_INTERNAL_PER_HOUR_LIMIT_FREQUENCY_CAP_H_
+#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
+#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
 
 #include <string>
 #include <deque>
@@ -44,4 +44,4 @@ class AdsPerHourFrequencyCap : public PermissionRule {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_PER_HOUR_LIMIT_FREQUENCY_CAP_H_
+#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
