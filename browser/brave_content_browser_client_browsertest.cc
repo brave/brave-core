@@ -210,6 +210,31 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
                    "chrome://chrome-urls/");
   }
 }
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                           RewriteChromeSync) {
+  std::vector<std::string> schemes {
+    "brave://",
+    "chrome://",
+  };
+
+  for (const std::string& scheme : schemes) {
+    content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+    ui_test_utils::NavigateToURL(browser(),
+                                 GURL(scheme + chrome::kChromeUISyncHost));
+    ASSERT_TRUE(WaitForLoadStop(contents));
+
+    EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
+                                   ->GetFormattedFullURL()).c_str(),
+                 "brave://sync");
+    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                 ->GetVirtualURL().spec().c_str(),
+                 "chrome://sync/");
+    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                 ->GetURL().spec().c_str(),
+                 "chrome://settings/braveSync");
+  }
+}
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
   content::WebContents* contents =
