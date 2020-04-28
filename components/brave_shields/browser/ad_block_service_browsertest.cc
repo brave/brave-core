@@ -976,3 +976,42 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
               &as_expected));
   EXPECT_TRUE(as_expected);
 }
+
+// Test scriptlet injection that modifies window attributes
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringWindowScriptlet) {
+  /* "content" below corresponds to the following scriptlet:
+   * ```
+   * (function() {
+   *   const send = window.getComputedStyle;
+   *   window.getComputedStyle = function(selector) {
+   *     return { 'color': 'Impossible value' };
+   *   }
+   * })();
+   * ```
+   */
+  UpdateAdBlockInstanceWithRules("b.com##+js(hjt)", "[{"
+          "\"name\": \"hijacktest\","
+          "\"aliases\": [\"hjt\"],"
+          "\"kind\": {\"mime\": \"application/javascript\"},"
+          "\"content\": \"KGZ1bmN0aW9uKCkgewogIGNvbnN0IHNlbmQgPSB3aW5kb3cuZ2V0"
+          "Q29tcHV0ZWRTdHlsZTsKICB3aW5kb3cuZ2V0Q29tcHV0ZWRTdHlsZSA9IGZ1bmN0aW9"
+          "uKHNlbGVjdG9yKSB7CiAgICByZXR1cm4geyAnY29sb3InOiAnSW1wb3NzaWJsZSB2YW"
+          "x1ZScgfTsKICB9Cn0pKCk7Cg==\"}]");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/cosmetic_filtering.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.ad', 'color', 'Impossible value')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
