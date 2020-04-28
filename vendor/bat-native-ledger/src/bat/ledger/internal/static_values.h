@@ -45,6 +45,13 @@
 #define PROMOTION_DEVELOPMENT_SERVER            \
 "https://grant.rewards.brave.software"
 
+#define PAYMENTS_STAGING_SERVER              \
+"http://payment.rewards.bravesoftware.com"
+#define PAYMENTS_PRODUCTION_SERVER           \
+"http://payment.rewards.brave.com"
+#define PAYMENTS_DEVELOPMENT_SERVER            \
+"https://payment.rewards.brave.software"
+
 #define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"

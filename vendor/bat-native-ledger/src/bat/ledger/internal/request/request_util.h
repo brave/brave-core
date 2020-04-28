@@ -17,7 +17,8 @@ enum class ServerTypes {
   BALANCE,
   PUBLISHER,
   PUBLISHER_DISTRO,
-  kPromotion
+  kPromotion,
+  kPayments
 };
 
 std::string BuildUrl(

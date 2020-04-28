@@ -22,6 +22,8 @@ std::string GetCreateTransactionURL(
     const std::string& order_id,
     const ledger::SKUTransactionType type);
 
+std::string GetReedemSKUUrl();
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_REQUEST_SKU_H_

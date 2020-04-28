@@ -30,7 +30,7 @@ std::string GetTransactionSuffix(const ledger::SKUTransactionType type) {
 namespace braveledger_request_util {
 
 std::string GetCreateOrderURL() {
-  return BuildUrl("/orders", PREFIX_V1, ServerTypes::kPromotion);
+  return BuildUrl("/orders", PREFIX_V1, ServerTypes::kPayments);
 }
 
 std::string GetOrderCredentialsURL(
@@ -46,7 +46,7 @@ std::string GetOrderCredentialsURL(
       order_id.c_str(),
       item_path.c_str());
 
-  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPayments);
 }
 
 std::string GetCreateTransactionURL(
@@ -58,7 +58,11 @@ std::string GetCreateTransactionURL(
       order_id.c_str(),
       suffix.c_str());
 
-  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPayments);
+}
+
+std::string GetReedemSKUUrl() {
+  return BuildUrl("/votes", PREFIX_V1, ServerTypes::kPayments);
 }
 
 }  // namespace braveledger_request_util
