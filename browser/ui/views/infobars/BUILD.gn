@@ -21,4 +21,14 @@ source_set("brave_wayback_machine") {
     "//ui/views",
     "//url",
   ]
+
+  # Below dep list are indirectly used by brave_wayback_machine target.
+  # Only added to fix intermittent build failure.
+  # chrome/common/buildflags.h is included indirectly from
+  # brave_wayback_machine_infobar_contents_view.cc.
+  # However, this buildflags.h sometimes not generated when
+  # brave_wayback_machine_infobar_contents_view.cc is compiled.
+  deps += [
+    "//chrome/common:buildflags",
+  ]
 }
