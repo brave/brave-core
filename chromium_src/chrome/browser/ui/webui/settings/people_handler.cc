@@ -15,22 +15,22 @@
       "SyncSetupReset", base::BindRepeating(&PeopleHandler::HandleReset, \
                                             base::Unretained(this)));
 
-#define BRAVE_HANDLE_SHOW_SETUP_UI                                 \
-  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs()); \
-  if (!brave_sync_prefs.IsSyncV2Migrated()) {                      \
-    service->StopAndClear();                                       \
-    brave_sync_prefs.SetSyncV2Migrated(true);                      \
-  }                                                                \
+#define BRAVE_HANDLE_SHOW_SETUP_UI                          \
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs()); \
+  if (!brave_sync_prefs.IsSyncV2Migrated()) {               \
+    service->StopAndClear();                                \
+    brave_sync_prefs.SetSyncV2Migrated(true);               \
+  }                                                         \
   brave_sync_prefs.SetSyncEnabled(true);
 
-#define BRAVE_CLOSE_SYNC_SETUP                                       \
-  syncer::SyncService* sync_service = GetSyncService();              \
-  if (sync_service &&                                                \
-      !sync_service->GetUserSettings()->IsFirstSetupComplete()) {    \
-    DVLOG(1) << "Sync setup aborted by user action";                 \
-    sync_service->StopAndClear();                                    \
-    brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs()); \
-    brave_sync_prefs.Clear();                                        \
+#define BRAVE_CLOSE_SYNC_SETUP                                    \
+  syncer::SyncService* sync_service = GetSyncService();           \
+  if (sync_service &&                                             \
+      !sync_service->GetUserSettings()->IsFirstSetupComplete()) { \
+    DVLOG(1) << "Sync setup aborted by user action";              \
+    sync_service->StopAndClear();                                 \
+    brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());     \
+    brave_sync_prefs.Clear();                                     \
   }
 
 #define BRAVE_IS_SYNC_SUBPAGE \
@@ -60,7 +60,7 @@ void PeopleHandler::HandleGetSyncCode(const base::ListValue* args) {
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
 
-  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   std::string sync_code = brave_sync_prefs.GetSeed();
   if (sync_code.empty()) {
     std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
@@ -83,7 +83,7 @@ void PeopleHandler::HandleSetSyncCode(const base::ListValue* args) {
     ResolveJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
-  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   if (!brave_sync_prefs.SetSeed(sync_code->GetString())) {
     ResolveJavascriptCallback(*callback_id, base::Value(false));
     return;
@@ -97,7 +97,7 @@ void PeopleHandler::HandleReset(const base::ListValue* args) {
     sync_service->GetUserSettings()->SetSyncRequested(false);
     sync_service->StopAndClear();
   }
-  brave_sync::prefs::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.Clear();
 
   // Sync prefs will be clear in ProfileSyncService::StopImpl

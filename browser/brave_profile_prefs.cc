@@ -101,7 +101,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       brave_rewards::prefs::kHideBraveRewardsButton,
       false);
 
-  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
+  brave_sync::Prefs::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings

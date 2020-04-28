@@ -1,0 +1,12 @@
+diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
+index c2761cef61443ebc0c991fe203717c2ac07afc8c..a520a0d99e18aad2b07ec758ae7843e14a09f88a 100644
+--- a/components/sync/driver/profile_sync_service.h
++++ b/components/sync/driver/profile_sync_service.h
+@@ -268,6 +268,7 @@ class ProfileSyncService : public SyncService,
+   // generate a secret. Returns empty string if keystore key is not available.
+   std::string GetExperimentalAuthenticationSecretForTest() const;
+ 
++  BRAVE_PROFILE_SYNC_SERVICE_H_
+  private:
+   // Passed as an argument to StopImpl to control whether or not the sync
+   // engine should clear its data directory when it shuts down. See StopImpl

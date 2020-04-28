@@ -13,11 +13,21 @@
   access_token_fetcher_->StartGetTimestamp();
 
 #define BRAVE_DETERMINE_ACCOUNT_TO_USE                                     \
-  AccountInfo account_info;                                                \
-  account_info.account_id = CoreAccountId::FromString("dummy_account_id"); \
-  account_info.email = "dummy@brave.com";                                  \
-  SyncAccountInfo account(account_info, true);                             \
-  return account;
+  if (!public_key_.empty()) {                                              \
+    const std::string client_id =                                          \
+        base::HexEncode(public_key_.data(), public_key_.size());           \
+    AccountInfo account_info;                                              \
+    account_info.account_id = CoreAccountId::FromString(client_id);        \
+    account_info.email = "sync@brave.com";                                 \
+    SyncAccountInfo account(account_info, true);                           \
+    return account;                                                        \
+  } else {                                                                 \
+    AccountInfo account_info;                                              \
+    account_info.account_id = CoreAccountId::FromString("tmp_account_id"); \
+    account_info.email = "sync-tmp@brave.com";                             \
+    SyncAccountInfo account(account_info, false);                          \
+    return account;                                                        \
+  }
 #include "../../../../../components/sync/driver/sync_auth_manager.cc"
 #undef BRAVE_REQUEST_ACCESS_TOKEN
 #undef BRAVE_DETERMINE_ACCOUNT_TO_USE
@@ -45,6 +55,10 @@ void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes);
   brave_sync::crypto::DeriveSigningKeysFromSeed(seed_bytes, &HKDF_SALT,
                                                 &public_key_, &private_key_);
+  // cleanup temp account info
+  sync_account_ = SyncAccountInfo();
+  if (registered_for_auth_notifications_)
+    UpdateSyncAccountIfNecessary();
 }
 
 void SyncAuthManager::ResetKeys() {
