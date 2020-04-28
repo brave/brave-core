@@ -1,0 +1,32 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Contains flags that should be applied only to brave_public_apk_for_test.
+
+# Do not obfuscate class names, methods and fields that are 
+# needed for checking of existence for bytecode manipulation
+-keepnames class org.chromium.chrome.browser.settings.MainSettings
+
+-keep class org.chromium.components.sync.AndroidSyncSettings {
+    *** notifyObservers(...);
+    *** updateCachedSettings(...);
+    *** setChromeSyncEnabled(...);
+    *** mIsSyncable;
+    *** mChromeSyncEnabled;
+    *** mMasterSyncEnabled;
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
+    *** extensiveBookmarkChangesBeginning(...);
+    *** extensiveBookmarkChangesEnded(...);
+    *** createBookmarkItem(...);
+}
+
+-keep class org.chromium.chrome.browser.externalnav.ExternalNavigationHandler {
+    *** clobberCurrentTabWithFallbackUrl(...);
+}
+
+-keep class org.chromium.chrome.browser.LaunchIntentDispatcher {
+    *** isCustomTabIntent(...);
+}

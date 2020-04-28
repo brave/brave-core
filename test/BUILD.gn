@@ -816,17 +816,24 @@ if (is_android) {
     android_manifest = brave_public_test_apk_manifest
     android_manifest_dep = ":brave_public_test_apk_manifest"
     shared_libraries = [ "//chrome/android:libchromefortest" ]
+    if (!is_java_debug) {
+      proguard_enabled = true
+      proguard_configs = [ "//brave/android/java/apk_for_test.flags" ]
+    }
 
     sources = [
       "//brave/android/javatests/org/chromium/chrome/browser/BravePrivateTabTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
     ]
 
     deps = [
+      "//base:base_java",
       "//base:base_java_test_support",
       "//chrome/android:chrome_apk_pak_assets",
       "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/test/android:chrome_java_test_support",
       "//components/search_engines/android:java",
+      "//components/sync/android:sync_java",
       "//third_party/junit",
     ]
   }

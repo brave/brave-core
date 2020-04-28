@@ -9,7 +9,7 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveMainPreferenceBaseClassAdapter extends BraveClassVisitor {
     static String sMainPreferencesClassName =
-            "org/chromium/chrome/browser/settings/MainPreferences";
+            "org/chromium/chrome/browser/settings/MainSettings";
 
     static String sBraveMainPreferencesBaseClassName =
             "org/chromium/chrome/browser/settings/BraveMainPreferencesBase";
