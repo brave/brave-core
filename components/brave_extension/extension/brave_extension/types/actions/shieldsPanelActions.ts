@@ -188,11 +188,11 @@ interface CosmeticFilterRuleExceptionsReturn {
   type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
   tabId: number,
   exceptions: string[],
-  randomizedClassName: string
+  scriptlet: string
 }
 
 export interface CosmeticFilterRuleExceptions {
-  (tabId: number, exceptions: string[], randomizedClassName: string): CosmeticFilterRuleExceptionsReturn
+  (tabId: number, exceptions: string[], scriptlet: string): CosmeticFilterRuleExceptionsReturn
 }
 
 interface ContentScriptsLoadedReturn {
