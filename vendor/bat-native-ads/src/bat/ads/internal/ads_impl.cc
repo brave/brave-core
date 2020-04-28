@@ -647,13 +647,23 @@ void AdsImpl::OnPageLoaded(
   if (SameSite(url, last_shown_ad_notification_.target_url)) {
     BLOG(INFO) << "Visited URL matches the last shown ad notification";
 
-    if (!SameSite(url, last_sustained_ad_notification_url_)) {
-      last_sustained_ad_notification_url_ = url;
+    if (last_sustained_ad_notification_.creative_instance_id !=
+        last_shown_ad_notification_.creative_instance_id) {
+      last_sustained_ad_notification_ = AdNotificationInfo();
+    }
+
+    if (!SameSite(url, last_sustained_ad_notification_.target_url)) {
+      last_sustained_ad_notification_ = last_shown_ad_notification_;
 
       StartSustainingAdNotificationInteraction();
     } else {
-      BLOG(INFO) << "Already sustaining ad notification interaction for "
-          "visited URL";
+      if (sustain_ad_notification_interaction_timer_.IsRunning()) {
+        BLOG(INFO) << "Already sustaining ad notification interaction for "
+            "visited URL";
+      } else {
+        BLOG(INFO) << "Already sustained ad notification interaction for "
+            "visited URL";
+      }
     }
 
     return;
@@ -1463,8 +1473,6 @@ void AdsImpl::StartSustainingAdNotificationInteraction() {
 }
 
 void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
-  last_sustained_ad_notification_url_ = "";
-
   if (!IsStillViewingAdNotification()) {
     BLOG(INFO) << "Failed to sustain ad notification interaction. The domain "
         "for the focused tab does not match the last shown ad notification for "

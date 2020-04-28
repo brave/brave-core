@@ -279,7 +279,7 @@ class AdsImpl : public Ads {
   AdNotificationInfo last_shown_ad_notification_;
   CreativeAdNotificationInfo last_shown_creative_ad_notification_;
   Timer sustain_ad_notification_interaction_timer_;
-  std::string last_sustained_ad_notification_url_;
+  AdNotificationInfo last_sustained_ad_notification_;
   void StartSustainingAdNotificationInteraction();
   void SustainAdNotificationInteractionIfNeeded();
   bool IsStillViewingAdNotification() const;
