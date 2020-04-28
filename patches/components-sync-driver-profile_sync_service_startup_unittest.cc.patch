@@ -1,0 +1,26 @@
+diff --git a/components/sync/driver/profile_sync_service_startup_unittest.cc b/components/sync/driver/profile_sync_service_startup_unittest.cc
+index 3aefc9df0a6ef46ce5b38bef50ff0bb89c462657..3d6b3ff622b5e0814dd284e2d0948d0e7416ebae 100644
+--- a/components/sync/driver/profile_sync_service_startup_unittest.cc
++++ b/components/sync/driver/profile_sync_service_startup_unittest.cc
+@@ -88,11 +88,13 @@ class ProfileSyncServiceStartupTest : public testing::Test {
+   void SimulateTestUserSignin() {
+     profile_sync_service_bundle_.identity_test_env()
+         ->MakePrimaryAccountAvailable(kEmail);
++    BRAVE_SIMULATE_TEST_USER_SIGNIN
+   }
+ 
+   void SimulateTestUserSigninWithoutRefreshToken() {
+     // Set the primary account *without* providing an OAuth token.
+     profile_sync_service_bundle_.identity_test_env()->SetPrimaryAccount(kEmail);
++    BRAVE_SIMULATE_TEST_USER_SIGNIN_WITHOUT_REFRESH_TOKEN
+   }
+ 
+   void UpdateCredentials() {
+@@ -140,6 +142,7 @@ class ProfileSyncServiceStartupTest : public testing::Test {
+     task_environment_.FastForwardUntilNoTasksRemain();
+   }
+ 
++ BRAVE_PROFILE_SYNC_SERVICE_STARTUP_TEST_
+  private:
+   base::test::TaskEnvironment task_environment_;
+   ProfileSyncServiceBundle profile_sync_service_bundle_;
