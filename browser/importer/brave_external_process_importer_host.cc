@@ -5,14 +5,15 @@
 
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 
+#include <memory>
+#include <string>
+
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
-#include "brave/browser/importer/brave_importer_lock_dialog.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
-#include "brave/browser/importer/chrome_profile_lock.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/common/importer/importer_constants.h"
 
@@ -64,61 +65,6 @@ BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
     : ExternalProcessImporterHost(),
       weak_ptr_factory_(this) {}
 BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
-
-void BraveExternalProcessImporterHost::ShowWarningDialog() {
-  DCHECK(!headless_);
-  brave::importer::ShowImportLockDialog(
-      parent_window_, source_profile_,
-      base::Bind(&BraveExternalProcessImporterHost::OnImportLockDialogEnd,
-                 weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveExternalProcessImporterHost::OnImportLockDialogEnd(bool is_continue) {
-  if (is_continue) {
-    // User chose to continue, then try to import the settings.
-    is_source_readable_ = true;
-    LaunchImportIfReady();
-  } else {
-    cancelled_ = true;
-    NotifyImportEnded();
-  }
-}
-
-bool BraveExternalProcessImporterHost::CheckForFirefoxLock(
-    const importer::SourceProfile& source_profile) {
-  if (!ExternalProcessImporterHost::CheckForFirefoxLock(source_profile))
-    return false;
-
-  return CheckForChromeLock(source_profile);
-}
-
-bool BraveExternalProcessImporterHost::CheckForChromeLock(
-    const importer::SourceProfile& source_profile) {
-  if (source_profile.importer_type != importer::TYPE_CHROME)
-    return true;
-
-  DCHECK(!browser_lock_.get());
-
-  // Extract the user data directory from the path of the profile to be
-  // imported, because we can only lock/unlock the entire user directory with
-  // ProcessSingleton.
-  base::FilePath user_data_dir = source_profile.source_path.DirName();
-  browser_lock_.reset(new ChromeProfileLock(user_data_dir));
-
-  browser_lock_->Lock();
-  if (browser_lock_->HasAcquired())
-    return true;
-
-  // If fail to acquire the lock, we set the source unreadable and
-  // show a warning dialog, unless running without UI (in which case the import
-  // must be aborted).
-  is_source_readable_ = false;
-  if (headless_)
-    return false;
-
-  ShowWarningDialog();
-  return true;
-}
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveExternalProcessImporterHost::LaunchExtensionsImport() {

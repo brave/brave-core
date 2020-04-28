@@ -174,16 +174,6 @@
       <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
         <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
       </message>
-      <!-- Importer Lock Dialog -->
-      <message name="IDS_CHROME_IMPORTER_LOCK_TITLE" desc="Dialog title for Chrome importer lock dialog">
-	Close Chrome
-      </message>
-      <message name="IDS_CHROME_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Chrome importer lock dialog">
-	To continue importing, close all Chrome windows.
-      </message>
-      <message name="IDS_CHROME_IMPORTER_LOCK_OK" desc="The text to be displayed in the OK button">
-        Continue
-      </message>
       <message name="IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX" desc="Checkbox for importing extensions list">
         Extensions
       </message>
