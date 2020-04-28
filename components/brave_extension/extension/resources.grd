@@ -26,9 +26,6 @@
       <include name="IDR_BRAVE_EXTENSION_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_BRAVE_SHIELDS_HTML" file="brave_extension/braveShieldsPanel.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_BRAVELIZER_JS" file="brave_extension/assets/bravelizer.css" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_REMOVE_EMPTY_ELEMENTS_CSS" file="brave_extension/assets/removeEmptyElements.css" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_SITEHACKS_MARKETWATCH_CSS" file="brave_extension/assets/siteHack-marketwatch.com.css" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_SITEHACKS_COINMARKETCAP_CSS" file="brave_extension/assets/siteHack-coinmarketcap.com.css" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_SITEHACKS_GLENNBECK_JS" file="brave_extension/assets/siteHack-glennbeck.com.js" type="BINDATA" />
     </includes>
   </release>
