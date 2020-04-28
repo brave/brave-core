@@ -72,7 +72,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                                         "/cookie_iframe.html");
     iframe_domain_registry_url_ =
         embedded_test_server()->GetURL("blah.twitter.com",
-                                    "/set-cookie?name=blahtwittercom;domain=twitter.com");
+                          "/set-cookie?name=blahtwittercom;domain=twitter.com");
 
     google_oauth_cookie_url_ =
         https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
@@ -276,7 +276,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   NavigateFrameTo(subdomain_first_party_cookie_url_);
   ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
-
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
