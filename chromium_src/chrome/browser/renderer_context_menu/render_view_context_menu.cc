@@ -4,10 +4,14 @@
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
+#include "brave/browser/autocomplete/brave_autocomplete_provider_client.h"
+#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
+#include "components/omnibox/browser/autocomplete_classifier.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
@@ -18,6 +22,29 @@
 #undef RenderViewContextMenu
 #define RenderViewContextMenu RenderViewContextMenu_Chromium
 
+namespace {
+
+GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
+  AutocompleteMatch match;
+  AutocompleteClassifier classifier(
+      std::make_unique<BraveAutocompleteController>(
+          std::make_unique<BraveAutocompleteProviderClient>(profile),
+          nullptr, AutocompleteClassifier::DefaultOmniboxProviders()),
+      std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
+  classifier.Classify(text, false, false,
+                      metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
+  classifier.Shutdown();
+  return match.destination_url;
+}
+
+}  // namespace
+
+#define BRAVE_APPEND_SEARCH_PROVIDER \
+  selection_navigation_url_ = \
+      GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
+  if (!selection_navigation_url_.is_valid()) \
+    return;
+
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 
@@ -27,6 +54,7 @@
 
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
+#undef BRAVE_APPEND_SEARCH_PROVIDER
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,

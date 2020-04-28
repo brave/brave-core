@@ -16,14 +16,10 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
-// See the BraveAutocompleteProviderClient why GetOriginalProfile() is fetched.
-// All services except TemplateURLService exposed from AutocompleteClassifier
-// uses original profile. So, |profile_| should be original profile same as
-// base class does.
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
     Profile* profile)
-    : ChromeAutocompleteSchemeClassifier(profile->GetOriginalProfile()),
-      profile_(profile->GetOriginalProfile()) {
+    : ChromeAutocompleteSchemeClassifier(profile),
+      profile_(profile) {
 }
 
 BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {
