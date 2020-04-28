@@ -9,7 +9,10 @@
 #include "bat/confirmations/internal/confirmations_impl_mock.h"
 #include "bat/confirmations/internal/platform_helper_mock.h"
 
+#include "base/base_paths.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
@@ -28,8 +31,10 @@ void Initialize(
 }
 
 base::FilePath GetTestDataPath() {
-  return base::FilePath(FILE_PATH_LITERAL(
-      "brave/vendor/bat-native-confirmations/test/data"));
+  base::FilePath path;
+  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+  path = path.AppendASCII("brave/vendor/bat-native-confirmations/test/data");
+  return path;
 }
 
 std::string GetPathForRequest(
