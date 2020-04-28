@@ -23,48 +23,16 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
-void MigrateBraveSyncPrefs(PrefService* prefs);
-
 namespace brave_sync {
-
-namespace prefs {
-// Stored as bip39 keywords
-extern const char kSyncV2Seed[];
-// Used for override DisableReasons in ProfileSyncService
-extern const char kSyncV2Enabled[];
-// Indicate whether migration has been done from v1 to v2
-extern const char kSyncV2Migrated[];
-
-// Deprecated
-// ============================================================================
-extern const char kSyncSeed[];
-extern const char kSyncEnabled[];
-extern const char kSyncDeviceId[];
-extern const char kSyncDeviceIdV2[];
-extern const char kSyncDeviceObjectId[];
-extern const char kSyncPrevSeed[];
-extern const char kSyncDeviceName[];
-extern const char kSyncBookmarksBaseOrder[];
-extern const char kSyncBookmarksEnabled[];
-extern const char kSyncSiteSettingsEnabled[];
-extern const char kSyncHistoryEnabled[];
-extern const char kSyncLatestRecordTime[];
-extern const char kSyncLatestDeviceRecordTime[];
-extern const char kSyncLastFetchTime[];
-extern const char kSyncDeviceList[];
-extern const char kSyncApiVersion[];
-extern const char kSyncMigrateBookmarksVersion[];
-extern const char kSyncRecordsToResend[];
-extern const char kSyncRecordsToResendMeta[];
-extern const char kDuplicatedBookmarksRecovered[];
-extern const char kDuplicatedBookmarksMigrateVersion[];
-// ============================================================================
 
 class Prefs {
  public:
   explicit Prefs(PrefService* pref_service);
+  virtual ~Prefs();
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
+  static std::string GetSeedPath();
 
   std::string GetSeed() const;
   bool SetSeed(const std::string& seed);
@@ -78,13 +46,13 @@ class Prefs {
   void Clear();
 
  private:
-  // May be null.
-  PrefService* pref_service_;
+  PrefService* const pref_service_;
 
   DISALLOW_COPY_AND_ASSIGN(Prefs);
 };
 
-}  // namespace prefs
+void MigrateBraveSyncPrefs(PrefService* prefs);
+
 }  // namespace brave_sync
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_

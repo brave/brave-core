@@ -45,8 +45,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 11/2019.
   MigrateWidevinePrefs(profile);
 #endif
-  // Added 11/2019.
-  MigrateBraveSyncPrefs(profile->GetPrefs());
+  brave_sync::MigrateBraveSyncPrefs(profile->GetPrefs());
 
   // Added 12/2019.
   dark_mode::MigrateBraveDarkModePrefs(profile);
