@@ -458,6 +458,17 @@ class BraveRewardsGetAnonWalletStatusFunction
   void OnGetAnonWalletStatus(const uint32_t result);
 };
 
+// TODO(zeparsing): Development only
+class BraveRewardsShowCheckoutDialogFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.showCheckoutDialog", UNKNOWN)
+
+ protected:
+  ~BraveRewardsShowCheckoutDialogFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

@@ -26,6 +26,10 @@
       <include name="IDR_BRAVE_REWARDS_TIP_BG_1" file="tip/img/tip_bg_1.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_TIP_BG_2" file="tip/img/tip_bg_2.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/brave_rewards_tip.html" type="BINDATA" />
+
+      <!-- WebUI Brave BAT checkout dialog resources -->
+      <include name="IDR_BRAVE_REWARDS_CHECKOUT_HTML" file="checkout/brave_rewards_checkout.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_CHECKOUT_BG" file="ui/components/checkout/dialogFrame/assets/dialog_bg.svg" type="BINDATA" />
     </includes>
   </release>
 </grit>
