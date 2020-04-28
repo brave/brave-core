@@ -160,6 +160,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     { "braveNewTabStats", IDS_SETTINGS_NEW_TAB_STATS },
     { "braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS },
     { "braveNewTabBinance", IDS_SETTINGS_NEW_TAB_BINANCE },
+    { "braveNewTabTogether", IDS_SETTINGS_NEW_TAB_TOGETHER },
     { "braveNewTabTopSites", IDS_SETTINGS_NEW_TAB_TOP_SITES },
     { "braveNewTabClock", IDS_SETTINGS_NEW_TAB_CLOCK },
     // Misc (TODO: Organize this)

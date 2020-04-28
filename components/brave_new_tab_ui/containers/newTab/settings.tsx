@@ -29,6 +29,7 @@ export interface Props {
   toggleShowStats: () => void
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
+  toggleShowTogether: () => void
   toggleShowBinance: () => void
   toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
@@ -38,6 +39,7 @@ export interface Props {
   brandedWallpaperOptIn: boolean
   allowSponsoredWallpaperUI: boolean
   showRewards: boolean
+  showTogether: boolean
   showBinance: boolean
   binanceSupported: boolean
 }
@@ -81,12 +83,14 @@ export default class Settings extends React.PureComponent<Props, {}> {
       toggleShowStats,
       toggleShowTopSites,
       toggleShowRewards,
+      toggleShowTogether,
       toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       showStats,
       showClock,
       showTopSites,
       showRewards,
+      showTogether,
       brandedWallpaperOptIn,
       allowSponsoredWallpaperUI,
       onClick,
@@ -135,6 +139,14 @@ export default class Settings extends React.PureComponent<Props, {}> {
               <Toggle
                 onChange={toggleShowRewards}
                 checked={showRewards}
+                size='small'
+              />
+            </SettingsRow>
+            <SettingsRow>
+              <SettingsText>{getLocale('showTogether')}</SettingsText>
+              <Toggle
+                onChange={toggleShowTogether}
+                checked={showTogether}
                 size='small'
               />
             </SettingsRow>

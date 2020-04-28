@@ -17,10 +17,12 @@ export const defaultState: NewTab.State = {
   showClock: false,
   showTopSites: false,
   showRewards: false,
+  showTogether: false,
   showBinance: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   showEmptyPage: false,
+  userRegion: 'com',
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
@@ -53,7 +55,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['binance', 'rewards'],
+  widgetStackOrder: ['together', 'binance', 'rewards'],
   binanceState: {
     userTLD: 'com',
     initialFiat: 'USD',
@@ -193,7 +195,7 @@ export const load = (): NewTab.State => {
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
-      showEmptyPage: data.showEmptyPage,
+      userRegion: data.userRegion,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
       removedStackWidgets: data.removedStackWidgets,

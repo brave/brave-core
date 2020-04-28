@@ -59,6 +59,7 @@ export const getNewTabData = (state: NewTab.State = defaultState) => ({
   showClock: boolean('Show clock?', true),
   showTopSites: boolean('Show top sites?', true),
   showRewards: boolean('Show rewards?', true),
+  showTogether: boolean('Show together?', true),
   showBinance: boolean('Show Binance?', true),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {

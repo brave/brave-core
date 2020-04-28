@@ -71,7 +71,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'together' | ''
 
   export interface LegacyState {
     pinnedTopSites: Site[]
@@ -94,6 +94,7 @@ declare namespace NewTab {
   }
 
   export interface PersistentState {
+    userRegion: BinanceTLD
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
@@ -118,6 +119,7 @@ declare namespace NewTab {
     showClock: boolean
     showTopSites: boolean
     showRewards: boolean
+    showTogether: boolean
     showBinance: boolean
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
