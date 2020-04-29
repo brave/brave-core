@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { Contributions } from './contributions'
 import { WalletInfo } from './walletInfo'
 import { Balance } from './balance'
+import { Promotions } from './promotions'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -33,6 +34,7 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
     this.actions.getRewardsEnabled()
     this.actions.getRewardsInternalsInfo()
     this.actions.getBalance()
+    this.actions.getPromotions()
   }
 
   onRefresh = () => {
@@ -40,12 +42,13 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
   }
 
   render () {
-    const { isRewardsEnabled, balance, info } = this.props.rewardsInternalsData
+    const { isRewardsEnabled, balance, info, promotions } = this.props.rewardsInternalsData
     if (isRewardsEnabled) {
       return (
         <div id='rewardsInternalsPage'>
           <WalletInfo state={this.props.rewardsInternalsData} />
           <Balance info={balance} />
+          <Promotions items={promotions} />
           <br/>
           <br/>
           <button type='button' onClick={this.onRefresh}>{getLocale('refreshButton')}</button>

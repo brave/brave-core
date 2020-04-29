@@ -41,6 +41,10 @@ window.cr.define('brave_rewards_internals', function () {
     getActions().onBalance(balance)
   }
 
+  function promotions (promotions: RewardsInternals.Promotion[]) {
+    getActions().onPromotions(promotions)
+  }
+
   function initialize () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
 
@@ -55,7 +59,8 @@ window.cr.define('brave_rewards_internals', function () {
     initialize,
     onGetRewardsEnabled,
     onGetRewardsInternalsInfo,
-    balance
+    balance,
+    promotions
   }
 })
 

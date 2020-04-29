@@ -118,6 +118,9 @@ using GetMonthlyReportCallback = base::OnceCallback<void(
 using GetAllMonthlyReportIdsCallback =
     base::OnceCallback<void(const std::vector<std::string>&)>;
 
+using GetAllPromotionsCallback =
+    base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -312,6 +315,9 @@ class RewardsService : public KeyedService {
 
   virtual void GetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback) = 0;
+
+  virtual void GetAllPromotions(
+      GetAllPromotionsCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

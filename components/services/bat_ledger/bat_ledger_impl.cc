@@ -1054,4 +1054,26 @@ void BatLedgerImpl:: GetAllMonthlyReportIds(
           _1));
 }
 
+// static
+void BatLedgerImpl::OnGetAllPromotions(
+    CallbackHolder<GetAllPromotionsCallback>* holder,
+    ledger::PromotionMap items) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(base::MapToFlatMap(std::move(items)));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
+  auto* holder = new CallbackHolder<GetAllPromotionsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetAllPromotions(
+      std::bind(BatLedgerImpl::OnGetAllPromotions,
+          holder,
+          _1));
+}
+
 }  // namespace bat_ledger

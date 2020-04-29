@@ -8,5 +8,7 @@ export const enum types {
   GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/GET_REWARDS_INTERNALS_INFO',
   ON_GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/ON_GET_REWARDS_INTERNALS_INFO',
   GET_BALANCE = '@@rewards_internals/GET_BALANCE',
-  ON_BALANCE = '@@rewards_internals/ON_BALANCE'
+  ON_BALANCE = '@@rewards_internals/ON_BALANCE',
+  GET_PROMOTIONS = '@@rewards_internals/GET_PROMOTIONS',
+  ON_PROMOTIONS = '@@rewards_internals/ON_PROMOTIONS'
 }
