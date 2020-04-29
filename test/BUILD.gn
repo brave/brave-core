@@ -18,6 +18,7 @@ import("//third_party/widevine/cdm/widevine.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
+  import("//chrome/android/chrome_public_apk_tmpl.gni")
 }
 
 group("fix_brave_test_install_name") {
@@ -789,3 +790,52 @@ test("brave_browser_tests") {
   }
 }
 } # if (!is_android) {
+
+# All in this section is for running instrumentation java tests
+if (is_android) {
+  brave_public_test_manifest_package = "com.brave.browser.tests"
+
+  brave_public_test_apk_manifest =
+      "$root_gen_dir/brave_public_test_apk_manifest/AndroidManifest.xml"
+
+  jinja_template("brave_public_test_apk_manifest") {
+    input = "//chrome/android/javatests/AndroidManifest.xml"
+    includes = [ "//chrome/android/java/AndroidManifest.xml" ]
+    output = brave_public_test_apk_manifest
+    variables = default_chrome_public_jinja_variables
+    variables += [
+      "manifest_package=$brave_public_test_manifest_package",
+      "min_sdk_version=19",
+      "target_sdk_version=$android_sdk_version",
+    ]
+  }
+
+  chrome_public_common_apk_or_module_tmpl("brave_public_test_apk") {
+    testonly = true
+    target_type = "instrumentation_test_apk"
+    apk_name = "BravePublicTest"
+    android_manifest = brave_public_test_apk_manifest
+    android_manifest_dep = ":brave_public_test_apk_manifest"
+    shared_libraries = [ "//chrome/android:libchromefortest" ]
+    if (!is_java_debug) {
+      proguard_enabled = true
+      proguard_configs = [ "//brave/android/java/apk_for_test.flags" ]
+    }
+
+    sources = [
+      "//brave/android/javatests/org/chromium/chrome/browser/BravePrivateTabTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
+    ]
+
+    deps = [
+      "//base:base_java",
+      "//base:base_java_test_support",
+      "//chrome/android:chrome_apk_pak_assets",
+      "//chrome/android:chrome_public_base_module_java_for_test",
+      "//chrome/test/android:chrome_java_test_support",
+      "//components/search_engines/android:java",
+      "//components/sync/android:sync_java",
+      "//third_party/junit",
+    ]
+  }
+} # if (is_android) {
