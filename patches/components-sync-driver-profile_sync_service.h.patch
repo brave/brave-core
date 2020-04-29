@@ -1,8 +1,18 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index c2761cef61443ebc0c991fe203717c2ac07afc8c..a520a0d99e18aad2b07ec758ae7843e14a09f88a 100644
+index c2761cef61443ebc0c991fe203717c2ac07afc8c..ba00b29daedf0ceb99339ff9e331a31cf03b6249 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -268,6 +268,7 @@ class ProfileSyncService : public SyncService,
+@@ -99,7 +99,8 @@ class ProfileSyncService : public SyncService,
+     std::string debug_identifier;
+     bool autofill_enable_account_wallet_storage = false;
+     bool enable_passwords_account_storage = false;
+-
++  
++  BRAVE_INIT_PARAMS_H_
+    private:
+     DISALLOW_COPY_AND_ASSIGN(InitParams);
+   };
+@@ -268,6 +269,7 @@ class ProfileSyncService : public SyncService,
    // generate a secret. Returns empty string if keystore key is not available.
    std::string GetExperimentalAuthenticationSecretForTest() const;
  

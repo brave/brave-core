@@ -19,8 +19,12 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
       brave_sync::Prefs::GetSeedPath(),                                    \
       base::Bind(&ProfileSyncService::OnBraveSyncPrefsChanged,             \
                  base::Unretained(this)));                                 \
-  auth_manager_->CreateAccessTokenFetcher(url_loader_factory_,             \
-                                          sync_service_url_);
+  if (!init_params.access_token_fetcher_for_test)                          \
+    auth_manager_->CreateAccessTokenFetcher(url_loader_factory_,           \
+                                            sync_service_url_);            \
+  else                                                                     \
+    auth_manager_->SetAccessTokenFetcherForTest(                           \
+        std::move(init_params.access_token_fetcher_for_test));
 
 #define BRAVE_D_PROFILE_SYNC_SERVICE \
   brave_sync_prefs_change_registrar_.RemoveAll();

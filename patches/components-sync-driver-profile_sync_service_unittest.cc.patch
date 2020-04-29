@@ -1,0 +1,24 @@
+diff --git a/components/sync/driver/profile_sync_service_unittest.cc b/components/sync/driver/profile_sync_service_unittest.cc
+index c0ea431335795750538ed2532891714a00f49d52..33215dd69e4155b627aa23d7776234f4817b9516 100644
+--- a/components/sync/driver/profile_sync_service_unittest.cc
++++ b/components/sync/driver/profile_sync_service_unittest.cc
+@@ -164,14 +164,18 @@ class ProfileSyncServiceTest : public ::testing::Test {
+   void SetUp() override {
+     base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+         switches::kSyncDeferredStartupTimeoutSeconds, "0");
++    BRAVE_SET_UP
+   }
+ 
+   void TearDown() override {
++    BRAVE_TEAR_DOWN
+     // Kill the service before the profile.
+     ShutdownAndDeleteService();
+   }
+ 
+-  void SignIn() { identity_test_env()->MakePrimaryAccountAvailable(kTestUser); }
++  void SignIn() { identity_test_env()->MakePrimaryAccountAvailable(kTestUser); 
++    BRAVE_SIGN_IN
++  }
+ 
+   void CreateService(ProfileSyncService::StartBehavior behavior) {
+     DCHECK(!service_);

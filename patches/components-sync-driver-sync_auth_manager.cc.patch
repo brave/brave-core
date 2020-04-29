@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/sync_auth_manager.cc b/components/sync/driver/sync_auth_manager.cc
-index 03080dd8c7205cc0ebaf8aa9516131a94a727170..85a592c12f43cb30297a8f65325974c0843cd8e5 100644
+index 03080dd8c7205cc0ebaf8aa9516131a94a727170..bab46b89e222070db3b8323fc7ac5c902c54ee58 100644
 --- a/components/sync/driver/sync_auth_manager.cc
 +++ b/components/sync/driver/sync_auth_manager.cc
 @@ -409,6 +409,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
@@ -14,7 +14,15 @@ index 03080dd8c7205cc0ebaf8aa9516131a94a727170..85a592c12f43cb30297a8f65325974c0
    // Finally, kick off a new access token fetch.
    partial_token_status_.token_request_time = base::Time::Now();
    partial_token_status_.token_response_time = base::Time();
-+  BRAVE_REQUEST_ACCESS_TOKEN
++  BRAVE_REQUEST_ACCESS_TOKEN_1
    ongoing_access_token_fetch_ =
        identity_manager_->CreateAccessTokenFetcherForAccount(
            sync_account_.account_info.account_id, kSyncOAuthConsumerName,
+@@ -487,6 +489,7 @@ void SyncAuthManager::RequestAccessToken() {
+           base::BindOnce(&SyncAuthManager::AccessTokenFetched,
+                          base::Unretained(this)),
+           signin::AccessTokenFetcher::Mode::kWaitUntilRefreshTokenAvailable);
++  BRAVE_REQUEST_ACCESS_TOKEN_2
+ }
+ 
+ void SyncAuthManager::AccessTokenFetched(
