@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-index 3484f28cf16bc288dd834f9da07a7c76e057c38c..42f3e43f3be7ed15482c4d2494b40e8e8d7d61a1 100644
+index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388708b56fd 100644
 --- a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 +++ b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 @@ -837,6 +837,7 @@ void RTCPeerConnection::Dispose() {
@@ -34,7 +34,7 @@ index 3484f28cf16bc288dd834f9da07a7c76e057c38c..42f3e43f3be7ed15482c4d2494b40e8e
    if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
      return ScriptPromise::CastUndefined(script_state);
  
-@@ -1335,6 +1339,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
+@@ -1337,6 +1341,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
      ScriptState* script_state,
      const RTCSessionDescriptionInit* session_description_init,
      ExceptionState& exception_state) {
@@ -42,7 +42,7 @@ index 3484f28cf16bc288dd834f9da07a7c76e057c38c..42f3e43f3be7ed15482c4d2494b40e8e
    if (session_description_init->type().IsNull() &&
        session_description_init->sdp().IsNull()) {
      return setLocalDescription(script_state);
-@@ -1395,6 +1400,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
+@@ -1397,6 +1402,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
            WebFeature::
                kRTCPeerConnectionSetLocalDescriptionLegacyNoFailureCallback);
    }
@@ -50,7 +50,7 @@ index 3484f28cf16bc288dd834f9da07a7c76e057c38c..42f3e43f3be7ed15482c4d2494b40e8e
    String sdp;
    if (session_description_init->type() != "rollback") {
      DOMException* exception =
-@@ -1447,6 +1453,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
+@@ -1449,6 +1455,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
      ScriptState* script_state,
      const RTCSessionDescriptionInit* session_description_init,
      ExceptionState& exception_state) {
@@ -58,7 +58,7 @@ index 3484f28cf16bc288dd834f9da07a7c76e057c38c..42f3e43f3be7ed15482c4d2494b40e8e
    if (session_description_init->type() != "rollback") {
      MaybeWarnAboutUnsafeSdp(session_description_init);
      ReportSetSdpUsage(SetSdpOperationType::kSetRemoteDescription,
-@@ -1501,6 +1508,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
+@@ -1503,6 +1510,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
            WebFeature::
                kRTCPeerConnectionSetRemoteDescriptionLegacyNoFailureCallback);
    }
