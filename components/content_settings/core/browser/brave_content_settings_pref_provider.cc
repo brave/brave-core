@@ -313,40 +313,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       rules.push_back(CloneRule(rule));
       brave_cookie_rules_[incognito].push_back(CloneRule(rule));
   }
-
-  // Add 3p cookie exception to handle an oddity in how Wordpress implements
-  // first party widgets on their site.  Wordpress implements it'd
-  // "notifications" sidebar with the following pattern, which results in
-  // first party cookies being blocked, because of the intermediate
-  // api.wp.com frame.
-  //
-  // https://yoursite.wordpress.com
-  //   <iframe src="//widgets.wp.com"> <-- no storage
-  //     <iframe src="//public-api.wordpress.com"> <-- ALSO no storage, despite
-  //                                                   being eTLD+1 equal with
-  //                                                   top level frame.
-  //
-  // See https://github.com/brave/brave-browser/issues/9064 and
-  // https://github.com/brave/brave-browser/issues/9105 (this approach is
-  // a stop gap solution until #9105 is solved).
-  const auto wordpress_host_pattern = ContentSettingsPattern::FromString(
-      "https://[*.]wordpress.com/*");
-  const auto wp_host_pattern = ContentSettingsPattern::FromString(
-      "https://[*.]wp.com/*");
-
-  auto widgets_wp_com_rule = Rule(
-      wordpress_host_pattern,
-      wp_host_pattern,
-      ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
-  rules.push_back(CloneRule(widgets_wp_com_rule));
-  brave_cookie_rules_[incognito].push_back(CloneRule(widgets_wp_com_rule));
-
-  auto wp_com_rule = Rule(
-      wp_host_pattern,
-      wordpress_host_pattern,
-      ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
-  rules.push_back(CloneRule(wp_com_rule));
-  brave_cookie_rules_[incognito].push_back(CloneRule(wp_com_rule));
+  // non-pref based exceptions should go in the cookie_settings_base.cc
+  // chromium_src override
 
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
