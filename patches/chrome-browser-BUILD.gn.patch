@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 023024e81c99d09efc0d1530a6c9ae3f1acf3abe..4554a8aa717ba00fc585f58c63e04cf229535f5c 100644
+index b3f8ac152722daf79878d83f14d2ee0bf625004c..242dd69159bea49f1933ff737929c3334ba9f594 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2295,6 +2295,7 @@ jumbo_static_library("browser") {
