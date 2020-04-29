@@ -4,12 +4,12 @@
 
 import * as React from 'react'
 
+interface Props {
+  reconcile: RewardsInternals.CurrentReconcile
+}
+
 // Utils
 import { getLocale } from '../../../../common/locale'
-
-interface Props {
-  currentReconcile: RewardsInternals.CurrentReconcile
-}
 
 const getRetryStepString = (retryStep: number) => {
   switch (retryStep) {
@@ -38,15 +38,15 @@ const getRetryStepString = (retryStep: number) => {
   return getLocale('retryStepUnknown')
 }
 
-export const CurrentReconcile = (props: Props) => (
+export const Contribution = (props: Props) => (
   <div>
-    <span i18n-content='viewingId'/> {props.currentReconcile.viewingId || ''}
+    {getLocale('viewingId')} {props.reconcile.viewingId || ''}
     <br/>
-    <span i18n-content='amount'/> {props.currentReconcile.amount || ''}
+    {getLocale('amount')} {props.reconcile.amount || ''}
     <br/>
-    <span i18n-content='retryStep'/> {getRetryStepString(props.currentReconcile.retryStep) || ''}
+    {getLocale('retryStep')} {getRetryStepString(props.reconcile.retryStep) || ''}
     <br/>
-    <span i18n-content='retryLevel'/> {props.currentReconcile.retryLevel || ''}
+    {getLocale('retryLevel')} {props.reconcile.retryLevel || ''}
     <br/>
   </div>
 )

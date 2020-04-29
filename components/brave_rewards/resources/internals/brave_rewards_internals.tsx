@@ -6,6 +6,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { getActions as getUtilActions, setActions } from './utils'
 
 // Components
 import App from './components/app'
@@ -17,45 +18,44 @@ import * as rewardsInternalsActions from './actions/rewards_internals_actions'
 window.cr.define('brave_rewards_internals', function () {
   'use strict'
 
-  function getRewardsEnabled () {
-    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
-    actions.getRewardsEnabled()
-  }
+  function getActions () {
+    const actions: any = getUtilActions()
+    if (actions) {
+      return actions
+    }
 
-  function getRewardsInternalsInfo () {
-    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
-    actions.getRewardsInternalsInfo()
+    const newActions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
+    setActions(newActions)
+    return newActions
   }
 
   function onGetRewardsEnabled (enabled: boolean) {
-    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
-    actions.onGetRewardsEnabled(enabled)
-    window.i18nTemplate.process(window.document, window.loadTimeData)
+    getActions().onGetRewardsEnabled(enabled)
   }
 
   function onGetRewardsInternalsInfo (info: RewardsInternals.State) {
-    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
-    actions.onGetRewardsInternalsInfo(info)
-    window.i18nTemplate.process(window.document, window.loadTimeData)
+    getActions().onGetRewardsInternalsInfo(info)
+  }
+
+  function balance (balance: RewardsInternals.Balance) {
+    getActions().onBalance(balance)
   }
 
   function initialize () {
-    getRewardsEnabled()
-    getRewardsInternalsInfo()
+    window.i18nTemplate.process(window.document, window.loadTimeData)
+
     render(
       <Provider store={store}>
         <App />
       </Provider>,
       document.getElementById('root'))
-    window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
   return {
-    getRewardsEnabled,
-    getRewardsInternalsInfo,
     initialize,
     onGetRewardsEnabled,
-    onGetRewardsInternalsInfo
+    onGetRewardsInternalsInfo,
+    balance
   }
 })
 

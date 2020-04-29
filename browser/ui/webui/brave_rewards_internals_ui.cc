@@ -45,6 +45,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetRewardsInternalsInfo(
       std::unique_ptr<brave_rewards::RewardsInternalsInfo> info);
   void OnPreferenceChanged();
+  void GetBalance(const base::ListValue* args);
+  void OnGetBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
@@ -68,6 +72,11 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.getRewardsInternalsInfo",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getBalance",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetBalance,
           base::Unretained(this)));
 }
 
@@ -138,6 +147,39 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
   }
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.onGetRewardsInternalsInfo", info_dict);
+}
+
+void RewardsInternalsDOMHandler::GetBalance(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  rewards_service_->FetchBalance(base::BindOnce(
+      &RewardsInternalsDOMHandler::OnGetBalance,
+      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value balance_value(base::Value::Type::DICTIONARY);
+
+  if (result == 0 && balance) {
+    balance_value.SetDoubleKey("total", balance->total);
+
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    for (auto const& wallet : balance->wallets) {
+      wallets.SetDoubleKey(wallet.first, wallet.second);
+    }
+    balance_value.SetKey("wallets", std::move(wallets));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.balance",
+      std::move(balance_value));
 }
 
 }  // namespace

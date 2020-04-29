@@ -815,11 +815,17 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }, {
       std::string("rewards-internals"), {
         { "amount", IDS_BRAVE_REWARDS_INTERNALS_AMOUNT },
+        { "balanceInfo", IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO },
+        { "bat", IDS_BRAVE_UI_BAT_TEXT },
         { "bootStamp", IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP },
+        { "contributionsInProgress", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS_IN_PROGRESS },   // NOLINT
         { "currentReconcile", IDS_BRAVE_REWARDS_INTERNALS_CURRENT_RECONCILE },
         { "invalid", IDS_BRAVE_REWARDS_INTERNALS_INVALID },
         { "keyInfoSeed", IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED },
         { "personaId", IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID },
+        { "processorBraveTokens", IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS },
+        { "processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD },
+        { "processorBraveUserFunds", IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS },
         { "refreshButton", IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON },
         { "retryLevel", IDS_BRAVE_REWARDS_INTERNALS_RETRY_LEVEL },
         { "retryStep", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP },
@@ -835,9 +841,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "retryStepVote", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VOTE },
         { "retryStepWinners", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_WINNERS },
         { "rewardsNotEnabled", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED },                // NOLINT
+        { "totalBalance", IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE },
         { "userId", IDS_BRAVE_REWARDS_INTERNALS_USER_ID },
         { "valid", IDS_BRAVE_REWARDS_INTERNALS_VALID },
         { "viewingId", IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID },
+        { "walletInfo", IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },
       }
     }, {

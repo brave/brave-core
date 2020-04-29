@@ -7,9 +7,9 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { CurrentReconcile } from './currentReconcile'
-import { KeyInfoSeed } from './keyInfoSeed'
-import { WalletPaymentId } from './walletPaymentId'
+import { Contributions } from './contributions'
+import { WalletInfo } from './walletInfo'
+import { Balance } from './balance'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -21,40 +21,35 @@ interface Props {
 }
 
 export class RewardsInternalsPage extends React.Component<Props, {}> {
+  componentDidMount () {
+    this.getData()
+  }
+
   get actions () {
     return this.props.actions
   }
 
+  getData = () => {
+    this.actions.getRewardsEnabled()
+    this.actions.getRewardsInternalsInfo()
+    this.actions.getBalance()
+  }
+
   onRefresh = () => {
-    chrome.send('brave_rewards_internals.getRewardsInternalsInfo')
+    this.getData()
   }
 
   render () {
-    const { isRewardsEnabled, info } = this.props.rewardsInternalsData
+    const { isRewardsEnabled, balance, info } = this.props.rewardsInternalsData
     if (isRewardsEnabled) {
       return (
         <div id='rewardsInternalsPage'>
-          <KeyInfoSeed isKeyInfoSeedValid={info.isKeyInfoSeedValid || false} />
-          <WalletPaymentId walletPaymentId={info.walletPaymentId || ''} />
-          <div>
-            <span i18n-content='personaId'/>: {info.personaId}
-          </div>
-          <div>
-            <span i18n-content='userId'/>: {info.userId}
-          </div>
-          <div>
-            <span i18n-content='bootStamp'/>: {new Date(info.bootStamp * 1000).toLocaleDateString()}
-          </div>
-          <button type='button' style={{ marginTop: '10px' }} onClick={this.onRefresh}>{getLocale('refreshButton')}</button>
-          {info.currentReconciles.map((item, index) => (
-            <span>
-              <hr/>
-              <div>
-                <span i18n-content='currentReconcile'/> {index + 1}
-                <CurrentReconcile currentReconcile={item || ''} />
-              </div>
-            </span>
-          ))}
+          <WalletInfo state={this.props.rewardsInternalsData} />
+          <Balance info={balance} />
+          <br/>
+          <br/>
+          <button type='button' onClick={this.onRefresh}>{getLocale('refreshButton')}</button>
+          <Contributions items={info.currentReconciles} />
         </div>)
     } else {
       return (
