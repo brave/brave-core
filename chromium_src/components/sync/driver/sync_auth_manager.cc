@@ -3,14 +3,15 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 
-#define BRAVE_REQUEST_ACCESS_TOKEN                        \
+#define BRAVE_REQUEST_ACCESS_TOKEN_1                      \
   VLOG(1) << __func__;                                    \
   if (private_key_.empty() || public_key_.empty()) {      \
     request_access_token_backoff_.InformOfRequest(false); \
     ScheduleAccessTokenRequest();                         \
     return;                                               \
-  }                                                       \
-  access_token_fetcher_->StartGetTimestamp();
+  }
+
+#define BRAVE_REQUEST_ACCESS_TOKEN_2 access_token_fetcher_->StartGetTimestamp();
 
 #define BRAVE_DETERMINE_ACCOUNT_TO_USE                                     \
   if (!public_key_.empty()) {                                              \
@@ -29,7 +30,8 @@
     return account;                                                        \
   }
 #include "../../../../../components/sync/driver/sync_auth_manager.cc"
-#undef BRAVE_REQUEST_ACCESS_TOKEN
+#undef BRAVE_REQUEST_ACCESS_TOKEN_1
+#undef BRAVE_REQUEST_ACCESS_TOKEN_2
 #undef BRAVE_DETERMINE_ACCOUNT_TO_USE
 
 namespace syncer {
@@ -39,6 +41,13 @@ void SyncAuthManager::CreateAccessTokenFetcher(
     const GURL& sync_service_url) {
   access_token_fetcher_ = std::make_unique<brave_sync::AccessTokenFetcherImpl>(
       this, url_loader_factory, sync_service_url, "");
+}
+
+void SyncAuthManager::SetAccessTokenFetcherForTest(
+    std::unique_ptr<brave_sync::AccessTokenFetcher> fetcher) {
+  access_token_fetcher_ = std::move(fetcher);
+  // This is to decouple FakeAccessTokenFetcher from non-test dependency
+  access_token_fetcher_->SetAccessTokenConsumerForTest(this);
 }
 
 void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {

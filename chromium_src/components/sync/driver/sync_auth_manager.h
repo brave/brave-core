@@ -7,6 +7,8 @@
   void CreateAccessTokenFetcher(                                            \
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,    \
       const GURL& sync_service_url);                                        \
+  void SetAccessTokenFetcherForTest(                                        \
+      std::unique_ptr<brave_sync::AccessTokenFetcher> fetcher);             \
   void DeriveSigningKeys(const std::string& seed);                          \
   void ResetKeys();                                                         \
   void OnGetTokenSuccess(                                                   \

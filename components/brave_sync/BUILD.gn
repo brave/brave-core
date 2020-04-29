@@ -14,6 +14,19 @@ config("brave_sync_config") {
   ]
 }
 
+source_set("access_token") {
+  sources = [
+    "access_token_consumer.cc",
+    "access_token_consumer.h",
+    "access_token_fetcher.cc",
+    "access_token_fetcher.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}
+
 source_set("prefs") {
   sources = [
     "brave_sync_prefs.cc",
@@ -60,15 +73,12 @@ source_set("features") {
 
 source_set("core") {
   sources = [
-    "access_token_consumer.cc",
-    "access_token_consumer.h",
-    "access_token_fetcher.cc",
-    "access_token_fetcher.h",
     "access_token_fetcher_impl.cc",
     "access_token_fetcher_impl.h",
   ]
 
   deps = [
+    ":access_token",
     ":crypto",
     ":features",
     ":prefs",
@@ -90,6 +100,19 @@ source_set("brave_sync") {
   deps = [
     ":core",
     "buildflags",
+    "//base",
+  ]
+}
+
+static_library("test_support") {
+  testonly = true
+  sources = [
+    "fake_access_token_fetcher.cc",
+    "fake_access_token_fetcher.h",
+  ]
+
+  deps = [
+    ":access_token",
     "//base",
   ]
 }

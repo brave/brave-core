@@ -7,6 +7,11 @@ AccessTokenFetcher::AccessTokenFetcher(AccessTokenConsumer* consumer)
 
 AccessTokenFetcher::~AccessTokenFetcher() {}
 
+void AccessTokenFetcher::SetAccessTokenConsumerForTest(
+    AccessTokenConsumer* consumer) {
+  consumer_ = consumer;
+}
+
 void AccessTokenFetcher::FireOnGetTokenSuccess(
     const AccessTokenConsumer::TokenResponse& token_response) {
   consumer_->OnGetTokenSuccess(token_response);

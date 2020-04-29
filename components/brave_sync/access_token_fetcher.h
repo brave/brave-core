@@ -21,6 +21,8 @@ class AccessTokenFetcher {
   // Cancels the current request and informs the consumer.
   virtual void CancelRequest() = 0;
 
+  void SetAccessTokenConsumerForTest(AccessTokenConsumer* consumer);
+
  protected:
   // Fires |OnGetTokenSuccess| on |consumer_|.
   void FireOnGetTokenSuccess(
@@ -33,7 +35,7 @@ class AccessTokenFetcher {
   void FireOnGetTimestampFailure(const GoogleServiceAuthError& error);
  private:
 
-  AccessTokenConsumer* const consumer_;
+  AccessTokenConsumer* consumer_;
 
   DISALLOW_COPY_AND_ASSIGN(AccessTokenFetcher);
 };
