@@ -31,6 +31,13 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state = { ...state }
       state.info = action.payload.info
       break
+    case types.GET_BALANCE:
+      chrome.send('brave_rewards_internals.getBalance')
+      break
+    case types.ON_BALANCE:
+      state = { ...state }
+      state.balance = action.payload.balance
+      break
     default:
       break
   }

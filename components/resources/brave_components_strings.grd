@@ -369,6 +369,10 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Wallet created</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE" desc="Total balance">Total balance</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS_IN_PROGRESS" desc="">Contributions in progress</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

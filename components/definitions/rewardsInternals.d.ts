@@ -4,6 +4,7 @@ declare namespace RewardsInternals {
   }
 
   export interface State {
+    balance: Balance
     isRewardsEnabled: boolean
     info: {
       isKeyInfoSeedValid: boolean
@@ -20,5 +21,10 @@ declare namespace RewardsInternals {
     amount: string
     retryStep: number
     retryLevel: number
+  }
+
+  export interface Balance {
+    total: number
+    wallets: Record<string, number>
   }
 }

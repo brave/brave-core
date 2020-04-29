@@ -8,13 +8,22 @@ import { action } from 'typesafe-actions'
 import { types } from '../constants/rewards_internals_types'
 
 export const getRewardsEnabled = () => action(types.GET_REWARDS_ENABLED)
+
 export const onGetRewardsEnabled = (enabled: boolean) =>
   action(types.ON_GET_REWARDS_ENABLED, {
     enabled
   })
 
 export const getRewardsInternalsInfo = () => action(types.GET_REWARDS_INTERNALS_INFO)
+
 export const onGetRewardsInternalsInfo = (info: RewardsInternals.State) =>
   action(types.ON_GET_REWARDS_INTERNALS_INFO, {
     info
+  })
+
+export const getBalance = () => action(types.GET_BALANCE)
+
+export const onBalance = (balance: RewardsInternals.Balance) =>
+  action(types.ON_BALANCE, {
+    balance
   })
