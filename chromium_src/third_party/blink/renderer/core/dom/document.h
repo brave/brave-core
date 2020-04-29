@@ -41,6 +41,8 @@ class CORE_EXPORT BraveSessionCache final
       scoped_refptr<blink::StaticBitmapImage> image_bitmap);
 
  private:
+  bool farbling_enabled_;
+  uint64_t session_key_;
   uint8_t domain_key_[32];
 
   scoped_refptr<blink::StaticBitmapImage> PerturbBalanced(
