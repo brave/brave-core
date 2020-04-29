@@ -3463,4 +3463,35 @@ void RewardsServiceImpl::OnGetAllMonthlyReportIds(
   std::move(callback).Run(ids);
 }
 
+void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
+  bat_ledger_->GetAllPromotions(
+      base::BindOnce(&RewardsServiceImpl::OnGetAllPromotions,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAllPromotions(
+    GetAllPromotionsCallback callback,
+    base::flat_map<std::string, ledger::PromotionPtr> promotions) {
+  std::vector<brave_rewards::Promotion> converted_rewards;
+  for (const auto& promotion : promotions) {
+    if (!promotion.second) {
+      continue;
+    }
+
+    brave_rewards::Promotion properties;
+    properties.promotion_id = promotion.second->id;
+    properties.amount = promotion.second->approximate_value;
+    properties.expires_at = promotion.second->expires_at;
+    properties.type = static_cast<uint32_t>(promotion.second->type);
+    properties.status = static_cast<uint32_t>(promotion.second->status);
+    properties.claimed_at = promotion.second->claimed_at;
+    properties.legacy_claimed = promotion.second->legacy_claimed;
+    properties.claim_id = promotion.second->claim_id;
+    properties.version = promotion.second->version;
+    converted_rewards.push_back(properties);
+  }
+  std::move(callback).Run(std::move(converted_rewards));
+}
+
 }  // namespace brave_rewards

@@ -27,3 +27,10 @@ export const onBalance = (balance: RewardsInternals.Balance) =>
   action(types.ON_BALANCE, {
     balance
   })
+
+export const getPromotions = () => action(types.GET_PROMOTIONS)
+
+export const onPromotions = (promotions: RewardsInternals.Promotion[]) =>
+  action(types.ON_PROMOTIONS, {
+    promotions
+  })

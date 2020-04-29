@@ -209,6 +209,9 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(GetAllMonthlyReportIds, void(
       brave_rewards::GetAllMonthlyReportIdsCallback callback));
+
+  MOCK_METHOD1(GetAllPromotions, void(
+      brave_rewards::GetAllPromotionsCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

@@ -19,7 +19,8 @@ const defaultState: RewardsInternals.State = {
     personaId: '',
     userId: '',
     bootStamp: 0
-  }
+  },
+  promotions: []
 }
 
 const cleanData = (state: RewardsInternals.State) => state

@@ -21,6 +21,10 @@ struct Promotion {
   uint64_t expires_at;
   uint32_t type;
   uint32_t status;
+  uint64_t claimed_at;
+  bool legacy_claimed;
+  std::string claim_id;
+  uint32_t version;
 };
 
 }  // namespace brave_rewards

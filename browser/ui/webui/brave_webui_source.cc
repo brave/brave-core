@@ -826,6 +826,24 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "processorBraveTokens", IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS },
         { "processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD },
         { "processorBraveUserFunds", IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS },
+        { "promotionAds", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS },
+        { "promotionAmount", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT },
+        { "promotionClaimedAt", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIMED_AT },             // NOLINT
+        { "promotionClaimId", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIM_ID },
+        { "promotionExpiresAt", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_EXPIRES_AT },              // NOLINT
+        { "promotionId", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ID },
+        { "promotionLegacyClaimed", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_CLAIMED },      // NOLINT
+        { "promotionLegacyNo", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_NO },                // NOLINT
+        { "promotionLegacyYes", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_YES },              // NOLINT
+        { "promotions", IDS_BRAVE_REWARDS_INTERNALS_PROMOTIONS },
+        { "promotionStatus", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS },
+        { "promotionStatusActive", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_ACTIVE },        // NOLINT
+        { "promotionStatusAttested", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_ATTESTED },    // NOLINT
+        { "promotionStatusFinished", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_FINISHED },    // NOLINT
+        { "promotionStatusOver", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_OVER },            // NOLINT
+        { "promotionType", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_TYPE },
+        { "promotionUGP", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_UGP },
+        { "promotionVersion", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION },
         { "refreshButton", IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON },
         { "retryLevel", IDS_BRAVE_REWARDS_INTERNALS_RETRY_LEVEL },
         { "retryStep", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP },

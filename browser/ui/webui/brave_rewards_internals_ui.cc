@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -49,6 +50,8 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetBalance(
     int32_t result,
     std::unique_ptr<brave_rewards::Balance> balance);
+  void GetPromotions(const base::ListValue* args);
+  void OnGetPromotions(const std::vector<brave_rewards::Promotion>& list);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
@@ -77,6 +80,11 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.getBalance",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::GetBalance,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getPromotions",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetPromotions,
           base::Unretained(this)));
 }
 
@@ -180,6 +188,42 @@ void RewardsInternalsDOMHandler::OnGetBalance(
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.balance",
       std::move(balance_value));
+}
+
+void RewardsInternalsDOMHandler::GetPromotions(const base::ListValue *args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetAllPromotions(base::BindOnce(
+      &RewardsInternalsDOMHandler::OnGetPromotions,
+      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetPromotions(
+    const std::vector<brave_rewards::Promotion>& list) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::ListValue promotions;
+  for (const auto & item : list) {
+    auto dict = std::make_unique<base::DictionaryValue>();
+    dict->SetDouble("amount", item.amount);
+    dict->SetString("promotionId", item.promotion_id);
+    dict->SetInteger("expiresAt", item.expires_at);
+    dict->SetInteger("type", item.type);
+    dict->SetInteger("status", item.status);
+    dict->SetInteger("claimedAt", item.claimed_at);
+    dict->SetBoolean("legacyClaimed", item.legacy_claimed);
+    dict->SetString("claimId", item.claim_id);
+    dict->SetInteger("version", item.version);
+    promotions.Append(std::move(dict));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.promotions",
+      std::move(promotions));
 }
 
 }  // namespace

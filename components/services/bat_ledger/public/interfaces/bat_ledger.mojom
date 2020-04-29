@@ -154,6 +154,8 @@ interface BatLedger {
   GetMonthlyReport(ledger.mojom.ActivityMonth month, int32 year) => (ledger.mojom.Result result, ledger.mojom.MonthlyReportInfo report);
 
   GetAllMonthlyReportIds() => (array<string> ids);
+
+  GetAllPromotions() => (map<string, ledger.mojom.Promotion> items);
 };
 
 interface BatLedgerClient {

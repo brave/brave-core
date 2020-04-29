@@ -373,6 +373,24 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS_IN_PROGRESS" desc="">Contributions in progress</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS" desc="">Ads</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT" desc="">Amount</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIMED_AT" desc="">Claimed at</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIM_ID" desc="">Claim ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_EXPIRES_AT" desc="">Expires at</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ID" desc="">ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_CLAIMED" desc="">Legacy promotion</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_NO" desc="">No</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_YES" desc="">Yes</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTIONS" desc="">Promotions</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS" desc="">Status</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_ACTIVE" desc="">Active</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_ATTESTED" desc="">Attested</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_FINISHED" desc="">Finished</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_OVER" desc="">Over</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_TYPE" desc="">Type</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_UGP" desc="">UGP</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION" desc="">Version</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
