@@ -22,7 +22,7 @@ class BraveAutocompleteSchemeClassifier
 
  private:
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  Profile* profile_;
+  Profile* profile_ = nullptr;
 #endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveAutocompleteSchemeClassifier);

@@ -17,8 +17,10 @@
 
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
     Profile* profile)
-    : ChromeAutocompleteSchemeClassifier(profile),
-      profile_(profile) {
+    : ChromeAutocompleteSchemeClassifier(profile) {
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  profile_ = profile;
+#endif
 }
 
 BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {
