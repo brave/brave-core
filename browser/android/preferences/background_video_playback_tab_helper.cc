@@ -39,14 +39,11 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
     return false;
 
   const std::string host = contents->GetLastCommittedURL().host();
-  const std::string path = contents->GetLastCommittedURL().path();
-  if (path.find("/watch") != std::string::npos) {
-    if (host.find("www.youtube.com") != std::string::npos ||
-        host.find("youtube.com") != std::string::npos ||
-        host.find("m.youtube.com") != std::string::npos) {
-        content::RenderFrameHost::AllowInjectingJavaScript();
-        return true;
-    }
+  if (host.find("www.youtube.com") != std::string::npos ||
+      host.find("youtube.com") != std::string::npos ||
+      host.find("m.youtube.com") != std::string::npos) {
+      content::RenderFrameHost::AllowInjectingJavaScript();
+      return true;
   }
 
   return false;
