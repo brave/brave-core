@@ -14,5 +14,5 @@ BraveTestLauncherDelegate::~BraveTestLauncherDelegate() = default;
 
 content::ContentMainDelegate*
 BraveTestLauncherDelegate::CreateContentMainDelegate() {
-  return new BraveMainDelegate();
+  return new BraveMainDelegate(base::TimeTicks::Now());
 }
