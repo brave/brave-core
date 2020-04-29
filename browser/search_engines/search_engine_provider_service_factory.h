@@ -8,6 +8,9 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
+class Profile;
+class SearchEngineProviderService;
+
 // The purpose of this factory is to configure proper search engine provider to
 // private/guest/tor profile before it is referenced.
 // Also, this factory doesn't have public api. Instead, service is instantiated
@@ -18,6 +21,11 @@ class SearchEngineProviderServiceFactory
   static SearchEngineProviderServiceFactory* GetInstance();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
+                           GuestWindowControllerTest);
+  // Only for test.
+  static SearchEngineProviderService* GetForProfile(Profile* profile);
+
   friend
       struct base::DefaultSingletonTraits<SearchEngineProviderServiceFactory>;
   SearchEngineProviderServiceFactory();

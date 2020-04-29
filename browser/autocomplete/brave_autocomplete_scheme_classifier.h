@@ -5,6 +5,7 @@
 #ifndef BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_SCHEME_CLASSIFIER_H_
 #define BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_SCHEME_CLASSIFIER_H_
 
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 
 class BraveAutocompleteSchemeClassifier : public ChromeAutocompleteSchemeClassifier {
@@ -16,7 +17,9 @@ class BraveAutocompleteSchemeClassifier : public ChromeAutocompleteSchemeClassif
       const std::string& scheme) const override;
 
  private:
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   Profile* profile_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveAutocompleteSchemeClassifier);
 };

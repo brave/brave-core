@@ -9,7 +9,6 @@
 
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

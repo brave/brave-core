@@ -53,6 +53,13 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
 }  // namespace
 
 // static
+SearchEngineProviderService* SearchEngineProviderServiceFactory::GetForProfile(
+    Profile* profile) {
+  return static_cast<SearchEngineProviderService*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+}
+
+// static
 SearchEngineProviderServiceFactory*
 SearchEngineProviderServiceFactory::GetInstance() {
   return base::Singleton<SearchEngineProviderServiceFactory>::get();

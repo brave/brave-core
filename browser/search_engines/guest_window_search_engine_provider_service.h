@@ -21,6 +21,9 @@ class GuestWindowSearchEngineProviderService
   ~GuestWindowSearchEngineProviderService() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
+                           GuestWindowControllerTest);
+
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
