@@ -9,6 +9,8 @@
 #include <string>
 
 namespace ledger {
+  const char kStateEnabled[] = "enabled";
+  const char kStateEnabledMigrated[] = "enabled_migrated";
   const char kStateServerPublisherListStamp[] = "server_publisher_list_stamp";
   const char kStateUpholdAnonAddress[] = "uphold_anon_address";
   const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";

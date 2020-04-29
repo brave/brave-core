@@ -1293,6 +1293,10 @@ BATLedgerBridge(BOOL,
 - (bool)getBooleanState:(const std::string&)name
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
+  if (![self.prefs objectForKey:key]) {
+    return NO;
+  }
+
   return [self.prefs[key] boolValue];
 }
 
