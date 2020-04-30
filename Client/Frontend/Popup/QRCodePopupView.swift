@@ -15,6 +15,7 @@ class QRCodePopupView: PopupView {
     
     private let title = UILabel().then {
         $0.text = Strings.themeQRCodeShareTitle
+        $0.appearanceTextColor = .black
         $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
         $0.font = UIFont.systemFont(ofSize: 16, weight: .medium)
     }
