@@ -34,12 +34,12 @@ extension Preferences {
         static let firstPingParam: Option<Bool> =
             Option<Bool>(key: "dau.first-ping", default: Preferences.DAU.lastLaunchInfo.value == nil)
     }
-    final class URP {
+    public final class URP {
         static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
         static let retryCountdown = Option<Int?>(key: "urp.retry-countdown", default: nil)
         static let customHeaderData = Option<Data?>(key: "urp.custom-header-data", default: nil)
         static let downloadId = Option<String?>(key: "urp.referral.download-id", default: nil)
-        static let referralCode = Option<String?>(key: "urp.referral.code", default: nil)
+        public static let referralCode = Option<String?>(key: "urp.referral.code", default: nil)
         static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
     }
     

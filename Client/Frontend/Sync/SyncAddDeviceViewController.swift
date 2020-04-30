@@ -12,6 +12,8 @@ enum DeviceType {
 
 class SyncAddDeviceViewController: SyncViewController {
     var doneHandler: (() -> Void)?
+    
+    private let barcodeSize: CGFloat = 200.0
 
     lazy var stackView: UIStackView = {
         let stack = UIStackView()
@@ -117,7 +119,7 @@ class SyncAddDeviceViewController: SyncViewController {
             qrCodeView?.snp.makeConstraints { make in
                 make.top.bottom.equalTo(0).inset(22)
                 make.centerX.equalTo(self.containerView)
-                make.size.equalTo(BarcodeSize)
+                make.size.equalTo(barcodeSize)
             }
             
             self.codewordsView.text = passphrase.joined(separator: " ")

@@ -47,6 +47,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
     }
     
+    private static let isFavoritePredicate = NSPredicate(format: "isFavorite == true")
+    
     // MARK: - Public interface
     
     // MARK: Create
@@ -141,6 +143,15 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return getFoldersInternal(bookmark: nil)
     }
     
+    public class var hasFavorites: Bool {
+        guard let count = count(predicate: isFavoritePredicate) else { return false }
+        return count > 0
+    }
+    
+    public class var allFavorites: [Bookmark] {
+        return all(where: isFavoritePredicate) ?? []
+    }
+    
     // MARK: Update
     
     public func update(customTitle: String?, url: String?) {
@@ -168,6 +179,18 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         DataController.perform { context in
             migrateOrder(forFavorites: true, context: context)
             migrateOrder(forFavorites: false, context: context)
+        }
+    }
+    
+    /// WARNING: This method deletes all current favorites and replaces them with new one from the array.
+    public class func forceOverwriteFavorites(with favorites: [(url: URL, title: String)]) {
+        DataController.perform { context in
+            Bookmark.deleteAll(predicate: isFavoritePredicate, context: .existing(context))
+            
+            favorites.forEach {
+                addInternal(url: $0.url, title: $0.title, isFavorite: true, sendToSync: false,
+                            context: .existing(context))
+            }
         }
     }
     
@@ -330,7 +353,7 @@ extension Bookmark {
                                     context: NSManagedObjectContext) {
         
         let predicate = forFavorites ?
-            NSPredicate(format: "isFavorite == true") : allBookmarksOfAGivenLevelPredicate(parent: parentFolder)
+            isFavoritePredicate : allBookmarksOfAGivenLevelPredicate(parent: parentFolder)
         
         let orderSort = NSSortDescriptor(key: #keyPath(Bookmark.order), ascending: true)
         let folderSort = NSSortDescriptor(key: #keyPath(Bookmark.isFolder), ascending: false)
