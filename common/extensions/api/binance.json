@@ -198,6 +198,10 @@
           {
             "type": "string",
             "name": "symbol"
+          },
+          {
+            "type": "string",
+            "name": "tickerNetwork"
           }, {
             "type": "function",
             "name": "callback",
@@ -207,7 +211,7 @@
                 "type": "string"
               },
               {
-                "name": "depositURL",
+                "name": "depositTag",
                 "type": "string"
               }
             ]
@@ -268,6 +272,24 @@
               {
                 "name": "success",
                 "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getCoinNetworks",
+        "type": "function",
+        "description": "Retrieves the primary networks for Binance assets",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "networks",
+                "type": "object",
+                "additionalProperties": { "type": "string" }
               }
             ]
           }

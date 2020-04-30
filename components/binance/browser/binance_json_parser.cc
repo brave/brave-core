@@ -217,9 +217,9 @@ bool BinanceJSONParser::GetTickerVolumeFromJSON(
 //    "success": true
 // }
 bool BinanceJSONParser::GetDepositInfoFromJSON(
-    const std::string& json, std::string *address, std::string *url) {
+    const std::string& json, std::string *address, std::string *tag) {
   DCHECK(address);
-  DCHECK(url);
+  DCHECK(tag);
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -241,16 +241,11 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
     return false;
   }
 
-  std::string deposit_url;
-  std::string deposit_address;
-
-  if (!data_dict->GetString("url", &deposit_url) ||
-      !data_dict->GetString("address", &deposit_address)) {
+  if (!data_dict->GetString("tag", tag) ||
+      !data_dict->GetString("address", address)) {
     return false;
   }
 
-  *url = deposit_url;
-  *address = deposit_address;
   return true;
 }
 
@@ -415,6 +410,76 @@ bool BinanceJSONParser::RevokeTokenFromJSON(
 
   if (!response_dict->GetBoolean("success", success_status)) {
     return false;
+  }
+
+  return true;
+}
+
+// static
+// Response Format:
+// {
+//    "code": "000000",
+//    "message": null,
+//    "messageDetail": null,
+//    "success": true,
+//    "data": [
+//        {
+//            "coin": "CTR",
+//            "networkList": [
+//                {
+//                    "coin": "CTR",
+//                    "network": "ETH"
+//                }
+//            ]
+//        }
+//    ]
+// }
+//
+bool BinanceJSONParser::GetCoinNetworksFromJSON(
+    const std::string& json, std::map<std::string, std::string>* networks) {
+  if (!networks) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* data_arr = records_v->FindKey("data");
+  if (!data_arr || !data_arr->is_list()) {
+    return false;
+  }
+
+  for (const base::Value &coin : data_arr->GetList()) {
+    const base::Value* coin_name = coin.FindKey("coin");
+    if (!coin_name || !coin_name->is_string()) {
+      return false;
+    }
+
+    const base::Value* network_list = coin.FindKey("networkList");
+    if (!network_list || !network_list->is_list()) {
+      return false;
+    }
+
+    for (const base::Value &network : network_list->GetList()) {
+      const base::Value* network_name = network.FindKey("network");
+      const base::Value* is_default = network.FindKey("isDefault");
+      const bool default_valid =
+          is_default && is_default->is_bool() && is_default->GetBool();
+      const bool network_name_valid =
+          network_name && network_name->is_string();
+
+      if (default_valid && network_name_valid) {
+        networks->insert({coin_name->GetString(), network_name->GetString()});
+        break;
+      }
+    }
   }
 
   return true;

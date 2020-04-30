@@ -254,6 +254,7 @@ BinanceGetDepositInfoFunction::Run() {
 
   auto* service = GetBinanceService(browser_context());
   bool info_request = service->GetDepositInfo(params->symbol,
+      params->ticker_network,
       base::BindOnce(
           &BinanceGetDepositInfoFunction::OnGetDepositInfo, this));
 
@@ -267,11 +268,11 @@ BinanceGetDepositInfoFunction::Run() {
 
 void BinanceGetDepositInfoFunction::OnGetDepositInfo(
     const std::string& deposit_address,
-    const std::string& deposit_url,
+    const std::string& deposit_tag,
     bool success) {
   Respond(TwoArguments(
       std::make_unique<base::Value>(deposit_address),
-      std::make_unique<base::Value>(deposit_url)));
+      std::make_unique<base::Value>(deposit_tag)));
 }
 
 ExtensionFunction::ResponseAction
@@ -360,6 +361,37 @@ BinanceRevokeTokenFunction::Run() {
 
 void BinanceRevokeTokenFunction::OnRevokeToken(bool success) {
   Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetCoinNetworksFunction::Run() {
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  bool balance_success = service->GetCoinNetworks(
+      base::BindOnce(
+          &BinanceGetCoinNetworksFunction::OnGetCoinNetworks,
+          this));
+
+  if (!balance_success) {
+    return RespondNow(Error("Could not send request to get coin networks"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetCoinNetworksFunction::OnGetCoinNetworks(
+    const std::map<std::string, std::string>& networks) {
+  auto coin_networks = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  for (const auto& network : networks) {
+    coin_networks->SetStringKey(network.first, network.second);
+  }
+
+  Respond(OneArgument(std::move(coin_networks)));
 }
 
 }  // namespace api
