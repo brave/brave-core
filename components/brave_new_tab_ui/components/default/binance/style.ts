@@ -365,7 +365,7 @@ export const MemoArea = styled<{}, 'div'>('div')`
 
 export const MemoInfo = styled<{}, 'div'>('div')`
   float: left;
-  max-width: 110px;
+  max-width: 160px;
 `
 
 export const CopyButton = styled(GenButton)`
