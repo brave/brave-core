@@ -102,7 +102,8 @@ class FavoritesViewController: UIViewController, Themeable {
     }
     
     private lazy var shareWithQRButton = QRCodeButton().then {
-        $0.setImage(#imageLiteral(resourceName: "add_to_favorites_share_action"), for: .normal)
+        $0.setImage(#imageLiteral(resourceName: "qr_code_button"), for: .normal)
+        $0.contentMode = .scaleAspectFit
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 24
         $0.backgroundColor = .white
