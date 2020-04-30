@@ -452,8 +452,8 @@ void DatabasePendingContribution::GetAllRecords(
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
-    "pi.url, pi.favIcon, spi.status, pi.provider, pc.amount, pc.added_date, "
-    "pc.viewing_id, pc.type "
+    "pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider, "
+    "pc.amount, pc.added_date, pc.viewing_id, pc.type "
     "FROM %s as pc "
     "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
     "LEFT JOIN server_publisher_info AS spi "
@@ -470,6 +470,7 @@ void DatabasePendingContribution::GetAllRecords(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
@@ -511,12 +512,13 @@ void DatabasePendingContribution::OnGetAllRecords(
     info->favicon_url = GetStringColumn(record_pointer, 4);
     info->status = static_cast<ledger::mojom::PublisherStatus>(
         GetInt64Column(record_pointer, 5));
-    info->provider = GetStringColumn(record_pointer, 6);
-    info->amount = GetDoubleColumn(record_pointer, 7);
-    info->added_date = GetInt64Column(record_pointer, 8);
-    info->viewing_id = GetStringColumn(record_pointer, 9);
+    info->status_updated_at = GetInt64Column(record_pointer, 6);
+    info->provider = GetStringColumn(record_pointer, 7);
+    info->amount = GetDoubleColumn(record_pointer, 8);
+    info->added_date = GetInt64Column(record_pointer, 9);
+    info->viewing_id = GetStringColumn(record_pointer, 10);
     info->type = static_cast<ledger::RewardsType>(
-        GetIntColumn(record_pointer, 10));
+        GetIntColumn(record_pointer, 11));
     info->expiration_date =
         info->added_date +
         braveledger_ledger::_pending_contribution_expiration;

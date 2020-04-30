@@ -591,7 +591,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
 
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "ci.amount, ci.created_at, spi.status, pi.provider "
+      "ci.amount, ci.created_at, spi.status, spi.updated_at, pi.provider "
       "FROM %s as ci "
       "INNER JOIN %s AS cp "
       "ON cp.contribution_id = ci.contribution_id "
@@ -623,6 +623,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE
@@ -662,7 +663,8 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     info->reconcile_stamp = GetInt64Column(record_pointer, 5);
     info->status = static_cast<ledger::mojom::PublisherStatus>(
         GetInt64Column(record_pointer, 6));
-    info->provider = GetStringColumn(record_pointer, 7);
+    info->status_updated_at = GetInt64Column(record_pointer, 7);
+    info->provider = GetStringColumn(record_pointer, 8);
 
     list.push_back(std::move(info));
   }

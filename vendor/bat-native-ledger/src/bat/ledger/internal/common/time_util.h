@@ -25,6 +25,13 @@ uint32_t GetYear(const base::Time& time);
 
 uint64_t GetCurrentTimeStamp();
 
+base::TimeDelta GetRandomizedDelay(base::TimeDelta delay);
+
+base::TimeDelta GetRandomizedDelayWithBackoff(
+    base::TimeDelta delay,
+    base::TimeDelta max_delay,
+    int backoff_count);
+
 }  // namespace braveledger_time_util
 
 #endif  // BRAVELEDGER_COMMON_TIME_UTIL_H_

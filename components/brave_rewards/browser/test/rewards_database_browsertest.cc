@@ -931,4 +931,16 @@ IN_PROC_BROWSER_TEST_F(
   }
 }
 
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_28_ServerPublisherInfoCleared) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  InitDB();
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  EXPECT_EQ(CountTableRows("server_publisher_info"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_amounts"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_banner"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_links"), 0);
+}
+
 }  // namespace rewards_browsertest

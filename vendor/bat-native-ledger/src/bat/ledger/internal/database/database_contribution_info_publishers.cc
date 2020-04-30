@@ -392,7 +392,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
 
   const std::string query = base::StringPrintf(
     "SELECT cip.contribution_id, cip.publisher_key, cip.total_amount, "
-    "pi.name, pi.url, pi.favIcon, spi.status, pi.provider "
+    "pi.name, pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider "
     "FROM %s as cip "
     "INNER JOIN publisher_info AS pi ON cip.publisher_key = pi.publisher_id "
     "LEFT JOIN server_publisher_info AS spi "
@@ -412,6 +412,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE
   };
@@ -449,7 +450,8 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     publisher->favicon_url = GetStringColumn(record_pointer, 5);
     publisher->status = static_cast<ledger::mojom::PublisherStatus>(
         GetInt64Column(record_pointer, 6));
-    publisher->provider = GetStringColumn(record_pointer, 7);
+    publisher->status_updated_at = GetInt64Column(record_pointer, 7);
+    publisher->provider = GetStringColumn(record_pointer, 8);
 
     pair_list.push_back(std::make_pair(
         GetStringColumn(record_pointer, 0),

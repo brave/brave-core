@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ledger/mojom_structs.h"
-
 namespace braveledger_request_util {
 
-std::string GetPublisherListUrl(const uint32_t page);
+std::string GetPublisherPrefixListUrl();
+
+std::string GetPublisherInfoUrl(const std::string& hash_prefix);
 
 }  // namespace braveledger_request_util
 

@@ -124,6 +124,23 @@ std::string BuildApiUrl() {
   return url;
 }
 
+std::string BuildPrivateCdnUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING:
+      url = PRIVATE_CDN_STAGING_SERVER;
+      break;
+    case ledger::Environment::PRODUCTION:
+      url = PRIVATE_CDN_PRODUCTION_SERVER;
+      break;
+    case ledger::Environment::DEVELOPMENT:
+      url = PRIVATE_CDN_DEVELOPMENT_SERVER;
+      break;
+  }
+
+  return url;
+}
+
 }  // namespace
 
 namespace braveledger_request_util {
@@ -156,6 +173,10 @@ std::string BuildUrl(
     }
     case ServerTypes::kAPI: {
       url = BuildApiUrl();
+      break;
+    }
+    case ServerTypes::kPrivateCDN: {
+      url = BuildPrivateCdnUrl();
       break;
     }
   }

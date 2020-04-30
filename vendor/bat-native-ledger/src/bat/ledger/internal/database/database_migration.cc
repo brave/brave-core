@@ -17,6 +17,7 @@
 #include "bat/ledger/internal/database/database_processed_publisher.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
+#include "bat/ledger/internal/database/database_publisher_prefix_list.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
 #include "bat/ledger/internal/database/database_sku_order.h"
@@ -44,6 +45,8 @@ DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
       std::make_unique<DatabaseProcessedPublisher>(ledger_);
   promotion_ = std::make_unique<DatabasePromotion>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
+  publisher_prefix_list_ =
+      std::make_unique<DatabasePublisherPrefixList>(ledger_);
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
       std::make_unique<DatabaseServerPublisherInfo>(ledger_);
@@ -145,10 +148,13 @@ bool DatabaseMigration::Migrate(
     return false;
   }
 
-  if (!sku_order_->Migrate(transaction, target)) {
+  if (!publisher_prefix_list_->Migrate(transaction, target)) {
     return false;
   }
 
+  if (!sku_order_->Migrate(transaction, target)) {
+    return false;
+  }
 
   if (!sku_transaction_->Migrate(transaction, target)) {
     return false;
