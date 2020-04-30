@@ -45,6 +45,21 @@ class NTPTableViewController: TableViewController {
         
         navigationItem.title = Strings.NTP.settingsTitle
         tableView.accessibilityIdentifier = "NewTabPageSettings.tableView"
+        loadSections()
+        
+        Preferences.NewTabPage.backgroundImages.observe(from: self)
+    }
+    
+    private func loadSections() {
+        var section = Section(rows: [Row.boolRow(title: Strings.NTP.settingsAutoOpenKeyboard,
+                                                 option: Preferences.NewTabPage.autoOpenKeyboard),
+                                     Row.boolRow(title: Strings.NTP.settingsBackgroundImages,
+                                                 option: Preferences.NewTabPage.backgroundImages)])
+        
+        if Preferences.NewTabPage.backgroundImages.value {
+            section.rows.append(backgroundImagesSetting(section: section))
+        }
+        
         dataSource.sections = [section]
     }
     
@@ -64,7 +79,7 @@ class NTPTableViewController: TableViewController {
         return available
     }()
     
-    private func moreSetting(section: Section) -> Row {
+    private func backgroundImagesSetting(section: Section) -> Row {
         var row = Row(
             text: Strings.NTP.settingsBackgroundImageSubMenu,
             detailText: selectedItem().displayString,
@@ -94,14 +109,10 @@ class NTPTableViewController: TableViewController {
         }
         return row
     }
-    
-    private lazy var section: Section = {
-        var section = Section(rows: [])
-        section.rows = [
-            Row.boolRow(title: Strings.NTP.settingsAutoOpenKeyboard, option: Preferences.NewTabPage.autoOpenKeyboard),
-            Row.boolRow(title: Strings.NTP.settingsBackgroundImages, option: Preferences.NewTabPage.backgroundImages),
-            moreSetting(section: section)
-        ]
-        return section
-    }()
+}
+
+extension NTPTableViewController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        loadSections()
+    }
 }
