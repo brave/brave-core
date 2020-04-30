@@ -604,6 +604,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_extension_functional_test.h",
     "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
+    "//brave/browser/farbling/brave_webaudio_farbling_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
     "//brave/browser/net/brave_system_request_handler_browsertest.cc",
