@@ -197,9 +197,8 @@ ledger::PublisherStatus PublisherServerList::ParsePublisherStatus(
 void PublisherServerList::ParsePublisherList(
     const std::string& data,
     ParsePublisherListCallback callback) {
-  auto list_publisher =
-      std::make_shared<std::vector<ledger::ServerPublisherPartial>>();
-  auto list_banner = std::make_shared<std::vector<ledger::PublisherBanner>>();
+  auto publishers =
+      std::make_shared<std::vector<ledger::ServerPublisherInfoPtr>>();
 
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
@@ -208,8 +207,7 @@ void PublisherServerList::ParsePublisherList(
     return;
   }
 
-  list_publisher->reserve(value->GetList().size());
-  list_banner->reserve(value->GetList().size());
+  publishers->reserve(value->GetList().size());
 
   for (auto& item : value->GetList()) {
     if (!item.is_list()) {
@@ -229,24 +227,21 @@ void PublisherServerList::ParsePublisherList(
       continue;
     }
 
-    list_publisher->emplace_back(
+    // Banner
+    ledger::PublisherBannerPtr banner = nullptr;
+    if (list[4].is_dict() && !list[4].DictEmpty()) {
+      banner = ParsePublisherBanner(&list[4], list[0].GetString());
+    }
+
+    publishers->push_back(ledger::ServerPublisherInfo::New(
         list[0].GetString(),
         ParsePublisherStatus(list[1].GetString()),
         list[2].GetBool(),
-        list[3].GetString());
-
-    // Banner
-    if (!list[4].is_dict() || list[4].DictEmpty()) {
-      continue;
-    }
-
-    list_banner->push_back(ledger::PublisherBanner());
-    auto& banner = list_banner->back();
-    ParsePublisherBanner(&banner, &list[4]);
-    banner.publisher_key = list[0].GetString();
+        list[3].GetString(),
+        std::move(banner)));
   }
 
-  if (list_publisher->empty()) {
+  if (publishers->empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -254,21 +249,21 @@ void PublisherServerList::ParsePublisherList(
   auto clear_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
       _1,
-      list_publisher,
-      list_banner,
+      publishers,
       callback);
 
   ledger_->ClearServerPublisherList(clear_callback);
 }
 
-void PublisherServerList::ParsePublisherBanner(
-    ledger::PublisherBanner* banner,
-    base::Value* dictionary) {
-  DCHECK(dictionary && banner);
+ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
+    base::Value* dictionary,
+    const std::string& publisher_key) {
+  DCHECK(dictionary);
   if (!dictionary->is_dict()) {
-    return;
+    return nullptr;
   }
 
+  auto banner = ledger::PublisherBanner::New();
   const auto* title = dictionary->FindStringKey("title");
   if (title) {
     banner->title = *title;
@@ -306,25 +301,23 @@ void PublisherServerList::ParsePublisherBanner(
       }
     }
   }
+
+  banner->publisher_key = publisher_key;
+
+  return banner;
 }
 
 void PublisherServerList::SaveParsedData(
     const ledger::Result result,
-    const SharedServerPublisherPartial& list_publisher,
-    const SharedPublisherBanner& list_banner,
+    const SharedServerPublisher& list,
     ParsePublisherListCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  if (list_publisher && !list_publisher->empty()) {
-    SavePublishers(list_publisher, list_banner, callback);
-    return;
-  }
-
-  if (list_banner && !list_banner->empty()) {
-    SaveBanners(list_banner, callback);
+  if (list && !list->empty()) {
+    SavePublishers(list, callback);
     return;
   }
 
@@ -332,71 +325,40 @@ void PublisherServerList::SaveParsedData(
 }
 
 void PublisherServerList::SavePublishers(
-    const SharedServerPublisherPartial& list_publisher,
-    const SharedPublisherBanner& list_banner,
+    const SharedServerPublisher& list,
     ParsePublisherListCallback callback) {
-  if (!list_publisher) {
+  if (!list) {
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
-  const int max_insert_records_ = 100000;
+  const int max_insert_records_ = 70000;
 
   int32_t interval = max_insert_records_;
-  const auto list_size = list_publisher->size();
+  const auto list_size = list->size();
   if (list_size < max_insert_records_) {
     interval = list_size;
   }
 
-  std::vector<ledger::ServerPublisherPartial> save_list(
-      list_publisher->begin(),
-      list_publisher->begin() + interval);
-  auto new_list_publisher =
-      std::make_shared<std::vector<ledger::ServerPublisherPartial>>(
-          list_publisher->begin() + interval,
-          list_publisher->end());
+  ledger::ServerPublisherInfoList save_list;
+  SharedServerPublisher new_list;
+  int i = 0;
+  for (auto& item : *list) {
+    if (i <= interval) {
+      save_list.push_back(std::move(item));
+    } else {
+      new_list->push_back(std::move(item));
+    }
+  }
+
 
   auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
       _1,
-      new_list_publisher,
-      list_banner,
+      new_list,
       callback);
 
-  ledger_->InsertServerPublisherList(save_list, save_callback);
-}
-
-void PublisherServerList::SaveBanners(
-    const SharedPublisherBanner& list_banner,
-    ParsePublisherListCallback callback) {
-  if (!list_banner) {
-    callback(ledger::Result::LEDGER_OK);
-    return;
-  }
-
-  const int max_insert_records_ = 80000;
-
-  int32_t interval = max_insert_records_;
-  const auto list_size = list_banner->size();
-  if (list_size < max_insert_records_) {
-    interval = list_size;
-  }
-
-  std::vector<ledger::PublisherBanner> save_list(
-      list_banner->begin(),
-      list_banner->begin() + interval);
-  auto new_list_banner = std::make_shared<std::vector<ledger::PublisherBanner>>(
-      list_banner->begin() + interval,
-      list_banner->end());
-
-  auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
-      this,
-      _1,
-      nullptr,
-      new_list_banner,
-      callback);
-
-  ledger_->InsertPublisherBannerList(save_list, save_callback);
+  ledger_->InsertServerPublisherList(std::move(save_list), save_callback);
 }
 
 void PublisherServerList::ClearTimer() {

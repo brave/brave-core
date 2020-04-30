@@ -22,7 +22,7 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
 
   void InsertOrUpdateList(
       ledger::DBTransaction* transaction,
-      const std::vector<ledger::PublisherBanner>& list);
+      ledger::PublisherBannerList list);
 
   void GetRecord(
       const std::string& publisher_key,

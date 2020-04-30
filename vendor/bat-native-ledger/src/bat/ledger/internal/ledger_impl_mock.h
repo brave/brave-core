@@ -492,11 +492,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(ClearServerPublisherList, void(ledger::ResultCallback));
 
   MOCK_METHOD2(InsertServerPublisherList, void(
-      const std::vector<ledger::ServerPublisherPartial>&,
-      ledger::ResultCallback));
-
-  MOCK_METHOD2(InsertPublisherBannerList, void(
-      const std::vector<ledger::PublisherBanner>&,
+      ledger::ServerPublisherInfoList list,
       ledger::ResultCallback));
 
   MOCK_METHOD2(GetServerPublisherInfo, void(

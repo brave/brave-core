@@ -110,6 +110,7 @@ using PromotionStatus = mojom::PromotionStatus;
 
 using PublisherBanner = mojom::PublisherBanner;
 using PublisherBannerPtr = mojom::PublisherBannerPtr;
+using PublisherBannerList = std::vector<PublisherBannerPtr>;
 
 using PublisherInfo = mojom::PublisherInfo;
 using PublisherInfoPtr = mojom::PublisherInfoPtr;
@@ -135,6 +136,7 @@ using RewardsType = mojom::RewardsType;
 
 using ServerPublisherInfo = mojom::ServerPublisherInfo;
 using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
+using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
 
 using ServerPublisherPartial = mojom::ServerPublisherPartial;
 using ServerPublisherPartialPtr = mojom::ServerPublisherPartialPtr;

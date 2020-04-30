@@ -177,7 +177,7 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
 
 void DatabaseServerPublisherLinks::InsertOrUpdateList(
     ledger::DBTransaction* transaction,
-    const std::vector<ledger::PublisherBanner>& list) {
+    ledger::PublisherBannerList list) {
   DCHECK(transaction);
 
   if (list.empty()) {
@@ -192,12 +192,12 @@ void DatabaseServerPublisherLinks::InsertOrUpdateList(
   std::string query;
   for (const auto& info : list) {
     // It's ok if links are empty
-    if (info.links.empty()) {
+    if (!info || info->links.empty()) {
       continue;
     }
 
 
-    for (const auto& link : info.links) {
+    for (const auto& link : info->links) {
       if (link.second.empty()) {
         continue;
       }
@@ -213,7 +213,7 @@ void DatabaseServerPublisherLinks::InsertOrUpdateList(
 
       query += base::StringPrintf(
         R"(("%s","%s","%s"))",
-        info.publisher_key.c_str(),
+        info->publisher_key.c_str(),
         link.first.c_str(),
         link.second.c_str());
       query += (i == kBatchLimit - 1) ? ";" : ",";

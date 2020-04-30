@@ -24,12 +24,8 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 
   void DeleteAll(ledger::ResultCallback callback);
 
-  void InsertOrUpdatePartialList(
-      const std::vector<ledger::ServerPublisherPartial>& list,
-      ledger::ResultCallback callback);
-
-  void InsertOrUpdateBannerList(
-      const std::vector<ledger::PublisherBanner>& list,
+  void InsertOrUpdateList(
+      ledger::ServerPublisherInfoList list,
       ledger::ResultCallback callback);
 
   void GetRecord(

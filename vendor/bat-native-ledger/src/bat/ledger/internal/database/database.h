@@ -257,11 +257,7 @@ class Database {
   void ClearServerPublisherList(ledger::ResultCallback callback);
 
   void InsertServerPublisherList(
-      const std::vector<ledger::ServerPublisherPartial>& list,
-      ledger::ResultCallback callback);
-
-  void InsertPublisherBannerList(
-      const std::vector<ledger::PublisherBanner>& list,
+      ledger::ServerPublisherInfoList list,
       ledger::ResultCallback callback);
 
   void GetServerPublisherInfo(

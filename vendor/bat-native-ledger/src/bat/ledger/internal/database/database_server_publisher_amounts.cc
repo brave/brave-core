@@ -174,7 +174,7 @@ bool DatabaseServerPublisherAmounts::MigrateToV15(
 
 void DatabaseServerPublisherAmounts::InsertOrUpdateList(
     ledger::DBTransaction* transaction,
-    const std::vector<ledger::PublisherBanner>& list) {
+    ledger::PublisherBannerList list) {
   DCHECK(transaction);
 
   if (list.empty()) {
@@ -189,7 +189,7 @@ void DatabaseServerPublisherAmounts::InsertOrUpdateList(
   std::string query;
   for (const auto& info : list) {
     // It's ok if amounts are empty
-    if (info.amounts.empty()) {
+    if (!info || info->amounts.empty()) {
       continue;
     }
 
@@ -197,7 +197,7 @@ void DatabaseServerPublisherAmounts::InsertOrUpdateList(
       query += base_query;
     }
 
-    for (const auto& amount : info.amounts) {
+    for (const auto& amount : info->amounts) {
       if (i == kBatchLimit) {
         query += base_query;
         i = 0;
@@ -205,7 +205,7 @@ void DatabaseServerPublisherAmounts::InsertOrUpdateList(
 
       query += base::StringPrintf(
         R"(("%s",%g))",
-        info.publisher_key.c_str(),
+        info->publisher_key.c_str(),
         amount);
       query += (i == kBatchLimit - 1) ? ";" : ",";
       i++;

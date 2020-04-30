@@ -121,8 +121,8 @@ void DatabaseServerPublisherInfo::DeleteAll(ledger::ResultCallback callback) {
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
-    const std::vector<ledger::ServerPublisherPartial>& list,
+void DatabaseServerPublisherInfo::InsertOrUpdateList(
+    ledger::ServerPublisherInfoList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     callback(ledger::Result::LEDGER_OK);
@@ -134,8 +134,16 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
       kTableName);
 
   size_t i = 0;
-  std::string main_query = base_query;
+  std::string main_query;
   for (const auto& info : list) {
+    if (!info) {
+      continue;
+    }
+
+    if (i == 0) {
+      main_query += base_query;
+    }
+
     if (i == kBatchLimit) {
       main_query += base_query;
       i = 0;
@@ -143,10 +151,10 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
 
     main_query += base::StringPrintf(
         R"(("%s",%d,%d,"%s"))",
-        info.publisher_key.c_str(),
-        static_cast<int>(info.status),
-        info.excluded,
-        info.address.c_str());
+        info->publisher_key.c_str(),
+        static_cast<int>(info->status),
+        info->excluded,
+        info->address.c_str());
     main_query += (i == kBatchLimit - 1) ? ";" : ",";
     i++;
   }
@@ -165,17 +173,13 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
 
   transaction->commands.push_back(std::move(command));
 
+  banner_->InsertOrUpdateList(transaction.get(), std::move(list));
+
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
       callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
-}
-
-void DatabaseServerPublisherInfo::InsertOrUpdateBannerList(
-    const std::vector<ledger::PublisherBanner>& list,
-    ledger::ResultCallback callback) {
-  banner_->InsertOrUpdateList(list, callback);
 }
 
 void DatabaseServerPublisherInfo::GetRecord(
