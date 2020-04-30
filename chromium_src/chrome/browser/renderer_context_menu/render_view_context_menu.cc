@@ -10,8 +10,8 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
-#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
@@ -27,9 +27,9 @@ namespace {
 GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
   AutocompleteMatch match;
   AutocompleteClassifier classifier(
-      std::make_unique<BraveAutocompleteController>(
+      std::make_unique<AutocompleteController>(
           std::make_unique<BraveAutocompleteProviderClient>(profile),
-          nullptr, AutocompleteClassifier::DefaultOmniboxProviders()),
+          AutocompleteClassifier::DefaultOmniboxProviders()),
       std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
   classifier.Classify(text, false, false,
                       metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
@@ -40,10 +40,12 @@ GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
 }  // namespace
 
 #define BRAVE_APPEND_SEARCH_PROVIDER \
-  selection_navigation_url_ = \
-      GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
-  if (!selection_navigation_url_.is_valid()) \
-    return;
+  if (GetProfile()->IsOffTheRecord()) { \
+    selection_navigation_url_ = \
+        GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
+    if (!selection_navigation_url_.is_valid()) \
+      return; \
+  }
 
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
