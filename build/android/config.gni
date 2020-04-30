@@ -1,3 +1,4 @@
+import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
 import("//brave/build/android/bytecode/java_sources.gni")
 import("//brave/components/sync/android/java_sources.gni")
@@ -28,8 +29,4 @@ brave_chrome_java_srcjar_deps = [
 
 brave_chrome_app_java_resources_deps = [
   "//brave/build/android:android_brave_strings_grd",
-]
-
-brave_chrome_app_java_resources_dirs = [
-  "//brave/android/java/res",
 ]
