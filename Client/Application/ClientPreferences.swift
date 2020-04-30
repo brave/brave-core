@@ -114,6 +114,27 @@ extension Preferences {
         /// The goal is to show the claim grant notification only once per app session if still available.
         static let attemptToShowClaimRewardsNotification =
             Option<Bool>(key: "newtabpage.show-grant-notification", default: true)
+        
+        /// Whether preloaded favorites have been initialized. Uses custom favorites in case of super referral or default ones instead.
+        static let preloadedFavoritiesInitialized =
+            Option<Bool>(key: "newtabpage.favorites-initialized", default: false)
+        
+        /// When super referrer fails to download and user hasn't changed their default favorites we might want to try to replace them
+        /// with the ones provided super referrer once available.This should be done only once.
+        static let initialFavoritesHaveBeenReplaced =
+            Option<Bool>(key: "newtabpage.initial-favorites-replaced", default: false)
+        
+        /// Custom theme used in app. Nil if default theme is used.
+        static let selectedCustomTheme =
+            Option<String?>(key: "newtabpage.selected-custom-theme", default: nil)
+        
+        /// List of currently installed themes on the device.
+        static let installedCustomThemes =
+            Option<[String]>(key: "newtabpage.installed-custom-themes", default: [])
+        
+        /// Tells the app whether we should try to fetch super referrer assets again in case of network error.
+        static let superReferrerThemeRetryDeadline =
+            Option<Date?>(key: "newtabpage.superreferrer-retry-deadline", default: nil)
     }
 }
 

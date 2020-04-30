@@ -474,12 +474,6 @@ extension Strings {
     public static let openWebsite = NSLocalizedString("OpenWebsite", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open Website", comment: "Button title to that opens a website.")
     public static let viewOn = NSLocalizedString("ViewOn", tableName: "BraveShared", bundle: Bundle.braveShared, value: "View on %@", comment: "Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'.")
     public static let photoBy = NSLocalizedString("PhotoBy", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Photo by %@", comment: "Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'.")
-    public static let newTabPageSettingsTitle = NSLocalizedString("NewTabPageSettingsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "New Tab Page", comment: "Title on settings page to adjust the primary home screen functionality.")
-    public static let newTabPageSettingsBackgroundImages = NSLocalizedString("NewTabPageSettingsBackgroundImages", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Background Images", comment: "A setting to enable or disable background images on the main screen.")
-    public static let newTabPageSettingsSponsoredImages = NSLocalizedString("NewTabPageSettingsSponsoredImages", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Sponsored Images", comment: "A setting to enable or disable sponsored images from showing on the main screen.")
-    public static let newTabPageSettingsAutoOpenKeyboard = NSLocalizedString("NewTabPageSettingsAutoOpenKeyboard", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Auto Open Keyboard", comment: "A setting to enable or disable the device's keyboard from opening automatically when creating a new tab.")
-    public static let newTabPageShowMoreFavorites = NSLocalizedString("NewTabPageShowMoreFavorites", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show More", comment: "A button title to show more bookmarks, that opens a new menu.")
-
 }
 
 extension Strings {
@@ -574,6 +568,22 @@ extension Strings {
     public static let themesAutomaticOption = NSLocalizedString("ThemesAutomaticOption", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Automatic", comment: "Selection to automatically color/style the user interface.")
     public static let themesLightOption = NSLocalizedString("ThemesLightOption", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Light", comment: "Selection to color/style the user interface with a light theme.")
     public static let themesDarkOption = NSLocalizedString("ThemesDarkOption", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Dark", comment: "Selection to color/style the user interface with a dark theme")
+    public static let themesSettings =
+        NSLocalizedString("themesSettings", tableName: "BraveShared", bundle: .braveShared,
+                          value: "Themes",
+                          comment: "Name for app theme settings")
+    public static let defaultThemeName =
+        NSLocalizedString("defaultThemeName", tableName: "BraveShared", bundle: .braveShared,
+                          value: "Brave default",
+                          comment: "Name for default Brave theme.")
+    public static let themeQRCodeShareTitle =
+        NSLocalizedString("themeQRCodeShareTitle", tableName: "BraveShared", bundle: .braveShared,
+                          value: "Share Brave with your friends!",
+                          comment: "Title for QR popup encouraging users to share the code with their friends.")
+    public static let themeQRCodeShareButton =
+        NSLocalizedString("themeQRCodeShareButton", tableName: "BraveShared", bundle: .braveShared,
+                          value: "Share...",
+                          comment: "Text for button to share referral's QR code.")
 }
 
 // MARK: - Quick Actions
@@ -737,6 +747,16 @@ extension Strings {
                     bundle: .braveShared,
                     value: "Learn more about sponsored images",
                     comment: "")
+        
+        public static let settingsTitle = NSLocalizedString("ntp.settingsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "New Tab Page", comment: "Title on settings page to adjust the primary home screen functionality.")
+        public static let settingsBackgroundImages = NSLocalizedString("ntp.settingsBackgroundImages", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Background Images", comment: "A setting to enable or disable background images on the main screen.")
+        public static let settingsBackgroundImageSubMenu = NSLocalizedString("ntp.settingsBackgroundImageSubMenu", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Background Images", comment: "A button that leads to a 'more' menu, letting users configure additional settings.")
+        public static let settingsDefaultImagesOnly = NSLocalizedString("ntp.settingsDefaultImagesOnly", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Default Images Only", comment: "A selection to let the users only see a set of predefined, default images on the background of the app.")
+        public static let settingsSponsoredImagesSelection = NSLocalizedString("ntp.settingsSponsoredImagesSelection", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Sponsored Images", comment: "A selection to let the users see sponsored image backgrounds when opening a new tab.")
+        public static let settingsAutoOpenKeyboard = NSLocalizedString("ntp.settingsAutoOpenKeyboard", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Auto Open Keyboard", comment: "A setting to enable or disable the device's keyboard from opening automatically when creating a new tab.")
+        
+        public static let showMoreFavorites = NSLocalizedString("ntp.showMoreFavorites", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show More", comment: "A button title to show more bookmarks, that opens a new menu.")
+        
     }
     
 }

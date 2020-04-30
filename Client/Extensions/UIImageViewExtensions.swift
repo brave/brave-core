@@ -26,6 +26,19 @@ extension UIImageView {
     }
     
     private func setIconURL(_ iconURL: String?, forURL url: URL?, completed completionBlock: ((UIColor, URL?) -> Void)?, scaledDefaultIconSize: CGSize? = nil) {
+        
+        // Priority order for favicons:
+        // 1. User installed icons(via using custom theme for example)
+        // 2. Icons bundled in the app
+        // 3. Try to fetch favicon from the website, use default one if it can't be retrieved.
+        
+        if let url = url, let customIcon = FaviconFetcher.getCustomIcon(for: url) {
+            image = UIImage(contentsOfFile: customIcon.url.path)
+            backgroundColor = customIcon.color
+            completionBlock?(customIcon.color, url)
+            return
+        }
+        
         if let url = url, let defaultIcon = FaviconFetcher.getDefaultIconForURL(url: url), iconURL == nil {
             if let scaleToSize = scaledDefaultIconSize {
                 self.image = UIImage(contentsOfFile: defaultIcon.url)?.createScaled(scaleToSize)
@@ -35,33 +48,34 @@ extension UIImageView {
             }
             self.backgroundColor = defaultIcon.color
             completionBlock?(defaultIcon.color, url)
-        } else {
-            let defaults = defaultFavicon(url)
-            if let url = url, iconURL == nil {
-                FaviconFetcher.getForURL(url).uponQueue(.main) { result in
-                    guard let favicons = result.successValue, favicons.count > 0, let foundIconUrl = favicons.first?.url.asURL else {
-                        return
-                    }
-                    self.sd_setImage(with: foundIconUrl, placeholderImage: defaults.image, options: []) {(img, err, _, _) in
-                        guard let image = img, err == nil else {
-                            self.backgroundColor = defaults.color
-                            completionBlock?(defaults.color, url)
-                            return
-                        }
-                        self.color(forImage: image, andURL: url, completed: completionBlock)
-                    }
-                }
-                return
-            }
-            let imageURL = URL(string: iconURL ?? "")
-            self.sd_setImage(with: imageURL, placeholderImage: defaults.image, options: []) {(img, err, _, _) in
-                guard let image = img, let dUrl = url, err == nil else {
-                    self.backgroundColor = defaults.color
-                    completionBlock?(defaults.color, url)
+            return
+        }
+        
+        let defaults = defaultFavicon(url)
+        if let url = url, iconURL == nil {
+            FaviconFetcher.getForURL(url).uponQueue(.main) { result in
+                guard let favicons = result.successValue, favicons.count > 0, let foundIconUrl = favicons.first?.url.asURL else {
                     return
                 }
-                self.color(forImage: image, andURL: dUrl, completed: completionBlock)
+                self.sd_setImage(with: foundIconUrl, placeholderImage: defaults.image, options: []) {(img, err, _, _) in
+                    guard let image = img, err == nil else {
+                        self.backgroundColor = defaults.color
+                        completionBlock?(defaults.color, url)
+                        return
+                    }
+                    self.color(forImage: image, andURL: url, completed: completionBlock)
+                }
             }
+            return
+        }
+        let imageURL = URL(string: iconURL ?? "")
+        self.sd_setImage(with: imageURL, placeholderImage: defaults.image, options: []) {(img, err, _, _) in
+            guard let image = img, let dUrl = url, err == nil else {
+                self.backgroundColor = defaults.color
+                completionBlock?(defaults.color, url)
+                return
+            }
+            self.color(forImage: image, andURL: dUrl, completed: completionBlock)
         }
     }
 

@@ -4,6 +4,7 @@
 
 import Storage
 import Shared
+import BraveShared
 import XCGLogger
 import Deferred
 import SDWebImage
@@ -54,6 +55,29 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         if let name = url.baseDomain, let icon = defaultIcons[name] {
             return icon
         }
+        return nil
+    }
+    
+    class func getCustomIcon(for url: URL) -> (url: URL, color: UIColor)? {
+        let dirName = NTPDownloader.faviconOverridesDirectory
+        
+        guard let folder = FileManager.default.getOrCreateFolder(name: dirName),
+            let baseDomain = url.baseDomain else { return nil }
+        
+        let backgroundFileName = baseDomain + NTPDownloader.faviconOverridesBackgroundSuffix
+        let backgroundFilePath = folder.appendingPathComponent(backgroundFileName)
+        
+        do {
+            let colorString = try String(contentsOf: backgroundFilePath)
+            let colorFromHex = UIColor(colorString: colorString)
+            
+            if FileManager.default.fileExists(atPath: folder.appendingPathComponent(baseDomain).path) {
+                return (folder.appendingPathComponent(baseDomain), colorFromHex)
+            }
+        } catch {
+            return nil
+        }
+        
         return nil
     }
 
@@ -168,7 +192,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         })
     }
 
-    func getFavicon(_ siteUrl: URL, icon: Favicon) -> Deferred<Maybe<Favicon>> {
+    private func getFavicon(_ siteUrl: URL, icon: Favicon) -> Deferred<Maybe<Favicon>> {
         let deferred = Deferred<Maybe<Favicon>>()
         let url = icon.url
 

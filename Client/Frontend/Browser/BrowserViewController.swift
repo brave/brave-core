@@ -59,7 +59,7 @@ class BrowserViewController: UIViewController {
     fileprivate var findInPageBar: FindInPageBar?
     
     // Single data source used for all favorites vcs
-    fileprivate let backgroundDataSource = NTPBackgroundDataSource()
+    let backgroundDataSource = NTPDataSource()
     
     var loadQueue = Deferred<Void>()
 
@@ -236,6 +236,7 @@ class BrowserViewController: UIViewController {
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
+        Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
@@ -261,6 +262,57 @@ class BrowserViewController: UIViewController {
             if action == .opened {
                 let request = URLRequest(url: notification.targetURL)
                 self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+            }
+        }
+        
+        backgroundDataSource.initializeFavorites = { sites in
+            DispatchQueue.main.async {
+                defer { Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true }
+                
+                if Preferences.NewTabPage.preloadedFavoritiesInitialized.value
+                    || Bookmark.hasFavorites { return }
+                
+                guard let sites = sites, sites.count > 0 else {
+                    FavoritesHelper.addDefaultFavorites()
+                    return
+                }
+                
+                let customFavorites = sites.compactMap { $0.asFavoriteSite }
+                Bookmark.addFavorites(from: customFavorites)
+            }
+        }
+        
+        backgroundDataSource.replaceFavoritesIfNeeded = { sites in
+            if Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value { return }
+            
+            guard let sites = sites, sites.count > 0 else { return }
+            
+            DispatchQueue.main.async {
+                let defaultFavorites = PreloadedFavorites.getList()
+                let currentFavorites = Bookmark.allFavorites
+                
+                if defaultFavorites.count != currentFavorites.count {
+                    return
+                }
+                
+                let exactSameFavorites = Bookmark.allFavorites
+                    .filter {
+                        guard let urlString = $0.url,
+                            let url = URL(string: urlString),
+                            let title = $0.displayTitle else {
+                                return false
+                        }
+                        
+                        return defaultFavorites.contains(where: { defaultFavorite in
+                            defaultFavorite.url == url && defaultFavorite.title == title
+                        })
+                }
+                
+                if currentFavorites.count == exactSameFavorites.count {
+                    let customFavorites = sites.compactMap { $0.asFavoriteSite }
+                    Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value = true
+                    Bookmark.forceOverwriteFavorites(with: customFavorites)
+                }
             }
         }
     }
@@ -3365,7 +3417,20 @@ extension BrowserViewController: FavoritesDelegate {
     func didTapShowMoreFavorites() {
         topToolbarDidTapBookmarkButton(nil, favorites: true)
     }
-    
+
+    func didTapQRButton(url: URL) {
+        let qrPopup = QRCodePopupView(url: url)
+        qrPopup.showWithType(showType: .flyUp)
+        qrPopup.qrCodeShareHandler = { [weak self] url in
+            guard let self = self else { return }
+            
+            let viewRect = CGRect(origin: self.view.center, size: .zero)
+            
+            self.presentActivityViewController(url, sourceView: self.view, sourceRect: viewRect,
+                                                arrowDirection: .any)
+        }
+    }
+
     func openBrandedImageCallout(state: BrandedImageCalloutState?) {
         guard let state = state, state.hasDetailViewController else { return }
         
@@ -3435,6 +3500,9 @@ extension BrowserViewController: PreferencesObserver {
             }
         case Preferences.Rewards.hideRewardsIcon.key:
             updateRewardsButtonState()
+        case Preferences.NewTabPage.selectedCustomTheme.key:
+            Preferences.NTP.ntpCheckDate.value = nil
+            backgroundDataSource.startFetching()
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break
