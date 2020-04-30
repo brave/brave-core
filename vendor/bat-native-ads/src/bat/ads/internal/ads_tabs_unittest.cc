@@ -11,7 +11,9 @@
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 
+#include "base/base_paths.h"
 #include "base/files/file_path.h"
+#include "base/path_service.h"
 
 using std::placeholders::_1;
 
@@ -71,6 +73,10 @@ class AdsTabsTest : public ::testing::Test {
               callback(SUCCESS);
             }));
 
+    const std::vector<std::string> user_model_languages = {"en", "de", "fr"};
+    EXPECT_CALL(*mock_ads_client_, GetUserModelLanguages())
+        .WillRepeatedly(Return(user_model_languages));
+
     EXPECT_CALL(*mock_ads_client_, LoadUserModelForLanguage(_, _))
         .WillRepeatedly(
             Invoke([this](
@@ -119,13 +125,17 @@ class AdsTabsTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
   base::FilePath GetTestDataPath() {
-    return base::FilePath(FILE_PATH_LITERAL(
-        "brave/vendor/bat-native-ads/test/data"));
+    base::FilePath path;
+    base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+    path = path.AppendASCII("brave/vendor/bat-native-ads/test/data");
+    return path;
   }
 
   base::FilePath GetResourcesPath() {
-    return base::FilePath(FILE_PATH_LITERAL(
-        "brave/vendor/bat-native-ads/resources"));
+    base::FilePath path;
+    base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+    path = path.AppendASCII("brave/vendor/bat-native-ads/resources");
+    return path;
   }
 
   bool Load(const base::FilePath path, std::string* value) {

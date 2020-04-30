@@ -151,6 +151,9 @@ test("brave_unit_tests") {
 
   data = [
     "data/",
+    "//brave/vendor/bat-native-ads/resources/",
+    "//brave/vendor/bat-native-ads/test/data/",
+    "//brave/vendor/bat-native-confirmations/test/data/",
   ]
 
   configs += [
@@ -370,6 +373,7 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_is_mobile_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.h",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_tabs_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/ad_grants_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/payments_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_impl_mock.cc",
@@ -394,10 +398,8 @@ test("brave_unit_tests") {
     ]
 
     if (!is_android) {
-      # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
+      # TODO(tmancey): Fix bat-native-user-model unittests, see https://github.com/brave/brave-core/pull/5408
       sources += [
-        # This should probably work, but returns UNKNOWN status for some tests
-        "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_tabs_unittest.cc",
         # Fails to load json files from folder 'brave/vendor/bat-native-usermodel/test/data'
         "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
       ]
