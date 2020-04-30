@@ -373,14 +373,10 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_is_mobile_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.h",
-      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_tabs_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/ad_grants_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/payments_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_impl_mock.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_impl_mock.h",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_token_mock.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_token_mock.h",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_token_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_create_confirmation_request_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_fetch_payment_token_request_unittest.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/get_signed_tokens_request_unittest.cc",
@@ -398,9 +394,19 @@ test("brave_unit_tests") {
     ]
 
     if (!is_android) {
-      # TODO(tmancey): Fix bat-native-user-model unittests, see https://github.com/brave/brave-core/pull/5408
       sources += [
-        # Fails to load json files from folder 'brave/vendor/bat-native-usermodel/test/data'
+        # TODO(https://github.com/brave/brave-browser/issues/9550):
+        # Temporarily disable Brave Ads tests which are passing in the detailed
+        # logs but failing in the summary
+
+        "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_token_mock.cc",
+        "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_token_mock.h",
+        "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_token_unittest.cc",
+        "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_tabs_unittest.cc",
+
+        # TODO(https://github.com/brave-intl/bat-native-usermodel/issues/26):
+        # Fix bat-native-user-model unittests fail to load data files from
+        # 'brave/vendor/bat-native-usermodel/test/data'
         "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
       ]
     }
