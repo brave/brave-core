@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
+index 17eca9e53f03a55ecf4f5233b0a4dc85e73ed1b9..05cbc0f56744cdb8d5fc709e5e636a5608626b6e 100644
+--- a/chrome/browser/ui/webui/favicon_source.cc
++++ b/chrome/browser/ui/webui/favicon_source.cc
+@@ -23,9 +23,11 @@
+ #include "components/history/core/browser/top_sites.h"
+ #include "content/public/browser/browser_thread.h"
+ #include "content/public/browser/web_contents.h"
++#if !defined(OS_ANDROID)
+ #include "extensions/browser/extension_registry.h"
+ #include "extensions/common/constants.h"
+ #include "extensions/common/manifest.h"
++#endif
+ #include "net/url_request/url_request.h"
+ #include "third_party/skia/include/core/SkBitmap.h"
+ #include "ui/base/layout.h"
+@@ -109,6 +111,7 @@ void FaviconSource::StartDataRequest(
+     return;
+   }
+ 
++#if !defined(OS_ANDROID)
+   if (url_format_ == chrome::FaviconUrlFormat::kFaviconLegacy) {
+     const extensions::Extension* extension =
+         extensions::ExtensionRegistry::Get(profile_)
+@@ -120,6 +123,7 @@ void FaviconSource::StartDataRequest(
+                                     extensions::Manifest::NUM_LOAD_TYPES);
+     }
+   }
++#endif
+ 
+   int desired_size_in_pixel =
+       std::ceil(parsed.size_in_dip * parsed.device_scale_factor);
