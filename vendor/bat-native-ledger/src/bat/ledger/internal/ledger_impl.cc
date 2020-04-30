@@ -855,7 +855,7 @@ void LedgerImpl::OnRecoverWallet(
   }
 
   if (result == ledger::Result::LEDGER_OK) {
-    bat_publisher_->clearAllBalanceReports();
+    bat_database_->DeleteAllBalanceReports([](const ledger::Result _) {});
   }
 
   callback(result, balance);
@@ -865,12 +865,12 @@ void LedgerImpl::GetBalanceReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetBalanceReportCallback callback) const {
-  bat_publisher_->GetBalanceReport(month, year, callback);
+  bat_database_->GetBalanceReportInfo(month, year, callback);
 }
 
-std::map<std::string, ledger::BalanceReportInfoPtr>
-LedgerImpl::GetAllBalanceReports() const {
-  return bat_publisher_->GetAllBalanceReports();
+void LedgerImpl::GetAllBalanceReports(
+    ledger::GetBalanceReportListCallback callback) const {
+  return bat_database_->GetAllBalanceReports(callback);
 }
 
 void LedgerImpl::SavePendingContribution(
@@ -952,7 +952,12 @@ void LedgerImpl::SetBalanceReportItem(
     const int year,
     const ledger::ReportType type,
     const double amount) {
-  bat_publisher_->SetBalanceReportItem(month, year, type, amount);
+  bat_database_->SaveBalanceReportInfoItem(
+      month,
+      year,
+      type,
+      amount,
+      [](const ledger::Result _) {});
 }
 
 void LedgerImpl::FetchFavIcon(const std::string& url,

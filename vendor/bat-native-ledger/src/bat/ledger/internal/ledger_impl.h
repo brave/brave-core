@@ -174,8 +174,8 @@ class LedgerImpl : public ledger::Ledger {
       const int year,
       ledger::GetBalanceReportCallback callback) const override;
 
-  std::map<std::string, ledger::BalanceReportInfoPtr>
-  GetAllBalanceReports() const override;
+  void GetAllBalanceReports(
+      ledger::GetBalanceReportListCallback callback) const override;
 
   ledger::AutoContributePropsPtr GetAutoContributeProps() override;
 

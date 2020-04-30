@@ -67,17 +67,6 @@ class Publisher {
 
   void setPublisherAllowVideos(const bool& allow);
 
-  void setBalanceReport(ledger::ActivityMonth month,
-                        int year,
-                        const ledger::BalanceReportInfo& report_info);
-
-  void GetBalanceReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetBalanceReportCallback callback);
-
-  std::map<std::string, ledger::BalanceReportInfoPtr> GetAllBalanceReports();
-
   uint64_t getPublisherMinVisitTime() const;  // In milliseconds
 
   unsigned int GetPublisherMinVisits() const;
@@ -87,8 +76,6 @@ class Publisher {
   bool getPublisherAllowVideos() const;
 
   void OnPublisherInfoSaved(const ledger::Result result);
-
-  std::string GetBalanceReportName(ledger::ActivityMonth month, int year);
 
   void ParsePublisherList(
       const std::string& data,
@@ -102,12 +89,6 @@ class Publisher {
   void GetPublisherBanner(const std::string& publisher_key,
                           ledger::PublisherBannerCallback callback);
 
-  void SetBalanceReportItem(
-      const ledger::ActivityMonth month,
-      const int year,
-      const ledger::ReportType type,
-      const double amount);
-
   ledger::ActivityInfoFilterPtr CreateActivityFilter(
       const std::string& publisher_id,
       ledger::ExcludeFilter excluded,
@@ -115,8 +96,6 @@ class Publisher {
       const uint64_t& current_reconcile_stamp,
       bool non_verified,
       bool min_visits);
-
-  void clearAllBalanceReports();
 
   void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
                                   const ledger::PublisherInfoList* list,
@@ -172,11 +151,6 @@ class Publisher {
     uint64_t duration,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback);
-
-  ledger::Result GetBalanceReportInternal(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::BalanceReportInfo* report_info);
 
   void onFetchFavIcon(const std::string& publisher_key,
                       uint64_t window_id,

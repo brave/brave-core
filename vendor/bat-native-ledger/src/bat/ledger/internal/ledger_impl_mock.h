@@ -134,8 +134,8 @@ class MockLedgerImpl : public LedgerImpl {
           const int,
           const ledger::GetBalanceReportCallback));
 
-  MOCK_CONST_METHOD0(GetAllBalanceReports,
-      std::map<std::string, ledger::BalanceReportInfoPtr>());
+  MOCK_CONST_METHOD1(GetAllBalanceReports,
+      void(ledger::GetBalanceReportListCallback));
 
   MOCK_METHOD0(GetAutoContributeProps, ledger::AutoContributePropsPtr());
 

@@ -150,12 +150,21 @@ bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
 }
 
 void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
-  auto reports = ledger_->GetAllBalanceReports();
+  auto balance_reports_callback = std::bind(&Report::OnGetAllBalanceReports,
+      this,
+      _1,
+      callback);
 
+  ledger_->GetAllBalanceReports(balance_reports_callback);
+}
+
+void Report::OnGetAllBalanceReports(
+    ledger::BalanceReportInfoList reports,
+    ledger::GetAllMonthlyReportIdsCallback callback) {
   std::vector<std::string> ids;
 
-  for (auto const& report : reports) {
-    ids.push_back(report.first);
+  for (const auto& report : reports) {
+    ids.push_back(report->id);
   }
 
   std::sort(ids.begin(), ids.end(), CompareReportIds);

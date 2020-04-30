@@ -48,6 +48,10 @@ class Report {
       const std::string& monthly_report_string,
       ledger::GetMonthlyReportCallback callback);
 
+  void OnGetAllBalanceReports(
+      ledger::BalanceReportInfoList reports,
+      ledger::GetAllMonthlyReportIdsCallback callback);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

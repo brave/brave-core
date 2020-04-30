@@ -15,6 +15,7 @@ struct BalanceReport {
   ~BalanceReport();
   BalanceReport(const BalanceReport& properties);
 
+  std::string id;
   double grants = 0.0;
   double earning_from_ads = 0.0;
   double auto_contribute = 0.0;

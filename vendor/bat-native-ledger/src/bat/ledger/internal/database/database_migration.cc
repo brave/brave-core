@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_balance_report_info.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_creds_batch.h"
@@ -31,6 +32,7 @@ DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
+  balance_report_info_ = std::make_unique<DatabaseBalanceReportInfo>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
@@ -96,6 +98,10 @@ bool DatabaseMigration::Migrate(
   DCHECK(transaction);
 
   if (!activity_info_->Migrate(transaction, target)) {
+    return false;
+  }
+
+  if (!balance_report_info_->Migrate(transaction, target)) {
     return false;
   }
 

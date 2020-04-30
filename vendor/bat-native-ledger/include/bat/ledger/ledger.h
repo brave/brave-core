@@ -53,6 +53,8 @@ using AttestPromotionCallback =
 
 using GetBalanceReportCallback =
     std::function<void(const ledger::Result, ledger::BalanceReportInfoPtr)>;
+using GetBalanceReportListCallback =
+  std::function<void(ledger::BalanceReportInfoList)>;
 
 using ContributionInfoListCallback =
     std::function<void(ContributionInfoList)>;
@@ -214,8 +216,8 @@ class LEDGER_EXPORT Ledger {
       int year,
       ledger::GetBalanceReportCallback callback) const = 0;
 
-  virtual std::map<std::string, ledger::BalanceReportInfoPtr>
-  GetAllBalanceReports() const = 0;
+  virtual void GetAllBalanceReports(
+      ledger::GetBalanceReportListCallback callback) const = 0;
 
   virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;
 

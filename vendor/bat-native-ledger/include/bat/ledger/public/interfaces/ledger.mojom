@@ -151,6 +151,7 @@ struct ExternalWallet {
 };
 
 struct BalanceReportInfo {
+  string id;
   double grants;
   double earning_from_ads;
   double auto_contribute;

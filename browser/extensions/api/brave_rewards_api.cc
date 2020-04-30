@@ -445,6 +445,7 @@ void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
     const int32_t result,
     const ::brave_rewards::BalanceReport& report) {
   auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  data->SetStringKey("id", report.id);
   data->SetDoubleKey("ads", report.earning_from_ads);
   data->SetDoubleKey("contribute", report.auto_contribute);
   data->SetDoubleKey("grant", report.grants);
