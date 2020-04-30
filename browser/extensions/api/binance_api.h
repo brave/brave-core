@@ -119,7 +119,7 @@ class BinanceGetDepositInfoFunction :
  protected:
   ~BinanceGetDepositInfoFunction() override {}
   void OnGetDepositInfo(const std::string& deposit_address,
-                        const std::string& deposit_url,
+                        const std::string& deposit_tag,
                         bool success);
 
   ResponseAction Run() override;
@@ -158,6 +158,19 @@ class BinanceRevokeTokenFunction :
  protected:
   ~BinanceRevokeTokenFunction() override {}
   void OnRevokeToken(bool success);
+
+  ResponseAction Run() override;
+};
+
+class BinanceGetCoinNetworksFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getCoinNetworks", UNKNOWN)
+
+ protected:
+  ~BinanceGetCoinNetworksFunction() override {}
+  void OnGetCoinNetworks(
+      const std::map<std::string, std::string>& networks);
 
   ResponseAction Run() override;
 };
