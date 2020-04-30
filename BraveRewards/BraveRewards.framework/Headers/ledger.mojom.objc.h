@@ -459,6 +459,7 @@ NS_SWIFT_NAME(ClientInfo)
 @interface BATClientInfo : NSObject <NSCopying>
 @property (nonatomic) BATPlatform platform;
 @property (nonatomic) BATOperatingSystem os;
+@property (nonatomic, copy) NSString * channel;
 @end
 
 NS_SWIFT_NAME(RecurringTip)
@@ -472,6 +473,7 @@ NS_SWIFT_NAME(TransactionReportInfo)
 @interface BATTransactionReportInfo : NSObject <NSCopying>
 @property (nonatomic) double amount;
 @property (nonatomic) BATReportType type;
+@property (nonatomic) BATContributionProcessor processor;
 @property (nonatomic) uint64_t createdAt;
 @end
 
@@ -480,6 +482,7 @@ NS_SWIFT_NAME(ContributionReportInfo)
 @property (nonatomic, copy) NSString * contributionId;
 @property (nonatomic) double amount;
 @property (nonatomic) BATReportType type;
+@property (nonatomic) BATContributionProcessor processor;
 @property (nonatomic, copy) NSArray<BATPublisherInfo *> * publishers;
 @property (nonatomic) uint64_t createdAt;
 @end
