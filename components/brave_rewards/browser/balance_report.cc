@@ -14,6 +14,7 @@ BalanceReport::~BalanceReport() = default;
 
 BalanceReport::BalanceReport(
     const BalanceReport &properties) {
+  id = properties.id;
   grants = properties.grants;
   earning_from_ads = properties.earning_from_ads;
   auto_contribute = properties.auto_contribute;

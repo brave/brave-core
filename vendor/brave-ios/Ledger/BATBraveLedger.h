@@ -234,11 +234,9 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - History
 
-@property (nonatomic, readonly) NSDictionary<NSString *, BATBalanceReportInfo *> *balanceReports;
-
 - (void)balanceReportForMonth:(BATActivityMonth)month
                          year:(int)year
-                   completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion;
+                   completion:(void (^)(BATBalanceReportInfo * _Nullable info))completion;
 
 @property (nonatomic, readonly) BATAutoContributeProps *autoContributeProps;
 

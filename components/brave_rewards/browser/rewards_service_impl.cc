@@ -1867,6 +1867,7 @@ void LedgerToServiceBalanceReport(
     return;
   }
 
+  new_report->id = report->id;
   new_report->grants = report->grants;
   new_report->earning_from_ads = report->earning_from_ads;
   new_report->auto_contribute = report->auto_contribute;

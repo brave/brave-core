@@ -1001,19 +1001,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - History
 
-- (NSDictionary<NSString *, BATBalanceReportInfo *> *)balanceReports
-{
-  const auto reports = ledger->GetAllBalanceReports();
-  const auto bridgedReports = [[NSMutableDictionary<NSString *, BATBalanceReportInfo *> alloc] init];
-  for (const auto& r : reports) {
-    if (r.second.get() == nullptr) { continue; }
-    bridgedReports[[NSString stringWithUTF8String:r.first.c_str()]] =
-      [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*r.second];
-  }
-  return bridgedReports;
-}
-
-- (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion
+- (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (^)(BATBalanceReportInfo * _Nullable info))completion
 {
   ledger->GetBalanceReport((ledger::ActivityMonth)month, year, ^(const ledger::Result result, ledger::BalanceReportInfoPtr info) {
     auto bridgedInfo = info.get() != nullptr ? [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*info.get()] : nil;

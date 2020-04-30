@@ -155,6 +155,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database.h",
     "src/bat/ledger/internal/database/database_activity_info.cc",
     "src/bat/ledger/internal/database/database_activity_info.h",
+    "src/bat/ledger/internal/database/database_balance_report_info.cc",
+    "src/bat/ledger/internal/database/database_balance_report_info.h",
     "src/bat/ledger/internal/database/database_contribution_info.cc",
     "src/bat/ledger/internal/database/database_contribution_info.h",
     "src/bat/ledger/internal/database/database_contribution_info_publishers.cc",

@@ -1,4 +1,5 @@
 index|activity_info_publisher_id_index|activity_info|CREATE INDEX activity_info_publisher_id_index ON activity_info (publisher_id)
+index|balance_report_info_balance_report_id_index|balance_report_info|CREATE INDEX balance_report_info_balance_report_id_index ON balance_report_info (balance_report_id)
 index|contribution_info_publishers_contribution_id_index|contribution_info_publishers|CREATE INDEX contribution_info_publishers_contribution_id_index ON contribution_info_publishers (contribution_id)
 index|contribution_info_publishers_publisher_key_index|contribution_info_publishers|CREATE INDEX contribution_info_publishers_publisher_key_index ON contribution_info_publishers (publisher_key)
 index|contribution_queue_publishers_contribution_queue_id_index|contribution_queue_publishers|CREATE INDEX contribution_queue_publishers_contribution_queue_id_index ON contribution_queue_publishers (contribution_queue_id)
@@ -18,6 +19,7 @@ index|sku_order_items_order_id_index|sku_order_items|CREATE INDEX sku_order_item
 index|sku_order_items_order_item_id_index|sku_order_items|CREATE INDEX sku_order_items_order_item_id_index ON sku_order_items (order_item_id)
 index|sku_transaction_order_id_index|sku_transaction|CREATE INDEX sku_transaction_order_id_index ON sku_transaction (order_id)
 index|sqlite_autoindex_activity_info_1|activity_info|
+index|sqlite_autoindex_balance_report_info_1|balance_report_info|
 index|sqlite_autoindex_contribution_info_1|contribution_info|
 index|sqlite_autoindex_contribution_info_publishers_1|contribution_info_publishers|
 index|sqlite_autoindex_creds_batch_1|creds_batch|
@@ -37,6 +39,7 @@ index|sqlite_autoindex_sku_transaction_1|sku_transaction|
 index|unblinded_tokens_creds_id_index|unblinded_tokens|CREATE INDEX unblinded_tokens_creds_id_index ON unblinded_tokens (creds_id)
 index|unblinded_tokens_redeem_id_index|unblinded_tokens|CREATE INDEX unblinded_tokens_redeem_id_index ON unblinded_tokens (redeem_id)
 table|activity_info|activity_info|CREATE TABLE activity_info (publisher_id LONGVARCHAR NOT NULL,duration INTEGER DEFAULT 0 NOT NULL,visits INTEGER DEFAULT 0 NOT NULL,score DOUBLE DEFAULT 0 NOT NULL,percent INTEGER DEFAULT 0 NOT NULL,weight DOUBLE DEFAULT 0 NOT NULL,reconcile_stamp INTEGER DEFAULT 0 NOT NULL,CONSTRAINT activity_unique UNIQUE (publisher_id, reconcile_stamp))
+table|balance_report_info|balance_report_info|CREATE TABLE balance_report_info (balance_report_id LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,grants DOUBLE DEFAULT 0 NOT NULL,earning_from_ads DOUBLE DEFAULT 0 NOT NULL,auto_contribute DOUBLE DEFAULT 0 NOT NULL,recurring_donation DOUBLE DEFAULT 0 NOT NULL,one_time_donation DOUBLE DEFAULT 0 NOT NULL)
 table|contribution_info|contribution_info|CREATE TABLE contribution_info (contribution_id TEXT NOT NULL,amount DOUBLE NOT NULL,type INTEGER NOT NULL,step INTEGER NOT NULL DEFAULT -1,retry_count INTEGER NOT NULL DEFAULT -1,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, processor INTEGER NOT NULL DEFAULT 1,PRIMARY KEY (contribution_id))
 table|contribution_info_publishers|contribution_info_publishers|CREATE TABLE contribution_info_publishers (contribution_id TEXT NOT NULL,publisher_key TEXT NOT NULL,total_amount DOUBLE NOT NULL,contributed_amount DOUBLE,CONSTRAINT contribution_info_publishers_unique     UNIQUE (contribution_id, publisher_key))
 table|contribution_queue|contribution_queue|CREATE TABLE contribution_queue (contribution_queue_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,type INTEGER NOT NULL,amount DOUBLE NOT NULL,partial INTEGER NOT NULL DEFAULT 0,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)

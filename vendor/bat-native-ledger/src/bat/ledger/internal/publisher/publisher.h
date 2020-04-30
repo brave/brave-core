@@ -48,11 +48,6 @@ class Publisher {
       const ledger::PublisherExclude& exclude,
       ledger::ResultCallback callback);
 
-  void GetBalanceReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetBalanceReportCallback callback);
-
   void OnPublisherInfoSaved(const ledger::Result result);
 
   void ParsePublisherList(
@@ -74,7 +69,6 @@ class Publisher {
       const uint64_t& current_reconcile_stamp,
       bool non_verified,
       bool min_visits);
-
 
   void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
                                   const ledger::PublisherInfoList* list,

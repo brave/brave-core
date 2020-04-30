@@ -22,6 +22,7 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabaseBalanceReportInfo;
 class DatabaseCredsBatch;
 class DatabaseContributionInfo;
 class DatabaseContributionQueue;
@@ -64,6 +65,31 @@ class Database {
 
   void DeleteActivityInfo(
       const std::string& publisher_key,
+      ledger::ResultCallback callback);
+
+  /**
+   * BALANCE REPORT INFO
+   */
+  void SaveBalanceReportInfo(
+      ledger::BalanceReportInfoPtr info,
+      ledger::ResultCallback callback);
+
+  void SaveBalanceReportInfoItem(
+      ledger::ActivityMonth month,
+      int year,
+      ledger::ReportType type,
+      double amount,
+      ledger::ResultCallback callback);
+
+  void GetBalanceReportInfo(
+      ledger::ActivityMonth month,
+      int year,
+      ledger::GetBalanceReportCallback callback);
+
+  void GetAllBalanceReports(
+      ledger::GetBalanceReportListCallback callback);
+
+  void DeleteAllBalanceReports(
       ledger::ResultCallback callback);
 
   /**
@@ -352,6 +378,7 @@ class Database {
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabaseBalanceReportInfo> balance_report_info_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabaseCredsBatch> creds_batch_;

@@ -1727,6 +1727,7 @@ void RewardsDOMHandler::OnGetBalanceReport(
   }
 
   base::Value report_base(base::Value::Type::DICTIONARY);
+  report_base.SetStringKey("id", report.id);
   report_base.SetDoubleKey("grant", report.grants);
   report_base.SetDoubleKey("ads", report.earning_from_ads);
   report_base.SetDoubleKey("contribute", report.auto_contribute);
@@ -1773,6 +1774,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
   data.SetIntKey("year", year);
 
   base::Value balance_report(base::Value::Type::DICTIONARY);
+  balance_report.SetStringKey("id", report.balance.id);
   balance_report.SetDoubleKey("grant", report.balance.grants);
   balance_report.SetDoubleKey("ads", report.balance.earning_from_ads);
   balance_report.SetDoubleKey("contribute", report.balance.auto_contribute);
