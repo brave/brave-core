@@ -28,6 +28,7 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *body;
 @property (nonatomic, readonly, copy) NSURL *targetURL;
+@property (nonatomic, readonly, copy) NSString *geoTarget;
 @end
 
 @interface BATAdNotification (MyFirstAd)
