@@ -54,4 +54,6 @@ const char kUseGoUpdateDev[] = "use-dev-goupdater-url";
 // Use custom update interval in sec
 const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
 
+// Disables DOH using a runtime flag mainly for network audit
+const char kDisableDnsOverHttps[] = "disable-doh";
 }  // namespace switches
