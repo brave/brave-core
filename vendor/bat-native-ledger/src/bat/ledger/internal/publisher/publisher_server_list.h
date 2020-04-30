@@ -67,14 +67,12 @@ class PublisherServerList {
 
   void SaveParsedData(
       const ledger::Result result,
-      const SharedServerPublisher& list,
       ParsePublisherListCallback callback);
 
-  void SavePublishers(
-      const SharedServerPublisher& list,
-      ParsePublisherListCallback callback);
+  void SavePublishers(ParsePublisherListCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::ServerPublisherInfoList list_;
   uint32_t server_list_timer_id_;
 };
 

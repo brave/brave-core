@@ -197,17 +197,12 @@ ledger::PublisherStatus PublisherServerList::ParsePublisherStatus(
 void PublisherServerList::ParsePublisherList(
     const std::string& data,
     ParsePublisherListCallback callback) {
-  auto publishers =
-      std::make_shared<std::vector<ledger::ServerPublisherInfoPtr>>();
-
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Data is not correct";
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
-
-  publishers->reserve(value->GetList().size());
 
   for (auto& item : value->GetList()) {
     if (!item.is_list()) {
@@ -233,7 +228,7 @@ void PublisherServerList::ParsePublisherList(
       banner = ParsePublisherBanner(&list[4], list[0].GetString());
     }
 
-    publishers->push_back(ledger::ServerPublisherInfo::New(
+    list_.push_back(ledger::ServerPublisherInfo::New(
         list[0].GetString(),
         ParsePublisherStatus(list[1].GetString()),
         list[2].GetBool(),
@@ -241,7 +236,7 @@ void PublisherServerList::ParsePublisherList(
         std::move(banner)));
   }
 
-  if (publishers->empty()) {
+  if (list_.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -249,7 +244,6 @@ void PublisherServerList::ParsePublisherList(
   auto clear_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
       _1,
-      publishers,
       callback);
 
   ledger_->ClearServerPublisherList(clear_callback);
@@ -309,15 +303,14 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
 
 void PublisherServerList::SaveParsedData(
     const ledger::Result result,
-    const SharedServerPublisher& list,
     ParsePublisherListCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  if (list && !list->empty()) {
-    SavePublishers(list, callback);
+  if (!list_.empty()) {
+    SavePublishers(callback);
     return;
   }
 
@@ -325,9 +318,8 @@ void PublisherServerList::SaveParsedData(
 }
 
 void PublisherServerList::SavePublishers(
-    const SharedServerPublisher& list,
     ParsePublisherListCallback callback) {
-  if (!list) {
+  if (list_.empty()) {
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -335,27 +327,27 @@ void PublisherServerList::SavePublishers(
   const int max_insert_records_ = 70000;
 
   int32_t interval = max_insert_records_;
-  const auto list_size = list->size();
+  const auto list_size = list_.size();
   if (list_size < max_insert_records_) {
     interval = list_size;
   }
 
   ledger::ServerPublisherInfoList save_list;
-  SharedServerPublisher new_list;
+  ledger::ServerPublisherInfoList new_list;
   int i = 0;
-  for (auto& item : *list) {
+  for (auto& item : list_) {
     if (i <= interval) {
       save_list.push_back(std::move(item));
     } else {
-      new_list->push_back(std::move(item));
+      new_list.push_back(std::move(item));
     }
   }
 
+  list_ = std::move(new_list);
 
   auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
       _1,
-      new_list,
       callback);
 
   ledger_->InsertServerPublisherList(std::move(save_list), save_callback);
