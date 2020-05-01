@@ -367,33 +367,33 @@ void AdsImpl::OnUnIdle() {
 
 void AdsImpl::OnMediaPlaying(
     const int32_t tab_id) {
-  auto tab = media_playing_.find(tab_id);
-  if (tab != media_playing_.end()) {
+  const auto iter = media_playing_.find(tab_id);
+  if (iter != media_playing_.end()) {
     // Media is already playing for this tab
     return;
   }
 
   BLOG(INFO) << "OnMediaPlaying for tab id: " << tab_id;
 
-  media_playing_.insert({tab_id, true});
+  media_playing_.insert(tab_id);
 }
 
 void AdsImpl::OnMediaStopped(
     const int32_t tab_id) {
-  auto tab = media_playing_.find(tab_id);
-  if (tab == media_playing_.end()) {
+  const auto iter = media_playing_.find(tab_id);
+  if (iter == media_playing_.end()) {
     // Media is not playing for this tab
     return;
   }
 
   BLOG(INFO) << "OnMediaStopped for tab id: " << tab_id;
 
-  media_playing_.erase(tab_id);
+  media_playing_.erase(iter);
 }
 
 bool AdsImpl::IsMediaPlaying() const {
-  auto tab = media_playing_.find(active_tab_id_);
-  if (tab == media_playing_.end()) {
+  const auto iter = media_playing_.find(active_tab_id_);
+  if (iter == media_playing_.end()) {
     // Media is not playing in the active tab
     return false;
   }

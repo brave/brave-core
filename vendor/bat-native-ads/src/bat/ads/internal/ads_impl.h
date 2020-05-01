@@ -12,6 +12,7 @@
 #include <vector>
 #include <deque>
 #include <memory>
+#include <set>
 
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
@@ -90,7 +91,7 @@ class AdsImpl : public Ads {
   void OnIdle() override;
   void OnUnIdle() override;
 
-  std::map<int32_t, bool> media_playing_;
+  std::set<int32_t> media_playing_;
   void OnMediaPlaying(
       const int32_t tab_id) override;
   void OnMediaStopped(
