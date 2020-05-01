@@ -64,7 +64,7 @@ class RewardsNotificationServiceImpl
   void OnReconcileComplete(
       RewardsService* rewards_service,
       unsigned int result,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       const double amount,
       const int32_t type) override;
 

@@ -11,7 +11,9 @@
 
 namespace braveledger_database {
 
-DatabaseTable::DatabaseTable(bat_ledger::LedgerImpl* ledger): ledger_(ledger) {}
+DatabaseTable::DatabaseTable(bat_ledger::LedgerImpl* ledger): ledger_(ledger) {
+  DCHECK(ledger_);
+}
 
 DatabaseTable::~DatabaseTable() = default;
 

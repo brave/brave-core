@@ -27,31 +27,32 @@ class UpholdTransfer {
   void Start(
       const Transaction& transaction,
       ledger::ExternalWalletPtr wallet,
-      TransactionCallback callback);
+      ledger::TransactionCallback callback);
 
  private:
   void CreateTransaction(
       const Transaction& transaction,
       ledger::ExternalWalletPtr wallet,
-      TransactionCallback callback);
+      ledger::TransactionCallback callback);
 
   void OnCreateTransaction(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const ledger::ExternalWallet& wallet,
-      TransactionCallback callback);
+      ledger::TransactionCallback callback);
 
   void CommitTransaction(
       const std::string& transaction_id,
       const ledger::ExternalWallet& wallet,
-      TransactionCallback callback);
+      ledger::TransactionCallback callback);
 
   void OnCommitTransaction(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      TransactionCallback callback);
+      const std::string& transaction_id,
+      ledger::TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED

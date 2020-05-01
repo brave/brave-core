@@ -32,6 +32,8 @@ class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
+class DatabaseSKUOrder;
+class DatabaseSKUTransaction;
 class DatabaseUnblindedToken;
 
 class Database {
@@ -85,9 +87,13 @@ class Database {
       const int year,
       ledger::GetContributionReportCallback callback);
 
-  void GetIncompleteContributions(
-      const ledger::ContributionProcessor processor,
+  void GetNotCompletedContributions(
       ledger::ContributionInfoListCallback callback);
+
+  void UpdateContributionInfoStep(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      ledger::ResultCallback callback);
 
   void UpdateContributionInfoStepAndCount(
       const std::string& contribution_id,
@@ -269,14 +275,50 @@ class Database {
       ledger::GetServerPublisherInfoCallback callback);
 
   /**
+   * SKU ORDER
+   */
+  void SaveSKUOrder(ledger::SKUOrderPtr order, ledger::ResultCallback callback);
+
+  void UpdateSKUOrderStatus(
+      const std::string& order_id,
+      const ledger::SKUOrderStatus status,
+      ledger::ResultCallback callback);
+
+  void GetSKUOrder(
+      const std::string& order_id,
+      ledger::GetSKUOrderCallback callback);
+
+  void GetSKUOrderByContributionId(
+      const std::string& contribution_id,
+      ledger::GetSKUOrderCallback callback);
+
+  void SaveContributionIdForSKUOrder(
+      const std::string& order_id,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
+
+  /**
+   * SKU TRANSACTION
+   */
+  void SaveSKUTransaction(
+      ledger::SKUTransactionPtr transaction,
+      ledger::ResultCallback callback);
+
+  void SaveSKUExternalTransaction(
+      const std::string& transaction_id,
+      const std::string& external_transaction_id,
+      ledger::ResultCallback callback);
+
+  void GetSKUTransactionByOrderId(
+      const std::string& order_id,
+      ledger::GetSKUTransactionCallback callback);
+
+  /**
    * UNBLINDED TOKEN
    */
   void SaveUnblindedTokenList(
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
-
-  void GetAllUnblindedTokens(
-      ledger::GetUnblindedTokenListCallback callback);
 
   void DeleteUnblindedTokens(
       const std::vector<std::string>& ids,
@@ -287,6 +329,11 @@ class Database {
       ledger::GetUnblindedTokenListCallback callback);
 
   void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
+
+  void GetUnblindedTokensByBatchTypes(
+      const std::vector<ledger::CredsBatchType>& batch_types,
+      ledger::GetUnblindedTokenListCallback callback);
+
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
@@ -301,6 +348,8 @@ class Database {
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
+  std::unique_ptr<DatabaseSKUOrder> sku_order_;
+  std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -9,29 +9,28 @@
 #include <map>
 #include <string>
 
-#include "base/values.h"
 #include "bat/ledger/mojom_structs.h"
-#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace braveledger_contribution {
 
-ledger::ReconcileDirections
-FromContributionQueuePublishersToReconcileDirections(
-    ledger::ContributionQueuePublisherList list);
-
 ledger::ReportType GetReportTypeFromRewardsType(const ledger::RewardsType type);
 
-bool GenerateSuggestion(
-    const std::string& token_value,
-    const std::string& public_key,
-    const std::string& suggestion_encoded,
-    base::Value* result);
+ledger::ContributionProcessor GetProcessor(const std::string& wallet_type);
 
-bool GenerateSuggestionMock(
-    const std::string& token_value,
-    const std::string& public_key,
-    const std::string& suggestion_encoded,
-    base::Value* result);
+std::string GetNextProcessor(const std::string& current_processor);
+
+bool HaveEnoughFundsToContribute(
+    double* amount,
+    const bool partial,
+    const double balance);
+
+void AdjustPublisherListAmounts(
+    ledger::ContributionQueuePublisherList publishers,
+    ledger::ContributionQueuePublisherList* publishers_new,
+    ledger::ContributionQueuePublisherList* publishers_left,
+    double reduce_fee_for);
+
+int32_t GetVotesFromAmount(const double amount);
 
 }  // namespace braveledger_contribution
 

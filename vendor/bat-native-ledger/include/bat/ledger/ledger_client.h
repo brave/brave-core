@@ -81,6 +81,15 @@ using GetCredsBatchCallback = std::function<void(CredsBatchPtr)>;
 using GetAllCredsBatchCallback = std::function<void(CredsBatchList)>;
 using GetPromotionListCallback = std::function<void(PromotionList)>;
 
+using SKUOrderCallback =
+    std::function<void(const Result, const std::string&)>;
+
+using TransactionCallback =
+    std::function<void(const Result, const std::string&)>;
+
+using GetSKUOrderCallback = std::function<void(SKUOrderPtr)>;
+using GetSKUTransactionCallback = std::function<void(SKUTransactionPtr)>;
+
 class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
@@ -91,7 +100,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnReconcileComplete(
       const Result result,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       const double amount,
       const ledger::RewardsType type) = 0;
 

@@ -115,7 +115,9 @@ void Balance::GetUnBlindedTokens(
       *balance,
       callback,
       _1);
-  ledger_->GetAllUnblindedTokens(tokens_callback);
+  ledger_->GetUnblindedTokensByBatchTypes(
+      {ledger::CredsBatchType::PROMOTION},
+      tokens_callback);
 }
 
 void Balance::OnGetUnBlindedTokens(

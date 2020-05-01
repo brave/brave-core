@@ -64,7 +64,7 @@ class ConfirmationsClientMock : public ConfirmationsClient {
 
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       const double amount,
       const ledger::RewardsType type));
 

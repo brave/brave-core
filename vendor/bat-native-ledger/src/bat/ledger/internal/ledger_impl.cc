@@ -27,6 +27,8 @@
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
+#include "bat/ledger/internal/sku/sku_factory.h"
+#include "bat/ledger/internal/sku/sku_merchant.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -38,6 +40,7 @@ using namespace braveledger_contribution; //  NOLINT
 using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
+using namespace braveledger_sku; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -82,6 +85,11 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
   task_runner_ = base::CreateSequencedTaskRunner(
       {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
+  bat_sku_ = braveledger_sku::SKUFactory::Create(
+      this,
+      braveledger_sku::SKUType::kMerchant);
+  DCHECK(bat_sku_);
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -179,15 +187,6 @@ void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
       _1,
       std::move(callback));
   bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
-}
-
-ledger::CurrentReconcileProperties LedgerImpl::GetReconcileById(
-    const std::string& viewingId) {
-  return bat_state_->GetReconcileById(viewingId);
-}
-
-void LedgerImpl::RemoveReconcileById(const std::string& viewingId) {
-  bat_state_->RemoveReconcileById(viewingId);
 }
 
 void LedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
@@ -705,28 +704,6 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
   return bat_state_->GetReconcileStamp();
 }
 
-void LedgerImpl::ReconcileComplete(
-    const ledger::Result result,
-    const double amount,
-    const std::string& viewing_id,
-    const ledger::RewardsType type,
-    const bool delete_reconcile) {
-  const auto reconcile = GetReconcileById(viewing_id);
-
-  if (result == ledger::Result::LEDGER_OK) {
-    bat_contribution_->ReconcileSuccess(
-      viewing_id,
-      amount,
-      delete_reconcile);
-  }
-
-  ledger_client_->OnReconcileComplete(
-      result,
-      viewing_id,
-      amount,
-      type);
-}
-
 void LedgerImpl::ContributionCompleted(
     const ledger::Result result,
     const double amount,
@@ -981,17 +958,6 @@ void LedgerImpl::ResetReconcileStamp() {
   ledger_client_->ReconcileStampReset();
 }
 
-bool LedgerImpl::UpdateReconcile(
-    const ledger::CurrentReconcileProperties& reconcile) {
-  return bat_state_->UpdateReconcile(reconcile);
-}
-
-void LedgerImpl::AddReconcile(
-      const std::string& viewing_id,
-      const ledger::CurrentReconcileProperties& reconcile) {
-  bat_state_->AddReconcile(viewing_id, reconcile);
-}
-
 const std::string& LedgerImpl::GetPaymentId() const {
   return bat_state_->GetPaymentId();
 }
@@ -1074,18 +1040,6 @@ void LedgerImpl::GetRewardsInternalsInfo(
         secret_key, &public_key, &new_secret_key);
   }
 
-  // Retrieve the current reconciles.
-  const ledger::CurrentReconciles current_reconciles = GetCurrentReconciles();
-  for (const auto& reconcile : current_reconciles) {
-    ledger::ReconcileInfoPtr reconcile_info = ledger::ReconcileInfo::New();
-    reconcile_info->viewing_id = reconcile.second.viewing_id;
-    reconcile_info->amount = reconcile.second.amount;
-    reconcile_info->retry_step = reconcile.second.retry_step;
-    reconcile_info->retry_level = reconcile.second.retry_level;
-    info->current_reconciles.insert(
-        std::make_pair(reconcile.second.viewing_id, std::move(reconcile_info)));
-  }
-
   callback(std::move(info));
 }
 
@@ -1102,48 +1056,6 @@ void LedgerImpl::SetWalletProperties(
   bat_state_->SetWalletProperties(properties);
 }
 
-unsigned int LedgerImpl::GetDays() const {
-  return bat_state_->GetDays();
-}
-
-void LedgerImpl::SetDays(unsigned int days) {
-  bat_state_->SetDays(days);
-}
-
-const ledger::Transactions& LedgerImpl::GetTransactions() const {
-  return bat_state_->GetTransactions();
-}
-
-void LedgerImpl::SetTransactions(
-    const ledger::Transactions& transactions) {
-  bat_state_->SetTransactions(transactions);
-}
-
-const ledger::Ballots& LedgerImpl::GetBallots() const {
-  return bat_state_->GetBallots();
-}
-
-void LedgerImpl::SetBallots(const ledger::Ballots& ballots) {
-  bat_state_->SetBallots(ballots);
-}
-
-const ledger::PublisherVotes& LedgerImpl::GetPublisherVotes() const {
-  return bat_state_->GetPublisherVotes();
-}
-
-void LedgerImpl::SetPublisherVotes(
-    const ledger::PublisherVotes& publisher_votes) {
-  bat_state_->SetPublisherVotes(publisher_votes);
-}
-
-const std::string& LedgerImpl::GetCurrency() const {
-  return bat_state_->GetCurrency();
-}
-
-void LedgerImpl::SetCurrency(const std::string& currency) {
-  bat_state_->SetCurrency(currency);
-}
-
 uint64_t LedgerImpl::GetBootStamp() const {
   return bat_state_->GetBootStamp();
 }
@@ -1151,19 +1063,6 @@ uint64_t LedgerImpl::GetBootStamp() const {
 void LedgerImpl::SetBootStamp(uint64_t stamp) {
   bat_state_->SetBootStamp(stamp);
 }
-
-const std::string& LedgerImpl::GetMasterUserToken() const {
-  return bat_state_->GetMasterUserToken();
-}
-
-void LedgerImpl::SetMasterUserToken(const std::string& token) {
-  bat_state_->SetMasterUserToken(token);
-}
-
-bool LedgerImpl::ReconcileExists(const std::string& viewingId) {
-  return bat_state_->ReconcileExists(viewingId);
-}
-
 void LedgerImpl::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
@@ -1179,22 +1078,6 @@ void LedgerImpl::NormalizeContributeWinners(
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
-}
-
-bool LedgerImpl::AddReconcileStep(
-    const std::string& viewing_id,
-    ledger::ContributionRetry step,
-    int level) {
-  BLOG(this, ledger::LogLevel::LOG_DEBUG)
-    << "Contribution step "
-    << std::to_string(static_cast<int32_t>(step))
-    << " for "
-    << viewing_id;
-  return bat_state_->AddReconcileStep(viewing_id, step, level);
-}
-
-const ledger::CurrentReconciles& LedgerImpl::GetCurrentReconciles() const {
-  return bat_state_->GetCurrentReconciles();
 }
 
 double LedgerImpl::GetDefaultContributionAmount() {
@@ -1575,11 +1458,6 @@ void LedgerImpl::SaveUnblindedTokenList(
   bat_database_->SaveUnblindedTokenList(std::move(list), callback);
 }
 
-void LedgerImpl::GetAllUnblindedTokens(
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetAllUnblindedTokens(callback);
-}
-
 void LedgerImpl::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
@@ -1618,16 +1496,25 @@ void LedgerImpl::GetContributionReport(
   bat_database_->GetContributionReport(month, year, callback);
 }
 
-void LedgerImpl::GetIncompleteContributions(
-    const ledger::ContributionProcessor processor,
+void LedgerImpl::GetNotCompletedContributions(
     ledger::ContributionInfoListCallback callback) {
-  bat_database_->GetIncompleteContributions(processor, callback);
+  bat_database_->GetNotCompletedContributions(callback);
 }
 
 void LedgerImpl::GetContributionInfo(
     const std::string& contribution_id,
     ledger::GetContributionInfoCallback callback) {
   bat_database_->GetContributionInfo(contribution_id, callback);
+}
+
+void LedgerImpl::UpdateContributionInfoStep(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateContributionInfoStep(
+      contribution_id,
+      step,
+      callback);
 }
 
 void LedgerImpl::UpdateContributionInfoStepAndCount(
@@ -1756,6 +1643,91 @@ void LedgerImpl::UpdateCredsBatchStatus(
       trigger_type,
       status,
       callback);
+}
+
+void LedgerImpl::SaveSKUOrder(
+    ledger::SKUOrderPtr order,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveSKUOrder(std::move(order), callback);
+}
+
+void LedgerImpl::SaveSKUTransaction(
+    ledger::SKUTransactionPtr transaction,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveSKUTransaction(std::move(transaction), callback);
+}
+
+void LedgerImpl::SaveSKUExternalTransaction(
+    const std::string& transaction_id,
+    const std::string& external_transaction_id,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveSKUExternalTransaction(
+      transaction_id,
+      external_transaction_id,
+      callback);
+}
+
+void LedgerImpl::UpdateSKUOrderStatus(
+    const std::string& order_id,
+    const ledger::SKUOrderStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateSKUOrderStatus(
+      order_id,
+      status,
+      callback);
+}
+
+void LedgerImpl::TransferFunds(
+    const ledger::SKUTransaction& transaction,
+    const std::string& destination,
+    ledger::ExternalWalletPtr wallet,
+    ledger::TransactionCallback callback) {
+  bat_contribution_->TransferFunds(
+      transaction,
+      destination,
+      std::move(wallet),
+      callback);
+}
+
+void LedgerImpl::GetSKUOrder(
+    const std::string& order_id,
+    ledger::GetSKUOrderCallback callback) {
+  bat_database_->GetSKUOrder(order_id, callback);
+}
+
+void LedgerImpl::ProcessSKU(
+    const std::vector<ledger::SKUOrderItem>& items,
+    ledger::ExternalWalletPtr wallet,
+    ledger::SKUOrderCallback callback) {
+  bat_sku_->Process(items, std::move(wallet), callback);
+}
+
+void LedgerImpl::GetSKUOrderByContributionId(
+    const std::string& contribution_id,
+    ledger::GetSKUOrderCallback callback) {
+  bat_database_->GetSKUOrderByContributionId(contribution_id, callback);
+}
+
+void LedgerImpl::SaveContributionIdForSKUOrder(
+    const std::string& order_id,
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveContributionIdForSKUOrder(
+      order_id,
+      contribution_id,
+      callback);
+}
+
+void LedgerImpl::GetSKUTransactionByOrderId(
+    const std::string& order_id,
+    ledger::GetSKUTransactionCallback callback) {
+  bat_database_->GetSKUTransactionByOrderId(order_id, callback);
+}
+
+void LedgerImpl::GetUnblindedTokensByBatchTypes(
+    const std::vector<ledger::CredsBatchType>& batch_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_database_->GetUnblindedTokensByBatchTypes(batch_types, callback);
 }
 
 }  // namespace bat_ledger

@@ -9,19 +9,17 @@
 #include "base/values.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-
-#include "wrapper.hpp"  // NOLINT
+#include "bat/ledger/internal/request/request_promotion.h"
+#include "bat/ledger/internal/request/request_util.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
-
-using challenge_bypass_ristretto::BatchDLEQProof;
-using challenge_bypass_ristretto::BlindedToken;
-using challenge_bypass_ristretto::PublicKey;
-using challenge_bypass_ristretto::SignedToken;
-using challenge_bypass_ristretto::UnblindedToken;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace {
 
@@ -114,7 +112,13 @@ void CredentialsCommon::BlindedCredsSaved(
     const ledger::Result result,
     const std::string& blinded_creds_json,
     BlindedCredsCallback callback) {
-  callback(result, blinded_creds_json);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Creds batch save failed";
+    callback(ledger::Result::RETRY, "");
+    return;
+  }
+
+  callback(ledger::Result::LEDGER_OK, blinded_creds_json);
 }
 
 void CredentialsCommon::GetSignedCredsFromResponse(
@@ -126,7 +130,7 @@ void CredentialsCommon::GetSignedCredsFromResponse(
 
   if (parsed_response.DictSize() != 3) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Parsing failed";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -174,11 +178,81 @@ void CredentialsCommon::OnSaveUnblindedCreds(
     const ledger::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list not saved";
+    callback(ledger::Result::RETRY);
+    return;
+  }
+
   ledger_->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
       ledger::CredsBatchStatus::FINISHED,
       callback);
+}
+
+void CredentialsCommon::RedeemTokens(
+    const CredentialsRedeem& redeem,
+    ledger::ResultCallback callback) {
+  if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Pub key / token list empty";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  std::vector<std::string> token_id_list;
+  for (const auto & item : redeem.token_list) {
+    token_id_list.push_back(base::NumberToString(item.id));
+  }
+
+  auto url_callback = std::bind(&CredentialsCommon::OnRedeemTokens,
+      this,
+      _1,
+      _2,
+      _3,
+      token_id_list,
+      callback);
+
+  std::string payload;
+  std::string url;
+  std::vector<std::string> headers;
+  if (redeem.type == ledger::RewardsType::TRANSFER) {
+    payload = GenerateTransferTokensPayload(redeem, ledger_->GetPaymentId());
+    url = braveledger_request_util::GetTransferTokens();
+    ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
+    headers = braveledger_request_util::BuildSignHeaders(
+        "post /v1/suggestions/claim",
+        payload,
+        ledger_->GetPaymentId(),
+        wallet_info.key_info_seed);
+  } else {
+    payload = GenerateRedeemTokensPayload(redeem);
+    url = braveledger_request_util::GetReedemTokensUrl(redeem.processor);
+  }
+
+  ledger_->LoadURL(
+      url,
+      headers,
+      payload,
+      "application/json; charset=utf-8",
+      ledger::UrlMethod::POST,
+      url_callback);
+}
+
+void CredentialsCommon::OnRedeemTokens(
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const std::vector<std::string>& token_id_list,
+    ledger::ResultCallback callback) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  ledger_->DeleteUnblindedTokens(token_id_list, callback);
 }
 
 }  // namespace braveledger_credentials

@@ -123,7 +123,7 @@ void CredentialsPromotion::Claim(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    callback(result);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -416,6 +416,12 @@ void CredentialsPromotion::Completed(
 
   ledger_->PromotionCredentialCompleted(trigger.id, callback);
   ledger_->UnblindedTokensReady();
+}
+
+void CredentialsPromotion::RedeemTokens(
+    const CredentialsRedeem& redeem,
+    ledger::ResultCallback callback) {
+  common_->RedeemTokens(redeem, callback);
 }
 
 }  // namespace braveledger_credentials

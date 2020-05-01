@@ -14,6 +14,9 @@ index|server_publisher_amounts_publisher_key_index|server_publisher_amounts|CREA
 index|server_publisher_banner_publisher_key_index|server_publisher_banner|CREATE INDEX server_publisher_banner_publisher_key_index ON server_publisher_banner (publisher_key)
 index|server_publisher_info_publisher_key_index|server_publisher_info|CREATE INDEX server_publisher_info_publisher_key_index ON server_publisher_info (publisher_key)
 index|server_publisher_links_publisher_key_index|server_publisher_links|CREATE INDEX server_publisher_links_publisher_key_index ON server_publisher_links (publisher_key)
+index|sku_order_items_order_id_index|sku_order_items|CREATE INDEX sku_order_items_order_id_index ON sku_order_items (order_id)
+index|sku_order_items_order_item_id_index|sku_order_items|CREATE INDEX sku_order_items_order_item_id_index ON sku_order_items (order_item_id)
+index|sku_transaction_order_id_index|sku_transaction|CREATE INDEX sku_transaction_order_id_index ON sku_transaction (order_id)
 index|sqlite_autoindex_activity_info_1|activity_info|
 index|sqlite_autoindex_contribution_info_1|contribution_info|
 index|sqlite_autoindex_creds_batch_1|creds_batch|
@@ -27,6 +30,9 @@ index|sqlite_autoindex_server_publisher_amounts_1|server_publisher_amounts|
 index|sqlite_autoindex_server_publisher_banner_1|server_publisher_banner|
 index|sqlite_autoindex_server_publisher_info_1|server_publisher_info|
 index|sqlite_autoindex_server_publisher_links_1|server_publisher_links|
+index|sqlite_autoindex_sku_order_1|sku_order|
+index|sqlite_autoindex_sku_order_items_1|sku_order_items|
+index|sqlite_autoindex_sku_transaction_1|sku_transaction|
 index|unblinded_tokens_creds_id_index|unblinded_tokens|CREATE INDEX unblinded_tokens_creds_id_index ON unblinded_tokens (creds_id)
 table|activity_info|activity_info|CREATE TABLE activity_info (publisher_id LONGVARCHAR NOT NULL,duration INTEGER DEFAULT 0 NOT NULL,visits INTEGER DEFAULT 0 NOT NULL,score DOUBLE DEFAULT 0 NOT NULL,percent INTEGER DEFAULT 0 NOT NULL,weight DOUBLE DEFAULT 0 NOT NULL,reconcile_stamp INTEGER DEFAULT 0 NOT NULL,CONSTRAINT activity_unique UNIQUE (publisher_id, reconcile_stamp))
 table|contribution_info|contribution_info|CREATE TABLE contribution_info (contribution_id TEXT NOT NULL,amount DOUBLE NOT NULL,type INTEGER NOT NULL,step INTEGER NOT NULL DEFAULT -1,retry_count INTEGER NOT NULL DEFAULT -1,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, processor INTEGER NOT NULL DEFAULT 1,PRIMARY KEY (contribution_id))
@@ -44,5 +50,8 @@ table|server_publisher_amounts|server_publisher_amounts|CREATE TABLE server_publ
 table|server_publisher_banner|server_publisher_banner|CREATE TABLE server_publisher_banner (publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,title TEXT,description TEXT,background TEXT,logo TEXT)
 table|server_publisher_info|server_publisher_info|CREATE TABLE server_publisher_info (publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,status INTEGER DEFAULT 0 NOT NULL,excluded INTEGER DEFAULT 0 NOT NULL,address TEXT NOT NULL)
 table|server_publisher_links|server_publisher_links|CREATE TABLE server_publisher_links (publisher_key LONGVARCHAR NOT NULL,provider TEXT,link TEXT,CONSTRAINT server_publisher_links_unique     UNIQUE (publisher_key, provider))
+table|sku_order|sku_order|CREATE TABLE sku_order (order_id TEXT NOT NULL,total_amount DOUBLE,merchant_id TEXT,location TEXT,status INTEGER NOT NULL DEFAULT 0,contribution_id TEXT,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (order_id))
+table|sku_order_items|sku_order_items|CREATE TABLE sku_order_items (order_item_id TEXT NOT NULL,order_id TEXT NOT NULL,sku TEXT,quantity INTEGER,price DOUBLE,name TEXT,description TEXT,type INTEGER,expires_at TIMESTAMP,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT sku_order_items_unique     UNIQUE (order_item_id, order_id))
+table|sku_transaction|sku_transaction|CREATE TABLE sku_transaction (transaction_id TEXT NOT NULL,order_id TEXT NOT NULL,external_transaction_id TEXT NOT NULL,type INTEGER NOT NULL,amount DOUBLE NOT NULL,status INTEGER NOT NULL,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (transaction_id))
 table|sqlite_sequence|sqlite_sequence|CREATE TABLE sqlite_sequence(name,seq)
 table|unblinded_tokens|unblinded_tokens|CREATE TABLE unblinded_tokens (token_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,token_value TEXT,public_key TEXT,value DOUBLE NOT NULL DEFAULT 0,creds_id TEXT,expires_at TIMESTAMP NOT NULL DEFAULT 0,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)

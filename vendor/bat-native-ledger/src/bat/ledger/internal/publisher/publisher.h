@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "bat/ledger/internal/properties/publisher_properties.h"
 #include "bat/ledger/internal/properties/publisher_settings_properties.h"
 #include "bat/ledger/ledger.h"
 
@@ -212,9 +211,6 @@ class Publisher {
   bool GetMigrateScore() const;
 
   void SetMigrateScore(bool value);
-
-  bool isPublisherVisible(
-      const ledger::PublisherProperties& publisher_st);
 
   void OnSaveVisitInternal(
     ledger::Result result,

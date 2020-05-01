@@ -4,6 +4,7 @@
 
 #import <UIKit/UIKit.h>
 #import "bat/ledger/ledger.h"
+#import "bat/ledger/global_constants.h"
 #import "bat/ledger/option_keys.h"
 
 #import "Records+Private.h"
@@ -784,6 +785,21 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   }
   ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(ledger::PublisherStatus status) {
     completion(static_cast<BATPublisherStatus>(status));
+  });
+}
+
+#pragma mark - SKUs
+
+- (void)processSKUItems:(NSArray<BATSKUOrderItem *> *)items
+             completion:(void (^)(BATResult result, NSString *orderID))completion
+{
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->type = ledger::kWalletUnBlinded;
+  
+  ledger->ProcessSKU(VectorFromNSArray(items, ^ledger::SKUOrderItem(BATSKUOrderItem *item) {
+    return *item.cppObjPtr;
+  }), std::move(wallet), ^(const ledger::Result result, const std::string& order_id) {
+    completion(static_cast<BATResult>(result), [NSString stringWithUTF8String:order_id.c_str()]);
   });
 }
 

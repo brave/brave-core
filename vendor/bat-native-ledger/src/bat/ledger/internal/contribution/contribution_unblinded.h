@@ -9,11 +9,12 @@
 #include <stdint.h>
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -32,17 +33,19 @@ class Unblinded {
   explicit Unblinded(bat_ledger::LedgerImpl* ledger);
   ~Unblinded();
 
-  void Initialize();
+  void Start(
+      const std::vector<ledger::CredsBatchType>& types,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
 
-  void Start(const std::string& contribution_id);
-
-  void OnTimer(uint32_t timer_id);
+  void Retry(
+      const std::vector<ledger::CredsBatchType>& types,
+      ledger::ContributionInfoPtr contribution,
+      ledger::ResultCallback callback);
 
  private:
-  void OnGetNotCompletedContributions(
-      ledger::ContributionInfoList list);
-
   void GetContributionInfoAndUnblindedTokens(
+      const std::vector<ledger::CredsBatchType>& types,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
@@ -58,11 +61,15 @@ class Unblinded {
 
   void PrepareTokens(
       ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::UnblindedToken>& list);
+      const std::vector<ledger::UnblindedToken>& list,
+      const std::vector<ledger::CredsBatchType>& types,
+      ledger::ResultCallback callback);
 
   void PreparePublishers(
       const std::vector<ledger::UnblindedToken>& list,
-      ledger::ContributionInfoPtr contribution);
+      ledger::ContributionInfoPtr contribution,
+      const std::vector<ledger::CredsBatchType>& types,
+      ledger::ResultCallback callback);
 
   ledger::ContributionPublisherList PrepareAutoContribution(
       const std::vector<ledger::UnblindedToken>& list,
@@ -70,52 +77,41 @@ class Unblinded {
 
   void OnPrepareAutoContribution(
       const ledger::Result result,
-      const std::string& contribution_id);
+      const std::vector<ledger::CredsBatchType>& types,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
 
-  void ProcessTokens(const std::string& contribution_id);
+  void PrepareStepSaved(
+      const ledger::Result result,
+      const std::vector<ledger::CredsBatchType>& types,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
+
+  void ProcessTokens(
+      const std::vector<ledger::CredsBatchType>& types,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
 
   void OnProcessTokens(
       ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::UnblindedToken>& list);
+      const std::vector<ledger::UnblindedToken>& list,
+      ledger::ResultCallback callback);
 
   void TokenProcessed(
       const ledger::Result result,
       const std::string& contribution_id,
-      const std::string& publisher_key);
-
-  void OnTokenProcessed(
-      const ledger::Result result,
-      const std::string& contribution_id);
-
-  void CheckIfCompleted(ledger::ContributionInfoPtr contribution);
-
-  void SendTokens(
       const std::string& publisher_key,
-      const ledger::RewardsType type,
-      const std::vector<ledger::UnblindedToken>& list,
+      const bool single_publisher,
       ledger::ResultCallback callback);
 
-  void OnSendTokens(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::vector<std::string>& token_id_list,
-      ledger::ResultCallback callback);
-
-  void ContributionCompleted(
+  void ContributionAmountSaved(
       const ledger::Result result,
-      ledger::ContributionInfoPtr contribution);
-
-  void SetTimer(
       const std::string& contribution_id,
-      const uint64_t& start_timer_in = 0);
-
-  void CheckStep(const std::string& contribution_id);
-
-  void DoRetry(ledger::ContributionInfoPtr contribution);
+      const bool single_publisher,
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::map<std::string, uint32_t> retry_timers_;
+  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
 };
 
 }  // namespace braveledger_contribution

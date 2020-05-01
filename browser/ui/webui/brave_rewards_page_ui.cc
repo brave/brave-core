@@ -222,7 +222,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
       unsigned int result,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       const double amount,
       const int32_t type) override;
   void OnPendingContributionSaved(
@@ -974,7 +974,7 @@ void RewardsDOMHandler::GetContributionAmount(const base::ListValue* args) {
 void RewardsDOMHandler::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
-    const std::string& viewing_id,
+    const std::string& contribution_id,
     const double amount,
     const int32_t type) {
   if (web_ui()->CanCallJavascript()) {

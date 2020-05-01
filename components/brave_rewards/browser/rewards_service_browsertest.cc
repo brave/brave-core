@@ -17,6 +17,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/request/request_sku.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
@@ -136,21 +137,14 @@ namespace brave_test_resp {
   std::string verification_;
   std::string promotions_;
   std::string promotion_claim_;
-  std::string promotion_tokens_;
+  std::string creds_tokens_;
+  std::string creds_tokens_prod_;
   std::string captcha_;
   std::string wallet_properties_;
   std::string wallet_properties_defaults_;
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
-
-  std::string contribution_;
-  std::string reconcile_;
-  std::string current_reconcile_;
-  std::string register_;
-  std::string register_credential_;
-  std::string surveyor_voting_;
-  std::string surveyor_voting_credential_;
 }  // namespace brave_test_resp
 
 class BraveRewardsBrowserTest
@@ -271,6 +265,45 @@ class BraveRewardsBrowserTest
       status.c_str());
   }
 
+  std::string GetOrderCreateResponse() {
+    DCHECK(sku_order_);
+    std::string items;
+    for (const auto& item : sku_order_->items) {
+      items.append(base::StringPrintf(
+        R"({
+          "id": "%s",
+          "orderId": "%s",
+          "sku": "",
+          "createdAt": "2020-04-08T08:22:26.288974Z",
+          "updatedAt": "2020-04-08T08:22:26.288974Z",
+          "currency": "BAT",
+          "quantity": %d,
+          "price": "%g",
+          "description": "%s"
+        })",
+        item->order_item_id.c_str(),
+        sku_order_->order_id.c_str(),
+        item->quantity,
+        item->price,
+        item->description.c_str()));
+    }
+
+    return base::StringPrintf(
+        R"({
+          "id": "%s",
+          "createdAt": "2020-04-08T08:22:26.288974Z",
+          "currency": "BAT",
+          "updatedAt": "2020-04-08T08:22:26.288974Z",
+          "totalPrice": "%g",
+          "location": "brave.com",
+          "status": "pending",
+          "items": [%s]
+        })",
+        sku_order_->order_id.c_str(),
+        sku_order_->total_amount,
+        items.c_str());
+  }
+
   std::vector<double> GetSiteBannerTipOptions(
       content::WebContents* site_banner) {
     rewards_service_browsertest_utils::WaitForElementToAppear(
@@ -351,7 +384,7 @@ class BraveRewardsBrowserTest
     } else if (URLMatches(url, "/promotions/", PREFIX_V1,
                           ServerTypes::kPromotion)) {
       if (url.find("claims") != std::string::npos) {
-        *response = brave_test_resp::promotion_tokens_;
+        *response = brave_test_resp::creds_tokens_;
       } else {
         *response = brave_test_resp::promotion_claim_;
       }
@@ -409,30 +442,27 @@ class BraveRewardsBrowserTest
         braveledger_uphold::GetAPIUrl("/v0/me"),
         base::CompareCase::INSENSITIVE_ASCII)) {
       *response = GetUpholdUser();
-    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      GURL gurl(url);
-      if (gurl.has_query()) {
-        *response = brave_test_resp::reconcile_;
-      } else {
-        *response = brave_test_resp::current_reconcile_;
+    } else if (URLMatches(
+        url,
+        "/order",
+        PREFIX_V1,
+        ServerTypes::kPayments)) {
+      if (url.find("credentials") != std::string::npos) {
+        if (method == 0) {
+          #if defined(OFFICIAL_BUILD)
+            *response = brave_test_resp::creds_tokens_prod_;
+          #else
+            *response = brave_test_resp::creds_tokens_;
+          #endif
+
+          return;
+        }
+        return;
+      } else if (url.find("transaction") == std::string::npos) {
+        *response = GetOrderCreateResponse();
       }
 
-    } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      *response = brave_test_resp::contribution_;
-    } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      if (url.find(REGISTER_VIEWING "/") != std::string::npos)
-        *response = brave_test_resp::register_credential_;
-      else
-        *response = brave_test_resp::register_;
-    } else if (URLMatches(url, SURVEYOR_BATCH_VOTING, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      if (url.find(SURVEYOR_BATCH_VOTING "/") != std::string::npos)
-        *response = brave_test_resp::surveyor_voting_credential_;
-      else
-        *response = brave_test_resp::surveyor_voting_;
+      *response_status_code = net::HTTP_CREATED;
     }
   }
 
@@ -650,8 +680,11 @@ class BraveRewardsBrowserTest
         base::ReadFileToString(path.AppendASCII("promotion_claim_resp.json"),
                                &brave_test_resp::promotion_claim_));
     ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("promotion_tokens_resp.json"),
-                               &brave_test_resp::promotion_tokens_));
+        base::ReadFileToString(path.AppendASCII("creds_tokens_resp.json"),
+                               &brave_test_resp::creds_tokens_));
+    ASSERT_TRUE(
+        base::ReadFileToString(path.AppendASCII("creds_tokens_prod_resp.json"),
+                               &brave_test_resp::creds_tokens_prod_));
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
                                &brave_test_resp::wallet_properties_));
@@ -667,26 +700,6 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_commit_resp.json"),
         &brave_test_resp::uphold_commit_resp_));
-
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("contribution_resp.json"),
-                               &brave_test_resp::contribution_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("reconcile_resp.json"),
-                                       &brave_test_resp::reconcile_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("current_reconcile_resp.json"),
-                               &brave_test_resp::current_reconcile_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("register_resp.json"),
-                                       &brave_test_resp::register_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("register_credential_resp.json"),
-        &brave_test_resp::register_credential_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("surveyor_voting_resp.json"),
-                               &brave_test_resp::surveyor_voting_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("surveyor_voting_credential_resp.json"),
-        &brave_test_resp::surveyor_voting_credential_));
   }
 
   void UpdateContributionBalance(double amount, bool verified = false) {
@@ -1174,7 +1187,7 @@ class BraveRewardsBrowserTest
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
       unsigned int result,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       const double amount,
       const int32_t type) {
     const auto converted_result = static_cast<ledger::Result>(result);
@@ -1407,6 +1420,8 @@ class BraveRewardsBrowserTest
   bool pending_tip_saved_ = false;
 
   std::unique_ptr<base::RunLoop> wait_for_attestation_loop_;
+
+  ledger::SKUOrderPtr sku_order_ = nullptr;
 
   bool last_publisher_added_ = false;
   bool alter_publisher_list_ = false;
@@ -2715,6 +2730,24 @@ IN_PROC_BROWSER_TEST_F(
 
   // 30 form unblinded and 20 from uphold
   rewards_service()->SetContributionAmount(50.0);
+
+  ledger::SKUOrderItemList items;
+  auto item = ledger::SKUOrderItem::New();
+  item->order_item_id = "ed193339-e58c-483c-8d61-7decd3c24827";
+  item->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
+  item->quantity = 80;
+  item->price = 0.25;
+  item->description = "description";
+  item->type = ledger::SKUOrderItemType::SINGLE_USE;
+  items.push_back(std::move(item));
+
+  auto order = ledger::SKUOrder::New();
+  order->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
+  order->total_amount = 20;
+  order->merchant_id = "";
+  order->location = "brave.com";
+  order->items = std::move(items);
+  sku_order_ = std::move(order);
 
   // Trigger contribution process
   rewards_service()->StartMonthlyContributionForTest();

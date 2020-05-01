@@ -10,14 +10,10 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/credentials/credentials_redeem.h"
+#include "bat/ledger/internal/credentials/credentials_trigger.h"
 
 namespace braveledger_credentials {
-
-struct CredentialsTrigger {
-  std::string id;
-  ledger::CredsBatchType type;
-  int size;
-};
 
 class Credentials {
  public:
@@ -27,6 +23,11 @@ class Credentials {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 
+  virtual void RedeemTokens(
+      const CredentialsRedeem& redeem,
+      ledger::ResultCallback callback) = 0;
+
+ protected:
   virtual void Blind(
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;

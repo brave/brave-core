@@ -69,125 +69,6 @@ class ClientStateTest : public ::testing::Test {
     return wallet_properties;
   }
 
-  Transactions GetTransactions(
-      const int count) const {
-    TransactionProperties transaction_properties;
-    transaction_properties.viewing_id = "ViewingId";
-    transaction_properties.surveyor_id = "SurveyorId";
-    transaction_properties.contribution_probi = "ContributionProbi";
-    transaction_properties.submission_timestamp = "SubmissionTimestamp";
-    transaction_properties.anonize_viewing_id = "AnonizeViewingId";
-    transaction_properties.registrar_vk = "RegistrarVk";
-    transaction_properties.master_user_token = "MasterUserToken";
-    transaction_properties.surveyor_ids = { "SurveyorId" };
-    transaction_properties.vote_count =
-        std::numeric_limits<uint32_t>::max();
-    transaction_properties.contribution_rates = {
-      { "BAT", 1.0 },
-      { "ETH", 2.0 },
-      { "LTC", 3.0 },
-      { "BTC", 4.0 },
-      { "USD", 5.0 },
-      { "EUR", 6.0 }
-    };
-
-    TransactionBallotProperties transaction_ballot_properties;
-    transaction_ballot_properties.publisher = "Publisher";
-    transaction_ballot_properties.count =
-        std::numeric_limits<uint32_t>::max();
-    transaction_properties.transaction_ballots.push_back(
-        transaction_ballot_properties);
-
-    Transactions transactions;
-    for (int i = 0; i < count; i++) {
-      transactions.push_back(transaction_properties);
-    }
-
-    return transactions;
-  }
-
-  Ballots GetBallots(
-      const int count) const {
-    BallotProperties ballot_properties;
-    ballot_properties.viewing_id = "ViewingId";
-    ballot_properties.surveyor_id = "SurveyorId";
-    ballot_properties.publisher = "Publisher";
-    ballot_properties.count = std::numeric_limits<uint32_t>::max();
-    ballot_properties.prepare_ballot = "PrepareBallot";
-
-    Ballots ballots;
-    for (int i = 0; i < count; i++) {
-      ballots.push_back(ballot_properties);
-    }
-
-    return ballots;
-  }
-
-  PublisherVotes GetPublisherVotes(
-      const int count) const {
-    PublisherVotesProperties publisher_votes_properties;
-    publisher_votes_properties.publisher = "Publisher";
-
-    PublisherVoteProperties publisher_vote_properties;
-    publisher_vote_properties.surveyor_id = "SurveyorId";
-    publisher_vote_properties.proof = "Proof";
-    publisher_votes_properties.batch_votes.push_back(publisher_vote_properties);
-
-    PublisherVotes publisher_votes;
-    for (int i = 0; i < count; i++) {
-      publisher_votes.push_back(publisher_votes_properties);
-    }
-
-    return publisher_votes;
-  }
-
-  CurrentReconciles GetCurrentReconciles(
-      const int count) const {
-    CurrentReconcileProperties current_reconcile_properties;
-    current_reconcile_properties.viewing_id = "ViewingId";
-    current_reconcile_properties.anonize_viewing_id = "AnonizeViewingId";
-    current_reconcile_properties.registrar_vk = "RegistrarVk";
-    current_reconcile_properties.pre_flight = "PreFlight";
-    current_reconcile_properties.master_user_token = "MasterUserToken";
-    current_reconcile_properties.surveyor_id = "SurveyorId";
-
-    current_reconcile_properties.timestamp =
-        std::numeric_limits<uint32_t>::max();
-    current_reconcile_properties.rates = {
-      { "BAT", 1.0 },
-      { "ETH", 2.0 },
-      { "LTC", 3.0 },
-      { "BTC", 4.0 },
-      { "USD", 5.0 },
-      { "EUR", 6.0 }
-    };
-    current_reconcile_properties.amount = "Amount";
-    current_reconcile_properties.currency = "Currency";
-    current_reconcile_properties.fee = std::numeric_limits<double>::max();
-
-    ReconcileDirectionProperties reconcile_direction_properties;
-    reconcile_direction_properties.publisher_key = "PublisherKey";
-    reconcile_direction_properties.amount_percent =
-        std::numeric_limits<double>::max();
-    current_reconcile_properties.directions.push_back(
-        reconcile_direction_properties);
-
-    current_reconcile_properties.type = RewardsType::ONE_TIME_TIP;
-    current_reconcile_properties.retry_step = ContributionRetry::STEP_RECONCILE;
-    current_reconcile_properties.retry_level =
-        std::numeric_limits<int32_t>::max();
-    current_reconcile_properties.destination = "Destination";
-    current_reconcile_properties.proof = "Proof";
-
-    CurrentReconciles current_reconciles;
-    for (int i = 0; i < count; i++) {
-      const std::string key = std::to_string(i);
-      current_reconciles.insert({key, current_reconcile_properties});
-    }
-
-    return current_reconciles;
-  }
-
   std::map<std::string, bool> GetInlineTips(
       const int count) const {
     std::map<std::string, bool> inline_tips;
@@ -212,17 +93,9 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMinValues) {
   client_properties.persona_id = "PersonaId";
   client_properties.user_id = "UserId";
   client_properties.registrar_vk = "RegistrarVk";
-  client_properties.master_user_token = "MasterUserToken";
   client_properties.pre_flight = "PreFlight";
-  client_properties.fee_currency = "FeeCurrency";
-  client_properties.settings = "Settings";
   client_properties.fee_amount = std::numeric_limits<double>::min();
   client_properties.user_changed_fee = true;
-  client_properties.days = std::numeric_limits<uint32_t>::min();
-  client_properties.transactions = GetTransactions(1);
-  client_properties.ballots = GetBallots(1);
-  client_properties.publisher_votes = GetPublisherVotes(1);
-  client_properties.current_reconciles = GetCurrentReconciles(1);
   client_properties.auto_contribute = true;
   client_properties.rewards_enabled = true;
   client_properties.inline_tips = GetInlineTips(1);
@@ -249,17 +122,9 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMinValues) {
   client_properties.persona_id = "PersonaId";
   client_properties.user_id = "UserId";
   client_properties.registrar_vk = "RegistrarVk";
-  client_properties.master_user_token = "MasterUserToken";
   client_properties.pre_flight = "PreFlight";
-  client_properties.fee_currency = "FeeCurrency";
-  client_properties.settings = "Settings";
   client_properties.fee_amount = std::numeric_limits<double>::min();
   client_properties.user_changed_fee = true;
-  client_properties.days = std::numeric_limits<uint32_t>::min();
-  client_properties.transactions = GetTransactions(1);
-  client_properties.ballots = GetBallots(1);
-  client_properties.publisher_votes = GetPublisherVotes(1);
-  client_properties.current_reconciles = GetCurrentReconciles(1);
   client_properties.auto_contribute = true;
   client_properties.rewards_enabled = true;
   client_properties.inline_tips = GetInlineTips(1);
@@ -287,17 +152,9 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMaxValues) {
   client_properties.persona_id = "PersonaId";
   client_properties.user_id = "UserId";
   client_properties.registrar_vk = "RegistrarVk";
-  client_properties.master_user_token = "MasterUserToken";
   client_properties.pre_flight = "PreFlight";
-  client_properties.fee_currency = "FeeCurrency";
-  client_properties.settings = "Settings";
   client_properties.fee_amount = std::numeric_limits<double>::max();
   client_properties.user_changed_fee = true;
-  client_properties.days = std::numeric_limits<uint32_t>::max();
-  client_properties.transactions = GetTransactions(3);
-  client_properties.ballots = GetBallots(7);
-  client_properties.publisher_votes = GetPublisherVotes(1);
-  client_properties.current_reconciles = GetCurrentReconciles(5);
   client_properties.auto_contribute = true;
   client_properties.rewards_enabled = true;
   client_properties.inline_tips = GetInlineTips(9);
@@ -324,17 +181,9 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMaxValues) {
   client_properties.persona_id = "PersonaId";
   client_properties.user_id = "UserId";
   client_properties.registrar_vk = "RegistrarVk";
-  client_properties.master_user_token = "MasterUserToken";
   client_properties.pre_flight = "PreFlight";
-  client_properties.fee_currency = "FeeCurrency";
-  client_properties.settings = "Settings";
   client_properties.fee_amount = std::numeric_limits<double>::max();
   client_properties.user_changed_fee = true;
-  client_properties.days = std::numeric_limits<uint32_t>::max();
-  client_properties.transactions = GetTransactions(3);
-  client_properties.ballots = GetBallots(7);
-  client_properties.publisher_votes = GetPublisherVotes(1);
-  client_properties.current_reconciles = GetCurrentReconciles(5);
   client_properties.auto_contribute = true;
   client_properties.rewards_enabled = true;
   client_properties.inline_tips = GetInlineTips(9);

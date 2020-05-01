@@ -171,9 +171,7 @@ bool getJSONRates(const std::string& json,
 
 bool getJSONWalletInfo(const std::string& json,
                        ledger::WalletInfoProperties* walletInfo,
-                       std::string* fee_currency,
-                       double* fee_amount,
-                       unsigned int* days) {
+                       double* fee_amount) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -193,20 +191,16 @@ bool getJSONWalletInfo(const std::string& json,
       walletInfo->address_card_id =
           d["wallet"]["addresses"]["CARD_ID"].GetString();
 
-      *days = d["payload"]["adFree"]["days"].GetUint();
       const auto & fee = d["payload"]["adFree"]["fee"].GetObject();
       auto itr = fee.MemberBegin();
       if (itr != fee.MemberEnd()) {
-        *fee_currency = itr->name.GetString();
         *fee_amount = itr->value.GetDouble();
       }
     } else if (d.HasMember("parameters") && d["parameters"].IsObject()) {
       walletInfo->address_card_id = d["addresses"]["CARD_ID"].GetString();
-      *days = d["parameters"]["adFree"]["days"].GetUint();
       const auto & fee = d["parameters"]["adFree"]["fee"].GetObject();
       auto itr = fee.MemberBegin();
       if (itr != fee.MemberEnd()) {
-        *fee_currency = itr->name.GetString();
         *fee_amount = itr->value.GetDouble();
       }
     }

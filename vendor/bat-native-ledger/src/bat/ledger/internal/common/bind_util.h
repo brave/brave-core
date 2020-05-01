@@ -43,6 +43,10 @@ std::string FromMonthlyReportToString(ledger::MonthlyReportInfoPtr info);
 
 ledger::MonthlyReportInfoPtr FromStringToMonthlyReport(const std::string& data);
 
+std::string FromSKUOrderToString(ledger::SKUOrderPtr info);
+
+ledger::SKUOrderPtr FromStringToSKUOrder(const std::string& data);
+
 }  // namespace braveledger_bind_util
 
 #endif  // BRAVELEDGER_COMMON_BIND_UTIL_H_

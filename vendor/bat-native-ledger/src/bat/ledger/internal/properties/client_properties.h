@@ -10,10 +10,6 @@
 #include <map>
 #include <string>
 
-#include "bat/ledger/internal/properties/ballot_properties.h"
-#include "bat/ledger/internal/properties/publisher_votes_properties.h"
-#include "bat/ledger/internal/properties/current_reconcile_properties.h"
-#include "bat/ledger/internal/properties/transaction_properties.h"
 #include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/mojom_structs.h"
 
@@ -38,17 +34,9 @@ struct ClientProperties {
   std::string persona_id;
   std::string user_id;
   std::string registrar_vk;
-  std::string master_user_token;
   std::string pre_flight;
-  std::string fee_currency;
-  std::string settings;
   double fee_amount;
   bool user_changed_fee;
-  uint32_t days;
-  Transactions transactions;
-  Ballots ballots;
-  PublisherVotes publisher_votes;
-  CurrentReconciles current_reconciles;
   bool auto_contribute;
   bool rewards_enabled;
   std::map<std::string, bool> inline_tips;

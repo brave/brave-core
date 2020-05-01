@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -45,6 +46,10 @@ class CredentialsCommon {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
+  void RedeemTokens(
+      const CredentialsRedeem& redeem,
+      ledger::ResultCallback callback);
+
  private:
   void BlindedCredsSaved(
       const ledger::Result result,
@@ -54,6 +59,13 @@ class CredentialsCommon {
   void OnSaveUnblindedCreds(
       const ledger::Result result,
       const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback);
+
+  void OnRedeemTokens(
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      const std::vector<std::string>& token_id_list,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

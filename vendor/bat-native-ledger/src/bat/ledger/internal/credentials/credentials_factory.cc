@@ -5,6 +5,7 @@
 
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/internal/credentials/credentials_promotion.h"
+#include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 namespace braveledger_credentials {
@@ -21,6 +22,10 @@ std::unique_ptr<Credentials> CredentialsFactory::Create(
 
     case ledger::CredsBatchType::PROMOTION: {
       return std::make_unique<CredentialsPromotion>(ledger);
+    }
+
+    case ledger::CredsBatchType::SKU: {
+      return std::make_unique<CredentialsSKU>(ledger);
     }
   }
 }
