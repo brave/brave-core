@@ -54,7 +54,7 @@ class Tab: NSObject {
         return type.isPrivate
     }
 
-    var secureContentState: TabSecureContentState = .insecure
+    var secureContentState: TabSecureContentState = .unknown
 
     // PageMetadata is derived from the page content itself, and as such lags behind the
     // rest of the tab.
