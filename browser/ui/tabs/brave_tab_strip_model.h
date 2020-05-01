@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/ui/tabs/mru_tab_cycling_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
 class BraveTabStripModel : public TabStripModel {
