@@ -11,8 +11,6 @@
 
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-#include "ui/events/event_handler.h"
-
 class BraveTabStripModel : public TabStripModel {
  public:
   explicit BraveTabStripModel(TabStripModelDelegate* delegate,

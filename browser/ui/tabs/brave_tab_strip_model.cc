@@ -13,16 +13,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/events/event.h"
-#include "ui/events/event_handler.h"
-
-#if defined(USE_AURA)
-#include "ui/aura/window.h"
-#endif
-
-#if defined(OS_MACOSX)
-#include "ui/views/widget/widget.h"
-#endif
 
 BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
                                        Profile* profile)
