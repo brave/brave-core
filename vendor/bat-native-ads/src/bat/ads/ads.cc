@@ -4,12 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <set>
 
 #include "bat/ads/ads.h"
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/locale_helper.h"
-#include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/supported_regions.h"
 
 namespace ads {
 
@@ -31,8 +32,8 @@ bool Ads::IsSupportedLocale(
     const std::string& locale) {
   const std::string region = GetRegion(locale);
 
-  for (const auto& schema : kSupportedRegionsSchemas) {
-    const std::vector<std::string> regions = schema.second;
+  for (const auto& schema : kSupportedRegions) {
+    const std::set<std::string> regions = schema.second;
     const auto iter = std::find(regions.begin(), regions.end(), region);
     if (iter != regions.end()) {
       return true;
@@ -47,13 +48,13 @@ bool Ads::IsNewlySupportedLocale(
     const int last_schema_version) {
   const std::string region = GetRegion(locale);
 
-  for (const auto& schema : kSupportedRegionsSchemas) {
+  for (const auto& schema : kSupportedRegions) {
     const int schema_version = schema.first;
     if (schema_version < last_schema_version) {
       continue;
     }
 
-    const std::vector<std::string> regions = schema.second;
+    const std::set<std::string> regions = schema.second;
     const auto iter = std::find(regions.begin(), regions.end(), region);
     if (iter != regions.end()) {
       return true;
