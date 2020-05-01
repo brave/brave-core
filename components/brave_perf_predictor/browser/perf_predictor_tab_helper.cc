@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
+#include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -38,10 +39,12 @@ content::WebContents* GetWebContents(int render_process_id,
 
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>()) {
+    : WebContentsObserver(web_contents) {
   if (web_contents->GetBrowserContext()->IsOffTheRecord())
     return;
+  bandwidth_predictor_ = std::make_unique<BandwidthSavingsPredictor>(
+      NamedThirdPartyRegistryFactory::GetForBrowserContext(
+          web_contents->GetBrowserContext()));
 
   bandwidth_tracker_ = std::make_unique<P3ABandwidthSavingsTracker>(
       user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));

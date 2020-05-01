@@ -5,12 +5,19 @@
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 
+#include <tuple>
+
+#include "base/bind.h"
 #include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
+#include "base/task_runner_util.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/values.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg_parameters.h"
 #include "components/grit/brave_components_resources.h"
@@ -20,32 +27,19 @@
 
 namespace brave_perf_predictor {
 
-// static
-NamedThirdPartyRegistry* NamedThirdPartyRegistry::GetInstance() {
-  auto* extractor = base::Singleton<NamedThirdPartyRegistry>::get();
-  // By default initialize from packaged resources
-  if (!extractor->IsInitialized()) {
-    bool initialized = extractor->InitializeFromResource();
-    if (!initialized) {
-      VLOG(2) << "Initialization from resource failed, marking as initialized "
-              << "will not retry";
-      extractor->MarkInitialized(true);
-    }
-  }
-  return extractor;
-}
+namespace {
 
-bool NamedThirdPartyRegistry::LoadMappings(const base::StringPiece entities,
-                                           bool discard_irrelevant) {
-  // Reset previous mappings
-  entity_by_domain_.clear();
-  entity_by_root_domain_.clear();
+std::tuple<base::flat_map<std::string, std::string>,
+           base::flat_map<std::string, std::string>>
+ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
+  base::flat_map<std::string, std::string> entity_by_domain;
+  base::flat_map<std::string, std::string> entity_by_root_domain;
 
   // Parse the JSON
   base::Optional<base::Value> document = base::JSONReader::Read(entities);
   if (!document || !document->is_list()) {
     LOG(ERROR) << "Cannot parse the third-party entities list";
-    return false;
+    return {};
   }
 
   // Collect the mappings
@@ -68,7 +62,7 @@ bool NamedThirdPartyRegistry::LoadMappings(const base::StringPiece entities,
       const base::StringPiece entity_domain(entity_domain_it.GetString());
 
       const auto inserted =
-          entity_by_domain_.emplace(entity_domain, *entity_name);
+          entity_by_domain.emplace(entity_domain, *entity_name);
       if (!inserted.second) {
         VLOG(2) << "Malformed data: duplicate domain " << entity_domain;
       }
@@ -76,28 +70,69 @@ bool NamedThirdPartyRegistry::LoadMappings(const base::StringPiece entities,
           entity_domain,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-      auto root_entity_entry = entity_by_root_domain_.find(root_domain);
-      if (root_entity_entry != entity_by_root_domain_.end() &&
+      auto root_entity_entry = entity_by_root_domain.find(root_domain);
+      if (root_entity_entry != entity_by_root_domain.end() &&
           root_entity_entry->second != *entity_name) {
         // If there is a clash at root domain level, neither is correct
-        entity_by_root_domain_.erase(root_entity_entry);
+        entity_by_root_domain.erase(root_entity_entry);
       } else {
-        entity_by_root_domain_.emplace(root_domain, *entity_name);
+        entity_by_root_domain.emplace(root_domain, *entity_name);
       }
     }
   }
 
-  entity_by_domain_.shrink_to_fit();
-  entity_by_root_domain_.shrink_to_fit();
+  entity_by_domain.shrink_to_fit();
+  entity_by_root_domain.shrink_to_fit();
+  return std::make_tuple(entity_by_domain, entity_by_root_domain);
+}
+
+std::tuple<base::flat_map<std::string, std::string>,
+           base::flat_map<std::string, std::string>>
+ParseFromResource(int resource_id) {
+  // TODO(AndriusA): insert trace event here
+  SCOPED_UMA_HISTOGRAM_TIMER(
+      "Brave.Savings.NamedThirdPartyRegistry.LoadTimeMS");
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::string data_resource =
+      resource_bundle.LoadDataResourceString(resource_id);
+  // Parse resource, discarding irrelevant entities
+  return ParseMappings(data_resource, true);
+}
+
+}  // namespace
+
+bool NamedThirdPartyRegistry::LoadMappings(const base::StringPiece entities,
+                                           bool discard_irrelevant) {
+  // Reset previous mappings
+  entity_by_domain_.clear();
+  entity_by_root_domain_.clear();
+  initialized_ = false;
+
+  tie(entity_by_domain_, entity_by_root_domain_) =
+      ParseMappings(entities, discard_irrelevant);
+  if (entity_by_domain_.size() == 0 || entity_by_root_domain_.size() == 0)
+    return false;
+
+  initialized_ = true;
+  return true;
+}
+
+void NamedThirdPartyRegistry::UpdateMappings(
+    std::tuple<base::flat_map<std::string, std::string>,
+               base::flat_map<std::string, std::string>> entity_mappings) {
+  tie(entity_by_domain_, entity_by_root_domain_) = entity_mappings;
   VLOG(2) << "Loaded " << entity_by_domain_.size() << " mappings by domain and "
           << entity_by_root_domain_.size() << " by root domain; size";
   initialized_ = true;
-
-  return true;
 }
 
 base::Optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
     const base::StringPiece request_url) const {
+  if (!IsInitialized()) {
+    VLOG(2) << "Named Third Party Registry not initialized";
+    return base::nullopt;
+  }
+
   const GURL url(request_url);
   if (!url.is_valid())
     return base::nullopt;
@@ -122,16 +157,12 @@ NamedThirdPartyRegistry::NamedThirdPartyRegistry() = default;
 
 NamedThirdPartyRegistry::~NamedThirdPartyRegistry() = default;
 
-bool NamedThirdPartyRegistry::InitializeFromResource() {
-  const auto resource_id = IDR_THIRD_PARTY_ENTITIES;
-  // TODO(AndriusA): insert trace event here
-  SCOPED_UMA_HISTOGRAM_TIMER(
-      "Brave.Savings.NamedThirdPartyRegistry.LoadTimeMS");
-  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  std::string data_resource =
-      resource_bundle.LoadDataResourceString(resource_id);
-  // Parse resource, discarding irrelevant entities
-  return LoadMappings(data_resource, true);
+void NamedThirdPartyRegistry::InitializeDefault() {
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&ParseFromResource, IDR_THIRD_PARTY_ENTITIES),
+      base::BindOnce(&NamedThirdPartyRegistry::UpdateMappings,
+                     weak_factory_.GetWeakPtr()));
 }
 
 }  // namespace brave_perf_predictor

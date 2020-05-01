@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "url/gurl.h"
+#include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 
 namespace page_load_metrics {
 namespace mojom {
@@ -39,7 +40,7 @@ namespace brave_perf_predictor {
 // of any resources fully loaded or blocked.
 class BandwidthSavingsPredictor {
  public:
-  BandwidthSavingsPredictor();
+  explicit BandwidthSavingsPredictor(const NamedThirdPartyRegistry* registry);
   ~BandwidthSavingsPredictor();
 
   BandwidthSavingsPredictor(const BandwidthSavingsPredictor&) = delete;
@@ -62,6 +63,7 @@ class BandwidthSavingsPredictor {
                            FeaturiseResourceLoading);
 
   GURL main_frame_url_;
+  const NamedThirdPartyRegistry* tp_registry_; // not owned
   base::flat_map<std::string, double> feature_map_;
 };
 
