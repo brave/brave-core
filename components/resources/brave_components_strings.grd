@@ -148,10 +148,10 @@
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->
-      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Ads and Trackers Blocked</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Ads and trackers blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
-      <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated Time Saved</message>
-      <message name="IDS_BRAVE_NEW_TAB_ESTIMATED_BANDWIDTH_SAVED" desc="total bandwidth saved from blocking ads and trackers">Estimated Bandwidth Saved</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated time saved</message>
+      <message name="IDS_BRAVE_NEW_TAB_ESTIMATED_BANDWIDTH_SAVED" desc="total bandwidth saved from blocking ads and trackers">Estimated bandwidth saved</message>
       <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Top site removed.</message>
       <message name="IDS_BRAVE_NEW_TAB_UNDO_REMOVED" desc="Shown when a user wants to undo removing a tile.">Undo</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOSE" desc="Shown when a user wants to close the site removal notification.">Close</message>
