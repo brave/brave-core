@@ -6,12 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 
-#define SelectNextTab virtual SelectNextTab
-#define SelectPreviousTab virtual SelectPreviousTab
+#define SelectRelativeTab virtual SelectRelativeTab
 #define TAB_STRIP_MODEL_H_ friend class BraveTabStripModel;
 
 #include "../../../../../../chrome/browser/ui/tabs/tab_strip_model.h"  // NOLINT
-#undef SelectNextTab
-#undef SelectPreviousTab
+#undef SelectRelativeTab
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_

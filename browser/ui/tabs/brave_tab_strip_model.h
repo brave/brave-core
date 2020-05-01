@@ -18,14 +18,10 @@ class BraveTabStripModel : public TabStripModel {
 
   ~BraveTabStripModel() override;
 
-  void SelectNextTab(UserGestureDetails detail =
-                         UserGestureDetails(GestureType::kOther)) override;
-
-  void SelectPreviousTab(UserGestureDetails detail =
-                             UserGestureDetails(GestureType::kOther)) override;
+  void SelectRelativeTab(bool forward, UserGestureDetails detail) override;
 
   // Set the next tab when doing a MRU cycling with Ctrl-tab
-  void SelectTabMRU(
+  void SelectMRUTab(
       bool backward,
       UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
 

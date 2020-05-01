@@ -20,30 +20,18 @@ BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
 
 BraveTabStripModel::~BraveTabStripModel() {}
 
-void BraveTabStripModel::SelectNextTab(UserGestureDetails detail) {
-  bool isMRUEnabled =
-      Profile::FromBrowserContext(GetActiveWebContents()->GetBrowserContext())
-          ->GetPrefs()
-          ->GetBoolean(kMRUCyclingEnabled);
-
-  if (isMRUEnabled) {
-    SelectTabMRU(false, detail);
-  } else {
-    SelectRelativeTab(true, detail);
-  }
-}
-
-void BraveTabStripModel::SelectPreviousTab(UserGestureDetails detail) {
+void BraveTabStripModel::SelectRelativeTab(bool next,
+                                           UserGestureDetails detail) {
   bool isMRUEnabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
 
   if (isMRUEnabled) {
-    SelectTabMRU(true, detail);
+    SelectMRUTab(!next, detail);
   } else {
-    SelectRelativeTab(false, detail);
+    TabStripModel::SelectRelativeTab(next, detail);
   }
 }
 
-void BraveTabStripModel::SelectTabMRU(bool backward,
+void BraveTabStripModel::SelectMRUTab(bool backward,
                                       UserGestureDetails detail) {
   if (current_mru_cycling_index_ == -1) {
     // Start cycling
