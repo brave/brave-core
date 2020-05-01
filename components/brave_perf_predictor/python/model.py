@@ -36,7 +36,7 @@ def _load_dataset(path):
     # Load data and reset index
     df = pd.read_csv(path, index_col='url', sep='\t')
     df = df.reset_index(drop=True)
-    df = df.drop(columns=['experiment'])
+    df = df.drop(columns=['experiment', 'metrics.interactive'])
 
     # Log transform target
     df['adblockSummary.wastedBytes_target_log10'] = np.log10(

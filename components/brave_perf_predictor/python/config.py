@@ -20,7 +20,7 @@ BEST_PARAMS ={
     'feature_selector__k': 'all',
     'model__alpha': 0.00025,
     'model__fit_intercept': True,
-    'model__max_iter': 20000,
+    'model__max_iter': 10000,
     'model__normalize': True,
     'model__selection': 'random',
     'pre_processor__standardise__with_mean': True,
@@ -31,11 +31,11 @@ GRID_PARAMS = {
     'pre_processor__standardise__with_mean': [True],
     'pre_processor__standardise__with_std': [True],
     # 'pre_processor__num_cols_processor__polynomials__degree': [1],
-    'feature_selector__k': [200, 'all'],
+    'feature_selector__k': ['all'],
     # 'feature_selector__threshold': [0.0001, 0.001, 0.00001, 0],
     'model__alpha': [0.0005, 0.00025, 0.0001],
     'model__normalize': [True],
-    'model__max_iter': [10000, 20000],
+    'model__max_iter': [10000, 20000, 30000],
     'model__fit_intercept': [True],
     'model__selection': ['random']
 }
