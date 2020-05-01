@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-document.addEventListener('DOMContentLoaded', function() {
+function braveFlagsUIOverrides() {
   $('channel-promo-beta').innerHTML = `
       Interested in cool new Brave features? Try our
       <a href="https://brave.com/download-beta/">beta channel</a>.
@@ -12,4 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
       Interested in cool new Brave features? Try our
       <a href="https://brave.com/download-beta/">dev channel</a>.
   `
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  braveFlagsUIOverrides();
 });
