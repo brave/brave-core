@@ -26,7 +26,7 @@
     /** @override */
     created: function() {
       this.browserProxy_ = settings.BraveNewTabBrowserProxyImpl.getInstance();
-      isSuperReferralActive_ = false;
+      this.isSuperReferralActive_ = false;
     },
 
     /** @override */
