@@ -20,6 +20,7 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
@@ -39,10 +40,6 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
-
-#if defined(OS_LINUX)
-#include "chrome/browser/ui/ui_features.h"
-#endif
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/common/brave_paths.h"
@@ -179,6 +176,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kNotificationTriggers.name,
       features::kSmsReceiver.name,
       features::kVideoPlaybackQuality.name,
+      features::kTabHoverCards.name,
 #if defined(OS_ANDROID)
       feed::kInterestFeedContentSuggestions.name,
       translate::kTranslateUI.name,
