@@ -1,3 +1,5 @@
+import("//build/config/ui.gni")
+
 source_set("tabs") {
   sources = [
   ]
@@ -15,7 +17,22 @@ source_set("tabs") {
   }
 
   deps = [
-    "//skia",
-    "//content/public/common",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/common/",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/public/common",
+      "//skia",
+      "//ui/events",
+    ]
+
+    if(use_aura) {
+      deps += [
+        "//ui/aura"
+      ]
+    }
+  }
 }
