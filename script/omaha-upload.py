@@ -107,17 +107,17 @@ def download_from_github(args, logging):
         # Instantiate new requests session, versus reusing the repo session above.
         # Headers was likely being reused in that session, and not allowing us
         # to set the Accept header to the below.
-        headers = {'Accept': 'application/octet-stream'}
+        headers = {'Accept': 'application/octet-stream',
+                   'Authorization': 'token ' + get_env_var('GITHUB_TOKEN')}
 
-        asset_auth_url = found_assets_in_github_release[platform]['url'] + \
-            '?access_token=' + os.environ.get('BRAVE_GITHUB_TOKEN')
+        asset_url = found_assets_in_github_release[platform]['url']
 
         if args.debug:
             # disable urllib3 logging for this session to avoid showing
             # access_token in logs
             logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-        r = requests.get(asset_auth_url, headers=headers, stream=True)
+        r = requests.get(asset_url, headers=headers, stream=True)
 
         if args.debug:
             logging.getLogger("urllib3").setLevel(logging.DEBUG)

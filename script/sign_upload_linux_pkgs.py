@@ -282,9 +282,8 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
     # Instantiate new requests session, versus reusing the repo session above.
     # Headers was likely being reused in that session, and not allowing us
     # to set the Accept header to the below.
-    headers = {'Accept': 'application/octet-stream'}
-    asset_auth_url = asset_url + '?access_token=' + \
-        args.github_token
+    headers = {'Accept': 'application/octet-stream',
+               'Authorization': 'token ' + args.github_token}
     if args.debug:
         # disable urllib3 logging for this session to avoid showing
         # access_token in logs
@@ -292,7 +291,7 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
     logging.info("Downloading GitHub release asset: {}".format(
         asset_url + '/' + filename))
     try:
-        r = requests.get(asset_auth_url, headers=headers, stream=True)
+        r = requests.get(asset_url, headers=headers, stream=True)
     except requests.exceptions.ConnectionError as e:
         logging.error(
             "Error: Received requests.exceptions.ConnectionError, Exiting...")
