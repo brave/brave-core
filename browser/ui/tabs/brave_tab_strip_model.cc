@@ -8,6 +8,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
+#include "brave/browser/ui/tabs/mru_tab_cycling_controller.h"
 #include "brave/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,7 +17,9 @@
 
 BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
                                        Profile* profile)
-    : TabStripModel(delegate, profile) {}
+    : TabStripModel(delegate, profile) {
+  mru_tab_cycling_controller_ = std::make_unique<MRUTabCyclingController>(this);
+}
 
 BraveTabStripModel::~BraveTabStripModel() {}
 
@@ -49,9 +52,8 @@ void BraveTabStripModel::SelectMRUTab(bool backward,
 
     current_mru_cycling_index_ = 0;
 
-    // Tell the controllers that we start cycling to handle tabs keys
-    for (auto& observer : observers_)
-      observer.StartMRUCycling(this);
+    // Tell the cycling controller that we start cycling to handle tabs keys
+    mru_tab_cycling_controller_->StartMRUCycling();
   }
 
   int tabCount = mru_cycle_list.size();

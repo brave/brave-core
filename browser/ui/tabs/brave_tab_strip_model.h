@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/ui/tabs/mru_tab_cycling_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
 class BraveTabStripModel : public TabStripModel {
@@ -29,6 +30,8 @@ class BraveTabStripModel : public TabStripModel {
   void StopMRUCycling();
 
  private:
+  std::unique_ptr<MRUTabCyclingController> mru_tab_cycling_controller_;
+
   // Current index when we are MRU cycling, set to -1 when not cycling
   int current_mru_cycling_index_ = -1;
 
