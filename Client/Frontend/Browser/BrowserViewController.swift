@@ -1305,38 +1305,54 @@ class BrowserViewController: UIViewController {
                 tab.secureContentState = .insecure
             }
             
-            topToolbar.secureContentState = tab.secureContentState
+            if tabManager.selectedTab === tab {
+                topToolbar.secureContentState = tab.secureContentState
+            }
         case .serverTrust:
             guard let tab = tabManager[webView] else {
                 break
             }
 
-            tab.secureContentState = .insecure
+            tab.secureContentState = .unknown
             
             guard let serverTrust = tab.webView?.serverTrust else {
-                if let url = tab.webView?.url {
-                    if url.isAboutHomeURL || url.isAboutURL {
+                if let url = tab.webView?.url ?? tab.url {
+                    if url.isAboutHomeURL || url.isAboutURL || url.scheme == "about" {
                         tab.secureContentState = .localHost
-                        topToolbar.secureContentState = .localHost
+                        if tabManager.selectedTab === tab {
+                            topToolbar.secureContentState = .localHost
+                        }
                         break
                     }
                     
                     if url.isErrorPageURL {
                         if ErrorPageHelper.certificateError(for: url) != 0 {
                             tab.secureContentState = .insecure
-                            topToolbar.secureContentState = .insecure
+                            if tabManager.selectedTab === tab {
+                                topToolbar.secureContentState = .insecure
+                            }
                             break
                         }
                     }
                     
                     if url.isReaderModeURL || url.isLocal {
                         tab.secureContentState = .unknown
-                        topToolbar.secureContentState = .unknown
+                        if tabManager.selectedTab === tab {
+                            topToolbar.secureContentState = .unknown
+                        }
                         break
                     }
+                    
+                    //All our checks failed, we show the page as insecure
+                    tab.secureContentState = .insecure
+                } else {
+                    //When there is no URL, it's likely a new tab.
+                    tab.secureContentState = .localHost
                 }
                 
-                topToolbar.secureContentState = tab.secureContentState
+                if tabManager.selectedTab === tab {
+                    topToolbar.secureContentState = tab.secureContentState
+                }
                 break
             }
             
@@ -1409,7 +1425,9 @@ class BrowserViewController: UIViewController {
         updateRewardsButtonState()
         
         topToolbar.currentURL = tab.url?.displayURL
-        topToolbar.secureContentState = tab.secureContentState
+        if tabManager.selectedTab === tab {
+            topToolbar.secureContentState = tab.secureContentState
+        }
         
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
         navigationToolbar.updatePageStatus(isPage)
