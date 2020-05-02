@@ -17,21 +17,6 @@ export const generateQRData = (url: string, asset: string, qrAction: any) => {
   }
 }
 
-export const getUSDPrice = (accountBTCBalance: string, btcUSDPrice: string) => {
-  if (!accountBTCBalance || !btcUSDPrice) {
-    return '0.00'
-  }
-
-  const btcUSDPriceNumber = parseFloat(btcUSDPrice)
-  const btcBalanceNumber = parseFloat(accountBTCBalance)
-
-  if (isNaN(btcUSDPriceNumber) || isNaN(btcBalanceNumber)) {
-    return '0.00'
-  }
-
-  return (btcUSDPriceNumber * btcBalanceNumber).toFixed(2)
-}
-
 export const isValidClientURL = (url: string) => {
   if (!url) {
     return false

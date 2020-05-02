@@ -114,15 +114,19 @@ BinanceGetAccountBalancesFunction::Run() {
 }
 
 void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
-    const std::map<std::string, std::string>& balances, bool success) {
-  auto balance_dict = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    const std::map<std::string, std::vector<std::string>>& balances,
+    bool success) {
+  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
 
   for (const auto& balance : balances) {
-    balance_dict->SetStringKey(balance.first, balance.second);
+    auto info = std::make_unique<base::DictionaryValue>();
+    info->SetString("balance", balance.second[0]);
+    info->SetString("btcValue", balance.second[1]);
+    info->SetString("fiatValue", balance.second[2]);
+    result->SetDictionary(balance.first, std::move(info));
   }
 
-  Respond(TwoArguments(std::move(balance_dict),
+  Respond(TwoArguments(std::move(result),
                        std::make_unique<base::Value>(success)));
 }
 
@@ -159,62 +163,6 @@ void BinanceGetConvertQuoteFunction::OnQuoteResult(
   quote->SetStringKey("fee", total_fee);
   quote->SetStringKey("amount", total_amount);
   Respond(OneArgument(std::move(quote)));
-}
-
-ExtensionFunction::ResponseAction
-BinanceGetTickerPriceFunction::Run() {
-  std::unique_ptr<binance::GetTickerPrice::Params> params(
-      binance::GetTickerPrice::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  if (!IsBinanceAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
-  auto* service = GetBinanceService(browser_context());
-  bool value_request = service->GetTickerPrice(params->symbol_pair,
-      base::BindOnce(
-          &BinanceGetTickerPriceFunction::OnGetTickerPrice, this));
-
-  if (!value_request) {
-    return RespondNow(
-        Error("Could not make request for BTC price"));
-  }
-
-  return RespondLater();
-}
-
-void BinanceGetTickerPriceFunction::OnGetTickerPrice(
-    const std::string& symbol_pair_price) {
-  Respond(OneArgument(std::make_unique<base::Value>(symbol_pair_price)));
-}
-
-ExtensionFunction::ResponseAction
-BinanceGetTickerVolumeFunction::Run() {
-  std::unique_ptr<binance::GetTickerVolume::Params> params(
-      binance::GetTickerVolume::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  if (!IsBinanceAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
-  auto* service = GetBinanceService(browser_context());
-  bool value_request = service->GetTickerVolume(params->symbol_pair,
-      base::BindOnce(
-          &BinanceGetTickerVolumeFunction::OnGetTickerVolume, this));
-
-  if (!value_request) {
-    return RespondNow(
-        Error("Could not make request for Volume"));
-  }
-
-  return RespondLater();
-}
-
-void BinanceGetTickerVolumeFunction::OnGetTickerVolume(
-    const std::string& symbol_pair_volume) {
-  Respond(OneArgument(std::make_unique<base::Value>(symbol_pair_volume)));
 }
 
 ExtensionFunction::ResponseAction
