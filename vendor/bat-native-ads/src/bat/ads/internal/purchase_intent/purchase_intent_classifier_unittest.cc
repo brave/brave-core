@@ -10,7 +10,7 @@
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 #include "base/time/time.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
@@ -101,7 +101,7 @@ class AdsPurchaseIntentClassifierTest : public ::testing::Test {
         kPurchaseIntentSignalLevel, kPurchaseIntentClassificationThreshold,
             kPurchaseIntentSignalDecayTimeWindow);
 
-    auto now = Time::NowInSeconds();
+    auto now = base::Time::Now().ToDoubleT();
     auto days = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
     auto p1 = PurchaseIntentSignalHistory();

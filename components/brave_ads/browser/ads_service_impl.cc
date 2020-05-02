@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/sequenced_task_runner.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
@@ -1618,10 +1619,11 @@ void AdsServiceImpl::StartRemoveOnboardingTimer() {
       base::TimeDelta::FromSeconds(timer_offset_in_seconds),
           base::BindOnce(&AdsServiceImpl::RemoveOnboarding, AsWeakPtr()));
 
-  auto time = base::TimeFormatFriendlyDateAndTime(
-      base::Time::FromDoubleT(timestamp_in_seconds));
+  const std::string friendly_date_and_time =
+      base::UTF16ToUTF8(base::TimeFormatFriendlyDateAndTime(
+          base::Time::FromDoubleT(now_in_seconds + timer_offset_in_seconds)));
 
-  LOG(INFO) << "Start timer to remove onboarding on " << time;
+  LOG(INFO) << "Start timer to remove onboarding " << friendly_date_and_time;
 }
 
 void AdsServiceImpl::MaybeShowMyFirstAdNotification() {

@@ -4,11 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/reports.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/search_providers.h"
 #include "bat/ads/ad_notification_info.h"
 
+#include "base/time/time.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
@@ -31,7 +32,8 @@ std::string Reports::GenerateAdNotificationEventReport(
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
 
   writer.StartObject();
 
@@ -119,7 +121,8 @@ std::string Reports::GenerateConfirmationEventReport(
   writer.String("confirmation");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.String("creativeInstanceId");
@@ -149,7 +152,8 @@ std::string Reports::GenerateLoadEventReport(
   writer.String("load");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.String("tabId");
@@ -205,7 +209,8 @@ std::string Reports::GenerateBackgroundEventReport() const {
   writer.String("background");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.EndObject();
@@ -228,7 +233,8 @@ std::string Reports::GenerateForegroundEventReport() const {
   writer.String("foreground");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.EndObject();
@@ -252,7 +258,8 @@ std::string Reports::GenerateBlurEventReport(
   writer.String("blur");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.String("tabId");
@@ -279,7 +286,8 @@ std::string Reports::GenerateDestroyEventReport(
   writer.String("destroy");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.String("tabId");
@@ -306,7 +314,8 @@ std::string Reports::GenerateFocusEventReport(
   writer.String("focus");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.String("tabId");
@@ -332,7 +341,8 @@ std::string Reports::GenerateSettingsEventReport() const {
   writer.String("settings");
 
   writer.String("timestamp");
-  const std::string timestamp = Time::Timestamp();
+  const base::Time time = base::Time::Now();
+  const std::string timestamp = FriendlyDateAndTime(time, false);
   writer.String(timestamp.c_str());
 
   writer.String("settings");

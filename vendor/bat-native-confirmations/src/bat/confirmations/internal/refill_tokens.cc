@@ -14,6 +14,7 @@
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/request_signed_tokens_request.h"
 #include "bat/confirmations/internal/get_signed_tokens_request.h"
+#include "bat/confirmations/internal/time_util.h"
 
 #include "base/logging.h"
 #include "base/json/json_reader.h"
@@ -311,7 +312,7 @@ void RefillTokens::OnRefill(
           kRetryRefillTokensAfterSeconds, base::BindOnce(&RefillTokens::OnRetry,
               base::Unretained(this)));
 
-      BLOG(INFO) << "Retry refilling tokens at " << time;
+      BLOG(INFO) << "Retry refilling tokens " << FriendlyDateAndTime(time);
     }
 
     return;

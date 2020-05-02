@@ -15,7 +15,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/saved_ad.h"
 #include "bat/ads/internal/static_values.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 
 #include "base/guid.h"
 

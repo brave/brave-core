@@ -9,10 +9,11 @@
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
-#include "bat/confirmations/internal/time.h"
+#include "bat/confirmations/internal/time_util.h"
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
+#include "base/time/time.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace confirmations {
@@ -151,7 +152,7 @@ base::Time Payments::CalculateNextPaymentDate(
       month++;
     } else {
       auto next_token_redemption_date =
-          Time::FromDoubleT(next_token_redemption_date_in_seconds);
+          base::Time::FromDoubleT(next_token_redemption_date_in_seconds);
 
       base::Time::Exploded next_token_redemption_date_exploded;
       next_token_redemption_date.UTCExplode(

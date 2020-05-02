@@ -14,7 +14,7 @@
 #include "bat/confirmations/internal/redeem_token.h"
 #include "bat/confirmations/internal/payout_tokens.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
-#include "bat/confirmations/internal/time.h"
+#include "bat/confirmations/internal/time_util.h"
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -395,7 +395,7 @@ bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
       std::stoull(next_token_redemption_date_in_seconds_value->GetString());
 
   payout_tokens_->set_token_redemption_timestamp_in_seconds(
-      Time::MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds));
+      MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds));
 
   return true;
 }
@@ -656,10 +656,10 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
           std::stoull(timestamp_in_seconds_value->GetString());
 
       info.timestamp_in_seconds =
-          Time::MigrateTimestampToDoubleT(timestamp_in_seconds);
+          MigrateTimestampToDoubleT(timestamp_in_seconds);
     } else {
       // timestamp missing, fallback to default
-      info.timestamp_in_seconds = Time::NowInSeconds();
+      info.timestamp_in_seconds = base::Time::Now().ToDoubleT();
     }
 
     // Estimated redemption value
@@ -997,7 +997,7 @@ void ConfirmationsImpl::GetTransactionHistory(
   transactions_info->ad_notifications_received_this_month =
       ad_notifications_received_this_month;
 
-  auto to_timestamp_in_seconds = Time::NowInSeconds();
+  auto to_timestamp_in_seconds = base::Time::Now().ToDoubleT();
   auto transactions = GetTransactionHistory(0, to_timestamp_in_seconds);
   transactions_info->transactions = transactions;
 
@@ -1040,8 +1040,13 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
   now.UTCExplode(&now_exploded);
 
   for (const auto& transaction : transactions) {
+    if (transaction.timestamp_in_seconds == 0) {
+      // Workaround for Windows crash when passing 0 to UTCExplode
+      continue;
+    }
+
     auto transaction_timestamp =
-        Time::FromDoubleT(transaction.timestamp_in_seconds);
+        base::Time::FromDoubleT(transaction.timestamp_in_seconds);
 
     base::Time::Exploded transaction_timestamp_exploded;
     transaction_timestamp.UTCExplode(&transaction_timestamp_exploded);
@@ -1123,7 +1128,7 @@ void ConfirmationsImpl::AppendTransactionToHistory(
   DCHECK(state_has_loaded_);
 
   TransactionInfo info;
-  info.timestamp_in_seconds = Time::NowInSeconds();
+  info.timestamp_in_seconds = base::Time::Now().ToDoubleT();
   info.estimated_redemption_value = estimated_redemption_value;
   info.confirmation_type = std::string(confirmation_type);
 
@@ -1193,7 +1198,7 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations() {
           base::BindOnce(&ConfirmationsImpl::RetryFailedConfirmations,
               base::Unretained(this)));
 
-  BLOG(INFO) << "Retry failed confirmations at " << time;
+  BLOG(INFO) << "Retry failed confirmations " << FriendlyDateAndTime(time);
 }
 
 void ConfirmationsImpl::RetryFailedConfirmations() {

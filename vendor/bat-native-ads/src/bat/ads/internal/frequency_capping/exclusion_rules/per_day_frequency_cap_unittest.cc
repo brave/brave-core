@@ -15,7 +15,7 @@
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/creative_ad_notification_info.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 
 // npm run test -- brave_unit_tests --filter=Ads*
 

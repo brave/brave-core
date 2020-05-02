@@ -9,6 +9,7 @@
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/time_util.h"
 
 #include "base/time/time.h"
 
@@ -49,7 +50,7 @@ void AdsServe::DownloadCatalogAfterDelay() {
   const base::Time time = timer_.StartWithPrivacy(delay,
       base::BindOnce(&AdsServe::DownloadCatalog, base::Unretained(this)));
 
-  BLOG(INFO) << "Download catalog at " << time;
+  BLOG(INFO) << "Download catalog " << FriendlyDateAndTime(time);
 }
 
 uint64_t AdsServe::CatalogLastUpdated() const {
@@ -186,7 +187,7 @@ void AdsServe::RetryDownloadingCatalog() {
       kRetryDownloadingCatalogAfterSeconds,
           base::BindOnce(&AdsServe::DownloadCatalog, base::Unretained(this)));
 
-  BLOG(INFO) << "Retry downloading catalog at " << time;
+  BLOG(INFO) << "Retry downloading catalog " << FriendlyDateAndTime(time);
 }
 
 void AdsServe::ResetCatalog() {

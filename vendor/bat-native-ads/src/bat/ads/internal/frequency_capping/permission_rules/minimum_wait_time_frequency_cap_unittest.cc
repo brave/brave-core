@@ -7,8 +7,6 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-#include "base/time/time.h"
-
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
 

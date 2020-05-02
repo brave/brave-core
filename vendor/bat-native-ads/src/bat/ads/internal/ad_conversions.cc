@@ -14,9 +14,10 @@
 #include "bat/ads/internal/sorts/ads_history_sort_factory.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "brave_base/random.h"
+#include "base/time/time.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 
@@ -122,7 +123,7 @@ void AdConversions::OnGetAdConversions(
 
       const base::Time observation_window = base::Time::Now() -
           base::TimeDelta::FromDays(ad_conversion.observation_window);
-      const base::Time time = Time::FromDoubleT(ad.timestamp_in_seconds);
+      const base::Time time = base::Time::FromDoubleT(ad.timestamp_in_seconds);
       if (observation_window > time) {
         // Observation window has expired
         continue;
@@ -188,7 +189,7 @@ void AdConversions::AddItemToQueue(
     return;
   }
 
-  const uint64_t now = Time::NowInSeconds();
+  const uint64_t now = base::Time::Now().ToDoubleT();
   client_->AppendTimestampToAdConversionHistory(creative_set_id, now);
 
   AdConversionQueueItemInfo ad_conversion;
@@ -242,14 +243,17 @@ void AdConversions::ProcessQueueItem(
   DCHECK(!creative_set_id.empty());
   DCHECK(!creative_instance_id.empty());
 
+  const std::string friendly_date_and_time =
+      FriendlyDateAndTime(timestamp_in_seconds);
+
   if (creative_set_id.empty() || creative_instance_id.empty()) {
-    BLOG(WARNING) << "Ad conversion for creative instance id "
+    BLOG(WARNING) << "Failed to convert ad for creative instance id "
         << creative_instance_id << " with creative set id " << creative_set_id
-            << " failed on " << Time::FromDoubleT(timestamp_in_seconds);
+            << " " << friendly_date_and_time;
   } else {
-    BLOG(INFO) << "Ad conversion for creative instance id "
+    BLOG(INFO) << "Successfully converted ad for creative instance id "
         << creative_instance_id << " with creative set id " << creative_set_id
-            << " triggered on " << Time::FromDoubleT(timestamp_in_seconds);
+            << " " << friendly_date_and_time;
 
     ads_->ConfirmAction(creative_instance_id, creative_set_id,
         ConfirmationType::kConversion);
@@ -274,7 +278,7 @@ void AdConversions::StartTimer(
   DCHECK(is_initialized_);
   DCHECK(!timer_.IsRunning());
 
-  const uint64_t now = Time::NowInSeconds();
+  const uint64_t now = base::Time::Now().ToDoubleT();
 
   uint64_t delay;
   if (now < info.timestamp_in_seconds) {
@@ -283,13 +287,13 @@ void AdConversions::StartTimer(
     delay = brave_base::random::Geometric(kExpiredAdConversionFrequency);
   }
 
-  timer_.Start(delay, base::BindOnce(&AdConversions::ProcessQueue,
-      base::Unretained(this)));
+  const base::Time time = timer_.Start(delay,
+      base::BindOnce(&AdConversions::ProcessQueue, base::Unretained(this)));
 
-  BLOG(INFO) << "Started ad conversion timer for creative_instance_id "
+  BLOG(INFO) << "Started ad conversion timer for creative instance id "
       << info.creative_instance_id << " with creative set id "
-          << info.creative_set_id << " which will trigger on "
-              << Time::FromDoubleT(info.timestamp_in_seconds);
+          << info.creative_set_id << " which will trigger "
+              << FriendlyDateAndTime(time);
 }
 
 void AdConversions::SaveState() {
