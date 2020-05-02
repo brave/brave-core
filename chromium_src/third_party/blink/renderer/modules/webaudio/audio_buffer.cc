@@ -24,15 +24,15 @@
     }                                                               \
   }
 
-#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                             \
-  LocalDOMWindow* window = LocalDOMWindow::From(script_state);        \
-  if (window) {                                                       \
-    double fudge_factor =                                             \
-        brave::BraveSessionCache::From(*(window->document()))         \
-            .GetFudgeFactor();                                        \
-    for (unsigned i = 0; i < count; ++i) {                            \
-      dst[i + buffer_offset] = dst[i + buffer_offset] * fudge_factor; \
-    }                                                                 \
+#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                      \
+  LocalDOMWindow* window = LocalDOMWindow::From(script_state); \
+  if (window) {                                                \
+    double fudge_factor =                                      \
+        brave::BraveSessionCache::From(*(window->document()))  \
+            .GetFudgeFactor();                                 \
+    for (unsigned i = 0; i < count; i++) {                     \
+      dst[i] = dst[i] * fudge_factor;                          \
+    }                                                          \
   }
 
 #include "../../../../../../third_party/blink/renderer/modules/webaudio/audio_buffer.cc"
