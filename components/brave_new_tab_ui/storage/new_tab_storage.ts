@@ -50,7 +50,10 @@ export const defaultState: NewTab.State = {
     walletCreateFailed: false,
     walletCorrupted: false
   },
-  currentStackWidget: 'rewards',
+  currentStackWidget: '',
+  removedStackWidgets: [],
+  // Order is ascending, with last entry being in the foreground
+  widgetStackOrder: ['binance', 'rewards'],
   binanceState: {
     userTLD: 'com',
     initialFiat: 'USD',
@@ -83,6 +86,72 @@ export const defaultState: NewTab.State = {
 if (chrome.extension.inIncognitoContext) {
   defaultState.isTor = window.loadTimeData.getBoolean('isTor')
   defaultState.isQwant = window.loadTimeData.getBoolean('isQwant')
+}
+
+// For users upgrading to the new list based widget stack state,
+// a list in the current format will need to be generated based on their
+// previous configuration.
+const getMigratedWidgetOrder = (state: NewTab.State) => {
+  const {
+    showRewards,
+    showBinance,
+    currentStackWidget
+  } = state
+
+  if (!showRewards && !showBinance) {
+    return {
+      widgetStackOrder: [],
+      removedStackWidgets: ['rewards', 'binance']
+    }
+  }
+
+  if (showRewards && !showBinance) {
+    return {
+      widgetStackOrder: ['rewards'],
+      removedStackWidgets: ['binance']
+    }
+  }
+
+  if (!showRewards && showBinance) {
+    return {
+      widgetStackOrder: ['binance'],
+      removedStackWidgets: ['rewards']
+    }
+  }
+
+  const widgetStackOrder = []
+  const nonCurrentWidget = currentStackWidget === 'rewards'
+    ? 'binance'
+    : 'rewards'
+
+  widgetStackOrder.push(currentStackWidget)
+  widgetStackOrder.unshift(nonCurrentWidget)
+
+  return {
+    widgetStackOrder,
+    removedStackWidgets: []
+  }
+}
+
+export const migrateStackWidgetSettings = (state: NewTab.State) => {
+  // Migrating to the new stack widget data format
+  const { widgetStackOrder, removedStackWidgets } = getMigratedWidgetOrder(state)
+  state.widgetStackOrder = widgetStackOrder as NewTab.StackWidget[]
+  state.removedStackWidgets = removedStackWidgets as NewTab.StackWidget[]
+  state.currentStackWidget = ''
+
+  // Ensure any new stack widgets introduced are put behind
+  // the others, and not re-added unecessarily if removed
+  // at one point.
+  const defaultWidgets = defaultState.widgetStackOrder
+  defaultWidgets.map((widget: NewTab.StackWidget) => {
+    if (!state.widgetStackOrder.includes(widget) &&
+        !state.removedStackWidgets.includes(widget)) {
+      state.widgetStackOrder.unshift(widget)
+    }
+  })
+
+  return state
 }
 
 const cleanData = (state: NewTab.State) => {
@@ -127,7 +196,8 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       showEmptyPage: data.showEmptyPage,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
-      currentStackWidget: data.currentStackWidget
+      removedStackWidgets: data.removedStackWidgets,
+      widgetStackOrder: data.widgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }

@@ -99,13 +99,6 @@ class NewTabPage extends React.Component<Props, State> {
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
-
-    // Migratory check in the event that rewards is off
-    // when receiving the upgrade with the Binance widget.
-    const { showRewards } = this.props.newTabData
-    if (!showRewards) {
-      this.props.actions.setCurrentStackWidget('binance')
-    }
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -136,13 +129,13 @@ class NewTabPage extends React.Component<Props, State> {
     const { showRewards, showBinance } = this.props.newTabData
 
     if (!oldShowRewards && showRewards) {
-      this.props.actions.setCurrentStackWidget('rewards')
+      this.props.actions.setForegroundStackWidget('rewards')
     } else if (!oldShowBinance && showBinance) {
-      this.props.actions.setCurrentStackWidget('binance')
+      this.props.actions.setForegroundStackWidget('binance')
     } else if (oldShowRewards && !showRewards) {
-      this.props.actions.setCurrentStackWidget('binance')
+      this.props.actions.removeStackWidget('rewards')
     } else if (oldShowBinance && !showBinance) {
-      this.props.actions.setCurrentStackWidget('rewards')
+      this.props.actions.removeStackWidget('binance')
     }
   }
 
@@ -207,36 +200,24 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowRewards = () => {
-    const {
-      currentStackWidget,
-      showBinance,
-      showRewards
-    } = this.props.newTabData
+    const { showRewards } = this.props.newTabData
 
-    if (currentStackWidget === 'rewards' && showRewards) {
-      this.props.actions.setCurrentStackWidget('binance')
-    } else if (!showBinance) {
-      this.props.actions.setCurrentStackWidget('rewards')
-    } else if (!showRewards) {
-      this.props.actions.setCurrentStackWidget('rewards')
+    if (showRewards) {
+      this.removeStackWidget('rewards')
+    } else {
+      this.setForegroundStackWidget('rewards')
     }
 
     this.props.saveShowRewards(!showRewards)
   }
 
   toggleShowBinance = () => {
-    const {
-      currentStackWidget,
-      showBinance,
-      showRewards
-    } = this.props.newTabData
+    const { showBinance } = this.props.newTabData
 
-    if (currentStackWidget === 'binance' && showBinance) {
-      this.props.actions.setCurrentStackWidget('rewards')
-    } else if (!showRewards) {
-      this.props.actions.setCurrentStackWidget('binance')
-    } else if (!showBinance) {
-      this.props.actions.setCurrentStackWidget('binance')
+    if (showBinance) {
+      this.removeStackWidget('binance')
+    } else {
+      this.setForegroundStackWidget('binance')
     }
 
     this.props.saveShowBinance(!showBinance)
@@ -351,8 +332,12 @@ class NewTabPage extends React.Component<Props, State> {
     this.setState({ showSettingsMenu: !this.state.showSettingsMenu })
   }
 
-  toggleStackWidget = (widgetId: NewTab.StackWidget) => {
-    this.props.actions.setCurrentStackWidget(widgetId)
+  setForegroundStackWidget = (widget: NewTab.StackWidget) => {
+    this.props.actions.setForegroundStackWidget(widget)
+  }
+
+  removeStackWidget = (widget: NewTab.StackWidget) => {
+    this.props.actions.removeStackWidget(widget)
   }
 
   setInitialAmount = (amount: string) => {
@@ -481,30 +466,31 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getCryptoContent () {
-    const { currentStackWidget } = this.props.newTabData
+    const { widgetStackOrder } = this.props.newTabData
+    const renderLookup = {
+      'rewards': this.renderRewardsWidget.bind(this),
+      'binance': this.renderBinanceWidget.bind(this)
+    }
 
     return (
       <>
-        {
-          currentStackWidget === 'rewards'
-          ? <>
-              {this.renderBinanceWidget(false)}
-              {this.renderRewardsWidget(true)}
-            </>
-          : <>
-              {this.renderRewardsWidget(false)}
-              {this.renderBinanceWidget(true)}
-            </>
-        }
+        {widgetStackOrder.map((widget: NewTab.StackWidget, i: number) => {
+          const isForeground = i === widgetStackOrder.length - 1
+          return (
+            <div key={`widget-${widget}`}>
+              {renderLookup[widget](isForeground)}
+            </div>
+          )
+        })}
       </>
     )
   }
 
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { showRewards, showBinance } = newTabData
+    const { widgetStackOrder } = newTabData
 
-    if (!showRewards && !showBinance) {
+    if (!widgetStackOrder.length) {
       return null
     }
 
@@ -542,7 +528,7 @@ class NewTabPage extends React.Component<Props, State> {
         preventFocus={false}
         hideWidget={this.toggleShowRewards}
         showContent={showContent}
-        onShowContent={this.toggleStackWidget.bind(this, 'rewards')}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onCreateWallet={this.createWallet}
         onEnableAds={this.enableAds}
         onEnableRewards={this.enableRewards}
@@ -592,7 +578,7 @@ class NewTabPage extends React.Component<Props, State> {
         onValidAuthCode={this.onValidAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
-        onShowContent={this.toggleStackWidget.bind(this, 'binance')}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'binance')}
         onSetInitialAmount={this.setInitialAmount}
         onSetInitialAsset={this.setInitialAsset}
         onSetInitialFiat={this.setInitialFiat}

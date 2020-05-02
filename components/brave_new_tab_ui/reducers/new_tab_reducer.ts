@@ -75,6 +75,11 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
           }
         }
       })
+
+      if (state.currentStackWidget) {
+        state = storage.migrateStackWidgetSettings(state)
+      }
+
       break
 
     case types.NEW_TAB_STATS_UPDATED:
@@ -309,12 +314,42 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
-    case types.SET_CURRENT_STACK_WIDGET:
-      const widgetId: NewTab.StackWidget = payload.widgetId
+    case types.REMOVE_STACK_WIDGET:
+      const widget: NewTab.StackWidget = payload.widget
+      let { removedStackWidgets, widgetStackOrder } = state
+
+      if (!widgetStackOrder.length) {
+        break
+      }
+
+      widgetStackOrder = widgetStackOrder.filter((curWidget: NewTab.StackWidget) => {
+        return curWidget !== widget
+      })
+
+      if (!removedStackWidgets.includes(widget)) {
+        removedStackWidgets.push(widget)
+      }
 
       state = {
         ...state,
-        currentStackWidget: widgetId
+        removedStackWidgets,
+        widgetStackOrder
+      }
+      break
+
+    case types.SET_FOREGROUND_STACK_WIDGET:
+      const frontWidget: NewTab.StackWidget = payload.widget
+      let newWidgetStackOrder = state.widgetStackOrder
+
+      newWidgetStackOrder = newWidgetStackOrder.filter((widget: NewTab.StackWidget) => {
+        return widget !== frontWidget
+      })
+
+      newWidgetStackOrder.push(frontWidget)
+
+      state = {
+        ...state,
+        widgetStackOrder: newWidgetStackOrder
       }
       break
 
