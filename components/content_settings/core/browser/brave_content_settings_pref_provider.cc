@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/auto_reset.h"
 #include "base/bind.h"
 #include "base/optional.h"
 #include "base/task/post_task.h"
@@ -160,6 +161,9 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // session, so also nothing to do.
   if (incognito)
     return;
+  // Disable OnCookieSettingsChanged while migrating, OnCookieSettingsChanged
+  // will get called once in the constructor after the migration is done.
+  base::AutoReset<bool> migrating(&migrating_, true);
   MigrateShieldsSettingsV1ToV2();
 }
 
@@ -472,6 +476,8 @@ void BravePrefProvider::OnCookiePrefsChanged(
 
 void BravePrefProvider::OnCookieSettingsChanged(
     ContentSettingsType content_type) {
+  if (migrating_)
+    return;
   UpdateCookieRules(content_type, true);
   UpdateCookieRules(content_type, false);
 }

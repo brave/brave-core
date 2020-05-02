@@ -73,6 +73,7 @@ class BravePrefProvider : public PrefProvider,
 
   std::map<bool /* is_incognito */, std::vector<Rule>> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;
+  bool migrating_ = false;
 
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 
