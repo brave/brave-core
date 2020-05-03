@@ -38,6 +38,8 @@ extern const char kUseGoUpdateDev[];
 
 extern const char kComponentUpdateIntervalInSec[];
 
+extern const char kDisableDnsOverHttps[];
+
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_

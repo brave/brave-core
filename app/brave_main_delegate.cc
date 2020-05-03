@@ -11,6 +11,7 @@
 #include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
+#include "base/task/post_task.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -151,7 +152,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
                                  "https://no-thanks.invalid");
 
   // Enabled features.
-  const std::unordered_set<const char*> enabled_features = {
+  std::unordered_set<const char*> enabled_features = {
     // Upgrade all mixed content
       blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
@@ -163,8 +164,12 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     // this feature.
       features::kWebUIDarkMode.name,
       omnibox::kSimplifyHttpsIndicator.name,
-      features::kDnsOverHttps.name,
   };
+
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    enabled_features.insert(features::kDnsOverHttps.name);
+  }
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
