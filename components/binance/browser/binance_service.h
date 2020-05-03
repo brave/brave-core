@@ -49,6 +49,9 @@ const char oauth_path_revoke_token[] = "/oauth-api/v1/revoke-token";
 const char api_path_ticker_price[] = "/api/v3/ticker/price";
 const char api_path_ticker_volume[] = "/api/v3/ticker/24hr";
 
+const char gateway_path_networks[] =
+    "/gateway-api/v1/public/capital/getNetworkCoinAll";
+
 class BinanceService : public KeyedService {
  public:
   explicit BinanceService(content::BrowserContext* context);
@@ -71,6 +74,8 @@ class BinanceService : public KeyedService {
   using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
   using GetTickerVolumeCallback = base::OnceCallback<void(const std::string&)>;
   using RevokeTokenCallback = base::OnceCallback<void(bool)>;
+  using GetCoinNetworksCallback = base::OnceCallback<
+        void(const std::map<std::string, std::string>&)>;
 
   bool GetAccessToken(GetAccessTokenCallback callback);
   bool GetConvertQuote(const std::string& from,
@@ -79,6 +84,7 @@ class BinanceService : public KeyedService {
       GetConvertQuoteCallback callback);
   bool GetAccountBalances(GetAccountBalancesCallback callback);
   bool GetDepositInfo(const std::string& symbol,
+      const std::string& ticker_network,
       GetDepositInfoCallback callback);
   bool ConfirmConvert(const std::string& quote_id,
       ConfirmConvertCallback callback);
@@ -88,6 +94,7 @@ class BinanceService : public KeyedService {
   bool GetTickerVolume(const std::string& symbol_pair,
       GetTickerVolumeCallback callback);
   bool RevokeToken(RevokeTokenCallback callback);
+  bool GetCoinNetworks(GetCoinNetworksCallback callback);
 
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
@@ -134,6 +141,9 @@ class BinanceService : public KeyedService {
   void OnRevokeToken(RevokeTokenCallback callback,
                      const int status, const std::string& body,
                      const std::map<std::string, std::string>& headers);
+  void OnGetCoinNetworks(GetCoinNetworksCallback callback,
+        const int status, const std::string& body,
+        const std::map<std::string, std::string>& headers);
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();
@@ -144,6 +154,7 @@ class BinanceService : public KeyedService {
   void SetClientIdForTest(const std::string& client_id);
   void SetOAuthHostForTest(const std::string& oauth_host);
   void SetAPIHostForTest(const std::string& api_host);
+  void SetGatewayHostForTest(const std::string& gateway_host);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   std::string auth_token_;
@@ -154,6 +165,7 @@ class BinanceService : public KeyedService {
   std::string client_id_;
   std::string oauth_host_;
   std::string api_host_;
+  std::string gateway_host_;
 
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

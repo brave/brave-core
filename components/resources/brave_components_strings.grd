@@ -773,8 +773,9 @@
       <message name="IDS_BINANCE_WIDGET_RETRY" desc="">Retry</message>
       <message name="IDS_BINANCE_WIDGET_DONE" desc="">Done</message>
       <message name="IDS_BINANCE_WIDGET_COPY" desc="">Copy</message>
-      <message name="IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE" desc="">Address Not Available</message>
+      <message name="IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE" desc="">Info Not Available</message>
       <message name="IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS" desc="">Deposit Address</message>
+      <message name="IDS_BINANCE_WIDGET_DEPOSIT_MEMO" desc="">Deposit Memo</message>
       <message name="IDS_BINANCE_WIDGET_SEARCH" desc="">Search</message>
 
       <message name="IDS_BINANCE_WIDGET_CONFIRM_CONVERSION" desc="">Confirm Conversion</message>

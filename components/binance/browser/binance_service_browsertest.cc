@@ -148,6 +148,43 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       "data": true,
       "success": true
     })");
+  } else if (request_path == gateway_path_networks) {
+    http_response->set_content(R"({
+      "code": "000000",
+      "message": null,
+      "data": [
+        {
+          "coin": "BAT",
+          "networkList": [
+            {
+              "coin": "BAT",
+              "network": "ETH",
+              "isDefault": true
+            },
+            {
+              "coin": "BAT",
+              "network": "BNB",
+              "isDefault": false
+            }
+          ]
+        },
+        {
+          "coin": "GAS",
+          "networkList": [
+            {
+              "coin": "GAS",
+              "network": "BTC",
+              "isDefault": false
+            },
+            {
+              "coin": "GAS",
+              "network": "NEO",
+              "isDefault": true
+            }
+          ]
+        }
+      ]
+      })");
   }
   return std::move(http_response);
 }
@@ -211,6 +248,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
         std::to_string(https_server_->port());
     service->SetAPIHostForTest(host);
     service->SetOAuthHostForTest(host);
+    service->SetGatewayHostForTest(host);
   }
 
   void OnGetAccessToken(bool unauthorized, bool check_set_prefs) {
@@ -285,24 +323,24 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
-  void OnGetDepositInfo(const std::string& address, const std::string& url,
+  void OnGetDepositInfo(const std::string& address, const std::string& tag,
       bool success) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
     ASSERT_EQ(expected_address_, address);
-    ASSERT_EQ(expected_url_, url);
+    ASSERT_EQ(expected_tag_, tag);
     ASSERT_EQ(expected_success_, success);
   }
 
   void WaitForGetDepositInfo(
-      const std::string& expected_address, const std::string& expected_url,
+      const std::string& expected_address, const std::string& expected_tag,
       bool expected_success) {
     if (wait_for_request_) {
       return;
     }
     expected_address_ = expected_address;
-    expected_url_ = expected_url;
+    expected_tag_ = expected_tag;
     expected_success_ = expected_success;
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
@@ -399,6 +437,23 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
+  void OnGetCoinNetworks(const std::map<std::string, std::string>& networks) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_EQ(expected_networks_, networks);
+  }
+
+  void WaitForGetCoinNetworks(
+      const std::map<std::string, std::string>& expected_networks) {
+    if (wait_for_request_) {
+      return;
+    }
+    expected_networks_ = expected_networks;
+    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_->Run();
+  }
+
   content::WebContents* active_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -429,12 +484,13 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   std::string expected_total_fee_;
   std::string expected_total_amount_;
   std::string expected_address_;
-  std::string expected_url_;
+  std::string expected_tag_;
   std::string expected_error_message_;
   std::string expected_symbol_pair_price_;
   std::string expected_symbol_pair_volume_;
   std::vector<std::string> expected_assets_;
   std::map<std::string, std::string> expected_balances_;
+  std::map<std::string, std::string> expected_networks_;
   std::map<std::string, std::vector<std::string>> expected_assets_with_sub_;
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
@@ -584,20 +640,20 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfo) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetDepositInfo("BTC",
+  ASSERT_TRUE(service->GetDepositInfo("BTC", "BTC",
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetDepositInfo,
           base::Unretained(this))));
   std::string address = "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW";
-  std::string url = "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW";
-  WaitForGetDepositInfo(address, url, true);
+  std::string tag = "";
+  WaitForGetDepositInfo(address, tag, true);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfoUnauthorized) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetDepositInfo("BTC",
+  ASSERT_TRUE(service->GetDepositInfo("BTC", "BTC",
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetDepositInfo,
           base::Unretained(this))));
@@ -608,7 +664,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfoServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetDepositInfo("BTC",
+  ASSERT_TRUE(service->GetDepositInfo("BTC", "BTC",
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetDepositInfo,
           base::Unretained(this))));
@@ -825,4 +881,43 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest,
       ExecuteScriptAndExtractBool(contents(), kBinanceAPIExistsScript,
         &result));
   ASSERT_FALSE(result);
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworks) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetBinanceService();
+  ASSERT_TRUE(service->GetCoinNetworks(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnGetCoinNetworks,
+          base::Unretained(this))));
+  WaitForGetCoinNetworks(
+      std::map<std::string, std::string> {
+          {"BAT", "ETH"},
+          {"GAS", "NEO"}
+      });
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworksUnauthorized) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetBinanceService();
+  ASSERT_TRUE(service->GetCoinNetworks(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnGetCoinNetworks,
+          base::Unretained(this))));
+  WaitForGetCoinNetworks(
+      std::map<std::string, std::string>());
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworksServerError) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetBinanceService();
+  ASSERT_TRUE(service->GetCoinNetworks(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnGetCoinNetworks,
+          base::Unretained(this))));
+  WaitForGetCoinNetworks(
+      std::map<std::string, std::string>());
 }

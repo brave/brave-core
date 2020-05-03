@@ -261,6 +261,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetSearch", IDS_BINANCE_WIDGET_SEARCH },
         { "binanceWidgetAddressUnavailable", IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE },    // NOLINT
         { "binanceWidgetDepositAddress", IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS },
+        { "binanceWidgetDepositMemo", IDS_BINANCE_WIDGET_DEPOSIT_MEMO },
         { "binanceWidgetConfirmConversion", IDS_BINANCE_WIDGET_CONFIRM_CONVERSION },      // NOLINT
         { "binanceWidgetConvert", IDS_BINANCE_WIDGET_CONVERT },
         { "binanceWidgetRate", IDS_BINANCE_WIDGET_RATE },
