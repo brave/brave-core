@@ -20,8 +20,10 @@ MRUTabCyclingController::MRUTabCyclingController(
 
 MRUTabCyclingController::~MRUTabCyclingController() {
   if (ctrl_released_event_handler_.get()) {
-    // We are still MRU cycling so ctrl realase handler is still registered
+    // We are still MRU cycling
+		// Disable checks that verifies the event handler not registered
     ui::EventHandler::DisableCheckTargets();
+    model_->StopMRUCycling();
   }
 }
 
