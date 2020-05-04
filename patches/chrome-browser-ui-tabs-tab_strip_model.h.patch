@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index f7282146e44d05a4f923adeed59089423bc6be62..ddc57f1da1224cbf4b395e79ccfab561cad1f08b 100644
+index 74fd4c627589c7e0860803468499fa729045d255..e1797dae2246c275a4290ad16999cdcaec8763da 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -511,6 +511,7 @@ class TabStripModel : public TabGroupController {
+@@ -545,6 +545,7 @@ class TabStripModel : public TabGroupController {
    // current tree of openers).
    bool ShouldResetOpenerOnActiveTabChange(content::WebContents* contents) const;
  
