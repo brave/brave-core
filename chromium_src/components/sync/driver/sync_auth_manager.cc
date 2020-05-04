@@ -13,21 +13,17 @@
 
 #define BRAVE_REQUEST_ACCESS_TOKEN_2 access_token_fetcher_->StartGetTimestamp();
 
-#define BRAVE_DETERMINE_ACCOUNT_TO_USE                                     \
-  if (!public_key_.empty()) {                                              \
-    const std::string client_id =                                          \
-        base::HexEncode(public_key_.data(), public_key_.size());           \
-    AccountInfo account_info;                                              \
-    account_info.account_id = CoreAccountId::FromString(client_id);        \
-    account_info.email = "sync@brave.com";                                 \
-    SyncAccountInfo account(account_info, true);                           \
-    return account;                                                        \
-  } else {                                                                 \
-    AccountInfo account_info;                                              \
-    account_info.account_id = CoreAccountId::FromString("tmp_account_id"); \
-    account_info.email = "sync-tmp@brave.com";                             \
-    SyncAccountInfo account(account_info, false);                          \
-    return account;                                                        \
+#define BRAVE_DETERMINE_ACCOUNT_TO_USE                              \
+  if (!public_key_.empty()) {                                       \
+    const std::string client_id =                                   \
+        base::HexEncode(public_key_.data(), public_key_.size());    \
+    AccountInfo account_info;                                       \
+    account_info.account_id = CoreAccountId::FromString(client_id); \
+    account_info.email = "sync@brave.com";                          \
+    SyncAccountInfo account(account_info, true);                    \
+    return account;                                                 \
+  } else {                                                          \
+    return SyncAccountInfo();                                       \
   }
 #include "../../../../../components/sync/driver/sync_auth_manager.cc"
 #undef BRAVE_REQUEST_ACCESS_TOKEN_1

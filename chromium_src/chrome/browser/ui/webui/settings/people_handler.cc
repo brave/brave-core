@@ -20,8 +20,7 @@
   if (!brave_sync_prefs.IsSyncV2Migrated()) {               \
     service->StopAndClear();                                \
     brave_sync_prefs.SetSyncV2Migrated(true);               \
-  }                                                         \
-  brave_sync_prefs.SetSyncEnabled(true);
+  }
 
 #define BRAVE_CLOSE_SYNC_SETUP                                    \
   syncer::SyncService* sync_service = GetSyncService();           \

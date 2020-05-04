@@ -18,8 +18,6 @@ namespace {
 
 // Stored as bip39 keywords (encrypted)
 const char kSyncV2Seed[] = "brave_sync_v2.seed";
-// Used for override DisableReasons in ProfileSyncService
-const char kSyncV2Enabled[] = "brave_sync_v2.enabled";
 // Indicate whether migration has been done from v1 to v2
 const char kSyncV2Migrated[] = "brave_sync_v2.migrated";
 
@@ -62,7 +60,6 @@ Prefs::~Prefs() {}
 // static
 void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
-  registry->RegisterBooleanPref(kSyncV2Enabled, false);
   registry->RegisterBooleanPref(kSyncV2Migrated, false);
 
 // Deprecated
@@ -126,13 +123,6 @@ bool Prefs::SetSeed(const std::string& seed) {
   return true;
 }
 
-bool Prefs::IsSyncEnabled() const {
-  return pref_service_->GetBoolean(kSyncV2Enabled);
-}
-void Prefs::SetSyncEnabled(bool is_enabled) {
-  pref_service_->SetBoolean(kSyncV2Enabled, is_enabled);
-}
-
 bool Prefs::IsSyncV2Migrated() const {
   return pref_service_->GetBoolean(kSyncV2Migrated);
 }
@@ -143,7 +133,6 @@ void Prefs::SetSyncV2Migrated(bool is_migrated) {
 
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
-  pref_service_->ClearPref(kSyncV2Enabled);
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {
