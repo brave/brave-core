@@ -11,7 +11,7 @@ buildflag_header("buildflags") {
 source_set("speedreader") {
   public_deps = [
     ":buildflags",
-    "//brave/components/speedreader/rust/ffi:speedreader_ffi_lib",
+    "rust/ffi:speedreader_ffi_lib",
   ]
 
   sources = [
@@ -32,10 +32,10 @@ source_set("speedreader") {
   deps = [
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
-    "//brave/components/speedreader/rust/ffi:speedreader_ffi",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
     "//url",
+    "rust/ffi:speedreader_ffi",
   ]
 }

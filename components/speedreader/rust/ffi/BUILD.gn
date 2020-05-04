@@ -50,7 +50,6 @@ cargo_build("speedreader_rust_lib") {
   output = "${root_gen_dir}/speedreader/out/${cargo_lib_prefix}speedreader_ffi${cargo_lib_suffix}"
   manifest_path = "Cargo.toml"
   build_path = "${root_gen_dir}/speedreader/out"
-  target = rustc_target
 }
 
 # Generate FFI header from Rust source

@@ -8,6 +8,10 @@ if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
 }
 
+declare_args() {
+  rustup_path = rebase_path("//brave/build/rustup/", root_build_dir)
+}
+
 # Runs a script to compile a local Cargo package and all of its dependencies
 template("cargo_build") {
   action(target_name) {
@@ -18,12 +22,17 @@ template("cargo_build") {
 
     outputs = [output]
 
+    if (!defined(target)) {
+      target = rustc_target  # defined by //brave/build/rust/config.gni,
+    }
+
     args = [
-      "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
-      "--cargo_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--rustup_path=" + rustup_path,
+      "--cargo_path=" + rustup_path,
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
       "--build_path=" + rebase_path(build_path, root_build_dir),
       "--target=" + target,
+      "--toolchain=" + rustc_toolchain, # defined by //brave/build/rust/config.gni,
       "--is_debug=$is_debug"
     ]
 
@@ -36,7 +45,6 @@ template("cargo_build") {
     }
 
     if (defined(rust_flags)) {
-      print("rust flags", rust_flags)
       args += [ "--rust_flags=$rust_flags" ]
     }
 
@@ -57,15 +65,14 @@ template("cargo_cbindgen") {
     sources += [
       config,
     ]
-    outputs = [ "$target_gen_dir/$output" ]
+    outputs = [ "${target_gen_dir}/${output}" ]
 
     args = [
-      "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
-      "--cargo_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
-      "--target=" + rustc_target,   # defined by //brave/build/rust/config.gni
+      "--rustup_path=" + rustup_path,
+      "--cargo_path=" + rustup_path,
       "--config=" + rebase_path(config, root_build_dir),
       "--path=" + rebase_path(get_path_info(config, "dir"), root_build_dir),
-      "--output=" + rebase_path("$target_gen_dir/$output", root_build_dir),
+      "--output=" + rebase_path("${target_gen_dir}/${output}", root_build_dir),
     ]
   }
 }

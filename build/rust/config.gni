@@ -8,12 +8,13 @@ import("//build/config/sysroot.gni")
 declare_args() {
   rust_flags = ""
   rustc_target = ""
+  rustc_toolchain = ""
   cargo_lib_prefix = ""
   cargo_lib_suffix = ""
   rust_shared_lib = is_mac
 }
 
-# See https://forge.rust-lang.org/platform-support.html for possible targets
+# See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
   if (current_cpu == "x86") {
     rust_flags += " --codegen target-feature=+crt-static "
@@ -36,12 +37,16 @@ if (is_win) {
 } else if (is_android) {
   if (current_cpu == "arm") {
     rustc_target = "arm-linux-androideabi"
+    rustc_toolchain = "arm"
   } else if (current_cpu == "arm64") {
     rustc_target = "aarch64-linux-android"
+    rustc_toolchain = "arm64"
   } else if (current_cpu == "x86") {
     rustc_target = "i686-linux-android"
+    rustc_toolchain = "x86"
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-linux-android"
+    rustc_toolchain = "x86_64"
   }
 } else if (is_ios) {
   if (current_cpu == "arm64") {

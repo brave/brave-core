@@ -12,15 +12,6 @@ import shutil
 from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
-def get_target_arch(target):
-    return {
-        'arm-linux-androideabi': 'arm',
-        'aarch64-linux-android': 'arm64',
-        'i686-linux-android': 'x86',
-        'x86_64-linux-android': 'x86_64',
-    }[target]
-
-
 def build(args):
     rustup_path = args.rustup_path
     cargo_path = args.cargo_path
@@ -42,15 +33,9 @@ def build(args):
     rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
     env['PATH'] = rustup_bin + os.pathsep + env['PATH']
 
-    if (target == 'arm-linux-androideabi' or
-        target == 'aarch64-linux-android' or
-        target == 'i686-linux-android' or
-            target == 'x86_64-linux-android'):
-        target_arch = get_target_arch(target)
-
+    if args.toolchain:
         toolchains_path = os.path.abspath(
-            os.path.join(rustup_path, 'toolchains', target_arch, "bin"))
-
+            os.path.join(rustup_path, 'toolchains', args.toolchain, "bin"))
         env['PATH'] = toolchains_path + os.pathsep + env['PATH']
 
     if args.mac_deployment_target is not None:
@@ -87,8 +72,7 @@ def build(args):
     cargo_args.append("--manifest-path=" + manifest_path)
     cargo_args.append("--target-dir=" + build_path)
     cargo_args.append("--target=" + target)
-    print("cargo args", cargo_args)
-    print("rust flags", env['RUSTFLAGS'])
+
     try:
         subprocess.check_call(cargo_args, env=env)
     except subprocess.CalledProcessError as e:
@@ -104,6 +88,7 @@ def parse_args():
     parser.add_argument('--manifest_path', required=True)
     parser.add_argument('--build_path', required=True)
     parser.add_argument('--target', required=True)
+    parser.add_argument('--toolchain')
     parser.add_argument('--is_debug', required=True)
     parser.add_argument('--mac_deployment_target')
     parser.add_argument('--rust_flags')
