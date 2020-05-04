@@ -737,7 +737,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderCurrentDepositAsset = () => {
     const { currentDepositAsset } = this.state
-    const { assetDepositInfo } = this.props
+    const assetDepositInfo = this.props.assetDepositInfo || {}
     const addressInfo = assetDepositInfo[currentDepositAsset]
     const address = addressInfo && addressInfo.address
     const tag = addressInfo && addressInfo.tag
