@@ -25,7 +25,7 @@ SuggestedSitesProvider::SuggestedSitesProvider(
 }
 
 void SuggestedSitesProvider::Start(const AutocompleteInput& input,
-                            bool minimal_changes) {
+                                   bool minimal_changes) {
   matches_.clear();
   auto* prefs = client_->GetPrefs();
   if (!prefs || !prefs->GetBoolean(kBraveSuggestedSiteSuggestionsEnabled)) {
@@ -41,15 +41,13 @@ void SuggestedSitesProvider::Start(const AutocompleteInput& input,
   const std::string input_text =
       base::ToLowerASCII(base::UTF16ToUTF8(input.text()));
   auto check_add_match =
-      [&](const std::pair<std::string, SuggestedSitesMatch>& pair) {
-    const std::string& current_site = pair.first;
-    const SuggestedSitesMatch& match = pair.second;
+      [&](const SuggestedSitesMatch& match) {
     // Don't bother matching until 4 chars, or less if it's an exact match
     if (input_text.length() < 4 &&
-        current_site.length() != input_text.length()) {
+        match.match_string_.length() != input_text.length()) {
       return;
     }
-    size_t foundPos = current_site.find(input_text);
+    size_t foundPos = match.match_string_.find(input_text);
     // We'd normally check for npos here but we want only people that
     // really want these suggestions. Example don't suggest bitcoin and
     // litecoin for just a coin search.
@@ -57,9 +55,9 @@ void SuggestedSitesProvider::Start(const AutocompleteInput& input,
       ACMatchClassifications styles =
           StylesForSingleMatch(input_text,
               base::UTF16ToASCII(match.display_));
-      AddMatch(base::ASCIIToUTF16(current_site), match, styles);
+      AddMatch(match, styles);
       if (match.allow_default_ &&
-          current_site.length() == input_text.length()) {
+          match.match_string_.length() == input_text.length()) {
         // It's guaranteed that matches_ has at least 1 item
         // here because of the previous AddMatch call.
         size_t last_index = matches_.size() - 1;
@@ -104,9 +102,8 @@ ACMatchClassifications SuggestedSitesProvider::StylesForSingleMatch(
   return styles;
 }
 
-void SuggestedSitesProvider::AddMatch(const base::string16& match_string,
-                               const SuggestedSitesMatch& data,
-                               const ACMatchClassifications& styles) {
+void SuggestedSitesProvider::AddMatch(const SuggestedSitesMatch& data,
+                                      const ACMatchClassifications& styles) {
   AutocompleteMatch match(this, kRelevance + matches_.size(), false,
                           AutocompleteMatchType::NAVSUGGEST);
   match.fill_into_edit = data.display_;
