@@ -84,7 +84,6 @@ import { getLocale } from '../../../../common/locale'
 import searchIcon from './assets/search-icon.png'
 import partyIcon from './assets/party.png'
 import qrIcon from './assets/qr.png'
-import { getUSDPrice } from '../../../binance-utils'
 
 interface State {
   fiatShowing: boolean
@@ -145,7 +144,6 @@ interface Props {
   onSetInitialAsset: (initialAsset: string) => void
   onSetUserTLDAutoSet: () => void
   onSetHideBalance: (hide: boolean) => void
-  onBinanceAccountBalances: (balances: Record<string, string>) => void
   onBinanceClientUrl: (clientUrl: string) => void
   onDisconnectBinance: () => void
   onCancelDisconnect: () => void
@@ -376,7 +374,6 @@ class Binance extends React.PureComponent<Props, State> {
     const { currentConvertId } = this.state
     chrome.binance.confirmConvert(currentConvertId, (success: boolean, message: string) => {
       if (success) {
-        this.props.onUpdateActions()
         this.setState({ convertSuccess: true })
       } else {
         this.setState({
@@ -891,9 +888,8 @@ class Binance extends React.PureComponent<Props, State> {
         {currencyList.map((asset: string) => {
           // Initial migration display
           const assetAccountBalance = accountBalances ? accountBalances[asset] : '0.00'
-          const assetUSDValue = assetUSDValues ? assetUSDValues[asset] : '0.00'
+          const assetUSDValue = assetUSDValues ? (assetUSDValues[asset] || '0.00') : '0.00'
           const assetBalance = this.formatCryptoBalance(assetAccountBalance)
-          const price = getUSDPrice(assetBalance, assetUSDValue)
 
           return (
             <ListItem key={`list-${asset}`}>
@@ -910,7 +906,7 @@ class Binance extends React.PureComponent<Props, State> {
                   {assetBalance}
                 </Balance>
                 <Converted isBTC={false} hideBalance={hideBalance}>
-                  {`= $${price}`}
+                  {`= $${assetUSDValue}`}
                 </Converted>
               </ListInfo>
             </ListItem>

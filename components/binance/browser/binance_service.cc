@@ -38,7 +38,6 @@
 namespace {
 
 const char oauth_host[] = "accounts.binance.com";
-const char api_host[] = "api.binance.com";
 const char gateway_host[] = "www.binance.com";
 const char oauth_callback[] = "com.brave.binance://authorization";
 const char oauth_scope[] =
@@ -87,7 +86,6 @@ std::string GetHexEncodedCryptoRandomSeed() {
 BinanceService::BinanceService(content::BrowserContext* context)
     : client_id_(BINANCE_CLIENT_ID),
       oauth_host_(oauth_host),
-      api_host_(api_host),
       gateway_host_(gateway_host),
       context_(context),
       url_loader_factory_(
@@ -167,7 +165,7 @@ bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
 void BinanceService::OnGetAccountBalances(GetAccountBalancesCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::string> balances;
+  std::map<std::string, std::vector<std::string>> balances;
 
   bool success = status >= 200 && status <= 299;
   if (success) {
@@ -356,48 +354,6 @@ void BinanceService::OnGetConvertQuote(
   std::move(callback).Run(quote_id, quote_price, total_fee, total_amount);
 }
 
-bool BinanceService::GetTickerPrice(
-    const std::string& symbol_pair,
-    GetTickerPriceCallback callback) {
-  auto internal_callback = base::BindOnce(&BinanceService::OnGetTickerPrice,
-      base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host_, api_path_ticker_price);
-  url = net::AppendQueryParameter(url, "symbol", symbol_pair);
-  return OAuthRequest(url, "GET", "", std::move(internal_callback));
-}
-
-bool BinanceService::GetTickerVolume(
-    const std::string& symbol_pair,
-    GetTickerVolumeCallback callback) {
-  auto internal_callback = base::BindOnce(&BinanceService::OnGetTickerVolume,
-      base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host_, api_path_ticker_volume);
-  url = net::AppendQueryParameter(url, "symbol", symbol_pair);
-  return OAuthRequest(url, "GET", "", std::move(internal_callback));
-}
-
-void BinanceService::OnGetTickerPrice(
-    GetTickerPriceCallback callback,
-    const int status, const std::string& body,
-    const std::map<std::string, std::string>& headers) {
-  std::string symbol_pair_price = "0.00";
-  if (status >= 200 && status <= 299) {
-    BinanceJSONParser::GetTickerPriceFromJSON(body, &symbol_pair_price);
-  }
-  std::move(callback).Run(symbol_pair_price);
-}
-
-void BinanceService::OnGetTickerVolume(
-    GetTickerPriceCallback callback,
-    const int status, const std::string& body,
-    const std::map<std::string, std::string>& headers) {
-  std::string symbol_pair_volume = "0";
-  if (status >= 200 && status <= 299) {
-    BinanceJSONParser::GetTickerVolumeFromJSON(body, &symbol_pair_volume);
-  }
-  std::move(callback).Run(symbol_pair_volume);
-}
-
 bool BinanceService::GetCoinNetworks(GetCoinNetworksCallback callback) {
   auto internal_callback = base::BindOnce(&BinanceService::OnGetCoinNetworks,
       base::Unretained(this), std::move(callback));
@@ -527,10 +483,6 @@ void BinanceService::SetClientIdForTest(const std::string& client_id) {
 
 void BinanceService::SetOAuthHostForTest(const std::string& oauth_host) {
   oauth_host_ = oauth_host;
-}
-
-void BinanceService::SetAPIHostForTest(const std::string& api_host) {
-  api_host_ = api_host;
 }
 
 void BinanceService::SetGatewayHostForTest(const std::string& gateway_host) {
