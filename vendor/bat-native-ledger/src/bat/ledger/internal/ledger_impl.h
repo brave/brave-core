@@ -733,6 +733,10 @@ class LedgerImpl : public ledger::Ledger {
       ledger::GetUnblindedTokenListCallback callback);
 
  private:
+  void MaybeInitializeConfirmations(
+      const bool execute_create_script,
+      ledger::ResultCallback callback);
+
   void InitializeConfirmations(
       const bool execute_create_script,
       ledger::ResultCallback callback);
@@ -741,6 +745,19 @@ class LedgerImpl : public ledger::Ledger {
       const bool success,
       const bool execute_create_script,
       ledger::ResultCallback callback);
+
+  void InitializeDatabase(
+      const bool execute_create_script,
+      ledger::ResultCallback callback);
+
+  void StartConfirmations();
+
+  void OnConfirmationsStarted(
+      const bool success);
+
+  void ShutdownConfirmations();
+
+  bool IsConfirmationsRunning();
 
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

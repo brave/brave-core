@@ -29,6 +29,7 @@
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
+#include "bat/ledger/internal/state_keys.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -134,15 +135,30 @@ void LedgerImpl::Initialize(
 
   initializing_ = true;
 
-  InitializeConfirmations(execute_create_script, callback);
+  MaybeInitializeConfirmations(execute_create_script, callback);
 }
 
-void LedgerImpl::InitializeConfirmations(
+void LedgerImpl::MaybeInitializeConfirmations(
     const bool execute_create_script,
     ledger::ResultCallback callback) {
   confirmations::_environment = ledger::_environment;
   confirmations::_is_debug = ledger::is_debug;
 
+  const bool is_enabled = GetBooleanState(ledger::kStateEnabled);
+
+  const bool is_enabled_migrated =
+      GetBooleanState(ledger::kStateEnabledMigrated);
+
+  if (is_enabled || !is_enabled_migrated) {
+    InitializeConfirmations(execute_create_script, callback);
+  } else {
+    InitializeDatabase(execute_create_script, callback);
+  }
+}
+
+void LedgerImpl::InitializeConfirmations(
+    const bool execute_create_script,
+    ledger::ResultCallback callback) {
   bat_confirmations_.reset(
       confirmations::Confirmations::CreateInstance(ledger_client_));
 
@@ -159,10 +175,18 @@ void LedgerImpl::OnConfirmationsInitialized(
     const bool execute_create_script,
     ledger::ResultCallback callback) {
   if (!success) {
+    // If confirmations fail, we should fall-through and continue initializing
+    // ledger
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
         "Failed to initialize confirmations";
   }
 
+  InitializeDatabase(execute_create_script, callback);
+}
+
+void LedgerImpl::InitializeDatabase(
+    const bool execute_create_script,
+    ledger::ResultCallback callback) {
   ledger::ResultCallback finish_callback =
       std::bind(&LedgerImpl::OnWalletInitializedInternal,
           this,
@@ -174,6 +198,49 @@ void LedgerImpl::OnConfirmationsInitialized(
       _1,
       finish_callback);
   bat_database_->Initialize(execute_create_script, database_callback);
+}
+
+void LedgerImpl::StartConfirmations() {
+  if (IsConfirmationsRunning()) {
+    return;
+  }
+
+  bat_confirmations_.reset(
+      confirmations::Confirmations::CreateInstance(ledger_client_));
+
+  const auto callback = std::bind(&LedgerImpl::OnConfirmationsStarted,
+      this,
+      _1);
+  bat_confirmations_->Initialize(callback);
+}
+
+void LedgerImpl::OnConfirmationsStarted(
+    const bool success) {
+  if (!success) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to start confirmations";
+    return;
+  }
+
+  BLOG(this, ledger::LogLevel::LOG_INFO)
+      << "Successfully started confirmations";
+}
+
+void LedgerImpl::ShutdownConfirmations() {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
+  BLOG(this, ledger::LogLevel::LOG_INFO) <<
+      "Successfully shutdown confirmations";
+  bat_confirmations_.release();
+}
+
+bool LedgerImpl::IsConfirmationsRunning() {
+  if (!bat_confirmations_) {
+    return false;
+  }
+
+  return true;
 }
 
 void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
@@ -359,6 +426,10 @@ void LedgerImpl::OnLedgerStateLoaded(
 
 void LedgerImpl::SetConfirmationsWalletInfo(
     const ledger::WalletInfoProperties& wallet_info_properties) {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
   if (wallet_info_properties.key_info_seed.size() != SEED_LENGTH) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
         "confirmations due to invalid wallet";
@@ -627,6 +698,12 @@ void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   bat_state_->SetRewardsMainEnabled(enabled);
   bat_publisher_->SetPublisherServerListTimer(enabled);
+
+  if (enabled) {
+    StartConfirmations();
+  } else {
+    ShutdownConfirmations();
+  }
 }
 
 void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {  // In seconds
@@ -950,6 +1027,10 @@ void LedgerImpl::LogResponse(
 }
 
 void LedgerImpl::UpdateAdsRewards() {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
   bat_confirmations_->UpdateAdsRewards(false);
 }
 
@@ -1102,6 +1183,10 @@ void LedgerImpl::SaveNormalizedPublisherList(ledger::PublisherInfoList list) {
 }
 
 void LedgerImpl::SetCatalogIssuers(const std::string& info) {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
   ads::IssuersInfo issuers_info_ads;
   if (issuers_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
@@ -1121,6 +1206,10 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
 void LedgerImpl::ConfirmAd(
     const std::string& json,
     const std::string& confirmation_type) {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
   ads::AdInfo ad_info;
   if (ad_info.FromJson(json) != ads::Result::SUCCESS) {
     return;
@@ -1141,12 +1230,20 @@ void LedgerImpl::ConfirmAction(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const std::string& confirmation_type) {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
   bat_confirmations_->ConfirmAction(creative_instance_id, creative_set_id,
       confirmations::ConfirmationType(confirmation_type));
 }
 
 void LedgerImpl::GetTransactionHistory(
     ledger::GetTransactionHistoryCallback callback) {
+  if (!IsConfirmationsRunning()) {
+    return;
+  }
+
   bat_confirmations_->GetTransactionHistory(callback);
 }
 

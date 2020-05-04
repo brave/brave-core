@@ -950,9 +950,8 @@ void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
   if (!state_has_loaded_) {
     BLOG(ERROR) <<
         "Unable to update ads rewards as Confirmations state is not ready";
+    return;
   }
-
-  DCHECK(wallet_info_.IsValid());
 
   ads_rewards_->Update(wallet_info_, should_refresh);
 }
