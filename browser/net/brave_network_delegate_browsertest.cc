@@ -466,4 +466,3 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(google_oauth_cookie_url_);
   ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
 }
-
