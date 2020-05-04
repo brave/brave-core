@@ -60,10 +60,12 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       "message": null,
       "data": [{
         "asset": "BAT",
-        "free": "2.00000000",
+        "free": "1000.00000",
         "locked": "0.00000000",
         "freeze": "0.00000000",
-        "withdrawing": "0.00000000"
+        "withdrawing": "0.00000000",
+        "btcValuation": "0.021100",
+        "fiatValuation": "20000.00000"
       }]
     })");
   } else if (request_path == oauth_path_deposit_info) {
@@ -130,16 +132,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
         }]
       }],
       "success":true
-    })");
-  } else if (request_path == api_path_ticker_price) {
-    http_response->set_content(R"({
-      "symbol":"BTCUSDT",
-      "price":"7265.82000000"
-    })");
-  } else if (request_path == api_path_ticker_volume) {
-    http_response->set_content(R"({
-      "symbol":"BTCUSDT",
-      "volume":"1337"
     })");
   } else if (request_path == oauth_path_revoke_token) {
     http_response->set_content(R"({
@@ -246,7 +238,6 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     BinanceService* service = GetBinanceService();
     std::string host = https_server_->base_url().host() + ":" +
         std::to_string(https_server_->port());
-    service->SetAPIHostForTest(host);
     service->SetOAuthHostForTest(host);
     service->SetGatewayHostForTest(host);
   }
@@ -302,7 +293,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
-  void OnGetAccountBalances(const std::map<std::string, std::string>& balances,
+  void OnGetAccountBalances(const std::map<std::string,
+                                           std::vector<std::string>>& balances,
       bool success) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
@@ -312,7 +304,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForGetAccountBalances(
-      const std::map<std::string, std::string>& expected_balances,
+      const std::map<std::string,
+                     std::vector<std::string>>& expected_balances,
       bool expected_success) {
     if (wait_for_request_) {
       return;
@@ -379,38 +372,6 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_assets_with_sub_ = expected_assets;
-    wait_for_request_.reset(new base::RunLoop);
-    wait_for_request_->Run();
-  }
-
-  void OnGetTickerPrice(const std::string& symbol_pair_price) {
-    if (wait_for_request_) {
-      wait_for_request_->Quit();
-    }
-    ASSERT_EQ(expected_symbol_pair_price_, symbol_pair_price);
-  }
-
-  void WaitForGetTickerPrice(const std::string& symbol_pair_price) {
-    if (wait_for_request_) {
-      return;
-    }
-    expected_symbol_pair_price_ = symbol_pair_price;
-    wait_for_request_.reset(new base::RunLoop);
-    wait_for_request_->Run();
-  }
-
-  void OnGetTickerVolume(const std::string& symbol_pair_volume) {
-    if (wait_for_request_) {
-      wait_for_request_->Quit();
-    }
-    ASSERT_EQ(expected_symbol_pair_volume_, symbol_pair_volume);
-  }
-
-  void WaitForGetTickerVolume(const std::string& symbol_pair_volume) {
-    if (wait_for_request_) {
-      return;
-    }
-    expected_symbol_pair_volume_ = symbol_pair_volume;
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
   }
@@ -486,10 +447,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   std::string expected_address_;
   std::string expected_tag_;
   std::string expected_error_message_;
-  std::string expected_symbol_pair_price_;
-  std::string expected_symbol_pair_volume_;
   std::vector<std::string> expected_assets_;
-  std::map<std::string, std::string> expected_balances_;
+  std::map<std::string, std::vector<std::string>> expected_balances_;
   std::map<std::string, std::string> expected_networks_;
   std::map<std::string, std::vector<std::string>> expected_assets_with_sub_;
 
@@ -607,8 +566,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalances) {
           &BinanceAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
   WaitForGetAccountBalances(
-      std::map<std::string, std::string> {
-          {"BAT", "2.00000000"}
+      std::map<std::string, std::vector<std::string>> {
+          {"BAT", {"1000.00000", "0.021100", "20000.00000"}}
       }, true);
 }
 
@@ -621,7 +580,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalancesUnauthorized) {
           &BinanceAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
   WaitForGetAccountBalances(
-      std::map<std::string, std::string>(), false);
+      std::map<std::string, std::vector<std::string>>(), false);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalancesServerError) {
@@ -633,7 +592,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalancesServerError) {
           &BinanceAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
   WaitForGetAccountBalances(
-      std::map<std::string, std::string>(), false);
+      std::map<std::string, std::vector<std::string>>(), false);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfo) {
@@ -713,7 +672,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssets) {
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
   std::vector<std::string> sub {"BNB"};
-  std::map<std::string, std::vector<std::string> > assets {{"BTC", sub}};
+  std::map<std::string, std::vector<std::string>> assets {{"BTC", sub}};
   WaitForGetConvertAssets(assets);
 }
 
@@ -737,72 +696,6 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
   WaitForGetConvertAssets(std::map<std::string, std::vector<std::string> >());
-}
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerPrice) {
-  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
-  auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetTickerPrice("BTCUSDT",
-      base::BindOnce(
-          &BinanceAPIBrowserTest::OnGetTickerPrice,
-          base::Unretained(this))));
-  WaitForGetTickerPrice("7265.82000000");
-}
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerPriceUnauthorized) {
-  ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
-  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
-  auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetTickerPrice("BTCUSDT",
-      base::BindOnce(
-          &BinanceAPIBrowserTest::OnGetTickerPrice,
-          base::Unretained(this))));
-  WaitForGetTickerPrice("0.00");
-}
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerPriceServerError) {
-  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
-  auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetTickerPrice("BTCUSDT",
-      base::BindOnce(
-          &BinanceAPIBrowserTest::OnGetTickerPrice,
-          base::Unretained(this))));
-  WaitForGetTickerPrice("0.00");
-}
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerVolume) {
-  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
-  auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetTickerVolume("BTCUSDT",
-      base::BindOnce(
-          &BinanceAPIBrowserTest::OnGetTickerVolume,
-          base::Unretained(this))));
-  WaitForGetTickerVolume("1337");
-}
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerVolumeUnauthorized) {
-  ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
-  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
-  auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetTickerVolume("BTCUSDT",
-      base::BindOnce(
-          &BinanceAPIBrowserTest::OnGetTickerVolume,
-          base::Unretained(this))));
-  WaitForGetTickerVolume("0");
-}
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerVolumeServerError) {
-  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
-  auto* service = GetBinanceService();
-  ASSERT_TRUE(service->GetTickerVolume("BTCUSDT",
-      base::BindOnce(
-          &BinanceAPIBrowserTest::OnGetTickerVolume,
-          base::Unretained(this))));
-  WaitForGetTickerVolume("0");
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeToken) {
