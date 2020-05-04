@@ -200,9 +200,9 @@ class NTPDownloader {
                 return 3.minutes
             }
             
-            let baseTime = 5.hours
-            let minVariance = 1.10            //10% variance
-            let maxVariance = 1.14            //14% variance
+            let baseTime = 1.hours
+            let minVariance = 1.10 // 10% variance
+            let maxVariance = 1.14 // 14% variance
             return baseTime * Double.random(in: ClosedRange<Double>(uncheckedBounds: (lower: minVariance, upper: maxVariance)))
         }()
         
