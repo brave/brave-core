@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.settings;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceFragmentCompat;
 import android.os.Build;
 import android.view.Menu;
 import android.view.MenuInflater;

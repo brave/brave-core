@@ -10,7 +10,7 @@ import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.UI_TH
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.preference.Preference;
+import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
 import org.chromium.base.BuildInfo;
@@ -18,7 +18,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.night_mode.ThemeType;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 

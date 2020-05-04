@@ -13,11 +13,13 @@ import android.graphics.Canvas;
 import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
+import org.chromium.components.content_settings.CookieControlsEnforcement;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
@@ -46,18 +48,19 @@ public class IncognitoNewTabPageView extends FrameLayout {
         void loadIncognitoLearnMore();
 
         /**
-         * Enables/disables cookie controls mode as set from incognito NTP. By default
-         * nothing happens.
-         * @param enable A boolean specifying the state of third party cookie blocking in
-         *         incognito. True will enable third-party cookie blocking in incognito and false
-         *         will disable this feature.
+         * Initializes the cookie controls manager for interaction with the cookie controls toggle.
          * */
-        void setThirdPartyCookieBlocking(boolean enable);
+        void initCookieControlsManager();
 
         /**
-         * Returns whether third-party cookies are currently being blocked.
+         * Tells the caller whether a new snapshot is required or not.
          * */
-        boolean shouldBlockThirdPartyCookies();
+        boolean shouldCaptureThumbnail();
+
+        /**
+         * Cleans up the manager after it is finished being used.
+         * */
+        void destroy();
 
         /**
          * Called when the NTP has completely finished loading (all views will be inflated
@@ -134,6 +137,36 @@ public class IncognitoNewTabPageView extends FrameLayout {
         mSnapshotHeight = getHeight();
         mSnapshotScrollY = mScrollView.getScrollY();
     }
+
+    /**
+     * Set the visibility of the cookie controls card on the incognito description.
+     * @param isVisible Whether it's visible or not.
+     */
+    void setIncognitoCookieControlsCardVisibility(boolean isVisible) {}
+
+    /**
+     * Set the toggle on the cookie controls card.
+     * @param isChecked Whether it's checked or not.
+     */
+    void setIncognitoCookieControlsToggleChecked(boolean isChecked) {}
+
+    /**
+     * Set the incognito cookie controls toggle checked change listener.
+     * @param listener The given checked change listener.
+     */
+    void setIncognitoCookieControlsToggleCheckedListener(OnCheckedChangeListener listener) {}
+
+    /**
+     * Set the enforcement rule for the incognito cookie controls toggle.
+     * @param enforcement The enforcement enum to set.
+     */
+    void setIncognitoCookieControlsToggleEnforcement(@CookieControlsEnforcement int enforcement) {}
+
+    /**
+     * Set the incognito cookie controls icon click listener.
+     * @param listener The given onclick listener.
+     */
+    void setIncognitoCookieControlsIconOnclickListener(OnClickListener listener) {}
 
     @Override
     public void onAttachedToWindow() {

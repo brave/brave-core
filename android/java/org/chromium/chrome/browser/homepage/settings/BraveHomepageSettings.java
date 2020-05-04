@@ -8,8 +8,8 @@ package org.chromium.chrome.browser.homepage.settings;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.homepage.HomepageManager;
-import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
-import org.chromium.chrome.browser.settings.homepage.HomepageSettings;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.homepage.settings.HomepageSettings;
 
 public class BraveHomepageSettings extends HomepageSettings {
     private HomepageManager mHomepageManager;

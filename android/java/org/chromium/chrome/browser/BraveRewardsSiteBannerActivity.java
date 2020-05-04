@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.text.Spanned;
 import android.view.MotionEvent;
-import org.chromium.chrome.browser.util.IntentUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -129,7 +129,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
-        String url = currentActiveTab.getUrl();
+        String url = currentActiveTab.getUrlString();
         String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
         mIconFetcher = new BraveRewardsHelper();
         mIconFetcher.retrieveLargeIcon(favicon_url, this);

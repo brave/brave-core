@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler;
-import org.chromium.chrome.browser.externalnav.ExternalNavigationParams;
+import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.chrome.R;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColor="@color/shield_text_color"
+        android:textColor="@color/default_icon_color_tint_list"
         android:orientation="horizontal"
         android:textSize="14sp"
         android:gravity="start|center_vertical"

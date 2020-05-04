@@ -18,7 +18,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.chromium.chrome.browser.util.IntentUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -51,7 +51,7 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
-        String url = currentActiveTab.getUrl();
+        String url = currentActiveTab.getUrlString();
         String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
         mIconFetcher = new org.chromium.chrome.browser.BraveRewardsHelper();
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
