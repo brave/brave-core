@@ -29,6 +29,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsSiteBannerActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsVerifyWalletActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveShieldsHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuObserver.java",

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,6 +25,7 @@ import android.widget.Switch;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.util.SparseArray;
+import android.graphics.Typeface;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -98,7 +100,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
     private String mHost;
     private String mTitle;
 
-    private Switch mBraveShieldsAdsTrackingSwitch;
+    private Switch mBraveShieldsBlockTrackersSwitch;
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
     private Switch mBraveShieldsHTTPSEverywhereSwitch;
     private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
@@ -109,6 +111,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
     private Switch mBraveShieldsFingerprintsSwitch;
     private OnCheckedChangeListener mBraveShieldsFingerprintsChangeListener;
     private Profile mProfile;
+
+    private boolean shouldShowExpanded;
 
 
     public BraveShieldsMenuAdapter(String host,
@@ -196,11 +200,75 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
                 holder = new StandardMenuItemViewHolder();
                 if (0 == position) {
                     convertView = mInflater.inflate(R.layout.brave_shields_main_layout, parent, false);
-                    // setupSwitchClick((Switch)convertView.findViewById(R.id.brave_shields_switch));
+                    Switch shieldMainSwitch = convertView.findViewById(R.id.site_switch);
+                    TextView siteText = convertView.findViewById(R.id.brave_shields_text);
+                    siteText.setText(mTitle);
+
+                    final LinearLayout secondaryLayout = convertView.findViewById(R.id.brave_shields_secondary_layout);
+
+                    LinearLayout toggleLayout = convertView.findViewById(R.id.brave_shields_toggle_layout_id);
+                    toggleLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(shouldShowExpanded) {
+                                secondaryLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                secondaryLayout.setVisibility(View.GONE);
+                            }
+                            shouldShowExpanded = !shouldShowExpanded;
+                        }
+                    });
+
+                    LinearLayout blockTrackersLayout = convertView.findViewById(R.id.brave_shields_block_trackers_id);
+                    TextView blockTrackersText = blockTrackersLayout.findViewById(R.id.brave_shields_switch_text);
+                    mBraveShieldsBlockTrackersSwitch = blockTrackersLayout.findViewById(R.id.brave_shields_switch);
+                    blockTrackersText.setText(R.string.brave_shields_ads_and_trackers);
+                    setupAdsTrackingSwitchClick(mBraveShieldsBlockTrackersSwitch);
+
+                    LinearLayout upgradeHttpsLayout = convertView.findViewById(R.id.brave_shields_upgrade_https_id);
+                    TextView upgradeHttpsText = upgradeHttpsLayout.findViewById(R.id.brave_shields_switch_text);
+                    mBraveShieldsHTTPSEverywhereSwitch = upgradeHttpsLayout.findViewById(R.id.brave_shields_switch);
+                    upgradeHttpsText.setText(R.string.brave_shields_https_everywhere_switch);
+                    setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
+
+                    LinearLayout blockScriptsLayout = convertView.findViewById(R.id.brave_shields_block_scripts_id);
+                    TextView blockScriptsText = blockScriptsLayout.findViewById(R.id.brave_shields_switch_text);
+                    mBraveShieldsBlockingScriptsSwitch = blockScriptsLayout.findViewById(R.id.brave_shields_switch);
+                    blockScriptsText.setText(R.string.brave_shields_blocks_scripts_switch);
+                    setupBlockingScriptsSwitchClick(mBraveShieldsBlockingScriptsSwitch);
+
+                    LinearLayout cookiesLayout = convertView.findViewById(R.id.brave_shields_cookies_layout_id);
+                    ImageView cookiesIcon = cookiesLayout.findViewById(R.id.site_favicon);
+                    cookiesIcon.setImageResource(R.drawable.chevron_right);
+                    TextView cookiesText = cookiesLayout.findViewById(R.id.site_text);
+                    cookiesText.setText(R.string.block_cross_site_cookies);
+
+                    LinearLayout fingerPrintingLayout = convertView.findViewById(R.id.brave_shields_fingerprinting_layout_id);
+                    ImageView fingerPrintingIcon = fingerPrintingLayout.findViewById(R.id.site_favicon);
+                    fingerPrintingIcon.setImageResource(R.drawable.chevron_right);
+                    TextView fingerPrintingText = fingerPrintingLayout.findViewById(R.id.site_text);
+                    fingerPrintingText.setText(R.string.block_cross_site_fingerprinting);
+
+                    setupSwitchClick(shieldMainSwitch);
                 // We should set layouts for switch rows
                 } else if(1 == position) {
                     convertView = mInflater.inflate(R.layout.brave_shields_toggle_layout, parent, false);
-                } else if (2 == position || 8 == position || 14 == position) {
+                    convertView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    });
+                } else if(2 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_text_item, parent, false);
+                    TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
+                    text.setTextColor(convertView.getContext().getResources().getColor(
+                                    R.color.standard_mode_tint));
+                    text.setTypeface(text.getTypeface(), Typeface.BOLD);
+                    text.setText(mTitle);
+                } else if (3 == position || 4 == position || 5 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_switcher, parent, false);
+                    setupSwitch(convertView, position);
+                } else if (8 == position || 14 == position) {
                     convertView = mInflater.inflate(R.layout.brave_shields_text_item, parent, false);
                     TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
                     if (text != null) {
@@ -268,28 +336,6 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
                     }
                 } else if (7 == position) {
                     convertView = mInflater.inflate(R.layout.menu_separator, parent, false);
-                } else if (9 == position) {
-                    convertView = mInflater.inflate(R.layout.brave_shields_ads_tracking_switcher, parent, false);
-                    mBraveShieldsAdsTrackingSwitch = (Switch)convertView.findViewById(R.id.brave_shields_ads_tracking_switch);
-                    setupAdsTrackingSwitchClick(mBraveShieldsAdsTrackingSwitch);
-                    // To make it more nice looking
-                    /*TextView text = (TextView) convertView.findViewById(R.id.brave_shields_ads_tracking_text);
-                    if (text != null && text.getText().toString().indexOf("and") != -1) {
-                        String value = text.getText().toString().replaceFirst("and", "&");
-                        text.setText(value);
-                    }*/
-                } else if (10 == position) {
-                    convertView = mInflater.inflate(R.layout.brave_shields_https_upgrade_switcher, parent, false);
-                    mBraveShieldsHTTPSEverywhereSwitch = (Switch)convertView.findViewById(R.id.brave_shields_https_upgrade_switch);
-                    setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
-                } else if (11 == position) {
-                    convertView = mInflater.inflate(R.layout.brave_shields_3rd_party_cookies_blocked_switcher, parent, false);
-                    mBraveShieldsBlocking3rdPartyCookiesSwitch = (Switch)convertView.findViewById(R.id.brave_shields_3rd_party_cookies_blocked_switch);
-                    setup3rdPartyCookiesSwitchClick(mBraveShieldsBlocking3rdPartyCookiesSwitch);
-                } else if (12 == position) {
-                    convertView = mInflater.inflate(R.layout.brave_shields_scripts_blocked_switcher, parent, false);
-                    mBraveShieldsBlockingScriptsSwitch = (Switch)convertView.findViewById(R.id.brave_shields_scripts_blocked_switch);
-                    setupBlockingScriptsSwitchClick(mBraveShieldsBlockingScriptsSwitch);
                 } else if (13 == position) {
                     convertView = mInflater.inflate(R.layout.brave_shields_fingerprints_blocked_switcher, parent, false);
                     mBraveShieldsFingerprintsSwitch = (Switch)convertView.findViewById(R.id.brave_shields_fingerprints_blocked_switch);
@@ -320,6 +366,25 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             setPopupWidth(holder.text);
         }
         return convertView;
+    }
+
+    private void setupSwitch(View convertView, int position) {
+        TextView text = convertView.findViewById(R.id.brave_shields_switch_text);
+        Switch shieldSwitch = (Switch)convertView.findViewById(R.id.brave_shields_switch);
+        switch(position) {
+            case 3:
+                text.setText(R.string.brave_shields_ads_and_trackers);
+                setupAdsTrackingSwitchClick(shieldSwitch);
+                break;
+            case 4:
+                text.setText(R.string.brave_shields_https_everywhere_switch);
+                setupHTTPSEverywhereSwitchClick(shieldSwitch);
+                break;
+            case 5:
+                text.setText(R.string.brave_shields_blocks_scripts_switch);
+                setupBlockingScriptsSwitchClick(shieldSwitch);
+                break;
+        }
     }
 
     private void setPopupWidth(TextView view) {
@@ -595,11 +660,9 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
               boolean isChecked) {
                 if (0 != mHost.length()) {
                     BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
-                    setupAdsTrackingSwitch(mBraveShieldsAdsTrackingSwitch, true);
+                    setupAdsTrackingSwitch(mBraveShieldsBlockTrackersSwitch, true);
                     setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);
-                    setupBlocking3rdPartyCookiesSwitch(mBraveShieldsBlocking3rdPartyCookiesSwitch, true);
-                    setupBlockingFingerprintsSwitch(mBraveShieldsFingerprintsSwitch, true);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, true);
                     }

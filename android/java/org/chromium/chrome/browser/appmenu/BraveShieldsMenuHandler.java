@@ -238,6 +238,7 @@ public class BraveShieldsMenuHandler {
         }
 
         mPopup.setWidth(popupWidth);
+        mPopup.setHeight(ListPopupWindow.WRAP_CONTENT);
 
         mAdapter = new BraveShieldsMenuAdapter(host, title, menuItems,
             LayoutInflater.from(wrapper), mMenuObserver, mPopup,

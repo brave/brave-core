@@ -76,4 +76,10 @@
     <color name="user_wallet_dimmed_note">#E6E3F4</color>
 
     <color name="qr_button_color">@android:color/white</color>
+    <color name="shield_back_button_tint">@color/brave_theme_color</color>
+    <color name="shield_toggle_button_tint">#373843</color>
+    <color name="shield_toggle_bg_color">#F8F9FA</color>
+    <color name="shield_secondary_color">#868e96</color>
+    <color name="shield_divider_color">#c8c7cc</color>
+    <color name="shield_option_text_color">#777777</color
 </resources>

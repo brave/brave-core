@@ -4,99 +4,137 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="8dp" >
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-      	android:id="@+id/site_layout"
-      	android:layout_width="match_parent"
-      	android:layout_height="wrap_content"
-      	android:gravity="center_horizontal"
-      	android:layout_marginTop="16dp"
-      	android:orientation="horizontal">
+    <FrameLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/brave_sync_bg_color">
 
-	    <ImageView 
-	    	android:id="@+id/site_favicon"
-		    android:layout_width="24dp"
-		    android:layout_height="24dp"
-		    android:contentDescription="@null"
-		    android:layout_marginEnd="8dp"
-		    android:layout_gravity="center_vertical"
-		    android:src="@drawable/bat_verified"/>
+	    <LinearLayout
+			android:id="@+id/main_layout"
+		    android:orientation="vertical"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content">
 
-	    <TextView
-		    android:id="@+id/site_text"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="24sp"
-		    android:layout_gravity="center_vertical"
-		    android:textColor="@color/standard_mode_tint"
-		    android:text="buzzfeed.com"/>
+		    <LinearLayout
+		      	android:id="@+id/site_layout"
+		      	android:layout_width="match_parent"
+		      	android:layout_height="wrap_content"
+		      	android:gravity="center_horizontal"
+		      	android:layout_marginTop="16dp"
+		      	android:orientation="horizontal">
 
-	</LinearLayout>
+			    <ImageView 
+			    	android:id="@+id/site_favicon"
+				    android:layout_width="24dp"
+				    android:layout_height="24dp"
+				    android:contentDescription="@null"
+				    android:layout_marginEnd="8dp"
+				    android:layout_gravity="center_vertical"
+				    android:src="@drawable/bat_verified"/>
 
-	<Switch
-        android:id="@+id/site_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="1.8"
-        android:scaleY="1.8"
-        android:layout_marginTop="32dp"
-        android:theme="@style/BraveSwitchTheme"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal" />
+			    <TextView
+				    android:id="@+id/site_text"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textSize="24sp"
+				    android:layout_gravity="center_vertical"
+				    android:textColor="@color/standard_mode_tint"/>
 
-    <TextView
-		android:id="@+id/site_shield_text"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="16dp"
-		android:textSize="16sp"
-		android:gravity="center_horizontal"
-		android:textColor="@color/standard_mode_tint"
-		android:text="Brave Shield UP"/>
+			</LinearLayout>
 
-	<LinearLayout
-      	android:id="@+id/site_block_layout"
-      	android:layout_width="match_parent"
-      	android:layout_height="wrap_content"
-      	android:layout_gravity="center_horizontal"
-      	android:layout_marginTop="16dp"
-      	android:orientation="horizontal">
+			<Switch
+		        android:id="@+id/site_switch"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:switchMinWidth="56dp"
+		        android:scaleX="2"
+		        android:scaleY="2"
+		        android:layout_marginTop="32dp"
+		        android:theme="@style/BraveSwitchTheme"
+		        android:gravity="center_horizontal"
+		        android:layout_gravity="center_horizontal" />
 
-	    <TextView
-		    android:id="@+id/site_block_counttext"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="36sp"
-		    android:textStyle="bold"
-		    android:layout_marginEnd="8dp"
-		    android:textColor="@color/standard_mode_tint"
-		    android:text="31"/>
+		    <TextView
+				android:id="@+id/site_shield_text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:textSize="16sp"
+				android:gravity="center_horizontal"
+				android:textColor="@color/standard_mode_tint"
+				android:text="@string/brave_shields_up"/>
 
-	    <TextView
-		    android:id="@+id/site_block_text"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="14sp"
-		    android:layout_gravity="center_vertical"
-		    android:textColor="@color/standard_mode_tint"
-		    android:text="Ads and other creepy\nthings blocked"/>
+			<LinearLayout
+		      	android:id="@+id/site_block_layout"
+		      	android:layout_width="match_parent"
+		      	android:layout_height="wrap_content"
+		      	android:gravity="center_horizontal"
+		      	android:layout_marginTop="16dp"
+		      	android:orientation="horizontal">
 
-	</LinearLayout>
+			    <TextView
+				    android:id="@+id/site_block_count_text"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textSize="36sp"
+				    android:textStyle="bold"
+				    android:layout_marginEnd="8dp"
+				    android:textColor="@color/standard_mode_tint"/>
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="14sp"
-		android:layout_gravity="center_horizontal"
-		android:textColor="#868e96"
-		android:layout_marginTop="8dp"
-		android:layout_marginBottom="16dp"
-		android:text="If this site appears broken, try Shields down."/>
+			    <TextView
+				    android:id="@+id/site_block_text"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textSize="14sp"
+				    android:layout_gravity="center_vertical"
+				    android:textColor="@color/standard_mode_tint"/>
 
-</LinearLayout>
+			</LinearLayout>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="14sp"
+				android:gravity="center_horizontal"
+				android:textColor="@color/shield_secondary_color"
+				android:layout_margin="16dp"
+				android:text="@string/site_broken_text"/>
+
+			<include 
+				android:id="@+id/brave_shields_toggle_layout_id"
+				layout="@layout/brave_shields_toggle_layout"/>
+
+			<include
+				android:id="@+id/brave_shields_secondary_layout_id"
+				layout="@layout/brave_shields_secondary_layout"/>
+
+		</LinearLayout>
+
+		<include 
+			android:id="@+id/brave_shields_block_cookies_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_block_fingerprinting_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_about_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_report_site_layout_id"
+			layout="@layout/report_broken_site_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_thank_you_layout_id"
+			layout="@layout/brave_shields_thank_you_layout"/>
+
+	</FrameLayout>
+
+</ScrollView>
