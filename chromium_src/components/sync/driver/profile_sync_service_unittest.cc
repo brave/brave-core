@@ -1,6 +1,13 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/os_crypt/os_crypt_mocker.h"
 
+namespace {
+const char sync_code[] =
+    "badge unique kiwi orient spring venue piano "
+    "lake admit ill roof brother grant hour better "
+    "proud cabbage fee slow economy wage final fox cancel";
+}  // namespace
+
 #define EnableSyncSignOutAndChangeAccount \
   DISABLED_EnableSyncSignOutAndChangeAccount
 #define RevokeAccessTokenFromTokenService \
@@ -24,14 +31,9 @@
 
 #define BRAVE_SET_UP OSCryptMocker::SetUp();
 #define BRAVE_TEAR_DOWN OSCryptMocker::TearDown();
-#define BRAVE_SIGN_IN                                    \
-  brave_sync::Prefs brave_sync_prefs(prefs());           \
-  brave_sync_prefs.SetSyncEnabled(true);                 \
-  brave_sync_prefs.SetSeed(                              \
-      "rabbit van once transfer town hammer humble "     \
-      "unfold color gospel hunt ten urban injury sure "  \
-      "tape stamp youth case armor caught normal share " \
-      "fury");
+#define BRAVE_SIGN_IN                          \
+  brave_sync::Prefs brave_sync_prefs(prefs()); \
+  brave_sync_prefs.SetSeed(sync_code);
 
 #include "../../../../../components/sync/driver/profile_sync_service_unittest.cc"
 #undef EnableSyncSignOutAndChangeAccount

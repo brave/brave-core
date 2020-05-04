@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 96abaa6e76e73d8896c31063a532b07a164ac9d0..de65469abaf8522b57733e6b5f7382346d969c3d 100644
+index 96abaa6e76e73d8896c31063a532b07a164ac9d0..861e290dea7e68f0b5bfd0856c3bbed68271b543 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
 @@ -199,6 +199,7 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
@@ -26,15 +26,7 @@ index 96abaa6e76e73d8896c31063a532b07a164ac9d0..de65469abaf8522b57733e6b5f738234
    params.poll_interval = sync_prefs_.GetPollInterval();
    if (params.poll_interval.is_zero()) {
      params.poll_interval =
-@@ -554,6 +557,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
-   }
- 
-   if (!IsLocalSyncEnabled()) {
-+    BRAVE_START_UP_SLOW_ENGINE_COMPONENTS
-     auth_manager_->ConnectionOpened();
-   }
- 
-@@ -674,6 +678,7 @@ void ProfileSyncService::StopImpl(SyncStopDataFate data_fate) {
+@@ -674,6 +677,7 @@ void ProfileSyncService::StopImpl(SyncStopDataFate data_fate) {
        // Note: We do this after shutting down, so that notifications about the
        // changed pref values don't mess up our state.
        sync_prefs_.ClearPreferences();
@@ -42,7 +34,7 @@ index 96abaa6e76e73d8896c31063a532b07a164ac9d0..de65469abaf8522b57733e6b5f738234
        break;
    }
  }
-@@ -928,6 +933,7 @@ void ProfileSyncService::OnEngineInitialized(
+@@ -928,6 +932,7 @@ void ProfileSyncService::OnEngineInitialized(
            engine_.get(), this);
  
    crypto_.SetSyncEngine(GetAuthenticatedAccountInfo(), engine_.get());
@@ -50,7 +42,7 @@ index 96abaa6e76e73d8896c31063a532b07a164ac9d0..de65469abaf8522b57733e6b5f738234
  
    // Auto-start means IsFirstSetupComplete gets set automatically.
    if (start_behavior_ == AUTO_START &&
-@@ -953,7 +959,7 @@ void ProfileSyncService::OnEngineInitialized(
+@@ -953,7 +958,7 @@ void ProfileSyncService::OnEngineInitialized(
                                  GoogleServiceAuthError::AuthErrorNone());
      }
    }
@@ -59,11 +51,3 @@ index 96abaa6e76e73d8896c31063a532b07a164ac9d0..de65469abaf8522b57733e6b5f738234
    NotifyObservers();
  }
  
-@@ -1228,6 +1234,7 @@ void ProfileSyncService::TriggerRefresh(const ModelTypeSet& types) {
- }
- 
- bool ProfileSyncService::IsSignedIn() const {
-+  BRAVE_IS_SIGNED_IN
-   // Sync is logged in if there is a non-empty account id.
-   return !GetAuthenticatedAccountInfo().account_id.empty();
- }

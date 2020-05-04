@@ -9,10 +9,6 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
   sync_prefs_.SetPollInterval(  \
       base::TimeDelta::FromSeconds(syncer::kBraveDefaultPollIntervalSeconds));
 
-#define BRAVE_IS_SIGNED_IN                                            \
-  brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService()); \
-  return brave_sync_prefs.IsSyncEnabled();
-
 #define BRAVE_PROFILE_SYNC_SERVICE                                         \
   brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService()); \
   brave_sync_prefs_change_registrar_.Add(                                  \
@@ -24,14 +20,12 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
                                             sync_service_url_);            \
   else                                                                     \
     auth_manager_->SetAccessTokenFetcherForTest(                           \
-        std::move(init_params.access_token_fetcher_for_test));
+        std::move(init_params.access_token_fetcher_for_test));             \
+  brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService());      \
+  auth_manager_->DeriveSigningKeys(brave_sync_prefs.GetSeed());
 
 #define BRAVE_D_PROFILE_SYNC_SERVICE \
   brave_sync_prefs_change_registrar_.RemoveAll();
-
-#define BRAVE_START_UP_SLOW_ENGINE_COMPONENTS                         \
-  brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService()); \
-  auth_manager_->DeriveSigningKeys(brave_sync_prefs.GetSeed());
 
 #define BRAVE_ON_ENGINE_INITIALIZED                                   \
   brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService()); \
@@ -47,14 +41,14 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
     }                                                                 \
   }
 
-#define BRAVE_STOP_IMPL auth_manager_->ResetKeys();
+#define BRAVE_STOP_IMPL \
+  if (IsSignedIn())     \
+    auth_manager_->ResetKeys();
 
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
 #undef BRAVE_SET_POLL_INTERVAL
-#undef BRAVE_IS_SIGNED_IN
 #undef BRAVE_PROFILE_SYNC_SERVICE
 #undef BRAVE_D_PROFILE_SYNC_SERVICE
-#undef BRAVE_START_UP_SLOW_ENGINE_COMPONENTS
 #undef BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
 #undef BRAVE_ON_ENGINE_INITIALIZED
 #undef BRAVE_STOP_IMPL
