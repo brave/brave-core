@@ -81,5 +81,5 @@
     <color name="shield_toggle_bg_color">#F8F9FA</color>
     <color name="shield_secondary_color">#868e96</color>
     <color name="shield_divider_color">#c8c7cc</color>
-    <color name="shield_option_text_color">#777777</color
+    <color name="shield_option_text_color">#777777</color>
 </resources>
