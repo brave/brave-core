@@ -34,12 +34,10 @@ const char kNotificationTargetUrlKey[] = "url";
 const char kNotificationGeoTargetKey[] = "geo_target";
 
 AdNotifications::AdNotifications(
-    AdsImpl* ads,
-    AdsClient* ads_client)
+    AdsImpl* ads)
     : is_initialized_(false),
-      ads_(ads),
-      ads_client_(ads_client) {
-  (void)ads_;
+      ads_(ads) {
+  DCHECK(ads_);
 }
 
 AdNotifications::~AdNotifications() = default;
@@ -75,7 +73,8 @@ void AdNotifications::PushBack(
   DCHECK(is_initialized_);
 
   ad_notifications_.push_back(info);
-  ads_client_->ShowNotification(std::make_unique<AdNotificationInfo>(info));
+  ads_->get_ads_client()->ShowNotification(
+      std::make_unique<AdNotificationInfo>(info));
 
   SaveState();
 }
@@ -84,7 +83,7 @@ void AdNotifications::PopFront(
     const bool should_dismiss) {
   if (!ad_notifications_.empty()) {
     if (should_dismiss) {
-      ads_client_->CloseNotification(ad_notifications_.front().uuid);
+      ads_->get_ads_client()->CloseNotification(ad_notifications_.front().uuid);
     }
     ad_notifications_.pop_front();
     SaveState();
@@ -106,7 +105,7 @@ bool AdNotifications::Remove(
   }
 
   if (should_dismiss) {
-    ads_client_->CloseNotification(uuid);
+    ads_->get_ads_client()->CloseNotification(uuid);
   }
   ad_notifications_.erase(iter);
 
@@ -121,7 +120,7 @@ void AdNotifications::RemoveAll(
 
   if (should_dismiss) {
     for (const auto& notification : ad_notifications_) {
-      ads_client_->CloseNotification(notification.uuid);
+      ads_->get_ads_client()->CloseNotification(notification.uuid);
     }
   }
   ad_notifications_.clear();
@@ -308,7 +307,7 @@ void AdNotifications::SaveState() {
 
   std::string json = ToJson();
   auto callback = std::bind(&AdNotifications::OnStateSaved, this, _1);
-  ads_client_->Save(kNotificationsStateName, json, callback);
+  ads_->get_ads_client()->Save(kNotificationsStateName, json, callback);
 }
 
 void AdNotifications::OnStateSaved(
@@ -325,7 +324,7 @@ void AdNotifications::LoadState() {
   BLOG(3, "Loading ad notifications state");
 
   auto callback = std::bind(&AdNotifications::OnStateLoaded, this, _1, _2);
-  ads_client_->Load(kNotificationsStateName, callback);
+  ads_->get_ads_client()->Load(kNotificationsStateName, callback);
 }
 
 void AdNotifications::OnStateLoaded(

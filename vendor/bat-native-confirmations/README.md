@@ -36,5 +36,5 @@ Use shorter timers to help with testing token redemption as defined by
 
 ## Unit Tests
 ```
-npm run test -- brave_unit_tests --filter=Confirmations*
+npm run test -- brave_unit_tests --filter=BatConfirmations*
 ```

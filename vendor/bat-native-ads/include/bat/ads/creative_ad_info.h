@@ -25,12 +25,15 @@ struct CreativeAdInfo {
   unsigned int daily_cap = 0;
   std::string advertiser_id;
   unsigned int priority = 0;
+  bool conversion = false;
   unsigned int per_day = 0;
   unsigned int total_max = 0;
   std::string category;
   std::vector<std::string> geo_targets;
   std::string target_url;
 };
+
+using CreativeAdList = std::vector<CreativeAdInfo>;
 
 }  // namespace ads
 

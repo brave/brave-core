@@ -130,7 +130,7 @@ Result ClientState::FromJson(
   if (client.HasMember("pageProbabilitiesHistory")) {
     for (const auto& page_probabilities :
         client["pageProbabilitiesHistory"].GetArray()) {
-      PageProbabilitiesMap new_page_probabilities;
+      classification::PageProbabilitiesMap new_page_probabilities;
 
       for (const auto& page_probability :
           page_probabilities["pageProbabilities"].GetArray()) {

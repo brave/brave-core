@@ -12,11 +12,9 @@ namespace confirmations {
 
 RedeemTokenMock::RedeemTokenMock(
     ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_tokens,
     UnblindedTokens* unblinded_payment_tokens)
-    : RedeemToken(confirmations, confirmations_client, unblinded_tokens,
-        unblinded_payment_tokens) {
+    : RedeemToken(confirmations, unblinded_tokens, unblinded_payment_tokens) {
 }
 
 RedeemTokenMock::~RedeemTokenMock() = default;

@@ -9,7 +9,7 @@
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/privacy_utils.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/request_signed_tokens_request.h"
@@ -32,10 +32,8 @@ namespace confirmations {
 
 RefillTokens::RefillTokens(
     ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_tokens) :
     confirmations_(confirmations),
-    confirmations_client_(confirmations_client),
     unblinded_tokens_(unblinded_tokens) {
 }
 
@@ -93,8 +91,8 @@ void RefillTokens::RequestSignedTokens() {
       this, _1);
 
   BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
-  confirmations_client_->LoadURL(url, headers, body, content_type, method,
-      callback);
+  confirmations_->get_client()->LoadURL(url, headers, body, content_type,
+      method, callback);
 }
 
 void RefillTokens::OnRequestSignedTokens(const UrlResponse& url_response) {
@@ -142,7 +140,7 @@ void RefillTokens::GetSignedTokens() {
   auto callback = std::bind(&RefillTokens::OnGetSignedTokens, this, _1);
 
   BLOG(5, UrlRequestToString(url, {}, "", "", method));
-  confirmations_client_->LoadURL(url, {}, "", "", method, callback);
+  confirmations_->get_client()->LoadURL(url, {}, "", "", method, callback);
 }
 
 void RefillTokens::OnGetSignedTokens(
@@ -311,10 +309,10 @@ int RefillTokens::CalculateAmountOfTokensToRefill() const {
 }
 
 void RefillTokens::GenerateAndBlindTokens(const int count) {
-  tokens_ = helper::Security::GenerateTokens(count);
+  tokens_ = privacy::GenerateTokens(count);
   BLOG(1, "Generated " << tokens_.size() << " tokens");
 
-  blinded_tokens_ = helper::Security::BlindTokens(tokens_);
+  blinded_tokens_ = privacy::BlindTokens(tokens_);
   BLOG(1, "Blinded " << blinded_tokens_.size() << " tokens");
 }
 

@@ -27,10 +27,10 @@ struct AdPreferences {
       const std::string& json,
       std::string* error_description = nullptr);
 
-  FilteredAdList filtered_ads;
-  FilteredCategoryList filtered_categories;
-  SavedAdList saved_ads;
-  FlaggedAdList flagged_ads;
+  FilteredAdsList filtered_ads;
+  FilteredCategoriesList filtered_categories;
+  SavedAdsList saved_ads;
+  FlaggedAdsList flagged_ads;
 };
 
 }  // namespace ads

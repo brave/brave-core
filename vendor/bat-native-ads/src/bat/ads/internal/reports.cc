@@ -6,6 +6,7 @@
 #include "bat/ads/internal/reports.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/classification/classification_util.h"
 #include "bat/ads/internal/search_providers.h"
 #include "bat/ads/ad_notification_info.h"
 
@@ -87,8 +88,7 @@ std::string Reports::GenerateAdNotificationEventReport(
 
   writer.String("classifications");
   writer.StartArray();
-  auto classifications =
-      helper::Classification::GetClassifications(info.category);
+  auto classifications = classification::SplitCategory(info.category);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -172,8 +172,7 @@ std::string Reports::GenerateLoadEventReport(
 
   writer.String("tabClassification");
   writer.StartArray();
-  auto classifications =
-      helper::Classification::GetClassifications(info.tab_classification);
+  auto classifications = classification::SplitCategory(info.tab_classification);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -186,7 +185,8 @@ std::string Reports::GenerateLoadEventReport(
     writer.String("pageProbabilities");
     writer.StartArray();
 
-    const PageProbabilitiesMap page_probabilities = iter->second;
+    const classification::PageProbabilitiesMap page_probabilities =
+        iter->second;
     for (const auto& page_probability : page_probabilities) {
       writer.StartObject();
 

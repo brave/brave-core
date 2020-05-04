@@ -15,7 +15,7 @@
 #include "bat/confirmations/wallet_info.h"
 #include "bat/confirmations/internal/retry_timer.h"
 
-#include "wrapper.hpp"
+#include "wrapper.hpp"  // NOLINT
 
 namespace confirmations {
 
@@ -29,7 +29,6 @@ class RefillTokens {
  public:
   RefillTokens(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
       UnblindedTokens* unblinded_tokens);
 
   ~RefillTokens();
@@ -67,7 +66,6 @@ class RefillTokens {
   void GenerateAndBlindTokens(const int count);
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
-  ConfirmationsClient* confirmations_client_;  // NOT OWNED
   UnblindedTokens* unblinded_tokens_;  // NOT OWNED
 };
 

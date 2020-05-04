@@ -1,52 +1,61 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"  // NOLINT
+
+#include <stdint.h>
+
 #include <memory>
+#include <string>
 #include <vector>
 
+#include "base/test/task_environment.h"
+#include "base/time/time.h"
+#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#include "bat/ads/internal/frequency_capping/exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
-
-#include "bat/ads/internal/client_mock.h"
+#include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/creative_ad_notification_info.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_unittest_utils.h"
+#include "bat/ads/internal/ads_unittest_utils.h"
 
-// npm run test -- brave_unit_tests --filter=Ads*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
-using std::placeholders::_1;
-using ::testing::_;
-using ::testing::Invoke;
+using ::testing::NiceMock;
+using ::testing::Return;
+
+namespace ads {
 
 namespace {
 
-const std::vector<std::string> kTestCampaignIds = {
+const std::vector<std::string> kCampaignIds = {
   "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
   "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
 };
 
-}  // namespace
-
-namespace ads {
-
 const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
     base::Time::kHoursPerDay;
 
-class BraveAdsDailyCapFrequencyCapTest : public ::testing::Test {
+}  // namespace
+
+class BatAdsDailyCapFrequencyCapTest : public ::testing::Test {
  protected:
-  BraveAdsDailyCapFrequencyCapTest() :
-      mock_ads_client_(std::make_unique<MockAdsClient>()),
-      ads_(std::make_unique<AdsImpl>(mock_ads_client_.get())) {
+  BatAdsDailyCapFrequencyCapTest()
+      : ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
+        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
+        locale_helper_mock_(std::make_unique<NiceMock<
+            brave_l10n::LocaleHelperMock>>()),
+        frequency_cap_(std::make_unique<DailyCapFrequencyCap>(ads_.get())) {
     // You can do set-up work for each test here
+
+    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
+        locale_helper_mock_.get());
   }
 
-  ~BraveAdsDailyCapFrequencyCapTest() override {
+  ~BatAdsDailyCapFrequencyCapTest() override {
     // You can do clean-up work that doesn't throw exceptions here
   }
 
@@ -57,19 +66,18 @@ class BraveAdsDailyCapFrequencyCapTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
-    auto callback = std::bind(
-        &BraveAdsDailyCapFrequencyCapTest::OnAdsImplInitialize, this, _1);
-    ads_->Initialize(callback);
+    ON_CALL(*ads_client_mock_, IsEnabled())
+        .WillByDefault(Return(true));
 
-    client_mock_ = std::make_unique<ClientMock>(ads_.get(),
-        mock_ads_client_.get());
-    frequency_capping_ = std::make_unique<FrequencyCapping>(client_mock_.get());
-    exclusion_rule_ = std::make_unique<DailyCapFrequencyCap>
-        (frequency_capping_.get());
-  }
+    ON_CALL(*locale_helper_mock_, GetLocale())
+        .WillByDefault(Return("en-US"));
 
-  void OnAdsImplInitialize(const Result result) {
-    EXPECT_EQ(Result::SUCCESS, result);
+    MockLoad(ads_client_mock_.get());
+    MockLoadUserModelForLanguage(ads_client_mock_.get());
+    MockLoadJsonSchema(ads_client_mock_.get());
+    MockSave(ads_client_mock_.get());
+
+    Initialize(ads_.get());
   }
 
   void TearDown() override {
@@ -77,133 +85,134 @@ class BraveAdsDailyCapFrequencyCapTest : public ::testing::Test {
     // destructor)
   }
 
-  std::unique_ptr<MockAdsClient> mock_ads_client_;
-  std::unique_ptr<AdsImpl> ads_;
+  // Objects declared here can be used by all tests in the test case
 
-  std::unique_ptr<ClientMock> client_mock_;
-  std::unique_ptr<FrequencyCapping> frequency_capping_;
-  std::unique_ptr<DailyCapFrequencyCap> exclusion_rule_;
-  CreativeAdNotificationInfo ad_notification_info_;
+  base::test::TaskEnvironment task_environment_;
+
+  std::unique_ptr<AdsClientMock> ads_client_mock_;
+  std::unique_ptr<AdsImpl> ads_;
+  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<DailyCapFrequencyCap> frequency_cap_;
 };
 
-TEST_F(BraveAdsDailyCapFrequencyCapTest, AdAllowedWhenNoAds) {
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  ad_notification_info_.campaign_id = kTestCampaignIds.at(0);
-  ad_notification_info_.daily_cap = 2;
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = 2;
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BraveAdsDailyCapFrequencyCapTest, AdAllowedWithAds) {
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    AllowAdIfDoesNotExceedCap) {
   // Arrange
-  ad_notification_info_.campaign_id = kTestCampaignIds[0];
-  ad_notification_info_.daily_cap = 2;
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = 2;
 
-  client_mock_->GeneratePastCampaignHistoryFromNow(
-      ad_notification_info_.campaign_id, 0, 1);
+  GeneratePastCampaignHistoryFromNow(ads_->get_client(), ad.campaign_id, 0, 1);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BraveAdsDailyCapFrequencyCapTest, AdAllowedWithAdsWithinTheDay) {
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
-  ad_notification_info_.campaign_id = kTestCampaignIds[0];
-  ad_notification_info_.daily_cap = 2;
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(1);
+  ad.daily_cap = 1;
+
+  GeneratePastCampaignHistoryFromNow(ads_->get_client(), kCampaignIds.at(0),
+      0, 2);
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    AllowAdIfDoesNotExceedCapWithin1Day) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = 2;
 
   // 23hrs 59m 59s ago
-  client_mock_->GeneratePastCampaignHistoryFromNow(
-      ad_notification_info_.campaign_id, kSecondsPerDay - 1, 1);
+  GeneratePastCampaignHistoryFromNow(ads_->get_client(), ad.campaign_id,
+      kSecondsPerDay - 1, 1);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BraveAdsDailyCapFrequencyCapTest, AdAllowedWithAdsOverTheDay) {
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  ad_notification_info_.campaign_id = kTestCampaignIds[0];
-  ad_notification_info_.daily_cap = 2;
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = 2;
 
   // 24hs ago
-  client_mock_->GeneratePastCampaignHistoryFromNow(
-      ad_notification_info_.campaign_id, kSecondsPerDay, 1);
+  GeneratePastCampaignHistoryFromNow(ads_->get_client(), ad.campaign_id,
+      kSecondsPerDay, 1);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BraveAdsDailyCapFrequencyCapTest,
-    AdExcludedWithMatchingCampaignAds) {
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    DoNotAllowAdIfExceedsCap) {
   // Arrange
-  ad_notification_info_.campaign_id = kTestCampaignIds[0];
-  ad_notification_info_.daily_cap = 2;
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = 2;
 
-  client_mock_->GeneratePastCampaignHistoryFromNow(
-    ad_notification_info_.campaign_id, 0, 2);
+  GeneratePastCampaignHistoryFromNow(ads_->get_client(), ad.campaign_id, 0, 2);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_TRUE(is_ad_excluded);
-  EXPECT_EQ(exclusion_rule_->GetLastMessage(), "campaignId 60267cee-d5bb-4a0d-baaf-91cd7f18e07e has exceeded the frequency capping for dailyCap");  // NOLINT
+  EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BraveAdsDailyCapFrequencyCapTest,
-    AdNotExcludedWithNoMatchingCampaignAds) {
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+    DoNotAllowAdForIssue4207) {
   // Arrange
-  client_mock_->GeneratePastCampaignHistoryFromNow(
-    kTestCampaignIds.at(0), 0, 2);
+  const uint64_t ads_per_day = 20;
+  const uint64_t ads_per_hour = 5;
+  const uint64_t ad_interval = base::Time::kSecondsPerHour / ads_per_hour;
 
-  ad_notification_info_.campaign_id = kTestCampaignIds[1];
-  ad_notification_info_.daily_cap = 1;
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = ads_per_day;
+
+  GeneratePastCampaignHistoryFromNow(ads_->get_client(), ad.campaign_id,
+      ad_interval, ads_per_day);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
-}
-
-TEST_F(BraveAdsDailyCapFrequencyCapTest, AdExcludedForIssue4207) {
-  // Arrange
-  uint64_t ads_per_day = 20;
-
-  ad_notification_info_.campaign_id = kTestCampaignIds[0];
-  ad_notification_info_.daily_cap = ads_per_day;
-
-  uint64_t ads_per_hour = 5;
-  uint64_t ad_interval = base::Time::kSecondsPerHour / ads_per_hour;
-
-  client_mock_->GeneratePastCampaignHistoryFromNow(
-      ad_notification_info_.campaign_id, ad_interval, ads_per_day);
-
-  // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
-
-  // Assert
-  EXPECT_TRUE(is_ad_excluded);
-  EXPECT_EQ(exclusion_rule_->GetLastMessage(), "campaignId 60267cee-d5bb-4a0d-baaf-91cd7f18e07e has exceeded the frequency capping for dailyCap");  // NOLINT
+  EXPECT_TRUE(should_exclude);
 }
 
 }  // namespace ads

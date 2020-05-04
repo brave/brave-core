@@ -25,8 +25,8 @@ namespace brave_ads {
 
 namespace {
 
-const int kCurrentVersionNumber = 6;
-const int kCompatibleVersionNumber = 6;
+const int kCurrentVersionNumber = 7;
+const int kCompatibleVersionNumber = 7;
 
 }  // namespace
 
@@ -168,6 +168,7 @@ bool BundleStateDatabase::CreateCreativeAdNotificationsTable() {
           "daily_cap INTEGER DEFAULT 0 NOT NULL, "
           "advertiser_id LONGVARCHAR, "
           "priority INTEGER DEFAULT 0 NOT NULL, "
+          "conversion INTEGER DEFAULT 0 NOT NULL, "
           "per_day INTEGER DEFAULT 0 NOT NULL, "
           "total_max INTEGER DEFAULT 0 NOT NULL, "
           "PRIMARY KEY(region, uuid))",
@@ -211,10 +212,11 @@ bool BundleStateDatabase::InsertOrUpdateCreativeAdNotification(
             "daily_cap, "
             "advertiser_id, "
             "priority, "
+            "conversion, "
             "per_day, "
             "total_max, "
             "region) VALUES (%s)",
-      CreateBindingParameterPlaceholders(14).c_str());
+      CreateBindingParameterPlaceholders(15).c_str());
 
     sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
@@ -245,9 +247,10 @@ bool BundleStateDatabase::InsertOrUpdateCreativeAdNotification(
     statement.BindInt64(8, info.daily_cap);
     statement.BindString(9, info.advertiser_id);
     statement.BindInt64(10, info.priority);
-    statement.BindInt64(11, info.per_day);
-    statement.BindInt64(12, info.total_max);
-    statement.BindString(13, geo_target);
+    statement.BindBool(11, info.conversion);
+    statement.BindInt64(12, info.per_day);
+    statement.BindInt64(13, info.total_max);
+    statement.BindString(14, geo_target);
 
     if (!statement.Run()) {
       return false;
@@ -469,6 +472,7 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
           "ai.daily_cap, "
           "ai.advertiser_id, "
           "ai.priority, "
+          "ai.conversion, "
           "ai.per_day, "
           "ai.total_max, "
           "aic.category_name "
@@ -502,9 +506,10 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
     info.daily_cap = statement.ColumnInt(9);
     info.advertiser_id = statement.ColumnString(10);
     info.priority = statement.ColumnInt(11);
-    info.per_day = statement.ColumnInt(12);
-    info.total_max = statement.ColumnInt(13);
-    info.category = statement.ColumnString(14);
+    info.conversion = statement.ColumnBool(12);
+    info.per_day = statement.ColumnInt(13);
+    info.total_max = statement.ColumnInt(14);
+    info.category = statement.ColumnString(15);
     ads->emplace_back(info);
   }
 
@@ -642,6 +647,11 @@ bool BundleStateDatabase::Migrate() {
         break;
       }
 
+      case 6: {
+        success = MigrateV6toV7();
+        break;
+      }
+
       default: {
         NOTREACHED();
         break;
@@ -774,6 +784,35 @@ bool BundleStateDatabase::MigrateV5toV6() {
           "daily_cap INTEGER DEFAULT 0 NOT NULL, "
           "advertiser_id LONGVARCHAR, "
           "priority INTEGER DEFAULT 0 NOT NULL, "
+          "per_day INTEGER DEFAULT 0 NOT NULL, "
+          "total_max INTEGER DEFAULT 0 NOT NULL, "
+          "PRIMARY KEY(region, uuid))";
+
+  return GetDB().Execute(create_ad_info_table_sql.c_str());
+}
+
+bool BundleStateDatabase::MigrateV6toV7() {
+  const std::string drop_ad_info_table_sql =
+      "DROP TABLE IF EXISTS ad_info";
+  if (!GetDB().Execute(drop_ad_info_table_sql.c_str())) {
+    return false;
+  }
+
+  const std::string create_ad_info_table_sql =
+      "CREATE TABLE ad_info "
+          "(creative_set_id LONGVARCHAR, "
+          "advertiser LONGVARCHAR, "
+          "notification_text TEXT, "
+          "notification_url LONGVARCHAR, "
+          "start_timestamp TIMESTAMP, "
+          "end_timestamp TIMESTAMP, "
+          "uuid LONGVARCHAR, "
+          "region VARCHAR, "
+          "campaign_id LONGVARCHAR, "
+          "daily_cap INTEGER DEFAULT 0 NOT NULL, "
+          "advertiser_id LONGVARCHAR, "
+          "priority INTEGER DEFAULT 0 NOT NULL, "
+          "conversion INTEGER DEFAULT 0 NOT NULL, "
           "per_day INTEGER DEFAULT 0 NOT NULL, "
           "total_max INTEGER DEFAULT 0 NOT NULL, "
           "PRIMARY KEY(region, uuid))";

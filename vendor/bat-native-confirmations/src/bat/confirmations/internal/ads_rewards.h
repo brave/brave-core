@@ -25,8 +25,7 @@ class ConfirmationsImpl;
 class AdsRewards {
  public:
   AdsRewards(
-      ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client);
+      ConfirmationsImpl* confirmations);
 
   ~AdsRewards();
 
@@ -59,7 +58,6 @@ class AdsRewards {
   std::unique_ptr<AdGrants> ad_grants_;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
-  ConfirmationsClient* confirmations_client_;  // NOT OWNED
 };
 
 }  // namespace confirmations

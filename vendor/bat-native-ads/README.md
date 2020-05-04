@@ -37,5 +37,5 @@ minutes instead of 2 hours as defined by `kDebugCatalogPing` in
 ## Unit Tests
 
 ```
-npm run test -- brave_unit_tests --filter=Ads*
+npm run test -- brave_unit_tests --filter=BatAds*
 ```

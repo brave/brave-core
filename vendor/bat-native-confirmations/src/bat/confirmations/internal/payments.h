@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/internal/payment_info.h"
 
 #include "base/time/time.h"
@@ -22,9 +21,7 @@ class ConfirmationsImpl;
 
 class Payments {
  public:
-  Payments(
-      ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client);
+  Payments();
 
   ~Payments();
 
@@ -63,9 +60,6 @@ class Payments {
   std::string GetFormattedTransactionMonth(
       const int year,
       const int month) const;
-
-  ConfirmationsImpl* confirmations_;  // NOT OWNED
-  ConfirmationsClient* confirmations_client_;  // NOT OWNED
 };
 
 }  // namespace confirmations

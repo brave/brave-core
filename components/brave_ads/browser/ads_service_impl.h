@@ -361,10 +361,10 @@ class AdsServiceImpl : public AdsService,
   void OnPrefsChanged(
       const std::string& pref);
 
+  std::string GetLocale() const;
+
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
-
-  std::string GetLocale() const;
 
   bool connected();
 

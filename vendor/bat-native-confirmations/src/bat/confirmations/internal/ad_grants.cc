@@ -5,26 +5,20 @@
 
 #include "bat/confirmations/internal/ad_grants.h"
 #include "bat/confirmations/internal/logging.h"
-#include "bat/confirmations/internal/confirmations_impl.h"
 
 #include "base/json/json_reader.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace confirmations {
 
-AdGrants::AdGrants(
-    ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client) :
-    balance_(0.0),
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client) {
-  (void)confirmations_;
-  (void)confirmations_client_;
+AdGrants::AdGrants()
+    : balance_(0.0) {
 }
 
 AdGrants::~AdGrants() = default;
 
-bool AdGrants::SetFromJson(const std::string& json) {
+bool AdGrants::SetFromJson(
+    const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
@@ -42,7 +36,8 @@ bool AdGrants::SetFromJson(const std::string& json) {
   return true;
 }
 
-bool AdGrants::SetFromDictionary(base::DictionaryValue* dictionary) {
+bool AdGrants::SetFromDictionary(
+    base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
   const base::Optional<double> balance =

@@ -28,7 +28,7 @@ struct FlaggedAd {
   std::string creative_set_id;
 };
 
-using FlaggedAdList = std::vector<FlaggedAd>;
+using FlaggedAdsList = std::vector<FlaggedAd>;
 
 }  // namespace ads
 

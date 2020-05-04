@@ -24,7 +24,6 @@ class PayoutTokens {
  public:
   PayoutTokens(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
       UnblindedTokens* unblinded_payment_tokens);
 
   ~PayoutTokens();
@@ -57,7 +56,6 @@ class PayoutTokens {
   void UpdateNextTokenRedemptionDate();
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
-  ConfirmationsClient* confirmations_client_;  // NOT OWNED
   UnblindedTokens* unblinded_payment_tokens_;  // NOT OWNED
 };
 

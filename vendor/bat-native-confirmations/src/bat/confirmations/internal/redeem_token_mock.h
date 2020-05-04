@@ -8,8 +8,6 @@
 
 #include "bat/confirmations/internal/redeem_token.h"
 
-#include "bat/confirmations/confirmations_client.h"
-
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace confirmations {
@@ -22,7 +20,6 @@ class RedeemTokenMock : public RedeemToken {
  public:
   RedeemTokenMock(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
       UnblindedTokens* unblinded_tokens,
       UnblindedTokens* unblinded_payment_tokens);
 

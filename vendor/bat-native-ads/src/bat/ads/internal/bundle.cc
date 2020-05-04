@@ -25,13 +25,11 @@ using std::placeholders::_1;
 namespace ads {
 
 Bundle::Bundle(
-    AdsImpl* ads,
-    AdsClient* ads_client)
+    AdsImpl* ads)
     : catalog_version_(0),
       catalog_ping_(0),
       catalog_last_updated_timestamp_in_seconds_(0),
-      ads_(ads),
-      ads_client_(ads_client) {
+      ads_(ads) {
 }
 
 Bundle::~Bundle() = default;
@@ -54,7 +52,7 @@ bool Bundle::UpdateFromCatalog(
   auto callback = std::bind(&Bundle::OnStateSaved,
       this, catalog_id_, catalog_version_, catalog_ping_,
           catalog_last_updated_timestamp_in_seconds_, _1);
-  ads_client_->SaveBundleState(std::move(bundle_state), callback);
+  ads_->get_ads_client()->SaveBundleState(std::move(bundle_state), callback);
 
   return true;
 }
@@ -66,7 +64,7 @@ void Bundle::Reset() {
       this, bundle_state->catalog_id, bundle_state->catalog_version,
           bundle_state->catalog_ping,
               bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
-  ads_client_->SaveBundleState(std::move(bundle_state), callback);
+  ads_->get_ads_client()->SaveBundleState(std::move(bundle_state), callback);
 }
 
 std::string Bundle::GetCatalogId() const {
@@ -137,6 +135,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.daily_cap = campaign.daily_cap;
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
+        info.conversion =
+            creative_set.ad_conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
         info.geo_targets = regions;
@@ -224,7 +224,7 @@ bool Bundle::DoesOsSupportCreativeSet(
 
 std::string Bundle::GetClientOS() {
   ClientInfo client_info;
-  ads_client_->GetClientInfo(&client_info);
+  ads_->get_ads_client()->GetClientInfo(&client_info);
 
   switch (client_info.platform) {
     case UNKNOWN: {

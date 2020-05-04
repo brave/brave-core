@@ -10,8 +10,6 @@
 #include <string>
 #include <memory>
 
-#include "bat/ads/ads_client.h"
-
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/catalog.h"
 
@@ -22,7 +20,7 @@ struct BundleState;
 
 class Bundle {
  public:
-  Bundle(AdsImpl* ads, AdsClient* ads_client);
+  Bundle(AdsImpl* ads);
   ~Bundle();
 
   bool UpdateFromCatalog(const Catalog& catalog);
@@ -64,7 +62,6 @@ class Bundle {
   uint64_t catalog_last_updated_timestamp_in_seconds_;
 
   AdsImpl* ads_;  // NOT OWNED
-  AdsClient* ads_client_;  // NOT OWNED
 };
 
 }  // namespace ads

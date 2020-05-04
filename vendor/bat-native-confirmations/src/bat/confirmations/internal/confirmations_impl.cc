@@ -36,12 +36,12 @@ ConfirmationsImpl::ConfirmationsImpl(
     unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
     estimated_pending_rewards_(0.0),
     next_payment_date_in_seconds_(0),
-    ads_rewards_(std::make_unique<AdsRewards>(this, confirmations_client)),
-    refill_tokens_(std::make_unique<RefillTokens>(
-        this, confirmations_client, unblinded_tokens_.get())),
-    redeem_token_(std::make_unique<RedeemToken>(this, confirmations_client,
-        unblinded_tokens_.get(), unblinded_payment_tokens_.get())),
-    payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
+    ads_rewards_(std::make_unique<AdsRewards>(this)),
+    refill_tokens_(std::make_unique<RefillTokens>(this,
+        unblinded_tokens_.get())),
+    redeem_token_(std::make_unique<RedeemToken>(this, unblinded_tokens_.get(),
+        unblinded_payment_tokens_.get())),
+    payout_tokens_(std::make_unique<PayoutTokens>(this,
         unblinded_payment_tokens_.get())),
     state_has_loaded_(false),
     confirmations_client_(confirmations_client) {

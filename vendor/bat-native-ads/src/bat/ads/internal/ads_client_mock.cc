@@ -7,8 +7,8 @@
 
 namespace ads {
 
-MockAdsClient::MockAdsClient() = default;
+AdsClientMock::AdsClientMock() = default;
 
-MockAdsClient::~MockAdsClient() = default;
+AdsClientMock::~AdsClientMock() = default;
 
 }  // namespace ads

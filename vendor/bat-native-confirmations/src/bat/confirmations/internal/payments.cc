@@ -8,7 +8,6 @@
 #include "bat/confirmations/internal/payments.h"
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/logging.h"
-#include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/time_util.h"
 
 #include "base/json/json_reader.h"
@@ -19,15 +18,7 @@
 
 namespace confirmations {
 
-Payments::Payments(
-    ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client) :
-    payments_({}),
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client) {
-  (void)confirmations_;
-  (void)confirmations_client_;
-}
+Payments::Payments() = default;
 
 Payments::~Payments() = default;
 

@@ -16,7 +16,7 @@
 #include "bat/confirmations/internal/fetch_payment_token_request.h"
 #include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/platform_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/privacy_utils.h"
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/time_util.h"
 #include "bat/confirmations/internal/token_info.h"
@@ -44,11 +44,9 @@ namespace confirmations {
 
 RedeemToken::RedeemToken(
     ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_tokens,
     UnblindedTokens* unblinded_payment_tokens)
     : confirmations_(confirmations),
-      confirmations_client_(confirmations_client),
       unblinded_tokens_(unblinded_tokens),
       unblinded_payment_tokens_(unblinded_payment_tokens) {
 }
@@ -140,7 +138,7 @@ void RedeemToken::CreateConfirmation(
       this, _1, confirmation);
 
   BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
-  confirmations_client_->LoadURL(url, headers, body, content_type,
+  confirmations_->get_client()->LoadURL(url, headers, body, content_type,
       method, callback);
 }
 
@@ -182,7 +180,7 @@ void RedeemToken::FetchPaymentToken(
       this, _1, confirmation);
 
   BLOG(5, UrlRequestToString(url, {}, "", "", method));
-  confirmations_client_->LoadURL(url, {}, "", "", method, callback);
+  confirmations_->get_client()->LoadURL(url, {}, "", "", method, callback);
 }
 
 void RedeemToken::OnFetchPaymentToken(
@@ -444,10 +442,10 @@ ConfirmationInfo RedeemToken::CreateConfirmationInfo(
   confirmation.type = confirmation_type;
   confirmation.token_info = token;
 
-  auto payment_tokens = helper::Security::GenerateTokens(1);
+  auto payment_tokens = privacy::GenerateTokens(1);
   confirmation.payment_token = payment_tokens.front();
 
-  auto blinded_payment_tokens = helper::Security::BlindTokens(payment_tokens);
+  auto blinded_payment_tokens = privacy::BlindTokens(payment_tokens);
   auto blinded_payment_token = blinded_payment_tokens.front();
   confirmation.blinded_payment_token = blinded_payment_token;
 

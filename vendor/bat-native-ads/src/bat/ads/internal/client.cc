@@ -7,7 +7,6 @@
 
 #include "bat/ads/ad_history.h"
 #include "bat/ads/purchase_intent_signal_history.h"
-#include "bat/ads/internal/classification_helper.h"
 #include "bat/ads/internal/filtered_ad.h"
 #include "bat/ads/internal/filtered_category.h"
 #include "bat/ads/internal/flagged_ad.h"
@@ -22,41 +21,51 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
+namespace ads {
+
 namespace {
 
-ads::FilteredAdList::iterator FindFilteredAd(
+FilteredAdsList::iterator FindFilteredAd(
     const std::string& creative_instance_id,
-    ads::FilteredAdList* filtered_ad) {
-  return std::find_if(filtered_ad->begin(), filtered_ad->end(),
-      [&creative_instance_id](const ads::FilteredAd& ad) {
+    FilteredAdsList* filtered_ads) {
+  return std::find_if(filtered_ads->begin(), filtered_ads->end(),
+      [&creative_instance_id](const FilteredAd& ad) {
     return ad.creative_instance_id == creative_instance_id;
   });
 }
 
-ads::FilteredCategoryList::iterator FindFilteredCategory(
+FilteredCategoriesList::iterator FindFilteredCategory(
     const std::string& name,
-    ads::FilteredCategoryList* filtered_category) {
-  return std::find_if(filtered_category->begin(), filtered_category->end(),
-      [&name](const ads::FilteredCategory& category) {
+    FilteredCategoriesList* filtered_categories) {
+  return std::find_if(filtered_categories->begin(), filtered_categories->end(),
+      [&name](const FilteredCategory& category) {
     return category.name == name;
   });
 }
 
 }  // namespace
 
-namespace ads {
-
 Client::Client(
-    AdsImpl* ads,
-    AdsClient* ads_client)
+    AdsImpl* ads)
     : is_initialized_(false),
       ads_(ads),
-      ads_client_(ads_client),
       client_state_(new ClientState()) {
   (void)ads_;
 }
 
 Client::~Client() = default;
+
+FilteredAdsList Client::get_filtered_ads() const {
+  return client_state_->ad_prefs.filtered_ads;
+}
+
+FilteredCategoriesList Client::get_filtered_categories() const {
+  return client_state_->ad_prefs.filtered_categories;
+}
+
+FlaggedAdsList Client::get_flagged_ads() const {
+  return client_state_->ad_prefs.flagged_ads;
+}
 
 void Client::Initialize(
     InitializeCallback callback) {
@@ -65,7 +74,7 @@ void Client::Initialize(
   LoadState();
 }
 
-void Client::AppendAdHistoryToAdsShownHistory(
+void Client::AppendAdHistoryToAdsHistory(
     const AdHistory& ad_history) {
   client_state_->ads_shown_history.push_front(ad_history);
 
@@ -77,7 +86,7 @@ void Client::AppendAdHistoryToAdsShownHistory(
   SaveState();
 }
 
-std::deque<AdHistory> Client::GetAdsShownHistory() const {
+const std::deque<AdHistory>& Client::GetAdsHistory() const {
   return client_state_->ads_shown_history;
 }
 
@@ -316,56 +325,6 @@ bool Client::ToggleFlagAd(
   return flagged_ad;
 }
 
-bool Client::IsFilteredCategory(
-    const std::string& category) const {
-  // If passed in category has a subcategory and the current filter
-  // does not, check if it's a child of the filter. Conversely, if the
-  // passed in category has no subcategory but the current filter
-  // does, it can't be a match at all so move on to the next
-  // filter. Otherwise, perform an exact match to determine whether or
-  // not to filter the category.
-  std::vector<std::string> category_classifications =
-      helper::Classification::GetClassifications(category);
-  for (const auto& filtered_category :
-       client_state_->ad_prefs.filtered_categories) {
-    std::vector<std::string> filtered_classifications =
-        helper::Classification::GetClassifications(filtered_category.name);
-    if (category_classifications.size() > 1 &&
-        filtered_classifications.size() == 1) {
-      if (category_classifications[0] == filtered_classifications[0]) {
-        return true;
-      }
-    } else if (category_classifications.size() == 1 &&
-               filtered_classifications.size() > 1) {
-      continue;
-    } else if (filtered_category.name == category) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-bool Client::IsFilteredAd(
-    const std::string& creative_set_id) const {
-  auto it = std::find_if(client_state_->ad_prefs.filtered_ads.begin(),
-      client_state_->ad_prefs.filtered_ads.end(),
-          [&creative_set_id](const FilteredAd& ad) {
-    return ad.creative_set_id == creative_set_id;
-  });
-  return it != client_state_->ad_prefs.filtered_ads.end();
-}
-
-bool Client::IsFlaggedAd(
-    const std::string& creative_set_id) const {
-  auto it = std::find_if(client_state_->ad_prefs.flagged_ads.begin(),
-                         client_state_->ad_prefs.flagged_ads.end(),
-                         [&creative_set_id](const FlaggedAd& ad) {
-                           return ad.creative_set_id == creative_set_id;
-                         });
-  return it != client_state_->ad_prefs.flagged_ads.end();
-}
-
 void Client::UpdateAdUUID() {
   if (!client_state_->ad_uuid.empty()) {
     return;
@@ -384,7 +343,7 @@ void Client::UpdateSeenAdNotification(
   SaveState();
 }
 
-std::map<std::string, uint64_t> Client::GetSeenAdNotifications() {
+const std::map<std::string, uint64_t>& Client::GetSeenAdNotifications() {
   return client_state_->seen_ad_notifications;
 }
 
@@ -411,7 +370,7 @@ void Client::UpdateSeenAdvertiser(
   SaveState();
 }
 
-std::map<std::string, uint64_t> Client::GetSeenAdvertisers() {
+const std::map<std::string, uint64_t>& Client::GetSeenAdvertisers() {
   return client_state_->seen_advertisers;
 }
 
@@ -471,12 +430,12 @@ void Client::SetUserModelLanguages(
   SaveState();
 }
 
-std::vector<std::string> Client::GetUserModelLanguages() {
+const std::vector<std::string>& Client::GetUserModelLanguages() {
   return client_state_->user_model_languages;
 }
 
 void Client::AppendPageProbabilitiesToHistory(
-    const PageProbabilitiesMap& page_probabilities) {
+    const classification::PageProbabilitiesMap& page_probabilities) {
   client_state_->page_probabilities_history.push_front(page_probabilities);
   if (client_state_->page_probabilities_history.size() >
       kMaximumPageProbabilityHistoryEntries) {
@@ -486,7 +445,8 @@ void Client::AppendPageProbabilitiesToHistory(
   SaveState();
 }
 
-PageProbabilitiesList Client::GetPageProbabilitiesHistory() {
+const classification::PageProbabilitiesList&
+Client::GetPageProbabilitiesHistory() {
   return client_state_->page_probabilities_history;
 }
 
@@ -504,7 +464,7 @@ void Client::AppendTimestampToCreativeSetHistory(
   SaveState();
 }
 
-std::map<std::string, std::deque<uint64_t>>
+const std::map<std::string, std::deque<uint64_t>>&
 Client::GetCreativeSetHistory() const {
   return client_state_->creative_set_history;
 }
@@ -528,7 +488,7 @@ void Client::AppendTimestampToAdConversionHistory(
   SaveState();
 }
 
-std::map<std::string, std::deque<uint64_t>>
+const std::map<std::string, std::deque<uint64_t>>&
 Client::GetAdConversionHistory() const {
   return client_state_->ad_conversion_history;
 }
@@ -547,7 +507,8 @@ void Client::AppendTimestampToCampaignHistory(
   SaveState();
 }
 
-std::map<std::string, std::deque<uint64_t>> Client::GetCampaignHistory() const {
+const std::map<std::string, std::deque<uint64_t>>&
+Client::GetCampaignHistory() const {
   return client_state_->campaign_history;
 }
 
@@ -581,7 +542,7 @@ void Client::SaveState() {
 
   auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnStateSaved, this, _1);
-  ads_client_->Save(_client_resource_name, json, callback);
+  ads_->get_ads_client()->Save(_client_resource_name, json, callback);
 }
 
 void Client::OnStateSaved(
@@ -599,7 +560,7 @@ void Client::LoadState() {
   BLOG(3, "Loading client state");
 
   auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
-  ads_client_->Load(_client_resource_name, callback);
+  ads_->get_ads_client()->Load(_client_resource_name, callback);
 }
 
 void Client::OnStateLoaded(

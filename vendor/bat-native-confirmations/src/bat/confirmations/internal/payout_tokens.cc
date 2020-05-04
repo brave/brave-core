@@ -23,10 +23,8 @@ namespace confirmations {
 
 PayoutTokens::PayoutTokens(
     ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_payment_tokens)
     : confirmations_(confirmations),
-      confirmations_client_(confirmations_client),
       unblinded_payment_tokens_(unblinded_payment_tokens) {
 }
 
@@ -89,8 +87,8 @@ void PayoutTokens::RedeemPaymentTokens() {
   auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens, this, _1);
 
   BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
-  confirmations_client_->LoadURL(url, headers, body, content_type, method,
-      callback);
+  confirmations_->get_client()->LoadURL(url, headers, body, content_type,
+      method, callback);
 }
 
 void PayoutTokens::OnRedeemPaymentTokens(

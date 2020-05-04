@@ -24,7 +24,6 @@ class RedeemToken {
  public:
   RedeemToken(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
       UnblindedTokens* unblinded_tokens,
       UnblindedTokens* unblinded_payment_tokens);
 
@@ -72,7 +71,6 @@ class RedeemToken {
      const ConfirmationInfo& confirmation) const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
-  ConfirmationsClient* confirmations_client_;  // NOT OWNED
   UnblindedTokens* unblinded_tokens_;  // NOT OWNED
   UnblindedTokens* unblinded_payment_tokens_;  // NOT OWNED
 };
