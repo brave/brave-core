@@ -9,8 +9,8 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.BraveHelper;
-import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 
 /**
  * Base class for ChromeLauncherActivity
@@ -22,7 +22,7 @@ public class BraveLauncherActivity extends Activity {
 
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
 
-        FeatureUtilities.isBottomToolbarEnabled();
+        BottomToolbarConfiguration.isBottomToolbarEnabled();
         BraveHelper.DisableFREDRP();
     }
 }

@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
@@ -113,7 +114,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           ImageButton forwardButton = findViewById(R.id.forward_button);
           if (forwardButton != null) {
               final Drawable forwardButtonDrawable = UiUtils.getTintedDrawable(
-                      getContext(), R.drawable.btn_right_tablet, R.color.standard_mode_tint);
+                      getContext(), R.drawable.btn_right_tablet, R.color.default_icon_color_tint_list);
               forwardButton.setImageDrawable(forwardButtonDrawable);
           }
       }
@@ -241,7 +242,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             public void onDidFinishNavigation(Tab tab, NavigationHandle navigation) {
                 if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
                         && !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrl());
+                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
                 }
             }
 
@@ -257,7 +258,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 if (getToolbarDataProvider().getTab() == tab &&
                     mBraveRewardsNativeWorker != null &&
                     !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrl());
+                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
                 }
             }
         };
@@ -275,13 +276,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               return;
           }
           try {
-              URL url = new URL(currentTab.getUrl());
+              URL url = new URL(currentTab.getUrlString());
               // Don't show shields popup if protocol is not valid for shields.
               if (!isValidProtocolForShields(url.getProtocol())) {
                   return;
               }
-              mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.getUrl(),
-                  url.getHost(), currentTab.getId(), ((TabImpl)currentTab).getProfile());
+              mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.getUrlString(),
+                  url.getHost(), currentTab.getId(), Profile.fromWebContents(((TabImpl)currentTab).getWebContents()));
           } catch (Exception e) {
               // Do nothing if url is invalid.
               // Just return w/o showing shields popup.
@@ -428,7 +429,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           assert false;
           return false;
       }
-      return BraveShieldsContentSettings.getShields(((TabImpl)tab).getProfile(), tab.getUrl(),
+      return BraveShieldsContentSettings.getShields(Profile.fromWebContents(((TabImpl)tab).getWebContents()), tab.getUrlString(),
           BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
   }
 

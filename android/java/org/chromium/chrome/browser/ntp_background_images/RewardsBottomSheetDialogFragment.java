@@ -24,9 +24,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.TextPaint;
 import android.content.res.Configuration;
 
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import android.view.ViewTreeObserver;
 
 import org.chromium.chrome.R;
@@ -117,7 +117,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
             @Override
             public void onGlobalLayout() {
                 BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
-                FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(android.support.design.R.id.design_bottom_sheet);
+                FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                 BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }

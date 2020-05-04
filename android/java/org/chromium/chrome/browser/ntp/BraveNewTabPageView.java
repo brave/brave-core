@@ -22,7 +22,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import android.view.MenuItem;
 

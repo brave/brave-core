@@ -6,7 +6,7 @@
 package org.chromium.chrome.browser.settings.themes;
 
 import android.content.Context;
-import android.support.v7.preference.PreferenceViewHolder;
+import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -16,6 +16,7 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.night_mode.settings.RadioButtonGroupThemePreference;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 

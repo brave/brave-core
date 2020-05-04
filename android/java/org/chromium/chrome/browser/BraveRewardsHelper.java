@@ -25,12 +25,14 @@ import android.view.View;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.favicon.IconType;
-import org.chromium.chrome.browser.favicon.LargeIconBridge;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.favicon.IconType;
+import org.chromium.chrome.browser.ui.favicon.LargeIconBridge;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.favicon.RoundedIconGenerator;
+import org.chromium.chrome.browser.ui.favicon.RoundedIconGenerator;
 import org.chromium.chrome.R;
+import org.chromium.url.GURL;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -61,7 +63,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
 
     public BraveRewardsHelper () {
         if (mLargeIconBridge == null) {
-            mLargeIconBridge = new LargeIconBridge(((TabImpl)currentActiveTab()).getProfile());
+            mLargeIconBridge = new LargeIconBridge(Profile.fromWebContents(((TabImpl)currentActiveTab()).getWebContents()));
         }
     }
 
@@ -94,7 +96,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         if (mFaviconUrl == null || mFaviconUrl.isEmpty() || mFaviconUrl.equals("clear")) {
             Tab tab  = currentActiveTab();
             if (tab != null) {
-                mFaviconUrl = tab.getUrl();
+                mFaviconUrl = tab.getUrlString();
             }
 
             mHandler.postDelayed(new Runnable() {
@@ -109,7 +111,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
 
         //get the icon
         if (mLargeIconBridge!= null && mCallback != null && !mFaviconUrl.isEmpty()) {
-            mLargeIconBridge.getLargeIconForUrl(mFaviconUrl,FAVICON_DESIRED_SIZE, this);
+            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl),FAVICON_DESIRED_SIZE, this);
         }
     }
 

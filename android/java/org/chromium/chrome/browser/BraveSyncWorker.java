@@ -2567,7 +2567,7 @@ public class BraveSyncWorker {
                                 mNewBookmarkModel.setBookmarkTitle(bookmarkId, mTitle);
                             }
                             if (!mUrl.isEmpty() && bookmarkItem.isUrlEditable()) {
-                                String fixedUrl = UrlFormatter.fixupUrl(mUrl);
+                                String fixedUrl = UrlFormatter.fixupUrl(mUrl).getSpec();
                                 if (null != fixedUrl && !fixedUrl.equals(bookmarkItem.getTitle())) {
                                     mNewBookmarkModel.setBookmarkUrl(bookmarkId, fixedUrl);
                                 }
