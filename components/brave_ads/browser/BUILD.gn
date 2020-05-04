@@ -20,6 +20,7 @@ source_set("browser") {
     "//brave/components/brave_ads/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/l10n/browser",
     "//components/dom_distiller/content/browser",
     "//components/dom_distiller/core",
     "//components/keyed_service/content",
@@ -44,8 +45,6 @@ source_set("browser") {
       "ads_service_impl.h",
       "background_helper.cc",
       "background_helper.h",
-      "locale_helper.cc",
-      "locale_helper.h",
       "bundle_state_database.cc",
       "bundle_state_database.h",
       "notification_helper.cc",
@@ -56,8 +55,6 @@ source_set("browser") {
       sources += [
         "background_helper_android.cc",
         "background_helper_android.h",
-        "locale_helper_android.cc",
-        "locale_helper_android.h",
         "notification_helper_android.cc",
         "notification_helper_android.h",
       ]
@@ -67,8 +64,6 @@ source_set("browser") {
       sources += [
         "background_helper_linux.cc",
         "background_helper_linux.h",
-        "locale_helper_linux.cc",
-        "locale_helper_linux.h",
         "notification_helper_linux.cc",
         "notification_helper_linux.h",
       ]
@@ -78,8 +73,6 @@ source_set("browser") {
       sources += [
         "background_helper_mac.h",
         "background_helper_mac.mm",
-        "locale_helper_mac.h",
-        "locale_helper_mac.mm",
         "notification_helper_mac.h",
         "notification_helper_mac.mm",
       ]
@@ -89,8 +82,6 @@ source_set("browser") {
       sources += [
         "background_helper_win.cc",
         "background_helper_win.h",
-        "locale_helper_win.cc",
-        "locale_helper_win.h",
         "notification_helper_win.cc",
         "notification_helper_win.h",
       ]

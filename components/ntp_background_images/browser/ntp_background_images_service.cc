@@ -17,10 +17,10 @@
 #include "base/task/post_task.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -181,9 +181,9 @@ void NTPBackgroundImagesService::CheckSIComponentUpdate(
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   const std::string locale =
-      brave_ads::LocaleHelper::GetInstance()->GetLocale();
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const auto& data = GetSponsoredImagesComponentData(
-      brave_ads::LocaleHelper::GetCountryCode(locale));
+      brave_l10n::LocaleHelper::GetCountryCode(locale));
   if (!data) {
     DVLOG(2) << __func__ << ": Not support NTP SI component for " << locale;
     return;

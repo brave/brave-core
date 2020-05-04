@@ -5,9 +5,9 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/browser/locale_helper_win.h"
+#include "brave/components/l10n/browser/locale_helper_win.h"
 
-namespace brave_ads {
+namespace brave_l10n {
 
 LocaleHelperWin::LocaleHelperWin() = default;
 
@@ -47,4 +47,4 @@ LocaleHelper* LocaleHelper::GetInstanceImpl() {
   return LocaleHelperWin::GetInstanceImpl();
 }
 
-}  // namespace brave_ads
+}  // namespace brave_l10n

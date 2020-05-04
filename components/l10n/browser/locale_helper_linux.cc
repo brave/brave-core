@@ -5,9 +5,9 @@
 
 #include <stdlib.h>
 
-#include "brave/components/brave_ads/browser/locale_helper_linux.h"
+#include "brave/components/l10n/browser/locale_helper_linux.h"
 
-namespace brave_ads {
+namespace brave_l10n {
 
 LocaleHelperLinux::LocaleHelperLinux() = default;
 
@@ -43,4 +43,4 @@ LocaleHelper* LocaleHelper::GetInstanceImpl() {
   return LocaleHelperLinux::GetInstanceImpl();
 }
 
-}  // namespace brave_ads
+}  // namespace brave_l10n

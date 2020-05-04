@@ -27,8 +27,8 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/browser/locale_helper_mock.h"
 #include "brave/components/brave_ads/browser/notification_helper_mock.h"
+#include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "chrome/browser/ui/browser.h"
@@ -347,9 +347,9 @@ class BraveAdsBrowserTest
   void MockLocaleHelper(
       const std::string& locale) {
     locale_helper_mock_ =
-        std::make_unique<NiceMock<brave_ads::LocaleHelperMock>>();
+        std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>();
 
-    brave_ads::LocaleHelper::GetInstance()->set_for_testing(
+    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
         locale_helper_mock_.get());
 
     ON_CALL(*locale_helper_mock_, GetLocale())
@@ -533,7 +533,7 @@ class BraveAdsBrowserTest
 
   brave_ads::AdsServiceImpl* ads_service_;
 
-  std::unique_ptr<brave_ads::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   const std::string newly_supported_locale_ = "en_053";
 
   std::unique_ptr<brave_ads::NotificationHelperMock> notification_helper_mock_;
