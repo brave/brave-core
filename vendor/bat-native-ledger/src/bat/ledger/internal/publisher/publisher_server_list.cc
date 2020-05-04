@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/request/request_publisher.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/option_keys.h"
@@ -20,6 +21,12 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+
+namespace {
+
+const int kHardLimit = 100;
+
+}  // namespace
 
 namespace braveledger_publisher {
 
@@ -34,19 +41,29 @@ PublisherServerList::~PublisherServerList() {
 void PublisherServerList::OnTimer(uint32_t timer_id) {
   if (timer_id == server_list_timer_id_) {
     server_list_timer_id_ = 0;
-    Download([](const ledger::Result _){});
+    Start([](const ledger::Result _){});
   }
 }
 
-void PublisherServerList::Download(
-    DownloadServerPublisherListCallback callback) {
+void PublisherServerList::Start(ledger::ResultCallback callback) {
+  if (in_progress_) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Publisher list in progress";
+    callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+
+  in_progress_ = true;
+  current_page_ = 1;
+
+  Download(callback);
+}
+
+void PublisherServerList::Download(ledger::ResultCallback callback) {
   std::vector<std::string> headers;
   headers.push_back("Accept-Encoding: gzip");
 
-  const std::string url = braveledger_request_util::BuildUrl(
-      GET_PUBLISHERS_LIST,
-      "",
-      braveledger_request_util::ServerTypes::PUBLISHER_DISTRO);
+  const std::string url =
+      braveledger_request_util::GetPublisherListUrl(current_page_);
 
   const ledger::LoadURLCallback download_callback = std::bind(
       &PublisherServerList::OnDownload,
@@ -69,12 +86,19 @@ void PublisherServerList::OnDownload(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    DownloadServerPublisherListCallback callback) {
+    ledger::ResultCallback callback) {
   ledger_->LogResponse(
       __func__,
       response_status_code,
       "Publisher list",
       headers);
+
+  // we iterated through all pages
+  if (response_status_code == net::HTTP_NO_CONTENT) {
+    in_progress_ = false;
+    OnParsePublisherList(ledger::Result::LEDGER_OK, callback);
+    return;
+  }
 
   if (response_status_code == net::HTTP_OK && !response.empty()) {
     const auto parse_callback =
@@ -90,15 +114,22 @@ void PublisherServerList::OnDownload(
 
 void PublisherServerList::OnParsePublisherList(
     const ledger::Result result,
-    DownloadServerPublisherListCallback callback) {
+    ledger::ResultCallback callback) {
+  if (result == ledger::Result::CONTINUE && current_page_ < kHardLimit) {
+    current_page_++;
+    Download(callback);
+    return;
+  }
+
   uint64_t new_time = 0ull;
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result != ledger::Result::LEDGER_ERROR) {
     ledger_->ContributeUnverifiedPublishers();
     new_time = braveledger_time_util::GetCurrentTimeStamp();
   }
 
   ledger_->SetUint64State(ledger::kStateServerPublisherListStamp, new_time);
 
+  in_progress_ = false;
   bool retry_after_error = result != ledger::Result::LEDGER_OK;
   SetTimer(retry_after_error);
 
@@ -153,7 +184,7 @@ uint64_t PublisherServerList::GetTimerTime(
       ? 0ull
       : now_seconds - last_download;
 
-  uint64_t interval =
+  const uint64_t interval =
       ledger_->GetUint64Option(ledger::kOptionPublisherListRefreshInterval);
 
   if (now_seconds == last_download) {
@@ -183,7 +214,7 @@ ledger::PublisherStatus PublisherServerList::ParsePublisherStatus(
 
 void PublisherServerList::ParsePublisherList(
     const std::string& data,
-    ParsePublisherListCallback callback) {
+    ledger::ResultCallback callback) {
   auto list_publisher =
       std::make_shared<std::vector<ledger::ServerPublisherPartial>>();
   auto list_banner = std::make_shared<std::vector<ledger::PublisherBanner>>();
@@ -234,18 +265,29 @@ void PublisherServerList::ParsePublisherList(
   }
 
   if (list_publisher->empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher list is empty";
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  auto clear_callback = std::bind(&PublisherServerList::SaveParsedData,
+  // we need to clear table when we process first page, but only once
+  if (current_page_ == 1) {
+    auto clear_callback = std::bind(&PublisherServerList::SaveParsedData,
       this,
       _1,
       list_publisher,
       list_banner,
       callback);
 
-  ledger_->ClearServerPublisherList(clear_callback);
+    ledger_->ClearServerPublisherList(clear_callback);
+    return;
+  }
+
+  SaveParsedData(
+      ledger::Result::LEDGER_OK,
+      list_publisher,
+      list_banner,
+      callback);
 }
 
 void PublisherServerList::ParsePublisherBanner(
@@ -299,91 +341,63 @@ void PublisherServerList::SaveParsedData(
     const ledger::Result result,
     const SharedServerPublisherPartial& list_publisher,
     const SharedPublisherBanner& list_banner,
-    ParsePublisherListCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "DB was not cleared";
     callback(result);
     return;
   }
 
-  if (list_publisher && !list_publisher->empty()) {
-    SavePublishers(list_publisher, list_banner, callback);
+  if (!list_publisher || list_publisher->empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher list is null";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  if (list_banner && !list_banner->empty()) {
-    SaveBanners(list_banner, callback);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK);
-}
-
-void PublisherServerList::SavePublishers(
-    const SharedServerPublisherPartial& list_publisher,
-    const SharedPublisherBanner& list_banner,
-    ParsePublisherListCallback callback) {
-  if (!list_publisher) {
-    callback(ledger::Result::LEDGER_OK);
-    return;
-  }
-
-  const int max_insert_records_ = 100000;
-
-  int32_t interval = max_insert_records_;
-  const auto list_size = list_publisher->size();
-  if (list_size < max_insert_records_) {
-    interval = list_size;
-  }
-
-  std::vector<ledger::ServerPublisherPartial> save_list(
-      list_publisher->begin(),
-      list_publisher->begin() + interval);
-  auto new_list_publisher =
-      std::make_shared<std::vector<ledger::ServerPublisherPartial>>(
-          list_publisher->begin() + interval,
-          list_publisher->end());
-
-  auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
+  auto save_callback = std::bind(&PublisherServerList::SaveBanners,
       this,
       _1,
-      new_list_publisher,
       list_banner,
       callback);
 
-  ledger_->InsertServerPublisherList(save_list, save_callback);
+  ledger_->InsertServerPublisherList(*list_publisher, save_callback);
 }
 
 void PublisherServerList::SaveBanners(
+    const ledger::Result result,
     const SharedPublisherBanner& list_banner,
-    ParsePublisherListCallback callback) {
-  if (!list_banner) {
-    callback(ledger::Result::LEDGER_OK);
+    ledger::ResultCallback callback) {
+  if (!list_banner || result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Publisher list was not saved";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  const int max_insert_records_ = 80000;
-
-  int32_t interval = max_insert_records_;
-  const auto list_size = list_banner->size();
-  if (list_size < max_insert_records_) {
-    interval = list_size;
+  if (list_banner->empty()) {
+    callback(ledger::Result::CONTINUE);
+    return;
   }
 
-  std::vector<ledger::PublisherBanner> save_list(
-      list_banner->begin(),
-      list_banner->begin() + interval);
-  auto new_list_banner = std::make_shared<std::vector<ledger::PublisherBanner>>(
-      list_banner->begin() + interval,
-      list_banner->end());
-
-  auto save_callback = std::bind(&PublisherServerList::SaveParsedData,
+  auto save_callback = std::bind(&PublisherServerList::BannerSaved,
       this,
       _1,
-      nullptr,
-      new_list_banner,
       callback);
 
-  ledger_->InsertPublisherBannerList(save_list, save_callback);
+  ledger_->InsertPublisherBannerList(*list_banner, save_callback);
+}
+
+void PublisherServerList::BannerSaved(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result == ledger::Result::LEDGER_OK) {
+    callback(ledger::Result::CONTINUE);
+    return;
+  }
+
+
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Banners were not saved";
+  callback(result);
 }
 
 void PublisherServerList::ClearTimer() {
