@@ -9,7 +9,6 @@
 #include <stdint.h>
 #include <string>
 #include <memory>
-#include <vector>
 
 #include "bat/ads/ad_content.h"
 #include "bat/ads/ads_client.h"
