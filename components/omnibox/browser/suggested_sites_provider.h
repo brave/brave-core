@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_PROVIDER_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_PROVIDER_H_
 
-#include <map>
+#include <vector>
 #include <string>
 
 #include "base/compiler_specific.h"
@@ -28,18 +28,18 @@ class SuggestedSitesProvider : public AutocompleteProvider {
 
  private:
   ~SuggestedSitesProvider() override;
-  static std::map<std::string, SuggestedSitesMatch> suggested_sites_;
+  static std::vector<SuggestedSitesMatch> suggested_sites_;
 
   static const int kRelevance;
 
-  void AddMatch(const base::string16& match_string,
-                const SuggestedSitesMatch& match,
+  void AddMatch(const SuggestedSitesMatch& match,
                 const ACMatchClassifications& styles);
 
   static ACMatchClassifications StylesForSingleMatch(
       const std::string &input_text,
       const std::string &site);
 
+  AutocompleteProviderClient* client_;
   DISALLOW_COPY_AND_ASSIGN(SuggestedSitesProvider);
 };
 

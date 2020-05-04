@@ -66,6 +66,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kTopSiteSuggestionsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kBraveSuggestedSiteSuggestionsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[brave_rewards::prefs::kHideBraveRewardsButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAskWidevineInstall] =
