@@ -47,14 +47,15 @@ public class BraveBrowsingModeBottomToolbarCoordinator
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
 
-            mBookmarkButtonListenerSupplierCallback = bookmarkButtonListener -> {
-                mBookmarkButton.setOnClickListener(bookmarkButtonListener);
-            };
-            // To avoid extensive patching we use shareButtonListenerSupplier for both
-            // share and bookmark buttons. Thus we can't use them both simultaneously.
-            mBookmarkButtonListenerSupplier = shareButtonListenerSupplier;
-            mBookmarkButton.setActivityTabProvider(mBraveTabProvider);
-            mBookmarkButtonListenerSupplier.addObserver(mBookmarkButtonListenerSupplierCallback);
+            // TODO(samartnik): add proper listener for bookmark button
+            // mBookmarkButtonListenerSupplierCallback = bookmarkButtonListener -> {
+            //     mBookmarkButton.setOnClickListener(bookmarkButtonListener);
+            // };
+            // // To avoid extensive patching we use shareButtonListenerSupplier for both
+            // // share and bookmark buttons. Thus we can't use them both simultaneously.
+            // mBookmarkButtonListenerSupplier = shareButtonListenerSupplier;
+            // mBookmarkButton.setActivityTabProvider(mBraveTabProvider);
+            // mBookmarkButtonListenerSupplier.addObserver(mBookmarkButtonListenerSupplierCallback);
         }
         mMenuButton = mBraveToolbarRoot.findViewById(R.id.menu_button_wrapper);
         if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {

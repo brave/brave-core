@@ -7,18 +7,18 @@ package org.chromium.chrome.browser.privacy.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
+import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
-import org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference;
-import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
-import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
-import org.chromium.chrome.browser.settings.privacy.PrivacySettings;
-import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
+import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_HTTPSE = "httpse";
@@ -30,7 +30,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
 
     private final PrefServiceBridge mPrefServiceBridge = PrefServiceBridge.getInstance();
-    private final ManagedPreferenceDelegate mManagedPreferenceDelegate =
+    private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
             createManagedPreferenceDelegate();
     private ChromeSwitchPreference mSearchSuggestions;
 
@@ -106,7 +106,7 @@ public class BravePrivacySettings extends PrivacySettings {
         }
     }
 
-    private ManagedPreferenceDelegate createManagedPreferenceDelegate() {
+    private ChromeManagedPreferenceDelegate createManagedPreferenceDelegate() {
         return preference -> {
             String key = preference.getKey();
             if (PREF_SEARCH_SUGGESTIONS.equals(key)) {

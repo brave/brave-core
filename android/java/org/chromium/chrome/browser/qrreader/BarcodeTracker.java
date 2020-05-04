@@ -15,7 +15,7 @@
  */
 package org.chromium.chrome.browser.qrreader;
 
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;

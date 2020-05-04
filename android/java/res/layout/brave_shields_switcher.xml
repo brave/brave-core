@@ -18,7 +18,7 @@
             android:text="@string/brave_shields"
             android:orientation="horizontal"
             android:fontFamily="sans-serif-medium"
-            android:textColor="@color/standard_mode_tint"
+            android:textColor="@color/default_icon_color_tint_list"
             android:textSize="18sp" />
         <Switch
             android:id="@+id/brave_shields_switch"
