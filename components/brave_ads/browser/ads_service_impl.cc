@@ -331,7 +331,7 @@ AdsServiceImpl::~AdsServiceImpl() {
 
 bool AdsServiceImpl::IsSupportedLocale() const {
   const std::string locale = GetLocale();
-  return ads::Ads::IsSupportedLocale(locale);
+  return ads::IsSupportedLocale(locale);
 }
 
 bool AdsServiceImpl::IsNewlySupportedLocale() {
@@ -352,7 +352,7 @@ bool AdsServiceImpl::IsNewlySupportedLocale() {
       GetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion);
 
   const std::string locale = GetLocale();
-  return ads::Ads::IsNewlySupportedLocale(locale, last_schema_version);
+  return ads::IsNewlySupportedLocale(locale, last_schema_version);
 }
 
 void AdsServiceImpl::SetEnabled(
@@ -1252,7 +1252,7 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
   const auto locale = GetLocale();
-  const auto region = ads::Ads::GetRegion(locale);
+  const auto region = ads::GetRegionCode(locale);
 
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
@@ -1282,7 +1282,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
   const auto locale = GetLocale();
-  const auto region = ads::Ads::GetRegion(locale);
+  const auto region = ads::GetRegionCode(locale);
 
   // Disable ads for unsupported legacy regions due to a bug where ads were
   // enabled even if the users region was not supported
@@ -1330,7 +1330,7 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
 
 void AdsServiceImpl::MigratePrefsVersion4To5() {
   const auto locale = GetLocale();
-  const auto region = ads::Ads::GetRegion(locale);
+  const auto region = ads::GetRegionCode(locale);
 
   // Disable ads for unsupported legacy regions due to a bug where ads were
   // enabled even if the users region was not supported
@@ -1389,7 +1389,7 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   // even if the users region was not supported
 
   const auto locale = GetLocale();
-  const auto region = ads::Ads::GetRegion(locale);
+  const auto region = ads::GetRegionCode(locale);
 
   const std::vector<std::string> legacy_regions = {
     "US",  // United States of America
