@@ -1,8 +1,16 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 44a6eb15256323c76a10dcd6c412e228ae822e60..c76f70ddc3ad115051eb1f30c6bd84b7edd97319 100644
+index 44a6eb15256323c76a10dcd6c412e228ae822e60..0b21c447f9a80295d4a38b948904fa8e5d7904b8 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
-@@ -617,6 +617,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+@@ -568,6 +568,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+   } else {
+     // Except for local sync (roaming profiles), the user must be signed in for
+     // sync to start.
++    BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS_IF_FALSE
+     DCHECK(!authenticated_account_info.gaia.empty());
+     DCHECK(!authenticated_account_info.account_id.empty());
+   }
+@@ -617,6 +618,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
        create_http_post_provider_factory_cb_, MakeUserAgentForSync(channel_),
        url_loader_factory_->Clone(), network_time_update_callback_);
    params.authenticated_account_id = authenticated_account_info.account_id;
