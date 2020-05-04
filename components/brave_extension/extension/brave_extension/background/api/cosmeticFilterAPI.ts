@@ -57,14 +57,7 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
       runAt: 'document_start'
     })
 
-    if (resources.injected_script) {
-      chrome.tabs.executeScript(tabId, {
-        code: resources.injected_script,
-        runAt: 'document_start'
-      })
-    }
-
-    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions)
+    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions, resources.injected_script || '')
   })
 }
 

@@ -37,6 +37,24 @@ let cosmeticObserver: MutationObserver | undefined = undefined
 const allSelectorsToRules = new Map<string, number>()
 const cosmeticStyleSheet = new CSSStyleSheet()
 
+function injectScriptlet (text: string) {
+  let script
+  try {
+    script = document.createElement('script')
+    const textnode: Text = document.createTextNode(text)
+    script.appendChild(textnode);
+    (document.head || document.documentElement).appendChild(script)
+  } catch (ex) {
+    /* Unused catch */
+  }
+  if (script) {
+    if (script.parentNode) {
+      script.parentNode.removeChild(script)
+    }
+    script.textContent = ''
+  }
+}
+
 /**
  * Provides a new function which can only be scheduled once at a time.
  *
@@ -515,6 +533,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (action) {
     case 'cosmeticFilteringBackgroundReady': {
       scheduleQueuePump()
+      injectScriptlet(msg.scriptlet)
       break
     }
     case 'cosmeticFilterConsiderNewSelectors': {
