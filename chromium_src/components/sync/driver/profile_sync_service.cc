@@ -71,6 +71,8 @@ void BraveInit(base::WeakPtr<ProfileSyncService> profile_sync_service,
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #define IsSyncFeatureEnabled() IsBraveSyncEnabled(this)
 #endif
+#define BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS_IF_FALSE \
+  if (false)
 #define BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS \
   BraveInit(sync_enabled_weak_factory_.GetWeakPtr(), &sync_prefs_, &params);
 
