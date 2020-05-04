@@ -241,7 +241,10 @@ enum Result {
   ALREADY_EXISTS = 26,
   SAFETYNET_ATTESTATION_FAILED = 27,
   DATABASE_INIT_FAILED = 28,
-  RETRY = 29
+  RETRY = 29,
+  RETRY_SHORT = 30,
+  RETRY_LONG = 31,
+  CONTINUE = 32
 };
 
 enum PublisherStatus {
