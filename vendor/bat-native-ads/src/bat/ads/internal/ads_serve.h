@@ -18,14 +18,12 @@
 namespace ads {
 
 class AdsImpl;
-class AdsClient;
 class Bundle;
 
 class AdsServe {
  public:
   AdsServe(
       AdsImpl* ads_,
-      AdsClient* ads_client,
       Bundle* bundle);
 
   ~AdsServe();
@@ -62,7 +60,6 @@ class AdsServe {
       const Result result);
 
   AdsImpl* ads_;  // NOT OWNED
-  AdsClient* ads_client_;  // NOT OWNED
   Bundle* bundle_;  // NOT OWNED
 };
 

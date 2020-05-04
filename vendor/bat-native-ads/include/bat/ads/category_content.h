@@ -21,7 +21,6 @@ struct ADS_EXPORT CategoryContent {
 
   bool operator==(
       const CategoryContent& rhs) const;
-
   bool operator!=(
       const CategoryContent& rhs) const;
 

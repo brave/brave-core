@@ -36,16 +36,10 @@ const char kAdConversionCreativeSetIdKey[] = "creative_set_id";
 const char kAdConversionCreativeInstanceeIdKey[] = "uuid";
 
 AdConversions::AdConversions(
-    AdsImpl* ads,
-    AdsClient* ads_client,
-    Client* client)
+    AdsImpl* ads)
     : is_initialized_(false),
-      ads_(ads),
-      ads_client_(ads_client),
-      client_(client) {
+      ads_(ads) {
   DCHECK(ads_);
-  DCHECK(ads_client_);
-  DCHECK(client_);
 }
 
 AdConversions::~AdConversions() = default;
@@ -62,7 +56,7 @@ void AdConversions::Check(
   DCHECK(is_initialized_);
   DCHECK(!url.empty());
 
-  if (!ads_client_->ShouldAllowAdConversionTracking()) {
+  if (!ads_->get_ads_client()->ShouldAllowAdConversionTracking()) {
     return;
   }
 
@@ -70,7 +64,7 @@ void AdConversions::Check(
 
   auto callback =
       std::bind(&AdConversions::OnGetAdConversions, this, url, _1, _2);
-  ads_client_->GetAdConversions(callback);
+  ads_->get_ads_client()->GetAdConversions(callback);
 }
 
 void AdConversions::StartTimerIfReady() {
@@ -100,7 +94,7 @@ void AdConversions::OnGetAdConversions(
     return;
   }
 
-  std::deque<AdHistory> ads_history = client_->GetAdsShownHistory();
+  std::deque<AdHistory> ads_history = ads_->get_client()->GetAdsHistory();
   ads_history = FilterAdsHistory(ads_history);
   ads_history = SortAdsHistory(ads_history);
 
@@ -110,7 +104,7 @@ void AdConversions::OnGetAdConversions(
 
   for (const auto& ad_conversion : new_ad_conversions) {
     for (const auto& ad : ads_history) {
-      auto ad_conversion_history = client_->GetAdConversionHistory();
+      auto ad_conversion_history = ads_->get_client()->GetAdConversionHistory();
       if (ad_conversion_history.find(ad_conversion.creative_set_id) !=
           ad_conversion_history.end()) {
         // Creative set id has already been converted
@@ -143,7 +137,7 @@ void AdConversions::OnGetAdConversions(
 std::deque<AdHistory> AdConversions::FilterAdsHistory(
     const std::deque<AdHistory>& ads_history) {
   const auto filter = AdsHistoryFilterFactory::Build(
-      AdsHistory::FilterType::kAdConversionConfirmationType);
+      AdsHistory::FilterType::kAdConversion);
   DCHECK(filter);
 
   return filter->Apply(ads_history);
@@ -192,7 +186,8 @@ void AdConversions::AddItemToQueue(
   }
 
   const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  client_->AppendTimestampToAdConversionHistory(creative_set_id, now);
+  ads_->get_client()->AppendTimestampToAdConversionHistory(creative_set_id,
+      now);
 
   AdConversionQueueItemInfo ad_conversion;
 
@@ -307,7 +302,7 @@ void AdConversions::SaveState() {
 
   std::string json = ToJson();
   auto callback = std::bind(&AdConversions::OnStateSaved, this, _1);
-  ads_client_->Save(kAdConversionsStateName, json, callback);
+  ads_->get_ads_client()->Save(kAdConversionsStateName, json, callback);
 }
 
 void AdConversions::OnStateSaved(const Result result) {
@@ -356,7 +351,7 @@ void AdConversions::LoadState() {
   BLOG(3, "Loading ad conversions state");
 
   auto callback = std::bind(&AdConversions::OnStateLoaded, this, _1, _2);
-  ads_client_->Load(kAdConversionsStateName, callback);
+  ads_->get_ads_client()->Load(kAdConversionsStateName, callback);
 }
 
 void AdConversions::OnStateLoaded(

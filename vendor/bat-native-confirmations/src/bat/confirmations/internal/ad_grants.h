@@ -18,25 +18,23 @@ class ConfirmationsImpl;
 
 class AdGrants {
  public:
-  AdGrants(
-      ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client);
+  AdGrants();
 
   ~AdGrants();
 
-  bool SetFromJson(const std::string& json);
-  bool SetFromDictionary(base::DictionaryValue* dictionary);
+  bool SetFromJson(
+      const std::string& json);
+  bool SetFromDictionary(
+      base::DictionaryValue* dictionary);
 
   double GetBalance() const;
 
  private:
   double balance_;
+
   bool GetAmountFromDictionary(
       base::DictionaryValue* dictionary,
       double* amount) const;
-
-  ConfirmationsImpl* confirmations_;  // NOT OWNED
-  ConfirmationsClient* confirmations_client_;  // NOT OWNED
 };
 
 }  // namespace confirmations

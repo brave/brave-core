@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#include <memory>
+
 #include "base/bind.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -19,6 +21,12 @@ class Timer {
   Timer();
 
   ~Timer();
+
+  // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
+  // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +
+  // FastForward*() to this when possible
+  void set_timer_for_testing(
+      std::unique_ptr<base::OneShotTimer> timer);
 
   // Start a timer to run at the given |delay| from now. If the timer is already
   // running, it will be replaced to call the given |user_task|. Returns the
@@ -43,7 +51,7 @@ class Timer {
   void Stop();
 
  private:
-  base::OneShotTimer timer_;
+  std::unique_ptr<base::OneShotTimer> timer_;
 };
 
 }  // namespace ads

@@ -1,0 +1,48 @@
+{
+  "userModelLanguages": [
+    "de",
+    "en",
+    "fr"
+  ],
+  "creativeSetHistory": {
+  },
+  "userModelLanguage": "en",
+  "campaignHistory": {
+  },
+  "advertisersUUIDSeen": {
+  },
+  "pageScoreHistory": [
+  ],
+  "adsUUIDSeen": {
+  },
+  "adUUID": "795141f2-77e3-4391-933f-cde5a5192dba",
+  "nextCheckServeAd": 0,
+  "adPreferences": {
+    "filtered_ads": [
+    ],
+    "filtered_categories": [
+    ],
+    "saved_ads": [
+    ],
+    "flagged_ads": [
+    ]
+  },
+  "available": true,
+  "adConversionHistory": {
+  },
+  "score": 0,
+  "adsShownHistory": [
+  ],
+  "pageProbabilitiesHistory": [
+  ],
+  "adsUUIDSeen": {
+  },
+  "creativeSetHistory": {
+  },
+  "purchaseIntentSignalHistory": {
+  },
+  "adsShownHistory": [
+  ],
+  "score": 0,
+  "version_code": ""
+}

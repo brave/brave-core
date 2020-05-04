@@ -6,7 +6,7 @@
 #include "bat/ads/internal/client_state.h"
 
 #include "bat/ads/ad_history.h"
-#include "bat/ads/purchase_intent_signal_history.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_history.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/time_util.h"
 
@@ -130,7 +130,7 @@ Result ClientState::FromJson(
   if (client.HasMember("pageProbabilitiesHistory")) {
     for (const auto& page_probabilities :
         client["pageProbabilitiesHistory"].GetArray()) {
-      PageProbabilitiesMap new_page_probabilities;
+      classification::PageProbabilitiesMap new_page_probabilities;
 
       for (const auto& page_probability :
           page_probabilities["pageProbabilities"].GetArray()) {

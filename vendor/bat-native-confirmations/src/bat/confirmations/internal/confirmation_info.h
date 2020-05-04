@@ -27,9 +27,9 @@ struct ConfirmationInfo {
   ~ConfirmationInfo();
 
   bool operator==(
-      const ConfirmationInfo info) const;
+      const ConfirmationInfo& rhs) const;
   bool operator!=(
-      const ConfirmationInfo info) const;
+      const ConfirmationInfo& rhs) const;
 
   std::string id;
   std::string creative_instance_id;

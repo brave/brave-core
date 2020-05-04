@@ -40,9 +40,9 @@ class ConfirmationType {
   operator std::string() const;
 
   bool operator==(
-      const ConfirmationType type) const;
+      const ConfirmationType& rhs) const;
   bool operator!=(
-      const ConfirmationType type) const;
+      const ConfirmationType& rhs) const;
 
  private:
   Value value_;

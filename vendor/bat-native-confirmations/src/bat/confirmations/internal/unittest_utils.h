@@ -9,17 +9,23 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace confirmations {
 
-class ConfirmationsImpl;
 class ConfirmationsClientMock;
-class PlatformHelperMock;
+class ConfirmationsImpl;
 
+template<class T>
 void Initialize(
-    ConfirmationsImpl* mock);
+    T object) {
+  object->Initialize(
+      [](const bool success) {
+    ASSERT_TRUE(success);
+  });
+}
 
-base::FilePath GetTestDataPath();
+base::FilePath GetTestPath();
 
 std::string GetPathForRequest(
     const std::string& url);
@@ -32,10 +38,6 @@ void MockSaveState(
 void MockClientInfo(
     ConfirmationsClientMock* mock,
     const std::string& channel);
-
-void MockPlatformHelper(
-    PlatformHelperMock* mock,
-    const std::string& platform);
 
 }  // namespace confirmations
 

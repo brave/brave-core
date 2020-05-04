@@ -12,19 +12,16 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "bat/ads/creative_ad_info.h"
-#include "bat/ads/internal/subdivision_targeting.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping.h"
+#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/subdivision_targeting.h"
 
 namespace ads {
 
 SubdivisionTargetingFrequencyCap::SubdivisionTargetingFrequencyCap(
-    const FrequencyCapping* const frequency_capping,
-    const SubdivisionTargeting* const subdivision_targeting)
-    : frequency_capping_(frequency_capping),
-      subdivision_targeting_(subdivision_targeting) {
-  DCHECK(frequency_capping_);
-  DCHECK(subdivision_targeting_);
+    const AdsImpl* const ads)
+    : ads_(ads) {
+  DCHECK(ads_);
 }
 
 SubdivisionTargetingFrequencyCap::~SubdivisionTargetingFrequencyCap() = default;
@@ -41,7 +38,7 @@ bool SubdivisionTargetingFrequencyCap::ShouldExclude(
   return false;
 }
 
-std::string SubdivisionTargetingFrequencyCap::GetLastMessage() const {
+std::string SubdivisionTargetingFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
@@ -50,16 +47,17 @@ bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 
-  if (!subdivision_targeting_->ShouldAllowAdsSubdivisionTargeting(locale)) {
+  if (!ads_->get_subdivision_targeting()->ShouldAllowAdsSubdivisionTargeting(
+      locale)) {
     return true;
   }
 
-  if (subdivision_targeting_->IsDisabled()) {
+  if (ads_->get_subdivision_targeting()->IsDisabled()) {
     return true;
   }
 
   const std::string subdivision_targeting_code =
-      subdivision_targeting_->GetAdsSubdivisionTargetingCode();
+      ads_->get_subdivision_targeting()->GetAdsSubdivisionTargetingCode();
 
   return DoesAdSupportSubdivisionTargetingCode(ad, subdivision_targeting_code);
 }

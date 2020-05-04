@@ -16,14 +16,14 @@ TokenInfo::TokenInfo(
 TokenInfo::~TokenInfo() = default;
 
 bool TokenInfo::operator==(
-    const TokenInfo info) const {
-  return public_key == info.public_key &&
-      unblinded_token.encode_base64() == info.unblinded_token.encode_base64();
+    const TokenInfo& rhs) const {
+  return public_key == rhs.public_key &&
+      unblinded_token.encode_base64() == rhs.unblinded_token.encode_base64();
 }
 
 bool TokenInfo::operator!=(
-    const TokenInfo info) const {
-  return !(*this == info);
+    const TokenInfo& rhs) const {
+  return !(*this == rhs);
 }
 
 }  // namespace confirmations

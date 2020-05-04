@@ -24,7 +24,6 @@ struct ADS_EXPORT AdConversionInfo {
 
   bool operator==(
       const AdConversionInfo& rhs) const;
-
   bool operator!=(
       const AdConversionInfo& rhs) const;
 

@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
-#include "bat/confirmations/internal/string_helper.h"
-#include "bat/confirmations/internal/logging.h"
+#include "bat/confirmations/internal/security_utils.h"
+#include "bat/confirmations/internal/string_utils.h"
 
+#include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 
@@ -76,9 +76,8 @@ std::string GetPaymentBalanceRequest::BuildDigestHeaderValue(
     return value;
   }
 
-  const std::vector<uint8_t> body_sha256 = helper::Security::GetSHA256(body);
-  const std::string body_sha256_base64 =
-      helper::Security::GetBase64(body_sha256);
+  const std::vector<uint8_t> body_sha256 = security::Sha256Hash(body);
+  const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
 
   value = "SHA-256=" + body_sha256_base64;
 
@@ -91,9 +90,9 @@ std::string GetPaymentBalanceRequest::BuildSignatureHeaderValue(
   const std::string value = BuildDigestHeaderValue(body);
 
   const std::vector<uint8_t> private_key =
-      helper::String::decode_hex(wallet_info.private_key);
+      DecodeHexString(wallet_info.private_key);
 
-  return helper::Security::Sign({{"digest", value}}, "primary", private_key);
+  return security::Sign({{"digest", value}}, "primary", private_key);
 }
 
 std::string GetPaymentBalanceRequest::GetAcceptHeaderValue() const {

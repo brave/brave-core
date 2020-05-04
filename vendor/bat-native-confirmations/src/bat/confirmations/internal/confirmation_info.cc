@@ -20,22 +20,22 @@ ConfirmationInfo::ConfirmationInfo(
 ConfirmationInfo::~ConfirmationInfo() = default;
 
 bool ConfirmationInfo::operator==(
-    const ConfirmationInfo info) const {
-  return id == info.id &&
-      creative_instance_id == info.creative_instance_id &&
-      type == info.type &&
-      token_info == info.token_info &&
-      payment_token.encode_base64() == info.payment_token.encode_base64() &&
+    const ConfirmationInfo& rhs) const {
+  return id == rhs.id &&
+      creative_instance_id == rhs.creative_instance_id &&
+      type == rhs.type &&
+      token_info == rhs.token_info &&
+      payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
       blinded_payment_token.encode_base64() ==
-          info.blinded_payment_token.encode_base64() &&
-      credential == info.credential &&
-      timestamp_in_seconds == info.timestamp_in_seconds &&
-      created == info.created;
+          rhs.blinded_payment_token.encode_base64() &&
+      credential == rhs.credential &&
+      timestamp_in_seconds == rhs.timestamp_in_seconds &&
+      created == rhs.created;
 }
 
 bool ConfirmationInfo::operator!=(
-    const ConfirmationInfo info) const {
-  return !(*this == info);
+    const ConfirmationInfo& rhs) const {
+  return !(*this == rhs);
 }
 
 }  // namespace confirmations

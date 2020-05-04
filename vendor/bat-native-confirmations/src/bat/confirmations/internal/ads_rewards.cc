@@ -23,12 +23,10 @@ using std::placeholders::_3;
 namespace confirmations {
 
 AdsRewards::AdsRewards(
-    ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client) :
-    payments_(std::make_unique<Payments>(confirmations, confirmations_client)),
-    ad_grants_(std::make_unique<AdGrants>(confirmations, confirmations_client)),
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client) {
+    ConfirmationsImpl* confirmations)
+    : payments_(std::make_unique<Payments>()),
+      ad_grants_(std::make_unique<AdGrants>()),
+      confirmations_(confirmations) {
 }
 
 AdsRewards::~AdsRewards() = default;
@@ -111,7 +109,7 @@ void AdsRewards::GetPaymentBalance() {
   auto callback = std::bind(&AdsRewards::OnGetPaymentBalance, this, _1);
 
   BLOG(5, UrlRequestToString(url, headers, "", "", method));
-  confirmations_client_->LoadURL(url, headers, "", "", method, callback);
+  confirmations_->get_client()->LoadURL(url, headers, "", "", method, callback);
 }
 
 void AdsRewards::OnGetPaymentBalance(
@@ -146,7 +144,7 @@ void AdsRewards::GetAdGrants() {
   auto callback = std::bind(&AdsRewards::OnGetAdGrants, this, _1);
 
   BLOG(5, UrlRequestToString(url, {}, "", "", method));
-  confirmations_client_->LoadURL(url, {}, "", "", method, callback);
+  confirmations_->get_client()->LoadURL(url, {}, "", "", method, callback);
 }
 
 void AdsRewards::OnGetAdGrants(
@@ -156,8 +154,7 @@ void AdsRewards::OnGetAdGrants(
   BLOG(6, UrlResponseToString(url_response));
 
   if (url_response.status_code == net::HTTP_NO_CONTENT) {
-    ad_grants_ = std::make_unique<AdGrants>(
-        confirmations_, confirmations_client_);
+    ad_grants_ = std::make_unique<AdGrants>();
 
     OnAdsRewards(SUCCESS);
     return;

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <functional>
 #include <map>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -15,9 +16,8 @@
 #include "bat/ads/ads_history.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/purchase_intent_signal_history.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/classification_helper.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_history.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/search_providers.h"
 #include "bat/ads/internal/reports.h"
@@ -28,22 +28,24 @@
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
 #include "bat/ads/internal/event_type_load_info.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_filter_factory.h"
 #include "bat/ads/internal/filters/ads_history_filter_factory.h"
 #include "bat/ads/internal/filters/ads_history_date_range_filter.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/sorts/ads_history_sort_factory.h"
-#include "bat/ads/internal/purchase_intent/purchase_intent_signal_info.h"
-#include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_info.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 #include "bat/ads/internal/subdivision_targeting.h"
 #include "bat/ads/internal/url_util.h"
 
@@ -88,21 +90,19 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
     : is_foreground_(false),
       active_tab_id_(0),
       next_easter_egg_timestamp_in_seconds_(0),
-      client_(std::make_unique<Client>(this, ads_client)),
-      bundle_(std::make_unique<Bundle>(this, ads_client)),
-      ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
-      subdivision_targeting_(std::make_unique<
-          SubdivisionTargeting>(ads_client)),
-      frequency_capping_(std::make_unique<FrequencyCapping>(client_.get())),
-      ad_conversions_(std::make_unique<AdConversions>(
-          this, ads_client, client_.get())),
-      page_classifier_(std::make_unique<PageClassifier>(this)),
-      purchase_intent_classifier_(std::make_unique<PurchaseIntentClassifier>(
-          kPurchaseIntentSignalLevel, kPurchaseIntentClassificationThreshold,
-              kPurchaseIntentSignalDecayTimeWindow)),
+      client_(std::make_unique<Client>(this)),
+      bundle_(std::make_unique<Bundle>(this)),
+      ads_serve_(std::make_unique<AdsServe>(this, bundle_.get())),
+      subdivision_targeting_(std::make_unique<SubdivisionTargeting>(this)),
+      ad_conversions_(std::make_unique<AdConversions>(this)),
+      page_classifier_(std::make_unique<classification::PageClassifier>(this)),
+      purchase_intent_classifier_(std::make_unique<
+          classification::PurchaseIntentClassifier>(kPurchaseIntentSignalLevel,
+              kPurchaseIntentClassificationThreshold,
+                  kPurchaseIntentSignalDecayTimeWindow)),
       is_initialized_(false),
       is_confirmations_ready_(false),
-      ad_notifications_(std::make_unique<AdNotifications>(this, ads_client)),
+      ad_notifications_(std::make_unique<AdNotifications>(this)),
       ads_client_(ads_client) {
   set_ads_client_for_logging(ads_client_);
 }
@@ -121,8 +121,16 @@ AdNotifications* AdsImpl::get_ad_notifications() const {
   return ad_notifications_.get();
 }
 
-PageClassifier* AdsImpl::get_page_classifier() const {
+SubdivisionTargeting* AdsImpl::get_subdivision_targeting() const {
+  return subdivision_targeting_.get();
+}
+
+classification::PageClassifier* AdsImpl::get_page_classifier() const {
   return page_classifier_.get();
+}
+
+AdConversions* AdsImpl::get_ad_conversions() const {
+  return ad_conversions_.get();
 }
 
 void AdsImpl::Initialize(
@@ -150,7 +158,7 @@ void AdsImpl::InitializeStep2(
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::InitializeStep3, this, _1);
+  const auto callback = std::bind(&AdsImpl::InitializeStep3, this, _1);
   ad_notifications_->Initialize(callback);
 }
 
@@ -161,7 +169,7 @@ void AdsImpl::InitializeStep3(
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::InitializeStep4, this, _1);
+  const auto callback = std::bind(&AdsImpl::InitializeStep4, this, _1);
   ad_conversions_->Initialize(callback);
 }
 
@@ -225,7 +233,7 @@ void AdsImpl::InitializeStep5(
 
 #if defined(OS_ANDROID)
 void AdsImpl::RemoveAllAdNotificationsAfterReboot() {
-  auto ads_shown_history = client_->GetAdsShownHistory();
+  auto ads_shown_history = client_->GetAdsHistory();
   if (!ads_shown_history.empty()) {
     uint64_t ad_shown_timestamp =
         ads_shown_history.front().timestamp_in_seconds;
@@ -280,7 +288,7 @@ void AdsImpl::Shutdown(
 void AdsImpl::LoadUserModel() {
   auto language = client_->GetUserModelLanguage();
 
-  auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
+  const auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
   ads_client_->LoadUserModelForLanguage(language, callback);
 }
 
@@ -521,7 +529,7 @@ AdsHistory AdsImpl::GetAdsHistory(
     const AdsHistory::SortType sort_type,
     const uint64_t from_timestamp,
     const uint64_t to_timestamp) {
-  auto history = client_->GetAdsShownHistory();
+  auto history = client_->GetAdsHistory();
 
   const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();
   DCHECK(date_range_filter);
@@ -703,7 +711,7 @@ void AdsImpl::ExtractPurchaseIntentSignal(
     return;
   }
 
-  PurchaseIntentSignalInfo purchase_intent_signal =
+  classification::PurchaseIntentSignalInfo purchase_intent_signal =
       purchase_intent_classifier_->ExtractIntentSignal(url);
 
   if (purchase_intent_signal.segments.empty() &&
@@ -717,7 +725,7 @@ void AdsImpl::ExtractPurchaseIntentSignal(
 }
 
 void AdsImpl::GeneratePurchaseIntentSignalHistoryEntry(
-    const PurchaseIntentSignalInfo& purchase_intent_signal) {
+    const classification::PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
     PurchaseIntentSignalHistory history;
     history.timestamp_in_seconds = purchase_intent_signal.timestamp_in_seconds;
@@ -736,7 +744,7 @@ void AdsImpl::MaybeClassifyPage(
     if (page_classification.empty()) {
       BLOG(1, "Page not classified as not enough content");
     } else {
-      const CategoryList winning_categories =
+      const classification::CategoryList winning_categories =
           page_classifier_->GetWinningCategories();
 
       BLOG(1, "Classified page as " << page_classification << ". Winning "
@@ -756,9 +764,9 @@ void AdsImpl::MaybeClassifyPage(
   BLOG(3, "Event log: " << report);
 }
 
-PurchaseIntentWinningCategoryList
+classification::PurchaseIntentWinningCategoryList
 AdsImpl::GetWinningPurchaseIntentCategories() {
-  PurchaseIntentWinningCategoryList winning_categories;
+  classification::PurchaseIntentWinningCategoryList winning_categories;
 
   PurchaseIntentSignalSegmentHistoryMap purchase_intent_signal_history =
       client_->GetPurchaseIntentSignalHistory();
@@ -811,14 +819,15 @@ void AdsImpl::ServeAdNotificationIfReady(
     }
   }
 
-  CategoryList categories = GetCategoriesToServeAd();
+  classification::CategoryList categories = GetCategoriesToServeAd();
   ServeAdNotificationFromCategories(categories);
 }
 
-CategoryList AdsImpl::GetCategoriesToServeAd() {
-  CategoryList categories = page_classifier_->GetWinningCategories();
+classification::CategoryList AdsImpl::GetCategoriesToServeAd() {
+  classification::CategoryList categories =
+      page_classifier_->GetWinningCategories();
 
-  PurchaseIntentWinningCategoryList purchase_intent_categories =
+  classification::PurchaseIntentWinningCategoryList purchase_intent_categories =
       GetWinningPurchaseIntentCategories();
   categories.insert(categories.end(),
       purchase_intent_categories.begin(), purchase_intent_categories.end());
@@ -827,7 +836,7 @@ CategoryList AdsImpl::GetCategoriesToServeAd() {
 }
 
 void AdsImpl::ServeAdNotificationFromCategories(
-    const CategoryList& categories) {
+    const classification::CategoryList& categories) {
   std::string catalog_id = bundle_->GetCatalogId();
   if (catalog_id.empty()) {
     FailedToServeAdNotification("No ad catalog");
@@ -845,18 +854,18 @@ void AdsImpl::ServeAdNotificationFromCategories(
     BLOG(1, "  " << category);
   }
 
-  auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
+  const auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
       this, _1, _2, _3);
   ads_client_->GetCreativeAdNotifications(categories, callback);
 }
 
 void AdsImpl::OnServeAdNotificationFromCategories(
     const Result result,
-    const CategoryList& categories,
+    const classification::CategoryList& categories,
     const CreativeAdNotificationList& ads) {
   auto eligible_ads = GetEligibleAds(ads);
   if (!eligible_ads.empty()) {
-    ServeAdNotification(eligible_ads);
+    ServeAdNotificationWithPacing(eligible_ads);
     return;
   }
 
@@ -875,8 +884,8 @@ void AdsImpl::OnServeAdNotificationFromCategories(
 }
 
 bool AdsImpl::ServeAdNotificationFromParentCategories(
-    const CategoryList& categories) {
-  CategoryList parent_categories;
+    const classification::CategoryList& categories) {
+  classification::CategoryList parent_categories;
   for (const auto& category : categories) {
     auto pos = category.find_last_of(kCategoryDelimiter);
     if (pos == std::string::npos) {
@@ -898,7 +907,7 @@ bool AdsImpl::ServeAdNotificationFromParentCategories(
     BLOG(1, "  " << parent_category);
   }
 
-  auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
+  const auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
       this, _1, _2, _3);
   ads_client_->GetCreativeAdNotifications(parent_categories, callback);
 
@@ -912,7 +921,7 @@ void AdsImpl::ServeUntargetedAdNotification() {
     kUntargetedPageClassification
   };
 
-  auto callback = std::bind(&AdsImpl::OnServeUntargetedAdNotification,
+  const auto callback = std::bind(&AdsImpl::OnServeUntargetedAdNotification,
       this, _1, _2, _3);
   ads_client_->GetCreativeAdNotifications(categories, callback);
 }
@@ -927,28 +936,16 @@ void AdsImpl::OnServeUntargetedAdNotification(
     return;
   }
 
-  ServeAdNotification(eligible_ads);
+  ServeAdNotificationWithPacing(eligible_ads);
 }
 
-void AdsImpl::ServeAdNotification(
+void AdsImpl::ServeAdNotificationWithPacing(
     const CreativeAdNotificationList& ads) {
-  auto callback =
-      std::bind(&AdsImpl::OnServeAdNotification, this, _1, _2, ads);
-  ads_client_->GetAdConversions(callback);
-}
+  const auto filter = EligibleAdsFilterFactory::Build(
+      EligibleAdsFilter::Type::kPriority);
+  DCHECK(filter);
 
-void AdsImpl::OnServeAdNotification(
-    const Result result,
-    const AdConversionList& ad_conversions,
-    const CreativeAdNotificationList& ads) {
-  CreativeAdNotificationList eligible_ads =
-      GetEligibleAdsForConversions(ads, ad_conversions);
-  if (eligible_ads.empty()) {
-    FailedToServeAdNotification("No eligible ads found");
-    return;
-  }
-
-  eligible_ads = GetEligibleAdsForPriorities(eligible_ads);
+  const CreativeAdNotificationList eligible_ads = filter->Apply(ads);
   if (eligible_ads.empty()) {
     FailedToServeAdNotification("No eligible ads found");
     return;
@@ -978,44 +975,6 @@ void AdsImpl::OnServeAdNotification(
   SuccessfullyServedAd();
 }
 
-CreativeAdNotificationList AdsImpl::GetEligibleAdsForPriorities(
-    const CreativeAdNotificationList& ads) const {
-  std::map<unsigned int, CreativeAdNotificationList> prioritized_ads;
-
-  for (const auto& ad : ads) {
-    if (ad.priority == 0) {
-      continue;
-    }
-
-    const auto iter = prioritized_ads.find(ad.priority);
-    if (iter == prioritized_ads.end()) {
-      prioritized_ads.insert({ad.priority, {ad}});
-      continue;
-    }
-
-    iter->second.push_back(ad);
-  }
-
-  const auto iter = std::min_element(prioritized_ads.begin(),
-      prioritized_ads.end(), [](const auto& lhs, const auto& rhs) {
-    return lhs.first < rhs.first;
-  });
-
-  BLOG(2, iter->second.size() << " eligible ads with a priority of "
-      << iter->first);
-
-  for (const auto& prioritized_ad : prioritized_ads) {
-    if (prioritized_ad.first == iter->first) {
-      continue;
-    }
-
-    BLOG(2, prioritized_ad.second.size() << " ads with a priority of "
-        << prioritized_ad.first);
-  }
-
-  return iter->second;
-}
-
 void AdsImpl::SuccessfullyServedAd() {
   if (IsMobile()) {
     StartDeliveringAdNotificationsAfterSeconds(
@@ -1038,29 +997,37 @@ std::vector<std::unique_ptr<ExclusionRule>>
   std::vector<std::unique_ptr<ExclusionRule>> exclusion_rules;
 
   std::unique_ptr<ExclusionRule> daily_cap_frequency_cap =
-      std::make_unique<DailyCapFrequencyCap>(frequency_capping_.get());
+      std::make_unique<DailyCapFrequencyCap>(this);
   exclusion_rules.push_back(std::move(daily_cap_frequency_cap));
 
   std::unique_ptr<ExclusionRule> per_day_frequency_cap =
-      std::make_unique<PerDayFrequencyCap>(frequency_capping_.get());
+      std::make_unique<PerDayFrequencyCap>(this);
   exclusion_rules.push_back(std::move(per_day_frequency_cap));
 
   std::unique_ptr<ExclusionRule> per_hour_frequency_cap =
-      std::make_unique<PerHourFrequencyCap>(frequency_capping_.get());
+      std::make_unique<PerHourFrequencyCap>(this);
   exclusion_rules.push_back(std::move(per_hour_frequency_cap));
 
   std::unique_ptr<ExclusionRule> total_max_frequency_cap =
-      std::make_unique<TotalMaxFrequencyCap>(frequency_capping_.get());
+      std::make_unique<TotalMaxFrequencyCap>(this);
   exclusion_rules.push_back(std::move(total_max_frequency_cap));
 
   std::unique_ptr<ExclusionRule> conversion_frequency_cap =
-      std::make_unique<ConversionFrequencyCap>(frequency_capping_.get());
+      std::make_unique<ConversionFrequencyCap>(this);
   exclusion_rules.push_back(std::move(conversion_frequency_cap));
 
   std::unique_ptr<ExclusionRule> subdivision_targeting_frequency_cap =
-      std::make_unique<SubdivisionTargetingFrequencyCap>(
-          frequency_capping_.get(), subdivision_targeting_.get());
+      std::make_unique<SubdivisionTargetingFrequencyCap>(this);
   exclusion_rules.push_back(std::move(subdivision_targeting_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> marked_to_no_longer_recieve_frequency_cap =
+      std::make_unique<MarkedToNoLongerReceiveFrequencyCap>(this);
+  exclusion_rules.push_back(std::move(
+      marked_to_no_longer_recieve_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> marked_as_inappropriate_frequency_cap =
+      std::make_unique<MarkedAsInappropriateFrequencyCap>(this);
+  exclusion_rules.push_back(std::move(marked_as_inappropriate_frequency_cap));
 
   return exclusion_rules;
 }
@@ -1071,6 +1038,8 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
 
   const auto exclusion_rules = CreateExclusionRules();
 
+  std::set<std::string> exclusions;
+
   auto unseen_ads = GetUnseenAdsAndRoundRobinIfNeeded(ads);
   for (const auto& ad : unseen_ads) {
     bool should_exclude = false;
@@ -1080,7 +1049,8 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
         continue;
       }
 
-      BLOG(2, exclusion_rule->GetLastMessage());
+      exclusions.insert(exclusion_rule->get_last_message());
+
       should_exclude = true;
     }
 
@@ -1088,42 +1058,11 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
       continue;
     }
 
-    if (client_->IsFilteredAd(ad.creative_set_id)) {
-      BLOG(2, "creativeSetId " << ad.creative_set_id << " excluded "
-          "due to being marked to no longer receive ads");
-
-      continue;
-    }
-
-    if (client_->IsFlaggedAd(ad.creative_set_id)) {
-      BLOG(2, "creativeSetId " << ad.creative_set_id << " excluded "
-          "due to being marked as inappropriate");
-
-      continue;
-    }
-
     eligible_ads.push_back(ad);
   }
 
-  return eligible_ads;
-}
-
-CreativeAdNotificationList AdsImpl::GetEligibleAdsForConversions(
-    const CreativeAdNotificationList& ads,
-    const AdConversionList& ad_conversions) {
-  CreativeAdNotificationList eligible_ads = ads;
-
-  if (ads_client_->ShouldAllowAdConversionTracking()) {
-    return eligible_ads;
-  }
-
-  for (const auto& ad_conversion : ad_conversions) {
-    const auto iter = std::remove_if(eligible_ads.begin(), eligible_ads.end(),
-        [&ad_conversion](CreativeAdNotificationInfo& ad_notification) {
-      return ad_notification.creative_set_id == ad_conversion.creative_set_id;
-    });
-
-    eligible_ads.erase(iter, eligible_ads.end());
+  for (const auto& exclusion : exclusions) {
+    BLOG(2, exclusion);
   }
 
   return eligible_ads;
@@ -1292,18 +1231,15 @@ std::vector<std::unique_ptr<PermissionRule>>
   std::vector<std::unique_ptr<PermissionRule>> permission_rules;
 
   std::unique_ptr<PermissionRule> ads_per_hour_frequency_cap =
-      std::make_unique<AdsPerHourFrequencyCap>(this, ads_client_,
-          frequency_capping_.get());
+      std::make_unique<AdsPerHourFrequencyCap>(this);
   permission_rules.push_back(std::move(ads_per_hour_frequency_cap));
 
   std::unique_ptr<PermissionRule> minimum_wait_time_frequency_cap =
-      std::make_unique<MinimumWaitTimeFrequencyCap>(this, ads_client_,
-          frequency_capping_.get());
+      std::make_unique<MinimumWaitTimeFrequencyCap>(this);
   permission_rules.push_back(std::move(minimum_wait_time_frequency_cap));
 
   std::unique_ptr<PermissionRule> ads_per_day_frequency_cap =
-      std::make_unique<AdsPerDayFrequencyCap>(ads_client_,
-          frequency_capping_.get());
+      std::make_unique<AdsPerDayFrequencyCap>(this);
   permission_rules.push_back(std::move(ads_per_day_frequency_cap));
 
   return permission_rules;
@@ -1319,7 +1255,8 @@ bool AdsImpl::IsAllowedToServeAdNotifications() {
       continue;
     }
 
-    BLOG(2, permission_rule->GetLastMessage());
+    BLOG(2, permission_rule->get_last_message());
+
     is_allowed = false;
   }
 
@@ -1493,7 +1430,7 @@ void AdsImpl::AppendAdNotificationToHistory(
   ad_history.ad_content.ad_action = confirmation_type;
   ad_history.category_content.category = info.category;
 
-  client_->AppendAdHistoryToAdsShownHistory(ad_history);
+  client_->AppendAdHistoryToAdsHistory(ad_history);
 }
 
 bool AdsImpl::IsSupportedUrl(

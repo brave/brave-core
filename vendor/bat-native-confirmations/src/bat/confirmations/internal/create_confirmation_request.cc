@@ -10,11 +10,12 @@
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
 #include "bat/confirmations/internal/platform_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/country_codes.h"
-#include "bat/confirmations/internal/logging.h"
+
+#include "base/base64.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/values.h"
 
 namespace confirmations {
@@ -133,7 +134,7 @@ std::string CreateConfirmationRequest::CreateCredential(
   base::JSONWriter::Write(dictionary, &json);
 
   std::vector<uint8_t> credential(json.begin(), json.end());
-  std::string credential_base64 = helper::Security::GetBase64(credential);
+  std::string credential_base64 = base::Base64Encode(credential);
 
   return credential_base64;
 }

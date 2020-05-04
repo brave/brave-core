@@ -27,7 +27,7 @@ struct FilteredCategory {
   std::string name;
 };
 
-using FilteredCategoryList = std::vector<FilteredCategory>;
+using FilteredCategoriesList = std::vector<FilteredCategory>;
 
 }  // namespace ads
 

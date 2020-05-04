@@ -70,7 +70,7 @@
   "brave/components/resources/brave_components_strings.grd": {
     "messages": [39000]
   },
-  "brave/vendor/bat-native-ads/resources/bat_ads_resources.grd": {
+  "brave/vendor/bat-native-ads/data/resources/bat_ads_resources.grd": {
     "includes": [40000]
   },
   "brave/ui/webui/resources/brave_webui_resources.grd": {
