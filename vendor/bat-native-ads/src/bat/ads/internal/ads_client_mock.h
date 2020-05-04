@@ -18,10 +18,10 @@
 
 namespace ads {
 
-class MockAdsClient : public AdsClient {
+class AdsClientMock : public AdsClient {
  public:
-  MockAdsClient();
-  ~MockAdsClient() override;
+  AdsClientMock();
+  ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsEnabled, bool());
 
@@ -49,10 +49,12 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(IsForeground, bool());
 
-  MOCK_METHOD0(ShouldShowNotifications, bool());
+  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
 
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<AdNotificationInfo> info));
+
+  MOCK_METHOD0(ShouldShowNotifications, bool());
 
   MOCK_METHOD1(CloseNotification, void(
       const std::string& uuid));
@@ -109,8 +111,6 @@ class MockAdsClient : public AdsClient {
       const int line,
       const int verbose_level,
       const std::string& message));
-
-  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
 };
 
 }  // namespace ads

@@ -22,7 +22,6 @@ class NativeAdsClient : public ads::AdsClient {
   uint64_t GetAdsPerDay() const override;
   uint64_t GetAdsPerHour() const override;
   void GetClientInfo(ads::ClientInfo * info) const override;
-  std::string GetLocale() const override;
   bool IsNetworkConnectionAvailable() const override;
   void SetIdleThreshold(const int threshold) override;
   bool IsForeground() const override;

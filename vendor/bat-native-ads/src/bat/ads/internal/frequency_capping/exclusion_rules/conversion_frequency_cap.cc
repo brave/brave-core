@@ -7,24 +7,29 @@
 
 #include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/client.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_utils.h"
 
 #include "base/strings/stringprintf.h"
 
 namespace ads {
 
 ConversionFrequencyCap::ConversionFrequencyCap(
-    const FrequencyCapping* const frequency_capping)
-    : frequency_capping_(frequency_capping) {
-  DCHECK(frequency_capping_);
+    const Client* const client)
+    : client_(client) {
+  DCHECK(client_);
 }
 
 ConversionFrequencyCap::~ConversionFrequencyCap() = default;
 
 bool ConversionFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
-  if (!DoesRespectCap(ad)) {
+  const std::map<std::string, std::deque<uint64_t>> history =
+      client_->GetAdConversionHistory();
+
+  const std::deque<uint64_t> filtered_history =
+      FilterHistory(history, ad.creative_set_id);
+
+  if (!DoesRespectCap(filtered_history, ad)) {
     last_message_ = base::StringPrintf("creativeSetId %s has exceeded the "
         "frequency capping for conversions", ad.creative_set_id.c_str());
 
@@ -34,20 +39,30 @@ bool ConversionFrequencyCap::ShouldExclude(
   return false;
 }
 
-std::string ConversionFrequencyCap::GetLastMessage() const {
+std::string ConversionFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
 bool ConversionFrequencyCap::DoesRespectCap(
+      const std::deque<uint64_t>& history,
       const CreativeAdInfo& ad) const {
-  auto history =
-      frequency_capping_->GetAdConversionHistory(ad.creative_set_id);
-
   if (history.size() >= 1) {
     return false;
   }
 
   return true;
+}
+
+std::deque<uint64_t> ConversionFrequencyCap::FilterHistory(
+    const std::map<std::string, std::deque<uint64_t>>& history,
+    const std::string& creative_set_id) {
+  std::deque<uint64_t> filtered_history;
+
+  if (history.find(creative_set_id) != history.end()) {
+    filtered_history = history.at(creative_set_id);
+  }
+
+  return filtered_history;
 }
 
 }  // namespace ads

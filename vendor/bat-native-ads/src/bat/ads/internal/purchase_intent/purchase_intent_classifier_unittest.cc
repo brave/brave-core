@@ -3,39 +3,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <stdint.h>
-#include <memory>
-#include <tuple>
-
-#include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/ads_impl.h"
-
-#include "bat/ads/internal/time_util.h"
-#include "base/time/time.h"
-
-#include "testing/gtest/include/gtest/gtest.h"
-
-#include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
+
+#include <stdint.h>
+
+#include <deque>
+#include <map>
+#include <memory>
+#include <vector>
+
+#include "base/time/time.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/purchase_intent/funnel_sites.h"
+#include "bat/ads/internal/static_values.h"
 
-using ::testing::_;
-
-// npm run test -- brave_unit_tests --filter=AdsPurchaseIntentClassifier*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-const std::vector<std::string> audi_a4_segments = {
+namespace {
+
+const int64_t kSecondsPerDay =
+    base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+
+const std::vector<std::string> kAudiA4Segments = {
   "automotive purchase intent by make-audi",
   "automotive purchase intent by category-entry luxury car"
 };
 
-const std::vector<std::string> audi_a6_segments = {
+const std::vector<std::string> kAudiA6Segments = {
   "automotive purchase intent by make-audi",
   "automotive purchase intent by category-mid luxury car"
 };
 
-const std::vector<std::string> no_segments;
+const std::vector<std::string> kNoSegments;
 
 struct TestTriplets {
   std::string url;
@@ -44,46 +46,92 @@ struct TestTriplets {
 };
 
 std::vector<TestTriplets> kTestSearchQueries = {
-  {"https://yandex.com/search/?text=audi%20a6%20review%202020&lr=109565",
-      audi_a6_segments, 2},
-  {"https://www.google.com/search?q=audi+a6+review+2020&gs_l=psy-ab.3..0j0i22i30l3.26031.26031..26262...0.0..0.82.82.1......0....2j1..gws-wiz.MZlXqcvydls&ved=0ahUKEwjAjpziu8fnAhVLzYUKHSriDZMQ4dUDCAg&uact=5",  // NOLINT
-      audi_a6_segments, 2},
-  {"https://www.google.com/search?q=audi+a6+review+2020&oq=audi&aqs=chrome.1.69i59l2j69i57j69i60l3.2273j0j1&sourceid=chrome&ie=UTF-8",  // NOLINT
-      audi_a6_segments, 2},
-  {"https://www.bing.com/search?q=audi+a6+review+2020&qs=HS&pq=audi+a&sc=8-6&cvid=68F9883A6926440F8F6CCCBCDB87A7AA&FORM=QBLH&sp=1",   // NOLINT
-      audi_a6_segments, 2},
-  {"https://duckduckgo.com/?q=audi+a6+dealer+reviews&t=h_&ia=web",
-      audi_a6_segments, 3},
-  {"https://duckduckgo.com/?q=audi+a6&t=h_&ia=web",
-      audi_a6_segments, 1},
-  {"https://search.yahoo.com/search?p=audi+a6+review+2020&fr=sfp&iscqry=",
-      audi_a6_segments, 2},
-  {"https://fireball.com/search?q=audi+a6+review",
-      audi_a6_segments, 2},
-  {"https://www.ecosia.org/search?q=audi+a6+review",
-      audi_a6_segments, 2},
-  {"https://www.kbb.com/bmw/6-series/2017/styles/?intent=trade-in-sell&mileage=100000",  // NOLINT
-      _funnel_site_segments, 1},
-  {"https://www.cars.com/for-sale/searchresults.action/?mkId=20050&rd=10&searchSource=QUICK_FORM&zc=10001",  // NOLINT
-      _funnel_site_segments, 1},
-  {"https://www.google.com/search?source=hp&ei=lY5BXpenN-qUlwSd7bvICQ&q=foo+bar&oq=foo+bar&gs_l=psy-ab.3..0l10.1452.2016..2109...0.0..0.57.381.7......0....1..gws-wiz.......0i131j0i10.CeBo7A4BiSM&ved=0ahUKEwjXxbuPvcfnAhVqyoUKHZ32DpkQ4dUDCAg&uact=5",  // NOLINT
-      no_segments, 0},
-  {"https://creators.brave.com/",
-      no_segments, 0},
-  {"https://www.google.com/search?ei=bY2CXvHBMK2tytMPqYq--A4&q=audi+a4",
-      audi_a4_segments, 1},
-  {"https://www.google.com/search?source=hp&ei=y2eDXsWuI6fIrgThwZuQDw&q=audi+a4",  // NOLINT
-      audi_a4_segments, 1},
+  {
+    "https://yandex.com/search/?text=audi%20a6%20review%202020&lr=109565",
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://www.google.com/search?q=audi+a6+review+2020&gs_l=psy-ab.3..0j0i22i30l3.26031.26031..26262...0.0..0.82.82.1......0....2j1..gws-wiz.MZlXqcvydls&ved=0ahUKEwjAjpziu8fnAhVLzYUKHSriDZMQ4dUDCAg&uact=5",  // NOLINT
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://www.google.com/search?q=audi+a6+review+2020&oq=audi&aqs=chrome.1.69i59l2j69i57j69i60l3.2273j0j1&sourceid=chrome&ie=UTF-8",  // NOLINT
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://www.bing.com/search?q=audi+a6+review+2020&qs=HS&pq=audi+a&sc=8-6&cvid=68F9883A6926440F8F6CCCBCDB87A7AA&FORM=QBLH&sp=1",  // NOLINT
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://duckduckgo.com/?q=audi+a6+dealer+reviews&t=h_&ia=web",
+    kAudiA6Segments,
+    3
+  },
+  {
+    "https://duckduckgo.com/?q=audi+a6&t=h_&ia=web",
+    kAudiA6Segments,
+    1
+  },
+  {
+    "https://search.yahoo.com/search?p=audi+a6+review+2020&fr=sfp&iscqry=",
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://fireball.com/search?q=audi+a6+review",
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://www.ecosia.org/search?q=audi+a6+review",
+    kAudiA6Segments,
+    2
+  },
+  {
+    "https://www.kbb.com/bmw/6-series/2017/styles/?intent=trade-in-sell&mileage=100000",  // NOLINT
+    _funnel_site_segments,
+    1
+  },
+  {
+    "https://www.cars.com/for-sale/searchresults.action/?mkId=20050&rd=10&searchSource=QUICK_FORM&zc=10001",  // NOLINT
+    _funnel_site_segments,
+    1
+  },
+  {
+    "https://www.google.com/search?source=hp&ei=lY5BXpenN-qUlwSd7bvICQ&q=foo+bar&oq=foo+bar&gs_l=psy-ab.3..0l10.1452.2016..2109...0.0..0.57.381.7......0....1..gws-wiz.......0i131j0i10.CeBo7A4BiSM&ved=0ahUKEwjXxbuPvcfnAhVqyoUKHZ32DpkQ4dUDCAg&uact=5",  // NOLINT
+    kNoSegments,
+    0
+  },
+  {
+    "https://creators.brave.com/",
+    kNoSegments,
+    0
+  },
+  {
+    "https://www.google.com/search?ei=bY2CXvHBMK2tytMPqYq--A4&q=audi+a4",
+    kAudiA4Segments,
+    1
+  },
+  {
+    "https://www.google.com/search?source=hp&ei=y2eDXsWuI6fIrgThwZuQDw&q=audi+a4",  // NOLINT
+    kAudiA4Segments,
+    1
+  }
 };
+
+}  // namespace
 
 class AdsPurchaseIntentClassifierTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockAdsClient> mock_ads_client_;
-  std::unique_ptr<AdsImpl> ads_;
-
-  AdsPurchaseIntentClassifierTest() :
-      mock_ads_client_(std::make_unique<MockAdsClient>()),
-      ads_(std::make_unique<AdsImpl>(mock_ads_client_.get())) {
+  AdsPurchaseIntentClassifierTest()
+      : purchase_intent_classifier_(std::make_unique<
+            PurchaseIntentClassifier>(kPurchaseIntentSignalLevel,
+                kPurchaseIntentClassificationThreshold,
+                    kPurchaseIntentSignalDecayTimeWindow)) {
     // You can do set-up work for each test here
   }
 
@@ -97,64 +145,6 @@ class AdsPurchaseIntentClassifierTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    purchase_intent_classifier_ = std::make_unique<PurchaseIntentClassifier>(
-        kPurchaseIntentSignalLevel, kPurchaseIntentClassificationThreshold,
-            kPurchaseIntentSignalDecayTimeWindow);
-
-    auto now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-    auto days = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-
-    auto p1 = PurchaseIntentSignalHistory();
-    p1.timestamp_in_seconds = now - (6 * days);
-    p1.weight = 9;
-    auto p2 = PurchaseIntentSignalHistory();
-    p2.timestamp_in_seconds = now - (5 * days);
-    p2.weight = 9;
-    auto p3 = PurchaseIntentSignalHistory();
-    p3.timestamp_in_seconds = now - (4 * days);
-    p3.weight = 9;
-    auto p4 = PurchaseIntentSignalHistory();
-    p4.timestamp_in_seconds = now - (3 * days);
-    p4.weight = 1;
-    auto p5 = PurchaseIntentSignalHistory();
-    p5.timestamp_in_seconds = now - (2 * days);
-    p5.weight = 1;
-    auto p6 = PurchaseIntentSignalHistory();
-    p6.timestamp_in_seconds = now - (1 * days);
-    p6.weight = 2;
-    auto p7 = PurchaseIntentSignalHistory();
-    p7.timestamp_in_seconds = now - (1 * days);
-    p7.weight = 1;
-    auto p8 = PurchaseIntentSignalHistory();
-    p8.timestamp_in_seconds = now - (1 * days);
-    p8.weight = 1;
-    auto p9 = PurchaseIntentSignalHistory();
-    p9.timestamp_in_seconds = now - (1 * days);
-    p9.weight = 1;
-    auto p10 = PurchaseIntentSignalHistory();
-    p10.timestamp_in_seconds = now - (1 * days);
-    p10.weight = 1;
-    auto p11 = PurchaseIntentSignalHistory();
-    p11.timestamp_in_seconds = now - (1 * days);
-    p11.weight = 1;
-    auto p12 = PurchaseIntentSignalHistory();
-    p12.timestamp_in_seconds = now - (1 * days);
-    p12.weight = 8;
-
-    histories_ = {
-      {"cat_5", {p1, p4, p8, p9, p10}},  // Score: 13
-      {"cat_2", {p2, p5, p8, p11}},  // Score: 12
-      {"cat_1", {p3, p6, p8}},  // Score: 12
-      {"cat_4", {p7}},  // Score: 1
-      {"cat_3", {p8}},  // Score: 1
-      {"cat_6", {p12}},  // Score: 8
-      {"cat_7", {p6, p10, p12}}  // Score: 11
-    };
-
-    histories_short_ = {
-      {"cat_1", {p1}},  // Score: 9
-      {"cat_2", {p2, p3}}  // Score: 18
-    };
   }
 
   void TearDown() override {
@@ -163,78 +153,232 @@ class AdsPurchaseIntentClassifierTest : public ::testing::Test {
   }
 
   // Objects declared here can be used by all tests in the test case
+
+  PurchaseIntentSignalSegmentHistoryMap GenerateHistory() {
+    const uint64_t now_in_seconds =
+        static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+    PurchaseIntentSignalHistory p1;
+    p1.timestamp_in_seconds = now_in_seconds - (6 * kSecondsPerDay);
+    p1.weight = 9;
+
+    PurchaseIntentSignalHistory p2;
+    p2.timestamp_in_seconds = now_in_seconds - (5 * kSecondsPerDay);
+    p2.weight = 9;
+
+    PurchaseIntentSignalHistory p3;
+    p3.timestamp_in_seconds = now_in_seconds - (4 * kSecondsPerDay);
+    p3.weight = 9;
+
+    PurchaseIntentSignalHistory p4;
+    p4.timestamp_in_seconds = now_in_seconds - (3 * kSecondsPerDay);
+    p4.weight = 1;
+
+    PurchaseIntentSignalHistory p5;
+    p5.timestamp_in_seconds = now_in_seconds - (2 * kSecondsPerDay);
+    p5.weight = 1;
+
+    PurchaseIntentSignalHistory p6;
+    p6.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p6.weight = 2;
+
+    PurchaseIntentSignalHistory p7;
+    p7.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p7.weight = 1;
+
+    PurchaseIntentSignalHistory p8;
+    p8.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p8.weight = 1;
+
+    PurchaseIntentSignalHistory p9;
+    p9.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p9.weight = 1;
+
+    PurchaseIntentSignalHistory p10;
+    p10.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p10.weight = 1;
+
+    PurchaseIntentSignalHistory p11;
+    p11.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p11.weight = 1;
+
+    PurchaseIntentSignalHistory p12;
+    p12.timestamp_in_seconds = now_in_seconds - (1 * kSecondsPerDay);
+    p12.weight = 8;
+
+    const PurchaseIntentSignalSegmentHistoryMap history = {
+      {
+        "cat_5", {  // score: 13
+          p1,
+          p4,
+          p8,
+          p9,
+          p10
+        }
+      },
+      {
+        "cat_2", {  // score: 12
+          p2,
+          p5,
+          p8,
+          p11
+        }
+      },
+      {
+        "cat_1", {  // score: 12
+          p3,
+          p6,
+          p8
+        }
+      },
+      {
+        "cat_4", {  // score: 1
+          p7
+        }
+      },
+      {
+        "cat_3", {  // score: 1
+          p8
+        }
+      },
+      {
+        "cat_6", {  // score: 8
+          p12
+        }
+      },
+      {
+        "cat_7", {  // score: 11
+          p6,
+          p10,
+          p12
+        }
+      }
+    };
+
+    return history;
+  }
+
+  PurchaseIntentSignalSegmentHistoryMap GenerateShortHistory() {
+    const uint64_t now_in_seconds =
+        static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+    PurchaseIntentSignalHistory p1;
+    p1.timestamp_in_seconds = now_in_seconds - (6 * kSecondsPerDay);
+    p1.weight = 9;
+
+    PurchaseIntentSignalHistory p2;
+    p2.timestamp_in_seconds = now_in_seconds - (5 * kSecondsPerDay);
+    p2.weight = 9;
+
+    PurchaseIntentSignalHistory p3;
+    p3.timestamp_in_seconds = now_in_seconds - (4 * kSecondsPerDay);
+    p3.weight = 9;
+
+    const PurchaseIntentSignalSegmentHistoryMap history = {
+      {
+        "cat_1", {  // score: 9
+          p1
+        }
+      },
+      {
+        "cat_2", {  // score: 18
+          p2,
+          p3
+        }
+      }
+    };
+
+    return history;
+  }
+
   std::unique_ptr<PurchaseIntentClassifier> purchase_intent_classifier_;
-  PurchaseIntentSignalSegmentHistoryMap histories_;
-  PurchaseIntentSignalSegmentHistoryMap histories_short_;
-  PurchaseIntentSignalSegmentHistoryMap histories_empty_;
 };
 
-TEST_F(AdsPurchaseIntentClassifierTest, ExtractsPurchaseIntentSignal) {
-  for (const auto& test_search_query : kTestSearchQueries) {
+TEST_F(AdsPurchaseIntentClassifierTest,
+    ExtractsPurchaseIntentSignal) {
+  for (const auto& search_query : kTestSearchQueries) {
     // Arrange
-    auto url = test_search_query.url;
-    auto segments = test_search_query.segments;
-    auto weight = test_search_query.weight;
 
     // Act
-    PurchaseIntentSignalInfo purchase_intent_signal =
-        purchase_intent_classifier_->ExtractIntentSignal(url);
+    const PurchaseIntentSignalInfo purchase_intent_signal =
+        purchase_intent_classifier_->ExtractIntentSignal(search_query.url);
 
     // Assert
-    EXPECT_EQ(segments, purchase_intent_signal.segments);
-    EXPECT_EQ(weight, purchase_intent_signal.weight);
+    const std::vector<std::string> expected_segments = search_query.segments;
+    EXPECT_EQ(expected_segments, purchase_intent_signal.segments);
+
+    const uint16_t expected_weight = search_query.weight;
+    EXPECT_EQ(expected_weight, purchase_intent_signal.weight);
   }
 }
 
-TEST_F(AdsPurchaseIntentClassifierTest, GetsWinningCategoriesWithEmptyHistory) {
+TEST_F(AdsPurchaseIntentClassifierTest,
+    GetsWinningCategoriesWithEmptyHistory) {
   // Arrange
+  const PurchaseIntentSignalSegmentHistoryMap history = {};
 
   // Act
-  auto winning_categories = purchase_intent_classifier_->GetWinningCategories(
-      histories_empty_, 3);
+  const PurchaseIntentWinningCategoryList winning_categories =
+      purchase_intent_classifier_->GetWinningCategories(history, 3);
 
   // Assert
-  std::vector<std::string> gold_categories;
-  EXPECT_EQ(gold_categories, winning_categories);
+  const std::vector<std::string> expected_winning_categories = {};
+  EXPECT_EQ(expected_winning_categories, winning_categories);
 }
 
-TEST_F(AdsPurchaseIntentClassifierTest, GetsWinningCategoriesWithShortHistory) {
+TEST_F(AdsPurchaseIntentClassifierTest,
+    GetsWinningCategoriesWithShortHistory) {
   // Arrange
-  std::map<std::string, std::deque<PurchaseIntentSignalHistory>> histories;
+  const PurchaseIntentSignalSegmentHistoryMap history = GenerateShortHistory();
 
   // Act
-  auto winning_categories = purchase_intent_classifier_->GetWinningCategories(
-      histories_short_, 3);
+  const PurchaseIntentWinningCategoryList winning_categories =
+      purchase_intent_classifier_->GetWinningCategories(history, 3);
 
   // Assert
-  std::vector<std::string> gold_categories = {"cat_2"};
-  EXPECT_EQ(gold_categories, winning_categories);
+  const std::vector<std::string> expected_winning_categories = {
+    "cat_2"
+  };
+
+  EXPECT_EQ(expected_winning_categories, winning_categories);
 }
 
-TEST_F(AdsPurchaseIntentClassifierTest, GetsWinningCategories) {
+TEST_F(AdsPurchaseIntentClassifierTest,
+    GetsWinningCategories) {
   // Arrange
+  const PurchaseIntentSignalSegmentHistoryMap history = GenerateHistory();
 
   // Act
-  auto winning_categories = purchase_intent_classifier_->GetWinningCategories(
-      histories_, 5);
+  const PurchaseIntentWinningCategoryList winning_categories =
+      purchase_intent_classifier_->GetWinningCategories(history, 5);
 
   // Assert
-  std::vector<std::string> gold_categories =
-      {"cat_5", "cat_2", "cat_1", "cat_7"};
-  EXPECT_EQ(gold_categories, winning_categories);
+  const std::vector<std::string> expected_winning_categories = {
+    "cat_5",
+    "cat_2",
+    "cat_1",
+    "cat_7"
+  };
+
+  EXPECT_EQ(expected_winning_categories, winning_categories);
 }
 
-TEST_F(AdsPurchaseIntentClassifierTest, GetsWinningCategoriesUpToMaxSegments) {
+TEST_F(AdsPurchaseIntentClassifierTest,
+    GetsWinningCategoriesUpToMaxSegments) {
   // Arrange
+  const PurchaseIntentSignalSegmentHistoryMap history = GenerateHistory();
 
   // Act
-  auto winning_categories = purchase_intent_classifier_->GetWinningCategories(
-      histories_, 2);
+  const PurchaseIntentWinningCategoryList winning_categories =
+      purchase_intent_classifier_->GetWinningCategories(history, 2);
 
   // Assert
-  std::vector<std::string> gold_categories =
-      {"cat_5", "cat_2"};
-  EXPECT_EQ(gold_categories, winning_categories);
+  const std::vector<std::string> expected_winning_categories = {
+    "cat_5",
+    "cat_2"
+  };
+
+  EXPECT_EQ(expected_winning_categories, winning_categories);
 }
 
 }  // namespace ads

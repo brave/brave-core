@@ -1811,10 +1811,6 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #endif
 }
 
-std::string AdsServiceImpl::GetLocale() const {
-  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-}
-
 const std::string AdsServiceImpl::GetCountryCode() const {
   const std::string locale = GetLocale();
   const std::string country_code =
@@ -1847,6 +1843,10 @@ std::vector<std::string> AdsServiceImpl::GetUserModelLanguages() const {
   }
 
   return languages;
+}
+
+std::string AdsServiceImpl::GetLocale() const {
+  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 }
 
 std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(

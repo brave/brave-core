@@ -6,35 +6,45 @@
 #ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_DAY_FREQUENCY_CAP_H_  // NOLINT
 #define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_DAY_FREQUENCY_CAP_H_  // NOLINT
 
+#include <stdint.h>
+
+#include <deque>
 #include <string>
 
 #include "bat/ads/internal/frequency_capping/permission_rule.h"
 
 namespace ads {
 
-struct CreativeAdNotificationInfo;
 class AdsClient;
-class FrequencyCapping;
+class Client;
+struct AdHistory;
 
 class AdsPerDayFrequencyCap : public PermissionRule  {
  public:
   AdsPerDayFrequencyCap(
       const AdsClient* const ads_client,
-      const FrequencyCapping* const frequency_capping);
+      const Client* const client);
 
   ~AdsPerDayFrequencyCap() override;
 
+  AdsPerDayFrequencyCap(const AdsPerDayFrequencyCap&) = delete;
+  AdsPerDayFrequencyCap& operator=(const AdsPerDayFrequencyCap&) = delete;
+
   bool IsAllowed() override;
 
-  std::string GetLastMessage() const override;
+  std::string get_last_message() const override;
 
  private:
   const AdsClient* const ads_client_;  // NOT OWNED
-  const FrequencyCapping* const frequency_capping_;  // NOT OWNED
+  const Client* const client_;  // NOT OWNED
 
   std::string last_message_;
 
-  bool AreAdsPerDayBelowAllowedThreshold() const;
+  bool DoesRespectCap(
+      const std::deque<uint64_t>& history) const;
+
+  std::deque<uint64_t> FilterHistory(
+      const std::deque<AdHistory>& history) const;
 };
 
 }  // namespace ads

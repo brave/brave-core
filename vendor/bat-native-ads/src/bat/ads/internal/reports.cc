@@ -10,6 +10,7 @@
 #include "bat/ads/ad_notification_info.h"
 
 #include "base/time/time.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
@@ -362,7 +363,8 @@ std::string Reports::GenerateSettingsEventReport() const {
   writer.StartObject();
 
   writer.String("locale");
-  auto locale = ads_->get_ads_client()->GetLocale();
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   writer.String(locale.c_str());
 
   writer.String("notifications");

@@ -35,10 +35,6 @@ void NativeAdsClient::GetClientInfo(ads::ClientInfo * info) const {
   [bridge_ getClientInfo:info];
 }
 
-std::string NativeAdsClient::GetLocale() const {
-  return [bridge_ getLocale];
-}
-
 bool NativeAdsClient::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
 }

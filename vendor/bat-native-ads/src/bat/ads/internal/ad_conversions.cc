@@ -99,7 +99,7 @@ void AdConversions::OnGetAdConversions(
     return;
   }
 
-  std::deque<AdHistory> ads_history = client_->GetAdsShownHistory();
+  std::deque<AdHistory> ads_history = client_->GetAdsHistory();
   ads_history = FilterAdsHistory(ads_history);
   ads_history = SortAdsHistory(ads_history);
 

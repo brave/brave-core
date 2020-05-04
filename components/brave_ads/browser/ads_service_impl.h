@@ -350,6 +350,8 @@ class AdsServiceImpl : public AdsService,
   void OnPrefsChanged(
       const std::string& pref);
 
+  std::string GetLocale() const;
+
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
 
@@ -358,8 +360,6 @@ class AdsServiceImpl : public AdsService,
   // AdsClient implementation
   void GetClientInfo(
       ads::ClientInfo* info) const override;
-
-  std::string GetLocale() const override;
 
   bool IsNetworkConnectionAvailable() const override;
 

@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/confirmations/internal/unittest_utils.h"
+#include "bat/confirmations/internal/confirmations_unittest_utils.h"
+
+#include <string>
 
 #include "bat/confirmations/internal/confirmations_client_mock.h"
-#include "bat/confirmations/internal/confirmations_impl_mock.h"
 #include "bat/confirmations/internal/platform_helper_mock.h"
 
 #include "base/base_paths.h"
@@ -22,18 +23,19 @@ using ::testing::Return;
 
 namespace confirmations {
 
-void Initialize(
-    ConfirmationsImpl* confirmations) {
-  confirmations->Initialize(
-      [](const bool success) {
-    ASSERT_TRUE(success);
-  });
-}
-
-base::FilePath GetTestDataPath() {
+base::FilePath GetDataPath() {
   base::FilePath path;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  path = path.AppendASCII("brave/vendor/bat-native-confirmations/test/data");
+  path = path.AppendASCII("brave");
+  path = path.AppendASCII("vendor");
+  path = path.AppendASCII("bat-native-confirmations");
+  path = path.AppendASCII("data");
+  return path;
+}
+
+base::FilePath GetTestPath() {
+  base::FilePath path = GetDataPath();
+  path = path.AppendASCII("test");
   return path;
 }
 
@@ -48,7 +50,7 @@ void MockLoadState(
       .WillByDefault(Invoke([](
           const std::string& name,
           LoadCallback callback) {
-        base::FilePath path = GetTestDataPath();
+        base::FilePath path = GetTestPath();
         path = path.AppendASCII(name);
 
         std::string value;

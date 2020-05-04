@@ -50,8 +50,8 @@ class AdsImpl : public Ads {
 
   AdsClient* get_ads_client() const;
   Client* get_client() const;
-
   AdNotifications* get_ad_notifications() const;
+  AdConversions* get_ad_conversions() const;
   PageClassifier* get_page_classifier() const;
 
   InitializeCallback initialize_callback_;
@@ -248,7 +248,6 @@ class AdsImpl : public Ads {
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
-  std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<AdConversions> ad_conversions_;
   std::unique_ptr<PageClassifier> page_classifier_;
   std::unique_ptr<PurchaseIntentClassifier> purchase_intent_classifier_;

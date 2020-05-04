@@ -15,7 +15,7 @@
 #include "bat/confirmations/wallet_info.h"
 #include "bat/confirmations/internal/retry_timer.h"
 
-#include "wrapper.hpp"
+#include "wrapper.hpp"  // NOLINT
 
 namespace confirmations {
 

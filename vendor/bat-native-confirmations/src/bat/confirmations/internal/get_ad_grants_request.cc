@@ -5,8 +5,6 @@
 
 #include "bat/confirmations/internal/get_ad_grants_request.h"
 #include "bat/confirmations/internal/grant_rewards_serve_helper.h"
-#include "bat/confirmations/internal/string_helper.h"
-#include "bat/confirmations/internal/logging.h"
 
 namespace confirmations {
 

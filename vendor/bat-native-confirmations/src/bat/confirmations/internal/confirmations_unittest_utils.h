@@ -3,23 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_CONFIRMATIONS_INTERNAL_UNITTEST_UTILS_H_
-#define BAT_CONFIRMATIONS_INTERNAL_UNITTEST_UTILS_H_
+#ifndef BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_UNITTEST_UTILS_H_
+#define BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_UNITTEST_UTILS_H_
 
 #include <string>
 
 #include "base/files/file_path.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace confirmations {
 
-class ConfirmationsImpl;
 class ConfirmationsClientMock;
+class ConfirmationsImpl;
 class PlatformHelperMock;
 
+template<class T>
 void Initialize(
-    ConfirmationsImpl* mock);
+    T object) {
+  object->Initialize(
+      [](const bool success) {
+    ASSERT_TRUE(success);
+  });
+}
 
-base::FilePath GetTestDataPath();
+base::FilePath GetTestPath();
 
 std::string GetPathForRequest(
     const std::string& url);
@@ -39,4 +46,4 @@ void MockPlatformHelper(
 
 }  // namespace confirmations
 
-#endif  // BAT_CONFIRMATIONS_INTERNAL_UNITTEST_UTILS_H_
+#endif  // BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_UNITTEST_UTILS_H_

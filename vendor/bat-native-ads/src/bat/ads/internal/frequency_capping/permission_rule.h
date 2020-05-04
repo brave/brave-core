@@ -13,9 +13,10 @@ namespace ads {
 class PermissionRule {
  public:
   virtual ~PermissionRule() = default;
+
   virtual bool IsAllowed() = 0;
 
-  virtual std::string GetLastMessage() const = 0;
+  virtual std::string get_last_message() const = 0;
 };
 
 }  // namespace ads
