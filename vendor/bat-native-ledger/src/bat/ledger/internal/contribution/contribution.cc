@@ -203,7 +203,7 @@ void Contribution::OnTimer(uint32_t timer_id) {
   unverified_->OnTimer(timer_id);
   uphold_->OnTimer(timer_id);
 
-  for (std::pair<std::string, uint32_t> const& value : retry_timers_) {
+  for (const auto& value : retry_timers_) {
     if (value.second != timer_id) {
       continue;
     }
