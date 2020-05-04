@@ -14,6 +14,7 @@ public class BraveClassAdapter {
         chain = new BraveAndroidSyncSettingsClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
         chain = new BraveExternalNavigationHandlerClassAdapter(chain);
+        chain = new BraveHomepageManagerClassAdapter(chain);
         return chain;
     }
 }

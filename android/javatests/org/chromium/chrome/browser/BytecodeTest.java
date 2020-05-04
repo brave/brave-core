@@ -47,6 +47,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/externalnav/ExternalNavigationHandler",
                 "clobberCurrentTabWithFallbackUrl"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/LaunchIntentDispatcher", "isCustomTabIntent"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/homepage/HomepageManager", "shouldCloseAppWithZeroTabs"));
     }
 
     @Test
