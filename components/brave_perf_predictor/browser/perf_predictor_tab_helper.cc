@@ -39,12 +39,12 @@ content::WebContents* GetWebContents(int render_process_id,
 
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
+    : WebContentsObserver(web_contents),
+      bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>(
+          NamedThirdPartyRegistryFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext()))) {
   if (web_contents->GetBrowserContext()->IsOffTheRecord())
     return;
-  bandwidth_predictor_ = std::make_unique<BandwidthSavingsPredictor>(
-      NamedThirdPartyRegistryFactory::GetForBrowserContext(
-          web_contents->GetBrowserContext()));
 
   bandwidth_tracker_ = std::make_unique<P3ABandwidthSavingsTracker>(
       user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));

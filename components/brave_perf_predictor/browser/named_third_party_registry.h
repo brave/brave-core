@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_H_
 
 #include <string>
+#include <tuple>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"

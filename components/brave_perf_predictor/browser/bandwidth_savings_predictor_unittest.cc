@@ -5,8 +5,11 @@
 
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
 
+#include <memory>
+
 #include "base/containers/flat_map.h"
 #include "base/run_loop.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "chrome/browser/predictors/loading_test_util.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
@@ -25,10 +28,11 @@ class BandwidthSavingsPredictorTest : public ::testing::Test {
     predictor_ =
         std::make_unique<BandwidthSavingsPredictor>(tp_registry_.get());
     // Allow the third party registry to initialize
-    base::RunLoop().RunUntilIdle();
+    env_.RunUntilIdle();
   }
 
  protected:
+  base::test::TaskEnvironment env_;
   std::unique_ptr<NamedThirdPartyRegistry> tp_registry_;
   std::unique_ptr<BandwidthSavingsPredictor> predictor_;
 };
