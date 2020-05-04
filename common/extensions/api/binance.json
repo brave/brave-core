@@ -92,8 +92,7 @@
             "parameters": [
               {
                 "name": "balances",
-                "type": "object",
-                "additionalProperties": { "type": "string" }
+                "type": "any"
               }, {
                 "name": "success",
                 "type": "boolean",
@@ -145,46 +144,6 @@
                     "description": "total amount to be recieved"
                   }
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getTickerPrice",
-        "type": "function",
-        "description": "Fetches latest symbol pair trading value",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "symbolPair"
-          }, {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "symbolPairValue",
-                "type": "string"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getTickerVolume",
-        "type": "function",
-        "description": "Fetches latest symbol pair trading volume",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "symbolPair"
-          }, {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "symbolPairVolume",
-                "type": "string"
               }
             ]
           }
