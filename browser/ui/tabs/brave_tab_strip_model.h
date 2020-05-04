@@ -19,11 +19,14 @@ class BraveTabStripModel : public TabStripModel {
 
   ~BraveTabStripModel() override;
 
+  BraveTabStripModel(const BraveTabStripModel&) = delete;
+  BraveTabStripModel operator=(const BraveTabStripModel&) = delete;
+
   void SelectRelativeTab(bool forward, UserGestureDetails detail) override;
 
   // Set the next tab when doing a MRU cycling with Ctrl-tab
   void SelectMRUTab(
-      bool backward,
+      bool forward,
       UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
 
   // Stop MRU cycling, called when releasing the Ctrl key
@@ -32,11 +35,8 @@ class BraveTabStripModel : public TabStripModel {
  private:
   std::unique_ptr<MRUTabCyclingController> mru_tab_cycling_controller_;
 
-  // Current index when we are MRU cycling, set to -1 when not cycling
-  int current_mru_cycling_index_ = -1;
-
   // List of tab indexes sorted by most recently used
-  std::vector<int> mru_cycle_list;
+  std::vector<int> mru_cycle_list_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_

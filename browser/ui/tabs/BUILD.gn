@@ -1,8 +1,7 @@
 import("//build/config/ui.gni")
 
 source_set("tabs") {
-  sources = [
-  ]
+  sources = []
 
   if (!is_android) {
     sources += [
@@ -13,18 +12,17 @@ source_set("tabs") {
       "mru_tab_cycling_controller.cc",
       "mru_tab_cycling_controller.h",
     ]
-
   }
 
-  deps = [
-  ]
+  deps = []
 
   if (!is_android) {
     deps += [
       "//brave/common/",
+      "//chrome/app:generated_resources",
       "//components/prefs",
+      "//components/sessions",
       "//content/public/browser",
-      "//content/public/common",
       "//skia",
       "//ui/events",
     ]

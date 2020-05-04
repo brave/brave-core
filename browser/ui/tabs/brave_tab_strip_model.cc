@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+
 #include <algorithm>
 #include <memory>
-
-#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
 #include "brave/browser/ui/tabs/mru_tab_cycling_controller.h"
 #include "brave/common/pref_names.h"
@@ -23,54 +23,52 @@ BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
 
 BraveTabStripModel::~BraveTabStripModel() {}
 
-void BraveTabStripModel::SelectRelativeTab(bool next,
+void BraveTabStripModel::SelectRelativeTab(bool forward,
                                            UserGestureDetails detail) {
-  bool isMRUEnabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
+  if (contents_data_.empty())
+    return;
 
-  if (isMRUEnabled) {
-    SelectMRUTab(!next, detail);
+  bool is_mru_enabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
+
+  if (is_mru_enabled) {
+    SelectMRUTab(forward, detail);
   } else {
-    TabStripModel::SelectRelativeTab(next, detail);
+    TabStripModel::SelectRelativeTab(forward, detail);
   }
 }
 
-void BraveTabStripModel::SelectMRUTab(bool backward,
-                                      UserGestureDetails detail) {
-  if (current_mru_cycling_index_ == -1) {
+void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
+  if (mru_cycle_list_.empty()) {
     // Start cycling
 
     // Create a list of tab indexes sorted by time of last activation
     for (int i = 0; i < count(); ++i) {
-      mru_cycle_list.push_back(i);
+      mru_cycle_list_.push_back(i);
     }
 
-    std::sort(mru_cycle_list.begin(), mru_cycle_list.end(),
+    std::sort(mru_cycle_list_.begin(), mru_cycle_list_.end(),
               [this](int a, int b) {
                 return GetWebContentsAt(a)->GetLastActiveTime() >
                        GetWebContentsAt(b)->GetLastActiveTime();
               });
 
-    current_mru_cycling_index_ = 0;
-
     // Tell the cycling controller that we start cycling to handle tabs keys
     mru_tab_cycling_controller_->StartMRUCycling();
   }
 
-  int tabCount = mru_cycle_list.size();
-
-  if (tabCount == 0) {
-    return;
+  if (forward) {
+    std::rotate(mru_cycle_list_.begin(),
+                mru_cycle_list_.begin() + 1,
+                mru_cycle_list_.end());
+  } else {
+    std::rotate(mru_cycle_list_.rbegin(),
+                mru_cycle_list_.rbegin() + 1,
+                mru_cycle_list_.rend());
   }
 
-  int nextCycle = backward ? -1 : 1;
-
-  current_mru_cycling_index_ =
-      (current_mru_cycling_index_ + nextCycle % tabCount + tabCount) % tabCount;
-
-  ActivateTabAt(mru_cycle_list[current_mru_cycling_index_], detail);
+  ActivateTabAt(mru_cycle_list_[0], detail);
 }
 
 void BraveTabStripModel::StopMRUCycling() {
-  current_mru_cycling_index_ = -1;
-  mru_cycle_list.clear();
+  mru_cycle_list_.clear();
 }
