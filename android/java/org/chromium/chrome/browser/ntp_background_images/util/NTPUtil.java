@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp_background_images;
+package org.chromium.chrome.browser.ntp_background_images.util;
 
 import android.os.Bundle;
 import android.os.Build;
@@ -24,6 +24,11 @@ import android.widget.Button;
 import android.os.Handler;
 import android.net.Uri;
 import java.io.IOException;
+import android.content.SharedPreferences;
+import java.util.Set;
+import java.util.HashSet;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -36,29 +41,29 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.chrome.browser.ntp_background_images.NTPImage;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.ImageUtils;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
+import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.RewardsBottomSheetDialogFragment;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class NTPUtil {
 	private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
+    private static final String REMOVED_SITES = "removed_sites";
 
-    public static void openImageCredit(String url) {
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
-            LoadUrlParams loadUrlParams = new LoadUrlParams(url);
-            chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
-        }
-    }
+    public static HashMap<String,SoftReference<Bitmap>> imageCache =
+        new HashMap<String,SoftReference<Bitmap>>();
 
     public static void turnOnAds() {
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
@@ -140,18 +145,18 @@ public class NTPUtil {
         if (sponsoredTab.shouldShowBanner()) {
             if (BraveRewardsPanelPopup.isBraveRewardsEnabled()) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {
-                    if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+                    if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_ON;
                     }
                 } else if(BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())) {
-                    if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+                    if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_OFF ;
                     } else {
                         return SponsoredImageUtil.BR_ON_ADS_OFF_BG_IMAGE;
                     }
                 }
             } else {
-                if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper && !mBraveRewardsNativeWorker.IsCreateWalletInProcess()) {
+                if (ntpImage instanceof Wallpaper && !mBraveRewardsNativeWorker.IsCreateWalletInProcess()) {
                     return SponsoredImageUtil.BR_OFF;
                 }
             }
@@ -255,8 +260,8 @@ public class NTPUtil {
         float centerPointX;
         float centerPointY;
 
-        if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-            NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
+        if (ntpImage instanceof Wallpaper) {
+            Wallpaper mWallpaper = (Wallpaper) ntpImage;
             InputStream inputStream = null;
             try {
                 Uri imageFileUri = Uri.parse("file://"+mWallpaper.getImagePath());
@@ -284,6 +289,10 @@ public class NTPUtil {
             centerPointX = mBackgroundImage.getCenterPoint();
             centerPointY = 0;
         }
+        return getCalculatedBitmap(imageBitmap, centerPointX, centerPointY, layoutWidth, layoutHeight);
+    }
+
+    public static Bitmap getCalculatedBitmap(Bitmap imageBitmap, float centerPointX, float centerPointY, int layoutWidth, int layoutHeight) {
         float imageWidth = imageBitmap.getWidth();
         float imageHeight = imageBitmap.getHeight();
 
@@ -345,6 +354,56 @@ public class NTPUtil {
         return bitmapWithGradient;
     }
 
+    public static Bitmap getTopSiteBitmap(String iconPath) {
+        Context mContext = ContextUtils.getApplicationContext();
+        InputStream inputStream = null;
+        Bitmap topSiteIcon = null;
+        try {
+            Uri imageFileUri = Uri.parse("file://"+ iconPath);
+            inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+            topSiteIcon = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+        } catch(IOException exc) {
+            Log.e("NTP", exc.getMessage());
+            topSiteIcon = null;
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException exception) {
+                Log.e("NTP", exception.getMessage());
+                topSiteIcon = null;
+            }
+        }
+        return topSiteIcon;
+    }
+
+    private static Set<String> getRemovedTopSiteUrls() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        return mSharedPreferences.getStringSet(REMOVED_SITES, new HashSet<String>());
+    }
+
+    public static boolean isInRemovedTopSite(String url) {
+        Set<String> urlSet = getRemovedTopSiteUrls();
+        if (urlSet.contains(url)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void addToRemovedTopSite(String url) {
+        Set<String> urlSet = getRemovedTopSiteUrls();
+        if (!urlSet.contains(url)) {
+            urlSet.add(url);
+        }
+        
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putStringSet(REMOVED_SITES, urlSet);
+        sharedPreferencesEditor.apply();
+    }
+
     public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {
     	if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M
     		|| (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs)) {
@@ -354,11 +413,33 @@ public class NTPUtil {
     }
 
     public static NTPImage getNTPImage(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
-    	NTPBackgroundImagesBridge.Wallpaper mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper();
+    	Wallpaper mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper();
     	if (mWallpaper != null) {
     		return mWallpaper;
     	} else {
     		return SponsoredImageUtil.getBackgroundImage();
     	}
+    }
+
+    public static boolean isReferralEnabled() {
+        Profile mProfile = Profile.getLastUsedProfile();
+        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+        boolean isReferralEnabled = BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
+        return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
+    }
+
+    public static void openNewTab(boolean isIncognito, String url) {
+        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+        if(chromeTabbedActivity != null) {
+            chromeTabbedActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        }
+    }
+
+    public static void openUrlInSameTab(String url) {
+        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+        if(chromeTabbedActivity != null) {
+            LoadUrlParams loadUrlParams = new LoadUrlParams(url);
+            chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
+        }
     }
 }

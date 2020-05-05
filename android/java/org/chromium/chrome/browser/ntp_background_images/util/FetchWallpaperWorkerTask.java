@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp_background_images;
+package org.chromium.chrome.browser.ntp_background_images.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,12 +17,13 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.ntp_background_images.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 
 public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
     public interface WallpaperRetrievedCallback {
         void bgWallpaperRetrieved(Bitmap bgWallpaper);
-        void logoRetrieved(NTPBackgroundImagesBridge.Wallpaper mWallpaper, Bitmap logoWallpaper);
+        void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper);
     }
 
     private Context mContext;
@@ -44,8 +45,8 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
     @Override
     protected Pair<Bitmap, Bitmap> doInBackground() {
         Bitmap logoBitmap = null;
-        if (mNTPImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
-            NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) mNTPImage;
+        if (mNTPImage instanceof Wallpaper) {
+            Wallpaper mWallpaper = (Wallpaper) mNTPImage;
             if (mWallpaper.getLogoPath() != null ) {
                 InputStream inputStream = null;
                 try {
@@ -82,6 +83,6 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
             mCallback.bgWallpaperRetrieved(wallpapers.first);
 
         if (wallpapers.second != null && !wallpapers.second.isRecycled())
-            mCallback.logoRetrieved((NTPBackgroundImagesBridge.Wallpaper) mNTPImage, wallpapers.second);
+            mCallback.logoRetrieved((Wallpaper) mNTPImage, wallpapers.second);
     }
 }

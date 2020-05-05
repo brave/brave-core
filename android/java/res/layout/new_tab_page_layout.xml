@@ -5,7 +5,6 @@
 <org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,6 +35,14 @@
 
             <!-- Brave stats -->
             <include layout="@layout/brave_stats_layout"/>
+
+            <LinearLayout
+                android:id="@+id/ntp_super_referral_sites_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:weightSum="1.0"
+                android:orientation="horizontal"/>
 
             <!-- Explore offline card -->
             <ViewStub
@@ -95,7 +102,7 @@
 
         </LinearLayout>
 
-         <FrameLayout
+        <FrameLayout
             android:id="@+id/image_credit_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -124,5 +131,15 @@
     </LinearLayout>
 
     <include layout="@layout/ntp_non_distruptive_banner"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/super_referral_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qrcode_light"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:backgroundTint="@color/qr_button_color"/>
 
 </org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>

@@ -22,6 +22,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.homepage.BraveHomepageSettings;
@@ -30,6 +31,8 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 import java.util.HashMap;
 
@@ -98,7 +101,8 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
             removePreferenceIfPresent(PREF_WELCOME_TOUR);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP 
+            || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
     }

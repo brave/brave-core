@@ -16,13 +16,12 @@ import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
 import org.chromium.chrome.browser.tab.TabLaunchType;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.UrlConstants;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class BraveTabCreator extends ChromeTabCreator {
 

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.os.Build;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
@@ -17,16 +18,21 @@ import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mBraveStatsView;
+    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Profile mProfile = Profile.getLastUsedProfile();
+        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 
     @Override
@@ -62,7 +68,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
         int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
-        mainLayout.addView(mSiteSectionView, insertionPoint);
+        if (!mNTPBackgroundImagesBridge.isSuperReferral()
+            || !NTPBackgroundImagesBridge.enableSponsoredImages()
+            || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
     @Override
