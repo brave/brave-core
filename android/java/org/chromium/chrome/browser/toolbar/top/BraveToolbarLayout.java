@@ -381,7 +381,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
       ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)toolbarButtonsContainer.getLayoutParams();
 
-      int rewardsLen = mRewardsLayout == null ? 0 : mRewardsLayout.getWidth();
+      int rewardsLen = (mRewardsLayout == null || mRewardsLayout.getVisibility() == View.GONE) ? 0
+              : mRewardsLayout.getWidth();
       return toolbarButtonsContainer.getMeasuredWidth() -
             mShieldsLayout.getWidth() -
             rewardsLen +
