@@ -182,20 +182,23 @@ uint64_t PayoutTokens::CalculatePayoutDelay() {
     delay = token_redemption_timestamp_in_seconds_ - now_in_seconds;
   }
 
-  const uint64_t rand_delay = brave_base::random::Geometric(delay);
-  return rand_delay;
+  return delay;
 }
 
 void PayoutTokens::UpdateNextTokenRedemptionDate() {
-  uint64_t timestamp_in_seconds = base::Time::Now().ToDoubleT();
+  const uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+
+  uint64_t delay;
 
   if (!_is_debug) {
-    timestamp_in_seconds += kNextTokenRedemptionAfterSeconds;
+    delay = kNextTokenRedemptionAfterSeconds;
   } else {
-    timestamp_in_seconds += kDebugNextTokenRedemptionAfterSeconds;
+    delay = kDebugNextTokenRedemptionAfterSeconds;
   }
 
-  token_redemption_timestamp_in_seconds_ = timestamp_in_seconds;
+  const uint64_t rand_delay = brave_base::random::Geometric(delay);
+
+  token_redemption_timestamp_in_seconds_ = now_in_seconds + rand_delay;
   confirmations_->SaveState();
 }
 
