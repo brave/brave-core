@@ -16,7 +16,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/unsigned_tx_properties.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
-#include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/legacy/wallet_state.h"
 #include "bat/ledger/internal/legacy/unsigned_tx_state.h"
 #include "bat/ledger/internal/request/request_util.h"

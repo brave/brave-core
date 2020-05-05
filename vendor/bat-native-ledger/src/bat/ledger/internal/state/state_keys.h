@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_STATE_KEYS_H_
-#define BRAVELEDGER_STATE_KEYS_H_
+#ifndef BRAVELEDGER_STATE_STATE_KEYS_H_
+#define BRAVELEDGER_STATE_STATE_KEYS_H_
 
 #include <string>
 
@@ -17,6 +17,7 @@ namespace ledger {
   const char kStatePromotionCorruptedMigrated[] =
       "promotion_corrupted_migrated2";
   const char kStateAnonTransferChecked[] = "anon_transfer_checked";
+  const char kStateVersion[] = "version";
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_STATE_KEYS_H_
+#endif  // BRAVELEDGER_STATE_STATE_KEYS_H_

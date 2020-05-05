@@ -20,10 +20,10 @@ class LedgerImpl;
 
 namespace braveledger_bat_state {
 
-class BatState {
+class LegacyBatState {
  public:
-  explicit BatState(bat_ledger::LedgerImpl* ledger);
-  ~BatState();
+  explicit LegacyBatState(bat_ledger::LedgerImpl* ledger);
+  ~LegacyBatState();
 
   bool LoadState(const std::string& data);
 

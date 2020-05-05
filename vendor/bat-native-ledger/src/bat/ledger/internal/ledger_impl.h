@@ -40,7 +40,7 @@ class Publisher;
 }
 
 namespace braveledger_bat_state {
-class BatState;
+class LegacyBatState;
 }
 
 namespace braveledger_contribution {
@@ -61,6 +61,10 @@ class Report;
 
 namespace braveledger_sku {
 class SKU;
+}
+
+namespace braveledger_state {
+class State;
 }
 
 namespace confirmations {
@@ -828,13 +832,14 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
-  std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
+  std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   std::unique_ptr<braveledger_report::Report> bat_report_;
   std::unique_ptr<braveledger_sku::SKU> bat_sku_;
+  std::unique_ptr<braveledger_state::State> bat_state_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

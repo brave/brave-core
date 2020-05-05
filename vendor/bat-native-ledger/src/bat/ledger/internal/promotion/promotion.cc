@@ -15,7 +15,7 @@
 #include "base/strings/string_util.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_promotion.h"

@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/client_state.h"
@@ -16,15 +16,15 @@ using std::placeholders::_1;
 
 namespace braveledger_bat_state {
 
-BatState::BatState(bat_ledger::LedgerImpl* ledger) :
+LegacyBatState::LegacyBatState(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger),
       state_(new ledger::ClientProperties()) {
 }
 
-BatState::~BatState() {
+LegacyBatState::~LegacyBatState() {
 }
 
-bool BatState::LoadState(const std::string& data) {
+bool LegacyBatState::LoadState(const std::string& data) {
   ledger::ClientProperties state;
   const ledger::ClientState client_state;
   if (!client_state.FromJson(data, &state)) {
@@ -55,34 +55,34 @@ bool BatState::LoadState(const std::string& data) {
   return true;
 }
 
-void BatState::SaveState() {
+void LegacyBatState::SaveState() {
   const ledger::ClientState client_state;
   const std::string data = client_state.ToJson(*state_);
 
-  auto save_callback = std::bind(&BatState::OnSaveState,
+  auto save_callback = std::bind(&LegacyBatState::OnSaveState,
       this,
       _1);
 
   ledger_->SaveLedgerState(data, save_callback);
 }
 
-void BatState::OnSaveState(const ledger::Result result) {
+void LegacyBatState::OnSaveState(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Ledger state was not save successfully");
     return;
   }
 }
 
-void BatState::SetRewardsMainEnabled(bool enabled) {
+void LegacyBatState::SetRewardsMainEnabled(bool enabled) {
   state_->rewards_enabled = enabled;
   SaveState();
 }
 
-bool BatState::GetRewardsMainEnabled() const {
+bool LegacyBatState::GetRewardsMainEnabled() const {
   return state_->rewards_enabled;
 }
 
-void BatState::SetContributionAmount(double amount) {
+void LegacyBatState::SetContributionAmount(double amount) {
   ledger::WalletProperties properties = GetWalletProperties();
   auto hasAmount = std::find(properties.parameters_choices.begin(),
                              properties.parameters_choices.end(),
@@ -101,37 +101,37 @@ void BatState::SetContributionAmount(double amount) {
   SaveState();
 }
 
-double BatState::GetContributionAmount() const {
+double LegacyBatState::GetContributionAmount() const {
   return state_->fee_amount;
 }
 
-void BatState::SetUserChangedContribution() {
+void LegacyBatState::SetUserChangedContribution() {
   state_->user_changed_fee = true;
   SaveState();
 }
 
-bool BatState::GetUserChangedContribution() const {
+bool LegacyBatState::GetUserChangedContribution() const {
   return state_->user_changed_fee;
 }
 
-void BatState::SetAutoContribute(bool enabled) {
+void LegacyBatState::SetAutoContribute(bool enabled) {
   state_->auto_contribute = enabled;
   SaveState();
 }
 
-bool BatState::GetAutoContribute() const {
+bool LegacyBatState::GetAutoContribute() const {
   return state_->auto_contribute;
 }
 
-const std::string& BatState::GetCardIdAddress() const {
+const std::string& LegacyBatState::GetCardIdAddress() const {
   return state_->wallet_info.address_card_id;
 }
 
-uint64_t BatState::GetReconcileStamp() const {
+uint64_t LegacyBatState::GetReconcileStamp() const {
   return state_->reconcile_timestamp;
 }
 
-void BatState::ResetReconcileStamp() {
+void LegacyBatState::ResetReconcileStamp() {
   if (ledger::reconcile_time > 0) {
     state_->reconcile_timestamp =
         braveledger_time_util::GetCurrentTimeStamp() +
@@ -143,65 +143,65 @@ void BatState::ResetReconcileStamp() {
   SaveState();
 }
 
-bool BatState::IsWalletCreated() const {
+bool LegacyBatState::IsWalletCreated() const {
   return state_->boot_timestamp != 0u;
 }
 
-const std::string& BatState::GetPaymentId() const {
+const std::string& LegacyBatState::GetPaymentId() const {
   return state_->wallet_info.payment_id;
 }
 
-const std::string& BatState::GetPersonaId() const {
+const std::string& LegacyBatState::GetPersonaId() const {
   return state_->persona_id;
 }
 
-void BatState::SetPersonaId(const std::string& persona_id) {
+void LegacyBatState::SetPersonaId(const std::string& persona_id) {
   state_->persona_id = persona_id;
   SaveState();
 }
 
-const std::string& BatState::GetUserId() const {
+const std::string& LegacyBatState::GetUserId() const {
   return state_->user_id;
 }
 
-void BatState::SetUserId(const std::string& user_id) {
+void LegacyBatState::SetUserId(const std::string& user_id) {
   state_->user_id = user_id;
   SaveState();
 }
 
-const std::string& BatState::GetRegistrarVK() const {
+const std::string& LegacyBatState::GetRegistrarVK() const {
   return state_->registrar_vk;
 }
 
-void BatState::SetRegistrarVK(const std::string& registrar_vk) {
+void LegacyBatState::SetRegistrarVK(const std::string& registrar_vk) {
   state_->registrar_vk = registrar_vk;
   SaveState();
 }
 
-const std::string& BatState::GetPreFlight() const {
+const std::string& LegacyBatState::GetPreFlight() const {
   return state_->pre_flight;
 }
 
-void BatState::SetPreFlight(const std::string& pre_flight) {
+void LegacyBatState::SetPreFlight(const std::string& pre_flight) {
   state_->pre_flight = pre_flight;
   SaveState();
 }
 
-const ledger::WalletInfoProperties& BatState::GetWalletInfo() const {
+const ledger::WalletInfoProperties& LegacyBatState::GetWalletInfo() const {
   return state_->wallet_info;
 }
 
-void BatState::SetWalletInfo(
+void LegacyBatState::SetWalletInfo(
     const ledger::WalletInfoProperties& wallet_info) {
   state_->wallet_info = wallet_info;
   SaveState();
 }
 
-const ledger::WalletProperties& BatState::GetWalletProperties() const {
+const ledger::WalletProperties& LegacyBatState::GetWalletProperties() const {
   return state_->wallet;
 }
 
-void BatState::SetWalletProperties(
+void LegacyBatState::SetWalletProperties(
     ledger::WalletProperties* properties) {
   double amount = GetContributionAmount();
   double new_amount = properties->fee_amount;
@@ -228,25 +228,25 @@ void BatState::SetWalletProperties(
   SaveState();
 }
 
-uint64_t BatState::GetBootStamp() const {
+uint64_t LegacyBatState::GetBootStamp() const {
   return state_->boot_timestamp;
 }
 
-void BatState::SetBootStamp(uint64_t stamp) {
+void LegacyBatState::SetBootStamp(uint64_t stamp) {
   state_->boot_timestamp = stamp;
   SaveState();
 }
 
-double BatState::GetDefaultContributionAmount() {
+double LegacyBatState::GetDefaultContributionAmount() {
   return state_->wallet.fee_amount;
 }
 
-void BatState::SetInlineTipSetting(const std::string& key, bool enabled) {
+void LegacyBatState::SetInlineTipSetting(const std::string& key, bool enabled) {
   state_->inline_tips[key] = enabled;
   SaveState();
 }
 
-bool BatState::GetInlineTipSetting(const std::string& key) const {
+bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
   if (state_->inline_tips.find(key) == state_->inline_tips.end()) {
     // not found, all tips are on by default
     return true;
