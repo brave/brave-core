@@ -12,6 +12,9 @@ void AccessTokenFetcher::SetAccessTokenConsumerForTest(
   consumer_ = consumer;
 }
 
+void AccessTokenFetcher::SetAccessTokenResponseForTest(
+    const AccessTokenConsumer::TokenResponse& token_response) {}
+
 void AccessTokenFetcher::FireOnGetTokenSuccess(
     const AccessTokenConsumer::TokenResponse& token_response) {
   consumer_->OnGetTokenSuccess(token_response);

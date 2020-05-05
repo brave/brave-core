@@ -1,0 +1,374 @@
+diff --git a/components/sync/driver/sync_auth_manager_unittest.cc b/components/sync/driver/sync_auth_manager_unittest.cc
+index df83ccbe42c9467eac34871086711f1e84ac05d7..6311a44fdbf02def5a2188b5fa4823e90e58a982 100644
+--- a/components/sync/driver/sync_auth_manager_unittest.cc
++++ b/components/sync/driver/sync_auth_manager_unittest.cc
+@@ -84,6 +84,7 @@ TEST_F(SyncAuthManagerTest, IgnoresEventsIfNotRegistered) {
+   // none of this should result in any callback calls.
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
++  BRAVE_SIGN_IN_1
+   // Without RegisterForAuthNotifications, the active account should always be
+   // reported as empty.
+   EXPECT_TRUE(
+@@ -95,6 +96,7 @@ TEST_F(SyncAuthManagerTest, IgnoresEventsIfNotRegistered) {
+ // ChromeOS doesn't support sign-out.
+ #if !defined(OS_CHROMEOS)
+   identity_env()->ClearPrimaryAccount();
++  BRAVE_SIGN_OUT
+   EXPECT_TRUE(
+       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+ #endif  // !defined(OS_CHROMEOS)
+@@ -113,6 +115,7 @@ TEST_F(SyncAuthManagerTest, ForwardsPrimaryAccountEvents) {
+   EXPECT_CALL(credentials_changed, Run()).Times(0);
+   auto auth_manager =
+       CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
++  BRAVE_SIGN_IN_1
+ 
+   auth_manager->RegisterForAuthNotifications();
+ 
+@@ -126,6 +129,7 @@ TEST_F(SyncAuthManagerTest, ForwardsPrimaryAccountEvents) {
+   // not get a |credentials_changed| call here.
+   EXPECT_CALL(credentials_changed, Run()).Times(testing::AtMost(1));
+   identity_env()->ClearPrimaryAccount();
++  BRAVE_SIGN_OUT
+   EXPECT_TRUE(
+       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+ 
+@@ -133,6 +137,7 @@ TEST_F(SyncAuthManagerTest, ForwardsPrimaryAccountEvents) {
+   EXPECT_CALL(account_state_changed, Run());
+   CoreAccountId second_account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
++  BRAVE_SIGN_IN_2
+   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             second_account_id);
+ }
+@@ -147,6 +152,7 @@ TEST_F(SyncAuthManagerTest, NotifiesOfSignoutBeforeAccessTokenIsGone) {
+   auto auth_manager =
+       CreateAuthManager(account_state_changed.Get(), base::DoNothing());
+ 
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+ 
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+@@ -155,8 +161,9 @@ TEST_F(SyncAuthManagerTest, NotifiesOfSignoutBeforeAccessTokenIsGone) {
+   auth_manager->ConnectionOpened();
+ 
+   // Make sure an access token is available.
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //   "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // Sign out of the account.
+@@ -165,6 +172,7 @@ TEST_F(SyncAuthManagerTest, NotifiesOfSignoutBeforeAccessTokenIsGone) {
+     EXPECT_FALSE(auth_manager->GetCredentials().access_token.empty());
+   });
+   identity_env()->ClearPrimaryAccount();
++  BRAVE_SIGN_OUT
+   // After the signout is complete, the access token should be gone.
+   EXPECT_TRUE(
+       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+@@ -214,6 +222,7 @@ TEST_F(SyncAuthManagerTest, ClearsAuthErrorOnSignout) {
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+ 
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1
+ 
+   auth_manager->RegisterForAuthNotifications();
+ 
+@@ -227,6 +236,7 @@ TEST_F(SyncAuthManagerTest, ClearsAuthErrorOnSignout) {
+   // undefined, see comment on IdentityManager::Observer. Here, explicitly
+   // revoke the refresh token first to force an auth error.
+   identity_env()->RemoveRefreshTokenForPrimaryAccount();
++  BRAVE_ON_REFRESH_TOKEN_REMOVED
+ 
+   ASSERT_NE(auth_manager->GetLastAuthError().state(),
+             GoogleServiceAuthError::NONE);
+@@ -234,6 +244,7 @@ TEST_F(SyncAuthManagerTest, ClearsAuthErrorOnSignout) {
+   // Now actually sign out, i.e. remove the primary account. This should clear
+   // the auth error, since it's now not meaningful anymore.
+   identity_env()->ClearPrimaryAccount();
++  BRAVE_SIGN_OUT
+   EXPECT_EQ(auth_manager->GetLastAuthError().state(),
+             GoogleServiceAuthError::NONE);
+ }
+@@ -245,6 +256,7 @@ TEST_F(SyncAuthManagerTest, DoesNotClearAuthErrorOnSyncDisable) {
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+ 
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER_UNUSED
+ 
+   auth_manager->RegisterForAuthNotifications();
+ 
+@@ -257,6 +269,7 @@ TEST_F(SyncAuthManagerTest, DoesNotClearAuthErrorOnSyncDisable) {
+ 
+   // Force an auth error by revoking the refresh token.
+   identity_env()->RemoveRefreshTokenForPrimaryAccount();
++  BRAVE_ON_REFRESH_TOKEN_REMOVED
+   ASSERT_NE(auth_manager->GetLastAuthError().state(),
+             GoogleServiceAuthError::NONE);
+ 
+@@ -279,6 +292,7 @@ TEST_F(SyncAuthManagerTest, ForwardsCredentialsEvents) {
+   EXPECT_CALL(credentials_changed, Run()).Times(0);
+   auto auth_manager =
+       CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+ 
+   auth_manager->RegisterForAuthNotifications();
+ 
+@@ -289,26 +303,30 @@ TEST_F(SyncAuthManagerTest, ForwardsCredentialsEvents) {
+ 
+   // Once an access token is available, the callback should get run.
+   EXPECT_CALL(credentials_changed, Run());
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  //  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // Now the refresh token gets updated. The access token will get dropped, so
+   // this should cause another notification.
+   EXPECT_CALL(credentials_changed, Run());
+   identity_env()->SetRefreshTokenForPrimaryAccount();
++  BRAVE_FORWARDS_CREDENTIALS_EVENTS
+   ASSERT_TRUE(auth_manager->GetCredentials().access_token.empty());
+ 
+   // Once a new token is available, there's another notification.
+   EXPECT_CALL(credentials_changed, Run());
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token_2");
+ 
+   // Revoking the refresh token should also cause the access token to get
+   // dropped.
+   EXPECT_CALL(credentials_changed, Run());
+   identity_env()->RemoveRefreshTokenForPrimaryAccount();
++  BRAVE_ON_REFRESH_TOKEN_REMOVED
+   EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
+ }
+ 
+@@ -316,14 +334,16 @@ TEST_F(SyncAuthManagerTest, RequestsAccessTokenOnSyncStartup) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+ 
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   EXPECT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ }
+@@ -333,14 +353,15 @@ TEST_F(SyncAuthManagerTest,
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_RETRIES_ACCESS_TOKEN_FETCH_WITH_BACKOFF_ON_TRANSIENT_FAILURE
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
+-      GoogleServiceAuthError::FromConnectionError(net::ERR_TIMED_OUT));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
++  //     GoogleServiceAuthError::FromConnectionError(net::ERR_TIMED_OUT));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   // The access token fetch should get retried (with backoff, hence no actual
+   // request yet), without exposing an auth error.
+@@ -353,6 +374,7 @@ TEST_F(SyncAuthManagerTest, AbortsAccessTokenFetchOnPersistentFailure) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_ABORTS_ACCESS_TOKEN_FETCH_ON_PERSISTENT_FAILURE
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+@@ -363,8 +385,9 @@ TEST_F(SyncAuthManagerTest, AbortsAccessTokenFetchOnPersistentFailure) {
+       GoogleServiceAuthError::FromInvalidGaiaCredentialsReason(
+           GoogleServiceAuthError::InvalidGaiaCredentialsReason::
+               CREDENTIALS_REJECTED_BY_SERVER);
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
+-      auth_error);
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
++  //     auth_error);
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   // Auth error should get exposed; no retry.
+   EXPECT_FALSE(auth_manager->IsRetryingAccessTokenFetchForTest());
+@@ -375,13 +398,15 @@ TEST_F(SyncAuthManagerTest, FetchesNewAccessTokenWithBackoffOnServerError) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // The server is returning AUTH_ERROR - maybe something's wrong with the
+@@ -399,13 +424,15 @@ TEST_F(SyncAuthManagerTest, ExposesServerError) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // Now a server error happens.
+@@ -423,13 +450,15 @@ TEST_F(SyncAuthManagerTest, ClearsServerErrorOnSyncDisable) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // A server error happens.
+@@ -450,13 +479,15 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnExpiry) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // Now everything is okay for a while.
+@@ -471,8 +502,9 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnExpiry) {
+   // Should immediately drop the access token and fetch a new one (no backoff).
+   EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
+ 
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_REQUESTS_NEW_ACCESS_TOKEN_ON_EXPIRY
+   EXPECT_EQ(auth_manager->GetCredentials().access_token, "access_token_2");
+ }
+ 
+@@ -480,13 +512,15 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnRefreshTokenUpdate) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // Now everything is okay for a while.
+@@ -497,12 +531,14 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnRefreshTokenUpdate) {
+ 
+   // But then the refresh token changes.
+   identity_env()->SetRefreshTokenForPrimaryAccount();
++  BRAVE_REQUESTS_NEW_ACCESS_TOKEN_ON_REFRESH_TOKEN_UPDATE
+ 
+   // Should immediately drop the access token and fetch a new one (no backoff).
+   EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
+ 
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   EXPECT_EQ(auth_manager->GetCredentials().access_token, "access_token_2");
+ }
+ 
+@@ -510,6 +546,7 @@ TEST_F(SyncAuthManagerTest, DoesNotRequestAccessTokenAutonomously) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+@@ -525,6 +562,7 @@ TEST_F(SyncAuthManagerTest, DoesNotRequestAccessTokenAutonomously) {
+   identity_env()->SetCallbackForNextAccessTokenRequest(
+       access_token_requested.Get());
+   identity_env()->SetRefreshTokenForPrimaryAccount();
++  BRAVE_DOES_NOT_REQUEST_ACCESS_TOKEN_AUTONOMOUSLY
+ 
+   // Make sure no access token request was sent. Since the request goes through
+   // posted tasks, we have to spin the message loop.
+@@ -537,13 +575,15 @@ TEST_F(SyncAuthManagerTest, ClearsCredentialsOnRefreshTokenRemoval) {
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+ 
+   // Now everything is okay for a while.
+@@ -559,6 +599,7 @@ TEST_F(SyncAuthManagerTest, ClearsCredentialsOnRefreshTokenRemoval) {
+   identity_env()->SetCallbackForNextAccessTokenRequest(
+       access_token_requested.Get());
+   identity_env()->RemoveRefreshTokenForPrimaryAccount();
++  BRAVE_CLEARS_CREDENTIALS_ON_REFRESH_TOKEN_REMOVAL
+ 
+   // Should immediately drop the access token and expose an auth error.
+   EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
