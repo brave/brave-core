@@ -35,11 +35,6 @@ AdsRewards::~AdsRewards() = default;
 void AdsRewards::Update(
     const WalletInfo& wallet_info,
     const bool should_refresh) {
-  DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.private_key.empty());
-
-  wallet_info_ = WalletInfo(wallet_info);
-
   Update();
 
   if (!should_refresh) {
@@ -47,6 +42,12 @@ void AdsRewards::Update(
   }
 
   if (retry_timer_.IsRunning()) {
+    return;
+  }
+
+  wallet_info_ = wallet_info;
+  if (!wallet_info_.IsValid()) {
+    BLOG(ERROR) << "Failed to fetch ads rewards due to invalid wallet";
     return;
   }
 

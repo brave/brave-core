@@ -1,33 +1,25 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/confirmations/internal/string_helper.h"
+
+#include <stdint.h>
+
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
-
-#include "bat/confirmations/internal/confirmations_client_mock.h"
-#include "bat/confirmations/internal/confirmations_impl.h"
-#include "bat/confirmations/internal/string_helper.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=Confirmations*
 
-using std::placeholders::_1;
-
 namespace confirmations {
 
 class ConfirmationsStringHelperTest : public ::testing::Test {
  protected:
-  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
-  std::unique_ptr<ConfirmationsImpl> confirmations_;
-
-  ConfirmationsStringHelperTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
-      confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())) {
+  ConfirmationsStringHelperTest() {
     // You can do set-up work for each test here
   }
 
@@ -41,13 +33,6 @@ class ConfirmationsStringHelperTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    auto callback = std::bind(
-        &ConfirmationsStringHelperTest::OnInitialize, this, _1);
-    confirmations_->Initialize(callback);
-  }
-
-  void OnInitialize(const bool success) {
-    EXPECT_EQ(true, success);
   }
 
   void TearDown() override {
@@ -58,11 +43,13 @@ class ConfirmationsStringHelperTest : public ::testing::Test {
   // Objects declared here can be used by all tests in the test case
 };
 
-TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
+TEST_F(ConfirmationsStringHelperTest, DecodeHexString) {
   // Arrange
-  std::string hexadecimal = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
+  const std::string hexadecimal = "e9b1ab4f44d39eb04323411eed0b5a2ceedff0126"
+      "4474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61e"
+      "d5ab2845e224d58144";
 
-  std::vector<uint8_t> private_key = {
+  const std::vector<uint8_t> private_key = {
       0xe9, 0xb1, 0xab, 0x4f, 0x44, 0xd3, 0x9e, 0xb0, 0x43, 0x23, 0x41, 0x1e,
       0xed, 0x0b, 0x5a, 0x2c, 0xee, 0xdf, 0xf0, 0x12, 0x64, 0x47, 0x4f, 0x86,
       0xe2, 0x9c, 0x70, 0x7a, 0x56, 0x61, 0x56, 0x50, 0x33, 0xce, 0xa0, 0x08,
@@ -72,12 +59,12 @@ TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
   };
 
   // Act
-  auto bytes = helper::String::decode_hex(hexadecimal);
+  const std::vector<uint8_t> bytes = helper::String::decode_hex(hexadecimal);
 
   // Assert
   unsigned int index = 0;
   for (const auto& byte : bytes) {
-    auto valid_byte = private_key.at(index);
+    const uint8_t valid_byte = private_key.at(index);
     if (byte != valid_byte) {
       FAIL();
     }
@@ -86,6 +73,17 @@ TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
   }
 
   SUCCEED();
+}
+
+TEST_F(ConfirmationsStringHelperTest, DecodeEmptyHexString) {
+  // Arrange
+  const std::string hexadecimal = "";
+
+  // Act
+  const std::vector<uint8_t> bytes = helper::String::decode_hex(hexadecimal);
+
+  // Assert
+  EXPECT_TRUE(bytes.empty());
 }
 
 }  // namespace confirmations
