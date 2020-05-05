@@ -6,6 +6,8 @@ const char sync_code[] =
     "badge unique kiwi orient spring venue piano "
     "lake admit ill roof brother grant hour better "
     "proud cabbage fee slow economy wage final fox cancel";
+const char account_id[] =
+    "F9973A77CA9CE4D78F4564902500C96674D18E6A37AE762F853EC9FFFD227559";
 }  // namespace
 
 #define EnableSyncSignOutAndChangeAccount \
@@ -16,7 +18,6 @@ const char sync_code[] =
   DISABLED_CredentialsRejectedByClient_StopSync
 #define CredentialsRejectedByClient_DoNotStopSync \
   DISABLED_CredentialsRejectedByClient_DoNotStopSync
-#define SignOutRevokeAccessToken DISABLED_SignOutRevokeAccessToken
 #define CredentialErrorReturned DISABLED_CredentialErrorReturned
 #define CredentialErrorClearsOnNewToken DISABLED_CredentialErrorClearsOnNewToken
 #define DisableSyncOnClient DISABLED_DisableSyncOnClient
@@ -34,13 +35,16 @@ const char sync_code[] =
 #define BRAVE_SIGN_IN                          \
   brave_sync::Prefs brave_sync_prefs(prefs()); \
   brave_sync_prefs.SetSeed(sync_code);
+#define BRAVE_GET_PRIMARY_ACCOUNT CoreAccountId::FromString(account_id);
+#define BRAVE_SIGN_OUT                         \
+  brave_sync::Prefs brave_sync_prefs(prefs()); \
+  brave_sync_prefs.Clear();
 
 #include "../../../../../components/sync/driver/profile_sync_service_unittest.cc"
 #undef EnableSyncSignOutAndChangeAccount
 #undef RevokeAccessTokenFromTokenService
 #undef CredentialsRejectedByClient_StopSync
 #undef CredentialsRejectedByClient_DoNotStopSync
-#undef SignOutRevokeAccessToken
 #undef CredentialErrorReturned
 #undef CredentialErrorClearsOnNewToken
 #undef DisableSyncOnClient
@@ -52,3 +56,5 @@ const char sync_code[] =
 #undef BRAVE_SET_UP
 #undef BRAVE_TEAR_DOWN
 #undef BRAVE_SIGN_IN
+#undef BRAVE_GET_PRIMARY_ACCOUNT
+#undef BRAVE_SIGN_OUT

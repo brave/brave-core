@@ -70,6 +70,8 @@ void SyncAuthManager::ResetKeys() {
   VLOG(1) << __func__;
   public_key_.clear();
   private_key_.clear();
+  if (registered_for_auth_notifications_)
+    UpdateSyncAccountIfNecessary();
 }
 
 void SyncAuthManager::OnGetTokenSuccess(
