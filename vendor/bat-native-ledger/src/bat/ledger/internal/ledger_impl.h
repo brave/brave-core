@@ -18,7 +18,7 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/properties/wallet_info_properties.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/ledger.h"

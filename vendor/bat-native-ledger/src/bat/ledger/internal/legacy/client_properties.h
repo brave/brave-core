@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-#include "bat/ledger/internal/properties/wallet_info_properties.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/mojom_structs.h"
 
 namespace ledger {

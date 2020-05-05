@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "bat/ledger/internal/properties/publisher_settings_properties.h"
+#include "bat/ledger/internal/legacy/publisher_settings_properties.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {

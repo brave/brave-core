@@ -11,8 +11,8 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/properties/client_properties.h"
-#include "bat/ledger/internal/properties/wallet_info_properties.h"
+#include "bat/ledger/internal/legacy/client_properties.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;

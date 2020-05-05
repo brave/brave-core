@@ -6,7 +6,7 @@
 #include <limits>
 
 #include "bat/ledger/internal/legacy/publisher_settings_state.h"
-#include "bat/ledger/internal/properties/report_balance_properties.h"
+#include "bat/ledger/internal/legacy/report_balance_properties.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=PublisherSettingsStateTest.*

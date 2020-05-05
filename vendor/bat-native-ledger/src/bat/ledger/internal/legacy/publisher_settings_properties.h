@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/internal/properties/report_balance_properties.h"
+#include "bat/ledger/internal/legacy/report_balance_properties.h"
 
 namespace ledger {
 

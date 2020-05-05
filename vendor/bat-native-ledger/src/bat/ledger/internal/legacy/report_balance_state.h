@@ -10,7 +10,7 @@
 
 #include "bat/ledger/internal/legacy/state_reader.h"
 #include "bat/ledger/internal/legacy/state_writer.h"
-#include "bat/ledger/internal/properties/report_balance_properties.h"
+#include "bat/ledger/internal/legacy/report_balance_properties.h"
 #include "rapidjson/writer.h"
 
 namespace ledger {

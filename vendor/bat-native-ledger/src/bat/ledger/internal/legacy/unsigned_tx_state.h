@@ -10,7 +10,7 @@
 
 #include "bat/ledger/internal/legacy/state_reader.h"
 #include "bat/ledger/internal/legacy/state_writer.h"
-#include "bat/ledger/internal/properties/unsigned_tx_properties.h"
+#include "bat/ledger/internal/legacy/unsigned_tx_properties.h"
 #include "rapidjson/writer.h"
 
 namespace ledger {

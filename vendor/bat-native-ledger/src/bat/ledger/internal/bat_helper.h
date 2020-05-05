@@ -11,7 +11,7 @@
 #include <map>
 #include <functional>
 
-#include "bat/ledger/internal/properties/wallet_info_properties.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 
