@@ -1,0 +1,38 @@
+[
+  {
+    "domain": "theguardian.com",
+    "url_rules": [
+        "||theguardian.com"
+    ],
+    "declarative_rewrite": {
+        "main_content": [
+            "article header",
+            ".content__article-body"
+        ],
+        "main_content_cleanup": [
+            ".hide-on-mobile",
+            ".inline-icon",
+            ".atom__button",
+            "input",
+            ".meta__extras",
+            ".content__headline-showcase-wrapper",
+            ".fc-container__header",
+            "figure.element-embed",
+            ".vjs-control-text"
+        ],
+        "delazify": true,
+        "fix_embeds": true,
+        "content_script": "<script>\n            [...document.querySelectorAll(\"[data-src-background]\")]\n                .map(d => d.src = d.dataset[\"src-background\"].replace(\"background-image: url\", \"\").replace(/[\\(\\)]/g, \"\"))\n            </script>",
+        "preprocess": [
+            {
+                "selector": ".vjs-big-play-button[style]",
+                "attribute": [
+                    "style",
+                    "data-src-background"
+                ],
+                "element_name": "img"
+            }
+        ]
+    }
+  }
+]

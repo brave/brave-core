@@ -294,6 +294,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       && request.resource_type
           == static_cast<int>(content::ResourceType::kMainFrame)) {
     result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
+        g_brave_browser_process->speedreader_whitelist(),
         base::ThreadTaskRunnerHandle::Get()));
   }
 #endif  // ENABLE_SPEEDREADER

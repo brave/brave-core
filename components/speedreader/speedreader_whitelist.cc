@@ -8,29 +8,54 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/task/post_task.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
+#include "brave/components/speedreader/speedreader_switches.h"
 #include "url/gurl.h"
 
 namespace speedreader {
 
 namespace {
 
-constexpr base::FilePath::CharType kDatFileName[] =
-    FILE_PATH_LITERAL("\rs-SpeedreaderWhitelist.dat");
+constexpr base::FilePath::CharType kDatFileVersion[] = FILE_PATH_LITERAL("1");
 
-constexpr char kComponentName[] = "Speedreader";
-// TODO(iefremov):
-constexpr char kComponentId[] = "";
-constexpr char kComponentPublicKey[] = "";
+constexpr base::FilePath::CharType kDatFileName[] =
+    FILE_PATH_LITERAL("speedreader-updater.dat");
+
+constexpr char kComponentName[] = "Brave SpeedReader Updater";
+constexpr char kComponentId[] = "jicbkmdloagakknpihibphagfckhjdih";
+constexpr char kComponentPublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3j/+grwCsrYVA99oDHa+E9z5edPIV"
+    "3J+lzld3X7K8wfJXbSauGf2DSxW0UEh+MqkkcIK/66Kkd4veuWqnUCAGXUzrHVy/N6kksDkrS"
+    "cOlpKT9zfyIvLc/4nmiyPCSc5c7UrDVUwZnIUBBpEHiwkpiM4pujeJkZSl5783RWIDRN92GDB"
+    "dHMdD97JH3bPp3SCTmfAAHzzYUAHUSrOAfodD8qWkfWT19VigseIqwK6dH30uFgaZIOwU9uJV"
+    "2Ts/TDEddNv8eV7XbwQdL1HUEoFj+RXDq1CuQJjvQdc7YRmy0WGV0GIXu0lAFOQ6D/Z/rjtOe"
+    "//2uc4zIkviMcUlrvHaJwIDAQAB";
 
 }  // namespace
 
 SpeedreaderWhitelist::SpeedreaderWhitelist(Delegate* delegate)
     : brave_component_updater::BraveComponent(delegate),
-      engine_(new adblock::Engine) {
-  Register(kComponentName, kComponentId, kComponentPublicKey);
+      speedreader_(new speedreader::SpeedReader) {
+  const auto* cmd_line = base::CommandLine::ForCurrentProcess();
+  if (!cmd_line->HasSwitch(speedreader::kSpeedreaderWhitelistPath)) {
+    // Register component
+    Register(kComponentName, kComponentId, kComponentPublicKey);
+  } else {
+    const base::FilePath whitelist_path(
+        cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderWhitelistPath));
+    VLOG(2) << "Speedreader whitelist from " << whitelist_path;
+
+    base::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+        base::BindOnce(
+            &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
+            whitelist_path),
+        base::BindOnce(&SpeedreaderWhitelist::OnGetDATFileData,
+                       weak_factory_.GetWeakPtr()));
+  }
 }
 
 SpeedreaderWhitelist::~SpeedreaderWhitelist() = default;
@@ -40,24 +65,23 @@ void SpeedreaderWhitelist::OnComponentReady(const std::string& component_id,
                                             const std::string& manifest) {
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&brave_component_updater::LoadDATFileData<adblock::Engine>,
-                     install_dir.Append(kDatFileName)),
+      base::BindOnce(
+          &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
+          install_dir.Append(kDatFileVersion).Append(kDatFileName)),
       base::BindOnce(&SpeedreaderWhitelist::OnGetDATFileData,
                      weak_factory_.GetWeakPtr()));
 }
 
 bool SpeedreaderWhitelist::IsWhitelisted(const GURL& url) {
-  bool explicit_cancel;
-  bool saved_from_exception;
-  std::string redirect;
+  return speedreader_->IsReadableURL(url.spec());
+}
 
-  return engine_->matches(url.spec(), url.host(), url.host(),
-                          false, "sub_frame", &explicit_cancel,
-                          &saved_from_exception, &redirect);
+std::unique_ptr<Rewriter> SpeedreaderWhitelist::MakeRewriter(const GURL& url) {
+  return speedreader_->MakeRewriter(url.spec());
 }
 
 void SpeedreaderWhitelist::OnGetDATFileData(GetDATFileDataResult result) {
-  engine_ = std::move(result.first);
+  speedreader_ = std::move(result.first);
 }
 
 }  // namespace speedreader

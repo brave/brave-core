@@ -2,8 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/rust/config.gni")
+
 if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
+}
+
+declare_args() {
+  rustup_path = rebase_path("//brave/build/rustup/", root_build_dir)
 }
 
 # Runs a script to compile a local Cargo package and all of its dependencies
@@ -16,12 +22,17 @@ template("cargo_build") {
 
     outputs = [output]
 
+    if (!defined(target)) {
+      target = rustc_target  # defined by //brave/build/rust/config.gni,
+    }
+
     args = [
-      "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
-      "--cargo_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--rustup_path=" + rustup_path,
+      "--cargo_path=" + rustup_path,
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
       "--build_path=" + rebase_path(build_path, root_build_dir),
       "--target=" + target,
+      "--toolchain=" + rustc_toolchain, # defined by //brave/build/rust/config.gni,
       "--is_debug=$is_debug"
     ]
 
@@ -29,9 +40,39 @@ template("cargo_build") {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
     }
 
-    if (defined(invoker.rust_flags)) {
+    if (defined(ldflags)) {
+      rust_flags += " -C link-args=${ldflags} "
+    }
+
+    if (defined(rust_flags)) {
       args += [ "--rust_flags=$rust_flags" ]
     }
 
+  }
+}
+
+# Runs a script to generate C bindings for rust library
+template("cargo_cbindgen") {
+  action(target_name) {
+    script = "//brave/script/cargo_cbindgen.py"
+
+    forward_variables_from(invoker, ["config", "sources", "output"])
+
+    assert(defined(config), "Must specify cbindgen.toml config to use")
+    assert(defined(sources), "Must specify sources to generate bindings for")
+    assert(defined(output), "Must specify output header file")
+
+    sources += [
+      config,
+    ]
+    outputs = [ output ]
+
+    args = [
+      "--rustup_path=" + rustup_path,
+      "--cargo_path=" + rustup_path,
+      "--config=" + rebase_path(config, root_build_dir),
+      "--path=" + rebase_path(get_path_info(config, "dir"), root_build_dir),
+      "--output=" + rebase_path(output, root_build_dir),
+    ]
   }
 }
