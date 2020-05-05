@@ -1000,7 +1000,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return bridgedReports;
 }
 
-- (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion
+- (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (^)(BATBalanceReportInfo * _Nullable info))completion
 {
   ledger->GetBalanceReport((ledger::ActivityMonth)month, year, ^(const ledger::Result result, ledger::BalanceReportInfoPtr info) {
     auto bridgedInfo = info.get() != nullptr ? [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*info.get()] : nil;
