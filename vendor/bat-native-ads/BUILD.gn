@@ -179,6 +179,8 @@ source_set("ads") {
     "src/bat/ads/internal/filters/ads_history_filter_factory.cc",
     "src/bat/ads/internal/filters/ads_history_filter_factory.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rule.h",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.cc",

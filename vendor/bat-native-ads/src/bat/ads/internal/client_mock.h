@@ -38,6 +38,11 @@ class ClientMock : public Client {
       const std::string& segment,
       const uint64_t time_offset_in_seconds,
       const uint16_t weight);
+
+  void GeneratePastAdConversionHistoryFromNow(
+      const std::string& creative_set_id,
+      const int64_t time_offset_per_ad_in_seconds,
+      const uint8_t count);
 };
 
 }  // namespace ads

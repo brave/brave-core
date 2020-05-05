@@ -37,6 +37,9 @@ class FrequencyCapping {
   std::deque<uint64_t> GetCampaign(
       const std::string& campaign_id) const;
 
+  std::deque<uint64_t> GetAdConversionHistory(
+      const std::string& creative_set_id) const;
+
  private:
   const Client* const client_;  // NOT OWNED
 };

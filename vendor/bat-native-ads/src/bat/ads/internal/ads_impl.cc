@@ -35,6 +35,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
@@ -1095,6 +1096,10 @@ std::vector<std::unique_ptr<ExclusionRule>>
   std::unique_ptr<ExclusionRule> total_max_frequency_cap =
       std::make_unique<TotalMaxFrequencyCap>(frequency_capping_.get());
   exclusion_rules.push_back(std::move(total_max_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> conversion_frequency_cap =
+      std::make_unique<ConversionFrequencyCap>(frequency_capping_.get());
+  exclusion_rules.push_back(std::move(conversion_frequency_cap));
 
   return exclusion_rules;
 }

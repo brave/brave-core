@@ -95,4 +95,17 @@ std::deque<uint64_t> FrequencyCapping::GetCampaign(
   return history;
 }
 
+std::deque<uint64_t> FrequencyCapping::GetAdConversionHistory(
+    const std::string& creative_set_id) const {
+  std::deque<uint64_t> history;
+
+  auto creative_set_history = client_->GetAdConversionHistory();
+  if (creative_set_history.find(creative_set_id)
+      != creative_set_history.end()) {
+    history = creative_set_history.at(creative_set_id);
+  }
+
+  return history;
+}
+
 }  // namespace ads
