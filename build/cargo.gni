@@ -65,14 +65,14 @@ template("cargo_cbindgen") {
     sources += [
       config,
     ]
-    outputs = [ "${target_gen_dir}/${output}" ]
+    outputs = [ output ]
 
     args = [
       "--rustup_path=" + rustup_path,
       "--cargo_path=" + rustup_path,
       "--config=" + rebase_path(config, root_build_dir),
       "--path=" + rebase_path(get_path_info(config, "dir"), root_build_dir),
-      "--output=" + rebase_path("${target_gen_dir}/${output}", root_build_dir),
+      "--output=" + rebase_path(output, root_build_dir),
     ]
   }
 }

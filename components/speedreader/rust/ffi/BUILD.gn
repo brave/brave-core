@@ -55,7 +55,7 @@ cargo_build("speedreader_rust_lib") {
 # Generate FFI header from Rust source
 cargo_cbindgen("speedreader_ffi_header") {
   config = "cbindgen.toml"
-  output = "speedreader_ffi.h"
+  output = "${target_gen_dir}/speedreader_ffi.h"
 
   sources = [
     "Cargo.lock",
