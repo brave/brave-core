@@ -7,6 +7,7 @@ import newTabReducer from '../../../brave_new_tab_ui/reducers/new_tab_reducer'
 
 // API
 import * as storage from '../../../brave_new_tab_ui/storage/new_tab_storage'
+import { types } from '../../../brave_new_tab_ui/constants/new_tab_types'
 
 describe('newTabReducer', () => {
 
@@ -84,6 +85,115 @@ describe('newTabReducer', () => {
     })
     describe('SET_INITIAL_REWARDS_DATA', () => {
       // TODO
+    })
+  })
+  describe('widget stack state maintenance', () => {
+    describe('REMOVE_STACK_WIDGET', () => {
+      it('does not modify an empty stack', () => {
+        const assertion = newTabReducer({
+          ...storage.defaultState,
+          widgetStackOrder: []
+        }, {
+          type: types.REMOVE_STACK_WIDGET,
+          payload: {
+            widget: 'rewards'
+          }
+        })
+        const expectedState = {
+          ...storage.defaultState,
+          widgetStackOrder: []
+        }
+        expect(assertion).toEqual(expectedState)
+      })
+
+      it('removes widget and updates removed widgets', () => {
+        const assertion = newTabReducer({
+          ...storage.defaultState,
+          widgetStackOrder: ['binance', 'rewards']
+        }, {
+          type: types.REMOVE_STACK_WIDGET,
+          payload: {
+            widget: 'rewards'
+          }
+        })
+        const expectedState = {
+          ...storage.defaultState,
+          widgetStackOrder: ['binance'],
+          removedStackWidgets: ['rewards']
+        }
+        expect(assertion).toEqual(expectedState)
+      })
+
+      it('removes widget and does not re-update removed widgets', () => {
+        const assertion = newTabReducer({
+          ...storage.defaultState,
+          widgetStackOrder: ['rewards', 'binance'],
+          removedStackWidgets: ['rewards']
+        }, {
+          type: types.REMOVE_STACK_WIDGET,
+          payload: {
+            widget: 'rewards'
+          }
+        })
+        const expectedState = {
+          ...storage.defaultState,
+          widgetStackOrder: ['binance'],
+          removedStackWidgets: ['rewards']
+        }
+        expect(assertion).toEqual(expectedState)
+      })
+    })
+    describe('SET_FOREGROUND_STACK_WIDGET', () => {
+      it('adds widget if it is not in the stack and sets it to the foreground', () => {
+        const assertion = newTabReducer({
+          ...storage.defaultState,
+          widgetStackOrder: ['rewards']
+        }, {
+          type: types.SET_FOREGROUND_STACK_WIDGET,
+          payload: {
+            widget: 'binance'
+          }
+        })
+        const expectedState = {
+          ...storage.defaultState,
+          widgetStackOrder: ['rewards', 'binance']
+        }
+        expect(assertion).toEqual(expectedState)
+      })
+
+      it('sets a widget to the foreground if it is in the stack', () => {
+        const assertion = newTabReducer({
+          ...storage.defaultState,
+          widgetStackOrder: ['binance', 'rewards']
+        }, {
+          type: types.SET_FOREGROUND_STACK_WIDGET,
+          payload: {
+            widget: 'binance'
+          }
+        })
+        const expectedState = {
+          ...storage.defaultState,
+          widgetStackOrder: ['rewards', 'binance']
+        }
+        expect(assertion).toEqual(expectedState)
+      })
+
+      it('does not re-add a widget', () => {
+        const assertion = newTabReducer({
+          ...storage.defaultState,
+          widgetStackOrder: ['binance', 'rewards']
+        }, {
+          type: types.SET_FOREGROUND_STACK_WIDGET,
+          payload: {
+            widget: 'rewards'
+          }
+        })
+        const expectedState = {
+          ...storage.defaultState,
+          widgetStackOrder: ['binance', 'rewards']
+        }
+        expect(assertion).toEqual(expectedState)
+      })
     })
   })
 })

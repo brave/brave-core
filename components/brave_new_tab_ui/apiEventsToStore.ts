@@ -72,7 +72,7 @@ function binanceInitData () {
   getBinanceBlackList()
   .then(({ isSupportedRegion, onlyAnonWallet }) => {
     if (onlyAnonWallet || !isSupportedRegion) {
-      getActions().setCurrentStackWidget('rewards')
+      getActions().removeStackWidget('binance')
     }
     getActions().setOnlyAnonWallet(onlyAnonWallet)
     getActions().setBinanceSupported(isSupportedRegion && !onlyAnonWallet)

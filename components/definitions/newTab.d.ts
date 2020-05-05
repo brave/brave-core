@@ -72,7 +72,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance'
+  export type StackWidget = 'rewards' | 'binance' | ''
 
   export interface LegacyState {
     pinnedTopSites: Site[]
@@ -92,13 +92,14 @@ declare namespace NewTab {
 
   export interface RewardsState {
     rewardsState: RewardsWidgetState
-    currentStackWidget: StackWidget
   }
 
   export interface PersistentState {
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
+    removedStackWidgets: StackWidget[]
+    widgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
   }
 
