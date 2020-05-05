@@ -6,7 +6,7 @@
 
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="closing_all_tabs_closes_brave"
         android:title="@string/prefs_closing_all_tabs_closes_brave"
         android:summaryOn="@string/text_on"
