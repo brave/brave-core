@@ -35,14 +35,14 @@ class PublisherTest : public testing::Test {
   }
 };
 
-TEST_F(PublisherTest, calcScoreConsts) {
+TEST_F(PublisherTest, CalcScoreConsts) {
   braveledger_publisher::Publisher* publishers =
       new braveledger_publisher::Publisher(nullptr);
 
   /*
    * Test 5 seconds
    */
-  publishers->calcScoreConsts(5);
+  publishers->CalcScoreConsts(5);
 
   EXPECT_EQ(publishers->a_, 14500);
   EXPECT_EQ(publishers->a2_, 29000);
@@ -53,7 +53,7 @@ TEST_F(PublisherTest, calcScoreConsts) {
   /*
    * Test 8 seconds
    */
-  publishers->calcScoreConsts(8);
+  publishers->CalcScoreConsts(8);
 
   EXPECT_EQ(publishers->a_, 14200);
   EXPECT_EQ(publishers->a2_, 28400);
@@ -64,7 +64,7 @@ TEST_F(PublisherTest, calcScoreConsts) {
   /*
    * Test 1min (60 seconds)
    */
-  publishers->calcScoreConsts(60);
+  publishers->CalcScoreConsts(60);
 
   EXPECT_EQ(publishers->a_, 9000);
   EXPECT_EQ(publishers->a2_, 18000);
@@ -81,7 +81,7 @@ TEST_F(PublisherTest, concaveScore) {
    * min duration: 5 seconds
    * duration: 5, 15, 60, 1000, 10000, 150000, 500000
    */
-  publishers->calcScoreConsts(5);
+  publishers->CalcScoreConsts(5);
   EXPECT_NEAR(publishers->concaveScore(5), 1, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(15), 1.06285, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(60), 1.28703, 0.001f);
@@ -94,7 +94,7 @@ TEST_F(PublisherTest, concaveScore) {
    * min duration: 8 seconds
    * duration: 5, 15, 60, 1000, 10000, 150000, 500000
    */
-  publishers->calcScoreConsts(8);
+  publishers->CalcScoreConsts(8);
   EXPECT_NEAR(publishers->concaveScore(5), 0.979606, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(15), 1.04477, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(60), 1.27505, 0.001f);
@@ -107,7 +107,7 @@ TEST_F(PublisherTest, concaveScore) {
    * min duration: 60 seconds
    * duration: 5, 15, 60, 1000, 10000, 150000, 500000
    */
-  publishers->calcScoreConsts(60);
+  publishers->CalcScoreConsts(60);
   EXPECT_NEAR(publishers->concaveScore(5), 0.455342, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(15), 0.607625, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(60), 1, 0.001f);

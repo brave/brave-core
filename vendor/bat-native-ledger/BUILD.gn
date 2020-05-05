@@ -281,6 +281,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/client_state.h",
     "src/bat/ledger/internal/legacy/publisher_settings_state.cc",
     "src/bat/ledger/internal/legacy/publisher_settings_state.h",
+    "src/bat/ledger/internal/legacy/publisher_state.cc",
+    "src/bat/ledger/internal/legacy/publisher_state.h",
     "src/bat/ledger/internal/legacy/report_balance_state.cc",
     "src/bat/ledger/internal/legacy/report_balance_state.h",
     "src/bat/ledger/internal/legacy/state_reader.h",

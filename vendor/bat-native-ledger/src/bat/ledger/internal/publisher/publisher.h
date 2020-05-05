@@ -12,20 +12,16 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "bat/ledger/internal/legacy/publisher_settings_properties.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace ledger {
-struct PublisherSettings;
-}
-
 namespace braveledger_publisher {
 
 class PublisherServerList;
+class LegacyPublisherState;
 
 class Publisher {
  public:
@@ -128,6 +124,10 @@ class Publisher {
 
   bool IsConnectedOrVerified(const ledger::PublisherStatus status);
 
+  void SynopsisNormalizer();
+
+  void CalcScoreConsts(const uint64_t& min_duration_seconds);
+
  private:
   void OnRefreshPublisher(
     const ledger::Result result,
@@ -142,8 +142,6 @@ class Publisher {
                                const ledger::VisitData& visit_data,
                                ledger::Result result,
                                ledger::PublisherInfoPtr info);
-
-  void OnPublisherStateSaved(const ledger::Result result);
 
   bool IsExcluded(
       const std::string& publisher_id,
@@ -169,11 +167,6 @@ class Publisher {
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback);
 
-  ledger::Result GetBalanceReportInternal(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::BalanceReportInfo* report_info);
-
   void onFetchFavIcon(const std::string& publisher_key,
                       uint64_t window_id,
                       bool success,
@@ -190,13 +183,7 @@ class Publisher {
     ledger::PublisherInfoPtr publisher_info,
     ledger::ResultCallback callback);
 
-  void calcScoreConsts(const uint64_t& min_duration_seconds);
-
   double concaveScore(const uint64_t& duration_seconds);
-
-  void saveState();
-
-  void SynopsisNormalizer();
 
   void SynopsisNormalizerCallback(ledger::PublisherInfoList list);
 
@@ -232,7 +219,7 @@ class Publisher {
   ledger::PublisherStatus ParsePublisherStatus(const std::string& status);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::PublisherSettingsProperties> state_;
+  std::unique_ptr<LegacyPublisherState> state_;
   std::unique_ptr<PublisherServerList> server_list_;
 
   double a_;
