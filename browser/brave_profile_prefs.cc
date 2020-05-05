@@ -228,7 +228,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   speedreader::SpeedreaderService::RegisterPrefs(registry);
 #endif
 
+#if !defined(OS_ANDROID)
   BraveOmniboxClientImpl::RegisterPrefs(registry);
+#endif
 
   RegisterProfilePrefsForMigration(registry);
 }
