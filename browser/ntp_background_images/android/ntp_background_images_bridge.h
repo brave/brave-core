@@ -39,6 +39,15 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
                         const base::android::JavaParamRef<jobject>& obj);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);
+  void GetTopSites(JNIEnv* env,
+                        const base::android::JavaParamRef<jobject>& obj);
+  bool IsSuperReferral(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj);
+  base::android::ScopedJavaLocalRef<jstring>
+  GetSuperReferralThemeName(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj);
+  base::android::ScopedJavaLocalRef<jstring> GetSuperReferralCode(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 

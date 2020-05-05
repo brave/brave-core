@@ -68,4 +68,12 @@
     <color name="new_tab_menu_text_dark_color">@android:color/white</color>
     <color name="new_tab_menu_bg_dark_color">@color/modern_grey_800</color>
     <color name="ntp_non_disruptive_banner_bg_color">#E6343a40</color>
+    <color name="translucent_activity_background_color">#AA3B3B3B</color>
+    <color name="user_wallet_background">#F1F3F5</color>
+    <color name="user_wallet_status">#49CC69</color>
+
+    <!-- User wallet -->
+    <color name="user_wallet_dimmed_note">#E6E3F4</color>
+
+    <color name="qr_button_color">@android:color/white</color>
 </resources>
