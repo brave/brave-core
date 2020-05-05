@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Über Brave Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Erweiterte Steuerelemente";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Anzahl der Anzeigen und andere unerwünschte Dinge, die blockiert wurden";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Mehr erfahren";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Standardeinstellungen für globale Shields ändern";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Globale Steuerelemente";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Wenn diese Website defekt erscheint, versuchen Sie es mit Shields down";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Down";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Online";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Sie erhalten jetzt Prämien für die Anzeigen, die Sie in Brave angesehen haben.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields-Menü schließen";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Eine defekte Website melden";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Wiederhergestellte Lesezeichen";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Wiederhergestellte Favoriten";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Sie surfen auf dieser Website ohne den Datenschutz von Brave. Funktioniert es nicht richtig mit Shields?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sollen Suchvorschläge aktiviert werden?";

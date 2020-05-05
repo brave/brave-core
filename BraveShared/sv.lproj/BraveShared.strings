@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Privat sökning med DuckDuckGo?";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave standardinställningar";
+
 /* No comment provided by engineer. */
 "Delete" = "Radera";
 
@@ -410,7 +413,7 @@
 "ErrorPagesVisitOnceButton" = "Besök webbplatsen ändå";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Uppskattad tid\nsparad";
+"EstTimerSaved" = "Uppskattad tid \nsparad";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ startar ett externt program";
@@ -452,7 +455,7 @@
 "FingerprintingMethods" = "Fingeravtrycksmetoder";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Fingeratrycksskydd";
+"FingerprintingnProtection" = "Fingeratrycks\nskydd";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Fingeravtrycksskydd";
@@ -503,7 +506,7 @@
 "LastWeek" = "Förra veckan";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Läs om privat sökning\nmed DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Läs om privat sökning \nmed DuckDuckGo";
 
 /* No comment provided by engineer. */
 "learnMore" = "Lär dig mer";
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "Ny flik";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "Öppna tangentbord automatiskt";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "Visa bakgrundsbilder";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "Visa sponsrade bilder";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "Ny flikssida";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "Visa mer";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Ange alla ord och försök igen.";
 
@@ -627,6 +615,27 @@
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Lär dig mer om sponsrade bilder";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Öppna tangentbord automatiskt";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Visa bakgrundsbilder";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Bakgrundsbilder";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Endast standardbilder";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Sponsrade bilder";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Ny fliksida";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Visa mer";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Du kan stödja webbskapare med symboler.";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Villkor";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Dela ...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Dela Brave med dina vänner!";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatisk";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Ljus";
+
+/* Name for app theme settings */
+"themesSettings" = "Teman";
 
 /* History tableview section header */
 "Today" = "Idag";

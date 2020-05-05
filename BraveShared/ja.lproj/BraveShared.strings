@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "DuckDuckGo によるプライベート検索を有効にしますか？";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave デフォルト";
+
 /* No comment provided by engineer. */
 "Delete" = "削除";
 
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "新しいタブ";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "自動的にキーボードを開く";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "背景画像を表示する";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "スポンサー背景画像を表示する";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "新規タブページ";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "もっと見る";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
 
@@ -627,6 +615,27 @@
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "スポンサーイメージについて詳しく知る";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "自動的にキーボードを開く";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "背景画像を表示する";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "背景画像";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "デフォルトの画像のみ";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "スポンサー背景画像";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "新規タブページ";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "もっと見る";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "クリエイターにウェブ上で直接トークンを送ることができます";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "利用規約";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "共有";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Braveを友だちに教えてあげよう！";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "自動";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "ライト";
+
+/* Name for app theme settings */
+"themesSettings" = "テーマ";
 
 /* History tableview section header */
 "Today" = "今日";

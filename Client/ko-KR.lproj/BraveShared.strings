@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "클라이언트 오류";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "결제 요청 내 세부정보가 유효하지 않음";
+
 /* Suffix for error strings */
 "tryAgain" = ". 다시 시도하십시오.";
 

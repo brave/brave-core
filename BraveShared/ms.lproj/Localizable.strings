@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Mengenai Pelindung Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Kawalan lanjutan";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Iklan dan perkara menakutkan yang lain disekat";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Ketahui lebih lanjut";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Ubah kegagalan pelindung global";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Kawalan Global";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Jika laman ini kelihatan rosak, cubalah Pelindung di bawah";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Menahan Pelindung";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Bawah";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Atas";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Masa untuk mendapat ganjaran untuk iklan-iklan yang telah anda lihat dalam Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Shields";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Laporkan laman web yang rosak";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Penanda Halaman yang Dipulihkan";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Kegemaran yang Dipulihkan";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Anda melayari laman web ini tanpa perlindungan privasi Brave. Adakah ia tidak berfungsi dengan betul dengan Pelindung atas?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Hidupkan cadangan carian?";

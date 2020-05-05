@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Kesalahan klien";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Detail dalam permintaan pembayaran tidak valid";
+
 /* Suffix for error strings */
 "tryAgain" = ", mohon coba kembali";
 

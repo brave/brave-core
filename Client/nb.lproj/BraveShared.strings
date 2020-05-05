@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Klientfeil";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Ugyldige detaljer i betalingsforespørsel";
+
 /* Suffix for error strings */
 "tryAgain" = ", prøv igjen.";
 

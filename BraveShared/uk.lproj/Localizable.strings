@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Про щити Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Додаткові налаштування";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Рекламу й інші підозрілі елементи заблоковано";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Докладніше";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Змінити глобальні налаштування щитів";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Глобальні налаштування";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Якщо вебсайт не працює, спробуйте вимкнути щити";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Щити Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Вимкн.";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Увімкн.";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Час отримати винагороду за рекламу, яку ви переглянули в Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрити меню Shields";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Повідомити про помилки в роботі вебсайту";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Відновлені закладки";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Відновлений список вибраного";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Brave. Вебсайт не працює належним чином, якщо щити увімкнено?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
