@@ -6,10 +6,10 @@
 #ifndef BRAVELEDGER_BAT_STATE_STATE_MIGRATION_H_
 #define BRAVELEDGER_BAT_STATE_STATE_MIGRATION_H_
 
-#include <map>
 #include <memory>
 #include <string>
 
+#include "bat/ledger/internal/legacy/publisher_state.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -23,13 +23,22 @@ class StateMigration {
   explicit StateMigration(bat_ledger::LedgerImpl* ledger);
   ~StateMigration();
 
-  bool Migrate();
+  void Migrate(ledger::ResultCallback callback);
 
  private:
-  bool Migrate(int version);
+  void OnMigration(
+      ledger::Result result,
+      const int version,
+      ledger::ResultCallback callback);
 
-  bool MigrateToVersion1();
+  void MigrateToV1(ledger::ResultCallback callback);
 
+  void OnLoadState(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
+  std::unique_ptr<braveledger_publisher::LegacyPublisherState>
+  legacy_publisher_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

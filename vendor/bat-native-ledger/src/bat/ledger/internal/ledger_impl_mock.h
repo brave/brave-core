@@ -95,13 +95,13 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(GetRewardsMainEnabled, bool());
 
-  MOCK_CONST_METHOD0(GetPublisherMinVisitTime, uint64_t());
+  MOCK_METHOD0(GetPublisherMinVisitTime, uint64_t());
 
-  MOCK_CONST_METHOD0(GetPublisherMinVisits, unsigned int());
+  MOCK_METHOD0(GetPublisherMinVisits, unsigned int());
 
-  MOCK_CONST_METHOD0(GetPublisherAllowNonVerified, bool());
+  MOCK_METHOD0(GetPublisherAllowNonVerified, bool());
 
-  MOCK_CONST_METHOD0(GetPublisherAllowVideos, bool());
+  MOCK_METHOD0(GetPublisherAllowVideos, bool());
 
   MOCK_CONST_METHOD0(GetContributionAmount, double());
 
@@ -364,7 +364,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SavePublisherProcessed, void(const std::string&));
 
-  MOCK_CONST_METHOD1(WasPublisherAlreadyProcessed, bool(const std::string&));
+  MOCK_METHOD1(WasPublisherAlreadyProcessed, bool(const std::string&));
 
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 

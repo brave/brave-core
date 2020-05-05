@@ -14,25 +14,10 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/legacy/publisher_settings_properties.h"
-#include "bat/ledger/internal/legacy/report_balance_properties.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
-#include "bat/ledger/internal/legacy/publisher_state.h"
 #include "bat/ledger/internal/static_values.h"
-
-/* foo.bar.example.com
-   QLD = 'bar'
-   RLD = 'foo.bar'
-   SLD = 'example.com'
-   TLD = 'com'
-
-  search.yahoo.co.jp
-   QLD = 'search'
-   RLD = 'search'
-   SLD = 'yahoo.co.jp'
-   TLD = 'co.jp'
-*/
+#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -41,9 +26,8 @@ namespace braveledger_publisher {
 
 Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
-  state_(std::make_unique<LegacyPublisherState>(ledger, this)),
   server_list_(std::make_unique<PublisherServerList>(ledger)) {
-  CalcScoreConsts(getPublisherMinVisitTime());
+  CalcScoreConsts(braveledger_state::GetPublisherMinVisitTime(ledger_));
 }
 
 Publisher::~Publisher() {
@@ -173,10 +157,14 @@ ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
   auto filter = ledger::ActivityInfoFilter::New();
   filter->id = publisher_id;
   filter->excluded = excluded;
-  filter->min_duration = min_duration ? getPublisherMinVisitTime() : 0;
+  filter->min_duration = min_duration
+      ? braveledger_state::GetPublisherMinVisitTime(ledger_)
+      : 0;
   filter->reconcile_stamp = current_reconcile_stamp;
   filter->non_verified = non_verified;
-  filter->min_visits = min_visits ? GetPublisherMinVisits() : 0;
+  filter->min_visits = min_visits
+      ? braveledger_state::GetPublisherMinVisits(ledger_)
+      : 0;
 
   return filter;
 }
@@ -285,13 +273,18 @@ void Publisher::SaveVisitInternal(
   }
 
   // for new visits that are excluded or are not long enough or ac is off
-  bool min_duration_new = duration < getPublisherMinVisitTime() &&
+  bool min_duration_new =
+      duration < braveledger_state::GetPublisherMinVisitTime(ledger_) &&
       !ignore_time;
-  bool min_duration_ok = duration > getPublisherMinVisitTime() || ignore_time;
-  bool verified_new = !getPublisherAllowNonVerified() && !is_verified;
-  bool verified_old = (
-      (!getPublisherAllowNonVerified() && is_verified) ||
-      getPublisherAllowNonVerified());
+  bool min_duration_ok =
+      duration > braveledger_state::GetPublisherMinVisitTime(ledger_) ||
+      ignore_time;
+  bool verified_new =
+      !braveledger_state::GetPublisherAllowNonVerified(ledger_) && !is_verified;
+  bool verified_old =
+      (!braveledger_state::GetPublisherAllowNonVerified(ledger_) &&
+          is_verified) ||
+      braveledger_state::GetPublisherAllowNonVerified(ledger_);
 
   if (new_visit &&
       (excluded ||
@@ -449,47 +442,6 @@ void Publisher::OnRestorePublishers(
   callback(ledger::Result::LEDGER_OK);
 }
 
-// In seconds
-void Publisher::setPublisherMinVisitTime(const uint64_t& duration) {
-  state_->SetPublisherMinVisitTime(duration);
-}
-
-void Publisher::setPublisherMinVisits(const unsigned int visits) {
-  state_->SetPublisherMinVisits(visits);
-}
-
-void Publisher::setPublisherAllowNonVerified(const bool& allow) {
-  state_->SetPublisherAllowNonVerified(allow);
-}
-
-void Publisher::setPublisherAllowVideos(const bool& allow) {
-  state_->SetPublisherAllowVideos(allow);
-}
-
-uint64_t Publisher::getPublisherMinVisitTime() const {
-  return state_->GetPublisherMinVisitTime();
-}
-
-unsigned int Publisher::GetPublisherMinVisits() const {
-  return state_->GetPublisherMinVisits();
-}
-
-bool Publisher::getPublisherAllowNonVerified() const {
-  return state_->GetPublisherAllowNonVerified();
-}
-
-bool Publisher::getPublisherAllowVideos() const {
-  return state_->GetPublisherAllowVideos();
-}
-
-bool Publisher::GetMigrateScore() const {
-  return state_->GetMigrateScore();
-}
-
-void Publisher::SetMigrateScore(bool value) {
-  state_->SetMigrateScore(value);
-}
-
 void Publisher::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList* list,
@@ -508,16 +460,7 @@ void Publisher::synopsisNormalizerInternal(
 
   double totalScores = 0.0;
   for (size_t i = 0; i < list->size(); i++) {
-    // Check which would test uint problem from this issue
-    // https://github.com/brave/brave-browser/issues/3134
-    if (GetMigrateScore()) {
-      (*list)[i]->score = concaveScore((*list)[i]->duration);
-    }
     totalScores += (*list)[i]->score;
-  }
-
-  if (GetMigrateScore()) {
-    SetMigrateScore(false);
   }
 
   std::vector<unsigned int> percents;
@@ -582,8 +525,8 @@ void Publisher::SynopsisNormalizer() {
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
-      getPublisherAllowNonVerified(),
-      GetPublisherMinVisits());
+      braveledger_state::GetPublisherAllowNonVerified(ledger_),
+      braveledger_state::GetPublisherMinVisits(ledger_));
   ledger_->GetActivityInfoList(
       0,
       0,
@@ -617,33 +560,6 @@ bool Publisher::IsExcluded(
   }
 
   return server_exclude;
-}
-
-void Publisher::clearAllBalanceReports() {
-  state_->ClearAllBalanceReports();
-}
-
-void Publisher::setBalanceReport(
-    ledger::ActivityMonth month,
-    int year,
-    const ledger::BalanceReportInfo& report_info) {
-  state_->SetBalanceReport(month, year, report_info);
-}
-
-void Publisher::GetBalanceReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::GetBalanceReportCallback callback) {
-  state_->GetBalanceReport(month, year, callback);
-}
-
-std::map<std::string, ledger::BalanceReportInfoPtr>
-Publisher::GetAllBalanceReports() {
-  return state_->GetAllBalanceReports();
-}
-
-bool Publisher::loadState(const std::string& data) {
-  return state_->LoadState(data);
 }
 
 void Publisher::getPublisherActivityFromUrl(
@@ -740,14 +656,6 @@ void Publisher::OnPanelPublisherInfo(
   }
 }
 
-void Publisher::SetBalanceReportItem(
-    const ledger::ActivityMonth month,
-    const int year,
-    const ledger::ReportType type,
-    const double amount) {
-  state_->SetBalanceReportItem(month, year, type, amount);
-}
-
 void Publisher::GetPublisherBanner(
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
@@ -807,15 +715,6 @@ void Publisher::OnGetPublisherBannerPublisher(
   }
 
   callback(std::move(new_banner));
-}
-
-void Publisher::SavePublisherProcessed(const std::string& publisher_key) {
-  state_->SavePublisherProcessed(publisher_key);
-}
-
-bool Publisher::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) const {
-  return state_->WasPublisherAlreadyProcessed(publisher_key);
 }
 
 }  // namespace braveledger_publisher

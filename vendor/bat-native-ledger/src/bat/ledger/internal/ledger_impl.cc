@@ -28,6 +28,8 @@
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
 #include "bat/ledger/internal/state/state.h"
+#include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -106,7 +108,6 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
-    bat_state_->Initialize();
 
     // Set wallet info for Confirmations when launching the browser or creating
     // a wallet for the first time
@@ -127,6 +128,24 @@ void LedgerImpl::Initialize(
   }
 
   initializing_ = true;
+
+  auto state_callback = std::bind(&LedgerImpl::OnStateInitialized,
+      this,
+      _1,
+      execute_create_script,
+      callback);
+
+  bat_state_->Initialize(state_callback);
+}
+
+void LedgerImpl::OnStateInitialized(
+    const ledger::Result result,
+    const bool execute_create_script,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize state";
+    return;
+  }
 
   MaybeInitializeConfirmations(execute_create_script, callback);
 }
@@ -391,18 +410,19 @@ void LedgerImpl::OnLedgerStateLoaded(
       BLOG(1, "Failed ledger state: " << data);
 
       callback(ledger::Result::INVALID_LEDGER_STATE);
-    } else {
-      auto wallet_info = legacy_bat_state_->GetWalletInfo();
-      auto on_pub_load = std::bind(
-          &LedgerImpl::OnPublisherStateLoaded,
-          this,
-          _1,
-          _2,
-          std::move(callback));
-      LoadPublisherState(std::move(on_pub_load));
+      return;
     }
+
+    if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
+      BLOG(this, ledger::LogLevel::LOG_ERROR) << "Corrupted wallet";
+      callback(ledger::Result::CORRUPTED_DATA);
+      return;
+    }
+
+    callback(result);
     return;
   }
+
   if (result != ledger::Result::NO_LEDGER_STATE) {
     BLOG(0, "Failed to load ledger state");
     BLOG(1, "Failed ledger state: " << data);
@@ -447,30 +467,6 @@ void LedgerImpl::SetConfirmationsWalletInfo(
 
 void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadPublisherState(std::move(callback));
-}
-
-void LedgerImpl::OnPublisherStateLoaded(
-    ledger::Result result,
-    const std::string& data,
-    ledger::ResultCallback callback) {
-  if (result == ledger::Result::LEDGER_OK) {
-    if (!bat_publisher_->loadState(data)) {
-      BLOG(0, "Successfully loaded but failed to parse ledger state.");
-      BLOG(1, "Failed publisher state: " << data);
-
-      result = ledger::Result::INVALID_PUBLISHER_STATE;
-    }
-  } else {
-    BLOG(0, "Failed to load publisher state");
-    BLOG(1, "Failed publisher state: " << data);
-  }
-
-  if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
-    callback(ledger::Result::CORRUPTED_DATA);
-    return;
-  }
-
-  callback(result);
 }
 
 void LedgerImpl::OnDatabaseInitialized(
@@ -550,7 +546,7 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
                                 const uint64_t window_id,
                                 const ledger::PublisherInfoCallback callback) {
   uint64_t new_duration = duration;
-  if (!bat_publisher_->getPublisherAllowVideos()) {
+  if (!braveledger_state::GetPublisherAllowVideos(this)) {
     new_duration = 0;
   }
 
@@ -664,20 +660,20 @@ void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   }
 }
 
-void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {  // In seconds
-  bat_publisher_->setPublisherMinVisitTime(duration);
+void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {
+  braveledger_state::SetPublisherMinVisitTime(this, duration);
 }
 
 void LedgerImpl::SetPublisherMinVisits(unsigned int visits) {
-  bat_publisher_->setPublisherMinVisits(visits);
+  braveledger_state::SetPublisherMinVisits(this, visits);
 }
 
 void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  bat_publisher_->setPublisherAllowNonVerified(allow);
+  braveledger_state::SetPublisherAllowNonVerified(this, allow);
 }
 
 void LedgerImpl::SetPublisherAllowVideos(bool allow) {
-  bat_publisher_->setPublisherAllowVideos(allow);
+  braveledger_state::SetPublisherAllowVideos(this, allow);
 }
 
 void LedgerImpl::SetContributionAmount(double amount) {
@@ -711,20 +707,20 @@ bool LedgerImpl::GetRewardsMainEnabled() const {
   return legacy_bat_state_->GetRewardsMainEnabled();
 }
 
-uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
-  return bat_publisher_->getPublisherMinVisitTime();
+uint64_t LedgerImpl::GetPublisherMinVisitTime() {
+  return braveledger_state::GetPublisherMinVisitTime(this);
 }
 
-unsigned int LedgerImpl::GetPublisherMinVisits() const {
-  return bat_publisher_->GetPublisherMinVisits();
+unsigned int LedgerImpl::GetPublisherMinVisits() {
+  return braveledger_state::GetPublisherMinVisits(this);
 }
 
-bool LedgerImpl::GetPublisherAllowNonVerified() const {
-  return bat_publisher_->getPublisherAllowNonVerified();
+bool LedgerImpl::GetPublisherAllowNonVerified() {
+  return braveledger_state::GetPublisherAllowNonVerified(this);
 }
 
-bool LedgerImpl::GetPublisherAllowVideos() const {
-  return bat_publisher_->getPublisherAllowVideos();
+bool LedgerImpl::GetPublisherAllowVideos() {
+  return braveledger_state::GetPublisherAllowVideos(this);
 }
 
 double LedgerImpl::GetContributionAmount() const {
@@ -814,7 +810,7 @@ void LedgerImpl::OnRecoverWallet(
   }
 
   if (result == ledger::Result::LEDGER_OK) {
-    bat_publisher_->clearAllBalanceReports();
+    // TODO(emerick): bat_publisher_->clearAllBalanceReports();
   }
 
   callback(result, balance);
@@ -824,12 +820,12 @@ void LedgerImpl::GetBalanceReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetBalanceReportCallback callback) const {
-  bat_publisher_->GetBalanceReport(month, year, callback);
+  // TODO(emerick): bat_publisher_->GetBalanceReport(month, year, callback);
 }
 
 std::map<std::string, ledger::BalanceReportInfoPtr>
 LedgerImpl::GetAllBalanceReports() const {
-  return bat_publisher_->GetAllBalanceReports();
+  return {}; // TODO(emerick): bat_publisher_->GetAllBalanceReports();
 }
 
 void LedgerImpl::SavePendingContribution(
@@ -911,7 +907,7 @@ void LedgerImpl::SetBalanceReportItem(
     const int year,
     const ledger::ReportType type,
     const double amount) {
-  bat_publisher_->SetBalanceReportItem(month, year, type, amount);
+  // TODO(emerick): bat_publisher_->SetBalanceReportItem(month, year, type, amount);
 }
 
 void LedgerImpl::FetchFavIcon(const std::string& url,
@@ -1233,12 +1229,13 @@ void LedgerImpl::OnContributeUnverifiedPublishers(
 }
 
 void LedgerImpl::SavePublisherProcessed(const std::string& publisher_key) {
-  bat_publisher_->SavePublisherProcessed(publisher_key);
+  // TODO(nejc): implement
 }
 
 bool LedgerImpl::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) const {
-  return bat_publisher_->WasPublisherAlreadyProcessed(publisher_key);
+    const std::string& publisher_key) {
+  // TODO(nejc): implement
+  return false;
 }
 
 void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
@@ -1774,6 +1771,14 @@ void LedgerImpl::UpdatePromotionsBlankPublicKey(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
   bat_database_->UpdatePromotionsBlankPublicKey(ids, callback);
+}
+
+void LedgerImpl::SynopsisNormalizer() {
+  bat_publisher_->SynopsisNormalizer();
+}
+
+void LedgerImpl::CalcScoreConsts(const uint64_t& min_duration_seconds) {
+  bat_publisher_->CalcScoreConsts(min_duration_seconds);
 }
 
 }  // namespace bat_ledger

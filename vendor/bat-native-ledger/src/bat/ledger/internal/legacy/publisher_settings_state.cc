@@ -16,7 +16,6 @@ namespace {
 // Do not change these values as they are required to transition legacy state
 const char kAllowNonVerifiedSitesInListKey[] = "allow_non_verified";
 const char kAllowContributionToVideosKey[] = "allow_videos";
-const char kMigrateScore2Key[] = "migrate_score_2";
 // There is a spelling error with min_pubslisher_duration, however we cannot
 // change this otherwise we will break legacy installs. This will be resolved as
 // part of https://github.com/brave/brave-browser/issues/7024
@@ -159,14 +158,6 @@ bool PublisherSettingsState::FromDict(
     }
   }
 
-  // Migrate Score 2
-  const auto migrate_score_2 = dictionary->FindBoolKey(kMigrateScore2Key);
-  if (migrate_score_2) {
-    publisher_settings_properties.migrate_score_2 = *migrate_score_2;
-  } else {
-    publisher_settings_properties.migrate_score_2 = true;
-  }
-
   // Processed Pending Publishers
   const auto* processed_pending_publishers_list =
       dictionary->FindListKey(kProcessedPendingPublishersKey);
@@ -224,9 +215,6 @@ bool PublisherSettingsState::ToJson(
     writer->EndObject();
   }
   writer->EndArray();
-
-  writer->String(kMigrateScore2Key);
-  writer->Bool(properties.migrate_score_2);
 
   writer->String(kProcessedPendingPublishersKey);
   writer->StartArray();

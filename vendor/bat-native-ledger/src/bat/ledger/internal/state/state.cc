@@ -15,8 +15,8 @@ State::State(bat_ledger::LedgerImpl* ledger) :
 
 State::~State() = default;
 
-void State::Initialize() {
-  migration_->Migrate();
+void State::Initialize(ledger::ResultCallback callback) {
+  migration_->Migrate(callback);
 }
 
 }  // namespace braveledger_state

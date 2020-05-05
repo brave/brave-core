@@ -32,7 +32,6 @@ struct PublisherSettingsProperties {
   bool allow_non_verified_sites_in_list;
   bool allow_contribution_to_videos;
   std::map<std::string, ReportBalanceProperties> monthly_balances;
-  bool migrate_score_2;
   std::vector<std::string> processed_pending_publishers;
 };
 

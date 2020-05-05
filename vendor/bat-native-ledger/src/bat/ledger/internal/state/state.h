@@ -21,7 +21,7 @@ class State {
   explicit State(bat_ledger::LedgerImpl* ledger);
   ~State();
 
-  void Initialize();
+  void Initialize(ledger::ResultCallback callback);
 
  private:
   std::unique_ptr<StateMigration> migration_;

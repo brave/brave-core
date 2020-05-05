@@ -160,13 +160,13 @@ class LedgerImpl : public ledger::Ledger {
 
   bool GetRewardsMainEnabled() const override;
 
-  uint64_t GetPublisherMinVisitTime() const override;  // In milliseconds
+  uint64_t GetPublisherMinVisitTime() override;  // In milliseconds
 
-  unsigned int GetPublisherMinVisits() const override;
+  unsigned int GetPublisherMinVisits() override;
 
-  bool GetPublisherAllowNonVerified() const override;
+  bool GetPublisherAllowNonVerified() override;
 
-  bool GetPublisherAllowVideos() const override;
+  bool GetPublisherAllowVideos() override;
 
   double GetContributionAmount() const override;
 
@@ -421,7 +421,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void SavePublisherProcessed(const std::string& publisher_key);
 
-  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key);
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
@@ -733,7 +733,16 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
 
+  void SynopsisNormalizer();
+
+  void CalcScoreConsts(const uint64_t& min_duration_seconds);
+
  private:
+  void OnStateInitialized(
+      const ledger::Result result,
+      const bool execute_create_script,
+      ledger::ResultCallback callback);
+
   void MaybeInitializeConfirmations(
       const bool execute_create_script,
       ledger::ResultCallback callback);
@@ -799,11 +808,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void OnDatabaseInitialized(
       const ledger::Result result,
-      ledger::ResultCallback callback);
-
-  void OnPublisherStateLoaded(
-      ledger::Result result,
-      const std::string& data,
       ledger::ResultCallback callback);
 
   void OnLedgerStateLoaded(

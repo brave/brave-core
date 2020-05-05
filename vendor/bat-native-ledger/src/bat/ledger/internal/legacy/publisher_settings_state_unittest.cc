@@ -33,7 +33,6 @@ TEST(PublisherSettingsStateTest, ToJsonSerialization) {
     { "Date", report_balance_properties }
   });
 
-  publisher_settings_properties.migrate_score_2 = true;
   publisher_settings_properties.processed_pending_publishers.push_back(
       "ProcessedPendingPublisher");
 
@@ -70,11 +69,10 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
     { "Date", report_balance_properties }
   });
 
-  publisher_settings_properties.migrate_score_2 = true;
   publisher_settings_properties.processed_pending_publishers.push_back(
       "ProcessedPendingPublisher");
 
-  const std::string json = "{\"min_pubslisher_duration\":4294967295,\"min_visits\":4294967295,\"allow_non_verified\":true,\"allow_videos\":true,\"monthly_balances\":[{\"Date\":{\"grants\":1,\"earning_from_ads\":1,\"auto_contribute\":1,\"recurring_donation\":1,\"one_time_donation\":1}}],\"migrate_score_2\":true,\"processed_pending_publishers\":[\"ProcessedPendingPublisher\"]}";  // NOLINT
+  const std::string json = "{\"min_pubslisher_duration\":4294967295,\"min_visits\":4294967295,\"allow_non_verified\":true,\"allow_videos\":true,\"monthly_balances\":[{\"Date\":{\"grants\":1,\"earning_from_ads\":1,\"auto_contribute\":1,\"recurring_donation\":1,\"one_time_donation\":1}}],\"processed_pending_publishers\":[\"ProcessedPendingPublisher\"]}";  // NOLINT
 
   // Act
   PublisherSettingsProperties expected_publisher_settings_properties;

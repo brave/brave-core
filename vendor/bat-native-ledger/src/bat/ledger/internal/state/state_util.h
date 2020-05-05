@@ -17,6 +17,28 @@ void SetVersion(bat_ledger::LedgerImpl* ledger, const int version);
 
 int GetVersion(bat_ledger::LedgerImpl* ledger);
 
+void SetPublisherMinVisitTime(
+    bat_ledger::LedgerImpl* ledger,
+    const uint64_t& duration);
+
+uint64_t GetPublisherMinVisitTime(bat_ledger::LedgerImpl* ledger);
+
+void SetPublisherMinVisits(bat_ledger::LedgerImpl* ledger, const int visits);
+
+int GetPublisherMinVisits(bat_ledger::LedgerImpl* ledger);
+
+void SetPublisherAllowNonVerified(
+    bat_ledger::LedgerImpl* ledger,
+    const bool allow);
+
+bool GetPublisherAllowNonVerified(bat_ledger::LedgerImpl* ledger);
+
+void SetPublisherAllowVideos(
+    bat_ledger::LedgerImpl* ledger,
+    const bool allow);
+
+bool GetPublisherAllowVideos(bat_ledger::LedgerImpl* ledger);
+
 }  // namespace braveledger_state
 
 #endif  // BRAVELEDGER_STATE_STATE_UTIL_H_

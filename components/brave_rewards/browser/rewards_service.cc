@@ -68,6 +68,10 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kStatePromotionCorruptedMigrated, false);
   registry->RegisterBooleanPref(prefs::kStateAnonTransferChecked, false);
   registry->RegisterIntegerPref(prefs::kStateVersion, 0);
+  registry->RegisterUint64Pref(prefs::kStateMinVisitTime, 8ull);
+  registry->RegisterIntegerPref(prefs::kStateMinVisits, 1);
+  registry->RegisterBooleanPref(prefs::kStateAllowNonVerified, true);
+  registry->RegisterBooleanPref(prefs::kStateAllowVideoContribution, true);
 }
 
 }  // namespace brave_rewards
