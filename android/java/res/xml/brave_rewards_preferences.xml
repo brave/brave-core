@@ -7,7 +7,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="ads_switch"
         android:title="@string/show_ads_when_brave_is_not_in_use"
         android:summaryOn="@string/text_on"
