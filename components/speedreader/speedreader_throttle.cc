@@ -7,7 +7,8 @@
 
 #include <utility>
 
-#include "brave/components/speedreader/speedreader_loader.h"
+#include "brave/components/speedreader/speedreader_url_loader.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"

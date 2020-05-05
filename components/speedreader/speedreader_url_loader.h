@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_LOADER_H_
-#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_LOADER_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
 
 #include <string>
 #include <tuple>
@@ -154,4 +154,4 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
 
 }  // namespace speedreader
 
-#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_LOADER_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_

@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_H_
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/speedreader/speedreader_switches.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 namespace speedreader {
+
+class SpeedreaderWhitelist;
 
 // Launches the speedreader distillation pass over a reponce body, deferring
 // the load until distillation is done.

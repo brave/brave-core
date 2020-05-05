@@ -15,8 +15,6 @@ source_set("speedreader") {
   ]
 
   sources = [
-    "speedreader_loader.cc",
-    "speedreader_loader.h",
     "speedreader_pref_names.h",
     "speedreader_service.cc",
     "speedreader_service.h",
@@ -25,6 +23,8 @@ source_set("speedreader") {
     "speedreader_test_whitelist.h",
     "speedreader_throttle.cc",
     "speedreader_throttle.h",
+    "speedreader_url_loader.cc",
+    "speedreader_url_loader.h",
     "speedreader_whitelist.cc",
     "speedreader_whitelist.h",
   ]

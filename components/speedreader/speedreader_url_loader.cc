@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/speedreader/speedreader_loader.h"
+#include "brave/components/speedreader/speedreader_url_loader.h"
 
 #include <memory>
 #include <string>
@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "components/grit/brave_components_resources.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
