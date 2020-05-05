@@ -22,6 +22,7 @@
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/associated_binding.h"
@@ -57,6 +58,11 @@ namespace network {
 class SimpleURLLoader;
 }  // namespace network
 
+#if BUILDFLAG(ENABLE_GREASELION)
+namespace greaselion {
+class GreaselionService;
+}  // namespace greaselion
+#endif
 
 class Profile;
 class BraveRewardsBrowserTest;
@@ -87,7 +93,13 @@ class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
+#if BUILDFLAG(ENABLE_GREASELION)
+  explicit RewardsServiceImpl(
+      Profile* profile,
+      greaselion::GreaselionService* greaselion_service);
+#else
   explicit RewardsServiceImpl(Profile* profile);
+#endif
   ~RewardsServiceImpl() override;
 
   // KeyedService:
@@ -676,6 +688,9 @@ class RewardsServiceImpl : public RewardsService,
 #endif
 
   Profile* profile_;  // NOT OWNED
+#if BUILDFLAG(ENABLE_GREASELION)
+  greaselion::GreaselionService* greaselion_service_;  // NOT OWNED
+#endif
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_binding_;
   bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;

@@ -90,6 +90,10 @@
 #include "components/grit/components_resources.h"
 #endif
 
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/components/greaselion/browser/greaselion_service.h"
+#endif
+
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -337,8 +341,17 @@ const base::FilePath::StringType kPublishers_list("publishers_list");
 const base::FilePath::StringType kRewardsStatePath("rewards_service");
 #endif
 
+#if BUILDFLAG(ENABLE_GREASELION)
+RewardsServiceImpl::RewardsServiceImpl(
+    Profile* profile,
+    greaselion::GreaselionService* greaselion_service)
+#else
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
+#endif
     : profile_(profile),
+#if BUILDFLAG(ENABLE_GREASELION)
+      greaselion_service_(greaselion_service),
+#endif
       bat_ledger_client_binding_(new bat_ledger::LedgerClientMojoProxy(this)),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
@@ -1441,6 +1454,12 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
   SetRewardsMainEnabledPref(enabled);
   bat_ledger_->SetRewardsMainEnabled(enabled);
   TriggerOnRewardsMainEnabled(enabled);
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, enabled);
+    greaselion_service_->SetFeatureEnabled(greaselion::TWITTER_TIPS, enabled);
+  }
+#endif
 }
 
 void RewardsServiceImpl::GetRewardsMainEnabled(
