@@ -51,43 +51,27 @@ extern const char _catalog_resource_name[];
 // Client resource name
 extern const char _client_resource_name[];
 
+// Returns |true| if the locale is supported; otherwise returns |false|
+bool IsSupportedLocale(
+    const std::string& locale);
+
+// Returns |true| if the locale is newly supported; otherwise returns |false|
+bool IsNewlySupportedLocale(
+    const std::string& locale,
+    const int last_schema_version);
+
+// Returns the region code for the specified |locale|. If the locale cannot be
+// parsed return |ads::kDefaultRegion|
+std::string GetRegionCode(
+    const std::string& locale);
+
 class ADS_EXPORT Ads {
  public:
   Ads() = default;
   virtual ~Ads() = default;
 
-  static Ads* CreateInstance(AdsClient* ads_client);
-
-  // Should be called to determine if the specified |locale| is supported.
-  // |locale| should be specified in any of the following formats:
-  //
-  //     <language>-<REGION> i.e. en-US
-  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
-  //     <language>_<REGION> i.e. en_US
-  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
-  static bool IsSupportedLocale(
-      const std::string& locale);
-
-  // Should be called to determine if the specified |locale| is newly supported.
-  // |locale| should be specified in any of the following formats:
-  //
-  //     <language>-<REGION> i.e. en-US
-  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
-  //     <language>_<REGION> i.e. en_US
-  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
-  static bool IsNewlySupportedLocale(
-      const std::string& locale,
-      const int last_schema_version);
-
-  // Return the region for the specified locale. |locale| should be specified in
-  // any of the following formats:
-  //
-  //     <language>-<REGION> i.e. en-US
-  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
-  //     <language>_<REGION> i.e. en_US
-  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
-  static std::string GetRegion(
-      const std::string& locale);
+  static Ads* CreateInstance(
+      AdsClient* ads_client);
 
   // Should be called to initialize ads, i.e. when launching the browser or when
   // ads is implicitly enabled by a user on the client. The callback takes one

@@ -107,14 +107,14 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
 + (BOOL)isSupportedLocale:(NSString *)locale
 {
-  return ads::Ads::IsSupportedLocale(std::string(locale.UTF8String));
+  return ads::IsSupportedLocale(std::string(locale.UTF8String));
 }
 
 + (BOOL)isNewlySupportedLocale:(NSString *)locale
 {
   // TODO(khickinson): Add support for last schema version, however for the MVP
   // we can safely pass 0 as all locales are newly supported
-  return ads::Ads::IsNewlySupportedLocale(std::string(locale.UTF8String), 0);
+  return ads::IsNewlySupportedLocale(std::string(locale.UTF8String), 0);
 }
 
 + (BOOL)isCurrentLocaleSupported
