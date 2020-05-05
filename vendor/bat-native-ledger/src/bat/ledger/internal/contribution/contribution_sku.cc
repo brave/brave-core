@@ -319,7 +319,7 @@ void ContributionSKU::Merchant(
       transaction,
       callback);
 
-  ledger_->GetUnblindedTokensByBatchTypes(
+  ledger_->GetSpendableUnblindedTokensByBatchTypes(
       {ledger::CredsBatchType::PROMOTION},
       get_callback);
 }

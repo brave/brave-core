@@ -566,8 +566,10 @@ class LedgerImpl : public ledger::Ledger {
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback);
 
-  virtual void DeleteUnblindedTokens(
-      const std::vector<std::string>& id_list,
+  virtual void MarkUblindedTokensAsSpent(
+      const std::vector<std::string>& ids,
+      ledger::RewardsType redeem_type,
+      const std::string& redeem_id,
       ledger::ResultCallback callback);
 
   void GetUnblindedTokensByTriggerIds(
@@ -671,8 +673,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<ledger::PromotionType>& types,
       ledger::GetPromotionListCallback callback);
 
-  void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
-
   void UpdateCredsBatchStatus(
       const std::string& trigger_id,
       const ledger::CredsBatchType trigger_type,
@@ -728,7 +728,7 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& order_id,
       ledger::GetSKUTransactionCallback callback);
 
-  virtual void GetUnblindedTokensByBatchTypes(
+  virtual void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<ledger::CredsBatchType>& batch_types,
       ledger::GetUnblindedTokenListCallback callback);
 

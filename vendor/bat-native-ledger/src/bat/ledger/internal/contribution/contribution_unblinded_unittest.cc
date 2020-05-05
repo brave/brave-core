@@ -57,11 +57,7 @@ class UnblindedTest : public ::testing::Test {
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  std::vector<std::string> delete_list;
-  delete_list.push_back("1");
-  EXPECT_CALL(*mock_ledger_impl_, DeleteUnblindedTokens(delete_list, _));
-
-  ON_CALL(*mock_ledger_impl_, GetUnblindedTokensByBatchTypes(_, _))
+  ON_CALL(*mock_ledger_impl_, GetSpendableUnblindedTokensByBatchTypes(_, _))
     .WillByDefault(
       Invoke([](
           const std::vector<ledger::CredsBatchType>&,
@@ -77,79 +73,6 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
 
         callback(std::move(list));
       }));
-
-  unblinded_->Start(
-      {ledger::CredsBatchType::PROMOTION},
-      contribution_id,
-      [](const ledger::Result result) {
-        ASSERT_EQ(result, ledger::Result::NOT_ENOUGH_FUNDS);
-      });
-}
-
-TEST_F(UnblindedTest, PromotionExpiredDeleteToken) {
-  EXPECT_CALL(*mock_ledger_impl_, UpdateContributionInfoStep(
-      _,
-      ledger::ContributionStep::STEP_PREPARE,
-      _));
-
-  std::vector<std::string> delete_list;
-  delete_list.push_back("1");
-  EXPECT_CALL(*mock_ledger_impl_, DeleteUnblindedTokens(delete_list, _));
-
-  ON_CALL(*mock_ledger_impl_, GetUnblindedTokensByBatchTypes(_, _))
-      .WillByDefault(
-        Invoke([](
-            const std::vector<ledger::CredsBatchType>&,
-            ledger::GetUnblindedTokenListCallback callback) {
-          ledger::UnblindedTokenList list;
-
-          auto info = ledger::UnblindedToken::New();
-          info->id = 1;
-          info->token_value = "asdfasdfasdfsad=";
-          info->value = 5;
-          info->expires_at = 1574133178;
-          list.push_back(info->Clone());
-
-          info->id = 2;
-          info->expires_at = 22574133178;
-          list.push_back(info->Clone());
-
-          callback(std::move(list));
-        }));
-
-  unblinded_->Start(
-      {ledger::CredsBatchType::PROMOTION},
-      contribution_id,
-      [](const ledger::Result result) {
-        ASSERT_EQ(result, ledger::Result::LEDGER_ERROR);
-      });
-}
-
-TEST_F(UnblindedTest, PromotionExpiredDeleteTokensNotEnoughFunds) {
-  std::vector<std::string> delete_list;
-  delete_list.push_back("1");
-  delete_list.push_back("2");
-  EXPECT_CALL(*mock_ledger_impl_, DeleteUnblindedTokens(delete_list, _));
-
-  ON_CALL(*mock_ledger_impl_, GetUnblindedTokensByBatchTypes(_, _))
-      .WillByDefault(
-        Invoke([](
-            const std::vector<ledger::CredsBatchType>&,
-            ledger::GetUnblindedTokenListCallback callback) {
-          ledger::UnblindedTokenList list;
-
-          auto info = ledger::UnblindedToken::New();
-          info->id = 1;
-          info->token_value = "asdfasdfasdfsad=";
-          info->value = 3;
-          info->expires_at = 1574133178;
-          list.push_back(info->Clone());
-
-          info->id = 2;
-          list.push_back(info->Clone());
-
-          callback(std::move(list));
-        }));
 
   unblinded_->Start(
       {ledger::CredsBatchType::PROMOTION},

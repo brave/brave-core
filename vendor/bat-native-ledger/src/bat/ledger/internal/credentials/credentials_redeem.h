@@ -23,6 +23,7 @@ struct CredentialsRedeem {
   ledger::ContributionProcessor processor;
   std::vector<ledger::UnblindedToken> token_list;
   std::string order_id;
+  std::string contribution_id;
 };
 
 }  // namespace braveledger_credentials

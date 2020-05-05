@@ -54,7 +54,6 @@ void HandleExpiredPromotions(
 
   const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
 
-  bool check = false;
   for (auto& item : *promotions) {
     if (!item.second || item.second->status == ledger::PromotionStatus::OVER) {
       continue;
@@ -67,16 +66,11 @@ void HandleExpiredPromotions(
 
     if (item.second->expires_at > 0 &&
         item.second->expires_at <= current_time)  {
-      check = true;
       ledger_impl->UpdatePromotionStatus(
           item.second->id,
           ledger::PromotionStatus::OVER,
           [](const ledger::Result _){});
     }
-  }
-
-  if (check) {
-    ledger_impl->CheckUnblindedTokensExpiration([](const ledger::Result _){});
   }
 }
 
