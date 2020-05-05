@@ -6,4 +6,4 @@
 #define BRAVE_SETCOOKIEHELPER true /*is_from_http*/
 
 #include "../../../../android_webview/browser/cookie_manager.cc"
-#undef BRAVE_SETCOOKIEFROMSTRING
+#undef BRAVE_SETCOOKIEHELPER

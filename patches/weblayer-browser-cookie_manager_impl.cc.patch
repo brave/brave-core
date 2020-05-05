@@ -1,0 +1,14 @@
+diff --git a/weblayer/browser/cookie_manager_impl.cc b/weblayer/browser/cookie_manager_impl.cc
+index 702bf23cc2b0e1bdd5b9de8c8ffb82b8e09ebf65..dd3d70373bdcddf5761e966986ec7c264c1fee76 100644
+--- a/weblayer/browser/cookie_manager_impl.cc
++++ b/weblayer/browser/cookie_manager_impl.cc
+@@ -139,7 +139,8 @@ void CookieManagerImpl::RemoveCookieChangedCallback(JNIEnv* env, int id) {
+ bool CookieManagerImpl::SetCookieInternal(const GURL& url,
+                                           const std::string& value,
+                                           SetCookieCallback callback) {
+-  auto cc = net::CanonicalCookie::Create(url, value, base::Time::Now(),
++  auto cc = net::CanonicalCookie::Create(BRAVE_SETCOOKIEINTERNAL
++                                         url, value, base::Time::Now(),
+                                          base::nullopt);
+   if (!cc) {
+     return false;
