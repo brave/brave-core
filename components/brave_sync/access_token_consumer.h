@@ -15,6 +15,7 @@ class AccessTokenConsumer {
     TokenResponse(const std::string& access_token,
                   const base::Time& expiration_time,
                   const std::string& id_token);
+    TokenResponse(const TokenResponse& response);
 
     // access token.
     std::string access_token;

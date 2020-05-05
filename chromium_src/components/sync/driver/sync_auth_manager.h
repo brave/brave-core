@@ -9,6 +9,7 @@
       const GURL& sync_service_url);                                        \
   void SetAccessTokenFetcherForTest(                                        \
       std::unique_ptr<brave_sync::AccessTokenFetcher> fetcher);             \
+  brave_sync::AccessTokenFetcher* GetAccessTokenFetcherForTest();           \
   void DeriveSigningKeys(const std::string& seed);                          \
   void ResetKeys();                                                         \
   void OnGetTokenSuccess(                                                   \

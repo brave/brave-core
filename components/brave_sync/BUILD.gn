@@ -114,5 +114,7 @@ static_library("test_support") {
   deps = [
     ":access_token",
     "//base",
+    # Only for google_service_auth_error.h
+    "//google_apis:google_apis",
   ]
 }

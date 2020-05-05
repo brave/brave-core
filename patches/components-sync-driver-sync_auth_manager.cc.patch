@@ -1,7 +1,18 @@
 diff --git a/components/sync/driver/sync_auth_manager.cc b/components/sync/driver/sync_auth_manager.cc
-index 03080dd8c7205cc0ebaf8aa9516131a94a727170..bab46b89e222070db3b8323fc7ac5c902c54ee58 100644
+index 03080dd8c7205cc0ebaf8aa9516131a94a727170..ee8ed2da18585e17869d80423909a2ca5ecf21cc 100644
 --- a/components/sync/driver/sync_auth_manager.cc
 +++ b/components/sync/driver/sync_auth_manager.cc
+@@ -364,8 +364,8 @@ void SyncAuthManager::OnRefreshTokenRemovedForAccount(
+   // If we're still here, then that means Chrome is still signed in to this
+   // account. Keep Sync alive but set an auth error.
+   // TODO(crbug.com/906995): Should we stop Sync in this case?
+-  DCHECK_EQ(sync_account_.account_info.account_id,
+-            identity_manager_->GetPrimaryAccountId());
++  //  DCHECK_EQ(sync_account_.account_info.account_id,
++  //            identity_manager_->GetPrimaryAccountId());
+ 
+   // TODO(crbug.com/839834): REQUEST_CANCELED doesn't seem like the right auth
+   // error to use here. Maybe INVALID_GAIA_CREDENTIALS?
 @@ -409,6 +409,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
  
  SyncAccountInfo SyncAuthManager::DetermineAccountToUse() const {

@@ -46,6 +46,11 @@ void SyncAuthManager::SetAccessTokenFetcherForTest(
   access_token_fetcher_->SetAccessTokenConsumerForTest(this);
 }
 
+brave_sync::AccessTokenFetcher*
+SyncAuthManager::GetAccessTokenFetcherForTest() {
+  return access_token_fetcher_.get();
+}
+
 void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   VLOG(1) << __func__ << " seed=" << seed;
   if (seed.empty())

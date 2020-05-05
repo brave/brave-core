@@ -22,6 +22,8 @@ class AccessTokenFetcher {
   virtual void CancelRequest() = 0;
 
   void SetAccessTokenConsumerForTest(AccessTokenConsumer* consumer);
+  virtual void SetAccessTokenResponseForTest(
+      const AccessTokenConsumer::TokenResponse& token_response);
 
  protected:
   // Fires |OnGetTokenSuccess| on |consumer_|.

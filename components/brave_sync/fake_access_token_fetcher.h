@@ -1,8 +1,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_FAKE_ACCESS_TOKEN_FETCHER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_FAKE_ACCESS_TOKEN_FETCHER_H_
 
+#include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/access_token_fetcher.h"
+#include "google_apis/gaia/google_service_auth_error.h"
 
 namespace brave_sync {
 class FakeAccessTokenFetcher : public AccessTokenFetcher {
@@ -18,9 +20,21 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
 
   // Cancels the current request and informs the consumer.
   void CancelRequest() override;
+  void SetAccessTokenResponseForTest(
+      const AccessTokenConsumer::TokenResponse& token_response) override;
+
+  void SetTokenResponseCallback(base::OnceClosure on_available);
+  void SetTokenResponseError(const GoogleServiceAuthError& error);
  private:
   void OnGetTokenSuccess(
     const AccessTokenConsumer::TokenResponse& token_response);
+  void OnGetTokenFailure(const GoogleServiceAuthError& error);
+
+  AccessTokenConsumer::TokenResponse pending_response_;
+  // Initial state is NONE
+  GoogleServiceAuthError pending_error_;
+
+  base::OnceClosure on_available_;
 
   base::WeakPtrFactory<FakeAccessTokenFetcher> weak_ptr_factory_{this};
 

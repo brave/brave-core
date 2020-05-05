@@ -10,6 +10,13 @@ AccessTokenConsumer::TokenResponse::TokenResponse(
       expiration_time(expiration_time),
       id_token(id_token) {}
 
+AccessTokenConsumer::TokenResponse::TokenResponse(
+    const TokenResponse& response) {
+  access_token = response.access_token;
+  expiration_time = response.expiration_time;
+  id_token = response.id_token;
+}
+
 AccessTokenConsumer::~AccessTokenConsumer() {}
 
 void AccessTokenConsumer::OnGetTokenSuccess(
