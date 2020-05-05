@@ -359,12 +359,37 @@ void LedgerImpl::OnLedgerStateLoaded(
 }
 
 void LedgerImpl::SetConfirmationsWalletInfo(
-    const ledger::WalletInfoProperties& wallet_info) {
-  auto confirmations_wallet_info = GetConfirmationsWalletInfo(wallet_info);
-  DCHECK(confirmations_wallet_info.IsValid());
+    const ledger::WalletInfoProperties& wallet_info_properties) {
+  if (wallet_info_properties.key_info_seed.size() != SEED_LENGTH) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
+        "confirmations due to invalid wallet";
+    return;
+  }
+
+  const std::vector<uint8_t> seed =
+      braveledger_bat_helper::getHKDF(wallet_info_properties.key_info_seed);
+  std::vector<uint8_t> public_key;
+  std::vector<uint8_t> secret_key;
+
+  if (!braveledger_bat_helper::getPublicKeyFromSeed(seed, &public_key,
+      &secret_key)) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
+        "confirmations due to invalid wallet";
+    return;
+  }
+
+  confirmations::WalletInfo wallet_info;
+  wallet_info.payment_id = wallet_info_properties.payment_id;
+  wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secret_key);
+
+  if (!wallet_info.IsValid()) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
+        "confirmations due to invalid wallet";
+    return;
+  }
 
   bat_confirmations_->SetWalletInfo(
-      std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
+      std::make_unique<confirmations::WalletInfo>(wallet_info));
 }
 
 void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
@@ -1018,26 +1043,6 @@ void LedgerImpl::SetWalletInfo(
     // |OnWalletInitializedInternal|
     SetConfirmationsWalletInfo(info);
   }
-}
-
-const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
-    const ledger::WalletInfoProperties& info) const {
-  confirmations::WalletInfo wallet_info;
-
-  wallet_info.payment_id = info.payment_id;
-
-  if (info.key_info_seed.empty()) {
-    return wallet_info;
-  }
-
-  auto seed = braveledger_bat_helper::getHKDF(info.key_info_seed);
-  std::vector<uint8_t> publicKey = {};
-  std::vector<uint8_t> secretKey = {};
-  braveledger_bat_helper::getPublicKeyFromSeed(seed, &publicKey, &secretKey);
-
-  wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secretKey);
-
-  return wallet_info;
 }
 
 void LedgerImpl::GetRewardsInternalsInfo(

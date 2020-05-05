@@ -3,15 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <utility>
-
 #include "bat/confirmations/internal/request_signed_tokens_request.h"
-#include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/string_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
 
-#include "base/logging.h"
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "bat/confirmations/internal/ads_serve_helper.h"
+#include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/string_helper.h"
+
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/values.h"
 
 namespace confirmations {
@@ -77,25 +80,30 @@ std::vector<std::string> RequestSignedTokensRequest::BuildHeaders(
 
 std::string RequestSignedTokensRequest::BuildDigestHeaderValue(
     const std::string& body) const {
-  DCHECK(!body.empty());
+  std::string value;
 
-  auto body_sha256 = helper::Security::GetSHA256(body);
-  auto body_sha256_base64 = helper::Security::GetBase64(body_sha256);
-  return "SHA-256=" + body_sha256_base64;
+  if (body.empty()) {
+    return value;
+  }
+
+  const std::vector<uint8_t> body_sha256 = helper::Security::GetSHA256(body);
+  const std::string body_sha256_base64 =
+      helper::Security::GetBase64(body_sha256);
+
+  value = "SHA-256=" + body_sha256_base64;
+
+  return value;
 }
 
 std::string RequestSignedTokensRequest::BuildSignatureHeaderValue(
     const std::string& body,
     const WalletInfo& wallet_info) const {
-  DCHECK(!body.empty());
-  DCHECK(!wallet_info.private_key.empty());
+  const std::string value = BuildDigestHeaderValue(body);
 
-  auto digest_header_value = BuildDigestHeaderValue(body);
+  const std::vector<uint8_t> private_key =
+      helper::String::decode_hex(wallet_info.private_key);
 
-  auto private_key = helper::String::decode_hex(wallet_info.private_key);
-
-  return helper::Security::Sign({{"digest", digest_header_value}}, "primary",
-      private_key);
+  return helper::Security::Sign({{"digest", value}}, "primary", private_key);
 }
 
 std::string RequestSignedTokensRequest::GetAcceptHeaderValue() const {

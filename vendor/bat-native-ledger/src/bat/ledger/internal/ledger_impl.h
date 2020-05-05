@@ -189,7 +189,7 @@ class LedgerImpl : public ledger::Ledger {
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
   void SetConfirmationsWalletInfo(
-      const ledger::WalletInfoProperties& wallet_info);
+      const ledger::WalletInfoProperties& wallet_info_properties);
 
   void LoadLedgerState(ledger::OnLoadCallback callback);
 
@@ -365,9 +365,6 @@ class LedgerImpl : public ledger::Ledger {
   const ledger::WalletInfoProperties& GetWalletInfo() const;
 
   void SetWalletInfo(const ledger::WalletInfoProperties& info);
-
-  const confirmations::WalletInfo GetConfirmationsWalletInfo(
-      const ledger::WalletInfoProperties& info) const;
 
   const ledger::WalletProperties& GetWalletProperties() const;
 

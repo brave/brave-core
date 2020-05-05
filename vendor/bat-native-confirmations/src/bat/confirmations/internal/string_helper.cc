@@ -10,9 +10,11 @@
 namespace helper {
 
 std::vector<uint8_t> String::decode_hex(const std::string& hexadecimal) {
-  DCHECK(!hexadecimal.empty());
-
   std::vector<uint8_t> bytes;
+
+  if (hexadecimal.empty()) {
+    return bytes;
+  }
 
   for (size_t i = 0; i < hexadecimal.length(); i += 2) {
       std::string hexidecimal_byte = hexadecimal.substr(i, 2);
