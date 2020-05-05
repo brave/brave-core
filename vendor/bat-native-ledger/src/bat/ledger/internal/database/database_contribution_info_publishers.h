@@ -42,13 +42,19 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
 
   bool CreateTableV15(ledger::DBTransaction* transaction);
 
+  bool CreateTableV21(ledger::DBTransaction* transaction);
+
   bool CreateIndexV11(ledger::DBTransaction* transaction);
 
   bool CreateIndexV15(ledger::DBTransaction* transaction);
 
+  bool CreateIndexV21(ledger::DBTransaction* transaction);
+
   bool MigrateToV11(ledger::DBTransaction* transaction);
 
   bool MigrateToV15(ledger::DBTransaction* transaction);
+
+  bool MigrateToV21(ledger::DBTransaction* transaction);
 
   void OnGetRecordByContributionList(
       ledger::DBCommandResponsePtr response,

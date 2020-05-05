@@ -721,3 +721,44 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(expires_at, 1640995200ul);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_21_ContributionInfoPublishers) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("contribution_info_publishers"), 3);
+
+    ledger::ContributionPublisherList list;
+    const std::string query =
+        "SELECT contribution_id, publisher_key, total_amount, "
+        "contributed_amount "
+        "FROM contribution_info_publishers";
+    sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+    while (info_sql.Step()) {
+      auto contribution_publishers = ledger::ContributionPublisher::New();
+      contribution_publishers->contribution_id = info_sql.ColumnString(0);
+      contribution_publishers->publisher_key = info_sql.ColumnString(1);
+      contribution_publishers->total_amount = info_sql.ColumnDouble(2);
+      contribution_publishers->contributed_amount = info_sql.ColumnDouble(3);
+
+      list.push_back(std::move(contribution_publishers));
+    }
+    EXPECT_EQ(static_cast<int>(list.size()), 3);
+
+    EXPECT_EQ(list.at(0)->contribution_id, "1");
+    EXPECT_EQ(list.at(0)->publisher_key, "123");
+    EXPECT_EQ(list.at(0)->total_amount, 15.0);
+    EXPECT_EQ(list.at(0)->contributed_amount, 30.0);
+    EXPECT_EQ(list.at(1)->contribution_id, "2");
+    EXPECT_EQ(list.at(1)->publisher_key, "456");
+    EXPECT_EQ(list.at(1)->total_amount, 30.0);
+    EXPECT_EQ(list.at(1)->contributed_amount, 45.0);
+    EXPECT_EQ(list.at(2)->contribution_id, "3");
+    EXPECT_EQ(list.at(2)->publisher_key, "789");
+    EXPECT_EQ(list.at(2)->total_amount, 100.0);
+    EXPECT_EQ(list.at(2)->contributed_amount, 150.0);
+  }
+}
