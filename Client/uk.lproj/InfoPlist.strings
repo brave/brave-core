@@ -6,22 +6,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "NFCReaderUsageDescription" = "Для підключення до пристрою Yubikey додатку потрібно надати доступ до зчитування NFC-міток.";
 
-/* (No Comment) */
+/* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Це дозволить вам завантажувати фото.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Щоб надати Brave доступ до збережених облікових даних, уведіть Face ID.";
 
-/* (No Comment) */
+/* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Деякі веб-сайти можуть запитати дані щодо вашого місцеположення.";
 
-/* (No Comment) */
+/* Privacy - Microphone Usage Description */
 "NSMicrophoneUsageDescription" = "Це дозволить вам знімати і надсилати відео.";
 
-/* (No Comment) */
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Це дозволить вам зберігати фото.";
 
-/* (No Comment) */
+/* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Це дозволить вам зберігати і надсилати фото.";
 
 /* (No Comment) */

@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Tentang Perisai Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Kontrol Tingkat Lanjut";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Iklan dan hal mengerikan lainnya diblokir";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Ketahui selengkapnya";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Ubah default perisai global";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Kontrol Global";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Perisai";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Perisai Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Turun";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Naik";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Waktunya mendapat penghargaan untuk semua iklan yang telah Anda lihat di Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Perisai";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Laporkan situs rusak";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Penanda Halaman Dikembalikan";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Pilihan Favorit Dikembalikan";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Anda menjelajahi situs ini tanpa perlindungan privasi Brave. Apakah situs tidak berfungsi benar dengan Perisai?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Aktifkan saran pencarian?";

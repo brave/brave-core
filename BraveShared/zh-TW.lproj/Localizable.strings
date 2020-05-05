@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "關於 Brave Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "進階控制項";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "封鎖廣告和其他討人厭的追蹤程式";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "深入了解";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "變更 Shields 全域預設";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "全域控制項";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "如果這個網站貌似無法正常運作，請嘗試關閉 Shields";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "關閉";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "開啟";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "該獎勵您在 Brave 所看過的廣告了。";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "關閉 Shields 選單";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "回報故障網站";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "恢復的書籤";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "恢復的最愛";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";

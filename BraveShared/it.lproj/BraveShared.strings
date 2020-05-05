@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Ricerca privata con DuckDuckGo?";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Predefinito di Brave";
+
 /* No comment provided by engineer. */
 "Delete" = "Elimina";
 
@@ -494,7 +497,7 @@
 "HTTPSUpgrades" = "Aggiornamenti HTTPS";
 
 /* title for per-site shield toggles */
-"IndividualControls" = "Controlli individuali";
+"IndividualControls" = "Comandi individuali";
 
 /* History tableview section header */
 "LastMonth" = "Ultimo mese";
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "Nuova scheda";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "Apertura automatica della tastiera";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "Mostra immagini di sfondo";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "Mostra immagini sponsorizzate";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "Pagina Nuova scheda";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "Mosta altro";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Inserisci tutte le parole e riprova.";
 
@@ -627,6 +615,27 @@
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Scopri di più sulle immagini sponsorizzate";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Apertura automatica della tastiera";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Mostra immagini di sfondo";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Immagini di sfondo";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Solo immagini predefinite";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Immagini sponsorizzate";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Pagina Nuova scheda";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Mosta altro";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Puoi sostenere con dei token i creatori di contenuti web.";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Termini d’uso";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Condividi...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Condividi Brave con i tuoi amici!";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatico";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Chiaro";
+
+/* Name for app theme settings */
+"themesSettings" = "Temi";
 
 /* History tableview section header */
 "Today" = "Oggi";

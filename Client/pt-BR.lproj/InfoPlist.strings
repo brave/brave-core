@@ -6,22 +6,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "NFCReaderUsageDescription" = "O aplicativo precisa ter acesso para leitura de NFC para se comunicar com sua YubiKey.";
 
-/* (No Comment) */
+/* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Isso permite que você tire e carregue fotos.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "O Brave exige o Face ID para acessar seus logins salvos.";
 
-/* (No Comment) */
+/* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Os sites que você visitar poderão solicitar sua localização.";
 
-/* (No Comment) */
+/* Privacy - Microphone Usage Description */
 "NSMicrophoneUsageDescription" = "Isso permite que você grave e carregue vídeos.";
 
-/* (No Comment) */
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Isso permite que você salve fotos.";
 
-/* (No Comment) */
+/* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Isso permite que você salve e carregue fotos.";
 
 /* (No Comment) */

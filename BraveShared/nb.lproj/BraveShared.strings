@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Søke privat med DuckDuckGo?";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave standard";
+
 /* No comment provided by engineer. */
 "Delete" = "Slett";
 
@@ -374,10 +377,10 @@
 "EditFolderTitle" = "Rediger mappe";
 
 /* Sync enter code words */
-"EnterCodeWords" = "Skriv kodeord";
+"EnterCodeWords" = "Skriv inn kodeord";
 
 /* Enter sync code words below */
-"EnterCodeWordsBelow" = "Skriv kodeord under";
+"EnterCodeWordsBelow" = "Skriv inn kodeord under";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Tast inn navn på mappe";
@@ -506,7 +509,7 @@
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "Finn ut mer om private søk \nmed DuckDuckGo";
 
 /* No comment provided by engineer. */
-"learnMore" = "Få mer informasjon";
+"learnMore" = "Lær mer";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Sist modifisert %@";
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "Ny fane";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "Åpne tastatur automatisk";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "Vis bakgrunnsbilder";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "Vis sponsede bilder";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "Ny faneside";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "Vis mer";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Skriv alle ordene og prøv igjen.";
 
@@ -623,10 +611,31 @@
 "ntp.learnMoreAboutBrandedImages" = "For hvert sponsede bilde du ser, får du 70 % av inntjeningen i tokens. Med Brave-annonser har du alltid kontroll over annonsene du ser.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Få mer informasjon om Brave Rewards";
+"ntp.learnMoreAboutRewards" = "Lær mer om Brave Rewards";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutSI" = "Få mer informasjon om sponsede bilder";
+"ntp.learnMoreAboutSI" = "Lær mer om sponsede bilder";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Åpne tastatur automatisk";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Vis bakgrunnsbilder";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Bakgrunnsbilder";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Kun standardbilder";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Sponsede bilder";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Ny faneside";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Vis mer";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Du kan skape nettskapere med tokens.";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Bruksvilkår";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Del ...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Del Brave med vennene dine!";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatisk";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Lyst";
+
+/* Name for app theme settings */
+"themesSettings" = "Temaer";
 
 /* History tableview section header */
 "Today" = "I dag";

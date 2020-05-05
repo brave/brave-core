@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "À propos de Brave Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Contrôles avancés";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Publicités et autres contenus suspects bloqués";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "En savoir plus";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Modifier les réglages globaux par défaut de Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Contrôles globaux";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Si ce site semble ne pas fonctionner correctement, essayez de désactiver Shields";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "désactivé";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "activé";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Il est temps d'être récompensé pour ces publicités que vous avez visionnées dans Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Fermer le menu Shields";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Signaler un site qui ne fonctionne pas correctement";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Marque-pages restaurés";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Favoris restaurés";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Vous utilisez ce site sans les protections de confidentialité de Brave. Ne fonctionne-t-il pas correctement avec Shields activé ?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activer les suggestions de recherche ?";
