@@ -5,7 +5,6 @@
 
 #include "components/content_settings/core/common/cookie_settings_base.h"
 
-#include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/optional.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -84,13 +83,13 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
 
-  // get content settings only - do not consider default 3rd-party blocking
+  // Get content settings only - do not consider default 3rd-party blocking.
   ContentSetting setting;
   GetCookieSettingInternal(
       url, top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies,
       false, nullptr, &setting);
 
-  // content settings should always override any defaults
+  // Content settings should always override any defaults.
   if (!IsAllowed(setting))
     return false;
 
