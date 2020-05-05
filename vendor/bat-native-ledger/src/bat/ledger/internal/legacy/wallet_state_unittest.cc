@@ -5,7 +5,7 @@
 
 #include <limits>
 
-#include "bat/ledger/internal/state/wallet_state.h"
+#include "bat/ledger/internal/legacy/wallet_state.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=WalletStateTest.*

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/state/unsigned_tx_state.h"
+#include "bat/ledger/internal/legacy/unsigned_tx_state.h"
 #include "base/json/json_reader.h"
 
 namespace ledger {

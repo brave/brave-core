@@ -10,7 +10,7 @@
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state/client_state.h"
+#include "bat/ledger/internal/legacy/client_state.h"
 
 using std::placeholders::_1;
 

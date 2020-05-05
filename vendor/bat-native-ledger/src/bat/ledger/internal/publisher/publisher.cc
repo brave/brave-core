@@ -18,7 +18,7 @@
 #include "bat/ledger/internal/properties/report_balance_properties.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
-#include "bat/ledger/internal/state/publisher_settings_state.h"
+#include "bat/ledger/internal/legacy/publisher_settings_state.h"
 #include "bat/ledger/internal/static_values.h"
 
 /* foo.bar.example.com

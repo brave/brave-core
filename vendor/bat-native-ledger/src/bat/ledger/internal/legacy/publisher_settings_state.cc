@@ -5,8 +5,8 @@
 
 #include <limits>
 
-#include "bat/ledger/internal/state/publisher_settings_state.h"
-#include "bat/ledger/internal/state/report_balance_state.h"
+#include "bat/ledger/internal/legacy/publisher_settings_state.h"
+#include "bat/ledger/internal/legacy/report_balance_state.h"
 #include "base/json/json_reader.h"
 
 namespace ledger {

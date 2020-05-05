@@ -6,7 +6,7 @@
 #include <limits>
 #include <map>
 
-#include "bat/ledger/internal/state/client_state.h"
+#include "bat/ledger/internal/legacy/client_state.h"
 #include "base/base64.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
