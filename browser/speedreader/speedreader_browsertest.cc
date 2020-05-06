@@ -19,7 +19,8 @@
 
 const char kTestHost[] = "theguardian.com";
 const char kTestPage[] = "/guardian.html";
-const char kTestWhitelist[] = "speedreader_whitelist.json";
+const base::FilePath::StringPieceType kTestWhitelist =
+    FILE_PATH_LITERAL("speedreader_whitelist.json");
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
