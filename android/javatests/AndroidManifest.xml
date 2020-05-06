@@ -1,0 +1,13 @@
+{% extends "chrome/android/java/AndroidManifest.xml" %}
+
+# Copyright 2020 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+{% block application_label %}BravePublicTest{% endblock %}
+
+{% block extra_root_definitions %}
+    <instrumentation android:name="org.chromium.base.test.BaseChromiumAndroidJUnitRunner"
+        android:targetPackage="{{manifest_package}}"
+        android:label="Tests for {{manifest_package}}"/>
+{% endblock %}

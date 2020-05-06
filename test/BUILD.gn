@@ -807,7 +807,7 @@ if (is_android) {
       "$root_gen_dir/brave_public_test_apk_manifest/AndroidManifest.xml"
 
   jinja_template("brave_public_test_apk_manifest") {
-    input = "//chrome/android/javatests/AndroidManifest.xml"
+    input = "//brave/android/javatests/AndroidManifest.xml"
     includes = [ "//chrome/android/java/AndroidManifest.xml" ]
     output = brave_public_test_apk_manifest
     variables = default_chrome_public_jinja_variables
