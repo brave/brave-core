@@ -48,27 +48,24 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 // Whitelist for histograms that we collect. Will be replaced with something
 // updating on the fly.
 constexpr const char* kCollectedHistograms[] = {
-    "Brave.P3A.SentAnswersCount",
-    "Brave.Savings.BandwidthSavingsMB",
-    "Brave.Sync.Status",
-    // Deprecated:
-    // "DefaultBrowser.State",
-    "Brave.Importer.ImporterSource",
-    "Brave.Shields.UsageStatus",
-    // Do not gather detailed info regarding TOR usage for now.
-    // "Brave.Core.LastTimeTorUsed",
+    "Brave.Core.BookmarksCountOnProfileLoad",
     "Brave.Core.IsDefault",
-    "Brave.Core.TorEverUsed",
     "Brave.Core.LastTimeIncognitoUsed",
     "Brave.Core.NumberOfExtensions",
-    "Brave.Core.BookmarksCountOnProfileLoad",
     "Brave.Core.TabCount",
+    "Brave.Core.TorEverUsed",
     "Brave.Core.WindowCount",
-    "Brave.Search.DefaultEngine",
-    "Brave.Rewards.WalletBalance.2",
+    "Brave.Importer.ImporterSource",
+    "Brave.Omnibox.SearchCount",
+    "Brave.P3A.SentAnswersCount",
+    "Brave.Rewards.AdsState.2",
     "Brave.Rewards.AutoContributionsState.2",
     "Brave.Rewards.TipsState.2",
-    "Brave.Rewards.AdsState.2",
+    "Brave.Rewards.WalletBalance.2",
+    "Brave.Savings.BandwidthSavingsMB",
+    "Brave.Search.DefaultEngine",
+    "Brave.Shields.UsageStatus",
+    "Brave.Sync.Status",
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
 };

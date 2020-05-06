@@ -9,6 +9,7 @@
 #include <list>
 
 #include "base/timer/timer.h"
+#include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 
@@ -16,27 +17,6 @@ class PrefService;
 class PrefRegistrySimple;
 
 namespace brave {
-
-class UsagePermanentState {
- public:
-  explicit UsagePermanentState(PrefService* local_state);
-  ~UsagePermanentState();
-
-  void AddInterval(base::TimeDelta delta);
-  base::TimeDelta GetTotalUsage() const;
-
- private:
-  struct DailyUptime {
-    base::Time day;
-    base::TimeDelta uptime;
-  };
-  void LoadUptimes();
-  void SaveUptimes();
-  void RecordP3A();
-
-  std::list<DailyUptime> daily_uptimes_;
-  PrefService* local_state_ = nullptr;
-};
 
 class BraveUptimeTracker {
  public:
@@ -49,11 +29,12 @@ class BraveUptimeTracker {
 
  private:
   void RecordUsage();
+  void RecordP3A();
 
   resource_coordinator::UsageClock usage_clock_;
   base::RepeatingTimer timer_;
   base::TimeDelta current_total_usage_;
-  UsagePermanentState state_;
+  WeeklyStorage state_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveUptimeTracker);
 };
