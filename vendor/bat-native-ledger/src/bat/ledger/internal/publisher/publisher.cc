@@ -56,7 +56,7 @@ void Publisher::OnTimer(uint32_t timer_id) {
 void Publisher::RefreshPublisher(
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) {
-  server_list_->Download(std::bind(&Publisher::OnRefreshPublisher,
+  server_list_->Start(std::bind(&Publisher::OnRefreshPublisher,
           this,
           _1,
           publisher_key,

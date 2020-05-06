@@ -138,6 +138,8 @@ using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
 
 using ServerPublisherPartial = mojom::ServerPublisherPartial;
 using ServerPublisherPartialPtr = mojom::ServerPublisherPartialPtr;
+using ServerPublisherPartialList =
+    std::vector<mojom::ServerPublisherPartialPtr>;
 
 using SKUOrder = mojom::SKUOrder;
 using SKUOrderPtr = mojom::SKUOrderPtr;
