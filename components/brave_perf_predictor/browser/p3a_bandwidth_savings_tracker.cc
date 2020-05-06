@@ -11,8 +11,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/time/clock.h"
 #include "base/time/default_clock.h"
-#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_permanent_state.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/weekly_storage/weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -51,11 +51,9 @@ void P3ABandwidthSavingsTracker::RecordSavings(uint64_t savings) {
   if (savings > 0 && user_prefs_) {
     // TODO(AndriusA): optimise if needed, loading permanent state on every
     // record could be costly
-    auto permanent_state =
-        std::make_unique<P3ABandwidthSavingsPermanentState>(user_prefs_);
-    permanent_state->AddSavings(savings);
-    const auto total = permanent_state->GetFullPeriodSavingsBytes();
-    StoreSavingsHistogram(total);
+    WeeklyStorage weekly(user_prefs_, prefs::kBandwidthSavedDailyBytes);
+    weekly.AddDelta(savings);
+    StoreSavingsHistogram(weekly.GetWeeklySum());
   }
 }
 

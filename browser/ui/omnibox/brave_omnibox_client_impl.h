@@ -6,19 +6,24 @@
 #ifndef BRAVE_BROWSER_UI_OMNIBOX_BRAVE_OMNIBOX_CLIENT_IMPL_H_
 #define BRAVE_BROWSER_UI_OMNIBOX_BRAVE_OMNIBOX_CLIENT_IMPL_H_
 
-#include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 
 class OmniboxEditController;
+class PrefRegistrySimple;
 class Profile;
 
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
-  BraveOmniboxClientImpl(OmniboxEditController* controller,
-                     Profile* profile);
+  BraveOmniboxClientImpl(OmniboxEditController* controller, Profile* profile);
   ~BraveOmniboxClientImpl() override;
+
+  static void RegisterPrefs(PrefRegistrySimple* prefs);
+
   const AutocompleteSchemeClassifier& GetSchemeClassifier() const override;
   bool IsAutocompleteEnabled() const override;
+
+  void OnInputAccepted(const AutocompleteMatch& match) override;
 
  private:
   Profile* profile_;
