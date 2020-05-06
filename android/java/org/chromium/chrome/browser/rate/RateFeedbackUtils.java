@@ -69,7 +69,7 @@ public class RateFeedbackUtils {
 		StringBuilder sb = new StringBuilder(); 
 
 		//TODO update url for prod 
-		String http = "https://laptop-updates-pre.brave.com/1/feedback";  
+		String http = "https://laptop-updates.brave.com/1/feedback";  
 
 		HttpURLConnection urlConnection=null;  
 		try {  
