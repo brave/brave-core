@@ -67,6 +67,7 @@ BraveWaybackMachineInfoBarContentsView::
 ~BraveWaybackMachineInfoBarContentsView() {}
 
 void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
+  views::View::OnThemeChanged();
   const SkColor background_color = GetColor(kInfoBarLabelBackgroundColor);
   const SkColor text_color = GetColor(kInfoBarLabelTextColor);
   for (auto* label : labels_) {
