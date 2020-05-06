@@ -8,19 +8,17 @@
 #include <algorithm>
 #include <memory>
 
-#include "brave/browser/ui/tabs/mru_tab_cycling_controller.h"
 #include "brave/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 
 BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
                                        Profile* profile)
-    : TabStripModel(delegate, profile) {
-  mru_tab_cycling_controller_ = std::make_unique<MRUTabCyclingController>(this);
-}
-
+    : TabStripModel(delegate, profile) {}
 BraveTabStripModel::~BraveTabStripModel() {}
 
 void BraveTabStripModel::SelectRelativeTab(bool forward,
@@ -53,7 +51,9 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
-    mru_tab_cycling_controller_->StartMRUCycling();
+    static_cast<BraveBrowserWindow*>(
+        chrome::FindBrowserWithWebContents(GetWebContentsAt(0))->window())
+        ->StartMRUCycling();
   }
 
   if (forward) {

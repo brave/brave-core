@@ -8,11 +8,13 @@
 
 #include <string>
 
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 class BraveBrowserView : public BrowserView {
  public:
-  using BrowserView::BrowserView;
+  BraveBrowserView(std::unique_ptr<Browser> browser);
+  ~BraveBrowserView() override;
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
@@ -24,7 +26,24 @@ class BraveBrowserView : public BrowserView {
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
 
+  void StartMRUCycling() override;
+
  private:
+  class CtrlReleaseHandler : public ui::EventHandler {
+   public:
+    explicit CtrlReleaseHandler(BraveTabStripModel* model,
+                                BraveBrowserView* browser_view);
+    ~CtrlReleaseHandler() override;
+
+   private:
+    void OnKeyEvent(ui::KeyEvent* event) override;
+    BraveTabStripModel* model_;
+    BraveBrowserView* browser_view_;
+    DISALLOW_COPY_AND_ASSIGN(CtrlReleaseHandler);
+  };
+
+  std::unique_ptr<CtrlReleaseHandler> ctrl_released_event_handler_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };
 
