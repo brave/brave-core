@@ -80,7 +80,6 @@ def AddBravePartsForSigning(parts, config):
     brave_dylibs = (
         'libchallenge_bypass_ristretto.dylib',
         'libadblock.dylib',
-        'libspeedreader.dylib',
     )
     for library in brave_dylibs:
         library_basename = os.path.basename(library)
