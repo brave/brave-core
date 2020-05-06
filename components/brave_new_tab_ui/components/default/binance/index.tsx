@@ -744,7 +744,6 @@ class Binance extends React.PureComponent<Props, State> {
     const cleanName = this.currencyNames[currentDepositAsset]
     const cleanNameDisplay = cleanName ? `(${cleanName})` : ''
     const depositData = tag || address
-    const label = tag ? 'binanceWidgetDepositMemo' : 'binanceWidgetDepositAddress'
 
     return (
       <>
@@ -772,27 +771,54 @@ class Binance extends React.PureComponent<Props, State> {
           }
         </ListItem>
         <DetailArea>
-          <MemoArea>
-            <MemoInfo>
-              <DetailLabel>
-                {`${currentDepositAsset} ${getLocale(label)}`}
-              </DetailLabel>
-              <DetailInfo>
-                {
-                  depositData
-                  ? depositData
-                  : getLocale('binanceWidgetAddressUnavailable')
-                }
-              </DetailInfo>
-            </MemoInfo>
-            {
-              depositData
-              ? <CopyButton onClick={this.copyToClipboard.bind(this, depositData)}>
+          {
+            !depositData
+            ? <MemoArea>
+                <MemoInfo>
+                  <DetailLabel>
+                    {`${currentDepositAsset}`}
+                  </DetailLabel>
+                  <DetailInfo>
+                    {getLocale('binanceWidgetAddressUnavailable')}
+                  </DetailInfo>
+                </MemoInfo>
+              </MemoArea>
+            : null
+          }
+          {
+            address
+            ? <MemoArea>
+                <MemoInfo>
+                  <DetailLabel>
+                    {`${currentDepositAsset} ${getLocale('binanceWidgetDepositAddress')}`}
+                  </DetailLabel>
+                  <DetailInfo>
+                    {address}
+                  </DetailInfo>
+                </MemoInfo>
+                <CopyButton onClick={this.copyToClipboard.bind(this, address)}>
                   {getLocale('binanceWidgetCopy')}
                 </CopyButton>
-              : null
-            }
-          </MemoArea>
+              </MemoArea>
+            : null
+          }
+          {
+            tag
+            ? <MemoArea>
+                <MemoInfo>
+                  <DetailLabel>
+                    {`${currentDepositAsset} ${getLocale('binanceWidgetDepositMemo')}`}
+                  </DetailLabel>
+                  <DetailInfo>
+                    {tag}
+                  </DetailInfo>
+                </MemoInfo>
+                <CopyButton onClick={this.copyToClipboard.bind(this, tag)}>
+                  {getLocale('binanceWidgetCopy')}
+                </CopyButton>
+              </MemoArea>
+            : null
+          }
         </DetailArea>
       </>
     )
