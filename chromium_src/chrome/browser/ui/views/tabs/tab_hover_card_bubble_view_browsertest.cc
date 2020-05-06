@@ -76,23 +76,18 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     return hover_card->domain_label_->GetText();
   }
 
-  void HoverMouseOverTabAt(int index) {
-    TabStrip* tab_strip =
-        BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
-    Tab* tab = tab_strip->tab_at(index);
-    ui::MouseEvent hover_event(ui::ET_MOUSE_ENTERED, gfx::Point(), gfx::Point(),
-                               base::TimeTicks(), ui::EF_NONE, 0);
-    tab->OnMouseEntered(hover_event);
+  void HoverMouseOverTabAt(TabStrip* tab_strip, int index) {
+    // We don't use Tab::OnMouseEntered here to invoke the hover card because
+    // that path is disabled in browser tests. If we enabled it, the real mouse
+    // might interfere with the test.
+    tab_strip->UpdateHoverCard(tab_strip->tab_at(index));
   }
 
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
     TabStrip* tab_strip =
         BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
-    Tab* tab = tab_strip->tab_at(0);
-    ui::MouseEvent hover_event(ui::ET_MOUSE_ENTERED, gfx::Point(), gfx::Point(),
-                               base::TimeTicks(), ui::EF_NONE, 0);
-    tab->OnMouseEntered(hover_event);
+    HoverMouseOverTabAt(tab_strip, 0);
     TabHoverCardBubbleView* hover_card = GetHoverCard(tab_strip);
     Widget* widget = GetHoverCardWidget(hover_card);
     HoverCardVisibleWaiter waiter(widget);
@@ -130,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
   Widget* widget = GetHoverCardWidget(hover_card);
   EXPECT_TRUE(widget != nullptr);
   EXPECT_TRUE(widget->IsVisible());
-  HoverMouseOverTabAt(1);
+  HoverMouseOverTabAt(tab_strip, 1);
   EXPECT_EQ(GetHoverCardTitle(hover_card),
             base::UTF8ToUTF16("Settings - Addresses and more"));
   EXPECT_EQ(GetHoverCardDomain(hover_card),
