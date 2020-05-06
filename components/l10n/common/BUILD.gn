@@ -1,0 +1,10 @@
+source_set("common") {
+  deps = [
+    "//base",
+  ]
+
+  sources = [
+    "locale_util.cc",
+    "locale_util.h",
+  ]
+}

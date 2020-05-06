@@ -46,8 +46,6 @@ const int kAdConversionFrequency =
     base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 const int kExpiredAdConversionFrequency = 5 * base::Time::kSecondsPerMinute;
 
-const char kDefaultLanguage[] = "en";
-const char kDefaultRegion[] = "US";
 const char kDefaultUserModelLanguage[] = "en";
 
 const uint16_t kPurchaseIntentSignalLevel = 1;

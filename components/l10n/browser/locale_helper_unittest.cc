@@ -7,7 +7,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-#include "bat/ads/internal/locale_helper.h"
+#include "brave/components/l10n/browser/locale.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -45,7 +45,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "en";
@@ -59,7 +59,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "US";
@@ -73,7 +73,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "en";
@@ -87,7 +87,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "US";
@@ -101,7 +101,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "en";
@@ -115,7 +115,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "101";
@@ -129,7 +129,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "en";
@@ -143,7 +143,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "US";
@@ -157,7 +157,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "az";
@@ -171,7 +171,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "AZ";
@@ -185,7 +185,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "en";
@@ -199,7 +199,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "US";
@@ -213,7 +213,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "en";
@@ -227,7 +227,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "US";
@@ -241,7 +241,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string language_code =
-      helper::Locale::GetLanguageCode(locale);
+      brave_l10n::Locale::GetLanguageCode(locale);
 
   // Assert
   const std::string expected_language_code = "az";
@@ -255,7 +255,7 @@ TEST_F(BraveAdsLocaleTest,
 
   // Act
   const std::string region_code =
-      helper::Locale::GetRegionCode(locale);
+      brave_l10n::Locale::GetRegionCode(locale);
 
   // Assert
   const std::string expected_region_code = "AZ";
