@@ -176,7 +176,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       autofill::features::kAutofillServerCommunication.name,
       blink::features::kTextFragmentAnchor.name,
       features::kAllowPopupsDuringPageUnload.name,
-      features::kAudioServiceOutOfProcess.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
       features::kNotificationTriggers.name,
       features::kSmsReceiver.name,
