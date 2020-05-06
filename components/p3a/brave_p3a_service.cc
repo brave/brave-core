@@ -57,6 +57,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Shields.UsageStatus",
     // Do not gather detailed info regarding TOR usage for now.
     // "Brave.Core.LastTimeTorUsed",
+    "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.IsDefault",
     "Brave.Core.TorEverUsed",
     "Brave.Core.LastTimeIncognitoUsed",
