@@ -160,14 +160,11 @@ void Uphold::OnFetchBalance(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
-    callback(ledger::Result::EXPIRED_TOKEN, 0.0);
+  if (response_status_code == net::HTTP_UNAUTHORIZED ||
+      response_status_code == net::HTTP_NOT_FOUND ||
+      response_status_code == net::HTTP_FORBIDDEN) {
     DisconnectWallet();
-    return;
-  }
-
-  if (response_status_code == net::HTTP_NOT_FOUND) {
-    callback(ledger::Result::LEDGER_ERROR, 0.0);
+    callback(ledger::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
