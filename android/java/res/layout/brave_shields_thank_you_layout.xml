@@ -29,9 +29,8 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="24sp"
-            android:layout_marginBottom="24dp"
             android:gravity="center_vertical"
-            android:text="Thank you!"
+            android:text="@string/thank_you"
             android:textColor="@color/standard_mode_tint"/>
 
     </LinearLayout>
@@ -42,6 +41,6 @@
         android:textSize="16sp"
         android:textColor="@color/standard_mode_tint"
         android:layout_marginBottom="14dp"
-        android:text="Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!"/>
+        android:text="@string/thank_you_text"/>
 
 </LinearLayout>

@@ -24,8 +24,10 @@
 		      	android:id="@+id/site_layout"
 		      	android:layout_width="match_parent"
 		      	android:layout_height="wrap_content"
-		      	android:gravity="center_horizontal"
+		      	android:layout_gravity="center"
 		      	android:layout_marginTop="16dp"
+		      	android:layout_marginStart="24dp"
+				android:layout_marginEnd="24dp"
 		      	android:orientation="horizontal">
 
 			    <ImageView 
@@ -43,6 +45,8 @@
 				    android:layout_height="wrap_content"
 				    android:textSize="24sp"
 				    android:layout_gravity="center_vertical"
+				    android:singleLine="true"
+        			android:ellipsize="end"
 				    android:textColor="@color/standard_mode_tint"/>
 
 			</LinearLayout>
@@ -60,14 +64,45 @@
 		        android:layout_gravity="center_horizontal" />
 
 		    <TextView
-				android:id="@+id/site_shield_text"
+				android:id="@+id/shield_up_text"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="16dp"
 				android:textSize="16sp"
 				android:gravity="center_horizontal"
+				android:textColor="@color/standard_mode_tint"/>
+
+			<TextView
+				android:id="@+id/shield_down_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="14sp"
+				android:gravity="center_horizontal"
 				android:textColor="@color/standard_mode_tint"
-				android:text="@string/brave_shields_up"/>
+				android:layout_marginTop="32dp"
+				android:layout_marginStart="24dp"
+				android:layout_marginEnd="24dp"
+				android:layout_marginBottom="16dp"
+				android:visibility="gone"
+				android:text="@string/brave_shields_down_text"/>
+
+			<Button
+	            android:id="@+id/btn_report_broken_site"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_horizontal"
+	            android:gravity="center"
+	            android:background="@drawable/transparent_bg_bordered"
+	            android:paddingTop="8dp"
+	            android:paddingBottom="8dp"
+	            android:paddingStart="16dp"
+	            android:paddingEnd="16dp"
+	            android:layout_marginBottom="24dp"
+	            android:text="@string/report_broken_site_text"
+	            android:textAllCaps="false"
+	            android:textSize="16sp"
+	            android:visibility="gone"
+	            android:textColor="@color/standard_mode_tint"/>
 
 			<LinearLayout
 		      	android:id="@+id/site_block_layout"
@@ -97,6 +132,7 @@
 			</LinearLayout>
 
 			<TextView
+				android:id="@+id/site_broken_warning_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="14sp"

@@ -1092,11 +1092,35 @@ until they verify, or until 90 days have passed.
       <message name="IDS_ABOUT_BRAVE_SHIELDS_TEXT" desc="About Title for shields option.">
         About Brave Shields
       </message>
-      <message name="IDS_BRAVE_SHIELDS_UP" desc="Text for brave shields switch.">
-        Brave Shield UP
+      <message name="IDS_UP" desc="Text for brave shields switch.">
+        UP
+      </message>
+      <message name="IDS_DOWN" desc="Text for brave shields switch.">
+        DOWN
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_DOWN_TEXT" desc="Text for brave shields down.">
+        You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?
       </message>
       <message name="IDS_SITE_BROKEN_TEXT" desc="Shields text for broken text warning message.">
         If this site appears broken, try Shields down.
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
+        Report a broken site
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_TEXT_1" desc="Shields text for broken text warning message.">
+        Let Brave's developers know that this site doesn't work properly with Shields:
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_TEXT_2" desc="Shields text for broken text warning message.">
+        Note: This site address will be submitted with your Brave version number and your IP address(which will not be stored).
+      </message>
+      <message name="IDS_THANK_YOU" desc="Title for thank you UI for shields.">
+        Thank you!
+      </message>
+      <message name="IDS_THANK_YOU_TEXT" desc="Text for thank you UI for shields.">
+        Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!
+      </message>
+      <message name="IDS_ADVANCED_CONTRLS" desc="Title for toggle section.">
+        Advanced controls
       </message>
     </messages>
   </release>

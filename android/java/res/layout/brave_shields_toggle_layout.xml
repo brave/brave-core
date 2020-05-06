@@ -26,17 +26,17 @@
       	android:orientation="horizontal">
 
 	    <TextView
-		    android:id="@+id/site_text"
+		    android:id="@+id/toggle_text"
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
 		    android:textSize="16sp"
 		    android:layout_gravity="center_vertical"
 		    android:textColor="@color/standard_mode_tint"
-		    android:text="Advanced controls"/>
+		    android:text="@string/advanced_controls"/>
 
 		<ImageView 
-	    	android:id="@+id/site_favicon"
+	    	android:id="@+id/toggle_favicon"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:contentDescription="@null"
@@ -47,9 +47,11 @@
 	</LinearLayout>
 
 	<View
+		android:id="@+id/bottom_divider"
 	    android:layout_width="match_parent"
 	    android:layout_height="1dp"
 	    android:alpha="0.5"
+	    android:visibility="gone"
 	    android:background="@color/shield_divider_color"/>
 
 </LinearLayout>

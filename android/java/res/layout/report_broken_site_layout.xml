@@ -18,7 +18,7 @@
         android:textSize="24sp"
         android:layout_marginBottom="24dp"
         android:gravity="center_vertical"
-        android:text="Report a broken site"
+        android:text="@string/report_broken_site_text"
         android:textColor="@color/standard_mode_tint"/>
 
     <TextView
@@ -27,7 +27,7 @@
         android:textSize="16sp"
         android:textColor="@color/standard_mode_tint"
         android:layout_marginBottom="14dp"
-        android:text="Let Brave's developers know that this site doesn't work properly with Shields:"/>
+        android:text="@string/report_broken_site_text_1"/>
 
     <TextView
         android:id="@+id/report_site_url"
@@ -35,15 +35,14 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/shield_back_button_tint"
-        android:layout_marginBottom="14dp"
-        android:text="https://www.buzzfeed.com/"/>
+        android:layout_marginBottom="14dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/standard_mode_tint"
-        android:text="Note: This site address will be submitted with your Brave version number and your IP address(which will not be stored)."/>
+        android:text="@string/report_broken_site_text_2"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
