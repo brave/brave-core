@@ -6,6 +6,9 @@
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
+#include "base/metrics/histogram.h"
+#include "base/metrics/histogram_functions.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -72,8 +75,7 @@ OAuth2ErrorCodesForHistogram OAuth2ErrorToHistogramValue(
 
 static GoogleServiceAuthError CreateAuthError(int net_error) {
   CHECK_NE(net_error, net::OK);
-  DLOG(WARNING) << "Server error: errno "
-                << net_error;
+  DLOG(WARNING) << "Server error: errno " << net_error;
   return GoogleServiceAuthError::FromConnectionError(net_error);
 }
 
@@ -166,10 +168,9 @@ void AccessTokenFetcherImpl::CancelRequest() {
   ts_url_loader_.reset();
 }
 
-void AccessTokenFetcherImpl::Start(
-    const std::string& client_id,
-    const std::string& client_secret,
-    const std::string& timestamp) {
+void AccessTokenFetcherImpl::Start(const std::string& client_id,
+                                   const std::string& client_secret,
+                                   const std::string& timestamp) {
   client_id_ = client_id;
   client_secret_ = client_secret;
   timestamp_ = timestamp;
@@ -177,9 +178,7 @@ void AccessTokenFetcherImpl::Start(
 }
 
 void AccessTokenFetcherImpl::StartGetTimestamp() {
-  ts_url_loader_ =
-      CreateURLLoader(MakeGetTimestampUrl(),
-                      "");
+  ts_url_loader_ = CreateURLLoader(MakeGetTimestampUrl(), "");
   // It's safe to use Unretained below as the |url_loader_| is owned by |this|.
   ts_url_loader_->DownloadToString(
       url_loader_factory_.get(),
@@ -208,15 +207,11 @@ void AccessTokenFetcherImpl::EndGetAccessToken(
   CHECK_EQ(GET_ACCESS_TOKEN_STARTED, state_);
   state_ = GET_ACCESS_TOKEN_DONE;
 
-  bool net_failure = false;
   int histogram_value;
-  if (url_loader_->NetError() == net::OK && url_loader_->ResponseInfo() &&
-      url_loader_->ResponseInfo()->headers) {
-    histogram_value = url_loader_->ResponseInfo()->headers->response_code();
-  } else {
-    histogram_value = url_loader_->NetError();
-    net_failure = true;
-  }
+  bool net_failure = IsNetFailure(url_loader_.get(), &histogram_value);
+  base::UmaHistogramSparse(
+      "BraveSync.AccessTokenFetcherImpl.AccessTokenResponseCode",
+      histogram_value);
   if (net_failure) {
     OnGetTokenFailure(CreateAuthError(histogram_value));
     return;
@@ -309,6 +304,19 @@ void AccessTokenFetcherImpl::OnGetTokenFailure(
   FireOnGetTokenFailure(error);
 }
 
+bool AccessTokenFetcherImpl::IsNetFailure(network::SimpleURLLoader* loader,
+                                          int* histogram_value) {
+  DCHECK(loader);
+  DCHECK(histogram_value);
+  if (loader->NetError() == net::OK && loader->ResponseInfo() &&
+      loader->ResponseInfo()->headers) {
+    *histogram_value = loader->ResponseInfo()->headers->response_code();
+    return false;
+  }
+  *histogram_value = loader->NetError();
+  return true;
+}
+
 void AccessTokenFetcherImpl::OnURLLoadComplete(
     std::unique_ptr<std::string> response_body) {
   CHECK(state_ == GET_ACCESS_TOKEN_STARTED);
@@ -317,31 +325,28 @@ void AccessTokenFetcherImpl::OnURLLoadComplete(
 
 void AccessTokenFetcherImpl::OnTimestampLoadComplete(
     std::unique_ptr<std::string> response_body) {
-  state_ = INITIAL;
-  bool net_failure = false;
   int histogram_value;
-  if (ts_url_loader_->NetError() == net::OK && ts_url_loader_->ResponseInfo() &&
-      ts_url_loader_->ResponseInfo()->headers) {
-    histogram_value = ts_url_loader_->ResponseInfo()->headers->response_code();
-  } else {
-    histogram_value = ts_url_loader_->NetError();
-    net_failure = true;
-  }
+  bool net_failure = IsNetFailure(ts_url_loader_.get(), &histogram_value);
+  base::UmaHistogramSparse(
+      "BraveSync.AccessTokenFetcherImpl.TimestampResponseCode",
+      histogram_value);
   if (net_failure) {
     FireOnGetTimestampFailure(CreateAuthError(histogram_value));
-    state_ = ERROR_STATE;
     return;
   }
-  std::unique_ptr<base::DictionaryValue> value =
-      ParseServerResponse(std::move(response_body));
-  if (!value)
+
+  int response_code = ts_url_loader_->ResponseInfo()->headers->response_code();
+  if (response_code != net::HTTP_OK) {
+    FireOnGetTimestampFailure(
+        GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_UNAVAILABLE));
     return;
+  }
+
   std::string timestamp;
-  if (!value->GetString(kTimestamp, &timestamp)) {
+  if (!ParseGetTimestampSuccessResponse(std::move(response_body), &timestamp)) {
     DLOG(WARNING) << "Response doesn't match expected format";
     FireOnGetTimestampFailure(
         GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_UNAVAILABLE));
-    state_ = ERROR_STATE;
     return;
   }
   FireOnGetTimestampSuccess(timestamp);
@@ -364,14 +369,11 @@ std::string AccessTokenFetcherImpl::MakeGetAccessTokenBody(
   std::string enc_client_id = net::EscapeUrlEncodedData(client_id, true);
   std::string enc_client_secret =
       net::EscapeUrlEncodedData(client_secret, true);
-  std::string enc_timestamp =
-      net::EscapeUrlEncodedData(timestamp, true);
+  std::string enc_timestamp = net::EscapeUrlEncodedData(timestamp, true);
   std::string enc_refresh_token =
       net::EscapeUrlEncodedData(refresh_token, true);
-  return base::StringPrintf(kGetAccessTokenBodyFormat,
-                            enc_client_id.c_str(),
-                            enc_client_secret.c_str(),
-                            enc_timestamp.c_str(),
+  return base::StringPrintf(kGetAccessTokenBodyFormat, enc_client_id.c_str(),
+                            enc_client_secret.c_str(), enc_timestamp.c_str(),
                             enc_refresh_token.c_str());
 }
 
@@ -402,4 +404,16 @@ bool AccessTokenFetcherImpl::ParseGetAccessTokenFailureResponse(
   return value ? value->GetString(kErrorKey, error) : false;
 }
 
-}   // namespace brave_sync
+// static
+bool AccessTokenFetcherImpl::ParseGetTimestampSuccessResponse(
+    std::unique_ptr<std::string> response_body,
+    std::string* timestamp) {
+  CHECK(timestamp);
+  std::unique_ptr<base::DictionaryValue> value =
+      ParseServerResponse(std::move(response_body));
+  if (!value)
+    return false;
+  return value->GetString(kTimestamp, timestamp);
+}
+
+}  // namespace brave_sync

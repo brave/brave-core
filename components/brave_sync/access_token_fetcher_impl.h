@@ -7,16 +7,18 @@
 
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
-#include "brave/components/brave_sync/access_token_fetcher.h"
 #include "brave/components/brave_sync/access_token_consumer.h"
+#include "brave/components/brave_sync/access_token_fetcher.h"
 #include "url/gurl.h"
 
 namespace network {
 class SimpleURLLoader;
 class SharedURLLoaderFactory;
-}
+}  // namespace network
 
 namespace brave_sync {
+
+class AccessTokenFetcherImplTest;
 
 class AccessTokenFetcherImpl : public AccessTokenFetcher {
  public:
@@ -56,14 +58,15 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
       const AccessTokenConsumer::TokenResponse& token_response);
   void OnGetTokenFailure(const GoogleServiceAuthError& error);
 
+  bool IsNetFailure(network::SimpleURLLoader* loader, int* histogram_value);
+
   // Other helpers.
   GURL MakeGetAccessTokenUrl();
   GURL MakeGetTimestampUrl();
-  static std::string MakeGetAccessTokenBody(
-      const std::string& client_id,
-      const std::string& client_secret,
-      const std::string& timestamp,
-      const std::string& refresh_token);
+  static std::string MakeGetAccessTokenBody(const std::string& client_id,
+                                            const std::string& client_secret,
+                                            const std::string& timestamp,
+                                            const std::string& refresh_token);
 
   static bool ParseGetAccessTokenSuccessResponse(
       std::unique_ptr<std::string> response_body,
@@ -74,6 +77,10 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   static bool ParseGetAccessTokenFailureResponse(
       std::unique_ptr<std::string> response_body,
       std::string* error);
+
+  static bool ParseGetTimestampSuccessResponse(
+      std::unique_ptr<std::string> response_body,
+      std::string* timestamp);
 
   // State that is set during construction.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -88,7 +95,26 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   std::string client_secret_;
   std::string timestamp_;
 
+  friend class AccessTokenFetcherImplTest;
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest, MakeGetAccessTokenBody);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetAccessTokenResponseNoBody);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetTimestampResponseNoBody);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetAccessTokenResponseBadJson);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetTimestampResponseBadJson);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetAccessTokenResponseSuccess);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetTimestampResponseSuccess);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetAccessTokenFailureInvalidError);
+  FRIEND_TEST_ALL_PREFIXES(AccessTokenFetcherImplTest,
+                           ParseGetAccessTokenFailure);
+
   DISALLOW_COPY_AND_ASSIGN(AccessTokenFetcherImpl);
 };
-}   // namespace brave_sync
+}  // namespace brave_sync
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_ACCESS_TOKEN_FETCHER_IMPL_H_
