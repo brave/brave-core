@@ -125,6 +125,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/browser/adblock_stub_response_unittest.cc",
     "//brave/components/brave_shields/browser/cosmetic_merge_unittest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_recently_used_cache_unittest.cpp",
+    "//brave/components/brave_sync/access_token_fetcher_impl_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils_unittest.cc",
     "//brave/components/l10n/common/locale_util_unittest.cc",
