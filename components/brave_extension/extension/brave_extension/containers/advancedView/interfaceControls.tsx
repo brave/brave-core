@@ -26,6 +26,7 @@ interface AdsTrackersProps {
   trackers: BlockOptions
   trackersBlocked: number
   trackersBlockedResources: Array<string>
+  firstPartyCosmeticFiltering: boolean
   blockAdsTrackers: BlockAdsTrackers
 }
 
@@ -55,6 +56,7 @@ export default class InterfaceControls extends React.PureComponent<Props, {}> {
           trackers={this.props.trackers}
           trackersBlocked={this.props.trackersBlocked}
           trackersBlockedResources={this.props.trackersBlockedResources}
+          firstPartyCosmeticFiltering={this.props.firstPartyCosmeticFiltering}
           blockAdsTrackers={this.props.blockAdsTrackers}
         />
         <HTTPSUpgradesControl

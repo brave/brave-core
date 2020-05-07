@@ -226,6 +226,9 @@ export const getMockChrome = () => {
       getAdControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
       },
+      getCosmeticFilteringControlTypeAsync: function (url: string) {
+        return Promise.resolve('block_third_party')
+      },
       getCookieControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
       },
@@ -242,6 +245,9 @@ export const getMockChrome = () => {
         return new Promise(() => [])
       },
       setAdControlTypeAsync: function (url: string, controlType: string) {
+        return new Promise(() => [])
+      },
+      setCosmeticFilteringControlTypeAsync: function (url: string, controlType: string) {
         return new Promise(() => [])
       },
       setCookieControlTypeAsync: function (url: string, controlType: string) {

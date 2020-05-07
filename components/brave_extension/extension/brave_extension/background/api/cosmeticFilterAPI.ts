@@ -18,9 +18,13 @@ const informTabOfCosmeticRulesToConsider = (tabId: number, selectors: string[]) 
 }
 
 // Fires when content-script calls hiddenClassIdSelectors
-export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[]) => {
+export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[], hide1pContent: boolean) => {
   chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (selectors, forceHideSelectors) => {
-    informTabOfCosmeticRulesToConsider(tabId, selectors)
+    if (hide1pContent) {
+      forceHideSelectors.push(...selectors)
+    } else {
+      informTabOfCosmeticRulesToConsider(tabId, selectors)
+    }
 
     if (forceHideSelectors.length > 0) {
       const forceHideStylesheet = forceHideSelectors.join(',') + '{display:none!important;}\n'
@@ -35,14 +39,18 @@ export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: s
 }
 
 // Fires on content-script loaded
-export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => {
+export const applyAdblockCosmeticFilters = (tabId: number, hostname: string, hide1pContent: boolean) => {
   chrome.braveShields.hostnameCosmeticResources(hostname, async (resources) => {
     if (chrome.runtime.lastError) {
       console.warn('Unable to get cosmetic filter data for the current host', chrome.runtime.lastError)
       return
     }
 
-    informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
+    if (hide1pContent) {
+      resources.force_hide_selectors.push(...resources.hide_selectors)
+    } else {
+      informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
+    }
 
     let styledStylesheet = ''
     if (resources.force_hide_selectors.length > 0) {
