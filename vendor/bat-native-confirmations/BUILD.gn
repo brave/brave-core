@@ -22,6 +22,7 @@ config("internal_config") {
   visibility = [
     ":*",
     "//brave/test:*",
+    "//brave/vendor/test:*",
   ]
   include_dirs = [ "src" ]
 }
@@ -34,6 +35,7 @@ source_set("bat-native-confirmations") {
     ":*",
     rebase_path("bat-native-ledger", dep_base) + ":*",
     "//brave/test:*",
+    "//brave/vendor/test:*",
   ]
 
   sources = [
