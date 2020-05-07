@@ -113,22 +113,6 @@ SuggestedSitesProvider::suggested_sites_ = {
       false)
   }, {
     SuggestedSitesMatch(
-      "litecoin",
-      GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=LTC&ref=35089877&utm_source=brave"),
-      GURL("https://www.binance.us/en/buy-sell-crypto?crypto=LTC"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=LTC&ref=35089877"),  // NOLINT
-      false)
-  }, {
-    SuggestedSitesMatch(
-      "ltc",
-      GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=LTC&ref=35089877&utm_source=brave"),
-      GURL("https://www.binance.us/en/buy-sell-crypto?crypto=LTC"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=LTC&ref=35089877"),  // NOLINT
-      false)
-  }, {
-    SuggestedSitesMatch(
       "bnb",
       GURL("https://www.binance.us/en/buy-sell-crypto"
            "?fiat=USD&crypto=BNB&ref=35089877&utm_source=brave"),
