@@ -819,9 +819,10 @@ void LedgerImpl::FetchWalletProperties(
 }
 
 void LedgerImpl::ClaimPromotion(
+    const std::string& promotion_id,
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) const {
-  bat_promotion_->Claim(payload, std::move(callback));
+  bat_promotion_->Claim(promotion_id, payload, std::move(callback));
 }
 
 void LedgerImpl::AttestPromotion(

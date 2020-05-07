@@ -114,7 +114,9 @@ class RewardsServiceImpl : public RewardsService,
   void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
   void FetchPromotions() override;
-  void ClaimPromotion(ClaimPromotionCallback callback) override;
+  void ClaimPromotion(
+      const std::string& promotion_id,
+      ClaimPromotionCallback callback) override;
   void ClaimPromotion(
       const std::string& promotion_id,
       AttestPromotionCallback callback) override;

@@ -630,6 +630,7 @@ void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
 
 #if !defined(OS_ANDROID)
   rewards_service_->ClaimPromotion(
+      promotion_id,
       base::Bind(&RewardsDOMHandler::OnClaimPromotion,
           weak_factory_.GetWeakPtr(),
           promotion_id));

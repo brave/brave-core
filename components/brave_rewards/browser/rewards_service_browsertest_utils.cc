@@ -394,6 +394,4 @@ void IsMediaTipsInjected(content::WebContents* context, bool should_appear) {
   WaitForElementToAppear(context, ".action-brave-tip", should_appear);
 }
 
-
-
 }  // namespace rewards_service_browsertest_utils

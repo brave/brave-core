@@ -34,6 +34,7 @@ class Promotion {
   void Fetch(ledger::FetchPromotionCallback callback);
 
   void Claim(
+      const std::string& promotion_id,
       const std::string& payload,
       ledger::ClaimPromotionCallback callback);
 
@@ -66,7 +67,17 @@ class Promotion {
       const ledger::Result result,
       const std::string& promotion_string);
 
+  void OnClaimPromotion(
+      ledger::PromotionPtr promotion,
+      const std::string& payload,
+      ledger::ClaimPromotionCallback callback);
+
   void OnAttestPromotion(
+      ledger::PromotionPtr promotion,
+      const std::string& solution,
+      ledger::AttestPromotionCallback callback);
+
+  void OnAttestedPromotion(
       const ledger::Result result,
       const std::string& promotion_id,
       ledger::AttestPromotionCallback callback);

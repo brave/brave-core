@@ -949,6 +949,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     BLOG(ledger::LogLevel::LOG_ERROR) << "Missing JSON payload while attempting to claim promotion" << std::endl;
     return;
   }
+  // TODO we need to put promotion id in
   const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(jsonString.UTF8String, ^(const ledger::Result result, const std::string& json) {
     const auto jsonData = [[NSString stringWithUTF8String:json.c_str()] dataUsingEncoding:NSUTF8StringEncoding];

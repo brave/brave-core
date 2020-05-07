@@ -87,7 +87,9 @@ ledger::ReportType ConvertPromotionTypeToReportType(
 
 ledger::Result ParseFetchResponse(
     const std::string& response,
-    ledger::PromotionList* list) {
+    ledger::PromotionList* list,
+    std::vector<std::string>* corrupted_promotions) {
+  DCHECK(corrupted_promotions);
   if (!list) {
     return ledger::Result::LEDGER_ERROR;
   }
@@ -116,32 +118,38 @@ ledger::Result ParseFetchResponse(
 
       const auto version = item.FindIntKey("version");
       if (!version) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->version = *version;
 
       const auto* type = item.FindStringKey("type");
       if (!type) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->type = ConvertStringToPromotionType(*type);
 
       const auto suggestions = item.FindIntKey("suggestionsPerGrant");
       if (!suggestions) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->suggestions = *suggestions;
 
       const auto* approximate_value = item.FindStringKey("approximateValue");
       if (!approximate_value) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->approximate_value = std::stod(*approximate_value);
 
       const auto available = item.FindBoolKey("available");
       if (!available) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
+
       if (*available) {
         promotion->status = ledger::PromotionStatus::ACTIVE;
       } else {
@@ -150,6 +158,7 @@ ledger::Result ParseFetchResponse(
 
       auto* expires_at = item.FindStringKey("expiresAt");
       if (!expires_at) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
 
@@ -161,6 +170,7 @@ ledger::Result ParseFetchResponse(
 
       auto* public_keys = item.FindListKey("publicKeys");
       if (!public_keys || public_keys->GetList().empty()) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
 

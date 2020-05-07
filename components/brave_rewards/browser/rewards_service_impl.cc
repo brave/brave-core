@@ -1344,6 +1344,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
 }
 
 void RewardsServiceImpl::ClaimPromotion(
+    const std::string& promotion_id,
     ClaimPromotionCallback callback) {
   if (!Connected()) {
     return;
@@ -1353,7 +1354,7 @@ void RewardsServiceImpl::ClaimPromotion(
       AsWeakPtr(),
       std::move(callback));
 
-  bat_ledger_->ClaimPromotion("", std::move(claim_callback));
+  bat_ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
 }
 
 void RewardsServiceImpl::ClaimPromotion(
@@ -1368,7 +1369,7 @@ void RewardsServiceImpl::ClaimPromotion(
       promotion_id,
       std::move(callback));
 
-  bat_ledger_->ClaimPromotion("", std::move(claim_callback));
+  bat_ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
 }
 
 void RewardsServiceImpl::GetWalletPassphrase(

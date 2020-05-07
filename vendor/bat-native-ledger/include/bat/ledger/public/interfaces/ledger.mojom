@@ -249,7 +249,8 @@ enum Result {
   RETRY = 29,
   RETRY_SHORT = 30,
   RETRY_LONG = 31,
-  CONTINUE = 32
+  CONTINUE = 32,
+  IN_PROGRESS= 33
 };
 
 enum PublisherStatus {

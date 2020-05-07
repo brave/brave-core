@@ -139,7 +139,9 @@ class RewardsService : public KeyedService {
   virtual void GetExcludedList(const GetContentSiteListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
-  virtual void ClaimPromotion(ClaimPromotionCallback callback) = 0;
+  virtual void ClaimPromotion(
+      const std::string& promotion_id,
+      ClaimPromotionCallback callback) = 0;
   // Used by Android
   virtual void ClaimPromotion(
       const std::string& promotion_id,
