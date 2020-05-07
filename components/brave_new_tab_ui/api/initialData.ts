@@ -36,23 +36,21 @@ const isIncognito: boolean = chrome.extension.inIncognitoContext
 export async function getInitialData (): Promise<InitialData> {
   try {
     console.timeStamp('Getting initial data...')
+    const preferences = await preferencesAPI.getPreferences()
     const [
-      preferences,
       stats,
       privateTabData,
       topSites,
       defaultSuperReferralTopSites,
       brandedWallpaperData
-    ] = await preferencesAPI.getPreferences().then((preferences: preferencesAPI.Preferences) => {
-      return Promise.all([
-        preferences,
-        preferences.showStats ? statsAPI.getStats() : Promise.resolve(undefined),
-        privateTabDataAPI.getPrivateTabData(),
-        preferences.showTopSites ? topSitesAPI.getTopSites() : Promise.resolve(undefined),
-        !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
-        !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
-      ])
-    })
+    ] = await Promise.all([
+      preferences.showStats ? statsAPI.getStats() : Promise.resolve(undefined),
+      privateTabDataAPI.getPrivateTabData(),
+      preferences.showTopSites ? topSitesAPI.getTopSites() : Promise.resolve(undefined),
+      !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
+      !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
+    ])
+
     console.timeStamp('Got all initial data.')
     return {
       preferences,

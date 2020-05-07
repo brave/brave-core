@@ -11,7 +11,7 @@ export const fetchBookmarkTreeNode = (
 ): Promise<chrome.bookmarks.BookmarkTreeNode> => {
   return new Promise(resolve => {
     chrome.bookmarks.search(
-      url,
+      { url: url },
       (bookmarkTreeNodes) => {
         resolve(bookmarkTreeNodes[0])
       }
