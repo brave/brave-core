@@ -22,7 +22,6 @@ source_set("browser") {
 
   deps = [
      "//base",
-     "//brave/common:pref_names",
      "//components/omnibox/browser:buildflags",
      "//components/security_state/core",
      "//skia",
@@ -33,6 +32,7 @@ source_set("browser") {
 
 if (!is_ios) {
   deps += [
+   "//brave/common:pref_names",
    "//content/public/common",
   ]
 }
