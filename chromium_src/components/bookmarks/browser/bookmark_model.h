@@ -16,6 +16,7 @@ class BraveSyncServiceTestDelayedLoadModel;
 
 namespace bookmarks {
 void BraveMigrateOtherNodeFolder(BookmarkModel* model);
+void BraveClearSyncV1MetaInfo(BookmarkModel* model);
 }  // namespace bookmarks
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_BOOKMARKS_BROWSER_BOOKMARK_MODEL_H_

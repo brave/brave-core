@@ -15,13 +15,6 @@
       "SyncSetupReset", base::BindRepeating(&PeopleHandler::HandleReset, \
                                             base::Unretained(this)));
 
-#define BRAVE_HANDLE_SHOW_SETUP_UI                          \
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs()); \
-  if (!brave_sync_prefs.IsSyncV2Migrated()) {               \
-    service->StopAndClear();                                \
-    brave_sync_prefs.SetSyncV2Migrated(true);               \
-  }
-
 #define BRAVE_CLOSE_SYNC_SETUP                                    \
   syncer::SyncService* sync_service = GetSyncService();           \
   if (sync_service &&                                             \
@@ -45,7 +38,6 @@
 
 #include "../../../../../../../chrome/browser/ui/webui/settings/people_handler.cc"
 #undef BRAVE_REGISTER_MESSAGES
-#undef BRAVE_HANDLE_SHOW_SETUP_UI
 #undef BRAVE_CLOSE_SYNC_SETUP
 #undef BRAVE_IS_SYNC_SUBPAGE
 #undef BRAVE_GET_SYNC_STATUS_DICTIONARY

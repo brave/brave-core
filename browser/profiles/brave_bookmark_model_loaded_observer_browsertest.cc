@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -11,10 +12,8 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
 
-using BraveBookmarkModelLoadedObserverBrowserTest = InProcessBrowserTest;
-
-// This test to mainly testing kOtherBookmarksMigrated, granular testing for
-// migration is in BookmarkModelTest::BraveMigrateOtherNodeFolder
+// This test to mainly testing whether migration only runs once,
+// granular testing for is in BookmarkModelTest
 
 namespace {
 
@@ -25,51 +24,100 @@ void CreateOtherBookmarksFolder(bookmarks::BookmarkModel* model) {
   model->AddFolder(other_node_folder, 0, base::ASCIIToUTF16("A"));
 }
 
+void CreateBraveSyncV1MetaInfo(bookmarks::BookmarkModel* model) {
+  const bookmarks::BookmarkNode* node = model->AddURL(
+      model->bookmark_bar_node(), model->bookmark_bar_node()->children().size(),
+      base::ASCIIToUTF16("Brave"), GURL("https://brave.com"));
+  model->SetNodeMetaInfo(node, "object_id", "object_id_value");
+}
+
 }  // namespace
+
+class BraveBookmarkModelLoadedObserverBrowserTest
+    : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    profile_ = browser()->profile();
+    bookmark_model_ = BookmarkModelFactory::GetForBrowserContext(profile_);
+  }
+
+  PrefService* prefs() { return profile_->GetPrefs(); }
+
+  bookmarks::BookmarkModel* bookmark_model() { return bookmark_model_; }
+
+ private:
+  Profile* profile_;
+  bookmarks::BookmarkModel* bookmark_model_;
+};
 
 IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
                        PRE_OtherBookmarksMigration) {
-  Profile* profile = browser()->profile();
+  prefs()->SetBoolean(kOtherBookmarksMigrated, false);
 
-  profile->GetPrefs()->SetBoolean(kOtherBookmarksMigrated, false);
-
-  bookmarks::BookmarkModel* bookmark_model =
-      BookmarkModelFactory::GetForBrowserContext(profile);
-  CreateOtherBookmarksFolder(bookmark_model);
+  CreateOtherBookmarksFolder(bookmark_model());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
                        OtherBookmarksMigration) {
-  Profile* profile = browser()->profile();
-  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kOtherBookmarksMigrated));
+  EXPECT_TRUE(prefs()->GetBoolean(kOtherBookmarksMigrated));
 
-  bookmarks::BookmarkModel* bookmark_model =
-      BookmarkModelFactory::GetForBrowserContext(profile);
-
-  ASSERT_EQ(bookmark_model->other_node()->children().size(), 1u);
-  ASSERT_EQ(bookmark_model->bookmark_bar_node()->children().size(), 0u);
+  ASSERT_EQ(bookmark_model()->other_node()->children().size(), 1u);
+  ASSERT_EQ(bookmark_model()->bookmark_bar_node()->children().size(), 0u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
                        PRE_NoOtherBookmarksMigration) {
-  Profile* profile = browser()->profile();
+  prefs()->SetBoolean(kOtherBookmarksMigrated, true);
 
-  profile->GetPrefs()->SetBoolean(kOtherBookmarksMigrated, true);
-
-  bookmarks::BookmarkModel* bookmark_model =
-      BookmarkModelFactory::GetForBrowserContext(profile);
-
-  CreateOtherBookmarksFolder(bookmark_model);
+  CreateOtherBookmarksFolder(bookmark_model());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
                        NoOtherBookmarksMigration) {
-  Profile* profile = browser()->profile();
-  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kOtherBookmarksMigrated));
+  EXPECT_TRUE(prefs()->GetBoolean(kOtherBookmarksMigrated));
 
-  bookmarks::BookmarkModel* bookmark_model =
-      BookmarkModelFactory::GetForBrowserContext(profile);
+  ASSERT_EQ(bookmark_model()->other_node()->children().size(), 0u);
+  ASSERT_EQ(bookmark_model()->bookmark_bar_node()->children().size(), 1u);
+}
 
-  ASSERT_EQ(bookmark_model->other_node()->children().size(), 0u);
-  ASSERT_EQ(bookmark_model->bookmark_bar_node()->children().size(), 1u);
+IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
+                       PRE_ClearSyncV1MetaInfo) {
+  brave_sync::Prefs brave_sync_prefs(prefs());
+  brave_sync_prefs.SetSyncV1MetaInfoCleared(false);
+
+  CreateBraveSyncV1MetaInfo(bookmark_model());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
+                       ClearSyncV1MetaInfo) {
+  brave_sync::Prefs brave_sync_prefs(prefs());
+  EXPECT_TRUE(brave_sync_prefs.IsSyncV1MetaInfoCleared());
+
+  const bookmarks::BookmarkNode* node =
+      bookmark_model()->bookmark_bar_node()->children()[0].get();
+  std::string object_id;
+  ASSERT_EQ(node->GetMetaInfoMap(), nullptr);
+  ASSERT_FALSE(node->GetMetaInfo("object_id", &object_id));
+  ASSERT_TRUE(object_id.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
+                       PRE_NoClearSyncV1MetaInfo) {
+  brave_sync::Prefs brave_sync_prefs(prefs());
+  brave_sync_prefs.SetSyncV1MetaInfoCleared(true);
+
+  CreateBraveSyncV1MetaInfo(bookmark_model());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,
+                       NoClearSyncV1MetaInfo) {
+  brave_sync::Prefs brave_sync_prefs(prefs());
+  EXPECT_TRUE(brave_sync_prefs.IsSyncV1MetaInfoCleared());
+
+  const bookmarks::BookmarkNode* node =
+      bookmark_model()->bookmark_bar_node()->children()[0].get();
+  std::string object_id;
+  ASSERT_NE(node->GetMetaInfoMap(), nullptr);
+  ASSERT_TRUE(node->GetMetaInfo("object_id", &object_id));
+  ASSERT_EQ(object_id, "object_id_value");
 }
