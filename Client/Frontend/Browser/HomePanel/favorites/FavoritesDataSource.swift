@@ -126,17 +126,9 @@ extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-
+        
         switch type {
-        case .insert:
-            // Do not insert to collection view if full row is already taken,
-            // otherwise it crashes with inconsistency exception.
-            if let indexPath = newIndexPath, indexPath.row < columnsPerRow {
-                collectionView?.insertItems(at: [indexPath])
-            }
-            
-            favoriteUpdatedHandler?()
-        case .delete:
+        case .insert, .delete:
             // Not all favorites must be visible at the time, so we can't just call `deleteItems` here.
             // Example:
             // There's 10 favorites total, 4 are visible on iPhone.
