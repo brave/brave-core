@@ -1,0 +1,7 @@
+import("//brave/build/rust/config.gni")
+
+speedreader_shared_lib_install_name = ""
+
+if (fix_rust_install_name) {
+  speedreader_shared_lib_install_name = "@loader_path/../../Libraries/libspeedreader_ffi${cargo_lib_suffix}"
+}
