@@ -17,6 +17,7 @@
 !/vendor/bat-native-ads
 !/vendor/brave-ios
 !/vendor/CPPLINT.cfg
+!/vendor/test
 node_modules/
 patches/**/*.patchinfo
 *.xcodeproj

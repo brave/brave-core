@@ -23,6 +23,7 @@ config("internal_config") {
   visibility = [
     ":*",
     "//brave/test:*",
+    "//brave/vendor/test:*",
   ]
   include_dirs = [ "src" ]
 }
