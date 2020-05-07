@@ -249,10 +249,6 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  setBinanceBalances = (balances: Record<string, string>) => {
-    this.props.actions.onBinanceAccountBalances(balances)
-  }
-
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
@@ -297,16 +293,8 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onBinanceUserTLD(userTLD)
   }
 
-  setBTCUSDPrice = (price: string) => {
-    this.props.actions.onBTCUSDPrice(price)
-  }
-
-  setAssetBTCPrice = (ticker: string, price: string) => {
-    this.props.actions.onAssetBTCPrice(ticker, price)
-  }
-
-  setAssetUSDPrice = (ticker: string, price: string) => {
-    this.props.actions.onAssetUSDPrice(ticker, price)
+  setBalanceInfo = (info: Record<string, Record<string, string>>) => {
+    this.props.actions.onAssetsBalanceInfo(info)
   }
 
   setAssetDepositInfo = (symbol: string, address: string, url: string) => {
@@ -424,7 +412,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   fetchBalance = () => {
-    chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
+    chrome.binance.getAccountBalances((balances: Record<string, Record<string, string>>, success: boolean) => {
       const hasBalances = Object.keys(balances).length
 
       if (!hasBalances) {
@@ -434,26 +422,12 @@ class NewTabPage extends React.Component<Props, State> {
         return
       }
 
-      chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
-        this.setAssetUSDPrice('BTC', price)
-        this.setBTCUSDPrice(price)
-        this.setBalanceInfo(balances)
-      })
+      this.setBalanceInfo(balances)
+      this.setDepositInfo()
     })
   }
 
-  setBalanceInfo = (balances: Record<string, string>) => {
-    for (let ticker in balances) {
-      if (ticker !== 'BTC') {
-        chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
-          this.setAssetBTCPrice(ticker, price)
-        })
-        chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
-          this.setAssetUSDPrice(ticker, price)
-        })
-      }
-    }
-
+  setDepositInfo = () => {
     chrome.binance.getCoinNetworks((networks: Record<string, string>) => {
       const currencies = this.getCurrencyList()
       for (let ticker in networks) {
@@ -465,10 +439,6 @@ class NewTabPage extends React.Component<Props, State> {
         }
       }
     })
-
-    setTimeout(() => {
-      this.setBinanceBalances(balances)
-    }, 1500)
   }
 
   setAuthInvalid = () => {
@@ -584,7 +554,6 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowBinance}
         showContent={showContent}
         onSetHideBalance={this.setHideBalance}
-        onBinanceAccountBalances={this.setBinanceBalances}
         onBinanceClientUrl={this.onBinanceClientUrl}
         onConnectBinance={this.connectBinance}
         onDisconnectBinance={this.disconnectBinance}
