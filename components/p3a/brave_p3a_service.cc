@@ -48,7 +48,7 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 // Whitelist for histograms that we collect. Will be replaced with something
 // updating on the fly.
 constexpr const char* kCollectedHistograms[] = {
-    "Brave.Core.BookmarksCountOnProfileLoad",
+    "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.IsDefault",
     "Brave.Core.LastTimeIncognitoUsed",
     "Brave.Core.NumberOfExtensions",
