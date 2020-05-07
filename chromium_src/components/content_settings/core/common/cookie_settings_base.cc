@@ -99,7 +99,7 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
   return IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
-}  // namespce content_settings
+}  // namespace content_settings
 
 #define IsCookieAccessAllowed IsChromiumCookieAccessAllowed
 #include "../../../../../../components/content_settings/core/common/cookie_settings_base.cc"  // NOLINT
