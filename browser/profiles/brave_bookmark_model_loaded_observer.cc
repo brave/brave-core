@@ -6,9 +6,8 @@
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
 
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
 
@@ -24,6 +23,12 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
   if (!profile_->GetPrefs()->GetBoolean(kOtherBookmarksMigrated)) {
     BraveMigrateOtherNodeFolder(model);
     profile_->GetPrefs()->SetBoolean(kOtherBookmarksMigrated, true);
+  }
+
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  if (!brave_sync_prefs.IsSyncV1MetaInfoCleared()) {
+    BraveClearSyncV1MetaInfo(model);
+    brave_sync_prefs.SetSyncV1MetaInfoCleared(true);
   }
 
   BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);

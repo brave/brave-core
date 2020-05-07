@@ -22,7 +22,11 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
     auth_manager_->SetAccessTokenFetcherForTest(                           \
         std::move(init_params.access_token_fetcher_for_test));             \
   brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService());      \
-  auth_manager_->DeriveSigningKeys(brave_sync_prefs.GetSeed());
+  auth_manager_->DeriveSigningKeys(brave_sync_prefs.GetSeed());            \
+  if (!brave_sync_prefs.IsSyncV1Migrated()) {                              \
+    StopImpl(CLEAR_DATA);                                                  \
+    brave_sync_prefs.SetSyncV1Migrated(true);                              \
+  }
 
 #define BRAVE_D_PROFILE_SYNC_SERVICE \
   brave_sync_prefs_change_registrar_.RemoveAll();

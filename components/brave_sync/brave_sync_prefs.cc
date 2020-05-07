@@ -19,7 +19,10 @@ namespace {
 // Stored as bip39 keywords (encrypted)
 const char kSyncV2Seed[] = "brave_sync_v2.seed";
 // Indicate whether migration has been done from v1 to v2
-const char kSyncV2Migrated[] = "brave_sync_v2.migrated";
+const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
+// Indicate all meta info set in V1 has been stripped in
+// BraveBookmarkModelLoadedObserver
+const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
 
 // Deprecated
 // ============================================================================
@@ -60,7 +63,8 @@ Prefs::~Prefs() {}
 // static
 void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
-  registry->RegisterBooleanPref(kSyncV2Migrated, false);
+  registry->RegisterBooleanPref(kSyncV1Migrated, false);
+  registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
 
 // Deprecated
 // ============================================================================
@@ -123,12 +127,20 @@ bool Prefs::SetSeed(const std::string& seed) {
   return true;
 }
 
-bool Prefs::IsSyncV2Migrated() const {
-  return pref_service_->GetBoolean(kSyncV2Migrated);
+bool Prefs::IsSyncV1Migrated() const {
+  return pref_service_->GetBoolean(kSyncV1Migrated);
 }
 
-void Prefs::SetSyncV2Migrated(bool is_migrated) {
-  pref_service_->SetBoolean(kSyncV2Migrated, is_migrated);
+void Prefs::SetSyncV1Migrated(bool is_migrated) {
+  pref_service_->SetBoolean(kSyncV1Migrated, is_migrated);
+}
+
+bool Prefs::IsSyncV1MetaInfoCleared() const {
+  return pref_service_->GetBoolean(kSyncV1MetaInfoCleared);
+}
+
+void Prefs::SetSyncV1MetaInfoCleared(bool is_cleared) {
+  pref_service_->SetBoolean(kSyncV1MetaInfoCleared, is_cleared);
 }
 
 void Prefs::Clear() {

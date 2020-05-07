@@ -37,8 +37,11 @@ class Prefs {
   std::string GetSeed() const;
   bool SetSeed(const std::string& seed);
 
-  bool IsSyncV2Migrated() const;
-  void SetSyncV2Migrated(bool is_migrated);
+  bool IsSyncV1Migrated() const;
+  void SetSyncV1Migrated(bool is_migrated);
+
+  bool IsSyncV1MetaInfoCleared() const;
+  void SetSyncV1MetaInfoCleared(bool is_cleared);
 
   void Clear();
 
