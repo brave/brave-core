@@ -305,7 +305,7 @@
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^25.1.0",
+    "jest": "^25.4.0",
     "less": "^3.7.1",
     "less-loader": "^4.0.5",
     "mkdirp": "^0.5.1",
@@ -319,7 +319,7 @@
     "storybook-addon-styled-component-theme": "^1.1.1",
     "style-loader": "^0.19.1",
     "styled-components": "^3.4.2",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "^25.4.0",
     "ts-loader": "^6.2.1",
     "tslint": "^5.8.0",
     "tslint-config-standard": "^7.0.0",
@@ -329,7 +329,7 @@
     "typescript-plugin-styled-components": "^1.4.2",
     "url-loader": "^0.6.2",
     "webpack": "^4.16.0",
-    "webpack-cli": "^3.0.8"
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "@types/jszip": "^3.1.6",
