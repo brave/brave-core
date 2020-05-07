@@ -17,16 +17,13 @@ import {
 
 // Helpers
 import {
-  isGridSitePinned,
-  isGridSiteBookmarked
+  isGridSitePinned
 } from '../../helpers/newTabUtils'
 
 // Icons
 import {
   PinIcon,
   PinOIcon,
-  BookmarkIcon,
-  BookmarkOIcon,
   CloseStrokeIcon
 } from 'brave-ui/components/icons'
 
@@ -49,10 +46,6 @@ class TopSite extends React.PureComponent<Props, {}> {
     this.props.actions.showGridSiteRemovedNotification(true)
   }
 
-  onToggleBookmark (site: NewTab.Site) {
-    this.props.actions.toggleGridSiteBookmarkInfo(site)
-  }
-
   render () {
     const { siteData } = this.props
 
@@ -68,13 +61,6 @@ class TopSite extends React.PureComponent<Props, {}> {
         <TileActionsContainer>
           <TileAction onClick={this.onTogglePinnedTopSite.bind(this, siteData)}>
             {isGridSitePinned(siteData) ? <PinIcon /> : <PinOIcon />}
-          </TileAction>
-          <TileAction onClick={this.onToggleBookmark.bind(this, siteData)}>
-            {
-              isGridSiteBookmarked(siteData.bookmarkInfo)
-                ? <BookmarkIcon />
-                : <BookmarkOIcon />
-            }
           </TileAction>
           {
             // Disallow removing a pinned site
