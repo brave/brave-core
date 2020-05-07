@@ -17,7 +17,7 @@ import { registerViewCount } from '../api/brandedWallpaper'
 import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage/new_tab_storage'
 import { getTotalContributions } from '../rewards-utils'
-import { getUSDPrice, isValidClientURL } from '../binance-utils'
+import { isValidClientURL } from '../binance-utils'
 
 const initialState = storage.load()
 
@@ -400,42 +400,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.hideBalance = payload.hide
       break
 
-    case types.ON_BINANCE_ACCOUNT_BALANCES:
-      const { balances } = payload
-      if (!balances) {
-        break
-      }
-
-      state = { ...state }
-      state.binanceState.accountBalances = balances
-
-      let totalBTC = 0.00
-      let totalBTCUSDValue = 0.00
-
-      const btcPrice = state.binanceState.btcPrice
-      const btcValues = state.binanceState.assetBTCValues
-
-      Object.keys(balances).map((symbol: string) => {
-        const balance = balances[symbol]
-        if (symbol === 'BTC') {
-          totalBTC += parseFloat(balance)
-          totalBTCUSDValue += parseFloat(getUSDPrice(balance, btcPrice))
-        } else {
-          const totalInBTC = parseFloat(btcValues[symbol]) * parseFloat(balance)
-          const totalAssetValue = getUSDPrice(totalInBTC.toString(), btcPrice)
-          totalBTC += totalInBTC
-          totalBTCUSDValue += parseFloat(totalAssetValue)
-        }
-      })
-
-      state.binanceState = {
-        ...state.binanceState,
-        accountBTCValue: totalBTC.toString(),
-        accountBTCUSDValue: totalBTCUSDValue.toFixed(2).toString()
-      }
-
-      break
-
     case types.ON_VALID_AUTH_CODE:
       state = { ...state }
       state.binanceState.userAuthed = true
@@ -466,74 +430,37 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.binanceClientUrl = clientUrl
       break
 
-    case types.ON_BTC_USD_PRICE:
-      if (!payload.price) {
-        break
-      }
-
+    case types.ON_ASSETS_BALANCE_INFO:
       state = { ...state }
+      const balances = payload.info
 
       if (!state.binanceState.accountBalances) {
         state.binanceState.accountBalances = {}
       }
 
-      const accountBTCBalance = state.binanceState.accountBalances['BTC'] || '0.00'
-      state.binanceState.btcBalanceValue = getUSDPrice(accountBTCBalance, payload.price)
-      state.binanceState.btcPrice = payload.price
-      break
-
-    case types.ON_BTC_USD_VOLUME:
-      if (!payload.volume) {
-        break
-      }
-
-      const btcFloatString = Math.floor(
-        parseFloat(payload.volume)
-      ).toString()
-
-      state = { ...state }
-      state.binanceState.btcVolume = btcFloatString
-      break
-
-    case types.ON_ASSET_BTC_PRICE:
-      const { ticker, price } = payload
-      if (!price) {
-        break
-      }
-
-      state = { ...state }
-      if (!state.binanceState.assetBTCValues) {
-        state.binanceState.assetBTCValues = {}
-      }
-      state.binanceState.assetBTCValues[ticker] = price
-      break
-
-    case types.ON_ASSET_BTC_VOLUME:
-      if (!payload.volume) {
-        break
-      }
-
-      const floatString = Math.floor(
-        parseFloat(payload.volume)
-      ).toString()
-
-      state = { ...state }
-      if (!state.binanceState.assetBTCVolumes) {
-        state.binanceState.assetBTCVolumes = {}
-      }
-      state.binanceState.assetBTCVolumes[payload.ticker] = floatString
-      break
-
-    case types.ON_ASSET_USD_PRICE:
-      if (!payload.price) {
-        break
-      }
-
-      state = { ...state }
       if (!state.binanceState.assetUSDValues) {
         state.binanceState.assetUSDValues = {}
       }
-      state.binanceState.assetUSDValues[payload.ticker] = payload.price
+
+      let totalBtcValue = 0.00
+      let totalUSDValue = 0.00
+
+      for (let ticker in balances) {
+        const balance = balances[ticker].balance
+        const usdValue = balances[ticker].fiatValue
+        const btcValue = balances[ticker].btcValue
+        const assetUSDValue = parseFloat(usdValue).toFixed(2)
+
+        state.binanceState.accountBalances[ticker] = balance
+        state.binanceState.assetUSDValues[ticker] = assetUSDValue.toString()
+
+        totalUSDValue += parseFloat(usdValue)
+        totalBtcValue += parseFloat(btcValue)
+      }
+
+      const usdValue = totalUSDValue.toFixed(2).toString()
+      state.binanceState.accountBTCUSDValue = usdValue
+      state.binanceState.accountBTCValue = totalBtcValue.toString()
       break
 
     case types.ON_ASSET_DEPOSIT_INFO:

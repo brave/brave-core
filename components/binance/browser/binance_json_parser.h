@@ -15,13 +15,9 @@ class BinanceJSONParser {
   static bool GetTokensFromJSON(const std::string& json,
                                 std::string *value, std::string type);
   static bool GetAccountBalancesFromJSON(const std::string& json,
-                                         std::map<std::string, std::string>*);
+      std::map<std::string, std::vector<std::string>>* balances);
   static bool GetQuoteIDFromJSON(const std::string& json,
                                  std::string *quote_id);
-  static bool GetTickerPriceFromJSON(const std::string& json,
-                                     std::string* symbol_pair_price);
-  static bool GetTickerVolumeFromJSON(const std::string& json,
-                                      std::string* symbol_pair_volume);
   static bool GetDepositInfoFromJSON(const std::string& json,
                                      std::string* address,
                                      std::string* tag);

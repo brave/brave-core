@@ -54,13 +54,16 @@ bool BinanceJSONParser::GetTokensFromJSON(
 //            "free": "0.00000000",
 //            "locked": "0.00000000",
 //            "freeze": "1.00000000",
-//            "withdrawing": "0.00000000"
+//            "withdrawing": "0.00000000",
+//            "btcValuation": "0.00000000",
+//            "fiatValuation": "0.00000000"
 //        }
 //    ]
 // }
 //
 bool BinanceJSONParser::GetAccountBalancesFromJSON(
-    const std::string& json, std::map<std::string, std::string>* balances) {
+    const std::string& json,
+    std::map<std::string, std::vector<std::string>>* balances) {
   if (!balances) {
     return false;
   }
@@ -76,18 +79,31 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
   }
 
   const base::Value* pv_arr = records_v->FindKey("data");
-  if (pv_arr && pv_arr->is_list()) {
-    for (const base::Value &val : pv_arr->GetList()) {
-      const base::Value* asset = val.FindKey("asset");
-      const base::Value* free_amount = val.FindKey("free");
-      const base::Value* locked_amount = val.FindKey("locked");
-      if (asset && asset->is_string() &&
-          free_amount && free_amount->is_string() &&
-          locked_amount && locked_amount->is_string()) {
-        const std::string asset_symbol = asset->GetString();
-        balances->insert({asset_symbol, free_amount->GetString()});
-      }
+  if (!pv_arr || !pv_arr->is_list()) {
+    return false;
+  }
+
+  for (const base::Value &val : pv_arr->GetList()) {
+    const base::Value* asset = val.FindKey("asset");
+    const base::Value* free_amount = val.FindKey("free");
+    const base::Value* btc_val = val.FindKey("btcValuation");
+    const base::Value* fiat_val = val.FindKey("fiatValuation");
+
+    bool has_asset = asset && asset->is_string();
+    bool has_free = free_amount && free_amount->is_string();
+    bool has_btc_val = btc_val && btc_val->is_string();
+    bool has_fiat_val = fiat_val && fiat_val->is_string();
+
+    if (!has_asset || !has_free || !has_btc_val || !has_fiat_val) {
+      continue;
     }
+
+    std::vector<std::string> balance_data;
+    balance_data.push_back(free_amount->GetString());
+    balance_data.push_back(btc_val->GetString());
+    balance_data.push_back(fiat_val->GetString());
+
+    balances->insert({asset->GetString(), balance_data});
   }
 
   return true;
@@ -143,62 +159,6 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
     return false;
   }
 
-  return true;
-}
-
-// static
-// Response format:
-// {
-//   "symbol": "BTCUSDT",
-//   "price":"7265.82000000"
-// }
-//
-bool BinanceJSONParser::GetTickerPriceFromJSON(
-    const std::string& json, std::string* symbol_pair_price) {
-  DCHECK(symbol_pair_price);
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& parsed_response = value_with_error.value;
-  if (!parsed_response) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const base::Value* price = parsed_response->FindKey("price");
-  if (!price || !price->is_string()) {
-    return false;
-  }
-
-  *symbol_pair_price = price->GetString();
-  return true;
-}
-
-// static
-// Response Format:
-// {
-//   "symbol":"BTCUSDT",
-//   "volume":"1337"
-// }
-bool BinanceJSONParser::GetTickerVolumeFromJSON(
-    const std::string& json, std::string* symbol_pair_volume) {
-  DCHECK(symbol_pair_volume);
-
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& parsed_response = value_with_error.value;
-  if (!parsed_response) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const base::Value* volume = parsed_response->FindKey("volume");
-  if (!volume || !volume->is_string()) {
-    return false;
-  }
-
-  *symbol_pair_volume = volume->GetString();
   return true;
 }
 

@@ -24,10 +24,22 @@ std::string GetValueFromStringMap(
   return value;
 }
 
+std::vector<std::string> GetVectorFromStringMap(
+    const std::map<std::string, std::vector<std::string>>& map,
+    const std::string& key) {
+  std::vector<std::string> value;
+  std::map<std::string, std::vector<std::string>>::const_iterator it =
+      map.find(key);
+  if (it != map.end()) {
+    value = it->second;
+  }
+  return value;
+}
+
 typedef testing::Test BinanceJSONParserTest;
 
 TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
-  std::map<std::string, std::string> balances;
+  std::map<std::string, std::vector<std::string>> balances;
   ASSERT_TRUE(BinanceJSONParser::GetAccountBalancesFromJSON(R"(
       {
         "code": "000000",
@@ -38,22 +50,40 @@ TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
             "free": "10114.00000000",
             "locked": "0.00000000",
             "freeze": "999990.00000000",
-            "withdrawing": "0.00000000"
+            "withdrawing": "0.00000000",
+            "btcValuation": "2.000000",
+            "fiatValuation": "17.500000"
           },
           {
             "asset": "BTC",
             "free": "2.45000000",
             "locked": "0.00000000",
             "freeze": "999990.00000000",
-            "withdrawing": "0.00000000"
+            "withdrawing": "0.00000000",
+            "btcValuation": "2.45000000",
+            "fiatValuation": "20000.0000"
           }
         ]
       })", &balances));
 
-  std::string bnb_balance = GetValueFromStringMap(balances, "BNB");
-  std::string btc_balance = GetValueFromStringMap(balances, "BTC");
-  ASSERT_EQ(bnb_balance, "10114.00000000");
-  ASSERT_EQ(btc_balance, "2.45000000");
+  std::vector<std::string>
+      bnb_balance = GetVectorFromStringMap(balances, "BNB");
+  std::vector<std::string>
+      btc_balance = GetVectorFromStringMap(balances, "BTC");
+
+  const uint64_t three = 3;
+
+  ASSERT_EQ(bnb_balance.size(), three);
+  ASSERT_EQ(btc_balance.size(), three);
+
+  ASSERT_EQ(bnb_balance[0], "10114.00000000");
+  ASSERT_EQ(btc_balance[0], "2.45000000");
+
+  ASSERT_EQ(bnb_balance[1], "2.000000");
+  ASSERT_EQ(btc_balance[1], "2.45000000");
+
+  ASSERT_EQ(bnb_balance[2], "17.500000");
+  ASSERT_EQ(btc_balance[2], "20000.0000");
 }
 
 TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
@@ -81,26 +111,6 @@ TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
 
   ASSERT_EQ(access_token, "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5");
   ASSERT_EQ(refresh_token, "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea");
-}
-
-TEST_F(BinanceJSONParserTest, GetTickerPriceFromJSON) {
-  std::string symbol_pair_price;
-  ASSERT_TRUE(BinanceJSONParser::GetTickerPriceFromJSON(R"(
-      {
-        "symbol": "BTCUSDT",
-        "price": "7137.98000000"
-      })", &symbol_pair_price));
-  ASSERT_EQ(symbol_pair_price, "7137.98000000");
-}
-
-TEST_F(BinanceJSONParserTest, GetTickerVolumeFromJSON) {
-  std::string symbol_pair_volume;
-  ASSERT_TRUE(BinanceJSONParser::GetTickerVolumeFromJSON(R"(
-      {
-        "symbol": "BTCUSDT",
-        "volume": "99849.90399800"
-      })", &symbol_pair_volume));
-  ASSERT_EQ(symbol_pair_volume, "99849.90399800");
 }
 
 TEST_F(BinanceJSONParserTest, GetDepositInfoFromJSON) {
