@@ -1,38 +1,22 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 7d835183ab85b5b0eb628bba236ca44279b69366..862b8424b2ad0c5ebf11cdbe52a1691461ee4275 100644
+index 7d835183ab85b5b0eb628bba236ca44279b69366..a4dbbfbc21f08ddc6a7c20b112fc5acb915f0aac 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -12,6 +12,10 @@ import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+@@ -11,6 +11,7 @@ import("//third_party/icu/config.gni")
+ import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
  import("//ui/base/ui_features.gni")
  import("//v8/gni/v8.gni")
++import("//brave/build/config.gni")
  
-+if (brave_chromium_build) {
-+  import("//brave/build/config.gni")
-+}
-+
  declare_args() {
    # The Chrome archive is compressed in official builds to reduce the size of
-   # the installer. By default: non-official or component builds, a build mode
-@@ -183,6 +187,22 @@ template("generate_mini_installer") {
+@@ -183,6 +184,9 @@ template("generate_mini_installer") {
        "//third_party/icu:icudata",
        chrome_dll_target,
      ]
-+    if (brave_chromium_build) {
-+      if (skip_signing) { args += [ "--skip_signing" ] }
-+      inputs -= [
-+        "$root_out_dir/chrome.exe",
-+      ]
-+      inputs += [
-+        "$root_out_dir/brave.exe",
-+        "$root_out_dir/brave_resources.pak",
-+        "$root_out_dir/brave_100_percent.pak",
-+        "$root_out_dir/brave_200_percent.pak",
-+      ]
-+      deps += [
-+        "//brave:packed_resources",
-+        "//brave/build/win:copy_exe",
-+      ]
-+    }
++    if (skip_signing) { args += [ "--skip_signing" ] }
++    if (build_delta_installer) { args += [ "--setup_exe_format=DIFF", "--diff_algorithm=COURGETTE", "--last_chrome_installer",rebase_path("$root_out_dir/$last_chrome_installer", root_build_dir) ] }
++    deps += [ "//brave:mini_installer_dependencies" ]
  
      if (enable_hidpi) {
        args += [ "--enable_hidpi=1" ]

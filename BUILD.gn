@@ -51,6 +51,27 @@ if (!is_ios) {
   }
 }
 
+if (is_win) {
+  # create_installer_archive.py assumes that last_chrome_installer folder has
+  # courgette.exe.
+  if (build_delta_installer) {
+    copy("copy_courgette_binary") {
+      visibility = [ ":mini_installer_dependencies" ]
+      sources = [ "$root_out_dir/courgette.exe" ]
+      outputs = [ "$root_out_dir/$last_chrome_installer/{{source_file_part}}" ]
+      deps = [ "//courgette:copy_courgette_binaries" ]
+    }
+  }
+
+  group("mini_installer_dependencies") {
+    deps = [ ":brave" ]
+
+    if (build_delta_installer) {
+      deps += [ ":copy_courgette_binary" ]
+    }
+  }
+}
+
 group("brave") {
   deps = ["build/$target_os:brave"]
   if (!is_android && !is_ios) {
@@ -183,7 +204,6 @@ group("create_dist") {
   }
   if (is_win) {
     deps += [
-      "//chrome/installer/mini_installer",
       "build/win:create_signed_installer"
     ]
 
