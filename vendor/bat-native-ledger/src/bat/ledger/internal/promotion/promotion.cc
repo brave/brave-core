@@ -113,9 +113,9 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   const std::string& passphrase = ledger_->GetWalletPassphrase();
   if (wallet_payment_id.empty() || passphrase.empty()) {
     ledger::PromotionList empty_list;
-    callback(ledger::Result::CORRUPTED_WALLET, std::move(empty_list));
+    callback(ledger::Result::CORRUPTED_DATA, std::move(empty_list));
     ledger::WalletProperties properties;
-    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
+    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_DATA, properties);
     return;
   }
 
@@ -182,15 +182,22 @@ void Promotion::OnGetAllPromotions(
   HandleExpiredPromotions(ledger_, &promotions);
 
   ledger::PromotionList list;
-  bool success = ParseFetchResponse(response, &list);
+  ledger::Result success = ParseFetchResponse(response, &list);
 
-  if (!success) {
+  if (success == ledger::Result::LEDGER_ERROR) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Failed to parse promotions";
     ProcessFetchedPromotions(
         ledger::Result::LEDGER_ERROR,
         std::move(list),
         callback);
     return;
+  }
+
+  // even though that some promotions are corrupted
+  // we should display non corrupted ones either way
+  if (success == ledger::Result::CORRUPTED_DATA) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Some promotions are not formatted correctly";
   }
 
   for (auto & item : list) {

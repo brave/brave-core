@@ -71,7 +71,7 @@ void Wallet::GetWalletProperties(
 
   if (payment_id.empty() || passphrase.empty()) {
     ledger::WalletProperties properties;
-    callback(ledger::Result::CORRUPTED_WALLET,
+    callback(ledger::Result::CORRUPTED_DATA,
              WalletPropertiesToWalletInfo(properties));
     return;
   }
@@ -469,7 +469,7 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   }
 
   if (payment_id.empty() || passphrase.empty()) {
-    callback(ledger::Result::CORRUPTED_WALLET);
+    callback(ledger::Result::CORRUPTED_DATA);
     return;
   }
 

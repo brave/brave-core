@@ -134,14 +134,34 @@ void CredentialsCommon::GetSignedCredsFromResponse(
     return;
   }
 
+  auto* signed_creds = parsed_response.FindListKey("signed_creds");
+  if (!signed_creds || signed_creds->GetList().empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Failed to parse signed creds";
+    callback(ledger::Result::RETRY);
+    return;
+  }
+
+  auto* public_key = parsed_response.FindStringKey("public_key");
+  if (!public_key || public_key->empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Public key is empty";
+    callback(ledger::Result::RETRY);
+    return;
+  }
+
+  auto* batch_proof = parsed_response.FindStringKey("batch_proof");
+  if (!batch_proof || batch_proof->empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Batch proof is empty";
+    callback(ledger::Result::RETRY);
+    return;
+  }
+
   auto creds_batch = ledger::CredsBatch::New();
   creds_batch->trigger_id = trigger.id;
   creds_batch->trigger_type = trigger.type;
-  base::JSONWriter::Write(
-      *parsed_response.FindListKey("signed_creds"),
-      &creds_batch->signed_creds);
-  creds_batch->public_key = *parsed_response.FindStringKey("public_key");
-  creds_batch->batch_proof = *parsed_response.FindStringKey("batch_proof");
+  base::JSONWriter::Write(*signed_creds, &creds_batch->signed_creds);
+  creds_batch->public_key = *public_key;
+  creds_batch->batch_proof = *batch_proof;
 
   ledger_->SaveSignedCreds(std::move(creds_batch), callback);
 }

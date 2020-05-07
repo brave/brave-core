@@ -23,7 +23,7 @@ ledger::PromotionType ConvertStringToPromotionType(const std::string& type);
 ledger::ReportType ConvertPromotionTypeToReportType(
     const ledger::PromotionType type);
 
-bool ParseFetchResponse(
+ledger::Result ParseFetchResponse(
     const std::string& response,
     ledger::PromotionList* list);
 

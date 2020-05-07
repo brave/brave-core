@@ -487,7 +487,7 @@ void LedgerImpl::OnPublisherStateLoaded(
   }
 
   if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
-    callback(ledger::Result::CORRUPTED_WALLET);
+    callback(ledger::Result::CORRUPTED_DATA);
     return;
   }
 
