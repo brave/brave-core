@@ -43,14 +43,16 @@ export async function getInitialData (): Promise<InitialData> {
       topSites,
       defaultSuperReferralTopSites,
       brandedWallpaperData
-    ] = await Promise.all([
-      preferencesAPI.getPreferences(),
-      statsAPI.getStats(),
-      privateTabDataAPI.getPrivateTabData(),
-      topSitesAPI.getTopSites(),
-      !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
-      !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
-    ])
+    ] = await preferencesAPI.getPreferences().then((preferences: preferencesAPI.Preferences) => {
+      return Promise.all([
+        preferences,
+        preferences.showStats ? statsAPI.getStats() : Promise.resolve(undefined),
+        privateTabDataAPI.getPrivateTabData(),
+        preferences.showTopSites ? topSitesAPI.getTopSites() : Promise.resolve(undefined),
+        !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
+        !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
+      ])
+    })
     console.timeStamp('Got all initial data.')
     return {
       preferences,
