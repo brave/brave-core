@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
+index fb41bd86314482bb8f9116e4da454c7913b74158..987040b59709fc7cca7a28ea75a880fc5bc6171a 100644
+--- a/components/content_settings/core/common/cookie_settings_base.h
++++ b/components/content_settings/core/common/cookie_settings_base.h
+@@ -169,6 +169,7 @@ class CookieSettingsBase {
+   // Determines whether |setting| is a valid content setting for legacy cookie
+   // access.
+   static bool IsValidSettingForLegacyAccess(ContentSetting setting);
++  BRAVE_COOKIE_SETTINGS_BASE_H
+ 
+  private:
+   virtual void GetCookieSettingInternal(
