@@ -660,6 +660,11 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::PromotionStatus status,
       ledger::ResultCallback callback);
 
+  void UpdatePromotionsStatus(
+      const std::vector<std::string>& promotion_ids,
+      const ledger::PromotionStatus status,
+      ledger::ResultCallback callback);
+
   void PromotionCredentialCompleted(
       const std::string& promotion_id,
       ledger::ResultCallback callback);
@@ -676,6 +681,12 @@ class LedgerImpl : public ledger::Ledger {
 
   void UpdateCredsBatchStatus(
       const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      const ledger::CredsBatchStatus status,
+      ledger::ResultCallback callback);
+
+  void UpdateCredsBatchesStatus(
+      const std::vector<std::string>& trigger_ids,
       const ledger::CredsBatchType trigger_type,
       const ledger::CredsBatchStatus status,
       ledger::ResultCallback callback);
@@ -732,6 +743,10 @@ class LedgerImpl : public ledger::Ledger {
   virtual void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<ledger::CredsBatchType>& batch_types,
       ledger::GetUnblindedTokenListCallback callback);
+
+  void UpdatePromotionsBlankPublicKey(
+      const std::vector<std::string>& ids,
+      ledger::ResultCallback callback);
 
  private:
   void MaybeInitializeConfirmations(

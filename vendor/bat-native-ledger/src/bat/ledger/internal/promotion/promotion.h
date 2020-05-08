@@ -117,7 +117,11 @@ class Promotion {
 
   void Retry(ledger::PromotionMap promotions);
 
-  void CheckForCorrupted(ledger::CredsBatchList list);
+  void CheckForCorrupted(const ledger::PromotionMap& promotions);
+
+  void CorruptedPromotionFixed(const ledger::Result result);
+
+  void CheckForCorruptedCreds(ledger::CredsBatchList list);
 
   void CorruptedPromotions(
       ledger::PromotionList promotions,
@@ -129,7 +133,11 @@ class Promotion {
       const std::map<std::string, std::string>& headers,
       const std::vector<std::string>& promotion_id_list);
 
-  void PromotionListDeleted(const ledger::Result result);
+  void ErrorStatusSaved(
+      const ledger::Result result,
+      const std::vector<std::string>& promotion_id_list);
+
+  void ErrorCredsStatusSaved(const ledger::Result result);
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;

@@ -102,6 +102,10 @@ void CredentialsPromotion::OnStart(
       callback(ledger::Result::LEDGER_OK);
       break;
     }
+    case ledger::CredsBatchStatus::CORRUPTED: {
+      callback(ledger::Result::LEDGER_ERROR);
+      break;
+    }
   }
 }
 
