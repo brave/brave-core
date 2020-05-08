@@ -37,6 +37,7 @@ cr.define('settings', function() {
 
   cr.addSingletonGetter(BraveAppearanceBrowserProxyImpl);
 
+  // #cr_define_end
   return {
     BraveAppearanceBrowserProxy: BraveAppearanceBrowserProxy,
     BraveAppearanceBrowserProxyImpl: BraveAppearanceBrowserProxyImpl,

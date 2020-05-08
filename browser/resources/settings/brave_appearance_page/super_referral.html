@@ -1,39 +1,7 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
-
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
-<link rel="import" href="brave_appearance_browser_proxy.html">
-<link rel="import" href="../controls/settings_radio_group.html">
-<link rel="import" href="../settings_shared_css.html">
-<link rel="import" href="../settings_vars_css.html">
-<link rel="import" href="../page_visibility.html">
 
-<dom-module id="settings-brave-appearance-theme">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-    </style>
-    <div class="settings-box first">
-      <div class="start">$i18n{appearanceSettingsBraveTheme}</div>
-      <select id="braveThemeType" class="md-select"
-          on-change="onBraveThemeTypeChange_">
-        <template is="dom-repeat" items="[[braveThemeList_]]">
-          <option value="[[item.value]]"
-              selected="[[braveThemeTypeEqual_(item.value, braveThemeType_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
-    </div>
-    <template is="dom-if" if="[[useThemesSubPage_()]]">
-      <cr-link-row class="hr" id="themes-subpage-trigger"
-          label="$i18n{themes}" on-click="onThemeTap_"
-          role-description="$i18n{subpageArrowRoleDescription}">
-      </cr-link-row>
-    </template>
-  </template>
-  <script src="brave_appearance_page.js"></script>
-</dom-module>
+<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
 
 <dom-module id="settings-brave-appearance-super-referral">
   <template>
@@ -105,35 +73,5 @@
       </div>
     </div>
   </template>
-</dom-module>
-
-<dom-module id="settings-brave-appearance-toolbar">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-    </style>
-    <settings-toggle-button pref="{{prefs.brave.location_bar_is_wide}}"
-                            label="$i18n{appearanceSettingsLocationBarIsWide}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.autocomplete_enabled}}"
-      label="$i18n{appearanceSettingsShowAutocompleteInAddressBar}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.top_site_suggestions_enabled}}"
-      label="$i18n{appearanceSettingsUseTopSiteSuggestions}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.brave_suggested_site_suggestions_enabled}}"
-      label="$i18n{appearanceSettingsUseBraveSuggestedSiteSuggestions}">
-    </settings-toggle-button>
-    <settings-toggle-button pref="{{prefs.brave.hide_brave_rewards_button}}"
-                            label="$i18n{appearanceSettingsHideBraveRewardsButtonLabel}"
-                            sub-label="$i18n{appearanceSettingsHideBraveRewardsButtonDesc}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.always_show_bookmark_bar_on_ntp}}"
-      label="$i18n{appearanceSettingsAlwaysShowBookmarkBarOnNTP}"
-    >
-    </settings-toggle-button>
-  </template>
+  <script src="super_referral.js"></script>
 </dom-module>
