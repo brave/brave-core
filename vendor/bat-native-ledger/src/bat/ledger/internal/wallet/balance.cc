@@ -179,7 +179,7 @@ void Balance::OnUpholdFetchBalance(ledger::Balance info,
 
   info_ptr->wallets.insert(std::make_pair(ledger::kWalletUphold, balance));
   info_ptr->total += balance;
-  callback(ledger::Result::LEDGER_OK, std::move(info_ptr));
+  callback(result, std::move(info_ptr));
 }
 
 // static

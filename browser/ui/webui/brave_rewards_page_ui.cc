@@ -1518,14 +1518,16 @@ void RewardsDOMHandler::OnPendingContributionRemoved(
 void RewardsDOMHandler::OnFetchBalance(
     int32_t result,
     std::unique_ptr<brave_rewards::Balance> balance) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue data;
-    data.SetIntKey("status", result);
-    base::Value balance_value(base::Value::Type::DICTIONARY);
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
 
-    if (result == 0 && balance) {
-      balance_value.SetDoubleKey("total", balance->total);
+  base::Value balance_value(base::Value::Type::DICTIONARY);
 
+  if (balance) {
+    balance_value.SetDoubleKey("total", balance->total);
+
+    if (result == 0) {
       base::Value rates(base::Value::Type::DICTIONARY);
       for (auto const& rate : balance->rates) {
         rates.SetDoubleKey(rate.first, rate.second);
@@ -1537,12 +1539,15 @@ void RewardsDOMHandler::OnFetchBalance(
         wallets.SetDoubleKey(wallet.first, wallet.second);
       }
       balance_value.SetKey("wallets", std::move(wallets));
-
-      data.SetKey("balance", std::move(balance_value));
     }
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balance", data);
+  } else {
+    balance_value.SetDoubleKey("total", 0.0);
   }
+
+  base::DictionaryValue data;
+  data.SetIntKey("status", result);
+  data.SetKey("balance", std::move(balance_value));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balance", data);
 }
 
 void RewardsDOMHandler::FetchBalance(const base::ListValue* args) {
