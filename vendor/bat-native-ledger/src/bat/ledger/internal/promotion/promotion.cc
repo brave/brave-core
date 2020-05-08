@@ -102,7 +102,7 @@ void Promotion::Initialize() {
         this,
         _1);
 
-    ledger_->GetAllCredsBatches(check_callback);
+    ledger_->GetAllPromotions(check_callback);
   }
 
   auto retry_callback = std::bind(&Promotion::Retry,
@@ -463,6 +463,7 @@ void Promotion::Retry(ledger::PromotionMap promotions) {
       }
       case ledger::PromotionStatus::ACTIVE:
       case ledger::PromotionStatus::FINISHED:
+      case ledger::PromotionStatus::CORRUPTED:
       case ledger::PromotionStatus::OVER: {
         break;
       }
@@ -504,8 +505,55 @@ void Promotion::Refresh(const bool retry_after_error) {
   ledger_->SetTimer(start_timer_in, &last_check_timer_id_);
 }
 
-void Promotion::CheckForCorrupted(ledger::CredsBatchList list) {
+void Promotion::CheckForCorrupted(const ledger::PromotionMap& promotions) {
+  if (promotions.empty()) {
+    return;
+  }
+
+  std::vector<std::string> corrupted_promotions;
+
+  for (const auto& item : promotions) {
+    if (!item.second ||
+        item.second->status != ledger::PromotionStatus::ATTESTED) {
+      continue;
+    }
+
+    if (item.second->public_keys.empty() ||
+        item.second->public_keys == "[]") {
+      corrupted_promotions.push_back(item.second->id);
+    }
+  }
+
+  if (corrupted_promotions.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "No corrupted promotions";
+    CorruptedPromotionFixed(ledger::Result::LEDGER_OK);
+    return;
+  }
+
+  auto get_callback = std::bind(&Promotion::CorruptedPromotionFixed,
+      this,
+      _1);
+
+  ledger_->UpdatePromotionsBlankPublicKey(corrupted_promotions, get_callback);
+}
+
+void Promotion::CorruptedPromotionFixed(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Could not update public keys";
+    return;
+  }
+
+  auto check_callback = std::bind(&Promotion::CheckForCorruptedCreds,
+        this,
+        _1);
+
+  ledger_->GetAllCredsBatches(check_callback);
+}
+
+void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
   if (list.empty()) {
+    ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
     return;
   }
 
@@ -533,6 +581,7 @@ void Promotion::CheckForCorrupted(ledger::CredsBatchList list) {
   }
 
   if (corrupted_promotions.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "No corrupted creds";
     ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
     return;
   }
@@ -559,6 +608,8 @@ void Promotion::CorruptedPromotions(
   }
 
   if (corrupted_claims.GetList().empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "No corrupted creds";
+    ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
     return;
   }
 
@@ -597,20 +648,50 @@ void Promotion::OnCheckForCorrupted(
     return;
   }
 
-  auto save_callback = std::bind(&Promotion::PromotionListDeleted,
+  ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+
+  auto update_callback = std::bind(&Promotion::ErrorStatusSaved,
+      this,
+      _1,
+      promotion_id_list);
+
+  ledger_->UpdatePromotionsStatus(
+      promotion_id_list,
+      ledger::PromotionStatus::CORRUPTED,
+      update_callback);
+}
+
+void Promotion::ErrorStatusSaved(
+    const ledger::Result result,
+    const std::vector<std::string>& promotion_id_list) {
+  // even if promotions fail, let's try to update at least creds
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Promotion status save failed";
+  }
+
+  auto update_callback = std::bind(&Promotion::ErrorCredsStatusSaved,
       this,
       _1);
 
-  ledger_->DeletePromotionList(promotion_id_list, save_callback);
+  ledger_->UpdateCredsBatchesStatus(
+      promotion_id_list,
+      ledger::CredsBatchType::PROMOTION,
+      ledger::CredsBatchStatus::CORRUPTED,
+      update_callback);
 }
 
-void Promotion::PromotionListDeleted(const ledger::Result result) {
+void Promotion::ErrorCredsStatusSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Error deleting promotions";
-    return;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Creds status save failed";
   }
 
-  ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+  // let's retry promotions that are valid now
+  auto retry_callback = std::bind(&Promotion::Retry,
+    this,
+    _1);
+
+  ledger_->GetAllPromotions(retry_callback);
 }
 
 void Promotion::TransferTokens(

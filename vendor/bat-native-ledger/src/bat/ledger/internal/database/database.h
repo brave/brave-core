@@ -140,6 +140,12 @@ class Database {
       const ledger::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
+  void UpdateCredsBatchesStatus(
+      const std::vector<std::string>& trigger_ids,
+      const ledger::CredsBatchType trigger_type,
+      const ledger::CredsBatchStatus status,
+      ledger::ResultCallback callback);
+
   /**
    * MEDIA PUBLISHER INFO
    */
@@ -207,6 +213,11 @@ class Database {
       const ledger::PromotionStatus status,
       ledger::ResultCallback callback);
 
+  void UpdatePromotionsStatus(
+      const std::vector<std::string>& promotion_ids,
+      const ledger::PromotionStatus status,
+      ledger::ResultCallback callback);
+
   void PromotionCredentialCompleted(
       const std::string& promotion_id,
       ledger::ResultCallback callback);
@@ -218,6 +229,10 @@ class Database {
   void GetPromotionListByType(
       const std::vector<ledger::PromotionType>& types,
       ledger::GetPromotionListCallback callback);
+
+  void UpdatePromotionsBlankPublicKey(
+      const std::vector<std::string>& ids,
+      ledger::ResultCallback callback);
 
   /**
    * PUBLISHER INFO

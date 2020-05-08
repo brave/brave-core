@@ -201,6 +201,18 @@ void Database::UpdateCredsBatchStatus(
   creds_batch_->UpdateStatus(trigger_id, trigger_type, status, callback);
 }
 
+void Database::UpdateCredsBatchesStatus(
+    const std::vector<std::string>& trigger_ids,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  creds_batch_->UpdateRecordsStatus(
+      trigger_ids,
+      trigger_type,
+      status,
+      callback);
+}
+
 /**
  * MEDIA PUBLISHER INFO
  */
@@ -296,6 +308,13 @@ void Database::UpdatePromotionStatus(
   promotion_->UpdateStatus(promotion_id, status, callback);
 }
 
+void Database::UpdatePromotionsStatus(
+    const std::vector<std::string>& promotion_ids,
+    const ledger::PromotionStatus status,
+    ledger::ResultCallback callback) {
+  promotion_->UpdateRecordsStatus(promotion_ids, status, callback);
+}
+
 void Database::PromotionCredentialCompleted(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
@@ -312,6 +331,12 @@ void Database::GetPromotionListByType(
     const std::vector<ledger::PromotionType>& types,
     ledger::GetPromotionListCallback callback) {
   promotion_->GetRecordsByType(types, callback);
+}
+
+void Database::UpdatePromotionsBlankPublicKey(
+    const std::vector<std::string>& ids,
+    ledger::ResultCallback callback) {
+  promotion_->UpdateRecordsBlankPublicKey(ids, callback);
 }
 
 /**

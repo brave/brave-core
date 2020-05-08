@@ -1718,6 +1718,13 @@ void LedgerImpl::UpdatePromotionStatus(
   bat_database_->UpdatePromotionStatus(promotion_id, status, callback);
 }
 
+void LedgerImpl::UpdatePromotionsStatus(
+    const std::vector<std::string>& promotion_ids,
+    const ledger::PromotionStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdatePromotionsStatus(promotion_ids, status, callback);
+}
+
 void LedgerImpl::PromotionCredentialCompleted(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
@@ -1755,6 +1762,24 @@ void LedgerImpl::UpdateCredsBatchStatus(
       trigger_type,
       status,
       callback);
+}
+
+void LedgerImpl::UpdateCredsBatchesStatus(
+    const std::vector<std::string>& trigger_ids,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateCredsBatchesStatus(
+      trigger_ids,
+      trigger_type,
+      status,
+      callback);
+}
+
+void LedgerImpl::UpdatePromotionsBlankPublicKey(
+    const std::vector<std::string>& ids,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdatePromotionsBlankPublicKey(ids, callback);
 }
 
 }  // namespace bat_ledger
