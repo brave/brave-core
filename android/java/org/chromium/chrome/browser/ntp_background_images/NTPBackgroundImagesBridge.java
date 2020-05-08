@@ -111,6 +111,11 @@ public class NTPBackgroundImagesBridge {
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
+    public String getApiKey() {
+        return NTPBackgroundImagesBridgeJni.get().getApiKey(
+                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+    }
+
     public void setNewTabPageListener(NewTabPageListener newTabPageListener) {
         mNewTabPageListener = newTabPageListener;
     }
@@ -156,6 +161,8 @@ public class NTPBackgroundImagesBridge {
         String getSuperReferralThemeName(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
         String getSuperReferralCode(long nativeNTPBackgroundImagesBridge,
+                              NTPBackgroundImagesBridge caller);
+        String getApiKey(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
     }
 }

@@ -27,6 +27,8 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.settings.about.AboutChromeSettings;
 import org.chromium.chrome.browser.settings.about.AboutSettingsBridge;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class RateFeedbackUtils {
 	private static final String TAG = "Rate";
@@ -65,11 +67,11 @@ public class RateFeedbackUtils {
 	private static void sendRateFeedback(String userSelection, String userFeedback) {
 		Context context = ContextUtils.getApplicationContext();
 		String appVersion = AboutChromeSettings.getApplicationVersion(context, AboutSettingsBridge.getApplicationVersion());
-
 		StringBuilder sb = new StringBuilder(); 
-
-		//TODO update url for prod 
 		String http = "https://laptop-updates.brave.com/1/feedback";  
+
+		Profile mProfile = Profile.getLastUsedProfile();
+		NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
 
 		HttpURLConnection urlConnection=null;  
 		try {  
@@ -90,7 +92,7 @@ public class RateFeedbackUtils {
             jsonParam.put("phone_arch", Build.CPU_ABI);
             jsonParam.put("user_feedback", userFeedback);
             jsonParam.put("app_version", appVersion);
-            jsonParam.put("api_key", "a"); //TODO update api key for prod
+            jsonParam.put("api_key", mNTPBackgroundImagesBridge.getApiKey()); //TODO update api key for prod
 
             Log.e(TAG, jsonParam.toString());
 

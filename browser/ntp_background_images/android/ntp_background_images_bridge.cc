@@ -20,6 +20,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -183,6 +184,13 @@ NTPBackgroundImagesBridge::GetSuperReferralCode(
     return ConvertUTF8ToJavaString(env,
       view_counter_service_->GetSuperReferralCode());
   return ConvertUTF8ToJavaString(env, "");
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+NTPBackgroundImagesBridge::GetApiKey(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  return ConvertUTF8ToJavaString(env,
+      brave::GetAPIKey());
 }
 
 base::android::ScopedJavaLocalRef<jobject>
