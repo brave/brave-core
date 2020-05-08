@@ -1,0 +1,181 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//third_party/closure_compiler/compile_js.gni")
+import("//tools/polymer/polymer.gni")
+import("//ui/webui/resources/tools/js_modulizer.gni")
+import("//chrome/browser/resources/settings/settings.gni")
+
+js_type_check("closure_compile") {
+  deps = [
+    ":brave_appearance_browser_proxy",
+    ":brave_theme",
+    ":super_referral",
+    ":toolbar"
+  ]
+}
+
+js_library("brave_appearance_browser_proxy") {
+  deps = [
+    "//ui/webui/resources/js:cr",
+  ]
+  externs_list = [
+    "$externs_path/chrome_send.js",
+    "$externs_path/management.js",
+  ]
+}
+
+js_library("brave_theme") {
+  deps = [
+    ":brave_appearance_browser_proxy",
+    "//chrome/browser/resources/settings:route",
+    "//chrome/browser/resources/settings:router",
+    "//ui/webui/resources/js:cr",
+    "//ui/webui/resources/js:load_time_data",
+    "//ui/webui/resources/js:web_ui_listener_behavior",
+  ]
+  externs_list = [
+    "$externs_path/settings_private.js",
+  ]
+}
+
+js_library("super_referral") {
+  deps = [
+    ":brave_appearance_browser_proxy",
+    "//chrome/browser/resources/settings:route",
+    "//chrome/browser/resources/settings:router",
+    "//ui/webui/resources/js:assert",
+    "//ui/webui/resources/js:cr",
+    "//ui/webui/resources/js:i18n_behavior",
+    "//ui/webui/resources/js:load_time_data",
+  ]
+  externs_list = [
+    "$externs_path/settings_private.js",
+  ]
+}
+
+js_library("toolbar") {
+  externs_list = [
+    "$externs_path/settings_private.js",
+  ]
+}
+
+
+js_type_check("closure_compile_module") {
+  is_polymer3 = true
+  deps = [
+    ":brave_appearance_browser_proxy.m",
+    ":brave_theme.m",
+    ":super_referral.m",
+    ":toolbar.m",
+  ]
+}
+
+js_library("brave_appearance_browser_proxy.m") {
+  sources = [ "$root_gen_dir/brave/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.m.js" ]
+  deps = [
+    "//ui/webui/resources/js:cr.m",
+  ]
+  externs_list = [
+    "$externs_path/chrome_send.js",
+    "$externs_path/management.js",
+  ]
+  extra_deps = [ ":brave_appearance_browser_proxy_module" ]
+}
+
+js_library("brave_theme.m") {
+  deps = [
+    ":brave_appearance_browser_proxy.m",
+    "//chrome/browser/resources/settings:route.m",
+    "//chrome/browser/resources/settings:router.m",
+    "//ui/webui/resources/js:cr.m",
+    "//ui/webui/resources/js:load_time_data.m",
+    "//ui/webui/resources/js:web_ui_listener_behavior.m",
+  ]
+  externs_list = [
+    "$externs_path/settings_private.js",
+  ]
+  extra_deps = [
+    ":brave_theme_module",
+  ]
+}
+
+js_library("super_referral.m") {
+  deps = [
+    ":brave_appearance_browser_proxy.m",
+    "//chrome/browser/resources/settings:route.m",
+    "//chrome/browser/resources/settings:router.m",
+    "//ui/webui/resources/js:cr.m",
+    "//ui/webui/resources/js:i18n_behavior.m",
+    "//ui/webui/resources/js:load_time_data.m",
+  ]
+  externs_list = [
+    "$externs_path/settings_private.js",
+  ]
+  extra_deps = [
+    ":super_referral_module"
+  ]
+}
+
+js_library("toolbar.m") {
+  externs_list = [
+    "$externs_path/settings_private.js",
+  ]
+  extra_deps = [
+    ":toolbar_module"
+  ]
+}
+
+
+# make modules
+group("polymer3_elements") {
+  public_deps = [
+    ":brave_theme_module",
+    ":super_referral_module",
+    ":toolbar_module",
+    ":brave_appearance_browser_proxy_module",
+  ]
+}
+
+polymer_modulizer("brave_theme") {
+  js_file = "brave_theme.js"
+  html_file = "brave_theme.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+                   "ui/webui/resources/html/assert.html|assert",
+                   "chrome/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
+                   "chrome/browser/resources/settings/appearance_page/brave_appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
+                   "chrome/browser/resources/settings/route.html|routes",
+                   "chrome/browser/resources/settings/router.html|Router",
+                 ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+polymer_modulizer("super_referral") {
+  js_file = "super_referral.js"
+  html_file = "super_referral.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+                   "ui/webui/resources/html/assert.html|assert",
+                   "chrome/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
+                   "chrome/browser/resources/settings/appearance_page/brave_appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
+                 ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+polymer_modulizer("toolbar") {
+  js_file = "toolbar.js"
+  html_file = "toolbar.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+js_modulizer("brave_appearance_browser_proxy_module") {
+  input_files = [
+    "brave_appearance_browser_proxy.js",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
