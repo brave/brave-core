@@ -32,6 +32,7 @@ source_set("browser") {
 
 if (!is_ios) {
   deps += [
+   "//brave/common:pref_names",
    "//content/public/common",
   ]
 }

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_MATCH_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_MATCH_H_
 
+#include <string>
+
 #include "base/strings/string16.h"
 #include "url/gurl.h"
 
@@ -13,10 +15,13 @@
 class SuggestedSitesMatch {
  public:
   SuggestedSitesMatch(const SuggestedSitesMatch& other);
-  SuggestedSitesMatch(const GURL& destination_url,
+  SuggestedSitesMatch(const std::string& match_string,
+                      const GURL& destination_url,
                       const GURL& stripped_destination_url,
                       const base::string16& display,
                       const bool allow_default);
+  ~SuggestedSitesMatch();
+  std::string match_string_;
   GURL destination_url_;
   GURL stripped_destination_url_;
   base::string16 display_;
