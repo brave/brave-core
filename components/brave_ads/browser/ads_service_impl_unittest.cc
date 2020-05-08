@@ -47,7 +47,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetExcludedList,
       void(const brave_rewards::GetContentSiteListCallback&));
   MOCK_METHOD0(FetchPromotions, void());
-  MOCK_METHOD1(ClaimPromotion, void(const std::string&,
+  MOCK_METHOD2(ClaimPromotion, void(const std::string&,
       brave_rewards::ClaimPromotionCallback));
   MOCK_METHOD2(ClaimPromotion, void(const std::string&,
       brave_rewards::AttestPromotionCallback));
