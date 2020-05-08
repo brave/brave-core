@@ -20,6 +20,10 @@ void WaitForElementToAppear(
     const std::string& selector,
     bool should_appear = true);
 
+bool WaitForElementToAppearAndReturnResult(
+    content::WebContents* context,
+    const std::string& selector);
+
 void WaitForElementToEqual(
     content::WebContents*,
     const std::string& selector,

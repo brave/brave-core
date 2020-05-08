@@ -520,6 +520,13 @@ class BraveRewardsBrowserTest
 
   void WaitForMultipleTipReconcileCompleted(int32_t needed) {
     multiple_tip_reconcile_needed_ = needed;
+
+    // May have reached reconcile count before this function was ever
+    // called, check for that here
+    if (multiple_tip_reconcile_count_ == multiple_tip_reconcile_needed_) {
+      multiple_tip_reconcile_completed_ = true;
+    }
+
     if (multiple_tip_reconcile_completed_) {
       return;
     }
@@ -945,9 +952,20 @@ class BraveRewardsBrowserTest
   }
 
   void RefreshPublisherListUsingRewardsPopup() const {
-    rewards_service_browsertest_utils::WaitForElementThenClick(
-        OpenRewardsPopup(),
-        "[data-test-id='unverified-check-button']");
+    // Refresh publisher list; assume that absence of refresh button
+    // means that we're all set (i.e., publisher is already showing as
+    // verified)
+    content::WebContents* popup_contents = OpenRewardsPopup();
+    const std::string selector = "[data-test-id='unverified-check-button']";
+    bool result = rewards_service_browsertest_utils::
+        WaitForElementToAppearAndReturnResult(
+            popup_contents,
+            selector);
+    if (result) {
+      rewards_service_browsertest_utils::WaitForElementThenClick(
+          popup_contents,
+          selector);
+    }
   }
 
   content::WebContents* OpenSiteBanner(ContributionType banner_type) const {

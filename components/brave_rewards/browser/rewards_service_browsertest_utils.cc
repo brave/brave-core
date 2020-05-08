@@ -43,6 +43,16 @@ void WaitForElementToAppear(
     content::WebContents* context,
     const std::string& selector,
     bool should_appear) {
+  bool result = WaitForElementToAppearAndReturnResult(
+      context,
+      selector);
+
+  ASSERT_EQ(should_appear, result);
+}
+
+bool WaitForElementToAppearAndReturnResult(
+    content::WebContents* context,
+    const std::string& selector) {
   auto script = kWaitForElementToAppearScript +
       content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
@@ -64,7 +74,7 @@ void WaitForElementToAppear(
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END);
 
-  ASSERT_EQ(should_appear, result);
+  return result.ExtractBool();
 }
 
 void WaitForElementToEqual(
