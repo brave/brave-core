@@ -432,13 +432,25 @@ BravePatching.RegisterPolymerTemplateModifications({
     // (we remove the People section as a separate section).
     const page = templateContent.querySelector('settings-animated-pages[section=people]')
     page.setAttribute('section', 'getStarted')
-    const manageGoogleAccount = templateContent.querySelector('#manage-google-account')
+    // The 'Manage profile' button is inside the "signin-allowed" conditional template.
+    // We don't allow Google Sign-in, but we do allow local profile editing, so we have to turn
+    // the template back on and remove the google signin prompt.
+    const signinTemplate = templateContent.querySelector('template[is=dom-if][if="[[signinAllowed_]]"]')
+    if (!signinTemplate) {
+      console.error('[Brave Settings Overrides] People Page cannot find signin template')
+      return
+    }
+    // always show the template content
+    signinTemplate.setAttribute('if', 'true')
+    // remove the google account button
+    const manageGoogleAccount = signinTemplate.content.querySelector('#manage-google-account')
     if (!manageGoogleAccount) {
-      console.error('[Brave Settings Overrides] Could not find the google account settings item')
+      console.error('[Brave Settings Overrides] Could not find the google account settings item', templateContent, templateContent.innerHTML)
+      return
     }
     manageGoogleAccount.remove()
     // Edit profile item needs to know it's the first in the section
-    const firstItem = templateContent.querySelector('#edit-profile')
+    const firstItem = signinTemplate.content.querySelector('#edit-profile')
     if (!firstItem) {
       console.error('[Brave Settings Overrides] Could not find #edit-profile item in people_page')
       return
