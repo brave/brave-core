@@ -28,12 +28,12 @@
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
-#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
@@ -1850,13 +1850,13 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 }
 
 std::string AdsServiceImpl::GetLocale() const {
-  return LocaleHelper::GetInstance()->GetLocale();
+  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 }
 
 const std::string AdsServiceImpl::GetCountryCode() const {
   const std::string locale = GetLocale();
   const std::string country_code =
-      LocaleHelper::GetInstance()->GetCountryCode(locale);
+      brave_l10n::LocaleHelper::GetInstance()->GetCountryCode(locale);
   return country_code;
 }
 

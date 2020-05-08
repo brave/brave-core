@@ -3,18 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/locale_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 #include <algorithm>
 #include <vector>
 
-#include "bat/ads/internal/static_values.h"
-
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 
-namespace ads {
-namespace locale {
+namespace brave_l10n {
 
 std::string GetLanguageCode(
     const std::string& locale) {
@@ -64,5 +61,4 @@ std::string GetRegionCode(
   return base::ToUpperASCII(region_code);
 }
 
-}  // namespace locale
-}  // namespace ads
+}  // namespace brave_l10n

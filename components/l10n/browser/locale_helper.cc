@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/locale_helper.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 
 #include <algorithm>
 #include <vector>
 #include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
 
-namespace brave_ads {
+namespace brave_l10n {
 
 const char kDefaultCountryCode[] = "US";
 const char kDefaultLocale[] = "en-US";
@@ -68,4 +68,4 @@ LocaleHelper* LocaleHelper::GetInstanceImpl() {
 }
 #endif
 
-}  // namespace brave_ads
+}  // namespace brave_l10n

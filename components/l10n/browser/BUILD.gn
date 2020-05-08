@@ -1,0 +1,38 @@
+source_set("browser") {
+  deps = [
+    "//base",
+  ]
+
+  sources = [
+    "locale_helper.cc",
+    "locale_helper.h",
+  ]
+
+  if (is_android) {
+    sources += [
+      "locale_helper_android.cc",
+      "locale_helper_android.h",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "locale_helper_linux.cc",
+      "locale_helper_linux.h",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [
+      "locale_helper_mac.h",
+      "locale_helper_mac.mm",
+    ]
+  }
+
+  if (is_win) {
+    sources += [
+      "locale_helper_win.cc",
+      "locale_helper_win.h",
+    ]
+  }
+}

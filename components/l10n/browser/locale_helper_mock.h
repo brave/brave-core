@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_MOCK_H_
+#ifndef BRAVE_COMPONENTS_L10N_BROWSER_LOCALE_HELPER_MOCK_H_
+#define BRAVE_COMPONENTS_L10N_BROWSER_LOCALE_HELPER_MOCK_H_
 
 #include <string>
 
-#include "brave/components/brave_ads/browser/locale_helper.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace brave_ads {
+namespace brave_l10n {
 
 class LocaleHelperMock : public LocaleHelper {
  public:
@@ -25,6 +25,6 @@ class LocaleHelperMock : public LocaleHelper {
   MOCK_CONST_METHOD0(GetLocale, std::string());
 };
 
-}  // namespace brave_ads
+}  // namespace brave_l10n
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_MOCK_H_
+#endif  // BRAVE_COMPONENTS_L10N_BROWSER_LOCALE_HELPER_MOCK_H_

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/locale_helper_android.h"
+#include "brave/components/l10n/browser/locale_helper_android.h"
 
 #include "base/android/locale_utils.h"
 
-namespace brave_ads {
+namespace brave_l10n {
 
 std::string LocaleHelperAndroid::GetLocale() const {
   return base::android::GetDefaultLocaleString();
@@ -21,4 +21,4 @@ LocaleHelper* LocaleHelper::GetInstanceImpl() {
   return LocaleHelperAndroid::GetInstanceImpl();
 }
 
-}  // namespace brave_ads
+}  // namespace brave_l10n

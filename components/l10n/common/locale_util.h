@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_LOCALE_UTIL_H_
-#define BAT_ADS_INTERNAL_LOCALE_UTIL_H_
+#ifndef BRAVE_COMPONENTS_L10N_COMMON_LOCALE_UTIL_H_
+#define BRAVE_COMPONENTS_L10N_COMMON_LOCALE_UTIL_H_
 
 #include <string>
 
-namespace ads {
-namespace locale {
+namespace brave_l10n {
+
+const char kDefaultLanguage[] = "en";
+const char kDefaultRegion[] = "US";
 
 std::string GetLanguageCode(
     const std::string& locale);
@@ -17,7 +19,6 @@ std::string GetLanguageCode(
 std::string GetRegionCode(
     const std::string& locale);
 
-}  // namespace locale
-}  // namespace ads
+}  // namespace brave_l10n
 
-#endif  // BAT_ADS_INTERNAL_LOCALE_UTIL_H_
+#endif  // BRAVE_COMPONENTS_L10N_COMMON_LOCALE_UTIL_H_

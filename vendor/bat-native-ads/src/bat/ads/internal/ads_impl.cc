@@ -17,7 +17,6 @@
 #include "bat/ads/purchase_intent_signal_history.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/classification_helper.h"
-#include "bat/ads/internal/locale_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/search_providers.h"
 #include "bat/ads/internal/reports.h"
@@ -57,6 +56,7 @@
 #include "base/android/build_info.h"
 #endif
 
+#include "brave/components/l10n/common/locale_util.h"
 #include "url/gurl.h"
 
 using std::placeholders::_1;
@@ -603,7 +603,7 @@ bool AdsImpl::ToggleFlagAd(
 
 void AdsImpl::ChangeLocale(
     const std::string& locale) {
-  const std::string language_code = locale::GetLanguageCode(locale);
+  const std::string language_code = brave_l10n::GetLanguageCode(locale);
   client_->SetUserModelLanguage(language_code);
 
   const std::vector<std::string> languages = client_->GetUserModelLanguages();
@@ -740,7 +740,7 @@ void AdsImpl::MaybeClassifyPage(
 
 bool AdsImpl::ShouldClassifyPagesIfTargeted() const {
   const std::string locale = ads_client_->GetLocale();
-  const std::string language_code = locale::GetLanguageCode(locale);
+  const std::string language_code = brave_l10n::GetLanguageCode(locale);
 
   const std::vector<std::string> languages = client_->GetUserModelLanguages();
   if (std::find(languages.begin(), languages.end(), language_code)

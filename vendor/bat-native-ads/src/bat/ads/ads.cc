@@ -9,8 +9,8 @@
 #include "bat/ads/ads.h"
 
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/locale_util.h"
 #include "bat/ads/internal/supported_regions.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 
@@ -24,7 +24,7 @@ const char _client_resource_name[] = "client.json";
 
 bool IsSupportedLocale(
     const std::string& locale) {
-  const std::string region = locale::GetRegionCode(locale);
+  const std::string region = brave_l10n::GetRegionCode(locale);
 
   for (const auto& schema : kSupportedRegions) {
     const std::set<std::string> regions = schema.second;
@@ -40,7 +40,7 @@ bool IsSupportedLocale(
 bool IsNewlySupportedLocale(
     const std::string& locale,
     const int last_schema_version) {
-  const std::string region = locale::GetRegionCode(locale);
+  const std::string region = brave_l10n::GetRegionCode(locale);
 
   for (const auto& schema : kSupportedRegions) {
     const int schema_version = schema.first;
@@ -60,7 +60,7 @@ bool IsNewlySupportedLocale(
 
 std::string GetRegionCode(
     const std::string& locale) {
-  return locale::GetRegionCode(locale);
+  return brave_l10n::GetRegionCode(locale);
 }
 
 // static

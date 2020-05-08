@@ -200,8 +200,6 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h",
     "src/bat/ads/internal/json_helper.cc",
     "src/bat/ads/internal/json_helper.h",
-    "src/bat/ads/internal/locale_util.cc",
-    "src/bat/ads/internal/locale_util.h",
     "src/bat/ads/internal/logging.h",
     "src/bat/ads/internal/ad_notifications.cc",
     "src/bat/ads/internal/ad_notifications.h",
@@ -254,6 +252,7 @@ source_set("ads") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/common",
     "//net",
     "//url",
     "//third_party/re2",

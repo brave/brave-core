@@ -12,7 +12,6 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
-#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "components/component_updater/component_installer.h"
