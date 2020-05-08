@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL readPixels() test</title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <canvas id="test" width="8" height="8"></canvas>
+  <script>
+    var canvas = document.getElementById("test");
+    var gl = canvas.getContext("webgl");
+    // Draw a red rectangle
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var pixels = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
+    pixels[0] = 1;
+    gl.readPixels(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+    // First element in pixels array will be 0 if readPixels() call worked, or 1 if readPixels() was blocked.
+    document.title = pixels[0];
+  </script>
+</body>
+</html>
