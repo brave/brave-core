@@ -11,6 +11,7 @@
 #include "bat/confirmations/internal/get_payment_balance_request.h"
 #include "bat/confirmations/internal/get_ad_grants_request.h"
 #include "bat/confirmations/internal/static_values.h"
+#include "bat/confirmations/internal/time_util.h"
 
 #include "net/http/http_status_code.h"
 #include "brave_base/random.h"
@@ -223,7 +224,7 @@ void AdsRewards::OnAdsRewards(const Result result) {
         kRetryAdsRewardsAfterSeconds, base::BindOnce(&AdsRewards::OnRetry,
             base::Unretained(this)));
 
-    BLOG(INFO) << "Retry getting ad grants at " << time;
+    BLOG(INFO) << "Retry getting ad grants " << FriendlyDateAndTime(time);
 
     return;
   }

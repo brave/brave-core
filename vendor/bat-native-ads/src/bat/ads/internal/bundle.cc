@@ -12,7 +12,7 @@
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/catalog.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/static_values.h"
 
@@ -198,7 +198,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_id = catalog.GetId();
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();
-  state->catalog_last_updated_timestamp_in_seconds = Time::NowInSeconds();
+  state->catalog_last_updated_timestamp_in_seconds =
+      base::Time::Now().ToDoubleT();
   state->creative_ad_notifications = creative_ad_notifications;
   state->ad_conversions = ad_conversions;
 

@@ -11,7 +11,9 @@
 #include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
 #include "bat/ads/internal/purchase_intent/funnel_sites.h"
 #include "bat/ads/internal/purchase_intent/keywords.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
+
+#include "base/time/time.h"
 
 namespace ads {
 
@@ -39,7 +41,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
     if (!keyword_segments.empty()) {
       uint16_t keyword_weight = Keywords::GetFunnelWeight(search_query);
 
-      signal_info.timestamp_in_seconds = Time::NowInSeconds();
+      signal_info.timestamp_in_seconds = base::Time::Now().ToDoubleT();
       signal_info.segments = keyword_segments;
       signal_info.weight = keyword_weight;
       return signal_info;
@@ -48,7 +50,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
     FunnelSiteInfo info = FunnelSites::GetFunnelSite(url);
 
     if (!info.url_netloc.empty()) {
-      signal_info.timestamp_in_seconds = Time::NowInSeconds();
+      signal_info.timestamp_in_seconds = base::Time::Now().ToDoubleT();
       signal_info.segments = info.segments;
       signal_info.weight = info.weight;
       return signal_info;
@@ -93,8 +95,9 @@ uint16_t PurchaseIntentClassifier::GetIntentScoreForHistory(
 
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_at_in_seconds =
-        Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
-        base::TimeDelta::FromSeconds(signal_decay_time_window_in_seconds_);
+        base::Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
+            base::TimeDelta::FromSeconds(signal_decay_time_window_in_seconds_);
+
     const base::Time now_in_seconds = base::Time::Now();
 
     if (now_in_seconds > signal_decayed_at_in_seconds) {

@@ -6,7 +6,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
 #include "bat/ads/creative_ad_notification_info.h"
 #include "bat/ads/internal/client.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -23,7 +23,7 @@ bool FrequencyCapping::DoesHistoryRespectCapForRollingTimeConstraint(
     const uint64_t cap) const {
   uint64_t count = 0;
 
-  auto now_in_seconds = Time::NowInSeconds();
+  auto now_in_seconds = base::Time::Now().ToDoubleT();
 
   for (const auto& timestamp_in_seconds : history) {
     if (now_in_seconds - timestamp_in_seconds < time_constraint_in_seconds) {

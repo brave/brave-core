@@ -22,7 +22,7 @@
 #include "bat/ads/internal/search_providers.h"
 #include "bat/ads/internal/reports.h"
 #include "bat/ads/internal/static_values.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/ad_events/ad_notification_event_factory.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
@@ -215,7 +215,7 @@ void AdsImpl::RemoveAllAdNotificationsAfterReboot() {
   if (!ads_shown_history.empty()) {
     uint64_t ad_shown_timestamp =
         ads_shown_history.front().timestamp_in_seconds;
-    uint64_t boot_timestamp = Time::NowInSeconds() -
+    uint64_t boot_timestamp = base::Time::Now().ToDoubleT() -
         static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());
     if (ad_shown_timestamp <= boot_timestamp) {
       ad_notifications_->RemoveAll(false);
@@ -1290,7 +1290,7 @@ bool AdsImpl::ShowAdNotification(
     return false;
   }
 
-  auto now_in_seconds = Time::NowInSeconds();
+  auto now_in_seconds = base::Time::Now().ToDoubleT();
 
   client_->AppendTimestampToCreativeSetHistory(
       info.creative_set_id, now_in_seconds);
@@ -1374,7 +1374,7 @@ bool AdsImpl::IsAllowedToServeAdNotifications() {
 }
 
 void AdsImpl::StartDeliveringAdNotifications() {
-  auto now_in_seconds = Time::NowInSeconds();
+  auto now_in_seconds = base::Time::Now().ToDoubleT();
   auto next_check_serve_ad_timestamp_in_seconds =
       client_->GetNextCheckServeAdNotificationTimestampInSeconds();
 
@@ -1389,12 +1389,12 @@ void AdsImpl::StartDeliveringAdNotifications() {
   const base::Time time = deliver_ad_notification_timer_.Start(delay,
       base::BindOnce(&AdsImpl::DeliverAdNotification, base::Unretained(this)));
 
-  BLOG(INFO) << "Deliver ad notification at " << time;
+  BLOG(INFO) << "Deliver ad notification " << FriendlyDateAndTime(time);
 }
 
 void AdsImpl::StartDeliveringAdNotificationsAfterSeconds(
     const uint64_t seconds) {
-  auto timestamp_in_seconds = Time::NowInSeconds() + seconds;
+  auto timestamp_in_seconds = base::Time::Now().ToDoubleT() + seconds;
   client_->SetNextCheckServeAdNotificationTimestampInSeconds(
       timestamp_in_seconds);
 
@@ -1409,7 +1409,7 @@ bool AdsImpl::IsCatalogOlderThanOneDay() {
   auto catalog_last_updated_timestamp_in_seconds =
     bundle_->GetCatalogLastUpdatedTimestampInSeconds();
 
-  auto now_in_seconds = Time::NowInSeconds();
+  auto now_in_seconds = base::Time::Now().ToDoubleT();
 
   if (catalog_last_updated_timestamp_in_seconds != 0 &&
       now_in_seconds > catalog_last_updated_timestamp_in_seconds
@@ -1474,7 +1474,8 @@ void AdsImpl::StartSustainingAdNotificationInteraction() {
       delay, base::BindOnce(&AdsImpl::SustainAdNotificationInteractionIfNeeded,
           base::Unretained(this)));
 
-  BLOG(INFO) << "Sustain ad notification interaction at " << time;
+  BLOG(INFO) << "Sustain ad notification interaction "
+      << FriendlyDateAndTime(time);
 }
 
 void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
@@ -1523,7 +1524,7 @@ void AdsImpl::AppendAdNotificationToHistory(
     const AdNotificationInfo& info,
     const ConfirmationType& confirmation_type) {
   AdHistory ad_history;
-  ad_history.timestamp_in_seconds = Time::NowInSeconds();
+  ad_history.timestamp_in_seconds = base::Time::Now().ToDoubleT();
   ad_history.uuid = base::GenerateGUID();
   ad_history.parent_uuid = info.parent_uuid;
   ad_history.ad_content.creative_instance_id = info.creative_instance_id;

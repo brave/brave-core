@@ -9,6 +9,7 @@
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
+#include "bat/confirmations/internal/time_util.h"
 
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
@@ -44,11 +45,12 @@ void PayoutTokens::PayoutAfterDelay(
   }
 
   const uint64_t delay = CalculatePayoutDelay();
+
   const base::Time time = timer_.Start(delay,
       base::BindOnce(&PayoutTokens::RedeemPaymentTokens,
           base::Unretained(this)));
 
-  BLOG(INFO) << "Payout tokens at " << time;
+  BLOG(INFO) << "Payout tokens " << FriendlyDateAndTime(time);
 }
 
 uint64_t PayoutTokens::get_token_redemption_timestamp_in_seconds() const {
@@ -137,7 +139,7 @@ void PayoutTokens::OnPayout(const Result result) {
         kRetryPayoutTokensAfterSeconds, base::BindOnce(&PayoutTokens::OnRetry,
             base::Unretained(this)));
 
-    BLOG(INFO) << "Retry paying out tokens at " << time;
+    BLOG(INFO) << "Retry paying out tokens " << FriendlyDateAndTime(time);
 
     return;
   }

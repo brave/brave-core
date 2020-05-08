@@ -8,7 +8,7 @@
 #include "bat/ads/ad_history.h"
 #include "bat/ads/purchase_intent_signal_history.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 
 #include "base/strings/string_number_conversions.h"
 
@@ -144,8 +144,8 @@ Result ClientState::FromJson(
       std::deque<uint64_t> timestamps_in_seconds;
 
       for (const auto& timestamp_in_seconds : creative_set.value.GetArray()) {
-        auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-            timestamp_in_seconds.GetUint64());
+        auto migrated_timestamp_in_seconds =
+            MigrateTimestampToDoubleT(timestamp_in_seconds.GetUint64());
         timestamps_in_seconds.push_back(migrated_timestamp_in_seconds);
       }
 
@@ -172,8 +172,8 @@ Result ClientState::FromJson(
       std::deque<uint64_t> timestamps_in_seconds;
 
       for (const auto& timestamp_in_seconds : campaign.value.GetArray()) {
-        auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-            timestamp_in_seconds.GetUint64());
+        auto migrated_timestamp_in_seconds =
+            MigrateTimestampToDoubleT(timestamp_in_seconds.GetUint64());
         timestamps_in_seconds.push_back(migrated_timestamp_in_seconds);
       }
 

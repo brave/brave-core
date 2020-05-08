@@ -11,7 +11,6 @@
 #include "bat/confirmations/internal/payments.h"
 
 #include "base/time/time.h"
-#include "base/i18n/time_formatting.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 

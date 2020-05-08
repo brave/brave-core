@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
-#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/client.h"
 
 #include "bat/ads/creative_ad_info.h"
