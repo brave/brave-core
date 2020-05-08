@@ -45,7 +45,7 @@ const char kGetImageDataScript[] =
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHashFarblingBalanced = 261040;
+const int kExpectedImageDataHashFarblingBalanced = 261046;
 const int kExpectedImageDataHashFarblingOff = 261120;
 const int kExpectedImageDataHashFarblingMaximum = 127574;
 
@@ -303,11 +303,11 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
 // See https://github.com/brave/brave-browser/issues/8937
 // Fails on Linux
-// #if defined(OS_LINUX)
+#if defined(OS_LINUX)
 #define MAYBE_FarbleGetImageData DISABLED_FarbleGetImageData
-// #else
-// #define MAYBE_FarbleGetImageData FarbleGetImageData
-// #endif
+#else
+#define MAYBE_FarbleGetImageData FarbleGetImageData
+#endif
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        MAYBE_FarbleGetImageData) {
@@ -344,8 +344,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
   EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
 
-  // Farbling should be default if 3rd-party fingerpringint is blocked
-  // via content settings and kBraveFingerpringintV2 is disabled
+  // Farbling should be default if 3rd-party fingerprinting is blocked
+  // via content settings and kBraveFingerprintingV2 is disabled
   BlockThirdPartyFingerprinting();
   NavigateToPageWithIframe();
   hash = -1;
@@ -354,28 +354,40 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
 
   // Farbling should be default if fingerprinting is blocked via
-  // content settings and kBraveFingerpringintV2 is disabled
+  // content settings and kBraveFingerprintingV2 is disabled
   BlockFingerprinting();
   NavigateToPageWithIframe();
   hash = -1;
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
   EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+}
 
-  base::test::ScopedFeatureList scoped_feature_list_;
-  scoped_feature_list_.InitAndEnableFeature(
+class BraveContentSettingsAgentImplV2BrowserTest
+    : public BraveContentSettingsAgentImplBrowserTest {
+ public:
+  void SetUp() override {
+    scoped_feature_list_.InitAndEnableFeature(
         brave_shields::features::kFingerprintingProtectionV2);
+    BraveContentSettingsAgentImplBrowserTest::SetUp();
+  }
 
-  // Farbling should be default when kBraveFingerpringintV2 is enabled
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
+                       MAYBE_FarbleGetImageData) {
+  // Farbling should be default when kBraveFingerprintingV2 is enabled
   // because it uses a different content setting
   NavigateToPageWithIframe();
-  hash = -1;
+  int hash = -1;
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
   EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
 
-  // Farbling should be maximum if finerprinting is blocked via content settings
-  // and kBraveFingerpringintV2 is enabled
+  // Farbling should be maximum if fingerprinting is blocked via content
+  // settings and kBraveFingerprintingV2 is enabled
   BlockFingerprinting();
   NavigateToPageWithIframe();
   hash = -1;
@@ -384,7 +396,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(kExpectedImageDataHashFarblingMaximum, hash);
 
   // Farbling should be balanced if fingerprinting is default via
-  // content settings and kBraveFingerpringintV2 is enabled
+  // content settings and kBraveFingerprintingV2 is enabled
   SetFingerprintingDefault();
   NavigateToPageWithIframe();
   hash = -1;
@@ -393,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
 
   // Farbling should be off if fingerprinting is allowed via
-  // content settings and kBraveFingerpringintV2 is enabled
+  // content settings and kBraveFingerprintingV2 is enabled
   AllowFingerprinting();
   NavigateToPageWithIframe();
   hash = -1;
