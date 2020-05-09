@@ -187,7 +187,7 @@ NTPBackgroundImagesBridge::GetSuperReferralCode(
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-NTPBackgroundImagesBridge::GetApiKey(
+NTPBackgroundImagesBridge::GetReferralApiKey(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
   return ConvertUTF8ToJavaString(env,
       brave::GetAPIKey());

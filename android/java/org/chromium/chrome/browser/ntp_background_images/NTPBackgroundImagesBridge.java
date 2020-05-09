@@ -111,8 +111,8 @@ public class NTPBackgroundImagesBridge {
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
-    public String getApiKey() {
-        return NTPBackgroundImagesBridgeJni.get().getApiKey(
+    public String getReferralApiKey() {
+        return NTPBackgroundImagesBridgeJni.get().getReferralApiKey(
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
@@ -162,7 +162,7 @@ public class NTPBackgroundImagesBridge {
                               NTPBackgroundImagesBridge caller);
         String getSuperReferralCode(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
-        String getApiKey(long nativeNTPBackgroundImagesBridge,
+        String getReferralApiKey(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
     }
 }
