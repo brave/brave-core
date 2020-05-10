@@ -54,7 +54,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Core.NumberOfExtensions",
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
-    "Brave.Core.WindowCount",
+    "Brave.Core.WindowCount.2",
     "Brave.Importer.ImporterSource",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
