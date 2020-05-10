@@ -22,6 +22,8 @@ constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
 constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
 constexpr char kSonyentertainmentnetwork[] =
     "https://[*.]sonyentertainmentnetwork.com/*";
+constexpr char kUbisoft[] = "https://[*.]ubisoft.com/*";
+constexpr char kUbi[] = "https://[*.]ubi.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -41,11 +43,20 @@ bool BraveIsAllowedThirdParty(
           },
           {
             ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)},
+            ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
+          },
           {
             ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
             ContentSettingsPattern::FromString(kPlaystation)
           },
+          {
+            ContentSettingsPattern::FromString(kUbisoft),
+            ContentSettingsPattern::FromString(kUbi),
+          },
+          {
+            ContentSettingsPattern::FromString(kUbi),
+            ContentSettingsPattern::FromString(kUbisoft)
+          }
       });
 
   GURL first_party_url = site_for_cookies;
