@@ -381,6 +381,11 @@ class BraveRewardsBrowserTest
               "{\"donationAmounts\": [5,10,20]}]"
             "]";
       }
+
+      // we only have one page in this mock, so next page should return end
+      if (url.find("page=2") != std::string::npos) {
+        *response_status_code = net::HTTP_NO_CONTENT;
+      }
     } else if (base::StartsWith(
         url,
         braveledger_uphold::GetAPIUrl("/oauth2/token"),
