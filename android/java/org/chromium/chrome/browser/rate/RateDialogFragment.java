@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.rate;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.net.Uri;
@@ -19,14 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import android.support.v4.app.DialogFragment;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.util.DisplayMetrics;
 import android.content.res.Configuration;
@@ -48,12 +45,19 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     private boolean mIsSuccessShown;
     private boolean mIsFromSettings;
 
-	private TextView mRateTitleTextView, mFeedbackTitleTextView;
-    private ImageButton mHappyImageButton, mNeutralImageButton, mSadImageButton;
+	private TextView mRateTitleTextView;
+    private TextView mFeedbackTitleTextView;
+    private ImageButton mHappyImageButton;
+    private ImageButton mNeutralImageButton;
+    private ImageButton mSadImageButton;
 	private EditText mRateFeedbackEditText;
-	private Button mPositiveButton, mNegativeButton, mRateButton, mLaterButton;
+	private Button mPositiveButton;
+    private Button mNegativeButton;
+    private Button mRateButton;
+    private Button mLaterButton;
 
-    private LinearLayout mSmileyLayout, mRateActionLayout;
+    private LinearLayout mSmileyLayout;
+    private LinearLayout mRateActionLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
