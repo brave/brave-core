@@ -438,11 +438,6 @@ class AdsServiceImpl : public AdsService,
       const int line,
       const ads::LogLevel log_level) const override;
 
-  // history::HistoryServiceObserver
-  void OnURLsDeleted(
-      history::HistoryService* history_service,
-      const history::DeletionInfo& deletion_info) override;
-
   // BackgroundHelper::Observer implementation
   void OnBackground() override;
   void OnForeground() override;

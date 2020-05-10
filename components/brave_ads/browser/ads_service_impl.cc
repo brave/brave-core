@@ -2106,19 +2106,6 @@ std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdsServiceImpl::OnURLsDeleted(
-    history::HistoryService* history_service,
-    const history::DeletionInfo& deletion_info) {
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_->RemoveAllHistory(base::BindOnce(
-      &AdsServiceImpl::OnRemoveAllHistory, AsWeakPtr()));
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
 void AdsServiceImpl::OnBackground() {
   if (!connected()) {
     return;
