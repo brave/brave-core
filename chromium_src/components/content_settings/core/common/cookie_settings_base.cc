@@ -43,7 +43,7 @@ bool BraveIsAllowedThirdParty(
           },
           {
             ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
+            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)
           },
           {
             ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
@@ -51,7 +51,7 @@ bool BraveIsAllowedThirdParty(
           },
           {
             ContentSettingsPattern::FromString(kUbisoft),
-            ContentSettingsPattern::FromString(kUbi),
+            ContentSettingsPattern::FromString(kUbi)
           },
           {
             ContentSettingsPattern::FromString(kUbi),
