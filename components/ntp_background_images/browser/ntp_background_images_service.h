@@ -119,6 +119,7 @@ class NTPBackgroundImagesService {
 
   void CacheTopSitesFaviconList();
   void RestoreCachedTopSitesFaviconList();
+  void CheckSIComponentUpdate(const std::string& component_id);
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();
@@ -129,6 +130,7 @@ class NTPBackgroundImagesService {
   virtual void UnRegisterSuperReferralComponent();
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
+  base::RepeatingTimer si_update_check_timer_;
   std::vector<std::string> cached_top_site_favicon_list_;
   bool test_data_used_ = false;
   component_updater::ComponentUpdateService* component_update_service_;
