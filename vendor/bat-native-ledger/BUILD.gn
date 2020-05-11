@@ -241,6 +241,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/request/request_attestation.h",
     "src/bat/ledger/internal/request/request_promotion.cc",
     "src/bat/ledger/internal/request/request_promotion.h",
+    "src/bat/ledger/internal/request/request_publisher.cc",
+    "src/bat/ledger/internal/request/request_publisher.h",
     "src/bat/ledger/internal/request/request_util.cc",
     "src/bat/ledger/internal/request/request_util.h",
     "src/bat/ledger/internal/state_keys.h",
