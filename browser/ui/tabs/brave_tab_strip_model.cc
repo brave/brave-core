@@ -39,6 +39,10 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
   if (mru_cycle_list_.empty()) {
     // Start cycling
 
+    Browser* browser = chrome::FindBrowserWithWebContents(GetWebContentsAt(0));
+    if (!browser)
+      return;
+
     // Create a list of tab indexes sorted by time of last activation
     for (int i = 0; i < count(); ++i) {
       mru_cycle_list_.push_back(i);
@@ -51,9 +55,7 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
-    static_cast<BraveBrowserWindow*>(
-        chrome::FindBrowserWithWebContents(GetWebContentsAt(0))->window())
-        ->StartMRUCycling();
+    static_cast<BraveBrowserWindow*>(browser->window())->StartMRUCycling();
   }
 
   if (forward) {
