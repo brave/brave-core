@@ -618,6 +618,14 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void OnClaimPromotion(int error_code) {
+        grantClaimInProcess = false;
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnClaimPromotion(error_code);
+        }
+    }
+
     private native void nativeInit();
     private native void nativeDestroy(long nativeBraveRewardsNativeWorker);
     private native void nativeCreateWallet(long nativeBraveRewardsNativeWorker);

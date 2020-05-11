@@ -93,6 +93,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     // Custom Android notification
     private static final int REWARDS_NOTIFICATION_NO_INTERNET = 1000;
     private static final String REWARDS_NOTIFICATION_NO_INTERNET_ID = "29d835c2-5752-4152-93c3-8a1ded9dd4ec";
+    private static final int REWARDS_PROMOTION_CLAIM_ERROR = REWARDS_NOTIFICATION_NO_INTERNET + 1;
+    private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID = "rewards_promotion_claim_error_id";
     //
 
     // Auto contribute results
@@ -793,6 +795,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
             case REWARDS_NOTIFICATION_NO_INTERNET:
+            case REWARDS_PROMOTION_CLAIM_ERROR:
                 valid = true;
                 break;
             default:
@@ -969,6 +972,21 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 description = "<b>" + root.getResources().getString(R.string.brave_rewards_local_uh_oh)
                     + "</b> " + root.getResources().getString(R.string.brave_rewards_local_server_not_responding);
                 btClaimOk.setVisibility(View.GONE);
+                notificationClose.setVisibility(View.GONE);
+                nit.setOrientation(LinearLayout.HORIZONTAL);
+                params.setMargins(params.leftMargin, 180, params.rightMargin, params.bottomMargin);
+                nit.setLayoutParams(params);
+                tv.setGravity(Gravity.START);
+                break;
+            case REWARDS_PROMOTION_CLAIM_ERROR:
+                title = "";
+                btClaimOk.setText(root.getResources().getString(R.string.ok));
+                description = "<b>" +
+                        root.getResources().getString(
+                        R.string.brave_rewards_local_general_grant_error_title)
+                        + "</b>";
+                notification_icon.setImageResource(R.drawable.coin_stack);
+                hl.setBackgroundResource(R.drawable.notification_header_error);
                 notificationClose.setVisibility(View.GONE);
                 nit.setOrientation(LinearLayout.HORIZONTAL);
                 params.setMargins(params.leftMargin, 180, params.rightMargin, params.bottomMargin);
@@ -1413,7 +1431,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
             return;
         }
-        ShowNotification(id, type, timestamp, args);
+
+        if (currentNotificationId.isEmpty()) {
+            ShowNotification(id, type, timestamp, args);
+        }
     }
 
     @Override
@@ -1671,6 +1692,18 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         catch (JSONException e) {
             Log.e (TAG, "Error parsing external wallet status");
             mExternal_wallet = null;
+        }
+    }
+
+    /**
+     *  Show the "promotion claim failed" error message.
+     *  Succesful claims are dismissed by a notification.
+     */
+    @Override
+    public void OnClaimPromotion(int error_code) {
+        if (error_code != BraveRewardsNativeWorker.LEDGER_OK) {
+            String args[] = {};
+            ShowNotification(REWARDS_PROMOTION_CLAIM_ERROR_ID, REWARDS_PROMOTION_CLAIM_ERROR, 0, args);
         }
     }
 }

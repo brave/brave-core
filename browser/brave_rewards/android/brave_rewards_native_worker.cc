@@ -391,8 +391,9 @@ void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
 
 void BraveRewardsNativeWorker::OnClaimPromotion(const int32_t result,
         std::unique_ptr<brave_rewards::Promotion> promotion) {
-  // TODO(sergz) do nothing here. We receive an even that promotion
-  // being claimed on delete notification
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnClaimPromotion(env,
+      weak_java_brave_rewards_native_worker_.get(env), result);
 }
 
 int BraveRewardsNativeWorker::GetCurrentGrantsCount(JNIEnv* env,

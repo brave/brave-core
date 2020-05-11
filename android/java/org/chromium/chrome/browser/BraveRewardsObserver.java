@@ -31,4 +31,5 @@ public interface BraveRewardsObserver {
           String external_wallet) {};
   default public void OnProcessRewardsPageUrl(int error_code,
           String wallet_type, String action, String json_args ) {};
+  default public void OnClaimPromotion(int error_code) {};
 }
