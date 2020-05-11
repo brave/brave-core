@@ -24,18 +24,11 @@
 #define BALANCE_DEVELOPMENT_SERVER            \
 "https://balance.rewards.brave.software"
 
-#define PUBLISHER_STAGING_SERVER            \
-"https://publishers-staging.basicattentiontoken.org"
-#define PUBLISHER_PRODUCTION_SERVER         \
-"https://publishers.basicattentiontoken.org"
-#define PUBLISHER_DEVELOPMENT_SERVER         \
-"https://creators.brave.software"
-
-#define PUBLISHER_DISTRO_STAGING_SERVER     \
+#define PUBLISHER_STAGING_SERVER     \
 "https://publishers-staging-distro.basicattentiontoken.org"
-#define PUBLISHER_DISTRO_PRODUCTION_SERVER  \
+#define PUBLISHER_PRODUCTION_SERVER  \
 "https://publishers-distro.basicattentiontoken.org"
-#define PUBLISHER_DISTRO_DEVELOPMENT_SERVER  \
+#define PUBLISHER_DEVELOPMENT_SERVER  \
 "https://creators-distro.brave.software"
 
 #define PROMOTION_STAGING_SERVER              \
@@ -63,7 +56,6 @@
 "/v2/publisher/ruleset?limit=512&excludedOnly=false"
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
-#define GET_PUBLISHERS_LIST             "/api/v3/public/channels"
 #define GET_PROMOTION_ATTESTATION       "/attestations/"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"

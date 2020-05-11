@@ -354,8 +354,8 @@ class BraveRewardsBrowserTest
     } else if (URLMatches(url, "/captchas", PREFIX_V1,
                           ServerTypes::kPromotion)) {
       *response = brave_test_resp::captcha_;
-    } else if (URLMatches(url, GET_PUBLISHERS_LIST, "",
-                          ServerTypes::PUBLISHER_DISTRO)) {
+    } else if (URLMatches(url, "/api/v3/public/channels", "",
+                          ServerTypes::kPublisher)) {
       if (alter_publisher_list_) {
         *response =
             "["

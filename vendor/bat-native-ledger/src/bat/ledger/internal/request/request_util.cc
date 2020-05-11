@@ -47,23 +47,6 @@ std::string BuildPublisherUrl() {
   return url;
 }
 
-std::string BuildPublisherDistroUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::STAGING:
-      url = PUBLISHER_DISTRO_STAGING_SERVER;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
-      break;
-    case ledger::Environment::DEVELOPMENT:
-      url = PUBLISHER_DISTRO_DEVELOPMENT_SERVER;
-      break;
-  }
-
-  return url;
-}
-
 std::string BuildLedgerUrl() {
   std::string url;
   switch (ledger::_environment) {
@@ -115,12 +98,8 @@ std::string BuildUrl(
       url = BuildBalanceUrl();
       break;
     }
-    case ServerTypes::PUBLISHER: {
+    case ServerTypes::kPublisher: {
       url = BuildPublisherUrl();
-      break;
-    }
-    case ServerTypes::PUBLISHER_DISTRO: {
-      url = BuildPublisherDistroUrl();
       break;
     }
     case ServerTypes::LEDGER: {

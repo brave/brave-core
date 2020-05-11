@@ -28,10 +28,6 @@ namespace braveledger_publisher {
 
 class PublisherServerList;
 
-using ParsePublisherListCallback = std::function<void(const ledger::Result)>;
-using DownloadServerPublisherListCallback =
-    std::function<void(const ledger::Result)>;
-
 class Publisher {
  public:
   explicit Publisher(bat_ledger::LedgerImpl* ledger);
@@ -93,7 +89,7 @@ class Publisher {
 
   void ParsePublisherList(
       const std::string& data,
-      ParsePublisherListCallback callback);
+      ledger::ResultCallback callback);
 
   void getPublisherActivityFromUrl(
       uint64_t windowId,
