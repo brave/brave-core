@@ -34,12 +34,22 @@ class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveWalletIsInstalledFunction : public ExtensionFunction {
+class BraveWalletLoadUIFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.isInstalled", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveWallet.loadUI", UNKNOWN)
+  void OnLoaded();
 
  protected:
-  ~BraveWalletIsInstalledFunction() override {}
+  ~BraveWalletLoadUIFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletShouldPromptForSetupFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.shouldPromptForSetup", UNKNOWN)
+
+ protected:
+  ~BraveWalletShouldPromptForSetupFunction() override {}
   ResponseAction Run() override;
 };
 

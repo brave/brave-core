@@ -93,10 +93,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/services/tor/tor_launcher_service.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
@@ -105,6 +101,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BINANCE_ENABLED)
 #include "brave/browser/binance/binance_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #endif
 
 namespace {
@@ -430,7 +431,11 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (url->SchemeIs(content::kChromeUIScheme) &&
+  // If the Crypto Wallets extension is loaded, then it replaces the WebUI
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* service = BraveWalletServiceFactory::GetForProfile(profile);
+  if (service->IsCryptoWalletsReady() &&
+      url->SchemeIs(content::kChromeUIScheme) &&
       url->host() == ethereum_remote_client_host) {
     auto* registry = extensions::ExtensionRegistry::Get(browser_context);
     if (registry->ready_extensions().GetByID(
@@ -449,11 +454,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationHandle* handle) {
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  throttles.push_back(
-      std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   throttles.push_back(

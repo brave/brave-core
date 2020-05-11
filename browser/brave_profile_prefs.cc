@@ -209,6 +209,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
   registry->RegisterIntegerPref(kBraveWalletWeb3Provider,
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+  registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
+  registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
 
   // Binance widget
 #if BUILDFLAG(BINANCE_ENABLED)

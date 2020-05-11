@@ -73,7 +73,7 @@ base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
   }
 
   return metamask_installed_ ?
-      l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_USE_CRYPTO_WALLETS) :
+      l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS) :
       l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_SETUP);
 }
 

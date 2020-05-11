@@ -89,12 +89,31 @@ BraveWalletPromptToEnableWalletFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveWalletIsInstalledFunction::Run() {
+BraveWalletLoadUIFunction::Run() {
+  auto* service = GetBraveWalletService(browser_context());
+  // If the extension is already ready, respond right away
+  if (service->IsCryptoWalletsReady()) {
+    return RespondNow(NoArguments());
+  }
+
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* registry = extensions::ExtensionRegistry::Get(profile);
-  bool enabled = !brave::IsTorProfile(profile) &&
-    registry->ready_extensions().GetByID(ethereum_remote_client_extension_id);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
+  profile->GetPrefs()->SetBoolean(kOptedIntoCryptoWallets, true);
+  service->LoadCryptoWalletsExtension(base::BindOnce(
+      &BraveWalletLoadUIFunction::OnLoaded, this));
+  return RespondLater();
+}
+
+void BraveWalletLoadUIFunction::OnLoaded() {
+  Respond(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletShouldPromptForSetupFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* service = BraveWalletServiceFactory::GetForProfile(profile);
+  bool should_prompt = !service->IsCryptoWalletsSetup() &&
+      !profile->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets);
+  return RespondNow(OneArgument(std::make_unique<base::Value>(should_prompt)));
 }
 
 ExtensionFunction::ResponseAction
