@@ -33,7 +33,7 @@ class PublisherServerList {
   explicit PublisherServerList(bat_ledger::LedgerImpl* ledger);
   ~PublisherServerList();
 
-  void Download(DownloadServerPublisherListCallback callback);
+  void Start(ledger::ResultCallback callback);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -43,15 +43,17 @@ class PublisherServerList {
   void ClearTimer();
 
  private:
+  void Download(ledger::ResultCallback callback);
+
   void OnDownload(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      DownloadServerPublisherListCallback callback);
+      ledger::ResultCallback callback);
 
   void OnParsePublisherList(
       const ledger::Result result,
-      DownloadServerPublisherListCallback callback);
+      ledger::ResultCallback callback);
 
   uint64_t GetTimerTime(
       bool retry_after_error,
@@ -61,7 +63,7 @@ class PublisherServerList {
 
   void ParsePublisherList(
       const std::string& data,
-      ParsePublisherListCallback callback);
+      ledger::ResultCallback callback);
 
   void ParsePublisherBanner(
       ledger::PublisherBanner* banner,
@@ -71,19 +73,21 @@ class PublisherServerList {
       const ledger::Result result,
       const SharedServerPublisherPartial& list_publisher,
       const SharedPublisherBanner& list_banner,
-      ParsePublisherListCallback callback);
-
-  void SavePublishers(
-      const SharedServerPublisherPartial& list_publisher,
-      const SharedPublisherBanner& list_banner,
-      ParsePublisherListCallback callback);
+      ledger::ResultCallback callback);
 
   void SaveBanners(
+      const ledger::Result result,
       const SharedPublisherBanner& list_banner,
-      ParsePublisherListCallback callback);
+      ledger::ResultCallback callback);
+
+  void BannerSaved(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t server_list_timer_id_;
+  bool in_progress_ = false;
+  uint32_t current_page_ = 1;
 };
 
 }  // namespace braveledger_publisher
