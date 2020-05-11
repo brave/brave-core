@@ -117,8 +117,7 @@ describe('new tab util files tests', () => {
         title: 'brave',
         favicon: '',
         letter: '',
-        pinnedIndex: 1337,
-        bookmarkInfo: undefined
+        pinnedIndex: 1337
       }
       expect(newTabUtils.isGridSitePinned(site)).toBe(true)
     })
@@ -129,43 +128,9 @@ describe('new tab util files tests', () => {
         title: 'brave',
         favicon: '',
         letter: '',
-        pinnedIndex: undefined,
-        bookmarkInfo: undefined
+        pinnedIndex: undefined
       }
       expect(newTabUtils.isGridSitePinned(site)).toBe(false)
-    })
-  })
-  describe('isGridSiteBookmarked', () => {
-    it('return true if bookmarkInfo is defined', () => {
-      const site: NewTab.Site = {
-        id: '',
-        url: 'https://brave.com',
-        title: 'brave',
-        favicon: '',
-        letter: '',
-        pinnedIndex: undefined,
-        bookmarkInfo: {
-          dateAdded: 1337,
-          id: '',
-          index: 1337,
-          parentId: '',
-          title: 'brave',
-          url: 'https://brave.com'
-        }
-      }
-      expect(newTabUtils.isGridSiteBookmarked(site.bookmarkInfo)).toBe(true)
-    })
-    it('returns false if bookmarkInfo is not defined', () => {
-      const site: NewTab.Site = {
-        id: '',
-        url: 'https://brave.com',
-        title: 'brave',
-        favicon: '',
-        letter: '',
-        pinnedIndex: undefined,
-        bookmarkInfo: undefined
-      }
-      expect(newTabUtils.isGridSiteBookmarked(site.bookmarkInfo)).toBe(false)
     })
   })
   describe('isExistingGridSite', () => {
@@ -193,7 +158,7 @@ describe('new tab util files tests', () => {
       }
       const assertion = newTabUtils.generateGridSiteProperties(1337, newUrl)
       const expected = [
-        'title', 'url', 'id', 'letter', 'favicon', 'pinnedIndex', 'bookmarkInfo'
+        'title', 'url', 'id', 'letter', 'favicon', 'pinnedIndex'
       ]
       expect(Object.keys(assertion).every(item => expected.includes(item)))
         .toBe(true)
@@ -208,8 +173,7 @@ describe('new tab util files tests', () => {
         thumb: '',
         themeColor: '',
         computedThemeColor: '',
-        pinned: undefined,
-        bookmarked: undefined
+        pinned: undefined
       }]
 
       it('exclude all old properties of a top site', () => {
@@ -225,7 +189,6 @@ describe('new tab util files tests', () => {
         const assertion = newTabUtils.generateGridSitesFromLegacyEntries(legacyUrlList)
         expect(assertion[0]).toHaveProperty('id')
         expect(assertion[0]).toHaveProperty('pinnedIndex')
-        expect(assertion[0]).toHaveProperty('bookmarkInfo')
       })
       it('set pinnedIndex to be the same as the top site index', () => {
         const assertion = newTabUtils.generateGridSitesFromLegacyEntries(legacyUrlList)
@@ -254,8 +217,7 @@ describe('new tab util files tests', () => {
       title: 'brave',
       favicon: '',
       letter: '',
-      pinnedIndex: undefined,
-      bookmarkInfo: undefined
+      pinnedIndex: undefined
     }]
     it('filter sites already included in the sites list', () => {
       const removedSitesData = [ ...sitesData ]
@@ -269,8 +231,7 @@ describe('new tab util files tests', () => {
         title: 'new_site',
         favicon: '',
         letter: '',
-        pinnedIndex: undefined,
-        bookmarkInfo: undefined
+        pinnedIndex: undefined
       }]
       const assertion = newTabUtils.filterFromExcludedSites(sitesData, removedSitesData)
       expect(assertion).toHaveLength(1)
@@ -283,8 +244,7 @@ describe('new tab util files tests', () => {
       title: 'brave',
       favicon: '',
       letter: '',
-      pinnedIndex: undefined,
-      bookmarkInfo: undefined
+      pinnedIndex: undefined
     }]
     it('filter sites already included in the sites list', () => {
       const duplicatedSitesData = [ ...sitesData, ...sitesData ]
@@ -298,8 +258,7 @@ describe('new tab util files tests', () => {
         title: 'new_site',
         favicon: '',
         letter: '',
-        pinnedIndex: undefined,
-        bookmarkInfo: undefined
+        pinnedIndex: undefined
       }]
       const newSitesData: NewTab.Site[] = [ ...sitesData, ...otherSitesData ]
       const assertion = newTabUtils.filterDuplicatedSitesbyIndexOrUrl(newSitesData)

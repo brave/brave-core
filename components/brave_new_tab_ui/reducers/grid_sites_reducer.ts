@@ -85,22 +85,6 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
       break
     }
 
-    case types.GRID_SITES_UPDATE_SITE_BOOKMARK_INFO: {
-      state = gridSitesState
-        .gridSitesReducerUpdateSiteBookmarkInfo(state, payload.bookmarkInfo)
-      break
-    }
-
-    case types.GRID_SITES_TOGGLE_SITE_BOOKMARK_INFO: {
-      state = gridSitesState
-        .gridSitesReducerToggleSiteBookmarkInfo(
-          state,
-          payload.url,
-          payload.bookmarkInfo
-        )
-      break
-    }
-
     case types.GRID_SITES_ADD_SITES: {
       state = gridSitesState.gridSitesReducerAddSiteOrSites(state, payload.site)
       break

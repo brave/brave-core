@@ -8,14 +8,6 @@ import * as storage from '../../../brave_new_tab_ui/storage/grid_sites_storage'
 import { types } from '../../../brave_new_tab_ui/constants/grid_sites_types'
 import * as gridSitesState from '../../../brave_new_tab_ui/state/gridSitesState'
 
-const bookmarkInfo: chrome.bookmarks.BookmarkTreeNode = {
-  dateAdded: 123123,
-  id: 'topsite-0',
-  index: 1337,
-  parentId: '',
-  title: 'brave',
-  url: 'https://brave.com'
-}
 const topSites: chrome.topSites.MostVisitedURL[] = [{
   url: 'https://brave.com',
   title: 'brave'
@@ -28,15 +20,13 @@ const gridSites: NewTab.Site[] = [{
   id: 'topsite-0',
   favicon: '',
   letter: 'b',
-  pinnedIndex: undefined,
-  bookmarkInfo
+  pinnedIndex: undefined
 }, {
   ...topSites[1],
   id: 'topsite-1',
   favicon: '',
   letter: 'c',
-  pinnedIndex: undefined,
-  bookmarkInfo: undefined
+  pinnedIndex: undefined
 }]
 
 describe('gridSitesReducer', () => {
@@ -87,8 +77,7 @@ describe('gridSitesReducer', () => {
         title: 'g. clooney free propaganda',
         pinnedIndex: 0,
         favicon: '',
-        letter: '',
-        bookmarkInfo: undefined
+        letter: ''
       }
       const veryRepetitiveSite: NewTab.Site = {
         id: 'topsite-111',
@@ -96,8 +85,7 @@ describe('gridSitesReducer', () => {
         title: 'pokemon fan page',
         pinnedIndex: 0,
         favicon: '',
-        letter: '',
-        bookmarkInfo: undefined
+        letter: ''
       }
 
       const veryRepetitiveSiteList: NewTab.Site[] = [
@@ -359,110 +347,6 @@ describe('gridSitesReducer', () => {
       })
 
       expect(assertion.gridSites).toHaveLength(2)
-    })
-  })
-  describe('GRID_SITES_UPDATE_SITE_BOOKMARK_INFO', () => {
-    let gridSitesReducerUpdateSiteBookmarkInfoStub: jest.SpyInstance
-
-    beforeEach(() => {
-      gridSitesReducerUpdateSiteBookmarkInfoStub = jest
-        .spyOn(gridSitesState, 'gridSitesReducerUpdateSiteBookmarkInfo')
-    })
-    afterEach(() => {
-      gridSitesReducerUpdateSiteBookmarkInfoStub.mockRestore()
-    })
-
-    it('calls gridSitesReducerUpdateSiteBookmarkInfo with the correct args', () => {
-      const topSiteBookmarkInfo: NewTab.Site = gridSites[0].bookmarkInfo
-      gridSitesReducer(undefined, {
-        type: types.GRID_SITES_UPDATE_SITE_BOOKMARK_INFO,
-        payload: { bookmarkInfo: topSiteBookmarkInfo }
-      })
-
-      expect(gridSitesReducerUpdateSiteBookmarkInfoStub).toBeCalledTimes(1)
-      expect(gridSitesReducerUpdateSiteBookmarkInfoStub)
-        .toBeCalledWith(storage.initialGridSitesState, topSiteBookmarkInfo)
-    })
-    it('update own bookmarkInfo with the specified value', () => {
-      const topSiteBookmarkInfo: NewTab.Site = gridSites[0].bookmarkInfo
-      const sites: NewTab.Sites[] = [{
-        ...gridSites[0], bookmarkInfo: 'NEW_INFO'
-      }]
-      const newStateWithGridSites: NewTab.State = {
-        ...storage.initialGridSitesState,
-        gridSites: sites
-      }
-
-      const assertion = gridSitesReducer(newStateWithGridSites, {
-        type: types.GRID_SITES_UPDATE_SITE_BOOKMARK_INFO,
-        payload: { bookmarkInfo: topSiteBookmarkInfo }
-      })
-
-      expect(assertion.gridSites[0])
-        .toHaveProperty('bookmarkInfo', 'NEW_INFO')
-    })
-  })
-  describe('GRID_SITES_TOGGLE_SITE_BOOKMARK_INFO', () => {
-    let gridSitesReducerToggleSiteBookmarkInfoStub: jest.SpyInstance
-
-    beforeEach(() => {
-      gridSitesReducerToggleSiteBookmarkInfoStub = jest
-        .spyOn(gridSitesState, 'gridSitesReducerToggleSiteBookmarkInfo')
-    })
-    afterEach(() => {
-      gridSitesReducerToggleSiteBookmarkInfoStub.mockRestore()
-    })
-
-    it('calls gridSitesReducerToggleSiteBookmarkInfo with the correct args', () => {
-      const siteUrl: string = gridSites[0].url
-      const topSiteBookmarkInfo: chrome.bookmarks.BookmarkTreeNode
-        = bookmarkInfo
-      gridSitesReducer(undefined, {
-        type: types.GRID_SITES_TOGGLE_SITE_BOOKMARK_INFO,
-        payload: {
-          url: siteUrl,
-          bookmarkInfo: topSiteBookmarkInfo
-        }
-      })
-
-      expect(gridSitesReducerToggleSiteBookmarkInfoStub).toBeCalledTimes(1)
-      expect(gridSitesReducerToggleSiteBookmarkInfoStub)
-        .toBeCalledWith(storage.initialGridSitesState, siteUrl, topSiteBookmarkInfo)
-    })
-    it('add own add bookmarkInfo if url has no data', () => {
-      const siteUrl: string = gridSites[0].url
-      const newStateWithGridSites: NewTab.State = {
-        ...storage.initialGridSitesState,
-        gridSites
-      }
-
-      const assertion = gridSitesReducer(newStateWithGridSites, {
-        type: types.GRID_SITES_TOGGLE_SITE_BOOKMARK_INFO,
-        payload: {
-          url: siteUrl,
-          bookmarkInfo: undefined
-        }
-      })
-
-      expect(assertion.gridSites[0].bookmarkInfo).not.toBeUndefined()
-    })
-    it('remove own bookmarkInfo if url has data', () => {
-      const siteUrl: string = gridSites[0].url
-      const topSiteBookmarkInfo: NewTab.Site = gridSites[0].bookmarkInfo
-      const newStateWithGridSites: NewTab.State = {
-        ...storage.initialGridSitesState,
-        gridSites
-      }
-
-      const assertion = gridSitesReducer(newStateWithGridSites, {
-        type: types.GRID_SITES_TOGGLE_SITE_BOOKMARK_INFO,
-        payload: {
-          url: siteUrl,
-          bookmarkInfo: topSiteBookmarkInfo
-        }
-      })
-
-      expect(assertion.gridSites[0].bookmarkInfo).toBeUndefined()
     })
   })
   describe('GRID_SITES_ADD_SITES', () => {
