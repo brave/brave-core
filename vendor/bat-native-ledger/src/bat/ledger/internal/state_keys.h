@@ -15,7 +15,7 @@ namespace ledger {
   const char kStateUpholdAnonAddress[] = "uphold_anon_address";
   const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
   const char kStatePromotionCorruptedMigrated[] =
-      "promotion_corrupted_migrated";
+      "promotion_corrupted_migrated2";
   const char kStateAnonTransferChecked[] = "anon_transfer_checked";
 }  // namespace ledger
 

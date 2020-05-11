@@ -34,7 +34,7 @@ const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
 const char kStatePromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kStatePromotionCorruptedMigrated[] =
-    "brave.rewards.promotion_corrupted_migrated";
+    "brave.rewards.promotion_corrupted_migrated2";
 const char kStateAnonTransferChecked[] =  "brave.rewards.anon_transfer_checked";
 }  // namespace prefs
 }  // namespace brave_rewards

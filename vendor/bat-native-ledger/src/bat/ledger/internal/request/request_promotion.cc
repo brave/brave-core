@@ -59,7 +59,7 @@ std::string GetReedemTokensUrl(const ledger::ContributionProcessor processor) {
 std::string ReportClobberedClaimsUrl() {
   return BuildUrl(
       "/promotions/reportclobberedclaims",
-      PREFIX_V1,
+      PREFIX_V2,
       ServerTypes::kPromotion);
 }
 
