@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.16](https://github.com/brave/brave-ios/releases/tag/v1.16)
+
+ - Added support for referral background images and top sites on the New Tab Page. ([#2324](https://github.com/brave/brave-ios/issues/2324))
+ - Fixed missing urlbar icons for certificate errors. ([#1963](https://github.com/brave/brave-ios/issues/1963))
+ - Fixed certain websites not being classified correctly for Brave ads. ([#2444](https://github.com/brave/brave-ios/issues/2444))
+ - Fixed monthly contributions panel still editable when Brave Rewards is disabled. [#2401](https://github.com/brave/brave-ios/issues/2401))
+ - Fixed all tabs being destroyed when partially clearing data using "Clear Private Data". ([#2155](https://github.com/brave/brave-ios/issues/2155))
+ - Fixed alignment issue in urlbar. ([#1964](https://github.com/brave/brave-ios/issues/1964))
+ - Updated text from "Allow contribution to non-verified sites" to "Show non-verified sites in list" under auto-contribution settings. ([#2402](https://github.com/brave/brave-ios/issues/2402))
+
+## [1.15.2](https://github.com/brave/brave-ios/releases/tag/v1.15.2)
+
+ - Fixed crash on certain devices when downloading publisher list by improving load times. ([#2378](https://github.com/brave/brave-ios/issues/2477))
+
 ## [1.15.1](https://github.com/brave/brave-ios/releases/tag/v1.15.1)
 
  - Migrated rewards database to new code base to improve stability and performance. ([#2378](https://github.com/brave/brave-ios/issues/2378))
