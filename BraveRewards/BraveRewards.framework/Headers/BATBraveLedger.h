@@ -175,6 +175,11 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)refreshPublisherWithId:(NSString *)publisherId
                     completion:(void (^)(BATPublisherStatus status))completion;
 
+#pragma mark - SKUs
+
+- (void)processSKUItems:(NSArray<BATSKUOrderItem *> *)items
+             completion:(void (^)(BATResult result, NSString *orderID))completion;
+
 #pragma mark - Tips
 
 /// Get a list of publishers who the user has recurring tips on
