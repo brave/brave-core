@@ -636,7 +636,8 @@ void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
           promotion_id));
 #else
   // No need for a callback. The UI receives "brave_rewards.promotionFinish".
-  rewards_service_->ClaimPromotion(promotion_id, base::DoNothing());
+  brave_rewards::AttestPromotionCallback callback = base::DoNothing();
+  rewards_service_->ClaimPromotion(promotion_id, std::move(callback));
 #endif
 }
 
