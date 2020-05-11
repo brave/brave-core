@@ -167,6 +167,9 @@ bool DatabaseContributionInfo::Migrate(
     case 17: {
       return MigrateToV17(transaction);
     }
+    case 21: {
+      return MigrateToV21(transaction);
+    }
     default: {
       return true;
     }
@@ -377,6 +380,13 @@ bool DatabaseContributionInfo::MigrateToV17(
   transaction->commands.push_back(std::move(command));
 
   return true;
+}
+
+bool DatabaseContributionInfo::MigrateToV21(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  return publishers_->Migrate(transaction, 21);
 }
 
 void DatabaseContributionInfo::InsertOrUpdate(

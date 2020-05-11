@@ -78,6 +78,30 @@ bool DatabaseContributionInfoPublishers::CreateTableV15(
   return true;
 }
 
+bool DatabaseContributionInfoPublishers::CreateTableV21(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "contribution_id TEXT NOT NULL,"
+        "publisher_key TEXT NOT NULL,"
+        "total_amount DOUBLE NOT NULL,"
+        "contributed_amount DOUBLE,"
+        "CONSTRAINT %s_unique "
+        "    UNIQUE (contribution_id, publisher_key)"
+      ")",
+      kTableName,
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  return true;
+}
+
 bool DatabaseContributionInfoPublishers::CreateIndexV11(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
@@ -104,6 +128,19 @@ bool DatabaseContributionInfoPublishers::CreateIndexV15(
   return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
+bool DatabaseContributionInfoPublishers::CreateIndexV21(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  bool success = this->InsertIndex(transaction, kTableName, "contribution_id");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
+}
+
 bool DatabaseContributionInfoPublishers::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
@@ -115,6 +152,9 @@ bool DatabaseContributionInfoPublishers::Migrate(
     }
     case 15: {
       return MigrateToV15(transaction);
+    }
+    case 21: {
+      return MigrateToV21(transaction);
     }
     default: {
       return true;
@@ -187,6 +227,52 @@ bool DatabaseContributionInfoPublishers::MigrateToV15(
   return true;
 }
 
+bool DatabaseContributionInfoPublishers::MigrateToV21(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      kTableName);
+
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    return false;
+  }
+
+  const std::string query =
+      "DROP INDEX IF EXISTS contribution_info_publishers_contribution_id_index;"
+      " DROP INDEX IF EXISTS contribution_info_publishers_publisher_key_index;";
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!CreateTableV21(transaction)) {
+    return false;
+  }
+
+  if (!CreateIndexV21(transaction)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "contribution_id", "contribution_id" },
+    { "publisher_key", "publisher_key" },
+    { "total_amount", "total_amount" },
+    { "contributed_amount", "contributed_amount" }
+  };
+
+  if (!MigrateDBTable(
+      transaction,
+      temp_table_name,
+      kTableName,
+      columns,
+      true)) {
+    return false;
+  }
+  return true;
+}
+
 void DatabaseContributionInfoPublishers::InsertOrUpdate(
     ledger::DBTransaction* transaction,
     ledger::ContributionInfoPtr info) {
@@ -196,25 +282,13 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
     return;
   }
 
-  const std::string query_delete = base::StringPrintf(
-    "DELETE FROM %s WHERE contribution_id = ? AND publisher_key = ?",
-    kTableName);
-
   const std::string query = base::StringPrintf(
-    "INSERT INTO %s "
+    "INSERT OR REPLACE INTO %s "
     "(contribution_id, publisher_key, total_amount, contributed_amount) "
     "VALUES (?, ?, ?, ?)",
     kTableName);
 
   for (const auto& publisher : info->publishers) {
-    auto command_delete = ledger::DBCommand::New();
-    command_delete->type = ledger::DBCommand::Type::RUN;
-    command_delete->command = query_delete;
-
-    BindString(command_delete.get(), 0, publisher->contribution_id);
-    BindString(command_delete.get(), 1, publisher->publisher_key);
-    transaction->commands.push_back(std::move(command_delete));
-
     auto command = ledger::DBCommand::New();
     command->type = ledger::DBCommand::Type::RUN;
     command->command = query;

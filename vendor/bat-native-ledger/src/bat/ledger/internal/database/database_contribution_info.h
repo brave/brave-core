@@ -83,6 +83,8 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   bool MigrateToV17(ledger::DBTransaction* transaction);
 
+  bool MigrateToV21(ledger::DBTransaction* transaction);
+
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetContributionInfoCallback callback);
