@@ -208,6 +208,7 @@ class LedgerImpl : public ledger::Ledger {
   void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 
   void ClaimPromotion(
+      const std::string& promotion_id,
       const std::string& payload,
       ledger::ClaimPromotionCallback callback) const override;
 

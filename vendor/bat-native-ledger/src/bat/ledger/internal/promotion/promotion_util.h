@@ -23,9 +23,10 @@ ledger::PromotionType ConvertStringToPromotionType(const std::string& type);
 ledger::ReportType ConvertPromotionTypeToReportType(
     const ledger::PromotionType type);
 
-bool ParseFetchResponse(
+ledger::Result ParseFetchResponse(
     const std::string& response,
-    ledger::PromotionList* list);
+    ledger::PromotionList* list,
+    std::vector<std::string>* corrupted_promotions);
 
 std::vector<ledger::PromotionType> GetEligiblePromotions();
 

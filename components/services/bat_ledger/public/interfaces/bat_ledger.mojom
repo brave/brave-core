@@ -59,7 +59,7 @@ interface BatLedger {
   SetPublisherExclude(string publisher_key, ledger.mojom.PublisherExclude exclude) => (ledger.mojom.Result result);
   RestorePublishers() => (ledger.mojom.Result result);
   FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
-  ClaimPromotion(string payload) => (ledger.mojom.Result result, string response);
+  ClaimPromotion(string promotion_id, string payload) => (ledger.mojom.Result result, string response);
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);

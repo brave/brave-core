@@ -85,21 +85,23 @@ ledger::ReportType ConvertPromotionTypeToReportType(
   }
 }
 
-bool ParseFetchResponse(
+ledger::Result ParseFetchResponse(
     const std::string& response,
-    ledger::PromotionList* list) {
+    ledger::PromotionList* list,
+    std::vector<std::string>* corrupted_promotions) {
+  DCHECK(corrupted_promotions);
   if (!list) {
-    return false;
+    return ledger::Result::LEDGER_ERROR;
   }
 
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    return false;
+    return ledger::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    return false;
+    return ledger::Result::LEDGER_ERROR;
   }
 
   auto* promotions = dictionary->FindListKey("promotions");
@@ -116,32 +118,38 @@ bool ParseFetchResponse(
 
       const auto version = item.FindIntKey("version");
       if (!version) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->version = *version;
 
       const auto* type = item.FindStringKey("type");
       if (!type) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->type = ConvertStringToPromotionType(*type);
 
       const auto suggestions = item.FindIntKey("suggestionsPerGrant");
       if (!suggestions) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->suggestions = *suggestions;
 
       const auto* approximate_value = item.FindStringKey("approximateValue");
       if (!approximate_value) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
       promotion->approximate_value = std::stod(*approximate_value);
 
       const auto available = item.FindBoolKey("available");
       if (!available) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
+
       if (*available) {
         promotion->status = ledger::PromotionStatus::ACTIVE;
       } else {
@@ -150,6 +158,7 @@ bool ParseFetchResponse(
 
       auto* expires_at = item.FindStringKey("expiresAt");
       if (!expires_at) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
 
@@ -160,7 +169,8 @@ bool ParseFetchResponse(
       }
 
       auto* public_keys = item.FindListKey("publicKeys");
-      if (!public_keys) {
+      if (!public_keys || public_keys->GetList().empty()) {
+        corrupted_promotions->push_back(promotion->id);
         continue;
       }
 
@@ -175,11 +185,11 @@ bool ParseFetchResponse(
     }
 
     if (promotion_size != list->size()) {
-      return false;
+      return ledger::Result::CORRUPTED_DATA;
     }
   }
 
-  return true;
+  return ledger::Result::LEDGER_OK;
 }
 
 std::vector<ledger::PromotionType> GetEligiblePromotions() {

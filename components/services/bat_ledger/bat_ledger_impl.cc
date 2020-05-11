@@ -238,12 +238,14 @@ void BatLedgerImpl::OnClaimPromotion(
   delete holder;
 }
 void BatLedgerImpl::ClaimPromotion(
+    const std::string& promotion_id,
     const std::string& payload,
     ClaimPromotionCallback callback) {
   // deleted in OnClaimPromotion
   auto* holder = new CallbackHolder<ClaimPromotionCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_->ClaimPromotion(
+      promotion_id,
       payload,
       std::bind(BatLedgerImpl::OnClaimPromotion, holder, _1, _2));
 }

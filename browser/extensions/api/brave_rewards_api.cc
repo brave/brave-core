@@ -480,11 +480,13 @@ ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
     data->SetIntKey("result", 1);
     return RespondNow(OneArgument(std::move(data)));
   }
+
   rewards_service->ClaimPromotion(
+      params->promotion_id,
       base::BindOnce(
-        &BraveRewardsClaimPromotionFunction::OnClaimPromotion,
-        this,
-        params->promotion_id));
+          &BraveRewardsClaimPromotionFunction::OnClaimPromotion,
+          this,
+          params->promotion_id));
   return RespondLater();
 }
 

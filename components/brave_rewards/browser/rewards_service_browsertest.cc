@@ -136,6 +136,7 @@ namespace brave_test_resp {
   std::string registrarVK_;
   std::string verification_;
   std::string promotions_;
+  std::string promotion_empty_key_;
   std::string promotion_claim_;
   std::string creds_tokens_;
   std::string creds_tokens_prod_;
@@ -380,7 +381,11 @@ class BraveRewardsBrowserTest
       }
     } else if (URLMatches(url, "/promotions?", PREFIX_V1,
                           ServerTypes::kPromotion)) {
-      *response = brave_test_resp::promotions_;
+      if (promotion_empty_key_) {
+        *response = brave_test_resp::promotion_empty_key_;
+      } else {
+        *response = brave_test_resp::promotions_;
+      }
     } else if (URLMatches(url, "/promotions/", PREFIX_V1,
                           ServerTypes::kPromotion)) {
       if (url.find("claims") != std::string::npos) {
@@ -678,6 +683,10 @@ class BraveRewardsBrowserTest
 
     ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("promotions_resp.json"),
                                        &brave_test_resp::promotions_));
+
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("promotion_empty_key_resp.json"),
+        &brave_test_resp::promotion_empty_key_));
 
     ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("captcha_resp.json"),
                                        &brave_test_resp::captcha_));
@@ -1436,7 +1445,8 @@ class BraveRewardsBrowserTest
   double reconciled_tip_total_ = 0;
   double pending_balance_ = 0;
   double external_balance_ = 0;
-  double verified_wallet_ = false;
+  bool verified_wallet_ = false;
+  bool promotion_empty_key_ = false;
   const std::string external_wallet_address_ =
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
 };
@@ -2785,4 +2795,17 @@ IN_PROC_BROWSER_TEST_F(
       contents(),
       "[color=contribute]",
       "-50.0BAT");
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    PromotionHasEmptyPublicKey) {
+  promotion_empty_key_ = true;
+  EnableRewards();
+
+  WaitForPromotionInitialization();
+  rewards_service_browsertest_utils::WaitForElementToAppear(
+      OpenRewardsPopup(),
+      "[data-test-id=notification-close]",
+      false);
 }

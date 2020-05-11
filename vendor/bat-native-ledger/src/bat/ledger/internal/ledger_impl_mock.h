@@ -167,8 +167,10 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_CONST_METHOD1(FetchPromotions,
       void(ledger::FetchPromotionCallback));
 
-  MOCK_CONST_METHOD2(ClaimPromotion,
-      void(const std::string&, const ledger::ClaimPromotionCallback));
+  MOCK_CONST_METHOD3(ClaimPromotion, void(
+      const std::string&,
+      const std::string&,
+      const ledger::ClaimPromotionCallback));
 
   MOCK_CONST_METHOD3(AttestPromotion,
       void(const std::string&,

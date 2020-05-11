@@ -113,9 +113,9 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   const std::string& passphrase = ledger_->GetWalletPassphrase();
   if (wallet_payment_id.empty() || passphrase.empty()) {
     ledger::PromotionList empty_list;
-    callback(ledger::Result::CORRUPTED_WALLET, std::move(empty_list));
+    callback(ledger::Result::CORRUPTED_DATA, std::move(empty_list));
     ledger::WalletProperties properties;
-    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
+    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_DATA, properties);
     return;
   }
 
@@ -182,15 +182,27 @@ void Promotion::OnGetAllPromotions(
   HandleExpiredPromotions(ledger_, &promotions);
 
   ledger::PromotionList list;
-  bool success = ParseFetchResponse(response, &list);
+  std::vector<std::string> corrupted_promotions;
+  ledger::Result result = ParseFetchResponse(
+      response,
+      &list,
+      &corrupted_promotions);
 
-  if (!success) {
+  if (result == ledger::Result::LEDGER_ERROR) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Failed to parse promotions";
     ProcessFetchedPromotions(
         ledger::Result::LEDGER_ERROR,
         std::move(list),
         callback);
     return;
+  }
+
+  // even though that some promotions are corrupted
+  // we should display non corrupted ones either way
+  if (result == ledger::Result::CORRUPTED_DATA) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Promotions are not correct: " <<
+        base::JoinString(corrupted_promotions, ", ");
   }
 
   for (auto & item : list) {
@@ -251,8 +263,32 @@ void Promotion::LegacyClaimedSaved(
 }
 
 void Promotion::Claim(
+    const std::string& promotion_id,
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) {
+  auto promotion_callback = std::bind(&Promotion::OnClaimPromotion,
+      this,
+      _1,
+      payload,
+      callback);
+
+  ledger_->GetPromotion(promotion_id, promotion_callback);
+}
+
+void Promotion::OnClaimPromotion(
+    ledger::PromotionPtr promotion,
+    const std::string& payload,
+    ledger::ClaimPromotionCallback callback) {
+  if (!promotion) {
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  if (promotion->status != ledger::PromotionStatus::ACTIVE) {
+    callback(ledger::Result::IN_PROGRESS, "");
+    return;
+  }
+
   attestation_->Start(payload, callback);
 }
 
@@ -260,15 +296,38 @@ void Promotion::Attest(
     const std::string& promotion_id,
     const std::string& solution,
     ledger::AttestPromotionCallback callback) {
-  auto confirm_callback = std::bind(&Promotion::OnAttestPromotion,
+  auto promotion_callback = std::bind(&Promotion::OnAttestPromotion,
       this,
       _1,
-      promotion_id,
+      solution,
+      callback);
+
+  ledger_->GetPromotion(promotion_id, promotion_callback);
+}
+
+void Promotion::OnAttestPromotion(
+    ledger::PromotionPtr promotion,
+    const std::string& solution,
+    ledger::AttestPromotionCallback callback) {
+  if (!promotion) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  if (promotion->status != ledger::PromotionStatus::ACTIVE) {
+    callback(ledger::Result::IN_PROGRESS, nullptr);
+    return;
+  }
+
+  auto confirm_callback = std::bind(&Promotion::OnAttestedPromotion,
+      this,
+      _1,
+      promotion->id,
       callback);
   attestation_->Confirm(solution, confirm_callback);
 }
 
-void Promotion::OnAttestPromotion(
+void Promotion::OnAttestedPromotion(
     const ledger::Result result,
     const std::string& promotion_id,
     ledger::AttestPromotionCallback callback) {

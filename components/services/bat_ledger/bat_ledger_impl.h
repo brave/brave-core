@@ -71,6 +71,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void FetchPromotions(FetchPromotionsCallback callback) override;
   void ClaimPromotion(
+      const std::string& promotion_id,
       const std::string& payload,
       ClaimPromotionCallback callback) override;
   void AttestPromotion(

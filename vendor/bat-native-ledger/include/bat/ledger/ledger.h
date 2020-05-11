@@ -181,6 +181,7 @@ class LEDGER_EXPORT Ledger {
   // desktop: { "captchaImage": "{{captchaImage}}", "hint": "{{hint}}" }
   // iOS and Android: { "nonce": "{{nonce}}" }
   virtual void ClaimPromotion(
+      const std::string& promotion_id,
       const std::string& payload,
       ClaimPromotionCallback callback) const = 0;
 
