@@ -1119,7 +1119,7 @@ until they verify, or until 90 days have passed.
       <message name="IDS_THANK_YOU_TEXT" desc="Text for thank you UI for shields.">
         Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!
       </message>
-      <message name="IDS_ADVANCED_CONTRLS" desc="Title for toggle section.">
+      <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
       </message>
     </messages>
