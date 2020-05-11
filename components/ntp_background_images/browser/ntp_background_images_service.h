@@ -35,6 +35,8 @@ class NTPBackgroundImagesService {
    public:
     // Called whenever ntp background images component is updated.
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
+    // Called when SR campaign ended.
+    virtual void OnSuperReferralEnded() = 0;
    protected:
     virtual ~Observer() {}
   };
@@ -101,6 +103,7 @@ class NTPBackgroundImagesService {
                            IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
                            BasicSuperReferralDataTest);

@@ -53,12 +53,16 @@ class TestObserver : public NTPBackgroundImagesService::Observer {
   ~TestObserver() override = default;
 
   void OnUpdated(NTPBackgroundImagesData* data) override {
-    called_ = true;
+    on_updated_ = true;
     data_ = data;
+  }
+  void OnSuperReferralEnded() override {
+    on_super_referral_ended_ = true;
   }
 
   NTPBackgroundImagesData* data_;
-  bool called_ = false;
+  bool on_updated_ = false;
+  bool on_super_referral_ended_ = false;
 };
 
 class TestNTPBackgroundImagesService : public NTPBackgroundImagesService {
@@ -151,16 +155,16 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
 
   // Check with json file with empty object.
   service_->si_images_data_.reset();
-  observer.called_ = false;
+  observer.on_updated_ = false;
   observer.data_ = nullptr;
   service_->OnGetComponentJsonData(false, kTestEmptyComponent);
   auto* data = service_->GetBackgroundImagesData(false);
   EXPECT_EQ(data, nullptr);
-  EXPECT_TRUE(observer.called_);
+  EXPECT_TRUE(observer.on_updated_);
   EXPECT_TRUE(observer.data_->logo_alt_text.empty());
 
   service_->si_images_data_.reset();
-  observer.called_ = false;
+  observer.on_updated_ = false;
   observer.data_ = nullptr;
   service_->OnGetComponentJsonData(false, kTestSponsoredImages);
   // Mark this is not SR to get SI data.
@@ -176,7 +180,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   // Check default value is set if "focalPoint" is missed.
   EXPECT_EQ(0, data->backgrounds[1].focal_point.x());
   EXPECT_EQ(0, data->backgrounds[2].focal_point.x());
-  EXPECT_TRUE(observer.called_);
+  EXPECT_TRUE(observer.on_updated_);
   EXPECT_FALSE(observer.data_->logo_alt_text.empty());
   EXPECT_TRUE(*data->GetBackgroundAt(0).FindBoolKey("isSponsored"));
 
@@ -206,7 +210,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
         ]
     })";
   service_->si_images_data_.reset();
-  observer.called_ = false;
+  observer.on_updated_ = false;
   observer.data_ = nullptr;
   service_->OnGetComponentJsonData(false, test_json_string_higher_schema);
   data = service_->GetBackgroundImagesData(false);
@@ -299,7 +303,7 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   service_->AddObserver(&observer);
 
   service_->sr_images_data_.reset();
-  observer.called_ = false;
+  observer.on_updated_ = false;
   observer.data_ = nullptr;
   service_->OnGetComponentJsonData(true, kTestSuperReferral);
   auto* data = service_->GetBackgroundImagesData(true);
@@ -311,7 +315,7 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   EXPECT_EQ(top_site_count, data->top_sites.size());
   EXPECT_TRUE(data->IsSuperReferral());
   EXPECT_FALSE(*data->GetBackgroundAt(0).FindBoolKey("isSponsored"));
-  EXPECT_TRUE(observer.called_);
+  EXPECT_TRUE(observer.on_updated_);
 
   service_->RemoveObserver(&observer);
 }
@@ -381,6 +385,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
       prefs::kNewTabPageGetInitialSRComponentInProgress));
 
   Init();
+  TestObserver observer;
+  service_->AddObserver(&observer);
 
   EXPECT_TRUE(service_->sponsored_images_component_started_);
   EXPECT_TRUE(service_->checked_super_referral_component_);
@@ -425,6 +431,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   // Simulate current SR campaign is ended.
   service_->OnGetComponentJsonData(true, kTestEmptyComponent);
+  EXPECT_TRUE(observer.on_super_referral_ended_);
   EXPECT_TRUE(pref_service_.GetString(
       prefs::kNewTabPageCachedSuperReferralCode).empty());
   EXPECT_FALSE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
@@ -433,6 +440,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
                   prefs::kNewTabPageCachedSuperReferralComponentData).empty());
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   EXPECT_TRUE(service_->unregistered_super_referral_component_);
+  service_->RemoveObserver(&observer);
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, CheckReferralServiceInitStatusTest) {

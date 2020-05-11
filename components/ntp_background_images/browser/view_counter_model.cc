@@ -49,8 +49,10 @@ void ViewCounterModel::RegisterPageView() {
   }
 }
 
-void ViewCounterModel::Reset() {
-  count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+void ViewCounterModel::Reset(bool use_initial_count) {
+  count_to_branded_wallpaper_ =
+      use_initial_count ? kInitialCountToBrandedWallpaper
+                        : kRegularCountToBrandedWallpaper;
   current_wallpaper_image_index_ = 0;
   total_image_count_ = -1;
   ignore_count_to_branded_wallpaper_ = false;

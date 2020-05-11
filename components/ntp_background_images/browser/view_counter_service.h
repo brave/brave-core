@@ -85,6 +85,7 @@ class ViewCounterService : public KeyedService,
                            ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveOptedInWithNTPBackgoundOption);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
@@ -93,6 +94,7 @@ class ViewCounterService : public KeyedService,
 
   // NTPBackgroundImagesService::Observer
   void OnUpdated(NTPBackgroundImagesData* data) override;
+  void OnSuperReferralEnded() override;
 
   void ResetNotificationState();
   bool IsSponsoredImagesWallpaperOptedIn() const;

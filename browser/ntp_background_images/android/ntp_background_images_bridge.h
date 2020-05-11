@@ -53,6 +53,8 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
 
  private:
   void OnUpdated(NTPBackgroundImagesData* data) override;
+  void OnSuperReferralEnded() override;
+
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper();
 
   Profile* profile_;
