@@ -40,7 +40,6 @@ export function wireApiEventsToStore () {
     binanceInitData()
     getActions().setInitialData(initialData)
     getActions().setFirstRenderGridSitesData(initialData)
-    getActions().updateGridSitesBookmarkInfo(initialData.topSites)
     // Listen for API changes and dispatch to store
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)

@@ -7,13 +7,6 @@
 import { types } from '../constants/grid_sites_types'
 import { action } from 'typesafe-actions'
 import { InitialData } from '../api/initialData'
-import { Dispatch } from 'redux'
-
-// API
-import {
-  fetchAllBookmarkTreeNodes,
-  updateBookmarkTreeNode
-} from '../api/bookmarks'
 
 export const setFirstRenderGridSitesData = (initialData: InitialData) => {
   return action(types.GRID_SITES_SET_FIRST_RENDER_DATA, initialData)
@@ -37,27 +30,6 @@ export const undoRemoveGridSite = () => {
 
 export const undoRemoveAllGridSites = () => {
   return action(types.GRID_SITES_UNDO_REMOVE_ALL_SITES)
-}
-
-export const updateGridSitesBookmarkInfo = (
-  sites: chrome.topSites.MostVisitedURL[]
-) => {
-  return async (dispatch: Dispatch) => {
-    const bookmarkInfo = await fetchAllBookmarkTreeNodes(sites)
-    dispatch(action(types.GRID_SITES_UPDATE_SITE_BOOKMARK_INFO, {
-      bookmarkInfo
-    }))
-  }
-}
-
-export const toggleGridSiteBookmarkInfo = (site: NewTab.Site) => {
-  return async (dispatch: Dispatch) => {
-    const bookmarkInfo = await updateBookmarkTreeNode(site)
-    dispatch(action(types.GRID_SITES_TOGGLE_SITE_BOOKMARK_INFO, {
-      url: site.url,
-      bookmarkInfo
-    }))
-  }
 }
 
 export const addGridSites = (site: NewTab.Site) => {
