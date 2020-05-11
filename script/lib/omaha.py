@@ -88,7 +88,7 @@ def get_app_info(appinfo, args):
     to perform the upload
     """
 
-    changelog_url = "https://github.com/brave/brave-browser/blob/master/CHANGELOG.md"
+    changelog_url = "https://github.com/brave/brave-browser/blob/master/CHANGELOG_DESKTOP.md"
     chrome_major = get_chrome_version().split('.')[0]
     chrome_minor = get_chrome_version().split('.')[1]
 
@@ -117,9 +117,7 @@ def get_app_info(appinfo, args):
         appinfo['short_version'] = chrome_major + '.' + get_upload_version()
         appinfo['version'] = str(adjusted_minor) + \
             '.' + version_values[2]
-    appinfo['release_notes'] = 'Brave Browser version: {}\n\n<a href="{}">Brave Changelog</a>'\
-        .format(appinfo['version'] if appinfo['platform'] in 'win32' else appinfo['short_version'],
-                changelog_url)
+    appinfo['release_notes'] = 'Brave Browser Changelog: {}'.format(changelog_url)
 
     return appinfo
 
