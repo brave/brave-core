@@ -51,6 +51,7 @@ import android.view.animation.TranslateAnimation;
 import android.graphics.Bitmap;
 
 import org.chromium.base.SysUtils;
+import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.R;
@@ -59,6 +60,7 @@ import org.chromium.base.AnimationFrameTimeHistogram;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.BraveShieldsUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -542,6 +544,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask = new BraveShieldsUtils.BraveShieldsWorkerTask(mTitle);
+                mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 mReportBrokenSiteLayout.setVisibility(View.GONE);
                 mThankYouLayout.setVisibility(View.VISIBLE);
             }
