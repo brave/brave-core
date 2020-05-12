@@ -76,8 +76,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     ":mojo_gen_wrappers",
   ]
 
-  bundle_deps_filter = [ "//third_party/icu:icudata" ]
-
   sources = [
     "BATBraveRewards.h",
     "BATBraveRewards.m",

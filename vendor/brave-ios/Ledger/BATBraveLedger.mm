@@ -32,6 +32,9 @@
 #import "base/strings/sys_string_conversions.h"
 #import "brave/components/brave_rewards/browser/rewards_database.h"
 
+#import "base/i18n/icu_util.h"
+#import "base/ios/ios_util.h"
+
 #define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
 
 #define BATLedgerReadonlyBridge(__type, __objc_getter, __cpp_getter) \
@@ -153,6 +156,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       self.prefs[kUserHasFundedKey] = @(NO);
       self.prefs[kMigrationSucceeded] = @(NO);
       [self savePrefs];
+    }
+    
+    const auto pathToICUDTL = [[NSBundle bundleForClass:[BATBraveLedger class]] pathForResource:@"icudtl" ofType:@"dat"];
+    base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
+    if (!base::i18n::InitializeICU()) {
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to initialize ICU data" << std::endl;
     }
     
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
