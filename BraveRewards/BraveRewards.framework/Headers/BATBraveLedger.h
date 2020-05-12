@@ -175,6 +175,11 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)refreshPublisherWithId:(NSString *)publisherId
                     completion:(void (^)(BATPublisherStatus status))completion;
 
+#pragma mark - SKUs
+
+- (void)processSKUItems:(NSArray<BATSKUOrderItem *> *)items
+             completion:(void (^)(BATResult result, NSString *orderID))completion;
+
 #pragma mark - Tips
 
 /// Get a list of publishers who the user has recurring tips on
@@ -210,7 +215,8 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion;
 
-- (void)claimPromotion:(NSString *)deviceCheckPublicKey
+- (void)claimPromotion:(NSString *)promotionId
+             publicKey:(NSString *)deviceCheckPublicKey
             completion:(void (^)(BATResult result, NSString * _Nonnull nonce))completion;
 
 - (void)attestPromotion:(NSString *)promotionId
