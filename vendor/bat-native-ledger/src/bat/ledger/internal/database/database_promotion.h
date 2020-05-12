@@ -51,6 +51,11 @@ class DatabasePromotion: public DatabaseTable {
       const ledger::PromotionStatus status,
       ledger::ResultCallback callback);
 
+  void UpdateRecordsStatus(
+      const std::vector<std::string>& ids,
+      const ledger::PromotionStatus status,
+      ledger::ResultCallback callback);
+
   void CredentialCompleted(
       const std::string& promotion_id,
       ledger::ResultCallback callback);
@@ -58,6 +63,10 @@ class DatabasePromotion: public DatabaseTable {
   void GetRecordsByType(
       const std::vector<ledger::PromotionType>& types,
       ledger::GetPromotionListCallback callback);
+
+  void UpdateRecordsBlankPublicKey(
+      const std::vector<std::string>& ids,
+      ledger::ResultCallback callback);
 
  private:
   bool CreateTableV10(ledger::DBTransaction* transaction);
