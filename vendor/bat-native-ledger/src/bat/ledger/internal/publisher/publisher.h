@@ -179,19 +179,8 @@ class Publisher {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherServerList> server_list_;
 
-  double a_;
-
-  double a2_;
-
-  double a4_;
-
-  double b_;
-
-  double b2_;
-
   // For testing purposes
   friend class PublisherTest;
-  FRIEND_TEST_ALL_PREFIXES(PublisherTest, calcScoreConsts);
   FRIEND_TEST_ALL_PREFIXES(PublisherTest, concaveScore);
   FRIEND_TEST_ALL_PREFIXES(PublisherTest, synopsisNormalizerInternal);
 };

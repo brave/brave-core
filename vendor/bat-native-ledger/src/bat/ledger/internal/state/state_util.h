@@ -39,6 +39,16 @@ void SetPublisherAllowVideos(
 
 bool GetPublisherAllowVideos(bat_ledger::LedgerImpl* ledger);
 
+void SetScoreValues(
+    bat_ledger::LedgerImpl* ledger,
+    double a,
+    double b);
+
+void GetScoreValues(
+    bat_ledger::LedgerImpl* ledger,
+    double* a,
+    double* b);
+
 }  // namespace braveledger_state
 
 #endif  // BRAVELEDGER_STATE_STATE_UTIL_H_

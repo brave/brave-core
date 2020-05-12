@@ -72,6 +72,8 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(prefs::kStateMinVisits, 1);
   registry->RegisterBooleanPref(prefs::kStateAllowNonVerified, true);
   registry->RegisterBooleanPref(prefs::kStateAllowVideoContribution, true);
+  registry->RegisterDoublePref(prefs::kStateScoreA, 0.0);
+  registry->RegisterDoublePref(prefs::kStateScoreB, 0.0);
 }
 
 }  // namespace brave_rewards

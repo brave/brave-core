@@ -86,6 +86,9 @@ void StateMigration::MigrateToV1(ledger::ResultCallback callback) {
 void StateMigration::OnLoadState(
     const ledger::Result result,
     ledger::ResultCallback callback) {
+  ledger_->CalcScoreConsts(
+      ledger_->GetIntegerState(ledger::kStateMinVisitTime));
+
   if (result == ledger::Result::NO_PUBLISHER_STATE) {
     callback(ledger::Result::LEDGER_OK);
     return;

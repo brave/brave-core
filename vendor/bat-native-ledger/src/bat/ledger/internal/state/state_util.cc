@@ -71,4 +71,22 @@ bool GetPublisherAllowVideos(bat_ledger::LedgerImpl* ledger) {
   return ledger->GetBooleanState(ledger::kStateAllowVideoContribution);
 }
 
+void SetScoreValues(
+    bat_ledger::LedgerImpl* ledger,
+    double a,
+    double b) {
+  DCHECK(ledger);
+  ledger->SetDoubleState(ledger::kStateScoreA, a);
+  ledger->SetDoubleState(ledger::kStateScoreB, b);
+}
+
+void GetScoreValues(
+  bat_ledger::LedgerImpl* ledger,
+  double* a,
+  double* b) {
+  DCHECK(ledger && a && b);
+  *a = ledger->GetDoubleState(ledger::kStateScoreA);
+  *b = ledger->GetDoubleState(ledger::kStateScoreB);
+}
+
 }  // namespace braveledger_state

@@ -22,6 +22,8 @@ namespace ledger {
   const char kStateMinVisits[] = "ac.min_visits";
   const char kStateAllowNonVerified[] = "ac.allow_non_verified";
   const char kStateAllowVideoContribution[] = "ac.allow_video_contributions";
+  const char kStateScoreA[] = "ac.score.a";
+  const char kStateScoreB[] = "ac.score.b";
 
 }  // namespace ledger
 

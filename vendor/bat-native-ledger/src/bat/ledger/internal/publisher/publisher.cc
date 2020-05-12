@@ -27,7 +27,6 @@ namespace braveledger_publisher {
 Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   server_list_(std::make_unique<PublisherServerList>(ledger)) {
-  CalcScoreConsts(braveledger_state::GetPublisherMinVisitTime(ledger_));
 }
 
 Publisher::~Publisher() {
@@ -89,18 +88,20 @@ void Publisher::CalcScoreConsts(const int min_duration_seconds) {
   // as possible (we used 1000 in muon)
   // keeping it with only seconds visits are not spaced out equally
   uint64_t min_duration_big = min_duration_seconds * 100;
-  a_ = (1.0 / (braveledger_ledger::_d * 2.0)) - min_duration_big;
-  a2_ = a_ * 2.0;
-  a4_ = a2_ * 2.0;
-  b_ = min_duration_big - a_;
-  b2_ = b_ * b_;
+  const double d = 1.0 / (30.0 * 1000.0);
+  const double a = (1.0 / (d * 2.0)) - min_duration_big;
+  const double b = min_duration_big - a;
+
+  braveledger_state::SetScoreValues(ledger_, a, b);
 }
 
 // courtesy of @dimitry-xyz:
 // https://github.com/brave/ledger/issues/2#issuecomment-221752002
 double Publisher::concaveScore(const uint64_t& duration_seconds) {
   uint64_t duration_big = duration_seconds * 100;
-  return (-b_ + std::sqrt(b2_ + (a4_ * duration_big))) / a2_;
+  double a, b;
+  braveledger_state::GetScoreValues(ledger_, &a, &b);
+  return (-b + std::sqrt((b * b) + (a * 4 * duration_big))) / (a * 2);
 }
 
 std::string getProviderName(const std::string& publisher_id) {

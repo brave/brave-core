@@ -34,6 +34,8 @@ extern const char kStateMinVisitTime[];
 extern const char kStateMinVisits[];
 extern const char kStateAllowNonVerified[];
 extern const char kStateAllowVideoContribution[];
+extern const char kStateScoreA[];
+extern const char kStateScoreB[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs
