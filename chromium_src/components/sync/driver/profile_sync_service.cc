@@ -31,26 +31,11 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
 #define BRAVE_D_PROFILE_SYNC_SERVICE \
   brave_sync_prefs_change_registrar_.RemoveAll();
 
-#define BRAVE_ON_ENGINE_INITIALIZED                                   \
-  brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService()); \
-  std::string sync_code = brave_sync_prefs.GetSeed();                 \
-  if (!sync_code.empty()) {                                           \
-    GetUserSettings()->EnableEncryptEverything();                     \
-    if (GetUserSettings()->IsPassphraseRequired()) {                  \
-      if (!GetUserSettings()->SetDecryptionPassphrase(sync_code))     \
-        LOG(ERROR) << "Set decryption passphrase failed";             \
-    } else {                                                          \
-      if (!GetUserSettings()->IsUsingSecondaryPassphrase())           \
-        GetUserSettings()->SetEncryptionPassphrase(sync_code);        \
-    }                                                                 \
-  }
-
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
 #undef BRAVE_SET_POLL_INTERVAL
 #undef BRAVE_PROFILE_SYNC_SERVICE
 #undef BRAVE_D_PROFILE_SYNC_SERVICE
 #undef BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
-#undef BRAVE_ON_ENGINE_INITIALIZED
 
 namespace syncer {
 void ProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
