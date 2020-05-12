@@ -98,7 +98,7 @@ void DoHistogramBravezation(base::StringPiece histogram_name,
       answer = 3;
     }
 
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount.2", answer, 2);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount.2", answer, 3);
     return;
   }
 }
