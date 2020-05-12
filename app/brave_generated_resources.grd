@@ -745,7 +745,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         SETUP
       </message>
        <message name="IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD" desc="Start Crypto Wallets and reload">
-        Start Crypto Wallets and relaod
+        Start Crypto Wallets and reload
       </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_SETTINGS" desc="Open Crypto Wallets settings">
         Settings

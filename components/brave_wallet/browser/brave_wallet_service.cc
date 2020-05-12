@@ -300,7 +300,7 @@ bool BraveWalletService::IsCryptoWalletsSetup() const {
 
 bool BraveWalletService::IsCryptoWalletsReady() const {
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  return registry->enabled_extensions().Contains(
+  return registry->ready_extensions().Contains(
       ethereum_remote_client_extension_id);
 }
 
