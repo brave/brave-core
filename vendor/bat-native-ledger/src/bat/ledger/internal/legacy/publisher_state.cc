@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/publisher_settings_state.h"
 #include "bat/ledger/internal/legacy/publisher_state.h"
@@ -67,6 +69,23 @@ void LegacyPublisherState::OnLoad(
 std::vector<std::string>
 LegacyPublisherState::GetAlreadyProcessedPublishers() const {
   return state_->processed_pending_publishers;
+}
+
+void LegacyPublisherState::GetAllBalanceReports(
+    ledger::BalanceReportInfoList* reports) {
+  DCHECK(reports);
+
+  for (auto const& report : state_->monthly_balances) {
+    auto report_ptr = ledger::BalanceReportInfo::New();
+    report_ptr->id = report.first;
+    report_ptr->grants = report.second.grants;
+    report_ptr->earning_from_ads = report.second.ad_earnings;
+    report_ptr->auto_contribute = report.second.auto_contributions;
+    report_ptr->recurring_donation = report.second.recurring_donations;
+    report_ptr->one_time_donation = report.second.one_time_donations;
+
+    reports->push_back(std::move(report_ptr));
+  }
 }
 
 }  // namespace braveledger_publisher

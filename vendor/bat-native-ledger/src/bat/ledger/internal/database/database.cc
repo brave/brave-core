@@ -7,7 +7,7 @@
 
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
-#include "bat/ledger/internal/database/database_balance_report_info.h"
+#include "bat/ledger/internal/database/database_balance_report.h"
 #include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
@@ -32,7 +32,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
 
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
-  balance_report_info_ = std::make_unique<DatabaseBalanceReportInfo>(ledger_);
+  balance_report_ = std::make_unique<DatabaseBalanceReport>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
@@ -97,7 +97,13 @@ void Database::DeleteActivityInfo(
 void Database::SaveBalanceReportInfo(
     ledger::BalanceReportInfoPtr info,
     ledger::ResultCallback callback) {
-  balance_report_info_->InsertOrUpdate(std::move(info), callback);
+  balance_report_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::SaveBalanceReportInfoList(
+      ledger::BalanceReportInfoList list,
+      ledger::ResultCallback callback) {
+  balance_report_->InsertOrUpdateList(std::move(list), callback);
 }
 
 void Database::SaveBalanceReportInfoItem(
@@ -106,24 +112,24 @@ void Database::SaveBalanceReportInfoItem(
     ledger::ReportType type,
     double amount,
     ledger::ResultCallback callback) {
-  balance_report_info_->InsertOrUpdateItem(month, year, type, amount, callback);
+  balance_report_->SetAmount(month, year, type, amount, callback);
 }
 
 void Database::GetBalanceReportInfo(
     ledger::ActivityMonth month,
     int year,
     ledger::GetBalanceReportCallback callback) {
-  balance_report_info_->GetRecord(month, year, callback);
+  balance_report_->GetRecord(month, year, callback);
 }
 
 void Database::GetAllBalanceReports(
     ledger::GetBalanceReportListCallback callback) {
-  balance_report_info_->GetAllRecords(callback);
+  balance_report_->GetAllRecords(callback);
 }
 
 void Database::DeleteAllBalanceReports(
     ledger::ResultCallback callback) {
-  balance_report_info_->DeleteAllRecords(callback);
+  balance_report_->DeleteAllRecords(callback);
 }
 
 /**

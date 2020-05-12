@@ -1785,4 +1785,10 @@ void LedgerImpl::CalcScoreConsts(const int min_duration_seconds) {
   bat_publisher_->CalcScoreConsts(min_duration_seconds);
 }
 
+void LedgerImpl::SaveBalanceReportInfoList(
+    ledger::BalanceReportInfoList list,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveBalanceReportInfoList(std::move(list), callback);
+}
+
 }  // namespace bat_ledger

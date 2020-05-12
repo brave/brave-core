@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration.h"
@@ -116,6 +118,31 @@ void StateMigration::OnLoadState(
   ledger_->SetBooleanState(
       ledger::kStateAllowVideoContribution,
       legacy_publisher_->GetPublisherAllowVideos());
+
+  ledger::BalanceReportInfoList reports;
+  legacy_publisher_->GetAllBalanceReports(&reports);
+  if (!reports.empty()) {
+    auto save_callback = std::bind(&StateMigration::OnBalanceReportsSaved,
+      this,
+      _1,
+      callback);
+
+    ledger_->SaveBalanceReportInfoList(std::move(reports), save_callback);
+    return;
+  }
+
+  // TODO(nejc): migrate processed publishers in db
+
+  callback(ledger::Result::LEDGER_OK);
+}
+
+void StateMigration::OnBalanceReportsSaved(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result);
+    return;
+  }
 
   // TODO(nejc): migrate processed publishers in db
 

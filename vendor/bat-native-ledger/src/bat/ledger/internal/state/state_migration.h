@@ -37,6 +37,10 @@ class StateMigration {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
+  void OnBalanceReportsSaved(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
   std::unique_ptr<braveledger_publisher::LegacyPublisherState>
   legacy_publisher_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

@@ -737,6 +737,10 @@ class LedgerImpl : public ledger::Ledger {
 
   void CalcScoreConsts(const int min_duration_seconds);
 
+  void SaveBalanceReportInfoList(
+      ledger::BalanceReportInfoList list,
+      ledger::ResultCallback callback);
+
  private:
   void OnStateInitialized(
       const ledger::Result result,

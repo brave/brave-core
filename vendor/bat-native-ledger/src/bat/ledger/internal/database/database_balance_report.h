@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_INFO_H_
-#define BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_INFO_H_
+#ifndef BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_
+#define BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_
 
 #include <string>
 
@@ -12,10 +12,10 @@
 
 namespace braveledger_database {
 
-class DatabaseBalanceReportInfo : public DatabaseTable {
+class DatabaseBalanceReport : public DatabaseTable {
  public:
-  explicit DatabaseBalanceReportInfo(bat_ledger::LedgerImpl* ledger);
-  ~DatabaseBalanceReportInfo() override;
+  explicit DatabaseBalanceReport(bat_ledger::LedgerImpl* ledger);
+  ~DatabaseBalanceReport() override;
 
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
@@ -23,7 +23,11 @@ class DatabaseBalanceReportInfo : public DatabaseTable {
       ledger::BalanceReportInfoPtr info,
       ledger::ResultCallback callback);
 
-  void InsertOrUpdateItem(
+  void InsertOrUpdateList(
+      ledger::BalanceReportInfoList list,
+      ledger::ResultCallback callback);
+
+  void SetAmount(
       ledger::ActivityMonth month,
       int year,
       ledger::ReportType type,
@@ -42,35 +46,21 @@ class DatabaseBalanceReportInfo : public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV21(ledger::DBTransaction* transaction);
+  bool CreateTableV22(ledger::DBTransaction* transaction);
 
-  bool CreateIndexV21(ledger::DBTransaction* transaction);
+  bool CreateIndexV22(ledger::DBTransaction* transaction);
 
-  bool MigrateToV21(ledger::DBTransaction* transaction);
-
-  void UpdateItemAmount(
-      ledger::BalanceReportInfoPtr info,
-      ledger::ReportType type,
-      double amount,
-      ledger::ResultCallback callback);
+  bool MigrateToV22(ledger::DBTransaction* transaction);
 
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
-      ledger::ActivityMonth month,
-      int year,
       ledger::GetBalanceReportCallback callback);
 
   void OnGetAllRecords(
       ledger::DBCommandResponsePtr response,
       ledger::GetBalanceReportListCallback callback);
-
-  void OnInsertOrUpdateInternal(
-      ledger::Result result,
-      ledger::ActivityMonth month,
-      int year,
-      ledger::GetBalanceReportCallback callback);
 };
 
 }  // namespace braveledger_database
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_INFO_H_
+#endif  // BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_

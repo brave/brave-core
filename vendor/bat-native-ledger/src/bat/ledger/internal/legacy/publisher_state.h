@@ -7,6 +7,7 @@
 #define BRAVELEDGER_LEGACY_PUBLISHER_STATE_H_
 
 #include <string>
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -36,6 +37,8 @@ class LegacyPublisherState {
   void Load(ledger::ResultCallback callback);
 
   std::vector<std::string> GetAlreadyProcessedPublishers() const;
+
+  void GetAllBalanceReports(ledger::BalanceReportInfoList* reports);
 
  private:
   void OnLoad(

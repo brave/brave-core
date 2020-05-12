@@ -8,19 +8,19 @@
 #include <utility>
 
 #include "base/test/task_environment.h"
-#include "bat/ledger/internal/database/database_balance_report_info.h"
+#include "bat/ledger/internal/database/database_balance_report.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 
-// npm run test -- brave_unit_tests --filter=DatabaseBalanceReportInfoTest.*
+// npm run test -- brave_unit_tests --filter=DatabaseBalanceReportTest.*
 
 using ::testing::_;
 using ::testing::Invoke;
 
 namespace braveledger_database {
 
-class DatabaseBalanceReportInfoTest : public ::testing::Test {
+class DatabaseBalanceReportTest : public ::testing::Test {
  private:
   base::test::TaskEnvironment scoped_task_environment_;
 
@@ -28,20 +28,20 @@ class DatabaseBalanceReportInfoTest : public ::testing::Test {
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
-  std::unique_ptr<DatabaseBalanceReportInfo> balance_report_;
+  std::unique_ptr<DatabaseBalanceReport> balance_report_;
 
-  DatabaseBalanceReportInfoTest() {
+  DatabaseBalanceReportTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
         std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
     balance_report_ =
-        std::make_unique<DatabaseBalanceReportInfo>(mock_ledger_impl_.get());
+        std::make_unique<DatabaseBalanceReport>(mock_ledger_impl_.get());
   }
 
-  ~DatabaseBalanceReportInfoTest() override {}
+  ~DatabaseBalanceReportTest() override {}
 };
 
-TEST_F(DatabaseBalanceReportInfoTest, InsertOrUpdateOk) {
+TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
   auto info = ledger::BalanceReportInfo::New();
   info->id = "2020_05";
   info->grants = 1.0;
@@ -52,8 +52,8 @@ TEST_F(DatabaseBalanceReportInfoTest, InsertOrUpdateOk) {
 
   const std::string query =
       "INSERT OR REPLACE INTO balance_report_info "
-      "(balance_report_id, grants, earning_from_ads, auto_contribute, "
-      "recurring_donation, one_time_donation) "
+      "(balance_report_id, grants_ugp, grants_ads, auto_contribute, "
+      "tip_recurring, tip) "
       "VALUES (?, ?, ?, ?, ?, ?)";
 
   ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
@@ -75,13 +75,13 @@ TEST_F(DatabaseBalanceReportInfoTest, InsertOrUpdateOk) {
       [](const ledger::Result){});
 }
 
-TEST_F(DatabaseBalanceReportInfoTest, GetAllRecordsOk) {
+TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
   EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
-    "SELECT mb.balance_report_id, mb.grants, mb.earning_from_ads, "
-    "mb.auto_contribute, mb.recurring_donation, mb.one_time_donation "
-    "FROM balance_report_info as mb ";
+    "SELECT balance_report_id, grants_ugp, grants_ads, "
+    "auto_contribute, tip_recurring, tip "
+    "FROM balance_report_info";
 
   ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
       .WillByDefault(
@@ -101,14 +101,14 @@ TEST_F(DatabaseBalanceReportInfoTest, GetAllRecordsOk) {
   balance_report_->GetAllRecords([](ledger::BalanceReportInfoList) {});
 }
 
-TEST_F(DatabaseBalanceReportInfoTest, GetRecordOk) {
+TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
   EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
-    "SELECT mb.balance_report_id, mb.grants, mb.earning_from_ads, "
-    "mb.auto_contribute, mb.recurring_donation, mb.one_time_donation "
-    "FROM balance_report_info as mb "
-    "WHERE balance_report_id=?";
+    "SELECT balance_report_id, grants_ugp, grants_ads, "
+    "auto_contribute, tip_recurring, tip "
+    "FROM balance_report_info "
+    "WHERE balance_report_id = ?";
 
   ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
       .WillByDefault(
@@ -116,13 +116,13 @@ TEST_F(DatabaseBalanceReportInfoTest, GetRecordOk) {
             ledger::DBTransactionPtr transaction,
             ledger::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
+          ASSERT_EQ(transaction->commands.size(), 2u);
           ASSERT_EQ(
-              transaction->commands[0]->type,
+              transaction->commands[1]->type,
               ledger::DBCommand::Type::READ);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
+          ASSERT_EQ(transaction->commands[1]->command, query);
+          ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
+          ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
         }));
 
   balance_report_->GetRecord(
@@ -131,7 +131,7 @@ TEST_F(DatabaseBalanceReportInfoTest, GetRecordOk) {
       [](ledger::Result, ledger::BalanceReportInfoPtr) {});
 }
 
-TEST_F(DatabaseBalanceReportInfoTest, DeleteAllRecordsOk) {
+TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
@@ -146,7 +146,7 @@ TEST_F(DatabaseBalanceReportInfoTest, DeleteAllRecordsOk) {
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::RUN);
+              ledger::DBCommand::Type::EXECUTE);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
