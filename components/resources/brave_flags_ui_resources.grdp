@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<grit-part>
-  <include name="IDR_FLAGS_UI_BRAVE_FLAGS_OVERRIDES_JS" file="../flags_ui/resources/brave_flags_overrides.js" type="BINDATA" compress="gzip" />
-</grit-part>
