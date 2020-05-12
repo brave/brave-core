@@ -24,6 +24,8 @@ extern const char kBraveUITipHost[];
 extern const char kBraveUITipURL[];
 extern const char kBraveUISyncURL[];
 extern const char kBraveUIWalletURL[];
+extern const char kBraveUIWalletURL[];
+extern const char kExtensionSettingsURL[];
 extern const char kWalletHost[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_

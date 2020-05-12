@@ -46,4 +46,10 @@ void ShowBraveWallet(Browser* browser) {
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIWalletURL)));
 }
 
+void ShowExtensionSettings(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GetSingletonTabNavigateParams(browser, GURL(kExtensionSettingsURL)));
+}
+
 }  // namespace brave

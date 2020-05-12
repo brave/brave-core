@@ -314,6 +314,14 @@ bool BraveWalletService::IsCryptoWalletsReady() const {
       ethereum_remote_client_extension_id);
 }
 
+bool BraveWalletService::ShouldShowLazyLoadInfobar() const {
+  Profile* profile = Profile::FromBrowserContext(context_);
+  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+      profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+  return provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS &&
+      !IsCryptoWalletsReady();
+}
+
 void BraveWalletService::LoadCryptoWalletsExtension(LoadUICallback callback) {
   load_ui_callback_ = std::move(callback);
   extensions::ExtensionService* service =

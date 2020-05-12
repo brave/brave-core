@@ -50,6 +50,7 @@ class BraveWalletService : public KeyedService,
   std::string GetBitGoSeed(std::vector<uint8_t> key);
   bool IsCryptoWalletsSetup() const;
   bool IsCryptoWalletsReady() const;
+  bool ShouldShowLazyLoadInfobar() const;
   void LoadCryptoWalletsExtension(LoadUICallback callback);
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
