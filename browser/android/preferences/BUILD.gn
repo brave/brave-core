@@ -22,6 +22,7 @@ source_set("preferences") {
     "//components/content_settings/core/browser",
     "//components/prefs",
     "//content/public/browser",
+    "//net",
     "//url",
   ]
 }

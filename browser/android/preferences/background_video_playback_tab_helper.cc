@@ -17,6 +17,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/browser/navigation_handle.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 namespace {
@@ -38,12 +39,11 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   if (!prefs->GetBoolean(kBackgroundVideoPlaybackEnabled))
     return false;
 
-  const std::string host = contents->GetLastCommittedURL().host();
-  if (host.find("www.youtube.com") != std::string::npos ||
-      host.find("youtube.com") != std::string::npos ||
-      host.find("m.youtube.com") != std::string::npos) {
-      content::RenderFrameHost::AllowInjectingJavaScript();
-      return true;
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          contents->GetLastCommittedURL(), GURL("https://www.youtube.com"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    content::RenderFrameHost::AllowInjectingJavaScript();
+    return true;
   }
 
   return false;
