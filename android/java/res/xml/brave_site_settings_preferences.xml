@@ -10,10 +10,12 @@
         android:fragment="org.chromium.chrome.browser.settings.website.DesktopModePreferences"
         android:key="desktop_mode_category"
         android:icon="@drawable/settings_desktop_mode"
-        android:title="@string/settings_desktop_mode_title" />
+        android:title="@string/settings_desktop_mode_title"
+        app:iconTint="@color/default_icon_color" />
     <org.chromium.chrome.browser.settings.website.SiteSettingsPreference
         android:fragment="org.chromium.chrome.browser.settings.website.PlayYTVideoInBrowserPreferences"
         android:key="play_yt_video_in_browser_category"
         android:icon="@drawable/settings_play_yt_video_in_browser"
-        android:title="@string/settings_play_yt_video_in_browser_title" />
+        android:title="@string/settings_play_yt_video_in_browser_title"
+        app:iconTint="@color/default_icon_color" />
 </android.support.v7.preference.PreferenceScreen>
