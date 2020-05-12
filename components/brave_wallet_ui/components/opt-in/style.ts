@@ -75,3 +75,10 @@ export const StyledButton = styled<{}, 'button'>('button')`
   cursor: pointer;
   border: none;
 `
+
+export const StyledLoader = styled<{}, 'div'>('div')`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: bottom;
+`

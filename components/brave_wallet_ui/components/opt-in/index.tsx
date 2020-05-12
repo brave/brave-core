@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Components
 import CryptoBanner from './assets/crypto-banner'
+import { LoaderIcon } from 'brave-ui/components/icons'
 import {
   StyledWrapper,
   StyledInner,
@@ -17,7 +18,8 @@ import {
   StyledText,
   StyledRewards,
   StyledButtonWrapper,
-  StyledButton
+  StyledButton,
+  StyledLoader
 } from './style'
 
 // Utils
@@ -27,10 +29,26 @@ interface Props {
   onWalletOptIn: () => void
 }
 
-export default class OptIn extends React.PureComponent<Props, {}> {
+interface State {
+  isLoading: boolean
+}
+
+export default class OptIn extends React.PureComponent<Props, State> {
+
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      isLoading: false
+    }
+  }
 
   openRewards = () => {
     window.open('chrome://rewards', '_blank')
+  }
+
+  onWalletOptIn = () => {
+    this.setState({ isLoading: true })
+    this.props.onWalletOptIn()
   }
 
   render () {
@@ -56,8 +74,14 @@ export default class OptIn extends React.PureComponent<Props, {}> {
             </StyledDisclosure>
           </StyledContent>
           <StyledButtonWrapper>
-            <StyledButton onClick={this.props.onWalletOptIn}>
-              {getLocale('cryptoWalletsDisclosureConfirm')}
+            <StyledButton onClick={this.onWalletOptIn}>
+              {
+                this.state.isLoading
+                ? <StyledLoader>
+                    <LoaderIcon />
+                  </StyledLoader>
+                : getLocale('cryptoWalletsDisclosureConfirm')
+              }
             </StyledButton>
           </StyledButtonWrapper>
         </StyledInner>
