@@ -169,16 +169,6 @@ Polymer({
   },
 
   /**
-   * Handler for when the sync state is pushed from the browser.
-   * @param {?settings.SyncStatus} syncStatus
-   * @private
-   */
-  handleSyncStatus_: function(syncStatus) {
-    this.syncStatus = syncStatus;
-  },
-
-
-  /**
    * @return {boolean}
    * @private
    */
@@ -283,9 +273,6 @@ Polymer({
   onNavigateToPage_: function() {
     const router = settings.Router.getInstance();
     assert(router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP);
-
-    this.browserProxy_.getSyncStatus().then(
-        this.handleSyncStatus_.bind(this));
 
     if (this.beforeunloadCallback_) {
       return;

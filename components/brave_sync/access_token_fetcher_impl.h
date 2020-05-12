@@ -39,13 +39,6 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   void CancelRequest() override;
 
  private:
-  enum State {
-    INITIAL,
-    GET_ACCESS_TOKEN_STARTED,
-    GET_ACCESS_TOKEN_DONE,
-    ERROR_STATE,
-  };
-
   void OnURLLoadComplete(std::unique_ptr<std::string> response_body);
   void OnTimestampLoadComplete(std::unique_ptr<std::string> response_body);
 
@@ -86,7 +79,6 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   GURL sync_service_url_;
   const std::string refresh_token_;
-  State state_;
 
   // While a fetch is in progress.
   std::unique_ptr<network::SimpleURLLoader> url_loader_;

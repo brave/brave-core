@@ -158,8 +158,7 @@ AccessTokenFetcherImpl::AccessTokenFetcherImpl(
     : AccessTokenFetcher(consumer),
       url_loader_factory_(url_loader_factory),
       sync_service_url_(sync_service_url),
-      refresh_token_(refresh_token),
-      state_(INITIAL) {}
+      refresh_token_(refresh_token) {}
 
 AccessTokenFetcherImpl::~AccessTokenFetcherImpl() {}
 
@@ -188,8 +187,6 @@ void AccessTokenFetcherImpl::StartGetTimestamp() {
 }
 
 void AccessTokenFetcherImpl::StartGetAccessToken() {
-  CHECK_EQ(INITIAL, state_);
-  state_ = GET_ACCESS_TOKEN_STARTED;
   url_loader_ =
       CreateURLLoader(MakeGetAccessTokenUrl(),
                       MakeGetAccessTokenBody(client_id_, client_secret_,
@@ -204,9 +201,6 @@ void AccessTokenFetcherImpl::StartGetAccessToken() {
 
 void AccessTokenFetcherImpl::EndGetAccessToken(
     std::unique_ptr<std::string> response_body) {
-  CHECK_EQ(GET_ACCESS_TOKEN_STARTED, state_);
-  state_ = GET_ACCESS_TOKEN_DONE;
-
   int histogram_value;
   bool net_failure = IsNetFailure(url_loader_.get(), &histogram_value);
   base::UmaHistogramSparse(
@@ -300,7 +294,6 @@ void AccessTokenFetcherImpl::OnGetTokenSuccess(
 
 void AccessTokenFetcherImpl::OnGetTokenFailure(
     const GoogleServiceAuthError& error) {
-  state_ = ERROR_STATE;
   FireOnGetTokenFailure(error);
 }
 
@@ -319,7 +312,6 @@ bool AccessTokenFetcherImpl::IsNetFailure(network::SimpleURLLoader* loader,
 
 void AccessTokenFetcherImpl::OnURLLoadComplete(
     std::unique_ptr<std::string> response_body) {
-  CHECK(state_ == GET_ACCESS_TOKEN_STARTED);
   EndGetAccessToken(std::move(response_body));
 }
 
