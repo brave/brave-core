@@ -67,7 +67,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
   EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kLoadCryptoWalletsOnStartup));
+      browser()->profile()->GetPrefs()->GetBoolean(
+          kLoadCryptoWalletsOnStartup));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets));
 

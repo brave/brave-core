@@ -1,15 +1,27 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<!-- Restart the navigation after first run -->
-<script src="/brave_wallet.bundle.js"></script>
-<style>
-  #root { height: -webkit-fill-available; width: -webkit-fill-available; }
-</style>
-</head>
-<body>
-</body>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Crypto Wallets</title>
+  <link rel="import" href="chrome://resources/html/cr.html">
+  <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
+  <link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
+  <script src="chrome://resources/js/cr.js"></script>
+  <script src="chrome://resources/js/load_time_data.js"></script>
+  <script src="chrome://resources/js/util.js"></script>
+  <script src="chrome://resources/js/i18n_template_no_process.js"></script>
+  <script src="/strings.js"></script>
+  <script src="/brave_wallet.bundle.js"></script>
+  <style>
+    #root {
+      display: flex;
+      min-height: calc(100vh - 56px);
+    }
+  </style>
+  </head>
+  <body>
+    <cr-toolbar no-search></cr-toolbar>
+    <div id="root"></div>
+  </body>
 </html>

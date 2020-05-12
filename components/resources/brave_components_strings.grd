@@ -896,6 +896,14 @@
       <message name="IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME_DESCRIPTION" desc="Error message in dialog for when a Sync could not connect to Sync servers, because of wrong system time (description)">Your computer's clock may be set to the wrong time or time zone. Check your clock settings.</message>
       <!-- WebUI Brave Toolbar resources -->
       <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Crypto Wallets</message>
+      <!-- WebUI Crypto Wallets resources -->
+      <message name="IDS_BRAVE_WALLET_WELCOME" desc="">Welcome to Brave Crypto Wallets</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_ONE" desc="">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_TWO" desc="">Only use Crypto Wallets if you accept that you alone are responsible for all risk associated with this use, and that Brave Software bears no responsibility or liability for any losses including incidental or consequential losses you might suffer as a result of this use.</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_THREE" desc="">All of this is completely separate from</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_FOUR" desc="">So if you were looking to support your favorite sites, head over there instead.</message>
+      <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
 
       <part file="speedreader_strings.grdp" />
     </messages>
