@@ -7,6 +7,7 @@ import BraveRewards
 import BraveShared
 import Shared
 import Static
+import CoreServices
 
 private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 
@@ -197,10 +198,18 @@ public class QASettingsViewController: TableViewController {
         ]
       ),
       Section(
+        header: .title("Database"),
         rows: [
-          Row(text: "Share Rewards Database", selection: {
+          Row(text: "Import Rewards Database", selection: {
+            self.tappedImportRewardsDatabase()
+          }, cellClass: ButtonCell.self),
+          Row(text: "Export Rewards Database", selection: {
             self.tappedShareRewardsDatabase()
           }, cellClass: ButtonCell.self),
+        ]
+      ),
+      Section(
+        rows: [
           Row(text: "Reset Rewards", selection: {
             self.tappedReset()
           }, cellClass: ButtonCell.self)
@@ -217,9 +226,18 @@ public class QASettingsViewController: TableViewController {
     }
   }
   
+  private func tappedImportRewardsDatabase() {
+    let docPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeData), String(kUTTypeDatabase)], in: .import)
+    if #available(iOS 13.0, *) {
+      docPicker.shouldShowFileExtensions = true
+    }
+    docPicker.delegate = self
+    self.present(docPicker, animated: true)
+  }
+  
   private func tappedShareRewardsDatabase() {
     guard let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
-    let dbPath = (appSupportPath as NSString).appendingPathComponent("rewards")
+    let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
     let activity = UIActivityViewController(activityItems: [URL(fileURLWithPath: dbPath)], applicationActivities: nil)
     self.present(activity, animated: true)
   }
@@ -318,5 +336,33 @@ fileprivate class MultilineSubtitleCell: SubtitleCell {
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+extension QASettingsViewController: UIDocumentPickerDelegate {
+  public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    guard let documentURL = urls.first, documentURL.pathExtension == "db" else { return }
+    guard let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
+    let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
+    do {
+      _ = try FileManager.default.replaceItemAt(URL(fileURLWithPath: dbPath), withItemAt: documentURL)
+      if FileManager.default.fileExists(atPath: "\(dbPath)-journal") {
+        try FileManager.default.removeItem(atPath: "\(dbPath)-journal")
+      }
+      let alert = UIAlertController(
+        title: "Database Imported",
+        message: "Brave must be restarted after importing a database for data to be read from it correctly.",
+        preferredStyle: .alert
+      )
+      alert.addAction(UIAlertAction(title: "Exit Now", style: .destructive, handler: { _ in
+        fatalError()
+      }))
+      alert.addAction(UIAlertAction(title: "Later…", style: .default, handler: nil))
+      present(alert, animated: true)
+    } catch {
+      let alert = UIAlertController(title: "Failed To Import Database", message: error.localizedDescription, preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      present(alert, animated: true)
+    }
   }
 }
