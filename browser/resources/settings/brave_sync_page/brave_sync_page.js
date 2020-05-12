@@ -10,7 +10,10 @@
 Polymer({
   is: 'settings-brave-sync-page',
 
-  behaviors: [I18nBehavior, WebUIListenerBehavior],
+  behaviors: [
+    I18nBehavior,
+    WebUIListenerBehavior,
+  ],
 
   properties: {
     /**
@@ -34,11 +37,38 @@ Polymer({
     pageVisibility: Object,
   },
 
+  /** @private {?settings.SyncBrowserProxy} */
+  browserProxy_: null,
+
+  /** @override */
+  created: function() {
+    this.browserProxy_ = settings.SyncBrowserProxyImpl.getInstance();
+  },
+
+  /** @override */
+  attached: function() {
+    // We can't get sync status from people page because of brave setting
+    // override
+    this.browserProxy_.getSyncStatus().then(
+        this.handleSyncStatus_.bind(this));
+    this.addWebUIListener(
+        'sync-status-changed', this.handleSyncStatus_.bind(this));
+  },
+
   /** @private */
   onSyncTap_: function() {
     // Users can go to sync subpage regardless of sync status.
     const router = settings.Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_SYNC_SETUP);
+  },
+
+  /**
+   * Handler for when the sync state is pushed from the browser.
+   * @param {?settings.SyncStatus} syncStatus
+   * @private
+   */
+  handleSyncStatus_: function(syncStatus) {
+    this.syncStatus = syncStatus;
   },
 
 });
