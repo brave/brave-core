@@ -25,6 +25,16 @@ class BraveWalletPromptToEnableWalletFunction :
   ResponseAction Run() override;
 };
 
+class BraveWalletReadyFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.ready", UNKNOWN)
+
+ protected:
+  ~BraveWalletReadyFunction() override {}
+  ResponseAction Run() override;
+};
+
 class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.shouldCheckForDapps", UNKNOWN)

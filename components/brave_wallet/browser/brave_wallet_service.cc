@@ -292,16 +292,6 @@ void BraveWalletService::OnExtensionLoaded(
   RemoveUnusedWeb3ProviderContentScripts();
 }
 
-void BraveWalletService::OnExtensionReady(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension) {
-  if (extension->id() == ethereum_remote_client_extension_id) {
-    if (load_ui_callback_) {
-      std::move(load_ui_callback_).Run();
-    }
-  }
-}
-
 bool BraveWalletService::IsCryptoWalletsSetup() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return prefs->HasPrefPath(kBraveWalletAES256GCMSivNonce) &&
@@ -330,5 +320,11 @@ void BraveWalletService::LoadCryptoWalletsExtension(LoadUICallback callback) {
     extensions::ComponentLoader* loader = service->component_loader();
     static_cast<extensions::BraveComponentLoader*>(loader)->
         AddEthereumRemoteClientExtension();
+  }
+}
+
+void BraveWalletService::CryptoWalletsExtensionReady() {
+  if (load_ui_callback_) {
+    std::move(load_ui_callback_).Run();
   }
 }

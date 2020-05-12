@@ -23,6 +23,11 @@
           }
         ]
       }, {
+        "name": "ready",
+        "type": "function",
+        "description": "Called by Crypto Wallets when it is ready",
+        "parameters": []
+      }, {
         "name": "shouldPromptForSetup",
         "type": "function",
         "description": "Called to determine if a brave wallet prompt should be shown to opt into install",

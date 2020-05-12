@@ -52,6 +52,7 @@ class BraveWalletService : public KeyedService,
   bool IsCryptoWalletsReady() const;
   bool ShouldShowLazyLoadInfobar() const;
   void LoadCryptoWalletsExtension(LoadUICallback callback);
+  void CryptoWalletsExtensionReady();
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
       const std::string& seed);
@@ -76,8 +77,6 @@ class BraveWalletService : public KeyedService,
   void OnPreferenceChanged();
   // ExtensionRegistryObserver implementation.
   void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
-  void OnExtensionReady(content::BrowserContext* browser_context,
                          const extensions::Extension* extension) override;
 
   content::BrowserContext* context_;

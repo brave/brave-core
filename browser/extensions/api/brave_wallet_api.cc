@@ -97,6 +97,18 @@ BraveWalletPromptToEnableWalletFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
+BraveWalletReadyFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* service = GetBraveWalletService(browser_context());
+  service->CryptoWalletsExtensionReady();
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
 BraveWalletLoadUIFunction::Run() {
   auto* service = GetBraveWalletService(browser_context());
   // If the extension is already ready, respond right away
