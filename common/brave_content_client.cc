@@ -11,6 +11,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/components_resources.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/resource/resource_bundle.h"
 
 BraveContentClient::BraveContentClient() {}
 
@@ -19,16 +20,15 @@ BraveContentClient::~BraveContentClient() {}
 base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
     int resource_id) {
   if (resource_id == IDR_FLAGS_UI_FLAGS_JS) {
-    auto* chromium_flags_ui_data =
-        ChromeContentClient::GetDataResourceBytes(resource_id);
-    auto* brave_flags_ui_data = ChromeContentClient::GetDataResourceBytes(
-        IDR_FLAGS_UI_BRAVE_FLAGS_OVERRIDES_JS);
-    std::string new_flags_js(chromium_flags_ui_data->front_as<const char>(),
-                             chromium_flags_ui_data->size());
-    new_flags_js.append(brave_flags_ui_data->front_as<const char>(),
-                        brave_flags_ui_data->size());
-    return new base::RefCountedStaticMemory(new_flags_js.c_str(),
-                                            new_flags_js.length());
+    const ui::ResourceBundle& resource_bundle =
+        ui::ResourceBundle::GetSharedInstance();
+    const std::string flags_js =
+        resource_bundle.LoadDataResourceString(resource_id) +
+        resource_bundle.LoadDataResourceString(
+            IDR_FLAGS_UI_BRAVE_FLAGS_OVERRIDES_JS);
+    base::RefCountedString* bytes = new base::RefCountedString();
+    bytes->data().assign(flags_js.data(), flags_js.length());
+    return bytes;
   }
   return ChromeContentClient::GetDataResourceBytes(resource_id);
 }

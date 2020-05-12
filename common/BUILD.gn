@@ -102,6 +102,7 @@ source_set("common") {
     "//components/resources",
     "//content/public/common",
     "//extensions/buildflags",
+    "//ui/base",
   ]
 
   if (is_mac) {
