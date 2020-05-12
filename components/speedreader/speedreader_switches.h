@@ -8,7 +8,6 @@
 
 namespace speedreader {
 
-constexpr char kEnableSpeedreader[] = "enable-speedreader";
 constexpr char kSpeedreaderWhitelist[] = "speedreader-whitelist";
 constexpr char kSpeedreaderWhitelistPath[] = "speedreader-whitelist-path";
 

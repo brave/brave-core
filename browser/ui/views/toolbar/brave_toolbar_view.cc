@@ -10,13 +10,13 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -135,8 +135,7 @@ void BraveToolbarView::Init() {
   bookmark_->Init();
 
   // Speedreader.
-  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-  if (cmdline->HasSwitch(speedreader::kEnableSpeedreader)) {
+  if (base::FeatureList::IsEnabled(speedreader::kBraveSpeedreader)) {
     speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
     speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                               ui::EF_MIDDLE_MOUSE_BUTTON);

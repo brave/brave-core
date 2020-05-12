@@ -5,9 +5,9 @@
 
 #include "brave/components/speedreader/speedreader_service.h"
 
-#include "base/command_line.h"
+#include "base/feature_list.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -28,8 +28,7 @@ void SpeedreaderService::ToggleSpeedreader() {
 }
 
 bool SpeedreaderService::IsEnabled() {
-  const auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (!cmd_line->HasSwitch(kEnableSpeedreader)) {
+  if (!base::FeatureList::IsEnabled(kBraveSpeedreader)) {
     return false;
   }
 

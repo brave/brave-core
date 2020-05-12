@@ -8,6 +8,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -26,6 +27,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
   SpeedReaderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitAndDisableFeature(speedreader::kBraveSpeedreader);
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -40,7 +42,6 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   ~SpeedReaderBrowserTest() override {}
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    command_line->AppendSwitch(speedreader::kEnableSpeedreader);
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     base::FilePath whitelist_path = test_data_dir.Append(kTestWhitelist);
@@ -56,6 +57,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
 };
 

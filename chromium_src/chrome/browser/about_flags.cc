@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/about_flags.h"
+
 #include "base/strings/string_util.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "chrome/browser/about_flags.h"
+#include "brave/components/speedreader/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
@@ -37,6 +39,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll, \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                  \
+    {"brave-speedreader",                                                  \
+     flag_descriptions::kBraveSpeedreaderName,                             \
+     flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,          \
+     FEATURE_VALUE_TYPE(speedreader::kBraveSpeedreader)},                  \
     {"brave-sync",                                                         \
      flag_descriptions::kBraveSyncName,                                    \
      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
