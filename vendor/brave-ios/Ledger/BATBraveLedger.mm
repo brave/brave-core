@@ -211,6 +211,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     if (self.initialized) {
       self.prefs[kMigrationSucceeded] = @(YES);
       [self savePrefs];
+      
+      if (self.isEnabled) {
+        [self.ads initializeIfAdsEnabled];
+      }
     } else {
       BLOG(ledger::LogLevel::LOG_ERROR) << "Ledger Initialization Failed with error: " << std::to_string(static_cast<int>(result)) << std::endl;
       if (result == ledger::Result::DATABASE_INIT_FAILED) {
