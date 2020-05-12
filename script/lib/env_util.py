@@ -24,8 +24,8 @@ def consume(iter):
 
 
 # Define a way to handle each KEY=VALUE line.
-def handle_line(l):
-    return l.rstrip().split('=', 1)
+def handle_line(line):
+    return line.rstrip().split('=', 1)
 
 
 def get_environment_from_batch_command(env_cmd, initial=None):
