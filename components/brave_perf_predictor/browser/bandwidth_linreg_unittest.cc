@@ -19,7 +19,7 @@ TEST(BraveSavingsPredictorTest, FeatureArrayGetsPrediction) {
 TEST(BraveSavingsPredictorTest, HandlesSpecificVectorExample) {
   // This test needs to be updated for any change in the model
   constexpr std::array<double, feature_count> sample = {
-      20, 129, 225, 225, 142, 925,    5, 34662, 3,  317818,  9,  1702888,
+      20, 129, 225, 142, 925,    5, 34662, 3,  317818,  9,  1702888,
       0,  0,   1,   324, 32,  238315, 9, 90131, 54, 2367498, 59, 2384138,
       0,  1,   0,   0,   0,   0,      0, 0,     0,  1,       0,  0,
       0,  0,   1,   0,   0,   0,      0, 0,     0,  0,       0,  0,
@@ -77,7 +77,6 @@ TEST(BraveSavingsPredictorTest, HandesSpecificFeaturemapExample) {
       {"thirdParties.Po.st.blocked", 1},
       {"adblockRequests", 20},
       {"metrics.firstMeaningfulPaint", 129},
-      {"metrics.interactive", 225},
       {"metrics.observedDomContentLoaded", 225},
       {"metrics.observedFirstVisualChange", 142},
       {"metrics.observedLoad", 925},

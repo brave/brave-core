@@ -53,9 +53,6 @@ base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
     "javascriptBlockedStat",
     prefs->GetUint64(kJavascriptBlocked));
   stats_data.SetInteger(
-    "httpsUpgradesStat",
-    prefs->GetUint64(kHttpsUpgrades));
-  stats_data.SetInteger(
     "fingerprintingBlockedStat",
     prefs->GetUint64(kFingerprintingBlocked));
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)

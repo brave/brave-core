@@ -28,7 +28,7 @@ export const defaultState: NewTab.State = {
   stats: {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
-    httpsUpgradesStat: 0,
+    bandwidthSavedStat: 0,
     fingerprintingBlockedStat: 0
   },
   rewardsState: {

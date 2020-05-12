@@ -31,6 +31,11 @@ uint64_t getProfileBandwidthSaved(Browser* browser) {
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
 }
 
+uint64_t getProfileAdsBlocked(Browser* browser) {
+  return browser->profile()->GetPrefs()->GetUint64(
+      kAdsBlocked);
+}
+
 }  // namespace
 
 class PerfPredictorTabHelperTest : public InProcessBrowserTest {
@@ -49,7 +54,6 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 
   void PreRunTestOnMainThread() override {
     InProcessBrowserTest::PreRunTestOnMainThread();
-    WaitForAdBlockServiceThreads();
     // Need ad_block_service to be available to get blocking savings predictions
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
@@ -64,16 +68,6 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     content::SetupCrossSiteRedirector(embedded_test_server());
     ASSERT_TRUE(embedded_test_server()->Start());
   }
-
-  void WaitForAdBlockServiceThreads() {
-    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
-    ASSERT_TRUE(tr_helper->Run());
-    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        base::CreateSingleThreadTaskRunner({content::BrowserThread::IO})
-            .get()));
-    ASSERT_TRUE(io_helper->Run());
-  }
 };
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
@@ -84,12 +78,10 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(1, 0, 0, 0, 0, 0);"
-                                          "addImage('logo.png')",
-                                          &as_expected));
-  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(true, EvalJsWithManualReply(contents,
+                                    "addImage('logo.png');"
+                                    "setExpectations(0, 0, 0, 0, 1, 0);"
+                                    "xhr('analytics.js')"));
   // Prediction triggered when web contents are closed
   contents->Close();
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
@@ -105,12 +97,12 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_TRUE(ExecJs(contents, "addImage('logo.png')"));
-  ASSERT_TRUE(EvalJsWithManualReply(contents,
+  EXPECT_EQ(true, EvalJsWithManualReply(contents,
+                                    "addImage('logo.png');"
                                     "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')")
-                  .ExtractBool());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+                                    "xhr('analytics.js')"));
+
+  EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
   // Prediction triggered when web contents are closed
   contents->Close();
   EXPECT_NE(getProfileBandwidthSaved(browser()), 0ULL);
@@ -126,24 +118,21 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_TRUE(ExecJs(contents, "addImage('logo.png')"));
-  ASSERT_TRUE(EvalJsWithManualReply(contents,
+  EXPECT_EQ(true, EvalJsWithManualReply(contents,
+                                    "addImage('logo.png');"
                                     "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')")
-                  .ExtractBool());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+                                    "xhr('analytics.js')"));
+  EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
   // Prediction triggered when web contents are closed
   GURL second_url =
       embedded_test_server()->GetURL("example.com", "/blocking.html");
   ui_test_utils::NavigateToURL(browser(), second_url);
-  ASSERT_TRUE(ExecJs(contents, "addImage('logo.png')"));
-  ASSERT_TRUE(EvalJsWithManualReply(contents,
+  EXPECT_EQ(true, EvalJsWithManualReply(contents,
+                                    "addImage('logo.png');"
                                     "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')")
-                  .ExtractBool());
+                                    "xhr('analytics.js')"));
 
-  auto previous_nav_savings = browser()->profile()->GetPrefs()->GetUint64(
-      brave_perf_predictor::prefs::kBandwidthSavedBytes);
+  auto previous_nav_savings = getProfileBandwidthSaved(browser());
   EXPECT_NE(previous_nav_savings, 0ULL);
 
   // closing the new navigation triggers a second computation

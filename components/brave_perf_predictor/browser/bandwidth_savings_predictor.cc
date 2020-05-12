@@ -9,7 +9,6 @@
 
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
-#include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "content/public/common/resource_load_info.mojom.h"
 #include "content/public/common/resource_type.h"
@@ -17,7 +16,9 @@
 
 namespace brave_perf_predictor {
 
-BandwidthSavingsPredictor::BandwidthSavingsPredictor() = default;
+BandwidthSavingsPredictor::BandwidthSavingsPredictor(
+    const NamedThirdPartyRegistry* registry)
+    : tp_registry_(registry) {}
 
 BandwidthSavingsPredictor::~BandwidthSavingsPredictor() = default;
 
@@ -54,10 +55,8 @@ void BandwidthSavingsPredictor::OnSubresourceBlocked(
     const std::string& resource_url) {
   feature_map_["adblockRequests"] += 1;
 
-  const NamedThirdPartyRegistry* tp_registry =
-      NamedThirdPartyRegistry::GetInstance();
-  if (tp_registry) {
-    const auto tp_name = tp_registry->GetThirdParty(resource_url);
+  if (tp_registry_) {
+    const auto tp_name = tp_registry_->GetThirdParty(resource_url);
     if (tp_name.has_value())
       feature_map_["thirdParties." + tp_name.value() + ".blocked"] = 1;
   }

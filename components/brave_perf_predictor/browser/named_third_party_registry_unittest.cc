@@ -41,7 +41,8 @@ namespace {
 std::string LoadFile() {
   base::FilePath source_root;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root);
-  auto path = source_root.Append(FILE_PATH_LITERAL("brave"))
+  auto path =
+      source_root.Append(FILE_PATH_LITERAL("brave"))
           .Append(FILE_PATH_LITERAL("components"))
           .Append(FILE_PATH_LITERAL("brave_perf_predictor"))
           .Append(FILE_PATH_LITERAL("resources"))
@@ -49,39 +50,41 @@ std::string LoadFile() {
 
   std::string value;
   const bool ok = ReadFileToString(path, &value);
-  if (!ok) return {};
+  if (!ok)
+    return {};
   return value;
 }
 
 }  // namespace
 
 TEST(NamedThirdPartyRegistryTest, HandlesEmptyJSON) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   bool parsed = extractor->LoadMappings("", false);
   EXPECT_FALSE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, ParsesJSON) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   bool parsed = extractor->LoadMappings(test_mapping, false);
   EXPECT_TRUE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, HandlesInvalidJSON) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
-  bool parsed = extractor->LoadMappings(R"([{"name":"Google Analytics")", false);
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
+  bool parsed =
+      extractor->LoadMappings(R"([{"name":"Google Analytics")", false);
   EXPECT_FALSE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, HandlesFullDataset) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   auto dataset = LoadFile();
   bool parsed = extractor->LoadMappings(dataset, true);
   EXPECT_TRUE(parsed);
 }
 
 TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyURLTest) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
 
@@ -91,7 +94,7 @@ TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyURLTest) {
 }
 
 TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyHostnameTest) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
   auto entity = extractor->GetThirdParty("https://google-analytics.com");
@@ -100,7 +103,7 @@ TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyHostnameTest) {
 }
 
 TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyRootDomainTest) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
   auto entity = extractor->GetThirdParty("https://test.m.facebook.com");
@@ -109,7 +112,7 @@ TEST(NamedThirdPartyRegistryTest, ExtractsThirdPartyRootDomainTest) {
 }
 
 TEST(NamedThirdPartyRegistryTest, HandlesUnrecognisedThirdPartyTest) {
-  NamedThirdPartyRegistry* extractor = NamedThirdPartyRegistry::GetInstance();
+  NamedThirdPartyRegistry* extractor = new NamedThirdPartyRegistry();
   auto dataset = LoadFile();
   extractor->LoadMappings(dataset, true);
   auto entity = extractor->GetThirdParty("http://example.com");
