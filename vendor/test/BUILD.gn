@@ -19,16 +19,25 @@ test("brave_rewards_unit_tests") {
   data = [ "//brave/test/data/" ]
 
   sources = []
+
+  deps = []
+
   if (is_android) {
+    deps += [
+      "//brave:brave_pak_assets",
+      "//chrome/test/android:chrome_java_test_support",
+      "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
+      "//v8:v8_external_startup_data_assets",
+    ]
+
+    if (is_component_build) {
+      deps += [ "//chrome/gpu" ]
+    }
+
     sources += [
       "../../../chrome/app/chrome_main_delegate.cc",
       "../../../chrome/app/chrome_main_delegate.h",
     ]
-  }
-
-  deps = []
-  if (is_component_build && is_android) {
-    deps += [ "//chrome/gpu" ]
   }
 
   if (brave_rewards_enabled) {
