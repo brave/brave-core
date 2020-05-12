@@ -378,4 +378,37 @@ void DatabaseCredsBatch::UpdateStatus(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
+void DatabaseCredsBatch::UpdateRecordsStatus(
+    const std::vector<std::string>& trigger_ids,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  if (trigger_ids.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET status = ? WHERE trigger_id IN (%s) AND trigger_type = ?",
+      kTableName,
+      GenerateStringInCase(trigger_ids).c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(command.get(), 0, static_cast<int>(status));
+  BindInt(command.get(), 1, static_cast<int>(trigger_type));
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
 }  // namespace braveledger_database

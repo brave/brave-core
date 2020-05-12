@@ -469,6 +469,36 @@ void DatabasePromotion::UpdateStatus(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
+void DatabasePromotion::UpdateRecordsStatus(
+    const std::vector<std::string>& ids,
+    const ledger::PromotionStatus status,
+    ledger::ResultCallback callback) {
+  if (ids.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET status = ? WHERE promotion_id IN (%s)",
+      kTableName,
+      GenerateStringInCase(ids).c_str());
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(command.get(), 0, static_cast<int>(status));
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
 void DatabasePromotion::CredentialCompleted(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
@@ -619,6 +649,29 @@ void DatabasePromotion::GetRecordsByType(
           this,
           _1,
           callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabasePromotion::UpdateRecordsBlankPublicKey(
+    const std::vector<std::string>& ids,
+    ledger::ResultCallback callback) {
+  const std::string query = base::StringPrintf(
+      "UPDATE %s as p SET public_keys = "
+      "(SELECT PRINTF('[\"%%s\"]', public_key) FROM creds_batch as cb "
+      "WHERE cb.trigger_id = p.promotion_id) WHERE p.promotion_id IN (%s)",
+      kTableName,
+      GenerateStringInCase(ids).c_str());
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
