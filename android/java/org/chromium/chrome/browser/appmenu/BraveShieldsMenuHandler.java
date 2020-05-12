@@ -70,7 +70,7 @@ public class BraveShieldsMenuHandler {
     private AnimatorListener mAnimationHistogramRecorder = AnimationFrameTimeHistogram
             .getAnimatorRecorder("WrenchMenu.OpeningAnimationFrameTimes");
     private BraveShieldsMenuObserver mMenuObserver;
-    private final View mHardwareButtonMenuAnchor;
+    private View mHardwareButtonMenuAnchor;
     private final Map<Integer, BlockersInfo> mTabsStat =
             Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
@@ -83,7 +83,10 @@ public class BraveShieldsMenuHandler {
         mContext = context;
         mMenuResourceId = menuResourceId;
         mAdapter = null;
-        mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
+        mHardwareButtonMenuAnchor = null;
+        if (mContext instanceof Activity) {
+            mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
+        }
     }
 
     public void addStat(int tabId, String block_type, String subresource) {
@@ -121,6 +124,7 @@ public class BraveShieldsMenuHandler {
 
     public void show(View anchorView, String host, String title, int tabId,
             Profile profile) {
+        if (mHardwareButtonMenuAnchor == null) return;
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.

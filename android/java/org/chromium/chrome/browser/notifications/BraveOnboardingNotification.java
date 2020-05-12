@@ -40,6 +40,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static final String COUNTRY_CODE_FR = "fr_FR";
 
     public static void showOnboardingNotification(Context context) {
+        if (context == null) return;
         NotificationManagerProxyImpl notificationManager =
                 new NotificationManagerProxyImpl(context);
 
