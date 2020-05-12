@@ -88,15 +88,17 @@ void DoHistogramBravezation(base::StringPiece histogram_name,
 
   if ("Tabs.WindowCount" == histogram_name) {
     int answer = 0;
-    if (0 <= sample && sample <= 1) {
+    if (sample <= 0) {
       answer = 0;
-    } else if (2 <= sample && sample <= 5) {
+    } else if (sample == 1) {
       answer = 1;
-    } else {
+    } else if (2 <= sample && sample <= 5) {
       answer = 2;
+    } else {
+      answer = 3;
     }
 
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount", answer, 2);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount.2", answer, 2);
     return;
   }
 }
