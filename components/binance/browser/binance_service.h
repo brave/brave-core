@@ -100,6 +100,7 @@ class BinanceService : public KeyedService {
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
   bool SetAccessTokens(const std::string& access_token,
                        const std::string& refresh_token);
+  void ResetAccessTokens();
 
   using URLRequestCallback =
       base::OnceCallback<void(const int, const std::string&,

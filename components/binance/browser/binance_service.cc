@@ -281,6 +281,15 @@ bool BinanceService::SetAccessTokens(const std::string& access_token,
   return true;
 }
 
+void BinanceService::ResetAccessTokens() {
+  access_token_ = "";
+  refresh_token_ = "";
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  prefs->SetString(kBinanceAccessToken, access_token_);
+  prefs->SetString(kBinanceRefreshToken, refresh_token_);
+}
+
 bool BinanceService::LoadTokensFromPrefs() {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   std::string encoded_encrypted_access_token =
@@ -463,7 +472,7 @@ void BinanceService::OnRevokeToken(RevokeTokenCallback callback,
   if (success) {
     code_challenge_ = "";
     code_verifier_ = "";
-    SetAccessTokens("", "");
+    ResetAccessTokens();
   }
   std::move(callback).Run(success);
 }
