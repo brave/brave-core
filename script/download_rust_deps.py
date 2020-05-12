@@ -144,8 +144,9 @@ def cargo_install(tool):
     cargo_args = []
     cargo_args.append(cargo_bin)
     cargo_args.append("install")
-    cargo_args.append("--force")
-    cargo_args.append(tool)
+    cargo_args.append(tool[0])
+    cargo_args.append("--version")
+    cargo_args.append(tool[1])
 
     try:
         subprocess.check_call(cargo_args, env=env)
@@ -161,7 +162,7 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
-    tools = ["cbindgen"]
+    tools = [("cbindgen", "0.14.2")]
     for tool in tools:
         cargo_install(tool)
 
