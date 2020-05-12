@@ -62,6 +62,7 @@
       </if>
 
       <part file="speedreader_resources.grdp" />
+      <part file="brave_flags_ui_resources.grdp" />
     </includes>
   </release>
 </grit>
