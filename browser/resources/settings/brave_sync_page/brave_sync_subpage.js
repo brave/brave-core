@@ -327,6 +327,22 @@ Polymer({
    */
   handleSyncPrefsChanged_: function(syncPrefs) {
     this.syncPrefs = syncPrefs;
+    // Enforce encryption
+    if (this.syncStatus && !this.syncStatus.firstSetupInProgress) {
+      if (!this.syncPrefs.encryptAllData) {
+        this.syncPrefs.encryptAllData = true;
+        this.syncPrefs.setNewPassphrase = true;
+        this.syncPrefs.passphrase = this.passphrase_;
+
+        this.browserProxy_.setSyncEncryption(this.syncPrefs)
+          .then(this.handlePageStatusChanged_.bind(this));
+      } else if (this.syncPrefs.passphraseRequired) {
+        this.syncPrefs.setNewPassphrase = false;
+        this.syncPrefs.passphrase = this.passphrase_;
+        this.browserProxy_.setSyncEncryption(this.syncPrefs)
+          .then(this.handlePageStatusChanged_.bind(this));
+      }
+    }
     this.pageStatus_ = settings.PageStatus.CONFIGURE;
   },
 

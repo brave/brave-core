@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 96abaa6e76e73d8896c31063a532b07a164ac9d0..679fc23106926d2a5f0a73496303a31a3b0952f5 100644
+index 96abaa6e76e73d8896c31063a532b07a164ac9d0..e26654c51893b065ec569a2c1526685717939dbf 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
 @@ -199,6 +199,7 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
@@ -26,15 +26,7 @@ index 96abaa6e76e73d8896c31063a532b07a164ac9d0..679fc23106926d2a5f0a73496303a31a
    params.poll_interval = sync_prefs_.GetPollInterval();
    if (params.poll_interval.is_zero()) {
      params.poll_interval =
-@@ -928,6 +931,7 @@ void ProfileSyncService::OnEngineInitialized(
-           engine_.get(), this);
- 
-   crypto_.SetSyncEngine(GetAuthenticatedAccountInfo(), engine_.get());
-+  BRAVE_ON_ENGINE_INITIALIZED
- 
-   // Auto-start means IsFirstSetupComplete gets set automatically.
-   if (start_behavior_ == AUTO_START &&
-@@ -953,7 +957,7 @@ void ProfileSyncService::OnEngineInitialized(
+@@ -953,7 +956,7 @@ void ProfileSyncService::OnEngineInitialized(
                                  GoogleServiceAuthError::AuthErrorNone());
      }
    }
