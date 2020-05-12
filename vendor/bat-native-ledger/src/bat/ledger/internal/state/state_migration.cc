@@ -98,9 +98,9 @@ void StateMigration::OnLoadState(
     return;
   }
 
-  ledger_->SetUint64State(
+  ledger_->SetIntegerState(
       ledger::kStateMinVisitTime,
-      legacy_publisher_->GetPublisherMinVisitTime());
+      static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
 
   ledger_->SetIntegerState(
       ledger::kStateMinVisits,

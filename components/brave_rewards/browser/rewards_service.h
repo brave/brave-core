@@ -57,8 +57,8 @@ using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropsCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
-using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
-using GetPublisherMinVisitsCallback = base::Callback<void(uint32_t)>;
+using GetPublisherMinVisitTimeCallback = base::Callback<void(int)>;
+using GetPublisherMinVisitsCallback = base::Callback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
 using GetAutoContributeCallback = base::OnceCallback<void(bool)>;
@@ -175,10 +175,10 @@ class RewardsService : public KeyedService {
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
-  virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
+  virtual void SetPublisherMinVisitTime(int duration_in_seconds) const = 0;
   virtual void GetPublisherMinVisits(
       const GetPublisherMinVisitsCallback& callback) = 0;
-  virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
+  virtual void SetPublisherMinVisits(int visits) const = 0;
   virtual void GetPublisherAllowNonVerified(
       const GetPublisherAllowNonVerifiedCallback& callback) = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;

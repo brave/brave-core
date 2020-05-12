@@ -660,11 +660,11 @@ void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   }
 }
 
-void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {
+void LedgerImpl::SetPublisherMinVisitTime(int duration) {
   braveledger_state::SetPublisherMinVisitTime(this, duration);
 }
 
-void LedgerImpl::SetPublisherMinVisits(unsigned int visits) {
+void LedgerImpl::SetPublisherMinVisits(int visits) {
   braveledger_state::SetPublisherMinVisits(this, visits);
 }
 
@@ -707,11 +707,11 @@ bool LedgerImpl::GetRewardsMainEnabled() const {
   return legacy_bat_state_->GetRewardsMainEnabled();
 }
 
-uint64_t LedgerImpl::GetPublisherMinVisitTime() {
+int LedgerImpl::GetPublisherMinVisitTime() {
   return braveledger_state::GetPublisherMinVisitTime(this);
 }
 
-unsigned int LedgerImpl::GetPublisherMinVisits() {
+int LedgerImpl::GetPublisherMinVisits() {
   return braveledger_state::GetPublisherMinVisits(this);
 }
 
@@ -1777,7 +1777,7 @@ void LedgerImpl::SynopsisNormalizer() {
   bat_publisher_->SynopsisNormalizer();
 }
 
-void LedgerImpl::CalcScoreConsts(const uint64_t& min_duration_seconds) {
+void LedgerImpl::CalcScoreConsts(const int min_duration_seconds) {
   bat_publisher_->CalcScoreConsts(min_duration_seconds);
 }
 

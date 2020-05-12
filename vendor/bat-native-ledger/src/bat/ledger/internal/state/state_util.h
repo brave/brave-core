@@ -19,9 +19,9 @@ int GetVersion(bat_ledger::LedgerImpl* ledger);
 
 void SetPublisherMinVisitTime(
     bat_ledger::LedgerImpl* ledger,
-    const uint64_t& duration);
+    const int duration);
 
-uint64_t GetPublisherMinVisitTime(bat_ledger::LedgerImpl* ledger);
+int GetPublisherMinVisitTime(bat_ledger::LedgerImpl* ledger);
 
 void SetPublisherMinVisits(bat_ledger::LedgerImpl* ledger, const int visits);
 

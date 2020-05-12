@@ -69,9 +69,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
 
-  MOCK_METHOD1(SetPublisherMinVisitTime, void(uint64_t));
+  MOCK_METHOD1(SetPublisherMinVisitTime, void(int));
 
-  MOCK_METHOD1(SetPublisherMinVisits, void(unsigned int));
+  MOCK_METHOD1(SetPublisherMinVisits, void(int));
 
   MOCK_METHOD1(SetPublisherAllowNonVerified, void(bool));
 
@@ -95,9 +95,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(GetRewardsMainEnabled, bool());
 
-  MOCK_METHOD0(GetPublisherMinVisitTime, uint64_t());
+  MOCK_METHOD0(GetPublisherMinVisitTime, int());
 
-  MOCK_METHOD0(GetPublisherMinVisits, unsigned int());
+  MOCK_METHOD0(GetPublisherMinVisits, int());
 
   MOCK_METHOD0(GetPublisherAllowNonVerified, bool());
 

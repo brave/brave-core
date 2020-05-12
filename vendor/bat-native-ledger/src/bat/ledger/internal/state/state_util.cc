@@ -20,16 +20,16 @@ int GetVersion(bat_ledger::LedgerImpl* ledger) {
 
 void SetPublisherMinVisitTime(
     bat_ledger::LedgerImpl* ledger,
-    const uint64_t& duration) {
+    const int duration) {
   DCHECK(ledger);
-  ledger->SetUint64State(ledger::kStateMinVisitTime, duration);
+  ledger->SetIntegerState(ledger::kStateMinVisitTime, duration);
   ledger->CalcScoreConsts(duration);
   ledger->SynopsisNormalizer();
 }
 
-uint64_t GetPublisherMinVisitTime(bat_ledger::LedgerImpl* ledger) {
+int GetPublisherMinVisitTime(bat_ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
-  return ledger->GetUint64State(ledger::kStateMinVisitTime);
+  return ledger->GetIntegerState(ledger::kStateMinVisitTime);
 }
 
 void SetPublisherMinVisits(

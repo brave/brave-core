@@ -84,7 +84,7 @@ void Publisher::SetPublisherServerListTimer(const bool rewards_enabled) {
   server_list_->SetTimer(false);
 }
 
-void Publisher::CalcScoreConsts(const uint64_t& min_duration_seconds) {
+void Publisher::CalcScoreConsts(const int min_duration_seconds) {
   // we increase duration for 100 to keep it as close to muon implementation
   // as possible (we used 1000 in muon)
   // keeping it with only seconds visits are not spaced out equally
@@ -272,13 +272,12 @@ void Publisher::SaveVisitInternal(
     publisher_info->excluded = ledger::PublisherExclude::EXCLUDED;
   }
 
+  uint64_t min_visit_time = static_cast<uint64_t>(
+      braveledger_state::GetPublisherMinVisitTime(ledger_));
+
   // for new visits that are excluded or are not long enough or ac is off
-  bool min_duration_new =
-      duration < braveledger_state::GetPublisherMinVisitTime(ledger_) &&
-      !ignore_time;
-  bool min_duration_ok =
-      duration > braveledger_state::GetPublisherMinVisitTime(ledger_) ||
-      ignore_time;
+  bool min_duration_new = duration < min_visit_time && !ignore_time;
+  bool min_duration_ok = duration > min_visit_time || ignore_time;
   bool verified_new =
       !braveledger_state::GetPublisherAllowNonVerified(ledger_) && !is_verified;
   bool verified_old =

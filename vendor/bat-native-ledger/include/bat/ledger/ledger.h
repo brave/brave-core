@@ -135,9 +135,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
 
-  virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) = 0;
+  virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
 
-  virtual void SetPublisherMinVisits(unsigned int visits) = 0;
+  virtual void SetPublisherMinVisits(int visits) = 0;
 
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
 
@@ -155,9 +155,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetRewardsMainEnabled() const = 0;
 
-  virtual uint64_t GetPublisherMinVisitTime() = 0;  // In milliseconds
+  virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
 
-  virtual unsigned int GetPublisherMinVisits() = 0;
+  virtual int GetPublisherMinVisits() = 0;
 
   virtual bool GetPublisherAllowNonVerified() = 0;
 

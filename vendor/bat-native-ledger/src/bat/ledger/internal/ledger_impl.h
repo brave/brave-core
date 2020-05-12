@@ -132,9 +132,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void SetRewardsMainEnabled(bool enabled) override;
 
-  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
+  void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
-  void SetPublisherMinVisits(unsigned int visits) override;
+  void SetPublisherMinVisits(int visits) override;
 
   void SetPublisherAllowNonVerified(bool allow) override;
 
@@ -160,9 +160,9 @@ class LedgerImpl : public ledger::Ledger {
 
   bool GetRewardsMainEnabled() const override;
 
-  uint64_t GetPublisherMinVisitTime() override;  // In milliseconds
+  int GetPublisherMinVisitTime() override;  // In milliseconds
 
-  unsigned int GetPublisherMinVisits() override;
+  int GetPublisherMinVisits() override;
 
   bool GetPublisherAllowNonVerified() override;
 
@@ -735,7 +735,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void SynopsisNormalizer();
 
-  void CalcScoreConsts(const uint64_t& min_duration_seconds);
+  void CalcScoreConsts(const int min_duration_seconds);
 
  private:
   void OnStateInitialized(

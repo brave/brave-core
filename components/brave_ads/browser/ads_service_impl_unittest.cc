@@ -78,10 +78,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
   MOCK_METHOD1(GetPublisherMinVisitTime,
       void(const brave_rewards::GetPublisherMinVisitTimeCallback&));
-  MOCK_CONST_METHOD1(SetPublisherMinVisitTime, void(uint64_t));
+  MOCK_CONST_METHOD1(SetPublisherMinVisitTime, void(int));
   MOCK_METHOD1(GetPublisherMinVisits,
       void(const brave_rewards::GetPublisherMinVisitsCallback&));
-  MOCK_CONST_METHOD1(SetPublisherMinVisits, void(unsigned int));
+  MOCK_CONST_METHOD1(SetPublisherMinVisits, void(int));
   MOCK_METHOD1(GetPublisherAllowNonVerified,
       void(const brave_rewards::GetPublisherAllowNonVerifiedCallback&));
   MOCK_CONST_METHOD1(SetPublisherAllowNonVerified, void(bool));

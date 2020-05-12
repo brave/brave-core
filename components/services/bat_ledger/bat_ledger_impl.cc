@@ -304,11 +304,11 @@ void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {
   ledger_->SetRewardsMainEnabled(enabled);
 }
 
-void BatLedgerImpl::SetPublisherMinVisitTime(uint64_t duration_in_seconds) {
+void BatLedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
   ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
 
-void BatLedgerImpl::SetPublisherMinVisits(uint32_t visits) {
+void BatLedgerImpl::SetPublisherMinVisits(int visits) {
   ledger_->SetPublisherMinVisits(visits);
 }
 

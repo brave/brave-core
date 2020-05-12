@@ -16,6 +16,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -846,11 +847,23 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     }
 
     if (key == "contributionMinTime") {
-      rewards_service_->SetPublisherMinVisitTime(std::stoull(value));
+      int int_value;
+      if (!base::StringToInt(value, &int_value)) {
+        LOG(ERROR) << "Min time was not converted to int";
+        return;
+      }
+
+      rewards_service_->SetPublisherMinVisitTime(int_value);
     }
 
     if (key == "contributionMinVisits") {
-      rewards_service_->SetPublisherMinVisits(std::stoul(value));
+      int int_value;
+      if (!base::StringToInt(value, &int_value)) {
+        LOG(ERROR) << "Min time was not converted to int";
+        return;
+      }
+
+      rewards_service_->SetPublisherMinVisits(int_value);
     }
 
     if (key == "contributionNonVerified") {

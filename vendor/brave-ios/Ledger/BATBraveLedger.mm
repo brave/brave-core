@@ -1268,11 +1268,11 @@ BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
   }
 }
 
-BATLedgerBridge(UInt64,
+BATLedgerBridge(int,
                 minimumVisitDuration, setMinimumVisitDuration,
                 GetPublisherMinVisitTime, SetPublisherMinVisitTime)
 
-BATLedgerBridge(UInt32,
+BATLedgerBridge(int,
                 minimumNumberOfVisits, setMinimumNumberOfVisits,
                 GetPublisherMinVisits, SetPublisherMinVisits)
 

@@ -88,7 +88,7 @@ class Publisher {
 
   void SynopsisNormalizer();
 
-  void CalcScoreConsts(const uint64_t& min_duration_seconds);
+  void CalcScoreConsts(const int min_duration_seconds);
 
  private:
   void OnRefreshPublisher(
