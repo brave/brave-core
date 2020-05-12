@@ -12,16 +12,16 @@
 
 namespace speedreader {
 
-SpeedReader::SpeedReader() : raw(speedreader_new()) {}
+SpeedReader::SpeedReader() : raw_(speedreader_new()) {}
 SpeedReader::SpeedReader(const char* whitelist_serialized,
                          size_t whitelist_size)
-    : raw(with_whitelist(whitelist_serialized, whitelist_size)) {}
+    : raw_(with_whitelist(whitelist_serialized, whitelist_size)) {}
 
 bool SpeedReader::deserialize(const char* data, size_t data_size) {
   auto* new_raw = with_whitelist(data, data_size);
   if (new_raw != nullptr) {
-    speedreader_free(raw);
-    raw = new_raw;
+    speedreader_free(raw_);
+    raw_ = new_raw;
     return true;
   } else {
     VLOG(2) << __func__ << " deserialization failed";
@@ -30,25 +30,25 @@ bool SpeedReader::deserialize(const char* data, size_t data_size) {
 }
 
 SpeedReader::~SpeedReader() {
-  speedreader_free(raw);
+  speedreader_free(raw_);
 }
 
 bool SpeedReader::IsReadableURL(const std::string& url) {
-  return url_readable(raw, url.c_str(), url.length());
+  return url_readable(raw_, url.c_str(), url.length());
 }
 
 RewriterType SpeedReader::RewriterTypeForURL(const std::string& url) {
-  return find_type(raw, url.c_str(), url.length());
+  return find_type(raw_, url.c_str(), url.length());
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(const std::string& url) {
-  return std::make_unique<Rewriter>(raw, url, RewriterType::RewriterUnknown);
+  return std::make_unique<Rewriter>(raw_, url, RewriterType::RewriterUnknown);
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
     const std::string& url,
     RewriterType rewriter_type) {
-  return std::make_unique<Rewriter>(raw, url, rewriter_type);
+  return std::make_unique<Rewriter>(raw_, url, rewriter_type);
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
@@ -56,7 +56,7 @@ std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
     RewriterType rewriter_type,
     void (*output_sink)(const char*, size_t, void*),
     void* output_sink_user_data) {
-  return std::make_unique<Rewriter>(raw, url, rewriter_type, output_sink,
+  return std::make_unique<Rewriter>(raw_, url, rewriter_type, output_sink,
                                     output_sink_user_data);
 }
 
@@ -81,26 +81,26 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
     : output_(""),
       ended_(false),
       poisoned_(false),
-      config_raw(
+      config_raw_(
           get_rewriter_opaque_config(speedreader, url.c_str(), url.length())),
-      raw(rewriter_new(speedreader,
+      raw_(rewriter_new(speedreader,
                        url.c_str(),
                        url.length(),
                        output_sink,
                        output_sink_user_data,
-                       config_raw,
+                       config_raw_,
                        rewriter_type)) {}
 
 Rewriter::~Rewriter() {
   if (!ended_) {
-    rewriter_free(raw);
+    rewriter_free(raw_);
   }
-  free_rewriter_opaque_config(config_raw);
+  free_rewriter_opaque_config(config_raw_);
 }
 
 int Rewriter::Write(const char* chunk, size_t chunk_len) {
   if (!ended_ && !poisoned_) {
-    int ret = rewriter_write(raw, chunk, chunk_len);
+    int ret = rewriter_write(raw_, chunk, chunk_len);
     if (ret != 0) {
       poisoned_ = true;
     }
@@ -112,7 +112,7 @@ int Rewriter::Write(const char* chunk, size_t chunk_len) {
 
 int Rewriter::End() {
   if (!ended_ && !poisoned_) {
-    int ret = rewriter_end(raw);
+    int ret = rewriter_end(raw_);
     ended_ = true;
     return ret;
   } else {

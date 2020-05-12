@@ -55,8 +55,8 @@ class Rewriter {
   std::string output_;
   bool ended_;
   bool poisoned_;
-  C_CRewriterConfig* config_raw;
-  C_CRewriter* raw;
+  C_CRewriterConfig* config_raw_;
+  C_CRewriter* raw_;
 };
 
 class SpeedReader {
@@ -97,7 +97,7 @@ class SpeedReader {
                                          void* output_sink_user_data);
 
  private:
-  C_SpeedReader* raw;
+  C_SpeedReader* raw_;
 };
 
 }  // namespace speedreader

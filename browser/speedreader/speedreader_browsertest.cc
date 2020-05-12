@@ -27,7 +27,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
   SpeedReaderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndDisableFeature(speedreader::kBraveSpeedreader);
+    feature_list_.InitAndEnableFeature(speedreader::kBraveSpeedreader);
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
