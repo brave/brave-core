@@ -7,7 +7,7 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
-#if !defined(OS_LINUX)
+#if !defined(OS_LINUX) && !defined(OS_ANDROID)
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR \
   using ThemeService = BraveThemeService;
 #else

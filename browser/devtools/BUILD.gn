@@ -1,5 +1,5 @@
 source_set("devtools") {
-  if (!is_android) {
+  #if (!is_android) {
     sources = [
       "brave_devtools_ui_bindings.cc",
       "brave_devtools_ui_bindings.h",
@@ -12,5 +12,5 @@ source_set("devtools") {
       "//chrome/common",
       "//components/prefs",
     ]
-  }
+  #}
 }

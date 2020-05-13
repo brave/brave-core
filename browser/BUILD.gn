@@ -203,18 +203,21 @@ source_set("browser_process") {
       "//brave/components/brave_sync",
     ]
   }
+  deps += ["importer",]
 
+  sources += [
+    "brave_rewards/tip_dialog.cc",
+    "brave_rewards/tip_dialog.h",
+  ]
+
+  deps += ["infobars",]
   if (!is_android) {
     sources += [
-      "brave_rewards/tip_dialog.cc",
-      "brave_rewards/tip_dialog.h",
       "p3a/p3a_core_metrics.cc",
       "p3a/p3a_core_metrics.h",
     ]
 
     deps += [
-      "importer",
-      "infobars",
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {

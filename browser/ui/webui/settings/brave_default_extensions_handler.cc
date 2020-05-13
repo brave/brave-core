@@ -167,6 +167,7 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
 
 void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
     const base::ListValue* args) {
+#if !defined(OS_ANDROID)
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
   bool enabled;
@@ -187,6 +188,7 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
         hangouts_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
+#endif
 }
 
 bool BraveDefaultExtensionsHandler::IsExtensionInstalled(

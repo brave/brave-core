@@ -40,8 +40,10 @@ GreaselionServiceFactory::GreaselionServiceFactory()
           "GreaselionService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
+#if !defined(OS_ANDROID)
   DependsOn(
       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
+#endif
 }
 
 GreaselionServiceFactory::~GreaselionServiceFactory() = default;

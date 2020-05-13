@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
@@ -27,8 +26,11 @@ namespace extensions {
 
 BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
     : ExtensionManagement(profile),
-      extension_registry_observer_(this),
-      profile_(profile) {
+      extension_registry_observer_(this)
+#if BUILDFLAG(ENABLE_TOR)
+      ,profile_(profile)
+#endif
+      {
   extension_registry_observer_.Add(ExtensionRegistry::Get(
         static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(

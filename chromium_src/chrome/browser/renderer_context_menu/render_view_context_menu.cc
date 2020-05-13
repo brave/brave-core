@@ -55,11 +55,13 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+#if BUILDFLAG(ENABLE_TOR)
       profiles::SwitchToTorProfile(
           base::Bind(
               OnProfileCreated, params_.link_url,
               content::Referrer(
                 GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
+#endif
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
@@ -85,9 +87,9 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+int index = -1;
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
-  int index = -1;
   if (!tor::TorProfileService::IsTorDisabled() &&
       !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();

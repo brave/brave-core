@@ -12,7 +12,9 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
+#if !defined(OS_ANDROID)
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
+#endif
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 
 namespace extensions {
@@ -39,7 +41,9 @@ namespace extensions {
       // Please keep the list in alphabetical order.
       case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_REWARDS:
+#if !defined(OS_ANDROID)
       case IDR_BRAVE_SYNC_EXTENSION:
+#endif
       case IDR_BRAVE_WEBTORRENT:
         return true;
     }

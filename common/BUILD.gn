@@ -68,13 +68,13 @@ source_set("common") {
     "webui_url_constants.h",
   ]
 
-  if (!is_android) {
+  #if (!is_android) {
     sources += [
       "importer/chrome_importer_utils.cc",
       "importer/chrome_importer_utils.h",
       "importer/importer_constants.h",
     ]
-  }
+  #}
 
   if (enable_extensions) {
     sources += [
@@ -116,6 +116,12 @@ source_set("common") {
   if (is_win) {
     sources += [
       "importer/chrome_importer_utils_win.cc",
+    ]
+  }
+
+  if (is_android) {
+    sources += [
+      "importer/chrome_importer_utils_android.cc",
     ]
   }
 }

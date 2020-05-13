@@ -134,6 +134,7 @@ void BraveToolbarView::Init() {
                                          ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->Init();
 
+#if !defined(OS_ANDROID)
   // Speedreader.
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
   if (cmdline->HasSwitch(speedreader::kEnableSpeedreader)) {
@@ -142,15 +143,18 @@ void BraveToolbarView::Init() {
                                               ui::EF_MIDDLE_MOUSE_BUTTON);
     speedreader_->Init();
   }
+#endif
 
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImage();
 
+#if !defined(OS_ANDROID)
   if (speedreader_) {
     AddChildViewAt(speedreader_, GetIndexOf(location_bar_));
     speedreader_->UpdateImage();
   }
+#endif
 
   brave_initialized_ = true;
 }
@@ -175,8 +179,10 @@ void BraveToolbarView::OnThemeChanged() {
 
   if (display_mode_ == DisplayMode::NORMAL && bookmark_)
     bookmark_->UpdateImage();
+#if !defined(OS_ANDROID)
   if (display_mode_ == DisplayMode::NORMAL && speedreader_)
     speedreader_->UpdateImage();
+#endif
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -192,8 +198,10 @@ void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_)
     bookmark_->UpdateImage();
+#if !defined(OS_ANDROID)
   if (speedreader_)
     speedreader_->UpdateImage();
+#endif
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -203,11 +211,13 @@ void BraveToolbarView::Update(content::WebContents* tab) {
     bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                           edit_bookmarks_enabled_.GetValue());
   }
+#if !defined(OS_ANDROID)
   if (speedreader_) {
     // Note that we pass active web contents, not the |tab| which is something
     // different.
     speedreader_->Update(GetWebContents());
   }
+#endif
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
   auto* avatar_button = GetAvatarToolbarButton();

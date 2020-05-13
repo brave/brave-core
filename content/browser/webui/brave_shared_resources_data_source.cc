@@ -115,7 +115,9 @@ void BraveSharedResourcesDataSource::StartDataRequest(
     content::URLDataSource::GotDataCallback callback) {
   const std::string path = URLDataSource::URLToRequestPath(url);
   int idr = GetIdrForPath(path);
+#if !defined(OS_ANDROID)
   DCHECK_NE(-1, idr) << " path: " << path;
+#endif
   scoped_refptr<base::RefCountedMemory> bytes;
 
   // Cannot access GetContentClient() from here as that is //content/public

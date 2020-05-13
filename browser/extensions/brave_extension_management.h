@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_MANAGEMENT_H_
 
 #include "base/scoped_observer.h"
+#include "brave/browser/tor/buildflags.h"
 #include "chrome/browser/extensions/extension_management.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
@@ -34,8 +35,9 @@ class BraveExtensionManagement : public ExtensionManagement,
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
-
+#if BUILDFLAG(ENABLE_TOR)
   Profile* profile_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };
