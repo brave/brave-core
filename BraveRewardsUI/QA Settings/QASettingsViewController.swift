@@ -239,6 +239,9 @@ public class QASettingsViewController: TableViewController {
     guard let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
     let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
     let activity = UIActivityViewController(activityItems: [URL(fileURLWithPath: dbPath)], applicationActivities: nil)
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      activity.popoverPresentationController?.sourceView = view
+    }
     self.present(activity, animated: true)
   }
   
