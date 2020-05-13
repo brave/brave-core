@@ -30,7 +30,16 @@
     <color name="brave_set_default_dialog_text_color">@android:color/white</color>
 
     <color name="qr_button_color">@color/modern_grey_800</color>
+    <color name="shield_title_color">#F0F2FF</color>
+    <color name="shield_text_color">#F0F2FF</color>
+    <color name="shield_advanced_controls_color">#F0F2FF</color>
+
+
+    <color name="shield_bg_color">#17171F</color>
     <color name="shield_back_button_tint">#FF7654</color>
+
     <color name="shield_toggle_button_tint">#F0F2FF</color>
     <color name="shield_toggle_bg_color">#1E2029</color>
+    
+    <color name="shield_thank_you_icon_color">#F0F2FF</color>
 </resources>

@@ -12,7 +12,7 @@
     <FrameLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:background="@color/brave_sync_bg_color">
+	    android:background="@color/shield_bg_color">
 
 	    <LinearLayout
 			android:id="@+id/main_layout"
@@ -25,6 +25,7 @@
 		      	android:layout_width="match_parent"
 		      	android:layout_height="wrap_content"
 		      	android:layout_gravity="center"
+		      	android:gravity="center"
 		      	android:layout_marginTop="16dp"
 		      	android:layout_marginStart="24dp"
 				android:layout_marginEnd="24dp"
@@ -36,18 +37,18 @@
 				    android:layout_height="24dp"
 				    android:contentDescription="@null"
 				    android:layout_marginEnd="8dp"
-				    android:layout_gravity="center_vertical"
-				    android:src="@drawable/bat_verified"/>
+				    android:layout_gravity="center_vertical"/>
 
 			    <TextView
 				    android:id="@+id/site_text"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
-				    android:textSize="24sp"
+				    android:textSize="20sp"
 				    android:layout_gravity="center_vertical"
 				    android:singleLine="true"
         			android:ellipsize="end"
-				    android:textColor="@color/standard_mode_tint"/>
+        			android:fontFamily="sans-serif"
+				    android:textColor="@color/shield_title_color"/>
 
 			</LinearLayout>
 
@@ -56,8 +57,8 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:switchMinWidth="56dp"
-		        android:scaleX="2"
-		        android:scaleY="2"
+		        android:scaleX="2.2"
+		        android:scaleY="2.2"
 		        android:layout_marginTop="32dp"
 		        android:theme="@style/BraveSwitchTheme"
 		        android:gravity="center_horizontal"
@@ -70,7 +71,7 @@
 				android:layout_marginTop="16dp"
 				android:textSize="16sp"
 				android:gravity="center_horizontal"
-				android:textColor="@color/standard_mode_tint"/>
+				android:textColor="@color/shield_text_color"/>
 
 			<TextView
 				android:id="@+id/shield_down_text"
@@ -116,10 +117,11 @@
 				    android:id="@+id/site_block_count_text"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
-				    android:textSize="36sp"
+				    android:textSize="34sp"
 				    android:textStyle="bold"
-				    android:layout_marginEnd="8dp"
-				    android:textColor="@color/standard_mode_tint"/>
+				    android:layout_marginEnd="16dp"
+				    android:fontFamily="sans-serif"
+				    android:textColor="@color/shield_title_color"/>
 
 			    <TextView
 				    android:id="@+id/site_block_text"
@@ -127,7 +129,7 @@
 				    android:layout_height="wrap_content"
 				    android:textSize="14sp"
 				    android:layout_gravity="center_vertical"
-				    android:textColor="@color/standard_mode_tint"/>
+				    android:textColor="@color/shield_title_color"/>
 
 			</LinearLayout>
 
@@ -138,7 +140,10 @@
 				android:textSize="14sp"
 				android:gravity="center_horizontal"
 				android:textColor="@color/shield_secondary_color"
-				android:layout_margin="16dp"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="16dp"
+				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp"
 				android:text="@string/site_broken_text"/>
 
 			<include 

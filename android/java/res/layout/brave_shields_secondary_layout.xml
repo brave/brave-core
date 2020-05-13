@@ -16,8 +16,8 @@
 		android:id="@+id/brave_shields_text"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingStart="15dp"
-		android:paddingTop="5dp"
+		android:paddingStart="16dp"
+		android:paddingTop="16dp"
 		android:layout_marginTop="4dp"
 		android:layout_marginBottom="4dp"
 		android:singleLine="true"
@@ -25,7 +25,7 @@
 		android:textSize="16sp"
 		android:fontFamily="sans-serif"
 		android:textStyle="bold"
-		android:textColor="@color/standard_mode_tint" />
+		android:textColor="@color/shield_text_color" />
 
 	<include 
 		android:id="@+id/brave_shields_block_trackers_id"

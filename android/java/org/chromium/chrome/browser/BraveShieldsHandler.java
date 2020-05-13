@@ -353,7 +353,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mIconFetcher.retrieveLargeIcon(favicon_url,this);
 
         TextView mSiteText = mMainLayout.findViewById(R.id.site_text);
-        mSiteText.setText(mTitle);
+        mSiteText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)",""));
 
         Switch mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
@@ -368,9 +368,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         TextView mSiteBlockText = mMainLayout.findViewById(R.id.site_block_text);
         mSiteBlockText.setMovementMethod(LinkMovementMethod.getInstance());
-        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked) + " ";
+        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked)+"   ";
         SpannableString mSpannableString = new SpannableString(mBlockText);
-        ImageSpan mImageSpan = new ImageSpan(mContext, R.drawable.help);
+        ImageSpan mImageSpan = new ImageSpan(mContext, R.drawable.ic_help);
         mSpannableString.setSpan(mImageSpan, mBlockText.length() - 1, mBlockText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mSpannableString.setSpan(mClickableSpan, mSpannableString.getSpanStart(mImageSpan), mSpannableString.getSpanEnd(mImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mSiteBlockText.setText(mSpannableString);
@@ -392,17 +392,17 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         if(shouldShow) {
             mSecondaryLayout.setVisibility(View.VISIBLE);
             mBottomDivider.setVisibility(View.VISIBLE);
-            mToggleIcon.setImageResource(R.drawable.arrows_chevron_up);
+            mToggleIcon.setImageResource(R.drawable.ic_toggle_up);
         } else {
             mSecondaryLayout.setVisibility(View.GONE);
             mBottomDivider.setVisibility(View.GONE);
-            mToggleIcon.setImageResource(R.drawable.arrows_chevron_down);
+            mToggleIcon.setImageResource(R.drawable.ic_toggle_down);
         }
     }
 
     private void setUpSecondaryLayout() {
         TextView shieldsText = mSecondaryLayout.findViewById(R.id.brave_shields_text);
-        shieldsText.setText(mTitle);
+        shieldsText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)",""));
 
         setUpSwitchLayouts();
         setUpCookiesLayout();
@@ -462,7 +462,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             }
         });
         ImageView mCookiesIcon = mCookiesLayout.findViewById(R.id.toggle_favicon);
-        mCookiesIcon.setImageResource(R.drawable.chevron_right);
+        mCookiesIcon.setImageResource(R.drawable.ic_chevron_right);
         mCookiesIcon.setColorFilter(mContext.getResources().getColor(R.color.standard_mode_tint));
         TextView mCookiesText = mCookiesLayout.findViewById(R.id.toggle_text);
         mCookiesText.setText(R.string.block_cross_site_cookies);
@@ -501,7 +501,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             }
         });
         ImageView mFingerPrintingIcon = mFingerPrintingLayout.findViewById(R.id.toggle_favicon);
-        mFingerPrintingIcon.setImageResource(R.drawable.chevron_right);
+        mFingerPrintingIcon.setImageResource(R.drawable.ic_chevron_right);
         mFingerPrintingIcon.setColorFilter(mContext.getResources().getColor(R.color.standard_mode_tint));
         TextView mFingerPrintingText = mFingerPrintingLayout.findViewById(R.id.toggle_text);
         mFingerPrintingText.setText(R.string.block_cross_site_fingerprinting);

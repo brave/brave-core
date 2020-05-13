@@ -30,15 +30,16 @@
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
-		    android:textSize="16sp"
+		    android:textSize="14sp"
+		    android:fontFamily="sans-serif"
 		    android:layout_gravity="center_vertical"
-		    android:textColor="@color/standard_mode_tint"
+		    android:textColor="@color/shield_text_color"
 		    android:text="@string/advanced_controls"/>
 
 		<ImageView 
 	    	android:id="@+id/toggle_favicon"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+		    android:layout_width="24dp"
+		    android:layout_height="24dp"
 		    android:contentDescription="@null"
 		    android:layout_marginStart="8dp"
 		    android:layout_gravity="center_vertical"
