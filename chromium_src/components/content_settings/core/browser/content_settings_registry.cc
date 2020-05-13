@@ -66,8 +66,8 @@
              ContentSettingsInfo::INHERIT_IN_INCOGNITO,                        \
              ContentSettingsInfo::PERSISTENT,                                  \
              ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);  \
-    /* We need 62, 63, 64 for ContentSettingsTypes for Android tabs            \
-     * migration*/                                                             \
+    /* We need 62, 63, 64 for ContentSettingsTypes for Android tabs */         \
+    /* migration*/                                                             \
     /* We read only from these settings*/                                      \
     Register(                                                                  \
         static_cast<ContentSettingsType>(62), "desktop-view",                  \

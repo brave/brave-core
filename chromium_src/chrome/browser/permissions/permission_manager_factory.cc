@@ -30,7 +30,8 @@ BraveCreatePermissionContexts(Profile* profile) {
 }  // namespace
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
-#define GeolocationPermissionContextDelegate BraveGeolocationPermissionContextDelegate
+#define GeolocationPermissionContextDelegate \
+  BraveGeolocationPermissionContextDelegate
 #include "../../../../../chrome/browser/permissions/permission_manager_factory.cc"
 #undef GeolocationPermissionContextDelegate
 #undef BuildServiceInstanceFor
