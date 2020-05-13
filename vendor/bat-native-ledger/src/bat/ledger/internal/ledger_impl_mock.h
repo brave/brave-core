@@ -362,9 +362,9 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD3(OnContributeUnverifiedPublishers,
       void(ledger::Result, const std::string&, const std::string&));
 
-  MOCK_METHOD1(SavePublisherProcessed, void(const std::string&));
-
-  MOCK_METHOD1(WasPublisherAlreadyProcessed, bool(const std::string&));
+  MOCK_METHOD2(WasPublisherProcessed, void(
+      const std::string&,
+      ledger::ResultCallback));
 
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 

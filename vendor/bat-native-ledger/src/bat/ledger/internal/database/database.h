@@ -29,6 +29,7 @@ class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
 class DatabaseMultiTables;
 class DatabasePendingContribution;
+class DatabaseProcessedPublisher;
 class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
@@ -221,6 +222,17 @@ class Database {
   void RemoveAllPendingContributions(ledger::ResultCallback callback);
 
   /**
+   * PROCESSED PUBLISHER
+   */
+  void SaveProcessedPublisherList(
+      const std::vector<std::string>& list,
+      ledger::ResultCallback callback);
+
+  void WasPublisherProcessed(
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
+
+  /**
    * PROMOTION
    */
   void SavePromotion(
@@ -385,6 +397,7 @@ class Database {
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabaseCredsBatch> creds_batch_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
+  std::unique_ptr<DatabaseProcessedPublisher> processed_publisher_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabaseMultiTables> multi_tables_;

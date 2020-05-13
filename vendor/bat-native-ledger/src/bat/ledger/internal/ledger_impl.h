@@ -419,9 +419,9 @@ class LedgerImpl : public ledger::Ledger {
                                         const std::string& publisher_key = "",
                                         const std::string& publisher_name = "");
 
-  void SavePublisherProcessed(const std::string& publisher_key);
-
-  bool WasPublisherAlreadyProcessed(const std::string& publisher_key);
+  void WasPublisherProcessed(
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
@@ -739,6 +739,10 @@ class LedgerImpl : public ledger::Ledger {
 
   void SaveBalanceReportInfoList(
       ledger::BalanceReportInfoList list,
+      ledger::ResultCallback callback);
+
+  void SaveProcessedPublisherList(
+      const std::vector<std::string>& list,
       ledger::ResultCallback callback);
 
  private:

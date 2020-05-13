@@ -34,6 +34,16 @@ class Unverified {
   void OnTimer(uint32_t timer_id);
 
  private:
+  void WasPublisherProcessed(
+      const ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& name);
+
+  void ProcessedPublisherSaved(
+      const ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& name);
+
   void OnRemovePendingContribution(ledger::Result result);
 
   void OnContributeUnverifiedBalance(

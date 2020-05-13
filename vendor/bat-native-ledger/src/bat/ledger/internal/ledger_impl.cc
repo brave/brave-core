@@ -1232,14 +1232,10 @@ void LedgerImpl::OnContributeUnverifiedPublishers(
                                                    publisher_name);
 }
 
-void LedgerImpl::SavePublisherProcessed(const std::string& publisher_key) {
-  // TODO(nejc): implement
-}
-
-bool LedgerImpl::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) {
-  // TODO(nejc): implement
-  return false;
+void LedgerImpl::WasPublisherProcessed(
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  bat_database_->WasPublisherProcessed(publisher_key, callback);
 }
 
 void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
@@ -1789,6 +1785,12 @@ void LedgerImpl::SaveBalanceReportInfoList(
     ledger::BalanceReportInfoList list,
     ledger::ResultCallback callback) {
   bat_database_->SaveBalanceReportInfoList(std::move(list), callback);
+}
+
+void LedgerImpl::SaveProcessedPublisherList(
+    const std::vector<std::string>& list,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveProcessedPublisherList(list, callback);
 }
 
 }  // namespace bat_ledger

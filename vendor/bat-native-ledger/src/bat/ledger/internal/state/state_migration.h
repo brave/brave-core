@@ -37,7 +37,13 @@ class StateMigration {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  void OnBalanceReportsSaved(
+  void BalanceReportsSaved(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
+  void SaveProcessedPublishers(ledger::ResultCallback callback);
+
+  void ProcessedPublisherSaved(
       const ledger::Result result,
       ledger::ResultCallback callback);
 

@@ -88,13 +88,13 @@ void Unverified::OnContributeUnverifiedPublishers(
     return;
   }
 
-  if (!ledger_->WasPublisherAlreadyProcessed(current->publisher_key)) {
-    ledger_->OnContributeUnverifiedPublishers(
-        ledger::Result::VERIFIED_PUBLISHER,
-        current->publisher_key,
-        current->name);
-    ledger_->SavePublisherProcessed(current->publisher_key);
-  }
+  auto get_callback = std::bind(&Unverified::WasPublisherProcessed,
+      this,
+      _1,
+      current->publisher_key,
+      current->name);
+
+  ledger_->WasPublisherProcessed(current->publisher_key, get_callback);
 
   // Trigger contribution
   if (balance >= current->amount) {
@@ -127,6 +127,38 @@ void Unverified::OnContributeUnverifiedPublishers(
     ledger_->OnContributeUnverifiedPublishers(
         ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
   }
+}
+
+void Unverified::WasPublisherProcessed(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    const std::string& name) {
+  if (result == ledger::Result::LEDGER_ERROR) {
+    BLOG(0, "Coudn't get processed data");
+    return;
+  }
+
+  if (result == ledger::Result::LEDGER_OK) {
+    // Nothing to do here as publisher was already processed
+    return;
+  }
+
+  auto save_callback = std::bind(&Unverified::ProcessedPublisherSaved,
+      this,
+      _1,
+      publisher_key,
+      name);
+  ledger_->SaveProcessedPublisherList({publisher_key}, save_callback);
+}
+
+void Unverified::ProcessedPublisherSaved(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    const std::string& name) {
+  ledger_->OnContributeUnverifiedPublishers(
+      ledger::Result::VERIFIED_PUBLISHER,
+      publisher_key,
+      name);
 }
 
 void Unverified::OnRemovePendingContribution(

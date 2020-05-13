@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_multi_tables.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
+#include "bat/ledger/internal/database/database_processed_publisher.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
@@ -41,6 +42,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
+  processed_publisher_ = std::make_unique<DatabaseProcessedPublisher>(ledger_);
   promotion_ = std::make_unique<DatabasePromotion>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
@@ -323,6 +325,21 @@ void Database::RemovePendingContribution(
 
 void Database::RemoveAllPendingContributions(ledger::ResultCallback callback) {
   pending_contribution_->DeleteAllRecords(callback);
+}
+
+/**
+ * PROCESSED PUBLISHER
+ */
+void Database::SaveProcessedPublisherList(
+    const std::vector<std::string>& list,
+    ledger::ResultCallback callback) {
+  processed_publisher_->InsertOrUpdateList(list, callback);
+}
+
+void Database::WasPublisherProcessed(
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  processed_publisher_->WasProcessed(publisher_key, callback);
 }
 
 /**

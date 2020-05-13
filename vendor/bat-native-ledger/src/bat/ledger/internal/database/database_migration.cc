@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_migration.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
+#include "bat/ledger/internal/database/database_processed_publisher.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
@@ -39,6 +40,8 @@ DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
   media_publisher_info_ = std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
+  processed_publisher_ =
+      std::make_unique<DatabaseProcessedPublisher>(ledger_);
   promotion_ = std::make_unique<DatabasePromotion>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
@@ -119,6 +122,10 @@ bool DatabaseMigration::Migrate(
     return false;
   }
   if (!pending_contribution_->Migrate(transaction, target)) {
+    return false;
+  }
+
+  if (!processed_publisher_->Migrate(transaction, target)) {
     return false;
   }
 
