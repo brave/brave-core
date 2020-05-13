@@ -10,10 +10,11 @@
 #include "ui/native_theme/native_theme.h"
 
 #define GetInstanceForNativeUi BraveGetInstanceForNativeUi
-#define IDR_DEFAULT_FAVICON_32 IDR_DEFAULT_FAVICON
-#define IDR_DEFAULT_FAVICON_64 IDR_DEFAULT_FAVICON
-#define IDR_DEFAULT_FAVICON_DARK_32 IDR_DEFAULT_FAVICON_DARK
-#define IDR_DEFAULT_FAVICON_DARK_64 IDR_DEFAULT_FAVICON_DARK
+//#define IDR_DEFAULT_FAVICON_32 IDR_DEFAULT_FAVICON
+//#define IDR_DEFAULT_FAVICON_64 IDR_DEFAULT_FAVICON
+//#define IDR_DEFAULT_FAVICON_DARK_32 IDR_DEFAULT_FAVICON_DARK
+//#define IDR_DEFAULT_FAVICON_DARK_64 IDR_DEFAULT_FAVICON_DARK
+#endif  // #if defined(OS_ANDROID)
 // FaviconSource was excluded from Android builds
 // https://chromium.googlesource.com/chromium/src/+/2ad1441f59880e901664277108e4a490f4b6ea88
 // But it is still used for icons in rewards webui, including Android page.
@@ -66,7 +67,6 @@ class InstantService {
     return false;
   }
 };
-#endif  // #if defined(OS_ANDROID)
 
 #include "../../../../../../chrome/browser/ui/webui/favicon_source.cc"
 

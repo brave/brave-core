@@ -39,7 +39,9 @@ void NewOffTheRecordWindowTor(Browser* browser) {
     return;
   }
 
+#if !defined(OS_ANDROID)
   profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
+#endif
 }
 
 void NewTorConnectionForSite(Browser* browser) {

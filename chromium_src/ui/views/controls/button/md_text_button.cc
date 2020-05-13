@@ -88,6 +88,7 @@ SkPath BraveTextButton::GetHighlightPath() const {
 
 void BraveTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   // Set brave-style hover colors
+#if !defined(OS_ANDROID)
   LabelButton::OnPaintBackground(canvas);
   if (GetProminent() && (
         hover_animation().is_animating() || state() == STATE_HOVERED)) {
@@ -103,6 +104,7 @@ void BraveTextButton::OnPaintBackground(gfx::Canvas* canvas) {
     canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()),
         GetCornerRadius(), flags);
   }
+#endif
 }
 
 std::unique_ptr<InkDrop> BraveTextButton::CreateInkDrop() {

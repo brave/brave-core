@@ -38,7 +38,7 @@ source_set("ui") {
     "webui/brave_webui_source.h",
   ]
 
-  if (!is_android) {
+  #if (!is_android) {
     sources += [
       "brave_browser_command_controller.cc",
       "brave_browser_command_controller.h",
@@ -51,14 +51,6 @@ source_set("ui") {
       "brave_view_ids.h",
       "browser_commands.cc",
       "browser_commands.h",
-      "content_settings/brave_autoplay_blocked_image_model.cc",
-      "content_settings/brave_autoplay_blocked_image_model.h",
-      "content_settings/brave_autoplay_content_setting_bubble_model.cc",
-      "content_settings/brave_autoplay_content_setting_bubble_model.h",
-      "content_settings/brave_content_setting_bubble_model.cc",
-      "content_settings/brave_content_setting_bubble_model.h",
-      "content_settings/brave_content_setting_image_models.cc",
-      "content_settings/brave_content_setting_image_models.h",
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "tabs/brave_tab_menu_model.cc",
@@ -102,9 +94,9 @@ source_set("ui") {
         "webui/settings/brave_relaunch_handler_mac.mm",
       ]
     }
-  }
+  #}
 
-  if (toolkit_views) {
+  if (is_android || toolkit_views) {
     sources += [
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
@@ -145,7 +137,7 @@ source_set("ui") {
     }
   }
 
-  if (is_win || is_mac || is_desktop_linux) {
+  if (is_android || is_win || is_mac || is_desktop_linux) {
     sources += [
       "views/profiles/brave_incognito_menu_view.cc",
       "views/profiles/brave_incognito_menu_view.h",
@@ -246,7 +238,7 @@ source_set("ui") {
     ]
   }
 
-  if (enable_extensions && toolkit_views) {
+  if (is_android || enable_extensions && toolkit_views) {
     sources += [
       "brave_actions/brave_action_icon_with_badge_image_source.cc",
       "brave_actions/brave_action_icon_with_badge_image_source.h",

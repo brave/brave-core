@@ -67,7 +67,7 @@ source_set("common") {
     "webui_url_constants.h",
   ]
 
-  if (!is_android && !is_ios) {
+  if (!is_ios) {
     deps += [
       "//brave/common/importer",
     ]
@@ -111,6 +111,12 @@ source_set("common") {
 
     deps += [
       "//content/public/common",
+    ]
+  }
+
+  if (is_android) {
+    sources += [
+      "importer/chrome_importer_utils_android.cc",
     ]
   }
 }
