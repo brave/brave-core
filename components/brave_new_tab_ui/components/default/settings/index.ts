@@ -1,32 +1,168 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled, { css } from 'styled-components'
+import styled, { css } from 'brave-ui/theme'
 
 interface Props {
   textDirection: string
 }
 
 export const SettingsMenu = styled<Props, 'div'>('div')`
-  bottom: 48px;
-  width: auto;
-  position: absolute;
+  width: 680px;
   ${p => p.textDirection && (p.textDirection === 'rtl') ? `left: 12px` : `right: 12px`}
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
   border-radius: 8px;
-  padding: 24px 24px 17px 24px;
+  padding: 24px;
   box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24);
   font-family: ${p => p.theme.fontFamily.body};
 `
 
+export const SettingsContent = styled<{}, 'div'>('div')`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 40px;
+`
+
+export const SettingsSidebar = styled<{}, 'aside'>('aside')`
+  position: relative;
+  /* normalize against SettingsMenu default padding */
+  margin-left: -24px;
+  padding-left: 24px;
+`
+
+interface SettingsSidebarActiveButtonSliderProps {
+  translateTo: number
+}
+
+export const SettingsSidebarActiveButtonSlider =
+  styled<SettingsSidebarActiveButtonSliderProps, 'div'>('div')`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 48px;
+  width: 4px;
+  background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+  transform: translateY(${p => p.translateTo * 48}px);
+  transition-delay: 0.05s;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in;
+  transition-property: transform;
+`
+interface SettingsSidebarSVGContentProps {
+  src: string
+}
+
+export const SettingsSidebarSVGContent = styled<SettingsSidebarSVGContentProps, 'div'>('div')`
+  width: 20px;
+  height: 20px;
+  background: ${p => p.theme.palette.grey800};
+  -webkit-mask-image: url(${p => p.src});
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+`
+
+export const SettingsSidebarButtonText = styled<{}, 'span'>('span')`
+  margin-left: 16px;
+  font-weight: 500;
+  font-size: 13px;
+  font-family: ${p => p.theme.fontFamily.heading};
+  color: ${p => p.theme.palette.grey800};
+  position: relative;
+
+  &:hover {
+    color: ${p => p.theme.color.brandBrave};
+  }
+`
+interface SettingsSidebarButtonProps {
+  activeTab: boolean
+}
+
+export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'>('button')`
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 220px;
+  height: 48px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    ${SettingsSidebarSVGContent} {
+      background: ${p => p.theme.color.brandBrave};
+    }
+    ${SettingsSidebarButtonText} {
+      color: ${p => p.theme.color.brandBrave};
+    }
+  }
+
+  ${SettingsSidebarSVGContent} {
+    ${p => p.activeTab && css`
+      background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    `}
+  }
+
+  ${SettingsSidebarButtonText} {
+    // Gradientify text
+    ${p => p.activeTab && css`
+      background: ${p => p.theme.color.panelBackground};
+    `}
+
+    // Gradientify text part 2
+    &::before {
+      ${p => p.activeTab && css`
+        mix-blend-mode: screen;
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: linear 0.3s background-image;
+        background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+      `}
+    }
+`
+
+export const SettingsFeatureBody = styled<{}, 'section'>('section')`
+  padding: 10px 16px 0;
+`
+
 export const SettingsTitle = styled<{}, 'div'>('div')`
-  font-family: ${p => p.theme.fontFamily.body};
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: 0px;
   margin-bottom: 17px;
+  grid-template-columns: 1fr 20px;
+  display: grid;
+  align-items: center;
+
+  h1 {
+    font-family: ${p => p.theme.fontFamily.heading};
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0.02em;
+    color: ${p => p.theme.color.neutral900};
+  }
+`
+
+export const SettingsCloseIcon = styled<{}, 'button'>('button')`
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 `
 
 interface SettingsRowProps {
@@ -37,11 +173,11 @@ export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 36px;
-  margin-top: 10px;
-  height: 30px;
-  width: 320px;
+  align-items: center;
+  width: 100%;
+  height: 28px;
   ${p => p.isChildSetting && css`
-    padding-left: 15px;
+    padding-left: 36px;
   `}
 `
 
@@ -57,9 +193,15 @@ interface SettingsWrapperProps {
 }
 
 export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;

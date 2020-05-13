@@ -1,0 +1,7 @@
+<!--
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none'> <path fill='#5E6175' fillRule='evenodd' d='M1.875 10a8.125 8.125 0 1016.25 0 8.125 8.125 0 00-16.25 0zm14.896 0a6.77 6.77 0 11-13.542 0 6.77 6.77 0 0113.542 0zm-5.688 0a1.256 1.256 0 00-.458-.458V6.875a.625.625 0 10-1.25 0v2.667a1.25 1.25 0 101.708 1.708h3.292a.625.625 0 100-1.25h-3.292z' clipRule='evenodd'/></svg>

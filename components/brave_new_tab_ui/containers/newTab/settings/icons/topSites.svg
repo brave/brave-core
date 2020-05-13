@@ -1,0 +1,7 @@
+<!--
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'><path fill='#5E6175' fillRule='evenodd' d='M14.667 15.333H1.333A1.335 1.335 0 010 14V2C0 1.265.598.667 1.333.667h13.334C15.402.667 16 1.265 16 2v12c0 .735-.598 1.333-1.333 1.333zM1.333 14h13.332l.001-9.333H1.333V14zm0-12v1.333h13.334V2H1.333zm11.334 8h-4a.666.666 0 110-1.333h4a.666.666 0 110 1.333zm0-2h-4a.666.666 0 110-1.333h4a.667.667 0 010 1.333zM6 12H3.333a.667.667 0 01-.666-.667v-4c0-.368.298-.666.666-.666H6c.368 0 .667.298.667.666v4A.667.667 0 016 12zm-.667-4H4v2.667h1.333V8zm3.334 2.667H10A.667.667 0 1110 12H8.667a.667.667 0 010-1.333z' clipRule='evenodd'/></svg>

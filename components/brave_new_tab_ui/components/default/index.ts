@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { StatsContainer, StatsItem } from './stats'
-import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from './settings'
+export * from './settings'
 import { ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './gridSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { ClockWidget } from './clock'
@@ -27,11 +27,6 @@ export {
   SiteRemovalText,
   SiteRemovalAction,
   ClockWidget,
-  SettingsMenu,
-  SettingsRow,
-  SettingsText,
-  SettingsTitle,
-  SettingsWrapper,
   RewardsWidget,
   BinanceWidget,
   TogetherWidget,

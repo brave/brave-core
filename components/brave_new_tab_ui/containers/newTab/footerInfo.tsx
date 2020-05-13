@@ -5,73 +5,42 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
+import {
+  Link,
+  Navigation,
+  IconButton,
+  IconButtonContainer,
+  IconButtonSideText,
+  IconLink,
+  PhotoName
+} from '../../components/default'
 import * as S from '../../components/default/page'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
+import {
+  SettingsIcon,
+  SettingsAdvancedIcon,
+  BookmarkBook,
+  HistoryIcon
+} from 'brave-ui/components/icons'
 
 // Helpers
 import { getLocale } from '../../../common/locale'
-import Settings from './settings'
 
 interface Props {
   textDirection: string
-  onClickOutside: () => void
+  onClickSettings: (event: React.MouseEvent<HTMLButtonElement>) => void
   backgroundImageInfo: any
-  onClickSettings: () => void
-  showSettingsMenu: boolean
   showPhotoInfo: boolean
-  toggleShowBackgroundImage: () => void
-  toggleShowClock: () => void
-  toggleShowStats: () => void
-  toggleShowTopSites: () => void
-  toggleShowRewards: () => void
-  toggleShowTogether: () => void
-  toggleShowBinance: () => void
-  toggleBrandedWallpaperOptIn: () => void
-  showBackgroundImage: boolean
-  showClock: boolean
-  showStats: boolean
-  showTopSites: boolean
-  showRewards: boolean
-  showTogether: boolean
-  showBinance: boolean
-  brandedWallpaperOptIn: boolean
-  allowSponsoredWallpaperUI: boolean
-  binanceSupported: boolean
-  togetherSupported: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
-
   render () {
     const {
       textDirection,
-      backgroundImageInfo,
       onClickSettings,
-      showSettingsMenu,
-      showPhotoInfo,
-      onClickOutside,
-      toggleShowBackgroundImage,
-      toggleShowClock,
-      toggleShowStats,
-      toggleShowTopSites,
-      toggleBrandedWallpaperOptIn,
-      showBackgroundImage,
-      showClock,
-      showStats,
-      showTopSites,
-      brandedWallpaperOptIn,
-      allowSponsoredWallpaperUI,
-      toggleShowRewards,
-      showRewards,
-      toggleShowTogether,
-      showTogether,
-      toggleShowBinance,
-      showBinance,
-      binanceSupported,
-      togetherSupported
+      backgroundImageInfo,
+      showPhotoInfo
     } = this.props
 
     return (
@@ -86,33 +55,21 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             </PhotoName>
           </S.GridItemCredits>
         }
+        {
+          <S.GridItemNavigationBraveToday>
+            ⬇🟢⬇🟢⬇🟢⬇🟢⬇🟢 scroll to see more ⬇🟢⬇🟢⬇🟢⬇🟢⬇🟢
+          </S.GridItemNavigationBraveToday>
+        }
         <S.GridItemNavigation>
           <Navigation>
-            <Settings
-              textDirection={textDirection}
-              showSettingsMenu={showSettingsMenu}
-              onClickOutside={onClickOutside}
-              onClick={onClickSettings}
-              toggleShowBackgroundImage={toggleShowBackgroundImage}
-              toggleShowClock={toggleShowClock}
-              toggleShowStats={toggleShowStats}
-              toggleShowTopSites={toggleShowTopSites}
-              toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
-              showBackgroundImage={showBackgroundImage}
-              showClock={showClock}
-              showStats={showStats}
-              showTopSites={showTopSites}
-              brandedWallpaperOptIn={brandedWallpaperOptIn}
-              allowSponsoredWallpaperUI={allowSponsoredWallpaperUI}
-              toggleShowRewards={toggleShowRewards}
-              showRewards={showRewards}
-              toggleShowTogether={toggleShowTogether}
-              showTogether={showTogether}
-              toggleShowBinance={toggleShowBinance}
-              showBinance={showBinance}
-              binanceSupported={binanceSupported}
-              togetherSupported={togetherSupported}
-            />
+            <IconButtonContainer textDirection={textDirection}>
+              <IconButtonSideText textDirection={textDirection}>
+                <IconButton onClick={onClickSettings}>
+                  <SettingsIcon />
+                </IconButton>
+                {getLocale('customize')}
+              </IconButtonSideText>
+            </IconButtonContainer>
             <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
               <SettingsAdvancedIcon />
             </IconLink>
