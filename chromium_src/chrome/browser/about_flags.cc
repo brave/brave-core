@@ -21,6 +21,7 @@ using brave_sync::features::kBraveSync;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
+using speedreader::kSpeedreaderFeature;
 
 #define BRAVE_FEATURE_ENTRIES \
     {"use-dev-updater-url",                                                \
@@ -42,7 +43,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     {"brave-speedreader",                                                  \
      flag_descriptions::kBraveSpeedreaderName,                             \
      flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,          \
-     FEATURE_VALUE_TYPE(speedreader::kBraveSpeedreader)},                  \
+     FEATURE_VALUE_TYPE(kSpeedreaderFeature)},                             \
     {"brave-sync",                                                         \
      flag_descriptions::kBraveSyncName,                                    \
      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \

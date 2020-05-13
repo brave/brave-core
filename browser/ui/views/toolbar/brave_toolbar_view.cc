@@ -135,7 +135,7 @@ void BraveToolbarView::Init() {
   bookmark_->Init();
 
   // Speedreader.
-  if (base::FeatureList::IsEnabled(speedreader::kBraveSpeedreader)) {
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
     speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                               ui::EF_MIDDLE_MOUSE_BUTTON);

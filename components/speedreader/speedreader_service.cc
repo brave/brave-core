@@ -19,20 +19,20 @@ SpeedreaderService::~SpeedreaderService() {}
 
 // static
 void SpeedreaderService::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kSpeedreaderEnabled, false);
+  registry->RegisterBooleanPref(kSpeedreaderPrefEnabled, false);
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
-  const bool enabled = prefs_->GetBoolean(kSpeedreaderEnabled);
-  prefs_->SetBoolean(kSpeedreaderEnabled, !enabled);
+  const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
+  prefs_->SetBoolean(kSpeedreaderPrefEnabled, !enabled);
 }
 
 bool SpeedreaderService::IsEnabled() {
-  if (!base::FeatureList::IsEnabled(kBraveSpeedreader)) {
+  if (!base::FeatureList::IsEnabled(kSpeedreaderFeature)) {
     return false;
   }
 
-  return prefs_->GetBoolean(kSpeedreaderEnabled);
+  return prefs_->GetBoolean(kSpeedreaderPrefEnabled);
 }
 
 }  // namespace speedreader

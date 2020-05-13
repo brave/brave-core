@@ -9,8 +9,7 @@
 
 namespace speedreader {
 
-const base::Feature kBraveSpeedreader{
-    "Speedreader",
-    base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kSpeedreaderFeature{"Speedreader",
+                                        base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace speedreader
