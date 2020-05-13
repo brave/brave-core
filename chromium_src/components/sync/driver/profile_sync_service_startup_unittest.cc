@@ -8,14 +8,17 @@ const char sync_code[] =
     "proud cabbage fee slow economy wage final fox cancel";
 }  // namespace
 
-#define BRAVE_PROFILE_SYNC_SERVICE_STARTUP_TEST_ \
-  void SetUp() override {                        \
-    testing::Test::SetUp();                      \
-    OSCryptMocker::SetUp();                      \
-  }                                              \
-  void TearDown() override {                     \
-    OSCryptMocker::TearDown();                   \
-    testing::Test::TearDown();                   \
+#define BRAVE_PROFILE_SYNC_SERVICE_STARTUP_TEST_      \
+  void SetUp() override {                             \
+    testing::Test::SetUp();                           \
+    OSCryptMocker::SetUp();                           \
+    brave_sync::Prefs brave_sync_prefs(               \
+        profile_sync_service_bundle_.pref_service()); \
+    brave_sync_prefs.SetSyncV1Migrated(true);         \
+  }                                                   \
+  void TearDown() override {                          \
+    OSCryptMocker::TearDown();                        \
+    testing::Test::TearDown();                        \
   }
 
 #define BRAVE_SIMULATE_TEST_USER_SIGNIN             \
