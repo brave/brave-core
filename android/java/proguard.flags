@@ -9,3 +9,5 @@
     <methods>;
 }
 -keepattributes JavascriptInterface
+
+-keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
