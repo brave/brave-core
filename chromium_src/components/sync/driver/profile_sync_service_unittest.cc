@@ -30,7 +30,10 @@ const char account_id[] =
 #define ShouldProvideDisableReasonsAfterShutdown \
   DISABLED_ShouldProvideDisableReasonsAfterShutdown
 
-#define BRAVE_SET_UP OSCryptMocker::SetUp();
+#define BRAVE_SET_UP                           \
+  OSCryptMocker::SetUp();                      \
+  brave_sync::Prefs brave_sync_prefs(prefs()); \
+  brave_sync_prefs.SetSyncV1Migrated(true);
 #define BRAVE_TEAR_DOWN OSCryptMocker::TearDown();
 #define BRAVE_SIGN_IN                          \
   brave_sync::Prefs brave_sync_prefs(prefs()); \
