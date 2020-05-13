@@ -41,17 +41,17 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     private static final String NEUTRAL = "neutral";
 
     private String mUserSelection;
-	private boolean mIsFeedbackShown;
+    private boolean mIsFeedbackShown;
     private boolean mIsSuccessShown;
     private boolean mIsFromSettings;
 
-	private TextView mRateTitleTextView;
+    private TextView mRateTitleTextView;
     private TextView mFeedbackTitleTextView;
     private ImageButton mHappyImageButton;
     private ImageButton mNeutralImageButton;
     private ImageButton mSadImageButton;
-	private EditText mRateFeedbackEditText;
-	private Button mPositiveButton;
+    private EditText mRateFeedbackEditText;
+    private Button mPositiveButton;
     private Button mNegativeButton;
     private Button mRateButton;
     private Button mLaterButton;
