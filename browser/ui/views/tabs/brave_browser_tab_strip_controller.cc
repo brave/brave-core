@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 
+#include <utility>
+
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"

@@ -10,9 +10,10 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 // In components/cdm/renderer/android_key_systems.h the declaration of
-// AddAndroidWidevine is guarded by ENABLE_WIDEVINE, but in content_renderer_client_impl below
-// it is used without a guard. Instead of patching we can add an empty
-// definition of the same function here for when ENABLE_WIDEVINE is not true.
+// AddAndroidWidevine is guarded by ENABLE_WIDEVINE, but in
+// content_renderer_client_impl below it is used without a guard. Instead of
+// patching we can add an empty definition of the same function here for when
+// ENABLE_WIDEVINE is not true.
 
 #if !BUILDFLAG(ENABLE_WIDEVINE)
 namespace cdm {
