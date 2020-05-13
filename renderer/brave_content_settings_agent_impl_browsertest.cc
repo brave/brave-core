@@ -31,6 +31,13 @@ namespace {
 
 const char kIframeID[] = "test";
 
+const char kPointInPathScript[] =
+    "var canvas = document.createElement('canvas');"
+    "var ctx = canvas.getContext('2d');"
+    "ctx.rect(10, 10, 100, 100);"
+    "ctx.stroke();"
+    "domAutomationController.send(ctx.isPointInPath(10, 10));";
+
 const char kGetImageDataScript[] =
     "var adder = (a, x) => a + x;"
     "var canvas = document.createElement('canvas');"
@@ -59,8 +66,7 @@ const char kCookieScript[] =
 const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
 
-const char kTitleScript[] =
-  "domAutomationController.send(document.title);";
+const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 }  // namespace
 
@@ -485,6 +491,61 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
   EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
+                       CanvasIsPointInPath) {
+  bool isPointInPath;
+
+  // Farbling level: maximum
+  // Canvas isPointInPath(): blocked
+  BlockFingerprinting();
+  NavigateToPageWithIframe();
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_FALSE(isPointInPath);
+  NavigateIframe(cross_site_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_FALSE(isPointInPath);
+
+  // Farbling level: balanced (default)
+  // Canvas isPointInPath(): allowed
+  SetFingerprintingDefault();
+  NavigateToPageWithIframe();
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
+  NavigateIframe(cross_site_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
+
+  // Farbling level: off
+  // Canvas isPointInPath(): allowed
+  AllowFingerprinting();
+  NavigateToPageWithIframe();
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
+  NavigateIframe(cross_site_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
+
+  // Shields: down
+  // Canvas isPointInPath(): allowed
+  BlockFingerprinting();
+  ShieldsDown();
+  AllowFingerprinting();
+  NavigateToPageWithIframe();
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
+  NavigateIframe(cross_site_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
+                                          &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

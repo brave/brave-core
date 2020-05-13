@@ -1,8 +1,22 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index b4b6ae1e108614dfb2e20eb51922cd98efdd6ae5..321bdc99bf9eb74e9fdc64634ff17f5e9d0ea459 100644
+index b4b6ae1e108614dfb2e20eb51922cd98efdd6ae5..bc25aef7b3aa38b39a0a264978073bb04258cf28 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-@@ -126,7 +126,7 @@ interface CanvasRenderingContext2D {
+@@ -103,9 +103,13 @@ interface CanvasRenderingContext2D {
+     [RuntimeEnabled=Canvas2dScrollPathIntoView] void scrollPathIntoView(optional Path2D path);
+     void clip(optional CanvasFillRule winding);
+     void clip(Path2D path, optional CanvasFillRule winding);
++    [CallWith=ScriptState]
+     boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState]
+     boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState]
+     boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState]
+     boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+ 
+     // text (see also the CanvasDrawingStyles interface)
+@@ -126,7 +130,7 @@ interface CanvasRenderingContext2D {
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
