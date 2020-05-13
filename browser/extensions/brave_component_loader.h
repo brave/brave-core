@@ -51,9 +51,11 @@ class BraveComponentLoader : public ComponentLoader {
     const std::string& manifest);
   void AddExtension(const std::string& id,
       const std::string& name, const std::string& public_key);
+#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
   // ForceAddHangoutServicesExtension ignores whether or not a preference for
   // hangouts is set.  If the buildflag is not set, it won't add though.
   void ForceAddHangoutServicesExtension();
+#endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
  private:
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)

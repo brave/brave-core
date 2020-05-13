@@ -13,10 +13,15 @@ class BraveBrowserMainExtraPartsProfiles
  public:
   BraveBrowserMainExtraPartsProfiles() = default;
   ~BraveBrowserMainExtraPartsProfiles() override = default;
-
+#if !defined(OS_ANDROID)
   static void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     ChromeBrowserMainExtraPartsProfiles::
         EnsureBrowserContextKeyedServiceFactoriesBuilt();
+#else
+  static void EnsureBrowserContextKeyedServiceFactoriesBuilt(bool full_init) {
+    ChromeBrowserMainExtraPartsProfiles::
+        EnsureBrowserContextKeyedServiceFactoriesBuilt(full_init);
+#endif
     brave::EnsureBrowserContextKeyedServiceFactoriesBuilt();
   }
 

@@ -182,22 +182,32 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ShowWebcompatReporter(browser_);
       break;
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
+#if !defined(OS_ANDROID)
       brave::NewOffTheRecordWindowTor(browser_);
+#endif
       break;
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
+  #if !defined(OS_ANDROID)
       brave::NewTorConnectionForSite(browser_);
+  #endif
       break;
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(browser_);
       break;
     case IDC_ADD_NEW_PROFILE:
+#if !defined(OS_ANDROID)
       brave::AddNewProfile();
+#endif
       break;
     case IDC_OPEN_GUEST_PROFILE:
+#if !defined(OS_ANDROID)
       brave::OpenGuestProfile();
+#endif
       break;
     case IDC_TOGGLE_SPEEDREADER:
+#if !defined(OS_ANDROID)
       brave::ToggleSpeedreader(browser_);
+#endif
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

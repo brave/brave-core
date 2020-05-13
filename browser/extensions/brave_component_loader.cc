@@ -77,6 +77,7 @@ void BraveComponentLoader::AddExtension(const std::string& extension_id,
         base::Unretained(this), extension_id, true));
 }
 
+#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 void BraveComponentLoader::AddHangoutServicesExtension() {
   if (!profile_prefs_->FindPreference(kHangoutsEnabled) ||
       profile_prefs_->GetBoolean(kHangoutsEnabled)) {
@@ -87,6 +88,7 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
 void BraveComponentLoader::ForceAddHangoutServicesExtension() {
   ComponentLoader::AddHangoutServicesExtension();
 }
+#endif
 
 void BraveComponentLoader::AddDefaultComponentExtensions(
     bool skip_session_components) {
