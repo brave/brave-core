@@ -129,69 +129,6 @@ void LedgerImpl::Initialize(
 
   initializing_ = true;
 
-  auto state_callback = std::bind(&LedgerImpl::OnStateInitialized,
-      this,
-      _1,
-      execute_create_script,
-      callback);
-
-  bat_state_->Initialize(state_callback);
-}
-
-void LedgerImpl::OnStateInitialized(
-    const ledger::Result result,
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize state";
-    return;
-  }
-
-  MaybeInitializeConfirmations(execute_create_script, callback);
-}
-
-void LedgerImpl::MaybeInitializeConfirmations(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  confirmations::_environment = ledger::_environment;
-  confirmations::_is_debug = ledger::is_debug;
-
-  const bool is_enabled = GetBooleanState(ledger::kStateEnabled);
-
-  const bool is_enabled_migrated =
-      GetBooleanState(ledger::kStateEnabledMigrated);
-
-  if (is_enabled || !is_enabled_migrated) {
-    InitializeConfirmations(execute_create_script, callback);
-  } else {
-    InitializeDatabase(execute_create_script, callback);
-  }
-}
-
-void LedgerImpl::InitializeConfirmations(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  bat_confirmations_.reset(
-      confirmations::Confirmations::CreateInstance(ledger_client_));
-
-  auto initialized_callback = std::bind(&LedgerImpl::OnConfirmationsInitialized,
-      this,
-      _1,
-      execute_create_script,
-      callback);
-  bat_confirmations_->Initialize(initialized_callback);
-}
-
-void LedgerImpl::OnConfirmationsInitialized(
-    const bool success,
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  if (!success) {
-    // If confirmations fail, we should fall-through and continue initializing
-    // ledger
-    BLOG(0, "Failed to initialize confirmations");
-  }
-
   InitializeDatabase(execute_create_script, callback);
 }
 
@@ -209,6 +146,85 @@ void LedgerImpl::InitializeDatabase(
       _1,
       finish_callback);
   bat_database_->Initialize(execute_create_script, database_callback);
+}
+
+void LedgerImpl::OnDatabaseInitialized(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Database could not be initialized. Error: " << result);
+    callback(result);
+    return;
+  }
+
+  auto state_callback = std::bind(&LedgerImpl::OnStateInitialized,
+      this,
+      _1,
+      callback);
+
+  bat_state_->Initialize(state_callback);
+}
+
+void LedgerImpl::OnStateInitialized(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to initialize state");
+    return;
+  }
+
+  MaybeInitializeConfirmations(callback);
+}
+
+void LedgerImpl::MaybeInitializeConfirmations(
+    ledger::ResultCallback callback) {
+  confirmations::_environment = ledger::_environment;
+  confirmations::_is_debug = ledger::is_debug;
+
+  const bool is_enabled = GetBooleanState(ledger::kStateEnabled);
+
+  const bool is_enabled_migrated =
+      GetBooleanState(ledger::kStateEnabledMigrated);
+
+  if (is_enabled || !is_enabled_migrated) {
+    InitializeConfirmations(callback);
+  } else {
+    auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
+        this,
+        _1,
+        _2,
+        std::move(callback));
+    LoadLedgerState(on_load);
+  }
+}
+
+void LedgerImpl::InitializeConfirmations(
+    ledger::ResultCallback callback) {
+  bat_confirmations_.reset(
+      confirmations::Confirmations::CreateInstance(ledger_client_));
+
+  auto initialized_callback = std::bind(&LedgerImpl::OnConfirmationsInitialized,
+      this,
+      _1,
+      callback);
+  bat_confirmations_->Initialize(initialized_callback);
+}
+
+void LedgerImpl::OnConfirmationsInitialized(
+    const bool success,
+    ledger::ResultCallback callback) {
+  if (!success) {
+    // If confirmations fail, we should fall-through and continue initializing
+    // ledger
+    BLOG(0, "Failed to initialize confirmations");
+  }
+
+  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
+      this,
+      _1,
+      _2,
+      std::move(callback));
+  LoadLedgerState(on_load);
 }
 
 void LedgerImpl::StartConfirmations() {
@@ -414,7 +430,7 @@ void LedgerImpl::OnLedgerStateLoaded(
     }
 
     if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) << "Corrupted wallet";
+      BLOG(0, "Corrupted wallet");
       callback(ledger::Result::CORRUPTED_DATA);
       return;
     }
@@ -467,23 +483,6 @@ void LedgerImpl::SetConfirmationsWalletInfo(
 
 void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadPublisherState(std::move(callback));
-}
-
-void LedgerImpl::OnDatabaseInitialized(
-    const ledger::Result result,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Database could not be initialized. Error: " << result);
-    callback(result);
-    return;
-  }
-
-  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
-      this,
-      _1,
-      _2,
-      std::move(callback));
-  LoadLedgerState(on_load);
 }
 
 void LedgerImpl::SaveLedgerState(

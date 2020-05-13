@@ -740,20 +740,14 @@ class LedgerImpl : public ledger::Ledger {
  private:
   void OnStateInitialized(
       const ledger::Result result,
-      const bool execute_create_script,
       ledger::ResultCallback callback);
 
-  void MaybeInitializeConfirmations(
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
+  void MaybeInitializeConfirmations(ledger::ResultCallback callback);
 
-  void InitializeConfirmations(
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
+  void InitializeConfirmations(ledger::ResultCallback callback);
 
   void OnConfirmationsInitialized(
       const bool success,
-      const bool execute_create_script,
       ledger::ResultCallback callback);
 
   void InitializeDatabase(
