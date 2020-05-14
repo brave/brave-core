@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/xr/xr_system.cc b/third_party/blink/renderer/modules/xr/xr_system.cc
+index a94164360dcfe0e0686e5d48e64ee8a4dc9ef125..c6262b35693c5f6720ff2e3746c8b8a9eb3cdaec 100644
+--- a/third_party/blink/renderer/modules/xr/xr_system.cc
++++ b/third_party/blink/renderer/modules/xr/xr_system.cc
+@@ -847,6 +847,7 @@ ScriptPromise XRSystem::InternalIsSessionSupported(
+     return promise;
+   }
+ 
++  BRAVE_XR_SYSTEM_IS_SESSION_SUPPORTED
+   device::mojom::blink::XRSessionOptionsPtr session_options =
+       device::mojom::blink::XRSessionOptions::New();
+   session_options->mode = query->mode();
