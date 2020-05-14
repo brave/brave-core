@@ -108,6 +108,30 @@ bool SetEncryptionKeyForPasswordImporting(
 }
 #endif
 
+class ScopedCopyFile {
+ public:
+  explicit ScopedCopyFile(const base::FilePath& original_file_path) {
+    DCHECK(base::PathExists(original_file_path));
+    if (base::CreateTemporaryFile(&copied_file_path_))
+      copy_success_ = base::CopyFile(original_file_path, copied_file_path_);
+  }
+
+  ~ScopedCopyFile() {
+    if (base::PathExists(copied_file_path_))
+      base::DeleteFile(copied_file_path_, false);
+  }
+
+  bool copy_success() const { return copy_success_; }
+  ScopedCopyFile(const ScopedCopyFile&) = delete;
+  ScopedCopyFile& operator=(const ScopedCopyFile&) = delete;
+
+  base::FilePath copied_file_path() const { return copied_file_path_; }
+
+ private:
+  bool copy_success_ = false;
+  base::FilePath copied_file_path_;
+};
+
 }  // namespace
 
 ChromeImporter::ChromeImporter() {
@@ -147,15 +171,19 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
 }
 
 void ChromeImporter::ImportHistory() {
-  base::FilePath history_path =
-    source_path_.Append(
+  base::FilePath history_path = source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   if (!base::PathExists(history_path))
     return;
 
-  sql::Database db;
-  if (!db.Open(history_path))
+  ScopedCopyFile copy_history_file(history_path);
+  if (!copy_history_file.copy_success())
     return;
+
+  sql::Database db;
+  if (!db.Open(copy_history_file.copied_file_path())) {
+    return;
+  }
 
   const char query[] =
     "SELECT u.url, u.title, v.visit_time, u.typed_count, u.visit_count "
@@ -196,7 +224,12 @@ void ChromeImporter::ImportBookmarks() {
   base::FilePath bookmarks_path =
     source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
-  base::ReadFileToString(bookmarks_path, &bookmarks_content);
+  ScopedCopyFile copy_bookmark_file(bookmarks_path);
+  if (!copy_bookmark_file.copy_success())
+    return;
+
+  base::ReadFileToString(copy_bookmark_file.copied_file_path(),
+                         &bookmarks_content);
   base::Optional<base::Value> bookmarks_json =
     base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
@@ -240,8 +273,12 @@ void ChromeImporter::ImportBookmarks() {
   if (!base::PathExists(favicons_path))
     return;
 
+  ScopedCopyFile copy_favicon_file(favicons_path);
+  if (!copy_favicon_file.copy_success())
+    return;
+
   sql::Database db;
-  if (!db.Open(favicons_path))
+  if (!db.Open(copy_favicon_file.copied_file_path()))
     return;
 
   FaviconMap favicon_map;
@@ -385,8 +422,13 @@ void ChromeImporter::ImportPasswords() {
   if (!base::PathExists(passwords_path))
     return;
 
+  ScopedCopyFile copy_password_file(passwords_path);
+  if (!copy_password_file.copy_success())
+    return;
+
   password_manager::LoginDatabase database(
-      passwords_path, password_manager::IsAccountStore(false));
+      copy_password_file.copied_file_path(),
+      password_manager::IsAccountStore(false));
   if (!database.Init()) {
     LOG(ERROR) << "LoginDatabase Init() failed";
     return;

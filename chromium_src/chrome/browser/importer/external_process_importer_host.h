@@ -10,10 +10,8 @@
   friend class BraveExternalProcessImporterHost;
 
 #define NotifyImportEnded virtual NotifyImportEnded
-#define CheckForFirefoxLock virtual CheckForFirefoxLock
 #include "../../../../../chrome/browser/importer/external_process_importer_host.h"
 #undef BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H
 #undef NotifyImportEnded
-#undef CheckForFirefoxLock
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_HOST_H_

@@ -4,12 +4,8 @@ source_set("importer") {
   sources = [
     "brave_external_process_importer_host.cc",
     "brave_external_process_importer_host.h",
-    "brave_importer_lock_dialog.h",
     "brave_importer_p3a.cc",
     "brave_importer_p3a.h",
-    "browser_profile_lock.h",
-    "chrome_profile_lock.cc",
-    "chrome_profile_lock.h",
   ]
 
   deps = [

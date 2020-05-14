@@ -124,8 +124,6 @@ source_set("ui") {
       "views/download/brave_download_item_view.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
-      "views/importer/brave_import_lock_dialog_view.cc",
-      "views/importer/brave_import_lock_dialog_view.h",
       "views/reader_mode/brave_reader_mode_icon_view.cc",
       "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
