@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -259,14 +260,7 @@ void Uphold::OnDisconectWallet(
     return;
   }
 
-  if (wallet->status == ledger::WalletStatus::VERIFIED) {
-    wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
-  } else if (wallet->status == ledger::WalletStatus::CONNECTED ||
-            wallet->status == ledger::WalletStatus::NOT_CONNECTED) {
-    wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-  }
-
-  wallet->token = "";
+  wallet = braveledger_wallet::ResetWallet(std::move(wallet));
 
   ledger_->ShowNotification(
     "wallet_disconnected",
