@@ -13,7 +13,7 @@
 #include "bat/confirmations/internal/security_helper.h"
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/country_codes.h"
-#include "base/logging.h"
+#include "bat/confirmations/internal/logging.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 

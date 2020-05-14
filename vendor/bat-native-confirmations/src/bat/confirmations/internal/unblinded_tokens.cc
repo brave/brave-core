@@ -8,8 +8,7 @@
 
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
-
-#include "base/logging.h"
+#include "bat/confirmations/internal/logging.h"
 
 namespace confirmations {
 

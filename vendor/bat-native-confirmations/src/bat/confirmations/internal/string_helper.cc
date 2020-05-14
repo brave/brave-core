@@ -5,8 +5,6 @@
 
 #include "bat/confirmations/internal/string_helper.h"
 
-#include "base/logging.h"
-
 namespace helper {
 
 std::vector<uint8_t> String::decode_hex(const std::string& hexadecimal) {

@@ -5,8 +5,7 @@
 
 #include "bat/confirmations/internal/get_signed_tokens_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
-
-#include "base/logging.h"
+#include "bat/confirmations/internal/logging.h"
 
 namespace confirmations {
 

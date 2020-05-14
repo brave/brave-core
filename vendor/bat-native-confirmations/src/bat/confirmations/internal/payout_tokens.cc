@@ -40,7 +40,7 @@ void PayoutTokens::PayoutAfterDelay(
 
   wallet_info_ = wallet_info;
   if (!wallet_info_.IsValid()) {
-    BLOG(ERROR) << "Failed to payout tokens due to invalid wallet";
+    BLOG(0, "Failed to payout tokens due to invalid wallet");
     return;
   }
 
@@ -50,7 +50,7 @@ void PayoutTokens::PayoutAfterDelay(
       base::BindOnce(&PayoutTokens::RedeemPaymentTokens,
           base::Unretained(this)));
 
-  BLOG(INFO) << "Payout tokens " << FriendlyDateAndTime(time);
+  BLOG(1, "Payout tokens " << FriendlyDateAndTime(time));
 }
 
 uint64_t PayoutTokens::get_token_redemption_timestamp_in_seconds() const {
@@ -65,43 +65,31 @@ void PayoutTokens::set_token_redemption_timestamp_in_seconds(
 ///////////////////////////////////////////////////////////////////////////////
 
 void PayoutTokens::RedeemPaymentTokens() {
-  BLOG(INFO) << "RedeemPaymentTokens";
+  BLOG(1, "RedeemPaymentTokens");
 
   if (unblinded_payment_tokens_->IsEmpty()) {
-    BLOG(INFO) << "No unblinded payment tokens to redeem";
+    BLOG(1, "No unblinded payment tokens to redeem");
     ScheduleNextPayout();
     return;
   }
 
-  BLOG(INFO) << "PUT /v1/confirmation/payment/{payment_id}";
+  BLOG(1, "PUT /v1/confirmation/payment/{payment_id}");
   RedeemPaymentTokensRequest request;
 
   auto tokens = unblinded_payment_tokens_->GetAllTokens();
 
   auto payload = request.CreatePayload(wallet_info_);
 
-  BLOG(INFO) << "URL Request:";
-
   auto url = request.BuildUrl(wallet_info_);
-  BLOG(INFO) << "  URL: " << url;
-
   auto method = request.GetMethod();
-
   auto body = request.BuildBody(tokens, payload);
-  BLOG(INFO) << "  Body: " << body;
-
   auto headers = request.BuildHeaders();
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header;
-  }
-
   auto content_type = request.GetContentType();
-  BLOG(INFO) << "  Content_type: " << content_type;
 
   auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens,
       this, url, _1, _2, _3);
 
+  BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
   confirmations_client_->LoadURL(url, headers, body, content_type, method,
       callback);
 }
@@ -111,19 +99,12 @@ void PayoutTokens::OnRedeemPaymentTokens(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  BLOG(INFO) << "OnRedeemPaymentTokens";
+  BLOG(1, "OnRedeemPaymentTokens");
 
-  BLOG(INFO) << "URL Request Response:";
-  BLOG(INFO) << "  URL: " << url;
-  BLOG(INFO) << "  Response Status Code: " << response_status_code;
-  BLOG(INFO) << "  Response: " << response;
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header.first << ": " << header.second;
-  }
+  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
 
   if (response_status_code != net::HTTP_OK) {
-    BLOG(ERROR) << "Failed to redeem payment tokens";
+    BLOG(1, "Failed to redeem payment tokens");
     OnPayout(FAILED);
     return;
   }
@@ -133,18 +114,18 @@ void PayoutTokens::OnRedeemPaymentTokens(
 
 void PayoutTokens::OnPayout(const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to payout tokens";
+    BLOG(1, "Failed to payout tokens");
 
     const base::Time time = retry_timer_.StartWithBackoff(
         kRetryPayoutTokensAfterSeconds, base::BindOnce(&PayoutTokens::OnRetry,
             base::Unretained(this)));
 
-    BLOG(INFO) << "Retry paying out tokens " << FriendlyDateAndTime(time);
+    BLOG(1, "Retry paying out tokens " << FriendlyDateAndTime(time));
 
     return;
   }
 
-  BLOG(INFO) << "Successfully paid out tokens";
+  BLOG(1, "Successfully paid out tokens");
 
   confirmations_->AddUnredeemedTransactionsToPendingRewards();
   unblinded_payment_tokens_->RemoveAllTokens();
@@ -162,7 +143,7 @@ void PayoutTokens::ScheduleNextPayout() {
 }
 
 void PayoutTokens::OnRetry() {
-  BLOG(INFO) << "Retrying";
+  BLOG(1, "Retry paying out tokens");
 
   RedeemPaymentTokens();
 }
