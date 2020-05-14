@@ -368,6 +368,7 @@ source_set("ui") {
       ]
       deps += [
         "//brave/components/speedreader",
+        "//brave/components/speedreader:buildflags",
       ]
     }
   }

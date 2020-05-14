@@ -84,12 +84,12 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
       config_raw_(
           get_rewriter_opaque_config(speedreader, url.c_str(), url.length())),
       raw_(rewriter_new(speedreader,
-                       url.c_str(),
-                       url.length(),
-                       output_sink,
-                       output_sink_user_data,
-                       config_raw_,
-                       rewriter_type)) {}
+                        url.c_str(),
+                        url.length(),
+                        output_sink,
+                        output_sink_user_data,
+                        config_raw_,
+                        rewriter_type)) {}
 
 Rewriter::~Rewriter() {
   if (!ended_) {
