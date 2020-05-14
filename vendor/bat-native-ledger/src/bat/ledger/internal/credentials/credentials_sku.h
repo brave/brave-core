@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/credentials/credentials_common.h"
 
@@ -80,6 +81,14 @@ class CredentialsSKU : public Credentials {
       const ledger::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
+
+  void OnRedeemTokens(
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      const std::vector<std::string>& token_id_list,
+      const CredentialsRedeem& redeem,
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;

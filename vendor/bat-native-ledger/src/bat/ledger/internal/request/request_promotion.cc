@@ -44,16 +44,8 @@ std::string FetchSignedCredsUrl(
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 
-std::string GetReedemTokensUrl(const ledger::ContributionProcessor processor) {
-  std::string path = "/suggestions";
-  ServerTypes type = ServerTypes::kPromotion;
-  if (processor == ledger::ContributionProcessor::UPHOLD ||
-      processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS) {
-    path = "/votes";
-    type = ServerTypes::kPayments;
-  }
-
-  return BuildUrl(path, PREFIX_V1, type);
+std::string GetReedemTokensUrl() {
+  return BuildUrl("/suggestions", PREFIX_V1, ServerTypes::kPromotion);
 }
 
 std::string ReportClobberedClaimsUrl() {
