@@ -27,18 +27,12 @@ constexpr const char* kBravezationHistograms[] = {
 void DoHistogramBravezation(base::StringPiece histogram_name,
                             base::HistogramBase::Sample sample) {
   if ("Bookmarks.Count.OnProfileLoad" == histogram_name) {
-    int answer = 0;
-    if (0 <= sample && sample < 5)
-      answer = 0;
-    if (5 <= sample && sample < 20)
-      answer = 1;
-    if (20 <= sample && sample < 100)
-      answer = 2;
-    if (sample >= 100)
-      answer = 3;
-
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad", answer,
-                               3);
+    constexpr int kIntervals[] = {5, 20, 100, 500, 1000, 5000, 10000};
+    const int* it =
+        std::lower_bound(kIntervals, std::end(kIntervals), sample);
+    const int answer = it - kIntervals;
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad.2",
+                               answer, base::size(kIntervals));
     return;
   }
 
@@ -94,15 +88,17 @@ void DoHistogramBravezation(base::StringPiece histogram_name,
 
   if ("Tabs.WindowCount" == histogram_name) {
     int answer = 0;
-    if (0 <= sample && sample <= 1) {
+    if (sample <= 0) {
       answer = 0;
-    } else if (2 <= sample && sample <= 5) {
+    } else if (sample == 1) {
       answer = 1;
-    } else {
+    } else if (2 <= sample && sample <= 5) {
       answer = 2;
+    } else {
+      answer = 3;
     }
 
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount", answer, 2);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount.2", answer, 3);
     return;
   }
 }
