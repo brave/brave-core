@@ -106,6 +106,7 @@ test("brave_unit_tests") {
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/shield_exceptions_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
+    "//brave/components/brave_private_cdn/private_cdn_helper_unittest.cc",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
     "//brave/components/brave_shields/browser/adblock_stub_response_unittest.cc",
     "//brave/components/brave_shields/browser/cosmetic_merge_unittest.cc",
@@ -131,6 +132,7 @@ test("brave_unit_tests") {
 
   deps = [
     "//brave/browser/safebrowsing",
+    "//brave/components/brave_private_cdn",
     "//brave/components/ntp_background_images/browser",
     "//brave/vendor/brave_base",
     "//chrome:browser_dependencies",
