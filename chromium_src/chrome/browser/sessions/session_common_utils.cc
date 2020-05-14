@@ -14,7 +14,7 @@
 
 bool ShouldTrackURLForRestore(const GURL& url) {
   if (url.SchemeIs(content::kChromeUIScheme) &&
-      url.host() == ethereum_remote_client_host) {
+      url.host() == "wallet") {
     return false;
   }
   return ShouldTrackURLForRestore_ChromiumImpl(url);
