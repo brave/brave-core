@@ -1,5 +1,3 @@
-import("//build/config/ui.gni")
-
 source_set("tabs") {
   sources = []
 
@@ -17,6 +15,7 @@ source_set("tabs") {
   if (!is_android) {
     deps += [
       "//brave/common/",
+      "//chrome/app:generated_resources",
       "//components/prefs",
       "//components/sessions",
       "//content/public/browser",
