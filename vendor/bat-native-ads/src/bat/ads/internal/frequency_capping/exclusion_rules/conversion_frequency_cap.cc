@@ -8,8 +8,8 @@
 #include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
+#include "bat/ads/internal/logging.h"
 
-#include "base/logging.h"
 #include "base/strings/stringprintf.h"
 
 namespace ads {

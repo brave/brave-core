@@ -56,8 +56,6 @@ bool Bundle::UpdateFromCatalog(
           catalog_last_updated_timestamp_in_seconds_, _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
-  BLOG(INFO) << "Generated bundle";
-
   return true;
 }
 
@@ -154,8 +152,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
                   base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
-            BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
-                << " has an invalid segment name";
+            BLOG(1, "creative set id " << creative_set.creative_set_id
+                << " segment name should not be empty");
 
             continue;
           }
@@ -181,8 +179,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       }
 
       if (entries == 0) {
-        BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
-            << " has an invalid creative";
+        BLOG(1, "creative set id " << creative_set.creative_set_id
+            << " has no entries");
 
         continue;
       }
@@ -257,14 +255,14 @@ void Bundle::OnStateSaved(
     const uint64_t& catalog_last_updated_timestamp_in_seconds,
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to save bundle state";
+    BLOG(0, "Failed to save bundle state");
 
     // If the bundle fails to save, we will retry the next time a bundle is
     // downloaded from the Ads Serve
     return;
   }
 
-  BLOG(INFO) << "Successfully saved bundle state";
+  BLOG(3, "Successfully saved bundle state");
 }
 
 void Bundle::OnStateReset(
@@ -274,7 +272,7 @@ void Bundle::OnStateReset(
     const uint64_t& catalog_last_updated_timestamp_in_seconds,
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to reset bundle state";
+    BLOG(0, "Failed to reset bundle state");
 
     return;
   }
@@ -285,7 +283,7 @@ void Bundle::OnStateReset(
   catalog_last_updated_timestamp_in_seconds_ =
       catalog_last_updated_timestamp_in_seconds;
 
-  BLOG(INFO) << "Successfully reset bundle state";
+  BLOG(3, "Successfully reset bundle state");
 }
 
 }  // namespace ads

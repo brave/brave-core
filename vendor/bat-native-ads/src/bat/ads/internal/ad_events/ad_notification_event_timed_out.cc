@@ -8,8 +8,8 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_notification_event_timed_out.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/reports.h"
-#include "base/logging.h"
 
 namespace ads {
 
@@ -28,7 +28,7 @@ void AdNotificationEventTimedOut::Trigger(
   Reports reports(ads_);
   const std::string report = reports.GenerateAdNotificationEventReport(info,
       AdNotificationEventType::kTimedOut);
-  ads_->get_ads_client()->EventLog(report);
+  BLOG(3, "Event log: " << report);
 }
 
 }  // namespace ads
