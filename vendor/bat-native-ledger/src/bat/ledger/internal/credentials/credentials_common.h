@@ -21,9 +21,6 @@ class LedgerImpl;
 
 namespace braveledger_credentials {
 
-using BlindedCredsCallback =
-    std::function<void(const ledger::Result, const std::string&)>;
-
 class CredentialsCommon {
  public:
   explicit CredentialsCommon(bat_ledger::LedgerImpl* ledger);
@@ -31,7 +28,7 @@ class CredentialsCommon {
 
   void GetBlindedCreds(
       const CredentialsTrigger& trigger,
-      BlindedCredsCallback callback);
+      ledger::ResultCallback callback);
 
   void GetSignedCredsFromResponse(
       const CredentialsTrigger& trigger,
@@ -49,8 +46,7 @@ class CredentialsCommon {
  private:
   void BlindedCredsSaved(
       const ledger::Result result,
-      const std::string& blinded_creds_json,
-      BlindedCredsCallback callback);
+      ledger::ResultCallback callback);
 
   void OnSaveUnblindedCreds(
       const ledger::Result result,

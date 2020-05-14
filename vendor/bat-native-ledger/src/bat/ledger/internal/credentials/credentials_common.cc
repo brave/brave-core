@@ -70,12 +70,12 @@ CredentialsCommon::~CredentialsCommon() = default;
 
 void CredentialsCommon::GetBlindedCreds(
     const CredentialsTrigger& trigger,
-    BlindedCredsCallback callback) {
+    ledger::ResultCallback callback) {
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
     BLOG(0, "Creds are empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -84,7 +84,7 @@ void CredentialsCommon::GetBlindedCreds(
 
   if (blinded_creds.empty()) {
     BLOG(0, "Blinded creds are empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -102,7 +102,6 @@ void CredentialsCommon::GetBlindedCreds(
   auto save_callback = std::bind(&CredentialsCommon::BlindedCredsSaved,
       this,
       _1,
-      blinded_creds_json,
       callback);
 
   ledger_->SaveCredsBatch(std::move(creds_batch), save_callback);
@@ -110,15 +109,14 @@ void CredentialsCommon::GetBlindedCreds(
 
 void CredentialsCommon::BlindedCredsSaved(
     const ledger::Result result,
-    const std::string& blinded_creds_json,
-    BlindedCredsCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Creds batch save failed");
-    callback(ledger::Result::RETRY, "");
+    callback(ledger::Result::RETRY);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, blinded_creds_json);
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void CredentialsCommon::GetSignedCredsFromResponse(

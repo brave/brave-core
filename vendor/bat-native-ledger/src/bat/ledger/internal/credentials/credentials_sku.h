@@ -38,9 +38,17 @@ class CredentialsSKU : public Credentials {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
-  void Claim(
+  void OnBlind(
       const ledger::Result result,
-      const std::string& blinded_creds_json,
+      const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback);
+
+  void RetryPreviousStepSaved(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
+  void Claim(
+      ledger::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
