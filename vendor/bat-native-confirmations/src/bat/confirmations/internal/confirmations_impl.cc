@@ -44,6 +44,7 @@ ConfirmationsImpl::ConfirmationsImpl(
         unblinded_payment_tokens_.get())),
     state_has_loaded_(false),
     confirmations_client_(confirmations_client) {
+  set_confirmations_client_for_logging(confirmations_client_);
 }
 
 ConfirmationsImpl::~ConfirmationsImpl() = default;
