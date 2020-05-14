@@ -35,7 +35,7 @@
 #import "base/i18n/icu_util.h"
 #import "base/ios/ios_util.h"
 
-#define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
+#define BLOG(__verbose_level) RewardsLogStream(__FILE__, __LINE__, __verbose_level).stream()
 
 #define BATLedgerReadonlyBridge(__type, __objc_getter, __cpp_getter) \
 - (__type)__objc_getter { return ledger->__cpp_getter(); }
@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   self.initializing = YES;
   
-  BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Migrate from CoreData? " << (executeMigrateScript ? "YES" : "NO") << std::endl;
+  BLOG(5) << "DB: Migrate from CoreData? " << (executeMigrateScript ? "YES" : "NO") << std::endl;
   ledger->Initialize(executeMigrateScript, ^(ledger::Result result){
     self.initialized = (result == ledger::Result::LEDGER_OK ||
                         result == ledger::Result::NO_LEDGER_STATE ||
@@ -225,12 +225,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
         [self.ads initializeIfAdsEnabled];
       }
     } else {
-      BLOG(ledger::LogLevel::LOG_ERROR) << "Ledger Initialization Failed with error: " << std::to_string(static_cast<int>(result)) << std::endl;
+      BLOG(0) << "Ledger Initialization Failed with error: " << std::to_string(static_cast<int>(result)) << std::endl;
       if (result == ledger::Result::DATABASE_INIT_FAILED) {
         // Failed to migrate data...
         switch (self.migrationType) {
           case BATLedgerDatabaseMigrationTypeDefault:
-            BLOG(ledger::LogLevel::LOG_ERROR) << "DB: Full migration failed, attempting BAT only migration." << std::endl;
+            BLOG(0) << "DB: Full migration failed, attempting BAT only migration." << std::endl;
             self.dataMigrationFailed = YES;
             self.migrationType = BATLedgerDatabaseMigrationTypeTokensOnly;
             [self resetRewardsDatabase];
@@ -238,7 +238,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
             [self initializeLedgerService:YES];
             return;
           case BATLedgerDatabaseMigrationTypeTokensOnly:
-            BLOG(ledger::LogLevel::LOG_ERROR) << "DB: BAT only migration failed. Initializing without migration." << std::endl;
+            BLOG(0) << "DB: BAT only migration failed. Initializing without migration." << std::endl;
             self.dataMigrationFailed = YES;
             self.migrationType = BATLedgerDatabaseMigrationTypeNone;
             [self resetRewardsDatabase];
@@ -271,7 +271,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   // Can we even check the DB
   if (!rewardsDatabase) {
-    BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: No rewards database object" << std::endl;
+    BLOG(0) << "DB: No rewards database object" << std::endl;
     return YES;
   }
   // Check integrity of the new DB. Safe to assume if `publisher_info` table
@@ -290,7 +290,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   // restart from scratch
   if (response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     [self resetRewardsDatabase];
-    BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Failed to run transaction with status: " << std::to_string(static_cast<int>(response->status)) << std::endl;
+    BLOG(5) << "DB: Failed to run transaction with status: " << std::to_string(static_cast<int>(response->status)) << std::endl;
     return YES;
   }
   
@@ -299,7 +299,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   // Restart from scratch
   if (record.empty() || record.front()->fields.empty()) {
     [self resetRewardsDatabase];
-    BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Migrate because we couldnt find tables in sqlite_master" << std::endl;
+    BLOG(5) << "DB: Migrate because we couldnt find tables in sqlite_master" << std::endl;
     return YES;
   }
   
@@ -332,7 +332,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     case BATLedgerDatabaseMigrationTypeNone:
       // We shouldn't be migrating, therefore doesn't make sense that
       // `getCreateScript` was called
-      BLOG(ledger::LogLevel::LOG_ERROR) << "DB: Attempted CoreData migration with an empty migration script" << std::endl;
+      BLOG(0) << "DB: Attempted CoreData migration with an empty migration script" << std::endl;
       break;
     case BATLedgerDatabaseMigrationTypeTokensOnly:
       migrationScript = [BATLedgerDatabase migrateCoreDataBATOnlyToSQLTransaction];
@@ -959,7 +959,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   const auto payload = [NSDictionary dictionaryWithObject:deviceCheckPublicKey forKey:@"publicKey"];
   const auto jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
   if (!jsonData) {
-    BLOG(ledger::LogLevel::LOG_ERROR) << "Missing JSON payload while attempting to claim promotion" << std::endl;
+    BLOG(0) << "Missing JSON payload while attempting to claim promotion" << std::endl;
     return;
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -1700,7 +1700,7 @@ BATLedgerBridge(BOOL,
   if (!self.mNotifications) {
     self.mNotifications = [[NSMutableArray alloc] init];
     if (error) {
-      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to unarchive notifications on disk: " << error.debugDescription.UTF8String << std::endl;
+      BLOG(0) << "Failed to unarchive notifications on disk: " << error.debugDescription.UTF8String << std::endl;
     }
   }
 }
@@ -1722,7 +1722,7 @@ BATLedgerBridge(BOOL,
                                                           error:&error];
   if (!data) {
     if (error) {
-      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to write notifications to disk: " << error.debugDescription.UTF8String << std::endl;
+      BLOG(0) << "Failed to write notifications to disk: " << error.debugDescription.UTF8String << std::endl;
     }
     return;
   }

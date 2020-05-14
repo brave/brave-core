@@ -65,13 +65,11 @@ void DatabaseMigration::Start(
 
   for (auto i = start_version; i <= target_version; i++) {
     if (!Migrate(transaction.get(), i)) {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "DB: Error with MigrateV" << (i - 1) << "toV" << i;
+      BLOG(0, "DB: Error with MigrateV" << (i - 1) << "toV" << i);
       break;
     }
 
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-    "DB: Migrated to version " << i;
+    BLOG(1, "DB: Migrated to version " << i);
 
     migrated_version = i;
   }

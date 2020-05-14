@@ -45,15 +45,6 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 using std::placeholders::_3;
 
-namespace {
-
-bool IsPNG(const std::string& data) {
-  return ((data.length() >= 8) &&
-          (data.compare(0, 8, "\x89PNG\x0D\x0A\x1A\x0A") == 0));
-}
-
-}
-
 namespace bat_ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
@@ -119,7 +110,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     auto wallet_info = bat_state_->GetWalletInfo();
     SetConfirmationsWalletInfo(wallet_info);
   } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
+    BLOG(0, "Failed to initialize wallet");
   }
 }
 
@@ -128,8 +119,7 @@ void LedgerImpl::Initialize(
     ledger::ResultCallback callback) {
   DCHECK(!initializing_);
   if (initializing_) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Already initializing ledger";
+    BLOG(0, "Already initializing ledger");
     return;
   }
 
@@ -177,8 +167,7 @@ void LedgerImpl::OnConfirmationsInitialized(
   if (!success) {
     // If confirmations fail, we should fall-through and continue initializing
     // ledger
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Failed to initialize confirmations";
+    BLOG(0, "Failed to initialize confirmations");
   }
 
   InitializeDatabase(execute_create_script, callback);
@@ -217,12 +206,11 @@ void LedgerImpl::StartConfirmations() {
 void LedgerImpl::OnConfirmationsStarted(
     const bool success) {
   if (!success) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to start confirmations";
+    BLOG(0, "Failed to start confirmations");
     return;
   }
 
-  BLOG(this, ledger::LogLevel::LOG_INFO)
-      << "Successfully started confirmations";
+  BLOG(1, "Successfully started confirmations");
 }
 
 void LedgerImpl::ShutdownConfirmations() {
@@ -230,8 +218,7 @@ void LedgerImpl::ShutdownConfirmations() {
     return;
   }
 
-  BLOG(this, ledger::LogLevel::LOG_INFO) <<
-      "Successfully shutdown confirmations";
+  BLOG(1, "Successfully shutdown confirmations");
   bat_confirmations_.release();
 }
 
@@ -397,10 +384,8 @@ void LedgerImpl::OnLedgerStateLoaded(
     ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Successfully loaded but failed to parse ledger state.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed ledger state: " << data;
+      BLOG(0, "Successfully loaded but failed to parse ledger state.");
+      BLOG(1, "Failed ledger state: " << data);
 
       callback(ledger::Result::INVALID_LEDGER_STATE);
     } else {
@@ -416,10 +401,8 @@ void LedgerImpl::OnLedgerStateLoaded(
     return;
   }
   if (result != ledger::Result::NO_LEDGER_STATE) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
-    BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-      "Failed ledger state: " <<
-      data;
+    BLOG(0, "Failed to load ledger state");
+    BLOG(1, "Failed ledger state: " << data);
   }
   callback(result);
 }
@@ -431,8 +414,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
   }
 
   if (wallet_info_properties.key_info_seed.size() != SEED_LENGTH) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
-        "confirmations due to invalid wallet";
+    BLOG(0, "Failed to initialize confirmations due to invalid wallet");
     return;
   }
 
@@ -443,8 +425,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
 
   if (!braveledger_bat_helper::getPublicKeyFromSeed(seed, &public_key,
       &secret_key)) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
-        "confirmations due to invalid wallet";
+    BLOG(0, "Failed to initialize confirmations due to invalid wallet");
     return;
   }
 
@@ -453,8 +434,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
   wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secret_key);
 
   if (!wallet_info.IsValid()) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize "
-        "confirmations due to invalid wallet";
+    BLOG(0, "Failed to initialize confirmations due to invalid wallet");
     return;
   }
 
@@ -472,18 +452,14 @@ void LedgerImpl::OnPublisherStateLoaded(
     ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publisher_->loadState(data)) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Successfully loaded but failed to parse ledger state.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed publisher state: " << data;
+      BLOG(0, "Successfully loaded but failed to parse ledger state.");
+      BLOG(1, "Failed publisher state: " << data);
 
       result = ledger::Result::INVALID_PUBLISHER_STATE;
     }
   } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to load publisher state";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed publisher state: " << data;
+    BLOG(0, "Failed to load publisher state");
+    BLOG(1, "Failed publisher state: " << data);
   }
 
   if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
@@ -498,8 +474,7 @@ void LedgerImpl::OnDatabaseInitialized(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Database could not be initialized. Error: " << result;
+    BLOG(0, "Database could not be initialized. Error: " << result);
     callback(result);
     return;
   }
@@ -524,27 +499,6 @@ void LedgerImpl::SavePublisherState(
   ledger_client_->SavePublisherState(data, callback);
 }
 
-void LedgerImpl::LogRequest(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    const ledger::UrlMethod method) {
-  std::string formatted_headers = "";
-  for (const auto & header : headers) {
-    formatted_headers += "> header: " + header + "\n";
-  }
-
-  BLOG(this, ledger::LogLevel::LOG_REQUEST) << std::endl
-      << "[ REQUEST ]" << std::endl
-      << "> url: " << url << std::endl
-      << "> method: " << method << std::endl
-      << "> content: " << content << std::endl
-      << "> contentType: " << content_type << std::endl
-      << formatted_headers
-      << "[ END REQUEST ]";
-}
-
 void LedgerImpl::LoadURL(
     const std::string& url,
     const std::vector<std::string>& headers,
@@ -552,7 +506,8 @@ void LedgerImpl::LoadURL(
     const std::string& content_type,
     const ledger::UrlMethod method,
     ledger::LoadURLCallback callback) {
-  LogRequest(url, headers, content, content_type, method);
+  BLOG(5, ledger::UrlRequestToString(url, headers, content, content_type,
+      method));
 
   ledger_client_->LoadURL(
       url,
@@ -852,7 +807,7 @@ void LedgerImpl::OnRecoverWallet(
     const double balance,
     ledger::RecoverWalletCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
+    BLOG(0, "Failed to recover wallet");
   }
 
   if (result == ledger::Result::LEDGER_OK) {

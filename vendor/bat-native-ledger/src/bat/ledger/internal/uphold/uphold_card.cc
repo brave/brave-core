@@ -65,7 +65,9 @@ void UpholdCard::OnCreateIfNecessary(
     const std::map<std::string, std::string>& headers,
     const ledger::ExternalWallet& wallet,
     CreateCardCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
@@ -144,7 +146,8 @@ void UpholdCard::OnCreate(
     const std::map<std::string, std::string>& headers,
     const ledger::ExternalWallet& wallet,
     CreateCardCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
@@ -250,7 +253,8 @@ void UpholdCard::OnUpdate(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     UpdateCardCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN);
@@ -347,7 +351,9 @@ void UpholdCard::OnGetCardAddresses(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     GetCardAddressesCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN,  {});
     uphold_->DisconnectWallet();
@@ -429,7 +435,9 @@ void UpholdCard::OnCreateAnonAddress(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     CreateAnonAddressCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN,  "");
     uphold_->DisconnectWallet();

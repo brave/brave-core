@@ -88,7 +88,7 @@ void CredentialsSKU::Start(
     ledger::ResultCallback callback) {
   DCHECK_EQ(trigger.data.size(), 2ul);
   if (trigger.data.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Trigger data is missing";
+    BLOG(0, "Trigger data is missing");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -159,7 +159,7 @@ void CredentialsSKU::Claim(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim failed";
+    BLOG(0, "Claim failed");
     callback(result);
     return;
   }
@@ -167,8 +167,7 @@ void CredentialsSKU::Claim(
   auto blinded_creds = ParseStringToBaseList(blinded_creds_json);
 
   if (!blinded_creds || blinded_creds->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Blinded creds are corrupted";
+    BLOG(0, "Blinded creds are corrupted");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -211,7 +210,8 @@ void CredentialsSKU::OnClaim(
     const std::map<std::string, std::string>& headers,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::RETRY);
@@ -236,7 +236,7 @@ void CredentialsSKU::ClaimStatusSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim status not saved";
+    BLOG(0, "Claim status not saved");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -273,7 +273,8 @@ void CredentialsSKU::OnFetchSignedCreds(
     const std::map<std::string, std::string>& headers,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code == net::HTTP_ACCEPTED) {
     callback(ledger::Result::RETRY_SHORT);
@@ -298,7 +299,7 @@ void CredentialsSKU::SignedCredsSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Signed creds were not saved";
+    BLOG(0, "Signed creds were not saved");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -316,13 +317,13 @@ void CredentialsSKU::Unblind(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (!creds) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
+    BLOG(0, "Corrupted data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   if (!IsPublicKeyValid(creds->public_key)) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Public key is not valid";
+    BLOG(0, "Public key is not valid");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -337,7 +338,7 @@ void CredentialsSKU::Unblind(
   }
 
   if (!result) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << error;
+    BLOG(0, "UnBlindTokens: " << error);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -364,7 +365,7 @@ void CredentialsSKU::Completed(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Unblinded token save failed";
+    BLOG(0, "Unblinded token save failed");
     callback(result);
     return;
   }
@@ -377,7 +378,7 @@ void CredentialsSKU::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
   if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Pub key / token list empty";
+    BLOG(0, "Pub key / token list empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -416,7 +417,8 @@ void CredentialsSKU::OnRedeemTokens(
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(0, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);

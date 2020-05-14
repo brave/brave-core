@@ -28,8 +28,7 @@ bool BatState::LoadState(const std::string& data) {
   ledger::ClientProperties state;
   const ledger::ClientState client_state;
   if (!client_state.FromJson(data, &state)) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to load client state: " << data;
+    BLOG(0, "Failed to load client state: " << data);
     return false;
   }
 
@@ -69,8 +68,7 @@ void BatState::SaveState() {
 
 void BatState::OnSaveState(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Ledger state was not save successfully";
+    BLOG(0, "Ledger state was not save successfully");
     return;
   }
 }

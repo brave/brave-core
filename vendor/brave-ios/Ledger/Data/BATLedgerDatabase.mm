@@ -9,7 +9,7 @@
 #import "bat/ledger/global_constants.h"
 #import "RewardsLogStream.h"
 
-#define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
+#define BLOG(__verbose_level) RewardsLogStream(__FILE__, __LINE__, __verbose_level).stream()
 
 @implementation BATLedgerDatabase
 
@@ -19,7 +19,7 @@
   NSError *error = nil;
   const auto migrationScript = [NSString stringWithContentsOfFile:bundlePath encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
+    BLOG(0) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
     return nil;
   }
   
@@ -114,7 +114,7 @@
   NSError *error = nil;
   const auto migrationScript = [NSString stringWithContentsOfFile:bundlePath encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
+    BLOG(0) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
     return nil;
   }
   
@@ -332,7 +332,7 @@
 {
   const auto context = [DataController newBackgroundContext];
   
-  BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Deleting publisher list" << std::endl;
+  BLOG(1) << "CoreData: Deleting publisher list" << std::endl;
   [context performBlock:^{
     const auto fetchRequest = ServerPublisherInfo.fetchRequest;
     fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)

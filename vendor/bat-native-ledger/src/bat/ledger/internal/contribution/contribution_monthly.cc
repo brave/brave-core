@@ -101,7 +101,7 @@ void ContributionMonthly::GetVerifiedTipList(
 void ContributionMonthly::OnSavePendingContribution(
     const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem saving pending";
+    BLOG(0, "Problem saving pending");
   }
 
   ledger_->PendingContributionSaved(result);
@@ -124,7 +124,7 @@ void ContributionMonthly::OnSufficientBalanceWallet(
     ledger::BalancePtr info,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !info) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem getting balance";
+    BLOG(0, "Problem getting balance");
     return;
   }
 

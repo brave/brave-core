@@ -380,7 +380,8 @@ void Vimeo::OnEmbedResponse(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
@@ -463,11 +464,8 @@ void Vimeo::OnPublisherPage(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(
-      __func__,
-      response_status_code,
-      "HTML from Vimeo publisher page",
-      headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      "<HTML>", headers));
 
   if (response_status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
@@ -491,11 +489,8 @@ void Vimeo::OnUnknownPage(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(
-      __func__,
-      response_status_code,
-      "HTML from Vimeo unknown page",
-      headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      "<HTML>", headers));
 
   if (response_status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
@@ -591,8 +586,7 @@ void Vimeo::OnMediaPublisherInfo(
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError();
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Failed to get publisher info";
+    BLOG(0, "Failed to get publisher info");
     return;
   }
 
@@ -634,11 +628,8 @@ void Vimeo::OnPublisherVideoPage(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(
-      __func__,
-      response_status_code,
-      "HTML from Vimeo Video page",
-      headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      "<HTML>", headers));
 
   if (response_status_code != net::HTTP_OK) {
     OnMediaActivityError();
@@ -685,8 +676,7 @@ void Vimeo::SavePublisherInfo(
     const std::string& publisher_favicon) {
   if (user_id.empty() && publisher_key.empty()) {
     OnMediaActivityError(window_id);
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "User id is missing for: " << media_key;
+    BLOG(0, "User id is missing for: " << media_key);
     return;
   }
 
@@ -702,8 +692,7 @@ void Vimeo::SavePublisherInfo(
 
   if (key.empty()) {
     OnMediaActivityError(window_id);
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher key is missing for: " << media_key;
+    BLOG(0, "Publisher key is missing for: " << media_key);
     return;
   }
 

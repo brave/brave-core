@@ -37,7 +37,7 @@ void PromotionTransfer::Start(
   }
 
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is empty";
+    BLOG(0, "Wallet is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -57,7 +57,7 @@ void PromotionTransfer::OnAnonExternalWallet(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Initial transfer failed";
+    BLOG(0, "Initial transfer failed");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

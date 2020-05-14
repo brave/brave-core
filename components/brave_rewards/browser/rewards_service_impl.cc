@@ -146,7 +146,7 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
+    VLOG(0) << "Failed to read file: " << path.MaybeAsASCII();
     return {};
   }
   std::pair<std::string, base::Value> result;
@@ -158,14 +158,14 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
   std::string error_message;
   auto value = deserializer.Deserialize(&error_code, &error_message);
   if (!value) {
-    LOG(ERROR) << "Cannot deserialize ledger state, error code: " << error_code
-               << " message: " << error_message;
+    VLOG(0) << "Cannot deserialize ledger state, error code: " << error_code
+        << " message: " << error_message;
     return result;
   }
 
   const auto dict = base::DictionaryValue::From(std::move(value));
   if (!dict) {
-    LOG(ERROR) << "Corrupted ledger state.";
+    VLOG(0) << "Corrupted ledger state.";
     return result;
   }
 
@@ -197,7 +197,7 @@ std::string LoadOnFileTaskRunner(const base::FilePath& path) {
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
+    VLOG(0) << "Failed to read file: " << path.MaybeAsASCII();
     return std::string();
   }
   return data;
@@ -510,7 +510,7 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
     const std::string& result_string,
     const bool attestation_passed) {
   if (!token_received) {
-    LOG(ERROR) << "CreateWalletAttestationResult error: " << result_string;
+    VLOG(0) << "CreateWalletAttestationResult error: " << result_string;
     OnWalletInitialized(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -1006,7 +1006,7 @@ void RewardsServiceImpl::LoadNicewareList(
       IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
 
   if (data.empty()) {
-    LOG(ERROR) << "Failed to read in niceware list";
+    VLOG(0) << "Failed to read in niceware list";
   }
   callback(data.empty() ? ledger::Result::LEDGER_ERROR
                         : ledger::Result::LEDGER_OK, data);
@@ -1073,13 +1073,6 @@ void RewardsServiceImpl::LoadURL(
 
   if (!content.empty())
     loader->AttachStringForUpload(content, contentType);
-
-  if (VLOG_IS_ON(ledger::LogLevel::LOG_REQUEST)) {
-    std::string headers_log = "";
-    for (auto const& header : headers) {
-      headers_log += "> headers: " + header + "\n";
-    }
-  }
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
@@ -1989,7 +1982,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
 
   auto it = current_media_fetchers_.find(url);
   if (it != current_media_fetchers_.end()) {
-    LOG(WARNING) << "Already fetching favicon: " << url;
+    VLOG(1) << "Already fetching favicon: " << url;
     return;
   }
 

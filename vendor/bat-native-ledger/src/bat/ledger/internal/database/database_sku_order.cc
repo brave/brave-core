@@ -281,8 +281,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Order/contribution id is empty";
+    BLOG(0, "Order/contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

@@ -159,7 +159,8 @@ void Uphold::OnFetchBalance(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code == net::HTTP_UNAUTHORIZED ||
       response_status_code == net::HTTP_NOT_FOUND ||
@@ -356,9 +357,7 @@ void Uphold::TransferFeeOnTimer(const uint32_t timer_id) {
 }
 
 void Uphold::OnTimer(uint32_t timer_id) {
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-    << "OnTimer Uphold: "
-    << timer_id;
+  BLOG(1, "OnTimer Uphold: " << timer_id);
 
   TransferFeeOnTimer(timer_id);
 }
@@ -368,9 +367,7 @@ void Uphold::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
     start_timer_in = brave_base::random::Geometric(45);
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-    << "Starts Uphold timer in "
-    << start_timer_in;
+  BLOG(1, "Starts Uphold timer in " << start_timer_in);
 
   ledger_->SetTimer(start_timer_in, timer_id);
 }

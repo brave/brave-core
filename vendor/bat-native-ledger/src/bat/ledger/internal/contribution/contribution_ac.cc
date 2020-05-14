@@ -24,11 +24,11 @@ ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process() {
   if (!ledger_->GetRewardsMainEnabled() || !ledger_->GetAutoContribute()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Auto contribution is off";
+    BLOG(1, "Auto contribution is off");
     return;
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Starting auto contribution";
+  BLOG(1, "Starting auto contribution");
 
   auto filter = ledger_->CreateActivityFilter(
       "",
@@ -52,7 +52,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
 
   if (normalized_list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "AC list is empty";
+    BLOG(1, "AC list is empty");
     return;
   }
 
@@ -70,7 +70,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   }
 
   if (queue_list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "AC queue list is empty";
+    BLOG(1, "AC queue list is empty");
     return;
   }
 
@@ -89,7 +89,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
 
 void ContributionAC::QueueSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Queue was not saved";
+    BLOG(0, "Queue was not saved");
     return;
   }
 

@@ -244,12 +244,6 @@ class MockLedgerImpl : public LedgerImpl {
           bool,
           bool));
 
-  MOCK_METHOD4(LogResponse,
-      void(const std::string&,
-          int,
-          const std::string&,
-          const std::map<std::string, std::string>&));
-
   MOCK_METHOD0(ResetReconcileStamp, void());
 
   MOCK_CONST_METHOD0(GetPaymentId, const std::string&());

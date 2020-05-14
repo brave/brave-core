@@ -133,7 +133,7 @@ void RewardsDatabase::RunTransaction(
   for (auto const& command : transaction->commands) {
     ledger::DBCommandResponse::Status status;
 
-    VLOG(6) << "Query: " << command->command;
+    VLOG(8) << "Query: " << command->command;
 
     switch (command->type) {
       case ledger::DBCommand::Type::INITIALIZE: {

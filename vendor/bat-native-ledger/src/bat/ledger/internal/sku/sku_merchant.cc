@@ -30,7 +30,7 @@ void SKUMerchant::Process(
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is null";
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -51,7 +51,7 @@ void SKUMerchant::OrderCreated(
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not successful";
+    BLOG(0, "Order was not successful");
     callback(result, "");
     return;
   }
@@ -70,7 +70,7 @@ void SKUMerchant::OnOrder(
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is null";
+    BLOG(0, "Order is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -98,13 +98,13 @@ void SKUMerchant::OnServerPublisherInfo(
     ledger::SKUOrderCallback callback) {
   auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
   if (!order || !info) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order/Publisher not found";
+    BLOG(0, "Order/Publisher not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (info->address.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher address is empty";
+    BLOG(0, "Publisher address is empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

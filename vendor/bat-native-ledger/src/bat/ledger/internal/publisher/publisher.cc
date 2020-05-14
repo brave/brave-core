@@ -351,8 +351,7 @@ void Publisher::onFetchFavIcon(const std::string& publisher_key,
                                    bool success,
                                    const std::string& favicon_url) {
   if (!success || favicon_url.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Missing or corrupted favicon file for: " << publisher_key;
+    BLOG(1, "Missing or corrupted favicon file for: " << publisher_key);
     return;
   }
 
@@ -387,15 +386,13 @@ void Publisher::onFetchFavIconDBResponse(
                           visit_data);
     }
   } else {
-    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Missing or corrupted favicon file";
+    BLOG(1, "Missing or corrupted favicon file");
   }
 }
 
 void Publisher::OnPublisherInfoSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher info was not saved!";
+    BLOG(0, "Publisher info was not saved!");
   }
 
   SynopsisNormalizer();
@@ -449,8 +446,7 @@ void Publisher::OnRestorePublishers(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-    << "Could not restore publishers.";
+    BLOG(0, "Could not restore publishers.");
     callback(result);
     return;
   }
@@ -749,8 +745,7 @@ bool Publisher::loadState(const std::string& data) {
 
 void Publisher::OnPublisherStateSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Could not save publisher state";
+    BLOG(0, "Could not save publisher state");
     // TODO(anyone) error handling
     return;
   }

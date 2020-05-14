@@ -51,7 +51,7 @@ void PublisherServerList::OnTimer(uint32_t timer_id) {
 
 void PublisherServerList::Start(ledger::ResultCallback callback) {
   if (in_progress_) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Publisher list in progress";
+    BLOG(1, "Publisher list in progress");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -91,11 +91,8 @@ void PublisherServerList::OnDownload(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(
-      __func__,
-      response_status_code,
-      "Publisher list",
-      headers);
+  BLOG(7, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   // we iterated through all pages
   if (response_status_code == net::HTTP_NO_CONTENT) {
@@ -120,7 +117,7 @@ void PublisherServerList::OnDownload(
     return;
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Can't fetch publisher list";
+  BLOG(0, "Can't fetch publisher list");
   SetTimer(true);
   callback(ledger::Result::LEDGER_ERROR);
 }
@@ -178,10 +175,8 @@ uint64_t PublisherServerList::GetTimerTime(
   if (retry_after_error) {
     start_timer_in = brave_base::random::Geometric(150);
 
-    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh server list, will try again in " <<
-      start_timer_in <<
-      " seconds.";
+    BLOG(1, "Failed to refresh server list, will try again in "
+        << start_timer_in << " seconds.");
 
     return start_timer_in;
   }
@@ -234,7 +229,7 @@ void PublisherServerList::ParsePublisherList(
 
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Data is not correct";
+    BLOG(0, "Data is not correct");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -278,7 +273,7 @@ void PublisherServerList::ParsePublisherList(
   }
 
   if (list_publisher->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher list is empty";
+    BLOG(0, "Publisher list is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -356,13 +351,13 @@ void PublisherServerList::SaveParsedData(
     const SharedPublisherBanner& list_banner,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "DB was not cleared";
+    BLOG(0, "DB was not cleared");
     callback(result);
     return;
   }
 
   if (!list_publisher || list_publisher->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher list is null";
+    BLOG(0, "Publisher list is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -381,8 +376,7 @@ void PublisherServerList::SaveBanners(
     const SharedPublisherBanner& list_banner,
     ledger::ResultCallback callback) {
   if (!list_banner || result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-        "Publisher list was not saved";
+    BLOG(0, "Publisher list was not saved");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -409,7 +403,7 @@ void PublisherServerList::BannerSaved(
   }
 
 
-  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Banners were not saved";
+  BLOG(0, "Banners were not saved");
   callback(result);
 }
 

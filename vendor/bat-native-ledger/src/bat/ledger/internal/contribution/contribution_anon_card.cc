@@ -124,9 +124,11 @@ void ContributionAnonCard::OnSendTransaction(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     ledger::TransactionCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code != net::HTTP_CREATED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem sending transaction";
+    BLOG(0, "Problem sending transaction");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
