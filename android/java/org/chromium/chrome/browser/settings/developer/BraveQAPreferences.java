@@ -5,21 +5,37 @@
 
 package org.chromium.chrome.browser.settings.developer;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.lang.SecurityException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.FileUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -30,6 +46,8 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.settings.SettingsUtils;
+
+import org.chromium.base.Log;
 
 /**
  * Settings fragment containing preferences for QA team.
@@ -42,6 +60,13 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final String PREF_QA_DEBUG_NTP= "qa_debug_ntp";
 
     private static final String QA_ADS_PER_HOUR = "qa_ads_per_hour";
+    private static final String QA_IMPORT_REWARDS_DB = "qa_import_rewards_db";
+    private static final String QA_EXPORT_REWARDS_DB = "qa_export_rewards_db";
+
+    private static final String PUBLISHER_INFO_DB = "publisher_info_db";
+    private static final String REWARDS_DB_SRC_DIR = "app_chrome/Default";
+    private static final String REWARDS_DB_DST_DIR = "rewards";
+    private static final int STORAGE_PERMISSION_REQUEST_CODE = 8000;
 
     private static final int MAX_ADS = 50;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
@@ -49,6 +74,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mIsStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
+
+    private Preference mImportRewardsDb;
+    private Preference mExportRewardsDb;
+    private String mRewardsSrc;
+    private String mRewardsDst;
+    private String mRewardsDstDir;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +101,146 @@ public class BraveQAPreferences extends BravePreferenceFragment
         mDebugNTP = (ChromeSwitchPreference) findPreference(PREF_QA_DEBUG_NTP);
         if(mDebugNTP != null) {
             mDebugNTP.setOnPreferenceChangeListener(this);
+        }
+
+        mImportRewardsDb = findPreference(QA_IMPORT_REWARDS_DB);
+        mExportRewardsDb = findPreference(QA_EXPORT_REWARDS_DB);
+        setRewardsDbClickListeners();
+    }
+
+    private void setRewardsDbClickListeners() {
+        if (mImportRewardsDb != null) {
+            mImportRewardsDb.setOnPreferenceClickListener( preference -> {
+                Context context = ContextUtils.getApplicationContext();
+                mRewardsDst = context.getApplicationInfo().dataDir +
+                        File.separator + REWARDS_DB_SRC_DIR +
+                        File.separator + PUBLISHER_INFO_DB;
+
+                mRewardsSrc = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +
+                        File.separator + REWARDS_DB_DST_DIR  + File.separator +
+                        PUBLISHER_INFO_DB;
+
+                mRewardsDstDir = "";
+
+                if (isStoragePermissionGranted()) {
+                    copyRewardsDbThread();
+                }
+                return true;
+            });
+        }
+
+        if (mExportRewardsDb != null) {
+            mExportRewardsDb.setOnPreferenceClickListener( preference -> {
+                Context context = ContextUtils.getApplicationContext();
+                mRewardsSrc = context.getApplicationInfo().dataDir +
+                        File.separator + REWARDS_DB_SRC_DIR + File.separator +
+                        PUBLISHER_INFO_DB;
+
+                mRewardsDstDir = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +
+                        File.separator + REWARDS_DB_DST_DIR;
+
+                SimpleDateFormat dateFormat =
+                        new SimpleDateFormat("-yyyy-MM-dd-HHmmss");
+                mRewardsDst = mRewardsDstDir + File.separator +
+                        PUBLISHER_INFO_DB + dateFormat.format(new Date());
+
+                if (isStoragePermissionGranted()) {
+                    copyRewardsDbThread();
+                }
+                return true;
+            });
+        }
+    }
+
+    private void copyRewardsDbThread() {
+        // disable UI before starting the thread
+        mExportRewardsDb.setEnabled(false);
+        new Thread( () -> {
+            String erroMsg = "";
+
+            // create dest dir if necessary
+            if (!TextUtils.isEmpty(mRewardsDstDir)) {
+                if ( !createDstDir (mRewardsDstDir)) {
+                    erroMsg  = "Failed to create destination directory";
+                }
+            }
+
+            // no errors so far: copy the file
+            if (TextUtils.isEmpty(erroMsg)) {
+                boolean succeeded = copyFile(mRewardsSrc, mRewardsDst);
+                if (! succeeded) {
+                    erroMsg = "Failed to copy db file";
+                }
+            }
+
+            // update UI
+            final String msg = (!TextUtils.isEmpty(erroMsg)) ? erroMsg : "Success";
+            getActivity().runOnUiThread( () -> {
+                Context context = ContextUtils.getApplicationContext();
+                Toast.makeText(context , msg, Toast.LENGTH_SHORT).show();
+                mExportRewardsDb.setEnabled(true);
+            });
+        }).start();
+    }
+
+    private boolean copyFile(String src, String dst) {
+        boolean succeeded = false;
+        try {
+            InputStream in = new FileInputStream(src);
+            FileUtils.copyStreamToFile(in, new File(dst));
+            succeeded = true;
+        }
+        catch (IOException e) {
+        }
+        return succeeded;
+    }
+
+    private boolean createDstDir(String dir) {
+        boolean succeeded = false;
+        File dst = new File(dir);
+        try {
+            if (! dst.exists()) {
+                succeeded = dst.mkdirs();
+            }
+            else {
+                succeeded = true;
+            }
+        }
+        catch (SecurityException e) {
+            succeeded = false;
+        }
+        return succeeded;
+    }
+
+    private boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >=  Build.VERSION_CODES.M) {
+            Context context = ContextUtils.getApplicationContext();
+            if (context.checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]
+                        {android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        STORAGE_PERMISSION_REQUEST_CODE);
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
+        if (STORAGE_PERMISSION_REQUEST_CODE == requestCode &&
+                grantResults.length > 0 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            copyRewardsDbThread();
         }
     }
 
@@ -177,49 +348,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void OnWalletInitialized(int error_code) {}
-
-    @Override
-    public void OnWalletProperties(int error_code) {}
-
-    @Override
-    public void OnPublisherInfo(int tabId) {}
-
-    @Override
-    public void OnGetCurrentBalanceReport(double[] report) {}
-
-    @Override
-    public void OnNotificationAdded(String id, int type, long timestamp, String[] args) {}
-
-    @Override
-    public void OnNotificationsCount(int count) {}
-
-    @Override
-    public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {}
-
-    @Override
-    public void OnNotificationDeleted(String id) {}
-
-    @Override
-    public void OnIsWalletCreated(boolean created) {}
-
-    @Override
-    public void OnGetPendingContributionsTotal(double amount) {}
-
-    @Override
-    public void OnGetRewardsMainEnabled(boolean enabled) {
-    }
-
-    @Override
-    public void OnGetAutoContributeProps() {}
-
-    @Override
-    public void OnGetReconcileStamp(long timestamp) {}
-
-    @Override
-    public void OnRecurringDonationUpdated() {}
-
-    @Override
     public void OnResetTheWholeState(boolean success) {
         if (success) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -233,12 +361,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
             BraveRelaunchUtils.askForRelaunchCustom(getActivity());
         }
     }
-
-    @Override
-    public void OnRewardsMainEnabled(boolean enabled) {}
-
-    @Override
-    public void OnFetchPromotions() {}
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {}
