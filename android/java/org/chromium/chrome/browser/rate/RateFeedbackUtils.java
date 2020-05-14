@@ -31,7 +31,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 
 public class RateFeedbackUtils {
 	private static final String TAG = "Rate";
-	private static final String RATE_URL = "https://laptop-updates.brave.com/1/feedback";  
+	private static final String RATE_URL = "https://laptop-updates.brave.com/1/feedback";
 
 	public interface RateFeedbackCallback {
 		void rateFeedbackSubmitted();
@@ -48,18 +48,18 @@ public class RateFeedbackUtils {
 			mCallback = callback;
 		}
 
-	    @Override
-	    protected Void doInBackground() {
-	        sendRateFeedback(mUserSelection, mUserFeedback);
-	        return null;
-	    }
+		@Override
+		protected Void doInBackground() {
+			sendRateFeedback(mUserSelection, mUserFeedback);
+			return null;
+		}
 
-	    @Override
-	    protected void onPostExecute(Void result) {
-	        assert ThreadUtils.runningOnUiThread();
-	        if (isCancelled()) return;
-	        mCallback.rateFeedbackSubmitted();
-	    }
+		@Override
+		protected void onPostExecute(Void result) {
+			assert ThreadUtils.runningOnUiThread();
+			if (isCancelled()) return;
+			mCallback.rateFeedbackSubmitted();
+		}
 	}
 
 	private static void sendRateFeedback(String userSelection, String userFeedback) {
@@ -70,54 +70,54 @@ public class RateFeedbackUtils {
 		Profile mProfile = Profile.getLastUsedProfile();
 		NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
 
-		HttpURLConnection urlConnection=null;  
-		try {  
-		    URL url = new URL(RATE_URL);  
-		    urlConnection = (HttpURLConnection) url.openConnection();
-		    urlConnection.setDoOutput(true);   
-		    urlConnection.setRequestMethod("POST");  
-		    urlConnection.setUseCaches(false);  
-		    urlConnection.setRequestProperty("Content-Type","application/json");  
-		    urlConnection.connect();
+		HttpURLConnection urlConnection = null;
+		try {
+			URL url = new URL(RATE_URL);
+			urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setUseCaches(false);
+			urlConnection.setRequestProperty("Content-Type", "application/json");
+			urlConnection.connect();
 
-		    JSONObject jsonParam = new JSONObject();
-		    jsonParam.put("selection", userSelection);
-		    jsonParam.put("platform", "Android");
-		    jsonParam.put("os_version", String.valueOf(Build.VERSION.SDK_INT));
-		    jsonParam.put("phone_make", Build.MANUFACTURER);
-		    jsonParam.put("phone_model", Build.MODEL);
-		    jsonParam.put("phone_arch", Build.CPU_ABI);
-		    jsonParam.put("user_feedback", userFeedback);
-		    jsonParam.put("app_version", appVersion);
-		    jsonParam.put("api_key", mNTPBackgroundImagesBridge.getReferralApiKey());
+			JSONObject jsonParam = new JSONObject();
+			jsonParam.put("selection", userSelection);
+			jsonParam.put("platform", "Android");
+			jsonParam.put("os_version", String.valueOf(Build.VERSION.SDK_INT));
+			jsonParam.put("phone_make", Build.MANUFACTURER);
+			jsonParam.put("phone_model", Build.MODEL);
+			jsonParam.put("phone_arch", Build.CPU_ABI);
+			jsonParam.put("user_feedback", userFeedback);
+			jsonParam.put("app_version", appVersion);
+			jsonParam.put("api_key", mNTPBackgroundImagesBridge.getReferralApiKey());
 
-		    OutputStream outputStream = urlConnection.getOutputStream();
-		    byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
-		    outputStream.write(input, 0, input.length);
-		    outputStream.flush();
-		    outputStream.close();
+			OutputStream outputStream = urlConnection.getOutputStream();
+			byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
+			outputStream.write(input, 0, input.length);
+			outputStream.flush();
+			outputStream.close();
 
-		    int HttpResult =urlConnection.getResponseCode();
-		    if(HttpResult ==HttpURLConnection.HTTP_OK) {
-		    	BufferedReader br = new BufferedReader(new InputStreamReader(
-		    		urlConnection.getInputStream(), StandardCharsets.UTF_8.toString()));
-		    	String line = null;
-		    	while ((line = br.readLine()) != null) {
-		    		sb.append(line + "\n");
-		    	}
-		    	br.close();
-		    } else {
-		    	Log.e(TAG, urlConnection.getResponseMessage());
-		    }  
+			int HttpResult = urlConnection.getResponseCode();
+			if (HttpResult == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+				        urlConnection.getInputStream(), StandardCharsets.UTF_8.toString()));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
+			} else {
+				Log.e(TAG, urlConnection.getResponseMessage());
+			}
 		} catch (MalformedURLException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (JSONException e) {
-		    Log.e(TAG, e.getMessage());
-		} finally {  
-		    if(urlConnection!=null)  
-		    urlConnection.disconnect();  
-		}  
+			Log.e(TAG, e.getMessage());
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
 	}
 }

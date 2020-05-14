@@ -105,8 +105,8 @@ public class RateUtils {
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
 
         return (System.currentTimeMillis() > getPrefNextRateDate()
-            && appOpenCount >= getPrefNextAppOpenCount()
-            && getPrefRateEnabled());
+                && appOpenCount >= getPrefNextAppOpenCount()
+                && getPrefRateEnabled());
     }
 
     public void setNextRateDateAndCount() {

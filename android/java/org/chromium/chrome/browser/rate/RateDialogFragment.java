@@ -59,14 +59,14 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     private LinearLayout mSmileyLayout;
     private LinearLayout mRateActionLayout;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
             mIsFromSettings = bundle.getBoolean(RateUtils.FROM_SETTINGS, false);
         }
-	}
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -74,29 +74,28 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         setDialogParams();
     }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
-            public boolean onKey(android.content.DialogInterface dialog, 
-                int keyCode,android.view.KeyEvent event) {
+            public boolean onKey(android.content.DialogInterface dialog,
+                                 int keyCode, android.view.KeyEvent event) {
                 if ((keyCode ==  android.view.KeyEvent.KEYCODE_BACK)) {
                     dismiss();
                     return true;
-                }
-                else return false;
+                } else return false;
             }
         });
         setDialogParams();
-	}
- 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_rate_dialog, container, false);
-	}
+    }
 
-	@Override
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_rate_dialog, container, false);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mRateTitleTextView = view.findViewById(R.id.rate_title_tv);
         mFeedbackTitleTextView = view.findViewById(R.id.feedback_title_tv);
@@ -110,7 +109,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         mSmileyLayout = view.findViewById(R.id.smiley_layout);
         mRateActionLayout = view.findViewById(R.id.brave_rate_action_layout);
 
-        if(GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
+        if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
             mHappyImageButton.setColorFilter(Color.argb(255, 255, 255, 255));
             mNeutralImageButton.setColorFilter(Color.argb(255, 255, 255, 255));
             mSadImageButton.setColorFilter(Color.argb(255, 255, 255, 255));
@@ -126,34 +125,34 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rate_negative_btn) {
-            if(mIsFeedbackShown) {
+            if (mIsFeedbackShown) {
                 laterAction();
-            } else if(mIsSuccessShown) {
+            } else if (mIsSuccessShown) {
                 laterAction();
             }
         } else if (view.getId() == R.id.rate_positive_btn) {
-        	if(mIsFeedbackShown) {
+            if (mIsFeedbackShown) {
                 String feedback = mRateFeedbackEditText.getText().toString().trim();
-	            if (TextUtils.isEmpty(feedback)) {
-	                Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
-	                mRateFeedbackEditText.startAnimation(shake);
-	                return;
-	            } else {
+                if (TextUtils.isEmpty(feedback)) {
+                    Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                    mRateFeedbackEditText.startAnimation(shake);
+                    return;
+                } else {
                     RateFeedbackUtils.RateFeedbackWorkerTask mWorkerTask = new RateFeedbackUtils.RateFeedbackWorkerTask(mUserSelection, feedback, rateFeedbackCallback);
                     mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
-        	} else if (mIsSuccessShown) {
+            } else if (mIsSuccessShown) {
                 openPlaystore();
             } else {
                 laterAction();
             }
-        } else if(view.getId() == R.id.neutral_ib) {
+        } else if (view.getId() == R.id.neutral_ib) {
             mUserSelection = NEUTRAL;
             showFeedback();
-        } else if(view.getId() == R.id.sad_ib) {
+        } else if (view.getId() == R.id.sad_ib) {
             mUserSelection = SAD;
             showFeedback();
-        } else if(view.getId() == R.id.happy_ib) {
+        } else if (view.getId() == R.id.happy_ib) {
             showRateSuccess();
         }
     }
@@ -205,11 +204,11 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         boolean isLandscape = ConfigurationUtils.isLandscape(getActivity());
-        if(isTablet) {
+        if (isTablet) {
             params.width = (int) (0.5 * mDeviceWidth);
         } else {
-            if(isLandscape) {
-                params.width = (int) (0.5 * mDeviceWidth);    
+            if (isLandscape) {
+                params.width = (int) (0.5 * mDeviceWidth);
             } else {
                 params.width = (int) (0.9 * mDeviceWidth);
             }
@@ -218,7 +217,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 
-    private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback= new RateFeedbackUtils.RateFeedbackCallback() {
+    private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback = new RateFeedbackUtils.RateFeedbackCallback() {
         @Override
         public void rateFeedbackSubmitted() {
             RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
