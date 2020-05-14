@@ -1176,9 +1176,9 @@ class BrowserViewController: UIViewController {
             
             //Another Fix for: https://github.com/brave/brave-ios/pull/2296
             //Disable any sort of privileged execution contexts
-            //IE: The user must explicitly type OR must explicitly tap a bookmark they have saved.
+            //IE: The user must explicitly tap a bookmark they have saved.
             //Block all other contexts such as redirects, downloads, embed, linked, etc..
-            if visitType == .typed || visitType == .bookmark {
+            if visitType == .bookmark {
                 if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
                     webView.evaluateJavaScript(code, completionHandler: { _, error in
                         if let error = error {
