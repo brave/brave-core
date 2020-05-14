@@ -30,10 +30,10 @@ SpeedreaderButton::SpeedreaderButton(views::ButtonListener* listener,
   set_tag(IDC_TOGGLE_SPEEDREADER);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
 
-  on_ = prefs_->GetBoolean(speedreader::kSpeedreaderEnabled);
+  on_ = prefs_->GetBoolean(speedreader::kSpeedreaderPrefEnabled);
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      speedreader::kSpeedreaderEnabled,
+      speedreader::kSpeedreaderPrefEnabled,
       base::BindRepeating(&SpeedreaderButton::OnPreferenceChanged,
                           base::Unretained(this)));
 }
@@ -64,7 +64,7 @@ void SpeedreaderButton::SetHighlighted(bool bubble_visible) {
 }
 
 void SpeedreaderButton::OnPreferenceChanged() {
-  on_ = prefs_->GetBoolean(speedreader::kSpeedreaderEnabled);
+  on_ = prefs_->GetBoolean(speedreader::kSpeedreaderPrefEnabled);
   UpdateImage();
 }
 

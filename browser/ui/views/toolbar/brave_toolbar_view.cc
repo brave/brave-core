@@ -10,13 +10,12 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/speedreader/speedreader_pref_names.h"
-#include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -25,6 +24,11 @@
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
 
 namespace {
 constexpr int kLocationBarMaxWidth = 1080;
@@ -134,23 +138,24 @@ void BraveToolbarView::Init() {
                                          ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->Init();
 
+  DCHECK(location_bar_);
+  AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
+  bookmark_->UpdateImage();
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader.
-  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-  if (cmdline->HasSwitch(speedreader::kEnableSpeedreader)) {
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
     speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                               ui::EF_MIDDLE_MOUSE_BUTTON);
     speedreader_->Init();
   }
 
-  DCHECK(location_bar_);
-  AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
-  bookmark_->UpdateImage();
-
   if (speedreader_) {
     AddChildViewAt(speedreader_, GetIndexOf(location_bar_));
     speedreader_->UpdateImage();
   }
+#endif
 
   brave_initialized_ = true;
 }

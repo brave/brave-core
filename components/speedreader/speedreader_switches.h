@@ -8,10 +8,9 @@
 
 namespace speedreader {
 
-constexpr char kEnableSpeedreader[] = "enable-speedreader";
 constexpr char kSpeedreaderWhitelist[] = "speedreader-whitelist";
 constexpr char kSpeedreaderWhitelistPath[] = "speedreader-whitelist-path";
 
-}
+}  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_SWITCHES_H_

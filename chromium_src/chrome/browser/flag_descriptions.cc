@@ -24,6 +24,9 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
 const char kBraveAdblockCosmeticFilteringName[] = "Enable cosmetic filtering";
 const char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
+const char kBraveSpeedreaderName[] = "Enable SpeedReader";
+const char kBraveSpeedreaderDescription[] =
+    "Enables faster loading of simplified article-style web pages.";
 const char kBraveSyncName[] = "Enable Brave Sync";
 const char kBraveSyncDescription[] = "Brave Sync is disabled by default";
 const char kBraveSuperReferralName[] = "Enable Brave Super Referral";
