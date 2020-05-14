@@ -1,4 +1,4 @@
- 
+
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -42,11 +42,11 @@ public class RateFeedbackUtils {
 		private String mUserFeedback;
 		private RateFeedbackCallback mCallback;
 
-	    public RateFeedbackWorkerTask(String userSelection, String userFeedback, RateFeedbackCallback callback) {
-	    	mUserSelection = userSelection;
-	    	mUserFeedback = userFeedback;
-	        mCallback = callback;
-	    }
+		public RateFeedbackWorkerTask(String userSelection, String userFeedback, RateFeedbackCallback callback) {
+			mUserSelection = userSelection;
+			mUserFeedback = userFeedback;
+			mCallback = callback;
+		}
 
 	    @Override
 	    protected Void doInBackground() {
@@ -57,9 +57,7 @@ public class RateFeedbackUtils {
 	    @Override
 	    protected void onPostExecute(Void result) {
 	        assert ThreadUtils.runningOnUiThread();
-
 	        if (isCancelled()) return;
-
 	        mCallback.rateFeedbackSubmitted();
 	    }
 	}

@@ -61,7 +61,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
             mIsFromSettings = bundle.getBoolean(RateUtils.FROM_SETTINGS, false);
@@ -76,24 +76,24 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
 
 	@Override
 	public void onResume() {
-	 	super.onResume();
-	 	getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-	        @Override
-	        public boolean onKey(android.content.DialogInterface dialog, 
-	                              int keyCode,android.view.KeyEvent event) {
-	        	if ((keyCode ==  android.view.KeyEvent.KEYCODE_BACK)) {
-	        		dismiss();
-	        		return true;
-	        	}
-	        	else return false;
-	        }
-	    });
+        super.onResume();
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(android.content.DialogInterface dialog, 
+                int keyCode,android.view.KeyEvent event) {
+                if ((keyCode ==  android.view.KeyEvent.KEYCODE_BACK)) {
+                    dismiss();
+                    return true;
+                }
+                else return false;
+            }
+        });
         setDialogParams();
 	}
  
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_rate_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_rate_dialog, container, false);
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
             }
         } else if (view.getId() == R.id.rate_positive_btn) {
         	if(mIsFeedbackShown) {
-        		String feedback = mRateFeedbackEditText.getText().toString().trim();
+                String feedback = mRateFeedbackEditText.getText().toString().trim();
 	            if (TextUtils.isEmpty(feedback)) {
 	                Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
 	                mRateFeedbackEditText.startAnimation(shake);
@@ -175,7 +175,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     }
 
     private void showFeedback() {
-    	mIsFeedbackShown = true;
+        mIsFeedbackShown = true;
         mFeedbackTitleTextView.setVisibility(View.VISIBLE);
         mRateFeedbackEditText.setVisibility(View.VISIBLE);
         mNegativeButton.setVisibility(View.VISIBLE);
