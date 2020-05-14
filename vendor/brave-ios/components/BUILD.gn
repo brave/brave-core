@@ -13,18 +13,6 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-
-  include_dirs = [
-    ".",
-    "bookmarks",
-    "brave_sync",
-    "bookmark_sync_service",
-    "user_prefs",
-    "prefs_service",
-    "browser_state",
-    "context",
-    "keyed_service"
-  ]
 }
 
 source_set("components") {
@@ -39,12 +27,21 @@ source_set("components") {
 
   deps = [
     "//base",
+    "//brave/ios/app",
     "bookmarks",
     "brave_sync",
-    "bookmark_sync_service",
-    "user_prefs",
     "browser_state",
-    "context",
-    "keyed_service"
+    ":channel_info",
+    "//ios/web/public/init",
+  ]
+}
+
+source_set("channel_info") {
+  sources = [
+    "channel_info.cc",
+  ]
+
+  deps = [
+    "//components/version_info",
   ]
 }

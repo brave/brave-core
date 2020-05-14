@@ -1,4 +1,4 @@
 bookmarks_public_headers = [
   "//brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
-  "//brave/vendor/brave-ios/components/bookmarks/bookmark_client.h"
+  "//brave/vendor/brave-ios/components/bookmarks/brave_bookmark_client.h"
 ]

@@ -12,10 +12,6 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-
-  include_dirs = [
-    "."
-  ]
 }
 
 source_set("bookmark_sync_service") {
@@ -32,7 +28,10 @@ source_set("bookmark_sync_service") {
 
   deps = [
     "//base",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios",
     "//components/sync_bookmarks",
-    "//components/keyed_service/core"
+    "//components/undo",
+    "//brave/vendor/brave-ios/components/browser_state"
   ]
 }

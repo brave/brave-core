@@ -15,7 +15,6 @@
 #include "components/bookmarks/browser/bookmark_client.h"
 
 class GURL;
-class ChromeBrowserState;
 
 namespace sync_bookmarks {
 class BookmarkSyncService;
@@ -29,10 +28,10 @@ class BookmarkPermanentNode;
 namespace brave {
 class BraveBookmarkClient: public bookmarks::BookmarkClient {
  public:
-  BraveBookmarkClient(ChromeBrowserState* browser_state,
-                      sync_bookmarks::BookmarkSyncService* bookmark_sync_service);
+  BraveBookmarkClient(
+      sync_bookmarks::BookmarkSyncService* bookmark_sync_service);
   ~BraveBookmarkClient() override;
-    
+
   // bookmarks::BookmarkClient:
   void Init(bookmarks::BookmarkModel* model) override;
   bool PreferTouchIcon() override;
@@ -57,10 +56,6 @@ class BraveBookmarkClient: public bookmarks::BookmarkClient {
       const base::RepeatingClosure& schedule_save_closure) override;
 
  private:
-  // Pointer to the associated ios::ChromeBrowserState. Must outlive
-  // BookmarkClientImpl.
-  ChromeBrowserState* browser_state_;
-
   bookmarks::BookmarkModel* model_;
 
   // Pointer to the BookmarkSyncService responsible for encoding and decoding

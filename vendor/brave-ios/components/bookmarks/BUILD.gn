@@ -12,10 +12,6 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-
-  include_dirs = [
-    "."
-  ]
 }
 
 source_set("bookmarks") {
@@ -26,17 +22,22 @@ source_set("bookmarks") {
   sources = [
     "bookmarks_api.cc",
     "bookmarks_api.h",
-    "bookmark_client.h",
-    "bookmark_client.cc",
-    "bookmark_model_factory.h",
     "bookmark_model_factory.cc",
+    "bookmark_model_factory.h",
+    "brave_bookmark_client.cc",
+    "brave_bookmark_client.h",
+    "startup_task_runner_service_factory.cc",
     "startup_task_runner_service_factory.h",
-    "startup_task_runner_service_factory.cc"
   ]
 
   deps = [
     "//base",
+    "//brave/vendor/brave-ios/components/bookmark_sync_service",
+    "//brave/vendor/brave-ios/components/browser_state",
     "//components/bookmarks/browser",
+    "//components/favicon_base",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios",
     "//components/prefs",
     "//components/sync_bookmarks",
     "//components/undo",

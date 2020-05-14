@@ -1,18 +1,24 @@
-#ifdef startup_task_runner_service_factory_h
+#ifndef startup_task_runner_service_factory_h
 #define startup_task_runner_service_factory_h
+
 #include <memory>
 
 #include "base/macros.h"
 #include "base/no_destructor.h"
-#include "brave/vendor/brave-ios/components/keyed_service/browser_state_keyed_service_factory.h"
+#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
 class ChromeBrowserState;
+class KeyedService;
 
 namespace bookmarks {
 class StartupTaskRunnerService;
 }
 
-namespace brave {
+namespace web {
+class BrowserState;
+}
+
+namespace ios {
 // Singleton that owns all StartupTaskRunnerServices and associates them with
 // ChromeBrowserState.
 class StartupTaskRunnerServiceFactory : public BrowserStateKeyedServiceFactory {
@@ -34,5 +40,6 @@ class StartupTaskRunnerServiceFactory : public BrowserStateKeyedServiceFactory {
   DISALLOW_COPY_AND_ASSIGN(StartupTaskRunnerServiceFactory);
 };
 
-}  // namespace brave
+}  // namespace ios
+
 #endif

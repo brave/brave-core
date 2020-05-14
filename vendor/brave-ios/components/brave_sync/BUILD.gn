@@ -12,10 +12,6 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-
-  include_dirs = [
-    "."
-  ]
 }
 
 source_set("brave_sync") {
@@ -30,8 +26,8 @@ source_set("brave_sync") {
 
   deps = [
     "//base",
+    "//brave/vendor/brave-ios/components/bookmarks",
+    "//brave/vendor/brave-ios/components/browser_state",
     "//components/prefs",
-    "//components/pref_registry",
-    "//components/sync_preferences"
   ]
 }

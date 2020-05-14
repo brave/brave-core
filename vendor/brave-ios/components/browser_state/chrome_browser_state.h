@@ -8,71 +8,54 @@
 #ifndef chrome_browser_state_hpp
 #define chrome_browser_state_hpp
 
-#include "brave/vendor/brave-ios/components/browser_state/web_browser_state.h"
-
-#include <map>
-#include <string>
-
 #include "base/callback_forward.h"
 #include "base/compiler_specific.h"
+#include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
+#include "ios/web/public/browser_state.h"
 
-class PrefProxyConfigTracker;
 class PrefService;
 
 namespace base {
 class SequencedTaskRunner;
-class Time;
 }
 
 namespace sync_preferences {
 class PrefServiceSyncable;
 }
 
-enum class ChromeBrowserStateType {
-  REGULAR_BROWSER_STATE,
-  INCOGNITO_BROWSER_STATE,
-};
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
 
-namespace brave {
-class BraveBrowserStateIOData;
+extern const char kProductDirName[];
+extern const char kIOSChromeInitialBrowserState[];
 
 class ChromeBrowserState : public web::BrowserState {
  public:
+  explicit ChromeBrowserState(const base::FilePath& name);
   ~ChromeBrowserState() override;
-    
-  static ChromeBrowserState* FromBrowserState(BrowserState* browser_state);
-    
-  virtual scoped_refptr<base::SequencedTaskRunner> GetIOTaskRunner();
-    
-  virtual ChromeBrowserState* GetOriginalChromeBrowserState() = 0;
-    
-  virtual bool HasOffTheRecordChromeBrowserState() const = 0;
-    
-  virtual ChromeBrowserState* GetOffTheRecordChromeBrowserState() = 0;
-    
-  virtual void DestroyOffTheRecordChromeBrowserState() = 0;
-    
-  virtual PrefService* GetPrefs() = 0;
-    
-  virtual PrefService* GetOffTheRecordPrefs() = 0;
-    
-  virtual brave::BraveBrowserStateIOData* GetIOData() = 0;
-    
-  virtual sync_preferences::PrefServiceSyncable* GetSyncablePrefs();
-    
-  std::string GetDebugName();
 
- protected:
-  explicit ChromeBrowserState(
-      scoped_refptr<base::SequencedTaskRunner> io_task_runner);
+  static ChromeBrowserState* FromBrowserState(BrowserState* browser_state);
+
+  net::URLRequestContextGetter* GetRequestContext() override;
+  bool IsOffTheRecord() const override;
+  base::FilePath GetStatePath() const override;
+
+  PrefService* GetPrefs();
+  scoped_refptr<base::SequencedTaskRunner> GetIOTaskRunner();
 
  private:
+  net::URLRequestContextGetter* CreateRequestContext();
+
+  base::FilePath state_path_;
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
+  scoped_refptr<user_prefs::PrefRegistrySyncable> pref_registry_;
+  std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs_;
+  scoped_refptr<net::URLRequestContextGetter> request_context_getter_;
 
   DISALLOW_COPY_AND_ASSIGN(ChromeBrowserState);
 };
-}
 
 #endif /* chrome_browser_state_hpp */

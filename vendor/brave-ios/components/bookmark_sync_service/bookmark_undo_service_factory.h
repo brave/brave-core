@@ -6,13 +6,13 @@
 
 #include "base/macros.h"
 #include "base/no_destructor.h"
-#include "brave/vendor/brave-ios/components/keyed_service/browser_state_keyed_service_factory.h"
+#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
 class BookmarkUndoService;
 
-namespace brave {
 class ChromeBrowserState;
 
+namespace ios {
 // Singleton that owns all FaviconServices and associates them with
 // ChromeBrowserState.
 class BookmarkUndoServiceFactory : public BrowserStateKeyedServiceFactory {
@@ -36,5 +36,5 @@ class BookmarkUndoServiceFactory : public BrowserStateKeyedServiceFactory {
   DISALLOW_COPY_AND_ASSIGN(BookmarkUndoServiceFactory);
 };
 
-}  // namespace brave
+}  // namespace ios
 #endif //bookmark_undo_service_factory_h

@@ -1,9 +1,9 @@
 #include "brave/vendor/brave-ios/components/bookmarks/bookmark_model_factory.h"
-#include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
-
 
 #include <utility>
+
 #include "base/no_destructor.h"
+#include "base/deferred_sequenced_task_runner.h"
 #include "base/task/post_task.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
@@ -11,15 +11,18 @@
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/undo/bookmark_undo_service.h"
-#include "brave/vendor/brave-ios/components/bookmarks/bookmark_client.h"
+#include "brave/vendor/brave-ios/components/bookmarks/brave_bookmark_client.h"
 #include "brave/vendor/brave-ios/components/bookmark_sync_service/bookmark_sync_service_factory.h"
 #include "brave/vendor/brave-ios/components/bookmarks/startup_task_runner_service_factory.h"
-//#include "brave/vendor/brave-ios/components/bookmark_sync_service/history_service_factory.h"
 #include "brave/vendor/brave-ios/components/bookmark_sync_service/bookmark_undo_service_factory.h"
+#include "brave/vendor/brave-ios/components/browser_state/browser_state_otr_helper.h"
+#include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
-namespace brave {
+using brave::BraveBookmarkClient;
+
+namespace ios {
 
 // static
 bookmarks::BookmarkModel* BookmarkModelFactory::GetForBrowserState(
@@ -45,8 +48,8 @@ BookmarkModelFactory::BookmarkModelFactory()
     : BrowserStateKeyedServiceFactory(
           "BookmarkModel",
           BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(brave::BookmarkUndoServiceFactory::GetInstance());
-  DependsOn(brave::StartupTaskRunnerServiceFactory::GetInstance());
+  DependsOn(BookmarkUndoServiceFactory::GetInstance());
+  DependsOn(StartupTaskRunnerServiceFactory::GetInstance());
 }
 
 BookmarkModelFactory::~BookmarkModelFactory() {}
@@ -61,15 +64,14 @@ std::unique_ptr<KeyedService> BookmarkModelFactory::BuildServiceInstanceFor(
   ChromeBrowserState* browser_state =
       ChromeBrowserState::FromBrowserState(context);
   std::unique_ptr<bookmarks::BookmarkModel> bookmark_model(
-      new bookmarks::BookmarkModel(std::make_unique<BookmarkClientImpl>(
-          browser_state,
-          brave::BookmarkSyncServiceFactory::GetForBrowserState(browser_state))));
+      new bookmarks::BookmarkModel(std::make_unique<BraveBookmarkClient>(
+          BookmarkSyncServiceFactory::GetForBrowserState(browser_state))));
   bookmark_model->Load(
       browser_state->GetPrefs(), browser_state->GetStatePath(),
-      brave::StartupTaskRunnerServiceFactory::GetForBrowserState(browser_state)
+      StartupTaskRunnerServiceFactory::GetForBrowserState(browser_state)
           ->GetBookmarkTaskRunner(),
       base::CreateSingleThreadTaskRunner({web::WebThread::UI}));
-  brave::BookmarkUndoServiceFactory::GetForBrowserState(browser_state)
+  BookmarkUndoServiceFactory::GetForBrowserState(browser_state)
       ->Start(bookmark_model.get());
   return bookmark_model;
 }

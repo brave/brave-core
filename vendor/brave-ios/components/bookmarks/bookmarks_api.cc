@@ -5,34 +5,19 @@
 
 #include "brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
 
-#include "base/task/post_task.h"
 #include "base/time/time.h"
-#include "components/bookmarks/browser/bookmark_client.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
-#include "components/prefs/pref_service.h"
-#include "components/sync_bookmarks/bookmark_sync_service.h"
 #include "components/undo/bookmark_undo_service.h"
-#include "ios/web/public/thread/web_thread.h"
-#include "ios/web/public/thread/web_task_traits.h"
+#include "components/undo/undo_manager.h"
 #include "url/gurl.h"
 
 namespace bookmarks {
 
-BookmarksAPI::BookmarksAPI(PrefService* prefs,
-    const base::FilePath& state_path,
-    const scoped_refptr<base::SequencedTaskRunner>& io_task_runner,
-    std::unique_ptr<BookmarkClient> client)
-    : model_(new bookmarks::BookmarkModel(std::move(client))),
-      bookmark_undo_service_(new BookmarkUndoService()),
-      bookmark_sync_service_(
-          new sync_bookmarks::BookmarkSyncService(
-              bookmark_undo_service_.get())) {
-  model_->Load(
-      prefs,
-      state_path,
-      io_task_runner,
-      base::CreateSingleThreadTaskRunner({web::WebThread::UI}));
+BookmarksAPI::BookmarksAPI(BookmarkModel* model,
+                           BookmarkUndoService* undo_service)
+    : model_(model),
+      bookmark_undo_service_(undo_service) {
 }
 
 BookmarksAPI::~BookmarksAPI() {}
@@ -42,7 +27,7 @@ void BookmarksAPI::Create(const int64_t& parent_id,
                           const base::string16& title,
                           const GURL& url) {
   const BookmarkNode* parent =
-      bookmarks::GetBookmarkNodeByID(model_.get(), parent_id);
+      bookmarks::GetBookmarkNodeByID(model_, parent_id);
 
   DCHECK(parent);
 
@@ -64,16 +49,16 @@ void BookmarksAPI::Move(int64_t id,
     #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
     #endif
-    
+
     DCHECK(model_->loaded());
-    
+
     const BookmarkNode* node =
-        bookmarks::GetBookmarkNodeByID(model_.get(), id);
+        bookmarks::GetBookmarkNodeByID(model_, id);
     DCHECK(IsEditable(node));
-    
+
     const BookmarkNode* new_parent_node =
-        bookmarks::GetBookmarkNodeByID(model_.get(), parent_id);
-    
+        bookmarks::GetBookmarkNodeByID(model_, parent_id);
+
     if (node->parent() != new_parent_node) {
       model_->Move(node, new_parent_node, index);
     }
@@ -84,8 +69,8 @@ void BookmarksAPI::Update(int64_t id,
                           const GURL& url)
 {
     const BookmarkNode* node =
-        bookmarks::GetBookmarkNodeByID(model_.get(), id);
-    
+        bookmarks::GetBookmarkNodeByID(model_, id);
+
     DCHECK(IsEditable(node));
     model_->SetTitle(node, title);
     model_->SetURL(node, url);
@@ -96,17 +81,17 @@ void BookmarksAPI::Remove(int64_t id)
     #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
     #endif
-    
+
     DCHECK(model_->loaded());
-    
+
     const BookmarkNode* node =
-        bookmarks::GetBookmarkNodeByID(model_.get(), id);
-    
+        bookmarks::GetBookmarkNodeByID(model_, id);
+
     if (!IsEditable(node)) {
         NOTREACHED();
         return;
     }
-    
+
     model_->Remove(node);
 }
 
@@ -115,7 +100,7 @@ void BookmarksAPI::RemoveAll()
     #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
     #endif
-    
+
     DCHECK(model_->loaded());
     model_->RemoveAllUserBookmarks();
 }
@@ -127,7 +112,7 @@ void BookmarksAPI::Search(const base::string16& search_query,
     DCHECK(model_->loaded());
     bookmarks::QueryFields query;
     query.word_phrase_query.reset(new base::string16(search_query));
-    GetBookmarksMatchingProperties(model_.get(), query, max_count, nodes);
+    GetBookmarksMatchingProperties(model_, query, max_count, nodes);
     DCHECK(nodes->size() <= max_count);
 }
 
@@ -136,7 +121,7 @@ void BookmarksAPI::Undo()
     #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
     #endif
-    
+
     DCHECK(model_->loaded());
     UndoManager* undo_manager = bookmark_undo_service_->undo_manager();
     undo_manager->Undo();
@@ -148,7 +133,7 @@ bool BookmarksAPI::IsEditable(const BookmarkNode* node) const
         node->type() != BookmarkNode::URL)) {
       return false;
     }
-    
+
     return true; //TODO: Check Prefs
 }
 

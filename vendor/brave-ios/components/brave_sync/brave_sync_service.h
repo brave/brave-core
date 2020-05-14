@@ -10,34 +10,21 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "base/sequenced_task_runner.h"
-#include "base/supports_user_data.h"
-#include "brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
 
-//namespace bookmarks {
-//class BookmarksAPI;
-//}
+class ChromeBrowserState;
 
-namespace sync_preferences {
-class PrefServiceSyncable;
-class PrefServiceSyncableFactory;
+namespace bookmarks {
+class BookmarksAPI;
 }
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
-class BraveSyncService : public base::SupportsUserData {
+class BraveSyncService {
  public:
-  BraveSyncService();
+  BraveSyncService(ChromeBrowserState* browser_state);
   ~BraveSyncService();
 
   bookmarks::BookmarksAPI* bookmarks_api();
 
  private:
-  scoped_refptr<user_prefs::PrefRegistrySyncable> pref_registry_;
-  scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
-  std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs_;
   std::unique_ptr<bookmarks::BookmarksAPI> bookmarks_api_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncService);

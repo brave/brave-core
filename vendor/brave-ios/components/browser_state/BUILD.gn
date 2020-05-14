@@ -12,10 +12,6 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-
-  include_dirs = [
-    "."
-  ]
 }
 
 source_set("browser_state") {
@@ -24,25 +20,44 @@ source_set("browser_state") {
   configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   sources = [
-    "brave_browser_state.cc",
-    "brave_browser_state.h",
-    "BraveBrowserStateIOData.h",
-    "BraveBrowserStateIOData.cc",
-    "web_browser_state.cc",
-    "web_browser_state.h",
-    "chrome_browser_state.cc",
     "chrome_browser_state.h",
-    "chrome_state_manager.h",
-    "brave_browser_state_manager.cc",
-    "brave_browser_state_manager.h",
-    "bookmark_model_loaded_observer.h",
-    "bookmark_model_loaded_observer.cc"
+    "chrome_browser_state.mm",
+    "browser_state_otr_helper.cc",
+    "browser_state_otr_helper.h",
+  ]
+
+  deps = [
+    ":chromium_sources",
+    "//base",
+    "//components/keyed_service/ios",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//components/sync_preferences",
+    "//components/user_prefs",
+    "//ios/web/public",
+    "//ios/web/shell",
+    "//net",
+  ]
+
+  public_deps = [
+    "//ios/web/public",
+  ]
+}
+
+source_set("chromium_sources") {
+  sources = [
+    "//ios/chrome/browser/prefs/ios_chrome_pref_service_factory.cc",
+    "//ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h",
+    "//ios/chrome/browser/prefs/ios_chrome_pref_model_associator_client.cc",
+    "//ios/chrome/browser/prefs/ios_chrome_pref_model_associator_client.h",
   ]
 
   deps = [
     "//base",
+    "//components/content_settings/core/browser",
     "//components/prefs",
-    "//components/pref_registry",
-    "//components/sync_preferences"
+    "//components/proxy_config",
+    "//components/sync_preferences",
+    "//components/user_prefs",
   ]
 }

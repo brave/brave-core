@@ -1,12 +1,13 @@
 #include "brave/vendor/brave-ios/components/bookmarks/startup_task_runner_service_factory.h"
 
 #include "base/no_destructor.h"
-#include "base/sequenced_task_runner.h"
 #include "components/bookmarks/browser/startup_task_runner_service.h"
-#include "brave/vendor/brave-ios/components/keyed_service/browser_state_dependency_manager.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
+#include "ios/web/public/browser_state.h"
 
-namespace brave {
+namespace ios {
 
 // static
 bookmarks::StartupTaskRunnerService*
@@ -41,4 +42,4 @@ StartupTaskRunnerServiceFactory::BuildServiceInstanceFor(
       browser_state->GetIOTaskRunner());
 }
 
-}  // namespace brave
+}  // namespace ios

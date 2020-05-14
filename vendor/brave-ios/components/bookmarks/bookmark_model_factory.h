@@ -11,8 +11,9 @@ namespace bookmarks {
 class BookmarkModel;
 }
 
-namespace brave {
 class ChromeBrowserState;
+
+namespace ios {
 
 class BookmarkModelFactory : public BrowserStateKeyedServiceFactory {
  public:

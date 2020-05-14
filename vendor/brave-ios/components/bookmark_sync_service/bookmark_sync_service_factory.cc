@@ -1,14 +1,14 @@
 
 #include "brave/vendor/brave-ios/components/bookmark_sync_service/bookmark_sync_service_factory.h"
 
-#include "brave/vendor/brave-ios/components/keyed_service/browser_state_dependency_manager.h"
-#include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 
+#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/sync_bookmarks/bookmark_sync_service.h"
 #include "brave/vendor/brave-ios/components/browser_state/browser_state_otr_helper.h"
 #include "brave/vendor/brave-ios/components/bookmark_sync_service/bookmark_undo_service_factory.h"
 
-namespace brave {
+namespace ios {
 
 // static
 sync_bookmarks::BookmarkSyncService*
@@ -28,7 +28,7 @@ BookmarkSyncServiceFactory::BookmarkSyncServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "BookmarkSyncServiceFactory",
           BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(brave::BookmarkUndoServiceFactory::GetInstance());
+  DependsOn(BookmarkUndoServiceFactory::GetInstance());
 }
 
 BookmarkSyncServiceFactory::~BookmarkSyncServiceFactory() {}
@@ -50,4 +50,4 @@ web::BrowserState* BookmarkSyncServiceFactory::GetBrowserStateToUse(
   return GetBrowserStateRedirectedInIncognito(context);
 }
 
-}  // namespace brave
+}  // namespace ios
