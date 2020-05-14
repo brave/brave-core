@@ -173,6 +173,10 @@ class Contribution {
       const ledger::Result result,
       const std::string& contribution_string);
 
+  void OnMarkUnblindedTokensAsSpendable(
+      const ledger::Result result,
+      const std::string& contribution_string);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;

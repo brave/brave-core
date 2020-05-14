@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/synchronization/lock.h"
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/ledger.h"
 
@@ -50,6 +51,15 @@ class Unblinded {
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnUnblindedTokens(
+      ledger::UnblindedTokenList list,
+      const std::string& contribution_id,
+      GetContributionInfoAndUnblindedTokensCallback callback);
+
+  void GetContributionInfoAndReservedUnblindedTokens(
+      const std::string& contribution_id,
+      GetContributionInfoAndUnblindedTokensCallback callback);
+
+  void OnReservedUnblindedTokens(
       ledger::UnblindedTokenList list,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
@@ -110,9 +120,37 @@ class Unblinded {
       const bool final_publisher,
       ledger::ResultCallback callback);
 
+  void ReserveStepSaved(
+      const ledger::Result result,
+      const std::vector<ledger::UnblindedToken>& list,
+      const std::string& contribution_string,
+      const std::vector<ledger::CredsBatchType>& types,
+      ledger::ResultCallback callback);
+
+  void OnMarkUnblindedTokensAsReserved(
+      const ledger::Result result,
+      const std::vector<ledger::UnblindedToken>& list,
+      const std::string& contribution_string,
+      const std::vector<ledger::CredsBatchType>& types,
+      ledger::ResultCallback callback);
+
+  void AddReservedUnblindedTokensToCache(
+      const std::string& contribution_id,
+      const std::vector<ledger::UnblindedToken>& list);
+
+  bool GetReservedUnblindedTokensFromCache(
+      const std::string& contribution_id,
+      std::vector<ledger::UnblindedToken>* list);
+
+  void DiscardReservedUnblindedTokensFromCache(
+      const std::string& contribution_id);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_credentials::Credentials> credentials_promotion_;
   std::unique_ptr<braveledger_credentials::Credentials> credentials_sku_;
+  base::Lock reserved_unblinded_tokens_lock_;
+  std::map<std::string, std::vector<ledger::UnblindedToken>>
+      reserved_unblinded_tokens_for_retry_;
 };
 
 }  // namespace braveledger_contribution

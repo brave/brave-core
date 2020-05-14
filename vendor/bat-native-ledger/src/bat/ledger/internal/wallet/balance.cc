@@ -39,7 +39,7 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
   // we can skip balance server ping
   if (!braveledger_state::GetFetchOldBalanceEnabled(ledger_)) {
     auto balance = ledger::Balance::New();
-    GetUnBlindedTokens(std::move(balance), callback);
+    GetUnblindedTokens(std::move(balance), callback);
     return;
   }
 
@@ -103,10 +103,10 @@ void Balance::OnFetch(
     braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);
   }
 
-  GetUnBlindedTokens(std::move(balance), callback);
+  GetUnblindedTokens(std::move(balance), callback);
 }
 
-void Balance::GetUnBlindedTokens(
+void Balance::GetUnblindedTokens(
     ledger::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
@@ -115,7 +115,7 @@ void Balance::GetUnBlindedTokens(
     return;
   }
 
-  auto tokens_callback = std::bind(&Balance::OnGetUnBlindedTokens,
+  auto tokens_callback = std::bind(&Balance::OnGetUnblindedTokens,
       this,
       *balance,
       callback,
@@ -125,7 +125,7 @@ void Balance::GetUnBlindedTokens(
       tokens_callback);
 }
 
-void Balance::OnGetUnBlindedTokens(
+void Balance::OnGetUnblindedTokens(
     ledger::Balance info,
     ledger::FetchBalanceCallback callback,
     ledger::UnblindedTokenList list) {

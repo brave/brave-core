@@ -57,10 +57,10 @@ class UnblindedTest : public ::testing::Test {
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(*mock_ledger_impl_, GetSpendableUnblindedTokensByBatchTypes(_, _))
+  ON_CALL(*mock_ledger_impl_, GetReservedUnblindedTokens(_, _))
     .WillByDefault(
       Invoke([](
-          const std::vector<ledger::CredsBatchType>&,
+          const std::string&,
           ledger::GetUnblindedTokenListCallback callback) {
         ledger::UnblindedTokenList list;
 

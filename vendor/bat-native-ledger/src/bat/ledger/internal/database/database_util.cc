@@ -11,7 +11,7 @@
 
 namespace {
 
-const int kCurrentVersionNumber = 26;
+const int kCurrentVersionNumber = 27;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -318,12 +318,7 @@ std::string GenerateStringInCase(const std::vector<std::string>& items) {
     return "";
   }
 
-  std::string items_join = base::JoinString(items, ", ");
-  base::ReplaceSubstringsAfterOffset(
-      &items_join,
-      0,
-      ", ",
-      "\", \"");
+  const std::string items_join = base::JoinString(items, "\", \"");
 
   return base::StringPrintf("\"%s\"", items_join.c_str());
 }

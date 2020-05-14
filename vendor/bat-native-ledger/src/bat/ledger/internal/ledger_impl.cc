@@ -1322,16 +1322,29 @@ void LedgerImpl::SaveUnblindedTokenList(
   bat_database_->SaveUnblindedTokenList(std::move(list), callback);
 }
 
-void LedgerImpl::MarkUblindedTokensAsSpent(
+void LedgerImpl::MarkUnblindedTokensAsSpent(
     const std::vector<std::string>& ids,
     ledger::RewardsType redeem_type,
     const std::string& redeem_id,
     ledger::ResultCallback callback) {
-  bat_database_->MarkUblindedTokensAsSpent(
+  bat_database_->MarkUnblindedTokensAsSpent(
       ids,
       redeem_type,
       redeem_id,
       callback);
+}
+
+void LedgerImpl::MarkUnblindedTokensAsReserved(
+    const std::vector<std::string>& ids,
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  bat_database_->MarkUnblindedTokensAsReserved(ids, contribution_id, callback);
+}
+
+void LedgerImpl::MarkUnblindedTokensAsSpendable(
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  bat_database_->MarkUnblindedTokensAsSpendable(contribution_id, callback);
 }
 
 void LedgerImpl::GetSpendableUnblindedTokensByTriggerIds(
@@ -1606,6 +1619,14 @@ void LedgerImpl::GetSKUTransactionByOrderId(
     const std::string& order_id,
     ledger::GetSKUTransactionCallback callback) {
   bat_database_->GetSKUTransactionByOrderId(order_id, callback);
+}
+
+void LedgerImpl::GetReservedUnblindedTokens(
+    const std::string& redeem_id,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_database_->GetReservedUnblindedTokens(
+      redeem_id,
+      callback);
 }
 
 void LedgerImpl::GetSpendableUnblindedTokensByBatchTypes(

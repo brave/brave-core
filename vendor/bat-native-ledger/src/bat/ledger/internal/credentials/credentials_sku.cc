@@ -457,7 +457,7 @@ void CredentialsSKU::OnRedeemTokens(
     id = redeem.order_id;
   }
 
-  ledger_->MarkUblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
+  ledger_->MarkUnblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
 }
 
 }  // namespace braveledger_credentials

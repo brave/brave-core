@@ -356,7 +356,7 @@ void ContributionSKU::GetUnblindedTokens(
   redeem.token_list = token_list;
   redeem.order_id = transaction.order_id;
 
-  auto get_callback = std::bind(&ContributionSKU::GerOrderMerchant,
+  auto get_callback = std::bind(&ContributionSKU::GetOrderMerchant,
       this,
       _1,
       redeem,
@@ -365,7 +365,7 @@ void ContributionSKU::GetUnblindedTokens(
   ledger_->GetSKUOrder(transaction.order_id, get_callback);
 }
 
-void ContributionSKU::GerOrderMerchant(
+void ContributionSKU::GetOrderMerchant(
     ledger::SKUOrderPtr order,
     const braveledger_credentials::CredentialsRedeem& redeem,
     ledger::TransactionCallback callback) {

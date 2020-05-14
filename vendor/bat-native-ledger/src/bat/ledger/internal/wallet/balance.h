@@ -41,11 +41,11 @@ class Balance {
       const ledger::UrlResponse& response,
       ledger::FetchBalanceCallback callback);
 
-  void GetUnBlindedTokens(
+  void GetUnblindedTokens(
       ledger::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
-  void OnGetUnBlindedTokens(
+  void OnGetUnblindedTokens(
       ledger::Balance info,
       ledger::FetchBalanceCallback callback,
       ledger::UnblindedTokenList list);
