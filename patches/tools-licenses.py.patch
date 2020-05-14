@@ -1,12 +1,12 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index 6405b31497a425c68b0486a2653071f23e515671..e957c14c924a7a405bf9e20f3c8e2ffc56ea1306 100755
+index 6405b31497a425c68b0486a2653071f23e515671..5402e94334b0ecb6ebcbefb9e4cd93b070eb5cbd 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
  _REPOSITORY_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
  from util import build_utils
-+from brave_license_helper import AddBraveCredits, BRAVE_THIRD_PARTY_DIRS
++from brave_license_helper import AddBraveCredits, BRAVE_THIRD_PARTY_DIRS, CheckBraveMissingLicense
  
  
  # Paths from the root of the tree to directories to skip.
@@ -28,3 +28,13 @@ index 6405b31497a425c68b0486a2653071f23e515671..e957c14c924a7a405bf9e20f3c8e2ffc
              # Add all subdirectories that are not marked for skipping.
              for dir in dirs:
                  dirpath = os.path.join(path, dir)
+@@ -663,7 +666,8 @@ def GenerateCredits(
+     for path in third_party_dirs:
+         try:
+             metadata = ParseDir(path, _REPOSITORY_ROOT)
+-        except LicenseError:
++        except LicenseError as e:
++            CheckBraveMissingLicense(target_os, path, e)
+             # TODO(phajdan.jr): Convert to fatal error (http://crbug.com/39240).
+             continue
+         if metadata['License File'] == NOT_SHIPPED:

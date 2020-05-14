@@ -9,6 +9,14 @@ BRAVE_THIRD_PARTY_DIRS = [
     'vendor',
 ]
 
+ANDROID_ONLY_PATHS = [
+    os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'),
+]
+
+DESKTOP_ONLY_PATHS = [
+    os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'),
+]
+
 
 def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Exclude these specific paths from needing a README.chromium file.
@@ -30,6 +38,18 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Add the licensing info that would normally be in a README.chromium file.
     # This is for when we pull in external repos directly.
     special_cases.update({
+        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'): {
+            "Name": "Brave Sync",
+            "URL": "https://github.com/brave/sync",
+            "License": "MPL-2.0",
+            "License File": "/brave/components/brave_sync/extension/brave-sync/LICENSE.txt",
+        },
+        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'): {
+            "Name": "Brave Sync",
+            "URL": "https://github.com/brave/sync",
+            "License": "MPL-2.0",
+            "License File": "/brave/components/brave_sync/extension/brave-sync-android/LICENSE.txt",
+        },
         os.path.join('brave', 'vendor', 'adblock_rust_ffi'): {
             "Name": "adblock-rust-ffi",
             "URL": "https://github.com/brave/adblock-rust-ffi",
@@ -109,6 +129,11 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/Sparkle",
             "License": "MIT",
         },
+        os.path.join('brave', 'vendor', 'speedreader_rust_ffi'): {
+            "Name": "speedreader-rust-ffi",
+            "URL": "https://github.com/brave-experiments/speedreader-rust-ffi",
+            "License": "MPL-2.0",
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.
@@ -126,8 +151,20 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     additional_list += [
         os.path.join('brave', 'components', 'brave_prochlo'),
         os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
-        os.path.join('brave', 'components', 'brave_sync'),
+        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'),
+        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'),
     ]
     additional_paths = tuple(additional_list)
 
     return (prune_dirs, additional_paths)
+
+
+def CheckBraveMissingLicense(target_os, path, error):
+    if path.startswith('brave'):
+        if (target_os == 'android'):
+            if path in DESKTOP_ONLY_PATHS:
+                return  # Desktop failures are not relevant on Android.
+        else:
+            if path in ANDROID_ONLY_PATHS:
+                return  # Android failures are not relevant on desktop.
+        raise error
