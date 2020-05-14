@@ -56,6 +56,14 @@ const getClaimData = (claimedAt: number, claimId: string) => {
   )
 }
 
+const getExpirationDate = (expiresAt: number) => {
+  if (expiresAt === 0) {
+    return 0
+  }
+
+  return new Date(expiresAt * 1000).toLocaleDateString()
+}
+
 export const Promotion = (props: Props) => (
   <div>
     {getLocale('promotionId')}: {props.promotion.promotionId}
@@ -66,7 +74,7 @@ export const Promotion = (props: Props) => (
     <br/>
     {getLocale('promotionType')}: {getType(props.promotion.type)}
     <br/>
-    {getLocale('promotionExpiresAt')}: {new Date(props.promotion.expiresAt * 1000).toLocaleDateString()}
+    {getLocale('promotionExpiresAt')}: {getExpirationDate(props.promotion.expiresAt)}
     <br/>
     {getLocale('promotionLegacyClaimed')}: {getLegacyClaimed(props.promotion.legacyClaimed)}
     <br/>
