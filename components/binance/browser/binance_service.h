@@ -45,6 +45,7 @@ const char oauth_path_convert_quote[] = "/oauth-api/v1/ocbs/quote";
 const char oauth_path_convert_confirm[] = "/oauth-api/v1/ocbs/confirm";
 const char oauth_path_deposit_info[] = "/oauth-api/v1/get-charge-address";
 const char oauth_path_revoke_token[] = "/oauth-api/v1/revoke-token";
+const char binance_com_refcode[] = "39346846";
 
 const char gateway_path_networks[] =
     "/gateway-api/v1/public/capital/getNetworkCoinAll";
