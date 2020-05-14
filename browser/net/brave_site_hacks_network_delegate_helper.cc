@@ -35,7 +35,12 @@ namespace {
 
 const std::string& GetQueryStringTrackers() {
   static const base::NoDestructor<std::string> trackers(base::JoinString(
-      std::vector<std::string>({"fbclid", "gclid", "msclkid", "mc_eid"}), "|"));
+      std::vector<std::string>(
+          {// https://github.com/brave/brave-browser/issues/4239
+           "fbclid", "gclid", "msclkid", "mc_eid",
+           // https://github.com/brave/brave-browser/issues/9019
+           "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
+      "|"));
   return *trackers;
 }
 
