@@ -92,13 +92,17 @@ source_set("common") {
   }
 
   deps = [
+    "//base",
     ":network_constants",
     ":pref_names",
     ":shield_exceptions",
     ":switches",
     "//brave/chromium_src:common",
+    "//brave/components/resources",
+    "//components/resources",
     "//content/public/common",
     "//extensions/buildflags",
+    "//ui/base",
   ]
 
   if (is_mac) {
