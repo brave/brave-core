@@ -14,6 +14,7 @@
         app:tint="@color/standard_mode_tint"
         style="@style/SplitToolbarButton"
         android:layout_gravity="center"
-        android:contentDescription="@string/accessibility_toolbar_btn_home"/>
+        android:contentDescription="@string/accessibility_toolbar_btn_home"
+        android:background="?attr/selectableItemBackgroundBorderless" />
 
 </LinearLayout>
