@@ -97,3 +97,15 @@ grit("strings") {
   output_dir = "$root_gen_dir/components"
   resource_ids = "//brave/browser/resources/resource_ids"
 }
+
+action("about_credits") {
+  script = "//brave/script/check_npm_licenses.py"
+
+  inputs = [ "//brave/package.json" ]
+
+  outputs = [ "$root_gen_dir/npm_licenses.checked" ]
+
+  args = [
+    rebase_path("$root_gen_dir/npm_licenses.checked")
+  ]
+}

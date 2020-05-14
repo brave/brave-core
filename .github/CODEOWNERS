@@ -39,8 +39,8 @@ components/brave_wayback_machine @simonhong
 
 # Licensing of third-party components
 common/licenses/ @fmarier
-components/third_party/ @fmarier
 script/brave_license_helper.py @fmarier
+script/check_npm_licenses.py @fmarier
 script/generate_licenses.py @fmarier
 
 # Crypto Wallets
