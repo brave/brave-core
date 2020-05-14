@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
+#include <utility>
+
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -23,6 +25,52 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #endif
+
+namespace {
+
+class CtrlReleaseHandler : public ui::EventHandler {
+ public:
+  explicit CtrlReleaseHandler(BraveTabStripModel* model,
+                              BraveBrowserView* browser_view)
+      : model_(model), browser_view_(browser_view) {}
+  ~CtrlReleaseHandler() override = default;
+
+ private:
+  // ui::EventHandler overrides:
+  void OnKeyEvent(ui::KeyEvent* event) override {
+    if (event->key_code() == ui::VKEY_CONTROL &&
+        event->type() == ui::ET_KEY_RELEASED) {
+      // Ctrl key was released, stop the MRU cycling
+
+      // Remove event handler
+#if defined(OS_MACOSX)
+      if (browser_view_->GetWidget()->GetRootView())
+        browser_view_->GetWidget()->GetRootView()->RemovePreTargetHandler(this);
+#else
+      if (browser_view_->GetWidget()->GetNativeWindow())
+        browser_view_->GetWidget()->GetNativeWindow()->RemovePreTargetHandler(
+            this);
+#endif
+
+      model_->StopMRUCycling();
+    } else if (!((event->key_code() == ui::VKEY_TAB &&
+                  event->type() == ui::ET_KEY_PRESSED) ||
+                 (event->key_code() == ui::VKEY_PRIOR &&
+                  event->type() == ui::ET_KEY_PRESSED) ||
+                 (event->key_code() == ui::VKEY_NEXT &&
+                  event->type() == ui::ET_KEY_PRESSED))) {
+      // Block all keys while cycling except tab,pg previous, pg next keys
+      event->StopPropagation();
+    }
+  }
+
+  BraveTabStripModel* model_;
+  BraveBrowserView* browser_view_;
+
+  DISALLOW_COPY_AND_ASSIGN(CtrlReleaseHandler);
+};
+
+}  // namespace
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {}
@@ -103,39 +151,4 @@ void BraveBrowserView::StartMRUCycling() {
     GetWidget()->GetNativeWindow()->AddPreTargetHandler(
         ctrl_released_event_handler_.get());
 #endif
-}
-
-BraveBrowserView::CtrlReleaseHandler::CtrlReleaseHandler(
-    BraveTabStripModel* model,
-    BraveBrowserView* browser_view)
-    : model_(model), browser_view_(browser_view) {}
-
-BraveBrowserView::CtrlReleaseHandler::~CtrlReleaseHandler() = default;
-
-void BraveBrowserView::CtrlReleaseHandler::OnKeyEvent(ui::KeyEvent* event) {
-  if (event->key_code() == ui::VKEY_CONTROL &&
-      event->type() == ui::ET_KEY_RELEASED) {
-    // Ctrl key was released, stop the MRU cycling
-
-    // Remove event handler
-#if defined(OS_MACOSX)
-    if (browser_view_->GetWidget()->GetRootView())
-      browser_view_->GetWidget()->GetRootView()->RemovePreTargetHandler(this);
-#else
-    if (browser_view_->GetWidget()->GetNativeWindow())
-      browser_view_->GetWidget()->GetNativeWindow()->RemovePreTargetHandler(
-          this);
-#endif
-
-    model_->StopMRUCycling();
-
-  } else if (!((event->key_code() == ui::VKEY_TAB &&
-                event->type() == ui::ET_KEY_PRESSED) ||
-               (event->key_code() == ui::VKEY_PRIOR &&
-                event->type() == ui::ET_KEY_PRESSED) ||
-               (event->key_code() == ui::VKEY_NEXT &&
-                event->type() == ui::ET_KEY_PRESSED))) {
-    // Block all keys while cycling except tab,pg previous, pg next keys
-    event->StopPropagation();
-  }
 }

@@ -9,13 +9,13 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 
-#if defined(USE_AURA)
-#include "ui/aura/window.h"
-#endif
-
 using BraveBrowserViewTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, MRUCyclingBasic) {
+  // Off by default.
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled));
+
   TabStripModel* tab_strip_model = browser()->tab_strip_model();
 
   // Open 3 tabs
@@ -28,7 +28,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, MRUCyclingBasic) {
   chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
   EXPECT_EQ(tab_strip_model->active_index(), 0);
 
-  // // Activate MRU cycling
+  // Activate MRU cycling
   browser()->profile()->GetPrefs()->SetBoolean(kMRUCyclingEnabled, true);
 
   // MRU cycling, 0 -> 2

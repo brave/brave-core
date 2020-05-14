@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 
+#include <memory>
 #include <string>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -13,7 +14,7 @@
 
 class BraveBrowserView : public BrowserView {
  public:
-  BraveBrowserView(std::unique_ptr<Browser> browser);
+  explicit BraveBrowserView(std::unique_ptr<Browser> browser);
   ~BraveBrowserView() override;
 
   void SetStarredState(bool is_starred) override;
@@ -29,20 +30,7 @@ class BraveBrowserView : public BrowserView {
   void StartMRUCycling() override;
 
  private:
-  class CtrlReleaseHandler : public ui::EventHandler {
-   public:
-    explicit CtrlReleaseHandler(BraveTabStripModel* model,
-                                BraveBrowserView* browser_view);
-    ~CtrlReleaseHandler() override;
-
-   private:
-    void OnKeyEvent(ui::KeyEvent* event) override;
-    BraveTabStripModel* model_;
-    BraveBrowserView* browser_view_;
-    DISALLOW_COPY_AND_ASSIGN(CtrlReleaseHandler);
-  };
-
-  std::unique_ptr<CtrlReleaseHandler> ctrl_released_event_handler_;
+  std::unique_ptr<ui::EventHandler> ctrl_released_event_handler_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };
