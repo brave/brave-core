@@ -136,6 +136,10 @@ std::string BinanceService::GetOAuthClientUrl() {
   url = net::AppendQueryParameter(url, "scope", oauth_scope);
   url = net::AppendQueryParameter(url, "code_challenge", code_challenge_);
   url = net::AppendQueryParameter(url, "code_challenge_method", "S256");
+  url = net::AppendQueryParameter(url, "ref", binance_com_refcode);
+  // TODO(bbondy, ryanml): Once we have a binance.us oauth endpoint, we need to
+  // distinguish here and use this ref code.
+  // url = net::AppendQueryParameter(url, "ref", "35089877");
   return url.spec();
 }
 
