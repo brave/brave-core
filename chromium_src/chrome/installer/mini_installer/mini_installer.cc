@@ -17,7 +17,7 @@
        installer_filename.length() != 0) {                                   \
     ReferralCodeString referral_code;                                        \
     if (ParseReferralCode(installer_filename.get(), &referral_code)) {       \
-      cmd_line.append(L" --brave-referral-code=");                           \
+      cmd_line.append(L" --brave-referral-code");                            \
       cmd_line.append(L"=\"");                                               \
       cmd_line.append(referral_code.get());                                  \
       cmd_line.append(L"\"");                                                \
