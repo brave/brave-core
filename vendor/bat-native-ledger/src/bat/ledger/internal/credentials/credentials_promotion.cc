@@ -9,6 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/credentials/credentials_promotion.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -425,7 +426,78 @@ void CredentialsPromotion::Completed(
 void CredentialsPromotion::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  common_->RedeemTokens(redeem, callback);
+  if (redeem.token_list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list empty";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  std::vector<std::string> token_id_list;
+  for (const auto & item : redeem.token_list) {
+    token_id_list.push_back(base::NumberToString(item.id));
+  }
+
+  auto url_callback = std::bind(&CredentialsPromotion::OnRedeemTokens,
+      this,
+      _1,
+      _2,
+      _3,
+      token_id_list,
+      redeem,
+      callback);
+
+  std::string payload;
+  std::string url;
+  std::vector<std::string> headers;
+  if (redeem.type == ledger::RewardsType::TRANSFER) {
+    payload = GenerateTransferTokensPayload(redeem, ledger_->GetPaymentId());
+    url = braveledger_request_util::GetTransferTokens();
+    ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
+    headers = braveledger_request_util::BuildSignHeaders(
+        "post /v1/suggestions/claim",
+        payload,
+        ledger_->GetPaymentId(),
+        wallet_info.key_info_seed);
+  } else {
+    if (redeem.publisher_key.empty()) {
+      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher key is empty";
+      callback(ledger::Result::LEDGER_ERROR);
+      return;
+    }
+
+    payload = GenerateRedeemTokensPayload(redeem);
+    url = braveledger_request_util::GetReedemTokensUrl();
+  }
+
+  ledger_->LoadURL(
+      url,
+      headers,
+      payload,
+      "application/json; charset=utf-8",
+      ledger::UrlMethod::POST,
+      url_callback);
+}
+
+void CredentialsPromotion::OnRedeemTokens(
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const std::vector<std::string>& token_id_list,
+    const CredentialsRedeem& redeem,
+    ledger::ResultCallback callback) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  std::string id;
+  if (!redeem.contribution_id.empty()) {
+    id = redeem.contribution_id;
+  }
+
+  ledger_->MarkUblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
 }
 
 }  // namespace braveledger_credentials

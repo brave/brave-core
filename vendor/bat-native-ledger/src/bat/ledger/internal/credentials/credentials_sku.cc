@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <utility>
-#include <vector>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -377,7 +376,61 @@ void CredentialsSKU::Completed(
 void CredentialsSKU::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  common_->RedeemTokens(redeem, callback);
+  if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Pub key / token list empty";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  std::vector<std::string> token_id_list;
+  for (const auto & item : redeem.token_list) {
+    token_id_list.push_back(base::NumberToString(item.id));
+  }
+
+  auto url_callback = std::bind(&CredentialsSKU::OnRedeemTokens,
+      this,
+      _1,
+      _2,
+      _3,
+      token_id_list,
+      redeem,
+      callback);
+
+  const std::string payload = GenerateRedeemTokensPayload(redeem);
+  const std::string url =
+      braveledger_request_util::GetReedemSKUUrl();
+
+  ledger_->LoadURL(
+      url,
+      std::vector<std::string>(),
+      payload,
+      "application/json; charset=utf-8",
+      ledger::UrlMethod::POST,
+      url_callback);
+}
+
+void CredentialsSKU::OnRedeemTokens(
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const std::vector<std::string>& token_id_list,
+    const CredentialsRedeem& redeem,
+    ledger::ResultCallback callback) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  std::string id;
+  if (!redeem.contribution_id.empty()) {
+    id = redeem.contribution_id;
+  } else if (!redeem.order_id.empty()) {
+    id = redeem.order_id;
+  }
+
+  ledger_->MarkUblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
 }
 
 }  // namespace braveledger_credentials
