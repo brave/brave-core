@@ -12,7 +12,6 @@
 
 - (void)confirmAd:(const ads::AdInfo &)info confirmationType:(const ads::ConfirmationType)confirmation_type;
 - (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)confirmation_type;
-- (void)eventLog:(const std::string &)json;
 - (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::GetCreativeAdNotificationsCallback)callback;
 - (void)getAdConversions:(ads::GetAdConversionsCallback)callback;
 - (std::string)getLocale;
@@ -29,7 +28,7 @@
 - (void)load:(const std::string &)name callback:(ads::LoadCallback)callback;
 - (std::string)loadJsonSchema:(const std::string &)name;
 - (void)loadUserModelForLanguage:(const std::string &)language callback:(ads::LoadCallback)callback;
-- (std::unique_ptr<ads::LogStream>)log:(const char *)file line:(const int)line logLevel:(const ads::LogLevel)log_level;
+- (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)reset:(const std::string &)name callback:(ads::ResultCallback)callback;
 - (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::ResultCallback)callback;
 - (void)saveBundleState:(std::unique_ptr<ads::BundleState>)state callback:(ads::ResultCallback)callback;

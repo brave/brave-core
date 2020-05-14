@@ -10,8 +10,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <sstream>
-#include <ostream>
 #include <memory>
 #include <functional>
 
@@ -26,22 +24,10 @@
 
 namespace ads {
 
-enum LogLevel {
-  LOG_ERROR = 1,
-  LOG_WARNING,
-  LOG_INFO
-};
-
 enum URLRequestMethod {
   GET = 0,
   PUT = 1,
   POST = 2
-};
-
-class ADS_EXPORT LogStream {
- public:
-  virtual ~LogStream() = default;
-  virtual std::ostream& stream() = 0;
 };
 
 using ResultCallback = std::function<void(const Result)>;
@@ -227,15 +213,12 @@ class ADS_EXPORT AdsClient {
   virtual void GetAdConversions(
       GetAdConversionsCallback callback) = 0;
 
-  // Should log an event
-  virtual void EventLog(
-      const std::string& json) const = 0;
-
-  // Should log diagnostic information
-  virtual std::unique_ptr<LogStream> Log(
+  // Verbose level logging
+  virtual void Log(
       const char* file,
       const int line,
-      const LogLevel log_level) const = 0;
+      const int verbose_level,
+      const std::string& message) const = 0;
 };
 
 }  // namespace ads

@@ -97,6 +97,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       is_confirmations_ready_(false),
       ad_notifications_(std::make_unique<AdNotifications>(this, ads_client)),
       ads_client_(ads_client) {
+  set_ads_client_for_logging(ads_client_);
 }
 
 AdsImpl::~AdsImpl() = default;
