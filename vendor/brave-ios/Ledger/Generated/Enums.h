@@ -4,15 +4,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, BATLogLevel) {
-  BATLogLevelLogError = 1,
-  BATLogLevelLogWarning = 2,
-  BATLogLevelLogInfo = 3,
-  BATLogLevelLogDebug = 4,
-  BATLogLevelLogRequest = 5,
-  BATLogLevelLogResponse = 6
-} NS_SWIFT_NAME(LogLevel);
-
 typedef NSString *BATWalletType NS_SWIFT_NAME(WalletType) NS_STRING_ENUM;
 
 static BATWalletType const BATWalletTypeUphold = @"uphold";

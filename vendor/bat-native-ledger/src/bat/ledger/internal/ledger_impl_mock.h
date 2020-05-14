@@ -8,10 +8,8 @@
 
 #include <stdint.h>
 
-#include <iostream>
 #include <map>
 #include <memory>
-#include <ostream>
 #include <string>
 #include <vector>
 
@@ -21,31 +19,11 @@
 
 namespace bat_ledger {
 
-class MockLogStreamImpl : public ledger::LogStream {
- public:
-  MockLogStreamImpl(
-      const char* file,
-      const int line,
-      const ledger::LogLevel log_level);
-
-  std::ostream& stream() override;
-
- private:
-  // Not copyable, not assignable
-  MockLogStreamImpl(const MockLogStreamImpl&) = delete;
-  MockLogStreamImpl& operator=(const MockLogStreamImpl&) = delete;
-};
-
 class MockLedgerImpl : public LedgerImpl {
  public:
   explicit MockLedgerImpl(ledger::LedgerClient* client);
 
   ~MockLedgerImpl() override;
-
-  std::unique_ptr<ledger::LogStream> Log(
-      const char* file,
-      const int line,
-      const ledger::LogLevel log_level) const;
 
   MOCK_METHOD2(Initialize, void(
       const bool,

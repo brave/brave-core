@@ -7,48 +7,8 @@
 
 namespace ledger {
 
-MockLogStreamImpl::MockLogStreamImpl(
-    const char* file,
-    const int line,
-    const LogLevel log_level) {
-  (void)file;
-  (void)line;
-  (void)log_level;
-}
-
-std::ostream& MockLogStreamImpl::stream() {
-  return std::cout;
-}
-
-MockVerboseLogStreamImpl::MockVerboseLogStreamImpl(
-    const char* file,
-    int line,
-    int vlog_level) {
-  (void)file;
-  (void)line;
-  (void)vlog_level;
-}
-
-std::ostream& MockVerboseLogStreamImpl::stream() {
-  return std::cout;
-}
-
 MockLedgerClient::MockLedgerClient() = default;
 
 MockLedgerClient::~MockLedgerClient() = default;
-
-std::unique_ptr<LogStream> MockLedgerClient::Log(
-    const char* file,
-    int line,
-    const LogLevel log_level) const {
-  return std::make_unique<MockLogStreamImpl>(file, line, log_level);
-}
-
-std::unique_ptr<LogStream> MockLedgerClient::VerboseLog(
-    const char* file,
-    int line,
-    int vlog_level) const {
-  return std::make_unique<MockVerboseLogStreamImpl>(file, line, vlog_level);
-}
 
 }  // namespace ledger

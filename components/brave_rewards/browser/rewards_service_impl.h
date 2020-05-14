@@ -533,15 +533,12 @@ class RewardsServiceImpl : public RewardsService,
                                     ledger::FetchIconCallback callback,
                                     bool success);
 
-  std::unique_ptr<ledger::LogStream> Log(
-                     const char* file,
-                     int line,
-                     const ledger::LogLevel log_level) const override;
+  void Log(
+      const char* file,
+      const int line,
+      const int verbose_level,
+      const std::string& message) const override;
 
-  std::unique_ptr<ledger::LogStream> VerboseLog(
-                     const char* file,
-                     int line,
-                     int log_level) const override;
   void SaveState(const std::string& name,
                  const std::string& value,
                  ledger::ResultCallback callback) override;

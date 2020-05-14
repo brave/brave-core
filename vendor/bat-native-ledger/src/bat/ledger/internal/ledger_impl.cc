@@ -7,9 +7,7 @@
 
 #include <algorithm>
 #include <ctime>
-#include <iostream>
 #include <random>
-#include <sstream>
 #include <utility>
 #include <vector>
 
@@ -76,6 +74,8 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_pub_load_timer_id_(0u) {
   // Ensure ThreadPoolInstance is initialized before creating the task runner
   // for ios.
+  set_ledger_client_for_logging(ledger_client_);
+
   if (!base::ThreadPoolInstance::Get()) {
     base::ThreadPoolInstance::CreateAndStartWithDefaultParams("bat_ledger");
 
@@ -986,45 +986,6 @@ ledger::ActivityInfoFilterPtr LedgerImpl::CreateActivityFilter(
                                                currentReconcileStamp,
                                                non_verified,
                                                min_visits);
-}
-
-
-std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
-    const char* file,
-    int line,
-    const ledger::LogLevel log_level) const {
-  // TODO(Terry Mancey): bat-native-ledger architecture does not expose the
-  // client however the ledger impl is exposed so for now we will proxy logging
-  // via from the ledger impl to the client
-  return ledger_client_->Log(file, line, log_level);
-}
-
-void LedgerImpl::LogResponse(
-    const std::string& func_name,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  const std::string result =
-      response_status_code >= 200 && response_status_code < 300
-          ? "Success" : "Failure";
-
-  std::string formatted_headers = "";
-  for (auto header = headers.begin(); header != headers.end(); ++header) {
-    formatted_headers += "> headers " + header->first + ": " + header->second;
-    if (header != headers.end()) {
-      formatted_headers += "\n";
-    }
-  }
-
-  std::string response_data = IsPNG(response) ? "<PNG>" : response;
-  BLOG(this, ledger::LogLevel::LOG_RESPONSE) << std::endl
-    << "[ RESPONSE - " << func_name << " ]" << std::endl
-    << "> time: " << std::time(nullptr) << std::endl
-    << "> result: " << result << std::endl
-    << "> http code: " << response_status_code << std::endl
-    << "> response: " << response_data << std::endl
-    << formatted_headers
-    << "[ END RESPONSE ]";
 }
 
 void LedgerImpl::UpdateAdsRewards() {

@@ -102,48 +102,6 @@ namespace brave_rewards {
 
 static const unsigned int kRetriesCountOnNetworkChange = 1;
 
-class LogStreamImpl : public ledger::LogStream {
- public:
-  LogStreamImpl(const char* file,
-                int line,
-                const ledger::LogLevel log_level) {
-    logging::LogSeverity severity;
-
-    switch (log_level) {
-      case ledger::LogLevel::LOG_INFO:
-        severity = logging::LOG_INFO;
-        break;
-      case ledger::LogLevel::LOG_WARNING:
-        severity = logging::LOG_WARNING;
-        break;
-      case ledger::LogLevel::LOG_ERROR:
-        severity = logging::LOG_ERROR;
-        break;
-      default:
-        severity = logging::LOG_VERBOSE;
-        break;
-    }
-
-    log_message_ = std::make_unique<logging::LogMessage>(file, line, severity);
-  }
-
-  LogStreamImpl(const char* file,
-                int line,
-                int log_level) {
-    // VLOG has negative log level
-    log_message_ =
-        std::make_unique<logging::LogMessage>(file, line, -log_level);
-  }
-
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
-
- private:
-  std::unique_ptr<logging::LogMessage> log_message_;
-  DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
-};
-
 namespace {
 
 ContentSite PublisherInfoToContentSite(
@@ -2380,18 +2338,15 @@ void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
       "rewards_notification_tips_processed");
 }
 
-std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
+void RewardsServiceImpl::Log(
     const char* file,
-    int line,
-    const ledger::LogLevel log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
-}
-
-std::unique_ptr<ledger::LogStream> RewardsServiceImpl::VerboseLog(
-                     const char* file,
-                     int line,
-                     int log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
+    const int line,
+    const int verbose_level,
+    const std::string& message) const {
+  const int vlog_level = ::logging::GetVlogLevelHelper(file, strlen(file));
+  if (verbose_level <= vlog_level) {
+    ::logging::LogMessage(file, line, -verbose_level).stream() << message;
+  }
 }
 
 // static

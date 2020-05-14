@@ -1873,14 +1873,9 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Logging
 
-- (std::unique_ptr<ledger::LogStream>)verboseLog:(const char *)file line:(int)line vlogLevel:(int)vlog_level
+- (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message
 {
-  return std::make_unique<RewardsLogStream>(file, line, (ledger::LogLevel)vlog_level);
-}
-
-- (std::unique_ptr<ledger::LogStream>)log:(const char *)file line:(int)line logLevel:(const ledger::LogLevel)log_level
-{
-  return std::make_unique<RewardsLogStream>(file, line, log_level);
+  std::make_unique<RewardsLogStream>(file, line, verbose_level)->stream() << message << std::endl;
 }
 
 #pragma mark - Publisher Database

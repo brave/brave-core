@@ -35,8 +35,8 @@ void NativeLedgerClient::LoadState(const std::string & name, ledger::OnLoadCallb
 void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) {
   [bridge_ loadURL:url headers:headers content:content contentType:contentType method:method callback:callback];
 }
-std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, int line, const ledger::LogLevel log_level) const {
-  return [bridge_ log:file line:line logLevel:log_level];
+void NativeLedgerClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) const {
+  [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result publisherInfo:std::move(publisher_info) windowId:windowId];
@@ -70,9 +70,6 @@ void NativeLedgerClient::SetTimer(uint64_t time_offset, uint32_t * timer_id) {
 }
 std::string NativeLedgerClient::URIEncode(const std::string & value) {
   return [bridge_ URIEncode:value];
-}
-std::unique_ptr<ledger::LogStream> NativeLedgerClient::VerboseLog(const char * file, int line, int vlog_level) const {
-  return [bridge_ verboseLog:file line:line vlogLevel:vlog_level];
 }
 void NativeLedgerClient::OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) {
   return [bridge_ onContributeUnverifiedPublishers:result publisherKey:publisher_key publisherName:publisher_name];

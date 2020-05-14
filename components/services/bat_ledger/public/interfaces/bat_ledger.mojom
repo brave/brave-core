@@ -253,4 +253,6 @@ interface BatLedgerClient {
   GetCreateScript() => (string script, int32 table_version);
 
   PendingContributionSaved(ledger.mojom.Result result);
+
+  Log(string file, int32 line, int32 verbose_level, string message);
 };

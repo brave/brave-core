@@ -59,12 +59,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback) override;
 
-  std::unique_ptr<ledger::LogStream> Log(const char* file,
-                                         int line,
-                                         ledger::LogLevel level) const override;
-  std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
-                                         int line,
-                                         int verbosity_level) const override;
+  void Log(
+      const char* file,
+      const int line,
+      const int verbose_level,
+      const std::string& message) const override;
 
   std::string URIEncode(const std::string& value) override;
 

@@ -23,7 +23,7 @@ private:
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) override;
-  std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
+  void Log(const char * file, const int line, const int verbose_level, const std::string & message) const override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
@@ -35,7 +35,6 @@ private:
   void SetConfirmationsIsReady(const bool is_ready) override;
   void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;
   std::string URIEncode(const std::string & value) override;
-  std::unique_ptr<ledger::LogStream> VerboseLog(const char * file, int line, int vlog_level) const override;
   void OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;

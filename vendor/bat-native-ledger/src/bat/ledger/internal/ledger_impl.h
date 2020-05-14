@@ -11,7 +11,6 @@
 #include <memory>
 #include <map>
 #include <string>
-#include <fstream>
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
@@ -388,11 +387,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetTransactionHistory(
       ledger::GetTransactionHistoryCallback callback) override;
-
-  std::unique_ptr<ledger::LogStream> Log(
-      const char* file,
-      const int line,
-      const ledger::LogLevel log_level) const;
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
   void GetRewardsInternalsInfo(

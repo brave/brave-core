@@ -549,4 +549,12 @@ void LedgerClientMojoProxy::PendingContributionSaved(
   ledger_client_->PendingContributionSaved(result);
 }
 
+void LedgerClientMojoProxy::Log(
+    const std::string& file,
+    const int32_t line,
+    const int32_t verbose_level,
+    const std::string& message) {
+  ledger_client_->Log(file.c_str(), line, verbose_level, message);
+}
+
 }  // namespace bat_ledger
