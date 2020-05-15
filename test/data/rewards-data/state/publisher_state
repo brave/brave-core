@@ -1,0 +1,26 @@
+{
+  "min_pubslisher_duration": 5,
+  "min_visits": 5,
+  "allow_non_verified": false,
+  "allow_videos": false,
+  "monthly_balances": [
+    {
+      "2020_4": {
+        "grants": 4.1,
+        "earning_from_ads": 4.2,
+        "auto_contribute": 4.3,
+        "recurring_donation": 4.4,
+        "one_time_donation": 4.5
+      },
+      "2020_5": {
+        "grants": 5.1,
+        "earning_from_ads": 5.2,
+        "auto_contribute": 5.3,
+        "recurring_donation": 5.4,
+        "one_time_donation": 5.5
+      }
+    }
+  ],
+  "migrate_score_2": false,
+  "processed_pending_publishers": ["publisher1.com", "publisher2.com", "publisher3.com"]
+}

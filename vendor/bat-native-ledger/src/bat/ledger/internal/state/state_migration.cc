@@ -84,15 +84,23 @@ void StateMigration::MigrateToV1(ledger::ResultCallback callback) {
 void StateMigration::OnLoadState(
     const ledger::Result result,
     ledger::ResultCallback callback) {
-  ledger_->CalcScoreConsts(
-      ledger_->GetIntegerState(ledger::kStateMinVisitTime));
-
   if (result == ledger::Result::NO_PUBLISHER_STATE) {
+    ledger_->CalcScoreConsts(
+        ledger_->GetIntegerState(ledger::kStateMinVisitTime));
+
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
   if (result != ledger::Result::LEDGER_OK) {
+    ledger_->CalcScoreConsts(
+        ledger_->GetIntegerState(ledger::kStateMinVisitTime));
+
+    if (result == ledger::Result::NO_PUBLISHER_STATE) {
+      callback(ledger::Result::LEDGER_OK);
+      return;
+    }
+
     BLOG(0, "Failed to load publisher state file, setting default values");
     callback(ledger::Result::LEDGER_OK);
     return;
@@ -101,6 +109,8 @@ void StateMigration::OnLoadState(
   ledger_->SetIntegerState(
       ledger::kStateMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
+  ledger_->CalcScoreConsts(
+      ledger_->GetIntegerState(ledger::kStateMinVisitTime));
 
   ledger_->SetIntegerState(
       ledger::kStateMinVisits,
