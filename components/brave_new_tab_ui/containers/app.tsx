@@ -14,10 +14,11 @@ import NewTabPage from './newTab'
 // Utils
 import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
+import * as binanceActions from '../actions/binance_actions'
 import * as PreferencesAPI from '../api/preferences'
 
 interface Props {
-  actions: typeof newTabActions & typeof gridSitesActions
+  actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
 }
@@ -56,7 +57,7 @@ const mapStateToProps = (state: NewTab.ApplicationState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  const allActions = Object.assign({}, newTabActions, gridSitesActions)
+  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions)
   return {
     actions: bindActionCreators(allActions, dispatch)
   }

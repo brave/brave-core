@@ -6,17 +6,18 @@
 import { bindActionCreators } from 'redux'
 import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
+import * as binanceActions from '../actions/binance_actions'
 import store from '../store'
 
 /**
  * Get actions from the C++ back-end down to front-end components
  */
-let actions: typeof newTabActions & typeof gridSitesActions
+let actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions
 export default function getActions () {
   if (actions) {
     return actions
   }
-  const allActions = Object.assign({}, newTabActions, gridSitesActions)
+  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions)
   actions = bindActionCreators(allActions, store.dispatch.bind(store))
   return actions
 }
