@@ -441,8 +441,8 @@ void DatabaseUnblindedToken::GetRecordsByTriggerIds(
   const std::string query = base::StringPrintf(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
-      "INNER JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
-      "WHERE cb.trigger_id IN (%s)",
+      "LEFT JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
+      "WHERE cb.trigger_id IN (%s) OR ut.creds_id IS NULL",
       kTableName,
       GenerateStringInCase(trigger_ids).c_str());
 
@@ -523,10 +523,10 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
   const std::string query = base::StringPrintf(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
-      "INNER JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
+      "LEFT JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
       "WHERE ut.redeemed_at = 0 AND "
       "(ut.expires_at > strftime('%%s','now') OR ut.expires_at = 0) AND "
-      "cb.trigger_type IN (%s)",
+      "(cb.trigger_type IN (%s) OR ut.creds_id IS NULL)",
       kTableName,
       base::JoinString(in_case, ",").c_str());
 
