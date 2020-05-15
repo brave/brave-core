@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Reducer
-import newTabReducer from '../../../brave_new_tab_ui/reducers/new_tab_reducer'
+import { newTabReducer, newTabReducers } from '../../../brave_new_tab_ui/reducers'
 
 // API
 import * as storage from '../../../brave_new_tab_ui/storage/new_tab_storage'
@@ -14,7 +14,7 @@ describe('newTabReducer', () => {
   describe('initial state', () => {
     it('loads initial data', () => {
       const expectedState = storage.load()
-      const returnedState = newTabReducer(undefined, { type: {} })
+      const returnedState = newTabReducers(undefined, { type: {} })
       expect(returnedState).toEqual(expectedState)
     })
   })
