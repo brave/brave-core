@@ -11,6 +11,7 @@ import android.support.v7.preference.Preference;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
@@ -27,12 +28,16 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
+    private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
+    private static final String PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES = "autocomplete_brave_suggested_sites";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
 
     private final PrefServiceBridge mPrefServiceBridge = PrefServiceBridge.getInstance();
     private final ManagedPreferenceDelegate mManagedPreferenceDelegate =
             createManagedPreferenceDelegate();
     private ChromeSwitchPreference mSearchSuggestions;
+    private ChromeSwitchPreference mAutocompleteTopSites;
+    private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -60,6 +65,12 @@ public class BravePrivacySettings extends PrivacySettings {
         mSearchSuggestions.setOnPreferenceChangeListener(this);
         mSearchSuggestions.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
 
+        mAutocompleteTopSites = (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SITES);
+        mAutocompleteTopSites.setOnPreferenceChangeListener(this);
+
+        mAutocompleteBraveSuggestedSites = (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES);
+        mAutocompleteBraveSuggestedSites.setOnPreferenceChangeListener(this);
+
         updatePreferences();
     }
 
@@ -82,6 +93,11 @@ public class BravePrivacySettings extends PrivacySettings {
             sharedPreferencesEditor.apply();
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
             mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
+        } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
+        } else if (PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES.equals(key)) {
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED,
+                    (boolean) newValue);
         }
 
         return true;
@@ -97,6 +113,12 @@ public class BravePrivacySettings extends PrivacySettings {
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         mSearchSuggestions.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 1);
+        mAutocompleteTopSites
+                .setChecked(BravePrefServiceBridge.getInstance().getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
+        mAutocompleteTopSites.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 2);
+        mAutocompleteBraveSuggestedSites.setChecked(
+                BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED));
+        mAutocompleteBraveSuggestedSites.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 3);
     }
 
     private void removePreferenceIfPresent(String key) {
