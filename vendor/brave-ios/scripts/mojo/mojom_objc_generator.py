@@ -321,6 +321,7 @@ class Generator(generator.Generator):
       "interfaces": self.module.interfaces,
       "kinds": self.module.kinds,
       "module": self.module,
+      "module_name": os.path.basename(self.module.path),
       "module_include_path": self.module_include_path,
       "cpp_namespace": self._CppNamespace(),
       "class_prefix": self.class_prefix,
