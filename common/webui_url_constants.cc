@@ -22,4 +22,5 @@ const char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
 const char kBraveUITipURL[] = "chrome://tip/";
 const char kBraveUISyncURL[] = "chrome://sync/";
 const char kBraveUIWalletURL[] = "chrome://wallet/";
+const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletHost[] = "wallet";

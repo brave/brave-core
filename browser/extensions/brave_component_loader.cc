@@ -107,16 +107,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  // If Crypto Wallets has been loaded at least once before, load it
-  // always.
-  // We could only do this when the provider is Crypto Wallets, but
-  // it would cause a bug with loading brave://wallet not loading
-  // if a tab is left open and you restart the browser.  That would
-  // need to be fixed first.
-  // Does not load if project id is not configured.
-  bool has_project_id = HasInfuraProjectID();
-  if (has_project_id && ExtensionPrefs::Get(profile_)->
-          HasPrefForExtension(ethereum_remote_client_extension_id)) {
+  // Only load if the eagerly load Crypto Wallets setting is on and there is a
+  // project id configured in the build.
+  if (HasInfuraProjectID() &&
+      profile_prefs_->GetBoolean(kLoadCryptoWalletsOnStartup)) {
     AddEthereumRemoteClientExtension();
   }
 #endif
