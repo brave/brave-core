@@ -7,18 +7,20 @@ import { combineReducers } from 'redux'
 import * as storage from '../storage/new_tab_storage'
 
 // Reducers
-import newTabReducer from './new_tab_reducer'
+import newTabStateReducer from './new_tab_reducer'
 import gridSitesReducer from './grid_sites_reducer'
 import binanceReducer from './binance_reducer'
+import rewardsReducer from './rewards_reducer'
 
-const newTabReducers = (state: NewTab.State | undefined, action: any) => {
+export const newTabReducers = (state: NewTab.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
   }
 
   const startingState = state
-  state = newTabReducer(state, action)
+  state = newTabStateReducer(state, action)
   state = binanceReducer(state, action)
+  state = rewardsReducer(state, action)
 
   if (state !== startingState) {
     storage.debouncedSave(state)
@@ -27,7 +29,9 @@ const newTabReducers = (state: NewTab.State | undefined, action: any) => {
   return state
 }
 
-export default combineReducers<NewTab.ApplicationState>({
+export const mainNewTabReducer = combineReducers<NewTab.ApplicationState>({
   newTabData: newTabReducers,
   gridSitesData: gridSitesReducer
 })
+
+export const newTabReducer = newTabStateReducer

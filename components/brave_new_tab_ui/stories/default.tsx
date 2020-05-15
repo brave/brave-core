@@ -14,6 +14,8 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import NewTabPage from '../containers/newTab'
 import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
+import * as rewardsActions from '../actions/rewards_actions'
+import * as binanceActions from '../actions/binance_actions'
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 
@@ -46,7 +48,7 @@ storiesOf('New Tab/Containers', module)
       <NewTabPage
         newTabData={newTabData}
         gridSitesData={gridSitesData}
-        actions={Object.assign({}, newTabActions, gridSitesActions)}
+        actions={Object.assign({}, newTabActions, gridSitesActions, rewardsActions, binanceActions)}
         saveShowBackgroundImage={doNothing}
         saveShowClock={doNothing}
         saveShowTopSites={doNothing}
