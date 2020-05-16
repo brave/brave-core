@@ -249,23 +249,28 @@ export const NavigationBar = styled<{}, 'div'>('div')`
   }
 `
 
-export const NavigationItem = styled<StyleProps, 'div'>('div')`
+export const NavigationItem = styled<StyleProps, 'button'>('button')`
   float: left;
   width: 25%;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
+  background: inherit;
+  border: none;
   color: ${p => p.isActive ? '#F2C101' : '#9D7B01'};
+  margin-right: ${p => p.isLeading ? 12 : 0}px
   margin-left: ${p => {
     if (p.isBuy) {
-      return -13
-    } else if (p.isLeading) {
-      return 5
+      return -12
     } else {
       return 0
     }
   }}px;
+
+  &:focus {
+    outline: 0;
+  }
 `
 
 export const SelectedView = styled<StyleProps, 'div'>('div')`
