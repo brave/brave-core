@@ -41,6 +41,7 @@
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -1830,6 +1831,11 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 }
 
 bool AdsServiceImpl::IsForeground() const {
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  if (!profile_->IsSameProfile(profile)) {
+    return false;
+  }
+
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
