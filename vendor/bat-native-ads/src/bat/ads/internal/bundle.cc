@@ -197,7 +197,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();
   state->catalog_last_updated_timestamp_in_seconds =
-      base::Time::Now().ToDoubleT();
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   state->creative_ad_notifications = creative_ad_notifications;
   state->ad_conversions = ad_conversions;
 

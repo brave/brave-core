@@ -149,7 +149,8 @@ uint64_t PayoutTokens::CalculatePayoutDelay() {
     UpdateNextTokenRedemptionDate();
   }
 
-  const uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  const uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   uint64_t delay;
   if (now_in_seconds >= token_redemption_timestamp_in_seconds_) {
@@ -163,7 +164,8 @@ uint64_t PayoutTokens::CalculatePayoutDelay() {
 }
 
 void PayoutTokens::UpdateNextTokenRedemptionDate() {
-  const uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  const uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   uint64_t delay;
 

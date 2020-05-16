@@ -210,7 +210,8 @@ void AdsRewards::Update() {
   auto now = base::Time::Now();
   auto next_payment_date = payments_->CalculateNextPaymentDate(now,
       confirmations_->GetNextTokenRedemptionDateInSeconds());
-  uint64_t next_payment_date_in_seconds = next_payment_date.ToDoubleT();
+  uint64_t next_payment_date_in_seconds =
+      static_cast<uint64_t>(next_payment_date.ToDoubleT());
 
   confirmations_->UpdateAdsRewards(estimated_pending_rewards,
       next_payment_date_in_seconds);

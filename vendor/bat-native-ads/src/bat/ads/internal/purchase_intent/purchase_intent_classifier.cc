@@ -41,7 +41,8 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
     if (!keyword_segments.empty()) {
       uint16_t keyword_weight = Keywords::GetFunnelWeight(search_query);
 
-      signal_info.timestamp_in_seconds = base::Time::Now().ToDoubleT();
+      signal_info.timestamp_in_seconds =
+          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
       signal_info.segments = keyword_segments;
       signal_info.weight = keyword_weight;
       return signal_info;
@@ -50,7 +51,8 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
     FunnelSiteInfo info = FunnelSites::GetFunnelSite(url);
 
     if (!info.url_netloc.empty()) {
-      signal_info.timestamp_in_seconds = base::Time::Now().ToDoubleT();
+      signal_info.timestamp_in_seconds =
+          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
       signal_info.segments = info.segments;
       signal_info.weight = info.weight;
       return signal_info;

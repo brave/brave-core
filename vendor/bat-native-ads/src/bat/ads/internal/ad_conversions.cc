@@ -190,7 +190,7 @@ void AdConversions::AddItemToQueue(
     return;
   }
 
-  const uint64_t now = base::Time::Now().ToDoubleT();
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   client_->AppendTimestampToAdConversionHistory(creative_set_id, now);
 
   AdConversionQueueItemInfo ad_conversion;
@@ -279,7 +279,7 @@ void AdConversions::StartTimer(
   DCHECK(is_initialized_);
   DCHECK(!timer_.IsRunning());
 
-  const uint64_t now = base::Time::Now().ToDoubleT();
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   uint64_t delay;
   if (now < info.timestamp_in_seconds) {
