@@ -564,7 +564,7 @@ export const StyledEmoji = styled<{}, 'div'>('div')`
 `
 
 export const DisconnectWrapper = styled<{}, 'div'>('div')`
-  padding-top: 35px;
+  padding-top: 75px;
   min-height: 250px;
   text-align: center;
   max-width: 240px;
