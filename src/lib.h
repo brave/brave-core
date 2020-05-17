@@ -75,11 +75,6 @@ char *engine_hidden_class_id_selectors(C_Engine *engine,
                                        size_t exceptions_size);
 
 /**
- * Returns a set of cosmetic filtering resources specific to the given hostname, in JSON format
- */
-char *engine_hostname_cosmetic_resources(C_Engine *engine, const char *hostname);
-
-/**
  * Checks if a `url` matches for the specified `Engine` within the context.
  */
 bool engine_match(C_Engine *engine,
@@ -101,6 +96,11 @@ void engine_remove_tag(C_Engine *engine, const char *tag);
  * Checks if a tag exists in the engine
  */
 bool engine_tag_exists(C_Engine *engine, const char *tag);
+
+/**
+ * Returns a set of cosmetic filtering resources specific to the given url, in JSON format
+ */
+char *engine_url_cosmetic_resources(C_Engine *engine, const char *url);
 
 /**
  * Get the specific default list size

@@ -59,7 +59,7 @@ class Engine {
   void addResources(const std::string& resources);
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
-  const std::string hostnameCosmeticResources(const std::string& hostname);
+  const std::string urlCosmeticResources(const std::string& url);
   const std::string hiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
