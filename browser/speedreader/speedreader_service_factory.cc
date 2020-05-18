@@ -6,6 +6,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 
 #include "brave/components/speedreader/speedreader_service.h"
+#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
@@ -28,6 +29,12 @@ SpeedreaderServiceFactory::SpeedreaderServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {}
 
 SpeedreaderServiceFactory::~SpeedreaderServiceFactory() {}
+
+content::BrowserContext*
+SpeedreaderServiceFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+}
 
 KeyedService* SpeedreaderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

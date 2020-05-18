@@ -31,6 +31,12 @@ class SpeedreaderServiceFactory : public BrowserContextKeyedServiceFactory {
       delete;
 
   // BrowserContextKeyedServiceFactory overrides:
+
+  // Speedreader works in OTR modes, but doesn't persists its pref changes
+  // to the parent profile. So we override this to use OTR browser contexts
+  // as-is.
+  content::BrowserContext* GetBrowserContextToUse(
+      content::BrowserContext* context) const override;
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
