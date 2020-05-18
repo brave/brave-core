@@ -28,7 +28,7 @@ fi
 if [ "$promoCode" == "" ]; then
   appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g")
 else
-  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g" | sed "s/-${promoCode}//")
+  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g" | perl -ple "s/-${promoCode}//i")
 fi
 
 appNameNoDash=$(echo $appName | sed "s/-/ /g")
