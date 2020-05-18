@@ -161,7 +161,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     const auto pathToICUDTL = [[NSBundle bundleForClass:[BATBraveLedger class]] pathForResource:@"icudtl" ofType:@"dat"];
     base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
     if (!base::i18n::InitializeICU()) {
-      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to initialize ICU data" << std::endl;
+      BLOG(0) << "Failed to initialize ICU data" << std::endl;
     }
     
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   self.initializing = YES;
   
-  BLOG(5) << "DB: Migrate from CoreData? " << (executeMigrateScript ? "YES" : "NO") << std::endl;
+  BLOG(3) << "DB: Migrate from CoreData? " << (executeMigrateScript ? "YES" : "NO") << std::endl;
   ledger->Initialize(executeMigrateScript, ^(ledger::Result result){
     self.initialized = (result == ledger::Result::LEDGER_OK ||
                         result == ledger::Result::NO_LEDGER_STATE ||
@@ -271,7 +271,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   // Can we even check the DB
   if (!rewardsDatabase) {
-    BLOG(0) << "DB: No rewards database object" << std::endl;
+    BLOG(3) << "DB: No rewards database object" << std::endl;
     return YES;
   }
   // Check integrity of the new DB. Safe to assume if `publisher_info` table
@@ -290,7 +290,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   // restart from scratch
   if (response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     [self resetRewardsDatabase];
-    BLOG(5) << "DB: Failed to run transaction with status: " << std::to_string(static_cast<int>(response->status)) << std::endl;
+    BLOG(3) << "DB: Failed to run transaction with status: " << std::to_string(static_cast<int>(response->status)) << std::endl;
     return YES;
   }
   
@@ -299,7 +299,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   // Restart from scratch
   if (record.empty() || record.front()->fields.empty()) {
     [self resetRewardsDatabase];
-    BLOG(5) << "DB: Migrate because we couldnt find tables in sqlite_master" << std::endl;
+    BLOG(3) << "DB: Migrate because we couldnt find tables in sqlite_master" << std::endl;
     return YES;
   }
   
