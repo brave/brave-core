@@ -24,6 +24,8 @@ source_set("utility") {
 
   if (!is_android) {
     sources += [
+      "importer/brave_external_process_importer_bridge.cc",
+      "importer/brave_external_process_importer_bridge.h",
       "importer/brave_profile_import_impl.cc",
       "importer/brave_profile_import_impl.h",
       "importer/chrome_importer.cc",
@@ -35,6 +37,7 @@ source_set("utility") {
       "//chrome/app:chromium_strings",
       "//components/os_crypt",
       "//components/password_manager/core/browser",
+      "//components/webdata/common",
     ]
   }
 

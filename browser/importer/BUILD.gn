@@ -2,10 +2,14 @@ import("//build/config/features.gni")
 
 source_set("importer") {
   sources = [
+    "brave_external_process_importer_client.cc",
+    "brave_external_process_importer_client.h",
     "brave_external_process_importer_host.cc",
     "brave_external_process_importer_host.h",
     "brave_importer_p3a.cc",
     "brave_importer_p3a.h",
+    "brave_in_process_importer_bridge.cc",
+    "brave_in_process_importer_bridge.h",
   ]
 
   deps = [

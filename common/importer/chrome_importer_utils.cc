@@ -12,7 +12,11 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "brave/common/importer/importer_constants.h"
+#include "brave/common/importer/scoped_copy_file.h"
 #include "chrome/common/importer/importer_data_types.h"
+#include "components/webdata/common/webdata_constants.h"
+#include "sql/database.h"
+#include "sql/statement.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/common/extension.h"
@@ -44,6 +48,26 @@ bool HasImportableExtensions(const base::FilePath& secured_preference_path) {
   return false;
 }
 #endif
+
+bool HasPaymentMethods(const base::FilePath& payments_path) {
+  if (!base::PathExists(payments_path))
+    return false;
+
+  ScopedCopyFile copy_payments_file(payments_path);
+  if (!copy_payments_file.copy_success())
+    return false;
+
+  sql::Database db;
+  if (!db.Open(copy_payments_file.copied_file_path())) {
+    return false;
+  }
+
+  constexpr char query[] = "SELECT name_on_card FROM credit_cards;";
+  sql::Statement s(db.GetUniqueStatement(query));
+  // Will return false if there is no payment info.
+  return s.Step();
+}
+
 }  // namespace
 
 base::ListValue* GetChromeSourceProfiles(
@@ -107,6 +131,8 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
     *services_supported |= importer::HISTORY;
   if (base::PathExists(passwords))
     *services_supported |= importer::PASSWORDS;
+  if (HasPaymentMethods(profile.Append(kWebDataFilename)))
+    *services_supported |= importer::PAYMENTS;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (HasImportableExtensions(secured_preference))
     *services_supported |= importer::EXTENSIONS;

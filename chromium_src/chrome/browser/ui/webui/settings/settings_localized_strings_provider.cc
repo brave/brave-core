@@ -37,6 +37,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   webui::LocalizedString localized_strings[] = {
     {"importExtensions",
       IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX},
+    {"importPayments",
+      IDS_SETTINGS_IMPORT_PAYMENTS_CHECKBOX},
     {"siteSettingsAutoplay",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
     {"siteSettingsCategoryAutoplay",

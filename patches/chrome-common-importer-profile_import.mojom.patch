@@ -1,0 +1,12 @@
+diff --git a/chrome/common/importer/profile_import.mojom b/chrome/common/importer/profile_import.mojom
+index 6ea9e8f6935382908a46a53f955251fd7016f546..ff1e641e6508e2e07c71a479b5e6f201531b6771 100644
+--- a/chrome/common/importer/profile_import.mojom
++++ b/chrome/common/importer/profile_import.mojom
+@@ -62,6 +62,7 @@ interface ProfileImportObserver {
+   OnAutofillFormDataImportStart(uint32 total_autofill_form_data_entry_count);
+   OnAutofillFormDataImportGroup(
+       array<ImporterAutofillFormDataEntry> autofill_form_data_entry_group);
++  OnCreditCardImportReady(mojo_base.mojom.String16 name_on_card, mojo_base.mojom.String16 expiration_month, mojo_base.mojom.String16 expiration_year, mojo_base.mojom.String16 decrypted_card_number, string origin);
+ };
+ 
+ // This interface is used to control the import process.

@@ -12,8 +12,6 @@
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "extensions/buildflags/buildflags.h"
 
-class BrowserProfileLock;
-
 class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
  public:
   BraveExternalProcessImporterHost();

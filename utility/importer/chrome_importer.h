@@ -45,6 +45,7 @@ class ChromeImporter : public Importer {
   void ImportBookmarks();
   void ImportHistory();
   void ImportPasswords();
+  void ImportPayments();
 
   double chromeTimeToDouble(int64_t time);
 

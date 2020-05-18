@@ -46,6 +46,8 @@ source_set("switches") {
 }
 
 source_set("common") {
+  deps = []
+
   sources = [
     "brave_channel_info.cc",
     "brave_channel_info.h",
@@ -67,9 +69,17 @@ source_set("common") {
 
   if (!is_android) {
     sources += [
+      "importer/brave_importer_bridge.h",
       "importer/chrome_importer_utils.cc",
       "importer/chrome_importer_utils.h",
       "importer/importer_constants.h",
+      "importer/scoped_copy_file.cc",
+      "importer/scoped_copy_file.h",
+    ]
+
+    deps += [
+      "//components/webdata/common",
+      "//sql",
     ]
   }
 
@@ -88,7 +98,7 @@ source_set("common") {
     ]
   }
 
-  deps = [
+  deps += [
     "//base",
     ":network_constants",
     ":pref_names",

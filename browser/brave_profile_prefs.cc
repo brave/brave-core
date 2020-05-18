@@ -196,6 +196,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
+  registry->RegisterBooleanPref(kImportDialogPayments, true);
 
   // IPFS companion extension
   registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
