@@ -79,9 +79,7 @@ class Wallet {
 
  private:
   void WalletPropertiesCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::OnWalletPropertiesCallback callback);
 
   void OnGetExternalWallet(
@@ -101,9 +99,7 @@ class Wallet {
     std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   void OnTransferAnonToExternalWallet(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::ResultCallback callback);
 
   void OnTransferAnonToExternalWalletBalance(

@@ -38,9 +38,7 @@ class Balance {
 
  private:
   void OnWalletProperties(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::FetchBalanceCallback callback);
 
   void GetUnBlindedTokens(

@@ -243,9 +243,7 @@ void GitHub::ProcessMedia(
       duration,
       0,
       visit_data,
-      _1,
-      _2,
-      _3);
+      _1);
 
   FetchDataFromUrl(url, callback);
 }
@@ -266,15 +264,14 @@ void GitHub::OnMediaPublisherActivity(
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
-    FetchDataFromUrl(url,
-                     std::bind(&GitHub::OnUserPage,
-                               this,
-                               0,
-                               window_id,
-                               visit_data,
-                               _1,
-                               _2,
-                               _3));
+    auto url_callback = std::bind(&GitHub::OnUserPage,
+        this,
+        0,
+        window_id,
+        visit_data,
+        _1);
+
+    FetchDataFromUrl(url, url_callback);
   } else {
     GetPublisherPanelInfo(window_id,
                           visit_data,
@@ -329,15 +326,14 @@ void GitHub::OnPublisherPanelInfo(
   if (!info || result == ledger::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
-    FetchDataFromUrl(url,
-                     std::bind(&GitHub::OnUserPage,
-                               this,
-                               0,
-                               window_id,
-                               visit_data,
-                               _1,
-                               _2,
-                               _3));
+
+    auto url_callback = std::bind(&GitHub::OnUserPage,
+        this,
+        0,
+        window_id,
+        visit_data,
+        _1);
+    FetchDataFromUrl(url, url_callback);
   } else {
     ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
@@ -345,31 +341,24 @@ void GitHub::OnPublisherPanelInfo(
 
 void GitHub::FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback) {
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   "",
-                   "",
-                   ledger::UrlMethod::GET,
-                   callback);
+    ledger::LoadURLCallback callback) {
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
 }
 
 void GitHub::OnUserPage(
     const uint64_t duration,
     uint64_t window_id,
     const ledger::VisitData& visit_data,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK) {
+    const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
   }
 
-  const std::string user_id = GetUserId(response);
+  const std::string user_id = GetUserId(response.body);
   const std::string user_name = GetUserNameFromURL(visit_data.path);
-  const std::string publisher_name = GetPublisherName(response);
-  const std::string profile_picture = GetProfileImageURL(response);
+  const std::string publisher_name = GetPublisherName(response.body);
+  const std::string profile_picture = GetProfileImageURL(response.body);
 
   auto callback = std::bind(&GitHub::OnSaveMediaVisit,
                             this,
@@ -460,19 +449,17 @@ void GitHub::OnMediaPublisherInfo(
 
 void GitHub::OnMetaDataGet(
       ledger::PublisherInfoCallback callback,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK) {
+      const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::TIP_ERROR, nullptr);
     return;
   }
 
-  const std::string user_id = GetUserId(response);
-  const std::string user_name = GetUserName(response);
+  const std::string user_id = GetUserId(response.body);
+  const std::string user_name = GetUserName(response.body);
   const std::string media_key = GetMediaKey(user_name);
-  const std::string publisher_name = GetPublisherName(response);
-  const std::string profile_picture = GetProfileImageURL(response);
+  const std::string publisher_name = GetPublisherName(response.body);
+  const std::string profile_picture = GetProfileImageURL(response.body);
 
   ledger_->GetMediaPublisherInfo(
           media_key,
@@ -493,16 +480,12 @@ void GitHub::SaveMediaInfo(
     ledger::PublisherInfoCallback callback) {
   auto user_name = data.find("user_name");
   std::string url = GetProfileAPIURL(user_name->second);
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   "",
-                   "",
-                   ledger::UrlMethod::GET,
-                   std::bind(&GitHub::OnMetaDataGet,
-                              this,
-                              std::move(callback),
-                              _1,
-                              _2,
-                              _3));
+
+  auto get_callback = std::bind(&GitHub::OnMetaDataGet,
+      this,
+      std::move(callback),
+      _1);
+
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, get_callback);
 }
 }  // namespace braveledger_media

@@ -102,8 +102,6 @@ void ContributionAnonCard::SendTransaction(
   auto url_callback = std::bind(&ContributionAnonCard::OnSendTransaction,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   const std::string url = braveledger_request_util::GetCreateTransactionURL(
@@ -112,7 +110,7 @@ void ContributionAnonCard::SendTransaction(
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       payload,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -120,14 +118,11 @@ void ContributionAnonCard::SendTransaction(
 }
 
 void ContributionAnonCard::OnSendTransaction(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::TransactionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_CREATED) {
+  if (response.status_code != net::HTTP_CREATED) {
     BLOG(0, "Problem sending transaction");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;

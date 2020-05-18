@@ -190,14 +190,12 @@ void CredentialsSKU::Claim(
   auto url_callback = std::bind(&CredentialsSKU::OnClaim,
       this,
       _1,
-      _2,
-      _3,
       trigger,
       callback);
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       json,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -205,15 +203,12 @@ void CredentialsSKU::Claim(
 }
 
 void CredentialsSKU::OnClaim(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::RETRY);
     return;
   }
@@ -253,35 +248,24 @@ void CredentialsSKU::FetchSignedCreds(
   auto url_callback = std::bind(&CredentialsSKU::OnFetchSignedCreds,
       this,
       _1,
-      _2,
-      _3,
       trigger,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      std::vector<std::string>(),
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, url_callback);
 }
 
 void CredentialsSKU::OnFetchSignedCreds(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_ACCEPTED) {
+  if (response.status_code == net::HTTP_ACCEPTED) {
     callback(ledger::Result::RETRY_SHORT);
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::RETRY);
     return;
   }
@@ -291,7 +275,7 @@ void CredentialsSKU::OnFetchSignedCreds(
       _1,
       trigger,
       callback);
-  common_->GetSignedCredsFromResponse(trigger, response, get_callback);
+  common_->GetSignedCredsFromResponse(trigger, response.body, get_callback);
 }
 
 void CredentialsSKU::SignedCredsSaved(
@@ -390,9 +374,7 @@ void CredentialsSKU::RedeemTokens(
 
   auto url_callback = std::bind(&CredentialsSKU::OnRedeemTokens,
       this,
-      _1,
-      _2,
-      _3,
+                            _1,
       token_id_list,
       redeem,
       callback);
@@ -403,7 +385,7 @@ void CredentialsSKU::RedeemTokens(
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       payload,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -411,16 +393,13 @@ void CredentialsSKU::RedeemTokens(
 }
 
 void CredentialsSKU::OnRedeemTokens(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  BLOG(0, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

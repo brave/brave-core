@@ -43,11 +43,9 @@ void UpholdUser::Get(
   const std::string url = GetAPIUrl("/v0/me");
 
   auto user_callback = std::bind(&UpholdUser::OnGet,
-                                 this,
-                                 callback,
-                                 _1,
-                                 _2,
-                                 _3);
+      this,
+      callback,
+      _1);
   ledger_->LoadURL(
       url,
       headers,
@@ -59,24 +57,21 @@ void UpholdUser::Get(
 
 void UpholdUser::OnGet(
     GetUserCallback callback,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const ledger::UrlResponse& response) {
   User user;
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, user);
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, user);
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     callback(ledger::Result::LEDGER_ERROR, user);
     return;

@@ -61,8 +61,6 @@ void UpholdTransfer::CreateTransaction(
   auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
                             this,
                             _1,
-                            _2,
-                            _3,
                             *wallet,
                             callback);
   ledger_->LoadURL(
@@ -75,27 +73,24 @@ void UpholdTransfer::CreateTransaction(
 }
 
 void UpholdTransfer::OnCreateTransaction(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const ledger::ExternalWallet& wallet,
     ledger::TransactionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_ACCEPTED) {
+  if (response.status_code != net::HTTP_ACCEPTED) {
     // TODO(nejczdovc): add retry logic to all errors in this function
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -129,8 +124,6 @@ void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
   auto commit_callback = std::bind(&UpholdTransfer::OnCommitTransaction,
                             this,
                             _1,
-                            _2,
-                            _3,
                             transaction_id,
                             callback);
   ledger_->LoadURL(
@@ -143,21 +136,18 @@ void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
 }
 
 void UpholdTransfer::OnCommitTransaction(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::string& transaction_id,
     ledger::TransactionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

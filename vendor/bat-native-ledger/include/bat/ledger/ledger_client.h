@@ -25,8 +25,7 @@ using PublisherInfoListCallback =
 using GetNicewareListCallback =
     std::function<void(const Result, const std::string&)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
-using LoadURLCallback = std::function<void(const int, const std::string&,
-    const std::map<std::string, std::string>& headers)>;
+using LoadURLCallback = std::function<void(const ledger::UrlResponse&)>;
 using OnLoadCallback = std::function<void(const Result,
                                           const std::string&)>;
 using PendingContributionInfoListCallback =

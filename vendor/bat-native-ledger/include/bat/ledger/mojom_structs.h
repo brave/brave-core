@@ -175,6 +175,9 @@ using UnblindedTokenList = std::vector<UnblindedTokenPtr>;
 
 using UrlMethod = mojom::UrlMethod;
 
+using UrlResponse = mojom::UrlResponse;
+using UrlResponsePtr = mojom::UrlResponsePtr;
+
 using VisitData = mojom::VisitData;
 using VisitDataPtr = mojom::VisitDataPtr;
 

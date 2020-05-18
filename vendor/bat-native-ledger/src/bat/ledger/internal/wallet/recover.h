@@ -46,16 +46,12 @@ class Recover {
 
 
   void RecoverWalletPublicKeyCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const std::vector<uint8_t>& new_seed,
       ledger::RecoverWalletCallback callback);
 
   void RecoverWalletCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const std::string& recoveryId,
       const std::vector<uint8_t>& new_seed,
       ledger::RecoverWalletCallback callback);

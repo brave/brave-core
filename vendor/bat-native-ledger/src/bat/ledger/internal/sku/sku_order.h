@@ -29,9 +29,7 @@ class SKUOrder {
 
  private:
   void OnCreate(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const std::vector<ledger::SKUOrderItem>& order_items,
       ledger::SKUOrderCallback callback);
 

@@ -43,10 +43,7 @@ class PayoutTokens {
 
   void RedeemPaymentTokens();
   void OnRedeemPaymentTokens(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const UrlResponse& url_response);
 
   void OnPayout(const Result result);
 

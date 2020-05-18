@@ -198,13 +198,12 @@ void LedgerClientMojoProxy::URIEncode(const std::string& value,
 // static
 void LedgerClientMojoProxy::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,
-    int32_t response_code, const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const ledger::UrlResponse& response) {
   DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get())
-        .Run(response_code, response, base::MapToFlatMap(headers));
-  delete holder;
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ledger::UrlResponse::New(response));
+    delete holder;
+  }
 }
 
 void LedgerClientMojoProxy::LoadURL(const std::string& url,
@@ -218,7 +217,7 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       AsWeakPtr(), std::move(callback));
   ledger_client_->LoadURL(url, headers, content, contentType,
       method,
-      std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
+      std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1));
 }
 
 void LedgerClientMojoProxy::PublisherListNormalized(

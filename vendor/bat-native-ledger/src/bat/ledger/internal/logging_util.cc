@@ -43,29 +43,29 @@ std::string UrlRequestToString(
 
 std::string UrlResponseToString(
     const char* func,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const ledger::UrlResponse& response) {
   const std::string result =
-      response_status_code >= 200 && response_status_code < 300
+      response.status_code >= 200 && response.status_code < 300
           ? "Success" : "Failure";
 
   std::string formatted_headers;
-  for (const auto& header : headers) {
+  for (const auto& header : response.headers) {
     formatted_headers +=
         "\n> Header " + header.first + ": " + header.second;
   }
 
   return base::StringPrintf(
       "\n[ RESPONSE - %s ]\n"
+      "> Url: %s\n"
       "> Result: %s\n"
       "> HTTP Code: %d\n"
       "> Body: %s"
       "%s",
       func,
+      response.url.c_str(),
       result.c_str(),
-      response_status_code,
-      response.c_str(),
+      response.status_code,
+      response.body.c_str(),
       formatted_headers.c_str());
 }
 

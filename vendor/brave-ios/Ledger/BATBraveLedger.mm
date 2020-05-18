@@ -26,6 +26,7 @@
 #import "BATLedgerDatabase.h"
 #import "DataController.h"
 
+#import "base/containers/flat_map.h"
 #import "base/time/time.h"
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -1831,7 +1832,13 @@ BATLedgerBridge(BOOL,
     {ledger::UrlMethod::PUT, "PUT"}
   };
   return [self.commonOps loadURLRequest:url headers:headers content:content content_type:contentType method:methodMap[method] callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
-    callback(statusCode, response, headers);
+    ledger::UrlResponse url_response;
+    url_response.url = url;
+    url_response.status_code = statusCode;
+    url_response.body = response;
+    url_response.headers = base::MapToFlatMap(headers);
+
+    callback(url_response);
   }];
 }
 

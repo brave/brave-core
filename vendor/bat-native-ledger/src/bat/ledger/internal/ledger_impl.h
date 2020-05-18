@@ -823,9 +823,7 @@ class LedgerImpl : public ledger::Ledger {
       ledger::LoadURLCallback callback);
 
   void OnRefreshPublisher(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 

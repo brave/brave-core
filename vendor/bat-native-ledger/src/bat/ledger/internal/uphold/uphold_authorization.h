@@ -34,9 +34,7 @@ class UpholdAuthorization {
   void OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
   void OnGetUser(
     const ledger::Result result,

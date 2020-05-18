@@ -66,16 +66,14 @@ class Vimeo {
 
   void FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback);
+    ledger::LoadURLCallback callback);
 
   void OnMediaActivityError(uint64_t window_id = 0);
 
   void OnEmbedResponse(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
   void OnPublisherPage(
     const std::string& media_key,
@@ -83,16 +81,12 @@ class Vimeo {
     const std::string& publisher_name,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
   void OnUnknownPage(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
   void OnPublisherPanleInfo(
     const std::string& media_key,
@@ -121,9 +115,7 @@ class Vimeo {
   void OnPublisherVideoPage(
     const std::string& media_key,
     ledger::MediaEventInfo event_info,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
   void OnSaveMediaVisit(
     ledger::Result result,

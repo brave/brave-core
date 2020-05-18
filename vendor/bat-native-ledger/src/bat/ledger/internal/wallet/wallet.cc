@@ -85,15 +85,8 @@ void Wallet::GetWalletProperties(
   auto load_callback = std::bind(&Wallet::WalletPropertiesCallback,
                             this,
                             _1,
-                            _2,
-                            _3,
                             callback);
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   std::string(),
-                   std::string(),
-                   ledger::UrlMethod::GET,
-                   load_callback);
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
 }
 
 ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
@@ -108,14 +101,11 @@ ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
 }
 
 void Wallet::WalletPropertiesCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::OnWalletPropertiesCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
   ledger::WalletProperties properties;
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR,
              WalletPropertiesToWalletInfo(properties));
     return;
@@ -124,7 +114,7 @@ void Wallet::WalletPropertiesCallback(
   ledger::WalletPropertiesPtr wallet;
 
   const ledger::WalletState wallet_state;
-  bool ok = wallet_state.FromJson(response, &properties);
+  bool ok = wallet_state.FromJson(response.body, &properties);
 
   if (!ok) {
     BLOG(0, "Failed to load wallet properties state");
@@ -260,18 +250,15 @@ void Wallet::DisconnectWallet(
 }
 
 void Wallet::OnTransferAnonToExternalWallet(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_OK) {
+  if (response.status_code == net::HTTP_OK) {
     callback(ledger::Result::LEDGER_OK);
     return;
   }
-  if (response_status_code == net::HTTP_CONFLICT) {
+  if (response.status_code == net::HTTP_CONFLICT) {
     callback(ledger::Result::ALREADY_EXISTS);
     return;
   }
@@ -431,8 +418,6 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
   auto transfer_callback = std::bind(&Wallet::OnTransferAnonToExternalWallet,
                           this,
                           _1,
-                          _2,
-                          _3,
                           callback);
 
   const std::string payload = GetClaimPayload(

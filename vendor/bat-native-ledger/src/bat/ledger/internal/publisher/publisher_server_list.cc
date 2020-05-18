@@ -73,8 +73,6 @@ void PublisherServerList::Download(ledger::ResultCallback callback) {
       &PublisherServerList::OnDownload,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   ledger_->LoadURL(
@@ -87,32 +85,30 @@ void PublisherServerList::Download(ledger::ResultCallback callback) {
 }
 
 void PublisherServerList::OnDownload(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::ResultCallback callback) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
   // we iterated through all pages
-  if (response_status_code == net::HTTP_NO_CONTENT) {
+  if (response.status_code == net::HTTP_NO_CONTENT) {
     in_progress_ = false;
     OnParsePublisherList(ledger::Result::LEDGER_OK, callback);
     return;
   }
 
-  if (response_status_code == net::HTTP_OK && !response.empty()) {
+  if (response.status_code == net::HTTP_OK && !response.body.empty()) {
     const auto parse_callback =
       std::bind(&PublisherServerList::OnParsePublisherList, this, _1, callback);
 #if defined(OS_IOS)
-    std::string data = response;  // Make sure the data is copied into block
+    // Make sure the data is copied into block
+    std::string data = response.body;
     dispatch_queue_global_t global_queue =
       dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(global_queue, ^{
       this->ParsePublisherList(data, parse_callback);
     });
 #else
-    ParsePublisherList(response, parse_callback);
+    ParsePublisherList(response.body, parse_callback);
 #endif
     return;
   }

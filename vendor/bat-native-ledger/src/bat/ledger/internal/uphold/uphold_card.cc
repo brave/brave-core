@@ -46,8 +46,6 @@ void UpholdCard::CreateIfNecessary(
   auto check_callback = std::bind(&UpholdCard::OnCreateIfNecessary,
                             this,
                             _1,
-                            _2,
-                            _3,
                             *wallet,
                             callback);
   ledger_->LoadURL(
@@ -60,26 +58,23 @@ void UpholdCard::CreateIfNecessary(
 }
 
 void UpholdCard::OnCreateIfNecessary(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const ledger::ExternalWallet& wallet,
     CreateCardCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_list()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -127,8 +122,6 @@ void UpholdCard::Create(
   auto create_callback = std::bind(&UpholdCard::OnCreate,
                             this,
                             _1,
-                            _2,
-                            _3,
                             *wallet,
                             callback);
   ledger_->LoadURL(
@@ -141,26 +134,23 @@ void UpholdCard::Create(
 }
 
 void UpholdCard::OnCreate(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const ledger::ExternalWallet& wallet,
     CreateCardCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -235,34 +225,29 @@ void UpholdCard::Update(
   auto update_callback = std::bind(&UpholdCard::OnUpdate,
                             this,
                             _1,
-                            _2,
-                            _3,
                             callback);
 
   ledger_->LoadURL(
-    url,
-    headers,
-    json,
-    "application/json",
-    ledger::UrlMethod::PATCH,
-    update_callback);
+      url,
+      headers,
+      json,
+      "application/json",
+      ledger::UrlMethod::PATCH,
+      update_callback);
 }
 
 void UpholdCard::OnUpdate(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     UpdateCardCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN);
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -281,8 +266,6 @@ void UpholdCard::GetCardAddresses(
   auto address_callback = std::bind(&UpholdCard::OnGetCardAddresses,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   const auto url = GetAPIUrl(path);
@@ -347,25 +330,22 @@ std::map<std::string, std::string> UpholdCard::ParseGetCardAddressResponse(
 }
 
 void UpholdCard::OnGetCardAddresses(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     GetCardAddressesCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN,  {});
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR,  {});
     return;
   }
 
-  auto result = ParseGetCardAddressResponse(response);
+  auto result = ParseGetCardAddressResponse(response.body);
   callback(ledger::Result::LEDGER_OK, result);
 }
 
@@ -416,8 +396,6 @@ void UpholdCard::CreateAnonAddress(
   auto anon_callback = std::bind(&UpholdCard::OnCreateAnonAddress,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   const auto url = GetAPIUrl(path);
@@ -431,25 +409,22 @@ void UpholdCard::CreateAnonAddress(
 }
 
 void UpholdCard::OnCreateAnonAddress(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     CreateAnonAddressCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN,  "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR,  "");
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;

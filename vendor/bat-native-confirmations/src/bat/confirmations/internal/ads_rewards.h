@@ -40,17 +40,11 @@ class AdsRewards {
 
   void GetPaymentBalance();
   void OnGetPaymentBalance(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const UrlResponse& url_response);
 
   void GetAdGrants();
   void OnGetAdGrants(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const UrlResponse& url_response);
 
   void OnAdsRewards(
       const Result result);

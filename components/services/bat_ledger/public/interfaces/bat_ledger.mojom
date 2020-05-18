@@ -178,8 +178,7 @@ interface BatLedgerClient {
   LoadNicewareList() => (ledger.mojom.Result result, string data);
 
   LoadURL(string url, array<string> headers, string content,
-      string content_type, ledger.mojom.UrlMethod method) => (int32 status_code, string response,
-        map<string, string> headers);
+      string content_type, ledger.mojom.UrlMethod method) => (ledger.mojom.UrlResponse response);
 
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);

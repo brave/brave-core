@@ -94,8 +94,6 @@ void AttestationDesktop::Start(
   auto url_callback = std::bind(&AttestationDesktop::OnStart,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   const std::string url =
@@ -109,7 +107,7 @@ void AttestationDesktop::Start(
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       json,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -117,19 +115,16 @@ void AttestationDesktop::Start(
 }
 
 void AttestationDesktop::OnStart(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     StartCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  DownloadCaptchaImage(ledger::Result::LEDGER_OK, response, callback);
+  DownloadCaptchaImage(ledger::Result::LEDGER_OK, response.body, callback);
 }
 
 void AttestationDesktop::DownloadCaptchaImage(
@@ -154,39 +149,28 @@ void AttestationDesktop::DownloadCaptchaImage(
   auto url_callback = std::bind(&AttestationDesktop::OnDownloadCaptchaImage,
       this,
       _1,
-      _2,
-      _3,
       response,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      std::vector<std::string>(),
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, url_callback);
 }
 
 void AttestationDesktop::OnDownloadCaptchaImage(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::string& captcha_response,
     StartCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      "<PNG>", headers));
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
   base::Value dictionary(base::Value::Type::DICTIONARY);
   ParseCaptchaResponse(captcha_response, &dictionary);
 
-  if (response_status_code != net::HTTP_OK || dictionary.DictEmpty()) {
+  if (response.status_code != net::HTTP_OK || dictionary.DictEmpty()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   std::string encoded_image;
-  base::Base64Encode(response, &encoded_image);
+  base::Base64Encode(response.body, &encoded_image);
   encoded_image =
       base::StringPrintf("data:image/jpeg;base64,%s", encoded_image.c_str());
   dictionary.SetStringKey("captchaImage", encoded_image);
@@ -226,13 +210,11 @@ void AttestationDesktop::Confirm(
   auto url_callback = std::bind(&AttestationDesktop::OnConfirm,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       payload,
       "application/json; charset=utf-8",
       ledger::UrlMethod::PUT,
@@ -240,20 +222,17 @@ void AttestationDesktop::Confirm(
 }
 
 void AttestationDesktop::OnConfirm(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ConfirmCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_OK) {
+  if (response.status_code == net::HTTP_OK) {
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED ||
-      response_status_code == net::HTTP_BAD_REQUEST ) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED ||
+      response.status_code == net::HTTP_BAD_REQUEST ) {
     callback(ledger::Result::CAPTCHA_FAILED);
     return;
   }

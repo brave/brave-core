@@ -280,13 +280,8 @@ std::string Vimeo::GetVideoIdFromVideoPage(const std::string& data) {
 
 void Vimeo::FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback) {
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   "",
-                   "",
-                   ledger::UrlMethod::GET,
-                   callback);
+    ledger::LoadURLCallback callback) {
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
 }
 
 void Vimeo::OnMediaActivityError(uint64_t window_id) {
@@ -367,9 +362,7 @@ void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
                             this,
                             visit_data,
                             window_id,
-                            _1,
-                            _2,
-                            _3);
+                            _1);
 
   FetchDataFromUrl(url, callback);
 }
@@ -377,34 +370,27 @@ void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
 void Vimeo::OnEmbedResponse(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+    const ledger::UrlResponse& response) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
                               visit_data,
                               window_id,
-                              _1,
-                              _2,
-                              _3);
+                              _1);
 
     FetchDataFromUrl(visit_data.url, callback);
     return;
   }
 
-  base::Optional<base::Value> data = base::JSONReader::Read(response);
+  base::Optional<base::Value> data = base::JSONReader::Read(response.body);
   if (!data || !data->is_dict()) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
                               visit_data,
                               window_id,
-                              _1,
-                              _2,
-                              _3);
+                              _1);
 
     FetchDataFromUrl(visit_data.url, callback);
     return;
@@ -425,9 +411,7 @@ void Vimeo::OnEmbedResponse(
                               this,
                               visit_data,
                               window_id,
-                              _1,
-                              _2,
-                              _3);
+                              _1);
 
     FetchDataFromUrl(visit_data.url, callback);
     return;
@@ -448,9 +432,7 @@ void Vimeo::OnEmbedResponse(
                             publisher_name,
                             visit_data,
                             window_id,
-                            _1,
-                            _2,
-                            _3);
+                            _1);
 
   FetchDataFromUrl(publisher_url, callback);
 }
@@ -461,18 +443,15 @@ void Vimeo::OnPublisherPage(
     const std::string& publisher_name,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      "<HTML>", headers));
+    const ledger::UrlResponse& response) {
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
   }
 
-  const std::string user_id = GetIdFromPublisherPage(response);
+  const std::string user_id = GetIdFromPublisherPage(response.body);
   const std::string publisher_key = GetPublisherKey(user_id);
 
   GetPublisherPanleInfo(media_key,
@@ -486,25 +465,22 @@ void Vimeo::OnPublisherPage(
 void Vimeo::OnUnknownPage(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      "<HTML>", headers));
+    const ledger::UrlResponse& response) {
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
   }
 
-  std::string user_id = GetIdFromPublisherPage(response);
+  std::string user_id = GetIdFromPublisherPage(response.body);
   std::string publisher_name;
   std::string media_key;
   if (!user_id.empty()) {
     // we are on publisher page
-    publisher_name = GetNameFromPublisherPage(response);
+    publisher_name = GetNameFromPublisherPage(response.body);
   } else {
-    user_id = GetIdFromVideoPage(response);
+    user_id = GetIdFromVideoPage(response.body);
 
     if (user_id.empty()) {
       OnMediaActivityError(window_id);
@@ -512,8 +488,8 @@ void Vimeo::OnUnknownPage(
     }
 
     // we are on video page
-    publisher_name = GetNameFromVideoPage(response);
-    media_key = GetMediaKey(GetVideoIdFromVideoPage(response),
+    publisher_name = GetNameFromVideoPage(response.body);
+    media_key = GetMediaKey(GetVideoIdFromVideoPage(response.body),
                             "vimeo-vod");
   }
 
@@ -595,9 +571,7 @@ void Vimeo::OnMediaPublisherInfo(
                             this,
                             media_key,
                             event_info,
-                            _1,
-                            _2,
-                            _3);
+                            _1);
 
     FetchDataFromUrl(GetVideoUrl(media_id), callback);
     return;
@@ -625,18 +599,15 @@ void Vimeo::OnMediaPublisherInfo(
 void Vimeo::OnPublisherVideoPage(
     const std::string& media_key,
     ledger::MediaEventInfo event_info,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      "<HTML>", headers));
+    const ledger::UrlResponse& response) {
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError();
     return;
   }
 
-  const std::string user_id = GetIdFromVideoPage(response);
+  const std::string user_id = GetIdFromVideoPage(response.body);
 
   if (user_id.empty()) {
     OnMediaActivityError();
@@ -655,8 +626,8 @@ void Vimeo::OnPublisherVideoPage(
   SavePublisherInfo(media_key,
                     duration,
                     user_id,
-                    GetNameFromVideoPage(response),
-                    GetUrlFromVideoPage(response),
+                    GetNameFromVideoPage(response.body),
+                    GetUrlFromVideoPage(response.body),
                     0);
 }
 

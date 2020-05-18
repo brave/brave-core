@@ -45,9 +45,7 @@ class CredentialsPromotion : public Credentials {
       ledger::ResultCallback callback) override;
 
   void OnClaim(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
@@ -67,9 +65,7 @@ class CredentialsPromotion : public Credentials {
       ledger::ResultCallback callback);
 
   void OnFetchSignedCreds(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
@@ -102,9 +98,7 @@ class CredentialsPromotion : public Credentials {
       ledger::ResultCallback callback) override;
 
   void OnRedeemTokens(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const std::vector<std::string>& token_id_list,
       const CredentialsRedeem& redeem,
       ledger::ResultCallback callback);

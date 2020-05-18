@@ -7,6 +7,7 @@
 
 #include <sstream>
 
+#include "base/containers/flat_map.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 
@@ -51,7 +52,7 @@ std::string UrlRequestToString(
 }
 
 std::string HeadersToString(
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::vector<std::string> formatted_headers;
 
   for (auto& header : headers) {
@@ -68,15 +69,13 @@ std::string HeadersToString(
 }
 
 std::string UrlResponseToString(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  const std::string formatted_headers = HeadersToString(headers);
+    const UrlResponse& url_response) {
+  const std::string formatted_headers = HeadersToString(url_response.headers);
 
   return base::StringPrintf("URL Response:\n  URL: %s\n  Response "
-      "Status Code: %d\n  Response: %s\n  Headers:\n%s", url.c_str(),
-          response_status_code, response.c_str(), formatted_headers.c_str());
+      "Status Code: %d\n  Body: %s\n  Headers:\n%s",
+          url_response.url.c_str(), url_response.status_code,
+              url_response.body.c_str(), formatted_headers.c_str());
 }
 
 }  // namespace confirmations

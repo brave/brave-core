@@ -45,8 +45,6 @@ void SKUOrder::Create(
   auto url_callback = std::bind(&SKUOrder::OnCreate,
       this,
       _1,
-      _2,
-      _3,
       items,
       callback);
 
@@ -54,7 +52,7 @@ void SKUOrder::Create(
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       json,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -62,20 +60,17 @@ void SKUOrder::Create(
 }
 
 void SKUOrder::OnCreate(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::vector<ledger::SKUOrderItem>& order_items,
     ledger::SKUOrderCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_CREATED) {
+  if (response.status_code != net::HTTP_CREATED) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  auto order = ParseOrderCreateResponse(response, order_items);
+  auto order = ParseOrderCreateResponse(response.body, order_items);
 
   if (!order) {
     BLOG(0, "Order response could not be parsed");

@@ -130,7 +130,7 @@ void RedeemToken::CreateConfirmation(
   auto content_type = request.GetContentType();
 
   auto callback = std::bind(&RedeemToken::OnCreateConfirmation,
-      this, url, _1, _2, _3, confirmation);
+      this, _1, confirmation);
 
   BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
   confirmations_client_->LoadURL(url, headers, body, content_type,
@@ -138,18 +138,15 @@ void RedeemToken::CreateConfirmation(
 }
 
 void RedeemToken::OnCreateConfirmation(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const UrlResponse& url_response,
     const ConfirmationInfo& confirmation) {
   DCHECK(!confirmation.id.empty());
 
   BLOG(1, "OnCreateConfirmation");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code == net::HTTP_BAD_REQUEST) {
+  if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     // OnFetchPaymentToken handles HTTP response status codes for duplicate/bad
     // confirmations as we cannot guarantee if the confirmation was created or
     // not, i.e. after an internal server error 500
@@ -175,23 +172,20 @@ void RedeemToken::FetchPaymentToken(
   auto method = request.GetMethod();
 
   auto callback = std::bind(&RedeemToken::OnFetchPaymentToken,
-      this, url, _1, _2, _3, confirmation);
+      this, _1, confirmation);
 
   BLOG(5, UrlRequestToString(url, {}, "", "", method));
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
 void RedeemToken::OnFetchPaymentToken(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const UrlResponse& url_response,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "OnFetchPaymentToken");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code == net::HTTP_NOT_FOUND) {
+  if (url_response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(1, "Confirmation not found");
 
     if (!Verify(confirmation)) {
@@ -207,22 +201,23 @@ void RedeemToken::OnFetchPaymentToken(
     return;
   }
 
-  if (response_status_code == net::HTTP_BAD_REQUEST) {
+  if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     BLOG(1, "Credential is invalid");
     OnRedeem(FAILED, confirmation, false);
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch payment token");
     OnRedeem(FAILED, confirmation, true);
     return;
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
+  base::Optional<base::Value> dictionary =
+      base::JSONReader::Read(url_response.body);
   if (!dictionary || !dictionary->is_dict()) {
-    BLOG(3, "Failed to parse response: " << response);
+    BLOG(3, "Failed to parse response: " << url_response.body);
     OnRedeem(FAILED, confirmation, true);
     return;
   }

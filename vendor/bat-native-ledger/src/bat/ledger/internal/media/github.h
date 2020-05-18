@@ -51,15 +51,13 @@ class GitHub {
 
   void FetchDataFromUrl(
       const std::string& url,
-      braveledger_media::FetchDataFromUrlCallback callback);
+      ledger::LoadURLCallback callback);
 
   void OnUserPage(
       const uint64_t duration,
       uint64_t window_id,
       const ledger::VisitData& visit_data,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const ledger::UrlResponse& response);
 
   void OnSaveMediaVisit(
       ledger::Result result,
@@ -91,9 +89,7 @@ class GitHub {
 
 void OnMetaDataGet(
       ledger::PublisherInfoCallback callback,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const ledger::UrlResponse& response);
 
 void OnMediaPublisherInfo(
     uint64_t window_id,

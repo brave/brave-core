@@ -90,32 +90,29 @@ void RefillTokens::RequestSignedTokens() {
   auto content_type = request.GetContentType();
 
   auto callback = std::bind(&RefillTokens::OnRequestSignedTokens,
-      this, url, _1, _2, _3);
+      this, _1);
 
   BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
   confirmations_client_->LoadURL(url, headers, body, content_type, method,
       callback);
 }
 
-void RefillTokens::OnRequestSignedTokens(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+void RefillTokens::OnRequestSignedTokens(const UrlResponse& url_response) {
   BLOG(1, "OnRequestSignedTokens");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code != net::HTTP_CREATED) {
+  if (url_response.status_code != net::HTTP_CREATED) {
     BLOG(1, "Failed to request signed tokens");
     OnRefill(FAILED);
     return;
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
+  base::Optional<base::Value> dictionary =
+      base::JSONReader::Read(url_response.body);
   if (!dictionary || !dictionary->is_dict()) {
-    BLOG(3, "Failed to parse response: " << response);
+    BLOG(3, "Failed to parse response: " << url_response.body);
     OnRefill(FAILED, false);
     return;
   }
@@ -142,32 +139,29 @@ void RefillTokens::GetSignedTokens() {
   auto url = request.BuildUrl(wallet_info_, nonce_);
   auto method = request.GetMethod();
 
-  auto callback = std::bind(&RefillTokens::OnGetSignedTokens,
-      this, url, _1, _2, _3);
+  auto callback = std::bind(&RefillTokens::OnGetSignedTokens, this, _1);
 
   BLOG(5, UrlRequestToString(url, {}, "", "", method));
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
 void RefillTokens::OnGetSignedTokens(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const UrlResponse& url_response) {
   BLOG(1, "OnGetSignedTokens");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(0, "Failed to get signed tokens");
     OnRefill(FAILED);
     return;
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
+  base::Optional<base::Value> dictionary =
+      base::JSONReader::Read(url_response.body);
   if (!dictionary || !dictionary->is_dict()) {
-    BLOG(3, "Failed to parse response: " << response);
+    BLOG(3, "Failed to parse response: " << url_response.body);
     OnRefill(FAILED, false);
     return;
   }

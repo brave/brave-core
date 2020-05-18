@@ -86,8 +86,7 @@ void PayoutTokens::RedeemPaymentTokens() {
   auto headers = request.BuildHeaders();
   auto content_type = request.GetContentType();
 
-  auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens,
-      this, url, _1, _2, _3);
+  auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens, this, _1);
 
   BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
   confirmations_client_->LoadURL(url, headers, body, content_type, method,
@@ -95,15 +94,12 @@ void PayoutTokens::RedeemPaymentTokens() {
 }
 
 void PayoutTokens::OnRedeemPaymentTokens(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const UrlResponse& url_response) {
   BLOG(1, "OnRedeemPaymentTokens");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to redeem payment tokens");
     OnPayout(FAILED);
     return;
