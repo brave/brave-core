@@ -197,10 +197,10 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
   return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
 }
 
-base::Optional<base::Value> AdBlockBaseService::HostnameCosmeticResources(
-        const std::string& hostname) {
+base::Optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
+        const std::string& url) {
   return base::JSONReader::Read(
-          this->ad_block_client_->hostnameCosmeticResources(hostname));
+          this->ad_block_client_->urlCosmeticResources(url));
 }
 
 base::Optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(

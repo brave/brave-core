@@ -47,14 +47,16 @@ const char EMPTY_RESOURCES[] = "{"
     "\"hide_selectors\": [], "
     "\"style_selectors\": {}, "
     "\"exceptions\": [], "
-    "\"injected_script\": \"\""
+    "\"injected_script\": \"\", "
+    "\"generichide\": false"
 "}";
 
 const char NONEMPTY_RESOURCES[] = "{"
     "\"hide_selectors\": [\"a\", \"b\"], "
     "\"style_selectors\": {\"c\": \"color: #fff\", \"d\": \"color: #000\"}, "
     "\"exceptions\": [\"e\", \"f\"], "
-    "\"injected_script\": \"console.log('g')\""
+    "\"injected_script\": \"console.log('g')\", "
+    "\"generichide\": false"
 "}";
 
 TEST_F(CosmeticResourceMergeTest, MergeTwoEmptyResources) {
@@ -67,7 +69,8 @@ TEST_F(CosmeticResourceMergeTest, MergeTwoEmptyResources) {
       "\"hide_selectors\": [], "
       "\"style_selectors\": {}, "
       "\"exceptions\": [], "
-      "\"injected_script\": \"\n\""
+      "\"injected_script\": \"\n\", "
+      "\"generichide\": false"
   "}";
 
   CompareMergeFromStrings(a, b, false, expected);
@@ -83,7 +86,8 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyIntoNonEmpty) {
       "\"hide_selectors\": [\"a\", \"b\"], "
       "\"style_selectors\": {\"c\": \"color: #fff\", \"d\": \"color: #000\"}, "
       "\"exceptions\": [\"e\", \"f\"], "
-      "\"injected_script\": \"console.log('g')\n\""
+      "\"injected_script\": \"console.log('g')\n\", "
+      "\"generichide\": false"
   "}";
 
   CompareMergeFromStrings(a, b, false, expected);
@@ -99,7 +103,8 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoEmpty) {
       "\"hide_selectors\": [\"a\", \"b\"],"
       "\"style_selectors\": {\"c\": \"color: #fff\", \"d\": \"color: #000\"}, "
       "\"exceptions\": [\"e\", \"f\"], "
-      "\"injected_script\": \"\nconsole.log('g')\""
+      "\"injected_script\": \"\nconsole.log('g')\", "
+      "\"generichide\": false"
   "}";
 
   CompareMergeFromStrings(a, b, false, expected);
@@ -111,7 +116,8 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
       "\"hide_selectors\": [\"h\", \"i\"], "
       "\"style_selectors\": {\"j\": \"color: #eee\", \"k\": \"color: #111\"}, "
       "\"exceptions\": [\"l\", \"m\"], "
-      "\"injected_script\": \"console.log('n')\""
+      "\"injected_script\": \"console.log('n')\", "
+      "\"generichide\": false"
   "}";
 
   const std::string expected = "{"
@@ -123,7 +129,8 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
           "\"k\": \"color: #111\""
       "}, "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
-      "\"injected_script\": \"console.log('g')\nconsole.log('n')\""
+      "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
+      "\"generichide\": false"
   "}";
 
   CompareMergeFromStrings(a, b, false, expected);
@@ -140,6 +147,7 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyForceHide) {
       "\"style_selectors\": {}, "
       "\"exceptions\": [], "
       "\"injected_script\": \"\n\","
+      "\"generichide\": false, "
       "\"force_hide_selectors\": []"
   "}";
 
@@ -152,7 +160,8 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
       "\"hide_selectors\": [\"h\", \"i\"], "
       "\"style_selectors\": {\"j\": \"color: #eee\", \"k\": \"color: #111\"}, "
       "\"exceptions\": [\"l\", \"m\"], "
-      "\"injected_script\": \"console.log('n')\""
+      "\"injected_script\": \"console.log('n')\", "
+      "\"generichide\": false"
   "}";
 
   const std::string expected = "{"
@@ -165,10 +174,78 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
       "}, "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\","
+      "\"generichide\": false, "
       "\"force_hide_selectors\": [\"h\", \"i\"]"
   "}";
 
   CompareMergeFromStrings(a, b, true, expected);
+}
+
+TEST_F(CosmeticResourceMergeTest, MergeNonGenerichideIntoGenerichide) {
+  const std::string a = "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {}, "
+      "\"exceptions\": [], "
+      "\"injected_script\": \"\n\", "
+      "\"generichide\": true"
+  "}";
+  const std::string b = EMPTY_RESOURCES;
+
+  const std::string expected = "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {}, "
+      "\"exceptions\": [], "
+      "\"injected_script\": \"\n\n\", "
+      "\"generichide\": true"
+  "}";
+
+  CompareMergeFromStrings(a, b, false, expected);
+}
+
+TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoNonGenerichide) {
+  const std::string a = NONEMPTY_RESOURCES;
+  const std::string b = "{"
+      "\"hide_selectors\": [\"h\", \"i\"], "
+      "\"style_selectors\": {\"j\": \"color: #eee\", \"k\": \"color: #111\"}, "
+      "\"exceptions\": [\"l\", \"m\"], "
+      "\"injected_script\": \"console.log('n')\", "
+      "\"generichide\": true"
+  "}";
+
+  const std::string expected = "{"
+      "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
+      "\"style_selectors\": {"
+          "\"c\": \"color: #fff\", "
+          "\"d\": \"color: #000\", "
+          "\"j\": \"color: #eee\", "
+          "\"k\": \"color: #111\""
+      "}, "
+      "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
+      "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
+      "\"generichide\": true"
+  "}";
+
+  CompareMergeFromStrings(a, b, false, expected);
+}
+
+TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoGenerichide) {
+  const std::string a = "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {}, "
+      "\"exceptions\": [], "
+      "\"injected_script\": \"\", "
+      "\"generichide\": true"
+  "}";
+
+  const std::string expected = "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {}, "
+      "\"exceptions\": [], "
+      "\"injected_script\": \"\n\", "
+      "\"generichide\": true"
+  "}";
+
+  CompareMergeFromStrings(a, a, false, expected);
 }
 
 

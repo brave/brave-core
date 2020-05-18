@@ -11,12 +11,12 @@
 namespace extensions {
 namespace api {
 
-class BraveShieldsHostnameCosmeticResourcesFunction : public ExtensionFunction {
+class BraveShieldsUrlCosmeticResourcesFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.hostnameCosmeticResources", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveShields.urlCosmeticResources", UNKNOWN)
 
  protected:
-  ~BraveShieldsHostnameCosmeticResourcesFunction() override {}
+  ~BraveShieldsUrlCosmeticResourcesFunction() override {}
 
   ResponseAction Run() override;
 };

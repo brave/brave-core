@@ -46,8 +46,8 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
       });
 }
 
-// Merges the contents of the second HostnameCosmeticResources Value into the
-// first one provided.
+// Merges the contents of the second UrlCosmeticResources Value into the first
+// one provided.
 //
 // If `force_hide` is true, the contents of `from`'s `hide_selectors` field
 // will be moved into a possibly new field of `into` called
@@ -113,6 +113,15 @@ void MergeResourcesInto(
             resources_injected_script->GetString()
             + '\n'
             + from_resources_injected_script->GetString());
+  }
+
+  base::Value* resources_generichide = into->FindKey("generichide");
+  base::Value* from_resources_generichide =
+      from->FindKey("generichide");
+  if (from_resources_generichide) {
+    if (from_resources_generichide->GetBool()) {
+      *resources_generichide = base::Value(true);
+    }
   }
 }
 

@@ -234,14 +234,15 @@ declare namespace chrome.braveShields {
   const onShieldsPanelShown: any
   const reportBrokenSite: any
 
-  interface HostnameSpecificResources {
+  interface UrlSpecificResources {
     hide_selectors: string[]
     style_selectors: any
     exceptions: string[]
     injected_script: string
     force_hide_selectors: string[]
+    generichide: boolean
   }
-  const hostnameCosmeticResources: (hostname: string, callback: (resources: HostnameSpecificResources) => void) => void
+  const urlCosmeticResources: (url: string, callback: (resources: UrlSpecificResources) => void) => void
   const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
 
   type BraveShieldsViewPreferences = {

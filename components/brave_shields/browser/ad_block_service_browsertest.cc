@@ -988,6 +988,41 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   EXPECT_TRUE(as_expected);
 }
 
+// Test cosmetic filtering ignores generic cosmetic rules in the presence of a
+// `generichide` exception rule, both for elements added dynamically and
+// elements present at page load
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
+  UpdateAdBlockInstanceWithRules(
+      "##.blockme\n"
+      "##img[src=\"https://example.com/logo.png\"]\n"
+      "@@||b.com$generichide");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/cosmetic_filtering.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "addElementsDynamically();\n"
+              "checkSelector('.blockme', 'display', 'inline')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+
+  as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('img[src=\"https://example.com/logo.png\"]', "
+                            "'display', 'inline')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
 // Test custom style rules
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringCustomStyle) {

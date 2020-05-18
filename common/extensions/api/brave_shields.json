@@ -74,12 +74,12 @@
         "parameters": []
       },
       {
-        "name": "hostnameCosmeticResources",
+        "name": "urlCosmeticResources",
         "type": "function",
-        "description": "Get a cosmetic adblocking stylesheet, generic style exceptions, and script injections specific for the given hostname and domain",
+        "description": "Get a cosmetic adblocking stylesheet, generic style exceptions, script injections, and whether or not a generichide rule was present, all specific for the given URL",
         "parameters": [
           {
-            "name": "hostname",
+            "name": "url",
             "type": "string"
           },
           {
@@ -87,14 +87,15 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "hostnameSpecificResources",
+                "name": "urlSpecificResources",
                 "type": "object",
                 "properties": {
-                  "hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "Hostname-specific CSS selectors that should be hidden from the page if they are determined to not include 1st party content"},
-                  "style_selectors": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}, "description": "Hostname-specific CSS selectors that should be restyled, with their associated CSS style rules"},
-                  "exceptions": {"type": "array", "items": {"type": "string"}, "description": "Hostname-specific overrides for generic cosmetic blocking selectors"},
+                  "hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "URL-specific CSS selectors that should be hidden from the page if they are determined to not include 1st party content"},
+                  "style_selectors": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}, "description": "URL-specific CSS selectors that should be restyled, with their associated CSS style rules"},
+                  "exceptions": {"type": "array", "items": {"type": "string"}, "description": "URL-specific overrides for generic cosmetic blocking selectors"},
                   "injected_script": {"type": "string", "description": "A script to inject as the page is loading"},
-                  "force_hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "Hostname-specific CSS selectors that should be hidden from the page"}
+                  "force_hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "URL-specific CSS selectors that should be hidden from the page"},
+                  "generichide": {"type": "boolean", "description": "Indicates whether or not the URL matched a generichide exception rule"}
                 }
               }
             ]
