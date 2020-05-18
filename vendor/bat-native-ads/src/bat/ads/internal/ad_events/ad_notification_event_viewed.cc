@@ -10,7 +10,7 @@
 #include "bat/ads/internal/ad_events/ad_notification_event_viewed.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/reports.h"
-#include "base/logging.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -29,7 +29,7 @@ void AdNotificationEventViewed::Trigger(
   Reports reports(ads_);
   const std::string report = reports.GenerateAdNotificationEventReport(info,
       AdNotificationEventType::kViewed);
-  ads_->get_ads_client()->EventLog(report);
+  BLOG(3, "Event log: " << report);
 
   ads_->ConfirmAd(info, ConfirmationType::kViewed);
 

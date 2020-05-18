@@ -161,6 +161,12 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void PendingContributionSaved(const ledger::Result result) override;
 
+  void Log(
+      const std::string& file,
+      const int32_t line,
+      const int32_t verbose_level,
+      const std::string& message) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>

@@ -7,8 +7,7 @@
 #include "bat/ads/confirmation_type.h"
 
 #include "bat/ads/internal/json_helper.h"
-
-#include "base/logging.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

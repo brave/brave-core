@@ -47,8 +47,7 @@ void Report::OnBalance(
     const uint32_t year,
     ledger::GetMonthlyReportCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !balance_report) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Could not get balance report";
+    BLOG(0, "Could not get balance report");
     callback(result, nullptr);
     return;
   }
@@ -81,8 +80,7 @@ void Report::OnTransactions(
       monthly_report_string);
 
   if (!monthly_report) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Could not parse monthly report";
+    BLOG(0, "Could not parse monthly report");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
@@ -110,8 +108,7 @@ void Report::OnContributions(
       monthly_report_string);
 
   if (!monthly_report) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Could not parse monthly report";
+    BLOG(0, "Could not parse monthly report");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }

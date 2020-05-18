@@ -83,8 +83,11 @@ class AdsClientMojoBridge
   void GetClientInfo(
       const std::string& client_info,
       GetClientInfoCallback callback) override;
-  void EventLog(
-      const std::string& json) override;
+  void Log(
+      const std::string& file,
+      const int32_t line,
+      const int32_t verbose_level,
+      const std::string& message) override;
   void SetIdleThreshold(
       const int32_t threshold) override;
   void Load(

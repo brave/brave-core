@@ -67,7 +67,9 @@ void SKUOrder::OnCreate(
     const std::map<std::string, std::string>& headers,
     const std::vector<ledger::SKUOrderItem>& order_items,
     ledger::SKUOrderCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code != net::HTTP_CREATED) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -76,8 +78,7 @@ void SKUOrder::OnCreate(
   auto order = ParseOrderCreateResponse(response, order_items);
 
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Order response could not be parsed";
+    BLOG(0, "Order response could not be parsed");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -96,7 +97,7 @@ void SKUOrder::OnCreateSave(
     const std::string& order_id,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order couldn't be saved";
+    BLOG(0, "Order couldn't be saved");
     callback(result, "");
     return;
   }

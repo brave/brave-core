@@ -27,8 +27,7 @@ void ContributionTip::Process(
     const double amount,
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Failed to do tip due to missing publisher key";
+    BLOG(0, "Failed to do tip due to missing publisher key");
     callback(ledger::Result::NOT_FOUND);
     return;
   }
@@ -102,7 +101,7 @@ void ContributionTip::OnSavePending(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)<< "Pending tip save failed";
+    BLOG(0, "Pending tip save failed");
   }
 
   ledger_->PendingContributionSaved(result);

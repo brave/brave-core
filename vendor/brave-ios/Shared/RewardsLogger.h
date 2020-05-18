@@ -14,7 +14,7 @@ NS_SWIFT_NAME(RewardsLogger)
 /// Configures the logger by setting a callback function which will be called when the ads and rewards needs to log data.
 /// onWrite is called when data needs to be logged
 /// onFlush is called when data should be flushed from memory to a file (if needed)
-+ (void)configureWithLogCallback:(void(^)(BATLogLevel logLevel, int line, NSString *file, NSString *data))onWrite
++ (void)configureWithLogCallback:(void(^)(int verboseLevel, int line, NSString *file, NSString *data))onWrite
                        withFlush:(nullable void (^)())onFlush;
 @end
 

@@ -30,7 +30,7 @@ void SKUBrave::Process(
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is null";
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -53,7 +53,7 @@ void SKUBrave::OrderCreated(
     const std::string& contribution_id,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not successful";
+    BLOG(0, "Order was not successful");
     callback(result, "");
     return;
   }
@@ -77,7 +77,7 @@ void SKUBrave::ContributionIdSaved(
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution id not saved";
+    BLOG(0, "Contribution id not saved");
     callback(result, "");
     return;
   }
@@ -96,7 +96,7 @@ void SKUBrave::CreateTransaction(
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order not found";
+    BLOG(0, "Order not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -124,7 +124,7 @@ void SKUBrave::OnOrder(
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is null";
+    BLOG(0, "Order is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

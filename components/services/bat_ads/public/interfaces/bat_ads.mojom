@@ -56,7 +56,7 @@ interface BatAdsClient {
   Reset(string name) => (int32 result);
   GetCreativeAdNotifications(array<string> categories) => (int32 result, array<string> categories, array<string> json_list);
   GetAdConversions() => (int32 result, array<string> json_list);
-  EventLog(string json);
+  Log(string file, int32 line, int32 verbose_level, string message);
 };
 
 interface BatAds {

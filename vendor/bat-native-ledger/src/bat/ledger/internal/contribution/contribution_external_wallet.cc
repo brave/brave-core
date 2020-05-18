@@ -30,7 +30,7 @@ void ContributionExternalWallet::Process(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution id is empty";
+    BLOG(0, "Contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -51,7 +51,7 @@ void ContributionExternalWallet::OnExternalWallets(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (wallets.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "No external wallets";
+    BLOG(0, "No external wallets");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -59,7 +59,7 @@ void ContributionExternalWallet::OnExternalWallets(
   auto wallet = braveledger_uphold::GetWallet(std::move(wallets));
 
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "External wallet null";
+    BLOG(0, "External wallet null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -78,7 +78,7 @@ void ContributionExternalWallet::ContributionInfo(
     const ledger::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -89,9 +89,8 @@ void ContributionExternalWallet::ContributionInfo(
   // and then we will extend this function
   if (wallet.token.empty() ||
       wallet.status != ledger::WalletStatus::VERIFIED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Wallet token is empty/wallet is not verified. Wallet status: "
-        << wallet.status;
+    BLOG(0, "Wallet token is empty/wallet is not verified. Wallet status: "
+        << wallet.status);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -133,7 +132,7 @@ void ContributionExternalWallet::ContributionInfo(
 void ContributionExternalWallet::OnSavePendingContribution(
     const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem saving pending";
+    BLOG(0, "Problem saving pending");
   }
   ledger_->PendingContributionSaved(result);
 }
@@ -147,13 +146,13 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     const bool single_publisher,
     ledger::ResultCallback callback) {
   if (!info) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not found";
+    BLOG(0, "Publisher not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   if (info->status != ledger::PublisherStatus::VERIFIED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Publisher not verified";
+    BLOG(1, "Publisher not verified");
 
     auto save_callback =
         std::bind(&ContributionExternalWallet::OnSavePendingContribution,

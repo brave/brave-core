@@ -99,7 +99,7 @@ void Unblinded::Start(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution id is empty";
+    BLOG(0, "Contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -131,7 +131,7 @@ void Unblinded::OnUnblindedTokens(
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   if (list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list is empty";
+    BLOG(0, "Token list is empty");
     callback(nullptr, {});
     return;
   }
@@ -170,13 +170,13 @@ void Unblinded::PrepareTokens(
     const std::vector<ledger::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    BLOG(0, "Contribution not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   if (list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Not enough funds";
+    BLOG(0, "Not enough funds");
     callback(ledger::Result::NOT_ENOUGH_FUNDS);
     return;
   }
@@ -194,7 +194,7 @@ void Unblinded::PrepareTokens(
 
   if (current_amount < contribution->amount) {
     callback(ledger::Result::NOT_ENOUGH_FUNDS);
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Not enough funds";
+    BLOG(0, "Not enough funds");
     return;
   }
 
@@ -209,7 +209,7 @@ void Unblinded::PreparePublishers(
     const std::vector<ledger::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    BLOG(0, "Contribution not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -219,7 +219,7 @@ void Unblinded::PreparePublishers(
         PrepareAutoContribution(list, contribution->Clone());
 
     if (publisher_list.empty()) {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher list empty";
+      BLOG(0, "Publisher list empty");
       callback(ledger::Result::AC_TABLE_EMPTY);
       return;
     }
@@ -292,7 +292,7 @@ void Unblinded::OnPrepareAutoContribution(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not saved";
+    BLOG(0, "Contribution not saved");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -316,7 +316,7 @@ void Unblinded::PrepareStepSaved(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Prepare step was not saved";
+    BLOG(0, "Prepare step was not saved");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -344,7 +344,7 @@ void Unblinded::OnProcessTokens(
     const std::vector<ledger::UnblindedToken>& list,
     ledger::ResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    BLOG(0, "Contribution not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -397,8 +397,7 @@ void Unblinded::TokenProcessed(
     const bool single_publisher,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Tokens were not processed correctly";
+    BLOG(0, "Tokens were not processed correctly");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -434,7 +433,7 @@ void Unblinded::Retry(
     ledger::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -447,7 +446,7 @@ void Unblinded::Retry(
       contribution->type != ledger::RewardsType::AUTO_CONTRIBUTE;
 
   if (is_not_tokens && is_not_uphold_ac) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Retry is not for this func";
+    BLOG(0, "Retry is not for this func");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

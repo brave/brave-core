@@ -6,27 +6,13 @@
 
 RewardsLogStream::RewardsLogStream(const char* file,
                                    const int line,
-                                   const ledger::LogLevel log_level) {
+                                   const int verbose_level) {
     
   std::string file_info = file;
 
   /// Initialize an unbuffered logger with a lambda capturing the constructor parameters and writing it to the iOS callback functions
-  this->log_stream = std::make_unique<UnbufferedLogger>([this, file_info, line, log_level](std::string data){
-    this->log_stream->write({this->log_stream.get(), log_level, file_info, line, data});
-  }, [this]{
-    this->log_stream->flush();
-  });
-}
-
-RewardsLogStream::RewardsLogStream(const char* file,
-                                   const int line,
-                                   const ads::LogLevel log_level) {
-    
-  std::string file_info = file;
-
-  /// Initialize an unbuffered logger with a lambda capturing the constructor parameters and writing it to the iOS callback functions
-  this->log_stream = std::make_unique<UnbufferedLogger>([this, file_info, line, log_level](std::string data){
-    this->log_stream->write({this->log_stream.get(), log_level, file_info, line, data});
+  this->log_stream = std::make_unique<UnbufferedLogger>([this, file_info, line, verbose_level](std::string data){
+    this->log_stream->write({this->log_stream.get(), verbose_level, file_info, line, data});
   }, [this]{
     this->log_stream->flush();
   });

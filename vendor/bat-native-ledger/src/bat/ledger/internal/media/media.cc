@@ -130,9 +130,7 @@ void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
   }
 
   if (url.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Media activity error for url: "
-      << visit_data->url;
+    BLOG(0, "Media activity error for url: " << visit_data->url);
     return;
   }
 

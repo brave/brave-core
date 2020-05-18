@@ -8,8 +8,8 @@
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
 #include "bat/confirmations/internal/token_info.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
+#include "bat/confirmations/internal/logging.h"
 
-#include "base/logging.h"
 #include "base/json/json_writer.h"
 
 namespace confirmations {

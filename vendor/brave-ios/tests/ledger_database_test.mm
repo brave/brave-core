@@ -46,7 +46,7 @@
 
   DataController.shared = [[TempTestDataController alloc] init];
   
-  [BATBraveRewardsLogger configureWithLogCallback:^(BATLogLevel logLevel, int line, NSString * _Nonnull file, NSString * _Nonnull data) {
+  [BATBraveRewardsLogger configureWithLogCallback:^(int verboseLevel, int line, NSString * _Nonnull file, NSString * _Nonnull data) {
     NSLog(@"%@", data);
   } withFlush:^{ }];
   

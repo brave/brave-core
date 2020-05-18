@@ -44,6 +44,7 @@ ConfirmationsImpl::ConfirmationsImpl(
         unblinded_payment_tokens_.get())),
     state_has_loaded_(false),
     confirmations_client_(confirmations_client) {
+  set_confirmations_client_for_logging(confirmations_client_);
 }
 
 ConfirmationsImpl::~ConfirmationsImpl() = default;
@@ -54,12 +55,12 @@ ConfirmationsClient* ConfirmationsImpl::get_client() const {
 
 void ConfirmationsImpl::Initialize(
     OnInitializeCallback callback) {
-  BLOG(INFO) << "Initializing confirmations";
+  BLOG(1, "Initializing confirmations");
 
   initialize_callback_ = callback;
 
   if (is_initialized_) {
-    BLOG(INFO) << "Already initialized confirmations";
+    BLOG(1, "Already initialized confirmations");
 
     initialize_callback_(false);
     return;
@@ -78,7 +79,7 @@ void ConfirmationsImpl::MaybeStart() {
   }
 
   is_initialized_ = true;
-  BLOG(INFO) << "Successfully initialized confirmations";
+  BLOG(1, "Successfully initialized confirmations");
 
   payout_tokens_->PayoutAfterDelay(wallet_info_);
 
@@ -244,45 +245,40 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
 
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
-    BLOG(ERROR) << "Failed to parse JSON: " << json;
     return false;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(ERROR) << "Failed to get dictionary: " << json;
     return false;
   }
 
   if (!ParseCatalogIssuersFromJSON(dictionary)) {
-    BLOG(WARNING) << "Failed to get catalog issuers from JSON: " << json;
+    BLOG(0, "Failed to parse catalog issuers");
   }
 
   if (!ParseNextTokenRedemptionDateInSecondsFromJSON(dictionary)) {
-    BLOG(WARNING)
-        << "Failed to get next token redemption date in seconds from JSON: "
-        << json;
+    BLOG(0, "Failed to parse next token redemption date in seconds");
   }
 
   if (!ParseConfirmationsFromJSON(dictionary)) {
-    BLOG(WARNING) << "Failed to get confirmations from JSON: " << json;
+    BLOG(0, "Failed to parse confirmations");
   }
 
   if (!ads_rewards_->SetFromDictionary(dictionary)) {
-    BLOG(WARNING) << "Failed to get ads rewards from JSON: " << json;
+    BLOG(0, "Failed to parse ads rewards");
   }
 
   if (!ParseTransactionHistoryFromJSON(dictionary)) {
-    BLOG(WARNING) << "Failed to get transaction history from JSON: " << json;
+    BLOG(0, "Failed to parse transaction history");
   }
 
   if (!ParseUnblindedTokensFromJSON(dictionary)) {
-    BLOG(WARNING) << "Failed to get unblinded tokens from JSON: " << json;
+    BLOG(0, "Failed to parse unblinded tokens");
   }
 
   if (!ParseUnblindedPaymentTokensFromJSON(dictionary)) {
-    BLOG(WARNING) <<
-        "Failed to get unblinded payment tokens from JSON: " << json;
+    BLOG(0, "Failed to parse unblinded payment tokens");
   }
 
   return true;
@@ -737,7 +733,7 @@ void ConfirmationsImpl::SaveState() {
     return;
   }
 
-  BLOG(INFO) << "Saving confirmations state";
+  BLOG(3, "Saving confirmations state");
 
   std::string json = ToJSON();
   auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
@@ -749,15 +745,15 @@ void ConfirmationsImpl::SaveState() {
 
 void ConfirmationsImpl::OnStateSaved(const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to save confirmations state";
+    BLOG(0, "Failed to save confirmations state");
     return;
   }
 
-  BLOG(INFO) << "Successfully saved confirmations state";
+  BLOG(3, "Successfully saved confirmations state");
 }
 
 void ConfirmationsImpl::LoadState() {
-  BLOG(INFO) << "Loading confirmations state";
+  BLOG(3, "Loading confirmations state");
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateLoaded, this, _1, _2);
   confirmations_client_->LoadState(_confirmations_resource_name, callback);
@@ -771,19 +767,17 @@ void ConfirmationsImpl::OnStateLoaded(
   auto confirmations_json = json;
 
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to load confirmations state, resetting to default"
-        << " values";
+    BLOG(3, "Confirmations state does not exist, creating default state");
 
     confirmations_json = ToJSON();
   } else {
-    BLOG(INFO) << "Successfully loaded confirmations state";
+    BLOG(3, "Successfully loaded confirmations state");
   }
 
   if (!FromJSON(confirmations_json)) {
     state_has_loaded_ = false;
 
-    BLOG(ERROR) << "Failed to parse confirmations state: "
-        << confirmations_json;
+    BLOG(0, "Failed to parse confirmations state: " << confirmations_json);
 
     confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 
@@ -798,7 +792,7 @@ void ConfirmationsImpl::OnStateLoaded(
 void ConfirmationsImpl::ResetState() {
   DCHECK(state_has_loaded_);
 
-  BLOG(INFO) << "Resetting confirmations to default state";
+  BLOG(3, "Resetting confirmations state");
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
   confirmations_client_->ResetState(_confirmations_resource_name, callback);
@@ -806,12 +800,12 @@ void ConfirmationsImpl::ResetState() {
 
 void ConfirmationsImpl::OnStateReset(const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to reset confirmations state";
+    BLOG(0, "Failed to reset confirmations state");
 
     return;
   }
 
-  BLOG(INFO) << "Successfully reset confirmations state";
+  BLOG(3, "Successfully reset confirmations state");
 }
 
 void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
@@ -820,9 +814,7 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   }
 
   if (!info->IsValid()) {
-    BLOG(ERROR) << "SetWalletInfo (Invalid wallet):";
-    BLOG(ERROR) << "  Payment id: " << info->payment_id;
-    BLOG(ERROR) << "  Private key: " << info->private_key;
+    BLOG(0, "Failed to initialize Confirmations due to invalid wallet");
     return;
   }
 
@@ -832,9 +824,9 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
 
   wallet_info_ = WalletInfo(*info);
 
-  BLOG(INFO) << "SetWalletInfo:";
-  BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
-  BLOG(INFO) << "  Private key: ********";
+  BLOG(1, "SetWalletInfo:\n"
+      << "  Payment id: " << wallet_info_.payment_id
+      << "  Private key: ********");
 
   NotifyAdsIfConfirmationsIsReady();
 
@@ -846,18 +838,17 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
 void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
-    BLOG(ERROR) <<
-        "Unable to set catalog issuers as Confirmations state is not ready";
+    BLOG(0, "Failed to set catalog issuers as not initialized");
     return;
   }
 
-  BLOG(INFO) << "SetCatalogIssuers:";
-  BLOG(INFO) << "  Public key: " << info->public_key;
-  BLOG(INFO) << "  Issuers:";
+  BLOG(1, "SetCatalogIssuers:");
+  BLOG(1, "  Public key: " << info->public_key);
+  BLOG(1, "  Issuers:");
 
   for (const auto& issuer : info->issuers) {
-    BLOG(INFO) << "    Name: " << issuer.name;
-    BLOG(INFO) << "    Public key: " << issuer.public_key;
+    BLOG(1, "    Name: " << issuer.name);
+    BLOG(1, "    Public key: " << issuer.public_key);
   }
 
   const bool public_key_was_rotated =
@@ -909,10 +900,10 @@ void ConfirmationsImpl::AppendConfirmationToQueue(
 
   SaveState();
 
-  BLOG(INFO) << "Added " << confirmation_info.id
-      << " confirmation id with " << confirmation_info.creative_instance_id
-      << " creative instance id for " << std::string(confirmation_info.type)
-      << " to the confirmations queue";
+  BLOG(1, "Added confirmation id " << confirmation_info.id
+      << ", creative instance id " << confirmation_info.creative_instance_id
+          << " and " << std::string(confirmation_info.type)
+              << " to the confirmations queue");
 
   StartRetryingFailedConfirmations();
 }
@@ -927,18 +918,18 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
       });
 
   if (it == confirmations_.end()) {
-    BLOG(WARNING) << "Failed to remove " << confirmation_info.id
-        << " confirmation id with " << confirmation_info.creative_instance_id
-        << " creative instance id for " << std::string(confirmation_info.type)
-        << " from the confirmations queue";
+    BLOG(0, "Failed to remove confirmation id " << confirmation_info.id
+        << ", creative instance id " << confirmation_info.creative_instance_id
+            << " and " << std::string(confirmation_info.type) << " from "
+                "the confirmations queue");
 
     return;
   }
 
-  BLOG(INFO) << "Removed " << confirmation_info.id
-      << " confirmation id with " << confirmation_info.creative_instance_id
-      << " creative instance id for " << std::string(confirmation_info.type)
-      << " from the confirmations queue";
+  BLOG(1, "Removed confirmation id " << confirmation_info.id
+      << ", creative instance id " << confirmation_info.creative_instance_id
+          << " and " << std::string(confirmation_info.type) << " from the "
+              "confirmations queue");
 
   confirmations_.erase(it);
 
@@ -948,8 +939,7 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
 void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
-    BLOG(ERROR) <<
-        "Unable to update ads rewards as Confirmations state is not ready";
+    BLOG(0, "Failed to update ads rewards as not initialized");
     return;
   }
 
@@ -973,8 +963,7 @@ void ConfirmationsImpl::GetTransactionHistory(
     OnGetTransactionHistoryCallback callback) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
-    BLOG(ERROR) <<
-        "Unable to get transaction history as Confirmations state is not ready";
+    BLOG(0, "Failed to get transaction history as not initialized");
     return;
   }
 
@@ -1112,8 +1101,8 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
   if (it != catalog_issuers_.end()) {
     auto name = it->second;
     if (!re2::RE2::Replace(&name, "BAT", "")) {
-      BLOG(ERROR) << "Could not estimate redemption value due to catalog"
-          << " issuer name missing BAT";
+      BLOG(1, "Failed to estimate redemption value due to invalid catalog "
+          "issuer name");
     }
 
     estimated_redemption_value = stod(name);
@@ -1143,17 +1132,17 @@ void ConfirmationsImpl::ConfirmAd(
     const AdInfo& info,
     const ConfirmationType confirmation_type) {
   if (!state_has_loaded_) {
-    BLOG(ERROR) << "Unable to confirm ad as Confirmations state is not ready";
+    BLOG(0, "Failed to confirm ad as not initialized");
     return;
   }
 
-  BLOG(INFO) << "Confirm ad:"
-      << std::endl << "  creativeInstanceId: " << info.creative_instance_id
-      << std::endl << "  creativeSetId: " << info.creative_set_id
-      << std::endl << "  category: " << info.category
-      << std::endl << "  targetUrl: " << info.target_url
-      << std::endl << "  geoTarget: " << info.geo_target
-      << std::endl << "  confirmationType: " << std::string(confirmation_type);
+  BLOG(1, "Confirm ad:\n"
+      << "  creativeInstanceId: " << info.creative_instance_id << "\n"
+      << "  creativeSetId: " << info.creative_set_id << "\n"
+      << "  category: " << info.category << "\n"
+      << "  targetUrl: " << info.target_url << "\n"
+      << "  geoTarget: " << info.geo_target << "\n"
+      << "  confirmationType: " << std::string(confirmation_type));
 
   redeem_token_->Redeem(info, confirmation_type);
 }
@@ -1164,15 +1153,14 @@ void ConfirmationsImpl::ConfirmAction(
     const ConfirmationType confirmation_type) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
-    BLOG(ERROR) <<
-        "Unable to confirm action as Confirmations state is not ready";
+    BLOG(0, "Failed to confirm action as not initialized");
     return;
   }
 
-  BLOG(INFO) << "Confirm action:"
-      << std::endl << "  creativeInstanceId: " << creative_instance_id
-      << std::endl << "  creativeSetId: " << creative_set_id
-      << std::endl << "  confirmationType: " << std::string(confirmation_type);
+  BLOG(1, "Confirm action:\n"
+      << "  creativeInstanceId: " << creative_instance_id << "\n"
+      << "  creativeSetId: " << creative_set_id << "\n"
+      << "  confirmationType: " << std::string(confirmation_type));
 
   redeem_token_->Redeem(creative_instance_id, creative_set_id,
       confirmation_type);
@@ -1198,12 +1186,12 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations() {
           base::BindOnce(&ConfirmationsImpl::RetryFailedConfirmations,
               base::Unretained(this)));
 
-  BLOG(INFO) << "Retry failed confirmations " << FriendlyDateAndTime(time);
+  BLOG(1, "Retry failed confirmations " << FriendlyDateAndTime(time));
 }
 
 void ConfirmationsImpl::RetryFailedConfirmations() {
   if (confirmations_.empty()) {
-    BLOG(INFO) << "No failed confirmations to retry";
+    BLOG(1, "No failed confirmations to retry");
     return;
   }
 

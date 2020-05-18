@@ -48,11 +48,11 @@ void AdsRewards::Update(
 
   wallet_info_ = wallet_info;
   if (!wallet_info_.IsValid()) {
-    BLOG(ERROR) << "Failed to fetch ads rewards due to invalid wallet";
+    BLOG(0, "Failed to refresh ads rewards due to invalid wallet");
     return;
   }
 
-  BLOG(INFO) << "Fetch ads rewards";
+  BLOG(1, "Refresh ads rewards");
   GetPaymentBalance();
 }
 
@@ -98,33 +98,20 @@ bool AdsRewards::SetFromDictionary(base::DictionaryValue* dictionary) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsRewards::GetPaymentBalance() {
-  BLOG(INFO) << "GetPaymentBalance";
+  BLOG(1, "GetPaymentBalance");
+  BLOG(2, "GET /v1/confirmation/payment/{payment_id}");
 
-  BLOG(INFO) << "GET /v1/confirmation/payment/{payment_id}";
   GetPaymentBalanceRequest request;
-
-  BLOG(INFO) << "URL Request:";
-
   auto url = request.BuildUrl(wallet_info_);
-  BLOG(INFO) << "  URL: " << url;
-
   auto method = request.GetMethod();
-
   auto body = request.BuildBody();
-  BLOG(INFO) << "  Body: " << body;
-
   auto headers = request.BuildHeaders(body, wallet_info_);
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header;
-  }
-
   auto content_type = request.GetContentType();
-  BLOG(INFO) << "  Content_type: " << content_type;
 
   auto callback = std::bind(&AdsRewards::OnGetPaymentBalance,
       this, url, _1, _2, _3);
 
+  BLOG(5, UrlRequestToString(url, headers, "", "", method));
   confirmations_client_->LoadURL(url, headers, "", "", method, callback);
 }
 
@@ -133,25 +120,18 @@ void AdsRewards::OnGetPaymentBalance(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  BLOG(INFO) << "OnGetPaymentBalance";
+  BLOG(1, "OnGetPaymentBalance");
 
-  BLOG(INFO) << "URL Request Response:";
-  BLOG(INFO) << "  URL: " << url;
-  BLOG(INFO) << "  Response Status Code: " << response_status_code;
-  BLOG(INFO) << "  Response: " << response;
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header.first << ": " << header.second;
-  }
+  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
 
   if (response_status_code != net::HTTP_OK) {
-    BLOG(ERROR) << "Failed to get payment balance";
+    BLOG(1, "Failed to get payment balance");
     OnAdsRewards(FAILED);
     return;
   }
 
   if (!payments_->SetFromJson(response)) {
-    BLOG(ERROR) << "Failed to parse payment balance: " << response;
+    BLOG(0, "Failed to parse payment balance: " << response);
     OnAdsRewards(FAILED);
     return;
   }
@@ -160,20 +140,16 @@ void AdsRewards::OnGetPaymentBalance(
 }
 
 void AdsRewards::GetAdGrants() {
-  BLOG(INFO) << "GetAdGrants";
+  BLOG(1, "GetAdGrants");
+  BLOG(2, "GET /v1/promotions/ads/grants/summary?paymentId={payment_id}");
 
-  BLOG(INFO) << "GET /v1/promotions/ads/grants/summary?paymentId={payment_id}";
   GetAdGrantsRequest request;
-
-  BLOG(INFO) << "URL Request:";
-
   auto url = request.BuildUrl(wallet_info_);
-  BLOG(INFO) << "  URL: " << url;
-
   auto method = request.GetMethod();
 
   auto callback = std::bind(&AdsRewards::OnGetAdGrants, this, url, _1, _2, _3);
 
+  BLOG(5, UrlRequestToString(url, {}, "", "", method));
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
@@ -182,16 +158,9 @@ void AdsRewards::OnGetAdGrants(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  BLOG(INFO) << "OnGetAdGrants";
+  BLOG(1, "OnGetAdGrants");
 
-  BLOG(INFO) << "URL Request Response:";
-  BLOG(INFO) << "  URL: " << url;
-  BLOG(INFO) << "  Response Status Code: " << response_status_code;
-  BLOG(INFO) << "  Response: " << response;
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header.first << ": " << header.second;
-  }
+  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
 
   if (response_status_code == net::HTTP_NO_CONTENT) {
     ad_grants_ = std::make_unique<AdGrants>(
@@ -202,13 +171,13 @@ void AdsRewards::OnGetAdGrants(
   }
 
   if (response_status_code != net::HTTP_OK) {
-    BLOG(ERROR) << "Failed to get ad grants";
+    BLOG(1, "Failed to get ad grants");
     OnAdsRewards(FAILED);
     return;
   }
 
   if (!ad_grants_->SetFromJson(response)) {
-    BLOG(ERROR) << "Failed to parse ad grants: " << response;
+    BLOG(0, "Failed to parse ad grants: " << response);
     OnAdsRewards(FAILED);
     return;
   }
@@ -218,18 +187,18 @@ void AdsRewards::OnGetAdGrants(
 
 void AdsRewards::OnAdsRewards(const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to retrieve ads rewards";
+    BLOG(1, "Failed to get ads rewards");
 
     const base::Time time = retry_timer_.StartWithBackoff(
         kRetryAdsRewardsAfterSeconds, base::BindOnce(&AdsRewards::OnRetry,
             base::Unretained(this)));
 
-    BLOG(INFO) << "Retry getting ad grants " << FriendlyDateAndTime(time);
+    BLOG(1, "Retry getting ad grants " << FriendlyDateAndTime(time));
 
     return;
   }
 
-  BLOG(INFO) << "Successfully retrieved ads rewards";
+  BLOG(1, "Successfully retrieved ads rewards");
 
   retry_timer_.Stop();
 
@@ -237,7 +206,7 @@ void AdsRewards::OnAdsRewards(const Result result) {
 }
 
 void AdsRewards::OnRetry() {
-  BLOG(INFO) << "Retrying";
+  BLOG(1, "Retrying getting ads rewards");
 
   GetPaymentBalance();
 }

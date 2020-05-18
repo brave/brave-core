@@ -135,8 +135,7 @@ void CredentialsPromotion::Claim(
   auto blinded_creds = ParseStringToBaseList(blinded_creds_json);
 
   if (!blinded_creds || blinded_creds->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Blinded creds are corrupted";
+    BLOG(0, "Blinded creds are corrupted");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -181,7 +180,8 @@ void CredentialsPromotion::OnClaim(
     const std::map<std::string, std::string>& headers,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);
@@ -191,7 +191,7 @@ void CredentialsPromotion::OnClaim(
   const auto claim_id = ParseClaimCredsResponse(response);
 
   if (claim_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim id is missing";
+    BLOG(0, "Claim id is missing");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -210,7 +210,7 @@ void CredentialsPromotion::ClaimedSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim id was not saved";
+    BLOG(0, "Claim id was not saved");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -233,7 +233,7 @@ void CredentialsPromotion::ClaimStatusSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim status not saved";
+    BLOG(0, "Claim status not saved");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -251,7 +251,7 @@ void CredentialsPromotion::FetchSignedCreds(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (!promotion) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
+    BLOG(0, "Corrupted data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -282,7 +282,8 @@ void CredentialsPromotion::OnFetchSignedCreds(
     const std::map<std::string, std::string>& headers,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code == net::HTTP_ACCEPTED) {
     callback(ledger::Result::RETRY);
@@ -307,7 +308,7 @@ void CredentialsPromotion::SignedCredsSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Signed creds were not saved";
+    BLOG(0, "Signed creds were not saved");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -325,7 +326,7 @@ void CredentialsPromotion::Unblind(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (!creds) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
+    BLOG(0, "Corrupted data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -345,7 +346,7 @@ void CredentialsPromotion::VerifyPublicKey(
     const ledger::CredsBatch& creds,
     ledger::ResultCallback callback) {
   if (!promotion) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
+    BLOG(0, "Corrupted data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -353,7 +354,7 @@ void CredentialsPromotion::VerifyPublicKey(
   auto promotion_keys = ParseStringToBaseList(promotion->public_keys);
 
   if (!promotion_keys || promotion_keys->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Public key is missing";
+    BLOG(0, "Public key is missing");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -366,7 +367,7 @@ void CredentialsPromotion::VerifyPublicKey(
   }
 
   if (!valid) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Public key is not valid";
+    BLOG(0, "Public key is not valid");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -381,7 +382,7 @@ void CredentialsPromotion::VerifyPublicKey(
   }
 
   if (!result) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << error;
+    BLOG(0, "UnBlindTokens: " << error);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -414,7 +415,7 @@ void CredentialsPromotion::Completed(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Unblinded token save failed";
+    BLOG(0, "Unblinded token save failed");
     callback(result);
     return;
   }
@@ -427,7 +428,7 @@ void CredentialsPromotion::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
   if (redeem.token_list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list empty";
+    BLOG(0, "Token list empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -460,7 +461,7 @@ void CredentialsPromotion::RedeemTokens(
         wallet_info.key_info_seed);
   } else {
     if (redeem.publisher_key.empty()) {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher key is empty";
+      BLOG(0, "Publisher key is empty");
       callback(ledger::Result::LEDGER_ERROR);
       return;
     }
@@ -485,7 +486,8 @@ void CredentialsPromotion::OnRedeemTokens(
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);

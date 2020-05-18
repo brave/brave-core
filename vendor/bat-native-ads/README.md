@@ -34,23 +34,6 @@ minutes instead of 2 hours as defined by `kDebugCatalogPing` in
 --brave-ads-debug
 ```
 
-Enable diagnostic logging, where `#` should set to a minimum log level. Valid
-values are from 0 to 3 where INFO = 0, WARNING = 1, ERROR = 2 and FATAL = 3. So
-if you want INFO, WARNING and ERROR you would choose 2
-
-```
---enable-logging=stderr --log-level=#
-```
-
-i.e. to launch using Staging Server and logging for INFO, WARNING and ERROR on
-macOS open the `Terminal` application and enter the following commands:
-
-```
-cd /Applications/Brave\ Browser\ Dev.app/Contents
-
-./Brave\ Browser\ Dev --brave-ads-staging --enable-logging=stderr --log-level=2
-```
-
 ## Unit Tests
 
 ```

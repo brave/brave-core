@@ -4,7 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/confirmation_type.h"
-#include "base/logging.h"
+
+#include "bat/confirmations/internal/logging.h"
 
 namespace confirmations {
 

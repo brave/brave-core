@@ -102,48 +102,6 @@ namespace brave_rewards {
 
 static const unsigned int kRetriesCountOnNetworkChange = 1;
 
-class LogStreamImpl : public ledger::LogStream {
- public:
-  LogStreamImpl(const char* file,
-                int line,
-                const ledger::LogLevel log_level) {
-    logging::LogSeverity severity;
-
-    switch (log_level) {
-      case ledger::LogLevel::LOG_INFO:
-        severity = logging::LOG_INFO;
-        break;
-      case ledger::LogLevel::LOG_WARNING:
-        severity = logging::LOG_WARNING;
-        break;
-      case ledger::LogLevel::LOG_ERROR:
-        severity = logging::LOG_ERROR;
-        break;
-      default:
-        severity = logging::LOG_VERBOSE;
-        break;
-    }
-
-    log_message_ = std::make_unique<logging::LogMessage>(file, line, severity);
-  }
-
-  LogStreamImpl(const char* file,
-                int line,
-                int log_level) {
-    // VLOG has negative log level
-    log_message_ =
-        std::make_unique<logging::LogMessage>(file, line, -log_level);
-  }
-
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
-
- private:
-  std::unique_ptr<logging::LogMessage> log_message_;
-  DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
-};
-
 namespace {
 
 ContentSite PublisherInfoToContentSite(
@@ -188,7 +146,7 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
+    VLOG(0) << "Failed to read file: " << path.MaybeAsASCII();
     return {};
   }
   std::pair<std::string, base::Value> result;
@@ -200,14 +158,14 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
   std::string error_message;
   auto value = deserializer.Deserialize(&error_code, &error_message);
   if (!value) {
-    LOG(ERROR) << "Cannot deserialize ledger state, error code: " << error_code
-               << " message: " << error_message;
+    VLOG(0) << "Cannot deserialize ledger state, error code: " << error_code
+        << " message: " << error_message;
     return result;
   }
 
   const auto dict = base::DictionaryValue::From(std::move(value));
   if (!dict) {
-    LOG(ERROR) << "Corrupted ledger state.";
+    VLOG(0) << "Corrupted ledger state.";
     return result;
   }
 
@@ -239,7 +197,7 @@ std::string LoadOnFileTaskRunner(const base::FilePath& path) {
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
+    VLOG(0) << "Failed to read file: " << path.MaybeAsASCII();
     return std::string();
   }
   return data;
@@ -552,7 +510,7 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
     const std::string& result_string,
     const bool attestation_passed) {
   if (!token_received) {
-    LOG(ERROR) << "CreateWalletAttestationResult error: " << result_string;
+    VLOG(0) << "CreateWalletAttestationResult error: " << result_string;
     OnWalletInitialized(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -1048,7 +1006,7 @@ void RewardsServiceImpl::LoadNicewareList(
       IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
 
   if (data.empty()) {
-    LOG(ERROR) << "Failed to read in niceware list";
+    VLOG(0) << "Failed to read in niceware list";
   }
   callback(data.empty() ? ledger::Result::LEDGER_ERROR
                         : ledger::Result::LEDGER_OK, data);
@@ -1115,13 +1073,6 @@ void RewardsServiceImpl::LoadURL(
 
   if (!content.empty())
     loader->AttachStringForUpload(content, contentType);
-
-  if (VLOG_IS_ON(ledger::LogLevel::LOG_REQUEST)) {
-    std::string headers_log = "";
-    for (auto const& header : headers) {
-      headers_log += "> headers: " + header + "\n";
-    }
-  }
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
@@ -2031,7 +1982,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
 
   auto it = current_media_fetchers_.find(url);
   if (it != current_media_fetchers_.end()) {
-    LOG(WARNING) << "Already fetching favicon: " << url;
+    VLOG(1) << "Already fetching favicon: " << url;
     return;
   }
 
@@ -2380,18 +2331,15 @@ void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
       "rewards_notification_tips_processed");
 }
 
-std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
+void RewardsServiceImpl::Log(
     const char* file,
-    int line,
-    const ledger::LogLevel log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
-}
-
-std::unique_ptr<ledger::LogStream> RewardsServiceImpl::VerboseLog(
-                     const char* file,
-                     int line,
-                     int log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
+    const int line,
+    const int verbose_level,
+    const std::string& message) const {
+  const int vlog_level = ::logging::GetVlogLevelHelper(file, strlen(file));
+  if (verbose_level <= vlog_level) {
+    ::logging::LogMessage(file, line, -verbose_level).stream() << message;
+  }
 }
 
 // static

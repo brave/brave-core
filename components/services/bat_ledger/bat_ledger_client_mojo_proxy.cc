@@ -17,47 +17,6 @@ namespace bat_ledger {
 
 namespace {
 
-class LogStreamImpl : public ledger::LogStream {
- public:
-  LogStreamImpl(const char* file,
-                int line,
-                const ledger::LogLevel log_level) {
-    switch (log_level) {
-      case ledger::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_INFO);
-        break;
-      case ledger::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_WARNING);
-        break;
-      case ledger::LogLevel::LOG_ERROR:
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_ERROR);
-        break;
-      default:
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_VERBOSE);
-        break;
-    }
-  }
-
-  LogStreamImpl(const char* file,
-                int line,
-                int level) {
-    // VLOG has negative log level
-    log_message_ = std::make_unique<logging::LogMessage>(file, line, -level);
-  }
-
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
-
- private:
-  std::unique_ptr<logging::LogMessage> log_message_;
-  DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
-};
-
 void OnResultCallback(ledger::ResultCallback callback, ledger::Result result) {
   callback(result);
 }
@@ -129,16 +88,16 @@ void BatLedgerClientMojoProxy::OnReconcileComplete(
       type);
 }
 
-std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::Log(
-    const char* file, int line, ledger::LogLevel level) const {
-  // There's no need to proxy this
-  return std::make_unique<LogStreamImpl>(file, line, level);
-}
+void BatLedgerClientMojoProxy::Log(
+    const char* file,
+    const int line,
+    const int verbose_level,
+    const std::string& message) const {
+  if (!Connected()) {
+    return;
+  }
 
-std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
-    const char* file, int line, int level) const {
-  // There's no need to proxy this
-  return std::make_unique<LogStreamImpl>(file, line, level);
+  bat_ledger_client_->Log(file, line, verbose_level, message);
 }
 
 void BatLedgerClientMojoProxy::OnLoadLedgerState(

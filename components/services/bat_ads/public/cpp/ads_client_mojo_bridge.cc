@@ -212,9 +212,12 @@ void AdsClientMojoBridge::GetClientInfo(
   std::move(callback).Run(info.ToJson());
 }
 
-void AdsClientMojoBridge::EventLog(
-    const std::string& json) {
-  ads_client_->EventLog(json);
+void AdsClientMojoBridge::Log(
+    const std::string& file,
+    const int32_t line,
+    const int32_t verbose_level,
+    const std::string& message) {
+  ads_client_->Log(file.c_str(), line, verbose_level, message);
 }
 
 // static

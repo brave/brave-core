@@ -11,7 +11,6 @@
 #include <memory>
 #include <map>
 #include <string>
-#include <fstream>
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
@@ -257,13 +256,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void RestorePublishers(ledger::ResultCallback callback) override;
 
-  void LogRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const ledger::UrlMethod method);
-
   void OnRestorePublishers(
     const ledger::Result result,
     ledger::ResultCallback callback);
@@ -317,12 +309,6 @@ class LedgerImpl : public ledger::Ledger {
       const uint64_t& currentReconcileStamp,
       bool non_verified,
       bool min_visits);
-
-  void LogResponse(const std::string& func_name,
-                   int response_status_code,
-                   const std::string& response,
-                   const std::map<std::string,
-                   std::string>& headers);
 
   void ResetReconcileStamp();
 
@@ -388,11 +374,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetTransactionHistory(
       ledger::GetTransactionHistoryCallback callback) override;
-
-  std::unique_ptr<ledger::LogStream> Log(
-      const char* file,
-      const int line,
-      const ledger::LogLevel log_level) const;
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
   void GetRewardsInternalsInfo(

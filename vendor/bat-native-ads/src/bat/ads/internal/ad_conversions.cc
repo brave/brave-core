@@ -65,7 +65,7 @@ void AdConversions::Check(
     return;
   }
 
-  BLOG(INFO) << "Checking ad conversions";
+  BLOG(1, "Checking URL for ad conversion");
 
   auto callback =
       std::bind(&AdConversions::OnGetAdConversions, this, url, _1, _2);
@@ -80,7 +80,7 @@ void AdConversions::StartTimerIfReady() {
   }
 
   if (queue_.empty()) {
-    BLOG(INFO) << "Ad conversion queue is empty";
+    BLOG(1, "Ad conversion queue is empty");
     return;
   }
 
@@ -95,7 +95,7 @@ void AdConversions::OnGetAdConversions(
     const Result result,
     const AdConversionList& ad_conversions) {
   if (result != SUCCESS) {
-    BLOG(INFO) << "No ad conversions found";
+    BLOG(1, "No ad conversions found");
     return;
   }
 
@@ -129,8 +129,9 @@ void AdConversions::OnGetAdConversions(
         continue;
       }
 
-      BLOG(INFO) << "Ad conversion for " << ad_conversion.creative_set_id
-          << " creative set id for " << std::string(ad_conversion.type);
+      BLOG(1, "Ad conversion for creative set id " <<
+          ad_conversion.creative_set_id << " and "
+              << std::string(ad_conversion.type));
 
       AddItemToQueue(ad.ad_content.creative_instance_id,
           ad.ad_content.creative_set_id);
@@ -247,13 +248,13 @@ void AdConversions::ProcessQueueItem(
       FriendlyDateAndTime(timestamp_in_seconds);
 
   if (creative_set_id.empty() || creative_instance_id.empty()) {
-    BLOG(WARNING) << "Failed to convert ad for creative instance id "
-        << creative_instance_id << " with creative set id " << creative_set_id
-            << " " << friendly_date_and_time;
+    BLOG(1, "Failed to convert ad with creative instance id "
+        << creative_instance_id << " and creative set id " << creative_set_id
+            << " " << friendly_date_and_time);
   } else {
-    BLOG(INFO) << "Successfully converted ad for creative instance id "
-        << creative_instance_id << " with creative set id " << creative_set_id
-            << " " << friendly_date_and_time;
+    BLOG(1, "Successfully converted ad with creative instance id "
+        << creative_instance_id << " and creative set id " << creative_set_id
+            << " " << friendly_date_and_time);
 
     ads_->ConfirmAction(creative_instance_id, creative_set_id,
         ConfirmationType::kConversion);
@@ -290,10 +291,10 @@ void AdConversions::StartTimer(
   const base::Time time = timer_.Start(delay,
       base::BindOnce(&AdConversions::ProcessQueue, base::Unretained(this)));
 
-  BLOG(INFO) << "Started ad conversion timer for creative instance id "
-      << info.creative_instance_id << " with creative set id "
+  BLOG(1, "Started ad conversion timer for creative instance id "
+      << info.creative_instance_id << " and creative set id "
           << info.creative_set_id << " which will trigger "
-              << FriendlyDateAndTime(time);
+              << FriendlyDateAndTime(time));
 }
 
 void AdConversions::SaveState() {
@@ -301,7 +302,7 @@ void AdConversions::SaveState() {
     return;
   }
 
-  BLOG(INFO) << "Saving ad conversions state";
+  BLOG(3, "Saving ad conversions state");
 
   std::string json = ToJson();
   auto callback = std::bind(&AdConversions::OnStateSaved, this, _1);
@@ -310,11 +311,11 @@ void AdConversions::SaveState() {
 
 void AdConversions::OnStateSaved(const Result result) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to save ad conversions state";
+    BLOG(0, "Failed to save ad conversions state");
     return;
   }
 
-  BLOG(INFO) << "Successfully saved ad conversions state";
+  BLOG(3, "Successfully saved ad conversions state");
 }
 
 std::string AdConversions::ToJson() {
@@ -351,6 +352,8 @@ base::Value AdConversions::GetAsList() {
 }
 
 void AdConversions::LoadState() {
+  BLOG(3, "Loading ad conversions state");
+
   auto callback = std::bind(&AdConversions::OnStateLoaded, this, _1, _2);
   ads_client_->Load(kAdConversionsStateName, callback);
 }
@@ -361,20 +364,21 @@ void AdConversions::OnStateLoaded(
   is_initialized_ = true;
 
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to load ad conversions state, resetting to default "
-        "values";
+    BLOG(3, "Ad conversions state does not exist, creating default state");
 
     queue_.clear();
     SaveState();
   } else {
     if (!FromJson(json)) {
-      BLOG(ERROR) << "Failed to parse ad conversions state: " << json;
+      BLOG(0, "Failed to load ad conversions state");
+
+      BLOG(3, "Failed to parse ad conversions state: " << json);
 
       callback_(FAILED);
       return;
     }
 
-    BLOG(INFO) << "Successfully loaded ad conversions state";
+    BLOG(3, "Successfully loaded ad conversions state");
   }
 
   callback_(SUCCESS);

@@ -74,7 +74,7 @@ void CredentialsCommon::GetBlindedCreds(
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Creds are empty";
+    BLOG(0, "Creds are empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -83,7 +83,7 @@ void CredentialsCommon::GetBlindedCreds(
   const auto blinded_creds = GenerateBlindCreds(creds);
 
   if (blinded_creds.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Blinded creds are empty";
+    BLOG(0, "Blinded creds are empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -113,7 +113,7 @@ void CredentialsCommon::BlindedCredsSaved(
     const std::string& blinded_creds_json,
     BlindedCredsCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Creds batch save failed";
+    BLOG(0, "Creds batch save failed");
     callback(ledger::Result::RETRY, "");
     return;
   }
@@ -129,29 +129,28 @@ void CredentialsCommon::GetSignedCredsFromResponse(
   ParseSignedCredsResponse(response, &parsed_response);
 
   if (parsed_response.DictSize() != 3) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Parsing failed";
+    BLOG(0, "Parsing failed");
     callback(ledger::Result::RETRY);
     return;
   }
 
   auto* signed_creds = parsed_response.FindListKey("signed_creds");
   if (!signed_creds || signed_creds->GetList().empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-        "Failed to parse signed creds";
+    BLOG(0, "Failed to parse signed creds");
     callback(ledger::Result::RETRY);
     return;
   }
 
   auto* public_key = parsed_response.FindStringKey("public_key");
   if (!public_key || public_key->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Public key is empty";
+    BLOG(0, "Public key is empty");
     callback(ledger::Result::RETRY);
     return;
   }
 
   auto* batch_proof = parsed_response.FindStringKey("batch_proof");
   if (!batch_proof || batch_proof->empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Batch proof is empty";
+    BLOG(0, "Batch proof is empty");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -199,7 +198,7 @@ void CredentialsCommon::OnSaveUnblindedCreds(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list not saved";
+    BLOG(0, "Token list not saved");
     callback(ledger::Result::RETRY);
     return;
   }

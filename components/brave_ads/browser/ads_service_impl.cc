@@ -86,44 +86,6 @@ const unsigned int kRetriesCountOnNetworkChange = 1;
 
 }  // namespace
 
-class LogStreamImpl : public ads::LogStream {
- public:
-  LogStreamImpl(
-      const char* file,
-      const int line,
-      const ads::LogLevel log_level) {
-    switch (log_level) {
-      case ads::LogLevel::LOG_INFO: {
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_INFO);
-        break;
-      }
-
-      case ads::LogLevel::LOG_WARNING: {
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_WARNING);
-        break;
-      }
-
-      default: {
-        log_message_ = std::make_unique<logging::LogMessage>(
-            file, line, logging::LOG_ERROR);
-        break;
-      }
-    }
-  }
-
-  LogStreamImpl(const LogStreamImpl&) = delete;
-  LogStreamImpl& operator=(const LogStreamImpl&) = delete;
-
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
-
- private:
-  std::unique_ptr<logging::LogMessage> log_message_;
-};
-
 namespace {
 
 static std::map<std::string, int> g_schema_resource_ids = {
@@ -199,7 +161,6 @@ std::string LoadOnFileTaskRunner(
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
     return "";
   }
 
@@ -564,7 +525,7 @@ void AdsServiceImpl::OnCreate() {
 void AdsServiceImpl::OnInitialize(
     const int32_t result) {
   if (result != ads::Result::SUCCESS) {
-    LOG(ERROR) << "Failed to initialize ads";
+    VLOG(0) << "Failed to initialize ads";
     is_initialized_ = false;
   } else {
     is_initialized_ = true;
@@ -578,7 +539,7 @@ void AdsServiceImpl::OnInitialize(
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
-  LOG(INFO) << "Shutting down ads";
+  VLOG(1) << "Shutting down ads";
 
   bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownBatAds,
       AsWeakPtr()));
@@ -589,7 +550,7 @@ void AdsServiceImpl::OnShutdownBatAds(
   DCHECK(is_initialized_);
 
   if (result != ads::Result::SUCCESS) {
-    LOG(ERROR) << "Failed to shutdown ads";
+    VLOG(0) << "Failed to shutdown ads";
     return;
   }
 
@@ -597,7 +558,7 @@ void AdsServiceImpl::OnShutdownBatAds(
 
   ResetAllState();
 
-  LOG(INFO) << "Successfully shutdown ads";
+  VLOG(1) << "Successfully shutdown ads";
 }
 
 bool AdsServiceImpl::StartService() {
@@ -627,18 +588,18 @@ bool AdsServiceImpl::StartService() {
 void AdsServiceImpl::MaybeStart(
     const bool should_restart) {
   if (!IsSupportedLocale()) {
-    LOG(INFO) << GetLocale() << " locale does not support ads";
+    VLOG(1) << GetLocale() << " locale does not support ads";
     Shutdown();
     return;
   }
 
   if (should_restart) {
-    LOG(INFO) << "Restarting ads service";
+    VLOG(1) << "Restarting ads service";
     Shutdown();
   }
 
   if (!StartService()) {
-    LOG(ERROR) << "Failed to start ads service";
+    VLOG(0) << "Failed to start ads service";
     return;
   }
 
@@ -677,11 +638,11 @@ void AdsServiceImpl::ResetAllState() {
 void AdsServiceImpl::OnResetAllState(
     const bool success) {
   if (!success) {
-    LOG(ERROR) << "Failed to reset ads state";
+    VLOG(0) << "Failed to reset ads state";
     return;
   }
 
-  LOG(INFO) << "Successfully reset ads state";
+  VLOG(1) << "Successfully reset ads state";
 }
 
 void AdsServiceImpl::EnsureBaseDirectoryExists() {
@@ -695,7 +656,7 @@ void AdsServiceImpl::EnsureBaseDirectoryExists() {
 void AdsServiceImpl::OnEnsureBaseDirectoryExists(
     const bool success) {
   if (!success) {
-    LOG(ERROR) << "Failed to create base directory";
+    VLOG(0) << "Failed to create base directory";
     return;
   }
 
@@ -802,9 +763,9 @@ void AdsServiceImpl::OnClose(
     base::OnceClosure completed_closure) {
   if (StopNotificationTimeoutTimer(uuid)) {
     if (by_user) {
-      LOG(INFO) << "Cancelled timeout for ad notification with uuid " << uuid;
+      VLOG(1) << "Cancelled timeout for ad notification with uuid " << uuid;
     } else {
-      LOG(INFO) << "Timed out ad notification with uuid " << uuid;
+      VLOG(1) << "Timed out ad notification with uuid " << uuid;
     }
   }
 
@@ -834,7 +795,7 @@ void AdsServiceImpl::MaybeViewAdNotification() {
 void AdsServiceImpl::ViewAdNotification(
     const std::string& uuid) {
   if (StopNotificationTimeoutTimer(uuid)) {
-    LOG(INFO) << "Cancelled timeout for ad notification with uuid " << uuid;
+    VLOG(1) << "Cancelled timeout for ad notification with uuid " << uuid;
   }
 
   if (!connected() || !is_initialized_) {
@@ -842,7 +803,7 @@ void AdsServiceImpl::ViewAdNotification(
     return;
   }
 
-  LOG(INFO) << "View ad notification with uuid " << uuid;
+  VLOG(1) << "View ad notification with uuid " << uuid;
 
   bat_ads_->GetAdNotification(
       uuid, base::BindOnce(&AdsServiceImpl::OnViewAdNotification, AsWeakPtr()));
@@ -861,7 +822,7 @@ void AdsServiceImpl::OnViewAdNotification(
 
 void AdsServiceImpl::RetryViewingAdNotification(
     const std::string& uuid) {
-  LOG(WARNING) << "Retry viewing ad notification with uuid " << uuid;
+  VLOG(1) << "Retry viewing ad notification with uuid " << uuid;
   retry_viewing_ad_notification_with_uuid_ = uuid;
 }
 
@@ -883,7 +844,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(
     const std::string& url) {
   GURL gurl(url);
   if (!gurl.is_valid()) {
-    LOG(WARNING) << "Invalid URL: " << url;
+    VLOG(0) << "Failed to open new tab due to invalid URL: " << url;
     return;
   }
 
@@ -1052,11 +1013,11 @@ void AdsServiceImpl::OnGetAdsHistory(
 void AdsServiceImpl::OnRemoveAllHistory(
     const int32_t result) {
   if (result != ads::Result::SUCCESS) {
-    LOG(ERROR) << "Failed to remove all ads history";
+    VLOG(0) << "Failed to remove ads history";
     return;
   }
 
-  LOG(INFO) << "Successfully removed all ads history";
+  VLOG(1) << "Successfully removed ads history";
 }
 
 void AdsServiceImpl::OnToggleAdThumbUp(
@@ -1147,14 +1108,14 @@ void AdsServiceImpl::OnReset(
 void AdsServiceImpl::MigratePrefs() {
   is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
   if (is_upgrading_from_pre_brave_ads_build_) {
-    LOG(INFO) << "Migrating ads preferences from pre Brave ads build";
+    VLOG(1) << "Migrating ads preferences from pre Brave Ads build";
 
     // Force migration of preferences from version 1 if
     // |is_upgrading_from_pre_brave_ads_build_| is set to |true| to fix
     // "https://github.com/brave/brave-browser/issues/5434"
     SetIntegerPref(prefs::kVersion, 1);
   } else {
-    LOG(INFO) << "Migrating ads preferences";
+    VLOG(1) << "Migrating ads preferences";
   }
 
   auto source_version = GetPrefsVersion();
@@ -1162,7 +1123,7 @@ void AdsServiceImpl::MigratePrefs() {
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
-    LOG(ERROR) << "Failed to migrate ads preferences from version "
+    VLOG(0) << "Failed to migrate ads preferences from version "
         << source_version << " to " << dest_version;
 
     return;
@@ -1180,7 +1141,7 @@ bool AdsServiceImpl::MigratePrefs(
 
   if (source_version == dest_version) {
     if (!is_dry_run) {
-      LOG(INFO) << "Ads preferences are up to date on version " << dest_version;
+      VLOG(2) << "Ads preferences are up to date on version " << dest_version;
     }
 
     return true;
@@ -1218,7 +1179,7 @@ bool AdsServiceImpl::MigratePrefs(
     }
 
     if (!is_dry_run) {
-      LOG(INFO) << "Migrating ads preferences from mapping version "
+      VLOG(1) << "Migrating ads preferences from mapping version "
           << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
@@ -1233,7 +1194,7 @@ bool AdsServiceImpl::MigratePrefs(
   if (!is_dry_run) {
     SetIntegerPref(prefs::kVersion, dest_version);
 
-    LOG(INFO) << "Successfully migrated Ads preferences from version "
+    VLOG(1) << "Successfully migrated Ads preferences from version "
         << source_version << " to " << dest_version;
   }
 
@@ -1575,7 +1536,7 @@ void AdsServiceImpl::RemoveOnboarding() {
   auto* notification_service = rewards_service_->GetNotificationService();
   notification_service->DeleteNotification(kRewardsNotificationAdsOnboarding);
 
-  LOG(INFO) << "Removed onboarding";
+  VLOG(1) << "Removed onboarding";
 }
 
 void AdsServiceImpl::MaybeStartRemoveOnboardingTimer() {
@@ -1623,7 +1584,7 @@ void AdsServiceImpl::StartRemoveOnboardingTimer() {
       base::UTF16ToUTF8(base::TimeFormatFriendlyDateAndTime(
           base::Time::FromDoubleT(now_in_seconds + timer_offset_in_seconds)));
 
-  LOG(INFO) << "Start timer to remove onboarding " << friendly_date_and_time;
+  VLOG(1) << "Started timer to remove onboarding " << friendly_date_and_time;
 }
 
 void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
@@ -1927,7 +1888,7 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(
   notification_timers_[uuid]->Start(FROM_HERE, timeout,
       base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(), uuid));
 
-  LOG(INFO) << "Timeout ad notification with uuid " << uuid << " in "
+  VLOG(1) << "Timeout ad notification with uuid " << uuid << " in "
       << timeout_in_seconds << " seconds";
 #endif
 }
@@ -1936,7 +1897,6 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(
     const std::string& uuid) {
   const auto iter = notification_timers_.find(uuid);
   if (iter == notification_timers_.end()) {
-    LOG(WARNING) << "Failed to timeout ad notification with uuid " << uuid;
     return false;
   }
 
@@ -2092,16 +2052,15 @@ void AdsServiceImpl::GetAdConversions(
           std::move(callback)));
 }
 
-void AdsServiceImpl::EventLog(
-    const std::string& json) const {
-  VLOG(0) << "AdsService Event Log: " << json;
-}
-
-std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(
+void AdsServiceImpl::Log(
     const char* file,
     const int line,
-    const ads::LogLevel log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
+    const int verbose_level,
+    const std::string& message) const {
+  const int vlog_level = ::logging::GetVlogLevelHelper(file, strlen(file));
+  if (verbose_level <= vlog_level) {
+    ::logging::LogMessage(file, line, -verbose_level).stream() << message;
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

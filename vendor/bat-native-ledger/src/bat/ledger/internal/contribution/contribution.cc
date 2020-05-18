@@ -154,7 +154,7 @@ void Contribution::StartMonthlyContribution() {
     ResetReconcileStamp();
     return;
   }
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring monthly contribution";
+  BLOG(1, "Staring monthly contribution");
 
   auto callback = std::bind(&Contribution::StartAutoContribute,
       this,
@@ -165,7 +165,7 @@ void Contribution::StartMonthlyContribution() {
 
 void Contribution::StartAutoContribute(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Monthly contribution failed";
+    BLOG(0, "Monthly contribution failed");
   }
 
   ac_->Process();
@@ -179,8 +179,7 @@ void Contribution::OnBalance(
       braveledger_bind_util::FromStringToContributionQueue(contribution_queue);
   if (result != ledger::Result::LEDGER_OK || !info) {
     queue_in_progress_ = false;
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-         "We couldn't get balance from the server.";
+    BLOG(0, "We couldn't get balance from the server.");
     return;
   }
 
@@ -249,9 +248,7 @@ void Contribution::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
     start_timer_in = brave_base::random::Geometric(45);
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-    << "Timer will start in "
-    << start_timer_in;
+  BLOG(1, "Timer will start in " << start_timer_in);
 
   ledger_->SetTimer(start_timer_in, timer_id);
 }
@@ -286,8 +283,7 @@ void Contribution::ContributionCompleted(
 
 void Contribution::ContributionCompletedSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Contribution step and count failed";
+    BLOG(0, "Contribution step and count failed");
     return;
   }
 }
@@ -325,7 +321,7 @@ void Contribution::CreateNewEntry(
     ledger::BalancePtr balance,
     ledger::ContributionQueuePtr queue) {
   if (!queue) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Queue is null";
+    BLOG(1, "Queue is null");
     return;
   }
 
@@ -418,8 +414,7 @@ void Contribution::OnEntrySaved(
     const ledger::Balance& balance,
     const std::string& queue_string) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Contribution was not saved correctly";
+    BLOG(0, "Contribution was not saved correctly");
     return;
   }
 
@@ -427,8 +422,7 @@ void Contribution::OnEntrySaved(
       queue_string);
 
   if (!queue) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Queue was not converted successfully";
+    BLOG(0, "Queue was not converted successfully");
     return;
   }
 
@@ -481,8 +475,7 @@ void Contribution::OnQueueSaved(
     const ledger::Balance& balance,
     const std::string& queue_string) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Queue was not saved successfully";
+    BLOG(0, "Queue was not saved successfully");
     return;
   }
 
@@ -490,8 +483,7 @@ void Contribution::OnQueueSaved(
       queue_string);
 
   if (!queue) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Queue was not converted successfully";
+    BLOG(0, "Queue was not converted successfully");
     return;
   }
 
@@ -540,8 +532,7 @@ void Contribution::TransferFunds(
     ledger::ExternalWalletPtr wallet,
     ledger::TransactionCallback callback) {
   if (!wallet) {
-     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Wallet is null";
+     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -570,8 +561,7 @@ void Contribution::TransferFunds(
   }
 
   NOTREACHED();
-  BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Wallet type not supported: " << wallet->type;
+  BLOG(0, "Wallet type not supported: " << wallet->type);
 }
 
 void Contribution::SKUAutoContribution(
@@ -634,7 +624,7 @@ void Contribution::OnResult(
     ledger::ContributionInfoPtr contribution,
     const ledger::Result result) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     return;
   }
 
@@ -676,18 +666,15 @@ void Contribution::SetRetryTimer(
     timer_seconds = brave_base::random::Geometric(45);
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-    << "Timer for contribution retry ("
-    << contribution_id
-    << ") will start in "
-    << timer_seconds;
+  BLOG(1, "Timer for contribution retry (" << contribution_id << ") will "
+      "start in " << timer_seconds);
 
   ledger_->SetTimer(timer_seconds, &retry_timers_[contribution_id]);
 }
 
 void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     return;
   }
 
@@ -716,7 +703,7 @@ void Contribution::Retry(
     const ledger::Result result,
     const std::string& contribution_string) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Retry count update failed";
+    BLOG(0, "Retry count update failed");
     return;
   }
 
@@ -724,7 +711,7 @@ void Contribution::Retry(
       contribution_string);
 
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     return;
   }
 
@@ -733,11 +720,8 @@ void Contribution::Retry(
     return;
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-      << "Retrying contribution ("
-      << contribution->contribution_id
-      << ") on step "
-      << contribution->step;
+  BLOG(1, "Retrying contribution (" << contribution->contribution_id
+      << ") on step " << contribution->step);
 
   auto result_callback = std::bind(&Contribution::Result,
     this,

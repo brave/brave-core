@@ -6,7 +6,7 @@
 
 #import "ledger.mojom.objc.h"
 #import "RewardsLogStream.h"
-#define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
+#define BLOG(__verbose_level) RewardsLogStream(__FILE__, __LINE__, __verbose_level).stream()
 
 @implementation BATPromotionSolution
 
@@ -19,7 +19,7 @@
   };
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
   if (!jsonData) {
-    BLOG(ledger::LogLevel::LOG_WARNING) << "Missing JSON payload while attempting to attest promotion" << std::endl;
+    BLOG(1) << "Missing JSON payload while attempting to attest promotion" << std::endl;
     return @"";
   }
   return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];

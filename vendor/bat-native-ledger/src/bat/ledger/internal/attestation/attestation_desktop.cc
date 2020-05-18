@@ -121,7 +121,9 @@ void AttestationDesktop::OnStart(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     StartCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -172,7 +174,9 @@ void AttestationDesktop::OnDownloadCaptchaImage(
     const std::map<std::string, std::string>& headers,
     const std::string& captcha_response,
     StartCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      "<PNG>", headers));
+
   base::Value dictionary(base::Value::Type::DICTIONARY);
   ParseCaptchaResponse(captcha_response, &dictionary);
 
@@ -240,7 +244,9 @@ void AttestationDesktop::OnConfirm(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     ConfirmCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code == net::HTTP_OK) {
     callback(ledger::Result::LEDGER_OK);
     return;

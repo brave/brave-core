@@ -104,13 +104,11 @@ class BatAdsClientMojoBridge
   void GetAdConversions(
       ads::GetAdConversionsCallback callback) override;
 
-  void EventLog(
-      const std::string& json) const override;
-
-  std::unique_ptr<ads::LogStream> Log(
+  void Log(
       const char* file,
       const int line,
-      const ads::LogLevel log_level) const override;
+      const int verbose_level,
+      const std::string& message) const override;
 
  private:
   bool connected() const;

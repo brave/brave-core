@@ -8,8 +8,6 @@
 
 #include <stdint.h>
 
-#include <fstream>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -19,34 +17,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ledger {
-
-class MockLogStreamImpl : public ledger::LogStream {
- public:
-  MockLogStreamImpl(
-      const char* file,
-      int line,
-      const ledger::LogLevel log_level);
-  std::ostream& stream() override;
-
- private:
-  // Not copyable, not assignable
-  MockLogStreamImpl(const MockLogStreamImpl&) = delete;
-  MockLogStreamImpl& operator=(const MockLogStreamImpl&) = delete;
-};
-
-class MockVerboseLogStreamImpl : public ledger::LogStream {
- public:
-  MockVerboseLogStreamImpl(
-      const char* file,
-      int line,
-      int vlog_level);
-  std::ostream& stream() override;
-
- private:
-  // Not copyable, not assignable
-  MockVerboseLogStreamImpl(const MockVerboseLogStreamImpl&) = delete;
-  MockVerboseLogStreamImpl& operator=(const MockVerboseLogStreamImpl&) = delete;
-};
 
 class MockLedgerClient : public LedgerClient {
  public:
@@ -112,15 +82,11 @@ class MockLedgerClient : public LedgerClient {
       const std::string& publisher_key,
       bool exclude));
 
-  std::unique_ptr<ledger::LogStream> Log(
+  MOCK_CONST_METHOD4(Log, void(
       const char* file,
       const int line,
-      const ledger::LogLevel log_level) const;
-
-  std::unique_ptr<ledger::LogStream> VerboseLog(
-      const char* file,
-      int line,
-      int vlog_level) const;
+      const int verbose_level,
+      const std::string& message));
 
   MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
 

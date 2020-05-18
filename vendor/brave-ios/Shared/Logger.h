@@ -252,7 +252,7 @@ private:
 /// A struct containing all the logging information
 struct UnbufferedLoggerData final {
     const void* logger;
-    const std::int32_t log_level;
+    const std::int32_t verbose_level;
     const std::string file;
     const std::int32_t line;
     const std::string data;

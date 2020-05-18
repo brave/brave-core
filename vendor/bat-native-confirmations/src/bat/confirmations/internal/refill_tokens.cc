@@ -16,7 +16,6 @@
 #include "bat/confirmations/internal/get_signed_tokens_request.h"
 #include "bat/confirmations/internal/time_util.h"
 
-#include "base/logging.h"
 #include "base/json/json_reader.h"
 #include "net/http/http_status_code.h"
 #include "brave_base/random.h"
@@ -51,11 +50,11 @@ void RefillTokens::Refill(
     return;
   }
 
-  BLOG(INFO) << "Refill";
+  BLOG(1, "Refill tokens");
 
   wallet_info_ = wallet_info;
   if (!wallet_info_.IsValid()) {
-    BLOG(ERROR) << "Failed to refill tokens due to invalid wallet";
+    BLOG(0, "Failed to refill tokens due to an invalid wallet");
     return;
   }
 
@@ -69,44 +68,31 @@ void RefillTokens::Refill(
 ///////////////////////////////////////////////////////////////////////////////
 
 void RefillTokens::RequestSignedTokens() {
-  BLOG(INFO) << "RequestSignedTokens";
+  BLOG(1, "RequestSignedTokens");
 
   if (!ShouldRefillTokens()) {
-    BLOG(INFO) << "No need to refill tokens as we already have "
+    BLOG(1, "No need to refill tokens as we already have "
         << unblinded_tokens_->Count() << " unblinded tokens which is above the"
-        << " minimum threshold of " << kMinimumUnblindedTokens;
+            << " minimum threshold of " << kMinimumUnblindedTokens);
     return;
   }
 
-  BLOG(INFO) << "POST /v1/confirmation/token/{payment_id}";
-  RequestSignedTokensRequest request;
+  BLOG(2, "POST /v1/confirmation/token/{payment_id}");
 
   auto refill_amount = CalculateAmountOfTokensToRefill();
   GenerateAndBlindTokens(refill_amount);
 
-  BLOG(INFO) << "URL Request:";
-
+  RequestSignedTokensRequest request;
   auto url = request.BuildUrl(wallet_info_);
-  BLOG(INFO) << "  URL: " << url;
-
   auto method = request.GetMethod();
-
   auto body = request.BuildBody(blinded_tokens_);
-  BLOG(INFO) << "  Body: " << body;
-
   auto headers = request.BuildHeaders(body, wallet_info_);
-
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header;
-  }
-
   auto content_type = request.GetContentType();
-  BLOG(INFO) << "  Content_type: " << content_type;
 
   auto callback = std::bind(&RefillTokens::OnRequestSignedTokens,
       this, url, _1, _2, _3);
 
+  BLOG(5, UrlRequestToString(url, headers, body, content_type, method));
   confirmations_client_->LoadURL(url, headers, body, content_type, method,
       callback);
 }
@@ -116,19 +102,12 @@ void RefillTokens::OnRequestSignedTokens(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  BLOG(INFO) << "OnRequestSignedTokens";
+  BLOG(1, "OnRequestSignedTokens");
 
-  BLOG(INFO) << "URL Request Response:";
-  BLOG(INFO) << "  URL: " << url;
-  BLOG(INFO) << "  Response Status Code: " << response_status_code;
-  BLOG(INFO) << "  Response: " << response;
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header.first << ": " << header.second;
-  }
+  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
 
   if (response_status_code != net::HTTP_CREATED) {
-    BLOG(ERROR) << "Failed to get blinded tokens";
+    BLOG(1, "Failed to request signed tokens");
     OnRefill(FAILED);
     return;
   }
@@ -136,7 +115,7 @@ void RefillTokens::OnRequestSignedTokens(
   // Parse JSON response
   base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
   if (!dictionary || !dictionary->is_dict()) {
-    BLOG(ERROR) << "Failed to parse response: " << response;
+    BLOG(3, "Failed to parse response: " << response);
     OnRefill(FAILED, false);
     return;
   }
@@ -144,7 +123,7 @@ void RefillTokens::OnRequestSignedTokens(
   // Get nonce
   auto* nonce_value = dictionary->FindKey("nonce");
   if (!nonce_value) {
-    BLOG(ERROR) << "Response missing nonce";
+    BLOG(0, "Response is missing nonce");
     OnRefill(FAILED, false);
     return;
   }
@@ -156,21 +135,17 @@ void RefillTokens::OnRequestSignedTokens(
 }
 
 void RefillTokens::GetSignedTokens() {
-  BLOG(INFO) << "GetSignedTokens";
+  BLOG(1, "GetSignedTokens");
+  BLOG(2, "GET /v1/confirmation/token/{payment_id}?nonce={nonce}");
 
-  BLOG(INFO) << "GET /v1/confirmation/token/{payment_id}?nonce={nonce}";
   GetSignedTokensRequest request;
-
-  BLOG(INFO) << "URL Request:";
-
   auto url = request.BuildUrl(wallet_info_, nonce_);
-  BLOG(INFO) << "  URL: " << url;
-
   auto method = request.GetMethod();
 
   auto callback = std::bind(&RefillTokens::OnGetSignedTokens,
       this, url, _1, _2, _3);
 
+  BLOG(5, UrlRequestToString(url, {}, "", "", method));
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
@@ -179,19 +154,12 @@ void RefillTokens::OnGetSignedTokens(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  BLOG(INFO) << "OnGetSignedTokens";
+  BLOG(1, "OnGetSignedTokens");
 
-  BLOG(INFO) << "URL Request Response:";
-  BLOG(INFO) << "  URL: " << url;
-  BLOG(INFO) << "  Response Status Code: " << response_status_code;
-  BLOG(INFO) << "  Response: " << response;
-  BLOG(INFO) << "  Headers:";
-  for (const auto& header : headers) {
-    BLOG(INFO) << "    " << header.first << ": " << header.second;
-  }
+  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
 
   if (response_status_code != net::HTTP_OK) {
-    BLOG(ERROR) << "Failed to get signed tokens";
+    BLOG(0, "Failed to get signed tokens");
     OnRefill(FAILED);
     return;
   }
@@ -199,7 +167,7 @@ void RefillTokens::OnGetSignedTokens(
   // Parse JSON response
   base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
   if (!dictionary || !dictionary->is_dict()) {
-    BLOG(ERROR) << "Failed to parse response: " << response;
+    BLOG(3, "Failed to parse response: " << response);
     OnRefill(FAILED, false);
     return;
   }
@@ -207,7 +175,7 @@ void RefillTokens::OnGetSignedTokens(
   // Get public key
   auto* public_key_value = dictionary->FindKey("publicKey");
   if (!public_key_value) {
-    BLOG(ERROR) << "Response missing publicKey";
+    BLOG(0, "Response is missing publicKey");
     OnRefill(FAILED, false);
     return;
   }
@@ -216,8 +184,8 @@ void RefillTokens::OnGetSignedTokens(
 
   // Validate public key
   if (public_key_base64 != public_key_) {
-    BLOG(ERROR) << "Response public_key: " << public_key_value->GetString()
-        << " does not match catalog issuers public key: " << public_key_;
+    BLOG(0, "Response public key " << public_key_value->GetString()
+        << " does not match catalog issuers public key " << public_key_);
     OnRefill(FAILED, false);
     return;
   }
@@ -225,7 +193,7 @@ void RefillTokens::OnGetSignedTokens(
   // Get batch proof
   auto* batch_proof_value = dictionary->FindKey("batchProof");
   if (!batch_proof_value) {
-    BLOG(ERROR) << "Response missing batchProof";
+    BLOG(0, "Response is missing batchProof");
     OnRefill(FAILED, false);
     return;
   }
@@ -236,7 +204,7 @@ void RefillTokens::OnGetSignedTokens(
   // Get signed tokens
   auto* signed_tokens_value = dictionary->FindKey("signedTokens");
   if (!signed_tokens_value) {
-    BLOG(ERROR) << "Response missing signedTokens";
+    BLOG(0, "Response is missing signedTokens");
     OnRefill(FAILED, false);
     return;
   }
@@ -254,29 +222,29 @@ void RefillTokens::OnGetSignedTokens(
       blinded_tokens_, signed_tokens, PublicKey::decode_base64(public_key_));
 
   if (unblinded_tokens.size() == 0) {
-    BLOG(ERROR) << "Failed to verify and unblind tokens";
+    BLOG(1, "Failed to verify and unblind tokens");
 
-    BLOG(ERROR) << "  Batch proof: " << batch_proof_base64;
+    BLOG(1, "  Batch proof: " << batch_proof_base64);
 
-    BLOG(ERROR) << "  Tokens (" << tokens_.size() << "):";
+    BLOG(1, "  Tokens (" << tokens_.size() << "):");
     for (const auto& token : tokens_) {
       auto token_base64 = token.encode_base64();
-      BLOG(ERROR) << "    " << token_base64;
+      BLOG(1, "    " << token_base64);
     }
 
-    BLOG(ERROR) << "  Blinded tokens (" << blinded_tokens_.size() << "):";
+    BLOG(1, "  Blinded tokens (" << blinded_tokens_.size() << "):");
     for (const auto& blinded_token : blinded_tokens_) {
       auto blinded_token_base64 = blinded_token.encode_base64();
-      BLOG(ERROR) << "    " << blinded_token_base64;
+      BLOG(1, "    " << blinded_token_base64);
     }
 
-    BLOG(ERROR) << "  Signed tokens (" << signed_tokens.size() << "):";
+    BLOG(1, "  Signed tokens (" << signed_tokens.size() << "):");
     for (const auto& signed_token : signed_tokens) {
       auto signed_token_base64 = signed_token.encode_base64();
-      BLOG(ERROR) << "    " << signed_token_base64;
+      BLOG(1, "    " << signed_token_base64);
     }
 
-    BLOG(ERROR) << "  Public key: " << public_key_;
+    BLOG(1, "  Public key: " << public_key_);
 
     OnRefill(FAILED, false);
     return;
@@ -294,9 +262,8 @@ void RefillTokens::OnGetSignedTokens(
 
   unblinded_tokens_->AddTokens(tokens);
 
-  BLOG(INFO) << "Added " << unblinded_tokens.size()
-      << " unblinded tokens, you now have " << unblinded_tokens_->Count()
-      << " unblinded tokens";
+  BLOG(1, "Added " << unblinded_tokens.size() << " unblinded tokens, you now "
+      "have " << unblinded_tokens_->Count() << " unblinded tokens");
 
   OnRefill(SUCCESS, false);
 }
@@ -305,14 +272,14 @@ void RefillTokens::OnRefill(
     const Result result,
     const bool should_retry) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to refill tokens";
+    BLOG(1, "Failed to refill tokens");
 
     if (should_retry) {
       const base::Time time = retry_timer_.StartWithBackoff(
           kRetryRefillTokensAfterSeconds, base::BindOnce(&RefillTokens::OnRetry,
               base::Unretained(this)));
 
-      BLOG(INFO) << "Retry refilling tokens " << FriendlyDateAndTime(time);
+      BLOG(1, "Retry refilling tokens " << FriendlyDateAndTime(time));
     }
 
     return;
@@ -324,11 +291,11 @@ void RefillTokens::OnRefill(
   tokens_.clear();
   confirmations_->SaveState();
 
-  BLOG(INFO) << "Successfully refilled tokens";
+  BLOG(1, "Successfully refilled tokens");
 }
 
 void RefillTokens::OnRetry() {
-  BLOG(INFO) << "Retrying";
+  BLOG(1, "Retry refilling tokens");
 
   if (nonce_.empty()) {
     RequestSignedTokens();
@@ -351,10 +318,10 @@ int RefillTokens::CalculateAmountOfTokensToRefill() const {
 
 void RefillTokens::GenerateAndBlindTokens(const int count) {
   tokens_ = helper::Security::GenerateTokens(count);
-  BLOG(INFO) << "Generated " << tokens_.size() << " tokens";
+  BLOG(1, "Generated " << tokens_.size() << " tokens");
 
   blinded_tokens_ = helper::Security::BlindTokens(tokens_);
-  BLOG(INFO) << "Blinded " << blinded_tokens_.size() << " tokens";
+  BLOG(1, "Blinded " << blinded_tokens_.size() << " tokens");
 }
 
 }  // namespace confirmations

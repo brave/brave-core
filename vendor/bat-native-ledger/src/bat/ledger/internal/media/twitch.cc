@@ -287,11 +287,8 @@ void Twitch::OnMediaActivityError(const ledger::VisitData& visit_data,
     ledger_->GetPublisherActivityFromUrl(
         window_id, ledger::VisitData::New(new_visit_data), std::string());
   } else {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Media activity error for "
-        << TWITCH_MEDIA_TYPE << " (name: "
-        << name << ", url: "
-        << visit_data.url << ")";
+      BLOG(0, "Media activity error for " << TWITCH_MEDIA_TYPE << " (name: "
+          << name << ", url: " << visit_data.url << ")");
   }
 }
 
@@ -306,7 +303,7 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
 
   std::string media_key = braveledger_media::GetMediaKey(media_id,
                                                          TWITCH_MEDIA_TYPE);
-  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
+  BLOG(1, "Media key: " << media_key);
 
   ledger::MediaEventInfo twitch_info;
   std::map<std::string, std::string>::const_iterator iter = parts.find("event");
@@ -382,8 +379,7 @@ void Twitch::OnMediaPublisherInfo(
     ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Failed to get publisher info";
+    BLOG(0, "Failed to get publisher info");
     return;
   }
 
@@ -497,7 +493,8 @@ void Twitch::OnEmbedResponse(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     // TODO(anyone): add error handler
@@ -626,8 +623,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
                                const std::string& channel_id,
                                const std::string& publisher_key) {
   if (channel_id.empty() && publisher_key.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "author id is missing for: " << media_key;
+    BLOG(0, "author id is missing for: " << media_key);
     return;
   }
 
@@ -637,8 +633,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
   }
 
   if (key.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher id is missing for: " << media_key;
+    BLOG(0, "Publisher id is missing for: " << media_key);
     return;
   }
 

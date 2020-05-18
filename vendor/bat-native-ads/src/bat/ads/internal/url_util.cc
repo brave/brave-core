@@ -47,4 +47,21 @@ bool SameSite(
       GURL(url2), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
+std::string GetUrlMethodName(
+    const URLRequestMethod method) {
+  switch (method) {
+    case GET: {
+      return "GET";
+    }
+
+    case PUT: {
+      return "PUT";
+    }
+
+    case POST: {
+      return "POST";
+    }
+  }
+}
+
 }  // namespace ads

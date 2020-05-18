@@ -9,34 +9,13 @@
 #include <functional>
 #include <memory>
 #include <vector>
-#include <sstream>
-#include <fstream>
 #include <string>
 #include <map>
 
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
 
-namespace confirmations {
-class LogStream;
-}
-
 namespace ledger {
-
-LEDGER_EXPORT enum LogLevel {
-  LOG_ERROR = 1,
-  LOG_WARNING = 2,
-  LOG_INFO = 3,
-  LOG_DEBUG = 4,
-  LOG_REQUEST = 5,
-  LOG_RESPONSE = 6
-};
-
-class LEDGER_EXPORT LogStream {
- public:
-  virtual ~LogStream() = default;
-  virtual std::ostream& stream() = 0;
-};
 
 using PublisherInfoCallback =
     std::function<void(const Result, PublisherInfoPtr)>;
@@ -142,15 +121,11 @@ class LEDGER_EXPORT LedgerClient {
       ledger::LoadURLCallback callback) = 0;
 
   // Logs debug information
-  virtual std::unique_ptr<LogStream> Log(
+  virtual void Log(
       const char* file,
-      int line,
-      const ledger::LogLevel log_level) const = 0;
-
-  virtual std::unique_ptr<LogStream> VerboseLog(
-      const char* file,
-      int line,
-      int vlog_level) const = 0;
+      const int line,
+      const int verbose_level,
+      const std::string& message) const = 0;
 
   virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
 

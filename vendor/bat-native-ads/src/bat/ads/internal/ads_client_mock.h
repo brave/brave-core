@@ -6,34 +6,17 @@
 #ifndef BAT_ADS_INTERNAL_ADS_CLIENT_MOCK_H_
 #define BAT_ADS_INTERNAL_ADS_CLIENT_MOCK_H_
 
+#include "bat/ads/ads_client.h"
+
 #include <stdint.h>
+
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
-#include <iostream>
-#include <ostream>
-
-#include "bat/ads/ads_client.h"
-#include "bat/ads/ads.h"
 
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ads {
-
-class MockLogStreamImpl : public LogStream {
- public:
-  MockLogStreamImpl(
-      const char* file,
-      const int line,
-      const LogLevel log_level);
-
-  std::ostream& stream() override;
-
- private:
-  // Not copyable, not assignable
-  MockLogStreamImpl(const MockLogStreamImpl&) = delete;
-  MockLogStreamImpl& operator=(const MockLogStreamImpl&) = delete;
-};
 
 class MockAdsClient : public AdsClient {
  public:
@@ -121,15 +104,13 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(GetAdConversions, void(
       GetAdConversionsCallback callback));
 
-  MOCK_CONST_METHOD1(EventLog, void(
-      const std::string& json));
-
-  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
-
-  std::unique_ptr<LogStream> Log(
+  MOCK_CONST_METHOD4(Log, void(
       const char* file,
       const int line,
-      const LogLevel log_level) const;
+      const int verbose_level,
+      const std::string& message));
+
+  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
 };
 
 }  // namespace ads

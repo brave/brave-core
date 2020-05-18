@@ -187,7 +187,7 @@ TEST_F(AdsTabsTest, Media_NotPlaying) {
 
 TEST_F(AdsTabsTest, TabUpdated_Incognito) {
   // Arrange
-  EXPECT_CALL(*mock_ads_client_, EventLog(_))
+  EXPECT_CALL(*mock_ads_client_, Log(_, _, _, _))
       .Times(0);
 
   // Act
@@ -198,7 +198,7 @@ TEST_F(AdsTabsTest, TabUpdated_Incognito) {
 
 TEST_F(AdsTabsTest, TabUpdated_InactiveIncognito) {
   // Arrange
-  EXPECT_CALL(*mock_ads_client_, EventLog(_))
+  EXPECT_CALL(*mock_ads_client_, Log(_, _, _, _))
       .Times(0);
 
   // Act
@@ -209,8 +209,8 @@ TEST_F(AdsTabsTest, TabUpdated_InactiveIncognito) {
 
 TEST_F(AdsTabsTest, TabUpdated_Active) {
   // Arrange
-  EXPECT_CALL(*mock_ads_client_, EventLog(_))
-      .Times(1);
+  EXPECT_CALL(*mock_ads_client_, Log(_, _, _, _))
+      .Times(2);
 
   // Act
   ads_->OnTabUpdated(1, "https://brave.com", true, false);
@@ -220,8 +220,8 @@ TEST_F(AdsTabsTest, TabUpdated_Active) {
 
 TEST_F(AdsTabsTest, TabUpdated_Inactive) {
   // Arrange
-  EXPECT_CALL(*mock_ads_client_, EventLog(_))
-      .Times(1);
+  EXPECT_CALL(*mock_ads_client_, Log(_, _, _, _))
+      .Times(2);
 
   // Act
   ads_->OnTabUpdated(1, "https://brave.com", false, false);
@@ -232,9 +232,6 @@ TEST_F(AdsTabsTest, TabUpdated_Inactive) {
 TEST_F(AdsTabsTest, TabClosed_WhileMediaIsPlaying) {
   // Arrange
   ads_->OnMediaPlaying(1);
-
-  EXPECT_CALL(*mock_ads_client_, EventLog(_))
-      .Times(1);
 
   // Act
   ads_->OnTabClosed(1);

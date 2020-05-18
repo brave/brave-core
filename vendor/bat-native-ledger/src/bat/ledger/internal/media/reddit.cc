@@ -326,8 +326,7 @@ void Reddit::SavePublisherInfo(
   const std::string media_key = GetMediaKey(user_name, REDDIT_MEDIA_TYPE);
 if (publisher_key.empty()) {
     callback(ledger::Result::LEDGER_ERROR, nullptr);
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher key is missing for: " << media_key;
+    BLOG(0, "Publisher key is missing for: " << media_key);
     return;
   }
 

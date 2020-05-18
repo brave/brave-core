@@ -34,7 +34,7 @@ void SKUCommon::CreateTransaction(
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order not found";
+    BLOG(0, "Order not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -57,8 +57,7 @@ void SKUCommon::OnTransactionCompleted(
     const std::string& order_id,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Order status was not updated";
+    BLOG(0, "Order status was not updated");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -81,8 +80,7 @@ void SKUCommon::GetSKUTransactionByOrderId(
     ledger::SKUTransactionPtr transaction,
     ledger::SKUOrderCallback callback) {
   if (!transaction) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Transaction is null";
+    BLOG(0, "Transaction is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

@@ -56,7 +56,7 @@ void SKUTransaction::Create(
     const ledger::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is null";
+    BLOG(0, "Order is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -86,7 +86,7 @@ void SKUTransaction::OnTransactionSaved(
     const ledger::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Transaction was not saved";
+    BLOG(0, "Transaction was not saved");
     callback(result);
     return;
   }
@@ -111,9 +111,7 @@ void SKUTransaction::OnTransfer(
     const ledger::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Transaction for order failed "
-        << transaction.order_id;
+    BLOG(0, "Transaction for order failed " << transaction.order_id);
     callback(result);
     return;
   }
@@ -144,8 +142,7 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
     const ledger::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "External transaction was not saved";
+    BLOG(0, "External transaction was not saved");
     callback(result);
     return;
   }
@@ -167,7 +164,7 @@ void SKUTransaction::SendExternalTransaction(
     const ledger::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order status not updated";
+    BLOG(0, "Order status not updated");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -175,9 +172,8 @@ void SKUTransaction::SendExternalTransaction(
   // we only want to report external transaction id when we have it
   // we don't have it for all transactions
   if (transaction.external_transaction_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "External transaction id is empty for transaction id "
-        << transaction.transaction_id;
+    BLOG(0, "External transaction id is empty for transaction id "
+        << transaction.transaction_id);
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -218,10 +214,12 @@ void SKUTransaction::OnSendExternalTransaction(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
+
   if (response_status_code != net::HTTP_CREATED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "External transaction not sent";
+    BLOG(0, "External transaction not sent");
+
     callback(ledger::Result::RETRY);
     return;
   }

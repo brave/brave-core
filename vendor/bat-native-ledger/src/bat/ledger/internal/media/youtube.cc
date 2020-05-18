@@ -333,11 +333,8 @@ void YouTube::OnMediaActivityError(const ledger::VisitData& visit_data,
     ledger_->GetPublisherActivityFromUrl(
         window_id, ledger::VisitData::New(new_visit_data), std::string());
   } else {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Media activity error for "
-        << YOUTUBE_MEDIA_TYPE << " (name: "
-        << name << ", url: "
-        << visit_data.url << ")";
+      BLOG(0, "Media activity error for " << YOUTUBE_MEDIA_TYPE << " (name: "
+          << name << ", url: " << visit_data.url << ")");
   }
 }
 
@@ -352,8 +349,8 @@ void YouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
                                                          YOUTUBE_MEDIA_TYPE);
   uint64_t duration = GetMediaDurationFromParts(parts, media_key);
 
-  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
-  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media duration: " << duration;
+  BLOG(1, "Media key: " << media_key);
+  BLOG(1, "Media duration: " << duration);
 
   ledger_->GetMediaPublisherInfo(
       media_key,
@@ -415,8 +412,7 @@ void YouTube::OnMediaPublisherInfo(
     ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Failed to get publisher info";
+    BLOG(0, "Failed to get publisher info");
     return;
   }
 
@@ -469,7 +465,8 @@ void YouTube::OnEmbedResponse(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
 
   if (response_status_code != net::HTTP_OK) {
     // embedding disabled, need to scrape
@@ -560,8 +557,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
                                      const std::string& channel_id) {
   std::string url;
   if (channel_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Channel id is missing for: " << media_key;
+    BLOG(0, "Channel id is missing for: " << media_key);
     return;
   }
 
@@ -569,8 +565,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   url = publisher_url + "/videos";
 
   if (publisher_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher id is missing for: " << media_key;
+    BLOG(0, "Publisher id is missing for: " << media_key);
     return;
   }
 

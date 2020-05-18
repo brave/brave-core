@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "bat/ads/ads_client.h"
+
 namespace ads {
 
 std::string GetUrlWithScheme(
@@ -20,6 +22,9 @@ bool UrlMatchesPattern(
 bool SameSite(
     const std::string& url1,
     const std::string& url2);
+
+std::string GetUrlMethodName(
+    const URLRequestMethod method);
 
 }  // namespace ads
 

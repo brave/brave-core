@@ -92,8 +92,7 @@ void Recover::OnNicewareListLoaded(
     return;
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-    << "Failed to load niceware list";
+  BLOG(0, "Failed to load niceware list");
   callback(result, 0);
   return;
 }
@@ -104,11 +103,7 @@ void Recover::ContinueRecover(
     const std::vector<uint8_t>& newSeed,
     ledger::RecoverWalletCallback callback) {
   if (result != 0 || *written == 0) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-      << "Result: "
-      << result
-      << " Size: "
-      << *written;
+    BLOG(1, "Result: " << result << " Size: " << *written);
     callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
@@ -146,8 +141,8 @@ void Recover::RecoverWalletPublicKeyCallback(
     const std::map<std::string, std::string>& headers,
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, 0);
     return;
@@ -175,7 +170,8 @@ void Recover::RecoverWalletCallback(
     const std::string& recoveryId,
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
+      response, headers));
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, 0);
     return;

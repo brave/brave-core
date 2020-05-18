@@ -108,7 +108,7 @@ void ContributionSKU::AutoContribution(
     ledger::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is null";
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -128,7 +128,7 @@ void ContributionSKU::AnonUserFunds(
     ledger::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is null";
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -149,7 +149,7 @@ void ContributionSKU::Start(
     ledger::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!wallet) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is null";
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -170,7 +170,7 @@ void ContributionSKU::GetContributionInfo(
     const ledger::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    BLOG(0, "Contribution not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -211,7 +211,7 @@ void ContributionSKU::GetOrder(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "SKU was not processed";
+    BLOG(0, "SKU was not processed");
     callback(result);
     return;
   }
@@ -229,7 +229,7 @@ void ContributionSKU::OnGetOrder(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not found";
+    BLOG(0, "Order was not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -251,15 +251,14 @@ void ContributionSKU::TransactionStepSaved(
     const std::string& order_string,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "External transaction step was not saved";
+    BLOG(0, "External transaction step was not saved");
     callback(result);
     return;
   }
 
   auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is corrupted";
+    BLOG(0, "Order is corrupted");
     callback(ledger::Result::RETRY);
     return;
   }
@@ -277,7 +276,7 @@ void ContributionSKU::Completed(
     const ledger::RewardsType type,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order not completed";
+    BLOG(0, "Order not completed");
     callback(result);
     return;
   }
@@ -299,7 +298,7 @@ void ContributionSKU::CredsStepSaved(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Creds step not saved";
+    BLOG(0, "Creds step not saved");
     callback(result);
     return;
   }
@@ -329,7 +328,7 @@ void ContributionSKU::GetUnblindedTokens(
     const ledger::SKUTransaction& transaction,
     ledger::TransactionCallback callback) {
   if (list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "List is empty";
+    BLOG(0, "List is empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -346,7 +345,7 @@ void ContributionSKU::GetUnblindedTokens(
   }
 
   if (current_amount < transaction.amount) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Not enough funds";
+    BLOG(0, "Not enough funds");
     callback(ledger::Result::NOT_ENOUGH_FUNDS, "");
     return;
   }
@@ -371,7 +370,7 @@ void ContributionSKU::GerOrderMerchant(
     const braveledger_credentials::CredentialsRedeem& redeem,
     ledger::TransactionCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not found";
+    BLOG(0, "Order was not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -391,7 +390,7 @@ void ContributionSKU::OnRedeemTokens(
     const ledger::Result result,
     ledger::TransactionCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem redeeming tokens";
+    BLOG(0, "Problem redeeming tokens");
     callback(result, "");
     return;
   }
@@ -403,7 +402,7 @@ void ContributionSKU::Retry(
     const ledger::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution was not found";
+    BLOG(0, "Contribution was not found");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -427,7 +426,7 @@ void ContributionSKU::OnOrder(
       contribution_string);
 
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -461,9 +460,7 @@ void ContributionSKU::OnOrder(
     case ledger::ContributionStep::STEP_FAILED:
     case ledger::ContributionStep::STEP_COMPLETED:
     case ledger::ContributionStep::STEP_NO: {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-          << "Step not correct "
-          << contribution->step;
+      BLOG(0, "Step not correct " << contribution->step);
       NOTREACHED();
       return;
     }
@@ -475,7 +472,7 @@ void ContributionSKU::RetryStartStep(
     ledger::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!contribution) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    BLOG(0, "Contribution is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -524,7 +521,7 @@ void ContributionSKU::RetryStartStepExternalWallet(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (!wallet || result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "External wallet is missing";
+    BLOG(0, "External wallet is missing");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -549,7 +546,7 @@ void ContributionSKU::RetryExternalTransactionStep(
     ledger::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!contribution || !order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution/order is null";
+    BLOG(0, "Contribution/order is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
