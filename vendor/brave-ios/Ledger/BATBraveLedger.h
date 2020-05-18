@@ -234,11 +234,9 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - History
 
-@property (nonatomic, readonly) NSDictionary<NSString *, BATBalanceReportInfo *> *balanceReports;
-
 - (void)balanceReportForMonth:(BATActivityMonth)month
                          year:(int)year
-                   completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion;
+                   completion:(void (^)(BATBalanceReportInfo * _Nullable info))completion;
 
 @property (nonatomic, readonly) BATAutoContributeProps *autoContributeProps;
 
@@ -279,9 +277,9 @@ NS_SWIFT_NAME(BraveLedger)
 /// Whether or not brave rewards is enabled
 @property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 /// The number of seconds before a publisher is added.
-@property (nonatomic, assign) UInt64 minimumVisitDuration;
+@property (nonatomic, assign) int minimumVisitDuration;
 /// The minimum number of visits before a publisher is added
-@property (nonatomic, assign) UInt32 minimumNumberOfVisits;
+@property (nonatomic, assign) int minimumNumberOfVisits;
 /// Whether or not to allow auto contributions to unverified publishers
 @property (nonatomic, assign) BOOL allowUnverifiedPublishers;
 /// Whether or not to allow auto contributions to videos

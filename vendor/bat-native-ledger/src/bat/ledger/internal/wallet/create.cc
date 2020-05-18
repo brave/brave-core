@@ -13,7 +13,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/properties/wallet_info_properties.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 

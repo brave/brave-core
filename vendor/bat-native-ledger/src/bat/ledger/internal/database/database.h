@@ -22,12 +22,14 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabaseBalanceReport;
 class DatabaseCredsBatch;
 class DatabaseContributionInfo;
 class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
 class DatabaseMultiTables;
 class DatabasePendingContribution;
+class DatabaseProcessedPublisher;
 class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
@@ -65,6 +67,33 @@ class Database {
   void DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::ResultCallback callback);
+
+  /**
+   * BALANCE REPORT
+   */
+  void SaveBalanceReportInfo(
+      ledger::BalanceReportInfoPtr info,
+      ledger::ResultCallback callback);
+
+  void SaveBalanceReportInfoList(
+      ledger::BalanceReportInfoList list,
+      ledger::ResultCallback callback);
+
+  void SaveBalanceReportInfoItem(
+      ledger::ActivityMonth month,
+      int year,
+      ledger::ReportType type,
+      double amount,
+      ledger::ResultCallback callback);
+
+  void GetBalanceReportInfo(
+      ledger::ActivityMonth month,
+      int year,
+      ledger::GetBalanceReportCallback callback);
+
+  void GetAllBalanceReports(ledger::GetBalanceReportListCallback callback);
+
+  void DeleteAllBalanceReports(ledger::ResultCallback callback);
 
   /**
    * CONTRIBUTION INFO
@@ -191,6 +220,17 @@ class Database {
       ledger::ResultCallback callback);
 
   void RemoveAllPendingContributions(ledger::ResultCallback callback);
+
+  /**
+   * PROCESSED PUBLISHER
+   */
+  void SaveProcessedPublisherList(
+      const std::vector<std::string>& list,
+      ledger::ResultCallback callback);
+
+  void WasPublisherProcessed(
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
 
   /**
    * PROMOTION
@@ -352,10 +392,12 @@ class Database {
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabaseBalanceReport> balance_report_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabaseCredsBatch> creds_batch_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
+  std::unique_ptr<DatabaseProcessedPublisher> processed_publisher_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabaseMultiTables> multi_tables_;

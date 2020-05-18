@@ -33,6 +33,8 @@ using BalancePtr = mojom::BalancePtr;
 
 using BalanceReportInfo = mojom::BalanceReportInfo;
 using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
+using BalanceReportInfoList =
+    std::vector<ledger::mojom::BalanceReportInfoPtr>;
 
 using ClientInfo = mojom::ClientInfo;
 using ClientInfoPtr = mojom::ClientInfoPtr;

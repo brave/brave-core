@@ -98,7 +98,6 @@ declare namespace Rewards {
   export enum ReportType {
     GRANT_UGP = 0,
     AUTO_CONTRIBUTION = 1,
-    DEPOSIT = 2,
     GRANT_AD = 3,
     TIP_RECURRING = 4,
     TIP = 5

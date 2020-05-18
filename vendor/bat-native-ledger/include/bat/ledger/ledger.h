@@ -53,6 +53,8 @@ using AttestPromotionCallback =
 
 using GetBalanceReportCallback =
     std::function<void(const ledger::Result, ledger::BalanceReportInfoPtr)>;
+using GetBalanceReportListCallback =
+  std::function<void(ledger::BalanceReportInfoList)>;
 
 using ContributionInfoListCallback =
     std::function<void(ContributionInfoList)>;
@@ -135,9 +137,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
 
-  virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) = 0;
+  virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
 
-  virtual void SetPublisherMinVisits(unsigned int visits) = 0;
+  virtual void SetPublisherMinVisits(int visits) = 0;
 
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
 
@@ -155,13 +157,13 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetRewardsMainEnabled() const = 0;
 
-  virtual uint64_t GetPublisherMinVisitTime() const = 0;  // In milliseconds
+  virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
 
-  virtual unsigned int GetPublisherMinVisits() const = 0;
+  virtual int GetPublisherMinVisits() = 0;
 
-  virtual bool GetPublisherAllowNonVerified() const = 0;
+  virtual bool GetPublisherAllowNonVerified() = 0;
 
-  virtual bool GetPublisherAllowVideos() const = 0;
+  virtual bool GetPublisherAllowVideos() = 0;
 
   virtual double GetContributionAmount() const = 0;
 
@@ -215,8 +217,8 @@ class LEDGER_EXPORT Ledger {
       int year,
       ledger::GetBalanceReportCallback callback) const = 0;
 
-  virtual std::map<std::string, ledger::BalanceReportInfoPtr>
-  GetAllBalanceReports() const = 0;
+  virtual void GetAllBalanceReports(
+      ledger::GetBalanceReportListCallback callback) const = 0;
 
   virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;
 

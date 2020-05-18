@@ -10,7 +10,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
-#include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

@@ -11,28 +11,12 @@
 #include <vector>
 
 #include "base/guid.h"
-#include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/properties/publisher_settings_properties.h"
-#include "bat/ledger/internal/properties/report_balance_properties.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
-#include "bat/ledger/internal/state/publisher_settings_state.h"
 #include "bat/ledger/internal/static_values.h"
-
-/* foo.bar.example.com
-   QLD = 'bar'
-   RLD = 'foo.bar'
-   SLD = 'example.com'
-   TLD = 'com'
-
-  search.yahoo.co.jp
-   QLD = 'search'
-   RLD = 'search'
-   SLD = 'yahoo.co.jp'
-   TLD = 'co.jp'
-*/
+#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -41,9 +25,7 @@ namespace braveledger_publisher {
 
 Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
-  state_(new ledger::PublisherSettingsProperties),
   server_list_(std::make_unique<PublisherServerList>(ledger)) {
-  calcScoreConsts(state_->min_page_time_before_logging_a_visit);
 }
 
 Publisher::~Publisher() {
@@ -100,23 +82,25 @@ void Publisher::SetPublisherServerListTimer(const bool rewards_enabled) {
   server_list_->SetTimer(false);
 }
 
-void Publisher::calcScoreConsts(const uint64_t& min_duration_seconds) {
+void Publisher::CalcScoreConsts(const int min_duration_seconds) {
   // we increase duration for 100 to keep it as close to muon implementation
   // as possible (we used 1000 in muon)
   // keeping it with only seconds visits are not spaced out equally
   uint64_t min_duration_big = min_duration_seconds * 100;
-  a_ = (1.0 / (braveledger_ledger::_d * 2.0)) - min_duration_big;
-  a2_ = a_ * 2.0;
-  a4_ = a2_ * 2.0;
-  b_ = min_duration_big - a_;
-  b2_ = b_ * b_;
+  const double d = 1.0 / (30.0 * 1000.0);
+  const double a = (1.0 / (d * 2.0)) - min_duration_big;
+  const double b = min_duration_big - a;
+
+  braveledger_state::SetScoreValues(ledger_, a, b);
 }
 
 // courtesy of @dimitry-xyz:
 // https://github.com/brave/ledger/issues/2#issuecomment-221752002
 double Publisher::concaveScore(const uint64_t& duration_seconds) {
   uint64_t duration_big = duration_seconds * 100;
-  return (-b_ + std::sqrt(b2_ + (a4_ * duration_big))) / a2_;
+  double a, b;
+  braveledger_state::GetScoreValues(ledger_, &a, &b);
+  return (-b + std::sqrt((b * b) + (a * 4 * duration_big))) / (a * 2);
 }
 
 std::string getProviderName(const std::string& publisher_id) {
@@ -173,18 +157,16 @@ ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
   auto filter = ledger::ActivityInfoFilter::New();
   filter->id = publisher_id;
   filter->excluded = excluded;
-  filter->min_duration = min_duration ? getPublisherMinVisitTime() : 0;
+  filter->min_duration = min_duration
+      ? braveledger_state::GetPublisherMinVisitTime(ledger_)
+      : 0;
   filter->reconcile_stamp = current_reconcile_stamp;
   filter->non_verified = non_verified;
-  filter->min_visits = min_visits ? GetPublisherMinVisits() : 0;
+  filter->min_visits = min_visits
+      ? braveledger_state::GetPublisherMinVisits(ledger_)
+      : 0;
 
   return filter;
-}
-
-std::string Publisher::GetBalanceReportName(
-    const ledger::ActivityMonth month,
-    int year) {
-  return base::StringPrintf("%d_%d", year, month);
 }
 
 void Publisher::OnSaveVisitServerPublisher(
@@ -290,14 +272,18 @@ void Publisher::SaveVisitInternal(
     publisher_info->excluded = ledger::PublisherExclude::EXCLUDED;
   }
 
+  uint64_t min_visit_time = static_cast<uint64_t>(
+      braveledger_state::GetPublisherMinVisitTime(ledger_));
+
   // for new visits that are excluded or are not long enough or ac is off
-  bool min_duration_new = duration < getPublisherMinVisitTime() &&
-      !ignore_time;
-  bool min_duration_ok = duration > getPublisherMinVisitTime() || ignore_time;
-  bool verified_new = !ledger_->GetPublisherAllowNonVerified() && !is_verified;
-  bool verified_old = (
-      (!ledger_->GetPublisherAllowNonVerified() && is_verified) ||
-      ledger_->GetPublisherAllowNonVerified());
+  bool min_duration_new = duration < min_visit_time && !ignore_time;
+  bool min_duration_ok = duration > min_visit_time || ignore_time;
+  bool verified_new =
+      !braveledger_state::GetPublisherAllowNonVerified(ledger_) && !is_verified;
+  bool verified_old =
+      (!braveledger_state::GetPublisherAllowNonVerified(ledger_) &&
+          is_verified) ||
+      braveledger_state::GetPublisherAllowNonVerified(ledger_);
 
   if (new_visit &&
       (excluded ||
@@ -455,57 +441,6 @@ void Publisher::OnRestorePublishers(
   callback(ledger::Result::LEDGER_OK);
 }
 
-// In seconds
-void Publisher::setPublisherMinVisitTime(const uint64_t& duration) {
-  state_->min_page_time_before_logging_a_visit = duration;
-  calcScoreConsts(duration);
-  SynopsisNormalizer();
-  saveState();
-}
-
-void Publisher::setPublisherMinVisits(const unsigned int visits) {
-  state_->min_visits_for_publisher_relevancy = visits;
-  SynopsisNormalizer();
-  saveState();
-}
-
-void Publisher::setPublisherAllowNonVerified(const bool& allow) {
-  state_->allow_non_verified_sites_in_list = allow;
-  SynopsisNormalizer();
-  saveState();
-}
-
-void Publisher::setPublisherAllowVideos(const bool& allow) {
-  state_->allow_contribution_to_videos = allow;
-  SynopsisNormalizer();
-  saveState();
-}
-
-uint64_t Publisher::getPublisherMinVisitTime() const {
-  return state_->min_page_time_before_logging_a_visit;
-}
-
-unsigned int Publisher::GetPublisherMinVisits() const {
-  return state_->min_visits_for_publisher_relevancy;
-}
-
-bool Publisher::getPublisherAllowNonVerified() const {
-  return state_->allow_non_verified_sites_in_list;
-}
-
-bool Publisher::getPublisherAllowVideos() const {
-  return state_->allow_contribution_to_videos;
-}
-
-bool Publisher::GetMigrateScore() const {
-  return state_->migrate_score_2;
-}
-
-void Publisher::SetMigrateScore(bool value) {
-  state_->migrate_score_2 = value;
-  saveState();
-}
-
 void Publisher::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList* list,
@@ -524,16 +459,7 @@ void Publisher::synopsisNormalizerInternal(
 
   double totalScores = 0.0;
   for (size_t i = 0; i < list->size(); i++) {
-    // Check which would test uint problem from this issue
-    // https://github.com/brave/brave-browser/issues/3134
-    if (GetMigrateScore()) {
-      (*list)[i]->score = concaveScore((*list)[i]->duration);
-    }
     totalScores += (*list)[i]->score;
-  }
-
-  if (GetMigrateScore()) {
-    SetMigrateScore(false);
   }
 
   std::vector<unsigned int> percents;
@@ -598,8 +524,8 @@ void Publisher::SynopsisNormalizer() {
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
-      ledger_->GetPublisherAllowNonVerified(),
-      ledger_->GetPublisherMinVisits());
+      braveledger_state::GetPublisherAllowNonVerified(ledger_),
+      braveledger_state::GetPublisherMinVisits(ledger_));
   ledger_->GetActivityInfoList(
       0,
       0,
@@ -633,122 +559,6 @@ bool Publisher::IsExcluded(
   }
 
   return server_exclude;
-}
-
-void Publisher::clearAllBalanceReports() {
-  if (state_->monthly_balances.empty()) {
-    return;
-  }
-  state_->monthly_balances.clear();
-  saveState();
-}
-
-void Publisher::setBalanceReport(ledger::ActivityMonth month,
-                                int year,
-                                const ledger::BalanceReportInfo& report_info) {
-  ledger::ReportBalanceProperties report_balance;
-  report_balance.grants = report_info.grants;
-  report_balance.ad_earnings = report_info.earning_from_ads;
-  report_balance.recurring_donations = report_info.recurring_donation;
-  report_balance.one_time_donations = report_info.one_time_donation;
-  report_balance.auto_contributions = report_info.auto_contribute;
-
-  state_->monthly_balances[GetBalanceReportName(month, year)] = report_balance;
-  saveState();
-}
-
-void Publisher::GetBalanceReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::GetBalanceReportCallback callback) {
-  ledger::BalanceReportInfo info;
-  const auto result = GetBalanceReportInternal(month, year, &info);
-  callback(result, info.Clone());
-}
-
-ledger::Result Publisher::GetBalanceReportInternal(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::BalanceReportInfo* report_info) {
-  if (!report_info) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  const std::string name = GetBalanceReportName(month, year);
-  auto iter = state_->monthly_balances.find(name);
-
-  if (iter == state_->monthly_balances.end()) {
-    ledger::BalanceReportInfo new_report_info;
-    new_report_info.grants = 0.0;
-    new_report_info.earning_from_ads = 0.0;
-    new_report_info.auto_contribute = 0.0;
-    new_report_info.recurring_donation = 0.0;
-    new_report_info.one_time_donation = 0.0;
-
-    setBalanceReport(month, year, new_report_info);
-    ledger::Result result = GetBalanceReportInternal(month, year, report_info);
-    if (result == ledger::Result::LEDGER_OK) {
-      iter = state_->monthly_balances.find(name);
-    } else {
-      return ledger::Result::LEDGER_ERROR;
-    }
-  }
-
-  report_info->grants = iter->second.grants;
-  report_info->earning_from_ads = iter->second.ad_earnings;
-  report_info->auto_contribute = iter->second.auto_contributions;
-  report_info->recurring_donation = iter->second.recurring_donations;
-  report_info->one_time_donation = iter->second.one_time_donations;
-
-  return ledger::Result::LEDGER_OK;
-}
-
-std::map<std::string, ledger::BalanceReportInfoPtr>
-Publisher::GetAllBalanceReports() {
-  std::map<std::string, ledger::BalanceReportInfoPtr> newReports;
-  for (auto const& report : state_->monthly_balances) {
-    ledger::BalanceReportInfoPtr newReport = ledger::BalanceReportInfo::New();
-    const ledger::ReportBalanceProperties oldReport = report.second;
-    newReport->grants = oldReport.grants;
-    newReport->earning_from_ads = oldReport.ad_earnings;
-    newReport->auto_contribute = oldReport.auto_contributions;
-    newReport->recurring_donation = oldReport.recurring_donations;
-    newReport->one_time_donation = oldReport.one_time_donations;
-
-    newReports[report.first] = std::move(newReport);
-  }
-
-  return newReports;
-}
-
-void Publisher::saveState() {
-  const ledger::PublisherSettingsState publisher_settings_state;
-  const std::string data = publisher_settings_state.ToJson(*state_);
-
-  auto save_callback = std::bind(&Publisher::OnPublisherStateSaved,
-      this,
-      _1);
-
-  ledger_->SavePublisherState(data, save_callback);
-}
-
-bool Publisher::loadState(const std::string& data) {
-  ledger::PublisherSettingsProperties state;
-  const ledger::PublisherSettingsState publisher_settings_state;
-  if (!publisher_settings_state.FromJson(data.c_str(), &state))
-    return false;
-
-  state_.reset(new ledger::PublisherSettingsProperties(state));
-  calcScoreConsts(state_->min_page_time_before_logging_a_visit);
-  return true;
-}
-
-void Publisher::OnPublisherStateSaved(const ledger::Result result) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Could not save publisher state");
-    // TODO(anyone) error handling
-    return;
-  }
 }
 
 void Publisher::getPublisherActivityFromUrl(
@@ -845,37 +655,6 @@ void Publisher::OnPanelPublisherInfo(
   }
 }
 
-void Publisher::SetBalanceReportItem(
-    const ledger::ActivityMonth month,
-    const int year,
-    const ledger::ReportType type,
-    const double amount) {
-  ledger::BalanceReportInfo report_info;
-  GetBalanceReportInternal(month, year, &report_info);
-
-  switch (type) {
-    case ledger::ReportType::GRANT_UGP:
-      report_info.grants = report_info.grants + amount;
-      break;
-    case ledger::ReportType::GRANT_AD:
-      report_info.earning_from_ads = report_info.earning_from_ads + amount;
-      break;
-    case ledger::ReportType::AUTO_CONTRIBUTION:
-      report_info.auto_contribute = report_info.auto_contribute + amount;
-      break;
-    case ledger::ReportType::TIP:
-      report_info.one_time_donation = report_info.one_time_donation + amount;
-      break;
-    case ledger::ReportType::TIP_RECURRING:
-      report_info.recurring_donation = report_info.recurring_donation + amount;
-      break;
-    default:
-      break;
-  }
-
-  setBalanceReport(month, year, report_info);
-}
-
 void Publisher::GetPublisherBanner(
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
@@ -935,20 +714,6 @@ void Publisher::OnGetPublisherBannerPublisher(
   }
 
   callback(std::move(new_banner));
-}
-
-void Publisher::SavePublisherProcessed(const std::string& publisher_key) {
-  const std::vector<std::string> list = state_->processed_pending_publishers;
-  if (std::find(list.begin(), list.end(), publisher_key) == list.end()) {
-    state_->processed_pending_publishers.push_back(publisher_key);
-  }
-  saveState();
-}
-
-bool Publisher::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) const {
-  const std::vector<std::string> list = state_->processed_pending_publishers;
-  return std::find(list.begin(), list.end(), publisher_key) != list.end();
 }
 
 }  // namespace braveledger_publisher

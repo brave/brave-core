@@ -29,6 +29,13 @@ extern const char kStateUpholdAnonAddress[];
 extern const char kStatePromotionLastFetchStamp[];
 extern const char kStatePromotionCorruptedMigrated[];
 extern const char kStateAnonTransferChecked[];
+extern const char kStateVersion[];
+extern const char kStateMinVisitTime[];
+extern const char kStateMinVisits[];
+extern const char kStateAllowNonVerified[];
+extern const char kStateAllowVideoContribution[];
+extern const char kStateScoreA[];
+extern const char kStateScoreB[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs

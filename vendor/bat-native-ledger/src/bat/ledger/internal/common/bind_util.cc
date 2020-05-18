@@ -341,6 +341,7 @@ void FromStringToContributionList(
 std::string FromMonthlyReportToString(ledger::MonthlyReportInfoPtr info) {
   base::Value balance(base::Value::Type::DICTIONARY);
   if (info->balance) {
+    balance.SetStringKey("id", info->balance->id);
     balance.SetDoubleKey("grants", info->balance->grants);
     balance.SetDoubleKey("earning_from_ads", info->balance->earning_from_ads);
     balance.SetDoubleKey("auto_contribute", info->balance->auto_contribute);
@@ -408,6 +409,11 @@ ledger::MonthlyReportInfoPtr FromStringToMonthlyReport(
   auto balance_report = ledger::BalanceReportInfo::New();
   auto* balance = dictionary->FindDictKey("balance");
   if (balance) {
+    const auto* id = balance->FindStringKey("id");
+    if (id) {
+      balance_report->id = *id;
+    }
+
     const auto grants = balance->FindDoubleKey("grants");
     if (grants) {
       balance_report->grants = *grants;

@@ -18,7 +18,7 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/properties/wallet_info_properties.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/ledger.h"
@@ -40,7 +40,7 @@ class Publisher;
 }
 
 namespace braveledger_bat_state {
-class BatState;
+class LegacyBatState;
 }
 
 namespace braveledger_contribution {
@@ -61,6 +61,10 @@ class Report;
 
 namespace braveledger_sku {
 class SKU;
+}
+
+namespace braveledger_state {
+class State;
 }
 
 namespace confirmations {
@@ -128,9 +132,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void SetRewardsMainEnabled(bool enabled) override;
 
-  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
+  void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
-  void SetPublisherMinVisits(unsigned int visits) override;
+  void SetPublisherMinVisits(int visits) override;
 
   void SetPublisherAllowNonVerified(bool allow) override;
 
@@ -156,13 +160,13 @@ class LedgerImpl : public ledger::Ledger {
 
   bool GetRewardsMainEnabled() const override;
 
-  uint64_t GetPublisherMinVisitTime() const override;  // In milliseconds
+  int GetPublisherMinVisitTime() override;  // In milliseconds
 
-  unsigned int GetPublisherMinVisits() const override;
+  int GetPublisherMinVisits() override;
 
-  bool GetPublisherAllowNonVerified() const override;
+  bool GetPublisherAllowNonVerified() override;
 
-  bool GetPublisherAllowVideos() const override;
+  bool GetPublisherAllowVideos() override;
 
   double GetContributionAmount() const override;
 
@@ -173,8 +177,8 @@ class LedgerImpl : public ledger::Ledger {
       const int year,
       ledger::GetBalanceReportCallback callback) const override;
 
-  std::map<std::string, ledger::BalanceReportInfoPtr>
-  GetAllBalanceReports() const override;
+  void GetAllBalanceReports(
+      ledger::GetBalanceReportListCallback callback) const override;
 
   ledger::AutoContributePropsPtr GetAutoContributeProps() override;
 
@@ -415,9 +419,9 @@ class LedgerImpl : public ledger::Ledger {
                                         const std::string& publisher_key = "",
                                         const std::string& publisher_name = "");
 
-  void SavePublisherProcessed(const std::string& publisher_key);
-
-  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
+  void WasPublisherProcessed(
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
@@ -478,9 +482,9 @@ class LedgerImpl : public ledger::Ledger {
 
   int GetIntegerState(const std::string& name) const;
 
-  void SetDoubleState(const std::string& name, double value);
+  virtual void SetDoubleState(const std::string& name, double value);
 
-  double GetDoubleState(const std::string& name) const;
+  virtual double GetDoubleState(const std::string& name) const;
 
   void SetStringState(const std::string& name, const std::string& value);
 
@@ -729,18 +733,29 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
 
- private:
-  void MaybeInitializeConfirmations(
-      const bool execute_create_script,
+  void SynopsisNormalizer();
+
+  void CalcScoreConsts(const int min_duration_seconds);
+
+  void SaveBalanceReportInfoList(
+      ledger::BalanceReportInfoList list,
       ledger::ResultCallback callback);
 
-  void InitializeConfirmations(
-      const bool execute_create_script,
+  void SaveProcessedPublisherList(
+      const std::vector<std::string>& list,
       ledger::ResultCallback callback);
+
+ private:
+  void OnStateInitialized(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
+  void MaybeInitializeConfirmations(ledger::ResultCallback callback);
+
+  void InitializeConfirmations(ledger::ResultCallback callback);
 
   void OnConfirmationsInitialized(
       const bool success,
-      const bool execute_create_script,
       ledger::ResultCallback callback);
 
   void InitializeDatabase(
@@ -797,11 +812,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  void OnPublisherStateLoaded(
-      ledger::Result result,
-      const std::string& data,
-      ledger::ResultCallback callback);
-
   void OnLedgerStateLoaded(
       ledger::Result result,
       const std::string& data,
@@ -828,13 +838,14 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
-  std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
+  std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   std::unique_ptr<braveledger_report::Report> bat_report_;
   std::unique_ptr<braveledger_sku::SKU> bat_sku_;
+  std::unique_ptr<braveledger_state::State> bat_state_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

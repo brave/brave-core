@@ -30,8 +30,8 @@ interface BatLedger {
       (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
 
   GetAutoContributeProps() => (ledger.mojom.AutoContributeProps props);
-  GetPublisherMinVisitTime() => (uint64 min_visit_time);
-  GetPublisherMinVisits() => (uint32 min_visits);
+  GetPublisherMinVisitTime() => (int32 min_visit_time);
+  GetPublisherMinVisits() => (int32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);
   GetPublisherAllowVideos() => (bool allowed);
   GetAutoContribute() => (bool auto_contribute);
@@ -65,8 +65,8 @@ interface BatLedger {
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
   
   SetRewardsMainEnabled(bool enabled);
-  SetPublisherMinVisitTime(uint64 duration_in_seconds);
-  SetPublisherMinVisits(uint32 visits);
+  SetPublisherMinVisitTime(int32 duration_in_seconds);
+  SetPublisherMinVisits(int32 visits);
   SetPublisherAllowNonVerified(bool allow);
   SetPublisherAllowVideos(bool allow);
   SetUserChangedContribution();

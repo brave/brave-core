@@ -84,8 +84,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       RecoverWalletCallback callback) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
-  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
-  void SetPublisherMinVisits(uint32_t visits) override;
+  void SetPublisherMinVisitTime(int duration_in_seconds) override;
+  void SetPublisherMinVisits(int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetPublisherAllowVideos(bool allow) override;
   void SetUserChangedContribution() override;

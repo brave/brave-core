@@ -269,7 +269,7 @@ class RewardsServiceImpl : public RewardsService,
       const double amount,
       const bool recurring) override;
 
-  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
+  void SetPublisherMinVisitTime(int duration_in_seconds) const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
@@ -500,7 +500,7 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) override;
   void SetRewardsMainEnabled(bool enabled) override;
-  void SetPublisherMinVisits(unsigned int visits) const override;
+  void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
   void SetUserChangedContribution() const override;

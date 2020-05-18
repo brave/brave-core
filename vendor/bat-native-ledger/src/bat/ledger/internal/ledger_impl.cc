@@ -20,14 +20,16 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
-#include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/state/state.h"
+#include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -40,6 +42,7 @@ using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
 using namespace braveledger_sku; //  NOLINT
+using namespace braveledger_state; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -52,11 +55,12 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_promotion_(new Promotion(this)),
     bat_publisher_(new Publisher(this)),
     bat_media_(new Media(this)),
-    bat_state_(new BatState(this)),
+    legacy_bat_state_(new LegacyBatState(this)),
     bat_contribution_(new Contribution(this)),
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
+    bat_state_(new State(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -107,7 +111,7 @@ void LedgerImpl::OnWalletInitializedInternal(
 
     // Set wallet info for Confirmations when launching the browser or creating
     // a wallet for the first time
-    auto wallet_info = bat_state_->GetWalletInfo();
+    auto wallet_info = legacy_bat_state_->GetWalletInfo();
     SetConfirmationsWalletInfo(wallet_info);
   } else {
     BLOG(0, "Failed to initialize wallet");
@@ -124,51 +128,6 @@ void LedgerImpl::Initialize(
   }
 
   initializing_ = true;
-
-  MaybeInitializeConfirmations(execute_create_script, callback);
-}
-
-void LedgerImpl::MaybeInitializeConfirmations(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  confirmations::_environment = ledger::_environment;
-  confirmations::_is_debug = ledger::is_debug;
-
-  const bool is_enabled = GetBooleanState(ledger::kStateEnabled);
-
-  const bool is_enabled_migrated =
-      GetBooleanState(ledger::kStateEnabledMigrated);
-
-  if (is_enabled || !is_enabled_migrated) {
-    InitializeConfirmations(execute_create_script, callback);
-  } else {
-    InitializeDatabase(execute_create_script, callback);
-  }
-}
-
-void LedgerImpl::InitializeConfirmations(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  bat_confirmations_.reset(
-      confirmations::Confirmations::CreateInstance(ledger_client_));
-
-  auto initialized_callback = std::bind(&LedgerImpl::OnConfirmationsInitialized,
-      this,
-      _1,
-      execute_create_script,
-      callback);
-  bat_confirmations_->Initialize(initialized_callback);
-}
-
-void LedgerImpl::OnConfirmationsInitialized(
-    const bool success,
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
-  if (!success) {
-    // If confirmations fail, we should fall-through and continue initializing
-    // ledger
-    BLOG(0, "Failed to initialize confirmations");
-  }
 
   InitializeDatabase(execute_create_script, callback);
 }
@@ -187,6 +146,85 @@ void LedgerImpl::InitializeDatabase(
       _1,
       finish_callback);
   bat_database_->Initialize(execute_create_script, database_callback);
+}
+
+void LedgerImpl::OnDatabaseInitialized(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Database could not be initialized. Error: " << result);
+    callback(result);
+    return;
+  }
+
+  auto state_callback = std::bind(&LedgerImpl::OnStateInitialized,
+      this,
+      _1,
+      callback);
+
+  bat_state_->Initialize(state_callback);
+}
+
+void LedgerImpl::OnStateInitialized(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to initialize state");
+    return;
+  }
+
+  MaybeInitializeConfirmations(callback);
+}
+
+void LedgerImpl::MaybeInitializeConfirmations(
+    ledger::ResultCallback callback) {
+  confirmations::_environment = ledger::_environment;
+  confirmations::_is_debug = ledger::is_debug;
+
+  const bool is_enabled = GetBooleanState(ledger::kStateEnabled);
+
+  const bool is_enabled_migrated =
+      GetBooleanState(ledger::kStateEnabledMigrated);
+
+  if (is_enabled || !is_enabled_migrated) {
+    InitializeConfirmations(callback);
+  } else {
+    auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
+        this,
+        _1,
+        _2,
+        std::move(callback));
+    LoadLedgerState(on_load);
+  }
+}
+
+void LedgerImpl::InitializeConfirmations(
+    ledger::ResultCallback callback) {
+  bat_confirmations_.reset(
+      confirmations::Confirmations::CreateInstance(ledger_client_));
+
+  auto initialized_callback = std::bind(&LedgerImpl::OnConfirmationsInitialized,
+      this,
+      _1,
+      callback);
+  bat_confirmations_->Initialize(initialized_callback);
+}
+
+void LedgerImpl::OnConfirmationsInitialized(
+    const bool success,
+    ledger::ResultCallback callback) {
+  if (!success) {
+    // If confirmations fail, we should fall-through and continue initializing
+    // ledger
+    BLOG(0, "Failed to initialize confirmations");
+  }
+
+  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
+      this,
+      _1,
+      _2,
+      std::move(callback));
+  LoadLedgerState(on_load);
 }
 
 void LedgerImpl::StartConfirmations() {
@@ -383,23 +421,24 @@ void LedgerImpl::OnLedgerStateLoaded(
     const std::string& data,
     ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
-    if (!bat_state_->LoadState(data)) {
+    if (!legacy_bat_state_->LoadState(data)) {
       BLOG(0, "Successfully loaded but failed to parse ledger state.");
       BLOG(1, "Failed ledger state: " << data);
 
       callback(ledger::Result::INVALID_LEDGER_STATE);
-    } else {
-      auto wallet_info = bat_state_->GetWalletInfo();
-      auto on_pub_load = std::bind(
-          &LedgerImpl::OnPublisherStateLoaded,
-          this,
-          _1,
-          _2,
-          std::move(callback));
-      LoadPublisherState(std::move(on_pub_load));
+      return;
     }
+
+    if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
+      BLOG(0, "Corrupted wallet");
+      callback(ledger::Result::CORRUPTED_DATA);
+      return;
+    }
+
+    callback(result);
     return;
   }
+
   if (result != ledger::Result::NO_LEDGER_STATE) {
     BLOG(0, "Failed to load ledger state");
     BLOG(1, "Failed ledger state: " << data);
@@ -444,47 +483,6 @@ void LedgerImpl::SetConfirmationsWalletInfo(
 
 void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadPublisherState(std::move(callback));
-}
-
-void LedgerImpl::OnPublisherStateLoaded(
-    ledger::Result result,
-    const std::string& data,
-    ledger::ResultCallback callback) {
-  if (result == ledger::Result::LEDGER_OK) {
-    if (!bat_publisher_->loadState(data)) {
-      BLOG(0, "Successfully loaded but failed to parse ledger state.");
-      BLOG(1, "Failed publisher state: " << data);
-
-      result = ledger::Result::INVALID_PUBLISHER_STATE;
-    }
-  } else {
-    BLOG(0, "Failed to load publisher state");
-    BLOG(1, "Failed publisher state: " << data);
-  }
-
-  if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
-    callback(ledger::Result::CORRUPTED_DATA);
-    return;
-  }
-
-  callback(result);
-}
-
-void LedgerImpl::OnDatabaseInitialized(
-    const ledger::Result result,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Database could not be initialized. Error: " << result);
-    callback(result);
-    return;
-  }
-
-  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
-      this,
-      _1,
-      _2,
-      std::move(callback));
-  LoadLedgerState(on_load);
 }
 
 void LedgerImpl::SaveLedgerState(
@@ -547,7 +545,7 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
                                 const uint64_t window_id,
                                 const ledger::PublisherInfoCallback callback) {
   uint64_t new_duration = duration;
-  if (!bat_publisher_->getPublisherAllowVideos()) {
+  if (!braveledger_state::GetPublisherAllowVideos(this)) {
     new_duration = 0;
   }
 
@@ -651,7 +649,7 @@ void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 }
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
-  bat_state_->SetRewardsMainEnabled(enabled);
+  legacy_bat_state_->SetRewardsMainEnabled(enabled);
   bat_publisher_->SetPublisherServerListTimer(enabled);
 
   if (enabled) {
@@ -661,36 +659,36 @@ void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   }
 }
 
-void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {  // In seconds
-  bat_publisher_->setPublisherMinVisitTime(duration);
+void LedgerImpl::SetPublisherMinVisitTime(int duration) {
+  braveledger_state::SetPublisherMinVisitTime(this, duration);
 }
 
-void LedgerImpl::SetPublisherMinVisits(unsigned int visits) {
-  bat_publisher_->setPublisherMinVisits(visits);
+void LedgerImpl::SetPublisherMinVisits(int visits) {
+  braveledger_state::SetPublisherMinVisits(this, visits);
 }
 
 void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  bat_publisher_->setPublisherAllowNonVerified(allow);
+  braveledger_state::SetPublisherAllowNonVerified(this, allow);
 }
 
 void LedgerImpl::SetPublisherAllowVideos(bool allow) {
-  bat_publisher_->setPublisherAllowVideos(allow);
+  braveledger_state::SetPublisherAllowVideos(this, allow);
 }
 
 void LedgerImpl::SetContributionAmount(double amount) {
-  bat_state_->SetContributionAmount(amount);
+  legacy_bat_state_->SetContributionAmount(amount);
 }
 
 void LedgerImpl::SetUserChangedContribution() {
-  bat_state_->SetUserChangedContribution();
+  legacy_bat_state_->SetUserChangedContribution();
 }
 
 bool LedgerImpl::GetUserChangedContribution() {
-  return bat_state_->GetUserChangedContribution();
+  return legacy_bat_state_->GetUserChangedContribution();
 }
 
 void LedgerImpl::SetAutoContribute(bool enabled) {
-  bat_state_->SetAutoContribute(enabled);
+  legacy_bat_state_->SetAutoContribute(enabled);
 }
 
 ledger::AutoContributePropsPtr LedgerImpl::GetAutoContributeProps() {
@@ -705,35 +703,35 @@ ledger::AutoContributePropsPtr LedgerImpl::GetAutoContributeProps() {
 }
 
 bool LedgerImpl::GetRewardsMainEnabled() const {
-  return bat_state_->GetRewardsMainEnabled();
+  return legacy_bat_state_->GetRewardsMainEnabled();
 }
 
-uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
-  return bat_publisher_->getPublisherMinVisitTime();
+int LedgerImpl::GetPublisherMinVisitTime() {
+  return braveledger_state::GetPublisherMinVisitTime(this);
 }
 
-unsigned int LedgerImpl::GetPublisherMinVisits() const {
-  return bat_publisher_->GetPublisherMinVisits();
+int LedgerImpl::GetPublisherMinVisits() {
+  return braveledger_state::GetPublisherMinVisits(this);
 }
 
-bool LedgerImpl::GetPublisherAllowNonVerified() const {
-  return bat_publisher_->getPublisherAllowNonVerified();
+bool LedgerImpl::GetPublisherAllowNonVerified() {
+  return braveledger_state::GetPublisherAllowNonVerified(this);
 }
 
-bool LedgerImpl::GetPublisherAllowVideos() const {
-  return bat_publisher_->getPublisherAllowVideos();
+bool LedgerImpl::GetPublisherAllowVideos() {
+  return braveledger_state::GetPublisherAllowVideos(this);
 }
 
 double LedgerImpl::GetContributionAmount() const {
-  return bat_state_->GetContributionAmount();
+  return legacy_bat_state_->GetContributionAmount();
 }
 
 bool LedgerImpl::GetAutoContribute() const {
-  return bat_state_->GetAutoContribute();
+  return legacy_bat_state_->GetAutoContribute();
 }
 
 uint64_t LedgerImpl::GetReconcileStamp() const {
-  return bat_state_->GetReconcileStamp();
+  return legacy_bat_state_->GetReconcileStamp();
 }
 
 void LedgerImpl::ContributionCompleted(
@@ -811,7 +809,7 @@ void LedgerImpl::OnRecoverWallet(
   }
 
   if (result == ledger::Result::LEDGER_OK) {
-    bat_publisher_->clearAllBalanceReports();
+    bat_database_->DeleteAllBalanceReports([](const ledger::Result _) {});
   }
 
   callback(result, balance);
@@ -821,12 +819,12 @@ void LedgerImpl::GetBalanceReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetBalanceReportCallback callback) const {
-  bat_publisher_->GetBalanceReport(month, year, callback);
+  bat_database_->GetBalanceReportInfo(month, year, callback);
 }
 
-std::map<std::string, ledger::BalanceReportInfoPtr>
-LedgerImpl::GetAllBalanceReports() const {
-  return bat_publisher_->GetAllBalanceReports();
+void LedgerImpl::GetAllBalanceReports(
+    ledger::GetBalanceReportListCallback callback) const {
+  return bat_database_->GetAllBalanceReports(callback);
 }
 
 void LedgerImpl::SavePendingContribution(
@@ -872,7 +870,7 @@ void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
 }
 
 bool LedgerImpl::IsWalletCreated() const {
-  return bat_state_->IsWalletCreated();
+  return legacy_bat_state_->IsWalletCreated();
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(
@@ -908,7 +906,12 @@ void LedgerImpl::SetBalanceReportItem(
     const int year,
     const ledger::ReportType type,
     const double amount) {
-  bat_publisher_->SetBalanceReportItem(month, year, type, amount);
+  bat_database_->SaveBalanceReportInfoItem(
+      month,
+      year,
+      type,
+      amount,
+      [](const ledger::Result _) {});
 }
 
 void LedgerImpl::FetchFavIcon(const std::string& url,
@@ -952,53 +955,53 @@ void LedgerImpl::UpdateAdsRewards() {
 }
 
 void LedgerImpl::ResetReconcileStamp() {
-  bat_state_->ResetReconcileStamp();
+  legacy_bat_state_->ResetReconcileStamp();
   ledger_client_->ReconcileStampReset();
 }
 
 const std::string& LedgerImpl::GetPaymentId() const {
-  return bat_state_->GetPaymentId();
+  return legacy_bat_state_->GetPaymentId();
 }
 
 const std::string& LedgerImpl::GetPersonaId() const {
-  return bat_state_->GetPersonaId();
+  return legacy_bat_state_->GetPersonaId();
 }
 
 void LedgerImpl::SetPersonaId(const std::string& persona_id) {
-  bat_state_->SetPersonaId(persona_id);
+  legacy_bat_state_->SetPersonaId(persona_id);
 }
 
 const std::string& LedgerImpl::GetUserId() const {
-  return bat_state_->GetUserId();
+  return legacy_bat_state_->GetUserId();
 }
 
 void LedgerImpl::SetUserId(const std::string& user_id) {
-  bat_state_->SetUserId(user_id);
+  legacy_bat_state_->SetUserId(user_id);
 }
 
 const std::string& LedgerImpl::GetRegistrarVK() const {
-  return bat_state_->GetRegistrarVK();
+  return legacy_bat_state_->GetRegistrarVK();
 }
 
 void LedgerImpl::SetRegistrarVK(const std::string& registrar_vk) {
-  bat_state_->SetRegistrarVK(registrar_vk);
+  legacy_bat_state_->SetRegistrarVK(registrar_vk);
 }
 
 const std::string& LedgerImpl::GetPreFlight() const {
-  return bat_state_->GetPreFlight();
+  return legacy_bat_state_->GetPreFlight();
 }
 
 void LedgerImpl::SetPreFlight(const std::string& pre_flight) {
-  bat_state_->SetPreFlight(pre_flight);
+  legacy_bat_state_->SetPreFlight(pre_flight);
 }
 
 const ledger::WalletInfoProperties& LedgerImpl::GetWalletInfo() const {
-  return bat_state_->GetWalletInfo();
+  return legacy_bat_state_->GetWalletInfo();
 }
 
 void LedgerImpl::SetWalletInfo(
     const ledger::WalletInfoProperties& info) {
-  bat_state_->SetWalletInfo(info);
+  legacy_bat_state_->SetWalletInfo(info);
 
   if (!initializing_) {
     // Only update wallet info for Confirmations if |SetWalletInfo| was not
@@ -1014,19 +1017,20 @@ void LedgerImpl::GetRewardsInternalsInfo(
   ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
 
   // Retrieve the payment id.
-  info->payment_id = bat_state_->GetPaymentId();
+  info->payment_id = legacy_bat_state_->GetPaymentId();
 
   // Retrieve the persona id.
-  info->persona_id = bat_state_->GetPersonaId();
+  info->persona_id = legacy_bat_state_->GetPersonaId();
 
   // Retrieve the user id.
-  info->user_id = bat_state_->GetUserId();
+  info->user_id = legacy_bat_state_->GetUserId();
 
   // Retrieve the boot stamp.
-  info->boot_stamp = bat_state_->GetBootStamp();
+  info->boot_stamp = legacy_bat_state_->GetBootStamp();
 
   // Retrieve the key info seed and validate it.
-  const ledger::WalletInfoProperties wallet_info = bat_state_->GetWalletInfo();
+  const ledger::WalletInfoProperties wallet_info =
+      legacy_bat_state_->GetWalletInfo();
   if (wallet_info.key_info_seed.size() != SEED_LENGTH) {
     info->is_key_info_seed_valid = false;
   } else {
@@ -1046,20 +1050,20 @@ void LedgerImpl::StartMonthlyContribution() {
 }
 
 const ledger::WalletProperties& LedgerImpl::GetWalletProperties() const {
-  return bat_state_->GetWalletProperties();
+  return legacy_bat_state_->GetWalletProperties();
 }
 
 void LedgerImpl::SetWalletProperties(
     ledger::WalletProperties* properties) {
-  bat_state_->SetWalletProperties(properties);
+  legacy_bat_state_->SetWalletProperties(properties);
 }
 
 uint64_t LedgerImpl::GetBootStamp() const {
-  return bat_state_->GetBootStamp();
+  return legacy_bat_state_->GetBootStamp();
 }
 
 void LedgerImpl::SetBootStamp(uint64_t stamp) {
-  bat_state_->SetBootStamp(stamp);
+  legacy_bat_state_->SetBootStamp(stamp);
 }
 void LedgerImpl::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
@@ -1079,7 +1083,7 @@ void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
 }
 
 double LedgerImpl::GetDefaultContributionAmount() {
-  return bat_state_->GetDefaultContributionAmount();
+  return legacy_bat_state_->GetDefaultContributionAmount();
 }
 
 void LedgerImpl::HasSufficientBalanceToReconcile(
@@ -1181,11 +1185,11 @@ void LedgerImpl::SaveMediaInfo(const std::string& type,
 }
 
 void LedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
-  bat_state_->SetInlineTipSetting(key, enabled);
+  legacy_bat_state_->SetInlineTipSetting(key, enabled);
 }
 
 bool LedgerImpl::GetInlineTipSetting(const std::string& key) {
-  return bat_state_->GetInlineTipSetting(key);
+  return legacy_bat_state_->GetInlineTipSetting(key);
 }
 
 std::string LedgerImpl::GetShareURL(
@@ -1228,13 +1232,10 @@ void LedgerImpl::OnContributeUnverifiedPublishers(
                                                    publisher_name);
 }
 
-void LedgerImpl::SavePublisherProcessed(const std::string& publisher_key) {
-  bat_publisher_->SavePublisherProcessed(publisher_key);
-}
-
-bool LedgerImpl::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) const {
-  return bat_publisher_->WasPublisherAlreadyProcessed(publisher_key);
+void LedgerImpl::WasPublisherProcessed(
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  bat_database_->WasPublisherProcessed(publisher_key, callback);
 }
 
 void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
@@ -1247,7 +1248,7 @@ void LedgerImpl::GetExternalWallets(
 }
 
 std::string LedgerImpl::GetCardIdAddress() const {
-  return bat_state_->GetCardIdAddress();
+  return legacy_bat_state_->GetCardIdAddress();
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
@@ -1770,6 +1771,26 @@ void LedgerImpl::UpdatePromotionsBlankPublicKey(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
   bat_database_->UpdatePromotionsBlankPublicKey(ids, callback);
+}
+
+void LedgerImpl::SynopsisNormalizer() {
+  bat_publisher_->SynopsisNormalizer();
+}
+
+void LedgerImpl::CalcScoreConsts(const int min_duration_seconds) {
+  bat_publisher_->CalcScoreConsts(min_duration_seconds);
+}
+
+void LedgerImpl::SaveBalanceReportInfoList(
+    ledger::BalanceReportInfoList list,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveBalanceReportInfoList(std::move(list), callback);
+}
+
+void LedgerImpl::SaveProcessedPublisherList(
+    const std::vector<std::string>& list,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveProcessedPublisherList(list, callback);
 }
 
 }  // namespace bat_ledger

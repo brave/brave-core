@@ -17,11 +17,13 @@ class LedgerImpl;
 namespace braveledger_database {
 
 class DatabaseActivityInfo;
+class DatabaseBalanceReport;
 class DatabaseContributionInfo;
 class DatabaseContributionQueue;
 class DatabaseCredsBatch;
 class DatabaseMediaPublisherInfo;
 class DatabasePendingContribution;
+class DatabaseProcessedPublisher;
 class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
@@ -43,11 +45,13 @@ class DatabaseMigration {
   bool Migrate(ledger::DBTransaction* transaction, const int target);
 
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabaseBalanceReport> balance_report_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabaseCredsBatch> creds_batch_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
+  std::unique_ptr<DatabaseProcessedPublisher> processed_publisher_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;

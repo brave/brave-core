@@ -7,6 +7,7 @@
 
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_balance_report.h"
 #include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
@@ -14,6 +15,7 @@
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_multi_tables.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
+#include "bat/ledger/internal/database/database_processed_publisher.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
@@ -31,6 +33,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
 
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
+  balance_report_ = std::make_unique<DatabaseBalanceReport>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
@@ -39,6 +42,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
+  processed_publisher_ = std::make_unique<DatabaseProcessedPublisher>(ledger_);
   promotion_ = std::make_unique<DatabasePromotion>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
@@ -87,6 +91,47 @@ void Database::DeleteActivityInfo(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
+}
+
+/**
+ * BALANCE REPORT INFO
+ */
+void Database::SaveBalanceReportInfo(
+    ledger::BalanceReportInfoPtr info,
+    ledger::ResultCallback callback) {
+  balance_report_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::SaveBalanceReportInfoList(
+      ledger::BalanceReportInfoList list,
+      ledger::ResultCallback callback) {
+  balance_report_->InsertOrUpdateList(std::move(list), callback);
+}
+
+void Database::SaveBalanceReportInfoItem(
+    ledger::ActivityMonth month,
+    int year,
+    ledger::ReportType type,
+    double amount,
+    ledger::ResultCallback callback) {
+  balance_report_->SetAmount(month, year, type, amount, callback);
+}
+
+void Database::GetBalanceReportInfo(
+    ledger::ActivityMonth month,
+    int year,
+    ledger::GetBalanceReportCallback callback) {
+  balance_report_->GetRecord(month, year, callback);
+}
+
+void Database::GetAllBalanceReports(
+    ledger::GetBalanceReportListCallback callback) {
+  balance_report_->GetAllRecords(callback);
+}
+
+void Database::DeleteAllBalanceReports(
+    ledger::ResultCallback callback) {
+  balance_report_->DeleteAllRecords(callback);
 }
 
 /**
@@ -280,6 +325,21 @@ void Database::RemovePendingContribution(
 
 void Database::RemoveAllPendingContributions(ledger::ResultCallback callback) {
   pending_contribution_->DeleteAllRecords(callback);
+}
+
+/**
+ * PROCESSED PUBLISHER
+ */
+void Database::SaveProcessedPublisherList(
+    const std::vector<std::string>& list,
+    ledger::ResultCallback callback) {
+  processed_publisher_->InsertOrUpdateList(list, callback);
+}
+
+void Database::WasPublisherProcessed(
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  processed_publisher_->WasProcessed(publisher_key, callback);
 }
 
 /**

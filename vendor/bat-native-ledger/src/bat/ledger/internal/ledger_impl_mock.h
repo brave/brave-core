@@ -69,9 +69,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
 
-  MOCK_METHOD1(SetPublisherMinVisitTime, void(uint64_t));
+  MOCK_METHOD1(SetPublisherMinVisitTime, void(int));
 
-  MOCK_METHOD1(SetPublisherMinVisits, void(unsigned int));
+  MOCK_METHOD1(SetPublisherMinVisits, void(int));
 
   MOCK_METHOD1(SetPublisherAllowNonVerified, void(bool));
 
@@ -95,13 +95,13 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(GetRewardsMainEnabled, bool());
 
-  MOCK_CONST_METHOD0(GetPublisherMinVisitTime, uint64_t());
+  MOCK_METHOD0(GetPublisherMinVisitTime, int());
 
-  MOCK_CONST_METHOD0(GetPublisherMinVisits, unsigned int());
+  MOCK_METHOD0(GetPublisherMinVisits, int());
 
-  MOCK_CONST_METHOD0(GetPublisherAllowNonVerified, bool());
+  MOCK_METHOD0(GetPublisherAllowNonVerified, bool());
 
-  MOCK_CONST_METHOD0(GetPublisherAllowVideos, bool());
+  MOCK_METHOD0(GetPublisherAllowVideos, bool());
 
   MOCK_CONST_METHOD0(GetContributionAmount, double());
 
@@ -112,8 +112,8 @@ class MockLedgerImpl : public LedgerImpl {
           const int,
           const ledger::GetBalanceReportCallback));
 
-  MOCK_CONST_METHOD0(GetAllBalanceReports,
-      std::map<std::string, ledger::BalanceReportInfoPtr>());
+  MOCK_CONST_METHOD1(GetAllBalanceReports,
+      void(ledger::GetBalanceReportListCallback));
 
   MOCK_METHOD0(GetAutoContributeProps, ledger::AutoContributePropsPtr());
 
@@ -362,9 +362,9 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD3(OnContributeUnverifiedPublishers,
       void(ledger::Result, const std::string&, const std::string&));
 
-  MOCK_METHOD1(SavePublisherProcessed, void(const std::string&));
-
-  MOCK_CONST_METHOD1(WasPublisherAlreadyProcessed, bool(const std::string&));
+  MOCK_METHOD2(WasPublisherProcessed, void(
+      const std::string&,
+      ledger::ResultCallback));
 
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 
