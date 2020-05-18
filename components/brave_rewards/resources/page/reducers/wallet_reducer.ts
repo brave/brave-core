@@ -201,6 +201,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         ui.walletServerProblem = true
       } else if (status === 24) { // on ledger::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet', ['uphold'])
+        state.balance.total = action.payload.balance.total || 0
       }
 
       state = {
