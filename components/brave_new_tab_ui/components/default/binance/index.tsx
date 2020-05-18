@@ -1125,6 +1125,7 @@ class Binance extends React.PureComponent<Props, State> {
       <>
         <NavigationBar>
           <NavigationItem
+            tabIndex={0}
             isLeading={true}
             isActive={isSummaryView}
             onClick={this.setSelectedView.bind(this, 'summary')}
@@ -1132,19 +1133,21 @@ class Binance extends React.PureComponent<Props, State> {
             {getLocale('binanceWidgetSummary')}
           </NavigationItem>
           <NavigationItem
-            isLeading={true}
+            tabIndex={0}
             isActive={selectedView === 'deposit'}
             onClick={this.setSelectedView.bind(this, 'deposit')}
           >
             {getLocale('binanceWidgetDepositLabel')}
           </NavigationItem>
           <NavigationItem
+            tabIndex={0}
             isActive={selectedView === 'convert'}
             onClick={this.setSelectedView.bind(this, 'convert')}
           >
             {getLocale('binanceWidgetConvert')}
           </NavigationItem>
           <NavigationItem
+            tabIndex={0}
             isBuy={true}
             isActive={selectedView === 'buy'}
             onClick={this.setSelectedView.bind(this, 'buy')}
@@ -1339,7 +1342,7 @@ class Binance extends React.PureComponent<Props, State> {
     }
 
     return (
-      <WidgetWrapper userAuthed={userAuthed} onClick={this.unpersistDropdowns}>
+      <WidgetWrapper tabIndex={0} userAuthed={userAuthed} onClick={this.unpersistDropdowns}>
         {
           this.renderIndexView()
           ? this.renderIndexView()
