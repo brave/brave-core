@@ -508,15 +508,19 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
                                                       si_installed_dir_));
   }
 
+  bool sr_ended = false;
+  if (is_super_referral && !sr_images_data_->IsValid()) {
+    DVLOG(2) << __func__ << ": NTP SR campaign ends.";
+    sr_ended = true;
+    UnRegisterSuperReferralComponent();
+    MarkThisInstallIsNotSuperReferralForever();
+  }
+
   for (auto& observer : observer_list_) {
     observer.OnUpdated(is_super_referral ? sr_images_data_.get()
                                          : si_images_data_.get());
-  }
-
-  if (is_super_referral && !sr_images_data_->IsValid()) {
-    DVLOG(2) << __func__ << ": NTP SR campaign ends.";
-    UnRegisterSuperReferralComponent();
-    MarkThisInstallIsNotSuperReferralForever();
+    if (sr_ended)
+      observer.OnSuperReferralEnded();
   }
 }
 
