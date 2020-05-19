@@ -59,9 +59,11 @@ bool BraveIsAllowedThirdParty(
             ContentSettingsPattern::FromString(kUbi),
             ContentSettingsPattern::FromString(kUbisoft)
           },
+          {
             ContentSettingsPattern::FromString(kAmericanexpress),
             ContentSettingsPattern::FromString(kAexp)
           },
+          {
             ContentSettingsPattern::FromString(kAexp),
             ContentSettingsPattern::FromString(kAmericanexpress)
           }
