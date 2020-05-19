@@ -32,6 +32,10 @@ declare_args() {
   brave_android_key_password = ""
 
   skip_signing = false
+
+  # Used for generating delta installer on Win.
+  build_delta_installer = false
+  last_chrome_installer = ""
 }
 
 if (base_sparkle_update_url == "") {
