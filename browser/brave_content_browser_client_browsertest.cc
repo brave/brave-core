@@ -91,6 +91,9 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
         "brave_webtorrent.html?https://webtorrent.io/torrents/"
         "sintel.torrent#ix=5");
+    torrent_invalid_query_extension_url_ = GURL(
+        "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
+        "brave_webtorrent.html?chrome://settings");
   }
 
   void TearDown() override {
@@ -103,6 +106,9 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   const GURL& extension_url() { return extension_url_; }
   const GURL& torrent_url() { return torrent_url_; }
   const GURL& torrent_extension_url() { return torrent_extension_url_; }
+  const GURL& torrent_invalid_query_extension_url() {
+    return torrent_invalid_query_extension_url_;
+  }
 
   content::ContentBrowserClient* client() {
     return browser_content_client_.get();
@@ -114,6 +120,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   GURL extension_url_;
   GURL torrent_url_;
   GURL torrent_extension_url_;
+  GURL torrent_invalid_query_extension_url_;
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
@@ -304,6 +311,28 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
                torrent_extension_url().spec().c_str())
+      << "Real URL should be extension URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       NoReverseRewriteTorrentURLForInvalidQuery) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // Used to add the extension
+  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  ui_test_utils::NavigateToURL(browser(),
+                               torrent_invalid_query_extension_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+               torrent_invalid_query_extension_url().spec().c_str())
+      << "URL visible to users should stay as extension URL for invalid query";
+  content::NavigationEntry* entry =
+      contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+               torrent_invalid_query_extension_url().spec().c_str())
       << "Real URL should be extension URL";
 }
 
