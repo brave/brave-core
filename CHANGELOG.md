@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.16.2](https://github.com/brave/brave-ios/releases/tag/v1.16.2)
+
+ - Fixed an issue where total balance did not include old promotions in certain scenarios. ([#2556](https://github.com/brave/brave-ios/issues/2556)
+
+## [1.16.1](https://github.com/brave/brave-ios/releases/tag/v1.16.1)
+
+ - Implemented pagination for publisher list. ([#2529](https://github.com/brave/brave-ios/issues/2529))
+ - Fixed users not receiving ad promotion due to empty public key in certain cases. ([#2536](https://github.com/brave/brave-ios/issues/2536))
+ - Fixed missing estimated ads payout details. ([#2531](https://github.com/brave/brave-ios/issues/2531))
+ - Fixed ads initialization between app relaunch. ([#2541](https://github.com/brave/brave-ios/issues/2541))
+
+
 ## [1.16](https://github.com/brave/brave-ios/releases/tag/v1.16)
 
  - Added support for referral background images and top sites on the New Tab Page. ([#2324](https://github.com/brave/brave-ios/issues/2324))
