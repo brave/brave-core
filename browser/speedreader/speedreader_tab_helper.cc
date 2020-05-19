@@ -22,6 +22,9 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
 
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
+  DCHECK(handle);
+  DCHECK(handle->IsInMainFrame());
+
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   DCHECK(profile);
@@ -34,7 +37,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
   }
 
   // Work only with casual main frame navigations.
-  if (handle->GetURL().SchemeIsHTTPOrHTTPS() && handle->IsInMainFrame()) {
+  if (handle->GetURL().SchemeIsHTTPOrHTTPS()) {
     auto* whitelist = g_brave_browser_process->speedreader_whitelist();
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         whitelist->IsWhitelisted(handle->GetURL())) {
