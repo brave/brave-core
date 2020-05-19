@@ -379,12 +379,8 @@ class PageWallet extends React.Component<Props, State> {
   getWalletStatus = (): WalletState | undefined => {
     const { externalWallet, ui } = this.props.rewardsData
 
-    if (ui.onlyAnonWallet) {
+    if (ui.onlyAnonWallet || !externalWallet) {
       return undefined
-    }
-
-    if (!externalWallet) {
-      return 'unverified'
     }
 
     switch (externalWallet.status) {
