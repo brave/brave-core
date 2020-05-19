@@ -50,10 +50,13 @@ import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.UrlConstants;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
+import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 /**
  * Brave's extension for ChromeActivity
@@ -186,8 +189,9 @@ public abstract class BraveActivity extends ChromeActivity {
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        int appOpenCount = ContextUtils.getAppSharedPreferences().getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0);
-        BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT , appOpenCount + 1);
+
+        int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
+        SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
         //set bg ads to off for existing and new installations
         setBgBraveAdsDefaultOff();
@@ -207,6 +211,14 @@ public abstract class BraveActivity extends ChromeActivity {
         if (onboardingActivity == null) {
             OnboardingPrefManager.getInstance().showOnboarding(this, false);
         }
+
+        if(!RateUtils.getInstance(this).getPrefRateEnabled()) {
+            RateUtils.getInstance(this).setPrefRateEnabled(true);
+            RateUtils.getInstance(this).setNextRateDateAndCount();
+        }
+
+        if (RateUtils.getInstance(this).shouldShowRateDialog())
+            showBraveRateDialog();
     }
 
     @Override
@@ -379,6 +391,12 @@ public abstract class BraveActivity extends ChromeActivity {
         } else { // Open a new tab
             return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
+    }
+
+    private void showBraveRateDialog() {
+        RateDialogFragment mRateDialogFragment = new RateDialogFragment();
+        mRateDialogFragment.setCancelable(false);
+        mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
     }
 
     private native void nativeRestartStatsUpdater();

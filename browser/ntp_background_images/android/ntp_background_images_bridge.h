@@ -48,6 +48,8 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
     const base::android::JavaParamRef<jobject>& obj);
   base::android::ScopedJavaLocalRef<jstring> GetSuperReferralCode(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj);
+  base::android::ScopedJavaLocalRef<jstring> GetReferralApiKey(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
