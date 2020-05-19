@@ -45,6 +45,7 @@ export const SettingsSidebarActiveButtonSlider =
   height: 48px;
   width: 4px;
   background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+  border-radius: 0px 2px 2px 0px;
   transform: translateY(${p => p.translateTo * 48}px);
   transition-delay: 0.05s;
   transition-duration: 0.3s;
@@ -66,10 +67,10 @@ export const SettingsSidebarSVGContent = styled<SettingsSidebarSVGContentProps, 
 
 export const SettingsSidebarButtonText = styled<{}, 'span'>('span')`
   margin-left: 16px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 13px;
   font-family: ${p => p.theme.fontFamily.heading};
-  color: ${p => p.theme.palette.grey800};
+  color: ${p => p.theme.color.contextMenuForeground};
   position: relative;
 
   &:hover {
@@ -91,6 +92,7 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
   cursor: pointer;
   display: flex;
   align-items: center;
+  background: inherit;
 
   &:focus {
     outline: none;
@@ -117,21 +119,16 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
       background: ${p => p.theme.color.panelBackground};
     `}
 
-    // Gradientify text part 2
-    &::before {
-      ${p => p.activeTab && css`
-        mix-blend-mode: screen;
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        transition: linear 0.3s background-image;
-        background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
-      `}
-    }
+    ${p => p.activeTab && css`
+      background-size: 100%;
+      background-repeat: repeat;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+      transition: linear 0.3s background-image;
+      background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    `}
 `
 
 export const SettingsFeatureBody = styled<{}, 'section'>('section')`
@@ -163,6 +160,7 @@ export const SettingsCloseIcon = styled<{}, 'button'>('button')`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  background: inherit;
 `
 
 interface SettingsRowProps {
@@ -184,8 +182,12 @@ export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
 export const SettingsText = styled<{}, 'span'>('span')`
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-style: normal;
   font-weight: normal;
+  font-size: 13px;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+  font-family: ${p => p.theme.fontFamily.heading};
 `
 
 interface SettingsWrapperProps {
