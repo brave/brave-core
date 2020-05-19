@@ -16,6 +16,9 @@ bool ShouldTrackURLForRestore(const GURL& url) {
   if (url.SchemeIs(content::kChromeUIScheme) &&
       url.host() == "wallet") {
     return false;
+  } else if (url.SchemeIs("chrome-extension") &&
+      url.host() == "odbfpeeihdkbihmopkbjmoonfanlbfcl") {
+    return false;
   }
   return ShouldTrackURLForRestore_ChromiumImpl(url);
 }
