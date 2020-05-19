@@ -9,16 +9,12 @@ const char sync_code1[] =
     "lake admit ill roof brother grant hour better "
     "proud cabbage fee slow economy wage final fox cancel";
 
-const char account_id1[] =
-    "F9973A77CA9CE4D78F4564902500C96674D18E6A37AE762F853EC9FFFD227559";
-
 const char sync_code2[] =
     "marine seminar head allow quick hold switch boost "
     "suffer sibling situate unhappy give movie steel spin "
     "dumb broccoli enter series power fog oven leisure";
 
-const char account_id2[] =
-    "7706260A12B6FD2E90F5871270C40BAF3E377054517630D9F51BC265A2452855";
+const char account_id_str[] = "gaia_id_for_user_gmail.com";
 
 brave_sync::FakeAccessTokenFetcher* CreateAccessTokenFetcher(
     SyncAuthManager* manager);
@@ -42,19 +38,19 @@ void WaitForAccessTokenResponse(brave_sync::FakeAccessTokenFetcher* fetcher);
 #define PrefersPrimaryAccountOverCookie DISABLED_PrefersPrimaryAccountOverCookie
 #define OnlyUsesFirstCookieAccount DISABLED_OnlyUsesFirstCookieAccount
 
-#define BRAVE_SIGN_IN_1                                \
-  account_id = CoreAccountId::FromString(account_id1); \
+#define BRAVE_SIGN_IN_1                                   \
+  account_id = CoreAccountId::FromString(account_id_str); \
   auth_manager->DeriveSigningKeys(sync_code1);
 #define BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER                            \
-  account_id = CoreAccountId::FromString(account_id1);                       \
+  account_id = CoreAccountId::FromString(account_id_str);                    \
   auto* access_token_fetcher = CreateAccessTokenFetcher(auth_manager.get()); \
   auth_manager->DeriveSigningKeys(sync_code1);
-#define BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER_UNUSED \
-  account_id = CoreAccountId::FromString(account_id1);   \
-  CreateAccessTokenFetcher(auth_manager.get());          \
+#define BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER_UNUSED  \
+  account_id = CoreAccountId::FromString(account_id_str); \
+  CreateAccessTokenFetcher(auth_manager.get());           \
   auth_manager->DeriveSigningKeys(sync_code1);
-#define BRAVE_SIGN_IN_2                                       \
-  second_account_id = CoreAccountId::FromString(account_id2); \
+#define BRAVE_SIGN_IN_2                                          \
+  second_account_id = CoreAccountId::FromString(account_id_str); \
   auth_manager->DeriveSigningKeys(sync_code2);
 #define BRAVE_SIGN_OUT auth_manager->ResetKeys();
 #define BRAVE_WAIT_FOR_ACCESS_TOKEN \

@@ -6,8 +6,7 @@ const char sync_code[] =
     "badge unique kiwi orient spring venue piano "
     "lake admit ill roof brother grant hour better "
     "proud cabbage fee slow economy wage final fox cancel";
-const char account_id[] =
-    "F9973A77CA9CE4D78F4564902500C96674D18E6A37AE762F853EC9FFFD227559";
+const char account_id[] = "gaia_id_for_user_gmail.com";
 }  // namespace
 
 #define EnableSyncSignOutAndChangeAccount \

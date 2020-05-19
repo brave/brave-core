@@ -553,6 +553,9 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/test/test_browser_dialog.h",
     "//chrome/browser/ui/test/test_browser_ui.cc",
     "//chrome/browser/ui/test/test_browser_ui.h",
+    "//chrome/browser/sync/test/integration/enable_disable_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_device_info_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_bookmarks_sync_test.cc",
   ]
 
   if (is_mac) {
@@ -675,6 +678,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
+    "//chrome/test:sync_integration_test_support",
     "//components/embedder_support",
     "//components/prefs",
     "//content/test:test_support",

@@ -13,22 +13,31 @@
 
 #define BRAVE_REQUEST_ACCESS_TOKEN_2 access_token_fetcher_->StartGetTimestamp();
 
-#define BRAVE_DETERMINE_ACCOUNT_TO_USE                              \
-  if (!public_key_.empty()) {                                       \
-    const std::string client_id =                                   \
-        base::HexEncode(public_key_.data(), public_key_.size());    \
-    AccountInfo account_info;                                       \
-    account_info.account_id = CoreAccountId::FromString(client_id); \
-    account_info.email = "sync@brave.com";                          \
-    SyncAccountInfo account(account_info, true);                    \
-    return account;                                                 \
-  } else {                                                          \
-    return SyncAccountInfo();                                       \
+// We don't use account_id in production but it is required to be set this
+// partiuclar value in order to get invalidation running
+#define BRAVE_DETERMINE_ACCOUNT_TO_USE                           \
+  if (!public_key_.empty()) {                                    \
+    const std::string client_id =                                \
+        base::HexEncode(public_key_.data(), public_key_.size()); \
+    AccountInfo account_info;                                    \
+    account_info.account_id =                                    \
+        CoreAccountId::FromString("gaia_id_for_user_gmail.com"); \
+    account_info.email = "sync@brave.com";                       \
+    SyncAccountInfo account(account_info, true);                 \
+    return account;                                              \
+  } else {                                                       \
+    return SyncAccountInfo();                                    \
   }
+
+#define BRAVE_CLEAR_ACCESS_TOKEN_AND_REQUEST \
+  if (access_token_fetcher_)                 \
+    access_token_fetcher_->CancelRequest();
+
 #include "../../../../../components/sync/driver/sync_auth_manager.cc"
 #undef BRAVE_REQUEST_ACCESS_TOKEN_1
 #undef BRAVE_REQUEST_ACCESS_TOKEN_2
 #undef BRAVE_DETERMINE_ACCOUNT_TO_USE
+#undef BRAVE_CLEAR_ACCESS_TOKEN_AND_REQUEST
 
 namespace syncer {
 

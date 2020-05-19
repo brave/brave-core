@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sync/test/integration/profile_sync_service_harness.cc b/chrome/browser/sync/test/integration/profile_sync_service_harness.cc
+index 4c7dc543076ae2bba47c63ff249c6912b9a8fde3..f1ff17ad8981e1bc6299269c0cd83b5dc9e0412d 100644
+--- a/chrome/browser/sync/test/integration/profile_sync_service_harness.cc
++++ b/chrome/browser/sync/test/integration/profile_sync_service_harness.cc
+@@ -153,6 +153,7 @@ ProfileSyncServiceHarness::ProfileSyncServiceHarness(
+ ProfileSyncServiceHarness::~ProfileSyncServiceHarness() { }
+ 
+ bool ProfileSyncServiceHarness::SignInPrimaryAccount() {
++  BRAVE_SIGN_IN_PRIMARY_ACCOUNT
+   // TODO(crbug.com/871221): This function should distinguish primary account
+   // (aka sync account) from secondary accounts (content area signin). Let's
+   // migrate tests that exercise transport-only sync to secondary accounts.

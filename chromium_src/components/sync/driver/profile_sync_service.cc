@@ -51,4 +51,10 @@ void ProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
     }
   }
 }
+void ProfileSyncService::SetURLLoaderFactoryForTest(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  url_loader_factory_ = url_loader_factory;
+  auth_manager_->CreateAccessTokenFetcher(url_loader_factory_,
+                                          sync_service_url_);
+}
 }  // namespace syncer
