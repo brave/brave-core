@@ -24,6 +24,8 @@ constexpr char kSonyentertainmentnetwork[] =
     "https://[*.]sonyentertainmentnetwork.com/*";
 constexpr char kUbisoft[] = "https://[*.]ubisoft.com/*";
 constexpr char kUbi[] = "https://[*.]ubi.com/*";
+constexpr char kAmericanexpress[] = "https://[*.]americanexpress.com/*";
+constexpr char kAexp[] = "https://[*.]aexp-static.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -56,6 +58,12 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kUbi),
             ContentSettingsPattern::FromString(kUbisoft)
+          },
+            ContentSettingsPattern::FromString(kAmericanexpress),
+            ContentSettingsPattern::FromString(kAexp)
+          },
+            ContentSettingsPattern::FromString(kAexp),
+            ContentSettingsPattern::FromString(kAmericanexpress)
           }
       });
 
