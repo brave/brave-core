@@ -119,7 +119,13 @@ void ViewCounterService::Shutdown() {
 
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   // We can get non effective component update because
-  // NTPBackgroundImagesService can manage SI and SR both.
+  // NTPBackgroundImagesService just notifies whenever any component is updated.
+  // When SR component is ended, |data| is for SR but
+  // GetCurrentBrandedWallpaperData() will return data for SI.
+  // When it happens, this callback can't update model_ properly because it
+  // returns early by below if clause. But, we have to reset |model_| because
+  // SR and SI uses different model_ policy. OnSuperReferralEnded() will handle
+  // it instead.
   if (data != GetCurrentBrandedWallpaperData())
     return;
 
@@ -134,9 +140,15 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   }
 }
 
+void ViewCounterService::OnSuperReferralEnded() {
+  // Need to reset model because SI images are shown only for every 4th NTP but
+  // we've shown SR images for every NTP.
+  ResetModel();
+}
+
 void ViewCounterService::ResetModel() {
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-    model_.Reset();
+    model_.Reset(false /* use_initial_count */);
     model_.set_total_image_count(data->backgrounds.size());
     model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
   }
@@ -144,7 +156,7 @@ void ViewCounterService::ResetModel() {
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kNewTabPageSuperReferralThemesOption) {
-    // Reset view counter model because
+    // Reset model because SI and SR use different policy.
     ResetModel();
     return;
   }

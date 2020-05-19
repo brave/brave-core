@@ -200,3 +200,7 @@ void NTPBackgroundImagesBridge::OnUpdated(NTPBackgroundImagesData* data) {
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }
+
+void NTPBackgroundImagesBridge::OnSuperReferralEnded() {
+  // Android doesn't need to get this update.
+}
