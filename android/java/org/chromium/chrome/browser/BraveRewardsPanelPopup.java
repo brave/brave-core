@@ -1009,16 +1009,20 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private void SetNotificationButtoClickListener() {
         Button btClaimOk = (Button)root.findViewById(R.id.br_claim_button);
         String strAction = (btClaimOk != null && mBraveRewardsNativeWorker != null )? btClaimOk.getText().toString() : "";
-        if (strAction.equals(root.getResources().getString(R.string.ok)))
-        {
+        if (strAction.equals(root.getResources().getString(R.string.ok))) {
             btClaimOk.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // This is custom Android notification and thus should be dismissed intead of
+                    // deleting
+                    if (currentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
+                        DismissNotification(currentNotificationId);
+                        return;
+                    }
                     mBraveRewardsNativeWorker.DeleteNotification(currentNotificationId);
                 }
             });
-        }
-        else if (strAction.equals(root.getResources().getString(R.string.brave_ui_claim))){
+        } else if (strAction.equals(root.getResources().getString(R.string.brave_ui_claim))) {
             btClaimOk.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1432,7 +1436,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             return;
         }
 
-        if (currentNotificationId.isEmpty()) {
+        // This is to make sure that user saw promotion error message before showing the
+        // rest of messages
+        if (!currentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
             ShowNotification(id, type, timestamp, args);
         }
     }
