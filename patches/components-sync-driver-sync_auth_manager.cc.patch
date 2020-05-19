@@ -1,8 +1,16 @@
 diff --git a/components/sync/driver/sync_auth_manager.cc b/components/sync/driver/sync_auth_manager.cc
-index 03080dd8c7205cc0ebaf8aa9516131a94a727170..ee8ed2da18585e17869d80423909a2ca5ecf21cc 100644
+index 03080dd8c7205cc0ebaf8aa9516131a94a727170..c5cd64451f0ff163793718bb8151b4caa99666a3 100644
 --- a/components/sync/driver/sync_auth_manager.cc
 +++ b/components/sync/driver/sync_auth_manager.cc
-@@ -364,8 +364,8 @@ void SyncAuthManager::OnRefreshTokenRemovedForAccount(
+@@ -249,6 +249,7 @@ void SyncAuthManager::ClearAccessTokenAndRequest() {
+   request_access_token_retry_timer_.Stop();
+   ongoing_access_token_fetch_.reset();
+   weak_ptr_factory_.InvalidateWeakPtrs();
++  BRAVE_CLEAR_ACCESS_TOKEN_AND_REQUEST
+ }
+ 
+ void SyncAuthManager::ScheduleAccessTokenRequest() {
+@@ -364,8 +365,8 @@ void SyncAuthManager::OnRefreshTokenRemovedForAccount(
    // If we're still here, then that means Chrome is still signed in to this
    // account. Keep Sync alive but set an auth error.
    // TODO(crbug.com/906995): Should we stop Sync in this case?
@@ -13,7 +21,7 @@ index 03080dd8c7205cc0ebaf8aa9516131a94a727170..ee8ed2da18585e17869d80423909a2ca
  
    // TODO(crbug.com/839834): REQUEST_CANCELED doesn't seem like the right auth
    // error to use here. Maybe INVALID_GAIA_CREDENTIALS?
-@@ -409,6 +409,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
+@@ -409,6 +410,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
  
  SyncAccountInfo SyncAuthManager::DetermineAccountToUse() const {
    DCHECK(registered_for_auth_notifications_);
@@ -21,7 +29,7 @@ index 03080dd8c7205cc0ebaf8aa9516131a94a727170..ee8ed2da18585e17869d80423909a2ca
    return syncer::DetermineAccountToUse(identity_manager_);
  }
  
-@@ -480,6 +481,7 @@ void SyncAuthManager::RequestAccessToken() {
+@@ -480,13 +482,15 @@ void SyncAuthManager::RequestAccessToken() {
    // Finally, kick off a new access token fetch.
    partial_token_status_.token_request_time = base::Time::Now();
    partial_token_status_.token_response_time = base::Time();
@@ -29,8 +37,9 @@ index 03080dd8c7205cc0ebaf8aa9516131a94a727170..ee8ed2da18585e17869d80423909a2ca
    ongoing_access_token_fetch_ =
        identity_manager_->CreateAccessTokenFetcherForAccount(
            sync_account_.account_info.account_id, kSyncOAuthConsumerName,
-@@ -487,6 +489,7 @@ void SyncAuthManager::RequestAccessToken() {
-           base::BindOnce(&SyncAuthManager::AccessTokenFetched,
+           {GaiaConstants::kChromeSyncOAuth2Scope},
+-          base::BindOnce(&SyncAuthManager::AccessTokenFetched,
++          base::BindOnce(&SyncAuthManager::AccessTokenFetchedDoNothing,
                           base::Unretained(this)),
            signin::AccessTokenFetcher::Mode::kWaitUntilRefreshTokenAvailable);
 +  BRAVE_REQUEST_ACCESS_TOKEN_2

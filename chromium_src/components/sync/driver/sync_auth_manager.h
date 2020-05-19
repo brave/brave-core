@@ -2,6 +2,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_AUTH_MANAGER_H_
 #include "brave/components/brave_sync/access_token_consumer.h"
 #include "brave/components/brave_sync/access_token_fetcher_impl.h"
+#include "components/signin/public/identity_manager/access_token_info.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #define BRAVE_SYNC_AUTH_MANAGER_H_                                          \
   void CreateAccessTokenFetcher(                                            \
@@ -23,6 +24,9 @@
   void GenerateClientIdAndSecret(                                           \
       std::string* client_id, std::string* client_secrect,                  \
       const std::string& server_timestamp, std::string* timestamp);         \
+  void AccessTokenFetchedDoNothing(                                         \
+      GoogleServiceAuthError error,                                         \
+      signin::AccessTokenInfo access_token_info) {}                         \
   std::vector<uint8_t> public_key_;                                         \
   std::vector<uint8_t> private_key_;                                        \
   std::unique_ptr<brave_sync::AccessTokenFetcher> access_token_fetcher_;
