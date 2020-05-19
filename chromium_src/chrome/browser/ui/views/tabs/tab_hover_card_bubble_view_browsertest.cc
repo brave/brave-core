@@ -107,7 +107,16 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
   DISALLOW_COPY_AND_ASSIGN(TabHoverCardBubbleViewBrowserTest);
 };
 
-IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest, ChromeSchemeUrl) {
+// This test appears to be flaky on Windows. Upstream tests were also found to
+// be flaky, so for now we'll follow the upstream lead and disable this one on
+// Windows. See crbug.com/1050765.
+#if defined(OS_WIN)
+#define MAYBE_ChromeSchemeUrl DISABLED_ChromeSchemeUrl
+#else
+#define MAYBE_ChromeSchemeUrl ChromeSchemeUrl
+#endif
+IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
+                       MAYBE_ChromeSchemeUrl) {
   TabStrip* tab_strip =
       BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   TabRendererData new_tab_data = TabRendererData();
