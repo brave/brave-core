@@ -26,7 +26,7 @@
 #import "BATLedgerDatabase.h"
 #import "DataController.h"
 
-#import "base/containers/flat_map.h"
+#import "brave/base/containers/utils.h"
 #import "base/time/time.h"
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
