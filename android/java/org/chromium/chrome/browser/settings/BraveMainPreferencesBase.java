@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -30,6 +31,11 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.HashMap;
 
@@ -51,6 +57,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
+    private static final String PREF_RATE_BRAVE = "rate_brave";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -65,6 +72,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
         overrideChromiumPreferences();
         initWelcomeTourPreference();
+        initRateBrave();
     }
 
     @Override
@@ -210,6 +218,22 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
                     .setNegativeButton(android.R.string.cancel, null)
                     .create();
                 alertDialog.show();
+                return true;
+            }
+        });
+    }
+
+    private void initRateBrave() {
+        findPreference(PREF_RATE_BRAVE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
+
+                RateDialogFragment mRateDialogFragment = new RateDialogFragment();
+                mRateDialogFragment.setCancelable(false);
+                mRateDialogFragment.setArguments(bundle);
+                mRateDialogFragment.show(getActivity().getSupportFragmentManager(), "RateDialogFragment");
                 return true;
             }
         });
