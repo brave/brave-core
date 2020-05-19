@@ -80,7 +80,6 @@
     <color name="shield_text_color">#212529</color>
     <color name="shield_advanced_controls_color">#222326</color>
 
-
     <color name="shield_bg_color">#FFFFFF</color>
     <color name="shield_back_button_tint">@color/brave_theme_color</color>
 

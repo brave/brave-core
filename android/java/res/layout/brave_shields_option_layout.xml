@@ -62,7 +62,9 @@
     <RadioGroup
         android:id="@+id/options_radio_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <RadioButton
             android:id="@+id/option1"
@@ -70,8 +72,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:layout_marginStart="32dp"
-            android:textColor="@color/standard_mode_tint"/>
+            android:textColor="@color/shield_text_color"/>
 
         <RadioButton
             android:id="@+id/option2"
@@ -79,8 +80,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:layout_marginStart="32dp"
-            android:textColor="@color/standard_mode_tint"
+            android:textColor="@color/shield_text_color"
             android:checked="true"/>
 
         <RadioButton
@@ -89,8 +89,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:layout_marginStart="32dp"
-            android:textColor="@color/standard_mode_tint"/>
+            android:textColor="@color/shield_text_color"/>
 
     </RadioGroup>
 
