@@ -76,4 +76,5 @@
     <color name="user_wallet_dimmed_note">#E6E3F4</color>
 
     <color name="qr_button_color">@android:color/white</color>
+    <color name="section_divider_color">#c8c7cc</color>
 </resources>

@@ -47,16 +47,6 @@
             android:textSize="14sp"
             android:textColor="@android:color/white"/>
 
-        <TextView
-            android:id="@+id/ntp_banner_learn_more_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/learn_more"
-            android:textColor="@color/brave_theme_color"
-            android:visibility="gone"/>
-
         <Button
             android:id="@+id/btn_turn_on_ads"
             android:layout_width="wrap_content"
