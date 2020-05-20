@@ -7,5 +7,10 @@
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());   \
   brave_sync_prefs.SetSyncV1Migrated(true);                   \
   brave_sync_prefs.SetSeed(sync_code);
+
+#define BRAVE_SIGN_OUT_PRIMARY_ACCOUNT                      \
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs()); \
+  brave_sync_prefs.Clear();
 #include "../../../../../../../chrome/browser/sync/test/integration/profile_sync_service_harness.cc"
 #undef BRAVE_SIGN_IN_PRIMARY_ACCOUNT
+#undef BRAVE_SIGN_OUT_PRIMARY_ACCOUNT
