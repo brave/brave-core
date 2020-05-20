@@ -1,3 +1,4 @@
 @ECHO OFF
-XCOPY /D /Y /Q "..\..\brave\script\redirect-cc.py" "%CD%/redirect.*" 1>nul
+:: brave/script/redirect-cc.py is copied to %CD% and renamed to redirect.py in
+:: the beginning of the build. See brave-browser/lib/util.js util.copyRedirectCC
 python redirect.py %*
