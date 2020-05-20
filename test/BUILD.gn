@@ -89,7 +89,8 @@ group("all_unit_tests") {
   testonly = true
   deps = [
     ":brave_unit_tests",
-    "//brave/vendor/test:brave_rewards_unit_tests",
+    "//brave/components/brave_ads/test:brave_ads_unit_tests",
+    "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
   ]
   if (!is_android) {
     deps += [ ":brave_installer_unittests" ]
