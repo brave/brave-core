@@ -52,7 +52,8 @@ static bool HandleTorrentURLReverseRewrite(GURL* url,
     content::BrowserContext* browser_context) {
   if (url->SchemeIs(extensions::kExtensionScheme) &&
       url->host() == brave_webtorrent_extension_id &&
-      url->ExtractFileName() == "brave_webtorrent.html") {
+      url->ExtractFileName() == "brave_webtorrent.html" &&
+      GURL(url->query()).SchemeIsHTTPOrHTTPS()) {
     *url =  TranslateTorrentUIURLReversed(*url);
     return true;
   }
@@ -72,7 +73,8 @@ static bool HandleTorrentURLRewrite(GURL* url,
   if (url->SchemeIsHTTPOrHTTPS() ||
       (url->SchemeIs(extensions::kExtensionScheme) &&
        url->host() == brave_webtorrent_extension_id &&
-       url->ExtractFileName() == "brave_webtorrent.html")) {
+       url->ExtractFileName() == "brave_webtorrent.html" &&
+       GURL(url->query()).SchemeIsHTTPOrHTTPS())) {
     return true;
   }
 
