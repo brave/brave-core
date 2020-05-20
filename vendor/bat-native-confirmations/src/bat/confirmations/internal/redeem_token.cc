@@ -453,7 +453,8 @@ ConfirmationInfo RedeemToken::CreateConfirmationInfo(
       build_channel, platform);
 
   confirmation.credential = request.CreateCredential(token, payload);
-  confirmation.timestamp_in_seconds = base::Time::Now().ToDoubleT();
+  confirmation.timestamp_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   return confirmation;
 }

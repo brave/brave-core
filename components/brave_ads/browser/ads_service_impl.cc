@@ -1487,7 +1487,7 @@ uint64_t AdsServiceImpl::MigrateTimestampToDoubleT(
   auto delta = timestamp_in_seconds - now_in_seconds;
 
   auto date = now + base::TimeDelta::FromSeconds(delta);
-  return date.ToDoubleT();
+  return static_cast<uint64_t>(date.ToDoubleT());
 }
 
 void AdsServiceImpl::MaybeShowOnboarding() {
@@ -1521,7 +1521,7 @@ void AdsServiceImpl::ShowOnboarding() {
 
   SetBooleanPref(prefs::kShouldShowOnboarding, false);
 
-  auto now = base::Time::Now().ToDoubleT();
+  auto now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   SetUint64Pref(prefs::kOnboardingTimestamp, now);
 
   StartRemoveOnboardingTimer();
@@ -1558,7 +1558,7 @@ void AdsServiceImpl::StartRemoveOnboardingTimer() {
     return;
   }
 
-  auto now_in_seconds = base::Time::Now().ToDoubleT();
+  auto now_in_seconds = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   auto timestamp_in_seconds =
       MigrateTimestampToDoubleT(GetUint64Pref(prefs::kOnboardingTimestamp));

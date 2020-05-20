@@ -23,7 +23,7 @@ bool FrequencyCapping::DoesHistoryRespectCapForRollingTimeConstraint(
     const uint64_t cap) const {
   uint64_t count = 0;
 
-  auto now_in_seconds = base::Time::Now().ToDoubleT();
+  auto now_in_seconds = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   for (const auto& timestamp_in_seconds : history) {
     if (now_in_seconds - timestamp_in_seconds < time_constraint_in_seconds) {

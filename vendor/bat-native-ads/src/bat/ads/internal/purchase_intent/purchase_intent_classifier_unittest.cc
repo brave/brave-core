@@ -101,7 +101,7 @@ class AdsPurchaseIntentClassifierTest : public ::testing::Test {
         kPurchaseIntentSignalLevel, kPurchaseIntentClassificationThreshold,
             kPurchaseIntentSignalDecayTimeWindow);
 
-    auto now = base::Time::Now().ToDoubleT();
+    auto now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
     auto days = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
     auto p1 = PurchaseIntentSignalHistory();

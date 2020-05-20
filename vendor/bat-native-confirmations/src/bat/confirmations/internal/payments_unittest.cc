@@ -58,7 +58,7 @@ class ConfirmationsPaymentsTest : public ::testing::Test {
 
     auto token_redemption_date = UTCDateFromString(next_token_redemption_date);
     uint64_t token_redemption_date_in_seconds =
-        token_redemption_date.ToDoubleT();
+        static_cast<uint64_t>(token_redemption_date.ToDoubleT());
 
     return payments_->CalculateNextPaymentDate(current_date,
         token_redemption_date_in_seconds);

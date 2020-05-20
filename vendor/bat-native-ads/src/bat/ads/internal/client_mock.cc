@@ -19,7 +19,8 @@ void ClientMock::GeneratePastAdHistoryFromNow(
     const std::string& creative_instance_id,
     const int64_t time_offset_per_ad_in_seconds,
     const uint8_t count) {
-  uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   AdHistory ad_history;
   ad_history.uuid = base::GenerateGUID();
@@ -38,7 +39,8 @@ void ClientMock::GeneratePastCreativeSetHistoryFromNow(
     const std::string& creative_set_id,
     const int64_t time_offset_per_ad_in_seconds,
     const uint8_t count) {
-  uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
@@ -51,7 +53,8 @@ void ClientMock::GeneratePastCampaignHistoryFromNow(
     const std::string& campaign_id,
     const int64_t time_offset_per_ad_in_seconds,
     const uint8_t count) {
-  uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
@@ -64,7 +67,8 @@ void ClientMock::GeneratePastPurchaseIntentSignalHistoryFromNow(
     const std::string& segment,
     const uint64_t time_offset_in_seconds,
     const uint16_t weight) {
-  uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   now_in_seconds -= time_offset_in_seconds;
   PurchaseIntentSignalHistory history;
   history.timestamp_in_seconds = 0;
@@ -76,7 +80,8 @@ void ClientMock::GeneratePastAdConversionHistoryFromNow(
     const std::string& creative_set_id,
     const int64_t time_offset_per_ad_in_seconds,
     const uint8_t count) {
-  uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  uint64_t now_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
