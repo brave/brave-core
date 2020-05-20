@@ -74,7 +74,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.settingsMenuRef = React.createRef()
-    this.state = { activeTab: 0 }
+    this.state = { activeTab: props.allowSponsoredWallpaperUI ? 0 : 1 }
   }
 
   handleClickOutside = (event: Event) => {
@@ -179,6 +179,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                 {
                   this.activeTabOptions.map((tabName, index) => {
                     const name = index === (this.activeTabOptions.length - 1) ? tabName : `show${tabName}`
+                    if (index === 0 && !allowSponsoredWallpaperUI)
+                      return <div key={`sidebar-button=${index}`} />
                     return (
                       <SettingsSidebarButton
                         key={`sidebar-button-${index}`}
@@ -201,7 +203,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                     <BackgroundImageSettings
                       toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                       toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-                      allowSponsoredWallpaperUI={allowSponsoredWallpaperUI}
                       brandedWallpaperOptIn={brandedWallpaperOptIn}
                       showBackgroundImage={showBackgroundImage}
                     />

@@ -16,7 +16,6 @@ import { getLocale } from '../../../../common/locale'
 interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
-  allowSponsoredWallpaperUI: boolean
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
 }
@@ -24,7 +23,6 @@ interface Props {
 class BackgroundImageSettings extends React.PureComponent<Props, {}> {
   render () {
     const {
-      allowSponsoredWallpaperUI,
       toggleShowBackgroundImage,
       toggleBrandedWallpaperOptIn,
       brandedWallpaperOptIn,
@@ -33,28 +31,25 @@ class BackgroundImageSettings extends React.PureComponent<Props, {}> {
 
     return (
       <div>
-        {allowSponsoredWallpaperUI &&
-          <SettingsRow>
-            <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
-            <Toggle
-              onChange={toggleShowBackgroundImage}
-              checked={showBackgroundImage}
-              size='large'
-            />
-          </SettingsRow>
-          }
-          {allowSponsoredWallpaperUI &&
-          <SettingsRow isChildSetting={true}>
-            <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
-            <Toggle
-              onChange={toggleBrandedWallpaperOptIn}
-              // This option can only be enabled if
-              // users opt in for background images
-              checked={showBackgroundImage && brandedWallpaperOptIn}
-              disabled={!showBackgroundImage}
-              size='small'
-            />
-        </SettingsRow>}
+        <SettingsRow>
+          <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
+          <Toggle
+            onChange={toggleShowBackgroundImage}
+            checked={showBackgroundImage}
+            size='large'
+          />
+        </SettingsRow>
+        <SettingsRow isChildSetting={true}>
+          <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+          <Toggle
+            onChange={toggleBrandedWallpaperOptIn}
+            // This option can only be enabled if
+            // users opt in for background images
+            checked={showBackgroundImage && brandedWallpaperOptIn}
+            disabled={!showBackgroundImage}
+            size='small'
+          />
+        </SettingsRow>
       </div>
     )
   }
