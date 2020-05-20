@@ -43,10 +43,21 @@ BatLedgerClientMojoProxy::BatLedgerClientMojoProxy(
 BatLedgerClientMojoProxy::~BatLedgerClientMojoProxy() {
 }
 
-void OnLoadURL(const ledger::LoadURLCallback& callback,
-    int32_t response_code, const std::string& response,
-    const base::flat_map<std::string, std::string>& headers) {
-  callback(response_code, response, base::FlatMapToMap(headers));
+void OnLoadURL(
+    const ledger::LoadURLCallback& callback,
+    ledger::UrlResponsePtr response_ptr) {
+  ledger::UrlResponse response;
+
+  if (!response_ptr) {
+    callback(response);
+    return;
+  }
+
+  response.url = response_ptr->url;
+  response.status_code = response_ptr->status_code;
+  response.body = response_ptr->body;
+  response.headers = response_ptr->headers;
+  callback(response);
 }
 
 void BatLedgerClientMojoProxy::LoadURL(

@@ -53,9 +53,7 @@ class Promotion {
 
  private:
   void OnFetch(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::FetchPromotionCallback callback);
 
   void OnGetAllPromotions(
@@ -128,9 +126,7 @@ class Promotion {
       const std::vector<std::string>& ids);
 
   void OnCheckForCorrupted(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       const std::vector<std::string>& promotion_id_list);
 
   void ErrorStatusSaved(

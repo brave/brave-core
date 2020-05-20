@@ -122,8 +122,6 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   auto url_callback = std::bind(&Promotion::OnFetch,
       this,
       _1,
-      _2,
-      _3,
       std::move(callback));
 
   auto client_info = ledger_->GetClientInfo();
@@ -133,26 +131,17 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
       wallet_payment_id,
       client);
 
-  ledger_->LoadURL(
-      url,
-      std::vector<std::string>(),
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, url_callback);
 }
 
 void Promotion::OnFetch(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::FetchPromotionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
   ledger::PromotionList list;
 
-  if (response_status_code == net::HTTP_NOT_FOUND) {
+  if (response.status_code == net::HTTP_NOT_FOUND) {
     ProcessFetchedPromotions(
         ledger::Result::NOT_FOUND,
         std::move(list),
@@ -160,7 +149,7 @@ void Promotion::OnFetch(
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     ProcessFetchedPromotions(
         ledger::Result::LEDGER_ERROR,
         std::move(list),
@@ -171,7 +160,7 @@ void Promotion::OnFetch(
   auto all_callback = std::bind(&Promotion::OnGetAllPromotions,
       this,
       _1,
-      response,
+      response.body,
       callback);
 
   ledger_->GetAllPromotions(all_callback);
@@ -674,13 +663,11 @@ void Promotion::CorruptedPromotions(
   auto url_callback = std::bind(&Promotion::OnCheckForCorrupted,
       this,
       _1,
-      _2,
-      _3,
       ids);
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       json,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -688,14 +675,11 @@ void Promotion::CorruptedPromotions(
 }
 
 void Promotion::OnCheckForCorrupted(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::vector<std::string>& promotion_id_list) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     return;
   }
 

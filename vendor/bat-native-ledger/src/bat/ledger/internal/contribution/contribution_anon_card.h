@@ -34,9 +34,7 @@ class ContributionAnonCard {
 
  private:
   void OnSendTransaction(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

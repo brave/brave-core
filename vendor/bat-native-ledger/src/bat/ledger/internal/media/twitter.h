@@ -80,7 +80,7 @@ class Twitter {
 
   void FetchDataFromUrl(
       const std::string& url,
-      braveledger_media::FetchDataFromUrlCallback callback);
+      ledger::LoadURLCallback callback);
 
   void OnMediaPublisherActivity(
       ledger::Result result,
@@ -104,9 +104,7 @@ class Twitter {
   void OnUserPage(
       uint64_t window_id,
       const ledger::VisitData& visit_data,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const ledger::UrlResponse& response);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

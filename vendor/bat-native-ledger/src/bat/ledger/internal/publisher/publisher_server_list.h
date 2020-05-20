@@ -46,9 +46,7 @@ class PublisherServerList {
   void Download(ledger::ResultCallback callback);
 
   void OnDownload(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::ResultCallback callback);
 
   void OnParsePublisherList(

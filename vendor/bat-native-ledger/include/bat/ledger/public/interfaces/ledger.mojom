@@ -530,3 +530,10 @@ struct SKUTransaction {
   uint64 created_at;
 };
 
+struct UrlResponse {
+  string url;
+  int32 status_code;
+  string body;
+  map<string, string> headers;
+};
+

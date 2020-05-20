@@ -108,30 +108,26 @@ void AdsRewards::GetPaymentBalance() {
   auto headers = request.BuildHeaders(body, wallet_info_);
   auto content_type = request.GetContentType();
 
-  auto callback = std::bind(&AdsRewards::OnGetPaymentBalance,
-      this, url, _1, _2, _3);
+  auto callback = std::bind(&AdsRewards::OnGetPaymentBalance, this, _1);
 
   BLOG(5, UrlRequestToString(url, headers, "", "", method));
   confirmations_client_->LoadURL(url, headers, "", "", method, callback);
 }
 
 void AdsRewards::OnGetPaymentBalance(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const UrlResponse& url_response) {
   BLOG(1, "OnGetPaymentBalance");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to get payment balance");
     OnAdsRewards(FAILED);
     return;
   }
 
-  if (!payments_->SetFromJson(response)) {
-    BLOG(0, "Failed to parse payment balance: " << response);
+  if (!payments_->SetFromJson(url_response.body)) {
+    BLOG(0, "Failed to parse payment balance: " << url_response.body);
     OnAdsRewards(FAILED);
     return;
   }
@@ -147,22 +143,19 @@ void AdsRewards::GetAdGrants() {
   auto url = request.BuildUrl(wallet_info_);
   auto method = request.GetMethod();
 
-  auto callback = std::bind(&AdsRewards::OnGetAdGrants, this, url, _1, _2, _3);
+  auto callback = std::bind(&AdsRewards::OnGetAdGrants, this, _1);
 
   BLOG(5, UrlRequestToString(url, {}, "", "", method));
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
 void AdsRewards::OnGetAdGrants(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const UrlResponse& url_response) {
   BLOG(1, "OnGetAdGrants");
 
-  BLOG(6, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(6, UrlResponseToString(url_response));
 
-  if (response_status_code == net::HTTP_NO_CONTENT) {
+  if (url_response.status_code == net::HTTP_NO_CONTENT) {
     ad_grants_ = std::make_unique<AdGrants>(
         confirmations_, confirmations_client_);
 
@@ -170,14 +163,14 @@ void AdsRewards::OnGetAdGrants(
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to get ad grants");
     OnAdsRewards(FAILED);
     return;
   }
 
-  if (!ad_grants_->SetFromJson(response)) {
-    BLOG(0, "Failed to parse ad grants: " << response);
+  if (!ad_grants_->SetFromJson(url_response.body)) {
+    BLOG(0, "Failed to parse ad grants: " << url_response.body);
     OnAdsRewards(FAILED);
     return;
   }

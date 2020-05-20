@@ -426,9 +426,7 @@ void YouTube::OnMediaPublisherInfo(
         media_url,
         visit_data,
         window_id,
-        _1,
-        _2,
-        _3);
+        _1);
 
     const std::string url = (std::string)YOUTUBE_PROVIDER_URL +
         "?format=json&url=" +
@@ -462,15 +460,12 @@ void YouTube::OnEmbedResponse(
     const std::string& media_url,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+    const ledger::UrlResponse& response) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     // embedding disabled, need to scrape
-    if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    if (response.status_code == net::HTTP_UNAUTHORIZED) {
       FetchDataFromUrl(visit_data.url,
           std::bind(&YouTube::OnPublisherPage,
                     this,
@@ -480,19 +475,21 @@ void YouTube::OnEmbedResponse(
                     std::string(),
                     visit_data,
                     window_id,
-                    _1,
-                    _2,
-                    _3));
+                    _1));
     }
     return;
   }
 
   std::string publisher_url;
-  braveledger_bat_helper::getJSONValue("author_url", response, &publisher_url);
+  braveledger_bat_helper::getJSONValue(
+      "author_url",
+      response.body,
+      &publisher_url);
   std::string publisher_name;
-  braveledger_bat_helper::getJSONValue("author_name",
-                                       response,
-                                       &publisher_name);
+  braveledger_bat_helper::getJSONValue(
+      "author_name",
+      response.body,
+      &publisher_name);
 
   auto callback = std::bind(&YouTube::OnPublisherPage,
                             this,
@@ -502,9 +499,7 @@ void YouTube::OnEmbedResponse(
                             publisher_name,
                             visit_data,
                             window_id,
-                            _1,
-                            _2,
-                            _3);
+                            _1);
 
   FetchDataFromUrl(publisher_url, callback);
 }
@@ -516,20 +511,18 @@ void YouTube::OnPublisherPage(
     std::string publisher_name,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK && publisher_name.empty()) {
+    const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK && publisher_name.empty()) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  if (response_status_code == net::HTTP_OK) {
-    std::string fav_icon = GetFavIconUrl(response);
-    std::string channel_id = GetChannelId(response);
+  if (response.status_code == net::HTTP_OK) {
+    std::string fav_icon = GetFavIconUrl(response.body);
+    std::string channel_id = GetChannelId(response.body);
 
     if (publisher_name.empty()) {
-      publisher_name = GetPublisherName(response);
+      publisher_name = GetPublisherName(response.body);
     }
 
     if (publisher_url.empty()) {
@@ -598,13 +591,8 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
 
 void YouTube::FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback) {
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   std::string(),
-                   std::string(),
-                   ledger::UrlMethod::GET,
-                   callback);
+    ledger::LoadURLCallback callback) {
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
 }
 
 void YouTube::WatchPath(uint64_t window_id,
@@ -695,9 +683,7 @@ void YouTube::OnPublisherPanleInfo(
                                window_id,
                                visit_data,
                                is_custom_path,
-                               _1,
-                               _2,
-                               _3));
+                               _1));
   } else {
     ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
@@ -708,17 +694,15 @@ void YouTube::GetChannelHeadlineVideo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     bool is_custom_path,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK) {
+    const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
   if (visit_data.path.find("/channel/") != std::string::npos) {
-    std::string title = GetNameFromChannel(response);
-    std::string favicon = GetFavIconUrl(response);
+    std::string title = GetNameFromChannel(response.body);
+    std::string favicon = GetFavIconUrl(response.body);
     std::string channel_id = GetPublisherKeyFromUrl(visit_data.path);
 
     SavePublisherInfo(0,
@@ -731,9 +715,9 @@ void YouTube::GetChannelHeadlineVideo(
                       channel_id);
 
   } else if (is_custom_path) {
-    std::string title = GetNameFromChannel(response);
-    std::string favicon = GetFavIconUrl(response);
-    std::string channel_id = GetChannelIdFromCustomPathPage(response);
+    std::string title = GetNameFromChannel(response.body);
+    std::string favicon = GetFavIconUrl(response.body);
+    std::string channel_id = GetChannelIdFromCustomPathPage(response.body);
     ledger::VisitData new_visit_data;
     new_visit_data.path = "/channel/" + channel_id;
     GetPublisherPanleInfo(window_id,
@@ -799,9 +783,7 @@ void YouTube::OnUserActivity(
                                window_id,
                                visit_data,
                                media_key,
-                               _1,
-                               _2,
-                               _3));
+                               _1));
 
   } else {
     GetPublisherPanleInfo(window_id,
@@ -815,10 +797,8 @@ void YouTube::OnChannelIdForUser(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& media_key,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  std::string channelId = GetChannelId(response);
+    const ledger::UrlResponse& response) {
+  std::string channelId = GetChannelId(response.body);
   if (!channelId.empty()) {
     std::string path = "/channel/" + channelId;
     std::string url = GetChannelUrl(channelId);

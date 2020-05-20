@@ -87,7 +87,7 @@ class Twitch {
 
   void FetchDataFromUrl(
       const std::string& url,
-      braveledger_media::FetchDataFromUrlCallback callback);
+      ledger::LoadURLCallback callback);
 
   void OnEmbedResponse(
       const uint64_t duration,
@@ -95,9 +95,7 @@ class Twitch {
       const ledger::VisitData& visit_data,
       const uint64_t window_id,
       const std::string& user_id,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const ledger::UrlResponse& response);
 
   void OnMediaPublisherActivity(
       uint64_t window_id,

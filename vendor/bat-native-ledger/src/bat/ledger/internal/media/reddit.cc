@@ -82,14 +82,12 @@ void Reddit::OnUserActivity(
   if (!publisher_info || result == ledger::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromUrl(visit_data.path);
     const std::string url = GetProfileUrl(user_name);
-    FetchDataFromUrl(visit_data.url,
-        std::bind(&Reddit::OnUserPage,
-            this,
-            window_id,
-            visit_data,
-            _1,
-            _2,
-            _3));
+    auto url_callback = std::bind(&Reddit::OnUserPage,
+        this,
+        window_id,
+        visit_data,
+        _1);
+    FetchDataFromUrl(visit_data.url, url_callback);
   } else {
     GetPublisherPanelInfo(
         window_id,
@@ -101,10 +99,8 @@ void Reddit::OnUserActivity(
 void Reddit::OnPageDataFetched(
     const std::string& user_name,
     ledger::PublisherInfoCallback callback,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK) {
+    const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::TIP_ERROR, nullptr);
     return;
   }
@@ -113,12 +109,12 @@ void Reddit::OnPageDataFetched(
       0,
       user_name,
       callback,
-      response);
+      response.body);
 }
 
 void Reddit::FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback) {
+    ledger::LoadURLCallback callback) {
   /* if user is on old reddit, sub the url to get the icon
      since old reddit didn't have user icons */
   GURL reddit_url(url);
@@ -132,12 +128,9 @@ void Reddit::FetchDataFromUrl(
     reddit_url = reddit_url.ReplaceComponents(replacements);
   }
 
-  ledger_->LoadURL(reddit_url.spec(),
-      std::vector<std::string>(),
-      std::string(),
-      std::string(),
-      ledger::UrlMethod::GET,
-      callback);
+  const std::string load_url = reddit_url.spec();
+
+  ledger_->LoadURL(load_url, {}, "", "", ledger::UrlMethod::GET, callback);
 }
 
 // static
@@ -194,14 +187,13 @@ void Reddit::OnPublisherPanelInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
-    FetchDataFromUrl(visit_data.url,
-                     std::bind(&Reddit::OnUserPage,
-                               this,
-                               window_id,
-                               visit_data,
-                               _1,
-                               _2,
-                               _3));
+    auto url_callback = std::bind(&Reddit::OnUserPage,
+        this,
+        window_id,
+        visit_data,
+        _1);
+
+    FetchDataFromUrl(visit_data.url, url_callback);
   } else {
     ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
@@ -248,10 +240,8 @@ void Reddit::OnRedditSaved(
 void Reddit::OnUserPage(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK) {
+    const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
@@ -264,7 +254,7 @@ void Reddit::OnUserPage(
           this,
           _1,
           _2),
-          response);
+          response.body);
 }
 
 // static
@@ -308,9 +298,7 @@ void Reddit::OnMediaPublisherInfo(
           this,
           user_name,
           callback,
-          _1,
-          _2,
-          _3));
+          _1));
   } else {
     callback(result, std::move(publisher_info));
   }

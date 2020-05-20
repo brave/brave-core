@@ -141,8 +141,7 @@ TEST_F(ConfirmationsRedeemTokenTest,
           const URLRequestMethod method,
           URLRequestCallback callback) {
         int response_status_code = -1;
-        std::string response;
-        std::map<std::string, std::string> response_headers;
+        std::string body;
 
         const std::string create_confirmation_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)";
         const std::string fetch_payment_token_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)";
@@ -150,13 +149,16 @@ TEST_F(ConfirmationsRedeemTokenTest,
         const std::string endpoint = GetPathForRequest(url);
         if (endpoint == create_confirmation_endpoint) {
           response_status_code = net::HTTP_CREATED;
-          response = R"({"id":"9fd71bc4-1b8e-4c1e-8ddc-443193a09f91","payload":{},"createdAt":"2020-04-20T10:27:11.717Z","type":"view","modifiedAt":"2020-04-20T10:27:11.717Z","creativeInstanceId":"70829d71-ce2e-4483-a4c0-e1e2bee96520"})";
+          body = R"({"id":"9fd71bc4-1b8e-4c1e-8ddc-443193a09f91","payload":{},"createdAt":"2020-04-20T10:27:11.717Z","type":"view","modifiedAt":"2020-04-20T10:27:11.717Z","creativeInstanceId":"70829d71-ce2e-4483-a4c0-e1e2bee96520"})";
         } else if (endpoint == fetch_payment_token_endpoint) {
           response_status_code = net::HTTP_OK;
-          response = R"({"id":"9fd71bc4-1b8e-4c1e-8ddc-443193a09f91","createdAt":"2020-04-20T10:27:11.717Z","type":"view","modifiedAt":"2020-04-20T10:27:11.736Z","creativeInstanceId":"70829d71-ce2e-4483-a4c0-e1e2bee96520","paymentToken":{"publicKey":"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=","batchProof":"FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==","signedTokens":["DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="]}})";
+          body = R"({"id":"9fd71bc4-1b8e-4c1e-8ddc-443193a09f91","createdAt":"2020-04-20T10:27:11.717Z","type":"view","modifiedAt":"2020-04-20T10:27:11.736Z","creativeInstanceId":"70829d71-ce2e-4483-a4c0-e1e2bee96520","paymentToken":{"publicKey":"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=","batchProof":"FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==","signedTokens":["DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="]}})";
         }
 
-        callback(response_status_code, response, response_headers);
+        UrlResponse response;
+        response.body = body;
+        response.status_code = response_status_code;
+        callback(response);
       }));
 
   EXPECT_CALL(*confirmations_client_mock_, LoadURL(_, _, _, _, _, _))
@@ -194,18 +196,20 @@ TEST_F(ConfirmationsRedeemTokenTest,
           const URLRequestMethod method,
           URLRequestCallback callback) {
         int response_status_code = -1;
-        std::string response;
-        std::map<std::string, std::string> response_headers;
+        std::string body;
 
         const std::string fetch_payment_token_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)";
 
         const std::string endpoint = GetPathForRequest(url);
         if (endpoint == fetch_payment_token_endpoint) {
           response_status_code = net::HTTP_OK;
-          response = R"({"id":"9fd71bc4-1b8e-4c1e-8ddc-443193a09f91","createdAt":"2020-04-20T10:27:11.717Z","type":"view","modifiedAt":"2020-04-20T10:27:11.736Z","creativeInstanceId":"70829d71-ce2e-4483-a4c0-e1e2bee96520","paymentToken":{"publicKey":"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=","batchProof":"FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==","signedTokens":["DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="]}})";
+          body = R"({"id":"9fd71bc4-1b8e-4c1e-8ddc-443193a09f91","createdAt":"2020-04-20T10:27:11.717Z","type":"view","modifiedAt":"2020-04-20T10:27:11.736Z","creativeInstanceId":"70829d71-ce2e-4483-a4c0-e1e2bee96520","paymentToken":{"publicKey":"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=","batchProof":"FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==","signedTokens":["DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="]}})";
         }
 
-        callback(response_status_code, response, response_headers);
+        UrlResponse response;
+        response.body = body;
+        response.status_code = response_status_code;
+        callback(response);
       }));
 
   EXPECT_CALL(*confirmations_client_mock_, LoadURL(_, _, _, _, _, _))
@@ -243,8 +247,6 @@ TEST_F(ConfirmationsRedeemTokenTest,
           const URLRequestMethod method,
           URLRequestCallback callback) {
         int response_status_code = -1;
-        std::string response;
-        std::map<std::string, std::string> response_headers;
 
         const std::string create_confirmation_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)";
         const std::string fetch_payment_token_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)";
@@ -256,7 +258,9 @@ TEST_F(ConfirmationsRedeemTokenTest,
           response_status_code = net::HTTP_NOT_FOUND;
         }
 
-        callback(response_status_code, response, response_headers);
+        UrlResponse response;
+        response.status_code = response_status_code;
+        callback(response);
       }));
 
   EXPECT_CALL(*confirmations_client_mock_, LoadURL(_, _, _, _, _, _))
@@ -294,8 +298,6 @@ TEST_F(ConfirmationsRedeemTokenTest,
           const URLRequestMethod method,
           URLRequestCallback callback) {
         int response_status_code = -1;
-        std::string response;
-        std::map<std::string, std::string> response_headers;
 
         const std::string create_confirmation_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)";
         const std::string fetch_payment_token_endpoint = R"(/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/paymentToken)";
@@ -307,7 +309,9 @@ TEST_F(ConfirmationsRedeemTokenTest,
           response_status_code = net::HTTP_INTERNAL_SERVER_ERROR;
         }
 
-        callback(response_status_code, response, response_headers);
+        UrlResponse response;
+        response.status_code = response_status_code;
+        callback(response);
       }));
 
   EXPECT_CALL(*confirmations_client_mock_, LoadURL(_, _, _, _, _, _))

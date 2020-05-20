@@ -139,11 +139,9 @@ void Uphold::FetchBalance(
   const std::string url = GetAPIUrl("/v0/me/cards/" + wallet->address);
 
   auto balance_callback = std::bind(&Uphold::OnFetchBalance,
-                                    this,
-                                    callback,
-                                    _1,
-                                    _2,
-                                    _3);
+      this,
+      callback,
+      _1);
 
   ledger_->LoadURL(
       url,
@@ -156,26 +154,23 @@ void Uphold::FetchBalance(
 
 void Uphold::OnFetchBalance(
     FetchBalanceCallback callback,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+    const ledger::UrlResponse& response) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED ||
-      response_status_code == net::HTTP_NOT_FOUND ||
-      response_status_code == net::HTTP_FORBIDDEN) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED ||
+      response.status_code == net::HTTP_NOT_FOUND ||
+      response.status_code == net::HTTP_FORBIDDEN) {
     DisconnectWallet();
     callback(ledger::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;

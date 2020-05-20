@@ -451,9 +451,7 @@ void Twitch::OnMediaPublisherInfo(
                               visit_data,
                               window_id,
                               user_id,
-                              _1,
-                              _2,
-                              _3);
+                              _1);
 
     const std::string url = (std::string)TWITCH_PROVIDER_URL + "?json&url=" +
         ledger_->URIEncode(oembed_url);
@@ -475,13 +473,8 @@ void Twitch::OnMediaPublisherInfo(
 
 void Twitch::FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback) {
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   std::string(),
-                   std::string(),
-                   ledger::UrlMethod::GET,
-                   callback);
+    ledger::LoadURLCallback callback) {
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
 }
 
 void Twitch::OnEmbedResponse(
@@ -490,23 +483,24 @@ void Twitch::OnEmbedResponse(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const std::string& user_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+    const ledger::UrlResponse& response) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     // TODO(anyone): add error handler
     return;
   }
 
   std::string fav_icon;
-  braveledger_bat_helper::getJSONValue("author_thumbnail_url",
-                                       response,
-                                       &fav_icon);
+  braveledger_bat_helper::getJSONValue(
+      "author_thumbnail_url",
+      response.body,
+      &fav_icon);
   std::string author_name;
-  braveledger_bat_helper::getJSONValue("author_name", response, &author_name);
+  braveledger_bat_helper::getJSONValue(
+      "author_name",
+      response.body,
+      &author_name);
 
   SavePublisherInfo(duration,
                     media_key,

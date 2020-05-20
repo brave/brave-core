@@ -1021,13 +1021,19 @@ void RewardsServiceImpl::LoadURL(
     ledger::LoadURLCallback callback) {
 
   if (url.empty()) {
-    callback(net::HTTP_BAD_REQUEST, "", {});
+    ledger::UrlResponse response;
+    response.url = url;
+    response.status_code = net::HTTP_BAD_REQUEST;
+    callback(response);
     return;
   }
 
   GURL parsed_url(url);
   if (!parsed_url.is_valid()) {
-    callback(net::HTTP_BAD_REQUEST, "", {});
+    ledger::UrlResponse response;
+    response.url = url;
+    response.status_code = net::HTTP_BAD_REQUEST;
+    callback(response);
     return;
   }
 
@@ -1035,12 +1041,19 @@ void RewardsServiceImpl::LoadURL(
     std::string test_response;
     std::map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
-    test_response_callback_.Run(url,
-                                static_cast<int>(method),
-                                &response_status_code,
-                                &test_response,
-                                &test_headers);
-    callback(response_status_code, test_response, test_headers);
+    test_response_callback_.Run(
+        url,
+        static_cast<int>(method),
+        &response_status_code,
+        &test_response,
+        &test_headers);
+
+    ledger::UrlResponse response;
+    response.url = url;
+    response.status_code = response_status_code;
+    response.body = test_response;
+    response.headers = base::MapToFlatMap(test_headers);
+    callback(response);
     return;
   }
 
@@ -1061,8 +1074,10 @@ void RewardsServiceImpl::LoadURL(
     request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   }
 
-  for (size_t i = 0; i < headers.size(); i++)
+  for (size_t i = 0; i < headers.size(); i++) {
     request->headers.AddHeaderFromString(headers[i]);
+  }
+
   network::SimpleURLLoader* loader = network::SimpleURLLoader::Create(
       std::move(request),
       GetNetworkTrafficAnnotationTagForURLLoad()).release();
@@ -1071,8 +1086,9 @@ void RewardsServiceImpl::LoadURL(
   loader->SetRetryOptions(kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
-  if (!content.empty())
+  if (!content.empty()) {
     loader->AttachStringForUpload(content, contentType);
+  }
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
@@ -1087,13 +1103,27 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     network::SimpleURLLoader* loader,
     ledger::LoadURLCallback callback,
     std::unique_ptr<std::string> response_body) {
+
   DCHECK(url_loaders_.find(loader) != url_loaders_.end());
   url_loaders_.erase(loader);
+
+  if (!Connected()) {
+    return;
+  }
+
   std::unique_ptr<network::SimpleURLLoader> scoped_loader(loader);
 
+  ledger::UrlResponse response;
+  response.body = response_body ? *response_body : "";
+
   int response_code = -1;
-  if (loader->ResponseInfo() && loader->ResponseInfo()->headers)
+  if (loader->ResponseInfo() && loader->ResponseInfo()->headers) {
     response_code = loader->ResponseInfo()->headers->response_code();
+  }
+  response.status_code = response_code;
+
+  const auto url = loader->GetFinalURL();
+  response.url = url.spec();
 
   std::map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
@@ -1106,16 +1136,12 @@ void RewardsServiceImpl::OnURLLoaderComplete(
       std::string value;
       while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
         key = base::ToLowerASCII(key);
-        headers[key] = value;
+        response.headers[key] = value;
       }
     }
   }
 
-  if (Connected()) {
-    callback(response_code,
-             response_body ? *response_body : std::string(),
-             headers);
-  }
+  callback(response);
 }
 
 void RewardsServiceImpl::OnFetchWalletProperties(

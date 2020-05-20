@@ -192,8 +192,6 @@ void SKUTransaction::SendExternalTransaction(
   auto url_callback = std::bind(&SKUTransaction::OnSendExternalTransaction,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   const std::string url = braveledger_request_util::GetCreateTransactionURL(
@@ -202,7 +200,7 @@ void SKUTransaction::SendExternalTransaction(
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       json,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -210,14 +208,11 @@ void SKUTransaction::SendExternalTransaction(
 }
 
 void SKUTransaction::OnSendExternalTransaction(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_CREATED) {
+  if (response.status_code != net::HTTP_CREATED) {
     BLOG(0, "External transaction not sent");
 
     callback(ledger::Result::RETRY);

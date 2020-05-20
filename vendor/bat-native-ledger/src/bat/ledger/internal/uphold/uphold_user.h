@@ -51,9 +51,7 @@ class UpholdUser {
  private:
   void OnGet(
       GetUserCallback callback,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const ledger::UrlResponse& response);
 
   UserStatus GetStatus(const std::string& status);
 

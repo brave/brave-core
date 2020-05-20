@@ -98,15 +98,13 @@ void AttestationIOS::Start(
   auto url_callback = std::bind(&AttestationIOS::OnStart,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   const std::string url = braveledger_request_util::GetStartAttestationIOSUrl();
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       json,
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
@@ -114,19 +112,16 @@ void AttestationIOS::Start(
 }
 
 void AttestationIOS::OnStart(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     StartCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, response);
+  callback(ledger::Result::LEDGER_OK, response.body);
 }
 
 void AttestationIOS::Confirm(
@@ -155,13 +150,11 @@ void AttestationIOS::Confirm(
   auto url_callback = std::bind(&AttestationIOS::OnConfirm,
       this,
       _1,
-      _2,
-      _3,
       callback);
 
   ledger_->LoadURL(
       url,
-      std::vector<std::string>(),
+      {},
       payload,
       "application/json; charset=utf-8",
       ledger::UrlMethod::PUT,
@@ -169,14 +162,11 @@ void AttestationIOS::Confirm(
 }
 
 void AttestationIOS::OnConfirm(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     ConfirmCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

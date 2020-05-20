@@ -37,15 +37,11 @@ class AttestationIOS : public Attestation {
       base::Value* result);
 
   void OnStart(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       StartCallback callback);
 
   void OnConfirm(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ConfirmCallback callback);
 };
 

@@ -51,9 +51,7 @@ class UpholdCard {
 
  private:
   void OnCreateIfNecessary(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const ledger::ExternalWallet& wallet,
     CreateCardCallback callback);
 
@@ -62,9 +60,7 @@ class UpholdCard {
     CreateCardCallback callback);
 
   void OnCreate(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const ledger::ExternalWallet& wallet,
     CreateCardCallback callback);
 
@@ -79,9 +75,7 @@ class UpholdCard {
     UpdateCardCallback callback);
 
   void OnUpdate(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     UpdateCardCallback callback);
 
   void GetCardAddresses(
@@ -92,9 +86,7 @@ class UpholdCard {
       const std::string& response);
 
   void OnGetCardAddresses(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       GetCardAddressesCallback callback);
 
   void OnCreateAnonAddressGet(
@@ -113,9 +105,7 @@ class UpholdCard {
       CreateAnonAddressCallback callback);
 
   void OnCreateAnonAddress(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       CreateAnonAddressCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

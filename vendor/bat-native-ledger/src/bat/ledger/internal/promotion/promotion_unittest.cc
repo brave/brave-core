@@ -84,7 +84,11 @@ class PromotionTest : public testing::Test {
             const std::string& contentType,
             const ledger::UrlMethod method,
             ledger::LoadURLCallback callback) {
-          callback(200, GetResponse(url), {});
+          ledger::UrlResponse response;
+          response.status_code = 200;
+          response.url = url;
+          response.body = GetResponse(url);
+          callback(response);
         }));
   }
 };

@@ -81,12 +81,10 @@ void UpholdAuthorization::Authorize(
       base::StringPrintf("code=%s&grant_type=authorization_code", code.c_str());
   const std::string url = GetAPIUrl("/oauth2/token");
   auto auth_callback = std::bind(&UpholdAuthorization::OnAuthorize,
-                                    this,
-                                    callback,
-                                    *wallet,
-                                    _1,
-                                    _2,
-                                    _3);
+      this,
+      callback,
+      *wallet,
+      _1);
 
   ledger_->LoadURL(
       url,
@@ -100,24 +98,21 @@ void UpholdAuthorization::Authorize(
 void UpholdAuthorization::OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
+    const ledger::UrlResponse& response) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+  if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, {});
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response_status_code != net::HTTP_OK) {
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     callback(ledger::Result::LEDGER_ERROR, {});
     return;

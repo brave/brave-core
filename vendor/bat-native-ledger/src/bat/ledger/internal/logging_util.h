@@ -23,9 +23,7 @@ std::string UrlRequestToString(
 
 std::string UrlResponseToString(
     const char* func,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
 }  // namespace ledger
 

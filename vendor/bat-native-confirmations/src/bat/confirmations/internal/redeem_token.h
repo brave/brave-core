@@ -44,19 +44,13 @@ class RedeemToken {
   void CreateConfirmation(
       const ConfirmationInfo& confirmation);
   void OnCreateConfirmation(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const UrlResponse& url_response,
       const ConfirmationInfo& confirmation);
 
   void FetchPaymentToken(
       const ConfirmationInfo& confirmation);
   void OnFetchPaymentToken(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const UrlResponse& url_response,
       const ConfirmationInfo& confirmation);
 
   virtual void OnRedeem(

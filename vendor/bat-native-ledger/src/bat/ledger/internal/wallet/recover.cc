@@ -119,60 +119,44 @@ void Recover::ContinueRecover(
   auto on_load = std::bind(&Recover::RecoverWalletPublicKeyCallback,
                             this,
                             _1,
-                            _2,
-                            _3,
                             newSeed,
                             std::move(callback));
   const auto url = braveledger_request_util::BuildUrl(
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex,
         PREFIX_V2);
-  ledger_->LoadURL(
-      url,
-      std::vector<std::string>(),
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      std::move(on_load));
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, std::move(on_load));
 }
 
 void Recover::RecoverWalletPublicKeyCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
-  if (response_status_code != net::HTTP_OK) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
   std::string recoveryId;
-  braveledger_bat_helper::getJSONValue("paymentId", response, &recoveryId);
+  braveledger_bat_helper::getJSONValue("paymentId", response.body, &recoveryId);
 
-  auto on_recover = std::bind(&Recover::RecoverWalletCallback,
+  auto recover_callback = std::bind(&Recover::RecoverWalletCallback,
                             this,
                             _1,
-                            _2,
-                            _3,
                             recoveryId,
                             new_seed,
                             std::move(callback));
-  ledger_->LoadURL(braveledger_request_util::BuildUrl(
-        (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
-      std::vector<std::string>(), "", "", ledger::UrlMethod::GET, on_recover);
+  const std::string url = braveledger_request_util::BuildUrl
+      ((std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2);
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, recover_callback);
 }
 
 void Recover::RecoverWalletCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
+    const ledger::UrlResponse& response,
     const std::string& recoveryId,
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response_status_code,
-      response, headers));
-  if (response_status_code != net::HTTP_OK) {
+  BLOG(6, ledger::UrlResponseToString(__func__, response));
+  if (response.status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
@@ -182,11 +166,11 @@ void Recover::RecoverWalletCallback(
   double fee_amount = .0;
   double balance = .0;
   braveledger_bat_helper::getJSONWalletInfo(
-      response,
+      response.body,
       &wallet_info,
       &fee_amount);
   braveledger_bat_helper::getJSONRecoverWallet(
-      response,
+      response.body,
       &balance);
   if (!ledger_->GetUserChangedContribution()) {
     ledger_->SetContributionAmount(fee_amount);

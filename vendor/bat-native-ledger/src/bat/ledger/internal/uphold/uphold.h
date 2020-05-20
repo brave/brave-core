@@ -102,9 +102,7 @@ class Uphold {
 
   void OnFetchBalance(
     FetchBalanceCallback callback,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const ledger::UrlResponse& response);
 
   void OnTransferAnonToExternalWalletCallback(
     ledger::ExternalWalletCallback callback,

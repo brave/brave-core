@@ -402,13 +402,8 @@ void Twitter::OnSaveMediaVisit(
 
 void Twitter::FetchDataFromUrl(
     const std::string& url,
-    braveledger_media::FetchDataFromUrlCallback callback) {
-  ledger_->LoadURL(url,
-                   std::vector<std::string>(),
-                   std::string(),
-                   std::string(),
-                   ledger::UrlMethod::GET,
-                   callback);
+    ledger::LoadURLCallback callback) {
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
 }
 
 void Twitter::OnMediaActivityError(const ledger::VisitData& visit_data,
@@ -473,14 +468,13 @@ void Twitter::OnMediaPublisherActivity(
     const std::string user_id = GetUserIdFromUrl(visit_data.path);
     const std::string url = GetProfileURL(user_name, user_id);
 
-    FetchDataFromUrl(url,
-                     std::bind(&Twitter::OnUserPage,
-                               this,
-                               window_id,
-                               visit_data,
-                               _1,
-                               _2,
-                               _3));
+    auto url_callback = std::bind(&Twitter::OnUserPage,
+        this,
+        window_id,
+        visit_data,
+        _1);
+
+    FetchDataFromUrl(url, url_callback);
   } else {
     GetPublisherPanelInfo(window_id,
                           visit_data,
@@ -517,14 +511,12 @@ void Twitter::OnPublisherPanelInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
-    FetchDataFromUrl(visit_data.url,
-                     std::bind(&Twitter::OnUserPage,
-                               this,
-                               window_id,
-                               visit_data,
-                               _1,
-                               _2,
-                               _3));
+    auto url_callback = std::bind(&Twitter::OnUserPage,
+        this,
+        window_id,
+        visit_data,
+        _1);
+    FetchDataFromUrl(visit_data.url, url_callback);
   } else {
     ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
@@ -533,21 +525,19 @@ void Twitter::OnPublisherPanelInfo(
 void Twitter::OnUserPage(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  if (response_status_code != net::HTTP_OK) {
+    const ledger::UrlResponse& response) {
+  if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
   std::string user_id = GetUserIdFromUrl(visit_data.path);
   if (user_id.empty()) {
-    user_id = GetUserId(response);
+    user_id = GetUserId(response.body);
   }
 
   const std::string user_name = GetUserNameFromUrl(visit_data.path);
-  std::string publisher_name = GetPublisherName(response);
+  std::string publisher_name = GetPublisherName(response.body);
 
   if (publisher_name.empty()) {
     publisher_name = user_name;

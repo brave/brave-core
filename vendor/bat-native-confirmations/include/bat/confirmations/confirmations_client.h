@@ -24,6 +24,8 @@ using URLRequestCallback = ::ledger::LoadURLCallback;
 
 using ConfirmationsClient = ::ledger::LedgerClient;
 
+using UrlResponse = ::ledger::UrlResponse;
+
 }  // namespace confirmations
 
 #endif  // BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_H_

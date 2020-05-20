@@ -39,15 +39,11 @@ class Create {
     const std::string& octets);
 
   void RequestCredentialsCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::ResultCallback callback);
 
   void RegisterPersonaCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::UrlResponse& response,
       ledger::ResultCallback callback);
 
   std::string GetAnonizeProof(const std::string& registrarVK,
