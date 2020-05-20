@@ -10,5 +10,6 @@ source_set("net") {
     "//brave/components/brave_webtorrent/browser",
     "//extensions/browser",
     "//net",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
   ]
 }
