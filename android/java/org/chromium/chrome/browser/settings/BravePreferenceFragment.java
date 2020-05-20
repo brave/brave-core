@@ -5,17 +5,24 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.content.Intent;
 
 import org.chromium.chrome.R;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 
 public class BravePreferenceFragment extends PreferenceFragmentCompat {
+    protected static final int STORAGE_PERMISSION_EXPORT_REQUEST_CODE = 8000;
+    protected static final int STORAGE_PERMISSION_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_EXPORT_REQUEST_CODE + 1;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -40,5 +47,21 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+    }
+
+    protected boolean isStoragePermissionGranted(boolean isExport) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Context context = ContextUtils.getApplicationContext();
+            if (context.checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                requestPermissions(
+                        new String[] { android.Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                        isExport ? STORAGE_PERMISSION_EXPORT_REQUEST_CODE : STORAGE_PERMISSION_IMPORT_REQUEST_CODE);
+                return false;
+            }
+        }
+        return true;
     }
 }
