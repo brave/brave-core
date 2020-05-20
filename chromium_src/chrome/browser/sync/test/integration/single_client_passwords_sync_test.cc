@@ -1,0 +1,11 @@
+#define StoresDataForNonSyncingPrimaryAccountInAccountDB DISABLED_StoresDataForNonSyncingPrimaryAccountInAccountDB
+#define StoresDataForSecondaryAccountInAccountDB DISABLED_StoresDataForSecondaryAccountInAccountDB
+#define ClearsAccountDBOnSignout DISABLED_ClearsAccountDBOnSignout
+#define SwitchesStoresOnEnablingSync DISABLED_SwitchesStoresOnEnablingSync
+#define SwitchesStoresOnMakingAccountPrimary DISABLED_SwitchesStoresOnMakingAccountPrimary
+#include "../../../../../../../chrome/browser/sync/test/integration/single_client_passwords_sync_test.cc"
+#undef StoresDataForNonSyncingPrimaryAccountInAccountDB
+#undef StoresDataForSecondaryAccountInAccountDB
+#undef ClearsAccountDBOnSignout
+#undef SwitchesStoresOnEnablingSync
+#undef SwitchesStoresOnMakingAccountPrimary

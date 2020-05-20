@@ -554,8 +554,17 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/test/test_browser_ui.cc",
     "//chrome/browser/ui/test/test_browser_ui.h",
     "//chrome/browser/sync/test/integration/enable_disable_test.cc",
-    "//chrome/browser/sync/test/integration/single_client_device_info_sync_test.cc",
+    "//chrome/browser/sync/test/integration/local_sync_test.cc",
+    "//chrome/browser/sync/test/integration/migration_test.cc",
     "//chrome/browser/sync/test/integration/single_client_bookmarks_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_autofill_profile_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_custom_passphrase_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_device_info_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_directory_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_extensions_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_history_delete_directives_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_nigori_sync_test.cc",
+    "//chrome/browser/sync/test/integration/single_client_passwords_sync_test.cc",
   ]
 
   if (is_mac) {
