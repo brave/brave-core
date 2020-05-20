@@ -273,6 +273,13 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">3 ads per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">4 ads per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">5 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">State level ad targeting</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your state.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTOMATICALLY_DETECTED_AS" desc="">Auto-detected as {{adsSubdivisionTarget}}</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTOMATICALLY_DETECT" desc="">Auto-detect</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE" desc="">Disable</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED" desc="">Disabled</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
       <message name="IDS_BRAVE_UI_BAP_REWARDS_TEXT" desc="">BAP</message>
       <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="">BAT Points</message>

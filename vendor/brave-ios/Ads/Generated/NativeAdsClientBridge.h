@@ -36,5 +36,11 @@
 - (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info;
 - (void)closeNotification:(const std::string&)id;
 - (void)URLRequest:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)content_type method:(const ads::URLRequestMethod)method callback:(ads::URLRequestCallback)callback;
+- (bool)shouldAllowAdsSubdivisionTargeting;
+- (void)setAllowAdsSubdivisionTargeting:(const bool)should_allow;
+- (std::string)adsSubdivisionTargetingCode;
+- (void)setAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
+- (std::string)automaticallyDetectedAdsSubdivisionTargetingCode;
+- (void)setAutomaticallyDetectedAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
 
 @end

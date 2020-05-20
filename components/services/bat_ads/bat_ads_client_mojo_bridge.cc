@@ -99,6 +99,69 @@ uint64_t BatAdsClientMojoBridge::GetAdsPerDay() const {
   return ads_per_day;
 }
 
+bool BatAdsClientMojoBridge::ShouldAllowAdsSubdivisionTargeting() const {
+  if (!connected()) {
+    return false;
+  }
+
+  bool should_allow;
+  bat_ads_client_->ShouldAllowAdsSubdivisionTargeting(&should_allow);
+  return should_allow;
+}
+
+void BatAdsClientMojoBridge::SetAllowAdsSubdivisionTargeting(
+    const bool should_allow) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetAllowAdsSubdivisionTargeting(should_allow);
+}
+
+std::string BatAdsClientMojoBridge::GetAdsSubdivisionTargetingCode() const {
+  std::string subdivision_targeting_code;
+
+  if (!connected()) {
+    return subdivision_targeting_code;
+  }
+
+  bat_ads_client_->GetAdsSubdivisionTargetingCode(&subdivision_targeting_code);
+  return subdivision_targeting_code;
+}
+
+void BatAdsClientMojoBridge::SetAdsSubdivisionTargetingCode(
+    const std::string& subdivision_targeting_code) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetAdsSubdivisionTargetingCode(subdivision_targeting_code);
+}
+
+std::string BatAdsClientMojoBridge::
+GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const {
+  std::string subdivision_targeting_code;
+
+  if (!connected()) {
+    return subdivision_targeting_code;
+  }
+
+  bat_ads_client_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      &subdivision_targeting_code);
+  return subdivision_targeting_code;
+}
+
+void BatAdsClientMojoBridge::
+SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+    const std::string& subdivision_targeting_code) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      subdivision_targeting_code);
+}
+
 void BatAdsClientMojoBridge::SetIdleThreshold(
     const int threshold) {
   if (!connected()) {

@@ -35,6 +35,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
@@ -43,6 +44,7 @@
 #include "bat/ads/internal/sorts/ads_history_sort_factory.h"
 #include "bat/ads/internal/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
+#include "bat/ads/internal/subdivision_targeting.h"
 #include "bat/ads/internal/url_util.h"
 
 #include "base/guid.h"
@@ -52,13 +54,13 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 
 #if defined(OS_ANDROID)
 #include "base/system/sys_info.h"
 #include "base/android/build_info.h"
 #endif
 
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "url/gurl.h"
 
@@ -89,6 +91,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       client_(std::make_unique<Client>(this, ads_client)),
       bundle_(std::make_unique<Bundle>(this, ads_client)),
       ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
+      subdivision_targeting_(std::make_unique<
+          SubdivisionTargeting>(ads_client)),
       frequency_capping_(std::make_unique<FrequencyCapping>(client_.get())),
       ad_conversions_(std::make_unique<AdConversions>(
           this, ads_client, client_.get())),
@@ -608,6 +612,8 @@ bool AdsImpl::ToggleFlagAd(
 
 void AdsImpl::ChangeLocale(
     const std::string& locale) {
+  subdivision_targeting_->MaybeFetch(locale);
+
   const std::string language_code = brave_l10n::GetLanguageCode(locale);
   client_->SetUserModelLanguage(language_code);
 
@@ -619,6 +625,13 @@ void AdsImpl::ChangeLocale(
   }
 
   LoadUserModel();
+}
+
+void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+
+  subdivision_targeting_->MaybeFetch(locale);
 }
 
 void AdsImpl::OnPageLoaded(
@@ -1043,6 +1056,11 @@ std::vector<std::unique_ptr<ExclusionRule>>
   std::unique_ptr<ExclusionRule> conversion_frequency_cap =
       std::make_unique<ConversionFrequencyCap>(frequency_capping_.get());
   exclusion_rules.push_back(std::move(conversion_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> subdivision_targeting_frequency_cap =
+      std::make_unique<SubdivisionTargetingFrequencyCap>(
+          frequency_capping_.get(), subdivision_targeting_.get());
+  exclusion_rules.push_back(std::move(subdivision_targeting_frequency_cap));
 
   return exclusion_rules;
 }

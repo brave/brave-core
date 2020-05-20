@@ -28,6 +28,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_parameters.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
@@ -306,6 +307,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 namespace {
 
 const int kDaysOfAdsHistory = 7;
+
+const char kShouldAllowAdsSubdivisionTargeting[] =
+    "shouldAllowAdsSubdivisionTargeting";
+const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
+const char kAutomaticallyDetectedAdsSubdivisionTargeting[] =
+    "automaticallyDetectedAdsSubdivisionTargeting";
 
 }  // namespace
 
@@ -1107,6 +1114,20 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   auto ads_per_hour = ads_service_->GetAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
+  const std::string subdivision_targeting_code =
+      ads_service_->GetAdsSubdivisionTargetingCode();
+  ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
+
+  const std::string automatically_detected_subdivision_targeting_code =
+      ads_service_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
+  ads_data.SetString(kAutomaticallyDetectedAdsSubdivisionTargeting,
+      automatically_detected_subdivision_targeting_code);
+
+  const bool should_allow_subdivision_ad_targeting =
+      ads_service_->ShouldAllowAdsSubdivisionTargeting();
+  ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
+      should_allow_subdivision_ad_targeting);
+
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
     auto ads_ui_enabled = true;
 #else
@@ -1326,6 +1347,10 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
     ads_service_->SetEnabled(is_enabled);
   } else if (key == "adsPerHour") {
     ads_service_->SetAdsPerHour(std::stoull(value));
+  } else if (key == kAdsSubdivisionTargeting) {
+    ads_service_->SetAdsSubdivisionTargetingCode(value);
+  } else if (key == kAutomaticallyDetectedAdsSubdivisionTargeting) {
+    ads_service_->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(value);
   }
 
   base::ListValue* emptyArgs = nullptr;
@@ -1868,11 +1893,14 @@ void RewardsDOMHandler::GetAllMonthlyReportIds(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
-  if (!ads_service_ || !web_ui()->CanCallJavascript()) {
+  if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
-  const std::string country_code = ads_service_->GetCountryCode();
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string country_code =
+      brave_l10n::LocaleHelper::GetInstance()->GetCountryCode(locale);
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.countryCode", base::Value(country_code));

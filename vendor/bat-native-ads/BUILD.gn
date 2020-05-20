@@ -132,6 +132,9 @@ source_set("ads") {
     "src/bat/ads/internal/ads_impl.h",
     "src/bat/ads/internal/ads_serve.cc",
     "src/bat/ads/internal/ads_serve.h",
+    "src/bat/ads/internal/subdivision_targeting_codes.h",
+    "src/bat/ads/internal/subdivision_targeting.cc",
+    "src/bat/ads/internal/subdivision_targeting.h",
     "src/bat/ads/internal/bundle.cc",
     "src/bat/ads/internal/bundle.h",
     "src/bat/ads/internal/catalog_ad_notification_payload_info.h",
@@ -189,6 +192,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/frequency_capping.cc",
@@ -261,6 +266,7 @@ source_set("ads") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//net",
     "//url",
