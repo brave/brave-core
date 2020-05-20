@@ -28,6 +28,12 @@ SKUOrder::~SKUOrder() = default;
 void SKUOrder::Create(
     const std::vector<ledger::SKUOrderItem>& items,
     ledger::SKUOrderCallback callback) {
+  if (items.empty()) {
+    BLOG(0, "List is empty");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   base::Value order_items(base::Value::Type::LIST);
   for (const auto& item : items) {
     base::Value order_item(base::Value::Type::DICTIONARY);

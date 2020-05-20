@@ -107,10 +107,12 @@ bool DatabaseMediaPublisherInfo::MigrateToV1(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV1(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
@@ -126,14 +128,17 @@ bool DatabaseMediaPublisherInfo::MigrateToV15(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -148,6 +153,7 @@ bool DatabaseMediaPublisherInfo::MigrateToV15(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
 
@@ -159,6 +165,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
+    BLOG(0, "Data is empty " << media_key << "/" << publisher_key);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -189,6 +196,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
     const std::string& media_key,
     ledger::PublisherInfoCallback callback) {
   if (media_key.empty()) {
+    BLOG(0, "Media key is empty");
     return callback(ledger::Result::LEDGER_ERROR, {});
   }
 
@@ -236,6 +244,7 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
     ledger::PublisherInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }

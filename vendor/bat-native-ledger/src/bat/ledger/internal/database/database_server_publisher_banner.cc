@@ -116,14 +116,17 @@ bool DatabaseServerPublisherBanner::MigrateToV7(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV7(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV7(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -147,6 +150,7 @@ bool DatabaseServerPublisherBanner::MigrateToV15(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -158,10 +162,12 @@ bool DatabaseServerPublisherBanner::MigrateToV15(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -179,6 +185,7 @@ bool DatabaseServerPublisherBanner::MigrateToV15(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
 
@@ -197,6 +204,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdateList(
     const std::vector<ledger::PublisherBanner>& list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
+    BLOG(0, "List is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -236,6 +244,11 @@ void DatabaseServerPublisherBanner::InsertOrUpdateList(
 void DatabaseServerPublisherBanner::GetRecord(
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
+  if (publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
+    callback(nullptr);
+    return;
+  }
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT title, description, background, logo "
@@ -274,6 +287,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
     ledger::PublisherBannerCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
   }

@@ -87,11 +87,13 @@ void UpholdWallet::OnGenerate(
   }
 
   if (user.bat_not_allowed) {
+    BLOG(0, "BAT not allowed");
     callback(ledger::Result::BAT_NOT_ALLOWED, std::move(wallet_ptr));
     return;
   }
 
   if (!wallet_ptr || result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Wallet not generated");
     callback(result, std::move(wallet_ptr));
     return;
   }
@@ -133,6 +135,7 @@ void UpholdWallet::OnCreateCard(
     const std::string& address) {
   auto wallet_ptr = ledger::ExternalWallet::New(wallet);
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Card not created");
     callback(result, std::move(wallet_ptr));
     return;
   }
@@ -153,6 +156,11 @@ void UpholdWallet::OnCreateCard(
 ledger::ExternalWalletPtr UpholdWallet::SetStatus(
     const User& user,
     ledger::ExternalWalletPtr wallet) {
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return wallet;
+  }
+
   switch (static_cast<int>(wallet->status)) {
     case static_cast<int>(ledger::WalletStatus::CONNECTED): {
       if (!user.verified) {

@@ -75,14 +75,17 @@ bool DatabaseContributionQueue::MigrateToV9(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV9(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!publishers_->Migrate(transaction, 9)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
@@ -100,6 +103,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
     ledger::ContributionQueuePtr info,
     ledger::ResultCallback callback) {
   if (!info) {
+    BLOG(0, "Queue is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -164,6 +168,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
     ledger::ResultCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -172,6 +177,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
       braveledger_bind_util::FromStringToContributionQueue(queue_string);
 
   if (!queue) {
+    BLOG(0, "Queue is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -182,6 +188,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(0, "Record size is not correct");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -230,11 +237,13 @@ void DatabaseContributionQueue::OnGetFirstRecord(
     ledger::GetFirstContributionQueueCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(0, "Record size is not correct");
     callback(nullptr);
     return;
   }
@@ -265,6 +274,7 @@ void DatabaseContributionQueue::OnGetPublishers(
       braveledger_bind_util::FromStringToContributionQueue(queue_string);
 
   if (!queue) {
+    BLOG(0, "Queue is null");
     callback(nullptr);
     return;
   }
@@ -278,6 +288,7 @@ void DatabaseContributionQueue::DeleteRecord(
     const uint64_t id,
     ledger::ResultCallback callback) {
   if (id == 0) {
+    BLOG(0, "Id is 0");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

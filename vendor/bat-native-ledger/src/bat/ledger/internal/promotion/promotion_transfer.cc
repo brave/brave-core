@@ -102,6 +102,7 @@ void PromotionTransfer::OnGetEligibleTokens(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
+    BLOG(1, "No eligible tokens");
     callback(ledger::Result::LEDGER_OK);
     return;
   }

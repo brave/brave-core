@@ -54,6 +54,7 @@ void ContributionTip::ServerPublisher(
 
   // Save to the pending list if not verified
   if (status == ledger::PublisherStatus::NOT_VERIFIED) {
+    BLOG(1, "Saving pending publisher " << publisher_key);
     auto save_callback = std::bind(&ContributionTip::OnSavePending,
         this,
         _1,
@@ -102,9 +103,10 @@ void ContributionTip::OnSavePending(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
+  } else {
+    ledger_->PendingContributionSaved(result);
   }
 
-  ledger_->PendingContributionSaved(result);
   callback(result);
 }
 

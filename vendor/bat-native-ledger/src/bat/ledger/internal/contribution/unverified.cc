@@ -36,6 +36,7 @@ void Unverified::OnContributeUnverifiedBalance(
     ledger::Result result,
     ledger::BalancePtr properties) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
+    BLOG(0, "Balance is null");
     return;
   }
 
@@ -50,10 +51,12 @@ void Unverified::OnContributeUnverifiedPublishers(
     double balance,
     const ledger::PendingContributionInfoList& list) {
   if (list.empty()) {
+    BLOG(0, "List is empty");
     return;
   }
 
   if (balance == 0) {
+    BLOG(0, "Not enough funds");
     ledger_->OnContributeUnverifiedPublishers(
         ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
     return;
@@ -85,6 +88,7 @@ void Unverified::OnContributeUnverifiedPublishers(
   }
 
   if (!current) {
+    BLOG(1, "Nothing to process");
     return;
   }
 
@@ -123,10 +127,11 @@ void Unverified::OnContributeUnverifiedPublishers(
     } else {
       contribution_->SetTimer(&unverified_publishers_timer_id_);
     }
-  } else {
-    ledger_->OnContributeUnverifiedPublishers(
-        ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
   }
+
+  BLOG(0, "Not enough funds");
+  ledger_->OnContributeUnverifiedPublishers(
+      ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
 }
 
 void Unverified::WasPublisherProcessed(
@@ -134,11 +139,12 @@ void Unverified::WasPublisherProcessed(
     const std::string& publisher_key,
     const std::string& name) {
   if (result == ledger::Result::LEDGER_ERROR) {
-    BLOG(0, "Coudn't get processed data");
+    BLOG(0, "Couldn't get processed data");
     return;
   }
 
   if (result == ledger::Result::LEDGER_OK) {
+    BLOG(1, "Publisher already processed");
     // Nothing to do here as publisher was already processed
     return;
   }
@@ -163,10 +169,13 @@ void Unverified::ProcessedPublisherSaved(
 
 void Unverified::OnRemovePendingContribution(
     ledger::Result result) {
-  if (result == ledger::Result::LEDGER_OK) {
-    ledger_->OnContributeUnverifiedPublishers(
-        ledger::Result::PENDING_PUBLISHER_REMOVED);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Problem removing pending contribution");
+    return;
   }
+
+  ledger_->OnContributeUnverifiedPublishers(
+      ledger::Result::PENDING_PUBLISHER_REMOVED);
 }
 
 void Unverified::OnTimer(uint32_t timer_id) {

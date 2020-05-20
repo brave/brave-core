@@ -92,6 +92,7 @@ Promotion::~Promotion() = default;
 
 void Promotion::Initialize() {
   if (!ledger_->GetBooleanState(ledger::kStatePromotionCorruptedMigrated)) {
+    BLOG(1, "Migrating corrupted promotions");
     auto check_callback = std::bind(&Promotion::CheckForCorrupted,
         this,
         _1);
@@ -112,6 +113,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   const std::string& wallet_payment_id = ledger_->GetPaymentId();
   const std::string& passphrase = ledger_->GetWalletPassphrase();
   if (wallet_payment_id.empty() || passphrase.empty()) {
+    BLOG(0, "Corrupted wallet");
     ledger::PromotionList empty_list;
     callback(ledger::Result::CORRUPTED_DATA, std::move(empty_list));
     ledger::WalletProperties properties;
@@ -270,11 +272,13 @@ void Promotion::OnClaimPromotion(
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) {
   if (!promotion) {
+    BLOG(0, "Promotion is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (promotion->status != ledger::PromotionStatus::ACTIVE) {
+    BLOG(1, "Promotion already in progress");
     callback(ledger::Result::IN_PROGRESS, "");
     return;
   }
@@ -300,11 +304,13 @@ void Promotion::OnAttestPromotion(
     const std::string& solution,
     ledger::AttestPromotionCallback callback) {
   if (!promotion) {
+    BLOG(1, "Promotion is null");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   if (promotion->status != ledger::PromotionStatus::ACTIVE) {
+    BLOG(1, "Promotion already in progress");
     callback(ledger::Result::IN_PROGRESS, nullptr);
     return;
   }
@@ -375,6 +381,7 @@ void Promotion::AttestedSaved(
       braveledger_bind_util::FromStringToPromotion(promotion_string);
 
   if (!promotion_ptr) {
+    BLOG(1, "Promotion is null");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
@@ -404,6 +411,7 @@ void Promotion::OnComplete(
     ledger::PromotionPtr promotion,
     const ledger::Result result,
     ledger::AttestPromotionCallback callback) {
+    BLOG(1, "Promotion completed with result " << result);
   if (promotion && result == ledger::Result::LEDGER_OK) {
     ledger_->SetBalanceReportItem(
         braveledger_time_util::GetCurrentMonth(),
@@ -477,6 +485,7 @@ void Promotion::CredentialsProcessed(
   }
 
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Credentials process not succeeded " << result);
     callback(result);
     return;
   }
@@ -548,6 +557,7 @@ void Promotion::Refresh(const bool retry_after_error) {
 
 void Promotion::CheckForCorrupted(const ledger::PromotionMap& promotions) {
   if (promotions.empty()) {
+    BLOG(1, "Promotion is empty");
     return;
   }
 
@@ -593,6 +603,7 @@ void Promotion::CorruptedPromotionFixed(const ledger::Result result) {
 
 void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
   if (list.empty()) {
+    BLOG(0, "Creds list is empty");
     ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
     return;
   }

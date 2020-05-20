@@ -72,10 +72,12 @@ bool DatabaseSKUOrder::MigrateToV19(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV19(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
@@ -86,6 +88,7 @@ void DatabaseSKUOrder::InsertOrUpdate(
     ledger::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!order) {
+    BLOG(0, "Order is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -126,6 +129,7 @@ void DatabaseSKUOrder::UpdateStatus(
     const ledger::SKUOrderStatus status,
     ledger::ResultCallback callback) {
   if (order_id.empty()) {
+    BLOG(0, "Order id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -156,6 +160,7 @@ void DatabaseSKUOrder::GetRecord(
     const std::string& order_id,
     ledger::GetSKUOrderCallback callback) {
   if (order_id.empty()) {
+    BLOG(0, "Order id is empty");
     callback({});
     return;
   }
@@ -197,6 +202,7 @@ void DatabaseSKUOrder::OnGetRecord(
     ledger::GetSKUOrderCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }
@@ -229,6 +235,7 @@ void DatabaseSKUOrder::OnGetRecordItems(
     ledger::GetSKUOrderCallback callback) {
   auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
   if (!order) {
+    BLOG(0, "Order is null");
     callback({});
     return;
   }
@@ -241,6 +248,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
     const std::string& contribution_id,
     ledger::GetSKUOrderCallback callback) {
   if (contribution_id.empty()) {
+    BLOG(0, "Contribution id is empty");
     callback({});
     return;
   }
@@ -281,7 +289,8 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
-    BLOG(0, "Order/contribution id is empty");
+    BLOG(0, "Order/contribution id is empty " <<
+        order_id << "/" << contribution_id);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

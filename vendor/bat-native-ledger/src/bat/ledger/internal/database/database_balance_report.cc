@@ -105,14 +105,17 @@ bool DatabaseBalanceReport::MigrateToV22(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV22(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV22(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -123,6 +126,7 @@ void DatabaseBalanceReport::InsertOrUpdate(
     ledger::BalanceReportInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info || info->id.empty()) {
+    BLOG(0, "Id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -160,6 +164,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
     ledger::BalanceReportInfoList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
+    BLOG(0, "List is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -201,6 +206,11 @@ void DatabaseBalanceReport::SetAmount(
     ledger::ReportType type,
     double amount,
     ledger::ResultCallback callback) {
+  if (month == ledger::ActivityMonth::ANY || year == 0) {
+    BLOG(0, "Record size is not correct " << month << "/" << year);
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
   auto transaction = ledger::DBTransaction::New();
 
   const std::string id = GetBalanceReportId(month, year);
@@ -242,6 +252,12 @@ void DatabaseBalanceReport::GetRecord(
     ledger::ActivityMonth month,
     int year,
     ledger::GetBalanceReportCallback callback) {
+  if (month == ledger::ActivityMonth::ANY || year == 0) {
+    BLOG(0, "Record size is not correct " << month << "/" << year);
+    callback(ledger::Result::LEDGER_ERROR, {});
+    return;
+  }
+
   auto transaction = ledger::DBTransaction::New();
 
   // when new month starts we need to insert blank values
@@ -294,6 +310,7 @@ void DatabaseBalanceReport::OnGetRecord(
     ledger::GetBalanceReportCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -355,6 +372,7 @@ void DatabaseBalanceReport::OnGetAllRecords(
     ledger::GetBalanceReportListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }

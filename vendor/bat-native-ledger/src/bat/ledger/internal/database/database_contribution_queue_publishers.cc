@@ -117,10 +117,12 @@ bool DatabaseContributionQueuePublishers::MigrateToV9(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV9(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
@@ -136,14 +138,17 @@ bool DatabaseContributionQueuePublishers::MigrateToV15(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -159,6 +164,7 @@ bool DatabaseContributionQueuePublishers::MigrateToV15(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -169,6 +175,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     ledger::ContributionQueuePublisherList list,
     ledger::ResultCallback callback) {
   if (id == 0 || list.empty()) {
+    BLOG(0, "Empty data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -203,6 +210,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
     const uint64_t queue_id,
     ContributionQueuePublishersListCallback callback) {
   if (queue_id == 0) {
+    BLOG(0, "Queue id is 0");
     callback({});
     return;
   }
@@ -241,6 +249,7 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
     ContributionQueuePublishersListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }
@@ -265,6 +274,7 @@ void DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
   DCHECK(transaction);
 
   if (queue_id == 0) {
+    BLOG(0, "Queue id is 0");
     return;
   }
 

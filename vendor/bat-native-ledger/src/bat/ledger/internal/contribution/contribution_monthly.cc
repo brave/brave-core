@@ -89,13 +89,15 @@ void ContributionMonthly::GetVerifiedTipList(
     non_verified.push_back(std::move(contribution));
   }
 
-  if (!non_verified.empty()) {
-    auto save_callback = std::bind(
-        &ContributionMonthly::OnSavePendingContribution,
-        this,
-        _1);
-    ledger_->SavePendingContribution(std::move(non_verified), save_callback);
+  if (non_verified.empty()) {
+    return;
   }
+
+  auto save_callback = std::bind(
+      &ContributionMonthly::OnSavePendingContribution,
+      this,
+      _1);
+  ledger_->SavePendingContribution(std::move(non_verified), save_callback);
 }
 
 void ContributionMonthly::OnSavePendingContribution(
@@ -142,6 +144,7 @@ void ContributionMonthly::OnHasSufficientBalance(
     const double balance,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (publisher_list.empty()) {
+    BLOG(1, "Publisher list is empty");
     callback(true);
     return;
   }

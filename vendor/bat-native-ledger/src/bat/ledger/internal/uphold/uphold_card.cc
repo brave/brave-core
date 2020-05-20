@@ -42,6 +42,12 @@ UpholdCard::~UpholdCard() {
 void UpholdCard::CreateIfNecessary(
     ledger::ExternalWalletPtr wallet,
     CreateCardCallback callback) {
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   auto headers = RequestAuthorization(wallet->token);
   auto check_callback = std::bind(&UpholdCard::OnCreateIfNecessary,
                             this,
@@ -76,6 +82,7 @@ void UpholdCard::OnCreateIfNecessary(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_list()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -110,6 +117,12 @@ void UpholdCard::OnCreateIfNecessary(
 void UpholdCard::Create(
     ledger::ExternalWalletPtr wallet,
     CreateCardCallback callback) {
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   auto headers = RequestAuthorization(wallet->token);
   const std::string payload =
       base::StringPrintf(
@@ -152,18 +165,21 @@ void UpholdCard::OnCreate(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   const auto* id = dictionary->FindStringKey("id");
   if (!id) {
+    BLOG(0, "ID not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -187,6 +203,7 @@ void UpholdCard::OnCreateUpdate(
     const std::string& address,
     CreateCardCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Card update failed");
     callback(result, "");
     return;
   }
@@ -199,6 +216,7 @@ void UpholdCard::Update(
     const UpdateCard& card,
     UpdateCardCallback callback) {
   if (!wallet) {
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -258,6 +276,12 @@ void UpholdCard::OnUpdate(
 void UpholdCard::GetCardAddresses(
     ledger::ExternalWalletPtr wallet,
     GetCardAddressesCallback callback) {
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, {});
+    return;
+  }
+
   const auto headers = RequestAuthorization(wallet->token);
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/addresses",
@@ -284,11 +308,13 @@ std::map<std::string, std::string> UpholdCard::ParseGetCardAddressResponse(
 
   base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
   if (!dictionary || !dictionary->is_list()) {
+    BLOG(0, "JSON is not correct");
     return results;
   }
 
   base::ListValue* addresses = nullptr;
   if (!dictionary->GetAsList(&addresses)) {
+    BLOG(0, "JSON is not correct");
     return results;
   }
 
@@ -382,6 +408,12 @@ void UpholdCard::OnCreateAnonAddressIfNecessary(
 void UpholdCard::CreateAnonAddress(
     ledger::ExternalWalletPtr wallet,
     CreateAnonAddressCallback callback) {
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   const auto headers = RequestAuthorization(wallet->token);
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/addresses",
@@ -426,18 +458,21 @@ void UpholdCard::OnCreateAnonAddress(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   const auto* id = dictionary->FindStringKey("id");
   if (!id) {
+    BLOG(0, "ID not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

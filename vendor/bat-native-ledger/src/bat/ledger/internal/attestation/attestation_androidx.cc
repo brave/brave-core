@@ -30,21 +30,25 @@ void AttestationAndroid::ParseClaimSolution(
     base::Value* result) {
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Parsing of solution failed");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Parsing of solution failed");
     return;
   }
 
   const auto* nonce = dictionary->FindStringKey("nonce");
   if (!nonce) {
+    BLOG(0, "Nonce is missing");
     return;
   }
 
   const auto* token = dictionary->FindStringKey("token");
   if (!token) {
+    BLOG(0, "Token is missing");
     return;
   }
 
@@ -102,6 +106,7 @@ void AttestationAndroid::Confirm(
   ParseClaimSolution(solution, &parsed_solution);
 
   if (parsed_solution.DictSize() != 2) {
+    BLOG(0, "Solution is wrong: " << solution);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

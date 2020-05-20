@@ -68,6 +68,12 @@ void SKUCommon::OnTransactionCompleted(
 void SKUCommon::SendExternalTransaction(
     const std::string& order_id,
     ledger::SKUOrderCallback callback) {
+  if (order_id.empty()) {
+    BLOG(0, "Order id is empty");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   auto get_callback = std::bind(&SKUCommon::GetSKUTransactionByOrderId,
       this,
       _1,

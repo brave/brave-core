@@ -132,6 +132,7 @@ void Create::RequestCredentialsCallback(
   if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
                                             response.body,
                                             &registrar_vk)) {
+    BLOG(0, "Bad registration response");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -142,6 +143,7 @@ void Create::RequestCredentialsCallback(
   ledger_->SetPreFlight(pre_flight);
 
   if (proof.empty()) {
+    BLOG(0, "Proof is empty");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -219,6 +221,7 @@ void Create::RegisterPersonaCallback(
   if (!braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME,
                                             response.body,
                                             &verification)) {
+    BLOG(0, "Verification is missing");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -233,8 +236,8 @@ void Create::RegisterPersonaCallback(
     // https://github.com/brave-intl/bat-native-anonize/issues/11
     free((void*)masterUserToken); // NOLINT
   } else if (!ledger::is_testing) {
-    callback(
-        ledger::Result::REGISTRATION_VERIFICATION_FAILED);
+    BLOG(0, "Master token error");
+    callback(ledger::Result::REGISTRATION_VERIFICATION_FAILED);
     return;
   }
 
@@ -244,6 +247,7 @@ void Create::RegisterPersonaCallback(
       response.body,
       &wallet_info,
       &fee_amount)) {
+    BLOG(0, "Can't get wallet info");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }

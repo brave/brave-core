@@ -48,6 +48,7 @@ void DatabaseInitialize::OnInitialize(
     ledger::ResultCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(ledger::Result::DATABASE_INIT_FAILED);
     return;
   }
@@ -60,6 +61,7 @@ void DatabaseInitialize::OnInitialize(
   if (!response->result ||
       response->result->get_value()->which() !=
       ledger::DBValue::Tag::INT_VALUE) {
+    BLOG(0, "DB init failed");
     callback(ledger::Result::DATABASE_INIT_FAILED);
     return;
   }
@@ -83,6 +85,7 @@ void DatabaseInitialize::ExecuteCreateScript(
     const int table_version,
     ledger::ResultCallback callback) {
   if (script.empty()) {
+    BLOG(0, "Script is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -110,6 +113,7 @@ void DatabaseInitialize::OnExecuteCreateScript(
     ledger::ResultCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(ledger::Result::DATABASE_INIT_FAILED);
     return;
   }

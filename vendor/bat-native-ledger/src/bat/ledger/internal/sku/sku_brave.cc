@@ -110,6 +110,11 @@ void SKUBrave::Retry(
     const std::string& order_id,
     ledger::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
+  if (order_id.empty()) {
+    BLOG(0, "Order id is empty");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
   auto get_callback = std::bind(&SKUBrave::OnOrder,
       this,
       _1,
