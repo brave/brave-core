@@ -2,7 +2,6 @@ static_library("lib") {
   visibility = [
     "//brave/utility:*",
     "//brave/test:*",
-    "//brave/vendor/test:*",
   ]
 
   sources = [

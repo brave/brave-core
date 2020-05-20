@@ -22,8 +22,9 @@ source_set("browser_process") {
     "//chrome/browser/*",
     "//brave/browser/*",
     "//brave:browser_dependencies",
+    "//brave/components/brave_ads/test:*",
+    "//brave/components/brave_rewards/test:*",
     "//brave/test:*",
-    "//brave/vendor/test:*",
   ]
 
   sources = [
