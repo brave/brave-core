@@ -21,6 +21,7 @@ source_set("browser") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/l10n/browser",
+    "//chrome/common:buildflags",
     "//components/dom_distiller/content/browser",
     "//components/dom_distiller/core",
     "//components/keyed_service/content",
