@@ -19,7 +19,11 @@ class DatabaseActivityInfo: public DatabaseTable {
 
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
-  void InsertOrUpdateList(
+  void InsertOrUpdate(
+      ledger::PublisherInfoPtr info,
+      ledger::ResultCallback callback);
+
+  void NormalizeList(
       ledger::PublisherInfoList list,
       ledger::ResultCallback callback);
 

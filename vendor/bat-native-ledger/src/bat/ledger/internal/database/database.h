@@ -54,7 +54,7 @@ class Database {
       ledger::PublisherInfoPtr info,
       ledger::ResultCallback callback);
 
-  void SaveActivityInfoList(
+  void NormalizeActivityInfoList(
       ledger::PublisherInfoList list,
       ledger::ResultCallback callback);
 

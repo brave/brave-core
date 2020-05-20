@@ -40,23 +40,16 @@ class DatabaseActivityInfoTest : public ::testing::Test {
   ~DatabaseActivityInfoTest() override {}
 };
 
-TEST_F(DatabaseActivityInfoTest, InsertOrUpdateListEmpty) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(0);
-
-  ledger::PublisherInfoList list;
-  activity_->InsertOrUpdateList(std::move(list), [](const ledger::Result){});
-}
-
-TEST_F(DatabaseActivityInfoTest, InsertOrUpdateListNull) {
+TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
   EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(0);
 
   ledger::PublisherInfoList list;
   list.push_back(nullptr);
 
-  activity_->InsertOrUpdateList(std::move(list), [](const ledger::Result){});
+  activity_->InsertOrUpdate(nullptr, [](const ledger::Result){});
 }
 
-TEST_F(DatabaseActivityInfoTest, InsertOrUpdateListOk) {
+TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
   auto info = ledger::PublisherInfo::New();
   info->id = "publisher_2";
   info->duration = 10;
@@ -85,11 +78,8 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateListOk) {
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
         }));
 
-  ledger::PublisherInfoList list;
-  list.push_back(std::move(info));
-
-  activity_->InsertOrUpdateList(
-      std::move(list),
+  activity_->InsertOrUpdate(
+      std::move(info),
       [](const ledger::Result){});
 }
 
