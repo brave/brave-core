@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.appmenu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.Menu;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -74,17 +75,28 @@ public class BraveShieldsMenuHandler {
     private final Map<Integer, BlockersInfo> mTabsStat =
             Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
+    private static Context scanForActivity(Context cont) {
+        if (cont == null)
+            return null;
+        else if (cont instanceof Activity)
+            return cont;
+        else if (cont instanceof ContextWrapper)
+            return scanForActivity(((ContextWrapper)cont).getBaseContext());
+
+        return cont;
+    }
+
     /**
      * Constructs a BraveShieldsMenuHandler object.
      * @param context Context that is using the BraveShieldsMenu.
      * @param menuResourceId Resource Id that should be used as the source for the menu items.
      */
     public BraveShieldsMenuHandler(Context context, int menuResourceId) {
-        mContext = context;
         mMenuResourceId = menuResourceId;
         mAdapter = null;
         mHardwareButtonMenuAnchor = null;
-        if (mContext instanceof Activity) {
+        mContext = scanForActivity(context);
+        if (mContext != null) {
             mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
         }
     }
@@ -287,6 +299,9 @@ public class BraveShieldsMenuHandler {
     }
 
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
+        if (mContext == null) {
+            return;
+        }
         final int fadsAndTrackers = adsAndTrackers;
         final int fhttpsUpgrades = httpsUpgrades;
         final int fscriptsBlocked = scriptsBlocked;
