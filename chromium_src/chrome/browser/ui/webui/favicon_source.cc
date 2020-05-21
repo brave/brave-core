@@ -4,9 +4,9 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "build/build_config.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if defined(OS_ANDROID)
-#include "extensions/buildflags/buildflags.h"
 #include "ui/native_theme/native_theme.h"
 
 #define GetInstanceForNativeUi BraveGetInstanceForNativeUi
