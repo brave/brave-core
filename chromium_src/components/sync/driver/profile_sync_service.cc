@@ -1,14 +1,6 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_service.h"
 
-namespace syncer {
-const int64_t kBraveDefaultPollIntervalSeconds = 60;
-}  // namespace syncer
-
-#define BRAVE_SET_POLL_INTERVAL \
-  sync_prefs_.SetPollInterval(  \
-      base::TimeDelta::FromSeconds(syncer::kBraveDefaultPollIntervalSeconds));
-
 #define BRAVE_PROFILE_SYNC_SERVICE                                         \
   brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService()); \
   brave_sync_prefs_change_registrar_.Add(                                  \
