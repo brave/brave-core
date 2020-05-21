@@ -38,45 +38,6 @@ class BraveAdsUrlUtilTest : public ::testing::Test {
 };
 
 TEST_F(BraveAdsUrlUtilTest,
-    GetUrlForUrlMissingScheme) {
-  // Arrange
-  const std::string url = "www.foobar.com";
-
-  // Act
-  const std::string url_with_schema = GetUrlWithScheme(url);
-
-  // Assert
-  const std::string expected_url_with_scheme = "https://www.foobar.com";
-  EXPECT_EQ(expected_url_with_scheme, url_with_schema);
-}
-
-TEST_F(BraveAdsUrlUtilTest,
-    GetUrlForUrlWithHttpScheme) {
-  // Arrange
-  const std::string url = "http://www.foobar.com";
-
-  // Act
-  const std::string url_with_schema = GetUrlWithScheme(url);
-
-  // Assert
-  const std::string expected_url_with_scheme = "http://www.foobar.com";
-  EXPECT_EQ(expected_url_with_scheme, url_with_schema);
-}
-
-TEST_F(BraveAdsUrlUtilTest,
-    GetUrlForUrlWithHttpsScheme) {
-  // Arrange
-  const std::string url = "https://www.foobar.com";
-
-  // Act
-  const std::string url_with_schema = GetUrlWithScheme(url);
-
-  // Assert
-  const std::string expected_url_with_scheme = "https://www.foobar.com";
-  EXPECT_EQ(expected_url_with_scheme, url_with_schema);
-}
-
-TEST_F(BraveAdsUrlUtilTest,
     UrlMatchesPatternWithNoWildcards) {
   // Arrange
   const std::string url = "https://www.foo.com/";

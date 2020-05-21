@@ -1181,7 +1181,7 @@ bool AdsImpl::ShowAdNotification(
   ad_notification->category = info.category;
   ad_notification->title = info.title;
   ad_notification->body = info.body;
-  ad_notification->target_url = GetUrlWithScheme(info.target_url);
+  ad_notification->target_url = info.target_url;
   ad_notification->geo_target = info.geo_targets.at(0);
 
   BLOG(1, "Ad notification shown:\n"
