@@ -23,6 +23,8 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
 
   void SetAdControlType(const base::ListValue* args);
   void GetAdControlType(const base::ListValue* args);
+  void SetCosmeticFilteringControlType(const base::ListValue* args);
+  void IsFirstPartyCosmeticFilteringEnabled(const base::ListValue* args);
   void SetCookieControlType(const base::ListValue* args);
   void GetCookieControlType(const base::ListValue* args);
   void SetFingerprintingControlType(const base::ListValue* args);

@@ -379,7 +379,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Advanced view
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
-        Block cross-site trackers
+        Block trackers &amp; ads
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
         Cookies
@@ -410,6 +410,15 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows LinkedIn embedded posts">
         Allow LinkedIn embedded posts
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_AGGRESSIVE" desc="Select value">
+        Trackers &amp; ads blocked (aggressive)
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_STANDARD" desc="Select value">
+        Trackers &amp; ads blocked (standard)
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_ADS_TRACKERS" desc="Select value">
+        Allow all trackers &amp; ads
       </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
         Only block cross-site cookies

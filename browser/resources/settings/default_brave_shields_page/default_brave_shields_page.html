@@ -90,11 +90,18 @@
         </settings-radio-group>
       </div>
     </div>
-    <settings-toggle-button id="adControlType"
-        pref="{{prefs.brave.ad_default}}"
-        label="$i18n{adControlLabel}"
-        on-settings-boolean-control-change="onAdControlChange_">
-    </settings-toggle-button>
+    <div class="settings-box">
+      <div class="start">$i18n{adControlLabel}</div>
+      <select id="adControlType" class="md-select"
+          on-change="onAdControlChange_">
+        <template is="dom-repeat" items="[[adControlTypes_]]">
+          <option value="[[item.value]]"
+              selected="[[controlEqual(item.value, adControlType_)]]">
+            [[item.name]]
+          </option>
+        </template>
+      </select>
+    </div>
     <settings-toggle-button id="httpsEverywhereControlType"
         pref="{{prefs.brave.https_everywhere_default}}"
         label="$i18n{httpsEverywhereControlLabel}"
