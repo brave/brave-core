@@ -77,10 +77,6 @@ content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
   return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }
 
-bool TorProfileServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
-}
-
 void TorProfileServiceFactory::BrowserContextShutdown(
     content::BrowserContext* context) {
 #if BUILDFLAG(ENABLE_TOR)
