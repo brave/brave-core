@@ -87,7 +87,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "c9255cc2aa3d81ca6328e82d25a95766.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },           // NOLINT
         { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_WELCOME_BG },            // NOLINT
         { "dcaf489409ca7908aef96547c9aad274.svg", IDR_BRAVE_REWARDS_IMG_TAP },                   // NOLINT
-        { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_P2P },                    // NOLINT
       }
     }, {
       std::string("tip"), {
@@ -679,10 +678,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
         { "tapNetworkLink", IDS_BRAVE_UI_TAP_NETWORK_LINK },
         { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER },
-
-        { "p2pTitle", IDS_BRAVE_UI_P2P_TITLE },
-        { "p2pLink", IDS_BRAVE_UI_P2P_LINK },
-        { "p2pDisclaimer", IDS_BRAVE_UI_P2P_DISCLAIMER }
       }
     }, {
       std::string("sync"), {
