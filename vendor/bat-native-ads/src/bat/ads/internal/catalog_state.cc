@@ -161,8 +161,6 @@ Result CatalogState::FromJson(
           creative_info.payload.title = payload["title"].GetString();
           creative_info.payload.target_url = payload["targetUrl"].GetString();
           if (!GURL(creative_info.payload.target_url).is_valid()) {
-            BLOG(1, "Invalid target URL for creative instance id "
-                << creative_instance_id);
             continue;
           }
 
