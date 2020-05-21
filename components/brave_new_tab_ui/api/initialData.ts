@@ -54,12 +54,10 @@ export async function getInitialData (): Promise<InitialData> {
       !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined),
       new Promise((resolve) => {
         if (!('braveTogether' in chrome)) {
-          console.log('unavailable')
           resolve(false)
         }
 
         chrome.braveTogether.isSupported((supported: boolean) => {
-          console.log({supported})
           resolve(supported)
         })
       })

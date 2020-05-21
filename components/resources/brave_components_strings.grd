@@ -769,6 +769,7 @@
       <message name="IDS_TOGETHER_WIDGET_TITLE" desc="">Brave Together</message>
       <message name="IDS_TOGETHER_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
       <message name="IDS_TOGETHER_WIDGET_START_BUTTON" desc="">Start video call</message>
+      <message name="IDS_TOGETHER_WIDGET_ABOUT_DATA" desc="">About your data</message>
       <message name="IDS_BINANCE_WIDGET_BUY" desc="">Buy</message>
       <message name="IDS_BINANCE_WIDGET_BUY_CRYPTO" desc="">Buy Crypto</message>
       <message name="IDS_BINANCE_WIDGET_BUY_DEFAULT" desc="">I want to spend...</message>

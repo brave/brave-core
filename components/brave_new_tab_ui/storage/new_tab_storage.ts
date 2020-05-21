@@ -141,18 +141,19 @@ export const migrateStackWidgetSettings = (state: NewTab.State) => {
   state.widgetStackOrder = widgetStackOrder as NewTab.StackWidget[]
   state.removedStackWidgets = removedStackWidgets as NewTab.StackWidget[]
   state.currentStackWidget = ''
+  return state
+}
 
-  // Ensure any new stack widgets introduced are put behind
-  // the others, and not re-added unecessarily if removed
-  // at one point.
-  const defaultWidgets = defaultState.widgetStackOrder
-  defaultWidgets.map((widget: NewTab.StackWidget) => {
+// Ensure any new stack widgets introduced are put behind
+// the others, and not re-added unecessarily if removed
+// at one point.
+export const addNewStackWidget = (state: NewTab.State) => {
+  defaultState.widgetStackOrder.map((widget: NewTab.StackWidget) => {
     if (!state.widgetStackOrder.includes(widget) &&
         !state.removedStackWidgets.includes(widget)) {
       state.widgetStackOrder.unshift(widget)
     }
   })
-
   return state
 }
 

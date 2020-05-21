@@ -457,20 +457,30 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getCryptoContent () {
-    const { widgetStackOrder } = this.props.newTabData
-    const renderLookup = {
-      'rewards': this.renderRewardsWidget.bind(this),
-      'binance': this.renderBinanceWidget.bind(this),
-      'together': this.renderTogetherWidget.bind(this)
+    const { widgetStackOrder, binanceState, togetherSupported, showRewards } = this.props.newTabData
+    const lookup = {
+      'rewards': {
+        supported: showRewards,
+        render: this.renderRewardsWidget.bind(this)
+      },
+      'binance': {
+        supported: binanceState.binanceSupported,
+        render: this.renderBinanceWidget.bind(this)
+      },
+      'together': {
+        supported: togetherSupported,
+        render: this.renderTogetherWidget.bind(this)
+      }
     }
+    const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => lookup[widget].supported)
 
     return (
       <>
-        {widgetStackOrder.map((widget: NewTab.StackWidget, i: number) => {
-          const isForeground = i === widgetStackOrder.length - 1
+        {widgetList.map((widget: NewTab.StackWidget, i: number) => {
+          const isForeground = i === widgetList.length - 1
           return (
             <div key={`widget-${widget}`}>
-              {renderLookup[widget](isForeground)}
+              {lookup[widget].render(isForeground)}
             </div>
           )
         })}

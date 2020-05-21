@@ -23,7 +23,8 @@ export const Header = styled<{}, 'div'>('div')`
 `
 
 export const Content = styled<{}, 'div'>('div')`
-  margin: 20px 0;
+  margin-top: 20px;
+  margin-bottom: 10px;
   min-width: 200px;
 `
 
@@ -38,7 +39,6 @@ export const WelcomeText = styled<{}, 'span'>('span')`
 `
 
 export const ActionsWrapper = styled<{}, 'div'>('div')`
-  margin-bottom: 25px;
   text-align: center;
 `
 
@@ -51,7 +51,7 @@ export const CallButton = styled<{}, 'button'>('button')`
   padding: 10px 30px;
   cursor: pointer;
   color: ${palette.white};
-  margin-top: 20px;
+  margin: 20px 0;
   outline: none;
 
   &:focus {
@@ -78,6 +78,17 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const StyledTitleText = styled<{}, 'div'>('div')`
-  margin-top: 4px;
+export const Privacy = styled<{}, 'div'>('div')`
+  width: 100%;
+  text-align: center;
+`
+
+export const PrivacyLink = styled<{}, 'a'>('a')`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  color: #FFFFFF;
+  opacity: 0.8;
+  text-decoration: none;
+  font-family: ${p => p.theme.fontFamily.heading};
 `

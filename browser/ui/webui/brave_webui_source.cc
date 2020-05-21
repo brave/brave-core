@@ -230,9 +230,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBrandedNotificationDescription", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION }, // NOLINT
         { "rewardsWidgetBrandedNotificationHideAction", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION }, // NOLINT
         // Together Widget
-        { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE},
-        { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE},
-        { "togetherWidgetStartButton", IDS_TOGETHER_WIDGET_START_BUTTON},
+        { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
+        { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },
+        { "togetherWidgetStartButton", IDS_TOGETHER_WIDGET_START_BUTTON },
+        { "togetherWidgetAboutData", IDS_TOGETHER_WIDGET_ABOUT_DATA },
         // Binance Widget
         { "binanceWidgetBuy", IDS_BINANCE_WIDGET_BUY },
         { "binanceWidgetBuyCrypto", IDS_BINANCE_WIDGET_BUY_CRYPTO },

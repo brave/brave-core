@@ -69,6 +69,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       if (state.currentStackWidget) {
         state = storage.migrateStackWidgetSettings(state)
       }
+      state = storage.addNewStackWidget(state)
 
       break
 

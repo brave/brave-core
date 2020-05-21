@@ -16,7 +16,8 @@ import {
   CallButton,
   TogetherIcon,
   StyledTitle,
-  StyledTitleText
+  Privacy,
+  PrivacyLink
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import BraveTogetherIcon from './assets/brave-together-icon'
@@ -39,9 +40,9 @@ class Together extends React.PureComponent<Props, {}> {
           <TogetherIcon>
             <BraveTogetherIcon />
           </TogetherIcon>
-          <StyledTitleText>
-          {getLocale('togetherWidgetTitle')}
-          </StyledTitleText>
+          <>
+            {getLocale('togetherWidgetTitle')}
+          </>
         </StyledTitle>
       </Header>
     )
@@ -88,6 +89,14 @@ class Together extends React.PureComponent<Props, {}> {
               <CallButton onClick={this.shouldCreateCall}>
                 {getLocale('togetherWidgetStartButton')}
               </CallButton>
+              <Privacy>
+                <PrivacyLink
+                  target={'_blank'}
+                  href={'https://brave.com/privacy/#brave-together-learn'}
+                >
+                  {getLocale('togetherWidgetAboutData')}
+                </PrivacyLink>
+              </Privacy>
             </ActionsWrapper>
           </Content>
       </WidgetWrapper>
