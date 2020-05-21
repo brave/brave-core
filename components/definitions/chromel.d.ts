@@ -166,6 +166,10 @@ declare namespace chrome.binance {
   const revokeToken: (callback: (success: boolean) => void) => {}
 }
 
+declare namespace chrome.braveTogether {
+  const isSupported: (callback: (supported: boolean) => void) => {}
+}
+
 declare namespace chrome.rewardsNotifications {
   const addNotification: (type: number, args: string[], id: string) => {}
   const deleteNotification: (id: string) => {}

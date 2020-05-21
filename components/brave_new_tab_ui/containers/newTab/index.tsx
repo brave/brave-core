@@ -537,9 +537,9 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderTogetherWidget (showContent: boolean) {
     const { newTabData } = this.props
-    const { showTogether, textDirection, userRegion } = newTabData
+    const { showTogether, textDirection, togetherSupported } = newTabData
 
-    if (!showTogether || userRegion !== 'us') {
+    if (!showTogether || !togetherSupported) {
       return null
     }
 
@@ -616,7 +616,6 @@ class NewTabPage extends React.Component<Props, State> {
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
     const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
     const cryptoContent = this.renderCryptoContent()
-    const isUS = newTabData.userRegion === 'us'
 
     return (
       <Page.App dataIsReady={newTabData.initialDataLoaded}>
@@ -637,7 +636,7 @@ class NewTabPage extends React.Component<Props, State> {
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
-            showTogether={newTabData.showTogether && isUS}
+            showTogether={newTabData.showTogether && newTabData.togetherSupported}
             showBinance={newTabData.showBinance}
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
@@ -715,7 +714,7 @@ class NewTabPage extends React.Component<Props, State> {
               showStats={newTabData.showStats}
               showTopSites={newTabData.showTopSites}
               showRewards={newTabData.showRewards}
-              showTogether={newTabData.showTogether && isUS}
+              showTogether={newTabData.showTogether}
               showBinance={newTabData.showBinance}
               brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
               allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
@@ -723,6 +722,7 @@ class NewTabPage extends React.Component<Props, State> {
               toggleShowTogether={this.toggleShowTogether}
               toggleShowBinance={this.toggleShowBinance}
               binanceSupported={binanceState.binanceSupported}
+              togetherSupported={newTabData.togetherSupported}
             />
             </Page.FooterContent>
           </Page.Footer>

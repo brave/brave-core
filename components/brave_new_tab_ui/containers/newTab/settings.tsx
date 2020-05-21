@@ -42,6 +42,7 @@ export interface Props {
   showTogether: boolean
   showBinance: boolean
   binanceSupported: boolean
+  togetherSupported: boolean
 }
 
 export default class Settings extends React.PureComponent<Props, {}> {
@@ -96,7 +97,8 @@ export default class Settings extends React.PureComponent<Props, {}> {
       onClick,
       toggleShowBinance,
       showBinance,
-      binanceSupported
+      binanceSupported,
+      togetherSupported
     } = this.props
     return (
       <SettingsWrapper
@@ -142,14 +144,18 @@ export default class Settings extends React.PureComponent<Props, {}> {
                 size='small'
               />
             </SettingsRow>
-            <SettingsRow>
-              <SettingsText>{getLocale('showTogether')}</SettingsText>
-              <Toggle
-                onChange={toggleShowTogether}
-                checked={showTogether}
-                size='small'
-              />
-            </SettingsRow>
+            {
+              togetherSupported
+              ? <SettingsRow>
+                  <SettingsText>{getLocale('showTogether')}</SettingsText>
+                  <Toggle
+                    onChange={toggleShowTogether}
+                    checked={showTogether}
+                    size='small'
+                  />
+                </SettingsRow>
+              : null
+            }
             {
               binanceSupported
               ? <SettingsRow>

@@ -14,6 +14,11 @@
      * @return {!Promise<Boolean>}
      */
     getIsBinanceSupported() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    getIsBraveTogetherSupported() {}
   }
 
   /**
@@ -28,6 +33,11 @@
     /** @override */
     getIsBinanceSupported() {
       return cr.sendWithPromise('getIsBinanceSupported')
+    }
+
+    /** @override */
+    getIsBraveTogetherSupported() {
+      return cr.sendWithPromise('getIsBraveTogetherSupported')
     }
   }
 

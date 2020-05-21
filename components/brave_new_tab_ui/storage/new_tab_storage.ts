@@ -22,7 +22,7 @@ export const defaultState: NewTab.State = {
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   showEmptyPage: false,
-  userRegion: 'com',
+  togetherSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
@@ -195,7 +195,7 @@ export const load = (): NewTab.State => {
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
-      userRegion: data.userRegion,
+      togetherSupported: data.togetherSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
       removedStackWidgets: data.removedStackWidgets,
