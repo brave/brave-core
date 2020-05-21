@@ -24,8 +24,8 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.settings.about.AboutChromeSettings;
-import org.chromium.chrome.browser.settings.about.AboutSettingsBridge;
+import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
+import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
