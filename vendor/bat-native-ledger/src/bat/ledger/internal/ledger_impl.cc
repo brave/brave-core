@@ -1097,7 +1097,7 @@ void LedgerImpl::SaveNormalizedPublisherList(ledger::PublisherInfoList list) {
     save_list.push_back(item.Clone());
   }
 
-  bat_database_->SaveActivityInfoList(
+  bat_database_->NormalizeActivityInfoList(
       std::move(save_list),
       [](const ledger::Result){});
   ledger_client_->PublisherListNormalized(std::move(list));

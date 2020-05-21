@@ -68,15 +68,13 @@ void Database::Initialize(
 void Database::SaveActivityInfo(
     ledger::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
-  ledger::PublisherInfoList list;
-  list.push_back(std::move(info));
-  activity_info_->InsertOrUpdateList(std::move(list), callback);
+  activity_info_->InsertOrUpdate(std::move(info), callback);
 }
 
-void Database::SaveActivityInfoList(
+void Database::NormalizeActivityInfoList(
     ledger::PublisherInfoList list,
     ledger::ResultCallback callback) {
-  activity_info_->InsertOrUpdateList(std::move(list), callback);
+  activity_info_->NormalizeList(std::move(list), callback);
 }
 
 void Database::GetActivityInfoList(

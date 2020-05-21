@@ -534,23 +534,34 @@ bool DatabaseActivityInfo::MigrateToV15(ledger::DBTransaction* transaction) {
   return true;
 }
 
-void DatabaseActivityInfo::InsertOrUpdateList(
+void DatabaseActivityInfo::NormalizeList(
     ledger::PublisherInfoList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     callback(ledger::Result::LEDGER_OK);
     return;
   }
-
-  auto transaction = ledger::DBTransaction::New();
-  for (auto& info : list) {
-    CreateInsertOrUpdate(transaction.get(), std::move(info));
+  std::string main_query;
+  for (const auto& info : list) {
+    main_query += base::StringPrintf(
+      "UPDATE %s SET percent = %d, weight = %f WHERE publisher_id = \"%s\";",
+      kTableName,
+      info->percent,
+      info->weight,
+      info->id.c_str());
   }
 
-  if (transaction->commands.empty()) {
+  if (main_query.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = main_query;
+
+  transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
@@ -559,15 +570,15 @@ void DatabaseActivityInfo::InsertOrUpdateList(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseActivityInfo::CreateInsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(transaction);
-
+void DatabaseActivityInfo::InsertOrUpdate(
+    ledger::PublisherInfoPtr info,
+    ledger::ResultCallback callback) {
   if (!info) {
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
+  auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, duration, score, percent, "
@@ -588,6 +599,12 @@ void DatabaseActivityInfo::CreateInsertOrUpdate(
   BindInt(command.get(), 6, info->visits);
 
   transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::GetRecordsList(
