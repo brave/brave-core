@@ -54,6 +54,8 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
                        GetWebContentsAt(b)->GetLastActiveTime();
               });
 
+    DVLOG(2) << " Start MRU Tab Cycling";
+
     // Tell the cycling controller that we start cycling to handle tabs keys
     static_cast<BraveBrowserWindow*>(browser->window())->StartMRUCycling();
   }
@@ -72,5 +74,6 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
 }
 
 void BraveTabStripModel::StopMRUCycling() {
+  DVLOG(2) << " Stop MRU Tab Cycling";
   mru_cycle_list_.clear();
 }
