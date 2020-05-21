@@ -27,11 +27,11 @@
         android:summaryOff="@string/text_off"
         android:defaultValue="false" />
 
-    <org.chromium.chrome.browser.settings.ChromeBasePreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_import_rewards_db"
         android:title="Import Rewards Database"/>
 
-    <org.chromium.chrome.browser.settings.ChromeBasePreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_export_rewards_db"
         android:title="Export Rewards Database" />
 
