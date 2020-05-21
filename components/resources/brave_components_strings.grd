@@ -709,10 +709,6 @@
       <message name="IDS_BRAVE_UI_TAP_NETWORK_LINK" desc="">Visit TAP.</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold Verification.</message>
 
-      <message name="IDS_BRAVE_UI_P2P_TITLE" desc="">Invite your friends and earn BAT.</message>
-      <message name="IDS_BRAVE_UI_P2P_LINK" desc="">Sign up here</message>
-      <message name="IDS_BRAVE_UI_P2P_DISCLAIMER" desc="">* Requires Uphold Verification.</message>
-
       <!-- Rewards New Tab Widget resources -->
       <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
         <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about Brave Rewards
