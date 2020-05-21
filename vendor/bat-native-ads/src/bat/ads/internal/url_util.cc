@@ -14,19 +14,6 @@
 
 namespace ads {
 
-std::string GetUrlWithScheme(
-    const std::string& url) {
-  if (!base::StartsWith(url, url::kHttpScheme,
-          base::CompareCase::INSENSITIVE_ASCII) &&
-      !base::StartsWith(url, url::kHttpsScheme,
-          base::CompareCase::INSENSITIVE_ASCII)) {
-    return base::StringPrintf("%s%s%s", url::kHttpsScheme,
-        url::kStandardSchemeSeparator, url.c_str());
-  }
-
-  return url;
-}
-
 bool UrlMatchesPattern(
     const std::string& url,
     const std::string& pattern) {

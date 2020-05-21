@@ -10,9 +10,6 @@
 
 namespace ads {
 
-std::string GetUrlWithScheme(
-    const std::string& url);
-
 bool UrlMatchesPattern(
     const std::string& url,
     const std::string& pattern);

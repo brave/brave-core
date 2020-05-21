@@ -27,14 +27,14 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *category;
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *body;
-@property (nonatomic, readonly, copy) NSURL *targetURL;
+@property (nonatomic, readonly, copy) NSString *targetURL;
 @property (nonatomic, readonly, copy) NSString *geoTarget;
 @end
 
 @interface BATAdNotification (MyFirstAd)
 + (instancetype)customAdWithTitle:(NSString *)title
                              body:(NSString *)body
-                              url:(NSURL *)url NS_SWIFT_NAME(customAd(title:body:url:));
+                              url:(NSString *)url NS_SWIFT_NAME(customAd(title:body:url:));
 @end
 
 NS_ASSUME_NONNULL_END
