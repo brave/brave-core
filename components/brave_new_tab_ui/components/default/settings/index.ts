@@ -9,6 +9,10 @@ interface Props {
   textDirection: string
 }
 
+const isDarkTheme = (p: any) => {
+  return p.theme.name === 'Brave Dark'
+}
+
 export const SettingsMenu = styled<Props, 'div'>('div')`
   width: 680px;
   ${p => p.textDirection && (p.textDirection === 'rtl') ? `left: 12px` : `right: 12px`}
@@ -59,7 +63,7 @@ interface SettingsSidebarSVGContentProps {
 export const SettingsSidebarSVGContent = styled<SettingsSidebarSVGContentProps, 'div'>('div')`
   width: 20px;
   height: 20px;
-  background: ${p => p.theme.palette.grey800};
+  background: ${p => isDarkTheme(p) ? p.theme.palette.grey400 : p.theme.palette.grey800};
   -webkit-mask-image: url(${p => p.src});
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -67,7 +71,7 @@ export const SettingsSidebarSVGContent = styled<SettingsSidebarSVGContentProps, 
 
 export const SettingsSidebarButtonText = styled<{}, 'span'>('span')`
   margin-left: 16px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 13px;
   font-family: ${p => p.theme.fontFamily.heading};
   color: ${p => p.theme.color.contextMenuForeground};
@@ -120,6 +124,7 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
     `}
 
     ${p => p.activeTab && css`
+      font-weight: 600;
       background-size: 100%;
       background-repeat: repeat;
       -webkit-background-clip: text;

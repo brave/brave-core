@@ -179,8 +179,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                 {
                   this.activeTabOptions.map((tabName, index) => {
                     const name = index === (this.activeTabOptions.length - 1) ? tabName : `show${tabName}`
-                    if (index === 0 && !allowSponsoredWallpaperUI)
+                    if (index === 0 && !allowSponsoredWallpaperUI) {
                       return <div key={`sidebar-button=${index}`} />
+                    }
                     return (
                       <SettingsSidebarButton
                         key={`sidebar-button-${index}`}
