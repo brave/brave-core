@@ -18,7 +18,7 @@
         android:layout_margin="16dp"
         android:text="@string/how_would_you_rate"
         android:textSize="20sp"
-        android:textColor="@color/standard_mode_tint"
+        android:textColor="@color/default_icon_color_tint_list"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/share_your_thoughts"
-        android:textColor="@color/standard_mode_tint"
+        android:textColor="@color/default_icon_color_tint_list"
         android:textStyle="bold"
         android:textSize="20sp"
         android:visibility="gone" />
