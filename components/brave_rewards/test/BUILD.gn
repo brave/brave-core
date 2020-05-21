@@ -7,38 +7,11 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
-if (!is_ios) {
-test("brave_rewards_unit_tests") {
+source_set("brave_rewards_unit_tests") {
   testonly = true
-  public_deps = [
-    "//base/test:test_support",
-    "//brave/test:brave_test_support_unit",
-  ]
-
-  data = [ "//brave/test/data/" ]
-  sources = []
-  deps = []
-
-  if (is_android) {
-    deps += [
-      "//brave:brave_pak_assets",
-      "//chrome/test/android:chrome_java_test_support",
-      "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
-      "//v8:v8_external_startup_data_assets",
-    ]
-
-    if (is_component_build) {
-      deps += [ "//chrome/gpu" ]
-    }
-
-    sources += [
-      "../../../../chrome/app/chrome_main_delegate.cc",
-      "../../../../chrome/app/chrome_main_delegate.h",
-    ]
-  }
 
   if (brave_rewards_enabled) {
-    sources += [
+    sources = [
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unblinded_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_monthly_util_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/database/database_activity_info_unittest.cc",
@@ -108,7 +81,7 @@ test("brave_rewards_unit_tests") {
       ]
     }
 
-    deps += [
+    deps = [
       "//brave/browser:browser_process",
       "//brave/components/brave_rewards/browser:browser",
       "//brave/components/brave_rewards/browser:testutil",
@@ -128,9 +101,7 @@ test("brave_rewards_unit_tests") {
     configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
     configs += [ "//brave/vendor/bat-native-confirmations:internal_config" ]
 
-    data += [ "//brave/vendor/bat-native-confirmations/test/data/" ]
+    data = [ "//brave/vendor/bat-native-confirmations/test/data/" ]
 
   }  # if (brave_rewards_enabled)
-}  # test("brave_rewards_unit_tests")
-}  # if (!is_ios)
-
+}  # source_set("brave_rewards_unit_tests")
