@@ -18,6 +18,7 @@
         android:textSize="24sp"
         android:layout_marginBottom="24dp"
         android:gravity="center_vertical"
+        android:fontFamily="sans-serif"
         android:text="@string/report_broken_site_text"
         android:textColor="@color/standard_mode_tint"/>
 

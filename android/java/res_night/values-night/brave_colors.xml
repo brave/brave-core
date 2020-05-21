@@ -34,7 +34,7 @@
     <color name="shield_text_color">#F0F2FF</color>
     <color name="shield_advanced_controls_color">#F0F2FF</color>
 
-
+    <color name="shield_divider_color">#3B3E4F</color>
     <color name="shield_bg_color">#17171F</color>
     <color name="shield_back_button_tint">#FF7654</color>
 
