@@ -32,11 +32,11 @@
         android:title="@string/autocomplete_searches_and_urls_title"
         android:summary="@string/autocomplete_searches_and_urls_summary"
         android:persistent="false"/>
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="autocomplete_top_sites"
         android:title="@string/autocomplete_top_sites_title"
         android:persistent="false"/>
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="autocomplete_brave_suggested_sites"
         android:title="@string/autocomplete_brave_suggested_sites_title"
         android:persistent="false"/>
