@@ -95,64 +95,6 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, NOTUAWhitelistedTest) {
   }
 }
 
-TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
-  const std::vector<const GURL> urls(
-      {GURL("https://brianbondy.com/7"), GURL("https://www.brianbondy.com/5"),
-       GURL("https://brian.bondy.brianbondy.com")});
-  for (const auto& url : urls) {
-    net::HttpRequestHeaders headers;
-    const GURL original_referrer("https://hello.brianbondy.com/about");
-
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    brave_request_info->referrer = original_referrer;
-    int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
-                                                     brave_request_info);
-    EXPECT_EQ(rc, net::OK);
-    // new_url should not be set.
-    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-    EXPECT_EQ(brave_request_info->referrer, original_referrer);
-  }
-}
-
-TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
-  const std::vector<const GURL> urls({GURL("https://digg.com/7"),
-                                      GURL("https://slashdot.org/5"),
-                                      GURL("https://bondy.brian.org")});
-  for (const auto& url : urls) {
-    const GURL original_referrer("https://hello.brianbondy.com/about");
-
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    brave_request_info->referrer = original_referrer;
-    int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
-                                                     brave_request_info);
-    EXPECT_EQ(rc, net::OK);
-    // new_url should not be set.
-    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-    EXPECT_EQ(brave_request_info->new_referrer, url.GetOrigin().spec());
-  }
-}
-
-TEST(BraveSiteHacksNetworkDelegateHelperTest,
-     ReferrerWouldBeClearedButExtensionSite) {
-  const std::vector<const GURL> urls({GURL("https://digg.com/7"),
-                                      GURL("https://slashdot.org/5"),
-                                      GURL("https://bondy.brian.org")});
-  for (const auto& url : urls) {
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    brave_request_info->tab_origin =
-        GURL("chrome-extension://aemmndcbldboiebfnladdacbdfmadadm/");
-    const GURL original_referrer("https://hello.brianbondy.com/about");
-    brave_request_info->referrer = original_referrer;
-
-    int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
-                                                     brave_request_info);
-    EXPECT_EQ(rc, net::OK);
-    // new_url should not be set
-    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-    EXPECT_EQ(brave_request_info->referrer, original_referrer);
-  }
-}
-
 TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {
   const std::vector<const std::string> urls({
       "https://example.com/",

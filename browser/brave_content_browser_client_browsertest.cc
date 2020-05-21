@@ -481,12 +481,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                               &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 
-  // Cross-origin iframe navigations get a spoofed referrer.
+  // Cross-origin iframe navigations should not be affected by this method.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(),
                               kRequestUrl, kDocumentUrl, false,
                               &referrer);
-  EXPECT_EQ(referrer->url, kRequestUrl.GetOrigin());
+  EXPECT_EQ(referrer->url, kDocumentUrl);
 
   // Same-origin iframe navigations get full referrers.
   referrer = kReferrer.Clone();

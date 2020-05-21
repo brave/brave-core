@@ -377,6 +377,13 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 #endif
 
+  if (!is_main_frame) {
+    // Hide referrers only for top-level navigations, otherwise stick to
+    // Chromium defaults.
+    // https://github.com/brave/brave-browser/issues/8696
+    return;
+  }
+
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AllowReferrers(profile,
                                                              document_url);
@@ -384,10 +391,6 @@ void BraveContentBrowserClient::MaybeHideReferrer(
                                                                 document_url);
   // Top-level navigations get empty referrers (brave/brave-browser#3422).
   GURL replacement_referrer_url;
-  if (!is_main_frame) {
-    // But iframe navigations get spoofed instead (brave/brave-browser#3988).
-    replacement_referrer_url = request_url.GetOrigin();
-  }
   content::Referrer new_referrer;
   if (brave_shields::ShouldSetReferrer(
       allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
