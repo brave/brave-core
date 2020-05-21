@@ -93,7 +93,7 @@ Result BundleState::FromJson(
 
         info.title = creative["title"].GetString();
         info.body = creative["body"].GetString();
-        info.target_url = GetUrlWithScheme(creative["targetUrl"].GetString());
+        info.target_url = creative["targetUrl"].GetString();
         info.creative_instance_id = creative["creativeInstanceId"].GetString();
 
         const std::string category = creative_ad_notification.name.GetString();

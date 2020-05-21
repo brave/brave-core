@@ -6,6 +6,9 @@
 #include "bat/ads/internal/catalog_state.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/logging.h"
+
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -157,6 +160,11 @@ Result CatalogState::FromJson(
           creative_info.payload.body = payload["body"].GetString();
           creative_info.payload.title = payload["title"].GetString();
           creative_info.payload.target_url = payload["targetUrl"].GetString();
+          if (!GURL(creative_info.payload.target_url).is_valid()) {
+            BLOG(1, "Invalid target URL for creative instance id "
+                << creative_instance_id);
+            continue;
+          }
 
           creative_set_info.creative_ad_notifications.push_back(creative_info);
         } else {
