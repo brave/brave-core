@@ -475,19 +475,19 @@ std::vector<std::string> Client::GetUserModelLanguages() {
   return client_state_->user_model_languages;
 }
 
-void Client::AppendPageScoreToPageScoreHistory(
-    const std::vector<double>& page_score) {
-  client_state_->page_score_history.push_front(page_score);
-  if (client_state_->page_score_history.size() >
-      kMaximumEntriesInPageScoreHistory) {
-    client_state_->page_score_history.pop_back();
+void Client::AppendPageProbabilitiesToHistory(
+    const PageProbabilitiesMap& page_probabilities) {
+  client_state_->page_probabilities_history.push_front(page_probabilities);
+  if (client_state_->page_probabilities_history.size() >
+      kMaximumPageProbabilityHistoryEntries) {
+    client_state_->page_probabilities_history.pop_back();
   }
 
   SaveState();
 }
 
-std::deque<std::vector<double>> Client::GetPageScoreHistory() {
-  return client_state_->page_score_history;
+PageProbabilitiesList Client::GetPageProbabilitiesHistory() {
+  return client_state_->page_probabilities_history;
 }
 
 void Client::AppendTimestampToCreativeSetHistory(
