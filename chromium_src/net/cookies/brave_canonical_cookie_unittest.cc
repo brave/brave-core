@@ -35,18 +35,18 @@ constexpr base::TimeDelta kMaxCookieExpiration =
 TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
   GURL url("https://www.example.com/test");
 
-  std::unique_ptr<CanonicalCookie> cookie(
-      CanonicalCookie::Create(url, max_expires_date_cookie, creation_time, base::nullopt));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
+      url, max_expires_date_cookie, creation_time, base::nullopt));
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie =
-      CanonicalCookie::Create(url, max_age_cookie, creation_time, base::nullopt);
+  cookie = CanonicalCookie::Create(url, max_age_cookie, creation_time,
+                                   base::nullopt);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie =
-      CanonicalCookie::Create(url, max_expires_and_max_age_cookie, creation_time, base::nullopt);
+  cookie = CanonicalCookie::Create(url, max_expires_and_max_age_cookie,
+                                   creation_time, base::nullopt);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 }
@@ -54,8 +54,8 @@ TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
 TEST(BraveCanonicalCookieTest, AllowShorterThanMaxExpiration) {
   GURL url("https://www.example.com/test");
   // Short-lived cookies get to keep their shorter expiration.
-  std::unique_ptr<CanonicalCookie> cookie =
-      CanonicalCookie::Create(url, short_expiration_cookie, creation_time, base::nullopt);
+  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::Create(
+      url, short_expiration_cookie, creation_time, base::nullopt);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(2));
 }
@@ -75,8 +75,8 @@ TEST(BraveCanonicalCookieTest, NoExpirationCookie) {
 
   base::Time creation_time = base::Time::Now();
 
-  std::unique_ptr<CanonicalCookie> cookie(
-      CanonicalCookie::Create(url, no_expiration_cookie, creation_time, base::nullopt));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
+      url, no_expiration_cookie, creation_time, base::nullopt));
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->IsPersistent(), false);
 }
