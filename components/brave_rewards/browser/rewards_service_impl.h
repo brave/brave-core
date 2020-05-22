@@ -337,9 +337,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-  void OnPublisherStateSaved(
-      ledger::ResultCallback callback,
-      bool success);
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
   void OnFetchWalletProperties(const ledger::Result result,
@@ -488,9 +485,6 @@ class RewardsServiceImpl : public RewardsService,
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void SaveLedgerState(
       const std::string& ledger_state,
-      ledger::ResultCallback callback) override;
-  void SavePublisherState(
-      const std::string& publisher_state,
       ledger::ResultCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void LoadURL(const std::string& url,

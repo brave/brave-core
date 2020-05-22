@@ -119,10 +119,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SaveLedgerState, void(const std::string&));
 
-  MOCK_METHOD2(SavePublisherState, void(
-      const std::string&,
-      ledger::ResultCallback));
-
   MOCK_METHOD1(LoadNicewareList, void(ledger::GetNicewareListCallback));
 
   MOCK_METHOD1(SetConfirmationsWalletInfo,

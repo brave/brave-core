@@ -168,27 +168,6 @@ void BatLedgerClientMojoProxy::SaveLedgerState(
       base::BindOnce(&OnSaveLedgerState, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::OnSavePublisherState(
-    ledger::ResultCallback callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::SavePublisherState(
-    const std::string& publisher_state,
-    ledger::ResultCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->SavePublisherState(
-      publisher_state,
-      base::BindOnce(&BatLedgerClientMojoProxy::OnSavePublisherState,
-        AsWeakPtr(),
-        callback));
-}
-
 void BatLedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     uint32_t* timer_id) {
   if (!Connected()) {

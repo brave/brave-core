@@ -1750,12 +1750,6 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)savePublisherState:(const std::string &)publisher_state callback:(ledger::ResultCallback)callback
-{
-  const auto result = [self.commonOps saveContents:publisher_state name:"publisher_state.json"];
-  callback(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-}
-
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];

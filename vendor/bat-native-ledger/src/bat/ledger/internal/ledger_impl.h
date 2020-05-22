@@ -186,10 +186,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& data,
       ledger::ResultCallback callback);
 
-  void SavePublisherState(
-      const std::string& data,
-      ledger::ResultCallback callback);
-
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
   void SetConfirmationsWalletInfo(

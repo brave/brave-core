@@ -90,10 +90,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadPublisherState(OnLoadCallback callback) = 0;
 
-  virtual void SavePublisherState(
-      const std::string& publisher_state,
-      ResultCallback callback) = 0;
-
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,

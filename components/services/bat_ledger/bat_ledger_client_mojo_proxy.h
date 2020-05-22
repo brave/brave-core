@@ -39,9 +39,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SaveLedgerState(
       const std::string& ledger_state,
       ledger::ResultCallback callback) override;
-  void SavePublisherState(
-      const std::string& publisher_state,
-      ledger::ResultCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void KillTimer(const uint32_t timer_id) override;
 
@@ -155,9 +152,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const ledger::Result result, const std::string& data);
   void OnLoadPublisherState(ledger::OnLoadCallback callback,
       const ledger::Result result, const std::string& data);
-  void OnSavePublisherState(
-      ledger::ResultCallback callback,
-      const ledger::Result result);
 
   DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);
 };

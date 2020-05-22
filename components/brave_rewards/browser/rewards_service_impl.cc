@@ -965,38 +965,6 @@ void RewardsServiceImpl::OnLedgerStateSaved(
            : ledger::Result::NO_LEDGER_STATE);
 }
 
-void RewardsServiceImpl::SavePublisherState(
-    const std::string& publisher_state,
-    ledger::ResultCallback callback) {
-  if (reset_states_) {
-    return;
-  }
-  base::ImportantFileWriter writer(publisher_state_path_, file_task_runner_);
-
-  writer.RegisterOnNextWriteCallbacks(
-      base::Closure(),
-      base::Bind(
-        &PostWriteCallback,
-        base::Bind(
-            &RewardsServiceImpl::OnPublisherStateSaved,
-            AsWeakPtr(),
-            callback),
-        base::SequencedTaskRunnerHandle::Get()));
-
-  writer.WriteNow(std::make_unique<std::string>(publisher_state));
-}
-
-void RewardsServiceImpl::OnPublisherStateSaved(
-    ledger::ResultCallback callback,
-    bool success) {
-  if (!Connected())
-    return;
-
-  callback(success
-      ? ledger::Result::LEDGER_OK
-      : ledger::Result::LEDGER_ERROR);
-}
-
 void RewardsServiceImpl::LoadNicewareList(
   ledger::GetNicewareListCallback callback) {
   if (!Connected())
