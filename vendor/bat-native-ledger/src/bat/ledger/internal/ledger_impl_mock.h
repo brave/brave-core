@@ -498,7 +498,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(GetAnonWalletStatus, void(ledger::ResultCallback));
 
-  MOCK_METHOD2(GetUnblindedTokensByTriggerIds, void(
+  MOCK_METHOD2(GetSpendableUnblindedTokensByTriggerIds, void(
       const std::vector<std::string>& trigger_ids,
       ledger::GetUnblindedTokenListCallback));
 

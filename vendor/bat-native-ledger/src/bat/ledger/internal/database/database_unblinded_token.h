@@ -24,7 +24,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void GetRecordsByTriggerIds(
+  void GetSpendableRecordsByTriggerIds(
       const std::vector<std::string>& trigger_ids,
       ledger::GetUnblindedTokenListCallback callback);
 

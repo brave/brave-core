@@ -93,7 +93,7 @@ void PromotionTransfer::GetEligibleTokens(
     ids.push_back(promotion->id);
   }
 
-  ledger_->GetUnblindedTokensByTriggerIds(
+  ledger_->GetSpendableUnblindedTokensByTriggerIds(
       ids,
       tokens_callback);
 }

@@ -1485,10 +1485,10 @@ void LedgerImpl::MarkUblindedTokensAsSpent(
       callback);
 }
 
-void LedgerImpl::GetUnblindedTokensByTriggerIds(
+void LedgerImpl::GetSpendableUnblindedTokensByTriggerIds(
     const std::vector<std::string>& trigger_ids,
     ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetUnblindedTokensByTriggerIds(trigger_ids, callback);
+  bat_database_->GetSpendableUnblindedTokensByTriggerIds(trigger_ids, callback);
 }
 
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {
