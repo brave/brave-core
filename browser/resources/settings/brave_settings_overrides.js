@@ -103,6 +103,11 @@ const BraveClearSettingsMenuHighlightBehavior = {
   }
 }
 
+const SITE_SETTINGS_REMOVE_IDS = [
+  settings.ContentSettingsTypes.ADS,
+  settings.ContentSettingsTypes.BACKGROUND_SYNC,
+]
+
 // Polymer Component Behavior injection (like superclasses)
 BravePatching.RegisterPolymerComponentBehaviors({
   'settings-clear-browsing-data-dialog': [
@@ -133,6 +138,39 @@ BravePatching.RegisterPolymerComponentBehaviors({
         this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
           !(this.getPref('import_dialog_extensions').value &&
             this.selected_.extensions)
+      }
+    }
+  }],
+  'settings-site-settings-page': [{
+    registered: function() {
+      if (!this.properties || !this.properties.lists_ || !this.properties.lists_.value) {
+        console.error('[Brave Settings Overrides] Could not find polymer lists_ property')
+        return
+      }
+      const oldListsGetter = this.properties.lists_.value
+      this.properties.lists_.value = function () {
+        const lists_ = oldListsGetter()
+        if (!lists_ || !lists_.all) {
+          console.error('[Brave Settings Overrides] did not get lists_ data')
+          return
+        }
+        lists_.all = lists_.all.filter(item => !SITE_SETTINGS_REMOVE_IDS.includes(item.id))
+        let indexForAutoplay = lists_.all.findIndex(item => item.id === settings.ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
+        if (indexForAutoplay === -1) {
+          console.error('Could not find automatic downloads site settings item')
+        } else {
+          indexForAutoplay++
+          const autoplayItem = {
+            route: settings.routes.SITE_SETTINGS_AUTOPLAY,
+            id: 'autoplay',
+            label: 'siteSettingsAutoplay',
+            icon: 'cr:extension',
+            enabledLabel: 'siteSettingsAutoplayAsk',
+            disabledLabel: 'siteSettingsBlocked'
+          }
+          lists_.all.splice(indexForAutoplay, 0, autoplayItem)
+        }
+        return lists_
       }
     }
   }]
