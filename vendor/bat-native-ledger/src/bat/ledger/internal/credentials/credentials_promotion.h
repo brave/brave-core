@@ -38,9 +38,13 @@ class CredentialsPromotion : public Credentials {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
+  void OnBlind(
+    const ledger::Result result,
+    const CredentialsTrigger& trigger,
+    ledger::ResultCallback callback);
+
   void Claim(
-      const ledger::Result result,
-      const std::string& blinded_creds_json,
+      ledger::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
@@ -57,6 +61,10 @@ class CredentialsPromotion : public Credentials {
   void ClaimStatusSaved(
       const ledger::Result result,
       const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback);
+
+  void RetryPreviousStepSaved(
+      const ledger::Result result,
       ledger::ResultCallback callback);
 
   void FetchSignedCreds(

@@ -33,8 +33,7 @@ class Credentials {
       ledger::ResultCallback callback) = 0;
 
   virtual void Claim(
-      const ledger::Result result,
-      const std::string& blinded_creds_json,
+      ledger::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 
