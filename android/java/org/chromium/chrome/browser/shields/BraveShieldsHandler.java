@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.shields;
 
 import android.app.Activity;
 import android.content.Context;
@@ -57,12 +57,12 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.base.AnimationFrameTimeHistogram;
-import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.BraveShieldsUtils;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -226,7 +226,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             appRect.bottom = ((Activity)mContext).getWindow().getDecorView().getHeight();
         }
 
-        LayoutInflater inflater = (LayoutInflater) anchorView.getContext().getSystemService(anchorView.getContext().LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) anchorView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
 
         setUpViews();
@@ -263,17 +263,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                          + bgPadding.left + bgPadding.right;
 
         mPopupWindow.setWidth(popupWidth);
-
-        //Handler for clicking on the inactive zone of the window
-        // popupView.setOnTouchListener(new View.OnTouchListener() {
-        //     @Override
-        //     public boolean onTouch(View v, MotionEvent event) {
-
-        //         //Close the window when clicked
-        //         mPopup.dismiss();
-        //         return true;
-        //     }
-        // });
 
         updateValues(mTabId);
     }
@@ -477,6 +466,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         RadioGroup mCookiesOptionGroup = mBlockCookiesLayout.findViewById(R.id.options_radio_group);
         mCookiesOptionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
                 boolean isChecked = checkedRadioButton.isChecked();
@@ -543,6 +533,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         RadioGroup mFingerprintingOptionGroup = mBlockFingerPrintingLayout.findViewById(R.id.options_radio_group);
         mFingerprintingOptionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
                 boolean isChecked = checkedRadioButton.isChecked();
