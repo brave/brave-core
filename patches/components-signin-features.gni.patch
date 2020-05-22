@@ -1,0 +1,13 @@
+diff --git a/components/signin/features.gni b/components/signin/features.gni
+index f4636abdb3f5147569e25f51ce7d0c7edae4028b..6d1eafe672c97343b9a31069e5a23b50ad14a841 100644
+--- a/components/signin/features.gni
++++ b/components/signin/features.gni
+@@ -3,7 +3,7 @@
+ # found in the LICENSE file.
+ 
+ # Dice is supported on the platform (but not necessarily enabled).
+-enable_dice_support = (is_linux && !is_chromeos) || is_mac || is_win
++enable_dice_support = is_android || (is_linux && !is_chromeos) || is_mac || is_win
+ 
+ # Mirror is enabled and other account consistency mechanisms are not available.
+ enable_mirror = is_android || is_ios

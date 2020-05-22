@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/apps/platform_apps/api/music_manager_private/BUILD.gn b/chrome/browser/apps/platform_apps/api/music_manager_private/BUILD.gn
+index 3a47764325bb0315e455a8a8205ae46eff9aa933..b4f913bb29fda596c55012d92b7b1400e8497fe0 100644
+--- a/chrome/browser/apps/platform_apps/api/music_manager_private/BUILD.gn
++++ b/chrome/browser/apps/platform_apps/api/music_manager_private/BUILD.gn
+@@ -28,6 +28,7 @@ source_set("music_manager_private") {
+     "//extensions/browser",
+     "//rlz/buildflags",
+   ]
++  deps += ["//brave/browser/apps/platform_apps/api/music_manager_private",]
+ 
+   libs = []
+   if (is_win) {

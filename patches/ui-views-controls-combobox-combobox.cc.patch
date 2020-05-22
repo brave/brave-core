@@ -1,0 +1,16 @@
+diff --git a/ui/views/controls/combobox/combobox.cc b/ui/views/controls/combobox/combobox.cc
+index c66b9643bd911dc61511bd9ad1f98148e02c5de9..7d0c88ff9be5178cfd4f717b50f667ba8e03ccd5 100644
+--- a/ui/views/controls/combobox/combobox.cc
++++ b/ui/views/controls/combobox/combobox.cc
+@@ -77,7 +77,11 @@ class TransparentButton : public Button {
+   }
+ 
+   double GetAnimationValue() const {
++#if !defined(OS_ANDROID)
+     return hover_animation().GetCurrentValue();
++#else
++    return 0;
++#endif
+   }
+ 
+   // Overridden from InkDropHost:

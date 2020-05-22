@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/browser_instant_controller.h b/chrome/browser/ui/browser_instant_controller.h
+index 4d105455ff2491c23152cbb06412d5d0044d1b32..ecd7c6354ba3b66194abc2c60c05b58b0e0031da 100644
+--- a/chrome/browser/ui/browser_instant_controller.h
++++ b/chrome/browser/ui/browser_instant_controller.h
+@@ -13,9 +13,9 @@
+ #include "chrome/browser/search/search_engine_base_url_tracker.h"
+ #include "chrome/browser/ui/search/instant_controller.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ class Browser;
+ class Profile;

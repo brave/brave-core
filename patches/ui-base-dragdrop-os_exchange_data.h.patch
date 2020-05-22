@@ -1,0 +1,38 @@
+diff --git a/ui/base/dragdrop/os_exchange_data.h b/ui/base/dragdrop/os_exchange_data.h
+index 325182759437198504c1570edec6a41e4196c056..1caf8f153cf602409a7d6f10b12b007fa92df2c4 100644
+--- a/ui/base/dragdrop/os_exchange_data.h
++++ b/ui/base/dragdrop/os_exchange_data.h
+@@ -63,7 +63,7 @@ class UI_BASE_EXPORT OSExchangeData {
+ #if defined(OS_WIN)
+     FILE_CONTENTS  = 1 << 4,
+ #endif
+-#if defined(USE_AURA)
++#if defined(OS_ANDROID) || defined(USE_AURA)
+     HTML           = 1 << 5,
+ #endif
+   };
+@@ -138,13 +138,13 @@ class UI_BASE_EXPORT OSExchangeData {
+     virtual void SetDownloadFileInfo(DownloadFileInfo* download) = 0;
+ #endif
+ 
+-#if defined(USE_AURA)
++#if defined(OS_ANDROID) || defined(USE_AURA)
+     virtual void SetHtml(const base::string16& html, const GURL& base_url) = 0;
+     virtual bool GetHtml(base::string16* html, GURL* base_url) const = 0;
+     virtual bool HasHtml() const = 0;
+ #endif
+ 
+-#if defined(USE_AURA) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(USE_AURA) || defined(OS_MACOSX)
+     virtual void SetDragImage(const gfx::ImageSkia& image,
+                               const gfx::Vector2d& cursor_offset) = 0;
+     virtual gfx::ImageSkia GetDragImage() const = 0;
+@@ -269,7 +269,7 @@ class UI_BASE_EXPORT OSExchangeData {
+   void SetDownloadFileInfo(DownloadFileInfo* download);
+ #endif
+ 
+-#if defined(USE_AURA)
++#if defined(OS_ANDROID) || defined(USE_AURA)
+   // Adds a snippet of HTML.  |html| is just raw html but this sets both
+   // text/html and CF_HTML.
+   void SetHtml(const base::string16& html, const GURL& base_url);

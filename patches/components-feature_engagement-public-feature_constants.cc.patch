@@ -1,0 +1,13 @@
+diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
+index 50b4b5b90e944a609daa5df056104efe27f491f1..22e3527ae430fa135b664093eaad263f8c952c03 100644
+--- a/components/feature_engagement/public/feature_constants.cc
++++ b/components/feature_engagement/public/feature_constants.cc
+@@ -14,7 +14,7 @@ const base::Feature kIPHDemoMode{"IPH_DemoMode",
+ const base::Feature kIPHDummyFeature{"IPH_Dummy",
+                                      base::FEATURE_DISABLED_BY_DEFAULT};
+ 
+-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+     defined(OS_CHROMEOS)
+ const base::Feature kIPHFocusModeFeature{"IPH_FocusMode",
+                                          base::FEATURE_DISABLED_BY_DEFAULT};

@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router.cc b/chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router.cc
+index 2bbe89349c63ee8e4fa799d276ba8fe6b484629c..617fe7f7ee17a9fba5d9ea24a408e0b006113920 100644
+--- a/chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router.cc
++++ b/chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router.cc
+@@ -802,9 +802,11 @@ void SafeBrowsingPrivateEventRouter::RealtimeReportingPrefChanged(
+ 
+ void SafeBrowsingPrivateEventRouter::IfAuthorized(
+     base::OnceCallback<void(bool)> cont) {
++#if !defined(OS_ANDROID)
+   if (binary_upload_service_) {
+     binary_upload_service_->IsAuthorized(std::move(cont));
+   }
++#endif
+ }
+ 
+ void SafeBrowsingPrivateEventRouter::ReportRealtimeEvent(
+@@ -887,6 +889,8 @@ bool SafeBrowsingPrivateEventRouter::IsRealtimeReportingAvailable() {
+   // And that user must be managed.
+   auto* profile = chromeos::ProfileHelper::Get()->GetProfileByUser(user);
+   return profile && profile->GetProfilePolicyConnector()->IsManaged();
++#elif defined(OS_ANDROID)
++  return false;
+ #else
+   return policy::ChromeBrowserCloudManagementController::IsEnabled();
+ #endif

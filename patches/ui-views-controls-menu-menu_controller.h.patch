@@ -1,0 +1,30 @@
+diff --git a/ui/views/controls/menu/menu_controller.h b/ui/views/controls/menu/menu_controller.h
+index 1b12cd52e936b48573200af52d2f60462d8c685d..155231b903f972c9d6a53f270b6f0c7dfe3f2c3d 100644
+--- a/ui/views/controls/menu/menu_controller.h
++++ b/ui/views/controls/menu/menu_controller.h
+@@ -227,7 +227,13 @@ class VIEWS_EXPORT MenuController
+ 
+   // Gets the animation used for menu item alerts. The returned pointer lives as
+   // long as the MenuController.
+-  const gfx::Animation* GetAlertAnimation() const { return &alert_animation_; }
++  const gfx::Animation* GetAlertAnimation() const { 
++#if !defined(OS_ANDROID)
++    return &alert_animation_;
++#else
++    return nullptr;
++#endif
++}
+ 
+   // gfx::AnimationDelegate:
+   void AnimationProgressed(const gfx::Animation* animation) override;
+@@ -772,8 +778,10 @@ class VIEWS_EXPORT MenuController
+ 
+   std::unique_ptr<MenuPreTargetHandler> menu_pre_target_handler_;
+ 
++#if !defined(OS_ANDROID)
+   // Animation used for alerted MenuItemViews. Started on demand.
+   gfx::ThrobAnimation alert_animation_;
++#endif
+ 
+   // Currently showing alerted menu items. Updated when submenus open and close.
+   base::flat_set<MenuItemView*> alerted_items_;

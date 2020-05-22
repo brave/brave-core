@@ -1,0 +1,16 @@
+diff --git a/ui/views/controls/editable_combobox/editable_combobox.cc b/ui/views/controls/editable_combobox/editable_combobox.cc
+index adeb9c83321e45edef85cb4bbfb3003d47c9b15d..875ecd488098aa04ad2b18646dbc9751e9a941bb 100644
+--- a/ui/views/controls/editable_combobox/editable_combobox.cc
++++ b/ui/views/controls/editable_combobox/editable_combobox.cc
+@@ -78,7 +78,11 @@ class Arrow : public Button {
+   ~Arrow() override = default;
+ 
+   double GetAnimationValue() const {
++#if !defined(OS_ANDROID)
+     return hover_animation().GetCurrentValue();
++#else
++    return 0;
++#endif
+   }
+ 
+   // Overridden from InkDropHost:

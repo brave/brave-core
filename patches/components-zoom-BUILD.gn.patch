@@ -1,0 +1,13 @@
+diff --git a/components/zoom/BUILD.gn b/components/zoom/BUILD.gn
+index a81c62e83be1087dc72962c09adca6e313a780c0..99ad03538a5e322f3ff3698654788a34d6673518 100644
+--- a/components/zoom/BUILD.gn
++++ b/components/zoom/BUILD.gn
+@@ -2,7 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
+-assert(!is_android && !is_ios, "Desktop zoom is not used on mobile platforms.")
++assert(!is_ios, "Desktop zoom is not used on mobile platforms.")
+ 
+ static_library("zoom") {
+   sources = [

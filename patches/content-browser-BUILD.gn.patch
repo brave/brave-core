@@ -1,0 +1,55 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index 75fc9d9d182627029021655deb240c72ea3e6bcf..199b106f8cd0bbda17534ebafedcb4624335d152 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -2434,6 +2434,12 @@ jumbo_source_set("browser") {
+     defines += [ "APPCACHE_USE_SIMPLE_CACHE" ]
+     libs += [ "jnigraphics" ]
+   } else {
++    sources += [
++      "devtools/devtools_frontend_host_impl.cc",
++      "devtools/devtools_frontend_host_impl.h",
++    ]
++  }
++  #else {
+     # Not Android.
+     sources += [
+       # The WebAuthn devtools protocol API is not supported in Android yet.
+@@ -2441,8 +2447,6 @@ jumbo_source_set("browser") {
+       "$target_gen_dir/devtools/protocol/web_authn.h",
+ 
+       # Devtools frontend not included in Android
+-      "devtools/devtools_frontend_host_impl.cc",
+-      "devtools/devtools_frontend_host_impl.h",
+       "devtools/protocol/webauthn_handler.cc",
+       "devtools/protocol/webauthn_handler.h",
+       "host_zoom_level_context.cc",
+@@ -2492,7 +2496,7 @@ jumbo_source_set("browser") {
+     ]
+ 
+     deps += [ "//third_party/flac" ]
+-  }
++  #}
+ 
+   if (is_mac) {
+     deps += [
+@@ -2580,12 +2584,16 @@ jumbo_source_set("browser") {
+     ]
+   }
+ 
+-  if (use_aura || is_mac) {
++  if (is_android || use_aura || is_mac) {
++    if (!is_android) {
++        sources += [
++          "compositor/viz_process_transport_factory.cc",
++          "compositor/viz_process_transport_factory.h",
++        ]
++    }
+     sources += [
+       "compositor/image_transport_factory.cc",
+       "compositor/image_transport_factory.h",
+-      "compositor/viz_process_transport_factory.cc",
+-      "compositor/viz_process_transport_factory.h",
+       "context_factory.cc",
+       "renderer_host/browser_compositor_view_mac.h",
+       "renderer_host/browser_compositor_view_mac.mm",

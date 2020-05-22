@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
+index 4a17827809ca7e298e4554220c24cda641b80088..c2f2df0d55b84a3b954a79a22dba3a3abceaa7aa 100644
+--- a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
++++ b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
+@@ -351,7 +351,7 @@ bool BrowsingDataRemoverFunction::RunAsync() {
+     return false;
+   }
+ 
+-#if BUILDFLAG(ENABLE_PLUGINS)
++#if BUILDFLAG(ENABLE_PLUGINS) && !defined(OS_ANDROID)
+   if (removal_mask_ &
+       ChromeBrowsingDataRemoverDelegate::DATA_TYPE_PLUGIN_DATA) {
+     // If we're being asked to remove plugin data, check whether it's actually

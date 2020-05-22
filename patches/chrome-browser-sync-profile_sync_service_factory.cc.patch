@@ -1,7 +1,25 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.cc b/chrome/browser/sync/profile_sync_service_factory.cc
-index 2478919ffea6460b17d90b6b839b83026f0f01ce..110ab04798ad6093b66e610c5b4a286003ab3a4a 100644
+index 2478919ffea6460b17d90b6b839b83026f0f01ce..d22f98dbdccfa4e7afc9db39adf452bd2105d34b 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.cc
 +++ b/chrome/browser/sync/profile_sync_service_factory.cc
+@@ -160,7 +160,7 @@ ProfileSyncServiceFactory::ProfileSyncServiceFactory()
+   DependsOn(SendTabToSelfSyncServiceFactory::GetInstance());
+   DependsOn(SharingMessageBridgeFactory::GetInstance());
+   DependsOn(SpellcheckServiceFactory::GetInstance());
+-#if BUILDFLAG(ENABLE_SUPERVISED_USERS)
++#if !defined(OS_ANDROID) && BUILDFLAG(ENABLE_SUPERVISED_USERS)
+   DependsOn(SupervisedUserServiceFactory::GetInstance());
+   DependsOn(SupervisedUserSettingsServiceFactory::GetInstance());
+ #endif  // BUILDFLAG(ENABLE_SUPERVISED_USERS)
+@@ -170,7 +170,7 @@ ProfileSyncServiceFactory::ProfileSyncServiceFactory()
+   DependsOn(ThemeServiceFactory::GetInstance());
+ #endif  // !defined(OS_ANDROID)
+   DependsOn(WebDataServiceFactory::GetInstance());
+-#if BUILDFLAG(ENABLE_EXTENSIONS)
++#if !defined(OS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS)
+   DependsOn(
+       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
+   DependsOn(extensions::StorageFrontend::GetFactoryInstance());
 @@ -283,7 +283,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
    }
  

@@ -1,0 +1,37 @@
+diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+index fd1135cead69374786578e274ad0762801aa0440..3cca05d10e2241b155855c16b01fe81659b8504f 100644
+--- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
++++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+@@ -156,7 +156,7 @@
+ #include "ui/gfx/text_elider.h"
+ #include "ui/strings/grit/ui_strings.h"
+ 
+-#if BUILDFLAG(USE_RENDERER_SPELLCHECKER)
++#if defined(OS_ANDROID) || BUILDFLAG(USE_RENDERER_SPELLCHECKER)
+ #include "chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h"
+ #endif
+ 
+@@ -1747,7 +1747,7 @@ void RenderViewContextMenu::AppendLanguageSettings() {
+ #if defined(OS_MACOSX)
+   menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_LANGUAGE_SETTINGS,
+                                   IDS_CONTENT_CONTEXT_LANGUAGE_SETTINGS);
+-#else
++#elif !defined(OS_ANDROID)
+   if (!spelling_options_submenu_observer_) {
+     const int kLanguageRadioGroup = 1;
+     spelling_options_submenu_observer_ =
+@@ -2420,12 +2420,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+       break;
+ 
+     case IDC_CONTENT_CONTEXT_SHOWALLSAVEDPASSWORDS:
++#if !defined(OS_ANDROID)
+       NavigateToManagePasswordsPage(
+           GetBrowser(),
+           password_manager::ManagePasswordsReferrer::kPasswordContextMenu);
+       password_manager::metrics_util::LogContextOfShowAllSavedPasswordsAccepted(
+           password_manager::metrics_util::ShowAllSavedPasswordsContext::
+               kContextMenu);
++#endif
+       break;
+ 
+     case IDC_CONTENT_CONTEXT_PICTUREINPICTURE:

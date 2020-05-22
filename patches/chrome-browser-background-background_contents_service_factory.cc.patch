@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/background/background_contents_service_factory.cc b/chrome/browser/background/background_contents_service_factory.cc
+index f866434c509ebb504a12d5f738e04c0960b1ce95..b8b716bca28a87df4447567be21ea2053d722d55 100644
+--- a/chrome/browser/background/background_contents_service_factory.cc
++++ b/chrome/browser/background/background_contents_service_factory.cc
+@@ -32,8 +32,10 @@ BackgroundContentsServiceFactory::BackgroundContentsServiceFactory()
+     : BrowserContextKeyedServiceFactory(
+           "BackgroundContentsService",
+           BrowserContextDependencyManager::GetInstance()) {
++#if !defined(OS_ANDROID)
+   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
+   DependsOn(extensions::ExtensionSystemFactory::GetInstance());
++#endif
+ }
+ 
+ BackgroundContentsServiceFactory::~BackgroundContentsServiceFactory() {}

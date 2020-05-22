@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/profiles/profile_window.cc b/chrome/browser/profiles/profile_window.cc
+index 4f453ac671bd5cb38890544d0f06839147c6f438..a17033ce5bb37dc5c25ec3baf46d9c978ee2dd3d 100644
+--- a/chrome/browser/profiles/profile_window.cc
++++ b/chrome/browser/profiles/profile_window.cc
+@@ -54,13 +54,13 @@
+ #include "extensions/browser/extension_system.h"
+ #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/browser_finder.h"
+ #include "chrome/browser/ui/browser_list.h"
+ #include "chrome/browser/ui/browser_list_observer.h"
+ #include "chrome/browser/ui/browser_window.h"
+ #include "chrome/browser/ui/startup/startup_browser_creator.h"
+-#endif  // !defined (OS_ANDROID)
++//#endif  // !defined (OS_ANDROID)
+ 
+ #if !defined(OS_CHROMEOS)
+ #include "chrome/browser/ui/user_manager.h"
+@@ -253,7 +253,7 @@ void OpenBrowserWindowForProfile(ProfileManager::CreateCallback callback,
+                                             is_first_run, true);
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ 
+ void LoadProfileAsync(const base::FilePath& path,
+                       ProfileManager::CreateCallback callback) {
+@@ -287,7 +287,7 @@ void SwitchToGuestProfile(ProfileManager::CreateCallback callback) {
+                  false),
+       base::string16(), std::string());
+ }
+-#endif
++//#endif
+ 
+ bool HasProfileSwitchTargets(Profile* profile) {
+   size_t min_profiles = profile->IsGuestSession() ? 1 : 2;

@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/prefs/chrome_pref_service_factory.cc b/chrome/browser/prefs/chrome_pref_service_factory.cc
+index 6186da7ed1830dc50257770e76ebf7d8afbdf44e..36f1bced0fe781cf63cfde72d712b40705328f57 100644
+--- a/chrome/browser/prefs/chrome_pref_service_factory.cc
++++ b/chrome/browser/prefs/chrome_pref_service_factory.cc
+@@ -124,10 +124,10 @@ const prefs::TrackedPreferenceMetadata kTrackedPrefs[] = {
+      PrefTrackingStrategy::ATOMIC, ValueType::PERSONAL},
+     {7, prefs::kSearchProviderOverrides, EnforcementLevel::ENFORCE_ON_LOAD,
+      PrefTrackingStrategy::ATOMIC, ValueType::IMPERSONAL},
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+     {11, prefs::kPinnedTabs, EnforcementLevel::ENFORCE_ON_LOAD,
+      PrefTrackingStrategy::ATOMIC, ValueType::IMPERSONAL},
+-#endif
++//#endif
+     {14, DefaultSearchManager::kDefaultSearchProviderDataPrefName,
+      EnforcementLevel::NO_ENFORCEMENT, PrefTrackingStrategy::ATOMIC,
+      ValueType::IMPERSONAL},

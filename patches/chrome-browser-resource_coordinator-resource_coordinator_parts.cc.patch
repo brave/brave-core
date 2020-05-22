@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/resource_coordinator/resource_coordinator_parts.cc b/chrome/browser/resource_coordinator/resource_coordinator_parts.cc
+index 7273896ebd8ea1844ef5d3d31492200a072944e5..686b07337ec2b77dd0d864d1ceb96f4d33715686 100644
+--- a/chrome/browser/resource_coordinator/resource_coordinator_parts.cc
++++ b/chrome/browser/resource_coordinator/resource_coordinator_parts.cc
+@@ -9,15 +9,15 @@
+ namespace resource_coordinator {
+ 
+ ResourceCoordinatorParts::ResourceCoordinatorParts()
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+     : tab_manager_(&tab_load_tracker_),
+       tab_lifecycle_unit_source_(tab_manager_.intervention_policy_database(),
+                                  tab_manager_.usage_clock())
+-#endif
++//#endif
+ {
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   tab_lifecycle_unit_source_.AddObserver(&tab_manager_);
+-#endif
++//#endif
+ }
+ 
+ ResourceCoordinatorParts::~ResourceCoordinatorParts() = default;

@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/profiles/profiles_state.h b/chrome/browser/profiles/profiles_state.h
+index 6d3e919daea100f092b000d270fe759249d15a39..f496a60eaac22faabeb0e3fb1047ee9ab6606c17 100644
+--- a/chrome/browser/profiles/profiles_state.h
++++ b/chrome/browser/profiles/profiles_state.h
+@@ -43,7 +43,7 @@ void RegisterPrefs(PrefRegistrySimple* registry);
+ // System Profile directory, which is an invalid last used profile.
+ void SetLastUsedProfile(const std::string& profile_dir);
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Returns the display name of the specified on-the-record profile (or guest),
+ // specified by |profile_path|, used in the avatar button or user manager. If
+ // |profile_path| is the guest path, it will return IDS_GUEST_PROFILE_NAME. If
+@@ -114,7 +114,7 @@ bool IsPublicSession();
+ 
+ // Returns whether public session restrictions are enabled.
+ bool ArePublicSessionRestrictionsEnabled();
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ }  // namespace profiles
+ 

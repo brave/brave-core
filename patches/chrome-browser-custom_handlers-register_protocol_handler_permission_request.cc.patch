@@ -1,0 +1,49 @@
+diff --git a/chrome/browser/custom_handlers/register_protocol_handler_permission_request.cc b/chrome/browser/custom_handlers/register_protocol_handler_permission_request.cc
+index 947043aae41ece7fefa1b002606708648764cac4..8f553aac175b5a64dc442f5dad795f37d7a1ea9f 100644
+--- a/chrome/browser/custom_handlers/register_protocol_handler_permission_request.cc
++++ b/chrome/browser/custom_handlers/register_protocol_handler_permission_request.cc
+@@ -27,7 +27,11 @@ RegisterProtocolHandlerPermissionRequest::
+ 
+ permissions::PermissionRequest::IconId
+ RegisterProtocolHandlerPermissionRequest::GetIconId() const {
++#if !defined(OS_ANDROID)
+   return vector_icons::kProtocolHandlerIcon;
++#else
++  return 0;
++#endif
+ }
+ 
+ base::string16
+@@ -43,6 +47,32 @@ RegisterProtocolHandlerPermissionRequest::GetMessageTextFragment() const {
+                    base::UTF8ToUTF16(old_handler.url().host_piece()));
+ }
+ 
++base::string16
++RegisterProtocolHandlerPermissionRequest::GetMessageText() const {
++  ProtocolHandler old_handler = registry_->GetHandlerFor(handler_.protocol());
++  return old_handler.IsEmpty()
++             ? l10n_util::GetStringFUTF16(
++                   IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_FRAGMENT,
++                   handler_.GetProtocolDisplayName())
++             : l10n_util::GetStringFUTF16(
++                   IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_REPLACE_FRAGMENT,
++                   handler_.GetProtocolDisplayName(),
++                   base::UTF8ToUTF16(old_handler.url().host_piece()));
++}
++
++base::string16
++RegisterProtocolHandlerPermissionRequest::GetTitleText() const {
++  ProtocolHandler old_handler = registry_->GetHandlerFor(handler_.protocol());
++  return old_handler.IsEmpty()
++             ? l10n_util::GetStringFUTF16(
++                   IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_FRAGMENT,
++                   handler_.GetProtocolDisplayName())
++             : l10n_util::GetStringFUTF16(
++                   IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_REPLACE_FRAGMENT,
++                   handler_.GetProtocolDisplayName(),
++                   base::UTF8ToUTF16(old_handler.url().host_piece()));
++}
++
+ GURL RegisterProtocolHandlerPermissionRequest::GetOrigin() const {
+   return origin_;
+ }

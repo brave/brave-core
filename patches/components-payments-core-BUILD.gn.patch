@@ -1,0 +1,22 @@
+diff --git a/components/payments/core/BUILD.gn b/components/payments/core/BUILD.gn
+index 699989dd5e41e88669c15e8b9818de61e9c8adca..2414debe79de6727bcf285900e408b8ed88a6453 100644
+--- a/components/payments/core/BUILD.gn
++++ b/components/payments/core/BUILD.gn
+@@ -46,7 +46,7 @@ jumbo_static_library("core") {
+     "url_util.h",
+   ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [
+       "autofill_card_validation.cc",
+       "autofill_card_validation.h",
+@@ -72,7 +72,7 @@ jumbo_static_library("core") {
+       "web_payment_request.cc",
+       "web_payment_request.h",
+     ]
+-  }
++  #}
+ 
+   deps = [
+     ":error_strings",

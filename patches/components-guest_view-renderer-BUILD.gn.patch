@@ -1,0 +1,13 @@
+diff --git a/components/guest_view/renderer/BUILD.gn b/components/guest_view/renderer/BUILD.gn
+index 13065887efd76006dc30bbd56433a48ef8942633..76a1280392c50e683e24f41a2c90dbb54e785a57 100644
+--- a/components/guest_view/renderer/BUILD.gn
++++ b/components/guest_view/renderer/BUILD.gn
+@@ -6,7 +6,7 @@
+ # assert to prevent the accidental building of GuestViews on mobile
+ # platforms. If you're now using GuestViews on mobile, go ahead and
+ # remove this assert.
+-assert(!is_android && !is_ios)
++assert(!is_ios)
+ 
+ static_library("renderer") {
+   sources = [

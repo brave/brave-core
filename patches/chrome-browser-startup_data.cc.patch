@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/startup_data.cc b/chrome/browser/startup_data.cc
+index 09d11d2d8014b367ea85a2ca2586724544e0a469..14c3868eef017a86bbad0d3c31059a39a3fb9486 100644
+--- a/chrome/browser/startup_data.cc
++++ b/chrome/browser/startup_data.cc
+@@ -151,7 +151,11 @@ StartupData::TakeProtoDatabaseProvider() {
+ void StartupData::PreProfilePrefServiceInit() {
+   pref_registry_ = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
+   ChromeBrowserMainExtraPartsProfiles::
++#if defined(OS_ANDROID)
++      EnsureBrowserContextKeyedServiceFactoriesBuilt(false);
++#else
+       EnsureBrowserContextKeyedServiceFactoriesBuilt();
++#endif
+ }
+ 
+ void StartupData::CreateServicesInternal() {

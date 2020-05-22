@@ -1,17 +1,85 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 5f0a38eea3e3b47b0d7d6e2c45bf9ce9e08608dc..870cf598da8e410876124ca653196ffa59c87980 100644
+index 5f0a38eea3e3b47b0d7d6e2c45bf9ce9e08608dc..a50468ebf0a907d1fe7330225ed7a32800ad7eba 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -446,7 +446,7 @@ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
+@@ -355,6 +355,7 @@ void LocationBarView::SelectAll() {
+ }
+ 
+ void LocationBarView::FocusLocation(bool is_user_initiated) {
++#if !defined(OS_ANDROID)
+   const bool omnibox_already_focused = omnibox_view_->HasFocus();
+ 
+   omnibox_view_->SetFocus(is_user_initiated);
+@@ -370,10 +371,13 @@ void LocationBarView::FocusLocation(bool is_user_initiated) {
+   // Only exit Query in Omnibox mode on focus command if the location bar was
+   // already focused to begin with, i.e. user presses Ctrl+L twice.
+   omnibox_view()->model()->Unelide(omnibox_already_focused);
++#endif
+ }
+ 
+ void LocationBarView::Revert() {
++#if !defined(OS_ANDROID)
+   omnibox_view_->RevertAll();
++#endif
+ }
+ 
+ OmniboxView* LocationBarView::GetOmniboxView() {
+@@ -381,7 +385,11 @@ OmniboxView* LocationBarView::GetOmniboxView() {
+ }
+ 
+ bool LocationBarView::HasFocus() const {
++#if !defined(OS_ANDROID)
+   return omnibox_view_ && omnibox_view_->model()->has_focus();
++#else
++  return false;
++#endif
+ }
+ 
+ void LocationBarView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+@@ -390,9 +398,12 @@ void LocationBarView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+ 
+ gfx::Size LocationBarView::GetMinimumSize() const {
+   const int height = GetLayoutConstant(LOCATION_BAR_HEIGHT);
++#if !defined(OS_ANDROID)
+   if (!IsInitialized())
++#endif
+     return gfx::Size(0, height);
+ 
++#if !defined(OS_ANDROID)
+   const int inset_width = GetInsets().width();
+   const int padding = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
+   const int leading_width = GetMinimumLeadingWidth();
+@@ -410,8 +421,10 @@ gfx::Size LocationBarView::GetMinimumSize() const {
+   int width = inset_width + std::max(omnibox_width, alt_width);
+ 
+   return gfx::Size(width, height);
++#endif
+ }
+ 
++#if !defined(OS_ANDROID)
+ gfx::Size LocationBarView::CalculatePreferredSize() const {
+   const int height = GetLayoutConstant(LOCATION_BAR_HEIGHT);
+   if (!IsInitialized())
+@@ -440,13 +453,17 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
+ 
+   return gfx::Size(width, height);
+ }
++#endif
+ 
+ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
++#if !defined(OS_ANDROID)
+   DCHECK(!icon.IsEmpty());
    selected_keyword_view_->SetCustomImage(icon);
++#endif
  }
  
 -void LocationBarView::Layout() {
 +void LocationBarView::Layout(views::View* right_most) {
++#if !defined(OS_ANDROID)
    if (!IsInitialized())
      return;
  
-@@ -548,6 +548,7 @@ void LocationBarView::Layout() {
+@@ -548,6 +565,7 @@ void LocationBarView::Layout() {
      }
    };
  
@@ -19,3 +87,57 @@ index 5f0a38eea3e3b47b0d7d6e2c45bf9ce9e08608dc..870cf598da8e410876124ca653196ffa
    add_trailing_decoration(page_action_icon_container_);
    for (ContentSettingViews::const_reverse_iterator i(
             content_setting_views_.rbegin());
+@@ -608,9 +626,11 @@ void LocationBarView::Layout() {
+   }
+   omnibox_view_->SetBoundsRect(location_bounds);
+   View::Layout();
++#endif
+ }
+ 
+ void LocationBarView::OnThemeChanged() {
++#if !defined(OS_ANDROID)
+   // ToolbarView::Init() adds |this| to the view hierarchy before initializing,
+   // which will trigger an early theme change.
+   if (!IsInitialized())
+@@ -623,14 +643,18 @@ void LocationBarView::OnThemeChanged() {
+ 
+   RefreshBackground();
+   RefreshClearAllButtonIcon();
++#endif
+ }
+ 
+ void LocationBarView::ChildPreferredSizeChanged(views::View* child) {
++#if !defined(OS_ANDROID)
+   Layout();
+   SchedulePaint();
++#endif
+ }
+ 
+ void LocationBarView::Update(const WebContents* contents) {
++#if !defined(OS_ANDROID)
+   RefreshContentSettingViews();
+ 
+   RefreshPageActionIconViews();
+@@ -648,15 +672,22 @@ void LocationBarView::Update(const WebContents* contents) {
+     send_tab_to_self_icon->SetVisible(false);
+ 
+   OnChanged();  // NOTE: Calls Layout().
++#endif
+ }
+ 
+ void LocationBarView::ResetTabState(WebContents* contents) {
++#if !defined(OS_ANDROID)
+   omnibox_view_->ResetTabState(contents);
++#endif
+ }
+ 
+ bool LocationBarView::ActivateFirstInactiveBubbleForAccessibility() {
++#if !defined(OS_ANDROID)
+   return page_action_icon_controller_
+       ->ActivateFirstInactiveBubbleForAccessibility();
++#else
++  return false;
++#endif
+ }
+ 
+ void LocationBarView::UpdateWithoutTabRestore() {

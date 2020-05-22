@@ -1,0 +1,162 @@
+diff --git a/chrome/browser/ui/webui/browser_switch/browser_switch_ui.cc b/chrome/browser/ui/webui/browser_switch/browser_switch_ui.cc
+index f7db04bc6d56d002d779022eae9d3ced500764db..660d224e8789febe9ce100da9d6a220da8813413 100644
+--- a/chrome/browser/ui/webui/browser_switch/browser_switch_ui.cc
++++ b/chrome/browser/ui/webui/browser_switch/browser_switch_ui.cc
+@@ -43,6 +43,7 @@ void GotoNewTabPage(content::WebContents* web_contents) {
+   web_contents->OpenURL(params);
+ }
+ 
++#if !defined(OS_ANDROID)
+ // Returns true if there's only 1 tab left open in this profile. Incognito
+ // window tabs count as the same profile.
+ bool IsLastTab(const Profile* profile) {
+@@ -57,6 +58,7 @@ bool IsLastTab(const Profile* profile) {
+   }
+   return true;
+ }
++#endif
+ 
+ // Returns a dictionary like:
+ //
+@@ -64,6 +66,7 @@ bool IsLastTab(const Profile* profile) {
+ //   "sitelist": ["example.com", ...],
+ //   "greylist": ["example.net", ...]
+ // }
++#if !defined(OS_ANDROID)
+ std::unique_ptr<base::Value> RuleSetToDict(
+     const browser_switcher::RuleSet& ruleset) {
+   auto sitelist = std::make_unique<base::ListValue>();
+@@ -80,17 +83,21 @@ std::unique_ptr<base::Value> RuleSetToDict(
+ 
+   return dict;
+ }
++#endif
+ 
++#if !defined(OS_ANDROID)
+ browser_switcher::BrowserSwitcherService* GetBrowserSwitcherService(
+     content::WebUI* web_ui) {
+   return browser_switcher::BrowserSwitcherServiceFactory::GetForBrowserContext(
+       web_ui->GetWebContents()->GetBrowserContext());
+ }
++#endif
+ 
+ content::WebUIDataSource* CreateBrowserSwitchUIHTMLSource(
+     content::WebUI* web_ui) {
+   content::WebUIDataSource* source =
+       content::WebUIDataSource::Create(chrome::kChromeUIBrowserSwitchHost);
++#if !defined(OS_ANDROID)
+ 
+   auto* service = GetBrowserSwitcherService(web_ui);
+   source->AddInteger("launchDelay", service->prefs().GetDelay());
+@@ -146,7 +153,7 @@ content::WebUIDataSource* CreateBrowserSwitchUIHTMLSource(
+   source->AddResourcePath("internals", IDR_BROWSER_SWITCH_INTERNALS_HTML);
+ 
+   source->UseStringsJs();
+-
++#endif
+   return source;
+ }
+ 
+@@ -276,6 +283,7 @@ void BrowserSwitchHandler::RegisterMessages() {
+ }
+ 
+ void BrowserSwitchHandler::OnJavascriptAllowed() {
++#if !defined(OS_ANDROID)
+   auto* service = GetBrowserSwitcherService(web_ui());
+   prefs_subscription_ = service->prefs().RegisterPrefsChangedCallback(
+       base::BindRepeating(&BrowserSwitchHandler::OnBrowserSwitcherPrefsChanged,
+@@ -283,6 +291,7 @@ void BrowserSwitchHandler::OnJavascriptAllowed() {
+   service_subscription_ =
+       service->RegisterAllRulesetsParsedCallback(base::BindRepeating(
+           &BrowserSwitchHandler::OnAllRulesetsParsed, base::Unretained(this)));
++#endif
+ }
+ 
+ void BrowserSwitchHandler::OnJavascriptDisallowed() {
+@@ -307,6 +316,7 @@ void BrowserSwitchHandler::UpdateEverything() {
+ 
+ void BrowserSwitchHandler::HandleLaunchAlternativeBrowserAndCloseTab(
+     const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   DCHECK(args);
+   AllowJavascript();
+ 
+@@ -315,7 +325,8 @@ void BrowserSwitchHandler::HandleLaunchAlternativeBrowserAndCloseTab(
+   GURL url(url_spec);
+ 
+   auto* service = GetBrowserSwitcherService(web_ui());
+-  bool should_switch = service->sitelist()->ShouldSwitch(url);
++  bool should_switch = false;
++  should_switch = service->sitelist()->ShouldSwitch(url);
+   if (!url.is_valid() || !should_switch) {
+     // This URL shouldn't open in an alternative browser. Abort launch, because
+     // something weird is going on (e.g. race condition from a new sitelist
+@@ -347,6 +358,7 @@ void BrowserSwitchHandler::HandleLaunchAlternativeBrowserAndCloseTab(
+         base::BindOnce(&content::WebContents::ClosePage,
+                        base::Unretained(web_ui()->GetWebContents())));
+   }
++#endif
+ }
+ 
+ void BrowserSwitchHandler::HandleGotoNewTabPage(const base::ListValue* args) {
+@@ -354,6 +366,7 @@ void BrowserSwitchHandler::HandleGotoNewTabPage(const base::ListValue* args) {
+ }
+ 
+ void BrowserSwitchHandler::HandleGetAllRulesets(const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   DCHECK(args);
+   AllowJavascript();
+ 
+@@ -369,9 +382,11 @@ void BrowserSwitchHandler::HandleGetAllRulesets(const base::ListValue* args) {
+   retval.Set("external", std::move(external_dict));
+ 
+   ResolveJavascriptCallback(args->GetList()[0], retval);
++#endif
+ }
+ 
+ void BrowserSwitchHandler::HandleGetDecision(const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   DCHECK(args);
+   AllowJavascript();
+ 
+@@ -416,9 +431,11 @@ void BrowserSwitchHandler::HandleGetDecision(const base::ListValue* args) {
+   }
+ 
+   ResolveJavascriptCallback(args->GetList()[0], retval);
++#endif
+ }
+ 
+ void BrowserSwitchHandler::HandleGetTimestamps(const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   DCHECK(args);
+   AllowJavascript();
+ 
+@@ -437,10 +454,12 @@ void BrowserSwitchHandler::HandleGetTimestamps(const base::ListValue* args) {
+                                downloader->next_refresh_time().ToJsTime()));
+ 
+   ResolveJavascriptCallback(args->GetList()[0], retval);
++#endif
+ }
+ 
+ void BrowserSwitchHandler::HandleGetRulesetSources(
+     const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   DCHECK(args);
+   AllowJavascript();
+ 
+@@ -460,12 +479,15 @@ void BrowserSwitchHandler::HandleGetRulesetSources(
+     retval.Set(source.pref_name, std::move(val));
+   }
+   ResolveJavascriptCallback(args->GetList()[0], retval);
++#endif
+ }
+ 
+ void BrowserSwitchHandler::HandleRefreshXml(const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   DCHECK(args);
+   auto* service = GetBrowserSwitcherService(web_ui());
+   service->StartDownload(base::TimeDelta());
++#endif
+ }
+ 
+ BrowserSwitchUI::BrowserSwitchUI(content::WebUI* web_ui)

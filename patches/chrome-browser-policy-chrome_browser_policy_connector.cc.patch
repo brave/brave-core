@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/policy/chrome_browser_policy_connector.cc b/chrome/browser/policy/chrome_browser_policy_connector.cc
+index 90232aa7e184ac8c78fdacbed61192567c7ca18a..367a19837f60e9b82fe4d5c738db69d696dcf06b 100644
+--- a/chrome/browser/policy/chrome_browser_policy_connector.cc
++++ b/chrome/browser/policy/chrome_browser_policy_connector.cc
+@@ -47,7 +47,7 @@
+ #include "components/policy/core/browser/android/android_combined_policy_provider.h"
+ #endif
+ 
+-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS)
+ #include "chrome/browser/policy/chrome_browser_cloud_management_controller.h"
+ #include "components/policy/core/common/cloud/machine_level_user_cloud_policy_manager.h"
+ #endif

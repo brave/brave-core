@@ -1,0 +1,28 @@
+diff --git a/ui/views/controls/button/button.h b/ui/views/controls/button/button.h
+index 984b8939954ecb233404d7c00fec9d19fffbdd71..1de697d803c1e3300f1bb02cfed405599f8f8123 100644
+--- a/ui/views/controls/button/button.h
++++ b/ui/views/controls/button/button.h
+@@ -284,9 +284,11 @@ class VIEWS_EXPORT Button : public InkDropHostView,
+   // node_data). This does not take into account enabled node_data.
+   bool ShouldEnterHoveredState();
+ 
++#if !defined(OS_ANDROID)
+   const gfx::ThrobAnimation& hover_animation() const {
+     return hover_animation_;
+-  }
++}
++#endif
+ 
+   FocusRing* focus_ring() { return focus_ring_.get(); }
+ 
+@@ -332,8 +334,9 @@ class VIEWS_EXPORT Button : public InkDropHostView,
+   int tag_ = -1;
+ 
+   ButtonState state_ = STATE_NORMAL;
+-
++#if !defined(OS_ANDROID)
+   gfx::ThrobAnimation hover_animation_{this};
++#endif
+ 
+   // Should we animate when the state changes?
+   bool animate_on_state_change_ = false;

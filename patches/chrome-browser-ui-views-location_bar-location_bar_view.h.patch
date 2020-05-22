@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index baeba401df2e36187a4f93f3eb8a2076b86e62bf..d3ef526cbfdad7aaefc4feb1da9270ca33350127 100644
+index baeba401df2e36187a4f93f3eb8a2076b86e62bf..259fa36d54500a02fb050d51acba50f8a74b6216 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -107,6 +107,7 @@ class LocationBarView : public LocationBar,
@@ -18,15 +18,18 @@ index baeba401df2e36187a4f93f3eb8a2076b86e62bf..d3ef526cbfdad7aaefc4feb1da9270ca
    void Update(const content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -178,6 +180,7 @@ class LocationBarView : public LocationBar,
+@@ -177,7 +179,10 @@ class LocationBarView : public LocationBar,
+   bool HasFocus() const override;
    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
    gfx::Size GetMinimumSize() const override;
++#if !defined(OS_ANDROID)
    gfx::Size CalculatePreferredSize() const override;
++#endif
 +  void Layout(views::View* trailing_view);
    void Layout() override;
    void OnThemeChanged() override;
    void ChildPreferredSizeChanged(views::View* child) override;
-@@ -228,6 +231,7 @@ class LocationBarView : public LocationBar,
+@@ -228,6 +233,7 @@ class LocationBarView : public LocationBar,
                                       on_icon_fetched) const override;
  
   private:

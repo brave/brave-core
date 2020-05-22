@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/sharing/shared_clipboard/feature_flags.h b/chrome/browser/sharing/shared_clipboard/feature_flags.h
+index 40a711f754fc2a306fd49d47ec6bd23c57e667bc..e4494affaa7a627f4dc684c450c759e35b76b7bd 100644
+--- a/chrome/browser/sharing/shared_clipboard/feature_flags.h
++++ b/chrome/browser/sharing/shared_clipboard/feature_flags.h
+@@ -18,7 +18,7 @@ extern const base::Feature kSharedClipboardReceiver;
+ extern const base::Feature kSharedClipboardUI;
+ 
+ #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+-    defined(OS_CHROMEOS)
++    defined(OS_CHROMEOS) || defined(OS_ANDROID)
+ // Feature to enable handling remote copy messages.
+ extern const base::Feature kRemoteCopyReceiver;
+ 

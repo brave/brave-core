@@ -1,0 +1,139 @@
+diff --git a/ui/views/widget/widget.cc b/ui/views/widget/widget.cc
+index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f569249596 100644
+--- a/ui/views/widget/widget.cc
++++ b/ui/views/widget/widget.cc
+@@ -42,6 +42,10 @@
+ #include "ui/views/window/custom_frame_view.h"
+ #include "ui/views/window/dialog_delegate.h"
+ 
++#if defined(OS_ANDROID)
++#include "ui/native_theme/native_theme_android.h"
++#endif
++
+ namespace views {
+ 
+ namespace {
+@@ -173,6 +177,12 @@ ui::ZOrderLevel Widget::InitParams::EffectiveZOrderLevel() const {
+   }
+ }
+ 
++#if defined(OS_ANDROID)
++const ui::NativeTheme* Widget::GetNativeTheme() const {
++  return ui::NativeThemeAndroid::instance();
++}
++#endif
++
+ ////////////////////////////////////////////////////////////////////////////////
+ // Widget, public:
+ 
+@@ -230,42 +240,60 @@ Widget* Widget::CreateWindowWithContextAndBounds(WidgetDelegate* delegate,
+ 
+ // static
+ Widget* Widget::GetWidgetForNativeView(gfx::NativeView native_view) {
++#if !defined(OS_ANDROID)
+   internal::NativeWidgetPrivate* native_widget =
+       internal::NativeWidgetPrivate::GetNativeWidgetForNativeView(native_view);
+   return native_widget ? native_widget->GetWidget() : nullptr;
++#else
++  return nullptr;
++#endif
+ }
+ 
+ // static
+ Widget* Widget::GetWidgetForNativeWindow(gfx::NativeWindow native_window) {
++#if !defined(OS_ANDROID)
+   internal::NativeWidgetPrivate* native_widget =
+       internal::NativeWidgetPrivate::GetNativeWidgetForNativeWindow(
+           native_window);
+   return native_widget ? native_widget->GetWidget() : nullptr;
++#else
++  return nullptr;
++#endif
+ }
+ 
+ // static
+ Widget* Widget::GetTopLevelWidgetForNativeView(gfx::NativeView native_view) {
++#if !defined(OS_ANDROID)
+   internal::NativeWidgetPrivate* native_widget =
+       internal::NativeWidgetPrivate::GetTopLevelNativeWidget(native_view);
+   return native_widget ? native_widget->GetWidget() : nullptr;
++#else
++  return nullptr;
++#endif
+ }
+ 
+ // static
+ void Widget::GetAllChildWidgets(gfx::NativeView native_view,
+                                 Widgets* children) {
++#if !defined(OS_ANDROID)
+   internal::NativeWidgetPrivate::GetAllChildWidgets(native_view, children);
++#endif
+ }
+ 
+ // static
+ void Widget::GetAllOwnedWidgets(gfx::NativeView native_view,
+                                 Widgets* owned) {
++#if !defined(OS_ANDROID)
+   internal::NativeWidgetPrivate::GetAllOwnedWidgets(native_view, owned);
++#endif
+ }
+ 
+ // static
+ void Widget::ReparentNativeView(gfx::NativeView native_view,
+                                 gfx::NativeView new_parent) {
++#if !defined(OS_ANDROID)
+   internal::NativeWidgetPrivate::ReparentNativeView(native_view, new_parent);
++#endif
+ }
+ 
+ // static
+@@ -344,14 +372,15 @@ void Widget::Init(InitParams params) {
+   native_widget_ = CreateNativeWidget(params, this)->AsNativeWidgetPrivate();
+   root_view_.reset(CreateRootView());
+   default_theme_provider_ = std::make_unique<ui::DefaultThemeProvider>();
+-
++#if !defined(OS_ANDROID)
+   // Copy the elements of params that will be used after it is moved.
+   const InitParams::Type type = params.type;
+   const gfx::Rect bounds = params.bounds;
+   const ui::WindowShowState show_state = params.show_state;
+   WidgetDelegate* delegate = params.delegate;
+-
++#endif
+   native_widget_->InitNativeWidget(std::move(params));
++#if !defined(OS_ANDROID)
+   if (type == InitParams::TYPE_MENU)
+     is_mouse_button_pressed_ = native_widget_->IsMouseButtonDown();
+   if (RequiresNonClientView(type)) {
+@@ -397,12 +426,15 @@ void Widget::Init(InitParams params) {
+     observer_manager_.Add(native_theme);
+ #else
+   observer_manager_.Add(GetNativeTheme());
++#endif
+ #endif
+   native_widget_initialized_ = true;
+   native_widget_->OnWidgetInitDone();
+ 
++#if !defined(OS_ANDROID)
+   if (delegate)
+     delegate->OnWidgetInitialized();
++#endif
+ }
+ 
+ void Widget::ShowEmojiPanel() {
+@@ -1256,6 +1288,7 @@ void Widget::OnKeyEvent(ui::KeyEvent* event) {
+ //                   RootView from anywhere in Widget. Use
+ //                   SendEventToSink() instead. See crbug.com/348087.
+ void Widget::OnMouseEvent(ui::MouseEvent* event) {
++#if !defined(OS_ANDROID)
+   View* root_view = GetRootView();
+   switch (event->type()) {
+     case ui::ET_MOUSE_PRESSED: {
+@@ -1341,6 +1374,7 @@ void Widget::OnMouseEvent(ui::MouseEvent* event) {
+     default:
+       return;
+   }
++#endif
+ }
+ 
+ void Widget::OnMouseCaptureLost() {

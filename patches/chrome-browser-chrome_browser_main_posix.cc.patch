@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/chrome_browser_main_posix.cc b/chrome/browser/chrome_browser_main_posix.cc
+index 0b19e94ef71ccb54341e1995ea6efda271a8e466..e00ae971fa6c0c1375e263198b75585f86b5b04d 100644
+--- a/chrome/browser/chrome_browser_main_posix.cc
++++ b/chrome/browser/chrome_browser_main_posix.cc
+@@ -173,7 +173,7 @@ void ChromeBrowserMainPartsPosix::ShowMissingLocaleMessageBox() {
+   // TODO(port): We may want a views based message dialog here eventually, but
+   // for now, crash.
+   NOTREACHED();
+-#else
++#elif !defined(OS_ANDROID)
+ #error "Need MessageBox implementation."
+ #endif
+ }

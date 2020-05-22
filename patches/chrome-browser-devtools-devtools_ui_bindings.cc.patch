@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/devtools/devtools_ui_bindings.cc b/chrome/browser/devtools/devtools_ui_bindings.cc
+index 5369351868e0d189006effd3b6b8aa977eaf56f5..8fcfb4a3db2fbeb143c698f19f39b2c5cbbffb77 100644
+--- a/chrome/browser/devtools/devtools_ui_bindings.cc
++++ b/chrome/browser/devtools/devtools_ui_bindings.cc
+@@ -1545,13 +1545,16 @@ void DevToolsUIBindings::ReadyToCommitNavigation(
+       if (!opener_bindings || !opener_bindings->frontend_host_)
+         return;
+     }
++#if !defined(OS_ANDROID)
+     frontend_host_ = content::DevToolsFrontendHost::Create(
+         navigation_handle->GetRenderFrameHost(),
+         base::Bind(&DevToolsUIBindings::HandleMessageFromDevToolsFrontend,
+                    base::Unretained(this)));
++#endif
+     return;
+   }
+ 
++#if !defined(OS_ANDROID)
+   content::RenderFrameHost* frame = navigation_handle->GetRenderFrameHost();
+   std::string origin = navigation_handle->GetURL().GetOrigin().spec();
+   auto it = extensions_api_.find(origin);
+@@ -1560,6 +1563,7 @@ void DevToolsUIBindings::ReadyToCommitNavigation(
+   std::string script = base::StringPrintf("%s(\"%s\")", it->second.c_str(),
+                                           base::GenerateGUID().c_str());
+   content::DevToolsFrontendHost::SetupExtensionsAPI(frame, script);
++#endif
+ }
+ 
+ void DevToolsUIBindings::DocumentOnLoadCompletedInMainFrame() {

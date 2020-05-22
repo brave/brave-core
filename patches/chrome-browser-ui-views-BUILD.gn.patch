@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/BUILD.gn b/chrome/browser/ui/views/BUILD.gn
+index 0241896ec54bef7dae21266013f5ee609fde605f..d10784954d90f0907455e4c58b03fc3652ba09a2 100644
+--- a/chrome/browser/ui/views/BUILD.gn
++++ b/chrome/browser/ui/views/BUILD.gn
+@@ -5,7 +5,7 @@
+ import("//build/config/ui.gni")
+ import("//ui/views/features.gni")
+ 
+-assert(toolkit_views)
++#assert(toolkit_views)
+ 
+ component("views") {
+   output_name = "browser_ui_views"

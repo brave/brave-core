@@ -1,0 +1,13 @@
+diff --git a/chrome/renderer/media/chrome_key_systems.cc b/chrome/renderer/media/chrome_key_systems.cc
+index b1c800648c70e5b81e167dc1697f50508bc20ce9..1647b21121f09b31b8e38d16083c75fd92d6270c 100644
+--- a/chrome/renderer/media/chrome_key_systems.cc
++++ b/chrome/renderer/media/chrome_key_systems.cc
+@@ -329,7 +329,7 @@ void AddChromeKeySystems(
+ 
+ #endif  // BUILDFLAG(ENABLE_LIBRARY_CDMS)
+ 
+-#if defined(OS_ANDROID)
++#if defined(OS_ANDROID) && BUILDFLAG(ENABLE_WIDEVINE)
+   cdm::AddAndroidWidevine(key_systems_properties);
+ #endif  // defined(OS_ANDROID)
+ }

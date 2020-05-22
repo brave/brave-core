@@ -1,0 +1,22 @@
+diff --git a/ui/message_center/BUILD.gn b/ui/message_center/BUILD.gn
+index 0cfd9571fc5f3dabba6ecc353e296f4230d00465..a016c488597e5ac5a8d7f0df0392ec07db13d6be 100644
+--- a/ui/message_center/BUILD.gn
++++ b/ui/message_center/BUILD.gn
+@@ -36,7 +36,7 @@ jumbo_component("message_center") {
+ 
+   defines = [ "MESSAGE_CENTER_IMPLEMENTATION" ]
+ 
+-  if (enable_message_center) {
++  if (is_android || enable_message_center) {
+     deps += [
+       ":message_center_vector_icons",
+       "//base:i18n",
+@@ -88,7 +88,7 @@ jumbo_component("message_center") {
+       ]
+     }
+ 
+-    if (toolkit_views) {
++    if (is_android || toolkit_views) {
+       sources += [
+         "views/desktop_message_popup_collection.cc",
+         "views/desktop_message_popup_collection.h",

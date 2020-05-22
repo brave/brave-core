@@ -1,0 +1,13 @@
+diff --git a/apps/BUILD.gn b/apps/BUILD.gn
+index bba3724ca1d0a388cfb15e2a6c59603e271e73b4..9442963f34ccdb388544f4a1c640a6932e5cc535 100644
+--- a/apps/BUILD.gn
++++ b/apps/BUILD.gn
+@@ -6,7 +6,7 @@ import("//build/config/features.gni")
+ import("//build/config/ui.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ 
+-assert(!is_android && !is_ios)
++assert(!is_ios)
+ assert(enable_extensions,
+        "Cannot depend on extensions because enable_extensions=false.")
+ 

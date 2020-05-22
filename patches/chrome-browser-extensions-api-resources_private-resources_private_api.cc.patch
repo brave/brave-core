@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/extensions/api/resources_private/resources_private_api.cc b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
+index 4820771c1c810c67164611220e03be4632f81db5..3f4bb832f2ac1a7ae9f0ac7a7c68508213f4ee46 100644
+--- a/chrome/browser/extensions/api/resources_private/resources_private_api.cc
++++ b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
+@@ -43,6 +43,7 @@ void AddStringsForIdentity(base::DictionaryValue* dict) {
+ }
+ 
+ void AddStringsForPdf(base::DictionaryValue* dict) {
++#if !defined(OS_ANDROID)
+ #if BUILDFLAG(ENABLE_PDF)
+   static constexpr webui::LocalizedString kPdfResources[] = {
+     {"passwordDialogTitle", IDS_PDF_PASSWORD_DIALOG_TITLE},
+@@ -114,6 +115,7 @@ void AddStringsForPdf(base::DictionaryValue* dict) {
+     {"annotationFormWarningKeepEditing", IDS_PDF_KEEP_EDITING},
+     {"annotationFormWarningDiscard", IDS_PDF_DISCARD},
+ #endif  // defined(OS_CHROMEOS)
++#endif
+   };
+   for (const auto& resource : kPdfResources)
+     dict->SetString(resource.name, l10n_util::GetStringUTF16(resource.id));

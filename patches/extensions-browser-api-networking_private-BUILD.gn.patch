@@ -1,0 +1,15 @@
+diff --git a/extensions/browser/api/networking_private/BUILD.gn b/extensions/browser/api/networking_private/BUILD.gn
+index dc33633579fae5e91fbaa30fd5eb18a3f1cba4b7..688c79038eded83619c89390351d0bbf1f15457e 100644
+--- a/extensions/browser/api/networking_private/BUILD.gn
++++ b/extensions/browser/api/networking_private/BUILD.gn
+@@ -57,6 +57,10 @@ source_set("networking_private") {
+                 "networking_private_chromeos.h",
+                 "networking_private_event_router_chromeos.cc",
+               ]
++  } else if (is_android) {
++    sources = default_sources + [
++      "networking_private_event_router_nonchromeos.cc",
++    ]
+   } else {
+     not_needed([ "default_sources" ])
+     sources = [ "networking_private_stubs.cc" ]

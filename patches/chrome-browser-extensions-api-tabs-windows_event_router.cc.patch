@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/api/tabs/windows_event_router.cc b/chrome/browser/extensions/api/tabs/windows_event_router.cc
+index 5f41fa24c34bcffbffb91226e7959a3d663fcaa7..2f11b20090d2a38991439f2afa4bd50b4e040b9f 100644
+--- a/chrome/browser/extensions/api/tabs/windows_event_router.cc
++++ b/chrome/browser/extensions/api/tabs/windows_event_router.cc
+@@ -164,7 +164,7 @@ WindowsEventRouter::WindowsEventRouter(Profile* profile)
+                  content::NotificationService::AllSources());
+ #elif defined(TOOLKIT_VIEWS)
+   views::WidgetFocusManager::GetInstance()->AddFocusChangeListener(this);
+-#else
++#elif !defined(OS_ANDROID)
+ #error Unsupported
+ #endif
+ 

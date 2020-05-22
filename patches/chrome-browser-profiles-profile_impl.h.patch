@@ -1,7 +1,45 @@
 diff --git a/chrome/browser/profiles/profile_impl.h b/chrome/browser/profiles/profile_impl.h
-index c9807293b3f476d5895d52f5082d7281bf0dd046..b3b8cd51c5577306f6561fb8d7e235c4499a53cd 100644
+index c9807293b3f476d5895d52f5082d7281bf0dd046..1859b8136b82a9e548c610159d6bc1975dba0c22 100644
 --- a/chrome/browser/profiles/profile_impl.h
 +++ b/chrome/browser/profiles/profile_impl.h
+@@ -27,10 +27,10 @@
+ #include "mojo/public/cpp/bindings/remote.h"
+ #include "services/identity/public/mojom/identity_service.mojom.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
+ #include "content/public/browser/host_zoom_map.h"
+-#endif
++//#endif
+ 
+ class MediaDeviceIDSalt;
+ class PrefService;
+@@ -76,10 +76,10 @@ class ProfileImpl : public Profile {
+   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+ 
+   // content::BrowserContext implementation:
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   std::unique_ptr<content::ZoomLevelDelegate> CreateZoomLevelDelegate(
+       const base::FilePath& partition_path) override;
+-#endif
++//#endif
+   content::DownloadManagerDelegate* GetDownloadManagerDelegate() override;
+   content::ResourceContext* GetResourceContext() override;
+   content::BrowserPluginGuestManager* GetGuestManager() override;
+@@ -133,9 +133,9 @@ class ProfileImpl : public Profile {
+   ExtensionSpecialStoragePolicy* GetExtensionSpecialStoragePolicy() override;
+   PrefService* GetPrefs() override;
+   const PrefService* GetPrefs() const override;
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   ChromeZoomLevelPrefs* GetZoomLevelPrefs() override;
+-#endif
++//#endif
+   PrefService* GetOffTheRecordPrefs() override;
+   PrefService* GetReadOnlyOffTheRecordPrefs() override;
+   policy::SchemaRegistryService* GetPolicySchemaRegistryService() override;
 @@ -169,6 +169,7 @@ class ProfileImpl : public Profile {
    void OnLogin() override;
    void InitChromeOSPreferences() override;

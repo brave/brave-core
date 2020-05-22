@@ -1,0 +1,20 @@
+diff --git a/ui/views/view.cc b/ui/views/view.cc
+index d0883381dc30a86e6353687caaaa62ac8f094ffb..0525c5d2eab976e9bafc6d47da65806dbf2ac37e 100644
+--- a/ui/views/view.cc
++++ b/ui/views/view.cc
+@@ -2313,6 +2313,7 @@ void View::PropagateRemoveNotifications(View* old_parent,
+ 
+ void View::PropagateAddNotifications(const ViewHierarchyChangedDetails& details,
+                                      bool is_added_to_widget) {
++#if !defined(OS_ANDROID)
+   {
+     internal::ScopedChildrenLock lock(this);
+     for (auto* child : children_)
+@@ -2324,6 +2325,7 @@ void View::PropagateAddNotifications(const ViewHierarchyChangedDetails& details,
+     for (ViewObserver& observer : observers_)
+       observer.OnViewAddedToWidget(this);
+   }
++#endif
+ }
+ 
+ void View::PropagateNativeViewHierarchyChanged() {

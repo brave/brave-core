@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f84235f792ff 100644
+index f4c3c9e25190f0734f5fc585d706ffdb221d6264..e6158d5477ab9b7b06bfa37add0d74bf7f2fa9e0 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -148,7 +148,7 @@ class ProfileManager : public content::NotificationObserver,
@@ -11,6 +11,24 @@ index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f842
  
    // Get the Profiles which are currently open, i.e. have open browsers or were
    // open the last time Chrome was running. Profiles that fail to initialize are
+@@ -201,7 +201,7 @@ class ProfileManager : public content::NotificationObserver,
+   // profile specfic desktop shortcuts.
+   ProfileShortcutManager* profile_shortcut_manager();
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   // Less strict version of ScheduleProfileForDeletion(), silently exits if
+   // profile is either scheduling or marked for deletion.
+   void MaybeScheduleProfileForDeletion(
+@@ -214,7 +214,7 @@ class ProfileManager : public content::NotificationObserver,
+   // that case the callback will be called when profile creation is complete.
+   void ScheduleProfileForDeletion(const base::FilePath& profile_dir,
+                                   ProfileLoadedCallback callback);
+-#endif
++//#endif
+ 
+   // Autoloads profiles if they are running background apps.
+   void AutoloadProfiles();
 @@ -229,7 +229,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Initializes user prefs of |profile|. This includes profile name and
@@ -36,6 +54,24 @@ index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f842
    void DoFinalInitForServices(Profile* profile, bool go_off_the_record);
    void DoFinalInitLogging(Profile* profile);
  
+@@ -317,7 +319,7 @@ class ProfileManager : public content::NotificationObserver,
+   // null if creation fails.
+   Profile* CreateAndInitializeProfile(const base::FilePath& profile_dir);
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   // Continues the scheduled profile deletion after closing all the profile's
+   // browsers tabs. Creates a new profile if the profile to be deleted is the
+   // last non-supervised profile. In the Mac, loads the next non-supervised
+@@ -332,7 +334,7 @@ class ProfileManager : public content::NotificationObserver,
+                              const base::FilePath& new_active_profile_dir);
+   void OnLoadProfileForProfileDeletion(const base::FilePath& profile_dir,
+                                        Profile* profile);
+-#endif
++//#endif
+ 
+   // Registers profile with given info. Returns pointer to created ProfileInfo
+   // entry.
 @@ -358,7 +360,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Apply settings for profiles created by the system rather than users: The
@@ -45,3 +81,21 @@ index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f842
  
    // Determines if profile should be OTR.
    bool ShouldGoOffTheRecord(Profile* profile);
+@@ -369,7 +371,7 @@ class ProfileManager : public content::NotificationObserver,
+ 
+   void SaveActiveProfiles();
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   void OnBrowserOpened(Browser* browser);
+   void OnBrowserClosed(Browser* browser);
+ 
+@@ -410,7 +412,7 @@ class ProfileManager : public content::NotificationObserver,
+   // shutdown. New profiles will not be created.
+   void ScheduleForcedEphemeralProfileForDeletion(
+       const base::FilePath& profile_dir);
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // Destroy after |profile_info_cache_| since Profile destruction may trigger
+   // some observers to unregister themselves.

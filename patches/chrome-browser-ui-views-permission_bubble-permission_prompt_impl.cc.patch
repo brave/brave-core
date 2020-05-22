@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
+index 456eaf6fa0e414fdab4824c294fadd9356e3b8e2..da71ef5ad5df92b7c3eb0392c40431506cb05d7d 100644
+--- a/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
++++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
+@@ -15,6 +15,7 @@
+ #include "ui/views/bubble/bubble_frame_view.h"
+ 
+ // static
++#if !defined(OS_ANDROID)
+ std::unique_ptr<PermissionPrompt> PermissionPrompt::Create(
+     content::WebContents* web_contents,
+     Delegate* delegate) {
+@@ -27,6 +28,7 @@ std::unique_ptr<PermissionPrompt> PermissionPrompt::Create(
+   return std::make_unique<PermissionPromptImpl>(browser, web_contents,
+                                                 delegate);
+ }
++#endif
+ 
+ PermissionPromptImpl::PermissionPromptImpl(Browser* browser,
+                                            content::WebContents* web_contents,

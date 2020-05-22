@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/media/router/media_router_base.cc b/chrome/browser/media/router/media_router_base.cc
+index 24d66af2167a8eb0d2b55ae4b92baaeb4c7e9537..59bb5ff755fbe44a858244ceade3142b80c12f7f 100644
+--- a/chrome/browser/media/router/media_router_base.cc
++++ b/chrome/browser/media/router/media_router_base.cc
+@@ -88,12 +88,12 @@ MediaRouterBase::GetFlingingController(const MediaRoute::Id& route_id) {
+   return nullptr;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void MediaRouterBase::GetMediaController(
+     const MediaRoute::Id& route_id,
+     mojo::PendingReceiver<mojom::MediaController> controller,
+     mojo::PendingRemote<mojom::MediaStatusObserver> observer) {}
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ MediaRouterBase::MediaRouterBase() : initialized_(false) {}
+ 

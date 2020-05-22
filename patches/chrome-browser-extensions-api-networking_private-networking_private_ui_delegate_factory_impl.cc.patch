@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc b/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc
+index f4ec25dd253b06afac41abeb556ce90423be57d6..e4801dfa501136a4aa4bbd04625da1c899ad0254 100644
+--- a/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc
++++ b/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc
+@@ -10,6 +10,8 @@
+ 
+ #if defined(OS_CHROMEOS)
+ #include "chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_chromeos.h"
++#elif defined(OS_ANDROID)
++#include "chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_android.h"
+ #endif
+ 
+ namespace extensions {
+@@ -25,6 +27,9 @@ NetworkingPrivateUIDelegateFactoryImpl::CreateDelegate() {
+ #if defined(OS_CHROMEOS)
+   return std::make_unique<
+       chromeos::extensions::NetworkingPrivateUIDelegateChromeOS>();
++#elif defined(OS_ANDROID)
++  return std::make_unique<
++      android::extensions::NetworkingPrivateUIDelegateAndroid>();
+ #else
+   return nullptr;
+ #endif

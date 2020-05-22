@@ -1,0 +1,14 @@
+diff --git a/extensions/browser/guest_view/web_view/web_view_guest.cc b/extensions/browser/guest_view/web_view/web_view_guest.cc
+index 20f5d538b74c962677f9e2356982e8120e3fd627..e3ec1a7585d43f54ca81369833f513f20d654014 100644
+--- a/extensions/browser/guest_view/web_view/web_view_guest.cc
++++ b/extensions/browser/guest_view/web_view/web_view_guest.cc
+@@ -144,6 +144,9 @@ static std::string TerminationStatusToString(base::TerminationStatus status) {
+ #if defined(OS_CHROMEOS)
+     case base::TERMINATION_STATUS_PROCESS_WAS_KILLED_BY_OOM:
+       return "oom killed";
++#endif
++#if defined(OS_ANDROID)
++    case base::TERMINATION_STATUS_OOM_PROTECTED:
+ #endif
+     case base::TERMINATION_STATUS_OOM:
+       return "oom";

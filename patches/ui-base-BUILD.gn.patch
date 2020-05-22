@@ -1,12 +1,46 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 7ec4b390a6c805868076177b02312352d825a553..82b76c03b4f44303cd91d84f7f4d247792a19ef8 100644
+index 7ec4b390a6c805868076177b02312352d825a553..1b84319be53bd9efe4054aeeacf7461d3ee0d694 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
 @@ -448,6 +448,7 @@ jumbo_component("base") {
      "//ui/strings",
      "//url",
    ]
-+  deps += [ "//brave/ui/base:chromium_deps" ]
++  deps += [ "//brave/ui/base", "//brave/ui/base:chromium_deps" ]
  
    if (is_debug || dcheck_always_on) {
      deps += [ "//third_party/re2" ]
+@@ -613,7 +614,7 @@ jumbo_component("base") {
+     ]
+   }
+ 
+-  if (!toolkit_views && !use_aura) {
++  if (!is_android && !toolkit_views && !use_aura) {
+     sources -= [
+       "dragdrop/drag_drop_types.h",
+       "dragdrop/drop_target_event.cc",
+@@ -631,15 +632,15 @@ jumbo_component("base") {
+     deps += [ ":ui_base_jni_headers" ]
+     libs += [ "jnigraphics" ]
+ 
+-    sources -= [
+-      "cursor/cursor_android.cc",
+-      "default_theme_provider.cc",
+-      "l10n/l10n_font_util.cc",
+-      "models/button_menu_item_model.cc",
+-      "pointer/touch_editing_controller.cc",
+-      "theme_provider.cc",
+-      "ui_base_types.cc",
+-    ]
++    #sources -= [
++    #  "cursor/cursor_android.cc",
++    #  "default_theme_provider.cc",
++    #  "l10n/l10n_font_util.cc",
++    #  "models/button_menu_item_model.cc",
++    #  "pointer/touch_editing_controller.cc",
++    #  "theme_provider.cc",
++    #  "ui_base_types.cc",
++    #]
+   }
+ 
+   if (use_aura) {

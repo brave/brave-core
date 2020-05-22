@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/browser_content_setting_bubble_model_delegate.cc b/chrome/browser/ui/browser_content_setting_bubble_model_delegate.cc
+index 9643d436d7d856c72980c47d1f11d8163e1ab1e2..aec5eac3f7995d47d8ca3a2a6b7507626a4264a1 100644
+--- a/chrome/browser/ui/browser_content_setting_bubble_model_delegate.cc
++++ b/chrome/browser/ui/browser_content_setting_bubble_model_delegate.cc
+@@ -49,7 +49,9 @@ void BrowserContentSettingBubbleModelDelegate::ShowLearnMorePage(
+   GURL learn_more_url;
+   switch (type) {
+     case ContentSettingsType::PLUGINS:
++#if !defined(OS_ANDROID)
+       learn_more_url = GURL(chrome::kBlockedPluginLearnMoreURL);
++#endif
+       break;
+     case ContentSettingsType::ADS:
+       learn_more_url = GURL(subresource_filter::kLearnMoreLink);

@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/media/router/media_router_base.h b/chrome/browser/media/router/media_router_base.h
+index c4338a957bed090c001133079b3f4b5e4a4bfb75..e1a16aa7544ea82450243bf49c8dd16acdba2ed2 100644
+--- a/chrome/browser/media/router/media_router_base.h
++++ b/chrome/browser/media/router/media_router_base.h
+@@ -19,11 +19,11 @@
+ #include "chrome/common/media_router/media_route.h"
+ #include "third_party/blink/public/mojom/presentation/presentation.mojom.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/common/media_router/mojom/media_controller.mojom.h"
+ #include "mojo/public/cpp/bindings/pending_receiver.h"
+ #include "mojo/public/cpp/bindings/pending_remote.h"
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ namespace media_router {
+ 
+@@ -42,12 +42,12 @@ class MediaRouterBase : public MediaRouter {
+   std::vector<MediaRoute> GetCurrentRoutes() const override;
+   std::unique_ptr<media::FlingingController> GetFlingingController(
+       const MediaRoute::Id& route_id) override;
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   void GetMediaController(
+       const MediaRoute::Id& route_id,
+       mojo::PendingReceiver<mojom::MediaController> controller,
+       mojo::PendingRemote<mojom::MediaStatusObserver> observer) override;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+   void RegisterRemotingSource(SessionID tab_id,
+                               CastRemotingConnector* remoting_source) override;
+   void UnregisterRemotingSource(SessionID tab_id) override;

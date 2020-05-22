@@ -1,8 +1,43 @@
 diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
-index e1e53d483a34658df926be3f11d6dcb30a0d2bbb..b865d1075af36e7f4ec7ba8a3b38ef22e80b825d 100644
+index e1e53d483a34658df926be3f11d6dcb30a0d2bbb..3c215789e1f678aa2663ba56d5d498d2aadac2ab 100644
 --- a/chrome/browser/signin/account_consistency_mode_manager.cc
 +++ b/chrome/browser/signin/account_consistency_mode_manager.cc
-@@ -188,7 +188,9 @@ bool AccountConsistencyModeManager::ShouldBuildServiceForProfile(
+@@ -33,7 +33,9 @@ namespace {
+ // Preference indicating that the Dice migraton has happened.
+ const char kDiceMigrationCompletePref[] = "signin.DiceMigrationComplete";
+ 
++#if !defined(OS_ANDROID)
+ const char kDiceMigrationStatusHistogram[] = "Signin.DiceMigrationStatus";
++#endif
+ 
+ const char kAllowBrowserSigninArgument[] = "allow-browser-signin";
+ 
+@@ -49,6 +51,7 @@ enum class DiceMigrationStatus {
+   kDiceMigrationStatusCount
+ };
+ 
++#if !defined(OS_ANDROID)
+ DiceMigrationStatus GetDiceMigrationStatus(
+     AccountConsistencyMethod account_consistency) {
+   switch (account_consistency) {
+@@ -61,6 +64,7 @@ DiceMigrationStatus GetDiceMigrationStatus(
+       return DiceMigrationStatus::kDisabled;
+   }
+ }
++#endif
+ 
+ bool IsBrowserSigninAllowedByCommandLine() {
+   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+@@ -107,7 +111,7 @@ AccountConsistencyModeManager::AccountConsistencyModeManager(Profile* profile)
+ 
+   account_consistency_ = ComputeAccountConsistencyMethod(profile_);
+ 
+-#if BUILDFLAG(ENABLE_DICE_SUPPORT)
++#if BUILDFLAG(ENABLE_DICE_SUPPORT) && !defined(OS_ANDROID)
+   // New profiles don't need Dice migration. Old profiles may need it if they
+   // were created before Dice.
+   if (profile_->IsNewProfile())
+@@ -188,7 +192,9 @@ bool AccountConsistencyModeManager::ShouldBuildServiceForProfile(
  
  AccountConsistencyMethod
  AccountConsistencyModeManager::GetAccountConsistencyMethod() {

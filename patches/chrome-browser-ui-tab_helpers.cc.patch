@@ -1,8 +1,19 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 02d2216a7d6ab75f5eb6663121a79f00f50788b1..eb564ffaadea9aa276038dea702c3e7baa8688ed 100644
+index 02d2216a7d6ab75f5eb6663121a79f00f50788b1..cd68d0663d8b0094da48b23b131ad5f54022a72d 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -421,4 +421,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -371,8 +371,10 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+   extensions::TabHelper::CreateForWebContents(web_contents);
++#if !defined(OS_ANDROID)
+   if (web_app::AreWebAppsEnabled(profile))
+     web_app::WebAppTabHelper::CreateForWebContents(web_contents);
++#endif
+   if (SiteEngagementService::IsEnabled())
+     web_app::WebAppMetrics::Get(profile);
+ #endif
+@@ -421,4 +423,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
    //     See https://crbug.com/910288.
    resource_coordinator::ResourceCoordinatorTabHelper::CreateForWebContents(
        web_contents);

@@ -1,0 +1,16 @@
+diff --git a/ui/accessibility/ax_node.cc b/ui/accessibility/ax_node.cc
+index 15e5849814559c19bcb9a32dc6d0696a8a9b44fd..4a17c1aae52cb5e884a349501a9afd7a7d636b08 100644
+--- a/ui/accessibility/ax_node.cc
++++ b/ui/accessibility/ax_node.cc
+@@ -587,7 +587,10 @@ base::Optional<int> AXNode::GetTableCellRowIndex() const {
+   base::Optional<int> index = GetTableCellIndex();
+   if (!index)
+     return base::nullopt;
+-
++#if defined(OS_ANDROID)
++  if (*index >= (int)table_info->cell_data_vector.size())
++    return base::nullopt;
++#endif
+   return int{table_info->cell_data_vector[*index].row_index};
+ }
+ 

@@ -1,0 +1,13 @@
+diff --git a/ui/webui/resources/css/roboto.css b/ui/webui/resources/css/roboto.css
+index af0bdbc6a9762e73882e4547cdbbed99432bb4ce..00cbd32a078bb5875134dd74a8316ad20004b0bc 100644
+--- a/ui/webui/resources/css/roboto.css
++++ b/ui/webui/resources/css/roboto.css
+@@ -2,7 +2,7 @@
+  * Use of this source code is governed by a BSD-style license that can be
+  * found in the LICENSE file. */
+ 
+-<if expr="not chromeos and not is_android">
++<if expr="not chromeos">
+ @font-face {
+   font-family: 'Roboto';
+   font-style: normal;

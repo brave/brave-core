@@ -1,0 +1,99 @@
+diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
+index 0f394a91847942a39281d76d220c60c1f5798b89..1437f2f3d477c81b1f62df2dca56b9059c563b10 100644
+--- a/chrome/browser/ui/unload_controller.cc
++++ b/chrome/browser/ui/unload_controller.cc
+@@ -50,7 +50,11 @@ bool UnloadController::ShouldRunUnloadEventsHelper(
+     content::WebContents* contents) {
+   // If |contents| is being inspected, devtools needs to intercept beforeunload
+   // events.
++#if !defined(OS_ANDROID)
+   return DevToolsWindow::GetInstanceForInspectedWebContents(contents) != NULL;
++#else
++  return false;
++#endif
+ }
+ 
+ bool UnloadController::RunUnloadEventsHelper(content::WebContents* contents) {
+@@ -67,6 +71,7 @@ bool UnloadController::RunUnloadEventsHelper(content::WebContents* contents) {
+   }
+ #endif  // (ENABLE_EXTENSIONS)
+ 
++#if !defined(OS_ANDROID)
+   // Special case for when we quit an application. The devtools window can
+   // close if it's beforeunload event has already fired which will happen due
+   // to the interception of it's content's beforeunload.
+@@ -81,6 +86,7 @@ bool UnloadController::RunUnloadEventsHelper(content::WebContents* contents) {
+   if (DevToolsWindow::InterceptPageBeforeUnload(contents)) {
+     return true;
+   }
++#endif
+   // If the WebContents is not connected yet, then there's no unload
+   // handler we can fire even if the WebContents has an unload listener.
+   // One case where we hit this is in a tab that has an infinite loop
+@@ -98,8 +104,10 @@ bool UnloadController::RunUnloadEventsHelper(content::WebContents* contents) {
+ 
+ bool UnloadController::BeforeUnloadFired(content::WebContents* contents,
+                                          bool proceed) {
++#if !defined(OS_ANDROID)
+   if (!proceed)
+     DevToolsWindow::OnPageCloseCanceled(contents);
++#endif
+ 
+   if (!is_attempting_to_close_browser_) {
+     if (!proceed)
+@@ -131,6 +139,7 @@ bool UnloadController::ShouldCloseWindow() {
+   if (HasCompletedUnloadProcessing())
+     return true;
+ 
++#if !defined(OS_ANDROID)
+   // Special case for when we quit an application. The devtools window can
+   // close if it's beforeunload event has already fired which will happen due
+   // to the interception of it's content's beforeunload.
+@@ -138,6 +147,7 @@ bool UnloadController::ShouldCloseWindow() {
+       DevToolsWindow::HasFiredBeforeUnloadEventForDevToolsBrowser(browser_)) {
+     return true;
+   }
++#endif
+ 
+   // The behavior followed here varies based on the current phase of the
+   // operation and whether a batched shutdown is in progress.
+@@ -188,6 +198,7 @@ void UnloadController::ResetTryToCloseWindow() {
+ }
+ 
+ bool UnloadController::TabsNeedBeforeUnloadFired() {
++#if !defined(OS_ANDROID)
+   if (tabs_needing_before_unload_fired_.empty()) {
+     for (int i = 0; i < browser_->tab_strip_model()->count(); ++i) {
+       content::WebContents* contents =
+@@ -201,6 +212,7 @@ bool UnloadController::TabsNeedBeforeUnloadFired() {
+       }
+     }
+   }
++#endif
+   return !tabs_needing_before_unload_fired_.empty();
+ }
+ 
+@@ -210,10 +222,12 @@ void UnloadController::CancelWindowClose() {
+   // case some of this code might not have an effect, but it's still useful to,
+   // for example, call the notification(s).
+   tabs_needing_before_unload_fired_.clear();
++#if !defined(OS_ANDROID)
+   for (auto it = tabs_needing_unload_fired_.begin();
+        it != tabs_needing_unload_fired_.end(); ++it) {
+     DevToolsWindow::OnPageCloseCanceled(*it);
+   }
++#endif
+   tabs_needing_unload_fired_.clear();
+   if (is_calling_before_unload_handlers()) {
+     base::Callback<void(bool)> on_close_confirmed = on_close_confirmed_;
+@@ -328,8 +342,10 @@ void UnloadController::ProcessPendingTabs(bool skip_beforeunload) {
+       // we would like devtools to call its own beforeunload handlers first,
+       // and then call beforeunload handlers for |web_contents|.
+       // See DevToolsWindow::InterceptPageBeforeUnload for details.
++#if !defined(OS_ANDROID)
+       if (!DevToolsWindow::InterceptPageBeforeUnload(web_contents))
+         web_contents->DispatchBeforeUnload(false /* auto_cancel */);
++#endif
+     } else {
+       ClearUnloadState(web_contents, true);
+     }

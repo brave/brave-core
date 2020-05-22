@@ -1,0 +1,13 @@
+diff --git a/google_apis/BUILD.gn b/google_apis/BUILD.gn
+index 520be6c4bf2c0efc48140f032b0831497f4b21cf..d95606ac44ff835c23e08efe6a08a4e463ca711f 100644
+--- a/google_apis/BUILD.gn
++++ b/google_apis/BUILD.gn
+@@ -141,7 +141,7 @@ template("google_apis_tmpl") {
+       "//services/network/public/cpp",
+     ]
+ 
+-    if (is_chrome_branded || use_official_google_api_keys) {
++    if (!is_android && (is_chrome_branded || use_official_google_api_keys)) {
+       deps += [ "internal:generate_metrics_key_header" ]
+     }
+ 

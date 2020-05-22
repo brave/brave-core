@@ -1,8 +1,112 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 135f34dbfd00ea86128c4c04cec5ee623635d0db..fcf25fdea2aba6bdb652efee3b14e29caa3a784b 100644
+index 135f34dbfd00ea86128c4c04cec5ee623635d0db..1afe03dd82f07ed743090647118eeb48c038e48a 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -789,6 +789,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -219,7 +219,7 @@
+ #if BUILDFLAG(ENABLE_FEED_IN_CHROME)
+ #include "components/feed/core/common/pref_names.h"
+ #endif  // BUILDFLAG(ENABLE_FEED_IN_CHROME)
+-#else   // defined(OS_ANDROID)
++#endif  // defined(OS_ANDROID)
+ #include "chrome/browser/apps/app_service/app_service_proxy.h"
+ #include "chrome/browser/enterprise_reporting/prefs.h"
+ #include "chrome/browser/gcm/gcm_product_util.h"
+@@ -235,7 +235,6 @@
+ #include "chrome/browser/ui/webui/settings/settings_ui.h"
+ #include "chrome/browser/upgrade_detector/upgrade_detector.h"
+ #include "components/ntp_tiles/custom_links_manager_impl.h"
+-#endif  // defined(OS_ANDROID)
+ 
+ #if defined(OS_CHROMEOS)
+ #include "ash/public/cpp/ash_pref_names.h"
+@@ -359,12 +358,12 @@
+ #include "components/os_crypt/os_crypt.h"
+ #endif
+ 
+-#if defined(OS_WIN) || defined(OS_MACOSX) || \
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || \
+     (defined(OS_LINUX) && !defined(OS_CHROMEOS))
+ #include "chrome/browser/browser_switcher/browser_switcher_prefs.h"
+ #endif
+ 
+-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS)
+ #include "chrome/browser/ui/startup/default_browser_prompt.h"
+ #endif
+ 
+@@ -448,12 +447,12 @@ const char kContentSuggestionsNotificationsEnabled[] =
+ 
+ #endif  // defined(OS_ANDROID)
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Deprecated 5/2019
+ const char kSignInPromoShowOnFirstRunAllowed[] =
+     "sync_promo.show_on_first_run_allowed";
+ const char kSignInPromoShowNTPBubble[] = "sync_promo.show_ntp_bubble";
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ // Deprecated 5/2019
+ const char kBookmarkAppCreationLaunchType[] =
+@@ -470,11 +469,11 @@ const char kHasSeenWin10PromoPage[] = "browser.has_seen_win10_promo_page";
+ // Deprecated 7/2019
+ const char kSignedInTime[] = "signin.signedin_time";
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Deprecated 7/2019
+ const char kNtpActivateHideShortcutsFieldTrial[] =
+     "ntp.activate_hide_shortcuts_field_trial";
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ #if defined(OS_ANDROID)
+ // Deprecated 7/2019
+@@ -580,10 +579,10 @@ void RegisterProfilePrefsForMigration(
+   registry->RegisterBooleanPref(kContentSuggestionsNotificationsEnabled, true);
+ #endif  // defined(OS_ANDROID)
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   registry->RegisterBooleanPref(kSignInPromoShowOnFirstRunAllowed, true);
+   registry->RegisterBooleanPref(kSignInPromoShowNTPBubble, false);
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   registry->RegisterIntegerPref(kBookmarkAppCreationLaunchType, 0);
+ 
+@@ -674,15 +673,15 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+ #if defined(OS_ANDROID)
+   ::android::RegisterPrefs(registry);
+ #else
+-  enterprise_reporting::RegisterLocalStatePrefs(registry);
+   gcm::RegisterPrefs(registry);
++#endif  // !defined(OS_ANDROID)
++  enterprise_reporting::RegisterLocalStatePrefs(registry);
+   media_router::RegisterLocalStatePrefs(registry);
+   metrics::TabStatsTracker::RegisterPrefs(registry);
+   RegisterBrowserPrefs(registry);
+   StartupBrowserCreator::RegisterLocalStatePrefs(registry);
+   task_manager::TaskManagerInterface::RegisterPrefs(registry);
+   UpgradeDetector::RegisterPrefs(registry);
+-#endif  // !defined(OS_ANDROID)
+ 
+ #if defined(OS_CHROMEOS)
+   arc::prefs::RegisterLocalStatePrefs(registry);
+@@ -779,9 +778,9 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+ 
+   // Obsolete. See MigrateObsoleteBrowserPrefs().
+   registry->RegisterIntegerPref(metrics::prefs::kStabilityExecutionPhase, 0);
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   registry->RegisterBooleanPref(kNtpActivateHideShortcutsFieldTrial, false);
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+   registry->RegisterInt64Pref(kLastStartupTimestamp, 0);
+   registry->RegisterStringPref(kLastStartupVersion, std::string());
+   registry->RegisterIntegerPref(kSameVersionStartupCount, 0);
+@@ -789,6 +788,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #if defined(TOOLKIT_VIEWS)
    RegisterBrowserViewLocalPrefs(registry);
  #endif
@@ -10,7 +114,63 @@ index 135f34dbfd00ea86128c4c04cec5ee623635d0db..fcf25fdea2aba6bdb652efee3b14e29c
  
    // Obsolete. See MigrateObsoleteBrowserPrefs().
    registry->RegisterBooleanPref(kGCMChannelStatus, true);
-@@ -1040,6 +1041,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -893,8 +893,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #endif
+ 
+ #if BUILDFLAG(ENABLE_PLUGINS)
++#if !defined(OS_ANDROID)
+   DeviceIDFetcher::RegisterProfilePrefs(registry);
+   PepperFlashSettingsManager::RegisterProfilePrefs(registry);
++#endif
+   PluginInfoHostImpl::RegisterUserPrefs(registry);
+ #endif
+ 
+@@ -935,17 +937,18 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #if BUILDFLAG(ENABLE_FEED_IN_CHROME)
+   feed::RegisterProfilePrefs(registry);
+ #endif  // BUILDFLAG(ENABLE_FEED_IN_CHROME)
+-#else   // defined(OS_ANDROID)
+-  apps::AppServiceProxy::RegisterProfilePrefs(registry);
+-  AppShortcutManager::RegisterProfilePrefs(registry);
++#else
+   browser_sync::ForeignSessionHandler::RegisterProfilePrefs(registry);
+   ChromeAuthenticatorRequestDelegate::RegisterProfilePrefs(registry);
++  gcm::RegisterProfilePrefs(registry);
++#endif  // defined(OS_ANDROID)
++  apps::AppServiceProxy::RegisterProfilePrefs(registry);
++  AppShortcutManager::RegisterProfilePrefs(registry);
+   DevToolsWindow::RegisterProfilePrefs(registry);
+   enterprise_reporting::RegisterProfilePrefs(registry);
+   extensions::CommandService::RegisterProfilePrefs(registry);
+   extensions::TabsCaptureVisibleTabFunction::RegisterProfilePrefs(registry);
+   first_run::RegisterProfilePrefs(registry);
+-  gcm::RegisterProfilePrefs(registry);
+   HatsService::RegisterProfilePrefs(registry);
+   HistoryUI::RegisterProfilePrefs(registry);
+   InstantService::RegisterProfilePrefs(registry);
+@@ -961,7 +964,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   signin::RegisterProfilePrefs(registry);
+   StartupBrowserCreator::RegisterProfilePrefs(registry);
+   UnifiedAutoplayConfig::RegisterProfilePrefs(registry);
+-#endif  // defined(OS_ANDROID)
+ 
+ #if defined(OS_CHROMEOS)
+   app_list::AppListSyncableService::RegisterProfilePrefs(registry);
+@@ -1026,11 +1028,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   browser_switcher::BrowserSwitcherPrefs::RegisterProfilePrefs(registry);
+ #endif
+ 
+-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS)
+   default_apps::RegisterProfilePrefs(registry);
+ #endif
+ 
+-#if !defined(OS_CHROMEOS) && BUILDFLAG(ENABLE_EXTENSIONS)
++#if defined(OS_ANDROID) || !defined(OS_CHROMEOS) && BUILDFLAG(ENABLE_EXTENSIONS)
+   extensions::enterprise_reporting::RegisterProfilePrefs(registry);
+ #endif
+ 
+@@ -1040,6 +1042,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);
@@ -18,3 +178,30 @@ index 135f34dbfd00ea86128c4c04cec5ee623635d0db..fcf25fdea2aba6bdb652efee3b14e29c
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1095,10 +1098,10 @@ void MigrateObsoleteBrowserPrefs(Profile* profile, PrefService* local_state) {
+   local_state->ClearPref(kHasSeenWin10PromoPage);
+ #endif  // defined(OS_WIN)
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   // Added 7/2019.
+   local_state->ClearPref(kNtpActivateHideShortcutsFieldTrial);
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // Added 8/2019.
+   local_state->ClearPref(kLastStartupTimestamp);
+@@ -1201,11 +1204,11 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
+   profile_prefs->ClearPref(kContentSuggestionsNotificationsEnabled);
+ #endif  // defined(OS_ANDROID)
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   // Deprecated 5/2019
+   profile_prefs->ClearPref(kSignInPromoShowOnFirstRunAllowed);
+   profile_prefs->ClearPref(kSignInPromoShowNTPBubble);
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // Added 5/2019.
+   profile_prefs->ClearPref(kBookmarkAppCreationLaunchType);

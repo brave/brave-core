@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h
+index 8b366bcf4331b930ef2c9c1f638e20087861262b..d330c15240fa54e7bf78c5d8f795acf692a9f128 100644
+--- a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h
++++ b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h
+@@ -23,7 +23,11 @@ class ChromeBrowserMainExtraPartsProfiles : public ChromeBrowserMainExtraParts {
+   // Instantiates all chrome KeyedService factories, which is
+   // especially important for services that should be created at profile
+   // creation time as compared to lazily on first access.
++#if defined(OS_ANDROID)
++  static void EnsureBrowserContextKeyedServiceFactoriesBuilt(bool full_init = true);
++#else
+   static void EnsureBrowserContextKeyedServiceFactoriesBuilt();
++#endif
+ 
+   // Overridden from ChromeBrowserMainExtraParts:
+   void PreProfileInit() override;

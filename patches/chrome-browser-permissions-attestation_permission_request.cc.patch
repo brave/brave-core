@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/permissions/attestation_permission_request.cc b/chrome/browser/permissions/attestation_permission_request.cc
+index 23494a945130232d0af646af57821dbce612227c..5ae7fdf424c17acaa67b73ba8f23ff1f408af38d 100644
+--- a/chrome/browser/permissions/attestation_permission_request.cc
++++ b/chrome/browser/permissions/attestation_permission_request.cc
+@@ -26,9 +26,23 @@ class AttestationPermissionRequest : public permissions::PermissionRequest {
+       : origin_(origin), callback_(std::move(callback)) {}
+ 
+   permissions::PermissionRequest::IconId GetIconId() const override {
++  #if defined(OS_ANDROID)
++    return 0;
++  #else
+     return kUsbSecurityKeyIcon;
++  #endif
+   }
+ 
++  base::string16 GetTitleText() const override {
++    return l10n_util::GetStringUTF16(
++        IDS_SECURITY_KEY_ATTESTATION_PERMISSION_FRAGMENT);
++  }
++
++  base::string16 GetMessageText() const override {
++    return l10n_util::GetStringUTF16(
++        IDS_SECURITY_KEY_ATTESTATION_PERMISSION_FRAGMENT);
++   }
++
+   base::string16 GetMessageTextFragment() const override {
+     return l10n_util::GetStringUTF16(
+         IDS_SECURITY_KEY_ATTESTATION_PERMISSION_FRAGMENT);

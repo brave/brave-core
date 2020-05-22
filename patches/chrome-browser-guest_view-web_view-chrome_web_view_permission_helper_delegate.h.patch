@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.h b/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.h
+index f3c2c7ba746e7d07b2f116922056e86a528b0a4a..4d7c86ac1558d268bdbb9ca48575cc450cffd387 100644
+--- a/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.h
++++ b/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.h
+@@ -14,7 +14,7 @@
+ #include "ppapi/buildflags/buildflags.h"
+ #include "third_party/blink/public/mojom/permissions/permission_status.mojom-forward.h"
+ 
+-#if BUILDFLAG(ENABLE_PLUGINS)
++#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_PLUGINS)
+ #include "chrome/common/plugin.mojom.h"
+ #endif
+ 
+@@ -51,7 +51,7 @@ class ChromeWebViewPermissionHelperDelegate
+       const GURL& url,
+       bool allowed_by_default,
+       base::OnceCallback<void(bool)> callback) override;
+-#if BUILDFLAG(ENABLE_PLUGINS)
++#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_PLUGINS)
+   // content::WebContentsObserver implementation.
+   bool OnMessageReceived(const IPC::Message& message,
+                          content::RenderFrameHost* render_frame_host) override;

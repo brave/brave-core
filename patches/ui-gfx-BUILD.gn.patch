@@ -1,0 +1,13 @@
+diff --git a/ui/gfx/BUILD.gn b/ui/gfx/BUILD.gn
+index 171b158557d71903756b324da56237d7106a6b59..0fa0f6dd871795d80353595f5e24d958de086b15 100644
+--- a/ui/gfx/BUILD.gn
++++ b/ui/gfx/BUILD.gn
+@@ -401,7 +401,7 @@ jumbo_component("gfx") {
+     ]
+   }
+ 
+-  if ((!use_aura && !toolkit_views) || is_ios) {
++  if (!is_android && ((!use_aura && !toolkit_views) || is_ios)) {
+     sources -= [
+       "nine_image_painter.cc",
+       "nine_image_painter.h",

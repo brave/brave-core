@@ -1,0 +1,39 @@
+diff --git a/ui/views/window/frame_caption_button.cc b/ui/views/window/frame_caption_button.cc
+index 5a57f099f7d497f66bf88fa43b7fa4817aab4e2b..360cc67fd20d7cc7cd9a119ab3139233653b6198 100644
+--- a/ui/views/window/frame_caption_button.cc
++++ b/ui/views/window/frame_caption_button.cc
+@@ -197,8 +197,11 @@ void FrameCaptionButton::SetBackgroundColor(SkColor background_color) {
+ }
+ 
+ void FrameCaptionButton::PaintButtonContents(gfx::Canvas* canvas) {
++#if !defined(OS_ANDROID)
+   constexpr SkAlpha kHighlightVisibleOpacity = 0x14;
++#endif
+   SkAlpha highlight_alpha = SK_AlphaTRANSPARENT;
++#if !defined(OS_ANDROID)
+   if (hover_animation().is_animating()) {
+     highlight_alpha = hover_animation().CurrentValueBetween(
+         SK_AlphaTRANSPARENT, kHighlightVisibleOpacity);
+@@ -208,6 +211,7 @@ void FrameCaptionButton::PaintButtonContents(gfx::Canvas* canvas) {
+     // AutoHighlightMode::SHOW_ON_RIPPLE.
+     highlight_alpha = kHighlightVisibleOpacity;
+   }
++#endif
+ 
+   if (highlight_alpha != SK_AlphaTRANSPARENT) {
+     // We paint the highlight manually here rather than relying on the ink drop
+@@ -261,12 +265,14 @@ int FrameCaptionButton::GetAlphaForIcon(int base_alpha) const {
+   // Paint icons as active when they are hovered over or pressed.
+   double inactive_alpha = GetInactiveButtonColorAlphaRatio();
+ 
++#if !defined(OS_ANDROID)
+   if (hover_animation().is_animating()) {
+     inactive_alpha =
+         hover_animation().CurrentValueBetween(inactive_alpha, 1.0f);
+   } else if (state() == STATE_PRESSED || state() == STATE_HOVERED) {
+     inactive_alpha = 1.0f;
+   }
++#endif
+   return base_alpha * inactive_alpha;
+ }
+ 

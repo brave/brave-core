@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index 5e8bad123d801e60980087602a22f0811c816869..a185121c9d17abb4cfd1aeb2727e93e40bfe2830 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -423,7 +423,7 @@
+ #include "chrome/browser/chrome_browser_main_posix.h"
+ #endif
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/badging/badge_manager.h"
+ #include "chrome/browser/devtools/chrome_devtools_manager_delegate.h"
+ #include "chrome/browser/devtools/devtools_window.h"
+@@ -441,7 +441,7 @@
+ #include "chrome/browser/webauthn/chrome_authenticator_request_delegate.h"
+ #include "chrome/common/importer/profile_import.mojom.h"
+ #include "chrome/grit/chrome_unscaled_resources.h"
+-#endif  //  !defined(OS_ANDROID)
++//#endif  //  !defined(OS_ANDROID)
+ 
+ #if defined(OS_WIN) || defined(OS_MACOSX) || \
+     (defined(OS_LINUX) && !defined(OS_CHROMEOS))

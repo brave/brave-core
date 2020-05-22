@@ -1,0 +1,54 @@
+diff --git a/ui/views/controls/menu/menu_host.cc b/ui/views/controls/menu/menu_host.cc
+index e2bc742bd7de0609605c8e43f12589f1ba2040cf..cc222bdc6f173083bda3342904a3d87cbefa290f 100644
+--- a/ui/views/controls/menu/menu_host.cc
++++ b/ui/views/controls/menu/menu_host.cc
+@@ -80,6 +80,7 @@ class PreMenuEventDispatchHandler : public ui::EventHandler,
+ #endif  // OS_MACOSX
+ 
+ void TransferGesture(Widget* source, Widget* target) {
++#if !defined(OS_ANDROID)
+ #if defined(OS_MACOSX)
+   NOTIMPLEMENTED();
+ #else   // !defined(OS_MACOSX)
+@@ -87,6 +88,7 @@ void TransferGesture(Widget* source, Widget* target) {
+       source->GetNativeView(), target->GetNativeView(),
+       ui::TransferTouchesBehavior::kDontCancel);
+ #endif  // defined(OS_MACOSX)
++#endif
+ }
+ 
+ }  // namespace internal
+@@ -138,7 +140,7 @@ void MenuHost::InitMenuHost(Widget* parent,
+ #endif
+   Init(std::move(params));
+ 
+-#if !defined(OS_MACOSX)
++#if !defined(OS_MACOSX) && !defined(OS_ANDROID)
+   pre_dispatch_handler_ =
+       std::make_unique<internal::PreMenuEventDispatchHandler>(
+           menu_controller, submenu_, GetNativeView());
+@@ -158,6 +160,7 @@ bool MenuHost::IsMenuHostVisible() {
+ }
+ 
+ void MenuHost::ShowMenuHost(bool do_capture) {
++#if !defined(OS_ANDROID)
+   // Doing a capture may make us get capture lost. Ignore it while we're in the
+   // process of showing.
+   base::AutoReset<bool> reseter(&ignore_capture_lost_, true);
+@@ -184,6 +187,7 @@ void MenuHost::ShowMenuHost(bool do_capture) {
+       Show();
+     native_widget_private()->SetCapture();
+   }
++#endif
+ }
+ 
+ void MenuHost::HideMenuHost() {
+@@ -203,7 +207,7 @@ void MenuHost::DestroyMenuHost() {
+   HideMenuHost();
+   destroying_ = true;
+   static_cast<MenuHostRootView*>(GetRootView())->ClearSubmenu();
+-#if !defined(OS_MACOSX)
++#if !defined(OS_MACOSX) && !defined(OS_ANDROID)
+   pre_dispatch_handler_.reset();
+ #endif
+   Close();

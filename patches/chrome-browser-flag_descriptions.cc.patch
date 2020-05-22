@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/flag_descriptions.cc b/chrome/browser/flag_descriptions.cc
+index 450fe32735b85060ad85ea3d24ac5507f49f35c0..cf362bbc156179944683d16de0522977605b6cab 100644
+--- a/chrome/browser/flag_descriptions.cc
++++ b/chrome/browser/flag_descriptions.cc
+@@ -2719,7 +2719,7 @@ const char kAndroidNightModeTabReparentingDescription[] =
+ 
+ // Non-Android -----------------------------------------------------------------
+ 
+-#else  // !defined(OS_ANDROID)
++//#else  // !defined(OS_ANDROID)
+ 
+ const char kAppManagementName[] = "Enable App Management page";
+ const char kAppManagementDescription[] =

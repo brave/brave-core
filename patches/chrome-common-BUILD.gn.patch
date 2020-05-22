@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 1c037e568b807f0c42ec4ab1d298100a659a90ac..63a25632efb783371ed50264e449d8ec016b9a1e 100644
+index 1c037e568b807f0c42ec4ab1d298100a659a90ac..4d6ec2b8dbc6d6e25ff2866ef4225deb5609e7ea 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -67,6 +67,7 @@ source_set("channel_info") {
@@ -18,7 +18,20 @@ index 1c037e568b807f0c42ec4ab1d298100a659a90ac..63a25632efb783371ed50264e449d8ec
      ":available_offline_content_mojom",
      ":buildflags",
      ":channel_info",
-@@ -550,6 +552,7 @@ static_library("non_code_constants") {
+@@ -421,10 +423,9 @@ static_library("common") {
+       "media/chrome_media_drm_bridge_client.cc",
+       "media/chrome_media_drm_bridge_client.h",
+     ]
+-  } else {
+-    # Non-Android.
+-    public_deps += [ "//chrome/common/importer" ]
+   }
++  public_deps += [ "//chrome/common/importer" ]
++#  }
+ 
+   if (is_win) {
+     deps += [
+@@ -550,6 +551,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:buildflags",
    ]

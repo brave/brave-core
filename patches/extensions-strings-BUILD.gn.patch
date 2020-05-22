@@ -1,0 +1,40 @@
+diff --git a/extensions/strings/BUILD.gn b/extensions/strings/BUILD.gn
+index 05913994d626dd8684c90a92fe40b114a6ee0fd0..118ccea83714f4f1cf2fa795f5bf3207485cdf4f 100644
+--- a/extensions/strings/BUILD.gn
++++ b/extensions/strings/BUILD.gn
+@@ -66,4 +66,35 @@ grit("strings") {
+     "extensions_strings_zh-CN.pak",
+     "extensions_strings_zh-TW.pak",
+   ]
++  if (is_android) {
++    outputs += [
++        "extensions_strings_af.pak",
++        "extensions_strings_as.pak",
++        "extensions_strings_az.pak",
++        "extensions_strings_be.pak",
++        "extensions_strings_bs.pak",
++        "extensions_strings_eu.pak",
++        "extensions_strings_fr-CA.pak",
++        "extensions_strings_gl.pak",
++        "extensions_strings_hy.pak",
++        "extensions_strings_is.pak",
++        "extensions_strings_ka.pak",
++        "extensions_strings_kk.pak",
++        "extensions_strings_km.pak",
++        "extensions_strings_ky.pak",
++        "extensions_strings_lo.pak",
++        "extensions_strings_mk.pak",
++        "extensions_strings_mn.pak",
++        "extensions_strings_my.pak",
++        "extensions_strings_ne.pak",
++        "extensions_strings_or.pak",
++        "extensions_strings_pa.pak",
++        "extensions_strings_si.pak",
++        "extensions_strings_sq.pak",
++        "extensions_strings_ur.pak",
++        "extensions_strings_uz.pak",
++        "extensions_strings_zh-HK.pak",
++        "extensions_strings_zu.pak",
++    ]
++  }
+ }

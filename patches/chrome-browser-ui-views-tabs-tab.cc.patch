@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
+index 8ea74750e51412235cbef64b060ac7246b5cf4f8..3b597b0bf0d9847f7d0b1533af824aeb2efed63b 100644
+--- a/chrome/browser/ui/views/tabs/tab.cc
++++ b/chrome/browser/ui/views/tabs/tab.cc
+@@ -802,7 +802,9 @@ bool Tab::IsSelected() const {
+ }
+ 
+ void Tab::SetData(TabRendererData data) {
++#if !defined(OS_ANDROID)
+   DCHECK(GetWidget());
++#endif
+ 
+   if (data_ == data)
+     return;

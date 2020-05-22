@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/resources/BUILD.gn b/chrome/browser/resources/BUILD.gn
+index 1bb1690f7bbe290bb08b3ebaf0cb12b4727ad296..d897ea8251eb7e3a8bed81e419b44b84a6959c22 100644
+--- a/chrome/browser/resources/BUILD.gn
++++ b/chrome/browser/resources/BUILD.gn
+@@ -18,7 +18,7 @@ if (closure_compile) {
+       "interventions_internals:closure_compile",
+       "reset_password:closure_compile",
+     ]
+-    if (is_linux || is_win || is_mac) {
++    if (is_android || is_linux || is_win || is_mac) {
+       deps += [
+         "bluetooth_internals:closure_compile",
+         "bookmarks:closure_compile",
+@@ -82,7 +82,7 @@ if (closure_compile) {
+   }
+ }
+ 
+-if (!is_android) {
++#if (!is_android) {
+   grit("bookmarks_resources") {
+     # The .grd contains references to generated files.
+     source_is_generated = true
+@@ -261,7 +261,7 @@ if (!is_android) {
+     ]
+     output_dir = "$root_gen_dir/chrome"
+   }
+-}
++#}
+ 
+ if (is_chromeos) {
+   grit("os_settings_resources") {
+@@ -292,7 +292,7 @@ if (is_chromeos) {
+   }
+ }
+ 
+-if (!is_android && !is_chromeos) {
++if (!is_chromeos) {
+   grit("welcome_resources") {
+     source = "welcome/welcome_resources.grd"
+ 

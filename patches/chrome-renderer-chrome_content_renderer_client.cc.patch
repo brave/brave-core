@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index e03ad3a5a115383143d1324164dfd37f87c6f2f2..c98392b8175456a13d42c56d0e69429c03f81d5b 100644
+index e03ad3a5a115383143d1324164dfd37f87c6f2f2..6e27b03136c9fcfd341fcf5303536748ef89cb8a 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -23,6 +23,7 @@
@@ -19,3 +19,12 @@ index e03ad3a5a115383143d1324164dfd37f87c6f2f2..c98392b8175456a13d42c56d0e69429c
        render_frame, should_whitelist_for_content_settings, registry);
  #if BUILDFLAG(ENABLE_EXTENSIONS)
    content_settings->SetExtensionDispatcher(
+@@ -631,7 +632,7 @@ bool ChromeContentRendererClient::IsPluginHandledExternally(
+     const blink::WebElement& plugin_element,
+     const GURL& original_url,
+     const std::string& mime_type) {
+-#if BUILDFLAG(ENABLE_EXTENSIONS) && BUILDFLAG(ENABLE_PLUGINS)
++#if !defined(OS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS) && BUILDFLAG(ENABLE_PLUGINS)
+   DCHECK(plugin_element.HasHTMLTagName("object") ||
+          plugin_element.HasHTMLTagName("embed"));
+   // Blink will next try to load a WebPlugin which would end up in

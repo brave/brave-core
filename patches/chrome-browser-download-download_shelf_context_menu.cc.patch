@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/download/download_shelf_context_menu.cc b/chrome/browser/download/download_shelf_context_menu.cc
+index 499898e41946edda9f7ac240018877f4d57a0c09..0ac4dda76db77818fbf2b030f7d876c5f47aa913 100644
+--- a/chrome/browser/download/download_shelf_context_menu.cc
++++ b/chrome/browser/download/download_shelf_context_menu.cc
+@@ -137,6 +137,7 @@ base::string16 DownloadShelfContextMenu::GetLabelForCommandId(
+       id = IDS_DOWNLOAD_MENU_KEEP;
+       break;
+     case DownloadCommands::ALWAYS_OPEN_TYPE: {
++#if !defined(OS_ANDROID)
+       if (download_commands_) {
+         bool can_open_pdf_in_system_viewer =
+             download_commands_->CanOpenPdfInSystemViewer();
+@@ -154,6 +155,7 @@ base::string16 DownloadShelfContextMenu::GetLabelForCommandId(
+         }
+ #endif
+       }
++#endif
+       id = IDS_DOWNLOAD_MENU_ALWAYS_OPEN_TYPE;
+       break;
+     }

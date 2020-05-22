@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
+index 01a5eefba50a969afcd13d04dceeb7656b077c82..60603761fc1c43a608515ab2be08710bd404f678 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip.cc
+@@ -139,7 +139,7 @@ class TabHoverCardEventSniffer : public ui::EventHandler {
+ #if defined(OS_MACOSX)
+     if (widget_->GetRootView())
+       widget_->GetRootView()->AddPreTargetHandler(this);
+-#else
++#elif !defined(OS_ANDROID)
+     if (widget_->GetNativeWindow())
+       widget_->GetNativeWindow()->AddPreTargetHandler(this);
+ #endif
+@@ -148,7 +148,7 @@ class TabHoverCardEventSniffer : public ui::EventHandler {
+   ~TabHoverCardEventSniffer() override {
+ #if defined(OS_MACOSX)
+     widget_->GetRootView()->RemovePreTargetHandler(this);
+-#else
++#elif !defined(OS_ANDROID)
+     widget_->GetNativeWindow()->RemovePreTargetHandler(this);
+ #endif
+   }

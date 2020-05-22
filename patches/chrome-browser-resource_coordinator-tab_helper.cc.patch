@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/resource_coordinator/tab_helper.cc b/chrome/browser/resource_coordinator/tab_helper.cc
+index 16affac943211a11987d000d6a513d9f3b905731..ecbba632d2b04206fd5436e930c1fbdaf16eb41c 100644
+--- a/chrome/browser/resource_coordinator/tab_helper.cc
++++ b/chrome/browser/resource_coordinator/tab_helper.cc
+@@ -25,10 +25,10 @@
+ #include "content/public/browser/render_process_host.h"
+ #include "services/resource_coordinator/public/cpp/memory_instrumentation/memory_instrumentation.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/resource_coordinator/local_site_characteristics_webcontents_observer.h"
+ #include "chrome/browser/resource_coordinator/tab_manager.h"
+-#endif
++//#endif
+ 
+ namespace resource_coordinator {
+ 
+@@ -43,11 +43,11 @@ ResourceCoordinatorTabHelper::ResourceCoordinatorTabHelper(
+         TabLoadTracker::Get());
+   }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   local_site_characteristics_wc_observer_ =
+       std::make_unique<LocalSiteCharacteristicsWebContentsObserver>(
+           web_contents);
+-#endif
++//#endif
+ }
+ 
+ ResourceCoordinatorTabHelper::~ResourceCoordinatorTabHelper() = default;

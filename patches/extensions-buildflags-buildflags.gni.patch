@@ -1,0 +1,13 @@
+diff --git a/extensions/buildflags/buildflags.gni b/extensions/buildflags/buildflags.gni
+index 35d9c6cebd548e7895574b3192d31d1c97cede1a..eb4c10f9752c9953edfe18160e3cafc62e5099cb 100644
+--- a/extensions/buildflags/buildflags.gni
++++ b/extensions/buildflags/buildflags.gni
+@@ -5,7 +5,7 @@
+ import("//build/config/features.gni")
+ 
+ declare_args() {
+-  enable_extensions = !is_android && !is_ios && !is_fuchsia
++  enable_extensions = !is_ios && !is_fuchsia
+ 
+   # Enables Wi-Fi Display functionality
+   # WARNING: This enables MPEG Transport Stream (MPEG-TS) encoding!

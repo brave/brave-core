@@ -1,0 +1,22 @@
+diff --git a/ui/resources/BUILD.gn b/ui/resources/BUILD.gn
+index e674b42cc40cf763ea076a5145b27d7247efb9f8..7c22cedccbf77264c5209759e15fbc6afb69482a 100644
+--- a/ui/resources/BUILD.gn
++++ b/ui/resources/BUILD.gn
+@@ -173,7 +173,7 @@ repack("repack_ui_test_pak_100_percent") {
+     ]
+   }
+ 
+-  if (toolkit_views) {
++  if (is_android || toolkit_views) {
+     deps += [ "//ui/views/resources" ]
+     sources += [
+       "$root_gen_dir/third_party/blink/public/resources/blink_resources.pak",
+@@ -198,7 +198,7 @@ repack("repack_ui_test_pak_200_percent") {
+ 
+   deps = [ "//ui/resources" ]
+ 
+-  if (toolkit_views) {
++  if (is_android || toolkit_views) {
+     deps += [ "//ui/views/resources" ]
+     sources +=
+         [ "$root_gen_dir/ui/views/resources/views_resources_200_percent.pak" ]

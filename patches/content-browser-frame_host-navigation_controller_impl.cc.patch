@@ -1,8 +1,19 @@
 diff --git a/content/browser/frame_host/navigation_controller_impl.cc b/content/browser/frame_host/navigation_controller_impl.cc
-index 1bb7007c16029db901514e79171952d07b47058e..abbff171f5375aecc8eef794767d9b43cd63aea2 100644
+index 1bb7007c16029db901514e79171952d07b47058e..eb6a4c419cd0acfe08660fdece48e45b5c6cbebc 100644
 --- a/content/browser/frame_host/navigation_controller_impl.cc
 +++ b/content/browser/frame_host/navigation_controller_impl.cc
-@@ -2887,16 +2887,17 @@ void NavigationControllerImpl::NavigateWithoutEntry(
+@@ -946,8 +946,10 @@ void NavigationControllerImpl::LoadURL(const GURL& url,
+ }
+ 
+ void NavigationControllerImpl::LoadURLWithParams(const LoadURLParams& params) {
++#if !defined(OS_ANDROID)
+   if (params.is_renderer_initiated)
+     DCHECK(params.initiator_origin.has_value());
++#endif
+ 
+   TRACE_EVENT1("browser,navigation",
+                "NavigationControllerImpl::LoadURLWithParams", "url",
+@@ -2887,16 +2889,17 @@ void NavigationControllerImpl::NavigateWithoutEntry(
    // Note: we intentionally leave the pending entry in place for renderer debug
    // URLs, unlike the cases below where we clear it if the navigation doesn't
    // proceed.
@@ -23,3 +34,13 @@ index 1bb7007c16029db901514e79171952d07b47058e..abbff171f5375aecc8eef794767d9b43
      return;
    }
  
+@@ -3087,7 +3090,9 @@ NavigationControllerImpl::CreateNavigationRequestFromLoadParams(
+   DCHECK_EQ(-1, GetIndexOfEntry(entry));
+   DCHECK(frame_entry);
+   // All renderer-initiated navigations must have an initiator_origin.
++#if !defined(OS_ANDROID)
+   DCHECK(!params.is_renderer_initiated || params.initiator_origin.has_value());
++#endif
+ 
+   GURL url_to_load;
+   GURL virtual_url;

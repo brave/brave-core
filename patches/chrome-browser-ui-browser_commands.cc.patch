@@ -1,0 +1,49 @@
+diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
+index efabf0141daf15832c0c96e1c63145205a0f4b50..31409962fd97f689b407b5e2b4ba99e24aec5683 100644
+--- a/chrome/browser/ui/browser_commands.cc
++++ b/chrome/browser/ui/browser_commands.cc
+@@ -686,22 +686,34 @@ void CloseTab(Browser* browser) {
+ }
+ 
+ bool CanZoomIn(content::WebContents* contents) {
++#if !defined(OS_ANDROID)
+   return contents && !contents->IsCrashed() &&
+          zoom::ZoomController::FromWebContents(contents)->GetZoomPercent() !=
+              contents->GetMaximumZoomPercent();
++#else
++  return false;
++#endif
+ }
+ 
+ bool CanZoomOut(content::WebContents* contents) {
++#if !defined(OS_ANDROID)
+   return contents && !contents->IsCrashed() &&
+          zoom::ZoomController::FromWebContents(contents)->GetZoomPercent() !=
+              contents->GetMinimumZoomPercent();
++#else
++  return false;
++#endif
+ }
+ 
+ bool CanResetZoom(content::WebContents* contents) {
++#if !defined(OS_ANDROID)
+   zoom::ZoomController* zoom_controller =
+       zoom::ZoomController::FromWebContents(contents);
+   return !zoom_controller->IsAtDefaultZoom() ||
+          !zoom_controller->PageScaleFactorIsOne();
++#else
++  return false;
++#endif
+ }
+ 
+ void SelectNextTab(Browser* browser,
+@@ -1293,7 +1305,9 @@ void ToggleDevToolsWindow(Browser* browser, DevToolsToggleAction action) {
+     base::RecordAction(UserMetricsAction("DevTools_ToggleConsole"));
+   else
+     base::RecordAction(UserMetricsAction("DevTools_ToggleWindow"));
++#if !defined(OS_ANDROID)
+   DevToolsWindow::ToggleDevToolsWindow(browser, action);
++#endif
+ }
+ 
+ bool CanOpenTaskManager() {

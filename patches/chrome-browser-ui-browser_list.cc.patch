@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/browser_list.cc b/chrome/browser/ui/browser_list.cc
+index 781607118c13ac34a1ef41f34b13b7e2e67a3c30..3448ee5a7abeaefa68d0871ca2847d0fcb44e7eb 100644
+--- a/chrome/browser/ui/browser_list.cc
++++ b/chrome/browser/ui/browser_list.cc
+@@ -129,7 +129,9 @@ void BrowserList::RemoveBrowser(Browser* browser) {
+     // shutdown, because Browser::WindowClosing() already makes sure that the
+     // SessionService is created and notified.
+     browser_shutdown::NotifyAppTerminating();
++#if !defined(OS_ANDROID)
+     chrome::OnAppExiting();
++#endif
+   }
+ }
+ 

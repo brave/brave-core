@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/extensions/api/enterprise_reporting_private/chrome_desktop_report_request_helper.cc b/chrome/browser/extensions/api/enterprise_reporting_private/chrome_desktop_report_request_helper.cc
+index 6b7c0535e9dc179d118188a2c1a9932fea895f28..258cc5f5b4d7fe4cd97f4fd91a2f2614c5034167 100644
+--- a/chrome/browser/extensions/api/enterprise_reporting_private/chrome_desktop_report_request_helper.cc
++++ b/chrome/browser/extensions/api/enterprise_reporting_private/chrome_desktop_report_request_helper.cc
+@@ -89,12 +89,16 @@ std::string GetProfileId(const Profile* profile) {
+ // Returns last policy fetch timestamp of machine level user cloud policy if
+ // it exists. Otherwise, returns zero.
+ int64_t GetMachineLevelUserCloudPolicyFetchTimestamp() {
++#if !defined(OS_ANDROID)
+   policy::MachineLevelUserCloudPolicyManager* manager =
+       g_browser_process->browser_policy_connector()
+           ->machine_level_user_cloud_policy_manager();
+   if (!manager || !manager->IsClientRegistered())
+     return 0;
+   return manager->core()->client()->last_policy_timestamp().ToJavaTime();
++#else
++  return 0;
++#endif
+ }
+ 
+ void AppendAdditionalBrowserInformation(em::ChromeDesktopReportRequest* request,

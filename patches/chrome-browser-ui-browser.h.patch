@@ -1,7 +1,20 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index ff8399e6c417dad97952ed1290483eb9ca070afa..4a68abdf74de7b901219f4b6c917355b438f3170 100644
+index ff8399e6c417dad97952ed1290483eb9ca070afa..d9f5a964c0682260771db584cfe421980204a741 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
+@@ -55,9 +55,9 @@
+ #include "ui/gfx/geometry/rect.h"
+ #include "ui/shell_dialogs/select_file_dialog.h"
+ 
+-#if defined(OS_ANDROID)
+-#error This file should only be included on desktop.
+-#endif
++//#if defined(OS_ANDROID)
++//#error This file should only be included on desktop.
++//#endif
+ 
+ class BackgroundContents;
+ class BrowserContentSettingBubbleModelDelegate;
 @@ -638,6 +638,7 @@ class Browser : public TabStripModelObserver,
    // dragging.
    void SetIsInTabDragging(bool is_in_tab_dragging);

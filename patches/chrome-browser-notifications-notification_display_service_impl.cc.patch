@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
-index ba53f33407995b07a31349c9356a064e10d965c2..7164061f6208c333cc105b6cda7ecb93405e206c 100644
+index ba53f33407995b07a31349c9356a064e10d965c2..6e3aaaf318b196ab47b13f735a26072a32e787b8 100644
 --- a/chrome/browser/notifications/notification_display_service_impl.cc
 +++ b/chrome/browser/notifications/notification_display_service_impl.cc
 @@ -141,6 +141,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
@@ -10,3 +10,19 @@ index ba53f33407995b07a31349c9356a064e10d965c2..7164061f6208c333cc105b6cda7ecb93
    }
  
    // Initialize the bridge if native notifications are available, otherwise
+@@ -258,6 +259,7 @@ void NotificationDisplayServiceImpl::Display(
+ void NotificationDisplayServiceImpl::Close(
+     NotificationHandler::Type notification_type,
+     const std::string& notification_id) {
++#if !defined(OS_ANDROID)
+   CHECK(profile_ || notification_type == NotificationHandler::Type::TRANSIENT);
+ 
+   if (!bridge_initialized_) {
+@@ -276,6 +278,7 @@ void NotificationDisplayServiceImpl::Close(
+ 
+   bridge->Close(profile_, notification_id);
+ #endif
++#endif
+ }
+ 
+ void NotificationDisplayServiceImpl::GetDisplayed(

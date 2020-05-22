@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/content_settings/host_content_settings_map_factory.cc b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-index 1610e0ecc707d91c1e67b5817776246c93ee7c4c..67deaf130cccaa3f86aba6d5e1fa47f3926ea043 100644
+index 1610e0ecc707d91c1e67b5817776246c93ee7c4c..bdad4799c26937140061b6900d7e5284e46e8961 100644
 --- a/chrome/browser/content_settings/host_content_settings_map_factory.cc
 +++ b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-@@ -81,6 +81,7 @@ scoped_refptr<RefcountedKeyedService>
+@@ -44,7 +44,7 @@ HostContentSettingsMapFactory::HostContentSettingsMapFactory()
+ #if BUILDFLAG(ENABLE_SUPERVISED_USERS)
+   DependsOn(SupervisedUserSettingsServiceFactory::GetInstance());
+ #endif
+-#if BUILDFLAG(ENABLE_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS) && !defined(OS_ANDROID)
+   DependsOn(
+       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
+ #endif
+@@ -81,11 +81,12 @@ scoped_refptr<RefcountedKeyedService>
  
    scoped_refptr<HostContentSettingsMap> settings_map(new HostContentSettingsMap(
        profile->GetPrefs(),
@@ -10,3 +19,9 @@ index 1610e0ecc707d91c1e67b5817776246c93ee7c4c..67deaf130cccaa3f86aba6d5e1fa47f3
        profile->IsIncognitoProfile() || profile->IsGuestSession(),
        /*store_last_modified=*/true,
        base::FeatureList::IsEnabled(features::kPermissionDelegation)));
+ 
+-#if BUILDFLAG(ENABLE_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS) && !defined(OS_ANDROID)
+   // These must be registered before before the HostSettings are passed over to
+   // the IOThread.  Simplest to do this on construction.
+   extensions::ExtensionService::RegisterContentSettings(settings_map.get(),

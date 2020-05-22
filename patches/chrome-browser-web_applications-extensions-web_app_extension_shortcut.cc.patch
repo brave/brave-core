@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/web_applications/extensions/web_app_extension_shortcut.cc b/chrome/browser/web_applications/extensions/web_app_extension_shortcut.cc
+index 0d84a098b20bdc1a230e6c36669258b82e57a362..afa81f3fe64d92ca928d90c64b4a6bc00f70d1bf 100644
+--- a/chrome/browser/web_applications/extensions/web_app_extension_shortcut.cc
++++ b/chrome/browser/web_applications/extensions/web_app_extension_shortcut.cc
+@@ -67,12 +67,14 @@ void UpdateAllShortcutsForShortcutInfo(
+     const base::string16& old_app_title,
+     base::OnceClosure callback,
+     std::unique_ptr<ShortcutInfo> shortcut_info) {
++#if !defined(OS_ANDROID)
+   base::FilePath shortcut_data_dir =
+       internals::GetShortcutDataDir(*shortcut_info);
+   internals::PostShortcutIOTaskAndReply(
+       base::BindOnce(&internals::UpdatePlatformShortcuts,
+                      std::move(shortcut_data_dir), old_app_title),
+       std::move(shortcut_info), std::move(callback));
++#endif
+ }
+ 
+ }  // namespace
+@@ -243,6 +245,7 @@ void CreateShortcuts(ShortcutCreationReason reason,
+ void DeleteAllShortcuts(Profile* profile, const extensions::Extension* app) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
++#if !defined(OS_ANDROID)
+   std::unique_ptr<ShortcutInfo> shortcut_info(
+       ShortcutInfoForExtensionAndProfile(app, profile));
+   base::FilePath shortcut_data_dir =
+@@ -250,6 +253,7 @@ void DeleteAllShortcuts(Profile* profile, const extensions::Extension* app) {
+   internals::PostShortcutIOTask(
+       base::BindOnce(&internals::DeletePlatformShortcuts, shortcut_data_dir),
+       std::move(shortcut_info));
++#endif
+ }
+ 
+ void UpdateAllShortcuts(const base::string16& old_app_title,

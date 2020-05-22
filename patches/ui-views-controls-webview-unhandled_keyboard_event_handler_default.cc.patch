@@ -1,0 +1,16 @@
+diff --git a/ui/views/controls/webview/unhandled_keyboard_event_handler_default.cc b/ui/views/controls/webview/unhandled_keyboard_event_handler_default.cc
+index f6cb4a38d17a1d4919657f6965fe6dbf13b687e8..2aa045be76051aaa8df2c9d5370de6f5ce877181 100644
+--- a/ui/views/controls/webview/unhandled_keyboard_event_handler_default.cc
++++ b/ui/views/controls/webview/unhandled_keyboard_event_handler_default.cc
+@@ -13,7 +13,11 @@ namespace views {
+ bool UnhandledKeyboardEventHandler::HandleNativeKeyboardEvent(
+     gfx::NativeEvent event,
+     FocusManager* focus_manager) {
++#if !defined(OS_ANDROID)
+   return !focus_manager->OnKeyEvent(*(event->AsKeyEvent()));
++#else
++  return false;
++#endif
+ }
+ 
+ }  // namespace views

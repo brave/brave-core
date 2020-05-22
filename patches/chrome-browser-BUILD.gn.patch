@@ -1,7 +1,40 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 6f768f7848a3885d516e337bd413d91e02e6900a..90beb01f613d62dce221195cf1310592342288de 100644
+index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c659a6b7bb2 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
+@@ -170,10 +170,10 @@ jumbo_static_library("browser") {
+     "bitmap_fetcher/bitmap_fetcher_service.h",
+     "bitmap_fetcher/bitmap_fetcher_service_factory.cc",
+     "bitmap_fetcher/bitmap_fetcher_service_factory.h",
+-    "bluetooth/bluetooth_chooser_context.cc",
+-    "bluetooth/bluetooth_chooser_context.h",
+-    "bluetooth/bluetooth_chooser_context_factory.cc",
+-    "bluetooth/bluetooth_chooser_context_factory.h",
++    #"bluetooth/bluetooth_chooser_context.cc",
++    #"bluetooth/bluetooth_chooser_context.h",
++    #"bluetooth/bluetooth_chooser_context_factory.cc",
++    #"bluetooth/bluetooth_chooser_context_factory.h",
+     "bookmarks/bookmark_model_factory.cc",
+     "bookmarks/bookmark_model_factory.h",
+     "bookmarks/chrome_bookmark_client.cc",
+@@ -415,7 +415,7 @@ jumbo_static_library("browser") {
+     "download/download_core_service_factory.h",
+     "download/download_core_service_impl.cc",
+     "download/download_core_service_impl.h",
+-    "download/download_crx_util_android.cc",
++    #"download/download_crx_util_android.cc",
+     "download/download_file_picker.cc",
+     "download/download_file_picker.h",
+     "download/download_history.cc",
+@@ -1565,7 +1565,7 @@ jumbo_static_library("browser") {
+     "sessions/session_common_utils.h",
+     "sessions/session_data_deleter.cc",
+     "sessions/session_data_deleter.h",
+-    "sessions/session_restore_android.cc",
++    #"sessions/session_restore_android.cc",
+     "sessions/session_tab_helper_factory.cc",
+     "sessions/session_tab_helper_factory.h",
+     "sessions/tab_restore_service_factory.cc",
 @@ -2261,6 +2261,7 @@ jumbo_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
@@ -10,3 +43,121 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..90beb01f613d62dce221195cf1310592
    ]
  
    if (is_win) {
+@@ -3024,7 +3025,8 @@ jumbo_static_library("browser") {
+       ]
+       deps += [ "//chrome/android/modules/dev_ui/provider:native" ]
+     }
+-  } else {  # !is_android
++  } 
++  #else {  # !is_android
+     sources += [
+       "accessibility/invert_bubble_prefs.cc",
+       "accessibility/invert_bubble_prefs.h",
+@@ -3072,8 +3074,8 @@ jumbo_static_library("browser") {
+       "badging/badge_manager_delegate.h",
+       "badging/badge_manager_factory.cc",
+       "badging/badge_manager_factory.h",
+-      "banners/app_banner_manager_desktop.cc",
+-      "banners/app_banner_manager_desktop.h",
++      #"banners/app_banner_manager_desktop.cc",
++      #"banners/app_banner_manager_desktop.h",
+       "bookmarks/bookmark_html_writer.cc",
+       "bookmarks/bookmark_html_writer.h",
+       "certificate_viewer.h",
+@@ -3165,6 +3167,7 @@ jumbo_static_library("browser") {
+       "first_run/first_run.h",
+       "first_run/first_run_dialog.h",
+       "first_run/first_run_internal.h",
++      "first_run/first_run_internal_android.cc",
+       "first_run/first_run_internal_linux.cc",
+       "first_run/first_run_internal_mac.mm",
+       "first_run/first_run_internal_win.cc",
+@@ -3301,7 +3304,7 @@ jumbo_static_library("browser") {
+       "metrics/desktop_session_duration/desktop_session_duration_tracker.h",
+       "metrics/first_web_contents_profiler.cc",
+       "metrics/first_web_contents_profiler.h",
+-      "metrics/incognito_observer_desktop.cc",
++      #"metrics/incognito_observer_desktop.cc",
+       "metrics/tab_stats_data_store.cc",
+       "metrics/tab_stats_data_store.h",
+       "metrics/tab_stats_tracker.cc",
+@@ -3748,11 +3751,17 @@ jumbo_static_library("browser") {
+         "chrome_browser_main_posix.h",
+         "first_run/first_run_internal_posix.cc",
+         "importer/firefox_profile_lock_posix.cc",
+-        "process_singleton_posix.cc",
++        #"process_singleton_posix.cc",
+         "task_manager/sampling/shared_sampler_posix.cc",
+       ]
+     }
+-  }
++
++    if (is_android) {
++      sources += [
++        "process_singleton_android.cc",
++      ]
++    }
++  #}
+ 
+   if (is_chromeos) {
+     sources += [
+@@ -4216,7 +4225,7 @@ jumbo_static_library("browser") {
+     defines += [ "USE_CRAS" ]
+   }
+ 
+-  if (!is_android && !is_chromeos) {
++  if (!is_chromeos) {
+     sources += [
+       "first_run/upgrade_util.cc",
+       "first_run/upgrade_util.h",
+@@ -4238,14 +4247,14 @@ jumbo_static_library("browser") {
+       "notifications/screen_lock_notification_blocker.cc",
+       "notifications/screen_lock_notification_blocker.h",
+       "platform_util.cc",
+-      "policy/chrome_browser_cloud_management_controller.cc",
+-      "policy/chrome_browser_cloud_management_controller.h",
+-      "policy/chrome_browser_cloud_management_register_watcher.cc",
+-      "policy/chrome_browser_cloud_management_register_watcher.h",
+-      "policy/cloud/chrome_browser_cloud_management_helper.cc",
+-      "policy/cloud/chrome_browser_cloud_management_helper.h",
+-      "policy/cloud/user_policy_signin_service.cc",
+-      "policy/cloud/user_policy_signin_service.h",
++      #"policy/chrome_browser_cloud_management_controller.cc",
++      #"policy/chrome_browser_cloud_management_controller.h",
++      #"policy/chrome_browser_cloud_management_register_watcher.cc",
++      #"policy/chrome_browser_cloud_management_register_watcher.h",
++      #"policy/cloud/chrome_browser_cloud_management_helper.cc",
++      #"policy/cloud/chrome_browser_cloud_management_helper.h",
++      #"policy/cloud/user_policy_signin_service.cc",
++      #"policy/cloud/user_policy_signin_service.h",
+       "policy/cloud/user_policy_signin_service_internal.h",
+       "profiles/avatar_menu.cc",
+       "profiles/avatar_menu.h",
+@@ -4275,7 +4284,8 @@ jumbo_static_library("browser") {
+       "upgrade_detector/upgrade_detector_impl.cc",
+       "upgrade_detector/upgrade_detector_impl.h",
+     ]
+-  } else {
++  } 
++  if (is_android || is_chromeos) {
+     sources += [
+       "media/protected_media_identifier_permission_context.cc",
+       "media/protected_media_identifier_permission_context.h",
+@@ -5141,7 +5151,7 @@ jumbo_static_library("browser") {
+     }
+   }
+ 
+-  if (enable_session_service) {
++  if (is_android || enable_session_service) {
+     sources += [
+       "sessions/session_restore.cc",
+       "sessions/session_restore.h",
+@@ -5490,7 +5500,7 @@ grit("resources") {
+     }
+   }
+ 
+-  if (is_win || is_mac || is_desktop_linux || is_chromeos) {
++  if (is_android || is_win || is_mac || is_desktop_linux || is_chromeos) {
+     deps += [
+       "//chrome/browser/resources/discards:discards_resources_gen",
+       "//chrome/browser/resources/management:polymer3_elements",

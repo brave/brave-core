@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/relaunch_notification/relaunch_notification_controller.cc b/chrome/browser/ui/views/relaunch_notification/relaunch_notification_controller.cc
+index f314c2f86a0e992cb67c64ff56903e048d960051..cdfdae2c087c0bf6298ce359ae84d45feebc3ecf 100644
+--- a/chrome/browser/ui/views/relaunch_notification/relaunch_notification_controller.cc
++++ b/chrome/browser/ui/views/relaunch_notification/relaunch_notification_controller.cc
+@@ -305,5 +305,7 @@ void RelaunchNotificationController::Close() {
+ }
+ 
+ void RelaunchNotificationController::OnRelaunchDeadlineExpired() {
++#if !defined(OS_ANDROID)
+   chrome::RelaunchIgnoreUnloadHandlers();
++#endif
+ }

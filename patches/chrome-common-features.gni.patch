@@ -1,0 +1,15 @@
+diff --git a/chrome/common/features.gni b/chrome/common/features.gni
+index c0d25aef4225c0146b1e9d7a663f592a1a355391..2b0afc9d92c2f483f2d481bfbe715eb7ace784fc 100644
+--- a/chrome/common/features.gni
++++ b/chrome/common/features.gni
+@@ -30,8 +30,8 @@ declare_args() {
+   builtin_cert_verifier_policy_supported = is_chromeos || is_desktop_linux
+ 
+   # Enables support for background apps.
+-  enable_background_contents = !is_android && !is_chromecast
+-  enable_background_mode = !is_android && !is_chromecast && !is_chromeos
++  enable_background_contents = !is_chromecast
++  enable_background_mode = !is_chromecast && !is_chromeos
+ 
+   # Enable the printing system dialog for platforms that support printing
+   # and have a system dialog.

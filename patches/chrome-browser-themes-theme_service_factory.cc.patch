@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/themes/theme_service_factory.cc b/chrome/browser/themes/theme_service_factory.cc
-index 5a0d5e736cb9fa72d9d764327aa0d549cfed563b..26f81dcc1cc82d8e7b7edbc4837eebc48aa73eeb 100644
+index 5a0d5e736cb9fa72d9d764327aa0d549cfed563b..4fc27ba827636a891e2287eef8b25f129d2fa75a 100644
 --- a/chrome/browser/themes/theme_service_factory.cc
 +++ b/chrome/browser/themes/theme_service_factory.cc
-@@ -78,6 +78,7 @@ ThemeServiceFactory::~ThemeServiceFactory() {}
+@@ -71,13 +71,16 @@ ThemeServiceFactory::ThemeServiceFactory()
+           BrowserContextDependencyManager::GetInstance()) {
+   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
+   DependsOn(extensions::ExtensionPrefsFactory::GetInstance());
++#if !defined(OS_ANDROID)
+   DependsOn(extensions::ExtensionSystemFactory::GetInstance());
++#endif
+ }
+ 
+ ThemeServiceFactory::~ThemeServiceFactory() {}
  
  KeyedService* ThemeServiceFactory::BuildServiceInstanceFor(
      content::BrowserContext* profile) const {

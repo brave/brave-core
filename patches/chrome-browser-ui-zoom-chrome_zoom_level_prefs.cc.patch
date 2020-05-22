@@ -1,0 +1,46 @@
+diff --git a/chrome/browser/ui/zoom/chrome_zoom_level_prefs.cc b/chrome/browser/ui/zoom/chrome_zoom_level_prefs.cc
+index 0ef8df91d02979e4170ccfc5d529094fc95d0646..ee6da90537d83eccac98dbb3221fdb8d2cea08e1 100644
+--- a/chrome/browser/ui/zoom/chrome_zoom_level_prefs.cc
++++ b/chrome/browser/ui/zoom/chrome_zoom_level_prefs.cc
+@@ -81,6 +81,7 @@ std::string ChromeZoomLevelPrefs::GetPartitionKeyForTesting(
+ }
+ 
+ void ChromeZoomLevelPrefs::SetDefaultZoomLevelPref(double level) {
++#if !defined(OS_ANDROID)
+   if (blink::PageZoomValuesEqual(level, host_zoom_map_->GetDefaultZoomLevel()))
+     return;
+ 
+@@ -92,16 +93,19 @@ void ChromeZoomLevelPrefs::SetDefaultZoomLevelPref(double level) {
+   default_zoom_changed_callbacks_.Notify();
+   if (zoom_event_manager_)
+     zoom_event_manager_->OnDefaultZoomLevelChanged();
++#endif
+ }
+ 
+ double ChromeZoomLevelPrefs::GetDefaultZoomLevelPref() const {
+   double default_zoom_level = 0.0;
+ 
++#if !defined(OS_ANDROID)
+   const base::DictionaryValue* default_zoom_level_dictionary =
+       pref_service_->GetDictionary(prefs::kPartitionDefaultZoomLevel);
+   // If no default has been previously set, the default returned is the
+   // value used to initialize default_zoom_level in this function.
+   default_zoom_level_dictionary->GetDouble(partition_key_, &default_zoom_level);
++#endif
+   return default_zoom_level;
+ }
+ 
+@@ -219,6 +223,7 @@ void ChromeZoomLevelPrefs::ExtractPerHostZoomLevels(
+ void ChromeZoomLevelPrefs::InitHostZoomMap(
+     content::HostZoomMap* host_zoom_map) {
+   // This init function must be called only once.
++#if !defined(OS_ANDROID)
+   DCHECK(!host_zoom_map_);
+   DCHECK(host_zoom_map);
+   host_zoom_map_ = host_zoom_map;
+@@ -242,4 +247,5 @@ void ChromeZoomLevelPrefs::InitHostZoomMap(
+   zoom_subscription_ =
+       host_zoom_map_->AddZoomLevelChangedCallback(base::BindRepeating(
+           &ChromeZoomLevelPrefs::OnZoomLevelChanged, base::Unretained(this)));
++#endif
+ }

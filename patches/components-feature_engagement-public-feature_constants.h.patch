@@ -1,0 +1,13 @@
+diff --git a/components/feature_engagement/public/feature_constants.h b/components/feature_engagement/public/feature_constants.h
+index d062cfc485ed8a9a363f7e218a3110e1d19c4406..5593065319860200f9aac79bf74fbfba5dced2db 100644
+--- a/components/feature_engagement/public/feature_constants.h
++++ b/components/feature_engagement/public/feature_constants.h
+@@ -17,7 +17,7 @@ extern const base::Feature kIPHDemoMode;
+ // A feature to ensure all arrays can contain at least one feature.
+ extern const base::Feature kIPHDummyFeature;
+ 
+-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+     defined(OS_CHROMEOS)
+ extern const base::Feature kIPHFocusModeFeature;
+ extern const base::Feature kIPHGlobalMediaControlsFeature;
