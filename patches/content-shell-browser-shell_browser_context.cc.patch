@@ -1,0 +1,19 @@
+diff --git a/content/shell/browser/shell_browser_context.cc b/content/shell/browser/shell_browser_context.cc
+index 8faba962a63cb2b878613595edd0c0b0c2e01c14..06930064a7b8d7f4592e3d7880a4e30f3fc238d2 100644
+--- a/content/shell/browser/shell_browser_context.cc
++++ b/content/shell/browser/shell_browser_context.cc
+@@ -139,12 +139,12 @@ void ShellBrowserContext::FinishInitWhileIOAllowed() {
+   SimpleKeyMap::GetInstance()->Associate(this, key_.get());
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ std::unique_ptr<ZoomLevelDelegate> ShellBrowserContext::CreateZoomLevelDelegate(
+     const base::FilePath&) {
+   return std::unique_ptr<ZoomLevelDelegate>();
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ base::FilePath ShellBrowserContext::GetPath() {
+   return path_;

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/payments/contact_info_editor_view_controller.cc b/chrome/browser/ui/views/payments/contact_info_editor_view_controller.cc
+index 17955d99e7565ede688df14801eccc3943d28cb0..7b808d1abed57dcfe23c51e5c7eb8b1cd4c33f9b 100644
+--- a/chrome/browser/ui/views/payments/contact_info_editor_view_controller.cc
++++ b/chrome/browser/ui/views/payments/contact_info_editor_view_controller.cc
+@@ -92,6 +92,7 @@ base::string16 ContactInfoEditorViewController::GetInitialValueForType(
+ bool ContactInfoEditorViewController::ValidateModelAndSave() {
+   // TODO(crbug.com/712224): Move this method and its helpers to a base class
+   // shared with the Shipping Address editor.
++#if !defined(OS_ANDROID)
+   if (!ValidateInputFields())
+     return false;
+ 
+@@ -111,6 +112,7 @@ bool ContactInfoEditorViewController::ValidateModelAndSave() {
+     std::move(on_added_).Run(*profile);
+     on_edited_.Reset();
+   }
++#endif
+   return true;
+ }
+ 

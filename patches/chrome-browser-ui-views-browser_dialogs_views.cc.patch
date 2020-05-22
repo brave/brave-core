@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/browser_dialogs_views.cc b/chrome/browser/ui/views/browser_dialogs_views.cc
+index e2943e51ac96e5fa1ef4f365636e38451350ad28..57f69c247bb0071003ec172da52ad4a65705c910 100644
+--- a/chrome/browser/ui/views/browser_dialogs_views.cc
++++ b/chrome/browser/ui/views/browser_dialogs_views.cc
+@@ -18,6 +18,7 @@
+ // This file provides definitions of desktop browser dialog-creation methods for
+ // all toolkit-views platforms.
+ // static
++#if !defined(OS_ANDROID)
+ std::unique_ptr<LoginHandler> LoginHandler::Create(
+     const net::AuthChallengeInfo& auth_info,
+     content::WebContents* web_contents,
+@@ -25,6 +26,7 @@ std::unique_ptr<LoginHandler> LoginHandler::Create(
+   return chrome::CreateLoginHandlerViews(auth_info, web_contents,
+                                          std::move(auth_required_callback));
+ }
++#endif
+ 
+ // static
+ void BookmarkEditor::Show(gfx::NativeWindow parent_window,

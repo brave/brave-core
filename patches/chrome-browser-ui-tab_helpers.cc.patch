@@ -1,8 +1,19 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 01ec84c644f83657a87684afbd38d6f670364d96..d9451960f96fe40d737c42b54e0411e80cf92a03 100644
+index 01ec84c644f8..5dd669f87638 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -467,4 +467,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -422,8 +422,10 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+       web_contents);
+   extensions::TabHelper::CreateForWebContents(web_contents);
+   extensions::WebNavigationTabObserver::CreateForWebContents(web_contents);
++#if !defined(OS_ANDROID)
+   if (web_app::AreWebAppsEnabled(profile))
+     web_app::WebAppTabHelper::CreateForWebContents(web_contents);
++#endif
+   if (SiteEngagementService::IsEnabled())
+     web_app::WebAppMetrics::Get(profile);
+ #endif
+@@ -467,4 +469,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
  
    // This is common code for all of us. PLEASE DO YOUR PART to keep it tidy and
    // organized.

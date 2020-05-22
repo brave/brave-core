@@ -1,0 +1,16 @@
+diff --git a/ui/views/controls/button/label_button.cc b/ui/views/controls/button/label_button.cc
+index 12c05efa8c12b5af3e99bca1215ad5201173ff4f..410b3e2c23a533fa6ed1b03ae953ebb515aa05a6 100644
+--- a/ui/views/controls/button/label_button.cc
++++ b/ui/views/controls/button/label_button.cc
+@@ -375,7 +375,11 @@ ui::NativeTheme::State LabelButton::GetThemeState(
+ }
+ 
+ const gfx::Animation* LabelButton::GetThemeAnimation() const {
++#if !defined(OS_ANDROID)
+   return &hover_animation();
++#else
++  return nullptr;
++#endif
+ }
+ 
+ ui::NativeTheme::State LabelButton::GetBackgroundThemeState(

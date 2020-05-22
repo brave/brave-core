@@ -1,0 +1,94 @@
+diff --git a/chrome/browser/ui/page_info/page_info_ui.cc b/chrome/browser/ui/page_info/page_info_ui.cc
+index a12aff6505a9e2b8bda67ac64eab07e68235fd10..7beb97c5bcce5c146fe0e15874ed1b99949b7581 100644
+--- a/chrome/browser/ui/page_info/page_info_ui.cc
++++ b/chrome/browser/ui/page_info/page_info_ui.cc
+@@ -31,7 +31,8 @@
+ 
+ #if defined(OS_ANDROID)
+ #include "chrome/browser/android/android_theme_resources.h"
+-#else
++#endif
++#include "brave/app/vector_icons/vector_icons.h"
+ #include "chrome/app/vector_icons/vector_icons.h"
+ #include "chrome/browser/profiles/profile.h"
+ #include "chrome/common/pref_names.h"
+@@ -40,7 +41,6 @@
+ #include "ui/gfx/color_palette.h"
+ #include "ui/gfx/color_utils.h"
+ #include "ui/gfx/paint_vector_icon.h"
+-#endif
+ 
+ #if BUILDFLAG(FULL_SAFE_BROWSING)
+ #include "components/safe_browsing/content/password_protection/password_protection_service.h"
+@@ -50,12 +50,12 @@ namespace {
+ 
+ const int kInvalidResourceID = -1;
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // The icon size is actually 16, but the vector icons being used generally all
+ // have additional internal padding. Account for this difference by asking for
+ // the vectors in 18x18dip sizes.
+ constexpr int kVectorIconSize = 18;
+-#endif
++//#endif
+ 
+ // The resource IDs for the strings that are displayed on the permissions
+ // button if the permission setting is managed by policy.
+@@ -110,7 +110,7 @@ static_assert(base::size(kPermissionButtonTextIDDefaultSetting) ==
+                   CONTENT_SETTING_NUM_SETTINGS,
+               "kPermissionButtonTextIDDefaultSetting array size is incorrect");
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // The resource IDs for the strings that are displayed on the sound permission
+ // button if the sound permission setting is managed by the user.
+ const int kSoundPermissionButtonTextIDUserManaged[] = {
+@@ -139,7 +139,7 @@ static_assert(
+     base::size(kSoundPermissionButtonTextIDDefaultSetting) ==
+         CONTENT_SETTING_NUM_SETTINGS,
+     "kSoundPermissionButtonTextIDDefaultSetting array size is incorrect");
+-#endif
++//#endif
+ 
+ struct PermissionsUIInfo {
+   ContentSettingsType type;
+@@ -176,9 +176,9 @@ base::span<const PermissionsUIInfo> GetContentSettingsUIInfo() {
+          ? IDS_PAGE_INFO_TYPE_SENSORS
+          : IDS_PAGE_INFO_TYPE_MOTION_SENSORS},
+     {ContentSettingsType::USB_GUARD, IDS_PAGE_INFO_TYPE_USB},
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+     {ContentSettingsType::SERIAL_GUARD, IDS_PAGE_INFO_TYPE_SERIAL},
+-#endif
++//#endif
+     {ContentSettingsType::NATIVE_FILE_SYSTEM_WRITE_GUARD,
+      IDS_PAGE_INFO_TYPE_NATIVE_FILE_SYSTEM_WRITE},
+     {ContentSettingsType::BLUETOOTH_SCANNING,
+@@ -554,7 +554,7 @@ int PageInfoUI::GetConnectionIconID(PageInfo::SiteConnectionStatus status) {
+   }
+   return resource_id;
+ }
+-#else  // !defined(OS_ANDROID)
++#endif
+ // static
+ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+                                                    SkColor related_text_color) {
+@@ -618,6 +618,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+     case ContentSettingsType::USB_GUARD:
+       icon = &vector_icons::kUsbIcon;
+       break;
++    case ContentSettingsType::AUTOPLAY:
++      icon = &kAutoplayStatusIcon;
++      break;
+     case ContentSettingsType::SERIAL_GUARD:
+       icon = &vector_icons::kSerialPortIcon;
+       break;
+@@ -705,7 +708,6 @@ const gfx::ImageSkia PageInfoUI::GetVrSettingsIcon(SkColor related_text_color) {
+       kVrHeadsetIcon, kVectorIconSize,
+       color_utils::DeriveDefaultIconColor(related_text_color));
+ }
+-#endif
+ 
+ // static
+ bool PageInfoUI::ContentSettingsTypeInPageInfo(ContentSettingsType type) {

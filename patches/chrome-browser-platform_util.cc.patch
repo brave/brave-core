@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/platform_util.cc b/chrome/browser/platform_util.cc
+index 0a12f09c6f73754e0dbaaa283c86929e29e4227c..76888206b6ece9b8a14bcff2ba7136dd8a927806 100644
+--- a/chrome/browser/platform_util.cc
++++ b/chrome/browser/platform_util.cc
+@@ -21,6 +21,7 @@ namespace {
+ 
+ bool shell_operations_allowed = true;
+ 
++#if !defined(OS_ANDROID)
+ void VerifyAndOpenItemOnBlockingThread(const base::FilePath& path,
+                                        OpenItemType type,
+                                        const OpenOperationCallback& callback) {
+@@ -44,6 +45,7 @@ void VerifyAndOpenItemOnBlockingThread(const base::FilePath& path,
+     base::PostTask(FROM_HERE, {BrowserThread::UI},
+                    base::BindOnce(callback, OPEN_SUCCEEDED));
+ }
++#endif
+ 
+ }  // namespace
+ 
+@@ -55,6 +57,7 @@ void DisableShellOperationsForTesting() {
+ 
+ }  // namespace internal
+ 
++#if !defined(OS_ANDROID)
+ void OpenItem(Profile* profile,
+               const base::FilePath& full_path,
+               OpenItemType item_type,
+@@ -72,6 +75,7 @@ void OpenItem(Profile* profile,
+       base::BindOnce(&VerifyAndOpenItemOnBlockingThread, full_path, item_type,
+                      callback));
+ }
++#endif
+ 
+ bool IsBrowserLockedFullscreen(const Browser* browser) {
+   return false;

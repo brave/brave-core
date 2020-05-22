@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/search/instant_service_factory.h b/chrome/browser/search/instant_service_factory.h
+index 2db314b9061759a8b048b06eb6e7c815ae79da6d..d4d4386ebb39d1f72a9ac62655deb1cb41024d20 100644
+--- a/chrome/browser/search/instant_service_factory.h
++++ b/chrome/browser/search/instant_service_factory.h
+@@ -10,9 +10,9 @@
+ #include "build/build_config.h"
+ #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ class InstantService;
+ class Profile;

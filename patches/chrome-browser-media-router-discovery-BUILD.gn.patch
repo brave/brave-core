@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/media/router/discovery/BUILD.gn b/chrome/browser/media/router/discovery/BUILD.gn
+index 902ab86980a7f516d49387ccb4424e60f67041e3..7bbb87740173d203ea5656acd8208f9c412debeb 100644
+--- a/chrome/browser/media/router/discovery/BUILD.gn
++++ b/chrome/browser/media/router/discovery/BUILD.gn
+@@ -2,7 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
+-assert(!is_android)
++#assert(!is_android)
+ 
+ static_library("discovery") {
+   inputs = [ "$root_gen_dir/chrome/grit/generated_resources.h" ]
+@@ -75,10 +75,14 @@ static_library("discovery") {
+     sources += [ "discovery_network_list_wifi_linux.cc" ]
+   }
+ 
+-  if (is_posix) {
++  if (!is_android && is_posix) {
+     sources += [ "discovery_network_list_posix.cc" ]
+   }
+ 
++  if (is_android) {
++    sources += [ "discovery_network_list_android.cc" ]
++  }
++
+   if (is_mac) {
+     sources += [ "discovery_network_list_wifi_mac.mm" ]
+     libs = [ "CoreWLAN.framework" ]

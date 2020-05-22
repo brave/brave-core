@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/download/download_commands.cc b/chrome/browser/download/download_commands.cc
+index d2553350985bb1a5322eae73eebcf03149b0ccbb..176a97be744ee3c3fa3919bf58dd0e682fcdaedf 100644
+--- a/chrome/browser/download/download_commands.cc
++++ b/chrome/browser/download/download_commands.cc
+@@ -26,7 +26,7 @@
+ #include "net/base/url_util.h"
+ #include "ui/base/clipboard/scoped_clipboard_writer.h"
+ 
+-#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX)
+ #include "chrome/browser/ui/browser.h"
+ #include "chrome/browser/ui/browser_finder.h"
+ #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
+@@ -153,7 +153,7 @@ void DownloadCommands::ExecuteCommand(Command command) {
+   model_->ExecuteCommand(this, command);
+ }
+ 
+-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
+ 
+ Browser* DownloadCommands::GetBrowser() const {
+   chrome::ScopedTabbedBrowserDisplayer browser_displayer(model_->profile());
+@@ -178,6 +178,8 @@ bool DownloadCommands::CanOpenPdfInSystemViewer() const {
+                                           : true);
+ #elif defined(OS_MACOSX) || defined(OS_LINUX)
+   return IsDownloadPdf();
++#elif defined(OS_ANDROID)
++  return false;
+ #endif
+ }
+ 

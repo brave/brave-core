@@ -1,0 +1,128 @@
+diff --git a/chrome/browser/extensions/extension_install_prompt.cc b/chrome/browser/extensions/extension_install_prompt.cc
+index b03355f04f54ffe007d94a3899194e5117ea718f..316311bb803cf65864dea70612c8d081d4ed07dd 100644
+--- a/chrome/browser/extensions/extension_install_prompt.cc
++++ b/chrome/browser/extensions/extension_install_prompt.cc
+@@ -13,6 +13,7 @@
+ #include "base/strings/string_util.h"
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/browser/extensions/brave_extension_install_prompt.h"
+ #include "chrome/browser/extensions/extension_install_prompt_show_params.h"
+ #include "chrome/browser/extensions/extension_util.h"
+ #include "chrome/browser/extensions/permissions_updater.h"
+@@ -20,6 +21,9 @@
+ #include "chrome/browser/ui/extensions/extension_install_ui_factory.h"
+ #include "chrome/grit/generated_resources.h"
+ #include "chrome/grit/theme_resources.h"
++#include "components/app_modal/javascript_app_modal_dialog.h"
++#include "components/app_modal/javascript_dialog_manager.h"
++#include "components/app_modal/native_app_modal_dialog.h"
+ #include "components/strings/grit/components_strings.h"
+ #include "content/public/browser/web_contents.h"
+ #include "extensions/browser/disable_reason.h"
+@@ -369,6 +373,17 @@ base::string16 ExtensionInstallPrompt::Prompt::GetUserCount() const {
+   return base::string16();
+ }
+ 
++base::string16 ExtensionInstallPrompt::Prompt::GetPermissionsAsString() const {
++  base::string16 result = base::string16();
++  result = result + GetDialogTitle() + base::ASCIIToUTF16("\n") + base::ASCIIToUTF16("\n");
++  result = result + GetPermissionsHeading() + base::ASCIIToUTF16("\n") + base::ASCIIToUTF16("\n");
++  result = result + base::JoinString(prompt_permissions_.permissions,
++                                     base::ASCIIToUTF16("\n")) + base::ASCIIToUTF16("\n");
++  result = result + base::JoinString(prompt_permissions_.details,
++                                     base::ASCIIToUTF16("\n"));
++  return result;
++}
++
+ size_t ExtensionInstallPrompt::Prompt::GetPermissionCount() const {
+   return prompt_permissions_.permissions.size();
+ }
+@@ -486,6 +501,7 @@ ExtensionInstallPrompt::ExtensionInstallPrompt(content::WebContents* contents)
+                    : nullptr),
+       extension_(nullptr),
+       install_ui_(extensions::CreateExtensionInstallUI(profile_)),
++      contents_(contents),
+       show_params_(new ExtensionInstallPromptShowParams(contents)),
+       did_call_show_dialog_(false) {}
+ 
+@@ -507,7 +523,7 @@ void ExtensionInstallPrompt::ShowDialog(
+     const SkBitmap* icon,
+     const ShowDialogCallback& show_dialog_callback) {
+   ShowDialog(done_callback, extension, icon,
+-             std::make_unique<Prompt>(INSTALL_PROMPT), show_dialog_callback);
++             std::make_unique<BravePrompt>(INSTALL_PROMPT), show_dialog_callback);
+ }
+ 
+ void ExtensionInstallPrompt::ShowDialog(
+@@ -607,6 +623,37 @@ void ExtensionInstallPrompt::LoadImageIfNeeded() {
+                                          weak_factory_.GetWeakPtr()));
+ }
+ 
++// Ensures that OnDialogClosed is only called once.
++class CloseDialogCallbackWrapper
++    : public base::RefCountedThreadSafe<CloseDialogCallbackWrapper> {
++ public:
++  explicit CloseDialogCallbackWrapper(ExtensionInstallPrompt::DoneCallback callback)
++      : callback_(std::move(callback)) {}
++
++  void Run(bool dialog_was_suppressed,
++           bool success,
++           const base::string16& user_input) {
++  if (success) {
++    LOG(INFO) << "[EXTENSIONS] We received result from extension dialog (ACCEPTED)";
++    base::ThreadTaskRunnerHandle::Get()->PostTask(
++         FROM_HERE, base::BindOnce(std::move(callback_),
++                                  ExtensionInstallPrompt::Result::ACCEPTED));
++  } else {
++    LOG(INFO) << "[EXTENSIONS] We received result from extension dialog (REJECTED)";
++    base::ThreadTaskRunnerHandle::Get()->PostTask(
++         FROM_HERE,
++         base::BindOnce(std::move(callback_),
++                        ExtensionInstallPrompt::Result::USER_CANCELED));
++  }
++  }
++
++ private:
++  friend class base::RefCountedThreadSafe<CloseDialogCallbackWrapper>;
++  ~CloseDialogCallbackWrapper() {}
++
++  ExtensionInstallPrompt::DoneCallback callback_;
++};
++
+ void ExtensionInstallPrompt::ShowConfirmation() {
+   std::unique_ptr<const PermissionSet> permissions_to_display;
+ 
+@@ -641,6 +688,24 @@ void ExtensionInstallPrompt::ShowConfirmation() {
+   if (AutoConfirmPromptIfEnabled())
+     return;
+ 
++#if defined(OS_ANDROID)
++  if (contents_) {
++    LOG(INFO) << "[EXTENSIONS] contents_ is not empty, displaying prompt";
++    scoped_refptr<CloseDialogCallbackWrapper> wrapper = new CloseDialogCallbackWrapper(std::move(done_callback_));
++
++    if (permissions_to_display) {
++      bool ignored;
++      app_modal::JavaScriptDialogManager::GetInstance()->RunJavaScriptDialog(
++          contents_, contents_->GetMainFrame(), content::JAVASCRIPT_DIALOG_TYPE_CONFIRM,
++          prompt_->GetPermissionsAsString(), base::string16(),
++                   base::BindOnce(&CloseDialogCallbackWrapper::Run, wrapper, false),
++                   &ignored);
++    }
++  } else {
++    LOG(INFO) << "[EXTENSIONS] contents_ is empty, skipping prompt";
++  }
++#else
++
+   if (show_dialog_callback_.is_null())
+     show_dialog_callback_ = GetDefaultShowDialogCallback();
+   // TODO(https://crbug.com/957713): Use OnceCallback and eliminate the need for
+@@ -648,6 +713,7 @@ void ExtensionInstallPrompt::ShowConfirmation() {
+   auto cb = std::move(done_callback_);
+   std::move(show_dialog_callback_)
+       .Run(show_params_.get(), cb, std::move(prompt_));
++#endif
+ }
+ 
+ bool ExtensionInstallPrompt::AutoConfirmPromptIfEnabled() {

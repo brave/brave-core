@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/search/local_ntp_source.h b/chrome/browser/search/local_ntp_source.h
+index 0d299a5f2600e50287a344acf4754de0e5bc57a3..1af9c76ed20196fe51188417ca67a3494d3a8136 100644
+--- a/chrome/browser/search/local_ntp_source.h
++++ b/chrome/browser/search/local_ntp_source.h
+@@ -26,9 +26,9 @@
+ #include "components/prefs/pref_registry_simple.h"
+ #include "content/public/browser/url_data_source.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ struct OneGoogleBarData;
+ struct PromoData;

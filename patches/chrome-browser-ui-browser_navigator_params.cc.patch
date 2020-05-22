@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/ui/browser_navigator_params.cc b/chrome/browser/ui/browser_navigator_params.cc
+index 84fe1cd9e251de1399d0ba507e174c2f20c222c1..2ece10263b812c0e74809908e38cc2eded1eea09 100644
+--- a/chrome/browser/ui/browser_navigator_params.cc
++++ b/chrome/browser/ui/browser_navigator_params.cc
+@@ -13,9 +13,9 @@
+ #include "content/public/browser/render_frame_host.h"
+ #include "content/public/browser/web_contents.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/browser.h"
+-#endif
++//#endif
+ 
+ using content::GlobalRequestID;
+ using content::NavigationController;
+@@ -24,7 +24,7 @@ using content::WebContents;
+ #if defined(OS_ANDROID)
+ NavigateParams::NavigateParams(std::unique_ptr<WebContents> contents_to_insert)
+     : contents_to_insert(std::move(contents_to_insert)) {}
+-#else
++#endif  // !defined(OS_ANDROID)
+ NavigateParams::NavigateParams(Browser* a_browser,
+                                const GURL& a_url,
+                                ui::PageTransition a_transition)
+@@ -33,7 +33,6 @@ NavigateParams::NavigateParams(Browser* a_browser,
+ NavigateParams::NavigateParams(Browser* a_browser,
+                                std::unique_ptr<WebContents> contents_to_insert)
+     : contents_to_insert(std::move(contents_to_insert)), browser(a_browser) {}
+-#endif  // !defined(OS_ANDROID)
+ 
+ NavigateParams::NavigateParams(Profile* a_profile,
+                                const GURL& a_url,

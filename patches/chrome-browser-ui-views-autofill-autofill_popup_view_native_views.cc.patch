@@ -1,0 +1,50 @@
+diff --git a/chrome/browser/ui/views/autofill/autofill_popup_view_native_views.cc b/chrome/browser/ui/views/autofill/autofill_popup_view_native_views.cc
+index 5ee6a9b009b8df7107b7ef07cb6ca89e2f37e99f..04700f010bd02fbd7fa565f0b0a71be69b2f2874 100644
+--- a/chrome/browser/ui/views/autofill/autofill_popup_view_native_views.cc
++++ b/chrome/browser/ui/views/autofill/autofill_popup_view_native_views.cc
+@@ -407,7 +407,9 @@ void AutofillPopupItemView::OnGestureEvent(ui::GestureEvent* event) {
+ }
+ 
+ void AutofillPopupItemView::CreateContent() {
++#if !defined(OS_ANDROID)
+   AutofillPopupController* controller = popup_view()->controller();
++#endif
+ 
+   auto* layout_manager = SetLayoutManager(std::make_unique<views::BoxLayout>(
+       views::BoxLayout::Orientation::kHorizontal,
+@@ -416,8 +418,12 @@ void AutofillPopupItemView::CreateContent() {
+   layout_manager->set_cross_axis_alignment(
+       views::BoxLayout::CrossAxisAlignment::kCenter);
+ 
++#if !defined(OS_ANDROID)
+   const gfx::ImageSkia icon =
+       controller->layout_model().GetIconImage(line_number());
++#else
++  const gfx::ImageSkia icon = gfx::ImageSkia();
++#endif
+ 
+   if (!icon.isNull()) {
+     AddIcon(icon);
+@@ -681,7 +687,9 @@ void AutofillPopupFooterView::CreateContent() {
+       /*right=*/0,
+       /*color=*/popup_view()->GetSeparatorColor()));
+ 
++#if !defined(OS_ANDROID)
+   AutofillPopupController* controller = popup_view()->controller();
++#endif
+ 
+   views::BoxLayout* layout_manager =
+       SetLayoutManager(std::make_unique<views::BoxLayout>(
+@@ -691,8 +699,12 @@ void AutofillPopupFooterView::CreateContent() {
+   layout_manager->set_cross_axis_alignment(
+       views::BoxLayout::CrossAxisAlignment::kStretch);
+ 
++#if !defined(OS_ANDROID)
+   const gfx::ImageSkia icon =
+       controller->layout_model().GetIconImage(line_number());
++#else
++  const gfx::ImageSkia icon = gfx::ImageSkia();
++#endif
+ 
+   // A FooterView shows an icon, if any, on the trailing (right in LTR) side,
+   // but the Show Account Cards context is an anomaly. Its icon is on the

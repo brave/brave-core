@@ -1,0 +1,14 @@
+diff --git a/ui/events/event.h b/ui/events/event.h
+index f38982eda75b8d16760b2e70fea21d4be344d34d..fb6143ee6ed5937e7025b2bfc2d05c25e90a4995 100644
+--- a/ui/events/event.h
++++ b/ui/events/event.h
+@@ -29,6 +29,9 @@
+ #include "ui/gfx/geometry/point.h"
+ #include "ui/gfx/geometry/point_conversions.h"
+ #include "ui/latency/latency_info.h"
++#if defined(OS_ANDROID)
++#include "ui/android/window_android.h"
++#endif
+ 
+ namespace gfx {
+ class Transform;

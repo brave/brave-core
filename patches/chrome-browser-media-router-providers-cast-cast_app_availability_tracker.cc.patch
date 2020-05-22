@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/media/router/providers/cast/cast_app_availability_tracker.cc b/chrome/browser/media/router/providers/cast/cast_app_availability_tracker.cc
+index 543d3ec7b7627989d5db29eb8bcfde8c526ddc15..357ee6141fb6edd23f248e46f957dec677357554 100644
+--- a/chrome/browser/media/router/providers/cast/cast_app_availability_tracker.cc
++++ b/chrome/browser/media/router/providers/cast/cast_app_availability_tracker.cc
+@@ -95,10 +95,12 @@ std::vector<CastMediaSource> CastAppAvailabilityTracker::GetSupportedSources(
+ 
+   // Find all registered sources whose query results contains the sink ID.
+   std::vector<CastMediaSource> sources;
++#if !defined(OS_ANDROID)
+   for (const auto& source : registered_sources_) {
+     if (source.second.ContainsAnyAppFrom(supported_app_ids))
+       sources.push_back(source.second);
+   }
++#endif
+   return sources;
+ }
+ 

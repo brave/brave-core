@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/hid/hid_chooser_context.cc b/chrome/browser/hid/hid_chooser_context.cc
+index dbf8db1cafd6b39977991c8b6dc7646d0425e6ae..b6ec708ebeef450c2ba34339ea609d2d9352dbc7 100644
+--- a/chrome/browser/hid/hid_chooser_context.cc
++++ b/chrome/browser/hid/hid_chooser_context.cc
+@@ -178,10 +178,12 @@ void HidChooserContext::EnsureHidManagerConnection() {
+   if (hid_manager_)
+     return;
+ 
++#if !defined(OS_ANDROID)
+   mojo::PendingRemote<device::mojom::HidManager> manager;
+   content::GetDeviceService().BindHidManager(
+       manager.InitWithNewPipeAndPassReceiver());
+   SetUpHidManagerConnection(std::move(manager));
++#endif
+ }
+ 
+ void HidChooserContext::SetUpHidManagerConnection(

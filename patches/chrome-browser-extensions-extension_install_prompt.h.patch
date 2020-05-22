@@ -1,0 +1,55 @@
+diff --git a/chrome/browser/extensions/extension_install_prompt.h b/chrome/browser/extensions/extension_install_prompt.h
+index 21899f6a1ca8ebb9ca04837ef700f6251de2fa5e..fa455ff0e5182dc235e17534788885a09104fcfe 100644
+--- a/chrome/browser/extensions/extension_install_prompt.h
++++ b/chrome/browser/extensions/extension_install_prompt.h
+@@ -20,6 +20,7 @@
+ #include "base/threading/thread_checker.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/extensions/install_prompt_permissions.h"
++#include "components/app_modal/javascript_app_modal_dialog.h"
+ #include "extensions/common/permissions/permission_message.h"
+ #include "third_party/skia/include/core/SkBitmap.h"
+ #include "ui/gfx/image/image.h"
+@@ -88,7 +89,7 @@ class ExtensionInstallPrompt {
+   class Prompt {
+    public:
+     explicit Prompt(PromptType type);
+-    ~Prompt();
++    virtual ~Prompt();
+ 
+     void AddPermissionSet(const extensions::PermissionSet& permissions);
+     void AddPermissionMessages(
+@@ -104,7 +105,7 @@ class ExtensionInstallPrompt {
+     PromptType type() const { return type_; }
+ 
+     // Getters for UI element labels.
+-    base::string16 GetDialogTitle() const;
++    virtual base::string16 GetDialogTitle() const;
+     int GetDialogButtons() const;
+     // Returns the empty string when there should be no "accept" button.
+     base::string16 GetAcceptButtonLabel() const;
+@@ -127,6 +128,7 @@ class ExtensionInstallPrompt {
+     void AppendRatingStars(StarAppender appender, void* data) const;
+     base::string16 GetRatingCount() const;
+     base::string16 GetUserCount() const;
++    base::string16 GetPermissionsAsString() const;
+     size_t GetPermissionCount() const;
+     size_t GetPermissionsDetailsCount() const;
+     base::string16 GetPermission(size_t index) const;
+@@ -168,6 +170,7 @@ class ExtensionInstallPrompt {
+ 
+    private:
+     friend class base::RefCountedThreadSafe<Prompt>;
++    friend class BravePrompt;
+ 
+     bool ShouldDisplayRevokeButton() const;
+ 
+@@ -345,6 +348,8 @@ class ExtensionInstallPrompt {
+   // The object responsible for doing the UI specific actions.
+   std::unique_ptr<extensions::ExtensionInstallUI> install_ui_;
+ 
++  content::WebContents* contents_;
++
+   // Parameters to show the confirmation UI.
+   std::unique_ptr<ExtensionInstallPromptShowParams> show_params_;
+ 

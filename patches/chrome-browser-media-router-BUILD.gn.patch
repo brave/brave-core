@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/media/router/BUILD.gn b/chrome/browser/media/router/BUILD.gn
+index 75ff9f3db47188f7673a43653314588edf727100..f15542ff75dc6934f2b112f0140516a59916870b 100644
+--- a/chrome/browser/media/router/BUILD.gn
++++ b/chrome/browser/media/router/BUILD.gn
+@@ -213,7 +213,7 @@ static_library("test_support") {
+     "test/test_helper.h",
+   ]
+ 
+-  if (enable_extensions) {
++  if (!is_android && enable_extensions) {
+     deps += [
+       "discovery",
+       "//chrome/common/media_router/mojom:media_router",

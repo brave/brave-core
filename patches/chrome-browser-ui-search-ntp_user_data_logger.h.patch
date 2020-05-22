@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/search/ntp_user_data_logger.h b/chrome/browser/ui/search/ntp_user_data_logger.h
+index a61a8d44e33b30ec85ca2465ba42173a89f46faf..c844083cc70f6d7c39e1688f2b318eac1b0b4989 100644
+--- a/chrome/browser/ui/search/ntp_user_data_logger.h
++++ b/chrome/browser/ui/search/ntp_user_data_logger.h
+@@ -21,9 +21,9 @@
+ #include "content/public/browser/web_contents_observer.h"
+ #include "content/public/browser/web_contents_user_data.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ namespace content {
+ class WebContents;

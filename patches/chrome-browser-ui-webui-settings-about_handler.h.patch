@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/webui/settings/about_handler.h b/chrome/browser/ui/webui/settings/about_handler.h
+index d5859604fe9b2ecd94d1ba850ef41208dbb052a3..8bd2f27b758dd906ee6f73a1b52fd696bbe62738 100644
+--- a/chrome/browser/ui/webui/settings/about_handler.h
++++ b/chrome/browser/ui/webui/settings/about_handler.h
+@@ -173,8 +173,10 @@ class AboutHandler : public settings::SettingsPageUIHandler,
+                           chromeos::UpdateEngineClient::EolInfo eol_info);
+ #endif
+ 
++#if !defined(OS_ANDROID)
+   // Specialized instance of the VersionUpdater used to update the browser.
+   std::unique_ptr<VersionUpdater> version_updater_;
++#endif
+ 
+   // Used to observe changes in the |kDeviceAutoUpdateDisabled| policy.
+   std::unique_ptr<policy::PolicyChangeRegistrar> policy_registrar_;

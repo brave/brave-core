@@ -1,0 +1,13 @@
+diff --git a/chrome/common/chrome_switches.cc b/chrome/common/chrome_switches.cc
+index 5104073cf0634cb78b573115df91ac3141a195ae..290a46a378233ff5ac310e7fcbb47d8f243fdc06 100644
+--- a/chrome/common/chrome_switches.cc
++++ b/chrome/common/chrome_switches.cc
+@@ -846,7 +846,7 @@ const char kAllowNaClFileHandleAPI[]        = "allow-nacl-file-handle-api";
+ const char kAllowNaClSocketAPI[]            = "allow-nacl-socket-api";
+ #endif
+ 
+-#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
+ const char kEnableNewAppMenuIcon[] = "enable-new-app-menu-icon";
+ 
+ // Causes the browser to launch directly in guest mode.

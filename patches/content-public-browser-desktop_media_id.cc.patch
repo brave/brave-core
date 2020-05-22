@@ -1,0 +1,34 @@
+diff --git a/content/public/browser/desktop_media_id.cc b/content/public/browser/desktop_media_id.cc
+index 9330ec65d4495fc46982f0a1a19dd0b5a11b8c7b..29b86280ae7d787e058ab87530db15db281f54a0 100644
+--- a/content/public/browser/desktop_media_id.cc
++++ b/content/public/browser/desktop_media_id.cc
+@@ -27,22 +27,28 @@ const DesktopMediaID::Id DesktopMediaID::kNullId = 0;
+ // static
+ const DesktopMediaID::Id DesktopMediaID::kFakeId = -3;
+ 
+-#if defined(USE_AURA) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(USE_AURA) || defined(OS_MACOSX)
+ // static
+ DesktopMediaID DesktopMediaID::RegisterNativeWindow(DesktopMediaID::Type type,
+                                                     gfx::NativeWindow window) {
+   DCHECK(type == TYPE_SCREEN || type == TYPE_WINDOW);
+   DCHECK(window);
+   DesktopMediaID media_id(type, kNullId);
++#if !defined(OS_ANDROID)
+   media_id.window_id =
+       DesktopMediaWindowRegistry::GetInstance()->RegisterWindow(window);
++#endif
+   return media_id;
+ }
+ 
+ // static
+ gfx::NativeWindow DesktopMediaID::GetNativeWindowById(
+     const DesktopMediaID& id) {
++#if !defined(OS_ANDROID)
+   return DesktopMediaWindowRegistry::GetInstance()->GetWindowById(id.window_id);
++#else
++  return gfx::NativeWindow();
++#endif
+ }
+ #endif
+ 

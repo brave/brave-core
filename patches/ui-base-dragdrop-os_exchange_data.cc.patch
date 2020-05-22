@@ -1,0 +1,22 @@
+diff --git a/ui/base/dragdrop/os_exchange_data.cc b/ui/base/dragdrop/os_exchange_data.cc
+index 4af8c7b6fcd34551d008d93af553d34fa7c65d3d..b89e23a0575216f7d27a80966f514453f4d479ae 100644
+--- a/ui/base/dragdrop/os_exchange_data.cc
++++ b/ui/base/dragdrop/os_exchange_data.cc
+@@ -114,7 +114,7 @@ bool OSExchangeData::HasAnyFormat(
+   if ((formats & FILE_CONTENTS) != 0 && provider_->HasFileContents())
+     return true;
+ #endif
+-#if defined(USE_AURA)
++#if defined(OS_ANDROID) || defined(USE_AURA)
+   if ((formats & HTML) != 0 && provider_->HasHtml())
+     return true;
+ #endif
+@@ -159,7 +159,7 @@ void OSExchangeData::SetDownloadFileInfo(DownloadFileInfo* download) {
+ }
+ #endif
+ 
+-#if defined(USE_AURA)
++#if defined(OS_ANDROID) || defined(USE_AURA)
+ bool OSExchangeData::HasHtml() const {
+   return provider_->HasHtml();
+ }

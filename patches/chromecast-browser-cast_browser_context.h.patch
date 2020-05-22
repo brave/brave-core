@@ -1,0 +1,17 @@
+diff --git a/chromecast/browser/cast_browser_context.h b/chromecast/browser/cast_browser_context.h
+index 7b0b36c8e0fd5e5fa4b5faa546020d20616fad4f..b2e5084d13d98c17304e7a5560866a4091f29cd1 100644
+--- a/chromecast/browser/cast_browser_context.h
++++ b/chromecast/browser/cast_browser_context.h
+@@ -25,10 +25,10 @@ class CastBrowserContext final : public content::BrowserContext {
+   ~CastBrowserContext() override;
+ 
+   // BrowserContext implementation:
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   std::unique_ptr<content::ZoomLevelDelegate> CreateZoomLevelDelegate(
+       const base::FilePath& partition_path) override;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+   base::FilePath GetPath() override;
+   bool IsOffTheRecord() override;
+   content::ResourceContext* GetResourceContext() override;

@@ -1,0 +1,18 @@
+diff --git a/content/public/browser/content_browser_client.cc b/content/public/browser/content_browser_client.cc
+index bcdc73fdf89d46e267f0c9568e46172ec89f9f23..d699aeb368e04f47c55bd2f06b8b98b31eda7ac9 100644
+--- a/content/public/browser/content_browser_client.cc
++++ b/content/public/browser/content_browser_client.cc
+@@ -850,11 +850,11 @@ void ContentBrowserClient::CreateWebUsbService(
+     RenderFrameHost* render_frame_host,
+     mojo::PendingReceiver<blink::mojom::WebUsbService> receiver) {}
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ SerialDelegate* ContentBrowserClient::GetSerialDelegate() {
+   return nullptr;
+ }
+-#endif
++//#endif
+ 
+ HidDelegate* ContentBrowserClient::GetHidDelegate() {
+   return nullptr;

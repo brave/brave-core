@@ -1,0 +1,22 @@
+diff --git a/ui/base/dragdrop/os_exchange_data_provider_factory.cc b/ui/base/dragdrop/os_exchange_data_provider_factory.cc
+index 4c5fbfbc079a29a76d01df7cbf03f456e31bce9e..3e8199ebcaa012fdb0aa07ea2b0c1fdc2d7a2e97 100644
+--- a/ui/base/dragdrop/os_exchange_data_provider_factory.cc
++++ b/ui/base/dragdrop/os_exchange_data_provider_factory.cc
+@@ -14,6 +14,8 @@
+ #include "ui/base/dragdrop/os_exchange_data_provider_builder_mac.h"
+ #elif defined(OS_WIN)
+ #include "ui/base/dragdrop/os_exchange_data_provider_win.h"
++#elif defined(OS_ANDROID)
++#include "brave/ui/base/dragdrop/os_exchange_data_provider_android.h"
+ #endif
+ 
+ namespace ui {
+@@ -33,6 +35,8 @@ OSExchangeDataProviderFactory::CreateProvider() {
+   // TODO(crbug.com/980371): Implement OSExchangeDataProvider for Fuchsia.
+   NOTIMPLEMENTED();
+   return nullptr;
++#elif defined(OS_ANDROID)
++  return std::make_unique<OSExchangeDataProviderAndroid>();
+ #else
+ #error "Unknown operating system"
+ #endif

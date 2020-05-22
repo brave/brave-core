@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-index 59e399de0f7bdf299fdebfb747d471a7e0abcd34..25d44423224e8e54205c1a2b9e4209308462b4e1 100644
+index 59e399de0f7b..3cd0b2748021 100644
 --- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 +++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 @@ -11,6 +11,7 @@
@@ -10,7 +10,90 @@ index 59e399de0f7bdf299fdebfb747d471a7e0abcd34..25d44423224e8e54205c1a2b9e420930
  #include "cc/paint/paint_flags.h"
  #include "chrome/browser/ui/browser.h"
  #include "chrome/browser/ui/browser_otr_state.h"
-@@ -246,7 +247,7 @@ void BrowserAppMenuButton::ShowMenu(int run_types) {
+@@ -53,9 +54,11 @@
+ 
+ namespace {
+ 
++#if !defined(OS_ANDROID)
+ // Cycle duration of ink drop pulsing animation used for in-product help.
+ constexpr base::TimeDelta kFeaturePromoPulseDuration =
+     base::TimeDelta::FromMilliseconds(800);
++#endif
+ 
+ // Max inset for pulsing animation.
+ constexpr float kFeaturePromoPulseInsetDip = 3.0f;
+@@ -72,13 +75,18 @@ class PulsingInkDropMask : public views::AnimationDelegateViews,
+                      float max_inset)
+       : AnimationDelegateViews(layer_container),
+         views::InkDropMask(layer_size),
++        margins_(margins)
++#if !defined(OS_ANDROID)
+         layer_container_(layer_container),
+-        margins_(margins),
+         normal_corner_radius_(normal_corner_radius),
+         max_inset_(max_inset),
+-        throb_animation_(this) {
++        throb_animation_(this)
++#endif
++        {
++#if !defined(OS_ANDROID)
+     throb_animation_.SetThrobDuration(kFeaturePromoPulseDuration);
+     throb_animation_.StartThrobbing(-1);
++#endif
+   }
+ 
+  private:
+@@ -93,16 +101,19 @@ class PulsingInkDropMask : public views::AnimationDelegateViews,
+     gfx::RectF bounds(layer()->bounds());
+     bounds.Inset(margins_);
+ 
++#if !defined(OS_ANDROID)
+     const float current_inset =
+         throb_animation_.CurrentValueBetween(0.0f, max_inset_);
+     bounds.Inset(gfx::InsetsF(current_inset));
+     const float corner_radius = normal_corner_radius_ - current_inset;
+ 
+     recorder.canvas()->DrawRoundRect(bounds, corner_radius, flags);
++#endif
+   }
+ 
+   // views::AnimationDelegateViews:
+   void AnimationProgressed(const gfx::Animation* animation) override {
++#if !defined(OS_ANDROID)
+     DCHECK_EQ(animation, &throb_animation_);
+     layer()->SchedulePaint(gfx::Rect(layer()->size()));
+ 
+@@ -111,17 +122,21 @@ class PulsingInkDropMask : public views::AnimationDelegateViews,
+     // on screen. TODO(crbug.com/935808): remove this workaround once the bug is
+     // fixed.
+     layer_container_->SchedulePaint();
++#endif
+   }
+ 
++#if !defined(OS_ANDROID)
+   // The View that contains the InkDrop layer we're masking. This must outlive
+   // our instance.
+   views::View* const layer_container_;
++#endif
+ 
+   // Margins between the layer bounds and the visible ink drop. We use this
+   // because sometimes the View we're masking is larger than the ink drop we
+   // want to show.
+   const gfx::Insets margins_;
+ 
++#if !defined(OS_ANDROID)
+   // Normal corner radius of the ink drop without animation. This is also the
+   // corner radius at the largest instant of the animation.
+   const float normal_corner_radius_;
+@@ -130,6 +145,7 @@ class PulsingInkDropMask : public views::AnimationDelegateViews,
+   const float max_inset_;
+ 
+   gfx::ThrobAnimation throb_animation_;
++#endif
+ };
+ 
+ }  // namespace
+@@ -246,7 +262,7 @@ void BrowserAppMenuButton::ShowMenu(int run_types) {
        promo_feature_ == InProductHelpFeature::kReopenTab;
  
    RunMenu(

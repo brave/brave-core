@@ -1,0 +1,18 @@
+diff --git a/ui/android/window_android.h b/ui/android/window_android.h
+index b5781ba702b69fb0dce8903eadeb27d3c56c213e..919b4d7c7940aba4e87415159a86735a984d6e0a 100644
+--- a/ui/android/window_android.h
++++ b/ui/android/window_android.h
+@@ -50,6 +50,13 @@ class UI_ANDROID_EXPORT WindowAndroid : public ViewAndroid {
+ 
+   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
+ 
++  static void ConvertPointToTarget(const WindowAndroid* source,
++                                   const WindowAndroid* target,
++                                   gfx::PointF* point);
++  static void ConvertPointToTarget(const WindowAndroid* source,
++                                   const WindowAndroid* target,
++                                   gfx::Point* point);
++
+   // Compositor callback relay.
+   void OnCompositingDidCommit();
+ 

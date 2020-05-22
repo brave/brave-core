@@ -1,7 +1,21 @@
 diff --git a/chrome/browser/ui/chrome_pages.cc b/chrome/browser/ui/chrome_pages.cc
-index 1145a28f83e88cd2347be87a68fd423922fb8a04..e6678eeb46fa48e3d604e877be008c73a7b94683 100644
+index 1145a28f83e8..bb6e8d99fc9b 100644
 --- a/chrome/browser/ui/chrome_pages.cc
 +++ b/chrome/browser/ui/chrome_pages.cc
+@@ -78,11 +78,11 @@
+ #include "chrome/browser/ui/signin_view_controller.h"
+ #endif
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/signin/identity_manager_factory.h"
+ #include "components/signin/public/base/signin_pref_names.h"
+ #include "components/signin/public/identity_manager/identity_manager.h"
+-#endif
++//#endif
+ 
+ using base::UserMetricsAction;
+ 
 @@ -363,7 +363,7 @@ void ShowSlow(Browser* browser) {
  #endif
  }
@@ -11,3 +25,12 @@ index 1145a28f83e88cd2347be87a68fd423922fb8a04..e6678eeb46fa48e3d604e877be008c73
    return GURL(std::string(kChromeUISettingsURL) + sub_page);
  }
  
+@@ -515,7 +515,7 @@ GURL GetOSSettingsUrl(const std::string& sub_page) {
+ }
+ #endif
+ 
+-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS)
+ void ShowBrowserSignin(Browser* browser,
+                        signin_metrics::AccessPoint access_point) {
+   Profile* original_profile = browser->profile()->GetOriginalProfile();

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/first_run/first_run_dialog.h b/chrome/browser/first_run/first_run_dialog.h
+index ac9e76fb6044136eff19f103ed48231756af04fc..b8c7c0ed7334952d1734c68389df3880d6c2f304 100644
+--- a/chrome/browser/first_run/first_run_dialog.h
++++ b/chrome/browser/first_run/first_run_dialog.h
+@@ -9,7 +9,7 @@
+ #include "build/build_config.h"
+ 
+ // Hide this function on platforms where the dialog does not exist.
+-#if defined(OS_MACOSX) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
++#if defined(OS_ANDROID) || defined(OS_MACOSX) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
+ 
+ class Profile;
+ 

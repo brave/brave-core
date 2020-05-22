@@ -1,0 +1,13 @@
+diff --git a/services/device/public/cpp/hid/BUILD.gn b/services/device/public/cpp/hid/BUILD.gn
+index 3408f2bca518c9be14f3be178a64e0fc2e391969..5fe0e8839038debd36d7bafe115bbc3f41d91029 100644
+--- a/services/device/public/cpp/hid/BUILD.gn
++++ b/services/device/public/cpp/hid/BUILD.gn
+@@ -7,7 +7,7 @@ import("//build/config/features.gni")
+ source_set("hid") {
+   # HID is not implemented on Android and we want to be particularly careful
+   # about not bloating binary size by accidentially including it.
+-  assert(!is_android)
++  #assert(!is_android)
+ 
+   sources = [
+     "fake_input_service_linux.cc",

@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
-index bee334fbef5852d19c9c32a7d426711144441add..a0598d539bac609f83d97dcc4be86ad505aa17e7 100644
+index bee334fbef58..c2470109cd57 100644
 --- a/chrome/browser/signin/account_consistency_mode_manager.cc
 +++ b/chrome/browser/signin/account_consistency_mode_manager.cc
+@@ -78,7 +78,7 @@ AccountConsistencyModeManager::AccountConsistencyModeManager(Profile* profile)
+ 
+   account_consistency_ = ComputeAccountConsistencyMethod(profile_);
+ 
+-#if BUILDFLAG(ENABLE_DICE_SUPPORT)
++#if BUILDFLAG(ENABLE_DICE_SUPPORT) && !defined(OS_ANDROID)
+   // New profiles don't need Dice migration. Old profiles may need it if they
+   // were created before Dice.
+   if (profile_->IsNewProfile())
 @@ -151,7 +151,9 @@ bool AccountConsistencyModeManager::ShouldBuildServiceForProfile(
  
  AccountConsistencyMethod

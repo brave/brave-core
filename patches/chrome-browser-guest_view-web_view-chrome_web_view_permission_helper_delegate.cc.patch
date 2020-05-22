@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.cc b/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.cc
+index 9e2bef693aaa91375809931eba7239a134ba2a17..057aa89192547d24d37a8360fd61dea0f735d5e3 100644
+--- a/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.cc
++++ b/chrome/browser/guest_view/web_view/chrome_web_view_permission_helper_delegate.cc
+@@ -51,7 +51,6 @@ ChromeWebViewPermissionHelperDelegate::ChromeWebViewPermissionHelperDelegate(
+ ChromeWebViewPermissionHelperDelegate::~ChromeWebViewPermissionHelperDelegate()
+ {}
+ 
+-#if BUILDFLAG(ENABLE_PLUGINS)
+ bool ChromeWebViewPermissionHelperDelegate::OnMessageReceived(
+     const IPC::Message& message,
+     content::RenderFrameHost* render_frame_host) {
+@@ -63,6 +62,7 @@ bool ChromeWebViewPermissionHelperDelegate::OnMessageReceived(
+   return true;
+ }
+ 
++#if BUILDFLAG(ENABLE_PLUGINS)
+ void ChromeWebViewPermissionHelperDelegate::BlockedUnauthorizedPlugin(
+     const base::string16& name,
+     const std::string& identifier) {
+@@ -87,10 +87,12 @@ void ChromeWebViewPermissionHelperDelegate::OnPermissionResponse(
+     const std::string& identifier,
+     bool allow,
+     const std::string& input) {
++#if !defined(OS_ANDROID)
+   if (allow) {
+     ChromePluginServiceFilter::GetInstance()->AuthorizeAllPlugins(
+         web_contents(), true, identifier);
+   }
++#endif
+ }
+ 
+ #endif  // BUILDFLAG(ENABLE_PLUGINS)

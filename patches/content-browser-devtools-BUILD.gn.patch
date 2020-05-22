@@ -1,0 +1,16 @@
+diff --git a/content/browser/devtools/BUILD.gn b/content/browser/devtools/BUILD.gn
+index f8c8a26012e6c1a709db028704416f66341fa29d..33d11f74fec25f2556667d1624fa179b2c93807b 100644
+--- a/content/browser/devtools/BUILD.gn
++++ b/content/browser/devtools/BUILD.gn
+@@ -7,9 +7,9 @@ import("//third_party/protobuf/proto_library.gni")
+ import("//tools/grit/grit_rule.gni")
+ 
+ group("resources") {
+-  if (!is_android) {
++  #if (!is_android) {
+     public_deps = [ ":devtools_resources" ]
+-  }
++  #}
+ }
+ 
+ grit("devtools_resources") {

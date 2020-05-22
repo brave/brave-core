@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc b/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc
+index 954ce6977683c20356a52dd4b2a24a2cc99d1150..1b679e0b2217b5537ae4a37df0e971eb36fe4e66 100644
+--- a/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc
++++ b/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc
+@@ -118,7 +118,7 @@ MediaCaptureDevicesDispatcher::MediaCaptureDevicesDispatcher()
+   // Wrapper around TabCaptureAccessHandler used in Public Sessions.
+   media_access_handlers_.push_back(
+       std::make_unique<PublicSessionTabCaptureAccessHandler>());
+-#else
++#elif !defined(OS_ANDROID)
+   media_access_handlers_.push_back(std::make_unique<TabCaptureAccessHandler>());
+ #endif
+ #endif

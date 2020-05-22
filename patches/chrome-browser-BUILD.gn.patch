@@ -1,8 +1,25 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index ab78eae16b47857f5c016b6b069cddc0b4c66e72..26a69329b4b86de28b9f6cfb40524307ae6f37b8 100644
+index ab78eae16b47..de25a4bf8b20 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2276,6 +2276,7 @@ static_library("browser") {
+@@ -1916,6 +1916,16 @@ static_library("browser") {
+     "win/ui_automation_util.cc",
+     "win/ui_automation_util.h",
+   ]
++  if (is_android) {
++    sources -= [
++      "bluetooth/bluetooth_chooser_context.cc",
++      "bluetooth/bluetooth_chooser_context.h",
++      "bluetooth/bluetooth_chooser_context_factory.cc",
++      "bluetooth/bluetooth_chooser_context_factory.h",
++      "download/download_crx_util_android.cc",
++      "sessions/session_restore_android.cc",
++    ]
++  }
+ 
+   configs += [
+     "//build/config/compiler:wexit_time_destructors",
+@@ -2276,6 +2286,7 @@ static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
@@ -10,3 +27,88 @@ index ab78eae16b47857f5c016b6b069cddc0b4c66e72..26a69329b4b86de28b9f6cfb40524307
    ]
  
    if (is_win) {
+@@ -3083,7 +3094,7 @@ static_library("browser") {
+ 
+       defines += [ "ENABLE_PASSWORD_CHANGE" ]
+     }
+-  } else {  # !is_android
++  } #else {  # !is_android
+     sources += [
+       "accessibility/caption_controller.cc",
+       "accessibility/caption_controller.h",
+@@ -3837,7 +3848,18 @@ static_library("browser") {
+         "task_manager/sampling/shared_sampler_posix.cc",
+       ]
+     }
+-  }
++    if (is_android) {
++      sources -= [
++        "banners/app_banner_manager_desktop.cc",
++        "banners/app_banner_manager_desktop.h",
++        "metrics/incognito_observer_desktop.cc",
++        "process_singleton_posix.cc",
++      ]
++      sources += [
++        "first_run/first_run_internal_android.cc",
++      ]
++    }
++  #}
+ 
+   if (is_chromeos) {
+     sources += [
+@@ -4348,7 +4370,7 @@ static_library("browser") {
+     ]
+   }
+ 
+-  if (!is_android && !is_chromeos) {
++  if (!is_chromeos) {
+     sources += [
+       "device_identity/device_oauth2_token_store_desktop.cc",
+       "device_identity/device_oauth2_token_store_desktop.h",
+@@ -4415,7 +4437,8 @@ static_library("browser") {
+       "upgrade_detector/upgrade_detector_impl.cc",
+       "upgrade_detector/upgrade_detector_impl.h",
+     ]
+-  } else {  # is_android || is_chromeos
++  } 
++  if (is_android || is_chromeos) {
+     sources += [
+       "installable/digital_asset_links/digital_asset_links_handler.cc",
+       "installable/digital_asset_links/digital_asset_links_handler.h",
+@@ -4423,6 +4446,18 @@ static_library("browser") {
+       "media/protected_media_identifier_permission_context.h",
+     ]
+   }
++  if (is_android) {
++    sources -= [
++      "policy/chrome_browser_cloud_management_controller.cc",
++      "policy/chrome_browser_cloud_management_controller.h",
++      "policy/chrome_browser_cloud_management_register_watcher.cc",
++      "policy/chrome_browser_cloud_management_register_watcher.h",
++      "policy/cloud/chrome_browser_cloud_management_helper.cc",
++      "policy/cloud/chrome_browser_cloud_management_helper.h",
++      "policy/cloud/user_policy_signin_service.cc",
++      "policy/cloud/user_policy_signin_service.h",
++    ]
++  }
+ 
+   if (is_posix && !is_mac) {
+     # TODO(crbug.com/753619): Enable crash reporting on Fuchsia.
+@@ -5302,7 +5337,7 @@ static_library("browser") {
+     }
+   }
+ 
+-  if (enable_session_service) {
++  if (is_android || enable_session_service) {
+     sources += [
+       "sessions/session_restore.cc",
+       "sessions/session_restore.h",
+@@ -5668,7 +5703,7 @@ grit("resources") {
+     }
+   }
+ 
+-  if (is_win || is_mac || is_desktop_linux || is_chromeos) {
++  if (is_android || is_win || is_mac || is_desktop_linux || is_chromeos) {
+     deps += [
+       "//chrome/browser/resources/discards:discards_resources_gen",
+       "//chrome/browser/resources/gaia_auth_host:modulize",

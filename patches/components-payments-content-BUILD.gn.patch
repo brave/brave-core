@@ -1,0 +1,22 @@
+diff --git a/components/payments/content/BUILD.gn b/components/payments/content/BUILD.gn
+index ae4e32dbac3471a248d1d16b4a50d04486089ad6..872a5f59d53ac0c703f541bd3d1339873d3883f9 100644
+--- a/components/payments/content/BUILD.gn
++++ b/components/payments/content/BUILD.gn
+@@ -36,7 +36,7 @@ jumbo_static_library("content") {
+     "//url",
+   ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [
+       "autofill_payment_app_factory.cc",
+       "autofill_payment_app_factory.h",
+@@ -69,7 +69,7 @@ jumbo_static_library("content") {
+     ]
+ 
+     deps += [ "//components/payments/core:method_strings" ]
+-  }
++  #}
+ }
+ 
+ # Files used by content and utility.

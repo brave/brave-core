@@ -1,0 +1,119 @@
+diff --git a/ui/views/controls/menu/menu_controller.cc b/ui/views/controls/menu/menu_controller.cc
+index 36e7f97887fd1775a0b7bf01686fa63122939177..47edea612d003c2dd652abca920a48968343b48b 100644
+--- a/ui/views/controls/menu/menu_controller.cc
++++ b/ui/views/controls/menu/menu_controller.cc
+@@ -124,9 +124,11 @@ constexpr int kBubbleTipSizeTopBottom = 11;
+ // been showing).
+ constexpr float kMaximumLengthMovedToActivate = 4.0f;
+ 
++#if !defined(OS_ANDROID)
+ // Time to complete a cycle of the menu item alert animation.
+ constexpr base::TimeDelta kAlertAnimationThrobDuration =
+     base::TimeDelta::FromMilliseconds(1000);
++#endif
+ 
+ // Returns true if the mnemonic of |menu| matches key.
+ bool MatchesMnemonic(MenuItemView* menu, base::char16 key) {
+@@ -498,9 +500,11 @@ void MenuController::Run(Widget* parent,
+     if (owner_)
+       owner_->AddObserver(this);
+ 
++#if !defined(OS_ANDROID)
+     // Only create a MenuPreTargetHandler for non-nested menus. Nested menus
+     // will use the existing one.
+     menu_pre_target_handler_ = MenuPreTargetHandler::Create(this, owner_);
++#endif
+   }
+ 
+ #if defined(OS_MACOSX)
+@@ -861,7 +865,7 @@ void MenuController::OnGestureEvent(SubmenuView* source,
+   if (owner_ && send_gesture_events_to_owner()) {
+ #if defined(OS_MACOSX)
+     NOTIMPLEMENTED();
+-#else   // !defined(OS_MACOSX)
++#elif !defined(OS_ANDROID)   // !defined(OS_MACOSX)
+     event->ConvertLocationToTarget(source->GetWidget()->GetNativeWindow(),
+                                    owner()->GetNativeWindow());
+ #endif  // defined(OS_MACOSX)
+@@ -1012,8 +1016,11 @@ int MenuController::OnDragUpdated(SubmenuView* source,
+     if (menu_item)
+       over_empty_menu = true;
+   }
++#if !defined(OS_ANDROID)
+   MenuDelegate::DropPosition drop_position = MenuDelegate::DropPosition::kNone;
++#endif
+   int drop_operation = ui::DragDropTypes::DRAG_NONE;
++#if !defined(OS_ANDROID)
+   if (menu_item) {
+     gfx::Point menu_item_loc(event.location());
+     View::ConvertPointToTarget(source, menu_item, &menu_item_loc);
+@@ -1048,6 +1055,7 @@ int MenuController::OnDragUpdated(SubmenuView* source,
+     SetSelection(source->GetMenuItem(), SELECTION_OPEN_SUBMENU);
+   }
+   SetDropMenuItem(menu_item, drop_position);
++#endif
+   last_drop_operation_ = drop_operation;
+   return drop_operation;
+ }
+@@ -1290,7 +1298,9 @@ void MenuController::OnMenuItemDestroying(MenuItemView* menu_item) {
+ }
+ 
+ void MenuController::AnimationProgressed(const gfx::Animation* animation) {
++#if !defined(OS_ANDROID)
+   DCHECK_EQ(animation, &alert_animation_);
++#endif
+ 
+   // Schedule paints at each alerted menu item. The menu items pull the
+   // animation's current value in their OnPaint methods.
+@@ -1614,8 +1624,11 @@ MenuController::MenuController(bool for_drop,
+                                internal::MenuControllerDelegate* delegate)
+     : for_drop_(for_drop),
+       active_mouse_view_tracker_(std::make_unique<ViewTracker>()),
+-      delegate_(delegate),
+-      alert_animation_(this) {
++      delegate_(delegate)
++#if !defined(OS_ANDROID)
++      , alert_animation_(this)
++#endif
++      {
+   delegate_stack_.push_back(delegate_);
+   active_instance_ = this;
+ }
+@@ -2872,6 +2885,7 @@ void MenuController::UpdateActiveMouseView(SubmenuView* event_source,
+     if (target == target_menu || !target->GetEnabled())
+       target = nullptr;
+   }
++#if !defined(OS_ANDROID)
+   View* active_mouse_view = active_mouse_view_tracker_->view();
+   if (target != active_mouse_view) {
+     SendMouseCaptureLostToActiveView();
+@@ -2900,6 +2914,7 @@ void MenuController::UpdateActiveMouseView(SubmenuView* event_source,
+         event.flags(), event.changed_button_flags());
+     active_mouse_view->OnMouseDragged(mouse_dragged_event);
+   }
++#endif
+ }
+ 
+ void MenuController::SendMouseReleaseToActiveView(SubmenuView* event_source,
+@@ -3127,17 +3142,21 @@ void MenuController::RegisterAlertedItem(MenuItemView* item) {
+   alerted_items_.insert(item);
+   // Start animation if necessary. We stop the animation once no alerted
+   // items are showing.
++#if !defined(OS_ANDROID)
+   if (!alert_animation_.is_animating()) {
+     alert_animation_.SetThrobDuration(kAlertAnimationThrobDuration);
+     alert_animation_.StartThrobbing(-1);
+   }
++#endif
+ }
+ 
+ void MenuController::UnregisterAlertedItem(MenuItemView* item) {
+   alerted_items_.erase(item);
+   // Stop animation if necessary.
++#if !defined(OS_ANDROID)
+   if (alerted_items_.empty())
+     alert_animation_.Stop();
++#endif
+ }
+ 
+ bool MenuController::CanProcessInputEvents() const {

@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/browser_otr_state.cc b/chrome/browser/ui/browser_otr_state.cc
+index 4c79c00b25a3da391112d89cddba8ce9a32c42b3..a73099cfbad6e899033db600a09d46d3f4363999 100644
+--- a/chrome/browser/ui/browser_otr_state.cc
++++ b/chrome/browser/ui/browser_otr_state.cc
+@@ -8,8 +8,10 @@
+ 
+ namespace chrome {
+ 
++#if !defined(OS_ANDROID)
+ bool IsIncognitoSessionActive() {
+   return BrowserList::IsIncognitoSessionActive();
+ }
++#endif
+ 
+ }  // namespace chrome

@@ -1,0 +1,34 @@
+diff --git a/chrome/browser/ui/browser_command_controller.cc b/chrome/browser/ui/browser_command_controller.cc
+index 240861a38f8000af6ff78a3118b9616b4123b909..c3144328082f2067a5e4f938c4fe1bf42fce1b68 100644
+--- a/chrome/browser/ui/browser_command_controller.cc
++++ b/chrome/browser/ui/browser_command_controller.cc
+@@ -649,19 +649,29 @@ bool BrowserCommandController::ExecuteCommandWithDisposition(
+           browser_, false /* force_shortcut_app */);
+       break;
+     case IDC_DEV_TOOLS:
++#if !defined(OS_ANDROID)
+       ToggleDevToolsWindow(browser_, DevToolsToggleAction::Show());
++#endif
+       break;
+     case IDC_DEV_TOOLS_CONSOLE:
++#if !defined(OS_ANDROID)
+       ToggleDevToolsWindow(browser_, DevToolsToggleAction::ShowConsolePanel());
++#endif
+       break;
+     case IDC_DEV_TOOLS_DEVICES:
++#if !defined(OS_ANDROID)
+       InspectUI::InspectDevices(browser_);
++#endif
+       break;
+     case IDC_DEV_TOOLS_INSPECT:
++#if !defined(OS_ANDROID)
+       ToggleDevToolsWindow(browser_, DevToolsToggleAction::Inspect());
++#endif
+       break;
+     case IDC_DEV_TOOLS_TOGGLE:
++#if !defined(OS_ANDROID)
+       ToggleDevToolsWindow(browser_, DevToolsToggleAction::Toggle());
++#endif
+       break;
+     case IDC_TASK_MANAGER:
+       OpenTaskManager(browser_);

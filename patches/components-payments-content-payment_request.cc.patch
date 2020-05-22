@@ -1,0 +1,17 @@
+diff --git a/components/payments/content/payment_request.cc b/components/payments/content/payment_request.cc
+index d8eab2d1733891d9b3aa8546e52fd07179d21aa2..61865442c4ac9dd16fc1dd34a2532060a1a626f7 100644
+--- a/components/payments/content/payment_request.cc
++++ b/components/payments/content/payment_request.cc
+@@ -126,7 +126,11 @@ void PaymentRequest::Init(
+     mojo::PendingRemote<mojom::PaymentRequestClient> client,
+     std::vector<mojom::PaymentMethodDataPtr> method_data,
+     mojom::PaymentDetailsPtr details,
+-    mojom::PaymentOptionsPtr options) {
++    mojom::PaymentOptionsPtr options
++#if defined(OS_ANDROID)
++    , bool google_pay_bridge_eligible
++#endif
++    ) {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+ 
+   if (is_initialized_) {

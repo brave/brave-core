@@ -1,0 +1,91 @@
+diff --git a/chrome/browser/profiles/off_the_record_profile_impl.cc b/chrome/browser/profiles/off_the_record_profile_impl.cc
+index acd5fb9dc0cf4819cfd697b69aa9199211fc1404..bcc5fbc7720efb5b1b107178c01f1bd45b81fafe 100644
+--- a/chrome/browser/profiles/off_the_record_profile_impl.cc
++++ b/chrome/browser/profiles/off_the_record_profile_impl.cc
+@@ -75,11 +75,10 @@
+ 
+ #if defined(OS_ANDROID)
+ #include "components/prefs/scoped_user_pref_update.h"
+-#else  // !defined(OS_ANDROID)
++#endif  // defined(OS_ANDROID)
+ #include "chrome/browser/ui/zoom/chrome_zoom_level_otr_delegate.h"
+ #include "components/zoom/zoom_event_manager.h"
+ #include "content/public/browser/host_zoom_map.h"
+-#endif  // defined(OS_ANDROID)
+ 
+ #if defined(OS_CHROMEOS)
+ #include "chrome/browser/chromeos/preferences.h"
+@@ -109,9 +108,9 @@
+ 
+ using content::BrowserThread;
+ using content::DownloadManagerDelegate;
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ using content::HostZoomMap;
+-#endif
++//#endif
+ 
+ namespace {
+ 
+@@ -155,9 +154,9 @@ void OffTheRecordProfileImpl::Init() {
+         IncognitoModePrefs::GetAvailability(profile_->GetPrefs()) !=
+             IncognitoModePrefs::DISABLED);
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   TrackZoomLevelsFromParent();
+-#endif
++//#endif
+ 
+ #if BUILDFLAG(ENABLE_PLUGINS)
+   ChromePluginServiceFilter::GetInstance()->RegisterProfile(this);
+@@ -219,7 +218,7 @@ OffTheRecordProfileImpl::~OffTheRecordProfileImpl() {
+   }
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void OffTheRecordProfileImpl::TrackZoomLevelsFromParent() {
+   DCHECK(!profile_->IsIncognitoProfile());
+ 
+@@ -244,7 +243,7 @@ void OffTheRecordProfileImpl::TrackZoomLevelsFromParent() {
+           base::Bind(&OffTheRecordProfileImpl::UpdateDefaultZoomLevel,
+                      base::Unretained(this)));
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ std::string OffTheRecordProfileImpl::GetProfileUserName() const {
+   // Incognito profile should not return the username.
+@@ -273,14 +272,14 @@ base::Time OffTheRecordProfileImpl::GetCreationTime() const {
+   return start_time_;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ std::unique_ptr<content::ZoomLevelDelegate>
+ OffTheRecordProfileImpl::CreateZoomLevelDelegate(
+     const base::FilePath& partition_path) {
+   return std::make_unique<ChromeZoomLevelOTRDelegate>(
+       zoom::ZoomEventManager::GetForBrowserContext(this)->GetWeakPtr());
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ scoped_refptr<base::SequencedTaskRunner>
+ OffTheRecordProfileImpl::GetIOTaskRunner() {
+@@ -618,7 +617,7 @@ Profile* Profile::CreateOffTheRecordProfile() {
+   return profile;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void OffTheRecordProfileImpl::OnParentZoomLevelChanged(
+     const HostZoomMap::ZoomLevelChange& change) {
+   HostZoomMap* host_zoom_map = HostZoomMap::GetDefaultForBrowserContext(this);
+@@ -648,4 +647,4 @@ void OffTheRecordProfileImpl::UpdateDefaultZoomLevel() {
+   zoom::ZoomEventManager::GetForBrowserContext(this)
+       ->OnDefaultZoomLevelChanged();
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)

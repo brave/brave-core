@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/first_run/upgrade_util.cc b/chrome/browser/first_run/upgrade_util.cc
+index 68b4dfba2983c279ef181578d126e3265cc67a63..08a042906b12dd7391aac6db03a14938cf3d7b3b 100644
+--- a/chrome/browser/first_run/upgrade_util.cc
++++ b/chrome/browser/first_run/upgrade_util.cc
+@@ -26,14 +26,20 @@ upgrade_util::RelaunchChromeBrowserCallback*
+ 
+ namespace upgrade_util {
+ 
++#if !defined(OS_ANDROID)
+ // Forward-declaration of the platform-specific implementation.
+ bool RelaunchChromeBrowserImpl(const base::CommandLine& command_line);
++#endif
+ 
+ bool RelaunchChromeBrowser(const base::CommandLine& command_line) {
+   if (relaunch_chrome_browser_callback_for_testing)
+     return relaunch_chrome_browser_callback_for_testing->Run(command_line);
+ 
++#if !defined(OS_ANDROID)
+   return RelaunchChromeBrowserImpl(command_line);
++#else
++  return true;
++#endif
+ }
+ 
+ #if !defined(OS_MACOSX)

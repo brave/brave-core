@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/api/system_cpu/BUILD.gn b/extensions/browser/api/system_cpu/BUILD.gn
+index 487742c54c192a10e310bfa8e6f301365c19eb60..e4c428de9c340095ca7ae1920e7c2cf3516c7bc4 100644
+--- a/extensions/browser/api/system_cpu/BUILD.gn
++++ b/extensions/browser/api/system_cpu/BUILD.gn
+@@ -19,6 +19,7 @@ source_set("system_cpu") {
+   ]
+ 
+   deps = [ "//extensions/common/api" ]
++  deps += [ "//brave/extensions/browser/api/system_cpu" ]
+ 
+   if (is_chromeos) {
+     deps += [ "//chromeos/system" ]

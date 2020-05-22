@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.cc b/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.cc
+index 7e77b7b1ad9278a1f8676b392f210d990f672b2a..f7fb4f6b6d56eecc339796f8fad3b101d06c0a4d 100644
+--- a/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.cc
++++ b/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.cc
+@@ -30,17 +30,25 @@ void PageActionIconLoadingIndicatorView::ShowAnimation() {
+     throbber_start_time_ = base::TimeTicks::Now();
+ 
+   SetVisible(true);
++#if !defined(OS_ANDROID)
+   animation_.StartThrobbing(-1);
++#endif
+ }
+ 
+ void PageActionIconLoadingIndicatorView::StopAnimation() {
+   throbber_start_time_.reset();
+   SetVisible(false);
++#if !defined(OS_ANDROID)
+   animation_.Reset();
++#endif
+ }
+ 
+ bool PageActionIconLoadingIndicatorView::IsAnimating() {
++#if !defined(OS_ANDROID)
+   return animation_.is_animating();
++#else
++  return false;
++#endif
+ }
+ 
+ void PageActionIconLoadingIndicatorView::OnPaint(gfx::Canvas* canvas) {
+@@ -62,6 +70,8 @@ void PageActionIconLoadingIndicatorView::OnViewBoundsChanged(
+ 
+ void PageActionIconLoadingIndicatorView::AnimationProgressed(
+     const gfx::Animation* animation) {
++#if !defined(OS_ANDROID)
+   DCHECK_EQ(animation, &animation_);
+   SchedulePaint();
++#endif
+ }

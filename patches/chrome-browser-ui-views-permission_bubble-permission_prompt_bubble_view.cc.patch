@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
-index a510343ab06bdb143f261b29d4d62e25f381af12..e7de9e1430f2bf890bb21eecb25714cf03173cce 100644
+index a510343ab06b..cd5698ffc039 100644
 --- a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
 +++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
 @@ -73,6 +73,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
@@ -10,3 +10,19 @@ index a510343ab06bdb143f261b29d4d62e25f381af12..e7de9e1430f2bf890bb21eecb25714cf
  }
  
  void PermissionPromptBubbleView::Show() {
+@@ -106,6 +107,7 @@ void PermissionPromptBubbleView::AddPermissionRequestLine(
+                          DISTANCE_SUBSECTION_HORIZONTAL_INDENT)),
+       provider->GetDistanceMetric(views::DISTANCE_RELATED_LABEL_HORIZONTAL)));
+ 
++#if !defined(OS_ANDROID)
+   auto* icon =
+       line_container->AddChildView(std::make_unique<views::ImageView>());
+   const gfx::VectorIcon& vector_id = request->GetIconId();
+@@ -115,6 +117,7 @@ void PermissionPromptBubbleView::AddPermissionRequestLine(
+   icon->SetImage(
+       gfx::CreateVectorIcon(vector_id, kPermissionIconSize, icon_color));
+   icon->SetVerticalAlignment(views::ImageView::Alignment::kLeading);
++#endif
+ 
+   auto* label = line_container->AddChildView(
+       std::make_unique<views::Label>(request->GetMessageTextFragment()));

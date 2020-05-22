@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/policy/BUILD.gn b/chrome/browser/policy/BUILD.gn
+index 87450f3ec300afaaee69f4f8175abd708e5d7a96..06e5b47f846342a86758519edeae98e6a4013f1e 100644
+--- a/chrome/browser/policy/BUILD.gn
++++ b/chrome/browser/policy/BUILD.gn
+@@ -7,6 +7,7 @@ import("//build/config/features.gni")
+ source_set("path_parser") {
+   sources = [
+     "policy_path_parser.h",
++    "policy_path_parser_android.cc",
+     "policy_path_parser_linux.cc",
+     "policy_path_parser_mac.mm",
+     "policy_path_parser_win.cc",

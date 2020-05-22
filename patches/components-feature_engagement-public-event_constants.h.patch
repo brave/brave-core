@@ -1,0 +1,22 @@
+diff --git a/components/feature_engagement/public/event_constants.h b/components/feature_engagement/public/event_constants.h
+index 638a72e929dca9be9d4257d3133cb7badef63b91..3db45104a5a21cd150514e67a85ea040e3ec8d09 100644
+--- a/components/feature_engagement/public/event_constants.h
++++ b/components/feature_engagement/public/event_constants.h
+@@ -13,7 +13,7 @@ namespace feature_engagement {
+ namespace events {
+ 
+ // Desktop and IOS.
+-#if defined(OS_IOS) || defined(OS_WIN) || defined(OS_MACOSX) || \
++#if defined(OS_ANDROID) || defined(OS_IOS) || defined(OS_WIN) || defined(OS_MACOSX) || \
+     defined(OS_LINUX) || defined(OS_CHROMEOS)
+ // The user has explicitly opened a new tab via an entry point from inside of
+ // Chrome.
+@@ -22,7 +22,7 @@ extern const char kNewTabOpened[];
+         // defined(OS_LINUX) || defined(OS_CHROMEOS)
+ 
+ // Desktop
+-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+     defined(OS_CHROMEOS)
+ // All conditions for reopen closed tab IPH were met. Since this IPH needs to
+ // track user events (opening/closing tabs, focusing the omnibox, etc) on the

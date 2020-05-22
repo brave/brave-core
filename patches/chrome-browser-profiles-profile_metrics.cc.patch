@@ -1,0 +1,62 @@
+diff --git a/chrome/browser/profiles/profile_metrics.cc b/chrome/browser/profiles/profile_metrics.cc
+index 9cbfce0e66f7e2dd51c90b1a279f0e668eb0371a..4316d1562edf11657121ea8e3aa6e98f74737eb4 100644
+--- a/chrome/browser/profiles/profile_metrics.cc
++++ b/chrome/browser/profiles/profile_metrics.cc
+@@ -25,17 +25,17 @@
+ #include "components/signin/core/browser/signin_header_helper.h"
+ #include "content/public/browser/browser_thread.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/browser_finder.h"
+-#endif
++//#endif
+ 
+ namespace {
+ 
+ const int kMaximumDaysOfDisuse = 4 * 7;  // Should be integral number of weeks.
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ size_t number_of_profile_switches_ = 0;
+-#endif
++//#endif
+ 
+ // Enum for tracking the state of profiles being switched to.
+ enum ProfileOpenState {
+@@ -47,7 +47,7 @@ enum ProfileOpenState {
+   PROFILE_UNOPENED
+ };
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ ProfileOpenState GetProfileOpenState(
+     ProfileManager* manager,
+     const base::FilePath& path) {
+@@ -60,7 +60,7 @@ ProfileOpenState GetProfileOpenState(
+ 
+   return PROFILE_OPENED_NO_BROWSER;
+ }
+-#endif
++//#endif
+ 
+ ProfileMetrics::ProfileType GetProfileType(
+     const base::FilePath& profile_path) {
+@@ -436,7 +436,7 @@ void ProfileMetrics::LogProfileOpenMethod(ProfileOpen metric) {
+                             NUM_PROFILE_OPEN_METRICS);
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void ProfileMetrics::LogProfileSwitch(
+     ProfileOpen metric,
+     ProfileManager* manager,
+@@ -473,7 +473,7 @@ void ProfileMetrics::LogProfileSwitch(
+   // as opening of profile related UI elements.
+   LogProfileOpenMethod(metric);
+ }
+-#endif
++//#endif
+ 
+ void ProfileMetrics::LogProfileSwitchGaia(ProfileGaia metric) {
+   if (metric == GAIA_OPT_IN)

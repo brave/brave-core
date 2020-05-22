@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/find_bar_host.cc b/chrome/browser/ui/views/find_bar_host.cc
+index 8a17a59d62c1041ff009f6034476522d95ae0ed2..9d34d870f42e5a44d1b2f40aa39e9d1c3aa6dbd3 100644
+--- a/chrome/browser/ui/views/find_bar_host.cc
++++ b/chrome/browser/ui/views/find_bar_host.cc
+@@ -115,10 +115,12 @@ bool FindBarHost::MaybeForwardKeyEventToWebpage(
+   // Make sure we don't have a text field element interfering with keyboard
+   // input. Otherwise Up and Down arrow key strokes get eaten. "Nom Nom Nom".
+   contents->ClearFocusedElement();
++#if !defined(OS_ANDROID)
+   NativeWebKeyboardEvent event(key_event);
+   contents->GetRenderViewHost()
+       ->GetWidget()
+       ->ForwardKeyboardEventWithLatencyInfo(event, *key_event.latency());
++#endif
+   return true;
+ }
+ 

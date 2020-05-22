@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
+index c08e9059b73df4c5f1d2eb204b1db21714889832..fd2b23353aaad4fff425781004c89aa66f08beec 100644
+--- a/chrome/browser/ui/tabs/tab_strip_model.cc
++++ b/chrome/browser/ui/tabs/tab_strip_model.cc
+@@ -1005,11 +1005,15 @@ void TabStripModel::CloseSelectedTabs() {
+ }
+ 
+ void TabStripModel::SelectNextTab(UserGestureDetails detail) {
++#if !defined(OS_ANDROID)
+   SelectRelativeTab(true, detail);
++#endif
+ }
+ 
+ void TabStripModel::SelectPreviousTab(UserGestureDetails detail) {
++#if !defined(OS_ANDROID)
+   SelectRelativeTab(false, detail);
++#endif
+ }
+ 
+ void TabStripModel::SelectLastTab(UserGestureDetails detail) {

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/background/background_mode_manager.cc b/chrome/browser/background/background_mode_manager.cc
+index 4b1cbb53aaed47a832f87cf74962a8e6b01c04c3..960a000eba2dc35213dc4e6d9ace3fd55b20ab21 100644
+--- a/chrome/browser/background/background_mode_manager.cc
++++ b/chrome/browser/background/background_mode_manager.cc
+@@ -564,7 +564,9 @@ void BackgroundModeManager::ExecuteCommand(int command_id, int event_flags) {
+     case IDC_EXIT:
+       RecordMenuItemClick(MENU_ITEM_EXIT);
+       base::RecordAction(UserMetricsAction("Exit"));
++#if !defined(OS_ANDROID)
+       chrome::CloseAllBrowsers();
++#endif
+       break;
+     case IDC_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND: {
+       // Background mode must already be enabled (as otherwise this menu would

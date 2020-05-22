@@ -1,0 +1,34 @@
+diff --git a/chrome/common/media_router/BUILD.gn b/chrome/common/media_router/BUILD.gn
+index 1606ee158485b1d8851ba8e2ec3d37fea91ecb95..f174e65e288c0b5c33c9acc3191c59e7bcf4897c 100644
+--- a/chrome/common/media_router/BUILD.gn
++++ b/chrome/common/media_router/BUILD.gn
+@@ -27,24 +27,24 @@ static_library("router") {
+     "media_sink.h",
+     "media_source.cc",
+     "media_source.h",
++    "providers/cast/cast_media_source.cc",
++    "providers/cast/cast_media_source.h",
+     "route_request_result.cc",
+     "route_request_result.h",
+   ]
+ 
+   deps = []
++  deps += [ "//components/cast_channel:cast_channel" ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [
+       "discovery/media_sink_service_base.cc",
+       "discovery/media_sink_service_base.h",
+       "discovery/media_sink_service_util.cc",
+       "discovery/media_sink_service_util.h",
+-      "providers/cast/cast_media_source.cc",
+-      "providers/cast/cast_media_source.h",
+     ]
+ 
+-    deps += [ "//components/cast_channel:cast_channel" ]
+-  }
++  #}
+ }
+ 
+ static_library("test_support") {

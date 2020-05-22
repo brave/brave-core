@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/screen_capture_notification_ui_stub.cc b/chrome/browser/ui/screen_capture_notification_ui_stub.cc
+index ec35cb8a549587ceda40464f71f73bbf5f16b6ca..369db632c34bda6c43c8724b8c9ab0466c65f2e2 100644
+--- a/chrome/browser/ui/screen_capture_notification_ui_stub.cc
++++ b/chrome/browser/ui/screen_capture_notification_ui_stub.cc
+@@ -20,8 +20,10 @@ class ScreenCaptureNotificationUIStub : public ScreenCaptureNotificationUI {
+ };
+ 
+ // static
++#if !defined(OS_ANDROID)
+ std::unique_ptr<ScreenCaptureNotificationUI>
+ ScreenCaptureNotificationUI::Create(const base::string16& title) {
+   return std::unique_ptr<ScreenCaptureNotificationUI>(
+       new ScreenCaptureNotificationUIStub());
+ }
++#endif

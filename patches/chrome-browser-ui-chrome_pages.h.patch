@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/chrome_pages.h b/chrome/browser/ui/chrome_pages.h
+index 24779d2549fa5ca40b12d9a916242a38ec7100b9..6c07ab7df49a331cb5d240b19ae515c39d789f75 100644
+--- a/chrome/browser/ui/chrome_pages.h
++++ b/chrome/browser/ui/chrome_pages.h
+@@ -13,9 +13,9 @@
+ #include "components/content_settings/core/common/content_settings_types.h"
+ #include "url/gurl.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/signin/signin_promo.h"
+-#endif
++//#endif
+ 
+ class Browser;
+ class Profile;
+@@ -135,7 +135,7 @@ void ShowEnterpriseManagementPageInTabbedBrowser(Browser* browser);
+ GURL GetOSSettingsUrl(const std::string& sub_page);
+ #endif
+ 
+-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS)
+ // Initiates signin in a new browser tab.
+ void ShowBrowserSignin(Browser* browser,
+                        signin_metrics::AccessPoint access_point);

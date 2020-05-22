@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
+index 8aea6b523350747dec7a8612e5743a2490d680e3..ff21fb24384db44ce7eac5edeb32e3dd056d0a51 100644
+--- a/chrome/browser/extensions/BUILD.gn
++++ b/chrome/browser/extensions/BUILD.gn
+@@ -257,6 +257,8 @@ jumbo_static_library("extensions") {
+     "api/metrics_private/chrome_metrics_private_delegate.h",
+     "api/module/module.cc",
+     "api/module/module.h",
++    "api/networking_private/networking_private_ui_delegate_android.cc",
++    "api/networking_private/networking_private_ui_delegate_android.h",
+     "api/networking_private/networking_private_ui_delegate_chromeos.cc",
+     "api/networking_private/networking_private_ui_delegate_chromeos.h",
+     "api/networking_private/networking_private_ui_delegate_factory_impl.cc",
+@@ -792,7 +794,6 @@ jumbo_static_library("extensions") {
+     "//chrome/browser/engagement:mojo_bindings",
+     "//chrome/browser/image_decoder",
+     "//chrome/browser/media/router",
+-    "//chrome/browser/media/router/discovery",
+     "//chrome/browser/resource_coordinator:mojo_bindings",
+     "//chrome/browser/safe_browsing",
+     "//chrome/browser/web_applications/components",
+@@ -926,6 +927,10 @@ jumbo_static_library("extensions") {
+     "//url",
+   ]
+ 
++  if (!is_android) {
++    deps += ["//chrome/browser/media/router/discovery",]
++  }
++
+   if (enable_autofill_assistant_api) {
+     deps += [ "//components/autofill_assistant/browser" ]
+   }
+@@ -1106,12 +1111,12 @@ jumbo_static_library("extensions") {
+     }
+   }
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [
+       "api/processes/processes_api.cc",
+       "api/processes/processes_api.h",
+     ]
+-  }
++  #}
+ 
+   if (is_win || is_mac) {
+     sources += [
+@@ -1160,7 +1165,7 @@ jumbo_static_library("extensions") {
+     ]
+   }
+ 
+-  if (enable_plugins) {
++  if (enable_plugins && !is_android) {
+     sources += [
+       "plugin_manager.cc",
+       "plugin_manager.h",

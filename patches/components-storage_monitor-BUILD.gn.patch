@@ -1,0 +1,13 @@
+diff --git a/components/storage_monitor/BUILD.gn b/components/storage_monitor/BUILD.gn
+index 1108f78b1f25212d0eb83cf9ce63931fce53a62a..b2c41d2c2b165427b828e6da5285b35e7de66110 100644
+--- a/components/storage_monitor/BUILD.gn
++++ b/components/storage_monitor/BUILD.gn
+@@ -79,6 +79,8 @@ static_library("storage_monitor") {
+     } else {
+       sources += [ "storage_monitor_dummy.cc" ]
+     }
++  } else {
++    sources += [ "storage_monitor_dummy.cc" ]
+   }
+ 
+   if (use_udev) {

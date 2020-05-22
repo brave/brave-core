@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/extensions/extension_uninstall_dialog.cc b/chrome/browser/extensions/extension_uninstall_dialog.cc
+index f8969ad64162e2b85bfdf154182d7d2db6fe8cd9..60fa12ecd950c6b8d015835d80c906f5226bdb87 100644
+--- a/chrome/browser/extensions/extension_uninstall_dialog.cc
++++ b/chrome/browser/extensions/extension_uninstall_dialog.cc
+@@ -73,8 +73,10 @@ ExtensionUninstallDialog::ExtensionUninstallDialog(
+     gfx::NativeWindow parent,
+     ExtensionUninstallDialog::Delegate* delegate)
+     : profile_(profile), parent_(parent), delegate_(delegate) {
++#if !defined(OS_ANDROID)
+   if (parent)
+     parent_window_tracker_ = NativeWindowTracker::Create(parent);
++#endif
+ }
+ 
+ ExtensionUninstallDialog::~ExtensionUninstallDialog() = default;

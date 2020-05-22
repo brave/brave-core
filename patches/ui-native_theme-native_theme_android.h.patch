@@ -1,0 +1,17 @@
+diff --git a/ui/native_theme/native_theme_android.h b/ui/native_theme/native_theme_android.h
+index 6d5c3811a0fa51632bcdaa618d5e8baa616b13f4..30185986a2ce9893dacdbd9bf1501af5f09f4ea1 100644
+--- a/ui/native_theme/native_theme_android.h
++++ b/ui/native_theme/native_theme_android.h
+@@ -20,11 +20,11 @@ class NativeThemeAndroid : public NativeThemeBase {
+                         const ExtraParams& extra) const override;
+   SkColor GetSystemColor(ColorId color_id,
+                          ColorScheme color_scheme) const override;
++  static NativeThemeAndroid* instance();
+ 
+  protected:
+   friend class NativeTheme;
+   friend class base::NoDestructor<NativeThemeAndroid>;
+-  static NativeThemeAndroid* instance();
+ 
+   // NativeThemeBase:
+   void AdjustCheckboxRadioRectForPadding(SkRect* rect) const override;

@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/search/search_ipc_router.h b/chrome/browser/ui/search/search_ipc_router.h
+index 6ebd77f7eec007e1751641bcbf992d0966c60939..dca9dc4dc106f15d38b28926a2ab02f5f3cf4a00 100644
+--- a/chrome/browser/ui/search/search_ipc_router.h
++++ b/chrome/browser/ui/search/search_ipc_router.h
+@@ -21,9 +21,9 @@
+ #include "content/public/browser/web_contents_observer.h"
+ #include "mojo/public/cpp/bindings/associated_receiver.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ class GURL;
+ 

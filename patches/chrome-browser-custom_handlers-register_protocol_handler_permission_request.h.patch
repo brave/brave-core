@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/custom_handlers/register_protocol_handler_permission_request.h b/chrome/browser/custom_handlers/register_protocol_handler_permission_request.h
+index 55e3ca80149e619ecc3b4d010ea8e9500cf22ba9..8fb70c6bd7b3fbcf40fac40e94b44488b823c0a3 100644
+--- a/chrome/browser/custom_handlers/register_protocol_handler_permission_request.h
++++ b/chrome/browser/custom_handlers/register_protocol_handler_permission_request.h
+@@ -26,6 +26,8 @@ class RegisterProtocolHandlerPermissionRequest
+  private:
+   // permissions::PermissionRequest:
+   IconId GetIconId() const override;
++  base::string16 GetTitleText() const override;
++  base::string16 GetMessageText() const override;
+   base::string16 GetMessageTextFragment() const override;
+   GURL GetOrigin() const override;
+   void PermissionGranted() override;

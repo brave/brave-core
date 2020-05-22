@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc b/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc
+index e7812b668701b9266fa7e17faa141cb0814c6b7d..6a5144279aac96f7236be7a125c00193e4fb7213 100644
+--- a/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc
++++ b/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc
+@@ -61,7 +61,9 @@ BrowserNonClientFrameView* CreateBrowserNonClientFrameView(
+ #endif
+   OpaqueBrowserFrameView* view =
+       CreateOpaqueBrowserFrameView(frame, browser_view);
++#if !defined(OS_ANDROID)
+   view->InitViews();
++#endif
+   return view;
+ }
+ 

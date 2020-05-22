@@ -1,0 +1,13 @@
+diff --git a/content/public/browser/desktop_media_id.h b/content/public/browser/desktop_media_id.h
+index c9791b4f436a10957102e21dc412e0912e356a64..ce12bf2735e3fedc1559ca38583fa84c38fae14e 100644
+--- a/content/public/browser/desktop_media_id.h
++++ b/content/public/browser/desktop_media_id.h
+@@ -28,7 +28,7 @@ struct CONTENT_EXPORT DesktopMediaID {
+   // Represents a fake id to create a dummy capturer for autotests.
+   static const Id kFakeId;
+ 
+-#if defined(USE_AURA) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(USE_AURA) || defined(OS_MACOSX)
+   // Assigns integer identifier to the |window| and returns its DesktopMediaID.
+   static DesktopMediaID RegisterNativeWindow(Type type,
+                                              gfx::NativeWindow window);

@@ -1,0 +1,40 @@
+diff --git a/components/url_formatter/elide_url.cc b/components/url_formatter/elide_url.cc
+index 24f090a1f9cac91810d9daf441defd70e57259dc..f6356ad3580ce1fc12d12c90d3d9a8ae26dbe15e 100644
+--- a/components/url_formatter/elide_url.cc
++++ b/components/url_formatter/elide_url.cc
+@@ -25,7 +25,7 @@
+ 
+ namespace {
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ const base::char16 kDot = '.';
+ 
+ // Build a path from the first |num_components| elements in |path_elements|.
+@@ -112,7 +112,7 @@ void SplitHost(const GURL& url,
+     url_subdomain->clear();
+   }
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ bool ShouldShowScheme(base::StringPiece scheme,
+                       const url_formatter::SchemeDisplay scheme_display) {
+@@ -144,7 +144,7 @@ base::string16 HostForDisplay(base::StringPiece host_in_puny) {
+ 
+ namespace url_formatter {
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ 
+ // TODO(pkasting): http://crbug.com/77883 This whole function gets
+ // kerning/ligatures/etc. issues potentially wrong by assuming that the width of
+@@ -356,7 +356,7 @@ base::string16 ElideHost(const GURL& url,
+                         gfx::ELIDE_HEAD);
+ }
+ 
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ base::string16 FormatUrlForSecurityDisplay(const GURL& url,
+                                            const SchemeDisplay scheme_display) {

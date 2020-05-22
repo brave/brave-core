@@ -1,0 +1,49 @@
+diff --git a/components/policy/resources/policy_templates.json b/components/policy/resources/policy_templates.json
+index 689c85eba7f2c2ae402a82150f56c733f89a6b38..71b2bf31c04ee481c7e8d13b8a90bcc87f322b2b 100644
+--- a/components/policy/resources/policy_templates.json
++++ b/components/policy/resources/policy_templates.json
+@@ -3976,7 +3976,7 @@
+         'items': { 'type': 'string' },
+         'id': 'ExtensionInstallSources',
+       },
+-      'supported_on': ['chrome.*:21-', 'chrome_os:21-'],
++      'supported_on': ['chrome.*:21-', 'chrome_os:21-', 'android:30-'],
+       'features': {
+         'dynamic_refresh': True,
+         'per_profile': True,
+@@ -4035,7 +4035,7 @@
+         },
+         'id': 'ExtensionAllowedTypes',
+       },
+-      'supported_on': ['chrome.*:25-', 'chrome_os:25-'],
++      'supported_on': ['chrome.*:25-', 'chrome_os:25-', 'android:30-'],
+       'features': {
+         'dynamic_refresh': True,
+         'per_profile': True,
+@@ -4150,7 +4150,7 @@
+         },
+       },
+       'url_schema': 'https://www.chromium.org/administrators/policy-list-3/extension-settings-full',
+-      'supported_on': ['chrome.*:62-', 'chrome_os:62-'],
++      'supported_on': ['chrome.*:62-', 'chrome_os:62-', 'android:30-'],
+       'features': {
+         'dynamic_refresh': True,
+         'per_profile': True,
+@@ -4422,7 +4422,7 @@
+       'owners': ['file://components/policy/resources/OWNERS'],
+       'type': 'main',
+       'schema': { 'type': 'boolean' },
+-      'supported_on': ['chrome.*:10-', 'chrome_os:11-'],
++      'supported_on': ['chrome.*:10-', 'chrome_os:11-', 'android:30-'],
+       'features': {
+         'can_be_recommended': True,
+         'dynamic_refresh': True,
+@@ -16499,7 +16499,7 @@
+           'required': ['url']
+         }
+       },
+-      'supported_on': ['chrome.*:75-', 'chrome_os:75-'],
++      'supported_on': ['chrome.*:75-', 'chrome_os:75-', 'android:30-'],
+       'features': {
+         'dynamic_refresh': True,
+         'per_profile': True,

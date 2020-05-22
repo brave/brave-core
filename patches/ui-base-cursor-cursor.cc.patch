@@ -1,0 +1,13 @@
+diff --git a/ui/base/cursor/cursor.cc b/ui/base/cursor/cursor.cc
+index be37579590ec86c4889c18e47d3376619610a32e..9d11beb0f451c2e5ae3952be38e89866cea403a1 100644
+--- a/ui/base/cursor/cursor.cc
++++ b/ui/base/cursor/cursor.cc
+@@ -36,7 +36,7 @@ void Cursor::SetPlatformCursor(const PlatformCursor& platform) {
+     RefCustomCursor();
+ }
+ 
+-#if !defined(USE_AURA)
++#if !defined(OS_ANDROID) && !defined(USE_AURA)
+ void Cursor::RefCustomCursor() {
+   NOTIMPLEMENTED();
+ }

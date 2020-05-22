@@ -1,0 +1,13 @@
+diff --git a/ui/views/controls/menu/menu_host.h b/ui/views/controls/menu/menu_host.h
+index e3df270ad1dfe2f1be546f1d46ce399481c2081c..24ebec29a2b57b05eaa3113cff25b86cecbf13f4 100644
+--- a/ui/views/controls/menu/menu_host.h
++++ b/ui/views/controls/menu/menu_host.h
+@@ -95,7 +95,7 @@ class MenuHost : public Widget, public WidgetObserver {
+   // If true and capture is lost we don't notify the delegate.
+   bool ignore_capture_lost_;
+ 
+-#if !defined(OS_MACOSX)
++#if !defined(OS_MACOSX) && !defined(OS_ANDROID)
+   // Handles raw touch events at the moment.
+   std::unique_ptr<internal::PreMenuEventDispatchHandler> pre_dispatch_handler_;
+ #endif

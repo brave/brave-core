@@ -1,0 +1,13 @@
+diff --git a/content/public/common/pepper_plugin_info.h b/content/public/common/pepper_plugin_info.h
+index 753bff723ad0a555ccd0c6707782d2d99c25b159..9a17105f1d8024f14e6398943d7ed7be2fcd703a 100644
+--- a/content/public/common/pepper_plugin_info.h
++++ b/content/public/common/pepper_plugin_info.h
+@@ -17,7 +17,7 @@
+ #include "ppapi/c/pp_module.h"
+ #include "ppapi/c/ppb.h"
+ 
+-#if !BUILDFLAG(ENABLE_PLUGINS)
++#if !defined(OS_ANDROID) && !BUILDFLAG(ENABLE_PLUGINS)
+ #error "Plugins should be enabled"
+ #endif
+ 

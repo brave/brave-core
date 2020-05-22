@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/search/most_visited_iframe_source.h b/chrome/browser/search/most_visited_iframe_source.h
+index c0ecdacffab8d679c6512e4e4c0d488bb86ebd39..8d22e5e261609994de0faeccae3363bff08da9fd 100644
+--- a/chrome/browser/search/most_visited_iframe_source.h
++++ b/chrome/browser/search/most_visited_iframe_source.h
+@@ -9,9 +9,9 @@
+ #include "build/build_config.h"
+ #include "content/public/browser/url_data_source.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ // Serves HTML for displaying suggestions using iframes, e.g.
+ // chrome-search://most-visited/single.html

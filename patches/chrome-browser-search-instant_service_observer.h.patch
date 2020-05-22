@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/search/instant_service_observer.h b/chrome/browser/search/instant_service_observer.h
+index 29b80c5cc8535055acd1a1b035b360a8a68fcc51..dbca000dc25822b4fa26cc93935a220f771d838e 100644
+--- a/chrome/browser/search/instant_service_observer.h
++++ b/chrome/browser/search/instant_service_observer.h
+@@ -9,9 +9,9 @@
+ 
+ #include "build/build_config.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ struct InstantMostVisitedInfo;
+ struct NtpTheme;

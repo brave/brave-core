@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/download/download_danger_prompt.cc b/chrome/browser/download/download_danger_prompt.cc
+index b13b1569bce77f4d30d4121d7e8dad9a3cfff4df..1b2f5bad059ac93825c3169c704b22b864d7101d 100644
+--- a/chrome/browser/download/download_danger_prompt.cc
++++ b/chrome/browser/download/download_danger_prompt.cc
+@@ -93,11 +93,13 @@ void DownloadDangerPrompt::SendSafeBrowsingDownloadReport(
+   }
+   report.set_url(download.GetURL().spec());
+   report.set_did_proceed(did_proceed);
++#if !defined(OS_ANDROID)
+   std::string token =
+     safe_browsing::DownloadProtectionService::GetDownloadPingToken(
+         &download);
+   if (!token.empty())
+     report.set_token(token);
++#endif
+   std::string serialized_report;
+   if (report.SerializeToString(&serialized_report))
+     sb_service->SendSerializedDownloadReport(serialized_report);

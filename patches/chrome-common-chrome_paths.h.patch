@@ -1,0 +1,13 @@
+diff --git a/chrome/common/chrome_paths.h b/chrome/common/chrome_paths.h
+index 3f73d868b54ea89f3f75335bfccb2def83799d1d..03f4b6a67f999796232962555fef4f0b3989920c 100644
+--- a/chrome/common/chrome_paths.h
++++ b/chrome/common/chrome_paths.h
+@@ -122,7 +122,7 @@ enum {
+   DIR_SUPERVISED_USER_INSTALLED_WHITELISTS,  // Directory where sanitized
+                                              // supervised user whitelists are
+                                              // installed.
+-#if defined(OS_LINUX) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_MACOSX)
+   DIR_NATIVE_MESSAGING,       // System directory where native messaging host
+                               // manifest files are stored.
+   DIR_USER_NATIVE_MESSAGING,  // Directory with Native Messaging Hosts
