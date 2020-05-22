@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-const qr = require('qr-image')
 
-export const generateQRData = (url: string, asset: string, qrAction: any) => {
-  const image = qr.image(url)
+export async function generateQRData (url: string, asset: string, qrAction: any) {
+  const qr = await import('qr-image')
+  const image: any = qr.image(url)
   try {
     let chunks: Array<Uint8Array> = []
     image
