@@ -3,3 +3,14 @@ group("chromium_deps") {
     "//brave/ui/webui/resources",
   ]
 }
+
+source_set("base") {
+  sources = [
+    "dragdrop/os_exchange_data_provider_android.cc",
+    "dragdrop/os_exchange_data_provider_android.h",
+  ]
+
+  deps = [
+    "//skia",
+  ]
+}

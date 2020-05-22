@@ -26,6 +26,7 @@ source_set("extensions") {
     "api/brave_theme_api.h",
     "api/rewards_notifications_api.cc",
     "api/rewards_notifications_api.h",
+    "api/image_writer_private/removable_storage_provider_android.cc",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
     "brave_component_extension_resource_manager.cc",
@@ -44,6 +45,10 @@ source_set("extensions") {
     "brave_extensions_browser_client_impl.h",
     "brave_theme_event_router.cc",
     "brave_theme_event_router.h",
+    "system_display/display_info_provider_android.cc",
+    "system_display/display_info_provider_android.h",
+    "global_shortcut_listener_android.cc",
+    "global_shortcut_listener_android.h",
     "updater/brave_update_client_config.cc",
     "updater/brave_update_client_config.h",
   ]

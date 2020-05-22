@@ -1,0 +1,21 @@
+
+source_set("views") {
+  sources = [
+    "metrics_android.cc",
+    "native_cursor_android.cc",
+    "event_monitor_android.cc",
+    "event_monitor_android.h",
+    "views_touch_selection_controller_factory_android.cc",
+    "controls/menu/menu_config_android.cc",
+    "controls/native/native_view_host_android.cc",
+    "controls/native/native_view_host_android.h",
+    "widget/native_widget_android.cc",
+    "widget/native_widget_android.h",
+    "//ui/native_theme/native_theme_android.cc"
+  ]
+
+  deps = [
+    "//skia",
+    "//ui/base",
+  ]
+}

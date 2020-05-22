@@ -26,6 +26,15 @@ source_set("favicon_source") {
 
 source_set("ui") {
   sources = [
+    "native_window_tracker_android.cc",
+    "native_window_tracker_android.h",
+    "views/accelerator_utils_android.cc",
+    "views/chrome_views_delegate_android.cc",
+    "views/dropdown_bar_host_android.cc",
+    "views/frame/desktop_browser_frame_android.cc",
+    "views/frame/desktop_browser_frame_android.h",
+    "views/frame/native_browser_frame_factory_android.cc",
+    "views/tabs/window_finder_android.cc",
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
@@ -36,6 +45,7 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
+    "window_sizer/window_sizer_android.cc",
   ]
 
 
@@ -208,6 +218,7 @@ source_set("ui") {
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/weekly_storage",
+    "//brave/ui/views",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/common",
