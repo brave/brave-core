@@ -1,0 +1,12 @@
+diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
+index 2a4eb7e3a8c106687f80656051c6a0a9e70e0ce3..1e74754c75de0b7dd5e09f5bb27e8b4c98e5ab53 100644
+--- a/components/permissions/BUILD.gn
++++ b/components/permissions/BUILD.gn
+@@ -55,6 +55,7 @@ source_set("permissions") {
+     "//ui/base",
+     "//url",
+   ]
++  deps += [ "//brave/components/permissions" ]
+   if (is_android) {
+     sources += [
+       "android/permission_dialog_delegate.cc",
