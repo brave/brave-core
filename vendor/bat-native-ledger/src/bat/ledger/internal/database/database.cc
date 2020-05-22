@@ -567,10 +567,10 @@ void Database::MarkUblindedTokensAsSpent(
       callback);
 }
 
-void Database::GetUnblindedTokensByTriggerIds(
+void Database::GetSpendableUnblindedTokensByTriggerIds(
     const std::vector<std::string>& trigger_ids,
     ledger::GetUnblindedTokenListCallback callback) {
-  unblinded_token_->GetRecordsByTriggerIds(trigger_ids, callback);
+  unblinded_token_->GetSpendableRecordsByTriggerIds(trigger_ids, callback);
 }
 
 void Database::GetSpendableUnblindedTokensByBatchTypes(
