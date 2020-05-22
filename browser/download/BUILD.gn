@@ -4,6 +4,7 @@ source_set("download") {
   sources = [
     "brave_download_item_model.cc",
     "brave_download_item_model.h",
+    "drag_download_item_android.cc",
   ]
 
   deps = [

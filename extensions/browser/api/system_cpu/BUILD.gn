@@ -1,0 +1,6 @@
+
+source_set("system_cpu") {
+  sources = [
+    "cpu_info_provider_android.cc",
+  ]
+}

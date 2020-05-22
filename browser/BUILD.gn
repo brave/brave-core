@@ -75,6 +75,9 @@ source_set("browser_process") {
     "geolocation/brave_geolocation_permission_context_delegate.h",
     "metrics/metrics_reporting_util.cc",
     "metrics/metrics_reporting_util.h",
+    "obsolete_system/obsolete_system_android.cc",
+    "policy/browser_dm_token_storage_android.cc",
+    "policy/browser_dm_token_storage_android.h",
     "search_engines/guest_window_search_engine_provider_service.cc",
     "search_engines/guest_window_search_engine_provider_service.h",
     "search_engines/private_window_search_engine_provider_service.cc",
@@ -92,6 +95,10 @@ source_set("browser_process") {
     "update_util.cc",
     "update_util.h",
   ]
+
+  if (enable_background_mode) {
+    sources += ["background/background_mode_manager_android.cc",]
+  }
 
   if (is_mac) {
     sources += [

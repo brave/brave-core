@@ -1,0 +1,7 @@
+
+source_set("components") {
+  sources = [
+    "web_app_shortcut_android.cc",
+    "web_app_shortcut_android.h",
+  ]
+}
