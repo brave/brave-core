@@ -3,7 +3,6 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as Crypto from 'crypto'
 import createWidget from '../widget/index'
 import { getLocale } from '../../../../common/locale'
 
@@ -21,6 +20,7 @@ import {
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import BraveTogetherIcon from './assets/brave-together-icon'
+import getRandomBase64 from '../../../getRandomBytes'
 
 interface Props {
   showContent: boolean
@@ -60,13 +60,8 @@ class Together extends React.PureComponent<Props, {}> {
 
   shouldCreateCall = (event: any) => {
     event.preventDefault()
-
-    Crypto.randomBytes(32, (err, buffer) => {
-      if (!err) {
-        const name = buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '')
-        window.open(`https://together.brave.com/${name}`, '_self')
-      }
-    })
+    const roomId = getRandomBase64(32)
+    window.open(`https://together.brave.com/${roomId}`, '_self', 'noopener')
   }
 
   render () {
@@ -91,6 +86,7 @@ class Together extends React.PureComponent<Props, {}> {
               </CallButton>
               <Privacy>
                 <PrivacyLink
+                  rel={'noopener'}
                   target={'_blank'}
                   href={'https://brave.com/privacy/#brave-together-learn'}
                 >

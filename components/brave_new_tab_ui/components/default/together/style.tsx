@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from 'brave-ui/theme'
 import palette from 'brave-ui/theme/colors'
 
 export const WidgetWrapper = styled<{}, 'div'>('div')`
@@ -56,6 +56,7 @@ export const CallButton = styled<{}, 'button'>('button')`
 
   &:focus {
     outline: none;
+    box-shadow: 0 0 0 1px ${p => p.theme.palette.blurple200};
   }
 `
 
