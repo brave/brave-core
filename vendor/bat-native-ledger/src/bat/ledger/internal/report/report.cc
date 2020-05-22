@@ -158,6 +158,11 @@ void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
 void Report::OnGetAllBalanceReports(
     ledger::BalanceReportInfoList reports,
     ledger::GetAllMonthlyReportIdsCallback callback) {
+  if (reports.empty()) {
+    callback({});
+    return;
+  }
+
   std::vector<std::string> ids;
 
   for (const auto& report : reports) {

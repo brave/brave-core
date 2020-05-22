@@ -50,6 +50,7 @@ void Publisher::OnRefreshPublisher(
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Publisher list was not successfully refreshed");
     callback(ledger::PublisherStatus::NOT_VERIFIED);
     return;
   }
@@ -130,7 +131,12 @@ void Publisher::SaveVisit(
     const uint64_t& duration,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
-  if (!ledger_->GetRewardsMainEnabled() || publisher_key.empty()) {
+  if (!ledger_->GetRewardsMainEnabled()) {
+    return;
+  }
+
+  if (publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
     return;
   }
 
@@ -221,6 +227,7 @@ void Publisher::SaveVisitInternal(
   DCHECK(result != ledger::Result::TOO_MANY_RESULTS);
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
+    BLOG(0, "Visit was not saved " << result);
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
@@ -355,30 +362,32 @@ void Publisher::onFetchFavIconDBResponse(
     ledger::PublisherInfoPtr info,
     const std::string& favicon_url,
     uint64_t window_id) {
-  if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
-    info->favicon_url = favicon_url;
-
-    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
-        this,
-        _1);
-
-    ledger_->SavePublisherInfo(info->Clone(), callback);
-
-    if (window_id > 0) {
-      ledger::VisitData visit_data;
-      OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
-                          std::move(info),
-                          window_id,
-                          visit_data);
-    }
-  } else {
+  if (result != ledger::Result::LEDGER_OK || favicon_url.empty()) {
     BLOG(1, "Missing or corrupted favicon file");
+    return;
+  }
+
+  info->favicon_url = favicon_url;
+
+  auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+      this,
+      _1);
+
+  ledger_->SavePublisherInfo(info->Clone(), callback);
+
+  if (window_id > 0) {
+    ledger::VisitData visit_data;
+    OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
+                        std::move(info),
+                        window_id,
+                        visit_data);
   }
 }
 
 void Publisher::OnPublisherInfoSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Publisher info was not saved!");
+    return;
   }
 
   SynopsisNormalizer();
@@ -405,12 +414,19 @@ void Publisher::OnSetPublisherExclude(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
+    BLOG(0, "Publisher exclude status not saved");
     callback(result);
     return;
   }
 
-  if (!publisher_info || publisher_info->excluded == exclude) {
+  if (!publisher_info) {
+    BLOG(0, "Publisher is null");
     callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  if (publisher_info->excluded == exclude) {
+    callback(ledger::Result::LEDGER_OK);
     return;
   }
 
@@ -445,7 +461,6 @@ void Publisher::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList* list,
     uint32_t record) {
-
   synopsisNormalizerInternal(newList, list, record);
 }
 
@@ -453,7 +468,8 @@ void Publisher::synopsisNormalizerInternal(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList* list,
     uint32_t /* next_record */) {
-  if (list->size() == 0) {
+  if (list->empty()) {
+    BLOG(0, "Publisher list is empty");
     return;
   }
 
@@ -702,6 +718,7 @@ void Publisher::OnGetPublisherBannerPublisher(
   auto new_banner = ledger::PublisherBanner::New(banner);
 
   if (!publisher_info || result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Publisher info not found");
     callback(std::move(new_banner));
     return;
   }

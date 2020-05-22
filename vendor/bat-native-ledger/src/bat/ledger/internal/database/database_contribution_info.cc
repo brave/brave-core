@@ -180,14 +180,17 @@ bool DatabaseContributionInfo::MigrateToV2(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV2(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV2(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -202,6 +205,7 @@ bool DatabaseContributionInfo::MigrateToV8(ledger::DBTransaction* transaction) {
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -213,10 +217,12 @@ bool DatabaseContributionInfo::MigrateToV8(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV8(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV8(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -235,6 +241,7 @@ bool DatabaseContributionInfo::MigrateToV8(ledger::DBTransaction* transaction) {
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -249,6 +256,7 @@ bool DatabaseContributionInfo::MigrateToV11(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table rename failed");
     return false;
   }
 
@@ -260,10 +268,12 @@ bool DatabaseContributionInfo::MigrateToV11(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV11(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!publishers_->Migrate(transaction, 11)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -333,6 +343,7 @@ bool DatabaseContributionInfo::MigrateToV11(
   transaction->commands.push_back(std::move(command));
 
   if (!DropTable(transaction, temp_table_name)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
@@ -393,6 +404,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
+    BLOG(0, "Info is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -477,6 +489,7 @@ void DatabaseContributionInfo::OnGetRecord(
     ledger::GetContributionInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback(nullptr);
     return;
   }
@@ -518,6 +531,7 @@ void DatabaseContributionInfo::OnGetPublishers(
       contribution_string);
 
   if (!contribution) {
+    BLOG(0, "Contribution is null");
     callback(nullptr);
     return;
   }
@@ -565,6 +579,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
     const int year,
     ledger::PublisherInfoListCallback callback) {
   if (year == 0) {
+    BLOG(0, "Year is 0");
     callback({});
     return;
   }
@@ -626,6 +641,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback({});
     return;
   }
@@ -656,6 +672,7 @@ void DatabaseContributionInfo::GetContributionReport(
     const int year,
     ledger::GetContributionReportCallback callback) {
   if (year == 0) {
+    BLOG(0, "Year is 0");
     callback({});
     return;
   }
@@ -704,6 +721,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
     ledger::GetContributionReportCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback({});
     return;
   }
@@ -811,6 +829,7 @@ void DatabaseContributionInfo::OnGetList(
     ledger::ContributionInfoListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback({});
     return;
   }
@@ -873,6 +892,7 @@ void DatabaseContributionInfo::UpdateStep(
     const ledger::ContributionStep step,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
+    BLOG(0, "Contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -905,6 +925,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
     const int32_t retry_count,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
+    BLOG(0, "Contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

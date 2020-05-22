@@ -64,6 +64,7 @@ void Uphold::StartContribution(
     ledger::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!info) {
+    BLOG(0, "Publisher info is null");
     ContributionCompleted(
         ledger::Result::LEDGER_ERROR,
         "",
@@ -127,10 +128,16 @@ void Uphold::FetchBalance(
     FetchBalanceCallback callback) {
   const auto wallet = GetWallet(std::move(wallets));
 
+  if (wallet->status == ledger::WalletStatus::CONNECTED) {
+    BLOG(1, "Wallet is connected");
+    callback(ledger::Result::LEDGER_OK, 0.0);
+    return;
+  }
+
   if (!wallet ||
       wallet->token.empty() ||
-      wallet->address.empty() ||
-      wallet->status == ledger::WalletStatus::CONNECTED) {
+      wallet->address.empty()) {
+    BLOG(0, "Wallet data is empty");
     callback(ledger::Result::LEDGER_OK, 0.0);
     return;
   }
@@ -172,12 +179,14 @@ void Uphold::OnFetchBalance(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response body is not JSON");
     callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response body is not JSON");
     callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;
   }
@@ -188,6 +197,7 @@ void Uphold::OnFetchBalance(
     return;
   }
 
+  BLOG(0, "Couldn't get balance");
   callback(ledger::Result::LEDGER_ERROR, 0.0);
 }
 
@@ -253,6 +263,7 @@ void Uphold::OnDisconectWallet(
     ledger::Result,
     ledger::ExternalWalletPtr wallet) {
   if (!wallet) {
+    BLOG(0, "Wallet is null");
     return;
   }
 
@@ -266,6 +277,7 @@ void Uphold::OnDisconectWallet(
 }
 
 void Uphold::DisconnectWallet() {
+  BLOG(1, "Disconnecting wallet");
   auto callback = std::bind(&Uphold::OnDisconectWallet,
                                  this,
                                  _1,
@@ -288,6 +300,7 @@ void Uphold::CreateAnonAddressIfNecessary(
 
 void Uphold::SaveTransferFee(ledger::TransferFeePtr transfer_fee) {
   if (!transfer_fee) {
+    BLOG(0, "Transfer fee is null");
     return;
   }
 
@@ -313,7 +326,6 @@ void Uphold::TransferFee(
     const ledger::Result result,
     ledger::ExternalWalletPtr wallet,
     const ledger::TransferFee& transfer_fee) {
-
   if (result != ledger::Result::LEDGER_OK) {
     SaveTransferFee(ledger::TransferFee::New(transfer_fee));
     return;
@@ -352,8 +364,6 @@ void Uphold::TransferFeeOnTimer(const uint32_t timer_id) {
 }
 
 void Uphold::OnTimer(uint32_t timer_id) {
-  BLOG(1, "OnTimer Uphold: " << timer_id);
-
   TransferFeeOnTimer(timer_id);
 }
 

@@ -80,14 +80,17 @@ bool DatabaseSKUTransaction::MigrateToV19(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV19(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV19(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -98,6 +101,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
     ledger::SKUTransactionPtr transaction,
     ledger::ResultCallback callback) {
   if (!transaction) {
+    BLOG(0, "Transcation is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -136,6 +140,8 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
     const std::string& external_transaction_id,
     ledger::ResultCallback callback) {
   if (transaction_id.empty() || external_transaction_id.empty()) {
+    BLOG(0, "Data is empty " <<
+        transaction_id << "/" << external_transaction_id);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -168,6 +174,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     const std::string& order_id,
     ledger::GetSKUTransactionCallback callback) {
   if (order_id.empty()) {
+    BLOG(0, "Order id is empty");
     callback(nullptr);
     return;
   }
@@ -208,6 +215,7 @@ void DatabaseSKUTransaction::OnGetRecord(
     ledger::GetSKUTransactionCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
   }

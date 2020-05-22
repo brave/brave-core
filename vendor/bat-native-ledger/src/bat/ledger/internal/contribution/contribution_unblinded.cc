@@ -255,7 +255,18 @@ void Unblinded::PreparePublishers(
 ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
     const std::vector<ledger::UnblindedToken>& list,
     ledger::ContributionInfoPtr contribution) {
-  if (!contribution || list.size() == 0 || contribution->publishers.empty()) {
+  if (!contribution) {
+    BLOG(0, "Contribution is null");
+    return {};
+  }
+
+  if (list.size() == 0) {
+    BLOG(0, "Token list is empty");
+    return {};
+  }
+
+  if (contribution->publishers.empty()) {
+    BLOG(0, "Publisher list is empty");
     return {};
   }
 
@@ -462,6 +473,7 @@ void Unblinded::Retry(
   }
 
   NOTREACHED();
+  BLOG(0, "We tried to retry not supported step");
 }
 
 }  // namespace braveledger_contribution

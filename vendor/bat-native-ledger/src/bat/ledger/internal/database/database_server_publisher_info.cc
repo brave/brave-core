@@ -80,14 +80,17 @@ bool DatabaseServerPublisherInfo::MigrateToV7(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV7(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV7(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -125,6 +128,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
     const std::vector<ledger::ServerPublisherPartial>& list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
+    BLOG(1, "List is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -181,6 +185,12 @@ void DatabaseServerPublisherInfo::InsertOrUpdateBannerList(
 void DatabaseServerPublisherInfo::GetRecord(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
+  if (publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
+    callback(nullptr);
+    return;
+  }
+
   // Get banner first as is not complex struct where ServerPublisherInfo is
   auto banner_callback =
       std::bind(&DatabaseServerPublisherInfo::OnGetRecordBanner,
@@ -238,6 +248,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
     ledger::GetServerPublisherInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
   }

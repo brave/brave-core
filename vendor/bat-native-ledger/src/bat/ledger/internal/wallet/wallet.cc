@@ -52,6 +52,7 @@ void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   const auto persona_id = ledger_->GetPersonaId();
 
   if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
+    BLOG(1, "Wallet already exists");
     callback(ledger::Result::WALLET_CREATED);
     return;
   }
@@ -63,12 +64,12 @@ void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   create_->Start(std::move(callback));
 }
 
-void Wallet::GetWalletProperties(
-    ledger::OnWalletPropertiesCallback callback) {
+void Wallet::GetWalletProperties(ledger::OnWalletPropertiesCallback callback) {
   std::string payment_id = ledger_->GetPaymentId();
   std::string passphrase = GetWalletPassphrase();
 
   if (payment_id.empty() || passphrase.empty()) {
+    BLOG(0, "Wallet corruption");
     ledger::WalletProperties properties;
     callback(ledger::Result::CORRUPTED_DATA,
              WalletPropertiesToWalletInfo(properties));
@@ -190,6 +191,7 @@ void Wallet::OnExternalWalletAuthorization(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   if (wallets.size() == 0) {
+    BLOG(0, "No wallets");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -220,6 +222,7 @@ void Wallet::OnDisconnectWallet(
     ledger::ResultCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   if (wallets.size() == 0) {
+    BLOG(0, "No wallets");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -227,6 +230,7 @@ void Wallet::OnDisconnectWallet(
   auto wallet_ptr = GetWallet(wallet_type, std::move(wallets));
 
   if (!wallet_ptr) {
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -286,11 +290,13 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
     const bool allow_zero_balance,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
+    BLOG(0, "Anon funds transfer failed");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   if (!allow_zero_balance && properties->user_funds == "0") {
+    BLOG(0, "Zero balance not allowed");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -299,6 +305,7 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
       ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
 
   if (!anon_address.empty()) {
+    BLOG(1, "Anon address already exists");
     OnTransferAnonToExternalWalletAddress(
         ledger::Result::ALREADY_EXISTS,
         anon_address,
@@ -398,6 +405,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
   if ((result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::ALREADY_EXISTS)
       || anon_address.empty()) {
+    BLOG(0, "Anon funds transfer failed");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -426,6 +434,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       anon_address);
 
   if (payload.empty()) {
+    BLOG(0, "Payload is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -449,11 +458,13 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const std::string persona_id = ledger_->GetPersonaId();
 
   if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
+    BLOG(0, "Wallet is ok");
     callback(ledger::Result::WALLET_CREATED);
     return;
   }
 
   if (payment_id.empty() || passphrase.empty()) {
+    BLOG(0, "Wallet is corrupted");
     callback(ledger::Result::CORRUPTED_DATA);
     return;
   }

@@ -341,10 +341,12 @@ bool DatabaseActivityInfo::MigrateToV1(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV1(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 

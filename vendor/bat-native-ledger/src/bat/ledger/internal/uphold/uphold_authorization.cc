@@ -35,6 +35,7 @@ void UpholdAuthorization::Authorize(
   auto wallet = GetWallet(std::move(wallets));
 
   if (!wallet) {
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -45,6 +46,7 @@ void UpholdAuthorization::Authorize(
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
 
   if (args.empty()) {
+    BLOG(0, "Arguments are empty");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -56,6 +58,7 @@ void UpholdAuthorization::Authorize(
   }
 
   if (code.empty()) {
+    BLOG(0, "Code is empty");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -67,11 +70,13 @@ void UpholdAuthorization::Authorize(
   }
 
   if (one_time_string.empty()) {
+    BLOG(0, "One time string is empty");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (current_one_time != one_time_string) {
+    BLOG(0, "One time string miss match");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -114,12 +119,14 @@ void UpholdAuthorization::OnAuthorize(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -131,6 +138,7 @@ void UpholdAuthorization::OnAuthorize(
   }
 
   if (token.empty()) {
+    BLOG(0, "Token is empty");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -174,6 +182,7 @@ void UpholdAuthorization::OnGetUser(
   std::map<std::string, std::string> args;
 
   if (user.bat_not_allowed) {
+    BLOG(0, "BAT not allowed");
     callback(ledger::Result::BAT_NOT_ALLOWED, args);
     return;
   }
@@ -213,6 +222,7 @@ void UpholdAuthorization::OnCardCreate(
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet) {
   if (result == ledger::Result::LEDGER_ERROR) {
+    BLOG(0, "Card creation");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }

@@ -39,6 +39,7 @@ std::string AttestationIOS::ParseStartPayload(
 
   const auto* key = dictionary->FindStringKey("publicKey");
   if (!key) {
+    BLOG(0, "Public key is wrong");
     return "";
   }
 
@@ -60,16 +61,19 @@ void AttestationIOS::ParseClaimSolution(
 
   const auto* nonce = dictionary->FindStringKey("nonce");
   if (!nonce) {
+    BLOG(0, "Nonce is wrong");
     return;
   }
 
   const auto* blob = dictionary->FindStringKey("blob");
   if (!blob) {
+    BLOG(0, "Blob is wrong");
     return;
   }
 
   const auto* signature = dictionary->FindStringKey("signature");
   if (!signature) {
+    BLOG(0, "Signature is wrong");
     return;
   }
 
@@ -85,6 +89,7 @@ void AttestationIOS::Start(
   const std::string payment_id = ledger_->GetPaymentId();
 
   if (key.empty()) {
+    BLOG(0, "Key is empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -131,6 +136,7 @@ void AttestationIOS::Confirm(
   ParseClaimSolution(solution, &parsed_solution);
 
   if (parsed_solution.DictSize() != 3) {
+    BLOG(0, "Solution is wrong: " << solution);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

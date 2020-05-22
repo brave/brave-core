@@ -267,6 +267,7 @@ void Contribution::ContributionCompleted(
   }
 
   if (contribution_id.empty()) {
+    BLOG(0, "Contribution id is empty");
     return;
   }
 
@@ -306,6 +307,7 @@ void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
 
 void Contribution::DeleteContributionQueue(const uint64_t id) {
   if (id == 0) {
+    BLOG(0, "Queue id is empty");
     return;
   }
 
@@ -326,6 +328,7 @@ void Contribution::CreateNewEntry(
   }
 
   if (queue->publishers.empty() || !balance || wallet_type.empty()) {
+    BLOG(0, "Queue data is wrong");
     DeleteContributionQueue(queue->id);
     return;
   }
@@ -335,12 +338,17 @@ void Contribution::CreateNewEntry(
           wallet_type,
           balance->wallets);
   if (wallet_balance == 0) {
+    BLOG(1, "Wallet balance is 0 for " << wallet_type);
     CreateNewEntry(
         GetNextProcessor(wallet_type),
         std::move(balance),
         std::move(queue));
     return;
   }
+
+
+  BLOG(1, "Creating contribution(" << wallet_type << ") for " <<
+      queue->amount << " type " << queue->type);
 
   const std::string contribution_id = base::GenerateGUID();
 
@@ -496,11 +504,18 @@ void Contribution::OnQueueSaved(
 void Contribution::Process(
     ledger::ContributionQueuePtr queue,
     ledger::BalancePtr balance) {
-  if (!queue || !balance) {
+  if (!queue) {
+    BLOG(0, "Queue is null");
+    return;
+  }
+
+  if (!balance) {
+    BLOG(0, "Balance is null");
     return;
   }
 
   if (queue->amount == 0 || queue->publishers.empty()) {
+    BLOG(0, "Amount/publisher is empty");
     DeleteContributionQueue(queue->id);
     return;
   }
@@ -511,11 +526,13 @@ void Contribution::Process(
       balance->total);
 
   if (!have_enough_balance) {
+    BLOG(1, "Not enough balance");
     DeleteContributionQueue(queue->id);
     return;
   }
 
-  if (queue->amount == 0 || queue->publishers.empty()) {
+  if (queue->amount == 0) {
+    BLOG(0, "Amount is 0");
     DeleteContributionQueue(queue->id);
     return;
   }
@@ -652,6 +669,7 @@ void Contribution::SetRetryTimer(
     const std::string& contribution_id,
     const uint64_t start_timer_in) {
   if (contribution_id.empty()) {
+    BLOG(0, "Contribution id is empty");
     return;
   }
 
@@ -679,6 +697,7 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
   }
 
   if (contribution->retry_count == 3) {
+    BLOG(0, "Contribution failed after 3 retries");
     ledger_->ContributionCompleted(
         ledger::Result::LEDGER_ERROR,
         contribution->amount,

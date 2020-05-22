@@ -87,14 +87,17 @@ bool DatabaseSKUOrderItems::MigrateToV19(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV19(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV19(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -106,6 +109,7 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
     ledger::SKUOrderItemList list) {
   DCHECK(transaction);
   if (list.empty()) {
+    BLOG(0, "List is empty");
     return;
   }
 
@@ -139,6 +143,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     const std::string& order_id,
     GetSKUOrderItemsCallback callback) {
   if (order_id.empty()) {
+    BLOG(0, "Order id is empty");
     callback({});
     return;
   }
@@ -184,6 +189,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     GetSKUOrderItemsCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }

@@ -43,11 +43,13 @@ void AttestationDesktop::ParseCaptchaResponse(
 
   const auto* captcha_id = dictionary->FindStringKey("captchaId");
   if (!captcha_id) {
+    BLOG(0, "Captcha id is wrong");
     return;
   }
 
   const auto* hint = dictionary->FindStringKey("hint");
   if (!hint) {
+    BLOG(0, "Hint is wrong");
     return;
   }
 
@@ -70,16 +72,19 @@ void AttestationDesktop::ParseClaimSolution(
 
   const auto* captcha_id = dictionary->FindStringKey("captchaId");
   if (!captcha_id) {
+    BLOG(0, "Captcha id is wrong");
     return;
   }
 
   const auto x = dictionary->FindIntKey("x");
   if (!x) {
+    BLOG(0, "X is wrong");
     return;
   }
 
   const auto y = dictionary->FindIntKey("y");
   if (!y) {
+    BLOG(0, "Y is wrong");
     return;
   }
 
@@ -135,12 +140,14 @@ void AttestationDesktop::DownloadCaptchaImage(
   ParseCaptchaResponse(response, &dictionary);
 
   if (dictionary.DictEmpty()) {
+    BLOG(0, "Captcha response is empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   const auto* id = dictionary.FindStringKey("captchaId");
   if (!id) {
+    BLOG(0, "Captcha id is wrong");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -164,7 +171,13 @@ void AttestationDesktop::OnDownloadCaptchaImage(
   base::Value dictionary(base::Value::Type::DICTIONARY);
   ParseCaptchaResponse(captcha_response, &dictionary);
 
-  if (response.status_code != net::HTTP_OK || dictionary.DictEmpty()) {
+  if (response.status_code != net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  if (dictionary.DictEmpty()) {
+    BLOG(0, "Captcha response is empty");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -187,6 +200,7 @@ void AttestationDesktop::Confirm(
   ParseClaimSolution(solution, &parsed_solution);
 
   if (parsed_solution.DictSize() != 3) {
+    BLOG(0, "Solution is wrong: " << solution);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -201,6 +215,7 @@ void AttestationDesktop::Confirm(
 
   const auto* id = parsed_solution.FindStringKey("captchaId");
   if (!id) {
+    BLOG(0, "Captcha id is wrong");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

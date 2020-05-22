@@ -61,12 +61,14 @@ void Balance::OnWalletProperties(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
@@ -101,6 +103,11 @@ void Balance::OnWalletProperties(
 void Balance::GetUnBlindedTokens(
     ledger::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
+  if (!balance) {
+    BLOG(0, "Balance is null");
+    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
+    return;
+  }
   auto tokens_callback = std::bind(&Balance::OnGetUnBlindedTokens,
       this,
       *balance,
@@ -128,6 +135,11 @@ void Balance::OnGetUnBlindedTokens(
 void Balance::ExternalWallets(
     ledger::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
+  if (!balance) {
+    BLOG(0, "Balance is null");
+    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
+    return;
+  }
   auto tokens_callback = std::bind(&Balance::OnExternalWallets,
                                    this,
                                    *balance,
@@ -164,6 +176,7 @@ void Balance::OnUpholdFetchBalance(ledger::Balance info,
   ledger::BalancePtr info_ptr = ledger::Balance::New(info);
 
   if (result == ledger::Result::LEDGER_ERROR) {
+    BLOG(0, "Can't get uphold balance");
     callback(ledger::Result::LEDGER_ERROR, std::move(info_ptr));
     return;
   }

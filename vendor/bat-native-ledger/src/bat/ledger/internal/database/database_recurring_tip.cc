@@ -107,14 +107,17 @@ bool DatabaseRecurringTip::MigrateToV2(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV2(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV2(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -129,6 +132,7 @@ bool DatabaseRecurringTip::MigrateToV15(ledger::DBTransaction* transaction) {
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -140,10 +144,12 @@ bool DatabaseRecurringTip::MigrateToV15(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -159,6 +165,7 @@ bool DatabaseRecurringTip::MigrateToV15(ledger::DBTransaction* transaction) {
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -168,6 +175,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
     ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -240,6 +248,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }
@@ -269,6 +278,7 @@ void DatabaseRecurringTip::DeleteRecord(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

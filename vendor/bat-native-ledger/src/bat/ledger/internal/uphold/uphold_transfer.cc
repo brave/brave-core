@@ -31,6 +31,7 @@ void UpholdTransfer::Start(
     ledger::ExternalWalletPtr wallet,
     ledger::TransactionCallback callback) {
   if (!wallet) {
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -42,6 +43,12 @@ void UpholdTransfer::CreateTransaction(
     const Transaction& transaction,
     ledger::ExternalWalletPtr wallet,
     ledger::TransactionCallback callback) {
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   auto headers = RequestAuthorization(wallet->token);
 
   const std::string path = base::StringPrintf(
@@ -92,18 +99,21 @@ void UpholdTransfer::OnCreateTransaction(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   const auto* id = dictionary->FindStringKey("id");
   if (!id) {
+    BLOG(0, "ID not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -111,9 +121,15 @@ void UpholdTransfer::OnCreateTransaction(
   CommitTransaction(*id, wallet, callback);
 }
 
-void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
-                                       const ledger::ExternalWallet& wallet,
-                                       ledger::TransactionCallback callback) {
+void UpholdTransfer::CommitTransaction(
+    const std::string& transaction_id,
+    const ledger::ExternalWallet& wallet,
+    ledger::TransactionCallback callback) {
+  if (transaction_id.empty()) {
+    BLOG(0, "Transaction id not found");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
   auto headers = RequestAuthorization(wallet.token);
 
   const std::string path = base::StringPrintf(

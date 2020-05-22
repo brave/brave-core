@@ -32,6 +32,12 @@ Recover::~Recover() {
 void Recover::Start(
     const std::string& pass_phrase,
     ledger::RecoverWalletCallback callback) {
+  if (pass_phrase.empty()) {
+    BLOG(0, "Pass phrase is empty");
+    callback(ledger::Result::LEDGER_ERROR, 0);
+    return;
+  }
+
   size_t written = 0;
   auto phrase_split = base::SplitString(
       pass_phrase,

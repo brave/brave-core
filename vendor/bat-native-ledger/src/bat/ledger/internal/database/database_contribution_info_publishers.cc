@@ -167,14 +167,17 @@ bool DatabaseContributionInfoPublishers::MigrateToV11(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV11(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV11(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -190,6 +193,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV15(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -202,10 +206,12 @@ bool DatabaseContributionInfoPublishers::MigrateToV15(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -222,6 +228,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV15(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -236,6 +243,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV21(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -248,10 +256,12 @@ bool DatabaseContributionInfoPublishers::MigrateToV21(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV21(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV21(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -268,6 +278,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV21(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -279,6 +290,7 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
   DCHECK(transaction);
 
   if (!info) {
+    BLOG(0, "Info is null");
     return;
   }
 
@@ -305,6 +317,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherListCallback callback) {
   if (contribution_ids.empty()) {
+    BLOG(0, "Contribution ids is empty");
     callback({});
     return;
   }
@@ -344,6 +357,7 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     ContributionPublisherListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback({});
     return;
   }
@@ -368,6 +382,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
+    BLOG(0, "Contribution ids is empty");
     callback({});
     return;
   }
@@ -416,6 +431,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     ContributionPublisherPairListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is not ok");
     callback({});
     return;
   }
@@ -447,6 +463,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
+    BLOG(0, "Data is empty " << contribution_id << "/" << publisher_key);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

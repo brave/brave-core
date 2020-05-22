@@ -121,14 +121,17 @@ bool DatabasePromotionCreds::MigrateToV10(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV10(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV10(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -143,6 +146,7 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -154,10 +158,12 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -177,6 +183,7 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;

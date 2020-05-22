@@ -96,10 +96,12 @@ bool DatabasePublisherInfo::MigrateToV1(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV1(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
@@ -114,10 +116,12 @@ bool DatabasePublisherInfo::MigrateToV7(ledger::DBTransaction* transaction) {
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
   if (!CreateTableV7(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
@@ -136,6 +140,7 @@ bool DatabasePublisherInfo::MigrateToV7(ledger::DBTransaction* transaction) {
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
 
@@ -146,6 +151,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
     ledger::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info || info->id.empty()) {
+    BLOG(0, "Info is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -206,6 +212,7 @@ void DatabasePublisherInfo::GetRecord(
     const std::string& publisher_key,
     ledger::PublisherInfoCallback callback) {
   if (publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -252,6 +259,7 @@ void DatabasePublisherInfo::OnGetRecord(
     ledger::PublisherInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -281,6 +289,7 @@ void DatabasePublisherInfo::GetPanelRecord(
     ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoCallback callback) {
   if (!filter || filter->id.empty()) {
+    BLOG(0, "Filter is empty");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -335,6 +344,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
     ledger::PublisherInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -430,6 +440,7 @@ void DatabasePublisherInfo::OnGetExcludedList(
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }

@@ -171,14 +171,17 @@ bool DatabaseUnblindedToken::MigrateToV10(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV10(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV10(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -208,6 +211,7 @@ bool DatabaseUnblindedToken::MigrateToV15(ledger::DBTransaction* transaction) {
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -219,10 +223,12 @@ bool DatabaseUnblindedToken::MigrateToV15(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -241,6 +247,7 @@ bool DatabaseUnblindedToken::MigrateToV15(ledger::DBTransaction* transaction) {
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -288,6 +295,7 @@ bool DatabaseUnblindedToken::MigrateToV18(ledger::DBTransaction* transaction) {
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -299,10 +307,12 @@ bool DatabaseUnblindedToken::MigrateToV18(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV18(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV18(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -322,6 +332,7 @@ bool DatabaseUnblindedToken::MigrateToV18(ledger::DBTransaction* transaction) {
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -352,6 +363,7 @@ bool DatabaseUnblindedToken::MigrateToV20(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   if (!CreateIndexV20(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -362,6 +374,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
+    BLOG(0, "List is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -406,6 +419,7 @@ void DatabaseUnblindedToken::OnGetRecords(
     ledger::GetUnblindedTokenListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }
@@ -432,6 +446,7 @@ void DatabaseUnblindedToken::GetRecordsByTriggerIds(
     const std::vector<std::string>& trigger_ids,
     ledger::GetUnblindedTokenListCallback callback) {
   if (trigger_ids.empty()) {
+    BLOG(0, "Trigger id is empty");
     callback({});
     return;
   }
@@ -475,6 +490,13 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::string& redeem_id,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
+    BLOG(0, "List of ids is empty");
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  if (redeem_id.empty()) {
+    BLOG(0, "Redeem id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -508,6 +530,7 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
     const std::vector<ledger::CredsBatchType>& batch_types,
     ledger::GetUnblindedTokenListCallback callback) {
   if (batch_types.empty()) {
+    BLOG(0, "Batch types is empty");
     callback({});
     return;
   }

@@ -87,14 +87,17 @@ bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV18(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV18(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -130,6 +133,7 @@ void DatabaseCredsBatch::InsertOrUpdate(
     ledger::CredsBatchPtr creds,
     ledger::ResultCallback callback) {
   if (!creds) {
+    BLOG(0, "Creds is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -214,11 +218,13 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
     ledger::GetCredsBatchCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(0, "Record size is not correct");
     callback(nullptr);
     return;
   }
@@ -245,6 +251,7 @@ void DatabaseCredsBatch::SaveSignedCreds(
     ledger::CredsBatchPtr creds,
     ledger::ResultCallback callback) {
   if (!creds) {
+    BLOG(0, "Creds is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -318,6 +325,7 @@ void DatabaseCredsBatch::OnGetAllRecords(
     ledger::GetAllCredsBatchCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }
@@ -351,6 +359,7 @@ void DatabaseCredsBatch::UpdateStatus(
     const ledger::CredsBatchStatus status,
     ledger::ResultCallback callback) {
   if (trigger_id.empty()) {
+    BLOG(0, "Trigger id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -384,6 +393,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
     const ledger::CredsBatchStatus status,
     ledger::ResultCallback callback) {
   if (trigger_ids.empty()) {
+    BLOG(0, "Trigger id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

@@ -116,14 +116,17 @@ bool DatabaseServerPublisherLinks::MigrateToV7(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV7(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV7(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -139,6 +142,7 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -150,10 +154,12 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -169,6 +175,7 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
 
@@ -181,6 +188,7 @@ void DatabaseServerPublisherLinks::InsertOrUpdateList(
   DCHECK(transaction);
 
   if (list.empty()) {
+    BLOG(1, "List is empty");
     return;
   }
 
@@ -236,6 +244,12 @@ void DatabaseServerPublisherLinks::InsertOrUpdateList(
 void DatabaseServerPublisherLinks::GetRecord(
     const std::string& publisher_key,
     ServerPublisherLinksCallback callback) {
+  if (publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
+    callback({});
+    return;
+  }
+
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT provider, link FROM %s WHERE publisher_key=?",
@@ -268,6 +282,7 @@ void DatabaseServerPublisherLinks::OnGetRecord(
     ServerPublisherLinksCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }

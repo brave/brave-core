@@ -39,6 +39,13 @@ UpholdUser::~UpholdUser() {
 void UpholdUser::Get(
     ledger::ExternalWalletPtr wallet,
     GetUserCallback callback) {
+  if (!wallet) {
+    User user;
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, user);
+    return;
+  }
+
   const auto headers = RequestAuthorization(wallet->token);
   const std::string url = GetAPIUrl("/v0/me");
 
@@ -73,12 +80,14 @@ void UpholdUser::OnGet(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, user);
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Response is not JSON");
     callback(ledger::Result::LEDGER_ERROR, user);
     return;
   }

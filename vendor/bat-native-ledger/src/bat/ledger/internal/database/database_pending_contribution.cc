@@ -193,14 +193,17 @@ bool DatabasePendingContribution::MigrateToV3(
   DCHECK(transaction);
 
   if (!DropTable(transaction, kTableName)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
   if (!CreateTableV3(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV3(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -216,6 +219,7 @@ bool DatabasePendingContribution::MigrateToV8(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -227,10 +231,12 @@ bool DatabasePendingContribution::MigrateToV8(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV8(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV8(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -248,6 +254,7 @@ bool DatabasePendingContribution::MigrateToV8(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
 
@@ -263,6 +270,7 @@ bool DatabasePendingContribution::MigrateToV12(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -274,10 +282,12 @@ bool DatabasePendingContribution::MigrateToV12(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV12(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV12(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -295,6 +305,7 @@ bool DatabasePendingContribution::MigrateToV12(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -309,6 +320,7 @@ bool DatabasePendingContribution::MigrateToV15(
       kTableName);
 
   if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
     return false;
   }
 
@@ -320,10 +332,12 @@ bool DatabasePendingContribution::MigrateToV15(
   transaction->commands.push_back(std::move(command));
 
   if (!CreateTableV15(transaction)) {
+    BLOG(0, "Table couldn't be created");
     return false;
   }
 
   if (!CreateIndexV15(transaction)) {
+    BLOG(0, "Index couldn't be created");
     return false;
   }
 
@@ -342,6 +356,7 @@ bool DatabasePendingContribution::MigrateToV15(
       kTableName,
       columns,
       true)) {
+    BLOG(0, "Table migration failed");
     return false;
   }
   return true;
@@ -351,6 +366,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
     ledger::PendingContributionList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
+    BLOG(0, "List is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -416,6 +432,7 @@ void DatabasePendingContribution::OnGetReservedAmount(
     ledger::PendingContributionsTotalCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback(0.0);
     return;
   }
@@ -477,6 +494,7 @@ void DatabasePendingContribution::OnGetAllRecords(
     ledger::PendingContributionInfoListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
     callback({});
     return;
   }
@@ -513,6 +531,7 @@ void DatabasePendingContribution::DeleteRecord(
     const uint64_t id,
     ledger::ResultCallback callback) {
   if (id == 0) {
+    BLOG(0, "Id is 0");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
