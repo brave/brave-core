@@ -428,7 +428,7 @@ void DatabaseUnblindedToken::OnGetRecords(
   callback(std::move(list));
 }
 
-void DatabaseUnblindedToken::GetRecordsByTriggerIds(
+void DatabaseUnblindedToken::GetSpendableRecordsByTriggerIds(
     const std::vector<std::string>& trigger_ids,
     ledger::GetUnblindedTokenListCallback callback) {
   if (trigger_ids.empty()) {
@@ -442,7 +442,8 @@ void DatabaseUnblindedToken::GetRecordsByTriggerIds(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
       "LEFT JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
-      "WHERE cb.trigger_id IN (%s) OR ut.creds_id IS NULL",
+      "WHERE ut.redeemed_at = 0 AND "
+      "(cb.trigger_id IN (%s) OR ut.creds_id IS NULL)",
       kTableName,
       GenerateStringInCase(trigger_ids).c_str());
 

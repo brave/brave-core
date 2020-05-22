@@ -573,7 +573,7 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
-  void GetUnblindedTokensByTriggerIds(
+  void GetSpendableUnblindedTokensByTriggerIds(
       const std::vector<std::string>& trigger_ids,
       ledger::GetUnblindedTokenListCallback callback);
 
