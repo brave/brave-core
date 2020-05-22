@@ -44,15 +44,6 @@ group("fix_brave_test_install_name_speedreader") {
   }
 }
 
-group("fix_all_tests") {
-  testonly = true
-  deps = [
-    ":fix_brave_test_install_name",
-    ":fix_brave_test_install_name_adblock",
-    ":fix_brave_test_install_name_speedreader",
-  ]
-}
-
 static_library("brave_test_support_unit") {
   testonly = true
   sources = [
