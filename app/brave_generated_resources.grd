@@ -799,6 +799,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">
         Site and Shields Settings
       </message>
+      <message name="IDS_BOOKMARK_BAR_IMPORT_LINK" desc="text shown for importing ">
+        Import bookmarks now...
+      </message>
+      <message name="IDS_BOOKMARKS_NO_ITEMS" desc="Text shown when the user has no bookmarks">
+        For quick access, place your bookmarks here on the bookmarks bar.
+      </message>
     </messages>
   </release>
 </grit>

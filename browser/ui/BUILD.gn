@@ -118,6 +118,8 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
+      "views/bookmarks/bookmark_bar_instructions_view.cc",
+      "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/brave_layout_provider.cc",
       "views/brave_layout_provider.h",
       "views/download/brave_download_item_view.cc",
