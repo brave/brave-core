@@ -203,15 +203,15 @@ public class DAU {
         return URLQueryItem(name: "woi", value: woi)
     }
     
-    private enum PingType {
+    private enum PingType: CaseIterable {
         case daily
         case weekly
         case monthly
     }
     
-    private func getPings(forDate date: Date, lastPingDate: Date) -> [PingType] {
+    private func getPings(forDate date: Date, lastPingDate: Date) -> Set<PingType> {
         let calendar = DAU.calendar
-        var pings = [PingType]()
+        var pings = Set<PingType>()
 
         func eraDayOrdinal(_ date: Date) -> Int? {
             return calendar.ordinality(of: .day, in: .era, for: date)
@@ -221,16 +221,23 @@ public class DAU {
         }
         
         if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate), nowDay > lastPingDay {
-            pings.append(.daily)
+            pings.insert(.daily)
         }
         
         let mondayWeekday = 2
         if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)), date >= nextMonday {
-            pings.append(.weekly)
+            pings.insert(.weekly)
+            pings.insert(.daily)
         }
         if let nextFirstOfMonth = nextDate(matching: DateComponents(day: 1)), date >= nextFirstOfMonth {
-            pings.append(.monthly)
+            pings.insert(.monthly)
+            pings.insert(.daily)
         }
+        
+        if pings.count > PingType.allCases.count {
+            assertionFailure("Passed more ping types than expected")
+        }
+        
         return pings
     }
     
