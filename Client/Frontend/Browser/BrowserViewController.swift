@@ -260,7 +260,17 @@ class BrowserViewController: UIViewController {
         notificationsHandler?.actionOccured = { [weak self] notification, action in
             guard let self = self else { return }
             if action == .opened {
-                let request = URLRequest(url: notification.targetURL)
+                var url = URL(string: notification.targetURL)
+                if url == nil, let percentEncodedURLString =
+                    notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    // Try to percent-encode the string and try that
+                    url = URL(string: percentEncodedURLString)
+                }
+                guard let targetURL = url else {
+                    assertionFailure("Invalid target URL for creative instance id: \(notification.creativeInstanceID)")
+                    return
+                }
+                let request = URLRequest(url: targetURL)
                 self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             }
         }

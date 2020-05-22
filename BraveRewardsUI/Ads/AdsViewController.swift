@@ -334,11 +334,16 @@ extension AdsViewController {
     let notification = AdsNotification.customAd(
       title: Strings.myFirstAdTitle,
       body: Strings.myFirstAdBody,
-      url: URL(string: "https://brave.com/my-first-ad")!
+      url: "https://brave.com/my-first-ad"
     )
     
+    guard let targetURL = URL(string: notification.targetURL) else {
+      assertionFailure("My First Ad URL is not valid: \(notification.targetURL)")
+      return
+    }
+    
     adsViewController.display(ad: notification, handler: { (notification, action) in
-      completion(action, notification.targetURL)
+      completion(action, targetURL)
     }, animatedOut: {
       adsViewController.view.removeFromSuperview()
     })
