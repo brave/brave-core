@@ -16,6 +16,7 @@ namespace {
 const std::vector<std::string> kShieldsResourceIDs {
     brave_shields::kAds,
     brave_shields::kTrackers,
+    brave_shields::kCosmeticFiltering,
     brave_shields::kHTTPUpgradableResources,
     brave_shields::kJavaScript,
     brave_shields::kFingerprinting,

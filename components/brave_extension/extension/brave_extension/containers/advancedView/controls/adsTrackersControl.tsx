@@ -6,12 +6,11 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  BlockedInfoRow,
-  BlockedInfoRowData,
+  BlockedInfoRowForSelect,
+  BlockedInfoRowDataForSelect,
   ArrowDownIcon,
   BlockedInfoRowStats,
-  BlockedInfoRowText,
-  Toggle
+  SelectBox
 } from '../../../components'
 
 // Group Components
@@ -25,15 +24,13 @@ import {
   sumAdsAndTrackers,
   mergeAdsAndTrackersResources,
   maybeBlockResource,
-  getToggleStateViaEventTarget,
   getTabIndexValueBasedOnProps,
   blockedResourcesSize,
   shouldDisableResourcesRow
 } from '../../../helpers/shieldsUtils'
 
 // Types
-import { BlockAdsTrackers } from '../../../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../../../types/other/blockTypes'
+import { BlockFPOptions, BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
   isBlockedListOpen: boolean
@@ -49,7 +46,8 @@ interface AdsTrackersProps {
   trackers: BlockOptions
   trackersBlocked: number
   trackersBlockedResources: Array<string>
-  blockAdsTrackers: BlockAdsTrackers
+  firstPartyCosmeticFiltering: boolean
+  blockAdsTrackers: (event: string) => void
 }
 
 export type Props = CommonProps & AdsTrackersProps
@@ -78,9 +76,12 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return mergeAdsAndTrackersResources(adsBlockedResources, trackersBlockedResources)
   }
 
-  get maybeBlock3rdPartyTrackersBlocked (): boolean {
-    const { ads, trackers } = this.props
-    return maybeBlockResource(ads) && maybeBlockResource(trackers)
+  get maybeBlock3rdPartyTrackersBlocked (): BlockFPOptions {
+    const { ads, trackers, firstPartyCosmeticFiltering } = this.props
+    if (!(maybeBlockResource(ads) && maybeBlockResource(trackers))) {
+      return 'allow'
+    }
+    return firstPartyCosmeticFiltering ? 'block' : 'block_third_party'
   }
 
   get shouldDisableResourcesRow (): boolean {
@@ -112,9 +113,8 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     }
   }
 
-  onChange3rdPartyTrackersBlockedEnabled = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const shoudEnableAdsTracks = getToggleStateViaEventTarget(event)
-    this.props.blockAdsTrackers(shoudEnableAdsTracks)
+  onChange3rdPartyTrackersBlockedEnabled = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.props.blockAdsTrackers(event.target.value)
   }
 
   render () {
@@ -122,8 +122,8 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     const { trackersBlockedOpen } = this.state
     return (
       <>
-        <BlockedInfoRow id='adsTrackersControl'>
-          <BlockedInfoRowData
+        <BlockedInfoRowForSelect id='adsTrackersControl'>
+          <BlockedInfoRowDataForSelect
             disabled={this.shouldDisableResourcesRow}
             tabIndex={this.tabIndex}
             onClick={this.onOpen3rdPartyTrackersBlocked}
@@ -131,16 +131,18 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
           >
             <ArrowDownIcon />
             <BlockedInfoRowStats id='blockAdsStat'>{this.totalAdsTrackersBlockedDisplay}</BlockedInfoRowStats>
-            <BlockedInfoRowText>{getLocale('thirdPartyTrackersBlocked')}</BlockedInfoRowText>
-          </BlockedInfoRowData>
-          <Toggle
+          </BlockedInfoRowDataForSelect>
+          <SelectBox
             id='blockAds'
-            size='small'
             disabled={isBlockedListOpen}
-            checked={this.maybeBlock3rdPartyTrackersBlocked}
+            value={this.maybeBlock3rdPartyTrackersBlocked}
             onChange={this.onChange3rdPartyTrackersBlockedEnabled}
-          />
-        </BlockedInfoRow>
+          >
+            <option value='block'>{getLocale('aggressiveAdsTrackersBlocking')}</option>
+            <option value='block_third_party'>{getLocale('standardAdsTrackersBlocking')}</option>
+            <option value='allow'>{getLocale('allowAdsTrackers')}</option>
+          </SelectBox>
+        </BlockedInfoRowForSelect>
         {
           trackersBlockedOpen &&
             <StaticList

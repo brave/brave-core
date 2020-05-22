@@ -24,7 +24,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
@@ -37,7 +36,6 @@ using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
-using brave_shields::features::kBraveAdblockCosmeticFiltering;
 
 namespace extensions {
 namespace api {
@@ -214,9 +212,65 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsGetCosmeticFilteringEnabledFunction::Run() {
+BraveShieldsShouldDoCosmeticFilteringFunction::Run() {
+  std::unique_ptr<brave_shields::ShouldDoCosmeticFiltering::Params>
+    params(
+      brave_shields::ShouldDoCosmeticFiltering::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  const GURL url(params->url);
+  // we don't allow getting defaults from the extension
+  if (url.is_empty() || !url.is_valid()) {
+    return RespondNow(Error(kInvalidUrlError, params->url));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  const bool enabled = ::brave_shields::ShouldDoCosmeticFiltering(profile, url);
+
+  return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsSetCosmeticFilteringControlTypeFunction::Run() {
+  std::unique_ptr<brave_shields::SetCosmeticFilteringControlType::Params>
+    params(
+      brave_shields::SetCosmeticFilteringControlType::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  const GURL url(params->url);
+  // we don't allow setting defaults from the extension
+  if (url.is_empty() || !url.is_valid()) {
+    return RespondNow(Error(kInvalidUrlError, params->url));
+  }
+
+  auto control_type = ControlTypeFromString(params->control_type);
+  if (control_type == ControlType::INVALID) {
+    return RespondNow(Error(kInvalidControlTypeError, params->control_type));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  ::brave_shields::SetCosmeticFilteringControlType(profile, control_type, url);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsIsFirstPartyCosmeticFilteringEnabledFunction::Run() {
+  std::unique_ptr<brave_shields::IsFirstPartyCosmeticFilteringEnabled::Params>
+      params(
+          brave_shields::IsFirstPartyCosmeticFilteringEnabled::Params::Create(
+          *args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  const GURL url(params->url);
+  // we don't allow getting defaults from the extension
+  if (url.is_empty() || !url.is_valid()) {
+    return RespondNow(Error(kInvalidUrlError, params->url));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
   auto result = std::make_unique<base::Value>(
-      base::FeatureList::IsEnabled(kBraveAdblockCosmeticFiltering));
+      ::brave_shields::IsFirstPartyCosmeticFilteringEnabled(profile, url));
 
   return RespondNow(OneArgument(std::move(result)));
 }

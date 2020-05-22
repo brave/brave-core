@@ -507,7 +507,7 @@ const startObserving = () => {
 
 let _hasDelayOcurred: boolean = false
 let _startCheckingId: number | undefined = undefined
-const scheduleQueuePump = () => {
+const scheduleQueuePump = (hide1pContent: boolean) => {
   // Three states possible here.  First, the delay has already occurred.  If so,
   // pass through to pumpCosmeticFilterQueues immediately.
   if (_hasDelayOcurred === true) {
@@ -524,7 +524,9 @@ const scheduleQueuePump = () => {
   _startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
     _hasDelayOcurred = true
     startObserving()
-    pumpCosmeticFilterQueuesOnIdle()
+    if (!hide1pContent) {
+      pumpCosmeticFilterQueuesOnIdle()
+    }
   }, { timeout: maxTimeMSBeforeStart })
 }
 
@@ -532,8 +534,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'cosmeticFilteringBackgroundReady': {
-      scheduleQueuePump()
       injectScriptlet(msg.scriptlet)
+      scheduleQueuePump(msg.hide1pContent)
       break
     }
     case 'cosmeticFilterConsiderNewSelectors': {
@@ -558,7 +560,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         // @ts-ignore
         document.adoptedStyleSheets = [cosmeticStyleSheet]
       }
-      scheduleQueuePump()
+      scheduleQueuePump(false)
       break
     }
   }

@@ -19,6 +19,10 @@ ContentSetting GetDefaultFromResourceIdentifier(
     const GURL& secondary_url) {
   if (resource_identifier == brave_shields::kAds) {
     return CONTENT_SETTING_BLOCK;
+  } else if (resource_identifier == brave_shields::kCosmeticFiltering) {
+    return secondary_url == GURL("https://firstParty/")
+        ? CONTENT_SETTING_ALLOW
+        : CONTENT_SETTING_BLOCK;
   } else if (resource_identifier == brave_shields::kTrackers) {
     return CONTENT_SETTING_BLOCK;
   } else if (resource_identifier == brave_shields::kHTTPUpgradableResources) {

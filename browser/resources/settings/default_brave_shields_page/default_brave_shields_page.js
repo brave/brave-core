@@ -13,6 +13,18 @@ Polymer({
   is: 'settings-default-brave-shields-page',
 
   properties: {
+    adControlTypes_: {
+      readOnly: true,
+      type: Array,
+      value: function() {
+        return [
+          {value: 'block', name: loadTimeData.getString('blockAdsTrackersAggressive')},
+          {value: 'block_third_party', name: loadTimeData.getString('blockAdsTrackersStandard')},
+          {value: 'allow', name: loadTimeData.getString('allowAdsTrackers')}
+        ]
+      }
+    },
+
     cookieControlTypes_: {
       readOnly: true,
       type: Array,
@@ -37,6 +49,7 @@ Polymer({
       }
     },
 
+    adControlType_: String,
     cookieControlType_: String,
     fingerprintingControlType_: String,
   },
@@ -57,6 +70,10 @@ Polymer({
     this.onHTTPSEverywhereControlChange_ = this.onHTTPSEverywhereControlChange_.bind(this)
     this.onNoScriptControlChange_ = this.onNoScriptControlChange_.bind(this)
 
+    Promise.all([this.browserProxy_.getAdControlType(), this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()])
+        .then(([adControlType, hide1pContent]) => {
+      this.adControlType_ = (adControlType === 'allow' ? 'allow' : (hide1pContent ? 'block' : 'block_third_party'))
+    });
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value;
     });
@@ -75,8 +92,16 @@ Polymer({
     return val1 === val2;
   },
 
+  /**
+   * The 'trackers & ads' setting controls both network filtering and cosmetic
+   * filtering separately. However, network filtering is simply a boolean
+   * toggle; there is no 1p/3p distinction.
+   */
   onAdControlChange_: function() {
-    this.browserProxy_.setAdControlType(this.$.adControlType.checked);
+    const setting = this.$.adControlType.value;
+    const adControlType = (setting !== 'allow');
+    this.browserProxy_.setAdControlType(adControlType);
+    this.browserProxy_.setCosmeticFilteringControlType(setting);
   },
   onCookieControlChange_: function() {
     this.browserProxy_.setCookieControlType(this.$.cookieControlType.value);

@@ -14,6 +14,7 @@ const fakeProps: Props = {
   hostname: 'brave.com',
   favicon: '',
   ads: 'allow',
+  cosmeticFiltering: 'block_third_party',
   adsBlocked: 0,
   adsBlockedResources: [],
   trackers: 'allow',
@@ -45,18 +46,25 @@ describe('AdvancedView AdsTrackersControl component', () => {
       expect(onChangeAdControlSelectOptions).toBeCalled()
     })
 
-    it('can toggle ad control on', () => {
-      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block' })
+    it('can set ad control to aggressive', () => {
+      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block', cosmeticFiltering: 'block' })
       const wrapper = shallow(baseComponent(newProps))
-      const assertion = wrapper.find('#blockAds').prop('checked')
-      expect(assertion).toBe(true)
+      const assertion = wrapper.find('#blockAds').prop('value')
+      expect(assertion).toBe('block')
     })
 
-    it('can toggle ad control off', () => {
-      const newProps = Object.assign(fakeProps, { ads: 'allow', trackers: 'allow' })
+    it('can set ad control to standard', () => {
+      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block', cosmeticFiltering: 'block_third_party' })
       const wrapper = shallow(baseComponent(newProps))
-      const assertion = wrapper.find('#blockAds').prop('checked')
-      expect(assertion).toBe(false)
+      const assertion = wrapper.find('#blockAds').prop('value')
+      expect(assertion).toBe('block_third_party')
+    })
+
+    it('can disable ad control', () => {
+      const newProps = Object.assign(fakeProps, { ads: 'allow', trackers: 'allow', cosmeticFiltering: 'allow' })
+      const wrapper = shallow(baseComponent(newProps))
+      const assertion = wrapper.find('#blockAds').prop('value')
+      expect(assertion).toBe('allow')
     })
 
     it('shows number of ads blocked', () => {

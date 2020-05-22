@@ -24,11 +24,12 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   return Promise.all([
     chrome.braveShields.getBraveShieldsEnabledAsync(tabData.url),
     chrome.braveShields.getAdControlTypeAsync(tabData.url),
+    chrome.braveShields.shouldDoCosmeticFilteringAsync(tabData.url),
+    chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(tabData.url),
     chrome.braveShields.getHTTPSEverywhereEnabledAsync(tabData.url),
     chrome.braveShields.getNoScriptControlTypeAsync(tabData.url),
     chrome.braveShields.getFingerprintingControlTypeAsync(tabData.url),
-    chrome.braveShields.getCookieControlTypeAsync(tabData.url),
-    chrome.braveShields.getCosmeticFilteringEnabledAsync()
+    chrome.braveShields.getCookieControlTypeAsync(tabData.url)
   ]).then((details) => {
     return {
       url: url.href,
@@ -38,11 +39,12 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       braveShields: details[0] ? 'allow' : 'block',
       ads: details[1],
       trackers: details[1],
-      httpUpgradableResources: details[2] ? 'block' : 'allow',
-      javascript: details[3],
-      fingerprinting: details[4],
-      cookies: details[5],
-      cosmeticBlocking: details[6]
+      cosmeticFiltering: details[2],
+      firstPartyCosmeticFiltering: details[3],
+      httpUpgradableResources: details[4] ? 'block' : 'allow',
+      javascript: details[5],
+      fingerprinting: details[6],
+      cookies: details[7]
     }
   }).catch(() => {
     return {
@@ -51,9 +53,10 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       hostname,
       id: tabData.id,
       braveShields: 'block',
-      cosmeticBlocking: 0,
       ads: 0,
       trackers: 0,
+      cosmeticFiltering: 0,
+      cosmeticFilteringFeatureFlag: 0,
       httpUpgradableResources: 0,
       javascript: 0,
       fingerprinting: 0
@@ -109,6 +112,17 @@ export const setAllowAds = (origin: string, setting: string) =>
  */
 export const setAllowTrackers = (origin: string, setting: string) => {
   return chrome.braveShields.setAdControlTypeAsync(setting, origin)
+}
+
+/**
+ * Changes the cosmetic filtering at origin to be allowed or blocked.
+ * The tracking-protection service will come into effect if the tracker is marked as blocked.
+ * @param {string} origin the origin of the site to change the setting for
+ * @param {string} setting 'allow', 'block_third_party', or 'block'
+ * @return a promise which resolves with the setting is set
+ */
+export const setAllowCosmeticFiltering = (origin: string, setting: string) => {
+  return chrome.braveShields.setCosmeticFilteringControlTypeAsync(setting, origin)
 }
 
 /**

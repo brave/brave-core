@@ -192,6 +192,65 @@ ControlType GetAdControlType(Profile* profile, const GURL& url) {
                                           : ControlType::BLOCK;
 }
 
+void SetCosmeticFilteringControlType(Profile* profile,
+                                     ControlType type,
+                                     const GURL& url) {
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(primary_pattern,
+                                     ContentSettingsPattern::Wildcard(),
+                                     ContentSettingsType::PLUGINS,
+                                     kCosmeticFiltering,
+                                     GetDefaultBlockFromControlType(type));
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern,
+          ContentSettingsPattern::FromString("https://firstParty/*"),
+          ContentSettingsType::PLUGINS,
+          kCosmeticFiltering,
+          GetDefaultAllowFromControlType(type));
+
+  RecordShieldsSettingChanged();
+}
+
+ControlType GetCosmeticFilteringControlType(Profile* profile, const GURL& url) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), ContentSettingsType::PLUGINS, kCosmeticFiltering);
+
+  ContentSetting fp_setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url,
+          GURL("https://firstParty/"),
+          ContentSettingsType::PLUGINS,
+          kCosmeticFiltering);
+
+  if (setting == CONTENT_SETTING_ALLOW) {
+    return ControlType::ALLOW;
+  } else if (fp_setting != CONTENT_SETTING_BLOCK) {
+    return ControlType::BLOCK_THIRD_PARTY;
+  } else {
+    return ControlType::BLOCK;
+  }
+}
+
+bool ShouldDoCosmeticFiltering(Profile* profile, const GURL& url) {
+  return base::FeatureList::IsEnabled(features::kBraveAdblockCosmeticFiltering)
+      && GetBraveShieldsEnabled(profile, url)
+      && (GetCosmeticFilteringControlType(profile, url) != ControlType::ALLOW);
+}
+
+bool IsFirstPartyCosmeticFilteringEnabled(Profile* profile, const GURL& url) {
+  const ControlType type = GetCosmeticFilteringControlType(profile, url);
+  return type == ControlType::BLOCK;
+}
+
 // TODO(bridiver) - convert cookie settings to ContentSettingsType::COOKIES
 // while maintaining read backwards compat
 void SetCookieControlType(Profile* profile, ControlType type, const GURL& url) {

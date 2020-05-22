@@ -38,9 +38,10 @@ describe('Shields API', () => {
           origin: 'https://www.brave.com',
           hostname: 'www.brave.com',
           braveShields: 'block',
-          cosmeticBlocking: true,
           ads: 'block',
           trackers: 'block',
+          cosmeticFiltering: 'block_third_party',
+          cosmeticFilteringFeatureFlag: true,
           httpUpgradableResources: 'block',
           javascript: 'block',
           fingerprinting: 'block',
@@ -95,9 +96,10 @@ describe('Shields API', () => {
     })
     it('resolves and calls requestShieldPanelData', (cb) => {
       const details: ShieldDetails = {
-        cosmeticBlocking: true,
         ads: 'block',
         trackers: 'block',
+        cosmeticFiltering: 'block_third_party',
+        cosmeticFilteringFeatureFlag: true,
         httpUpgradableResources: 'block',
         origin: 'https://www.brave.com',
         hostname: 'www.brave.com',

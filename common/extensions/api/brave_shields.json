@@ -161,16 +161,62 @@
         ]
       },
       {
-        "name": "getCosmeticFilteringEnabled",
+        "name": "shouldDoCosmeticFiltering",
         "type": "function",
-        "description": "Get whether or not the cosmetic filtering feature flag is enabled",
+        "description": "Determine whether or not to do cosmetic filtering on the given url",
         "parameters": [
+          {
+            "name": "url",
+            "type": "string"
+          },
           {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "name": "enabled",
+                "name": "doCosmeticFiltering",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "setCosmeticFilteringControlType",
+        "type": "function",
+        "description": "Set cosmetic filtering control type for a url",
+        "parameters": [
+          {
+            "name": "controlType",
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "isFirstPartyCosmeticFilteringEnabled",
+        "type": "function",
+        "description": "Check if first-party cosmetic filtering is enabled for the given url",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "hide1pContent",
                 "type": "boolean"
               }
             ]

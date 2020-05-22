@@ -72,14 +72,37 @@ class BraveShieldsGetBraveShieldsEnabledFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveShieldsGetCosmeticFilteringEnabledFunction
-    : public ExtensionFunction {
+class BraveShieldsShouldDoCosmeticFilteringFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.getCosmeticFilteringEnabled",
+  DECLARE_EXTENSION_FUNCTION("braveShields.shouldDoCosmeticFiltering", UNKNOWN)
+
+ protected:
+  ~BraveShieldsShouldDoCosmeticFilteringFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsSetCosmeticFilteringControlTypeFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setCosmeticFilteringControlType",
                              UNKNOWN)
 
  protected:
-  ~BraveShieldsGetCosmeticFilteringEnabledFunction() override {}
+  ~BraveShieldsSetCosmeticFilteringControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsIsFirstPartyCosmeticFilteringEnabledFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION(
+      "braveShields.isFirstPartyCosmeticFilteringEnabled",
+      UNKNOWN)
+
+ protected:
+  ~BraveShieldsIsFirstPartyCosmeticFilteringEnabledFunction() override {}
 
   ResponseAction Run() override;
 };

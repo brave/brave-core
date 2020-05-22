@@ -60,6 +60,7 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     braveShields: 'allow',
     ads: 'allow',
     trackers: 'allow',
+    cosmeticFiltering: 'allow',
     httpUpgradableResources: 'allow',
     javascript: 'allow',
     fingerprinting: 'allow',

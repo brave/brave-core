@@ -39,6 +39,7 @@ const details: ShieldDetails = {
   javascript: 'block',
   trackers: 'block',
   ads: 'block',
+  cosmeticFiltering: 'block_third_party',
   fingerprinting: 'block',
   cookies: 'block'
 }
@@ -827,7 +828,7 @@ describe('braveShieldsPanelReducer', () => {
       expect(
         shieldsPanelReducer(state, {
           type: types.BLOCK_ADS_TRACKERS,
-          setting: 'allow'
+          setting: 'block'
         })).toEqual(state)
       expect(setAllowAdsSpy).toBeCalledWith(origin, 'block')
       expect(setAllowTrackersSpy).toBeCalledWith(origin, 'block')

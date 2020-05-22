@@ -24,6 +24,7 @@ import {
   setAllowBraveShields,
   setAllowAds,
   setAllowTrackers,
+  setAllowCosmeticFiltering,
   setAllowHTTPUpgradableResources,
   setAllowJavaScript,
   setAllowFingerprinting,
@@ -205,16 +206,22 @@ export default function shieldsPanelReducer (
         break
       }
 
-      const setting = toggleShieldsValue(action.setting)
-      const p1 = setAllowAds(tabData.origin, setting)
+      const adsTrackersSetting = (action.setting === 'allow' ? 'allow' : 'block')
+      const cosmeticFilteringSetting = action.setting
+
+      const p1 = setAllowAds(tabData.origin, adsTrackersSetting)
         .catch(() => {
           console.error('Could not set ad block setting')
         })
-      const p2 = setAllowTrackers(tabData.origin, setting)
+      const p2 = setAllowTrackers(tabData.origin, adsTrackersSetting)
         .catch(() => {
           console.error('Could not set tracking protection setting')
         })
-      Promise.all([p1, p2])
+      const p3 = setAllowCosmeticFiltering(tabData.origin, cosmeticFilteringSetting)
+        .catch(() => {
+          console.error('Could not set cosmetic filtering setting')
+        })
+      Promise.all([p1, p2, p3])
         .then(() => {
           reloadTab(tabId, true).catch(() => {
             console.error('Tab reload was not successful')
@@ -362,10 +369,11 @@ export default function shieldsPanelReducer (
         break
       }
       const exceptions = tabData.cosmeticFilters.ruleExceptions
+      const hide1pContent = tabData.firstPartyCosmeticFiltering
 
       // setTimeout is used to prevent injectClassIdStylesheet from calling
       // another Redux function immediately
-      setTimeout(() => injectClassIdStylesheet(action.tabId, action.classes, action.ids, exceptions), 0)
+      setTimeout(() => injectClassIdStylesheet(action.tabId, action.classes, action.ids, exceptions, hide1pContent), 0)
       break
     }
     case shieldsPanelTypes.COSMETIC_FILTER_RULE_EXCEPTIONS: {
@@ -377,7 +385,8 @@ export default function shieldsPanelReducer (
       state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
       chrome.tabs.sendMessage(action.tabId, {
         type: 'cosmeticFilteringBackgroundReady',
-        scriptlet: action.scriptlet
+        scriptlet: action.scriptlet,
+        hide1pContent: tabData.firstPartyCosmeticFiltering
       })
       break
     }
@@ -387,13 +396,14 @@ export default function shieldsPanelReducer (
         console.error('Active tab not found')
         break
       }
-      const cosmeticBlockingEnabled = tabData.cosmeticBlocking
-      chrome.braveShields.getBraveShieldsEnabledAsync(action.url)
-        .then((braveShieldsEnabled: boolean) => {
-          const doCosmeticBlocking = braveShieldsEnabled && cosmeticBlockingEnabled
+      Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
+        .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
           if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, getHostname(action.url))
+            applyAdblockCosmeticFilters(action.tabId, getHostname(action.url), hide1pContent)
           }
+        })
+        .catch(() => {
+          console.error('Could not apply cosmetic blocking')
         })
       break
     }

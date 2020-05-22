@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -788,9 +789,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-class CosmeticFilteringDisabledTest : public AdBlockServiceTest {
+class CosmeticFilteringFlagDisabledTest : public AdBlockServiceTest {
  public:
-  CosmeticFilteringDisabledTest() {
+  CosmeticFilteringFlagDisabledTest() {
     feature_list_.InitAndDisableFeature(kBraveAdblockCosmeticFiltering);
   }
 
@@ -799,7 +800,8 @@ class CosmeticFilteringDisabledTest : public AdBlockServiceTest {
 };
 
 // Ensure no cosmetic filtering occurs when the feature flag is disabled
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringDisabledTest, CosmeticFilteringSimple) {
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
+        CosmeticFilteringSimple) {
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -811,7 +813,46 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringDisabledTest, CosmeticFilteringSimple) {
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
-    browser()->tab_strip_model()->GetActiveWebContents();
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('#ad-banner', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+
+  as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.ad-banner', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+
+  as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.ad', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
+// Ensure no cosmetic filtering occurs when the shields setting is disabled
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
+  brave_shields::SetCosmeticFilteringControlType(browser()->profile(),
+          brave_shields::ControlType::ALLOW, GURL());
+  UpdateAdBlockInstanceWithRules(
+      "b.com###ad-banner\n"
+      "##.ad");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/cosmetic_filtering.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
@@ -890,6 +931,30 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
               contents,
               "checkSelector('.fpsponsored', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
+// Test cosmetic filtering bypasses 1st party checks when toggled
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringHide1pContent) {
+  brave_shields::SetCosmeticFilteringControlType(browser()->profile(),
+          brave_shields::ControlType::BLOCK, GURL());
+  UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/cosmetic_filtering.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.fpsponsored', 'display', 'none')",
               &as_expected));
   EXPECT_TRUE(as_expected);
 }
