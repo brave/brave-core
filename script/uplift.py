@@ -60,7 +60,10 @@ class PrConfig:
             self.github_token = get_env_var('GITHUB_TOKEN')
             if len(self.github_token) == 0:
                 try:
-                    result = execute(['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
+                    npm_cmd = 'npm'
+                    if sys.platform.startswith('win'):
+                        npm_cmd = 'npm.cmd'
+                    result = execute([npm_cmd, 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
                     if result == 'undefined':
                         raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
                     self.github_token = result
@@ -178,6 +181,15 @@ def fancy_print(text):
     print('#' * len(text))
 
 
+def parse_issues_fixed(body):
+    try:
+        regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'
+        return re.findall(regex, body)
+    except Exception as e:
+        print str(e)
+        return []
+
+
 def main():
     args = parse_args()
     if args.verbose:
@@ -196,6 +208,7 @@ def main():
     brave_browser_version = get_remote_version('master')
     remote_branches = get_remote_channel_branches(brave_browser_version)
     top_level_base = 'master'
+    issues_fixed = []
 
     # if starting point is NOT nightly, remove options which aren't desired
     # also, find the branch which should be used for diffs (for cherry-picking)
@@ -223,6 +236,7 @@ def main():
             top_level_sha = response['base']['sha']
             merged_at = str(response['merged_at']).strip()
             config.title = str(response['title']).strip()
+            issues_fixed = parse_issues_fixed(response['body'])
 
         except Exception as e:
             print('[ERROR] Error parsing or error returned from API when looking up pull request "' +
@@ -297,7 +311,8 @@ def main():
                 channel,
                 top_level_base,
                 remote_branches[channel],
-                local_branches[channel])
+                local_branches[channel],
+                issues_fixed)
             if channel == args.uplift_to:
                 break
         print('\nDone!')
@@ -405,7 +420,7 @@ def get_milestone_for_branch(channel_branch):
     return None
 
 
-def submit_pr(channel, top_level_base, remote_base, local_branch):
+def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
     global config
 
     try:
@@ -425,8 +440,13 @@ def submit_pr(channel, top_level_base, remote_base, local_branch):
             pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
         else:
             pr_title += ' (uplift to ' + remote_base + ')'
-            pr_body = 'Uplift of #' + str(config.master_pr_number) + '\n\n'
-            pr_body += 'Approved, please ensure that before merging: \n'
+            pr_body = 'Uplift of #' + str(config.master_pr_number) + '\n'
+
+            if len(issues_fixed) > 0:
+                for fixed in issues_fixed:
+                    pr_body += (fixed[0] + '\n')
+
+            pr_body += '\nApproved, please ensure that before merging: \n'
             pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
                        'pass or are not related to your PR. \n'
             pr_body += '- [ ] You have tested your change on Nightly. \n'
