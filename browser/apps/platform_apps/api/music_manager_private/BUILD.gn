@@ -1,0 +1,4 @@
+
+source_set("music_manager_private") {
+  sources = ["device_id_android.cc",]
+}
