@@ -16,13 +16,6 @@ import App from './containers/app'
 
 // Utils
 import store from './store'
-import 'emptykit.css'
-
-// Fonts
-import '../../ui/webui/resources/fonts/poppins.css'
-import '../../ui/webui/resources/fonts/muli.css'
-import '../../ui/webui/resources/fonts/crypto_fonts.css'
-import '../../ui/webui/resources/css/crypto_styles.css'
 
 function initialize () {
   console.timeStamp('loaded')

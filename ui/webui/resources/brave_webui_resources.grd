@@ -29,6 +29,8 @@
              file="css/md_colors.css" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_CSS_TEXT_DEFAULTS"
              file="css/text_defaults.css" type="chrome_html" compress="gzip" />
+      <structure name="IDR_BRAVE_WEBUI_CSS_RESET"
+             file="css/reset.css" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_POLYMER_OVERRIDING_JS"
              file="polymer_overriding.js" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_OVERRIDES_CR_TOGGLE_JS"

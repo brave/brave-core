@@ -167,6 +167,9 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
   if (extension == "woff2")
     return "application/font-woff2";
 
+  if (extension == "ttf")
+    return "font/ttf";
+
   NOTREACHED() << path;
   return "text/plain";
 }
