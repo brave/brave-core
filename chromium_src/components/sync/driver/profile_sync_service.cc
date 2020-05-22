@@ -24,10 +24,8 @@
   brave_sync_prefs_change_registrar_.RemoveAll();
 
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
-#undef BRAVE_SET_POLL_INTERVAL
 #undef BRAVE_PROFILE_SYNC_SERVICE
 #undef BRAVE_D_PROFILE_SYNC_SERVICE
-#undef BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
 
 namespace syncer {
 void ProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
