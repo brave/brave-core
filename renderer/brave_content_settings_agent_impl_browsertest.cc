@@ -36,17 +36,13 @@ const char kGetImageDataScript[] =
     "canvas.width = 16;"
     "canvas.height = 16;"
     "var ctx = canvas.getContext('2d');"
-    "ctx.rect(0, 0, 16, 16);"
-    "ctx.fillStyle = 'black';"
-    "ctx.fill();"
-    "ctx.rect(5, 10, 10, 4);"
-    "ctx.fillStyle = 'white';"
-    "ctx.fill();"
+    "var data = ctx.createImageData(canvas.width, canvas.height);"
+    "ctx.putImageData(data, 0, 0);"
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHashFarblingBalanced = 261046;
-const int kExpectedImageDataHashFarblingOff = 261120;
+const int kExpectedImageDataHashFarblingBalanced = 85;
+const int kExpectedImageDataHashFarblingOff = 0;
 const int kExpectedImageDataHashFarblingMaximum = 127574;
 
 const char kEmptyCookie[] = "";
@@ -301,16 +297,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   base::ScopedTempDir temp_user_data_dir_;
 };
 
-// See https://github.com/brave/brave-browser/issues/8937
-// Fails on Linux
-#if defined(OS_LINUX)
-#define MAYBE_FarbleGetImageData DISABLED_FarbleGetImageData
-#else
-#define MAYBE_FarbleGetImageData FarbleGetImageData
-#endif
-
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       MAYBE_FarbleGetImageData) {
+                       FarbleGetImageData) {
   // Farbling should be balanced by default
   NavigateToPageWithIframe();
   int hash = -1;
@@ -377,7 +365,7 @@ class BraveContentSettingsAgentImplV2BrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
-                       MAYBE_FarbleGetImageData) {
+                       FarbleGetImageData) {
   // Farbling should be default when kBraveFingerprintingV2 is enabled
   // because it uses a different content setting
   NavigateToPageWithIframe();
