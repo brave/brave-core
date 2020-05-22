@@ -136,7 +136,9 @@ function testProviderIsNone() {
 function testBasics() {
   chrome.test.runTests([
     function braveWalletExtensionHasAccess() {
-      if (chrome.braveWallet && chrome.braveWallet.isInstalled &&
+      if (chrome.braveWallet &&
+          chrome.braveWallet.shouldPromptForSetup &&
+          chrome.braveWallet.loadUI &&
           chrome.braveWallet.promptToEnableWallet) {
         chrome.test.succeed();
       } else {

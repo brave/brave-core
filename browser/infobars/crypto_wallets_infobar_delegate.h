@@ -15,15 +15,26 @@
 class InfoBarService;
 class PrefService;
 
+namespace content {
+class WebContents;
+}
+
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class CryptoWalletsInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  static void Create(InfoBarService* infobar_service, bool metamask_installed);
+  enum class InfobarSubType {
+    LOAD_CRYPTO_WALLETS,
+    GENERIC_SETUP,
+    CRYPTO_WALLETS_METAMASK
+  };
+  static void Create(InfoBarService* infobar_service, InfobarSubType subtype);
 
  private:
-  explicit CryptoWalletsInfoBarDelegate(bool metamask_installed);
+  explicit CryptoWalletsInfoBarDelegate(InfobarSubType subtype);
   ~CryptoWalletsInfoBarDelegate() override;
 
+  void OnCryptoWalletsLoaded(content::WebContents*);
+  bool ShouldShowLazyLoadInfobar();
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
   const gfx::VectorIcon& GetVectorIcon() const override;
   void InfoBarDismissed() override;
@@ -35,7 +46,7 @@ class CryptoWalletsInfoBarDelegate : public ConfirmInfoBarDelegate {
   bool Accept() override;
   bool Cancel() override;
 
-  bool metamask_installed_;
+  InfobarSubType subtype_;
 
   DISALLOW_COPY_AND_ASSIGN(CryptoWalletsInfoBarDelegate);
 };
