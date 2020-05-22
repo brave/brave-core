@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/extensions/extension_install_prompt_show_params.cc b/chrome/browser/extensions/extension_install_prompt_show_params.cc
+index 421bf95cad3d86f761829ea38ddfb8e2317e09c9..c490798829734b82f863b2506bd7fe8a30c446ed 100644
+--- a/chrome/browser/extensions/extension_install_prompt_show_params.cc
++++ b/chrome/browser/extensions/extension_install_prompt_show_params.cc
+@@ -53,8 +53,10 @@ ExtensionInstallPromptShowParams::ExtensionInstallPromptShowParams(
+     web_contents_destruction_observer_.reset(
+         new WebContentsDestructionObserver(this));
+   }
++#if !defined(OS_ANDROID)
+   if (parent_window_)
+     native_window_tracker_ = NativeWindowTracker::Create(parent_window_);
++#endif
+ }
+ 
+ ExtensionInstallPromptShowParams::ExtensionInstallPromptShowParams(
+@@ -64,8 +66,10 @@ ExtensionInstallPromptShowParams::ExtensionInstallPromptShowParams(
+     parent_web_contents_(nullptr),
+     parent_web_contents_destroyed_(false),
+     parent_window_(parent_window) {
++#if !defined(OS_ANDROID)
+   if (parent_window_)
+     native_window_tracker_ = NativeWindowTracker::Create(parent_window_);
++#endif
+ }
+ 
+ ExtensionInstallPromptShowParams::~ExtensionInstallPromptShowParams() {

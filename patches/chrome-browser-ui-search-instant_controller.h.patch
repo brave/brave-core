@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/search/instant_controller.h b/chrome/browser/ui/search/instant_controller.h
+index aabfb16b471f33e2350bf3ab2b311c75aef84e9c..5bd6c5f12d543f027bba98f797adeb1f2245a3f4 100644
+--- a/chrome/browser/ui/search/instant_controller.h
++++ b/chrome/browser/ui/search/instant_controller.h
+@@ -12,9 +12,9 @@
+ #include "build/build_config.h"
+ #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ class Profile;
+ class TabStripModel;

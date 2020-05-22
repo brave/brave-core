@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/content_settings/content_setting_bubble_model.h b/chrome/browser/ui/content_settings/content_setting_bubble_model.h
+index 83f24dfcc1ea931edfe282bbe629673daba08de8..99b5644fa90aa03d009bf6003676b9564ffd3c8f 100644
+--- a/chrome/browser/ui/content_settings/content_setting_bubble_model.h
++++ b/chrome/browser/ui/content_settings/content_setting_bubble_model.h
+@@ -505,7 +505,7 @@ class ContentSettingSingleRadioGroup : public ContentSettingSimpleBubbleModel {
+   DISALLOW_COPY_AND_ASSIGN(ContentSettingSingleRadioGroup);
+ };
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // The model for the blocked Framebust bubble.
+ class ContentSettingFramebustBlockBubbleModel
+     : public ContentSettingSingleRadioGroup,
+@@ -531,6 +531,6 @@ class ContentSettingFramebustBlockBubbleModel
+ 
+   DISALLOW_COPY_AND_ASSIGN(ContentSettingFramebustBlockBubbleModel);
+ };
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ #endif  // CHROME_BROWSER_UI_CONTENT_SETTINGS_CONTENT_SETTING_BUBBLE_MODEL_H_

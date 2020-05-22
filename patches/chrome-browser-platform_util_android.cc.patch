@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/platform_util_android.cc b/chrome/browser/platform_util_android.cc
+index aae50e7dca78036855a74a5fcd5368fe5b6572e3..b825cc8d1bafec15643e8d6bfe58aca214610b40 100644
+--- a/chrome/browser/platform_util_android.cc
++++ b/chrome/browser/platform_util_android.cc
+@@ -55,6 +55,10 @@ void ActivateWindow(gfx::NativeWindow window) {
+   NOTIMPLEMENTED();
+ }
+ 
++gfx::NativeView GetViewForWindow(gfx::NativeWindow window) {
++  return nullptr;
++}
++
+ bool IsVisible(gfx::NativeView view) {
+   NOTIMPLEMENTED();
+   return true;

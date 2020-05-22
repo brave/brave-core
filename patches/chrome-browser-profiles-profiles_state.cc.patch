@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/profiles/profiles_state.cc b/chrome/browser/profiles/profiles_state.cc
+index 7fb65f2c2c4b55d9e4889895823efdba1a40ab41..85698b3047a3f560d317591027a3276a472f1252 100644
+--- a/chrome/browser/profiles/profiles_state.cc
++++ b/chrome/browser/profiles/profiles_state.cc
+@@ -27,9 +27,9 @@
+ #include "content/public/browser/browsing_data_remover.h"
+ #include "ui/base/l10n/l10n_util.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/browser.h"
+-#endif
++//#endif
+ 
+ #if defined(OS_CHROMEOS)
+ #include "chromeos/login/login_state/login_state.h"
+@@ -82,7 +82,7 @@ void SetLastUsedProfile(const std::string& profile_dir) {
+   local_state->SetString(prefs::kProfileLastUsed, profile_dir);
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ base::string16 GetAvatarNameForProfile(const base::FilePath& profile_path) {
+   if (profile_path == ProfileManager::GetGuestProfilePath()) {
+     return l10n_util::GetStringUTF16(IDS_GUEST_PROFILE_NAME);
+@@ -277,6 +277,6 @@ bool ArePublicSessionRestrictionsEnabled() {
+ #endif
+   return false;
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ }  // namespace profiles

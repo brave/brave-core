@@ -1,0 +1,20 @@
+diff --git a/ui/views/controls/webview/web_dialog_view.cc b/ui/views/controls/webview/web_dialog_view.cc
+index 7ab9be855535323c256c491e116d89e1c37838d7..0efe0a9d2bd80fbbef506a6bf6fc5f52aeae810f 100644
+--- a/ui/views/controls/webview/web_dialog_view.cc
++++ b/ui/views/controls/webview/web_dialog_view.cc
+@@ -350,11 +350,15 @@ void WebDialogView::SetContentsBounds(WebContents* source,
+ // they're all browser-specific. (This may change in the future.)
+ bool WebDialogView::HandleKeyboardEvent(content::WebContents* source,
+                                         const NativeWebKeyboardEvent& event) {
++#if !defined(OS_ANDROID)
+   if (!event.os_event)
+     return false;
+ 
+   return unhandled_keyboard_event_handler_.HandleKeyboardEvent(
+       event, GetFocusManager());
++#else
++  return false;
++#endif
+ }
+ 
+ void WebDialogView::CloseContents(WebContents* source) {

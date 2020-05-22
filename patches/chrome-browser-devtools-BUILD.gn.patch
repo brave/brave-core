@@ -1,0 +1,80 @@
+diff --git a/chrome/browser/devtools/BUILD.gn b/chrome/browser/devtools/BUILD.gn
+index d93be9322f2f7706066b1b11c79db1ca0cf64016..b1f1f544d1ca287e06d1e50fe3d3ad503b7db8aa 100644
+--- a/chrome/browser/devtools/BUILD.gn
++++ b/chrome/browser/devtools/BUILD.gn
+@@ -4,13 +4,13 @@
+ 
+ import("//extensions/buildflags/buildflags.gni")
+ 
+-if (!is_android) {
++#if (!is_android) {
+   import("//build/config/features.gni")
+   import("//chrome/common/features.gni")
+   import("//tools/grit/grit_rule.gni")
+-}
++#}
+ 
+-if (!is_android) {
++#if (!is_android) {
+   _inspector_protocol = "//third_party/inspector_protocol"
+   import("$_inspector_protocol/inspector_protocol.gni")
+ 
+@@ -78,7 +78,7 @@ if (!is_android) {
+ 
+     outputs = _protocol_generated
+   }
+-}
++#}
+ 
+ static_library("devtools") {
+   # Note: new sources and deps should be generally added in (!is_android) below.
+@@ -99,7 +99,7 @@ static_library("devtools") {
+     "//ui/events:dom_keycode_converter",
+   ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     deps += [
+       "//chrome:extra_resources",
+       "//chrome:resources",
+@@ -185,13 +185,13 @@ static_library("devtools") {
+         "device/cast_device_provider.h",
+       ]
+     }
+-  }
++  #}
+   if (is_mac) {
+     sources += [ "devtools_dock_tile_mac.mm" ]
+   } else {
+     sources += [ "devtools_dock_tile.cc" ]
+   }
+-  if (!is_android) {
++  #if (!is_android) {
+     deps += [
+       ":protocol_generated_sources",
+       "//components/subresource_filter/content/browser:browser",
+@@ -216,7 +216,7 @@ static_library("devtools") {
+       ]
+     }
+     sources += rebase_path(_protocol_generated, ".", target_gen_dir)
+-  }
++  #}
+ 
+   if (enable_extensions) {
+     deps += [ "//chrome/common/extensions/api" ]
+@@ -227,7 +227,7 @@ static_library("test_support") {
+   sources = []
+   deps = []
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     deps += [
+       "//base",
+       "//chrome/browser/ui",
+@@ -238,5 +238,5 @@ static_library("test_support") {
+       "devtools_window_testing.cc",
+       "devtools_window_testing.h",
+     ]
+-  }
++  #}
+ }

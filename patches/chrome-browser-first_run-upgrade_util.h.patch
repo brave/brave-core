@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/first_run/upgrade_util.h b/chrome/browser/first_run/upgrade_util.h
+index 859b9a096342c51ca473158144d3d628b69cdb3e..27d25304bd85d5ad157d74d8b6cbaeffbb3b5fc7 100644
+--- a/chrome/browser/first_run/upgrade_util.h
++++ b/chrome/browser/first_run/upgrade_util.h
+@@ -10,8 +10,8 @@
+ #include "base/callback_forward.h"
+ #include "build/build_config.h"
+ 
+-#if defined(OS_ANDROID) || defined(OS_CHROMEOS)
+-#error Not used on Android or ChromeOS
++#if defined(OS_CHROMEOS)
++#error Not used on ChromeOS
+ #endif
+ 
+ namespace base {

@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.cc b/chrome/browser/ui/views/profiles/profile_menu_view.cc
+index 631efe1e3e57b6789742b6eba8bc6656bc1b55b2..cf768982abfe53c003a142e5294a8d58b376f982 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_view.cc
++++ b/chrome/browser/ui/views/profiles/profile_menu_view.cc
+@@ -174,8 +174,10 @@ void ProfileMenuView::OnPasswordsButtonClicked() {
+   // TODO(crbug.com/995757): Remove user action.
+   base::RecordAction(
+       base::UserMetricsAction("ProfileChooser_PasswordsClicked"));
++#if !defined(OS_ANDROID)
+   NavigateToManagePasswordsPage(
+       browser(), password_manager::ManagePasswordsReferrer::kProfileChooser);
++#endif
+ }
+ 
+ void ProfileMenuView::OnCreditCardsButtonClicked() {

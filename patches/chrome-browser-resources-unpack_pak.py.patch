@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/resources/unpack_pak.py b/chrome/browser/resources/unpack_pak.py
+index d0c6ef69332576466bfba08b9e9d351725ba73af..3689508027c0633b8d2d2be7d56a29276a2dc88d 100755
+--- a/chrome/browser/resources/unpack_pak.py
++++ b/chrome/browser/resources/unpack_pak.py
+@@ -50,6 +50,10 @@ def Unpack(pak_path, out_path):
+       res = re.match('^#define (\S*).* (\d+)\)?$', line)
+       if res:
+         resource_ids[int(res.group(2))] = res.group(1)
++      else:
++        res = re.match('#define ([^ ]+) ([^ ]+) (\d+)', line)
++        if res:
++          resource_ids[int(res.group(3))] = res.group(1)
+   assert resource_ids
+ 
+   # Associate numerical string IDs to files.

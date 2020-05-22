@@ -1,0 +1,13 @@
+diff --git a/components/ui_devtools/views/BUILD.gn b/components/ui_devtools/views/BUILD.gn
+index e9fb3b231966b24563a58cb7f6ede6b202b2d4f7..c368b94edae90e58d26f0f2a80555ae86404ac5d 100644
+--- a/components/ui_devtools/views/BUILD.gn
++++ b/components/ui_devtools/views/BUILD.gn
+@@ -33,7 +33,7 @@ source_set("views") {
+     "//skia",
+     "//ui/views",
+   ]
+-
++  deps += ["//brave/components/ui_devtools/views"]
+   if (use_aura) {
+     sources += [
+       "dom_agent_aura.cc",

@@ -1,0 +1,63 @@
+diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
+index 9507ac2f76d7ac9734bf69a05861f33fb41ec465..ba05305333727ba7b6ea290b023e3acf25017147 100644
+--- a/content/browser/web_contents/web_contents_impl.cc
++++ b/content/browser/web_contents/web_contents_impl.cc
+@@ -173,9 +173,8 @@
+ #include "content/browser/android/nfc_host.h"
+ #include "content/browser/web_contents/web_contents_android.h"
+ #include "services/device/public/mojom/nfc.mojom.h"
+-#else  // !OS_ANDROID
+-#include "content/browser/host_zoom_map_impl.h"
+ #endif  // OS_ANDROID
++#include "content/browser/host_zoom_map_impl.h"
+ 
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/browser/media/session/pepper_playback_observer.h"
+@@ -585,9 +584,9 @@ WebContentsImpl::WebContentsImpl(BrowserContext* browser_context)
+       audio_stream_monitor_(this),
+       media_web_contents_observer_(
+           std::make_unique<MediaWebContentsObserver>(this)),
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+       page_scale_factor_is_one_(true),
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+       is_overlay_content_(false),
+       showing_context_menu_(false),
+       text_autosizer_page_info_({0, 0, 1.f}),
+@@ -1181,7 +1180,7 @@ FindRequestManager* WebContentsImpl::GetFindRequestManagerForTesting() {
+   return GetFindRequestManager();
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void WebContentsImpl::UpdateZoom() {
+   RenderWidgetHostImpl* rwh = GetRenderViewHost()->GetWidget();
+   if (rwh->GetView())
+@@ -1203,7 +1202,7 @@ void WebContentsImpl::UpdateZoomIfNecessary(const std::string& scheme,
+ 
+   UpdateZoom();
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ base::OnceClosure WebContentsImpl::AddReceiverSet(
+     const std::string& interface_name,
+@@ -5687,7 +5686,7 @@ WebContents* WebContentsImpl::GetAsWebContents() {
+   return this;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ double WebContentsImpl::GetPendingPageZoomLevel() {
+   NavigationEntry* pending_entry = GetController().GetPendingEntry();
+   if (!pending_entry)
+@@ -5697,7 +5696,7 @@ double WebContentsImpl::GetPendingPageZoomLevel() {
+   return HostZoomMap::GetForWebContents(this)->GetZoomLevelForHostAndScheme(
+       url.scheme(), net::GetHostOrSpecFromURL(url));
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ bool WebContentsImpl::HideDownloadUI() const {
+   return is_overlay_content_;

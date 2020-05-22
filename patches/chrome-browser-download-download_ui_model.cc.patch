@@ -1,0 +1,34 @@
+diff --git a/chrome/browser/download/download_ui_model.cc b/chrome/browser/download/download_ui_model.cc
+index 47669ef1645a444671eb4e05fafe4288e6d5317a..f1618c51db536e12119f7489550a31efa34e373e 100644
+--- a/chrome/browser/download/download_ui_model.cc
++++ b/chrome/browser/download/download_ui_model.cc
+@@ -24,9 +24,9 @@
+ #include "ui/base/text/bytes_formatting.h"
+ #include "ui/gfx/text_elider.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/browser.h"
+-#endif
++//#endif
+ 
+ #if defined(OS_CHROMEOS)
+ #include "chrome/browser/chromeos/note_taking_helper.h"
+@@ -538,7 +538,7 @@ bool DownloadUIModel::ShouldPromoteOrigin() const {
+   return false;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ bool DownloadUIModel::IsCommandEnabled(
+     const DownloadCommands* download_commands,
+     DownloadCommands::Command command) const {
+@@ -658,7 +658,7 @@ void DownloadUIModel::ExecuteCommand(DownloadCommands* download_commands,
+       break;
+   }
+ }
+-#endif
++//#endif
+ 
+ std::string DownloadUIModel::GetMimeType() const {
+   return "text/html";

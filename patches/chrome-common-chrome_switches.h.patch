@@ -1,0 +1,13 @@
+diff --git a/chrome/common/chrome_switches.h b/chrome/common/chrome_switches.h
+index c0ca5fac02247ecf74d23ef8b6fb5a446fa017ae..4dde00d6cb50e3705b5df6af442c636e07cbec13 100644
+--- a/chrome/common/chrome_switches.h
++++ b/chrome/common/chrome_switches.h
+@@ -261,7 +261,7 @@ extern const char kAllowNaClFileHandleAPI[];
+ extern const char kAllowNaClSocketAPI[];
+ #endif
+ 
+-#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
+ extern const char kEnableNewAppMenuIcon[];
+ extern const char kGuest[];
+ #endif

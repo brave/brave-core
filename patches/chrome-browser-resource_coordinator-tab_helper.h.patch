@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/resource_coordinator/tab_helper.h b/chrome/browser/resource_coordinator/tab_helper.h
+index 58e44c22da02501353a7b799a969c0502d65e084..5d6b106212939719f9ed23e7ed360a07e7e1d846 100644
+--- a/chrome/browser/resource_coordinator/tab_helper.h
++++ b/chrome/browser/resource_coordinator/tab_helper.h
+@@ -52,12 +52,12 @@ class ResourceCoordinatorTabHelper
+   ukm::SourceId ukm_source_id() const { return ukm_source_id_; }
+   void SetUkmSourceIdForTest(ukm::SourceId id) { ukm_source_id_ = id; }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   LocalSiteCharacteristicsWebContentsObserver*
+   local_site_characteristics_wc_observer() {
+     return local_site_characteristics_wc_observer_.get();
+   }
+-#endif
++//#endif
+ 
+  private:
+   explicit ResourceCoordinatorTabHelper(content::WebContents* web_contents);
+@@ -67,10 +67,10 @@ class ResourceCoordinatorTabHelper
+ 
+   friend class content::WebContentsUserData<ResourceCoordinatorTabHelper>;
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   std::unique_ptr<LocalSiteCharacteristicsWebContentsObserver>
+       local_site_characteristics_wc_observer_;
+-#endif
++//#endif
+ 
+ 
+   WEB_CONTENTS_USER_DATA_KEY_DECL();

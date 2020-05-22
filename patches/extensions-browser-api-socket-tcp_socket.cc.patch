@@ -1,8 +1,68 @@
 diff --git a/extensions/browser/api/socket/tcp_socket.cc b/extensions/browser/api/socket/tcp_socket.cc
-index b01331a2c0921b2e0fbc44330b13612fe5548373..fd2dc22832ea4bc1cfd68c8f19a59106928a462f 100644
+index b01331a2c0921b2e0fbc44330b13612fe5548373..0485ed6159fb1264f340fea9db48e6236c9e9f0c 100644
 --- a/extensions/browser/api/socket/tcp_socket.cc
 +++ b/extensions/browser/api/socket/tcp_socket.cc
-@@ -157,8 +157,16 @@ void TCPSocket::Disconnect(bool socket_destroying) {
+@@ -30,6 +30,7 @@ namespace extensions {
+ 
+ namespace {
+ 
++#if !defined(OS_ANDROID)
+ // Returns true if successfully parsed the SSL protocol version that is
+ // represented by a string. Returns false if |version_str| is invalid.
+ bool SSLProtocolVersionFromString(const std::string& version_str,
+@@ -52,12 +53,15 @@ bool SSLProtocolVersionFromString(const std::string& version_str,
+   }
+   return false;
+ }
++#endif
+ 
+ }  // namespace
+ 
++#if !defined(OS_ANDROID)
+ const char kTCPSocketTypeInvalidError[] =
+     "Cannot call both connect and listen on the same socket.";
+ const char kSocketListenError[] = "Could not listen on the specified port.";
++#endif
+ 
+ static base::LazyInstance<BrowserContextKeyedAPIFactory<
+     ApiResourceManager<ResumableTCPSocket>>>::DestructorAtExit g_factory =
+@@ -85,7 +89,9 @@ TCPSocket::TCPSocket(content::BrowserContext* browser_context,
+                      const std::string& owner_extension_id)
+     : Socket(owner_extension_id),
+       browser_context_(browser_context),
++#if !defined(OS_ANDROID)
+       socket_mode_(UNKNOWN),
++#endif
+       mojo_data_pump_(nullptr),
+       task_runner_(base::SequencedTaskRunnerHandle::Get()) {}
+ 
+@@ -97,7 +103,9 @@ TCPSocket::TCPSocket(
+     const std::string& owner_extension_id)
+     : Socket(owner_extension_id),
+       browser_context_(nullptr),
++#if !defined(OS_ANDROID)
+       socket_mode_(CLIENT),
++#endif
+       client_socket_(std::move(socket)),
+       mojo_data_pump_(std::make_unique<MojoDataPump>(std::move(receive_stream),
+                                                      std::move(send_stream))),
+@@ -114,6 +122,7 @@ void TCPSocket::Connect(const net::AddressList& address,
+                         net::CompletionOnceCallback callback) {
+   DCHECK(callback);
+ 
++#if !defined(OS_ANDROID)
+   if (socket_mode_ == SERVER || connect_callback_) {
+     std::move(callback).Run(net::ERR_CONNECTION_FAILED);
+     return;
+@@ -144,6 +153,7 @@ void TCPSocket::Connect(const net::AddressList& address,
+                                 storage_partition_, browser_context_, address,
+                                 client_socket_.BindNewPipeAndPassReceiver(),
+                                 std::move(completion_callback_ui)));
++#endif
+ }
+ 
+ void TCPSocket::Disconnect(bool socket_destroying) {
+@@ -157,8 +167,16 @@ void TCPSocket::Disconnect(bool socket_destroying) {
    client_socket_.reset();
    server_socket_.reset();
    listen_callback_.Reset();
@@ -21,3 +81,160 @@ index b01331a2c0921b2e0fbc44330b13612fe5548373..fd2dc22832ea4bc1cfd68c8f19a59106
    // TODO(devlin): Should we do this for all callbacks?
    if (read_callback_) {
      std::move(read_callback_)
+@@ -175,6 +193,7 @@ void TCPSocket::Bind(const std::string& address,
+ void TCPSocket::Read(int count, ReadCompletionCallback callback) {
+   DCHECK(callback);
+ 
++#if !defined(OS_ANDROID)
+   const bool socket_destroying = false;
+   if (socket_mode_ != CLIENT) {
+     std::move(callback).Run(net::ERR_FAILED, nullptr, socket_destroying);
+@@ -196,6 +215,7 @@ void TCPSocket::Read(int count, ReadCompletionCallback callback) {
+   read_callback_ = std::move(callback);
+   mojo_data_pump_->Read(count, base::BindOnce(&TCPSocket::OnReadComplete,
+                                               base::Unretained(this)));
++#endif
+ }
+ 
+ void TCPSocket::RecvFrom(int count, RecvFromCompletionCallback callback) {
+@@ -213,25 +233,30 @@ void TCPSocket::SendTo(scoped_refptr<net::IOBuffer> io_buffer,
+ void TCPSocket::SetKeepAlive(bool enable,
+                              int delay,
+                              SetKeepAliveCallback callback) {
++#if !defined(OS_ANDROID)
+   if (!client_socket_) {
+     std::move(callback).Run(net::ERR_FAILED);
+     return;
+   }
+   client_socket_->SetKeepAlive(enable, delay, std::move(callback));
++#endif
+ }
+ 
+ void TCPSocket::SetNoDelay(bool no_delay, SetNoDelayCallback callback) {
++#if !defined(OS_ANDROID)
+   if (!client_socket_) {
+     std::move(callback).Run(net::ERR_FAILED);
+     return;
+   }
+   client_socket_->SetNoDelay(no_delay, std::move(callback));
++#endif
+ }
+ 
+ void TCPSocket::Listen(const std::string& address,
+                        uint16_t port,
+                        int backlog,
+                        ListenCallback callback) {
++#if !defined(OS_ANDROID)
+   DCHECK(!server_socket_);
+   DCHECK(!client_socket_);
+   DCHECK(!listen_callback_);
+@@ -269,9 +294,11 @@ void TCPSocket::Listen(const std::string& address,
+                      browser_context_, ip_end_point, backlog,
+                      server_socket_.BindNewPipeAndPassReceiver(),
+                      std::move(completion_callback_ui)));
++#endif
+ }
+ 
+ void TCPSocket::Accept(AcceptCompletionCallback callback) {
++#if !defined(OS_ANDROID)
+   if (socket_mode_ != SERVER || !server_socket_) {
+     std::move(callback).Run(net::ERR_FAILED, mojo::NullRemote(), base::nullopt,
+                             mojo::ScopedDataPipeConsumerHandle(),
+@@ -291,6 +318,7 @@ void TCPSocket::Accept(AcceptCompletionCallback callback) {
+   server_socket_->Accept(
+       mojo::NullRemote() /* observer */,
+       base::BindOnce(&TCPSocket::OnAccept, base::Unretained(this)));
++#endif
+ }
+ 
+ bool TCPSocket::IsConnected() {
+@@ -357,12 +385,14 @@ void TCPSocket::OnConnectCompleteOnUIThread(
+     const base::Optional<net::IPEndPoint>& peer_addr,
+     mojo::ScopedDataPipeConsumerHandle receive_stream,
+     mojo::ScopedDataPipeProducerHandle send_stream) {
++#if !defined(OS_ANDROID)
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+ 
+   original_task_runner->PostTask(
+       FROM_HERE,
+       base::BindOnce(std::move(callback), result, local_addr, peer_addr,
+                      std::move(receive_stream), std::move(send_stream)));
++#endif
+ }
+ 
+ void TCPSocket::OnConnectComplete(
+@@ -371,6 +401,7 @@ void TCPSocket::OnConnectComplete(
+     const base::Optional<net::IPEndPoint>& peer_addr,
+     mojo::ScopedDataPipeConsumerHandle receive_stream,
+     mojo::ScopedDataPipeProducerHandle send_stream) {
++#if !defined(OS_ANDROID)
+   DCHECK(!is_connected_);
+   DCHECK(connect_callback_);
+   DCHECK(task_runner_->RunsTasksInCurrentSequence());
+@@ -383,6 +414,7 @@ void TCPSocket::OnConnectComplete(
+                                                      std::move(send_stream));
+   }
+   std::move(connect_callback_).Run(result);
++#endif
+ }
+ 
+ // static
+@@ -393,6 +425,7 @@ void TCPSocket::ListenOnUIThread(
+     int backlog,
+     mojo::PendingReceiver<network::mojom::TCPServerSocket> receiver,
+     network::mojom::NetworkContext::CreateTCPServerSocketCallback callback) {
++#if !defined(OS_ANDROID)
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+ 
+   if (!storage_partition) {
+@@ -404,6 +437,7 @@ void TCPSocket::ListenOnUIThread(
+       net::MutableNetworkTrafficAnnotationTag(
+           Socket::GetNetworkTrafficAnnotationTag()),
+       std::move(receiver), std::move(callback));
++#endif
+ }
+ 
+ // static
+@@ -412,15 +446,18 @@ void TCPSocket::OnListenCompleteOnUIThread(
+     network::mojom::NetworkContext::CreateTCPServerSocketCallback callback,
+     int result,
+     const base::Optional<net::IPEndPoint>& local_addr) {
++#if !defined(OS_ANDROID)
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+ 
+   original_task_runner->PostTask(
+       FROM_HERE, base::BindOnce(std::move(callback), result, local_addr));
++#endif
+ }
+ 
+ void TCPSocket::OnListenComplete(
+     int result,
+     const base::Optional<net::IPEndPoint>& local_addr) {
++#if !defined(OS_ANDROID)
+   DCHECK(task_runner_->RunsTasksInCurrentSequence());
+   DCHECK(listen_callback_);
+ 
+@@ -431,6 +468,7 @@ void TCPSocket::OnListenComplete(
+   }
+   local_addr_ = local_addr;
+   std::move(listen_callback_).Run(result, "");
++#endif
+ }
+ 
+ content::StoragePartition* TCPSocket::GetStoragePartitionHelper() {
+@@ -495,6 +533,7 @@ void TCPSocket::OnUpgradeToTLSComplete(
+ 
+ void TCPSocket::UpgradeToTLS(api::socket::SecureOptions* options,
+                              UpgradeToTLSCallback callback) {
++#if !defined(OS_ANDROID)
+   if (!client_socket_ || !mojo_data_pump_ ||
+       mojo_data_pump_->HasPendingRead() || mojo_data_pump_->HasPendingWrite()) {
+     std::move(callback).Run(net::ERR_FAILED, mojo::NullRemote(),
+@@ -562,6 +601,7 @@ void TCPSocket::UpgradeToTLS(api::socket::SecureOptions* options,
+       base::BindOnce(&TCPSocket::OnUpgradeToTLSComplete, base::Unretained(this),
+                      std::move(callback), std::move(tls_socket),
+                      local_addr_.value(), peer_addr_.value()));
++#endif
+ }
+ 
+ ResumableTCPSocket::ResumableTCPSocket(content::BrowserContext* browser_context,

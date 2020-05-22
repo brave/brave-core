@@ -1,0 +1,143 @@
+diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
+index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee27e9fd4d 100644
+--- a/chrome/browser/ui/views/frame/browser_view.cc
++++ b/chrome/browser/ui/views/frame/browser_view.cc
+@@ -917,6 +917,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+                                      content::WebContents* new_contents,
+                                      int index,
+                                      int reason) {
++#if !defined(OS_ANDROID)
+   DCHECK(new_contents);
+   TRACE_EVENT0("ui", "BrowserView::OnActiveTabChanged");
+ 
+@@ -1025,10 +1026,12 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+   UpdateTitleBar();
+ 
+   TranslateBubbleView::CloseCurrentBubble();
++#endif
+ }
+ 
+ void BrowserView::OnTabDetached(content::WebContents* contents,
+                                 bool was_active) {
++#if !defined(OS_ANDROID)
+   if (was_active) {
+     // We need to reset the current tab contents to null before it gets
+     // freed. This is because the focus manager performs some operations
+@@ -1041,6 +1044,7 @@ void BrowserView::OnTabDetached(content::WebContents* contents,
+     app_banner_manager_observer_.RemoveAll();
+     UpdateDevToolsForContents(nullptr, true);
+   }
++#endif
+ }
+ 
+ void BrowserView::OnTabRestored(int command_id) {
+@@ -1048,11 +1052,13 @@ void BrowserView::OnTabRestored(int command_id) {
+ }
+ 
+ void BrowserView::ZoomChangedForActiveTab(bool can_show_bubble) {
++#if !defined(OS_ANDROID)
+   const AppMenuButton* app_menu_button =
+       toolbar_button_provider()->GetAppMenuButton();
+   bool app_menu_showing = app_menu_button && app_menu_button->IsMenuShowing();
+   toolbar_button_provider()
+       ->ZoomChangedForActiveTab(can_show_bubble && !app_menu_showing);
++#endif
+ }
+ 
+ gfx::Rect BrowserView::GetRestoredBounds() const {
+@@ -1172,11 +1178,15 @@ void BrowserView::OnExclusiveAccessUserInput() {
+ }
+ 
+ bool BrowserView::ShouldHideUIForFullscreen() const {
++#if !defined(OS_ANDROID)
+   // Immersive mode needs UI for the slide-down top panel.
+   if (immersive_mode_controller_->IsEnabled())
++#endif
+     return false;
+ 
++#if !defined(OS_ANDROID)
+   return frame_->GetFrameView()->ShouldHideTopUIForFullscreen();
++#endif
+ }
+ 
+ bool BrowserView::IsFullscreen() const {
+@@ -1232,6 +1242,7 @@ LocationBar* BrowserView::GetLocationBar() const {
+ }
+ 
+ void BrowserView::SetFocusToLocationBar(bool select_all) {
++#if !defined(OS_ANDROID)
+   // On Windows, changing focus to the location bar causes the browser window to
+   // become active. This can steal focus if the user has another window open
+   // already. On Chrome OS, changing focus makes a view believe it has a focus
+@@ -1250,31 +1261,40 @@ void BrowserView::SetFocusToLocationBar(bool select_all) {
+     DCHECK(focus_manager);
+     focus_manager->ClearFocus();
+   }
++#endif
+ }
+ 
+ void BrowserView::UpdateReloadStopState(bool is_loading, bool force) {
++#if !defined(OS_ANDROID)
+   if (toolbar_button_provider_->GetReloadButton()) {
+     toolbar_button_provider_->GetReloadButton()->ChangeMode(
+         is_loading ? ReloadButton::Mode::kStop : ReloadButton::Mode::kReload,
+         force);
+   }
++#endif
+ }
+ 
+ void BrowserView::UpdateToolbar(content::WebContents* contents) {
++#if !defined(OS_ANDROID)
+   // We may end up here during destruction.
+   if (toolbar_)
+     toolbar_->Update(contents);
++#endif
+ }
+ 
+ void BrowserView::UpdateCustomTabBarVisibility(bool visible, bool animate) {
++#if !defined(OS_ANDROID)
+   if (toolbar_)
+     toolbar_->UpdateCustomTabBarVisibility(visible, animate);
++#endif
+ }
+ 
+ void BrowserView::ResetToolbarTabState(content::WebContents* contents) {
++#if !defined(OS_ANDROID)
+   // We may end up here during destruction.
+   if (toolbar_)
+     toolbar_->ResetTabState(contents);
++#endif
+ }
+ 
+ void BrowserView::FocusToolbar() {
+@@ -1354,6 +1374,7 @@ void BrowserView::FocusBookmarksToolbar() {
+ }
+ 
+ void BrowserView::FocusInactivePopupForAccessibility() {
++#if !defined(OS_ANDROID)
+   if (GetLocationBarView()->ActivateFirstInactiveBubbleForAccessibility())
+     return;
+ 
+@@ -1366,6 +1387,7 @@ void BrowserView::FocusInactivePopupForAccessibility() {
+ 
+   if (!infobar_container_->children().empty())
+     infobar_container_->SetPaneFocusAndFocusDefault();
++#endif
+ }
+ 
+ void BrowserView::FocusAppMenu() {
+@@ -2026,12 +2048,14 @@ base::string16 BrowserView::GetAccessibleWindowTitleForChannelAndProfile(
+         IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT, title);
+   } else if (profile->IsRegularProfile() &&
+              profile_manager->GetNumberOfProfiles() > 1) {
++#if !defined(OS_ANDROID)
+     base::string16 profile_name =
+         profiles::GetAvatarNameForProfile(profile->GetPath());
+     if (!profile_name.empty()) {
+       title = l10n_util::GetStringFUTF16(
+           IDS_ACCESSIBLE_WINDOW_TITLE_WITH_PROFILE_FORMAT, title, profile_name);
+     }
++#endif
+   }
+ 
+   return title;

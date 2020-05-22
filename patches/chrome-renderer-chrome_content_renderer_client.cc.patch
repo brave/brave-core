@@ -1,8 +1,16 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index c1d92ae00fe58a7f0d80914830d9607246231d33..9a175b5e2d0889f53ad17a6124d3a02d00bddd29 100644
+index c1d92ae00fe58a7f0d80914830d9607246231d33..bcc3960ec55b5bd4b17739d703abda14b4a349dd 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -483,7 +483,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -24,6 +24,7 @@
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/time/time.h"
+ #include "base/values.h"
++#include "brave/renderer/brave_content_settings_agent_impl.h"
+ #include "chrome/common/buildflags.h"
+ #include "chrome/common/channel_info.h"
+ #include "chrome/common/chrome_content_client.h"
+@@ -483,7 +484,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
    content_settings::ContentSettingsAgentImpl* content_settings =
@@ -11,3 +19,12 @@ index c1d92ae00fe58a7f0d80914830d9607246231d33..9a175b5e2d0889f53ad17a6124d3a02d
            render_frame, should_whitelist_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
+@@ -649,7 +650,7 @@ bool ChromeContentRendererClient::IsPluginHandledExternally(
+     const blink::WebElement& plugin_element,
+     const GURL& original_url,
+     const std::string& mime_type) {
+-#if BUILDFLAG(ENABLE_EXTENSIONS) && BUILDFLAG(ENABLE_PLUGINS)
++#if !defined(OS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS) && BUILDFLAG(ENABLE_PLUGINS)
+   DCHECK(plugin_element.HasHTMLTagName("object") ||
+          plugin_element.HasHTMLTagName("embed"));
+   // Blink will next try to load a WebPlugin which would end up in

@@ -1,0 +1,49 @@
+diff --git a/ui/views/BUILD.gn b/ui/views/BUILD.gn
+index 7b5bc59c5e0fa21e031df7cca1a2f86461933d59..ccd1157913363ffae989e394e983e3de6f2bc492 100644
+--- a/ui/views/BUILD.gn
++++ b/ui/views/BUILD.gn
+@@ -12,7 +12,9 @@ import("//ui/base/ui_features.gni")
+ import("//ui/ozone/ozone.gni")
+ import("//ui/views/features.gni")
+ 
++if (!is_android) {
+ assert(toolkit_views)
++}
+ 
+ # Reset sources_assignment_filter for the BUILD.gn file to prevent
+ # regression during the migration of Chromium away from the feature.
+@@ -284,6 +286,13 @@ jumbo_component("views") {
+     "window/window_shape.h",
+     "word_lookup_client.h",
+   ]
++  if (is_android) {
++    public += [
++      "event_monitor_android.h",
++      "widget/native_widget_aura.h",
++      "widget/native_widget_android.h",
++    ]
++  }
+ 
+   sources = [
+     "accessibility/ax_event_manager.cc",
+@@ -541,6 +550,7 @@ jumbo_component("views") {
+       "linux_ui/window_button_order_provider.cc",
+     ]
+   }
++  deps += [ "//brave/ui/views" ]
+ 
+   if (is_chromeos) {
+     sources += [ "controls/menu/menu_config_chromeos.cc" ]
+@@ -685,6 +695,12 @@ jumbo_component("views") {
+       "widget/window_reorderer.h",
+     ]
+ 
++    if (is_android) {
++      public += [
++        "widget/native_widget_android.h",
++      ]
++    }
++
+     sources += [
+       "accessibility/accessibility_alert_window.cc",
+       "accessibility/ax_aura_obj_cache.cc",

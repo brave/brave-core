@@ -1,0 +1,15 @@
+diff --git a/ui/views/controls/webview/unhandled_keyboard_event_handler.cc b/ui/views/controls/webview/unhandled_keyboard_event_handler.cc
+index 85a1cc6e07ad9a99b961599ff6bb71587c50fd9a..ff0edd1aa46805f91b9d76b197ad30b78b3157f2 100644
+--- a/ui/views/controls/webview/unhandled_keyboard_event_handler.cc
++++ b/ui/views/controls/webview/unhandled_keyboard_event_handler.cc
+@@ -50,8 +50,10 @@ bool UnhandledKeyboardEventHandler::HandleKeyboardEvent(
+     ignore_next_char_event_ = false;
+   }
+ 
++#if !defined(OS_ANDROID)
+   if (event.os_event && !event.skip_in_browser)
+     return HandleNativeKeyboardEvent(event.os_event, focus_manager);
++#endif
+ 
+   return false;
+ }

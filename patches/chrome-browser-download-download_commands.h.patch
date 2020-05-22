@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/download/download_commands.h b/chrome/browser/download/download_commands.h
+index 3c507043af7e00256aaa5adf58c55500dc96c31f..7caa43e47c2d0372f2c2697e65e345a0e48f6ba9 100644
+--- a/chrome/browser/download/download_commands.h
++++ b/chrome/browser/download/download_commands.h
+@@ -11,9 +11,9 @@
+ #include "content/public/browser/page_navigator.h"
+ #include "ui/gfx/image/image.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ class Browser;
+-#endif
++//#endif
+ 
+ class DownloadUIModel;
+ 
+@@ -48,7 +48,7 @@ class DownloadCommands {
+   bool IsCommandVisible(Command command) const;
+   void ExecuteCommand(Command command);
+ 
+-#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX)
+   bool IsDownloadPdf() const;
+   bool CanOpenPdfInSystemViewer() const;
+   Browser* GetBrowser() const;

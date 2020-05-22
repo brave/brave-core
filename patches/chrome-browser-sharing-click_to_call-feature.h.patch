@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/sharing/click_to_call/feature.h b/chrome/browser/sharing/click_to_call/feature.h
+index ca367376f6ac75f7591750b6ebfd440e904b7f96..be4bff0c193734ec9747cd29c474603cc6973200 100644
+--- a/chrome/browser/sharing/click_to_call/feature.h
++++ b/chrome/browser/sharing/click_to_call/feature.h
+@@ -14,7 +14,7 @@
+ extern const base::Feature kClickToCallReceiver;
+ #endif  // defined(OS_ANDROID)
+ 
+-#if BUILDFLAG(ENABLE_CLICK_TO_CALL)
++#if BUILDFLAG(ENABLE_CLICK_TO_CALL) || defined(OS_ANDROID)
+ // Feature to allow click to call gets processed on desktop.
+ extern const base::Feature kClickToCallUI;
+ 

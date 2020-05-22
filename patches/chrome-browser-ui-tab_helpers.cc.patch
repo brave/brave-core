@@ -1,8 +1,27 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index b50ee51bb2b8fc35418820e1c1955975e60a597e..ac5b99f5f744b6f2e01a20bfcda5f8d195c61708 100644
+index b50ee51bb2b8fc35418820e1c1955975e60a597e..c408213f06f3df80ee3439a5997120aee16088d6 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -466,4 +466,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -298,6 +298,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+   //     See https://crbug.com/910288.
+   resource_coordinator::ResourceCoordinatorTabHelper::CreateForWebContents(
+       web_contents);
++  brave::AttachTabHelpers(web_contents);
+   ResourceLoadingHintsWebContentsObserver::CreateForWebContents(web_contents);
+   safe_browsing::SafeBrowsingNavigationObserver::MaybeCreateForWebContents(
+       web_contents);
+@@ -421,8 +422,10 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+       web_contents);
+   extensions::TabHelper::CreateForWebContents(web_contents);
+   extensions::WebNavigationTabObserver::CreateForWebContents(web_contents);
++#if !defined(OS_ANDROID)
+   if (web_app::AreWebAppsEnabled(profile))
+     web_app::WebAppTabHelper::CreateForWebContents(web_contents);
++#endif
+   if (SiteEngagementService::IsEnabled())
+     web_app::WebAppMetrics::Get(profile);
+ #endif
+@@ -466,4 +469,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
  
    // This is common code for all of us. PLEASE DO YOUR PART to keep it tidy and
    // organized.

@@ -1,0 +1,20 @@
+diff --git a/ui/views/controls/button/image_button.cc b/ui/views/controls/button/image_button.cc
+index b0d5d724b45562896f4065c0f6203c5e37fc4ca5..8382c30daad45731c202f08613f60618c3b22de3 100644
+--- a/ui/views/controls/button/image_button.cc
++++ b/ui/views/controls/button/image_button.cc
+@@ -167,6 +167,7 @@ void ImageButton::PaintButtonContents(gfx::Canvas* canvas) {
+ gfx::ImageSkia ImageButton::GetImageToPaint() {
+   gfx::ImageSkia img;
+ 
++#if !defined(OS_ANDROID)
+   if (!images_[STATE_HOVERED].isNull() && hover_animation().is_animating()) {
+     img = gfx::ImageSkiaOperations::CreateBlendedImage(
+         images_[STATE_NORMAL], images_[STATE_HOVERED],
+@@ -174,6 +175,7 @@ gfx::ImageSkia ImageButton::GetImageToPaint() {
+   } else {
+     img = images_[state()];
+   }
++#endif
+ 
+   return !img.isNull() ? img : images_[STATE_NORMAL];
+ }

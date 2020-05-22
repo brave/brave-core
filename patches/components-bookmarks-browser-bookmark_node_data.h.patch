@@ -1,0 +1,40 @@
+diff --git a/components/bookmarks/browser/bookmark_node_data.h b/components/bookmarks/browser/bookmark_node_data.h
+index fa46f3c18d015740904fe092cd78254138b40d4d..ff5c5b2c7d1420d7fe5cb923a7ed7becc0209dad 100644
+--- a/components/bookmarks/browser/bookmark_node_data.h
++++ b/components/bookmarks/browser/bookmark_node_data.h
+@@ -18,7 +18,7 @@
+ #include "ui/base/clipboard/clipboard_buffer.h"
+ #include "url/gurl.h"
+ 
+-#if defined(TOOLKIT_VIEWS)
++#if defined(OS_ANDROID) || defined(TOOLKIT_VIEWS)
+ #include "ui/base/clipboard/clipboard_format_type.h"
+ #endif
+ 
+@@ -27,7 +27,7 @@ class Pickle;
+ class PickleIterator;
+ }
+ 
+-#if defined(TOOLKIT_VIEWS)
++#if defined(OS_ANDROID) || defined(TOOLKIT_VIEWS)
+ namespace ui {
+ class OSExchangeData;
+ }
+@@ -114,7 +114,7 @@ struct BookmarkNodeData {
+ 
+   ~BookmarkNodeData();
+ 
+-#if defined(TOOLKIT_VIEWS)
++#if defined(OS_ANDROID) || defined(TOOLKIT_VIEWS)
+   static const ui::ClipboardFormatType& GetBookmarkFormatType();
+ #endif
+ 
+@@ -133,7 +133,7 @@ struct BookmarkNodeData {
+   // WriteToClipboard() but will also attempt to read a plain bookmark.
+   bool ReadFromClipboard(ui::ClipboardBuffer buffer);
+ 
+-#if defined(TOOLKIT_VIEWS)
++#if defined(OS_ANDROID) || defined(TOOLKIT_VIEWS)
+   // Writes elements to data. If there is only one element and it is a URL
+   // the URL and title are written to the clipboard in a format other apps can
+   // use.

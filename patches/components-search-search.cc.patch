@@ -1,0 +1,13 @@
+diff --git a/components/search/search.cc b/components/search/search.cc
+index 4a0ae2f553ac4d204db1f172b69394aa2d250263..a89864ce21967284d2cee7535bc9cf8603e6d07c 100644
+--- a/components/search/search.cc
++++ b/components/search/search.cc
+@@ -9,7 +9,7 @@
+ namespace search {
+ 
+ bool IsInstantExtendedAPIEnabled() {
+-#if defined(OS_IOS) || defined(OS_ANDROID)
++#if defined(OS_IOS)// || defined(OS_ANDROID)
+   return false;
+ #else
+   return true;

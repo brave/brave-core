@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/supervised_user/supervised_user_service.cc b/chrome/browser/supervised_user/supervised_user_service.cc
+index 06b79b3da8b5be9e665971df15d6d16cb7c5ff3d..405cbcb36e9a568bef56d985593e5cbf471a758a 100644
+--- a/chrome/browser/supervised_user/supervised_user_service.cc
++++ b/chrome/browser/supervised_user/supervised_user_service.cc
+@@ -656,6 +656,9 @@ void SupervisedUserService::OnBlacklistLoaded() {
+ }
+ 
+ void SupervisedUserService::UpdateBlacklist() {
++#if defined(OS_ANDROID)
++  return;
++#endif
+   bool use_blacklist = supervised_users::IsSafeSitesBlacklistEnabled(profile_);
+   url_filter_.SetBlacklist(use_blacklist ? &blacklist_ : nullptr);
+   for (SupervisedUserServiceObserver& observer : observer_list_)

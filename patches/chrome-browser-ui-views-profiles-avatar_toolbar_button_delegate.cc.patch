@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc
+index b2e04fee0255c613dcc2a115a3182db4336f9c44..54fe6aa7dd549a8169702ffe1e143371f817825b 100644
+--- a/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc
++++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc
+@@ -119,8 +119,12 @@ void AvatarToolbarButtonDelegate::Init(AvatarToolbarButton* button,
+ }
+ 
+ base::string16 AvatarToolbarButtonDelegate::GetProfileName() const {
++#if !defined(OS_ANDROID)
+   DCHECK_NE(GetState(), AvatarToolbarButton::State::kIncognitoProfile);
+   return profiles::GetAvatarNameForProfile(profile_->GetPath());
++#else
++  return base::string16();
++#endif
+ }
+ 
+ base::string16 AvatarToolbarButtonDelegate::GetShortProfileName() const {

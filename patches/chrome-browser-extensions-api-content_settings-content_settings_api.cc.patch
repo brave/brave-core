@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/extensions/api/content_settings/content_settings_api.cc b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
+index d8dbcfece5b35c9f805eae4404ff36bdf5bb029c..87d11b102dcabdfcfd3398f22aaf308c158ad5f6 100644
+--- a/chrome/browser/extensions/api/content_settings/content_settings_api.cc
++++ b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
+@@ -322,7 +322,7 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
+     return true;
+   }
+ 
+-#if BUILDFLAG(ENABLE_PLUGINS)
++#if BUILDFLAG(ENABLE_PLUGINS) && !defined(OS_ANDROID)
+   content::PluginService::GetInstance()->GetPlugins(base::BindOnce(
+       &ContentSettingsContentSettingGetResourceIdentifiersFunction::
+           OnGotPlugins,
+@@ -332,7 +332,7 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
+   return true;
+ }
+ 
+-#if BUILDFLAG(ENABLE_PLUGINS)
++#if BUILDFLAG(ENABLE_PLUGINS) && !defined(OS_ANDROID)
+ void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
+     const std::vector<content::WebPluginInfo>& plugins) {
+   PluginFinder* finder = PluginFinder::GetInstance();

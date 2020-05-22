@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc b/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
+index 7c2416bd30a41806a7c97953fdef5ff7c61bf5d9..4c0611b12b301906723c71fc43b9b4e08abb00cc 100644
+--- a/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
+@@ -50,7 +50,9 @@ using BrowsingDataType = browsing_data::BrowsingDataType;
+ namespace {
+ 
+ const int kMaxTimesHistoryNoticeShown = 1;
++#if !defined(OS_ANDROID)
+ const int kMaxInstalledAppsToWarnOf = 5;
++#endif
+ 
+ // TODO(msramek): Get the list of deletion preferences from the JS side.
+ const char* kCounterPrefsAdvanced[] = {
+@@ -170,6 +172,7 @@ void ClearBrowsingDataHandler::GetRecentlyLaunchedInstalledApps(
+   CHECK(args->GetString(0, &webui_callback_id));
+ 
+   CHECK(args->GetInteger(1, &period_selected));
++#if !defined(OS_ANDROID)
+   browsing_data::TimePeriod time_period =
+       static_cast<browsing_data::TimePeriod>(period_selected);
+ 
+@@ -177,6 +180,7 @@ void ClearBrowsingDataHandler::GetRecentlyLaunchedInstalledApps(
+       time_period, profile_, kMaxInstalledAppsToWarnOf);
+ 
+   OnGotInstalledApps(webui_callback_id, installed_apps);
++#endif
+ }
+ 
+ void ClearBrowsingDataHandler::OnGotInstalledApps(

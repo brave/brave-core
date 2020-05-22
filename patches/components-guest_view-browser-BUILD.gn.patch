@@ -1,0 +1,13 @@
+diff --git a/components/guest_view/browser/BUILD.gn b/components/guest_view/browser/BUILD.gn
+index c522785ab8fa5da7aed98a0eb74db015b3185b20..7f60db704d2a90b695f301148a90aea2bbda5e0f 100644
+--- a/components/guest_view/browser/BUILD.gn
++++ b/components/guest_view/browser/BUILD.gn
+@@ -6,7 +6,7 @@
+ # assert to prevent the accidental building of GuestViews on mobile
+ # platforms. If you're now using GuestViews on mobile, go ahead and
+ # remove this assert.
+-assert(!is_android && !is_ios)
++assert(!is_ios)
+ 
+ static_library("browser") {
+   output_name = "guest_view_browser"

@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc b/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc
+index ea5fe8661b597678f6e4d63a62a2e6ff66cf02cb..266d7f2f7708e7f45d88f7606276359d2969657c 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc
+@@ -171,7 +171,11 @@ void OmniboxPopupContentsView::OpenMatch(
+ gfx::Image OmniboxPopupContentsView::GetMatchIcon(
+     const AutocompleteMatch& match,
+     SkColor vector_icon_color) const {
++#if !defined(OS_ANDROID)
+   return model_->GetMatchIcon(match, vector_icon_color);
++#else
++  return gfx::Image();
++#endif
+ }
+ 
+ void OmniboxPopupContentsView::SetSelectedLine(size_t index) {

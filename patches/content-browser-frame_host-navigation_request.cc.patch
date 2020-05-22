@@ -1,8 +1,18 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index 711e4b02b7e0b401deb25380af453a332fb5c4e3..090220f49b7e154946bafffa550cb28f372f90a0 100644
+index 711e4b02b7e0b401deb25380af453a332fb5c4e3..5f70ab92d2a9c26ff4fa5c3f7f83d30d39d84d6f 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -2533,6 +2533,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -945,7 +945,9 @@ NavigationRequest::NavigationRequest(
+       rfh_restored_from_back_forward_cache_(
+           rfh_restored_from_back_forward_cache),
+       client_security_state_(network::mojom::ClientSecurityState::New()) {
++#if !defined(OS_ANDROID)
+   DCHECK(browser_initiated_ || common_params_->initiator_origin.has_value());
++#endif
+   DCHECK(!IsRendererDebugURL(common_params_->url));
+   DCHECK(common_params_->method == "POST" || !common_params_->post_data);
+   TRACE_EVENT_NESTABLE_ASYNC_BEGIN2(
+@@ -2533,6 +2535,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  

@@ -1,0 +1,50 @@
+diff --git a/chrome/browser/ui/browser_navigator_params.h b/chrome/browser/ui/browser_navigator_params.h
+index a97e649a9f6383a3edda610cb69cc2723cf202a0..b683a08978791ddf86d69fb585d45b11d830d43e 100644
+--- a/chrome/browser/ui/browser_navigator_params.h
++++ b/chrome/browser/ui/browser_navigator_params.h
+@@ -25,10 +25,10 @@
+ #include "ui/gfx/geometry/rect.h"
+ #include "url/gurl.h"
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/ui/tabs/tab_strip_model.h"
+ #include "components/tab_groups/tab_group_id.h"
+-#endif
++//#endif
+ 
+ class Browser;
+ class Profile;
+@@ -66,13 +66,12 @@ struct NavigateParams {
+ #if defined(OS_ANDROID)
+   explicit NavigateParams(
+       std::unique_ptr<content::WebContents> contents_to_insert);
+-#else
++#endif
+   NavigateParams(Browser* browser,
+                  const GURL& a_url,
+                  ui::PageTransition a_transition);
+   NavigateParams(Browser* browser,
+                  std::unique_ptr<content::WebContents> contents_to_insert);
+-#endif
+   NavigateParams(Profile* profile,
+                  const GURL& a_url,
+                  ui::PageTransition a_transition);
+@@ -211,7 +210,7 @@ struct NavigateParams {
+   };
+   PathBehavior path_behavior = RESPECT;
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   // [in]  Specifies a Browser object where the navigation could occur or the
+   //       tab could be added. Navigate() is not obliged to use this Browser if
+   //       it is not compatible with the operation being performed. This can be
+@@ -233,7 +232,7 @@ struct NavigateParams {
+   // determine where to insert a new tab and whether or not it should be
+   // selected, among other properties.
+   int tabstrip_add_types = TabStripModel::ADD_ACTIVE;
+-#endif
++//#endif
+ 
+   // The profile that is initiating the navigation. If there is a non-NULL
+   // browser passed in via |browser|, it's profile will be used instead.

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/extensions/extension_install_ui_default.cc b/chrome/browser/ui/extensions/extension_install_ui_default.cc
+index ba7dfe118da1eb8bcef523fad456394099a6199b..c7184b0ea02fc8a7e017c5770a72330d8f8f3fc8 100644
+--- a/chrome/browser/ui/extensions/extension_install_ui_default.cc
++++ b/chrome/browser/ui/extensions/extension_install_ui_default.cc
+@@ -157,6 +157,7 @@ void ExtensionInstallUIDefault::SetUseAppInstalledBubble(bool use_bubble) {
+ }
+ 
+ void ExtensionInstallUIDefault::SetSkipPostInstallUI(bool skip_ui) {
++  LOG(ERROR) << "!!!here1 skip_ui == " << skip_ui;
+   skip_post_install_ui_ = skip_ui;
+ }
+ 

@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/api/messaging/message_service.cc b/extensions/browser/api/messaging/message_service.cc
+index c3918725562fcedac652564e69eaa0e6b54d3cc5..62367ab8ec0c7ad0d8d2fa75cd375dd3aa394cfb 100644
+--- a/extensions/browser/api/messaging/message_service.cc
++++ b/extensions/browser/api/messaging/message_service.cc
+@@ -441,7 +441,7 @@ void MessageService::OpenChannelToNativeApp(
+   channel->opener->IncrementLazyKeepaliveCount();
+ 
+   AddChannel(std::move(channel), receiver_port_id);
+-#else  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX))
++#elif !defined(OS_ANDROID)  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX))
+   const char kNativeMessagingNotSupportedError[] =
+       "Native Messaging is not supported on this platform.";
+   opener_port->DispatchOnDisconnect(kNativeMessagingNotSupportedError);

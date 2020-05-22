@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/search/search_ipc_router_policy_impl.h b/chrome/browser/ui/search/search_ipc_router_policy_impl.h
+index ab3647dd89b2eb70fc66768213e9029afbd58a6c..db88767fd4aca3732b27b30804fde5094c5ee742 100644
+--- a/chrome/browser/ui/search/search_ipc_router_policy_impl.h
++++ b/chrome/browser/ui/search/search_ipc_router_policy_impl.h
+@@ -9,9 +9,9 @@
+ #include "build/build_config.h"
+ #include "chrome/browser/ui/search/search_ipc_router.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ namespace content {
+ class WebContents;

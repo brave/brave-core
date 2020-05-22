@@ -1,18 +1,68 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 4a31f9315ce898ed714a7efca6a8afca9d4baf76..767d1686fa4448a2bac4f1fbc7187c8a37e9e2e6 100644
+index 4a31f9315ce898ed714a7efca6a8afca9d4baf76..92e7b932800e6093d9f743a00fa67ba828aeacce 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -608,6 +608,9 @@ static_library("ui") {
+@@ -608,10 +608,11 @@ static_library("ui") {
      "//ui/webui",
      "//v8:v8_version",
    ]
-+  deps += [
-+    "//brave/browser/ui",
-+  ]
++  deps += [ "//brave/browser/ui", ]
    allow_circular_includes_from +=
        [ "//chrome/browser/ui/webui/bluetooth_internals" ]
  
-@@ -2668,10 +2671,13 @@ static_library("ui") {
+-  if (is_win || is_mac || is_desktop_linux || is_chromeos) {
++  if (is_android || is_win || is_mac || is_desktop_linux || is_chromeos) {
+     deps += [ "//chrome/browser/ui/webui/discards:mojo_bindings" ]
+   }
+ 
+@@ -850,7 +851,7 @@ static_library("ui") {
+       "//services/device/public/mojom:usb",
+       "//ui/android",
+     ]
+-  } else {
++  } #else {
+     # !is_android
+     sources += [
+       "apps/app_info_dialog.h",
+@@ -1535,7 +1536,7 @@ static_library("ui") {
+         "//google_apis/drive",
+       ]
+     }
+-  }
++  #}
+ 
+   if (enable_kaleidoscope) {
+     deps += [ "//chrome/browser/media/kaleidoscope/internal" ]
+@@ -2230,7 +2231,7 @@ static_library("ui") {
+     }
+   }
+ 
+-  if (is_win || is_mac || is_desktop_linux || is_chromeos) {
++  if (is_android || is_win || is_mac || is_desktop_linux || is_chromeos) {
+     sources += [
+       "autofill/payments/virtual_card_selection_dialog_controller.h",
+       "autofill/payments/virtual_card_selection_dialog_controller_impl.cc",
+@@ -2296,8 +2297,8 @@ static_library("ui") {
+     ]
+     deps += [ "//ui/webui" ]
+   }
+-
+-  if (is_win || is_mac || is_desktop_linux) {
++  if (!is_android) {sources += ["views/external_protocol_dialog.cc","views/external_protocol_dialog.h",]}
++  if (is_android || is_win || is_mac || is_desktop_linux) {
+     sources += [
+       "bookmarks/bookmark_bubble_sign_in_delegate.cc",
+       "bookmarks/bookmark_bubble_sign_in_delegate.h",
+@@ -2311,8 +2312,6 @@ static_library("ui") {
+       "sync/one_click_signin_links_delegate_impl.h",
+       "user_manager.cc",
+       "user_manager.h",
+-      "views/external_protocol_dialog.cc",
+-      "views/external_protocol_dialog.h",
+       "views/profiles/badged_profile_photo.cc",
+       "views/profiles/badged_profile_photo.h",
+       "views/profiles/profile_picker_view.cc",
+@@ -2668,10 +2667,13 @@ static_library("ui") {
        ]
        deps += [ "//google_update" ]
      } else {
@@ -30,3 +80,131 @@ index 4a31f9315ce898ed714a7efca6a8afca9d4baf76..767d1686fa4448a2bac4f1fbc7187c8a
      }
    } else {  # 'OS!="win"
      # The Cast Linux build sets toolkit_views to false, but many files in this
+@@ -2789,7 +2791,26 @@ static_library("ui") {
+     ]
+   }
+ 
+-  if (toolkit_views) {
++  if (!is_android) {
++    sources += [ "views/autofill/autofill_popup_view_native_views.cc",
++      "views/autofill/autofill_popup_view_native_views.h",
++      "views/autofill/payments/card_unmask_prompt_views.cc",
++      "views/autofill/payments/card_unmask_prompt_views.h", 
++      "views/infobars/confirm_infobar.cc",
++      "views/infobars/confirm_infobar.h",
++      "views/media_router/cloud_services_dialog_view.cc",
++      "views/media_router/cloud_services_dialog_view.h",
++      "views/media_router/media_router_dialog_controller_views.cc",
++      "views/media_router/media_router_dialog_controller_views.h",
++      "views/overlay/overlay_window_views.cc",
++      "views/overlay/overlay_window_views.h",
++      "views/page_info/safety_tip_page_info_bubble_view.cc",
++      "views/page_info/safety_tip_page_info_bubble_view.h",
++      "views/passwords/password_generation_popup_view_views.cc",
++      "views/passwords/password_generation_popup_view_views.h",]
++  }
++
++  if (is_android || toolkit_views) {
+     sources += [
+       "autofill/payments/local_card_migration_bubble.h",
+       "autofill/payments/local_card_migration_bubble_controller_impl.cc",
+@@ -2861,12 +2882,8 @@ static_library("ui") {
+       "views/autofill/autofill_bubble_handler_impl.h",
+       "views/autofill/autofill_popup_base_view.cc",
+       "views/autofill/autofill_popup_base_view.h",
+-      "views/autofill/autofill_popup_view_native_views.cc",
+-      "views/autofill/autofill_popup_view_native_views.h",
+       "views/autofill/autofill_popup_view_utils.cc",
+       "views/autofill/autofill_popup_view_utils.h",
+-      "views/autofill/payments/card_unmask_prompt_views.cc",
+-      "views/autofill/payments/card_unmask_prompt_views.h",
+       "views/autofill/payments/dialog_view_ids.h",
+       "views/autofill/payments/local_card_migration_bubble_views.cc",
+       "views/autofill/payments/local_card_migration_bubble_views.h",
+@@ -3099,8 +3116,6 @@ static_library("ui") {
+       "views/importer/import_lock_dialog_view.h",
+       "views/infobars/alternate_nav_infobar_view.cc",
+       "views/infobars/alternate_nav_infobar_view.h",
+-      "views/infobars/confirm_infobar.cc",
+-      "views/infobars/confirm_infobar.h",
+       "views/infobars/infobar_container_view.cc",
+       "views/infobars/infobar_container_view.h",
+       "views/infobars/infobar_view.cc",
+@@ -3160,12 +3175,8 @@ static_library("ui") {
+       "views/media_router/cast_dialog_view.h",
+       "views/media_router/cast_toolbar_button.cc",
+       "views/media_router/cast_toolbar_button.h",
+-      "views/media_router/cloud_services_dialog_view.cc",
+-      "views/media_router/cloud_services_dialog_view.h",
+       "views/media_router/media_remoting_dialog_view.cc",
+       "views/media_router/media_remoting_dialog_view.h",
+-      "views/media_router/media_router_dialog_controller_views.cc",
+-      "views/media_router/media_router_dialog_controller_views.h",
+       "views/media_router/media_router_views_ui.cc",
+       "views/media_router/media_router_views_ui.h",
+       "views/media_router/presentation_receiver_window_factory.cc",
+@@ -3215,8 +3226,6 @@ static_library("ui") {
+       "views/overlay/back_to_tab_image_button.h",
+       "views/overlay/close_image_button.cc",
+       "views/overlay/close_image_button.h",
+-      "views/overlay/overlay_window_views.cc",
+-      "views/overlay/overlay_window_views.h",
+       "views/overlay/playback_image_button.cc",
+       "views/overlay/playback_image_button.h",
+       "views/overlay/resize_handle_button.cc",
+@@ -3251,8 +3260,6 @@ static_library("ui") {
+       "views/page_info/permission_selector_row.cc",
+       "views/page_info/permission_selector_row.h",
+       "views/page_info/permission_selector_row_observer.h",
+-      "views/page_info/safety_tip_page_info_bubble_view.cc",
+-      "views/page_info/safety_tip_page_info_bubble_view.h",
+       "views/passwords/account_chooser_dialog_view.cc",
+       "views/passwords/account_chooser_dialog_view.h",
+       "views/passwords/auto_signin_first_run_dialog_view.cc",
+@@ -3271,8 +3278,6 @@ static_library("ui") {
+       "views/passwords/password_bubble_view_base.h",
+       "views/passwords/password_generation_confirmation_view.cc",
+       "views/passwords/password_generation_confirmation_view.h",
+-      "views/passwords/password_generation_popup_view_views.cc",
+-      "views/passwords/password_generation_popup_view_views.h",
+       "views/passwords/password_items_view.cc",
+       "views/passwords/password_items_view.h",
+       "views/passwords/password_save_unsynced_credentials_locally_view.cc",
+@@ -3607,9 +3612,13 @@ static_library("ui") {
+       sources += [
+         "views/create_application_shortcut_view.cc",
+         "views/create_application_shortcut_view.h",
+-        "views/ssl_client_certificate_selector.cc",
+-        "views/ssl_client_certificate_selector.h",
+       ]
++      if (!is_android) {
++        sources += [
++            "views/ssl_client_certificate_selector.cc",
++            "views/ssl_client_certificate_selector.h",
++            ]
++      }
+     }
+ 
+     if (is_win) {
+@@ -3693,6 +3702,12 @@ static_library("ui") {
+     }
+   }
+ 
++  if (is_android) {
++      sources += [
++          "views/frame/browser_non_client_frame_view_factory_views.cc",
++      ]
++  }
++
+   if (use_aura) {
+     sources += [
+       "aura/accessibility/automation_manager_aura.cc",
+@@ -4230,7 +4245,7 @@ static_library("ui") {
+       "//components/printing/browser",
+       "//printing",
+     ]
+-    if (!is_chromeos && !is_android) {
++    if (!is_chromeos) {
+       sources += [
+         "webui/settings/printing_handler.cc",
+         "webui/settings/printing_handler.h",

@@ -1,0 +1,14 @@
+diff --git a/extensions/browser/api/socket/tcp_socket.h b/extensions/browser/api/socket/tcp_socket.h
+index 4f71a081977139e0164e6353f5d8ba3c101f51a9..8f661f0060ffbcd21ec310c2d3f7f020c606966a 100644
+--- a/extensions/browser/api/socket/tcp_socket.h
++++ b/extensions/browser/api/socket/tcp_socket.h
+@@ -170,7 +170,9 @@ class TCPSocket : public Socket {
+   // ApiResourceManager which is a BrowserContextKeyedAPI.
+   content::BrowserContext* browser_context_;
+ 
++#if !defined(OS_ANDROID)
+   SocketMode socket_mode_;
++#endif
+ 
+   // CLIENT mode.
+   mojo::Remote<network::mojom::TCPConnectedSocket> client_socket_;

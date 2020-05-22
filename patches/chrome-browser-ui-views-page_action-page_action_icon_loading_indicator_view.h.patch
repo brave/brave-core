@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.h b/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.h
+index e01a9572b43ecf3b2948f72a79304fb7ec4c66e6..bd918e9acaba3eedd13bc004fc49277a583df14e 100644
+--- a/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.h
++++ b/chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.h
+@@ -42,7 +42,9 @@ class PageActionIconLoadingIndicatorView : public views::View,
+  private:
+   base::Optional<base::TimeTicks> throbber_start_time_;
+ 
++#if !defined(OS_ANDROID)
+   gfx::ThrobAnimation animation_{this};
++#endif
+ 
+   PageActionIconView* const parent_;
+ 

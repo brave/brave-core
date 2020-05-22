@@ -1,0 +1,65 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_utils_desktop.cc b/chrome/browser/ui/bookmarks/bookmark_utils_desktop.cc
+index ed43c8eff770a849db07a161746ff57c415ab722..c7053e29afc4570f7f4f9c2d5da21890b7cdee3d 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_utils_desktop.cc
++++ b/chrome/browser/ui/bookmarks/bookmark_utils_desktop.cc
+@@ -63,7 +63,7 @@ std::vector<GURL> GetURLsToOpen(
+   return urls;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ bool ShouldOpenAll(gfx::NativeWindow parent,
+                    const std::vector<const BookmarkNode*>& nodes) {
+   size_t child_count = GetURLsToOpen(nodes).size();
+@@ -76,7 +76,7 @@ bool ShouldOpenAll(gfx::NativeWindow parent,
+                                         base::NumberToString16(child_count))) ==
+          MESSAGE_BOX_RESULT_YES;
+ }
+-#endif
++//#endif
+ 
+ // Returns the total number of descendants nodes.
+ int ChildURLCountTotal(const BookmarkNode* node) {
+@@ -89,7 +89,7 @@ int ChildURLCountTotal(const BookmarkNode* node) {
+                          count_children);
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Returns in |urls|, the url and title pairs for each open tab in browser.
+ void GetURLsForOpenTabs(Browser* browser,
+                         std::vector<std::pair<GURL, base::string16>>* urls) {
+@@ -100,11 +100,11 @@ void GetURLsForOpenTabs(Browser* browser,
+     urls->push_back(entry);
+   }
+ }
+-#endif
++//#endif
+ 
+ }  // namespace
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void OpenAll(gfx::NativeWindow parent,
+              content::PageNavigator* navigator,
+              const std::vector<const BookmarkNode*>& nodes,
+@@ -188,9 +188,10 @@ void ShowBookmarkAllTabsDialog(Browser* browser) {
+       BookmarkEditor::EditDetails::AddFolder(parent, parent->children().size());
+   GetURLsForOpenTabs(browser, &(details.urls));
+   DCHECK(!details.urls.empty());
+-
++#if !defined(OS_ANDROID)
+   BookmarkEditor::Show(browser->window()->GetNativeWindow(), profile, details,
+                        BookmarkEditor::SHOW_TREE);
++#endif
+ }
+ 
+ bool HasBookmarkURLs(const std::vector<const BookmarkNode*>& selection) {
+@@ -202,6 +203,6 @@ bool HasBookmarkURLsAllowedInIncognitoMode(
+     content::BrowserContext* browser_context) {
+   return !GetURLsToOpen(selection, browser_context, true).empty();
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ }  // namespace chrome

@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/resource_coordinator/tab_manager.cc b/chrome/browser/resource_coordinator/tab_manager.cc
+index af934be82c6295e7d39b669419fad24c40aa95ec..ecb88d1a122074e5e7c61a8d00862f6b6800c6dd 100644
+--- a/chrome/browser/resource_coordinator/tab_manager.cc
++++ b/chrome/browser/resource_coordinator/tab_manager.cc
+@@ -259,8 +259,10 @@ WebContents* TabManager::DiscardTabByExtension(content::WebContents* contents) {
+ }
+ 
+ void TabManager::DiscardTabFromMemoryPressure() {
++#if !defined(OS_ANDROID)
+   DCHECK(!base::FeatureList::IsEnabled(
+       performance_manager::features::kUrgentDiscardingFromPerformanceManager));
++#endif
+ 
+ #if defined(OS_CHROMEOS)
+   // Output a log with per-process memory usage and number of file descriptors,
+@@ -754,10 +756,12 @@ void TabManager::PerformStateTransitions() {
+   if (!base::FeatureList::IsEnabled(features::kTabFreeze))
+     return;
+ 
++#if !defined(OS_ANDROID)
+   if (base::FeatureList::IsEnabled(
+           performance_manager::features::kPageFreezingFromPerformanceManager)) {
+     return;
+   }
++#endif
+ 
+   base::TimeTicks next_state_transition_time = base::TimeTicks::Max();
+   const base::TimeTicks now = NowTicks();

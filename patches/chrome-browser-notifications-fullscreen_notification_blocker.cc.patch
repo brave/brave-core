@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/notifications/fullscreen_notification_blocker.cc b/chrome/browser/notifications/fullscreen_notification_blocker.cc
+index 5429c12e2b8c4c8d42efae1b36640c6cb814a4d2..cb5f2b47ed591294bfe357c8ca61eceb3dd5245b 100644
+--- a/chrome/browser/notifications/fullscreen_notification_blocker.cc
++++ b/chrome/browser/notifications/fullscreen_notification_blocker.cc
+@@ -23,7 +23,11 @@ FullscreenNotificationBlocker::~FullscreenNotificationBlocker() {
+ 
+ void FullscreenNotificationBlocker::CheckState() {
+   bool was_fullscreen_mode = is_fullscreen_mode_;
++#if !defined(OS_ANDROID)
+   is_fullscreen_mode_ = IsFullScreenMode();
++#else
++  is_fullscreen_mode_  = true;
++#endif
+   if (is_fullscreen_mode_ != was_fullscreen_mode)
+     NotifyBlockingStateChanged();
+ 

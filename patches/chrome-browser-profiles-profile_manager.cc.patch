@@ -1,0 +1,108 @@
+diff --git a/chrome/browser/profiles/profile_manager.cc b/chrome/browser/profiles/profile_manager.cc
+index 3c43cc7525117a7b5344a372e88f12ccb46ae1f8..1d7fb9c2e289a9ee1c712272da4988ea5f046845 100644
+--- a/chrome/browser/profiles/profile_manager.cc
++++ b/chrome/browser/profiles/profile_manager.cc
+@@ -125,12 +125,11 @@
+ #if defined(OS_ANDROID)
+ #include "chrome/browser/android/metrics/android_profile_session_durations_service_factory.h"
+ #include "chrome/browser/ntp_snippets/content_suggestions_service_factory.h"
+-#else
++#endif
+ #include "chrome/browser/first_run/first_run.h"
+ #include "chrome/browser/ui/browser.h"
+ #include "chrome/browser/ui/browser_finder.h"
+ #include "chrome/browser/ui/browser_list.h"
+-#endif
+ 
+ #if defined(OS_CHROMEOS)
+ #include "chrome/browser/browser_process_platform_part_chromeos.h"
+@@ -237,7 +236,7 @@ void ProfileSizeTask(const base::FilePath& path, int enabled_app_count) {
+     UMA_HISTOGRAM_COUNTS_10000("Profile.AppCount", enabled_app_count);
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Schedule a profile for deletion if it isn't already scheduled.
+ // Returns whether the profile has been newly scheduled.
+ bool ScheduleProfileDirectoryForDeletion(const base::FilePath& path) {
+@@ -266,7 +265,7 @@ void CancelProfileDeletion(const base::FilePath& path) {
+   ProfilesToDelete().erase(path);
+   ProfileMetrics::LogProfileDeleteUser(ProfileMetrics::DELETE_PROFILE_ABORTED);
+ }
+-#endif
++//#endif
+ 
+ bool IsProfileDirectoryMarkedForDeletion(const base::FilePath& profile_path) {
+   auto it = ProfilesToDelete().find(profile_path);
+@@ -336,7 +335,7 @@ void OnProfileLoaded(ProfileManager::ProfileLoadedCallback client_callback,
+       .Run(incognito ? profile->GetOffTheRecordProfile() : profile);
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Helper function for ScheduleForcedEphemeralProfileForDeletion.
+ bool IsProfileEphemeral(ProfileAttributesStorage* storage,
+                         const base::FilePath& profile_dir) {
+@@ -344,7 +343,7 @@ bool IsProfileEphemeral(ProfileAttributesStorage* storage,
+   return storage->GetProfileAttributesWithPath(profile_dir, &entry) &&
+          entry->IsEphemeral();
+ }
+-#endif
++//#endif
+ 
+ #if defined(OS_CHROMEOS)
+ bool IsLoggedIn() {
+@@ -805,7 +804,7 @@ ProfileShortcutManager* ProfileManager::profile_shortcut_manager() {
+   return profile_shortcut_manager_.get();
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void ProfileManager::MaybeScheduleProfileForDeletion(
+     const base::FilePath& profile_dir,
+     ProfileLoadedCallback callback,
+@@ -844,7 +843,7 @@ void ProfileManager::ScheduleProfileForDeletion(
+     EnsureActiveProfileExistsBeforeDeletion(std::move(callback), profile_dir);
+   }
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ void ProfileManager::AutoloadProfiles() {
+   // If running in the background is disabled for the browser, do not autoload
+@@ -1419,7 +1418,7 @@ Profile* ProfileManager::CreateAndInitializeProfile(
+   return profile_ptr;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
+     ProfileLoadedCallback callback,
+     const base::FilePath& profile_dir) {
+@@ -1566,7 +1565,7 @@ void ProfileManager::FinishDeletingProfile(
+   // Prevents CreateProfileAsync from re-creating the profile.
+   MarkProfileDirectoryForDeletion(profile_dir);
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ ProfileManager::ProfileInfo* ProfileManager::RegisterProfile(
+     std::unique_ptr<Profile> profile,
+@@ -1735,7 +1734,7 @@ void ProfileManager::SaveActiveProfiles() {
+   }
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ void ProfileManager::OnBrowserOpened(Browser* browser) {
+   DCHECK(browser);
+   Profile* profile = browser->profile();
+@@ -1894,7 +1893,7 @@ void ProfileManager::ScheduleForcedEphemeralProfileForDeletion(
+       found_entry ? found_entry->GetPath() : GenerateNextProfileDirectoryPath();
+   FinishDeletingProfile(profile_dir, new_active_profile_dir);
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ ProfileManagerWithoutInit::ProfileManagerWithoutInit(
+     const base::FilePath& user_data_dir) : ProfileManager(user_data_dir) {

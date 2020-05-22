@@ -1,0 +1,13 @@
+diff --git a/components/spellcheck/browser/BUILD.gn b/components/spellcheck/browser/BUILD.gn
+index 2359f8aa0404d859b225393361dbc9dc8cbb4f0c..605d6a37c98cc4787741fad5a1cf250ac119ffb1 100644
+--- a/components/spellcheck/browser/BUILD.gn
++++ b/components/spellcheck/browser/BUILD.gn
+@@ -24,7 +24,7 @@ source_set("browser") {
+     "spellchecker_session_bridge_android.h",
+   ]
+ 
+-  if (enable_spelling_service) {
++  if (is_android || enable_spelling_service) {
+     sources += [
+       "spelling_service_client.cc",
+       "spelling_service_client.h",

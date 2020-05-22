@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/extensions/extension_install_prompt.h b/chrome/browser/extensions/extension_install_prompt.h
+index 74370afb2eaab80f30230b60c0b70d6d8416966e..d350433d8ef1433fcd40d739c8863e439a2c0e3c 100644
+--- a/chrome/browser/extensions/extension_install_prompt.h
++++ b/chrome/browser/extensions/extension_install_prompt.h
+@@ -21,6 +21,9 @@
+ #include "base/strings/string16.h"
+ #include "base/threading/thread_checker.h"
+ #include "chrome/browser/extensions/install_prompt_permissions.h"
++#if defined(OS_ANDROID)
++#include "components/app_modal/javascript_app_modal_dialog.h"
++#endif
+ #include "chrome/common/buildflags.h"
+ #include "extensions/common/permissions/permission_message.h"
+ #include "third_party/skia/include/core/SkBitmap.h"
+@@ -147,6 +150,9 @@ class ExtensionInstallPrompt {
+     void AppendRatingStars(StarAppender appender, void* data) const;
+     base::string16 GetRatingCount() const;
+     base::string16 GetUserCount() const;
++#if defined(OS_ANDROID)
++    base::string16 GetPermissionsAsString() const;
++#endif
+     size_t GetPermissionCount() const;
+     base::string16 GetPermission(size_t index) const;
+     base::string16 GetPermissionsDetails(size_t index) const;
+@@ -376,7 +382,9 @@ class ExtensionInstallPrompt {
+ 
+   // The object responsible for doing the UI specific actions.
+   std::unique_ptr<extensions::ExtensionInstallUI> install_ui_;
+-
++#if defined(OS_ANDROID)
++  content::WebContents* contents_;
++#endif
+   // Parameters to show the confirmation UI.
+   std::unique_ptr<ExtensionInstallPromptShowParams> show_params_;
+ 

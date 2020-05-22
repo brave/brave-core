@@ -1,7 +1,34 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index e1582599124cdd81d6bab4e1d8280a731b4f4342..36fa5ccb3c93c77bae846cf4173de0a59b90ee13 100644
+index e1582599124cdd81d6bab4e1d8280a731b4f4342..0babc71439d8ae676beb39669d173c539e86efa1 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
+@@ -49,10 +49,10 @@
+ #include "chrome/browser/profiles/android/jni_headers/OTRProfileID_jni.h"
+ #endif
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ #include "chrome/browser/first_run/first_run.h"
+ #include "content/public/browser/host_zoom_map.h"
+-#endif
++//#endif
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+ #include "extensions/browser/extension_pref_store.h"
+@@ -227,11 +227,11 @@ TestingProfile* Profile::AsTestingProfile() {
+   return nullptr;
+ }
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ ChromeZoomLevelPrefs* Profile::GetZoomLevelPrefs() {
+   return nullptr;
+ }
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ PrefService* Profile::GetReadOnlyOffTheRecordPrefs() {
+   return GetOffTheRecordPrefs();
 @@ -247,7 +247,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(

@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/first_run/first_run_internal_posix.cc b/chrome/browser/first_run/first_run_internal_posix.cc
+index db313b4d05f581688c1707f9a500ccecf2ef2476..3319367655a54a1fe10cb1b103563b7f8252872f 100644
+--- a/chrome/browser/first_run/first_run_internal_posix.cc
++++ b/chrome/browser/first_run/first_run_internal_posix.cc
+@@ -45,7 +45,7 @@ enum class ForcedShowDialogState {
+ ForcedShowDialogState g_forced_show_dialog_state =
+     ForcedShowDialogState::kNotForced;
+ 
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+ // Returns whether the first run dialog should be shown. This is only true for
+ // certain builds, and only if the user has not already set preferences. In a
+ // real, official-build first run, initializes the default metrics reporting if
+@@ -96,7 +96,7 @@ void ForceFirstRunDialogShownForTesting(bool shown) {
+ }
+ 
+ void DoPostImportPlatformSpecificTasks(Profile* profile) {
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+   if (!ShouldShowFirstRunDialog())
+     return;
+ 

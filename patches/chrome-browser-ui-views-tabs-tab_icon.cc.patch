@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_icon.cc b/chrome/browser/ui/views/tabs/tab_icon.cc
-index f3bcff381e9bd61be5e5c471293a6716e06e0db1..61dcae48074564382cfd4942c0046f3cdd0c3733 100644
+index f3bcff381e9bd61be5e5c471293a6716e06e0db1..4cc5a256a0aa59f1f38ac25e57e01df65e77077f 100644
 --- a/chrome/browser/ui/views/tabs/tab_icon.cc
 +++ b/chrome/browser/ui/views/tabs/tab_icon.cc
 @@ -356,7 +356,7 @@ void TabIcon::SetIcon(const GURL& url, const gfx::ImageSkia& icon) {
@@ -11,3 +11,13 @@ index f3bcff381e9bd61be5e5c471293a6716e06e0db1..61dcae48074564382cfd4942c0046f3c
      themed_favicon_ = ThemeImage(icon);
    } else {
      themed_favicon_ = gfx::ImageSkia();
+@@ -425,6 +425,9 @@ void TabIcon::RefreshLayer() {
+ }
+ 
+ gfx::ImageSkia TabIcon::ThemeImage(const gfx::ImageSkia& source) {
++#if defined(OS_ANDROID)
++  return source;
++#endif
+   if (!GetThemeProvider()->HasCustomColor(
+           ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON))
+     return source;

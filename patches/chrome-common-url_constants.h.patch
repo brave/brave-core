@@ -1,0 +1,19 @@
+diff --git a/chrome/common/url_constants.h b/chrome/common/url_constants.h
+index 88b3f7a314d5852066f31054a025b672ced10005..edb1de399a4be9459d94120067599650365fb2a1 100644
+--- a/chrome/common/url_constants.h
++++ b/chrome/common/url_constants.h
+@@ -350,12 +350,12 @@ extern const char kChromeCleanerLearnMoreURL[];
+ extern const char kWindowsXPVistaDeprecationURL[];
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)
++#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)
+ // "Learn more" URL for the one click signin infobar.
+ extern const char kChromeSyncLearnMoreURL[];
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_PLUGINS)
++#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_PLUGINS)
+ // The URL for the "Learn more" page for the blocked plugin infobar.
+ extern const char kBlockedPluginLearnMoreURL[];
+ 

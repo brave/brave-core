@@ -1,0 +1,15 @@
+diff --git a/extensions/browser/api/device_permissions_prompt.cc b/extensions/browser/api/device_permissions_prompt.cc
+index ecc695825ede060dbf56749a312158dab34b6187..a27a8afd1329241deac7d12561ffc80fde9dbdfc 100644
+--- a/extensions/browser/api/device_permissions_prompt.cc
++++ b/extensions/browser/api/device_permissions_prompt.cc
+@@ -221,8 +221,10 @@ class HidDevicePermissionsPrompt : public DevicePermissionsPrompt::Prompt,
+     const auto& binder = GetHidManagerBinderOverride();
+     if (binder)
+       binder.Run(std::move(receiver));
++#if !defined(OS_ANDROID)
+     else
+       content::GetDeviceService().BindHidManager(std::move(receiver));
++#endif
+ 
+     hid_manager_->GetDevicesAndSetClient(
+         receiver_.BindNewEndpointAndPassRemote(),

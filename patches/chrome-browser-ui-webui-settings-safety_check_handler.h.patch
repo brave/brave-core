@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/ui/webui/settings/safety_check_handler.h b/chrome/browser/ui/webui/settings/safety_check_handler.h
+index 6268c712010973867e6a2dbab58f2968baaaa4e6..ead912c2df4ee871975efefe9faf03763c01b813 100644
+--- a/chrome/browser/ui/webui/settings/safety_check_handler.h
++++ b/chrome/browser/ui/webui/settings/safety_check_handler.h
+@@ -28,10 +28,12 @@ class SafetyCheckHandler : public settings::SettingsPageUIHandler {
+   // should only be called as a result of an explicit user action.
+   void PerformSafetyCheck();
+ 
++#if !defined(OS_ANDROID)
+   // Each triggers a corresponding check and calls the provided callback on
+   // completion.
+   void CheckUpdates(VersionUpdater* updater,
+                     const VersionUpdater::StatusCallback& update_callback);
++#endif
+ 
+  private:
+   // SettingsPageUIHandler implementation.
+@@ -41,6 +43,7 @@ class SafetyCheckHandler : public settings::SettingsPageUIHandler {
+   // WebUIMessageHandler implementation.
+   void RegisterMessages() override {}
+ 
++#if !defined(OS_ANDROID)
+   // Callbacks that get triggered when each check completes.
+   void OnUpdateCheckResult(VersionUpdater::Status status,
+                            int progress,
+@@ -50,6 +53,7 @@ class SafetyCheckHandler : public settings::SettingsPageUIHandler {
+                            const base::string16& message);
+ 
+   std::unique_ptr<VersionUpdater> version_updater_;
++#endif
+ 
+   DISALLOW_COPY_AND_ASSIGN(SafetyCheckHandler);
+ };

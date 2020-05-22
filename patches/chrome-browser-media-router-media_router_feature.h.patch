@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/media/router/media_router_feature.h b/chrome/browser/media/router/media_router_feature.h
+index bc1d4b51e60fbf06fa02601eb02f895a2a091b59..027e2c84bc4b0f44f962cd1c6e72750b0ebefc2f 100644
+--- a/chrome/browser/media/router/media_router_feature.h
++++ b/chrome/browser/media/router/media_router_feature.h
+@@ -19,7 +19,7 @@ namespace media_router {
+ // Returns true if Media Router is enabled for |context|.
+ bool MediaRouterEnabled(content::BrowserContext* context);
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ 
+ // TODO(crbug.com/1028753): Remove default-enabled kDialMediaRouteProvider after
+ // tests stop disabling it.
+@@ -66,7 +66,7 @@ bool CastMediaRouteProviderEnabled();
+ // Returns true if Mirroring Service should be used for mirroring.
+ bool ShouldUseMirroringService();
+ 
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ }  // namespace media_router
+ 

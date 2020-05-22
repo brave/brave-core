@@ -1,0 +1,16 @@
+diff --git a/chrome/common/extensions/api/api_sources.gni b/chrome/common/extensions/api/api_sources.gni
+index 582dd954152b277e0025fbe7f553fb7054172022..3ed9b77b27243fccaf1b3077c6f1c46fa6243f40 100644
+--- a/chrome/common/extensions/api/api_sources.gni
++++ b/chrome/common/extensions/api/api_sources.gni
+@@ -72,9 +72,9 @@ schema_sources_ = [
+   "windows.json",
+ ]
+ 
+-if (!is_android) {
++#if (!is_android) {
+   schema_sources_ += [ "processes.idl" ]
+-}
++#}
+ 
+ if (is_chromeos || is_mac || is_win) {
+   schema_sources_ += [ "networking_cast_private.idl" ]

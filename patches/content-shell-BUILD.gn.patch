@@ -1,0 +1,18 @@
+diff --git a/content/shell/BUILD.gn b/content/shell/BUILD.gn
+index 26a4d38bcb67d499751ac6d70367b29cfa115cd4..ae809cfc66959a379808171ff26dc905df6c87db 100644
+--- a/content/shell/BUILD.gn
++++ b/content/shell/BUILD.gn
+@@ -560,11 +560,11 @@ repack("pak") {
+     sources +=
+         [ "$root_gen_dir/ui/views/resources/views_resources_100_percent.pak" ]
+   }
+-  if (!is_android) {
++  #if (!is_android) {
+     sources +=
+         [ "$root_gen_dir/content/browser/devtools/devtools_resources.pak" ]
+     deps += [ "//content/browser/devtools:resources" ]
+-  }
++  #}
+   output = "$root_out_dir/content_shell.pak"
+ }
+ 

@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/webui/settings/printing_handler.cc b/chrome/browser/ui/webui/settings/printing_handler.cc
+index deaa3ab5352c0aaeb6e1f5402eb06c358a785ce9..096dde589c97b5e106b9b61577f11e5593f3bb50 100644
+--- a/chrome/browser/ui/webui/settings/printing_handler.cc
++++ b/chrome/browser/ui/webui/settings/printing_handler.cc
+@@ -28,8 +28,10 @@ void PrintingHandler::OnJavascriptAllowed() {}
+ void PrintingHandler::OnJavascriptDisallowed() {}
+ 
+ void PrintingHandler::HandleOpenSystemPrintDialog(const base::ListValue* args) {
++#if !defined(OS_ANDROID)
+   printing::PrinterManagerDialog::ShowPrinterManagerDialog(
+       Profile::FromWebUI(web_ui()));
++#endif
+ }
+ 
+ }  // namespace settings

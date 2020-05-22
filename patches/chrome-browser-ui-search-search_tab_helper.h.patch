@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/search/search_tab_helper.h b/chrome/browser/ui/search/search_tab_helper.h
+index f9feaddf0d5806ddfa723982196d9e3834d2b0b6..465320cc4e07fe5291b006149b1fda1e66e103b3 100644
+--- a/chrome/browser/ui/search/search_tab_helper.h
++++ b/chrome/browser/ui/search/search_tab_helper.h
+@@ -29,9 +29,9 @@
+ #include "content/public/browser/web_contents_user_data.h"
+ #include "ui/shell_dialogs/select_file_dialog.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ namespace content {
+ class WebContents;

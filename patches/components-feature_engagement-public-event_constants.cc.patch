@@ -1,0 +1,20 @@
+diff --git a/components/feature_engagement/public/event_constants.cc b/components/feature_engagement/public/event_constants.cc
+index 1e8973aceeaa34ce8bd1b89ca8de2a566c5528ef..12886cfdc32cc4ebaf31f5884a3154f004d5a9e6 100644
+--- a/components/feature_engagement/public/event_constants.cc
++++ b/components/feature_engagement/public/event_constants.cc
+@@ -11,13 +11,13 @@ namespace feature_engagement {
+ 
+ namespace events {
+ 
+-#if defined(OS_IOS) || defined(OS_WIN) || defined(OS_MACOSX) || \
++#if defined(OS_ANDROID) || defined(OS_IOS) || defined(OS_WIN) || defined(OS_MACOSX) || \
+     defined(OS_LINUX) || defined(OS_CHROMEOS)
+ const char kNewTabOpened[] = "new_tab_opened";
+ #endif  // defined(OS_IOS) || defined(OS_WIN) || defined(OS_MACOSX) ||
+         // defined(OS_LINUX) || defined(OS_CHROMEOS)
+ 
+-#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
++#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+     defined(OS_CHROMEOS)
+ const char kReopenTabConditionsMet[] = "reopen_tab_conditions_met";
+ const char kTabReopened[] = "tab_reopened";

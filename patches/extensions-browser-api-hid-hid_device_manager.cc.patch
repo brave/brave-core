@@ -1,0 +1,15 @@
+diff --git a/extensions/browser/api/hid/hid_device_manager.cc b/extensions/browser/api/hid/hid_device_manager.cc
+index a374d855fdd94e9d50328bd5c1a2d94cddfe27af..b4ebbd0965e892c25b58dec4069f6f4886020965 100644
+--- a/extensions/browser/api/hid/hid_device_manager.cc
++++ b/extensions/browser/api/hid/hid_device_manager.cc
+@@ -296,8 +296,10 @@ void HidDeviceManager::LazyInitialize() {
+     const auto& binder = GetHidManagerBinderOverride();
+     if (binder)
+       binder.Run(std::move(receiver));
++#if !defined(OS_ANDROID)
+     else
+       content::GetDeviceService().BindHidManager(std::move(receiver));
++#endif
+   }
+   // Enumerate HID devices and set client.
+   std::vector<device::mojom::HidDeviceInfoPtr> empty_devices;

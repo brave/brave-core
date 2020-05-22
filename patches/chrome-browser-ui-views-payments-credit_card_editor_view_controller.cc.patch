@@ -1,0 +1,54 @@
+diff --git a/chrome/browser/ui/views/payments/credit_card_editor_view_controller.cc b/chrome/browser/ui/views/payments/credit_card_editor_view_controller.cc
+index 0319b67b52841de11b79592670d4089289e509bf..9fac61fc4fbf077e7f5f43bed27cc697459bf346 100644
+--- a/chrome/browser/ui/views/payments/credit_card_editor_view_controller.cc
++++ b/chrome/browser/ui/views/payments/credit_card_editor_view_controller.cc
+@@ -400,6 +400,7 @@ base::string16 CreditCardEditorViewController::GetInitialValueForType(
+ }
+ 
+ bool CreditCardEditorViewController::ValidateModelAndSave() {
++#if !defined(OS_ANDROID)
+   if (IsEditingServerCard()) {
+     views::Combobox* address_combobox = static_cast<views::Combobox*>(
+         dialog()->GetViewByID(GetInputFieldViewId(kBillingAddressType)));
+@@ -492,6 +493,7 @@ bool CreditCardEditorViewController::ValidateModelAndSave() {
+           *credit_card_to_edit_);
+     std::move(on_edited_).Run();
+   }
++#endif
+ 
+   return true;
+ }
+@@ -518,6 +520,7 @@ CreditCardEditorViewController::CreateValidationDelegate(
+ std::unique_ptr<ui::ComboboxModel>
+ CreditCardEditorViewController::GetComboboxModelForType(
+     const autofill::ServerFieldType& type) {
++#if !defined(OS_ANDROID)
+   switch (type) {
+     case autofill::CREDIT_CARD_EXP_MONTH: {
+       return std::make_unique<autofill::MonthComboboxModel>();
+@@ -537,6 +540,7 @@ CreditCardEditorViewController::GetComboboxModelForType(
+       NOTREACHED();
+       break;
+   }
++#endif
+   return std::unique_ptr<ui::ComboboxModel>();
+ }
+ 
+@@ -594,6 +598,7 @@ bool CreditCardEditorViewController::IsValidCreditCardNumber(
+ }
+ 
+ base::string16 CreditCardEditorViewController::GetSheetTitle() {
++#if !defined(OS_ANDROID)
+   if (!credit_card_to_edit_)
+     return l10n_util::GetStringUTF16(IDS_PAYMENTS_ADD_CARD);
+ 
+@@ -603,6 +608,9 @@ base::string16 CreditCardEditorViewController::GetSheetTitle() {
+       state()->GetPersonalDataManager()->GetProfiles()));
+   return title.empty() ? l10n_util::GetStringUTF16(IDS_PAYMENTS_EDIT_CARD)
+                        : title;
++#else
++  return base::string16();
++#endif
+ }
+ 
+ void CreditCardEditorViewController::ButtonPressed(views::Button* sender,

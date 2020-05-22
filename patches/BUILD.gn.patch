@@ -1,0 +1,13 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index d4c2158d938c8db939047f99b8f8cb7b6b94c778..92c1fd16dbf6d08aac5bb52e5edb8f5c6f0e224c 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -245,7 +245,7 @@ group("gn_all") {
+ 
+   deps += root_extra_deps
+ 
+-  if (enable_extensions) {
++  if (!is_android && enable_extensions) {
+     deps += [
+       "//extensions:extensions_browsertests",
+       "//extensions:extensions_unittests",

@@ -1,12 +1,28 @@
 diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
-index 85d20f180a1000995dc49009f227924e6c33b675..569ebd9d3c216ad7a63552507855932672409e28 100644
+index 85d20f180a1000995dc49009f227924e6c33b675..852b5d3535d89bd3716af71bfc38fa693d945ecd 100644
 --- a/chrome/browser/notifications/notification_display_service_impl.cc
 +++ b/chrome/browser/notifications/notification_display_service_impl.cc
 @@ -167,6 +167,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
      AddNotificationHandler(NotificationHandler::Type::ANNOUNCEMENT,
                             std::make_unique<AnnouncementNotificationHandler>());
  #endif
-+    BRAVE_ADD_BRAVE_ADS_NOTIFICATION_HANDLER;
++    BRAVE_ADD_BRAVE_ADS_NOTIFICATION_HANDLER
    }
  
    // Initialize the bridge if native notifications are available, otherwise
+@@ -292,6 +293,7 @@ void NotificationDisplayServiceImpl::Display(
+ void NotificationDisplayServiceImpl::Close(
+     NotificationHandler::Type notification_type,
+     const std::string& notification_id) {
++#if !defined(OS_ANDROID)
+   CHECK(profile_ || notification_type == NotificationHandler::Type::TRANSIENT);
+ 
+   if (!bridge_initialized_) {
+@@ -310,6 +312,7 @@ void NotificationDisplayServiceImpl::Close(
+ 
+   bridge->Close(profile_, notification_id);
+ #endif
++#endif
+ }
+ 
+ void NotificationDisplayServiceImpl::GetDisplayed(

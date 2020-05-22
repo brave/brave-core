@@ -1,0 +1,17 @@
+diff --git a/components/payments/content/payment_request.h b/components/payments/content/payment_request.h
+index 5c77ab5d8040e96cca7549848177541cf19d8085..ce8142180279bfe497c77dad6d25cc11f38c1a78 100644
+--- a/components/payments/content/payment_request.h
++++ b/components/payments/content/payment_request.h
+@@ -72,7 +72,11 @@ class PaymentRequest : public mojom::PaymentRequest,
+   void Init(mojo::PendingRemote<mojom::PaymentRequestClient> client,
+             std::vector<mojom::PaymentMethodDataPtr> method_data,
+             mojom::PaymentDetailsPtr details,
+-            mojom::PaymentOptionsPtr options) override;
++            mojom::PaymentOptionsPtr options
++#if defined(OS_ANDROID)
++  , bool google_pay_bridge_eligible
++#endif
++            ) override;
+   void Show(bool is_user_gesture, bool wait_for_updated_details) override;
+   void Retry(mojom::PaymentValidationErrorsPtr errors) override;
+   void UpdateWith(mojom::PaymentDetailsPtr details) override;

@@ -1,0 +1,29 @@
+diff --git a/content/shell/browser/shell_browser_context.h b/content/shell/browser/shell_browser_context.h
+index d199c22ae0347f141f46fda591e704e40791f21e..ac489006cfd0a3635c76f3520f6c67a8359fd6f7 100644
+--- a/content/shell/browser/shell_browser_context.h
++++ b/content/shell/browser/shell_browser_context.h
+@@ -25,9 +25,9 @@ class ClientHintsControllerDelegate;
+ class DownloadManagerDelegate;
+ class PermissionControllerDelegate;
+ class ShellDownloadManagerDelegate;
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ class ZoomLevelDelegate;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ class ShellBrowserContext : public BrowserContext {
+  public:
+@@ -44,10 +44,10 @@ class ShellBrowserContext : public BrowserContext {
+ 
+   // BrowserContext implementation.
+   base::FilePath GetPath() override;
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   std::unique_ptr<ZoomLevelDelegate> CreateZoomLevelDelegate(
+       const base::FilePath& partition_path) override;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+   bool IsOffTheRecord() override;
+   DownloadManagerDelegate* GetDownloadManagerDelegate() override;
+   ResourceContext* GetResourceContext() override;

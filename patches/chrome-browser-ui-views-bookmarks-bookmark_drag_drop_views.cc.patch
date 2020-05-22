@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_drag_drop_views.cc b/chrome/browser/ui/views/bookmarks/bookmark_drag_drop_views.cc
+index 47b6e6fc21635f38c5e1c285f7d969c59d63f6ee..fd09fdf2b01dcf7c1d89b355000ba156a33ce6b5 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_drag_drop_views.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_drag_drop_views.cc
+@@ -291,8 +291,10 @@ void DoDragImpl(std::unique_ptr<ui::OSExchangeData> drag_data,
+     widget->RunShellDrag(nullptr, std::move(drag_data), gfx::Point(), operation,
+                          source);
+   } else {
++#if !defined(OS_ANDROID)
+     views::RunShellDrag(native_view, std::move(drag_data), point, operation,
+                         source);
++#endif
+   }
+ }
+ 

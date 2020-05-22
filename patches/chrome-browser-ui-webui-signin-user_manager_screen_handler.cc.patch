@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/webui/signin/user_manager_screen_handler.cc b/chrome/browser/ui/webui/signin/user_manager_screen_handler.cc
+index faa9222bb43883051f19a5a30863196efc8c4d82..8fc8543bbbdd5133f29650e3ff0f0d1904db6d0d 100644
+--- a/chrome/browser/ui/webui/signin/user_manager_screen_handler.cc
++++ b/chrome/browser/ui/webui/signin/user_manager_screen_handler.cc
+@@ -800,8 +800,12 @@ void UserManagerScreenHandler::SendUserList() {
+ 
+     profile_value->SetString(kKeyUsername, entry->GetUserName());
+     profile_value->SetString(kKeyEmailAddress, entry->GetUserName());
++#if !defined(OS_ANDROID)
+     profile_value->SetString(kKeyDisplayName,
+                              profiles::GetAvatarNameForProfile(profile_path));
++#else
++    profile_value->SetString(kKeyDisplayName, "");
++#endif
+     profile_value->SetKey(kKeyProfilePath,
+                           base::CreateFilePathValue(profile_path));
+     profile_value->SetBoolean(kKeyPublicAccount, false);

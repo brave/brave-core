@@ -1,0 +1,46 @@
+diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
+index db4e1bca07b973367cd65a8ab1fabbc1e3f6c791..28d7ea68148a31042904387c6156a16945cbfd1e 100644
+--- a/content/browser/web_contents/web_contents_impl.h
++++ b/content/browser/web_contents/web_contents_impl.h
+@@ -255,7 +255,7 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+   // bitmap.
+   void AddAccessibilityMode(ui::AXMode mode);
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   // Sets the zoom level for frames associated with this WebContents.
+   void UpdateZoom();
+ 
+@@ -265,7 +265,7 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+   void UpdateZoomIfNecessary(const std::string& scheme,
+                              const std::string& host);
+ 
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // Adds a new receiver set to the WebContents. Returns a closure which may be
+   // used to remove the receiver set at any time. The closure is safe to call
+@@ -801,9 +801,9 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+   void OnVerticalScrollDirectionChanged(
+       viz::VerticalScrollDirection scroll_direction) override;
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   double GetPendingPageZoomLevel() override;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   KeyboardEventProcessingResult PreHandleKeyboardEvent(
+       const NativeWebKeyboardEvent& event) override;
+@@ -1885,9 +1885,9 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+ 
+   std::unique_ptr<RenderWidgetHostInputEventRouter> rwh_input_event_router_;
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   bool page_scale_factor_is_one_;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+   // TextInputManager tracks the IME-related state for all the
+   // RenderWidgetHostViews on this WebContents. Only exists on the outermost

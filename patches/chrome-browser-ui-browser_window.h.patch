@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/browser_window.h b/chrome/browser/ui/browser_window.h
+index 29ac0fd8394cae9ea85624427ad7c83c465b59c2..9afe99b0b39dfa1184182fb06a7c6a99449c5b57 100644
+--- a/chrome/browser/ui/browser_window.h
++++ b/chrome/browser/ui/browser_window.h
+@@ -31,9 +31,9 @@
+ #include "ui/gfx/native_widget_types.h"
+ #include "url/origin.h"
+ 
+-#if defined(OS_ANDROID)
+-#error This file should only be included on desktop.
+-#endif
++//#if defined(OS_ANDROID)
++//#error This file should only be included on desktop.
++//#endif
+ 
+ class Browser;
+ class SharingDialog;

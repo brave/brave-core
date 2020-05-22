@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/webui/settings/safety_check_handler.cc b/chrome/browser/ui/webui/settings/safety_check_handler.cc
+index be365ff44891fea2a6971972f748cfebcaf0de28..d9f94b922ae94b0bd036cbb03628cdbcf4e9de6e 100644
+--- a/chrome/browser/ui/webui/settings/safety_check_handler.cc
++++ b/chrome/browser/ui/webui/settings/safety_check_handler.cc
+@@ -11,12 +11,15 @@ SafetyCheckHandler::SafetyCheckHandler() = default;
+ SafetyCheckHandler::~SafetyCheckHandler() = default;
+ 
+ void SafetyCheckHandler::PerformSafetyCheck() {
++#if !defined(OS_ANDROID)
+   version_updater_.reset(VersionUpdater::Create(web_ui()->GetWebContents()));
+   CheckUpdates(version_updater_.get(),
+                base::Bind(&SafetyCheckHandler::OnUpdateCheckResult,
+                           base::Unretained(this)));
++#endif
+ }
+ 
++#if !defined(OS_ANDROID)
+ void SafetyCheckHandler::CheckUpdates(
+     VersionUpdater* version_updater,
+     const VersionUpdater::StatusCallback& update_callback) {
+@@ -32,3 +35,4 @@ void SafetyCheckHandler::OnUpdateCheckResult(VersionUpdater::Status status,
+                                              const base::string16& message) {
+   NOTIMPLEMENTED();
+ }
++#endif

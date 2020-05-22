@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/search/instant_service.h b/chrome/browser/search/instant_service.h
+index 23442737c74bc40a6a2f50ea995ddc9af318e81f..562dc4dbea69568dab1b93c9ad014b12cd3b7214 100644
+--- a/chrome/browser/search/instant_service.h
++++ b/chrome/browser/search/instant_service.h
+@@ -33,9 +33,9 @@
+ #include "ui/native_theme/native_theme_observer.h"
+ #include "url/gurl.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Instant is only used on desktop";
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Instant is only used on desktop";
++//#endif
+ 
+ class InstantIOContext;
+ class InstantServiceObserver;

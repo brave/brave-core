@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 5a59c6696b0cf48e69256948687f60ca8c21efcd..996d7b81b1de40a6af09c8d3f4a6423f2208abad 100644
+index 5a59c6696b0cf48e69256948687f60ca8c21efcd..985e556ff4a07e2cb67ef82a9f1ad61361372aac 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -146,6 +146,10 @@ if (!is_android && !is_mac) {
@@ -111,3 +111,30 @@ index 5a59c6696b0cf48e69256948687f60ca8c21efcd..996d7b81b1de40a6af09c8d3f4a6423f
    ]
  }
  
+@@ -1288,7 +1303,7 @@ group("extra_resources") {
+     "//components/autofill/core/browser:autofill_address_rewriter_resources",
+   ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     public_deps += [
+       "//chrome/browser/resources:bookmarks_resources",
+       "//chrome/browser/resources:component_extension_resources",
+@@ -1300,7 +1315,7 @@ group("extra_resources") {
+       "//chrome/browser/resources:new_tab_page_resources",
+       "//chrome/browser/resources:settings_resources",
+     ]
+-  }
++  #}
+ 
+   if (is_chromeos) {
+     public_deps += [
+@@ -1312,7 +1327,7 @@ group("extra_resources") {
+     ]
+   }
+ 
+-  if (!is_android && !is_chromeos) {
++  if (!is_chromeos) {
+     public_deps += [
+       "//chrome/browser/resources:profile_picker_resources",
+       "//chrome/browser/resources:welcome_resources",

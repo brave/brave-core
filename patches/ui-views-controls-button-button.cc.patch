@@ -1,0 +1,77 @@
+diff --git a/ui/views/controls/button/button.cc b/ui/views/controls/button/button.cc
+index bd7e7942564c4381feeeebf66514862e49910ce1..ce6da2a89a15374bcfa01e0d4ed79e083c5e8c3e 100644
+--- a/ui/views/controls/button/button.cc
++++ b/ui/views/controls/button/button.cc
+@@ -179,21 +179,33 @@ void Button::SetState(ButtonState state) {
+     return;
+ 
+   if (animate_on_state_change_ &&
+-      (!is_throbbing_ || !hover_animation_.is_animating())) {
++      (!is_throbbing_ 
++#if !defined(OS_ANDROID)
++        || !hover_animation_.is_animating()
++#endif
++        )) {
+     is_throbbing_ = false;
+     if ((state_ == STATE_HOVERED) && (state == STATE_NORMAL)) {
+       // For HOVERED -> NORMAL, animate from hovered (1) to not hovered (0).
++#if !defined(OS_ANDROID)
+       hover_animation_.Hide();
++#endif
+     } else if (state != STATE_HOVERED) {
+       // For HOVERED -> PRESSED/DISABLED, or any transition not involving
+       // HOVERED at all, simply set the state to not hovered (0).
++#if !defined(OS_ANDROID)
+       hover_animation_.Reset();
++#endif
+     } else if (state_ == STATE_NORMAL) {
+       // For NORMAL -> HOVERED, animate from not hovered (0) to hovered (1).
++#if !defined(OS_ANDROID)
+       hover_animation_.Show();
++#endif
+     } else {
+       // For PRESSED/DISABLED -> HOVERED, simply set the state to hovered (1).
++#if !defined(OS_ANDROID)
+       hover_animation_.Reset(1);
++#endif
+     }
+   }
+ 
+@@ -212,21 +224,27 @@ Button::ButtonState Button::GetVisualState() const {
+ }
+ 
+ void Button::StartThrobbing(int cycles_til_stop) {
++#if !defined(OS_ANDROID)
+   if (!animate_on_state_change_)
+     return;
+   is_throbbing_ = true;
+   hover_animation_.StartThrobbing(cycles_til_stop);
++#endif
+ }
+ 
+ void Button::StopThrobbing() {
++#if !defined(OS_ANDROID)
+   if (hover_animation_.is_animating()) {
+     hover_animation_.Stop();
+     SchedulePaint();
+   }
++#endif
+ }
+ 
+ void Button::SetAnimationDuration(base::TimeDelta duration) {
++#if !defined(OS_ANDROID)
+   hover_animation_.SetSlideDuration(duration);
++#endif
+ }
+ 
+ void Button::SetInstallFocusRingOnFocus(bool install) {
+@@ -529,7 +547,9 @@ Button::Button(ButtonListener* listener)
+       ink_drop_base_color_(gfx::kPlaceholderColor) {
+   SetFocusBehavior(FocusBehavior::ACCESSIBLE_ONLY);
+   SetProperty(kIsButtonProperty, true);
++#if !defined(OS_ANDROID)
+   hover_animation_.SetSlideDuration(base::TimeDelta::FromMilliseconds(150));
++#endif
+   SetInstallFocusRingOnFocus(PlatformStyle::kPreferFocusRings);
+   button_controller_ = std::make_unique<ButtonController>(
+       this, std::make_unique<DefaultButtonControllerDelegate>(this));

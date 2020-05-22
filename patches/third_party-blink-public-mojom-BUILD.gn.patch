@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/public/mojom/BUILD.gn b/third_party/blink/public/mojom/BUILD.gn
+index c33e993abf2ce8218f04ee4fc818ad379d4f4c1b..d90a466e3b71929f988d8cc6fd5c84aaccc4d3de 100644
+--- a/third_party/blink/public/mojom/BUILD.gn
++++ b/third_party/blink/public/mojom/BUILD.gn
+@@ -162,9 +162,9 @@ mojom("mojom_platform") {
+     "worker/worker_options.mojom",
+   ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [ "serial/serial.mojom" ]
+-  }
++  #}
+ 
+   if (is_win) {
+     sources += [ "dwrite_font_proxy/dwrite_font_proxy.mojom" ]

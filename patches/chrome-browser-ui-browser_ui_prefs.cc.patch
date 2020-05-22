@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/browser_ui_prefs.cc b/chrome/browser/ui/browser_ui_prefs.cc
+index a8070d77b86c2ccf96e77308ae4bcb18f902743e..bf0f8b0f4456bc715af2060fbe6d269a53561038 100644
+--- a/chrome/browser/ui/browser_ui_prefs.cc
++++ b/chrome/browser/ui/browser_ui_prefs.cc
+@@ -40,14 +40,14 @@ uint32_t GetHomeButtonAndHomePageIsNewTabPageFlags() {
+ void RegisterBrowserPrefs(PrefRegistrySimple* registry) {
+   registry->RegisterBooleanPref(prefs::kAllowFileSelectionDialogs, true);
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   registry->RegisterIntegerPref(prefs::kRelaunchNotification, 0);
+   registry->RegisterIntegerPref(
+       prefs::kRelaunchNotificationPeriod,
+       base::saturated_cast<int>(
+           UpgradeDetector::GetDefaultHighAnnoyanceThreshold()
+               .InMilliseconds()));
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ }
+ 
+ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {

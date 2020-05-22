@@ -1,7 +1,20 @@
 diff --git a/chrome/browser/profiles/profile_window.h b/chrome/browser/profiles/profile_window.h
-index 6ba35ca6f4384892e87a132567fda82834d62b36..b17f08c9bbf4fc03ee328c34e7183037b484da13 100644
+index 6ba35ca6f4384892e87a132567fda82834d62b36..c7e3e8bd12bf6979da6707a8277def8a0f994ac0 100644
 --- a/chrome/browser/profiles/profile_window.h
 +++ b/chrome/browser/profiles/profile_window.h
+@@ -14,9 +14,9 @@
+ #include "chrome/browser/ui/profile_chooser_constants.h"
+ #include "chrome/browser/ui/startup/startup_types.h"
+ 
+-#if defined(OS_ANDROID)
+-#error "Not used on Android"
+-#endif
++//#if defined(OS_ANDROID)
++//#error "Not used on Android"
++//#endif
+ 
+ class Profile;
+ 
 @@ -85,6 +85,7 @@ void SwitchToProfile(const base::FilePath& path,
  
  // Opens a Browser for the guest profile and runs |callback| if it isn't null.

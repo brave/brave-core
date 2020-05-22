@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/frame/browser_root_view.cc b/chrome/browser/ui/views/frame/browser_root_view.cc
+index e622e8099e9586f09478930040f38fe110ac94d2..baf433f2c23c445b5f146d387f698e6fe2e7c031 100644
+--- a/chrome/browser/ui/views/frame/browser_root_view.cc
++++ b/chrome/browser/ui/views/frame/browser_root_view.cc
+@@ -74,9 +74,11 @@ void OnFindURLMimeType(const GURL& url,
+ 
+ #if BUILDFLAG(ENABLE_PLUGINS)
+   content::WebPluginInfo plugin;
++#if !defined(OS_ANDROID)
+   result = result || content::PluginService::GetInstance()->GetPluginInfo(
+                          process_id, routing_id, url, url::Origin(), mime_type,
+                          false, nullptr, &plugin, nullptr);
++#endif
+ #endif
+ 
+   std::move(callback).Run(url, result);

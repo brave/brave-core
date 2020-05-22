@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/webui/devtools_ui_data_source.cc b/chrome/browser/ui/webui/devtools_ui_data_source.cc
+index 0cfe18bc0cb1b654ed9670f7a4b3652edefe10e9..3533d99753dc868dc692f6d3d9d124c8f5c593bb 100644
+--- a/chrome/browser/ui/webui/devtools_ui_data_source.cc
++++ b/chrome/browser/ui/webui/devtools_ui_data_source.cc
+@@ -186,6 +186,7 @@ bool DevToolsDataSource::ShouldServeMimeTypeAsContentTypeHeader() {
+ void DevToolsDataSource::StartBundledDataRequest(
+     const std::string& path,
+     content::URLDataSource::GotDataCallback callback) {
++#if !defined(OS_ANDROID)
+   scoped_refptr<base::RefCountedMemory> bytes =
+       content::DevToolsFrontendHost::GetFrontendResourceBytes(path);
+ 
+@@ -194,6 +195,7 @@ void DevToolsDataSource::StartBundledDataRequest(
+       << ". If you compiled with debug_devtools=1, try running with "
+          "--debug-devtools.";
+   std::move(callback).Run(bytes);
++#endif
+ }
+ 
+ void DevToolsDataSource::StartRemoteDataRequest(

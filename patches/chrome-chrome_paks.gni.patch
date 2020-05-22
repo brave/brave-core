@@ -1,0 +1,28 @@
+diff --git a/chrome/chrome_paks.gni b/chrome/chrome_paks.gni
+index 5121fa721a06b822e80e461e899017f4dc7f2a9b..b7f3fd0447b004daf8e3e56b9fad4ae58db785fe 100644
+--- a/chrome/chrome_paks.gni
++++ b/chrome/chrome_paks.gni
+@@ -121,12 +121,12 @@ template("chrome_extra_paks") {
+       sources += invoker.additional_paks
+     }
+ 
+-    if (!is_android) {
++    #if (!is_android) {
+       # New paks should be added here by default.
+       sources += [
+         "$root_gen_dir/chrome/bookmarks_resources.pak",
+         "$root_gen_dir/chrome/component_extension_resources.pak",
+-        "$root_gen_dir/chrome/dev_ui_resources.pak",
++        #"$root_gen_dir/chrome/dev_ui_resources.pak",
+         "$root_gen_dir/chrome/downloads_resources.pak",
+         "$root_gen_dir/chrome/history_resources.pak",
+         "$root_gen_dir/chrome/local_ntp_resources.pak",
+@@ -147,7 +147,7 @@ template("chrome_extra_paks") {
+         "//content/browser/devtools:devtools_resources",
+         "//headless:resources",
+       ]
+-    }
++    #}
+     if (is_chromeos) {
+       sources += [
+         "$root_gen_dir/ash/public/cpp/resources/ash_public_unscaled_resources.pak",
