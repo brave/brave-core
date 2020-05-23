@@ -79,7 +79,8 @@ void BraveStatsUpdater::Start() {
   DCHECK(!server_ping_startup_timer_);
   server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (pref_service_->GetBoolean(kReferralInitialization)) {
+  if (pref_service_->GetBoolean(kReferralInitialization) ||
+        pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile)) {
     StartServerPingStartupTimer();
   } else {
     pref_change_registrar_.reset(new PrefChangeRegistrar());
