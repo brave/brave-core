@@ -197,6 +197,53 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterMigration) {
+  // Create a pre 1.19 user.
+  // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
+  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
+  GetLocalState()->SetString(kReferralDownloadID, "migration");
+  GetLocalState()->SetString(kReferralPromoCode, "BRV001");
+  GetLocalState()->SetBoolean(kReferralCheckedForPromoCodeFile, true);
+
+  // Start the referrals service, since the stats updater's startup
+  // ping only occurs after the referrals service checks for the promo
+  // code file
+  brave::BraveReferralsService referrals_service(GetLocalState());
+  referrals_service.SetReferralInitializedCallbackForTest(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+      base::Unretained(this)));
+  referrals_service.Start();
+  // NOTE: Don't call WaitForReferralInitializeCallback(); since a user
+  // migrating from an earlier version is aleady initialized, and that will
+  // never trigger.
+
+  // Start the stats updater, wait for it to perform its startup ping,
+  // and then shut it down
+  brave::BraveStatsUpdater stats_updater(GetLocalState());
+  stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
+  stats_updater.Start();
+  WaitForStatsUpdatedCallback();
+  stats_updater.Stop();
+
+  // Stop the referrals service
+  referrals_service.Stop();
+
+  // Verify that update url is valid
+  const GURL update_url(GetUpdateURL());
+  EXPECT_TRUE(update_url.is_valid());
+
+  // Verify that daily parameter is true
+  std::string query_value;
+  EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "daily", &query_value));
+  EXPECT_STREQ(query_value.c_str(), "true");
+
+  // Verify that there is no referral code
+  EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
+  EXPECT_STREQ(query_value.c_str(), "BRV001");
+}
+
 // Run the stats updater with an active referral and verify that the
 // update url includes the referral code
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
