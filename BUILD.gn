@@ -59,7 +59,10 @@ if (is_win) {
       visibility = [ ":mini_installer_dependencies" ]
       sources = [ "$root_out_dir/courgette.exe" ]
       outputs = [ "$root_out_dir/$last_chrome_installer/{{source_file_part}}" ]
-      deps = [ "//courgette:copy_courgette_binaries" ]
+      deps = [
+        "//courgette",
+        "//courgette:copy_courgette_binaries",
+      ]
     }
   }
 
