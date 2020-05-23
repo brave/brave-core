@@ -144,7 +144,7 @@ class Contribution {
       ledger::ContributionQueuePtr queue,
       ledger::BalancePtr balance);
 
-  void DeleteContributionQueue(const uint64_t id);
+  void DeleteContributionQueue(const std::string& id);
 
   void OnDeleteContributionQueue(const ledger::Result result);
 

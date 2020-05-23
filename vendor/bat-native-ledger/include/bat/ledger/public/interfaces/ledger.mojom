@@ -340,7 +340,7 @@ enum WalletStatus {
 };
 
 struct ContributionQueue {
-  uint64 id;
+  string id;
   RewardsType type;
   double amount;
   bool partial;

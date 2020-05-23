@@ -305,8 +305,8 @@ void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
   CheckContributionQueue();
 }
 
-void Contribution::DeleteContributionQueue(const uint64_t id) {
-  if (id == 0) {
+void Contribution::DeleteContributionQueue(const std::string& id) {
+  if (id.empty()) {
     BLOG(0, "Queue id is empty");
     return;
   }

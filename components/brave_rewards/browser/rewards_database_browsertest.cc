@@ -762,3 +762,53 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(list.at(2)->contributed_amount, 150.0);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_23_ContributionQueue) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("contribution_queue"), 1);
+
+    ledger::ContributionQueue contribution_queue;
+    const std::string query =
+        "SELECT contribution_queue_id, type, amount, partial, created_at "
+        "FROM contribution_queue LIMIT 1";
+    sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
+    while (sql.Step()) {
+      contribution_queue.id = sql.ColumnString(0);
+      contribution_queue.type =
+          static_cast<ledger::RewardsType>(sql.ColumnInt(1));
+      contribution_queue.amount = sql.ColumnDouble(2);
+      contribution_queue.partial = static_cast<bool>(sql.ColumnInt(3));
+    }
+
+    EXPECT_EQ(contribution_queue.id, "1");
+    EXPECT_EQ(contribution_queue.type, ledger::RewardsType::ONE_TIME_TIP);
+    EXPECT_EQ(contribution_queue.amount, 456.0);
+    EXPECT_EQ(contribution_queue.partial, true);
+
+    EXPECT_EQ(CountTableRows("contribution_queue_publishers"), 1);
+
+    ledger::ContributionQueuePublisher contribution_queue_publisher;
+    std::string contribution_queue_id;
+    const std::string query_publishers =
+        "SELECT contribution_queue_id, publisher_key, amount_percent "
+        "FROM contribution_queue_publishers LIMIT 1";
+    sql::Statement sql_publishers(
+        db_.GetUniqueStatement(query_publishers.c_str()));
+    while (sql_publishers.Step()) {
+      contribution_queue_id = sql_publishers.ColumnString(0);
+      contribution_queue_publisher.publisher_key =
+          sql_publishers.ColumnString(1);
+      contribution_queue_publisher.amount_percent =
+          sql_publishers.ColumnDouble(2);
+    }
+
+    EXPECT_EQ(contribution_queue_id, "1");
+    EXPECT_EQ(contribution_queue_publisher.publisher_key, "2");
+    EXPECT_EQ(contribution_queue_publisher.amount_percent, 456.0);
+  }
+}

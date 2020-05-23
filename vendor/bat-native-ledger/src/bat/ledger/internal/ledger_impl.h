@@ -523,7 +523,7 @@ class LedgerImpl : public ledger::Ledger {
     ledger::ResultCallback callback);
 
   void DeleteContributionQueue(
-    const uint64_t id,
+    const std::string& id,
     ledger::ResultCallback callback);
 
   void GetFirstContributionQueue(
