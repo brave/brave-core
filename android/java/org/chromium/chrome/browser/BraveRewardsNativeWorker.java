@@ -430,6 +430,19 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void RecoverWallet(String passPhrase) {
+        synchronized (lock) {
+            nativeRecoverWallet(mNativeBraveRewardsNativeWorker, passPhrase);
+        }
+    }
+
+    @CalledByNative
+    public void OnRecoverWallet(int errorCode) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnRecoverWallet(errorCode);
+        }
+    }
+
     @CalledByNative
     public void OnGetRewardsMainEnabled(boolean enabled) {
         int oldRewardsStatus = rewardsStatus;
@@ -672,4 +685,5 @@ public class BraveRewardsNativeWorker {
     private native void nativeGetExternalWallet(long nativeBraveRewardsNativeWorker, String wallet_type);
     private native void nativeDisconnectWallet(long nativeBraveRewardsNativeWorker, String wallet_type);
     private native void nativeProcessRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
+    private native void nativeRecoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
 }

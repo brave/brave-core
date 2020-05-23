@@ -179,6 +179,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jstring>& path,
         const base::android::JavaParamRef<jstring>& query);
 
+    void RecoverWallet(JNIEnv* env,
+                       const base::android::JavaParamRef<jobject>& obj,
+                       const base::android::JavaParamRef<jstring>& pass_phrase);
+
     void OnAdsResetTheWholeState(bool sucess);
 
     void OnResetTheWholeState(bool sucess);
@@ -258,6 +262,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnProcessRewardsPageUrl(int32_t result,
         const std::string& wallet_type, const std::string& action,
         const std::map<std::string, std::string>& args);
+
+    void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
+                         unsigned int result,
+                         double balance) override;
 
  private:
     std::string StdStrStrMapToJsonString(
