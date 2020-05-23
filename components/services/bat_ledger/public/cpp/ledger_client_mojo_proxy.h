@@ -38,9 +38,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
       SaveLedgerStateCallback callback) override;
-  void SavePublisherState(
-      const std::string& publisher_state,
-      SavePublisherStateCallback callback) override;
 
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
@@ -184,10 +181,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     base::WeakPtr<LedgerClientMojoProxy> client_;
     Callback callback_;
   };
-
-  static void OnSavePublisherState(
-      CallbackHolder<SavePublisherStateCallback>* holder,
-      const ledger::Result result);
 
   static void OnSaveLedgerState(
       CallbackHolder<SaveLedgerStateCallback>* holder,

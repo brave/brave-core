@@ -23,7 +23,6 @@
 - (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback;
 - (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
-- (void)savePublisherState:(const std::string &)publisher_state callback:(ledger::ResultCallback)callback;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;
 - (void)setTimer:(uint64_t)time_offset timerId:(uint32_t *)timer_id;

@@ -30,7 +30,6 @@ private:
   void ResetState(const std::string & name, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::ResultCallback callback) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
-  void SavePublisherState(const std::string & publisher_state, ledger::ResultCallback callback) override;
   void SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;

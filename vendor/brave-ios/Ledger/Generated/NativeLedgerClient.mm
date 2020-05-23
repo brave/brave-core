@@ -56,9 +56,6 @@ void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledge
 void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
-void NativeLedgerClient::SavePublisherState(const std::string & publisher_state, ledger::ResultCallback callback) {
-  [bridge_ savePublisherState:publisher_state callback:callback];
-}
 void NativeLedgerClient::SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) {
   [bridge_ saveState:name value:value callback:callback];
 }

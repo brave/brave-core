@@ -163,7 +163,6 @@ interface BatLedgerClient {
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
   SaveLedgerState(string ledger_state) => (ledger.mojom.Result result);
-  SavePublisherState(string publisher_state) => (ledger.mojom.Result result);
 
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,

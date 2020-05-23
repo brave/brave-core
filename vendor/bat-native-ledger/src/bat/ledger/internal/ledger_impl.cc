@@ -491,12 +491,6 @@ void LedgerImpl::SaveLedgerState(
   ledger_client_->SaveLedgerState(data, callback);
 }
 
-void LedgerImpl::SavePublisherState(
-    const std::string& data,
-    ledger::ResultCallback callback) {
-  ledger_client_->SavePublisherState(data, callback);
-}
-
 void LedgerImpl::LoadURL(
     const std::string& url,
     const std::vector<std::string>& headers,

@@ -94,29 +94,6 @@ void LedgerClientMojoProxy::SaveLedgerState(
                 _1));
 }
 
-// static
-void LedgerClientMojoProxy::OnSavePublisherState(
-    CallbackHolder<SavePublisherStateCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SavePublisherState(
-    const std::string& publisher_state,
-    SavePublisherStateCallback callback) {
-  auto* holder = new CallbackHolder<SavePublisherStateCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SavePublisherState(
-      publisher_state,
-      std::bind(LedgerClientMojoProxy::OnSavePublisherState,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::OnReconcileComplete(
     const ledger::Result result,
     const std::string& contribution_id,
