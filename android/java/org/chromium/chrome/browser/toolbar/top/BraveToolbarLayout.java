@@ -141,7 +141,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveRewardsButton.setOnLongClickListener(this);
       }
 
-      mBraveShieldsHandler = new BraveShieldsHandler(getContext(), R.menu.brave_shields_menu);
+      mBraveShieldsHandler = new BraveShieldsHandler(getContext());
       mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
           @Override
           public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {

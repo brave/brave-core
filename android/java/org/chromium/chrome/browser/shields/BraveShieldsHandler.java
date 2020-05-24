@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.shields;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.Menu;
 import android.view.View;
 import android.graphics.Typeface;
@@ -90,7 +91,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     private final Context mContext;
-    private final int mMenuResourceId;
     private PopupWindow mPopupWindow;
     private AnimatorSet mMenuItemEnterAnimator;
     private AnimatorListener mAnimationHistogramRecorder = AnimationFrameTimeHistogram
@@ -128,15 +128,28 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private int mTabId;
     private Profile mProfile;
 
+    private static Context scanForActivity(Context cont) {
+        if (cont == null)
+            return null;
+        else if (cont instanceof Activity)
+            return cont;
+        else if (cont instanceof ContextWrapper)
+            return scanForActivity(((ContextWrapper)cont).getBaseContext());
+
+        return cont;
+    }
+
     /**
      * Constructs a BraveShieldsHandler object.
      * @param context Context that is using the BraveShieldsMenu.
-     * @param menuResourceId Resource Id that should be used as the source for the menu items.
      */
-    public BraveShieldsHandler(Context context, int menuResourceId) {
+    public BraveShieldsHandler(Context context) {
         mContext = context;
-        mMenuResourceId = menuResourceId;
-        mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
+        mHardwareButtonMenuAnchor = null;
+        mContext = scanForActivity(context);
+        if (mContext != null) {
+            mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
+        }
     }
 
     public void addStat(int tabId, String block_type, String subresource) {
@@ -281,6 +294,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
+        if (mContext == null) {
+            return;
+        }
         final int fadsAndTrackers = adsAndTrackers;
         final int fhttpsUpgrades = httpsUpgrades;
         final int fscriptsBlocked = scriptsBlocked;
