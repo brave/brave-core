@@ -43,7 +43,7 @@
 		    android:contentDescription="@null"
 		    android:layout_marginStart="8dp"
 		    android:layout_gravity="center_vertical"
-		    android:src="@drawable/arrows_chevron_down"/>
+		    app:srcCompat="@drawable/ic_toggle_down"/>
 
 	</LinearLayout>
 

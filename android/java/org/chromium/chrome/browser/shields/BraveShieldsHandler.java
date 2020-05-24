@@ -96,7 +96,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private AnimatorListener mAnimationHistogramRecorder = AnimationFrameTimeHistogram
             .getAnimatorRecorder("WrenchMenu.OpeningAnimationFrameTimes");
     private BraveShieldsMenuObserver mMenuObserver;
-    private final View mHardwareButtonMenuAnchor;
+    private View mHardwareButtonMenuAnchor;
     private final Map<Integer, BlockersInfo> mTabsStat =
         Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
@@ -144,9 +144,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
      * @param context Context that is using the BraveShieldsMenu.
      */
     public BraveShieldsHandler(Context context) {
-        mContext = context;
-        mHardwareButtonMenuAnchor = null;
         mContext = scanForActivity(context);
+        mHardwareButtonMenuAnchor = null;
         if (mContext != null) {
             mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
         }
@@ -187,7 +186,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     public void show(View anchorView, String host, String title, int tabId,
                      Profile profile) {
-
+        if (mHardwareButtonMenuAnchor == null) return;
         mHost = host;
         mTitle = title;
         mTabId = tabId;
