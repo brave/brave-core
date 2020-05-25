@@ -16,8 +16,6 @@ const defaultState: RewardsInternals.State = {
     isKeyInfoSeedValid: false,
     walletPaymentId: '',
     currentReconciles: [],
-    personaId: '',
-    userId: '',
     bootStamp: 0
   },
   promotions: []

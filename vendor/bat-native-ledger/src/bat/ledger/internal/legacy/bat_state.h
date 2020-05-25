@@ -53,22 +53,6 @@ class LegacyBatState {
 
   const std::string& GetPaymentId() const;
 
-  const std::string& GetPersonaId() const;
-
-  void SetPersonaId(const std::string& persona_id);
-
-  const std::string& GetUserId() const;
-
-  void SetUserId(const std::string& user_id);
-
-  const std::string& GetRegistrarVK() const;
-
-  void SetRegistrarVK(const std::string& registrar_vk);
-
-  const std::string& GetPreFlight() const;
-
-  void SetPreFlight(const std::string& pre_flight);
-
   const ledger::WalletInfoProperties& GetWalletInfo() const;
 
   void SetWalletInfo(const ledger::WalletInfoProperties& info);

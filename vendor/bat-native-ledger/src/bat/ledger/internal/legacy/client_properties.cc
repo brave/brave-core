@@ -22,10 +22,6 @@ ClientProperties::ClientProperties(
   wallet_info = properties.wallet_info;
   boot_timestamp = properties.boot_timestamp;
   reconcile_timestamp = properties.reconcile_timestamp;
-  persona_id = properties.persona_id;
-  user_id = properties.user_id;
-  registrar_vk = properties.registrar_vk;
-  pre_flight = properties.pre_flight;
   fee_amount = properties.fee_amount;
   user_changed_fee = properties.user_changed_fee;
   auto_contribute = properties.auto_contribute;
@@ -41,10 +37,6 @@ bool ClientProperties::operator==(
       wallet_info == rhs.wallet_info &&
       boot_timestamp == rhs.boot_timestamp &&
       reconcile_timestamp == rhs.reconcile_timestamp &&
-      persona_id == rhs.persona_id &&
-      user_id == rhs.user_id &&
-      registrar_vk == rhs.registrar_vk &&
-      pre_flight == rhs.pre_flight &&
       fee_amount == rhs.fee_amount &&
       user_changed_fee == rhs.user_changed_fee &&
       auto_contribute == rhs.auto_contribute &&

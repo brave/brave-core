@@ -10,8 +10,6 @@ declare namespace RewardsInternals {
       isKeyInfoSeedValid: boolean
       walletPaymentId: string
       currentReconciles: CurrentReconcile[]
-      personaId: string
-      userId: string
       bootStamp: number
     }
     promotions: Promotion[]

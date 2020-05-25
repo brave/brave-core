@@ -90,10 +90,6 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMinValues) {
       std::numeric_limits<uint32_t>::min();
   client_properties.reconcile_timestamp =
       std::numeric_limits<uint32_t>::min();
-  client_properties.persona_id = "PersonaId";
-  client_properties.user_id = "UserId";
-  client_properties.registrar_vk = "RegistrarVk";
-  client_properties.pre_flight = "PreFlight";
   client_properties.fee_amount = std::numeric_limits<double>::min();
   client_properties.user_changed_fee = true;
   client_properties.auto_contribute = true;
@@ -119,10 +115,6 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMinValues) {
       std::numeric_limits<uint32_t>::min();
   client_properties.reconcile_timestamp =
       std::numeric_limits<uint32_t>::min();
-  client_properties.persona_id = "PersonaId";
-  client_properties.user_id = "UserId";
-  client_properties.registrar_vk = "RegistrarVk";
-  client_properties.pre_flight = "PreFlight";
   client_properties.fee_amount = std::numeric_limits<double>::min();
   client_properties.user_changed_fee = true;
   client_properties.auto_contribute = true;
@@ -149,10 +141,6 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMaxValues) {
       std::numeric_limits<uint32_t>::max();
   client_properties.reconcile_timestamp =
       std::numeric_limits<uint32_t>::max();
-  client_properties.persona_id = "PersonaId";
-  client_properties.user_id = "UserId";
-  client_properties.registrar_vk = "RegistrarVk";
-  client_properties.pre_flight = "PreFlight";
   client_properties.fee_amount = std::numeric_limits<double>::max();
   client_properties.user_changed_fee = true;
   client_properties.auto_contribute = true;
@@ -178,10 +166,6 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMaxValues) {
       std::numeric_limits<uint32_t>::max();
   client_properties.reconcile_timestamp =
       std::numeric_limits<uint32_t>::max();
-  client_properties.persona_id = "PersonaId";
-  client_properties.user_id = "UserId";
-  client_properties.registrar_vk = "RegistrarVk";
-  client_properties.pre_flight = "PreFlight";
   client_properties.fee_amount = std::numeric_limits<double>::max();
   client_properties.user_changed_fee = true;
   client_properties.auto_contribute = true;

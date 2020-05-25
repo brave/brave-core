@@ -957,38 +957,6 @@ const std::string& LedgerImpl::GetPaymentId() const {
   return legacy_bat_state_->GetPaymentId();
 }
 
-const std::string& LedgerImpl::GetPersonaId() const {
-  return legacy_bat_state_->GetPersonaId();
-}
-
-void LedgerImpl::SetPersonaId(const std::string& persona_id) {
-  legacy_bat_state_->SetPersonaId(persona_id);
-}
-
-const std::string& LedgerImpl::GetUserId() const {
-  return legacy_bat_state_->GetUserId();
-}
-
-void LedgerImpl::SetUserId(const std::string& user_id) {
-  legacy_bat_state_->SetUserId(user_id);
-}
-
-const std::string& LedgerImpl::GetRegistrarVK() const {
-  return legacy_bat_state_->GetRegistrarVK();
-}
-
-void LedgerImpl::SetRegistrarVK(const std::string& registrar_vk) {
-  legacy_bat_state_->SetRegistrarVK(registrar_vk);
-}
-
-const std::string& LedgerImpl::GetPreFlight() const {
-  return legacy_bat_state_->GetPreFlight();
-}
-
-void LedgerImpl::SetPreFlight(const std::string& pre_flight) {
-  legacy_bat_state_->SetPreFlight(pre_flight);
-}
-
 const ledger::WalletInfoProperties& LedgerImpl::GetWalletInfo() const {
   return legacy_bat_state_->GetWalletInfo();
 }
@@ -1012,12 +980,6 @@ void LedgerImpl::GetRewardsInternalsInfo(
 
   // Retrieve the payment id.
   info->payment_id = legacy_bat_state_->GetPaymentId();
-
-  // Retrieve the persona id.
-  info->persona_id = legacy_bat_state_->GetPersonaId();
-
-  // Retrieve the user id.
-  info->user_id = legacy_bat_state_->GetUserId();
 
   // Retrieve the boot stamp.
   info->boot_stamp = legacy_bat_state_->GetBootStamp();

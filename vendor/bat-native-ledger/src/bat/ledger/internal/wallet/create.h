@@ -30,25 +30,16 @@ class Create {
   void Start(ledger::ResultCallback callback);
 
  private:
-  std::string StringifyRequestCredentials(
-    const std::string& proof,
-    const std::string& label,
-    const std::string& public_key,
-    const std::string& digest,
-    const std::string& signature,
-    const std::string& octets);
-
   void RequestCredentialsCallback(
       const ledger::UrlResponse& response,
       ledger::ResultCallback callback);
 
   void RegisterPersonaCallback(
       const ledger::UrlResponse& response,
+      const std::string& user_id,
+      const std::string& pre_flight,
+      const std::string& registrar_vk,
       ledger::ResultCallback callback);
-
-  std::string GetAnonizeProof(const std::string& registrarVK,
-                              const std::string& id,
-                              std::string* preFlight);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
