@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ledger/internal/legacy/publisher_state.h"
+#include "bat/ledger/internal/state/state_migration_v1.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -31,24 +31,7 @@ class StateMigration {
       const int version,
       ledger::ResultCallback callback);
 
-  void MigrateToV1(ledger::ResultCallback callback);
-
-  void OnLoadState(
-      const ledger::Result result,
-      ledger::ResultCallback callback);
-
-  void BalanceReportsSaved(
-      const ledger::Result result,
-      ledger::ResultCallback callback);
-
-  void SaveProcessedPublishers(ledger::ResultCallback callback);
-
-  void ProcessedPublisherSaved(
-      const ledger::Result result,
-      ledger::ResultCallback callback);
-
-  std::unique_ptr<braveledger_publisher::LegacyPublisherState>
-  legacy_publisher_;
+  std::unique_ptr<StateMigrationV1> v1_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

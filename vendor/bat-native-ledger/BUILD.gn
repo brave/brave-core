@@ -280,6 +280,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/state/state_keys.h",
     "src/bat/ledger/internal/state/state_migration.cc",
     "src/bat/ledger/internal/state/state_migration.h",
+    "src/bat/ledger/internal/state/state_migration_v1.cc",
+    "src/bat/ledger/internal/state/state_migration_v1.h",
     "src/bat/ledger/internal/state/state_util.cc",
     "src/bat/ledger/internal/state/state_util.h",
     "src/bat/ledger/internal/legacy/client_state.cc",
