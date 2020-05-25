@@ -22,8 +22,10 @@ class NTPDownloader {
         case sponsor
         
         var resourceBaseURL: URL? {
-            let baseUrl = AppConstants.buildChannel.isPublic ? "https://mobile-data.s3.brave.com/"
-                : "https://mobile-data-dev.s3.brave.software"
+            // This should _probably_ correspond host for URP
+            let baseUrl = AppConstants.buildChannel == .developer
+                ? "https://mobile-data-dev.s3.brave.software"
+                : "https://mobile-data.s3.brave.com/"
             
             switch self {
             case .superReferral(let code):

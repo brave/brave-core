@@ -16,6 +16,7 @@ public class UserReferralProgram {
     public static let shared = UserReferralProgram()
     
     private static let apiKeyPlistKey = "API_KEY"
+    private static let clipboardPrefix = "F83AB73F-9852-4F01-ABA8-7830B8825993"
     
     struct HostUrl {
         static let staging = "https://brave-laptop-updates-staging.herokuapp.com"
@@ -29,6 +30,7 @@ public class UserReferralProgram {
             return Bundle.main.infoDictionary?[key] as? String
         }
         
+        // This should _probably_ correspond to the baseUrl for NTPDownloader
         let host = AppConstants.buildChannel == .developer ? HostUrl.staging : HostUrl.prod
         
         guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
@@ -44,10 +46,10 @@ public class UserReferralProgram {
     }
     
     /// Looks for referral and returns its landing page if possible.
-    public func referralLookup(completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
+    public func referralLookup(refCode: String?, completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
         UrpLog.log("first run referral lookup")
         
-        service.referralCodeLookup { referral, _ in
+        let referralBlock: (ReferralData?, UrpError?) -> Void = { referral, _ in
             guard let ref = referral else {
                 log.info("No referral code found")
                 UrpLog.log("No referral code found")
@@ -79,6 +81,16 @@ public class UserReferralProgram {
             
             completion(ref.referralCode, nil)
         }
+        
+        if let refCode = refCode {
+            // This is also potentially set after server network request,
+            //  esp important for binaries that require server ref code retrieval.
+            Preferences.URP.referralCode.value = refCode
+        }
+        
+        // Since ref-code method may not be repeatable (e.g. clipboard was cleared), this should be retrieved from prefs,
+        //  and not use the passed in referral code.
+        service.referralCodeLookup(refCode: UserReferralProgram.getReferralCode(), completion: referralBlock)
     }
     
     private func initRetryPingConnection(numberOfTimes: Int32) {
@@ -179,6 +191,24 @@ public class UserReferralProgram {
             return referralCode
         }
         return nil
+    }
+    
+    /// Passing string, attempts to derive a ref code from it.
+    /// Uses very strict matching.
+    /// Returns the sanitized code, or nil if no code was found
+    public class func sanitize(input: String?) -> String? {
+        guard
+            var input = input,
+            input.hasPrefix(self.clipboardPrefix),
+            input.count > self.clipboardPrefix.count
+            else { return nil }
+        
+        // +1 to strip off `:` that proceeds the defined prefix
+        input.removeFirst(self.clipboardPrefix.count + 1)
+        let valid = input.range(of: #"\b[A-Z]{3}[0-9]{3}\b"#, options: .regularExpression) != nil
+
+        // Both conditions must be met
+        return valid ? input : nil
     }
     
     /// Same as `customHeaders` only blocking on result, to gaurantee data is available

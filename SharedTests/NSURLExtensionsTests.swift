@@ -476,6 +476,21 @@ class NSURLExtensionsTests: XCTestCase {
         XCTAssertEqual("http://bar.com/noo?qqq=123", urlD.absoluteString)
         XCTAssertEqual("http://foo.com/bar/?ppp=123&rrr=aaa", urlE.absoluteString)
     }
+    
+    func testAppendPathComponentsHelper() {
+        var urlA = URL(string: "http://foo.com/bar/")!
+        var urlB = URL(string: "http://bar.com/noo")!
+
+        urlA.append(pathComponents: "foo")
+        urlA.append(pathComponents: "one", "two")
+        
+        urlB.append(pathComponents: "", "", "test", "", "one", "")
+
+        XCTAssertEqual("http://foo.com/bar/foo/one/two", urlA.absoluteString)
+        XCTAssertEqual("http://bar.com/noo/test/one/", urlB.absoluteString)
+        
+
+    }
 
     func testHidingFromDataDetectors() {
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
