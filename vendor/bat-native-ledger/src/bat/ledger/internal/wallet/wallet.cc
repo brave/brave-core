@@ -48,7 +48,7 @@ Wallet::~Wallet() {
 
 void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
-  const auto stamp = ledger_->GetBootStamp();
+  const auto stamp = ledger_->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
     BLOG(1, "Wallet already exists");
@@ -89,7 +89,7 @@ ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
     const ledger::WalletProperties& properties) {
   ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
   wallet->parameters_choices = properties.parameters_choices;
-  wallet->fee_amount = ledger_->GetContributionAmount();
+  wallet->fee_amount = ledger_->GetAutoContributionAmount();
   wallet->default_tip_choices = properties.default_tip_choices;
   wallet->default_monthly_tip_choices = properties.default_monthly_tip_choices;
 
@@ -449,7 +449,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
 void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const std::string payment_id = ledger_->GetPaymentId();
   const std::string passphrase = GetWalletPassphrase();
-  const uint64_t stamp = ledger_->GetBootStamp();
+  const uint64_t stamp = ledger_->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
     BLOG(1, "Wallet is ok");

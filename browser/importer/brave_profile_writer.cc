@@ -257,8 +257,8 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       new_contribution_amount_ = minimum_monthly_contribution;
     }
   }
-  rewards_service->SetContributionAmount(new_contribution_amount_);
-  rewards_service->SetAutoContribute(auto_contribute_enabled);
+  rewards_service->SetAutoContributionAmount(new_contribution_amount_);
+  rewards_service->SetAutoContributeEnabled(auto_contribute_enabled);
 }
 
 void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {

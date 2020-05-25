@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
+#include "bat/ledger/internal/static_values.h"
 
 namespace braveledger_state {
 
@@ -87,6 +89,73 @@ void GetScoreValues(
   DCHECK(ledger && a && b);
   *a = ledger->GetDoubleState(ledger::kStateScoreA);
   *b = ledger->GetDoubleState(ledger::kStateScoreB);
+}
+
+void SetRewardsMainEnabled(bat_ledger::LedgerImpl* ledger, bool enabled) {
+  DCHECK(ledger);
+  ledger->SetBooleanState(ledger::kStateEnabled, enabled);
+}
+
+bool GetRewardsMainEnabled(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetBooleanState(ledger::kStateEnabled);
+}
+
+void SetAutoContributeEnabled(bat_ledger::LedgerImpl* ledger, bool enabled) {
+  DCHECK(ledger);
+  ledger->SetBooleanState(ledger::kStateAutoContributeEnabled, enabled);
+}
+
+bool GetAutoContributeEnabled(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetBooleanState(ledger::kStateAutoContributeEnabled);
+}
+
+void SetAutoContributionAmount(
+    bat_ledger::LedgerImpl* ledger,
+    const double amount) {
+  DCHECK(ledger);
+  ledger->SetBooleanState(ledger::kStateAutoContributeAmount, amount);
+}
+
+bool GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  const double amount =
+      ledger->GetBooleanState(ledger::kStateAutoContributeAmount);
+  if (amount == 0.0) {
+    // TODO(nejc): get default value
+  }
+
+  return amount;
+}
+
+uint64_t GetReconcileStamp(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetUint64State(ledger::kStateNextReconcileStamp);
+}
+
+void SetReconcileStamp(
+    bat_ledger::LedgerImpl* ledger,
+    const int reconcile_interval) {
+  DCHECK(ledger);
+  uint64_t reconcile_stamp = braveledger_time_util::GetCurrentTimeStamp();
+  if (reconcile_interval > 0) {
+    reconcile_stamp += reconcile_interval * 60;
+  } else {
+    reconcile_stamp += braveledger_ledger::_reconcile_default_interval;
+  }
+
+  ledger->SetUint64State(ledger::kStateNextReconcileStamp, reconcile_stamp);
+}
+
+uint64_t GetCreationStamp(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetUint64State(ledger::kStateCreationStamp);
+}
+
+void SetCreationStamp(bat_ledger::LedgerImpl* ledger, const uint64_t stamp) {
+  DCHECK(ledger);
+  ledger->SetUint64State(ledger::kStateCreationStamp, stamp);
 }
 
 }  // namespace braveledger_state

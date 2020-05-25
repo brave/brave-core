@@ -41,6 +41,7 @@ class RewardsStateBrowserTest
     int32_t version = 0;
     GetMigrationVersionFromTest(&version);
     CopyPublisherFile(version);
+    CopyStateFile(version);
     return true;
   }
 
@@ -102,7 +103,6 @@ class RewardsStateBrowserTest
       int32_t result) override {
     const auto converted_result = static_cast<ledger::Result>(result);
     ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
-                converted_result == ledger::Result::NO_LEDGER_STATE ||
                 converted_result == ledger::Result::LEDGER_OK);
     wallet_initialized_ = true;
     if (wait_for_wallet_initialization_loop_) {
@@ -140,7 +140,7 @@ class RewardsStateBrowserTest
   }
 
   void CopyPublisherFile(const int32_t version) const {
-    if (version > 1) {
+    if (version != 1) {
       return;
     }
 
@@ -148,6 +148,18 @@ class RewardsStateBrowserTest
     GetFilePath("publisher_state", &profile_path);
     base::FilePath test_path;
     GetTestFile("publisher_state", &test_path);
+    ASSERT_TRUE(base::CopyFile(test_path, profile_path));
+  }
+
+  void CopyStateFile(const int32_t version) const {
+    if (version != 2) {
+      return;
+    }
+
+    base::FilePath profile_path;
+    GetFilePath("ledger_state", &profile_path);
+    base::FilePath test_path;
+    GetTestFile("ledger_state", &test_path);
     ASSERT_TRUE(base::CopyFile(test_path, profile_path));
   }
 
@@ -202,4 +214,10 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
         EXPECT_EQ(report.recurring_donation, 5.4);
         EXPECT_EQ(report.one_time_donation, 5.5);
       }));
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.enabled"),
+      false);
 }

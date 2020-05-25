@@ -140,13 +140,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void SetPublisherAllowVideos(bool allow) override;
 
-  void SetContributionAmount(double amount) override;
+  void SetAutoContributionAmount(double amount) override;
 
-  void SetUserChangedContribution() override;
-
-  bool GetUserChangedContribution();
-
-  void SetAutoContribute(bool enabled) override;
+  void SetAutoContributeEnabled(bool enabled) override;
 
   void UpdateAdsRewards() override;
 
@@ -156,9 +152,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void PendingContributionSaved(const ledger::Result result);
 
-  uint64_t GetReconcileStamp() const override;
+  uint64_t GetReconcileStamp() override;
 
-  bool GetRewardsMainEnabled() const override;
+  bool GetRewardsMainEnabled() override;
 
   int GetPublisherMinVisitTime() override;  // In milliseconds
 
@@ -168,9 +164,9 @@ class LedgerImpl : public ledger::Ledger {
 
   bool GetPublisherAllowVideos() override;
 
-  double GetContributionAmount() const override;
+  double GetAutoContributionAmount() override;
 
-  bool GetAutoContribute() const override;
+  bool GetAutoContributeEnabled() override;
 
   void GetBalanceReport(
       const ledger::ActivityMonth month,
@@ -181,10 +177,6 @@ class LedgerImpl : public ledger::Ledger {
       ledger::GetBalanceReportListCallback callback) const override;
 
   ledger::AutoContributePropertiesPtr GetAutoContributeProperties() override;
-
-  void SaveLedgerState(
-      const std::string& data,
-      ledger::ResultCallback callback);
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
@@ -320,9 +312,9 @@ class LedgerImpl : public ledger::Ledger {
   void SetWalletProperties(
       ledger::WalletProperties* properties);
 
-  uint64_t GetBootStamp() const override;
+  uint64_t GetCreationStamp() override;
 
-  void SetBootStamp(uint64_t stamp);
+  void SetCreationStamp(uint64_t stamp);
 
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
@@ -787,11 +779,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void OnDatabaseInitialized(
       const ledger::Result result,
-      ledger::ResultCallback callback);
-
-  void OnLedgerStateLoaded(
-      ledger::Result result,
-      const std::string& data,
       ledger::ResultCallback callback);
 
   void RefreshPromotions(bool retryAfterError);

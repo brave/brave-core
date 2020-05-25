@@ -32,10 +32,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(LoadLedgerState, void(
       ledger::OnLoadCallback callback));
 
-  MOCK_METHOD2(SaveLedgerState, void(
-      const std::string& ledger_state,
-      ledger::ResultCallback callback));
-
   MOCK_METHOD1(LoadPublisherState, void(
       ledger::OnLoadCallback callback));
 

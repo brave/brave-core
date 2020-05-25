@@ -27,7 +27,6 @@ private:
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void ResetState(const std::string & name, ledger::ResultCallback callback) override;
-  void SaveLedgerState(const std::string & ledger_state, ledger::ResultCallback callback) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;

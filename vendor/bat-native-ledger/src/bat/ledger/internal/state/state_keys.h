@@ -10,7 +10,6 @@
 
 namespace ledger {
   const char kStateEnabled[] = "enabled";
-  const char kStateEnabledMigrated[] = "enabled_migrated";
   const char kStateServerPublisherListStamp[] = "server_publisher_list_stamp";
   const char kStateUpholdAnonAddress[] = "uphold_anon_address";
   const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
@@ -18,12 +17,18 @@ namespace ledger {
       "promotion_corrupted_migrated2";
   const char kStateAnonTransferChecked[] = "anon_transfer_checked";
   const char kStateVersion[] = "version";
+
+  // Auto contributions
   const char kStateMinVisitTime[] = "ac.min_visit_time";
   const char kStateMinVisits[] = "ac.min_visits";
   const char kStateAllowNonVerified[] = "ac.allow_non_verified";
   const char kStateAllowVideoContribution[] = "ac.allow_video_contributions";
   const char kStateScoreA[] = "ac.score.a";
   const char kStateScoreB[] = "ac.score.b";
+  const char kStateAutoContributeEnabled[] = "ac.enabled";
+  const char kStateAutoContributeAmount[] = "ac.amount";
+  const char kStateNextReconcileStamp[] = "ac.next_reconcile_stamp";
+  const char kStateCreationStamp[] = "creation_stamp";
 
 }  // namespace ledger
 

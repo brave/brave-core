@@ -115,9 +115,9 @@ void BatLedgerImpl::GetPublisherAllowVideos(
   std::move(callback).Run(ledger_->GetPublisherAllowVideos());
 }
 
-void BatLedgerImpl::GetAutoContribute(
-    GetAutoContributeCallback callback) {
-  std::move(callback).Run(ledger_->GetAutoContribute());
+void BatLedgerImpl::GetAutoContributeEnabled(
+    GetAutoContributeEnabledCallback callback) {
+  std::move(callback).Run(ledger_->GetAutoContributeEnabled());
 }
 
 void BatLedgerImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
@@ -321,16 +321,12 @@ void BatLedgerImpl::SetPublisherAllowVideos(bool allow) {
   ledger_->SetPublisherAllowVideos(allow);
 }
 
-void BatLedgerImpl::SetUserChangedContribution() {
-  ledger_->SetUserChangedContribution();
+void BatLedgerImpl::SetAutoContributionAmount(double amount) {
+  ledger_->SetAutoContributionAmount(amount);
 }
 
-void BatLedgerImpl::SetContributionAmount(double amount) {
-  ledger_->SetContributionAmount(amount);
-}
-
-void BatLedgerImpl::SetAutoContribute(bool enabled) {
-  ledger_->SetAutoContribute(enabled);
+void BatLedgerImpl::SetAutoContributeEnabled(bool enabled) {
+  ledger_->SetAutoContributeEnabled(enabled);
 }
 
 void BatLedgerImpl::UpdateAdsRewards() {
@@ -394,9 +390,9 @@ void BatLedgerImpl::GetPublisherBanner(const std::string& publisher_id,
       std::bind(BatLedgerImpl::OnGetPublisherBanner, holder, _1));
 }
 
-void BatLedgerImpl::GetContributionAmount(
-    GetContributionAmountCallback callback) {
-  std::move(callback).Run(ledger_->GetContributionAmount());
+void BatLedgerImpl::GetAutoContributionAmount(
+    GetAutoContributionAmountCallback callback) {
+  std::move(callback).Run(ledger_->GetAutoContributionAmount());
 }
 
 void BatLedgerImpl::OnOneTimeTip(
@@ -442,8 +438,8 @@ void BatLedgerImpl::RemoveRecurringTip(
     std::bind(BatLedgerImpl::OnRemoveRecurringTip, holder, _1));
 }
 
-void BatLedgerImpl::GetBootStamp(GetBootStampCallback callback) {
-  std::move(callback).Run(ledger_->GetBootStamp());
+void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
+  std::move(callback).Run(ledger_->GetCreationStamp());
 }
 
 void BatLedgerImpl::GetRewardsMainEnabled(

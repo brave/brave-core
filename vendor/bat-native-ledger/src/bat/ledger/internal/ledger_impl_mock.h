@@ -77,13 +77,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetPublisherAllowVideos, void(bool));
 
-  MOCK_METHOD1(SetContributionAmount, void(double));
+  MOCK_METHOD1(SetAutoContributionAmount, void(double));
 
-  MOCK_METHOD0(SetUserChangedContribution, void());
-
-  MOCK_METHOD0(GetUserChangedContribution, bool());
-
-  MOCK_METHOD1(SetAutoContribute, void(bool));
+  MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
 
   MOCK_METHOD0(UpdateAdsRewards, void());
 
@@ -93,7 +89,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(GetReconcileStamp, uint64_t());
 
-  MOCK_CONST_METHOD0(GetRewardsMainEnabled, bool());
+  MOCK_METHOD0(GetRewardsMainEnabled, bool());
 
   MOCK_METHOD0(GetPublisherMinVisitTime, int());
 
@@ -103,9 +99,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(GetPublisherAllowVideos, bool());
 
-  MOCK_CONST_METHOD0(GetContributionAmount, double());
+  MOCK_METHOD0(GetAutoContributionAmount, double());
 
-  MOCK_CONST_METHOD0(GetAutoContribute, bool());
+  MOCK_METHOD0(GetAutoContributeEnabled, bool());
 
   MOCK_CONST_METHOD3(GetBalanceReport,
       void(const ledger::ActivityMonth,
@@ -117,8 +113,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(GetAutoContributeProperties,
       ledger::AutoContributePropertiesPtr());
-
-  MOCK_METHOD1(SaveLedgerState, void(const std::string&));
 
   MOCK_METHOD1(LoadNicewareList, void(ledger::GetNicewareListCallback));
 
@@ -257,9 +251,9 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(SetWalletProperties,
       void(ledger::WalletProperties*));
 
-  MOCK_CONST_METHOD0(GetBootStamp, uint64_t());
+  MOCK_METHOD0(GetCreationStamp, uint64_t());
 
-  MOCK_METHOD1(SetBootStamp, void(uint64_t));
+  MOCK_METHOD1(SetCreationStamp, void(uint64_t));
 
   MOCK_METHOD6(SaveContributionInfo,
       void(const std::string&,

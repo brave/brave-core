@@ -133,7 +133,6 @@ class RewardsDatabaseBrowserTest
       int32_t result) override {
     const auto converted_result = static_cast<ledger::Result>(result);
     ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
-                converted_result == ledger::Result::NO_LEDGER_STATE ||
                 converted_result == ledger::Result::LEDGER_OK);
     wallet_initialized_ = true;
     if (wait_for_wallet_initialization_loop_) {

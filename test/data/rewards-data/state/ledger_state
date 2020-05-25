@@ -1,0 +1,46 @@
+{
+  "walletInfo": {
+    "paymentId": "3023921f-a841-4db8-8f33-8787bdc3f436",
+    "addressCARD_ID": "46167343-c24f-41d5-aa11-d2bd4095e944",
+    "keyInfoSeed": "daIBD/rSQpfjHczU702WEHhhdVdfIPlgJySVceXq3Js="
+  },
+  "bootStamp": 1578132997,
+  "reconcileStamp": 1591763936,
+  "fee_currency": "BAT",
+  "settings": "adFree",
+  "fee_amount": 20.0,
+  "user_changed_fee": false,
+  "rewards_enabled": true,
+  "auto_contribute": false,
+  "walletProperties": {
+    "fee_amount": 20.0,
+    "parameters": {
+      "adFree": {
+        "fee": {
+          "BAT": 20.0
+        },
+        "choices": {
+          "BAT": [
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0,
+            50.0,
+            100.0
+          ]
+        }
+      },
+      "defaultTipChoices": [
+        "1.000000",
+        "10.000000",
+        "100.000000"
+      ],
+      "defaultMonthlyChoices": [
+        "1.000000",
+        "10.000000",
+        "100.000000"
+      ]
+    }
+  }
+}

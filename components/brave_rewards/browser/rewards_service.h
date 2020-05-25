@@ -55,14 +55,14 @@ class RewardsServicePrivateObserver;
 using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
-using GetContributionAmountCallback = base::Callback<void(double)>;
+using GetAutoContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropertiesCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(int)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
-using GetAutoContributeCallback = base::OnceCallback<void(bool)>;
+using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
@@ -190,11 +190,10 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherAllowVideos(
       const GetPublisherAllowVideosCallback& callback) = 0;
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
-  virtual void SetContributionAmount(double amount) const = 0;
-  virtual void SetUserChangedContribution() const = 0;
-  virtual void GetAutoContribute(
-      GetAutoContributeCallback callback) = 0;
-  virtual void SetAutoContribute(bool enabled) = 0;
+  virtual void SetAutoContributionAmount(double amount) const = 0;
+  virtual void GetAutoContributeEnabled(
+      GetAutoContributeEnabledCallback callback) = 0;
+  virtual void SetAutoContributeEnabled(bool enabled) = 0;
   virtual void UpdateAdsRewards() const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetBalanceReport(
@@ -207,8 +206,8 @@ class RewardsService : public KeyedService {
       const std::string& url,
       const std::string& favicon_url,
       const std::string& publisher_blob) = 0;
-  virtual void GetContributionAmount(
-      const GetContributionAmountCallback& callback) = 0;
+  virtual void GetAutoContributionAmount(
+      const GetAutoContributionAmountCallback& callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
   virtual void OnTip(

@@ -49,6 +49,30 @@ void GetScoreValues(
     double* a,
     double* b);
 
+void SetRewardsMainEnabled(bat_ledger::LedgerImpl* ledger, bool enabled);
+
+bool GetRewardsMainEnabled(bat_ledger::LedgerImpl* ledger);
+
+void SetAutoContributeEnabled(bat_ledger::LedgerImpl* ledger, bool enabled);
+
+bool GetAutoContributeEnabled(bat_ledger::LedgerImpl* ledger);
+
+void SetAutoContributionAmount(
+    bat_ledger::LedgerImpl* ledger,
+    const double amount);
+
+bool GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger);
+
+uint64_t GetReconcileStamp(bat_ledger::LedgerImpl* ledger);
+
+void SetReconcileStamp(
+    bat_ledger::LedgerImpl* ledger,
+    const int reconcile_interval);
+
+uint64_t GetCreationStamp(bat_ledger::LedgerImpl* ledger);
+
+void SetCreationStamp(bat_ledger::LedgerImpl* ledger, const uint64_t stamp);
+
 }  // namespace braveledger_state
 
 #endif  // BRAVELEDGER_STATE_STATE_UTIL_H_

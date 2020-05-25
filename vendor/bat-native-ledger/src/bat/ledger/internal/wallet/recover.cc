@@ -169,18 +169,13 @@ void Recover::RecoverWalletCallback(
 
   ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
   ledger::WalletProperties properties = ledger_->GetWalletProperties();
-  double fee_amount = .0;
   double balance = .0;
   braveledger_bat_helper::getJSONWalletInfo(
       response.body,
-      &wallet_info,
-      &fee_amount);
+      &wallet_info);
   braveledger_bat_helper::getJSONRecoverWallet(
       response.body,
       &balance);
-  if (!ledger_->GetUserChangedContribution()) {
-    ledger_->SetContributionAmount(fee_amount);
-  }
   ledger_->SetWalletProperties(&properties);
 
   wallet_info.payment_id = recoveryId;

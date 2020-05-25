@@ -580,9 +580,9 @@ class BraveRewardsBrowserTest
     return false;
   }
 
-  void GetReconcileTime() {
-    rewards_service()->GetReconcileTime(
-        base::Bind(&BraveRewardsBrowserTest::OnGetReconcileTime,
+  void GetReconcileInterval() {
+    rewards_service()->GetReconcileInterval(
+        base::Bind(&BraveRewardsBrowserTest::OnGetReconcileInterval,
           base::Unretained(this)));
   }
 
@@ -1160,7 +1160,6 @@ class BraveRewardsBrowserTest
                            int32_t result) {
     const auto converted_result = static_cast<ledger::Result>(result);
     ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
-                converted_result == ledger::Result::NO_LEDGER_STATE ||
                 converted_result == ledger::Result::LEDGER_OK);
     wallet_initialized_ = true;
     if (wait_for_wallet_initialization_loop_)
@@ -1383,7 +1382,7 @@ class BraveRewardsBrowserTest
 
   MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
-  MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
+  MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
 
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -1638,26 +1637,26 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   RunUntilIdle();
 
   // positive number
-  EXPECT_CALL(*this, OnGetReconcileTime(10));
+  EXPECT_CALL(*this, OnGetReconcileInterval(10));
   // negative number and string
-  EXPECT_CALL(*this, OnGetReconcileTime(0)).Times(2);
+  EXPECT_CALL(*this, OnGetReconcileInterval(0)).Times(2);
 
   // Reconcile interval - positive number
-  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetReconcileInterval(0);
   rewards_service()->HandleFlags("reconcile-interval=10");
-  GetReconcileTime();
+  GetReconcileInterval();
   RunUntilIdle();
 
   // Reconcile interval - negative number
-  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetReconcileInterval(0);
   rewards_service()->HandleFlags("reconcile-interval=-1");
-  GetReconcileTime();
+  GetReconcileInterval();
   RunUntilIdle();
 
   // Reconcile interval - string
-  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetReconcileInterval(0);
   rewards_service()->HandleFlags("reconcile-interval=sdf");
-  GetReconcileTime();
+  GetReconcileInterval();
   RunUntilIdle();
 
   EXPECT_CALL(*this, OnGetShortRetries(true));   // on
@@ -1679,18 +1678,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
-  EXPECT_CALL(*this, OnGetReconcileTime(10));
+  EXPECT_CALL(*this, OnGetReconcileInterval(10));
   EXPECT_CALL(*this, OnGetShortRetries(true));
 
   rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service()->SetDebug(true);
-  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetReconcileInterval(0);
   rewards_service()->SetShortRetries(false);
 
   rewards_service()->HandleFlags(
       "staging=true,debug=true,short-retries=true,reconcile-interval=10");
 
-  GetReconcileTime();
+  GetReconcileInterval();
   GetShortRetries();
   GetEnvironment();
   GetDebug();
@@ -1700,18 +1699,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
-  EXPECT_CALL(*this, OnGetReconcileTime(0));
+  EXPECT_CALL(*this, OnGetReconcileInterval(0));
   EXPECT_CALL(*this, OnGetShortRetries(false));
 
   rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service()->SetDebug(false);
-  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetReconcileInterval(0);
   rewards_service()->SetShortRetries(false);
 
   rewards_service()->HandleFlags(
       "staging=,debug=,shortretries=true,reconcile-interval");
 
-  GetReconcileTime();
+  GetReconcileInterval();
   GetShortRetries();
   GetDebug();
   GetEnvironment();
@@ -2695,7 +2694,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   EnableRewardsViaCode();
-  rewards_service_->SetAutoContribute(false);
+  rewards_service_->SetAutoContributeEnabled(false);
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/");
   ui_test_utils::NavigateToURLWithDisposition(
@@ -2744,7 +2743,7 @@ IN_PROC_BROWSER_TEST_F(
   VisitPublisher("3zsistemi.si", true);
 
   // 30 form unblinded and 20 from uphold
-  rewards_service()->SetContributionAmount(50.0);
+  rewards_service()->SetAutoContributionAmount(50.0);
 
   ledger::SKUOrderItemList items;
   auto item = ledger::SKUOrderItem::New();

@@ -146,7 +146,6 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    VLOG(0) << "Failed to read file: " << path.MaybeAsASCII();
     return {};
   }
   std::pair<std::string, base::Value> result;
@@ -197,9 +196,9 @@ std::string LoadOnFileTaskRunner(const base::FilePath& path) {
 
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
-    VLOG(0) << "Failed to read file: " << path.MaybeAsASCII();
-    return std::string();
+    return "";
   }
+
   return data;
 }
 
@@ -737,7 +736,6 @@ void RewardsServiceImpl::Shutdown() {
 
 void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
   if (result == ledger::Result::WALLET_CREATED ||
-      result == ledger::Result::NO_LEDGER_STATE ||
       result == ledger::Result::LEDGER_OK) {
     is_wallet_initialized_ = true;
   }
@@ -746,8 +744,6 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     ready_.Signal();
 
   if (result == ledger::Result::WALLET_CREATED) {
-    SetRewardsMainEnabled(true);
-    SetAutoContribute(true);
     StartNotificationTimers(true);
 
     // Record P3A:
@@ -847,11 +843,6 @@ void RewardsServiceImpl::OnReconcileComplete(
 
 void RewardsServiceImpl::LoadLedgerState(
     ledger::OnLoadCallback callback) {
-  if (!profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabledMigrated)) {
-    bat_ledger_->GetRewardsMainEnabled(
-        base::BindOnce(&RewardsServiceImpl::SetRewardsMainEnabledPref,
-          AsWeakPtr()));
-  }
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadStateOnFileTaskRunner, ledger_state_path_),
       base::BindOnce(&RewardsServiceImpl::OnLedgerStateLoaded,
@@ -866,11 +857,6 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
     return;
 
   if (state.second.is_dict()) {
-    // Extract some properties from the parsed json.
-    base::Value* auto_contribute = state.second.FindKey("auto_contribute");
-    if (auto_contribute && auto_contribute->is_bool()) {
-      auto_contributions_enabled_ = auto_contribute->GetBool();
-    }
     // Record stats.
     RecordBackendP3AStats();
     MaybeRecordInitialAdsP3AState(profile_->GetPrefs());
@@ -909,39 +895,6 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
       data.empty() ? ledger::Result::NO_PUBLISHER_STATE
                    : ledger::Result::LEDGER_OK,
       data);
-}
-
-void RewardsServiceImpl::SaveLedgerState(
-    const std::string& ledger_state,
-    ledger::ResultCallback callback) {
-  if (reset_states_) {
-    return;
-  }
-  base::ImportantFileWriter writer(
-      ledger_state_path_, file_task_runner_);
-
-  writer.RegisterOnNextWriteCallbacks(
-      base::Closure(),
-      base::Bind(
-        &PostWriteCallback,
-        base::Bind(&RewardsServiceImpl::OnLedgerStateSaved,
-            AsWeakPtr(),
-            callback),
-        base::SequencedTaskRunnerHandle::Get()));
-
-  writer.WriteNow(std::make_unique<std::string>(ledger_state));
-}
-
-void RewardsServiceImpl::OnLedgerStateSaved(
-    ledger::ResultCallback callback,
-    bool success) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(success
-           ? ledger::Result::LEDGER_OK
-           : ledger::Result::NO_LEDGER_STATE);
 }
 
 void RewardsServiceImpl::LoadNicewareList(
@@ -1382,18 +1335,19 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
     return;
   }
 
-  if (!enabled) {
-    RecordRewardsDisabledForSomeMetrics();
-  }
-  SetRewardsMainEnabledPref(enabled);
   bat_ledger_->SetRewardsMainEnabled(enabled);
   TriggerOnRewardsMainEnabled(enabled);
+
 #if BUILDFLAG(ENABLE_GREASELION)
   if (greaselion_service_) {
     greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, enabled);
     greaselion_service_->SetFeatureEnabled(greaselion::TWITTER_TIPS, enabled);
   }
 #endif
+
+  if (!enabled) {
+    RecordRewardsDisabledForSomeMetrics();
+  }
 }
 
 void RewardsServiceImpl::GetRewardsMainEnabled(
@@ -1403,16 +1357,6 @@ void RewardsServiceImpl::GetRewardsMainEnabled(
   }
 
   bat_ledger_->GetRewardsMainEnabled(callback);
-}
-
-void RewardsServiceImpl::SetRewardsMainEnabledPref(bool enabled) {
-  profile_->GetPrefs()->SetBoolean(prefs::kBraveRewardsEnabled, enabled);
-  SetRewardsMainEnabledMigratedPref(true);
-}
-
-void RewardsServiceImpl::SetRewardsMainEnabledMigratedPref(bool enabled) {
-  profile_->GetPrefs()->SetBoolean(
-      prefs::kBraveRewardsEnabledMigrated, true);
 }
 
 void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
@@ -1756,45 +1700,30 @@ void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
   bat_ledger_->SetPublisherAllowVideos(allow);
 }
 
-void RewardsServiceImpl::SetContributionAmount(const double amount) const {
+void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SetUserChangedContribution();
-  bat_ledger_->SetContributionAmount(amount);
+  bat_ledger_->SetAutoContributionAmount(amount);
 }
 
-// TODO(brave): Remove me (and pure virtual definition)
-// see https://github.com/brave/brave-core/commit/c4ef62c954a64fca18ae83ff8ffd611137323420#diff-aa3505dbf36b5d03d8ba0751e0c99904R385
-// and https://github.com/brave-intl/bat-native-ledger/commit/27f3ceb471d61c84052737ff201fe18cb9a6af32#diff-e303122e010480b2226895b9470891a3R135
-void RewardsServiceImpl::SetUserChangedContribution() const {
+void RewardsServiceImpl::GetAutoContributeEnabled(
+    GetAutoContributeEnabledCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SetUserChangedContribution();
+  bat_ledger_->GetAutoContributeEnabled(std::move(callback));
 }
 
-void RewardsServiceImpl::GetAutoContribute(
-    GetAutoContributeCallback callback) {
+void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetAutoContribute(std::move(callback));
-}
+  bat_ledger_->SetAutoContributeEnabled(enabled);
 
-void RewardsServiceImpl::SetAutoContribute(bool enabled) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->SetAutoContribute(enabled);
-  auto_contributions_enabled_ = enabled;
-
-  // Record stats.
-  DCHECK(profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabled));
   if (!enabled) {
     // Just record the disabled state.
     RecordAutoContributionsState(
@@ -1946,12 +1875,12 @@ void RewardsServiceImpl::OnPanelPublisherInfo(
                                   windowId);
 }
 
-void RewardsServiceImpl::GetContributionAmount(
-    const GetContributionAmountCallback& callback) {
+void RewardsServiceImpl::GetAutoContributionAmount(
+    const GetAutoContributionAmountCallback& callback) {
   if (!Connected())
     return;
 
-  bat_ledger_->GetContributionAmount(callback);
+  bat_ledger_->GetAutoContributionAmount(callback);
 }
 
 void RewardsServiceImpl::FetchFavIcon(const std::string& url,
@@ -2250,7 +2179,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
   if (!Connected())
     return;
 
-  bat_ledger_->GetBootStamp(
+  bat_ledger_->GetCreationStamp(
       base::BindOnce(&RewardsServiceImpl::MaybeShowBackupNotification,
         AsWeakPtr()));
   GetReconcileStamp(
@@ -2299,7 +2228,7 @@ void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
 }
 
 void RewardsServiceImpl::MaybeShowNotificationTipsPaid() {
-  GetAutoContribute(base::BindOnce(
+  GetAutoContributeEnabled(base::BindOnce(
       &RewardsServiceImpl::ShowNotificationTipsPaid,
       AsWeakPtr()));
 }
@@ -2382,7 +2311,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       bool success = base::StringToInt(value, &reconcile_int);
 
       if (success && reconcile_int > 0) {
-        SetReconcileTime(reconcile_int);
+        SetReconcileInterval(reconcile_int);
       }
 
       continue;
@@ -2529,9 +2458,9 @@ void RewardsServiceImpl::GetDebug(const GetDebugCallback& callback) {
   bat_ledger_service_->GetDebug(callback);
 }
 
-void RewardsServiceImpl::GetReconcileTime(
-    const GetReconcileTimeCallback& callback) {
-  bat_ledger_service_->GetReconcileTime(callback);
+void RewardsServiceImpl::GetReconcileInterval(
+    GetReconcileIntervalCallback callback) {
+  bat_ledger_service_->GetReconcileInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::GetShortRetries(
@@ -2547,8 +2476,8 @@ void RewardsServiceImpl::SetDebug(bool debug) {
   bat_ledger_service_->SetDebug(debug);
 }
 
-void RewardsServiceImpl::SetReconcileTime(int32_t time) {
-  bat_ledger_service_->SetReconcileTime(time);
+void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
+  bat_ledger_service_->SetReconcileInterval(interval);
 }
 
 void RewardsServiceImpl::SetShortRetries(bool short_retries) {
@@ -3184,11 +3113,21 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
     queued_recurring = recurring_donation_size;
   }
 
-  const auto auto_contributions_state = auto_contributions_enabled_ ?
+  RecordTipsState(true, true, tips, queued_recurring);
+
+  GetAutoContributeEnabled(base::BindOnce(
+    &RewardsServiceImpl::OnRecordBackendP3AStatsAC,
+    AsWeakPtr(),
+    auto_contributions));
+}
+
+void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
+    const int auto_contributions,
+    bool ac_enabled) {
+  const auto auto_contributions_state = ac_enabled ?
         AutoContributionsP3AState::kAutoContributeOn :
         AutoContributionsP3AState::kWalletCreatedAutoContributeOff;
   RecordAutoContributionsState(auto_contributions_state, auto_contributions);
-  RecordTipsState(true, true, tips, queued_recurring);
 }
 
 #if defined(OS_ANDROID)

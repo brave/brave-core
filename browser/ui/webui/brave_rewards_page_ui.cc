@@ -87,7 +87,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RestorePublishers(const base::ListValue* args);
   void RestorePublisher(const base::ListValue* args);
   void WalletExists(const base::ListValue* args);
-  void GetContributionAmount(const base::ListValue* args);
+  void GetAutoContributionAmount(const base::ListValue* args);
   void RemoveRecurringTip(const base::ListValue* args);
   void GetRecurringTips(const base::ListValue* args);
   void GetOneTimeTips(const base::ListValue* args);
@@ -372,7 +372,7 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::WalletExists,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionAmount",
-      base::BindRepeating(&RewardsDOMHandler::GetContributionAmount,
+      base::BindRepeating(&RewardsDOMHandler::GetAutoContributionAmount,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.removeRecurringTip",
       base::BindRepeating(&RewardsDOMHandler::RemoveRecurringTip,
@@ -850,8 +850,7 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     }
 
     if (key == "contributionMonthly") {
-      rewards_service_->SetUserChangedContribution();
-      rewards_service_->SetContributionAmount(std::stod(value));
+      rewards_service_->SetAutoContributionAmount(std::stod(value));
     }
 
     if (key == "contributionMinTime") {
@@ -883,7 +882,7 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     }
 
     if (key == "enabledContribute") {
-      rewards_service_->SetAutoContribute(value == "true");
+      rewards_service_->SetAutoContributeEnabled(value == "true");
     }
   }
 }
@@ -987,9 +986,9 @@ void RewardsDOMHandler::OnGetContributionAmount(double amount) {
   }
 }
 
-void RewardsDOMHandler::GetContributionAmount(const base::ListValue* args) {
+void RewardsDOMHandler::GetAutoContributionAmount(const base::ListValue* args) {
   if (rewards_service_)
-    rewards_service_->GetContributionAmount(
+    rewards_service_->GetAutoContributionAmount(
         base::Bind(&RewardsDOMHandler::OnGetContributionAmount,
           weak_factory_.GetWeakPtr()));
 }

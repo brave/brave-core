@@ -73,7 +73,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Marks if this is being ran in a test environment. Defaults to false
 @property (nonatomic, class, getter=isTesting) BOOL testing;
 /// Number of minutes between reconciles override. Defaults to 0 (no override)
-@property (nonatomic, class) int reconcileTime;
+@property (nonatomic, class) int reconcileInterval;
 /// Whether or not to use short contribution retries. Defaults to false
 @property (nonatomic, class) BOOL useShortRetries;
 

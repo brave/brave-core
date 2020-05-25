@@ -23,7 +23,7 @@ namespace ledger {
 extern Environment _environment;
 extern bool is_debug;
 extern bool is_testing;
-extern int reconcile_time;  // minutes
+extern int reconcile_interval;  // minutes
 extern bool short_retries;
 
 using PublisherBannerCallback =
@@ -145,17 +145,15 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherAllowVideos(bool allow) = 0;
 
-  virtual void SetContributionAmount(double amount) = 0;
+  virtual void SetAutoContributionAmount(double amount) = 0;
 
-  virtual void SetUserChangedContribution() = 0;
-
-  virtual void SetAutoContribute(bool enabled) = 0;
+  virtual void SetAutoContributeEnabled(bool enabled) = 0;
 
   virtual void UpdateAdsRewards() = 0;
 
-  virtual uint64_t GetReconcileStamp() const = 0;
+  virtual uint64_t GetReconcileStamp() = 0;
 
-  virtual bool GetRewardsMainEnabled() const = 0;
+  virtual bool GetRewardsMainEnabled() = 0;
 
   virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
 
@@ -165,9 +163,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetPublisherAllowVideos() = 0;
 
-  virtual double GetContributionAmount() const = 0;
+  virtual double GetAutoContributionAmount() = 0;
 
-  virtual bool GetAutoContribute() const = 0;
+  virtual bool GetAutoContributeEnabled() = 0;
 
   virtual void GetWalletProperties(
       OnWalletPropertiesCallback callback) const = 0;
@@ -250,7 +248,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual double GetDefaultContributionAmount() = 0;
 
-  virtual uint64_t GetBootStamp() const = 0;
+  virtual uint64_t GetCreationStamp() = 0;
 
   virtual void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) = 0;

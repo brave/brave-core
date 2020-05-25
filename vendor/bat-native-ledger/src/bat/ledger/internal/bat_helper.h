@@ -30,8 +30,7 @@ bool getJSONList(const std::string& fieldName,
                  std::vector<std::string>* value);
 
 bool getJSONWalletInfo(const std::string& json,
-                       ledger::WalletInfoProperties* walletInfo,
-                       double* fee_amount);
+                       ledger::WalletInfoProperties* walletInfo);
 
 bool getJSONRates(const std::string& json,
                   std::map<std::string, double>* rates);

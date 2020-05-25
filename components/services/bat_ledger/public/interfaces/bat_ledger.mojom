@@ -13,13 +13,13 @@ interface BatLedgerService {
          associated BatLedger& bat_ledger);
   SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
-  SetReconcileTime(int32 time);
+  SetReconcileInterval(int32 time);
   SetShortRetries(bool short_retries);
   SetTesting();
 
   GetEnvironment() => (ledger.mojom.Environment environment);
   GetDebug() => (bool debug);
-  GetReconcileTime() => (int32 time);
+  GetReconcileInterval() => (int32 interval);
   GetShortRetries() => (bool short_retries);
 };
 
@@ -33,7 +33,7 @@ interface BatLedger {
   GetPublisherMinVisits() => (int32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);
   GetPublisherAllowVideos() => (bool allowed);
-  GetAutoContribute() => (bool auto_contribute);
+  GetAutoContributeEnabled() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
   OnLoad(ledger.mojom.VisitData visit_data, uint64 current_time);
@@ -68,9 +68,8 @@ interface BatLedger {
   SetPublisherMinVisits(int32 visits);
   SetPublisherAllowNonVerified(bool allow);
   SetPublisherAllowVideos(bool allow);
-  SetUserChangedContribution();
-  SetContributionAmount(double amount);
-  SetAutoContribute(bool enabled);
+  SetAutoContributionAmount(double amount);
+  SetAutoContributeEnabled(bool enabled);
   UpdateAdsRewards();
 
   OnTimer(uint32 timer_id);
@@ -83,14 +82,14 @@ interface BatLedger {
   GetPublisherActivityFromUrl(uint64 window_id,
       ledger.mojom.VisitData visit_data,
       string publisher_blob);
-  GetContributionAmount() => (double contribution_amount);
+  GetAutoContributionAmount() => (double contribution_amount);
   GetPublisherBanner(string publisher_id) =>
       (ledger.mojom.PublisherBanner? banner);
 
   OneTimeTip(string publisher_id, double amount) => (ledger.mojom.Result result);
 
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
-  GetBootStamp() => (uint64 boot_stamp);
+  GetCreationStamp() => (uint64 boot_stamp);
   GetRewardsMainEnabled() => (bool main_enabled);
 
   HasSufficientBalanceToReconcile() => (bool sufficient);
@@ -161,7 +160,6 @@ interface BatLedgerClient {
   [Sync]
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
-  SaveLedgerState(string ledger_state) => (ledger.mojom.Result result);
 
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
       double amount, ledger.mojom.RewardsType type);

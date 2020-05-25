@@ -45,7 +45,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetPublisherAllowNonVerifiedCallback callback) override;
   void GetPublisherAllowVideos(
       GetPublisherAllowVideosCallback callback) override;
-  void GetAutoContribute(GetAutoContributeCallback callback) override;
+  void GetAutoContributeEnabled(
+      GetAutoContributeEnabledCallback callback) override;
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
 
   void OnLoad(ledger::VisitDataPtr visit_data, uint64_t current_time) override;
@@ -88,9 +89,8 @@ class BatLedgerImpl : public mojom::BatLedger,
   void SetPublisherMinVisits(int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetPublisherAllowVideos(bool allow) override;
-  void SetUserChangedContribution() override;
-  void SetContributionAmount(double amount) override;
-  void SetAutoContribute(bool enabled) override;
+  void SetAutoContributionAmount(double amount) override;
+  void SetAutoContributeEnabled(bool enabled) override;
   void UpdateAdsRewards() override;
 
   void OnTimer(uint32_t timer_id) override;
@@ -105,8 +105,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) override;
 
-  void GetContributionAmount(
-      GetContributionAmountCallback callback) override;
+  void GetAutoContributionAmount(
+      GetAutoContributionAmountCallback callback) override;
   void GetPublisherBanner(const std::string& publisher_id,
       GetPublisherBannerCallback callback) override;
 
@@ -118,7 +118,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void RemoveRecurringTip(
       const std::string& publisher_key,
       RemoveRecurringTipCallback callback) override;
-  void GetBootStamp(GetBootStampCallback callback) override;
+  void GetCreationStamp(GetCreationStampCallback callback) override;
   void GetRewardsMainEnabled(
       GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(

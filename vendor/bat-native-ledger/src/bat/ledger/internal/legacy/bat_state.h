@@ -25,29 +25,19 @@ class LegacyBatState {
   explicit LegacyBatState(bat_ledger::LedgerImpl* ledger);
   ~LegacyBatState();
 
-  bool LoadState(const std::string& data);
-
-  void SetRewardsMainEnabled(bool enabled);
+  void Load(ledger::ResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
 
-  void SetContributionAmount(double amount);
-
-  double GetContributionAmount() const;
-
-  void SetUserChangedContribution();
+  double GetAutoContributionAmount() const;
 
   bool GetUserChangedContribution() const;
 
-  void SetAutoContribute(bool enabled);
-
-  bool GetAutoContribute() const;
+  bool GetAutoContributeEnabled() const;
 
   const std::string& GetCardIdAddress() const;
 
   uint64_t GetReconcileStamp() const;
-
-  void ResetReconcileStamp();
 
   bool IsWalletCreated() const;
 
@@ -62,9 +52,7 @@ class LegacyBatState {
   void SetWalletProperties(
       ledger::WalletProperties* properties);
 
-  uint64_t GetBootStamp() const;
-
-  void SetBootStamp(uint64_t stamp);
+  uint64_t GetCreationStamp() const;
 
   double GetDefaultContributionAmount();
 
@@ -73,9 +61,10 @@ class LegacyBatState {
   bool GetInlineTipSetting(const std::string& key) const;
 
  private:
-  void SaveState();
-
-  void OnSaveState(const ledger::Result result);
+  void OnLoad(
+      const ledger::Result result,
+      const std::string& data,
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::ClientProperties> state_;

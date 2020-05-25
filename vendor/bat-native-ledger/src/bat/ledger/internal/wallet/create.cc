@@ -247,19 +247,18 @@ void Create::RegisterPersonaCallback(
   }
 
   ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-  double fee_amount = .0;
   if (!braveledger_bat_helper::getJSONWalletInfo(
       response.body,
-      &wallet_info,
-      &fee_amount)) {
+      &wallet_info)) {
     BLOG(0, "Can't get wallet info");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
+  ledger_->SetRewardsMainEnabled(true);
+  ledger_->SetAutoContributeEnabled(true);
   ledger_->SetWalletInfo(wallet_info);
-  ledger_->SetContributionAmount(fee_amount);
-  ledger_->SetBootStamp(braveledger_time_util::GetCurrentTimeStamp());
+  ledger_->SetCreationStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
   callback(ledger::Result::WALLET_CREATED);
 }

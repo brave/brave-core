@@ -380,7 +380,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 BATClassLedgerBridge(BOOL, isTesting, setTesting, is_testing)
-BATClassLedgerBridge(int, reconcileTime, setReconcileTime, reconcile_time)
+BATClassLedgerBridge(int, reconcileInterval, setReconcileInterval, reconcile_interval)
 BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 
 + (BATEnvironment)environment
@@ -423,9 +423,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       }
       error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
     }
-    
-    strongSelf.enabled = YES;
-    strongSelf.autoContributeEnabled = YES;
+
     strongSelf.ads.enabled = [BATBraveAds isCurrentLocaleSupported];
     [strongSelf startNotificationTimers];
     strongSelf.initializingWallet = NO;
@@ -433,6 +431,12 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
         completion(error);
+      }
+      
+      for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
+        if (observer.rewardsEnabledStateUpdated) {
+          observer.rewardsEnabledStateUpdated(strongSelf.isEnabled);
+        }
       }
       
       for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
@@ -1268,17 +1272,16 @@ BATLedgerBridge(BOOL,
                 allowVideoContributions, setAllowVideoContributions,
                 GetPublisherAllowVideos, SetPublisherAllowVideos)
 
-BATLedgerReadonlyBridge(double, contributionAmount, GetContributionAmount)
+BATLedgerReadonlyBridge(double, contributionAmount, GetAutoContributionAmount)
 
 - (void)setContributionAmount:(double)contributionAmount
 {
-  ledger->SetUserChangedContribution();
-  ledger->SetContributionAmount(contributionAmount);
+  ledger->SetAutoContributionAmount(contributionAmount);
 }
 
 BATLedgerBridge(BOOL,
                 isAutoContributeEnabled, setAutoContributeEnabled,
-                GetAutoContribute, SetAutoContribute)
+                GetAutoContributeEnabled, SetAutoContributeEnabled)
 
 - (void)setBooleanState:(const std::string&)name value:(bool)value
 {
@@ -1557,7 +1560,7 @@ BATLedgerBridge(BOOL,
 {
   // This is currently not required as the user cannot manage their wallet on mobile... yet
   /*
-  auto bootstamp = ledger->GetBootStamp();
+  auto bootstamp = ledger->GetCreationStamp();
   auto userFunded = [self.prefs[kUserHasFundedKey] boolValue];
   auto backupSucceeded = [self.prefs[kBackupSucceededKey] boolValue];
   if (userFunded && !backupSucceeded) {
@@ -1727,12 +1730,6 @@ BATLedgerBridge(BOOL,
     callback(ledger::Result::NO_LEDGER_STATE, contents);
   }
   [self startNotificationTimers];
-}
-
-- (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback
-{
-  const auto result = [self.commonOps saveContents:ledger_state name:"ledger_state.json"];
-  callback(result ? ledger::Result::LEDGER_OK : ledger::Result::NO_LEDGER_STATE);
 }
 
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback

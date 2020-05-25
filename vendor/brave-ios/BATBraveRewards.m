@@ -97,7 +97,7 @@
     BATBraveLedger.environment = configuration.environment;
     BATBraveLedger.testing = configuration.testing;
     BATBraveLedger.useShortRetries = configuration.useShortRetries;
-    BATBraveLedger.reconcileTime = configuration.overridenNumberOfSecondsBetweenReconcile;
+    BATBraveLedger.reconcileInterval = configuration.overridenNumberOfSecondsBetweenReconcile;
     
     [self setupLedgerAndAds];
   }

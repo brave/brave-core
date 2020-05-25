@@ -10,7 +10,6 @@ namespace prefs {
 
 const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kBraveRewardsEnabled[] = "brave.rewards.enabled";
-const char kBraveRewardsEnabledMigrated[] = "brave.rewards.enabled_migrated";
 const char kRewardsNotifications[] = "brave.rewards.notifications";
 const char kRewardsNotificationTimerInterval[]=
     "brave.rewards.notification_timer_interval";
@@ -44,5 +43,9 @@ const char kStateAllowVideoContribution[] =
     "brave.rewards.ac.allow_video_contributions";
 const char kStateScoreA[] = "brave.rewards.ac.score.a";
 const char kStateScoreB[] = "brave.rewards.ac.score.b";
+const char kStateAutoContributeEnabled[] = "brave.rewards.ac.enabled";
+const char kStateAutoContributeAmount[] = "brave.rewards.ac.amount";
+const char kStateNextReconcileStamp[] = "brave.rewards.ac.next_reconcile_stamp";
+const char kStateCreationStamp[] = "brave.rewards.creation_stamp";
 }  // namespace prefs
 }  // namespace brave_rewards
