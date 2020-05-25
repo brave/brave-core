@@ -45,6 +45,14 @@ Polymer({
     this.browserProxy_ = settings.SyncBrowserProxyImpl.getInstance();
   },
 
+  /** @private */
+  getSyncLabel_(syncStatus) {
+    const isAlreadySetup = this.syncStatus !== undefined &&
+        !this.syncStatus.firstSetupInProgress;
+    const key = isAlreadySetup ? 'braveSyncManageActionLabel' : 'braveSyncSetupActionLabel';
+    return I18nBehavior.i18n(key);
+  },
+
   /** @override */
   attached: function() {
     // We can't get sync status from people page because of brave setting
