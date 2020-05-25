@@ -216,23 +216,23 @@ public class BraveNewTabPageView extends NewTabPageView {
             result = result + (number / (base * base * base));
             number = number % (base * base * base);
             result = result + "." + (number / (10L * base * base));
-            suffix = isBytes ? "Gb" : "B";
+            suffix = isBytes ? "GB" : "B";
         } else if (number >= (10L * base * base) && number < (base * base * base)) {
             result = result + (number / (base * base));
-            suffix = isBytes ? "Mb" : "M";
+            suffix = isBytes ? "MB" : "M";
         } else if (number >= (base * base) && number < (10L * base * base)) {
             result = result + (number / (base * base));
             number = number % (base * base);
             result = result + "." + (number / (100L * base));
-            suffix = isBytes ? "Mb" : "M";
+            suffix = isBytes ? "MB" : "M";
         } else if (number >= (10L * base) && number < (base * base)) {
             result = result + (number / base);
-            suffix = isBytes ? "Kb" : "K";
+            suffix = isBytes ? "KB" : "K";
         } else if (number >= base && number < (10L * base)) {
             result = result + (number / base);
             number = number % base;
             result = result + "." + (number / 100L);
-            suffix = isBytes ? "Kb" : "K";
+            suffix = isBytes ? "KB" : "K";
         } else {
             result = result + number;
         }
