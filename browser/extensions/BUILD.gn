@@ -27,6 +27,8 @@ source_set("extensions") {
     "api/rewards_notifications_api.cc",
     "api/rewards_notifications_api.h",
     "api/image_writer_private/removable_storage_provider_android.cc",
+    "api/networking_private/networking_private_ui_delegate_android.cc",
+    "api/networking_private/networking_private_ui_delegate_android.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
     "brave_component_extension_resource_manager.cc",
