@@ -741,7 +741,7 @@ export class Panel extends React.Component<Props, State> {
         onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}
         goToUphold={this.goToUphold}
-        userName={utils.getUserName(externalWallet)}
+        greetings={utils.getGreetings(externalWallet)}
         onlyAnonWallet={this.props.onlyAnonWallet}
         {...notification}
       >

@@ -23,7 +23,7 @@ import {
 export interface Props {
   children: React.ReactNode
   onClose: () => void
-  userName: string
+  greetings: string
   id?: string
   verified?: boolean
 }
@@ -38,7 +38,7 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
     const {
       children,
       onClose,
-      userName,
+      greetings,
       id,
       verified
     } = this.props
@@ -50,7 +50,7 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
               <StyledIcon>
                 <UpholdColorIcon />
               </StyledIcon>
-              {userName}
+              {greetings}
               {
                 verified
                 ? <StyledStatus>

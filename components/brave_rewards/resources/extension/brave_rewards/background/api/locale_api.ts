@@ -59,6 +59,7 @@ export const getUIMessages = (): Record<string, string> => {
     'grantGeneralErrorText',
     'grantGeneralErrorTitle',
     'grants',
+    'greetingsVerified',
     'includeInAuto',
     'insufficientFunds',
     'insufficientFundsNotification',

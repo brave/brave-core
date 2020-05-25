@@ -149,7 +149,7 @@ export interface Props {
   onVerifyClick?: () => void
   onDisconnectClick?: () => void
   goToUphold?: () => void
-  userName?: string
+  greetings?: string
   onlyAnonWallet?: boolean
 }
 
@@ -402,14 +402,14 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   }
 
   getVerificationDetails = () => {
-    const { goToUphold, userName, onDisconnectClick, onVerifyClick, walletState } = this.props
+    const { goToUphold, greetings, onDisconnectClick, onVerifyClick, walletState } = this.props
     const verified = walletState === 'verified'
     const connected = walletState === 'connected'
 
     return (
       <WalletPopup
         onClose={this.toggleVerificationDetails}
-        userName={userName || ''}
+        greetings={greetings || ''}
         verified={verified}
       >
         {
