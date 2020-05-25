@@ -83,6 +83,8 @@ class DatabasePromotion: public DatabaseTable {
 
   bool MigrateToV18(ledger::DBTransaction* transaction);
 
+  bool MigrateToV25(ledger::DBTransaction* transaction);
+
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetPromotionCallback callback);
