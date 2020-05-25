@@ -32,8 +32,6 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
-import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -50,6 +48,8 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.ToolbarColors;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.base.MathUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -72,7 +72,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private HomeButton mHomeButton;
   private FrameLayout mShieldsLayout;
   private FrameLayout mRewardsLayout;
-  private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
+  private BraveShieldsHandler mBraveShieldsHandler;
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
   private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
   private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
@@ -141,8 +141,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveRewardsButton.setOnLongClickListener(this);
       }
 
-      mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(getContext(), R.menu.brave_shields_menu);
-      mBraveShieldsMenuHandler.addObserver(new BraveShieldsMenuObserver() {
+      mBraveShieldsHandler = new BraveShieldsHandler(getContext());
+      mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
           @Override
           public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
               Tab currentTab = getToolbarDataProvider().getTab();
@@ -156,21 +156,21 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                   currentTab.stopLoading();
               }
               currentTab.reloadIgnoringCache();
-              if (null != mBraveShieldsMenuHandler) {
+              if (null != mBraveShieldsHandler) {
                   // Clean the Bravery Panel
-                  mBraveShieldsMenuHandler.updateValues(0, 0, 0, 0);
+                  mBraveShieldsHandler.updateValues(0, 0, 0, 0);
               }
           }
       });
       mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
           @Override
           public void blockEvent(int tabId, String block_type, String subresource) {
-              mBraveShieldsMenuHandler.addStat(tabId, block_type, subresource);
+              mBraveShieldsHandler.addStat(tabId, block_type, subresource);
               Tab currentTab = getToolbarDataProvider().getTab();
               if (currentTab == null || currentTab.getId() != tabId) {
                   return;
               }
-              mBraveShieldsMenuHandler.updateValues(tabId);
+              mBraveShieldsHandler.updateValues(tabId);
           }
       };
       // Initially show shields off image. Shields button state will be updated when tab is
@@ -227,13 +227,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 if (getToolbarDataProvider().getTab() == tab) {
                     updateBraveShieldsButtonState(tab);
                 }
-                mBraveShieldsMenuHandler.clearBraveShieldsCount(tab.getId());
+                mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
             }
 
             @Override
             public void onPageLoadFinished(final Tab tab, String url) {
                 if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsMenuHandler.updateHost(url);
+                    mBraveShieldsHandler.updateHost(url);
                     updateBraveShieldsButtonState(tab);
                 }
             }
@@ -248,7 +248,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
             @Override
             public void onDestroyed(Tab tab) {
-                mBraveShieldsMenuHandler.removeStat(tab.getId());
+                mBraveShieldsHandler.removeStat(tab.getId());
             }
         };
 
@@ -266,7 +266,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void onClick(View v) {
-      if (mBraveShieldsMenuHandler == null) {
+      if (mBraveShieldsHandler == null) {
           assert false;
           return;
       }
@@ -281,7 +281,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               if (!isValidProtocolForShields(url.getProtocol())) {
                   return;
               }
-              mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.getUrl(),
+              mBraveShieldsHandler.show(mBraveShieldsButton, currentTab.getUrl(),
                   url.getHost(), currentTab.getId(), ((TabImpl)currentTab).getProfile());
           } catch (Exception e) {
               // Do nothing if url is invalid.

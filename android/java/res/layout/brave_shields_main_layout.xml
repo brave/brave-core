@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/shield_bg_color">
+
+	    <LinearLayout
+			android:id="@+id/main_layout"
+		    android:orientation="vertical"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content">
+
+		    <LinearLayout
+		      	android:id="@+id/site_layout"
+		      	android:layout_width="match_parent"
+		      	android:layout_height="wrap_content"
+		      	android:layout_gravity="center"
+		      	android:gravity="center"
+		      	android:layout_marginTop="16dp"
+		      	android:layout_marginStart="24dp"
+				android:layout_marginEnd="24dp"
+		      	android:orientation="horizontal">
+
+			    <ImageView 
+			    	android:id="@+id/site_favicon"
+				    android:layout_width="24dp"
+				    android:layout_height="24dp"
+				    android:contentDescription="@null"
+				    android:layout_marginEnd="8dp"
+				    android:layout_gravity="center_vertical"/>
+
+			    <TextView
+				    android:id="@+id/site_text"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textSize="20sp"
+				    android:layout_gravity="center_vertical"
+				    android:singleLine="true"
+        			android:ellipsize="end"
+        			android:fontFamily="sans-serif"
+				    android:textColor="@color/shield_title_color"/>
+
+			</LinearLayout>
+
+			<Switch
+		        android:id="@+id/site_switch"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:switchMinWidth="56dp"
+		        android:scaleX="2.2"
+		        android:scaleY="2.2"
+		        android:layout_marginTop="32dp"
+		        android:theme="@style/BraveSwitchTheme"
+		        android:gravity="center_horizontal"
+		        android:layout_gravity="center_horizontal" />
+
+		    <TextView
+				android:id="@+id/shield_up_text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:textSize="16sp"
+				android:gravity="center_horizontal"
+				android:textColor="@color/shield_text_color"/>
+
+			<TextView
+				android:id="@+id/shield_down_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="14sp"
+				android:gravity="center_horizontal"
+				android:textColor="@color/standard_mode_tint"
+				android:layout_marginTop="32dp"
+				android:layout_marginStart="24dp"
+				android:layout_marginEnd="24dp"
+				android:layout_marginBottom="16dp"
+				android:visibility="gone"
+				android:text="@string/brave_shields_down_text"/>
+
+			<Button
+	            android:id="@+id/btn_report_broken_site"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_horizontal"
+	            android:gravity="center"
+	            android:background="@drawable/transparent_bg_bordered"
+	            android:paddingTop="8dp"
+	            android:paddingBottom="8dp"
+	            android:paddingStart="16dp"
+	            android:paddingEnd="16dp"
+	            android:layout_marginBottom="24dp"
+	            android:text="@string/report_broken_site_text"
+	            android:textAllCaps="false"
+	            android:textSize="16sp"
+	            android:visibility="gone"
+	            android:textColor="@color/standard_mode_tint"/>
+
+			<LinearLayout
+		      	android:id="@+id/site_block_layout"
+		      	android:layout_width="match_parent"
+		      	android:layout_height="wrap_content"
+		      	android:gravity="center_horizontal"
+		      	android:layout_marginTop="16dp"
+		      	android:orientation="horizontal">
+
+			    <TextView
+				    android:id="@+id/site_block_count_text"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textSize="34sp"
+				    android:textStyle="bold"
+				    android:layout_marginEnd="16dp"
+				    android:fontFamily="sans-serif"
+				    android:textColor="@color/shield_title_color"/>
+
+			    <TextView
+				    android:id="@+id/site_block_text"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textSize="14sp"
+				    android:layout_gravity="center_vertical"
+				    android:textColor="@color/shield_title_color"/>
+
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/site_broken_warning_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="14sp"
+				android:gravity="center_horizontal"
+				android:textColor="@color/shield_secondary_color"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="16dp"
+				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp"
+				android:text="@string/site_broken_text"/>
+
+			<include 
+				android:id="@+id/brave_shields_toggle_layout_id"
+				layout="@layout/brave_shields_toggle_layout"/>
+
+			<include
+				android:id="@+id/brave_shields_secondary_layout_id"
+				layout="@layout/brave_shields_secondary_layout"/>
+
+		</LinearLayout>
+
+		<include 
+			android:id="@+id/brave_shields_block_cookies_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_block_fingerprinting_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_about_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_report_site_layout_id"
+			layout="@layout/report_broken_site_layout"/>
+
+		<include 
+			android:id="@+id/brave_shields_thank_you_layout_id"
+			layout="@layout/brave_shields_thank_you_layout"/>
+
+	</FrameLayout>
+
+</ScrollView>

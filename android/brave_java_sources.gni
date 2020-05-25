@@ -29,9 +29,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsSiteBannerActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsVerifyWalletActivity.java",
-  "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuHandler.java",
-  "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
@@ -140,7 +137,10 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/local_database/TopSiteTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/rate/RateFeedbackUtils.java"
+  "../../brave/android/java/org/chromium/chrome/browser/rate/RateFeedbackUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsMenuObserver.java",
+  "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsHandler.java",
+  "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java"
 ]
 
 if (brave_rewards_enabled) {

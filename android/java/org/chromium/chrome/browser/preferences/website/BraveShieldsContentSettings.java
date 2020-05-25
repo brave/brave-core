@@ -26,9 +26,9 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
     static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
 
-    static private final String blockResource = "block";
-    static private final String blockThirdPartyResource = "block_third_party";
-    static private final String allowResource = "allow";
+    static public final String BLOCK_RESOURCE = "block";
+    static public final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
+    static public final String ALLOW_RESOURCE = "allow";
 
     private long mNativeBraveShieldsContentSettings;
     private List<BraveShieldsContentSettingsObserver> mBraveShieldsContentSettingsObservers;
@@ -42,7 +42,7 @@ public class BraveShieldsContentSettings {
     private BraveShieldsContentSettings() {
         mNativeBraveShieldsContentSettings = 0;
         mBraveShieldsContentSettingsObservers =
-                new ArrayList<BraveShieldsContentSettingsObserver>();
+            new ArrayList<BraveShieldsContentSettingsObserver>();
         init();
     }
 
@@ -73,49 +73,51 @@ public class BraveShieldsContentSettings {
     }
 
     static public void setShields(Profile profile, String host, String resourceIndentifier, boolean value,
-            boolean fromTopShields) {
-        String setting_string = (value ? blockResource : allowResource);
+                                  boolean fromTopShields) {
+        String setting_string = (value ? BLOCK_RESOURCE : ALLOW_RESOURCE);
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             BraveShieldsContentSettingsJni.get().setBraveShieldsEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
             BraveShieldsContentSettingsJni.get().setAdControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
-            if (setting_string.equals(blockResource)) {
-                // On Android we block 3rd party cookies only
-                setting_string = blockThirdPartyResource;
-            }
-            BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
-            if (setting_string.equals(blockResource)) {
-                // On Android we temporary control 3rd party fingerprint resources only,
-                // until UI design for new shields menu is implemented
-                setting_string = blockThirdPartyResource;
-            }
-            BraveShieldsContentSettingsJni.get().setFingerprintingControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
         }
     }
 
+    public static void setShieldsValue(Profile profile, String host, String resourceIndentifier,
+                                       String settingOption, boolean fromTopShields) {
+        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            BraveShieldsContentSettingsJni.get().setFingerprintingControlType(settingOption, host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+            BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
+        }
+    }
+
     public static boolean getShields(Profile profile, String host, String resourceIndentifier) {
-        String settings = blockResource;
+        String settings = BLOCK_RESOURCE;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             return BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
             settings = BraveShieldsContentSettingsJni.get().getAdControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             return BraveShieldsContentSettingsJni.get().getHTTPSEverywhereEnabled(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
-            settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
-            settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         }
 
-        return !settings.equals(allowResource);
+        return !settings.equals(ALLOW_RESOURCE);
+    }
+
+    public static String getShieldsValue(Profile profile, String host, String resourceIndentifier) {
+        String settings = BLOCK_RESOURCE;
+        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+            settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
+        }
+        return settings;
     }
 
     @CalledByNative
