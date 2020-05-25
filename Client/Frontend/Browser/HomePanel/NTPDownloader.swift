@@ -118,6 +118,17 @@ class NTPDownloader {
             return completion(self.loadNTPResource(for: type))
         }
         
+        // For super referrer we want to load assets from cache first, then check if new resources
+        // are on the server.
+        // This is because as super referrer install we never want to show other images than the ones
+        // provided by the super referrer.
+        // In the future we might want to extend this preload from cache logic to other resource types.
+        //
+        // Note: this will call the same completion handler twice.
+        if case .superReferral = type {
+            completion(self.loadNTPResource(for: type))
+        }
+        
         // Download the NTP resource to a temporary directory
         self.downloadMetadata(type: type) { [weak self] url, cacheInfo, error in
             guard let self = self else { return }
