@@ -79,17 +79,6 @@ bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
   return can_show;
 }
 
-std::string BatAdsClientMojoBridge::GetLocale() const {
-  std::string locale = "en-US";
-
-  if (!connected()) {
-    return locale;
-  }
-
-  bat_ads_client_->GetLocale(&locale);
-  return locale;
-}
-
 uint64_t BatAdsClientMojoBridge::GetAdsPerHour() const {
   if (!connected()) {
     return 0;

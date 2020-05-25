@@ -109,7 +109,7 @@ class ConfirmationsRedeemTokenTest : public ::testing::Test {
         PlatformHelper::GetInstance()->GetPlatformName();
     const CreateConfirmationRequest request(confirmations_mock_.get());
     const std::string payload = request.CreateConfirmationRequestDTO(
-        confirmation, "test", platform);
+        confirmation, "test", platform, "US");
     confirmation.credential = request.CreateCredential(token, payload);
     confirmation.timestamp_in_seconds = 1587127747;
 

@@ -40,8 +40,6 @@ class BatAdsClientMojoBridge
   void GetClientInfo(
       ads::ClientInfo* info) const override;
 
-  std::string GetLocale() const override;
-
   bool IsNetworkConnectionAvailable() const override;
 
   void SetIdleThreshold(

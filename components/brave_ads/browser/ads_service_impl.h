@@ -353,13 +353,13 @@ class AdsServiceImpl : public AdsService,
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
 
+  std::string GetLocale() const;
+
   bool connected();
 
   // AdsClient implementation
   void GetClientInfo(
       ads::ClientInfo* info) const override;
-
-  std::string GetLocale() const override;
 
   bool IsNetworkConnectionAvailable() const override;
 

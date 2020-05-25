@@ -46,7 +46,8 @@ class CreateConfirmationRequest {
   std::string CreateConfirmationRequestDTO(
       const ConfirmationInfo& info,
       const std::string& build_channel,
-      const std::string& platform) const;
+      const std::string& platform,
+      const std::string& country_code) const;
 
   std::string CreateCredential(
       const TokenInfo& token_info,

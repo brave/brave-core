@@ -43,10 +43,6 @@ class AdsClientMojoBridge
       bool* out_is_foreground) override;
   void IsForeground(
       IsForegroundCallback callback) override;
-  bool GetLocale(
-      std::string* out_locale) override;
-  void GetLocale(
-      GetLocaleCallback callback) override;
   bool GetUserModelLanguages(
       std::vector<std::string>* out_languages) override;
   void GetUserModelLanguages(
