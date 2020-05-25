@@ -13,6 +13,10 @@ namespace page_classifier {
 
 std::string NormalizeContent(
     const std::string& content) {
+  if (content.empty()) {
+    return "";
+  }
+
   std::string normalized_content = content;
 
   const std::string escaped_characters =

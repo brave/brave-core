@@ -59,7 +59,7 @@ class PageClassifier {
   bool ShouldClassifyPagesForLocale(
       const std::string& locale) const;
 
-  const std::string& GetPageClassification(
+  std::string GetPageClassification(
       const PageProbabilitiesMap& page_probabilities) const;
 
   CategoryProbabilitiesMap GetCategoryProbabilities(
