@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
         android:textColor="@color/standard_mode_tint" />
