@@ -132,8 +132,7 @@ class BinanceService : public KeyedService {
         const int status, const std::string& body,
         const std::map<std::string, std::string>& headers);
   bool OAuthRequest(const GURL& url, const std::string& method,
-      const std::string& post_data, URLRequestCallback callback,
-      bool auto_retry_on_network_change);
+      const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();
   void OnURLLoaderComplete(
       SimpleURLLoaderList::iterator iter,
