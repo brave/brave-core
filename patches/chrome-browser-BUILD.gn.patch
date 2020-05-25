@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c659a6b7bb2 100644
+index 6f768f7848a3885d516e337bd413d91e02e6900a..dbd68252c203c9c00111e73ddf501da015c3b166 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -170,10 +170,10 @@ jumbo_static_library("browser") {
@@ -64,15 +64,7 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
        "bookmarks/bookmark_html_writer.cc",
        "bookmarks/bookmark_html_writer.h",
        "certificate_viewer.h",
-@@ -3165,6 +3167,7 @@ jumbo_static_library("browser") {
-       "first_run/first_run.h",
-       "first_run/first_run_dialog.h",
-       "first_run/first_run_internal.h",
-+      "first_run/first_run_internal_android.cc",
-       "first_run/first_run_internal_linux.cc",
-       "first_run/first_run_internal_mac.mm",
-       "first_run/first_run_internal_win.cc",
-@@ -3301,7 +3304,7 @@ jumbo_static_library("browser") {
+@@ -3301,7 +3303,7 @@ jumbo_static_library("browser") {
        "metrics/desktop_session_duration/desktop_session_duration_tracker.h",
        "metrics/first_web_contents_profiler.cc",
        "metrics/first_web_contents_profiler.h",
@@ -81,7 +73,7 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
        "metrics/tab_stats_data_store.cc",
        "metrics/tab_stats_data_store.h",
        "metrics/tab_stats_tracker.cc",
-@@ -3748,11 +3751,17 @@ jumbo_static_library("browser") {
+@@ -3748,11 +3750,11 @@ jumbo_static_library("browser") {
          "chrome_browser_main_posix.h",
          "first_run/first_run_internal_posix.cc",
          "importer/firefox_profile_lock_posix.cc",
@@ -91,17 +83,11 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
        ]
      }
 -  }
-+
-+    if (is_android) {
-+      sources += [
-+        "process_singleton_android.cc",
-+      ]
-+    }
 +  #}
  
    if (is_chromeos) {
      sources += [
-@@ -4216,7 +4225,7 @@ jumbo_static_library("browser") {
+@@ -4216,7 +4218,7 @@ jumbo_static_library("browser") {
      defines += [ "USE_CRAS" ]
    }
  
@@ -110,7 +96,7 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
      sources += [
        "first_run/upgrade_util.cc",
        "first_run/upgrade_util.h",
-@@ -4238,14 +4247,14 @@ jumbo_static_library("browser") {
+@@ -4238,14 +4240,14 @@ jumbo_static_library("browser") {
        "notifications/screen_lock_notification_blocker.cc",
        "notifications/screen_lock_notification_blocker.h",
        "platform_util.cc",
@@ -133,7 +119,7 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
        "policy/cloud/user_policy_signin_service_internal.h",
        "profiles/avatar_menu.cc",
        "profiles/avatar_menu.h",
-@@ -4275,7 +4284,8 @@ jumbo_static_library("browser") {
+@@ -4275,7 +4277,8 @@ jumbo_static_library("browser") {
        "upgrade_detector/upgrade_detector_impl.cc",
        "upgrade_detector/upgrade_detector_impl.h",
      ]
@@ -143,7 +129,7 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
      sources += [
        "media/protected_media_identifier_permission_context.cc",
        "media/protected_media_identifier_permission_context.h",
-@@ -5141,7 +5151,7 @@ jumbo_static_library("browser") {
+@@ -5141,7 +5144,7 @@ jumbo_static_library("browser") {
      }
    }
  
@@ -152,7 +138,7 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..6fbe183e9a8d9ed57d4e0c1fbdfc2c65
      sources += [
        "sessions/session_restore.cc",
        "sessions/session_restore.h",
-@@ -5490,7 +5500,7 @@ grit("resources") {
+@@ -5490,7 +5493,7 @@ grit("resources") {
      }
    }
  
