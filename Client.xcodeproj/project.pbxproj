@@ -729,6 +729,7 @@
 		74E36D781B71323500D69DA1 /* SettingsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E36D771B71323500D69DA1 /* SettingsContentViewController.swift */; };
 		78A9D0942407B3110077576C /* BraveGetUA.js in Resources */ = {isa = PBXBuildFile; fileRef = 78A9D0922407B3110077576C /* BraveGetUA.js */; };
 		78A9D0962407B4A90077576C /* BraveGetUA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A9D0952407B4A90077576C /* BraveGetUA.swift */; };
+		78BA4B602472F9F900BD0897 /* UserReferralProgramTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA4B5C2472F8C100BD0897 /* UserReferralProgramTests.swift */; };
 		7B10AA9F1E3A15020002DD08 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B10AA9E1E3A15020002DD08 /* DataExtensions.swift */; };
 		7B10AABB1E3A1F650002DD08 /* URLRequestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B10AABA1E3A1F650002DD08 /* URLRequestExtensions.swift */; };
 		7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B2142FC1E5E055000CDD3FC /* InfoPlist.strings */; };
@@ -2242,6 +2243,7 @@
 		74E36D771B71323500D69DA1 /* SettingsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsContentViewController.swift; sourceTree = "<group>"; };
 		78A9D0922407B3110077576C /* BraveGetUA.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = BraveGetUA.js; sourceTree = "<group>"; };
 		78A9D0952407B4A90077576C /* BraveGetUA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveGetUA.swift; sourceTree = "<group>"; };
+		78BA4B5C2472F8C100BD0897 /* UserReferralProgramTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgramTests.swift; sourceTree = "<group>"; };
 		7B10AA9E1E3A15020002DD08 /* DataExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtensions.swift; sourceTree = "<group>"; };
 		7B10AABA1E3A1F650002DD08 /* URLRequestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestExtensions.swift; sourceTree = "<group>"; };
 		7B2142FD1E5E055000CDD3FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -4247,6 +4249,7 @@
 				5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */,
 				2777273F22EB44B300F0214C /* StringExtensionTests.swift */,
 				5EEB25DD234E667700279091 /* CertificatePinningTest.swift */,
+				78BA4B5C2472F8C100BD0897 /* UserReferralProgramTests.swift */,
 			);
 			path = BraveSharedTests;
 			sourceTree = "<group>";
@@ -6311,6 +6314,7 @@
 			files = (
 				A176323C20CF2AF900126F25 /* DeferredTestUtils.swift in Sources */,
 				5DE7689420B3456E00FF5533 /* BraveSharedTests.swift in Sources */,
+				78BA4B602472F9F900BD0897 /* UserReferralProgramTests.swift in Sources */,
 				2777274022EB44B300F0214C /* StringExtensionTests.swift in Sources */,
 				27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */,
 				5965CA222215D4A0000B9EC1 /* CustomHeaderDataTests.swift in Sources */,
