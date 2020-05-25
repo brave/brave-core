@@ -1,5 +1,10 @@
 
 source_set("system_cpu") {
+  deps = [
+    "//base",
+    "//extensions/common/api",
+  ]
+
   sources = [
     "cpu_info_provider_android.cc",
   ]

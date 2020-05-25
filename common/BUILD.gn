@@ -72,6 +72,7 @@ source_set("common") {
     sources += [
       "importer/chrome_importer_utils.cc",
       "importer/chrome_importer_utils.h",
+      "importer/firefox_importer_utils_android.cc",
       "importer/importer_constants.h",
     ]
   #}
