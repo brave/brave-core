@@ -155,7 +155,7 @@ bool BinanceService::GetAccessToken(GetAccessTokenCallback callback) {
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
   auth_token_.clear();
   return OAuthRequest(
-      base_url, "POST", url.query(), std::move(internal_callback), true, true);
+      base_url, "POST", url.query(), std::move(internal_callback), true);
 }
 
 bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
@@ -163,8 +163,7 @@ bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(oauth_host_, oauth_path_account_balances);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(
-      url, "GET", "", std::move(internal_callback), true, false);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback), true);
 }
 
 void BinanceService::OnGetAccountBalances(GetAccountBalancesCallback callback,
@@ -197,18 +196,13 @@ bool BinanceService::OAuthRequest(const GURL &url,
                                   const std::string& method,
                                   const std::string& post_data,
                                   URLRequestCallback callback,
-                                  bool auto_retry_on_network_change,
-                                  bool send_save_cookies) {
+                                  bool auto_retry_on_network_change) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
-  request->load_flags = net::LOAD_BYPASS_CACHE |
+  request->load_flags = net::LOAD_DO_NOT_SEND_COOKIES |
+                        net::LOAD_DO_NOT_SAVE_COOKIES |
+                        net::LOAD_BYPASS_CACHE |
                         net::LOAD_DISABLE_CACHE;
-
-  if (!send_save_cookies) {
-    request->load_flags |= net::LOAD_DO_NOT_SEND_COOKIES;
-    request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
-  }
-
   request->method = method;
 
   auto url_loader = network::SimpleURLLoader::Create(
@@ -349,8 +343,7 @@ bool BinanceService::GetConvertQuote(
   url = net::AppendQueryParameter(url, "baseAsset", from);
   url = net::AppendQueryParameter(url, "amount", amount);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(
-      url, "POST", "", std::move(internal_callback), true, false);
+  return OAuthRequest(url, "POST", "", std::move(internal_callback), true);
 }
 
 void BinanceService::OnGetConvertQuote(
@@ -372,8 +365,7 @@ bool BinanceService::GetCoinNetworks(GetCoinNetworksCallback callback) {
   auto internal_callback = base::BindOnce(&BinanceService::OnGetCoinNetworks,
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(gateway_host_, gateway_path_networks);
-  return OAuthRequest(
-      url, "GET", "", std::move(internal_callback), true, false);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback), true);
 }
 
 void BinanceService::OnGetCoinNetworks(
@@ -396,8 +388,7 @@ bool BinanceService::GetDepositInfo(const std::string& symbol,
   url = net::AppendQueryParameter(url, "coin", symbol);
   url = net::AppendQueryParameter(url, "network", ticker_network);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(
-      url, "GET", "", std::move(internal_callback), true, false);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback), true);
 }
 
 void BinanceService::OnGetDepositInfo(
@@ -423,8 +414,7 @@ bool BinanceService::ConfirmConvert(const std::string& quote_id,
   GURL url = GetURLWithPath(oauth_host_, oauth_path_convert_confirm);
   url = net::AppendQueryParameter(url, "quoteId", quote_id);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(
-      url, "POST", "", std::move(internal_callback), false, false);
+  return OAuthRequest(url, "POST", "", std::move(internal_callback), false);
 }
 
 void BinanceService::OnConfirmConvert(
@@ -447,8 +437,7 @@ bool BinanceService::GetConvertAssets(GetConvertAssetsCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(oauth_host_, oauth_path_convert_assets);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(
-      url, "GET", "", std::move(internal_callback), true, false);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback), true);
 }
 
 void BinanceService::OnGetConvertAssets(GetConvertAssetsCallback callback,
@@ -468,8 +457,7 @@ bool BinanceService::RevokeToken(RevokeTokenCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(oauth_host_, oauth_path_revoke_token);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(
-      url, "POST", "", std::move(internal_callback), true, false);
+  return OAuthRequest(url, "POST", "", std::move(internal_callback), true);
 }
 
 void BinanceService::OnRevokeToken(RevokeTokenCallback callback,
