@@ -51,7 +51,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
+public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private static final String BRAVE_TERMS_PAGE = "https://basicattentiontoken.org/user-terms-of-service/";
     private static final String BRAVE_REWARDS_LEARN_MORE = "https://brave.com/faq-rewards";
 
@@ -65,12 +65,12 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
-    	if (getArguments()!=null) {
-    		ntpType = getArguments().getInt(SponsoredImageUtil.NTP_TYPE,1);
-    	}
-        return inflater.inflate(R.layout.ntp_bottom_sheet, container,false);
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            ntpType = getArguments().getInt(SponsoredImageUtil.NTP_TYPE, 1);
+        }
+        return inflater.inflate(R.layout.ntp_bottom_sheet, container, false);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
         super.onConfigurationChanged(newConfig);
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if(isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
             getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
         } else {
             getDialog().getWindow().setLayout(-1, -1);
@@ -98,7 +98,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
         newTabPageListener.updateInteractableFlag(false);
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if(isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
+        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
             getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
         } else {
             getDialog().getWindow().setLayout(-1, -1);
@@ -124,14 +124,22 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
         });
 
         ImageView btnClose = view.findViewById(R.id.ntp_bottom_sheet_close);
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
         Button turnOnAdsButton = view.findViewById(R.id.btn_turn_on_ads);
+        TextView bottomSheetTitleText = view.findViewById(R.id.ntp_bottom_sheet_title);
+        TextView bottomSheetText = view.findViewById(R.id.ntp_bottom_sheet_text);
+        TextView bottomSheetTosText = view.findViewById(R.id.ntp_bottom_sheet_tos_text);
+        TextView learnMoreText = view.findViewById(R.id.learn_more_text);
+        TextView hideSponsoredImagesText = view.findViewById(R.id.hide_sponsored_images_text);
+
+        if (btnClose != null) {
+            btnClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+        }
+
         if (turnOnAdsButton != null) {
             turnOnAdsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -142,20 +150,8 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
             });
         }
 
-        Button turnOnRewardsButton = view.findViewById(R.id.btn_turn_on_rewards);
-        if (turnOnRewardsButton != null) {
-            turnOnRewardsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    turnOnRewards();
-                    dismiss();
-                }
-            });
-        }
-
-        Button learnMoreButton = view.findViewById(R.id.btn_learn_more);
-        if (learnMoreButton != null) {
-            learnMoreButton.setOnClickListener(new View.OnClickListener() {
+        if (learnMoreText != null) {
+            learnMoreText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     NTPUtil.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
@@ -164,126 +160,48 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
             });
         }
 
-        TextView bottomSheetTitleText= view.findViewById(R.id.ntp_bottom_sheet_title);
-        TextView bottomSheetText= view.findViewById(R.id.ntp_bottom_sheet_text);
+        if (hideSponsoredImagesText != null) {
+            hideSponsoredImagesText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hideSponsoredImages();
+                    dismiss();
+                }
+            });
+        }
 
         switch (ntpType) {
-            case SponsoredImageUtil.BR_OFF:
-                bottomSheetTitleText.setText(getResources().getString(R.string.turn_on_brave_ads_to_claim));
-                turnOnRewardsButton.setVisibility(View.VISIBLE);
-                learnMoreButton.setVisibility(View.VISIBLE);
-                String brOffText = String.format(getResources().getString(R.string.ntp_tos_text), getResources().getString(R.string.terms_of_service), getResources().getString(R.string.hide_sponsored_images));
-                int termsOfServiceIndex = brOffText.indexOf(getResources().getString(R.string.terms_of_service));
-                Spanned brOffTextSpanned = BraveRewardsHelper.spannedFromHtmlString(brOffText);
-                SpannableString brOffTextSS = new SpannableString(brOffTextSpanned.toString());
+        case SponsoredImageUtil.BR_ON_ADS_OFF:
+            bottomSheetTitleText.setText(getResources().getString(R.string.earn_tokens_for_viewing_title));
+            turnOnAdsButton.setVisibility(View.VISIBLE);
 
-                ClickableSpan tosClickableSpan = new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View textView) {
-                        CustomTabActivity.showInfoPage(getActivity(), BRAVE_TERMS_PAGE);
-                    }
-                    @Override
-                    public void updateDrawState(@NonNull TextPaint ds) {
-                        super.updateDrawState(ds);
-                        ds.setUnderlineText(false);
-                    }
-                };
+            bottomSheetTosText.setVisibility(View.VISIBLE);
+            String tosText = String.format(getResources().getString(R.string.ntp_tos_text), getResources().getString(R.string.terms_of_service));
+            int termsOfServiceIndex = tosText.indexOf(getResources().getString(R.string.terms_of_service));
+            Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
+            SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
 
-                ClickableSpan brOffHideSponsoredImagesClickableSpan = new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View textView) {
-                        hideSponsoredImages();
-                        dismiss();
-                    }
-                    @Override
-                    public void updateDrawState(@NonNull TextPaint ds) {
-                        super.updateDrawState(ds);
-                        ds.setUnderlineText(false);
-                    }
-                };
+            ClickableSpan tosClickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View textView) {
+                    CustomTabActivity.showInfoPage(getActivity(), BRAVE_TERMS_PAGE);
+                }
+                @Override
+                public void updateDrawState(@NonNull TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
 
-                brOffTextSS.setSpan(tosClickableSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                brOffTextSS.setSpan(brOffHideSponsoredImagesClickableSpan, (brOffTextSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOffTextSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
-                ForegroundColorSpan brOffForegroundSpan2 = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
-                brOffTextSS.setSpan(brOffForegroundSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                brOffTextSS.setSpan(brOffForegroundSpan2, (brOffTextSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOffTextSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                bottomSheetText.setMovementMethod(LinkMovementMethod.getInstance());
-                bottomSheetText.setText(brOffTextSS);
-                break;
-            case SponsoredImageUtil.BR_ON_ADS_OFF:
-                bottomSheetTitleText.setText(getResources().getString(R.string.turn_on_brave_ads_to_claim));
-                turnOnAdsButton.setVisibility(View.VISIBLE);
-                String brOnAdsOffText = String.format( getResources().getString(R.string.br_on_ads_on_text2), getResources().getString(R.string.hide_sponsored_images));
-                Spanned brOnAdsOffSpanned = BraveRewardsHelper.spannedFromHtmlString(brOnAdsOffText);
-                SpannableString brOnAdsOffSS = new SpannableString(brOnAdsOffSpanned.toString());
-
-                ClickableSpan brOnAdsOffHideSponsoredImagesClickableSpan = new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View textView) {
-                        hideSponsoredImages();
-                        dismiss();
-                    }
-                    @Override
-                    public void updateDrawState(@NonNull TextPaint ds) {
-                        super.updateDrawState(ds);
-                        ds.setUnderlineText(false);
-                    }
-                };
-
-                brOnAdsOffSS.setSpan(brOnAdsOffHideSponsoredImagesClickableSpan, (brOnAdsOffSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOnAdsOffSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                ForegroundColorSpan brOnAdsOffForegroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
-                brOnAdsOffSS.setSpan(brOnAdsOffForegroundSpan, (brOnAdsOffSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOnAdsOffSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                bottomSheetText.setMovementMethod(LinkMovementMethod.getInstance());
-                bottomSheetText.setText(brOnAdsOffSS);
-                break;
-            case SponsoredImageUtil.BR_ON_ADS_ON:
-                bottomSheetTitleText.setText(getResources().getString(R.string.you_are_getting_paid));
-                String brOnAdsOnText = String.format(getResources().getString(R.string.br_on_ads_on_text), getResources().getString(R.string.learn_more), getResources().getString(R.string.hide_sponsored_images));
-                Spanned brOnAdsOnSpanned = BraveRewardsHelper.spannedFromHtmlString(brOnAdsOnText);
-                SpannableString brOnAdsOnSS = new SpannableString(brOnAdsOnSpanned.toString());
-
-                ClickableSpan learnMoreClickableSpan = new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View textView) {
-                        NTPUtil.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
-                        dismiss();
-                    }
-                    @Override
-                    public void updateDrawState(@NonNull TextPaint ds) {
-                        super.updateDrawState(ds);
-                        ds.setUnderlineText(false);
-                    }
-                };
-
-                ClickableSpan brOnAdsOnHideSponsoredImagesClickableSpan = new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View textView) {
-                        hideSponsoredImages();
-                        dismiss();
-                    }
-                    @Override
-                    public void updateDrawState(@NonNull TextPaint ds) {
-                        super.updateDrawState(ds);
-                        ds.setUnderlineText(false);
-                    }
-                };
-
-                brOnAdsOnSS.setSpan(learnMoreClickableSpan, 0, getResources().getString(R.string.learn_more).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                brOnAdsOnSS.setSpan(brOnAdsOnHideSponsoredImagesClickableSpan, (brOnAdsOnSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOnAdsOnSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                ForegroundColorSpan brOnAdsOnForegroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
-                ForegroundColorSpan brOnAdsOnForegroundSpan2 = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
-                brOnAdsOnSS.setSpan(brOnAdsOnForegroundSpan, 0, getResources().getString(R.string.learn_more).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                brOnAdsOnSS.setSpan(brOnAdsOnForegroundSpan2, (brOnAdsOnSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOnAdsOnSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                bottomSheetText.setMovementMethod(LinkMovementMethod.getInstance());
-                bottomSheetText.setText(brOnAdsOnSS);
-                break;
+            tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
+            tosTextSS.setSpan(brOffForegroundSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            bottomSheetTosText.setMovementMethod(LinkMovementMethod.getInstance());
+            bottomSheetTosText.setText(tosTextSS);
+            break;
+        case SponsoredImageUtil.BR_ON_ADS_ON:
+            bottomSheetTitleText.setText(getResources().getString(R.string.you_are_earning_tokens2));
+            break;
         }
     }
 
@@ -303,7 +221,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
 
     private void reloadTab() {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
+        if (chromeTabbedActivity != null) {
             Tab currentTab = chromeTabbedActivity.getActivityTab();
             SponsoredTab sponsoredTab = TabAttributes.from(currentTab).get(String.valueOf(((TabImpl)currentTab).getId()));
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
