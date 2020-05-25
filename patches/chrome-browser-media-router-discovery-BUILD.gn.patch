@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/media/router/discovery/BUILD.gn b/chrome/browser/media/router/discovery/BUILD.gn
-index 902ab86980a7f516d49387ccb4424e60f67041e3..7bbb87740173d203ea5656acd8208f9c412debeb 100644
+index 902ab86980a7f516d49387ccb4424e60f67041e3..6b9581cd4a4cac6ba5a8c0eb27b74afea3338e7a 100644
 --- a/chrome/browser/media/router/discovery/BUILD.gn
 +++ b/chrome/browser/media/router/discovery/BUILD.gn
 @@ -2,7 +2,7 @@
@@ -11,7 +11,7 @@ index 902ab86980a7f516d49387ccb4424e60f67041e3..7bbb87740173d203ea5656acd8208f9c
  
  static_library("discovery") {
    inputs = [ "$root_gen_dir/chrome/grit/generated_resources.h" ]
-@@ -75,10 +75,14 @@ static_library("discovery") {
+@@ -75,7 +75,7 @@ static_library("discovery") {
      sources += [ "discovery_network_list_wifi_linux.cc" ]
    }
  
@@ -20,10 +20,9 @@ index 902ab86980a7f516d49387ccb4424e60f67041e3..7bbb87740173d203ea5656acd8208f9c
      sources += [ "discovery_network_list_posix.cc" ]
    }
  
-+  if (is_android) {
-+    sources += [ "discovery_network_list_android.cc" ]
-+  }
-+
-   if (is_mac) {
-     sources += [ "discovery_network_list_wifi_mac.mm" ]
-     libs = [ "CoreWLAN.framework" ]
+@@ -88,4 +88,5 @@ static_library("discovery") {
+     sources += [ "discovery_network_list_win.cc" ]
+     libs = [ "iphlpapi.lib" ]
+   }
++  deps += ["//brave/browser/media/router/discovery"]
+ }

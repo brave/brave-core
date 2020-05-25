@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc b/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc
-index f4ec25dd253b06afac41abeb556ce90423be57d6..e4801dfa501136a4aa4bbd04625da1c899ad0254 100644
+index f4ec25dd253b06afac41abeb556ce90423be57d6..0ea2eb91a82429a3de0160d257e3bf24405d2ccd 100644
 --- a/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc
 +++ b/chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_factory_impl.cc
 @@ -10,6 +10,8 @@
@@ -7,7 +7,7 @@ index f4ec25dd253b06afac41abeb556ce90423be57d6..e4801dfa501136a4aa4bbd04625da1c8
  #if defined(OS_CHROMEOS)
  #include "chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_chromeos.h"
 +#elif defined(OS_ANDROID)
-+#include "chrome/browser/extensions/api/networking_private/networking_private_ui_delegate_android.h"
++#include "brave/browser/extensions/api/networking_private/networking_private_ui_delegate_android.h"
  #endif
  
  namespace extensions {
