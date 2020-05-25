@@ -110,8 +110,12 @@ bool PageClassifier::ShouldClassifyPagesForLocale(
   return true;
 }
 
-const std::string& PageClassifier::GetPageClassification(
+std::string PageClassifier::GetPageClassification(
     const PageProbabilitiesMap& page_probabilities) const {
+  if (page_probabilities.empty()) {
+    return "";
+  }
+
   const auto iter = std::max_element(page_probabilities.begin(),
       page_probabilities.end(), [](const CategoryProbabilityPair& a,
           const CategoryProbabilityPair& b) -> bool {
@@ -166,6 +170,10 @@ CategoryProbabilitiesList PageClassifier::GetWinningCategoryProbabilities(
 void PageClassifier::CachePageProbabilities(
     const std::string& url,
     const PageProbabilitiesMap& page_probabilities) {
+  if (page_probabilities.empty()) {
+    return;
+  }
+
   const auto iter = page_probabilities_cache_.find(url);
   if (iter == page_probabilities_cache_.end()) {
     page_probabilities_cache_.insert({url, page_probabilities});
