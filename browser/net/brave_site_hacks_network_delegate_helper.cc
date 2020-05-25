@@ -38,6 +38,8 @@ const std::string& GetQueryStringTrackers() {
       std::vector<std::string>(
           {// https://github.com/brave/brave-browser/issues/4239
            "fbclid", "gclid", "msclkid", "mc_eid",
+           // https://github.com/brave/brave-browser/issues/9879
+           "dclid",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
       "|"));
