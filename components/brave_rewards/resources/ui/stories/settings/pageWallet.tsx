@@ -335,7 +335,6 @@ class PageWallet extends React.Component<Props, State> {
                     }
                   }
                 ]}
-                paymentDay={12}
             />
             : null
         }

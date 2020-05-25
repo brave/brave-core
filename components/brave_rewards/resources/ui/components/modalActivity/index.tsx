@@ -21,8 +21,7 @@ import {
   StyledActionIcon,
   Tabs,
   Tab,
-  TabContent,
-  PaymentMonthly
+  TabContent
 } from './style'
 import TableActivity, { DetailRow as ActivityRow } from '../tableActivity'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
@@ -59,7 +58,6 @@ export interface Props {
   transactionRows: TransactionRow[]
   id?: string
   summary: SummaryItem[]
-  paymentDay: number,
   onlyAnonWallet?: boolean
 }
 
@@ -194,7 +192,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   }
 
   getMonthlyContributionTable = () => {
-    const { activityRows, paymentDay } = this.props
+    const { activityRows } = this.props
     const rows = activityRows.filter(row => row.type === 'monthly')
 
     return (
@@ -204,15 +202,12 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
         >
           {getLocale('noActivity')}
         </TableActivity>
-        <PaymentMonthly>
-          {getLocale('paymentMonthly', { day: paymentDay })}
-        </PaymentMonthly>
       </>
     )
   }
 
   getAutoContributeTable = () => {
-    const { activityRows, paymentDay } = this.props
+    const { activityRows } = this.props
     const rows = activityRows.filter(row => row.type === 'contribute')
 
     return (
@@ -222,9 +217,6 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
         >
           {getLocale('noActivity')}
         </TableActivity>
-        <PaymentMonthly>
-          {getLocale('paymentMonthly', { day: paymentDay })}
-        </PaymentMonthly>
       </>
     )
   }

@@ -116,14 +116,3 @@ export const Tab = styled<TabProps, 'button'>('button')`
 
 export const TabContent = styled<{}, 'div'>('div')`
 `
-
-export const PaymentMonthly = styled<{}, 'p'>('p')`
-  font-size: 14px;
-  font-weight: 300;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
-  text-transform: none;
-  padding: 0px;
-  margin: -8px 0 24px;
-  display: block;
-`

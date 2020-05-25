@@ -718,17 +718,11 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   generateMonthlyReport = () => {
-    const {
-      monthlyReport,
-      ui,
-      reconcileStamp
-    } = this.props.rewardsData
+    const { monthlyReport, ui } = this.props.rewardsData
 
     if (!monthlyReport || monthlyReport.year === -1 || monthlyReport.month === -1) {
       return undefined
     }
-
-    const paymentDay = new Intl.DateTimeFormat('default', { day: 'numeric' }).format(reconcileStamp * 1000)
 
     return (
       <ModalActivity
@@ -739,7 +733,6 @@ class PageWallet extends React.Component<Props, State> {
         months={this.getMonthlyReportDropDown()}
         onClose={this.onModalActivityToggle}
         onMonthChange={this.onModalActivityAction.bind(this,'onMonthChange')}
-        paymentDay={parseInt(paymentDay, 10)}
       />
     )
   }
