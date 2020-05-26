@@ -1,0 +1,7 @@
+import("//brave/components/brave_together/buildflags/buildflags.gni")
+
+source_set("browser") {
+  public_deps = [
+    "//brave/components/brave_together/buildflags",
+  ]
+}

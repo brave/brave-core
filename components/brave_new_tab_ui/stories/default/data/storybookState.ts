@@ -44,6 +44,15 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean) {
   return dummyBrandedWallpaper
 }
 
+function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
+  switch (firstWidget) {
+    case 'together':
+      return ['rewards', 'binance', 'together']
+    default:
+      return ['together', 'binance', 'rewards']
+  }
+}
+
 export const getNewTabData = (state: NewTab.State = defaultState) => ({
   ...state,
   brandedWallpaperData: shouldShowBrandedWallpaperData(
@@ -59,6 +68,8 @@ export const getNewTabData = (state: NewTab.State = defaultState) => ({
   showClock: boolean('Show clock?', true),
   showTopSites: boolean('Show top sites?', true),
   showRewards: boolean('Show rewards?', true),
+  showTogether: boolean('Show together?', true),
+  togetherSupported: boolean('Together supported?', true),
   showBinance: boolean('Show Binance?', true),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {
@@ -66,8 +77,13 @@ export const getNewTabData = (state: NewTab.State = defaultState) => ({
     adsBlockedStat: number('Number of blocked items', 1337),
     httpsUpgradesStat: number('Number of HTTPS upgrades', 1337)
   },
+  // TODO(petemill): Support binance state when binance can be included without chrome.* APIs
+  // binanceState: {
+  //   ...state.binanceState,
+  //   binanceSupported: boolean('Binance supported?', true)
+  // },
   initialDataLoaded: true,
-  currentStackWidget: 'rewards' as NewTab.StackWidget
+  widgetStackOrder: getWidgetStackOrder(select('First widget', ['together', 'rewards'], 'rewards'))
 })
 
 export const getGridSitesData = (

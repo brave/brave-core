@@ -16,6 +16,7 @@ export type InitialData = {
   topSites: chrome.topSites.MostVisitedURL[]
   defaultSuperReferralTopSites: undefined | NewTab.DefaultSuperReferralTopSite[]
   brandedWallpaperData: undefined | NewTab.BrandedWallpaper
+  togetherSupported: boolean
 }
 
 export type PreInitialRewardsData = {
@@ -42,14 +43,24 @@ export async function getInitialData (): Promise<InitialData> {
       privateTabData,
       topSites,
       defaultSuperReferralTopSites,
-      brandedWallpaperData
+      brandedWallpaperData,
+      togetherSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
       topSitesAPI.getTopSites(),
       !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
-      !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
+      !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined),
+      new Promise((resolve) => {
+        if (!('braveTogether' in chrome)) {
+          resolve(false)
+        }
+
+        chrome.braveTogether.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
+      })
     ])
     console.timeStamp('Got all initial data.')
     return {
@@ -58,8 +69,9 @@ export async function getInitialData (): Promise<InitialData> {
       privateTabData,
       topSites,
       defaultSuperReferralTopSites,
-      brandedWallpaperData
-    }
+      brandedWallpaperData,
+      togetherSupported
+    } as InitialData
   } catch (e) {
     console.error(e)
     throw Error('Error getting initial data')

@@ -22,6 +22,7 @@
     properties: {
       isSuperReferralActive_: Boolean,
       isBinanceSupported_: Boolean,
+      isBraveTogetherSupported_: Boolean,
     },
 
     /** @override */
@@ -29,6 +30,7 @@
       this.browserProxy_ = settings.BraveNewTabBrowserProxyImpl.getInstance();
       this.isSuperReferralActive_ = false;
       this.isBinanceSupported_ = false;
+      this.isBraveTogetherSupported_ = false;
     },
 
     /** @override */
@@ -38,6 +40,9 @@
       })
       this.browserProxy_.getIsBinanceSupported().then(isBinanceSupported => {
         this.isBinanceSupported_ = isBinanceSupported;
+      })
+      this.browserProxy_.getIsBraveTogetherSupported().then(isBraveTogetherSupported => {
+        this.isBraveTogetherSupported_ = isBraveTogetherSupported;
       })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {

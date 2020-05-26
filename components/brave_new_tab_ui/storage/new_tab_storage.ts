@@ -17,10 +17,12 @@ export const defaultState: NewTab.State = {
   showClock: false,
   showTopSites: false,
   showRewards: false,
+  showTogether: false,
   showBinance: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   showEmptyPage: false,
+  togetherSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
@@ -53,7 +55,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['binance', 'rewards'],
+  widgetStackOrder: ['together', 'binance', 'rewards'],
   binanceState: {
     userTLD: 'com',
     initialFiat: 'USD',
@@ -139,18 +141,19 @@ export const migrateStackWidgetSettings = (state: NewTab.State) => {
   state.widgetStackOrder = widgetStackOrder as NewTab.StackWidget[]
   state.removedStackWidgets = removedStackWidgets as NewTab.StackWidget[]
   state.currentStackWidget = ''
+  return state
+}
 
-  // Ensure any new stack widgets introduced are put behind
-  // the others, and not re-added unecessarily if removed
-  // at one point.
-  const defaultWidgets = defaultState.widgetStackOrder
-  defaultWidgets.map((widget: NewTab.StackWidget) => {
+// Ensure any new stack widgets introduced are put behind
+// the others, and not re-added unecessarily if removed
+// at one point.
+export const addNewStackWidget = (state: NewTab.State) => {
+  defaultState.widgetStackOrder.map((widget: NewTab.StackWidget) => {
     if (!state.widgetStackOrder.includes(widget) &&
         !state.removedStackWidgets.includes(widget)) {
       state.widgetStackOrder.unshift(widget)
     }
   })
-
   return state
 }
 
@@ -193,7 +196,7 @@ export const load = (): NewTab.State => {
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
-      showEmptyPage: data.showEmptyPage,
+      togetherSupported: data.togetherSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
       removedStackWidgets: data.removedStackWidgets,

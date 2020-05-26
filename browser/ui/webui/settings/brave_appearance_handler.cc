@@ -10,6 +10,7 @@
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/brave_together/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -20,6 +21,10 @@
 
 #if BUILDFLAG(BINANCE_ENABLED)
 #include "brave/browser/binance/binance_util.h"
+#endif
+
+#if BUILDFLAG(BRAVE_TOGETHER_ENABLED)
+#include "brave/browser/brave_together/brave_together_util.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -76,6 +81,10 @@ void BraveAppearanceHandler::RegisterMessages() {
       "getIsBinanceSupported",
       base::BindRepeating(&BraveAppearanceHandler::GetIsBinanceSupported,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsBraveTogetherSupported",
+      base::BindRepeating(&BraveAppearanceHandler::GetIsBraveTogetherSupported,
+                          base::Unretained(this)));
 }
 
 void BraveAppearanceHandler::SetBraveThemeType(const base::ListValue* args) {
@@ -118,6 +127,21 @@ void BraveAppearanceHandler::GetIsBinanceSupported(
   bool is_supported = false;
 #else
   bool is_supported = binance::IsBinanceSupported(profile_);
+#endif
+
+  ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));
+}
+
+void BraveAppearanceHandler::GetIsBraveTogetherSupported(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  AllowJavascript();
+
+#if !BUILDFLAG(BRAVE_TOGETHER_ENABLED)
+  bool is_supported = false;
+#else
+  bool is_supported = brave_together::IsBraveTogetherSupported(profile_);
 #endif
 
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));

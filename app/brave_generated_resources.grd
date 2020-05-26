@@ -285,6 +285,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Brave Rewards show/hide feature toggle">
         Brave Rewards
       </message>
+      <message name="IDS_SETTINGS_NEW_TAB_TOGETHER" desc="The label for Brave Together show/hide feature toggle">
+        Brave Together
+      </message>
       <message name="IDS_SETTINGS_NEW_TAB_BINANCE" desc="The label for Binance show/hide feature toggle">
         Binance
       </message>

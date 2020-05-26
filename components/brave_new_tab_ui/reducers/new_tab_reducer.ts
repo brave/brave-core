@@ -37,7 +37,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
         brandedWallpaperData: initialDataPayload.brandedWallpaperData,
-        ...initialDataPayload.privateTabData
+        ...initialDataPayload.privateTabData,
+        togetherSupported: initialDataPayload.togetherSupported
       }
       if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
@@ -68,6 +69,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       if (state.currentStackWidget) {
         state = storage.migrateStackWidgetSettings(state)
       }
+      state = storage.addNewStackWidget(state)
 
       break
 
