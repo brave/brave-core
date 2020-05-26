@@ -38,7 +38,6 @@ declare namespace NewTab {
     favicon: string
     letter: string
     pinnedIndex: number | undefined
-    bookmarkInfo: chrome.bookmarks.BookmarkTreeNode | undefined
   }
 
   // This is preserved for migration reasons.

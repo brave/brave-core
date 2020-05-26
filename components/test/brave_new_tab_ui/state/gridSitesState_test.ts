@@ -263,43 +263,6 @@ describe('gridSitesState', () => {
       expect(assertion.gridSites).toHaveLength(2)
     })
   })
-  describe('gridSitesReducerUpdateSiteBookmarkInfo', () => {
-    it('update own bookmarkInfo with the specified value', () => {
-      const topSiteUrl: NewTab.Site = gridSites[0].url
-      const sites: NewTab.Sites[] = [{ ...gridSites[0], bookmarkInfo: 'NEW_INFO' }]
-      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites: sites }
-
-      const assertion = gridSitesState
-        .gridSitesReducerUpdateSiteBookmarkInfo(newState, topSiteUrl)
-
-      expect(assertion.gridSites[0])
-        .toHaveProperty('bookmarkInfo', 'NEW_INFO')
-    })
-  })
-  describe('gridSitesReducerToggleTopSiteBookmarked', () => {
-    it('add own add bookmarkInfo if url has no data', () => {
-      const siteUrl: string = gridSites[0].url
-      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
-
-      const assertion = gridSitesState
-        .gridSitesReducerToggleSiteBookmarkInfo(newState, siteUrl, undefined)
-
-      expect(assertion.gridSites[0].bookmarkInfo).not.toBeUndefined()
-    })
-    it('remove own bookmarkInfo if url has data', () => {
-      const siteUrl: string = gridSites[0].url
-      const topSiteBookmarkInfo: chrome.bookmarks.BookmarkTreeNode = {
-        title: 'cool bookmark',
-        id: ''
-      }
-      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
-
-      const assertion = gridSitesState
-        .gridSitesReducerToggleSiteBookmarkInfo(newState, siteUrl, topSiteBookmarkInfo)
-
-      expect(assertion.gridSites[0].bookmarkInfo).toBeUndefined()
-    })
-  })
   describe('gridSitesReducerAddSiteOrSites', () => {
     it('add sites to state.gridSites list', () => {
       const newSite: NewTab.Site = { ...gridSites[0], id: 'topsite-111', url: 'https://example.com' }

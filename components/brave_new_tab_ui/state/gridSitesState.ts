@@ -9,7 +9,6 @@ import {
   isExistingGridSite,
   getGridSitesWhitelist,
   isGridSitePinned,
-  isGridSiteBookmarked,
   filterFromExcludedSites,
   filterDuplicatedSitesbyIndexOrUrl
 } from '../helpers/newTabUtils'
@@ -170,54 +169,6 @@ export function gridSitesReducerUndoRemoveAllSites (
 
   // Put them back into grid
   state = gridSitesReducerAddSiteOrSites(state, allRemovedSites)
-  return state
-}
-
-export const gridSitesReducerUpdateSiteBookmarkInfo = (
-  state: NewTab.GridSitesState,
-  bookmarkInfo: chrome.bookmarks.BookmarkTreeNode
-): NewTab.GridSitesState => {
-  const updatedGridSites: NewTab.Site[] = []
-  for (const [index, gridSite] of state.gridSites.entries()) {
-    const updatedBookmarkTreeNode = bookmarkInfo[index]
-    if (
-      updatedBookmarkTreeNode !== undefined &&
-      gridSite.url === updatedBookmarkTreeNode.url
-    ) {
-      updatedGridSites.push({
-        ...gridSite,
-        bookmarkInfo: updatedBookmarkTreeNode
-      })
-    } else {
-      updatedGridSites.push(gridSite)
-    }
-  }
-  state = gridSitesReducerDataUpdated(state, updatedGridSites)
-  return state
-}
-
-export const gridSitesReducerToggleSiteBookmarkInfo = (
-  state: NewTab.GridSitesState,
-  url: string,
-  bookmarkInfo: chrome.bookmarks.BookmarkTreeNode
-): NewTab.GridSitesState => {
-  const updatedGridSites: NewTab.Site[] = []
-  for (const gridSite of state.gridSites) {
-    if (url === gridSite.url) {
-      updatedGridSites.push({
-        ...gridSite,
-        bookmarkInfo: isGridSiteBookmarked(bookmarkInfo)
-          ? undefined
-          // Add a transitory state for bookmarks.
-          // This will be overriden by a new mount and is used
-          // as a secondary render until data is ready,
-          : { title: gridSite.title, id: 'TEMPORARY' }
-      })
-    } else {
-      updatedGridSites.push(gridSite)
-    }
-  }
-  state = gridSitesReducerDataUpdated(state, updatedGridSites)
   return state
 }
 

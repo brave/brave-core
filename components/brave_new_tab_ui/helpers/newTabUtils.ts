@@ -39,12 +39,6 @@ export const isGridSitePinned = (
   return gridSite.pinnedIndex !== undefined
 }
 
-export const isGridSiteBookmarked = (
-  bookmarkInfo: chrome.bookmarks.BookmarkTreeNode | undefined
-): boolean => {
-  return bookmarkInfo !== undefined
-}
-
 export const isExistingGridSite = (
   sitesData: NewTab.Site[],
   topOrGridSite: chrome.topSites.MostVisitedURL | NewTab.Site
@@ -61,8 +55,7 @@ export const generateGridSitePropertiesFromDefaultSuperReferralTopSite = (
     id: generateGridSiteId(),
     letter: getCharForSite(defaultSuperReferralTopSite),
     favicon: defaultSuperReferralTopSite.favicon,
-    pinnedIndex: defaultSuperReferralTopSite.pinnedIndex,
-    bookmarkInfo: undefined
+    pinnedIndex: defaultSuperReferralTopSite.pinnedIndex
   }
 }
 
@@ -79,8 +72,7 @@ export const generateGridSiteProperties = (
     favicon: generateGridSiteFavicon(topSite.url),
     // In the legacy version of topSites the pinnedIndex
     // was the site index itself.
-    pinnedIndex: fromLegacyData ? index : undefined,
-    bookmarkInfo: undefined
+    pinnedIndex: fromLegacyData ? index : undefined
   }
 }
 
