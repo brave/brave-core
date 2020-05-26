@@ -47,21 +47,21 @@ describe('AdvancedView AdsTrackersControl component', () => {
     })
 
     it('can set ad control to aggressive', () => {
-      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block', cosmeticFiltering: 'block' })
+      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block', firstPartyCosmeticFiltering: true })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#blockAds').prop('value')
       expect(assertion).toBe('block')
     })
 
     it('can set ad control to standard', () => {
-      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block', cosmeticFiltering: 'block_third_party' })
+      const newProps = Object.assign(fakeProps, { ads: 'block', trackers: 'block', firstPartyCosmeticFiltering: false })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#blockAds').prop('value')
       expect(assertion).toBe('block_third_party')
     })
 
     it('can disable ad control', () => {
-      const newProps = Object.assign(fakeProps, { ads: 'allow', trackers: 'allow', cosmeticFiltering: 'allow' })
+      const newProps = Object.assign(fakeProps, { ads: 'allow', trackers: 'allow', firstPartyCosmeticFiltering: false })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#blockAds').prop('value')
       expect(assertion).toBe('allow')
