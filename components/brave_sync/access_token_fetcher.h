@@ -1,5 +1,12 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_ACCESS_TOKEN_FETCHER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_ACCESS_TOKEN_FETCHER_H_
+
+#include <string>
 
 #include "base/macros.h"
 #include "base/time/time.h"
@@ -9,8 +16,8 @@ namespace brave_sync {
 
 class AccessTokenFetcher {
  public:
-   explicit AccessTokenFetcher(AccessTokenConsumer* consumer);
-   virtual ~AccessTokenFetcher();
+  explicit AccessTokenFetcher(AccessTokenConsumer* consumer);
+  virtual ~AccessTokenFetcher();
 
   virtual void Start(const std::string& client_id,
                      const std::string& client_secret,
@@ -35,8 +42,8 @@ class AccessTokenFetcher {
 
   void FireOnGetTimestampSuccess(const std::string& ts);
   void FireOnGetTimestampFailure(const GoogleServiceAuthError& error);
- private:
 
+ private:
   AccessTokenConsumer* consumer_;
 
   DISALLOW_COPY_AND_ASSIGN(AccessTokenFetcher);
