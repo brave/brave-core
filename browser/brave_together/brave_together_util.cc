@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <vector>
 
 #include "brave/browser/brave_together/brave_together_util.h"
 
@@ -12,13 +13,26 @@
 
 namespace brave_together {
 
+const std::vector<std::string> supported_countries = {
+  "CA",  // Canada
+  "US"   // United States
+};
+
 bool IsBraveTogetherSupported(Profile* profile)  {
-  const std::string us_code = "US";
+  bool is_supported = false;
   const int32_t user_country_id =
       country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
-  const int32_t us_id = country_codes::CountryCharsToCountryID(
-      us_code.at(0), us_code.at(1));
-  return user_country_id == us_id;
+
+  for (const auto& country : supported_countries) {
+    const int32_t country_id = country_codes::CountryCharsToCountryID(
+        country.at(0), country.at(1));
+    if (user_country_id == country_id) {
+      is_supported = true;
+      break;
+    }
+  }
+
+  return is_supported;
 }
 
 }  // namespace brave_together
