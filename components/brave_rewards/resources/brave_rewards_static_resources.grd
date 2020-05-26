@@ -17,7 +17,6 @@
       <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/img/favicon.ico" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_TAP" file="page/promos/assets/tap_bg.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_P2P" file="page/promos/assets/p2p_bg.svg" type="BINDATA" />
 
       <!-- WebUI Brave Rewards Internals resources -->
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
