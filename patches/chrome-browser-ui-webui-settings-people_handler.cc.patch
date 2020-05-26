@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 57cd1e34ebbc19681692a7e4100677ab0510daea..bab528521f520df2a6feb2861101fab39bc7eef6 100644
+index 57cd1e34ebbc19681692a7e4100677ab0510daea..01e4f1215d5e38b96b988a730f824b48d8c9ceea 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
 @@ -89,6 +89,7 @@ struct SyncConfigInfo {
@@ -10,15 +10,7 @@ index 57cd1e34ebbc19681692a7e4100677ab0510daea..bab528521f520df2a6feb2861101fab3
    return current_url == chrome::GetSettingsUrl(chrome::kSyncSetupSubPage);
  }
  
-@@ -330,6 +331,7 @@ void PeopleHandler::RegisterMessages() {
-       "SyncStartKeyRetrieval",
-       base::BindRepeating(&PeopleHandler::HandleStartKeyRetrieval,
-                           base::Unretained(this)));
-+  BRAVE_REGISTER_MESSAGES
- }
- 
- void PeopleHandler::OnJavascriptAllowed() {
-@@ -861,7 +863,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
+@@ -861,7 +862,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
  
  void PeopleHandler::BeforeUnloadDialogCancelled() {
    // The before unload dialog is only shown during the first sync setup.
@@ -27,7 +19,7 @@ index 57cd1e34ebbc19681692a7e4100677ab0510daea..bab528521f520df2a6feb2861101fab3
    syncer::SyncService* service = GetSyncService();
    DCHECK(service && service->IsSetupInProgress() &&
           !service->GetUserSettings()->IsFirstSetupComplete());
-@@ -909,6 +911,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
+@@ -909,6 +910,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsFirstSetupComplete() &&
            identity_manager->HasPrimaryAccount());
@@ -35,7 +27,7 @@ index 57cd1e34ebbc19681692a7e4100677ab0510daea..bab528521f520df2a6feb2861101fab3
  
    const sync_ui_util::StatusLabels status_labels =
        sync_ui_util::GetStatusLabels(profile_);
-@@ -1056,6 +1059,7 @@ void PeopleHandler::MarkFirstSetupComplete() {
+@@ -1056,6 +1058,7 @@ void PeopleHandler::MarkFirstSetupComplete() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {
