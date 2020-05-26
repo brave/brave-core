@@ -28,6 +28,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave_base/random.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -118,10 +119,16 @@ void RedeemToken::CreateConfirmation(
 
   const auto client_info = confirmations_->get_client()->GetClientInfo();
   const std::string build_channel = client_info->channel;
+
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
 
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string country_code =
+      brave_l10n::LocaleHelper::GetCountryCode(locale);
+
   auto confirmation_request_dto = request.CreateConfirmationRequestDTO(
-      confirmation, build_channel, platform);
+      confirmation, build_channel, platform, country_code);
 
   auto body = request.BuildBody(confirmation_request_dto);
 
@@ -446,11 +453,17 @@ ConfirmationInfo RedeemToken::CreateConfirmationInfo(
 
   const auto client_info = confirmations_->get_client()->GetClientInfo();
   const std::string build_channel = client_info->channel;
+
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
+
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string country_code =
+      brave_l10n::LocaleHelper::GetCountryCode(locale);
 
   CreateConfirmationRequest request(confirmations_);
   auto payload = request.CreateConfirmationRequestDTO(confirmation,
-      build_channel, platform);
+      build_channel, platform, country_code);
 
   confirmation.credential = request.CreateCredential(token, payload);
   confirmation.timestamp_in_seconds =
@@ -484,11 +497,17 @@ bool RedeemToken::Verify(
 
   const auto client_info = confirmations_->get_client()->GetClientInfo();
   const std::string build_channel = client_info->channel;
+
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
+
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string country_code =
+      brave_l10n::LocaleHelper::GetCountryCode(locale);
 
   CreateConfirmationRequest request(confirmations_);
   auto payload = request.CreateConfirmationRequestDTO(confirmation,
-      build_channel, platform);
+      build_channel, platform, country_code);
 
   auto unblinded_token = confirmation.token_info.unblinded_token;
   auto verification_key = unblinded_token.derive_verification_key();

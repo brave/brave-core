@@ -101,11 +101,10 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody_Viewed) {
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "US";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "release",
+      platform, "US");
 
   // Act
   auto body = request_->BuildBody(payload);
@@ -161,11 +160,10 @@ TEST_F(
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "US";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "release",
+      platform, "US");
 
   // Assert
   std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"release\",\"countryCode\":\"US\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
@@ -191,10 +189,9 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential_Viewed) {
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "US";
 
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "release", "platform");
+  auto payload = request_->CreateConfirmationRequestDTO(info, "release",
+      "platform", "US");
 
   // Act
   auto credential = request_->CreateCredential(token_info, payload);
@@ -218,11 +215,10 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "US";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "release",
+      platform, "US");
 
   // Assert
   std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"release\",\"countryCode\":\"US\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
@@ -243,11 +239,10 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "AS";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "release",
+      platform, "AS");
 
   // Assert
   std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"release\",\"countryCode\":\"??\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
@@ -268,11 +263,10 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "KY";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "release",
+      platform, "KY");
 
   // Assert
   std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"release\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
@@ -294,14 +288,13 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "US";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "non-release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "development",
+      platform, "US");
 
   // Assert
-  std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"non-release\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
+  std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"development\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
   EXPECT_EQ(expected_payload, payload);
 }
 
@@ -319,14 +312,13 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
   info.creative_instance_id = creative_instance_id;
   info.type = ConfirmationType::kViewed;
   info.blinded_payment_token = blinded_token;
-  info.country_code = "AS";
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  auto payload =
-      request_->CreateConfirmationRequestDTO(info, "non-release", platform);
+  auto payload = request_->CreateConfirmationRequestDTO(info, "development",
+      platform, "AS");
 
   // Assert
-  std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"non-release\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
+  std::string expected_payload = base::StringPrintf("{\"blindedPaymentToken\":\"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=\",\"buildChannel\":\"development\",\"creativeInstanceId\":\"546fe7b0-5047-4f28-a11c-81f14edcf0f6\",\"payload\":{},\"platform\":\"%s\",\"type\":\"view\"}", platform.c_str());  // NOLINT
   EXPECT_EQ(expected_payload, payload);
 }
 

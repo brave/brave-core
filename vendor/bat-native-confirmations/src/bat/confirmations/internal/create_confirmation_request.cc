@@ -74,7 +74,8 @@ std::string CreateConfirmationRequest::GetContentType() const {
 std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
     const ConfirmationInfo& info,
     const std::string& build_channel,
-    const std::string& platform) const {
+    const std::string& platform,
+    const std::string& country_code) const {
   DCHECK(!info.creative_instance_id.empty());
   DCHECK(!build_channel.empty());
 
@@ -91,10 +92,10 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
   payload.SetKey("type", base::Value(type));
 
   if (build_channel == "release") {
-    if (IsLargeAnonymityCountryCode(info.country_code)) {
-      payload.SetKey("countryCode", base::Value(info.country_code));
+    if (IsLargeAnonymityCountryCode(country_code)) {
+      payload.SetKey("countryCode", base::Value(country_code));
     } else {
-      if (IsOtherCountryCode(info.country_code)) {
+      if (IsOtherCountryCode(country_code)) {
         payload.SetKey("countryCode", base::Value("??"));
       }
     }

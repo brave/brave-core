@@ -427,11 +427,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return languages;
 }
 
-- (const std::string)getLocale
-{
-  return std::string([[NSLocale preferredLanguages] firstObject].UTF8String);
-}
-
 - (bool)isAdsEnabled
 {
   return self.enabled;

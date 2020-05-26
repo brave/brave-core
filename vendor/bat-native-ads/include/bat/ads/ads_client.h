@@ -54,15 +54,6 @@ class ADS_EXPORT AdsClient {
   // should return |false|
   virtual bool ShouldAllowAdConversionTracking() const = 0;
 
-  // Should return the locale of the operating system using one of the following
-  // formats:
-  //
-  //     <language>-<REGION> i.e. en-US
-  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
-  //     <language>_<REGION> i.e. en_US
-  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
-  virtual std::string GetLocale() const = 0;
-
   // Should return the maximum number of ads that can be shown per hour
   virtual uint64_t GetAdsPerHour() const = 0;
 

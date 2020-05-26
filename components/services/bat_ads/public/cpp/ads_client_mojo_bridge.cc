@@ -102,18 +102,6 @@ void AdsClientMojoBridge::CanShowBackgroundNotifications(
   std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
 }
 
-bool AdsClientMojoBridge::GetLocale(
-    std::string* out_locale) {
-  DCHECK(out_locale);
-  *out_locale = ads_client_->GetLocale();
-  return true;
-}
-
-void AdsClientMojoBridge::GetLocale(
-    GetLocaleCallback callback) {
-  std::move(callback).Run(ads_client_->GetLocale());
-}
-
 bool AdsClientMojoBridge::GetAdsPerHour(
     uint64_t* out_ads_per_hour) {
   DCHECK(out_ads_per_hour);

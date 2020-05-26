@@ -152,6 +152,7 @@ source_set("bat-native-confirmations") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/browser",
     "//net",
     "//third_party/boringssl",
     "//third_party/re2",
