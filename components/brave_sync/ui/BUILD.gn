@@ -1,9 +1,0 @@
-import("//brave/components/common/typescript.gni")
-
-transpile_web_ui("ui") {
-  entry_points = [
-    ["brave_sync", rebase_path("brave_sync.tsx")]
-  ]
-
-  resource_name = "brave_sync"
-}

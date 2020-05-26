@@ -1,5 +1,12 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_FAKE_ACCESS_TOKEN_FETCHER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_FAKE_ACCESS_TOKEN_FETCHER_H_
+
+#include <string>
 
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -9,8 +16,8 @@
 namespace brave_sync {
 class FakeAccessTokenFetcher : public AccessTokenFetcher {
  public:
-   FakeAccessTokenFetcher(AccessTokenConsumer* consumer);
-   ~FakeAccessTokenFetcher() override;
+  explicit FakeAccessTokenFetcher(AccessTokenConsumer* consumer);
+  ~FakeAccessTokenFetcher() override;
 
   void Start(const std::string& client_id,
                      const std::string& client_secret,
@@ -25,6 +32,7 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
 
   void SetTokenResponseCallback(base::OnceClosure on_available);
   void SetTokenResponseError(const GoogleServiceAuthError& error);
+
  private:
   void OnGetTokenSuccess(
     const AccessTokenConsumer::TokenResponse& token_response);
