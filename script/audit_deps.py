@@ -32,26 +32,41 @@ def audit_deps(args):
 
     try:
         result = json.loads(str(output))
-        resolutions = result['actions'][0]['resolves']
-        non_dev_exceptions = [r for r in resolutions if not r['dev']]
     except ValueError:
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
         return 1
 
-    print(output)
+    resolutions, non_dev_exceptions = extract_resolutions(result)
+
+    # Show response output
+    print output
 
     # Trigger a failure if there are non-dev exceptions
     if non_dev_exceptions:
-        print('Audit finished, vulnerabilities found')
+        print('Result: Audit finished, vulnerabilities found')
         return 1
 
     # Still pass if there are dev exceptions, but let the user know about them
     if resolutions:
-        print('Audit finished, there are dev package warnings')
+        print('Result: Audit finished, there are dev package warnings')
     else:
-        print('Audit finished, no vulnerabilities found')
+        print('Result: Audit finished, no vulnerabilities found')
     return 0
+
+
+def extract_resolutions(result):
+    if 'actions' not in result:
+        return [], []
+
+    if len(result['actions']) == 0:
+        return [], []
+
+    if 'resolves' not in result['actions'][0]:
+        return [], []
+
+    resolutions = result['actions'][0]['resolves']
+    return resolutions, [r for r in resolutions if not r['dev']]
 
 
 def parse_args():
