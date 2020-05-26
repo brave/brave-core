@@ -434,6 +434,12 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       }
       
       for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
+        if (observer.rewardsEnabledStateUpdated) {
+          observer.rewardsEnabledStateUpdated(strongSelf.isEnabled);
+        }
+      }
+      
+      for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
         if (observer.walletInitalized) {
           observer.walletInitalized(static_cast<BATResult>(result));
         }
