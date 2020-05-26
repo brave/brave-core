@@ -79,7 +79,7 @@
 				android:layout_height="wrap_content"
 				android:textSize="14sp"
 				android:gravity="center_horizontal"
-				android:textColor="@color/standard_mode_tint"
+				android:textColor="@color/default_icon_color_tint_list"
 				android:layout_marginTop="32dp"
 				android:layout_marginStart="24dp"
 				android:layout_marginEnd="24dp"
@@ -103,7 +103,7 @@
 	            android:textAllCaps="false"
 	            android:textSize="16sp"
 	            android:visibility="gone"
-	            android:textColor="@color/standard_mode_tint"/>
+	            android:textColor="@color/default_icon_color_tint_list"/>
 
 			<LinearLayout
 		      	android:id="@+id/site_block_layout"
