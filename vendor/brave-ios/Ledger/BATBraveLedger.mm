@@ -423,9 +423,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       }
       error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
     }
-    
-    strongSelf.enabled = YES;
-    strongSelf.autoContributeEnabled = YES;
+
     strongSelf.ads.enabled = [BATBraveAds isCurrentLocaleSupported];
     [strongSelf startNotificationTimers];
     strongSelf.initializingWallet = NO;
