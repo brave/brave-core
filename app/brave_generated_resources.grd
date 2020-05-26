@@ -520,6 +520,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC" desc="The description for Brave web3 provider select control in settings">
         Web3 provider for using Dapps
       </message>
+      <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP" desc="The description for always loading the Crypto Wallets extension on startup">
+        Load Crypto Wallets on startup
+      </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
       </message>
@@ -719,11 +722,14 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_CRYPTO_WALLETS_METAMASK_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Would you like to use Brave's Crypto Wallets or MetaMask for Dapps?
       </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
+        Would you like to start Crypto Wallets for web3 support on this page?
+      </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Set up Crypto Wallets to interact with this app and others like it.
       </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_USE_CRYPTO_WALLETS" desc="Use Crypto Wallets">
-        Use Crypto Wallets
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS" desc="Setup Crypto Wallets">
+        Setup Crypto Wallets
       </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_USE_METAMASK" desc="Use MetaMask and don't use Crypto Wallets">
         Use MetaMask
@@ -731,6 +737,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP" desc="Use Crypto Wallets">
         SETUP
       </message>
+       <message name="IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD" desc="Start Crypto Wallets and reload">
+        Start Crypto Wallets and reload
+      </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETTINGS" desc="Open Crypto Wallets settings">
+        Settings
+      </message>
+
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
         Sorry, that page is missing.

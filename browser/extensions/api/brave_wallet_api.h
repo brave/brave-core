@@ -25,6 +25,16 @@ class BraveWalletPromptToEnableWalletFunction :
   ResponseAction Run() override;
 };
 
+class BraveWalletReadyFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.ready", UNKNOWN)
+
+ protected:
+  ~BraveWalletReadyFunction() override {}
+  ResponseAction Run() override;
+};
+
 class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.shouldCheckForDapps", UNKNOWN)
@@ -34,12 +44,22 @@ class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveWalletIsInstalledFunction : public ExtensionFunction {
+class BraveWalletLoadUIFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.isInstalled", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveWallet.loadUI", UNKNOWN)
+  void OnLoaded();
 
  protected:
-  ~BraveWalletIsInstalledFunction() override {}
+  ~BraveWalletLoadUIFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletShouldPromptForSetupFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.shouldPromptForSetup", UNKNOWN)
+
+ protected:
+  ~BraveWalletShouldPromptForSetupFunction() override {}
   ResponseAction Run() override;
 };
 

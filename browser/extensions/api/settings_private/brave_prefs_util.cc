@@ -126,6 +126,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // Brave Wallet pref
   (*s_brave_whitelist)[kBraveWalletWeb3Provider] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_whitelist)[kLoadCryptoWalletsOnStartup] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Media Router Pref
   (*s_brave_whitelist)[kBraveEnabledMediaRouter] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

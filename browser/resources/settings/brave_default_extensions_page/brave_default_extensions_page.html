@@ -73,6 +73,10 @@
                               menu-options="[[braveWeb3Providers_]]">
       </settings-dropdown-menu>
     </div>
+    <settings-toggle-button id="ipfsCompanionEnabled"
+        pref="{{prefs.brave.wallet.load_on_startup}}"
+        label="$i18n{loadCryptoWalletsOnStartupDesc}">
+    </settings-toggle-button>
     <settings-toggle-button id="hangoutsEnabled"
         pref="{{prefs.brave.hangouts_enabled}}"
         label="Hangouts"

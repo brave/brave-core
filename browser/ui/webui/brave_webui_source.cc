@@ -49,7 +49,7 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
 void CustomizeWebUIHTMLSource(const std::string &name,
     content::WebUIDataSource* source) {
 #if !defined(OS_ANDROID)
-  if (name == "rewards") {
+  if (name == "rewards" || name == "wallet") {
     NavigationBarDataProvider::Initialize(source);
   }
 #endif
@@ -277,6 +277,16 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
         { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
         { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA }
+      }
+    }, {
+      std::string("wallet"), {
+        { "cryptoWalletsWelcome", IDS_BRAVE_WALLET_WELCOME },
+        { "cryptoWalletsDisclosureOne", IDS_BRAVE_WALLET_DISCLOSURE_ONE },
+        { "cryptoWalletsDisclosureTwo", IDS_BRAVE_WALLET_DISCLOSURE_TWO },
+        { "cryptoWalletsDisclosureThree", IDS_BRAVE_WALLET_DISCLOSURE_THREE },
+        { "cryptoWalletsDisclosureFour", IDS_BRAVE_WALLET_DISCLOSURE_FOUR },
+        { "cryptoWalletsBraveRewards", IDS_BRAVE_WALLET_BRAVE_REWARDS },
+        { "cryptoWalletsDisclosureConfirm", IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM }         // NOLINT
       }
     }, {
       std::string("welcome"), {

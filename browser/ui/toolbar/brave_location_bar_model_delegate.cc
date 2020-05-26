@@ -8,14 +8,16 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/extension_constants.h"
 #endif
 
-BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(
-    Browser* browser) : BrowserLocationBarModelDelegate(browser) {}
+BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(Browser* browser) :
+    BrowserLocationBarModelDelegate(browser) {}
 
 BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() {}
 

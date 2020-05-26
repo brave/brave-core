@@ -23,9 +23,14 @@
           }
         ]
       }, {
-        "name": "isInstalled",
+        "name": "ready",
         "type": "function",
-        "description": "Called to determine if brave wallet extension is installed",
+        "description": "Called by Crypto Wallets when it is ready",
+        "parameters": []
+      }, {
+        "name": "shouldPromptForSetup",
+        "type": "function",
+        "description": "Called to determine if a brave wallet prompt should be shown to opt into install",
         "parameters": [
           {
             "type": "function",
@@ -149,6 +154,18 @@
                 "description": "json stringified avalable web3 provider list"
               }
             ]
+          }
+        ]
+      }, {
+        "name": "loadUI",
+        "type": "function",
+        "description": "Called when brave://wallet WebUI wants to load the real UI",
+        "parameters": [
+          {
+            "name": "cb",
+            "type": "function",
+            "name": "callback",
+            "parameters": []
           }
         ]
       }
