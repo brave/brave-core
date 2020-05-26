@@ -69,6 +69,16 @@ class NTPDataSource {
     }
     
     func startFetching() {
+        let downloadType = downloader.currentResourceType
+        // For super referrer we want to load assets from cache first, then check if new resources
+        // are on the server.
+        // This is because as super referrer install we never want to show other images than the ones
+        // provided by the super referrer.
+        // In the future we might want to extend this preload from cache logic to other resource types.
+        if case .superReferral = downloadType {
+            downloader.preloadCustomTheme()
+        }
+        
         if downloader.delegate != nil {
             downloader.notifyObservers(for: downloader.currentResourceType)
         }
@@ -203,7 +213,10 @@ extension NTPDataSource: NTPDownloaderDelegate {
         } else {
             initializeFavorites?(theme?.topSites)
         }
-        
+    }
+    
+    func preloadCustomTheme(theme: CustomTheme?) {
+        self.customTheme = theme
     }
 }
 

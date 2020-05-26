@@ -12,6 +12,7 @@ private let logger = Logger.browserLogger
 protocol NTPDownloaderDelegate: class {
     func onSponsorUpdated(sponsor: NTPSponsor?)
     func onThemeUpdated(theme: CustomTheme?)
+    func preloadCustomTheme(theme: CustomTheme?)
 }
 
 class NTPDownloader {
@@ -105,6 +106,13 @@ class NTPDownloader {
         self.removeObservers()
     }
     
+    func preloadCustomTheme() {
+        guard let themeId = Preferences.NewTabPage.selectedCustomTheme.value else { return }
+        let customTheme = loadNTPResource(for: .superReferral(code: themeId)) as? CustomTheme
+        
+        delegate?.preloadCustomTheme(theme: customTheme)
+    }
+    
     private func getNTPResource(for type: ResourceType, _ completion: @escaping (NTPThemeable?) -> Void) {
         //Load from cache because the time since the last fetch hasn't expired yet..
         if let nextDate = Preferences.NTP.ntpCheckDate.value,
@@ -116,17 +124,6 @@ class NTPDownloader {
             }
             
             return completion(self.loadNTPResource(for: type))
-        }
-        
-        // For super referrer we want to load assets from cache first, then check if new resources
-        // are on the server.
-        // This is because as super referrer install we never want to show other images than the ones
-        // provided by the super referrer.
-        // In the future we might want to extend this preload from cache logic to other resource types.
-        //
-        // Note: this will call the same completion handler twice.
-        if case .superReferral = type {
-            completion(self.loadNTPResource(for: type))
         }
         
         // Download the NTP resource to a temporary directory
