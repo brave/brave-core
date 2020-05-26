@@ -14,8 +14,8 @@
 #include "chrome/browser/predictors/loading_test_util.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "components/page_load_metrics/common/page_load_timing.h"
-#include "content/public/common/resource_load_info.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_perf_predictor {
@@ -53,7 +53,6 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseTiming) {
   EXPECT_EQ(predictor_->feature_map_["metrics.observedDomContentLoaded"], 0);
   EXPECT_EQ(predictor_->feature_map_["metrics.observedFirstVisualChange"], 0);
   EXPECT_EQ(predictor_->feature_map_["metrics.observedLoad"], 0);
-  EXPECT_EQ(predictor_->feature_map_["metrics.interactive"], 0);
 
   auto timing = page_load_metrics::CreatePageLoadTiming();
   timing->document_timing->dom_content_loaded_event_start =
@@ -75,11 +74,6 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseTiming) {
       base::TimeDelta::FromMilliseconds(800);
   predictor_->OnPageLoadTimingUpdated(*timing);
   EXPECT_EQ(predictor_->feature_map_["metrics.observedFirstVisualChange"], 800);
-
-  timing->interactive_timing->interactive =
-      base::TimeDelta::FromMilliseconds(2500);
-  predictor_->OnPageLoadTimingUpdated(*timing);
-  EXPECT_EQ(predictor_->feature_map_["metrics.interactive"], 2500);
 }
 
 TEST_F(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
@@ -88,7 +82,8 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
   const GURL main_frame("https://brave.com/");
 
   auto fp_style = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   fp_style->raw_body_bytes = 1000;
   predictor_->OnResourceLoadComplete(main_frame, *fp_style);
   EXPECT_EQ(predictor_->feature_map_["resources.third-party.requestCount"], 0);
@@ -97,7 +92,7 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
 
   auto tp_style = predictors::CreateResourceLoadInfo(
       "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.js",
-      content::ResourceType::kScript);
+      network::mojom::RequestDestination::kScript);
   tp_style->raw_body_bytes = 1001;
   predictor_->OnResourceLoadComplete(main_frame, *tp_style);
 
@@ -126,7 +121,8 @@ TEST_F(BandwidthSavingsPredictorTest, PredictZeroInternalUrl) {
 TEST_F(BandwidthSavingsPredictorTest, PredictZeroBadFrame) {
   const GURL main_frame("");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   res->raw_body_bytes = 1000;
   predictor_->OnResourceLoadComplete(main_frame, *res);
 
@@ -136,7 +132,8 @@ TEST_F(BandwidthSavingsPredictorTest, PredictZeroBadFrame) {
 TEST_F(BandwidthSavingsPredictorTest, PredictZeroNoBlocks) {
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   res->raw_body_bytes = 1000;
   predictor_->OnResourceLoadComplete(main_frame, *res);
 
@@ -146,7 +143,8 @@ TEST_F(BandwidthSavingsPredictorTest, PredictZeroNoBlocks) {
 TEST_F(BandwidthSavingsPredictorTest, PredictNonZero) {
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   res->raw_body_bytes = 200000;
   res->total_received_bytes = 200000;
   predictor_->OnResourceLoadComplete(main_frame, *res);
@@ -154,7 +152,8 @@ TEST_F(BandwidthSavingsPredictorTest, PredictNonZero) {
   predictor_->OnSubresourceBlocked("https://google-analytics.com/ga.js");
   // resource still seen as complete, but with 0 bytes
   auto blocked = predictors::CreateResourceLoadInfo(
-      "https://google-analytics.com/ga.js", content::ResourceType::kScript);
+      "https://google-analytics.com/ga.js",
+      network::mojom::RequestDestination::kScript);
   blocked->raw_body_bytes = 0;
   predictor_->OnResourceLoadComplete(main_frame, *blocked);
 

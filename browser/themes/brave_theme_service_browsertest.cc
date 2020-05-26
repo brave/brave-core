@@ -14,12 +14,13 @@
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest-spi.h"
 #include "ui/native_theme/native_theme.h"
-#include "ui/native_theme/native_theme_dark_aura.h"
 #include "ui/native_theme/native_theme_observer.h"
 
 #if defined(OS_WIN)
 #include "base/run_loop.h"
+#include "base/test/scoped_run_loop_timeout.h"
 #include "base/time/time.h"
 #include "base/win/registry.h"
 #endif
@@ -38,10 +39,13 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
 
 #if defined(OS_WIN)
 void RunLoopRunWithTimeout(base::TimeDelta timeout) {
+  // ScopedRunLoopTimeout causes a FATAL failure on timeout though, but for us
+  // the timeout means success, so turn the FATAL failure into success.
   base::RunLoop run_loop;
-  base::RunLoop::ScopedRunTimeoutForTest run_timeout(timeout,
-                                                     run_loop.QuitClosure());
-  run_loop.Run();
+  base::test::ScopedRunLoopTimeout run_timeout(FROM_HERE, timeout);
+  // EXPECT_FATAL_FAILURE() can only reference globals and statics.
+  static base::RunLoop& static_loop = run_loop;
+  EXPECT_FATAL_FAILURE(static_loop.Run(), "Run() timed out.");
 }
 #endif
 

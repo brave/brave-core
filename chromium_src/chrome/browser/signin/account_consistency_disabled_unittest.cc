@@ -38,8 +38,12 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
 
     std::unique_ptr<sync_preferences::TestingPrefServiceSyncable> pref_service =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>(
-            new TestingPrefStore(), new TestingPrefStore(), user_prefs,
-            new TestingPrefStore(), new user_prefs::PrefRegistrySyncable(),
+            /*managed_prefs=*/new TestingPrefStore(),
+            /*supervised_user_prefs=*/new TestingPrefStore(),
+            /*extension_prefs=*/new TestingPrefStore(),
+            user_prefs,
+            /*recommended_prefs=*/new TestingPrefStore(),
+            new user_prefs::PrefRegistrySyncable(),
             new PrefNotifierImpl());
     RegisterUserProfilePrefs(pref_service->registry());
     profile_builder.SetPrefService(std::move(pref_service));

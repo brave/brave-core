@@ -177,7 +177,7 @@ template("pack_web_resources") {
       generated_dir = "$root_gen_dir/brave/web-ui-$resource_name"
     }
     source = "$generated_dir/$resource_name.grd"
-    source_is_generated = true
+    enable_input_discovery_for_gn_analyze = true
 
     outputs = [
       "grit/$resource_name" + "_generated.h",

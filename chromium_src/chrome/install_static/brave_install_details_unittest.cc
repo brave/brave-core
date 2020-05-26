@@ -23,13 +23,13 @@ class FakeInstallDetails : public InstallDetails {
     constants.install_suffix = L"";
     constants.default_channel_name = L"";
     constants.supported_multi_install = true;
-    if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
       constants.app_guid = L"testguid";
       constants.channel_strategy = ChannelStrategy::FIXED;
-    } else {
+#else
       constants.app_guid = L"";
       constants.channel_strategy = ChannelStrategy::UNSUPPORTED;
-    }
+#endif
     payload.size = sizeof(payload);
     payload.product_version = product_version.c_str();
     payload.mode = &constants;
@@ -56,25 +56,25 @@ class FakeInstallDetails : public InstallDetails {
 
 TEST(InstallDetailsTest, GetClientStateKeyPath) {
   FakeInstallDetails details;
-  if (kUseGoogleUpdateIntegration) {
-    EXPECT_THAT(details.GetClientStateKeyPath(),
-                StrEq(L"Software\\BraveSoftware\\Update\\ClientState\\testguid"));
-  } else {
+#if defined(OFFICIAL_BUILD)
+  EXPECT_THAT(details.GetClientStateKeyPath(),
+              StrEq(L"Software\\BraveSoftware\\Update\\ClientState\\testguid"));
+#else
     EXPECT_THAT(details.GetClientStateKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));
-  }
+#endif
 }
 
 TEST(InstallDetailsTest, GetClientStateMediumKeyPath) {
   FakeInstallDetails details;
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     EXPECT_THAT(
         details.GetClientStateMediumKeyPath(),
         StrEq(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\testguid"));
-  } else {
+#else
     EXPECT_THAT(details.GetClientStateKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));
-  }
+#endif
 }
 
 TEST(InstallDetailsTest, VersionMismatch) {

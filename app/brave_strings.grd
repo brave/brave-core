@@ -159,6 +159,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_sl.xtb" lang="sl" />
     <file path="resources/chromium_strings_sq.xtb" lang="sq" />
     <file path="resources/chromium_strings_sr.xtb" lang="sr" />
+    <file path="resources/chromium_strings_sr-Latn.xtb" lang="sr-Latn" />
     <file path="resources/chromium_strings_sv.xtb" lang="sv" />
     <file path="resources/chromium_strings_sw.xtb" lang="sw" />
     <file path="resources/chromium_strings_ta.xtb" lang="ta" />
@@ -229,6 +230,24 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <!-- Browser Window Title Format -->
         <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabbed browser windows">
           Brave - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
+        </message>
+      </if>
+      <if expr="not chromeos and not is_macosx">
+        <!-- Captive Portal Browser Window Title Format -->
+        <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
+          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in - Brave
+        </message>
+      </if>
+      <if expr="chromeos">
+        <!-- Captive Portal Browser Window Title Format -->
+        <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
+          Brave - Network Sign-in - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
+        </message>
+      </if>
+      <if expr="is_macosx">
+        <!-- Captive Portal Browser Window Title Format -->
+        <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
+          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in
         </message>
       </if>
       <!-- Accessible window title format - includes the channel, and the same
@@ -363,6 +382,12 @@ Brave is unable to recover your settings.
         <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before revealing plaintext passwords on the password page.">
           Brave is trying to show passwords.
         </message>
+        <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before copying plaintext passwords into the clipboard.">
+          Brave is trying to copy passwords.
+        </message>
+        <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before editing plaintext passwords on the password page.">
+          Brave is trying to edit passwords.
+        </message>
         <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
           Brave wants to export your passwords.
         </message>
@@ -370,6 +395,12 @@ Brave is unable to recover your settings.
       <if expr="is_win">
         <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before revealing plaintext passwords on the password page.">
           Brave is trying to show passwords. Type your Windows password to allow this.
+        </message>
+        <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before copying plaintext passwords into the clipboard.">
+          Brave is trying to copy passwords. Type your Windows password to allow this.
+        </message>
+        <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before editing plaintext passwords on the password page.">
+          Brave is trying to edit passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
           Brave wants to export your passwords. Type your Windows password to allow this.

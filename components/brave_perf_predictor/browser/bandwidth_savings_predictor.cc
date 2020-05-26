@@ -10,9 +10,8 @@
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
-#include "content/public/common/resource_load_info.mojom.h"
-#include "content/public/common/resource_type.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
 namespace brave_perf_predictor {
 
@@ -44,11 +43,6 @@ void BandwidthSavingsPredictor::OnPageLoadTimingUpdated(
   if (timing.document_timing->load_event_start.has_value())
     feature_map_["metrics.observedLoad"] =
         timing.document_timing->load_event_start.value().InMillisecondsF();
-
-  // Interactive
-  if (timing.interactive_timing->interactive.has_value())
-    feature_map_["metrics.interactive"] =
-        timing.interactive_timing->interactive.value().InMillisecondsF();
 }
 
 void BandwidthSavingsPredictor::OnSubresourceBlocked(
@@ -64,7 +58,7 @@ void BandwidthSavingsPredictor::OnSubresourceBlocked(
 
 void BandwidthSavingsPredictor::OnResourceLoadComplete(
     const GURL& main_frame_url,
-    const content::mojom::ResourceLoadInfo& resource_load_info) {
+    const blink::mojom::ResourceLoadInfo& resource_load_info) {
   // If the resource load info comes without a valid corresponding
   // main frame URL, ignore it
   if (main_frame_url.is_empty() || !main_frame_url.has_host() ||
@@ -89,26 +83,28 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
   feature_map_["transfer.total.size"] +=
       resource_load_info.total_received_bytes;
   std::string resource_type;
-  switch (resource_load_info.resource_type) {
-    case content::ResourceType::kMainFrame:
+  switch (resource_load_info.request_destination) {
+    case network::mojom::RequestDestination::kDocument:
       resource_type = "document";
       break;
-    case content::ResourceType::kSubFrame:
+    case network::mojom::RequestDestination::kIframe:
       resource_type = "document";
       break;
-    case content::ResourceType::kStylesheet:
+    case network::mojom::RequestDestination::kStyle:
       resource_type = "stylesheet";
       break;
-    case content::ResourceType::kScript:
+    case network::mojom::RequestDestination::kScript:
       resource_type = "script";
       break;
-    case content::ResourceType::kImage:
+    case network::mojom::RequestDestination::kImage:
       resource_type = "image";
       break;
-    case content::ResourceType::kFontResource:
+    case network::mojom::RequestDestination::kFont:
       resource_type = "font";
       break;
-    case content::ResourceType::kMedia:
+    case network::mojom::RequestDestination::kAudio:
+    case network::mojom::RequestDestination::kTrack:
+    case network::mojom::RequestDestination::kVideo:
       resource_type = "media";
       break;
     default:

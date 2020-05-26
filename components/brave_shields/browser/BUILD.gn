@@ -66,6 +66,7 @@ source_set("browser") {
     "//components/sessions",
     "//content/public/browser",
     "//net",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/leveldatabase",
     "//url",
   ]

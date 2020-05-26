@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index 00e4e8ad7481fc179a15fe04ab9a6d65612e3044..16dc78bc9e3f907350a878909efe0637e179392c 100644
+index ccf846d78009892396bcd66570c7d6efa48b452a..828854c620d6132ed331af38c1c6c34798c16032 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
 @@ -15,7 +15,7 @@ constexpr int kSeparatorThickness = 1;
  
  // Returns the height of the separator between tabs.
  int GetSeparatorHeight() {
--  return ui::MaterialDesignController::touch_ui() ? 24 : 20;
-+  return ui::MaterialDesignController::touch_ui() ? 24 : 24;
+-  return ui::TouchUiController::Get()->touch_ui() ? 24 : 20;
++  return ui::TouchUiController::Get()->touch_ui() ? 24 : 24;
  }
  
  }  // namespace

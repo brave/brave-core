@@ -5,4 +5,8 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
-#include "../../../../../chrome/browser/ui/tab_helpers.cc"  // NOLINT
+#define BRAVE_TAB_HELPERS \
+  brave::AttachTabHelpers(web_contents);
+
+#include "../../../../../chrome/browser/ui/tab_helpers.cc"
+#undef BRAVE_TAB_HELPERS

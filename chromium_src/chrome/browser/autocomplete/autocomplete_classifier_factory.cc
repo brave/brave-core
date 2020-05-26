@@ -5,14 +5,11 @@
 
 #include "brave/browser/autocomplete/brave_autocomplete_provider_client_for_classifier.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
-#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 
-#define AutocompleteController BraveAutocompleteController
 #define ChromeAutocompleteProviderClient BraveAutocompleteProviderClientForClassifier  // NOLINT
 #define ChromeAutocompleteSchemeClassifier BraveAutocompleteSchemeClassifier
 #include "../../../../../chrome/browser/autocomplete/autocomplete_classifier_factory.cc"
 #undef ChromeAutocompleteSchemeClassifier
 #undef ChromeAutocompleteProviderClient
-#undef AutocompleteController

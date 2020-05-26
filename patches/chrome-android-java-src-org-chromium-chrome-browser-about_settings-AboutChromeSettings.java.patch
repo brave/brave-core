@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
+index c12b88f7bd4cf7511382f4ae002a8d5d731b02d7..629d22a792ae10388419675120f6d36d4bdb58ea 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
+@@ -25,7 +25,7 @@ import java.util.Calendar;
+  * Settings fragment that displays information about Chrome.
+  */
+ public class AboutChromeSettings
+-        extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceClickListener {
+     private static final int TAPS_FOR_DEVELOPER_SETTINGS = 7;
+ 
+     private static final String PREF_APPLICATION_VERSION = "application_version";

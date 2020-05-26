@@ -7,8 +7,8 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -17,6 +17,8 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 /**
  * Fragment to keep track of all Brave Rewards related preferences.

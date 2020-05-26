@@ -12,5 +12,5 @@
         android:icon="@drawable/btn_close"
         android:title="@string/settings_exit"
         app:showAsAction="ifRoom"
-        app:iconTint="@color/standard_mode_tint" />
+        app:iconTint="@color/default_icon_color_tint_list" />
 </menu>

@@ -1,24 +1,24 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
-index 5aca8d3e33981d352282b868dd2ffaaa32a45a74..8d5dcd0f7c8ef475d2bd48a9d16a6ed7719f393c 100644
+index cf54c3785cde4ac9da4d2039b112644ebc2d7c62..7cc81b6639c41302e5265d82d3bf1f56de7d2201 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
-@@ -52,6 +52,7 @@ public class BottomToolbarVariationManager {
+@@ -62,6 +62,7 @@ public class BottomToolbarVariationManager {
       *         in the current variation.
       */
      public static boolean isShareButtonOnBottom() {
 +        if (BraveBottomToolbarVariationManager.isBraveVariation()) return false;
-         return FeatureUtilities.isBottomToolbarEnabled()
+         return BottomToolbarConfiguration.isBottomToolbarEnabled()
                  && !getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER);
      }
-@@ -61,6 +62,7 @@ public class BottomToolbarVariationManager {
+@@ -71,6 +72,7 @@ public class BottomToolbarVariationManager {
       *         in portrait mode in the current variation.
       */
      public static boolean isNewTabButtonOnBottom() {
 +        if (BraveBottomToolbarVariationManager.isBraveVariation()) return true;
-         return FeatureUtilities.isBottomToolbarEnabled()
+         return BottomToolbarConfiguration.isBottomToolbarEnabled()
                  && getVariation().equals(Variations.NEW_TAB_SEARCH_SHARE);
      }
-@@ -70,6 +72,7 @@ public class BottomToolbarVariationManager {
+@@ -80,6 +82,7 @@ public class BottomToolbarVariationManager {
       *         in portrait mode in the current variation.
       */
      public static boolean isMenuButtonOnBottom() {
@@ -26,19 +26,19 @@ index 5aca8d3e33981d352282b868dd2ffaaa32a45a74..8d5dcd0f7c8ef475d2bd48a9d16a6ed7
          // If we don't have variations that put menu on bottom in the future,
          // then this method can be removed.
          return false;
-@@ -80,6 +83,7 @@ public class BottomToolbarVariationManager {
+@@ -90,6 +93,7 @@ public class BottomToolbarVariationManager {
       *         in the current variation.
       */
      public static boolean shouldBottomToolbarBeVisibleInOverviewMode() {
 +        if (BraveBottomToolbarVariationManager.isBraveVariation()) return true;
          return (getVariation().equals(Variations.NEW_TAB_SEARCH_SHARE)
-                        && !FeatureUtilities.isStartSurfaceEnabled())
-                 || ((!FeatureUtilities.isGridTabSwitcherEnabled()
-@@ -101,6 +105,7 @@ public class BottomToolbarVariationManager {
+                        && !StartSurfaceConfiguration.isStartSurfaceEnabled())
+                 || ((!TabUiFeatureUtilities.isGridTabSwitcherEnabled()
+@@ -111,6 +115,7 @@ public class BottomToolbarVariationManager {
       *         of portrait mode in current variation.
       */
      public static boolean isTabSwitcherOnBottom() {
 +        if (BraveBottomToolbarVariationManager.isBraveVariation()) return true;
-         return FeatureUtilities.isBottomToolbarEnabled()
+         return BottomToolbarConfiguration.isBottomToolbarEnabled()
                  && getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER);
      }

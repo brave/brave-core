@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_impl.h b/chrome/browser/profiles/profile_impl.h
-index c9807293b3f476d5895d52f5082d7281bf0dd046..b3b8cd51c5577306f6561fb8d7e235c4499a53cd 100644
+index 326e2e98dd8feede2e560bef13e140a72b654e2d..d8f46435e7d34af3a3bb31b4fb7a45c6b69c26e2 100644
 --- a/chrome/browser/profiles/profile_impl.h
 +++ b/chrome/browser/profiles/profile_impl.h
-@@ -169,6 +169,7 @@ class ProfileImpl : public Profile {
+@@ -163,6 +163,7 @@ class ProfileImpl : public Profile {
    void OnLogin() override;
    void InitChromeOSPreferences() override;
  #endif  // defined(OS_CHROMEOS)

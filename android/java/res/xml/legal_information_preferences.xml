@@ -12,7 +12,7 @@
         app:url="@string/open_source_license_url" />
     <org.chromium.chrome.browser.settings.HyperlinkPreference
         android:key="terms_of_service"
-        android:title="@string/terms_of_service_title"
+        android:title="@string/google_terms_of_service_title"
         app:url="@string/brave_terms_of_service_url" />
     <org.chromium.chrome.browser.settings.HyperlinkPreference
         android:key="privacy_notice"

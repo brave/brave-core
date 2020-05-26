@@ -19,18 +19,15 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.util.UrlConstants;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class BraveTabCreator extends ChromeTabCreator {
 
-    public BraveTabCreator(ChromeActivity activity,
-            WindowAndroid nativeWindow,
-            StartupTabPreloader startupTabPreloader,
-            Supplier<TabDelegateFactory> tabDelegateFactory,
-            boolean incognito) {
-        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito);
+    public BraveTabCreator(ChromeActivity activity, WindowAndroid nativeWindow, StartupTabPreloader startupTabPreloader,
+            Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito, OverviewNTPCreator overviewNTPCreator) {
+        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito, overviewNTPCreator);
     }
 
     @Override

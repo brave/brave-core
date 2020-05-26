@@ -90,6 +90,7 @@ cr.define('settings', function() {
 
   cr.addSingletonGetter(DefaultBraveShieldsBrowserProxyImpl);
 
+  // #cr_define_end
   return {
     DefaultBraveShieldsBrowserProxy,
     DefaultBraveShieldsBrowserProxyImpl

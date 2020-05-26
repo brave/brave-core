@@ -30,7 +30,6 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/offline_pages/core/offline_page_feature.h"
-#include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/driver/sync_driver_switches.h"
@@ -153,17 +152,17 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {
-    // Upgrade all mixed content
+      // Upgrade all mixed content
       blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
-    // Remove URL bar mixed control and allow site specific override instead
+      // Remove URL bar mixed control and allow site specific override instead
       features::kMixedContentSiteSetting.name,
-    // Warn about Mixed Content optionally blockable content
+      // Warn about Mixed Content optionally blockable content
       security_state::features::kPassiveMixedContentWarning.name,
-    // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
-    // this feature.
+      // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
+      // on
+      // this feature.
       features::kWebUIDarkMode.name,
-      omnibox::kSimplifyHttpsIndicator.name,
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
@@ -173,18 +172,19 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
-      autofill::features::kAutofillServerCommunication.name,
-      blink::features::kTextFragmentAnchor.name,
-      features::kAllowPopupsDuringPageUnload.name,
-      features::kLookalikeUrlNavigationSuggestionsUI.name,
-      features::kNotificationTriggers.name,
-      features::kSmsReceiver.name,
-      features::kVideoPlaybackQuality.name,
-      features::kTabHoverCards.name,
+    autofill::features::kAutofillEnableAccountWalletStorage.name,
+    autofill::features::kAutofillServerCommunication.name,
+    blink::features::kTextFragmentAnchor.name,
+    features::kAllowPopupsDuringPageUnload.name,
+    features::kLookalikeUrlNavigationSuggestionsUI.name,
+    features::kNotificationTriggers.name,
+    features::kSmsReceiver.name,
+    features::kVideoPlaybackQuality.name,
+    features::kTabHoverCards.name,
 #if defined(OS_ANDROID)
-      feed::kInterestFeedContentSuggestions.name,
-      translate::kTranslateUI.name,
-      offline_pages::kPrefetchingOfflinePagesFeature.name,
+    feed::kInterestFeedContentSuggestions.name,
+    translate::kTranslateUI.name,
+    offline_pages::kPrefetchingOfflinePagesFeature.name,
 #endif
   };
   command_line.AppendFeatures(enabled_features, disabled_features);

@@ -1,5 +1,5 @@
 diff --git a/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java b/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java
-index 84a8b66912a2f6847771486e62556b772c192fd2..b66f68589fb11cda455a86d8400feb3ac2a0f083 100644
+index 0916e619f58d9146367a62c101ef9fdec0f5c0ad..75a77fca11887887e205c19ababab33b326a09d9 100644
 --- a/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java
 +++ b/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java
 @@ -77,7 +77,7 @@ public class AndroidSyncSettings {

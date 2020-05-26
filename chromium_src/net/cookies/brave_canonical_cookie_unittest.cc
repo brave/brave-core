@@ -5,112 +5,80 @@
 
 #include "net/cookies/canonical_cookie.h"
 
+#include "base/time/time.h"
 #include "net/cookies/cookie_constants.h"
 #include "net/cookies/cookie_options.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-static const char cookie_line1[] =
+using base::TimeDelta;
+
+static const char max_expires_date_cookie[] =
     "test1=yes; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-static const char cookie_line2[] =
+static const char max_age_cookie[] =
     "test2=yes; max-age=630720000";  // 20 years
-static const char cookie_line3[] =
+static const char max_expires_and_max_age_cookie[] =
     "test3=yes; max-age=630720000; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-static const char cookie_line4[] =
+static const char short_expiration_cookie[] =
     "test4=yes; max-age=172800";  // 2 days
 static const char cookie_line5[] =
     "test5=yes; httponly; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+static const char no_expiration_cookie[] =
+    "test5=yes";
 
 namespace net {
 
-TEST(BraveCanonicalCookieTest, ClientSide) {
-  using base::TimeDelta;
+const base::Time creation_time = base::Time::Now();
+constexpr base::TimeDelta kMaxCookieExpiration =
+    base::TimeDelta::FromDays(30*6);  // 6 months
 
+TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
   GURL url("https://www.example.com/test");
-  base::Time creation_time = base::Time::Now();
-  bool is_from_http = false;
 
-  std::unique_ptr<CanonicalCookie> cookie(
-      CanonicalCookie::Create(is_from_http, url, cookie_line1, creation_time,
-                              base::nullopt /* server_time */));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
+      url, max_expires_date_cookie, creation_time, base::nullopt));
   EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(8));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(6));
+  EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line2, creation_time,
-                              base::nullopt /* server_time */);
+  cookie = CanonicalCookie::Create(url, max_age_cookie, creation_time,
+                                   base::nullopt);
   EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(8));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(6));
+  EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line3, creation_time,
-                              base::nullopt /* server_time */);
+  cookie = CanonicalCookie::Create(url, max_expires_and_max_age_cookie,
+                                   creation_time, base::nullopt);
   EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(8));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(6));
-
-  // Short-lived cookies get to keep their shorter expiration.
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line4, creation_time,
-                              base::nullopt /* server_time */);
-  EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(3));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(1));
-
-  // document.cookie API 'httponly' works as expected.
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line5, creation_time,
-                              base::nullopt /* server_time */);
-  EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(8));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(6));
+  EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 }
 
-TEST(BraveCanonicalCookieTest, ServerSide) {
-  using base::TimeDelta;
-
+TEST(BraveCanonicalCookieTest, AllowShorterThanMaxExpiration) {
   GURL url("https://www.example.com/test");
-  base::Time creation_time = base::Time::Now();
-  bool is_from_http = true;
-
-  std::unique_ptr<CanonicalCookie> cookie(
-      CanonicalCookie::Create(is_from_http, url, cookie_line1, creation_time,
-                              base::nullopt /* server_time */));
-  EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*7));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*5));
-
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line2, creation_time,
-                              base::nullopt /* server_time */);
-  EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*7));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*5));
-
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line3, creation_time,
-                              base::nullopt /* server_time */);
-  EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*7));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*5));
-
   // Short-lived cookies get to keep their shorter expiration.
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line4, creation_time,
-                              base::nullopt /* server_time */);
+  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::Create(
+      url, short_expiration_cookie, creation_time, base::nullopt);
   EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(3));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(1));
+  EXPECT_EQ(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(2));
+}
+
+TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {
+  GURL url("https://www.example.com/test");
 
   // HTTP cookies with 'httponly' work as expected.
-  cookie =
-      CanonicalCookie::Create(is_from_http, url, cookie_line5, creation_time,
-                              base::nullopt /* server_time */);
+  std::unique_ptr<CanonicalCookie> cookie =
+      CanonicalCookie::Create(url, cookie_line5, creation_time, base::nullopt);
   EXPECT_TRUE(cookie.get());
-  EXPECT_LT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*7));
-  EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*5));
+  EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
+}
+
+TEST(BraveCanonicalCookieTest, NoExpirationCookie) {
+  GURL url("https://www.example.com/test");
+
+  base::Time creation_time = base::Time::Now();
+
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
+      url, no_expiration_cookie, creation_time, base::nullopt));
+  EXPECT_TRUE(cookie.get());
+  EXPECT_EQ(cookie->IsPersistent(), false);
 }
 
 }  // namespace net

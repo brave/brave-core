@@ -650,7 +650,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           ShowRewardsSummary();
           Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
           if (currentActiveTab != null && !currentActiveTab.isIncognito()) {
-            String url = currentActiveTab.getUrl();
+            String url = currentActiveTab.getUrlString();
             if (URLUtil.isValidUrl(url)) {
                 mBraveRewardsNativeWorker.GetPublisherInfo(currentActiveTab.getId(), url);
                 mPublisherFetcher = new Timer();
@@ -1241,7 +1241,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
-        String url = currentActiveTab.getUrl();
+        String url = currentActiveTab.getUrlString();
         final String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
 
         mIconFetcher.retrieveLargeIcon(favicon_url,this);

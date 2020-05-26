@@ -23,6 +23,8 @@ class BraveProfileManager : public ProfileManager {
   void InitProfileUserPrefs(Profile* profile) override;
   std::string GetLastUsedProfileName() override;
   void SetNonPersonalProfilePrefs(Profile* profile) override;
+  bool IsAllowedProfilePath(const base::FilePath& path) const override;
+  void AddProfileToStorage(Profile* profile) override;
 
   void OnProfileCreated(Profile* profile,
                         bool success,
@@ -39,6 +41,14 @@ class BraveProfileManager : public ProfileManager {
  private:
   void MigrateProfileNames();
   DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
+};
+
+class BraveProfileManagerWithoutInit : public BraveProfileManager {
+ public:
+  explicit BraveProfileManagerWithoutInit(const base::FilePath& user_data_dir);
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveProfileManagerWithoutInit);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_MANAGER_H_

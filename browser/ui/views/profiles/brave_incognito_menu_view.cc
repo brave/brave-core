@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -70,7 +71,6 @@ void BraveIncognitoMenuView::BuildMenu() {
   int window_count = GetWindowCount(browser()->profile());
   SetIdentityInfo(
       ColoredImageForMenu(kIncognitoProfileIcon, icon_color),
-      /*badge=*/gfx::ImageSkia(),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
@@ -78,20 +78,20 @@ void BraveIncognitoMenuView::BuildMenu() {
 
   AddTorButton();
 
-  AddFeatureButton(ImageForMenu(kCloseAllIcon),
-                   l10n_util::GetStringUTF16(
+  AddFeatureButton(l10n_util::GetStringUTF16(
                        GetProfileMenuCloseButtonTextId(browser()->profile())),
                    base::BindRepeating(&IncognitoMenuView::OnExitButtonClicked,
-                                       base::Unretained(this)));
+                                       base::Unretained(this)),
+                   kCloseAllIcon);
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
   if (ShouldShowTorProfileButton(browser()->profile())) {
     AddFeatureButton(
-        ImageForMenu(kLaunchIcon),
         l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON),
         base::BindRepeating(&BraveIncognitoMenuView::OnTorProfileButtonClicked,
-                            base::Unretained(this)));
+                            base::Unretained(this)),
+        vector_icons::kLaunchIcon);
   }
 }
 

@@ -71,6 +71,7 @@ cr.define('settings', function() {
 
   cr.addSingletonGetter(BravePrivacyBrowserProxyImpl);
 
+  // #cr_define_end
   return {
     BravePrivacyBrowserProxy: BravePrivacyBrowserProxy,
     BravePrivacyBrowserProxyImpl: BravePrivacyBrowserProxyImpl,

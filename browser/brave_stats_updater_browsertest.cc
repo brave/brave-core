@@ -63,7 +63,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
   void SetBaseUpdateURLForTest() {
     std::unique_ptr<base::Environment> env(base::Environment::Create());
     brave::BraveStatsUpdater::SetBaseUpdateURLForTest(
-        embedded_test_server()->GetURL("/1/usage/brave-core"));
+        embedded_test_server()->GetURL("/1/usage/brave-core").spec());
     env->SetVar("BRAVE_REFERRALS_SERVER",
         embedded_test_server()->host_port_pair().ToString());
     env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing

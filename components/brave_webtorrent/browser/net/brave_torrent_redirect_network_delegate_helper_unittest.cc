@@ -11,8 +11,8 @@
 #include "base/strings/strcat.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "content/public/common/resource_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 using brave::ResponseCallback;
 
@@ -68,7 +68,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -96,7 +96,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -126,7 +126,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -162,7 +162,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url;
   auto request_info =
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -194,7 +194,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url;
   auto request_info =
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -220,7 +220,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -249,7 +249,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->initiator_url = torrent_extension_url();
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -279,7 +279,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_viewer_url());
   request_info->initiator_url = torrent_extension_url();
-  request_info->resource_type = content::ResourceType::kMainFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -310,7 +310,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  request_info->resource_type = content::ResourceType::kXhr;
+  request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
@@ -323,7 +323,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
   EXPECT_EQ(rc, net::OK);
 
-  request_info->resource_type = content::ResourceType::kSubFrame;
+  request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
 
   rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
