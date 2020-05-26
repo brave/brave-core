@@ -30,6 +30,8 @@
     <color name="onboarding_progress_start_color">#FA7250</color>
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#4F30AB</color>
+    <color name="onboarding_indicator_selected_color">#FF7654</color>
+    <color name="onboarding_indicator_default_color">#C2C4CF</color>
 
     <color name="brave_shield_bg_color">@color/default_primary_color</color>
     <color name="brave_state_time_count_color">#222326</color>
