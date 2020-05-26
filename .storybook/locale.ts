@@ -144,7 +144,6 @@ const locale: Record<string, string> = {
   openAdsHistory: 'Show Ads History',
   openBalance: 'Opening Balance',
   payment: 'Payment',
-  paymentMonthly: 'Payment made every {{day}}th day in each month.',
   paymentNotMade: 'Payment not made.',
   pendingContributions: 'Pending Contributions',
   pendingContributionEmpty: 'No pending contributions…',

@@ -209,7 +209,6 @@ storiesOf('Rewards/Modal', module)
             }
           }
         ]}
-        paymentDay={12}
       />
     )
   })
