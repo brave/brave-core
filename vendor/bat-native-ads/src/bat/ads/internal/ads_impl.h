@@ -198,6 +198,8 @@ class AdsImpl : public Ads {
   CreativeAdNotificationList GetEligibleAdsForConversions(
       const CreativeAdNotificationList& ads,
       const AdConversionList& ad_conversions);
+  CreativeAdNotificationList GetEligibleAdsForPriorities(
+      const CreativeAdNotificationList& ads) const;
   CreativeAdNotificationList GetUnseenAdsAndRoundRobinIfNeeded(
       const CreativeAdNotificationList& ads) const;
   CreativeAdNotificationList GetUnseenAds(

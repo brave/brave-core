@@ -136,6 +136,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.end_at_timestamp = campaign.end_at;
         info.daily_cap = campaign.daily_cap;
         info.advertiser_id = campaign.advertiser_id;
+        info.priority = campaign.priority;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
         info.geo_targets = regions;
