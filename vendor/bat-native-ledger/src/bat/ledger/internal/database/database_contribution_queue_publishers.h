@@ -20,28 +20,34 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
   void InsertOrUpdate(
-      const uint64_t id,
+      const std::string& id,
       ledger::ContributionQueuePublisherList list,
       ledger::ResultCallback callback);
 
   void GetRecordsByQueueId(
-      const uint64_t queue_id,
+      const std::string& queue_id,
       ContributionQueuePublishersListCallback callback);
 
   void DeleteRecordsByQueueId(
       ledger::DBTransaction* transaction,
-      const uint64_t queue_id);
+      const std::string& queue_id);
 
  private:
   bool CreateTableV9(ledger::DBTransaction* transaction);
 
   bool CreateTableV15(ledger::DBTransaction* transaction);
 
+  bool CreateTableV23(ledger::DBTransaction* transaction);
+
   bool CreateIndexV15(ledger::DBTransaction* transaction);
+
+  bool CreateIndexV23(ledger::DBTransaction* transaction);
 
   bool MigrateToV9(ledger::DBTransaction* transaction);
 
   bool MigrateToV15(ledger::DBTransaction* transaction);
+
+  bool MigrateToV23(ledger::DBTransaction* transaction);
 
   void OnGetRecordsByQueueId(
       ledger::DBCommandResponsePtr response,

@@ -218,7 +218,7 @@ void Database::GetFirstContributionQueue(
 }
 
 void Database::DeleteContributionQueue(
-    const uint64_t id,
+    const std::string& id,
     ledger::ResultCallback callback) {
   return contribution_queue_->DeleteRecord(id, callback);
 }

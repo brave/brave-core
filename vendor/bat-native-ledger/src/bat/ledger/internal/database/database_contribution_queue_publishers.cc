@@ -80,7 +80,41 @@ bool DatabaseContributionQueuePublishers::CreateTableV15(
   return true;
 }
 
+bool DatabaseContributionQueuePublishers::CreateTableV23(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "contribution_queue_id TEXT NOT NULL,"
+        "publisher_key TEXT NOT NULL,"
+        "amount_percent DOUBLE NOT NULL"
+      ")",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  return true;
+}
+
 bool DatabaseContributionQueuePublishers::CreateIndexV15(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  bool success =
+      this->InsertIndex(transaction, kTableName, "contribution_queue_id");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
+}
+
+bool DatabaseContributionQueuePublishers::CreateIndexV23(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -105,6 +139,9 @@ bool DatabaseContributionQueuePublishers::Migrate(
     }
     case 15: {
       return MigrateToV15(transaction);
+    }
+    case 23: {
+      return MigrateToV23(transaction);
     }
     default: {
       return true;
@@ -170,11 +207,66 @@ bool DatabaseContributionQueuePublishers::MigrateToV15(
   return true;
 }
 
+bool DatabaseContributionQueuePublishers::MigrateToV23(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      kTableName);
+
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
+    return false;
+  }
+
+  std::string query =
+      "DROP INDEX IF EXISTS "
+      "contribution_queue_publishers_contribution_queue_id_index;"
+      " DROP INDEX IF EXISTS "
+      "contribution_queue_publishers_publisher_key_index;";
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!CreateTableV23(transaction)) {
+    BLOG(0, "Table couldn't be created");
+    return false;
+  }
+
+  if (!CreateIndexV23(transaction)) {
+    BLOG(0, "Index couldn't be created");
+    return false;
+  }
+
+  // Migrate the contribution_queue table
+  query = base::StringPrintf(
+      "INSERT INTO %s "
+      "(contribution_queue_id, publisher_key, amount_percent) "
+      "SELECT CAST(contribution_queue_id AS TEXT), publisher_key, "
+      "amount_percent FROM %s",
+      kTableName,
+      temp_table_name.c_str());
+
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!DropTable(transaction, temp_table_name)) {
+    BLOG(0, "Table couldn't be dropped");
+    return false;
+  }
+
+  return true;
+}
+
 void DatabaseContributionQueuePublishers::InsertOrUpdate(
-    const uint64_t id,
+    const std::string& id,
     ledger::ContributionQueuePublisherList list,
     ledger::ResultCallback callback) {
-  if (id == 0 || list.empty()) {
+  if (id.empty() || list.empty()) {
     BLOG(0, "Empty data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -192,7 +284,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
   command->command = query;
 
   for (const auto& publisher : list) {
-    BindInt64(command.get(), 0, id);
+    BindString(command.get(), 0, id);
     BindString(command.get(), 1, publisher->publisher_key);
     BindDouble(command.get(), 2, publisher->amount_percent);
 
@@ -207,10 +299,10 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
-    const uint64_t queue_id,
+    const std::string& queue_id,
     ContributionQueuePublishersListCallback callback) {
-  if (queue_id == 0) {
-    BLOG(0, "Queue id is 0");
+  if (queue_id.empty()) {
+    BLOG(0, "Queue id is empty");
     callback({});
     return;
   }
@@ -226,7 +318,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
   command->type = ledger::DBCommand::Type::READ;
   command->command = query;
 
-  BindInt64(command.get(), 0, queue_id);
+  BindString(command.get(), 0, queue_id);
 
   command->record_bindings = {
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
@@ -270,11 +362,11 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
 
 void DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
     ledger::DBTransaction* transaction,
-    const uint64_t queue_id) {
+    const std::string& queue_id) {
   DCHECK(transaction);
 
-  if (queue_id == 0) {
-    BLOG(0, "Queue id is 0");
+  if (queue_id.empty()) {
+    BLOG(0, "Queue id is empty");
     return;
   }
 
@@ -286,7 +378,7 @@ void DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt64(command.get(), 0, queue_id);
+  BindString(command.get(), 0, queue_id);
 
   transaction->commands.push_back(std::move(command));
 }

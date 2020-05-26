@@ -1423,7 +1423,7 @@ void LedgerImpl::SaveContributionQueue(
 }
 
 void LedgerImpl::DeleteContributionQueue(
-    const uint64_t id,
+    const std::string& id,
     ledger::ResultCallback callback) {
   bat_database_->DeleteContributionQueue(id, callback);
 }

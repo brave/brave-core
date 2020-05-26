@@ -6,6 +6,7 @@
 #include <map>
 #include <utility>
 
+#include "base/guid.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
@@ -52,6 +53,28 @@ bool DatabaseContributionQueue::CreateTableV9(
   return true;
 }
 
+bool DatabaseContributionQueue::CreateTableV23(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "contribution_queue_id TEXT PRIMARY KEY NOT NULL,"
+        "type INTEGER NOT NULL,"
+        "amount DOUBLE NOT NULL,"
+        "partial INTEGER NOT NULL DEFAULT 0,"
+        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL"
+      ")",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  return true;
+}
+
 bool DatabaseContributionQueue::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
@@ -63,6 +86,9 @@ bool DatabaseContributionQueue::Migrate(
     }
     case 15: {
       return MigrateToV15(transaction);
+    }
+    case 23: {
+      return MigrateToV23(transaction);
     }
     default: {
       return true;
@@ -99,6 +125,51 @@ bool DatabaseContributionQueue::MigrateToV15(
   return publishers_->Migrate(transaction, 15);
 }
 
+bool DatabaseContributionQueue::MigrateToV23(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      kTableName);
+
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
+    return false;
+  }
+
+  if (!CreateTableV23(transaction)) {
+    BLOG(0, "Table couldn't be created");
+    return false;
+  }
+
+  // Migrate the contribution_queue table
+  const std::string query = base::StringPrintf(
+      "INSERT INTO %s "
+      "(contribution_queue_id, type, amount, partial, created_at) "
+      "SELECT CAST(contribution_queue_id AS TEXT), type, amount, partial, "
+      "created_at FROM %s",
+      kTableName,
+      temp_table_name.c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!DropTable(transaction, temp_table_name)) {
+    BLOG(0, "Table couldn't be dropped");
+    return false;
+  }
+
+  if (!publishers_->Migrate(transaction, 23)) {
+    BLOG(0, "Table couldn't be migrated");
+    return false;
+  }
+
+  return true;
+}
+
 void DatabaseContributionQueue::InsertOrUpdate(
     ledger::ContributionQueuePtr info,
     ledger::ResultCallback callback) {
@@ -119,43 +190,22 @@ void DatabaseContributionQueue::InsertOrUpdate(
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
 
-  bool new_entry = false;
-  if (info->id != 0) {
-    BindInt64(command.get(), 0, info->id);
-  } else {
-    BindNull(command.get(), 0);
-    new_entry = true;
+  if (info->id.empty()) {
+    info->id = base::GenerateGUID();
   }
 
+  BindString(command.get(), 0, info->id);
   BindInt(command.get(), 1, static_cast<int>(info->type));
   BindDouble(command.get(), 2, info->amount);
   BindBool(command.get(), 3, info->partial);
 
   transaction->commands.push_back(std::move(command));
 
-  if (new_entry) {
-    const std::string new_query = base::StringPrintf(
-        "SELECT contribution_queue_id FROM %s "
-        "ORDER BY contribution_queue_id DESC LIMIT 1",
-    kTableName);
-
-    auto new_command = ledger::DBCommand::New();
-    new_command->type = ledger::DBCommand::Type::READ;
-    new_command->command = new_query;
-
-    new_command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
-    };
-
-    transaction->commands.push_back(std::move(new_command));
-  }
-
   auto transaction_callback =
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate,
           this,
           _1,
           braveledger_bind_util::FromContributionQueueToString(info->Clone()),
-          info->id,
           callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
@@ -164,7 +214,6 @@ void DatabaseContributionQueue::InsertOrUpdate(
 void DatabaseContributionQueue::OnInsertOrUpdate(
     ledger::DBCommandResponsePtr response,
     const std::string& queue_string,
-    const uint64_t id,
     ledger::ResultCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
@@ -182,23 +231,11 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
     return;
   }
 
-  if (id != 0) {
-    publishers_->InsertOrUpdate(id, std::move(queue->publishers), callback);
-    return;
-  }
-
-  if (response->result->get_records().size() != 1) {
-    BLOG(0, "Record size is not correct");
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto* record = response->result->get_records()[0].get();
-
   publishers_->InsertOrUpdate(
-      GetInt64Column(record, 0),
+      queue->id,
       std::move(queue->publishers),
       callback);
+  return;
 }
 
 void DatabaseContributionQueue::GetFirstRecord(
@@ -207,7 +244,7 @@ void DatabaseContributionQueue::GetFirstRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT contribution_queue_id, type, amount, partial "
-      "FROM %s ORDER BY contribution_queue_id ASC LIMIT 1",
+      "FROM %s ORDER BY created_at ASC LIMIT 1",
       kTableName);
 
   auto command = ledger::DBCommand::New();
@@ -215,7 +252,7 @@ void DatabaseContributionQueue::GetFirstRecord(
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
       ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE
@@ -251,7 +288,7 @@ void DatabaseContributionQueue::OnGetFirstRecord(
   auto* record = response->result->get_records()[0].get();
 
   auto info = ledger::ContributionQueue::New();
-  info->id = GetInt64Column(record, 0);
+  info->id = GetStringColumn(record, 0);
   info->type = static_cast<ledger::RewardsType>(GetIntColumn(record, 1));
   info->amount = GetDoubleColumn(record, 2);
   info->partial = static_cast<bool>(GetIntColumn(record, 3));
@@ -285,10 +322,10 @@ void DatabaseContributionQueue::OnGetPublishers(
 }
 
 void DatabaseContributionQueue::DeleteRecord(
-    const uint64_t id,
+    const std::string& id,
     ledger::ResultCallback callback) {
-  if (id == 0) {
-    BLOG(0, "Id is 0");
+  if (id.empty()) {
+    BLOG(0, "Id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -303,7 +340,7 @@ void DatabaseContributionQueue::DeleteRecord(
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt64(command.get(), 0, id);
+  BindString(command.get(), 0, id);
 
   transaction->commands.push_back(std::move(command));
 

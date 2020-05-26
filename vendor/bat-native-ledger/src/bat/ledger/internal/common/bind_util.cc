@@ -15,7 +15,7 @@ namespace braveledger_bind_util {
 
 std::string FromContributionQueueToString(ledger::ContributionQueuePtr info) {
   base::Value publishers(base::Value::Type::LIST);
-  for (auto& item : info->publishers) {
+  for (const auto& item : info->publishers) {
     base::Value publisher(base::Value::Type::DICTIONARY);
     publisher.SetStringKey("publisher_key", item->publisher_key);
     publisher.SetStringKey("amount_percent",
@@ -25,7 +25,7 @@ std::string FromContributionQueueToString(ledger::ContributionQueuePtr info) {
 
   base::Value queue(base::Value::Type::DICTIONARY);
 
-  queue.SetStringKey("id", std::to_string(info->id));
+  queue.SetStringKey("id", info->id);
   queue.SetIntKey("type", static_cast<int>(info->type));
   queue.SetStringKey("amount", std::to_string(info->amount));
   queue.SetBoolKey("partial", info->partial);
@@ -53,7 +53,7 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
 
   const auto* id = dictionary->FindStringKey("id");
   if (id) {
-    queue->id = std::stoull(*id);
+    queue->id = *id;
   }
 
   const auto type = dictionary->FindIntKey("type");
