@@ -183,7 +183,7 @@ def fancy_print(text):
 
 def parse_issues_fixed(body):
     try:
-        regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'
+        regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'  # nopep8
         return re.findall(regex, body)
     except Exception as e:
         print str(e)
