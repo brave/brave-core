@@ -252,6 +252,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                         toggleShowBinance={toggleShowBinance}
                         showBinance={showBinance}
                         binanceSupported={binanceSupported}
+                        toggleShowTogether={toggleShowTogether}
+                        showTogether={showTogether}
+                        togetherSupported={togetherSupported}
                       />
                     ) : null
                 }

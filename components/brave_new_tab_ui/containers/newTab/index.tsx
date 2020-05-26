@@ -739,6 +739,9 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowRewards={this.toggleShowRewards}
           toggleShowBinance={this.toggleShowBinance}
           binanceSupported={binanceState.binanceSupported}
+          togetherSupported={newTabData.togetherSupported}
+          toggleShowTogether={this.toggleShowTogether}
+          showTogether={newTabData.showTogether}
         />
       </Page.App>
     )

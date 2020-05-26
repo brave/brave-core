@@ -17,11 +17,21 @@ interface Props {
   toggleShowBinance: () => void
   showBinance: boolean
   binanceSupported: boolean
+  toggleShowTogether: () => void
+  showTogether: boolean
+  togetherSupported: boolean
 }
 
 class MoreCardsSettings extends React.PureComponent<Props, {}> {
   render () {
-    const { binanceSupported, toggleShowBinance, showBinance } = this.props
+    const {
+      binanceSupported,
+      toggleShowBinance,
+      showBinance,
+      toggleShowTogether,
+      showTogether,
+      togetherSupported
+    } = this.props
     return (
       <div>
         {
@@ -31,6 +41,18 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
               <Toggle
                 onChange={toggleShowBinance}
                 checked={showBinance}
+                size='large'
+              />
+            </SettingsRow>
+          : null
+        }
+        {
+          togetherSupported
+          ? <SettingsRow>
+              <SettingsText>{getLocale('showTogether')}</SettingsText>
+              <Toggle
+                onChange={toggleShowTogether}
+                checked={showTogether}
                 size='large'
               />
             </SettingsRow>
