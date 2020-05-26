@@ -78,6 +78,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/TroubleshootingOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingBottomSheetViewPagerAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboradingBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/BravePartnerBrowserCustomizations.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceKeys.java",
