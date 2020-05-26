@@ -1172,6 +1172,33 @@ until they verify, or until 90 days have passed.
       <message name="IDS_DOWNLOAD_BRAVE" desc="Cross promotional modal text">
         Download Brave at brave.com on your laptop or tablet for a faster and more private web
       </message>
+      <message name="IDS_PRIVACY_PROTECTION" desc="Title for onboading bottomsheet.">
+        Privacy protection
+      </message>
+      <message name="IDS_PRIVACY_PROTECTION_TEXT" desc="Text for onboading bottomsheet.">
+        Brave stops ads &amp; trackers from collecting information about you without your consent.
+      </message>
+      <message name="IDS_SAVE_DATA_AND_BATTERY" desc="Title for onboading bottomsheet.">
+        Save data and battery
+      </message>
+      <message name="IDS_SAVE_DATA_AND_BATTERY_TEXT" desc="Text for onboading bottomsheet.">
+        Without ads &amp; trackers, websites use less data and battery. You mighth even save money on carrier fees.
+      </message>
+      <message name="IDS_WEBSITES_LOAD_FASTER" desc="Title for onboading bottomsheet.">
+        Websites load faster
+      </message>
+      <message name="IDS_WEBSITES_LOAD_FASTER_TEXT" desc="Text for onboading bottomsheet.">
+        Loading less data means websites in Brave load faster - up to 8x faster than other browsers.
+      </message>
+      <message name="IDS_GET_WEEKLY_UPDATES" desc="Title for onboading bottomsheet.">
+        Get weekly updates
+      </message>
+      <message name="IDS_GET_WEEKLY_UPDATES_TEXT" desc="Text for onboading bottomsheet.">
+        Be informed about which websites you visit are the most privacy invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Brave browser on your device.
+      </message>
+      <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
+        Turn on privacy stats
+      </message>
     </messages>
   </release>
 </grit>
