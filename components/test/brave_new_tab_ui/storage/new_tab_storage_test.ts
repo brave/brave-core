@@ -17,7 +17,7 @@ describe('new tab storage', () => {
       const expectedState = {
         ...defaultState,
         currentStackWidget: '',
-        widgetStackOrder: ['together'],
+        widgetStackOrder: [],
         removedStackWidgets: ['rewards', 'binance']
       }
       expect(migrateStackWidgetSettings(initialState)).toEqual(expectedState)
@@ -34,7 +34,7 @@ describe('new tab storage', () => {
       ...defaultState,
       showRewards: true,
       currentStackWidget: '',
-      widgetStackOrder: ['together', 'rewards'],
+      widgetStackOrder: ['rewards'],
       removedStackWidgets: ['binance']
     }
     expect(migrateStackWidgetSettings(initialState)).toEqual(expectedState)
@@ -50,7 +50,7 @@ describe('new tab storage', () => {
       ...defaultState,
       showBinance: true,
       currentStackWidget: '',
-      widgetStackOrder: ['together', 'binance'],
+      widgetStackOrder: ['binance'],
       removedStackWidgets: ['rewards']
     }
     expect(migrateStackWidgetSettings(initialState)).toEqual(expectedState)
@@ -68,7 +68,7 @@ describe('new tab storage', () => {
       showBinance: true,
       showRewards: true,
       currentStackWidget: '',
-      widgetStackOrder: ['together', 'rewards', 'binance'],
+      widgetStackOrder: ['rewards', 'binance'],
       removedStackWidgets: []
     }
     expect(migrateStackWidgetSettings(initialState)).toEqual(expectedState)
@@ -86,7 +86,7 @@ describe('new tab storage', () => {
       showBinance: true,
       showRewards: true,
       currentStackWidget: '',
-      widgetStackOrder: ['together', 'binance', 'rewards'],
+      widgetStackOrder: ['binance', 'rewards'],
       removedStackWidgets: []
     }
     expect(migrateStackWidgetSettings(initialState)).toEqual(expectedState)
