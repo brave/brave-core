@@ -14,6 +14,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
@@ -58,6 +59,10 @@ namespace extensions {
 class BraveTorClientUpdater;
 }
 
+namespace ipfs {
+class BraveIpfsClientUpdater;
+}
+
 namespace speedreader {
 class SpeedreaderRewriterService;
 }
@@ -94,8 +99,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(ENABLE_TOR)
   extensions::BraveTorClientUpdater* tor_client_updater();
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  std::unique_ptr<extensions::BraveIpfsClientUpdater> ipfs_client_updater_;
+#if BUILDFLAG(IPFS_ENABLED)
+  ipfs::BraveIpfsClientUpdater* ipfs_client_updater();
 #endif
   brave::BraveP3AService* brave_p3a_service();
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -110,7 +115,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   brave_user_model::UserModelFileService* user_model_file_service();
 #endif
-  extensions::BraveTorClientUpdater* ipfs_client_updater();
 
  private:
   // BrowserProcessImpl overrides:
@@ -154,6 +158,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #endif
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
+#endif
+#if BUILDFLAG(IPFS_ENABLED)
+  std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;

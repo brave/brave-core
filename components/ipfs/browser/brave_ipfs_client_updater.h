@@ -2,16 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_IPFS_CLIENT_UPDATER_H_
-#define BRAVE_BROWSER_EXTENSIONS_BRAVE_IPFS_CLIENT_UPDATER_H_
+#ifndef BRAVE_COMPONENTS_IPFS_BROWSER_BRAVE_IPFS_CLIENT_UPDATER_H_
+#define BRAVE_COMPONENTS_IPFS_BROWSER_BRAVE_IPFS_CLIENT_UPDATER_H_
 
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
-#include "brave/browser/extensions/brave_component_extension.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 
 class BraveIpfsClientUpdaterTest;
 
-namespace extensions {
+using brave_component_updater::BraveComponent;
+
+namespace ipfs {
 
 #if defined(OS_WIN)
 const std::string kIpfsClientComponentName("Brave Ipfs Client Updater (Windows)");
@@ -50,9 +52,9 @@ const std::string kIpfsClientComponentBase64PublicKey =
     "ewIDAQAB";
 #endif
 
-class BraveIpfsClientUpdater : public BraveComponentExtension {
+class BraveIpfsClientUpdater : public BraveComponent {
  public:
-   BraveIpfsClientUpdater();
+   BraveIpfsClientUpdater(BraveComponent::Delegate* delegate);
    ~BraveIpfsClientUpdater() override;
 
   void Register();
@@ -63,7 +65,8 @@ class BraveIpfsClientUpdater : public BraveComponentExtension {
 
  protected:
   void OnComponentReady(const std::string& component_id,
-      const base::FilePath& install_dir) override;
+      const base::FilePath& install_dir,
+      const std::string& manifest) override;
 
  private:
   friend class ::BraveIpfsClientUpdaterTest;
@@ -82,8 +85,9 @@ class BraveIpfsClientUpdater : public BraveComponentExtension {
 };
 
 // Creates the BraveIpfsClientUpdater
-std::unique_ptr<BraveIpfsClientUpdater> BraveIpfsClientUpdaterFactory();
+std::unique_ptr<BraveIpfsClientUpdater>
+BraveIpfsClientUpdaterFactory(BraveComponent::Delegate* delegate);
 
-}  // namespace extensions
+}  // namespace ipfs
 
-#endif  // BRAVE_BROWSER_EXTENSIONS_BRAVE_IPFS_CLIENT_UPDATER_H_
+#endif  // BRAVE_COMPONENTS_IPFS_BROWSER_BRAVE_IPFS_CLIENT_UPDATER_H_

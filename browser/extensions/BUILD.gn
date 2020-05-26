@@ -1,4 +1,3 @@
-import("//brave/browser/ipfs/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
@@ -7,6 +6,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -81,7 +81,6 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/browser/ipfs:buildflags",
     "//brave/browser/tor:buildflags",
     "//brave/browser/webcompat_reporter",
     "//brave/common",
@@ -92,6 +91,7 @@ source_set("extensions") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/ipfs/browser/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_driver",

@@ -14,6 +14,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//components/gcm_driver/config.gni")
@@ -671,7 +672,7 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (enable_ipfs) {
+  if (ipfs_enabled) {
     sources += [
       "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
     ]

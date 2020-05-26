@@ -1,0 +1,10 @@
+source_set("browser") {
+  sources = [
+    "brave_ipfs_client_updater.cc",
+    "brave_ipfs_client_updater.h",
+  ]
+
+  deps = [
+    "//third_party/re2",
+  ]
+}

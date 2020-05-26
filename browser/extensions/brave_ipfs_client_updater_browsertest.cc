@@ -87,7 +87,7 @@ public:
       return false;
 
     g_brave_browser_process->ipfs_client_updater()->OnComponentReady(
-        ipfs_client_updater->id(), ipfs_client_updater->path());
+        ipfs_client_updater->id(), ipfs_client_updater->path(), "");
     WaitForIpfsClientUpdaterThread();
 
     return true;

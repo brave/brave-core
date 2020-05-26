@@ -3,7 +3,6 @@ import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/browser/ipfs/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -13,6 +12,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -137,6 +137,7 @@ source_set("browser_process") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
+    "//brave/components/ipfs/browser/buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_tiles",
@@ -195,15 +196,6 @@ source_set("browser_process") {
       "//third_party/re2",
     ]
   }
-
-  if (enable_tor) {
-    sources += [
-      # TODO(bridiver) - change the directory for these
-      "extensions/brave_ipfs_client_updater.cc",
-      "extensions/brave_ipfs_client_updater.h",
-    ]
-  }
-
 
   if (brave_wallet_enabled) {
     deps += [
@@ -315,6 +307,12 @@ source_set("browser_process") {
   if (ntp_widget_utils_enabled) {
     deps += [
       "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+
+  if (ipfs_enabled) {
+    deps += [
+      "//brave/components/ipfs/browser",
     ]
   }
 

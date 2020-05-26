@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/extensions/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
 
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
@@ -10,16 +10,17 @@
 #include "base/task/post_task.h"
 #include "third_party/re2/src/re2/re2.h"
 
-namespace extensions {
+namespace ipfs {
 
 std::string BraveIpfsClientUpdater::g_ipfs_client_component_id_(
     kIpfsClientComponentId);
 std::string BraveIpfsClientUpdater::g_ipfs_client_component_base64_public_key_(
     kIpfsClientComponentBase64PublicKey);
 
-BraveIpfsClientUpdater::BraveIpfsClientUpdater()
-    : task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
+BraveIpfsClientUpdater::BraveIpfsClientUpdater(BraveComponent::Delegate* delegate)
+    : BraveComponent(delegate),
+      task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock()})),
       registered_(false) {
 }
 
@@ -30,9 +31,9 @@ void BraveIpfsClientUpdater::Register() {
   if (registered_)
     return;
 
-  BraveComponentExtension::Register(kIpfsClientComponentName,
-                                    g_ipfs_client_component_id_,
-                                    g_ipfs_client_component_base64_public_key_);
+  BraveComponent::Register(kIpfsClientComponentName,
+                           g_ipfs_client_component_id_,
+                           g_ipfs_client_component_base64_public_key_);
   registered_ = true;
 }
 
@@ -78,7 +79,8 @@ void BraveIpfsClientUpdater::InitExecutablePath(
 
 void BraveIpfsClientUpdater::OnComponentReady(
     const std::string& component_id,
-    const base::FilePath& install_dir) {
+    const base::FilePath& install_dir,
+    const std::string& manifest) {
   GetTaskRunner()->PostTask(
       FROM_HERE, base::Bind(&BraveIpfsClientUpdater::InitExecutablePath,
                             base::Unretained(this), install_dir));
@@ -95,8 +97,9 @@ void BraveIpfsClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
 ///////////////////////////////////////////////////////////////////////////////
 
 // The Brave Ipfs client extension factory.
-std::unique_ptr<BraveIpfsClientUpdater> BraveIpfsClientUpdaterFactory() {
-  return std::make_unique<BraveIpfsClientUpdater>();
+std::unique_ptr<BraveIpfsClientUpdater> BraveIpfsClientUpdaterFactory(
+    BraveComponent::Delegate* delegate) {
+  return std::make_unique<BraveIpfsClientUpdater>(delegate);
 }
 
-}  // namespace extensions
+}  // namespace ipfs
