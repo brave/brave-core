@@ -169,50 +169,6 @@ bool getJSONRates(const std::string& json,
   return !error;
 }
 
-bool getJSONWalletInfo(const std::string& json,
-                       ledger::WalletInfoProperties* walletInfo) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(
-        ((d.HasMember("parameters") && d["parameters"].IsObject()) &&
-         (d.HasMember("addresses") && d["addresses"].IsObject())) ||
-        ((d.HasMember("payload") && d["payload"].IsObject()) &&
-         (d.HasMember("wallet") && d["wallet"].IsObject())));
-  }
-
-  if (!error) {
-    if (d.HasMember("payload") && d["payload"].IsObject()) {
-      walletInfo->payment_id = d["wallet"]["paymentId"].GetString();
-      walletInfo->address_card_id =
-          d["wallet"]["addresses"]["CARD_ID"].GetString();
-    } else if (d.HasMember("parameters") && d["parameters"].IsObject()) {
-      walletInfo->address_card_id = d["addresses"]["CARD_ID"].GetString();
-    }
-  }
-  return !error;
-}
-
-bool getJSONRecoverWallet(const std::string& json,
-                          double* balance) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(d.HasMember("balance") && d["balance"].IsString());
-  }
-
-  if (!error) {
-    *balance = std::stod(d["balance"].GetString());
-  }
-  return !error;
-}
-
 bool getJSONResponse(const std::string& json,
                      unsigned int* statusCode,
                      std::string* error) {

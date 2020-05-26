@@ -107,8 +107,6 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase
                           completion:(nullable void (^)(NSError * _Nullable))completion;
 
-@property (nonatomic, readonly) double defaultContributionAmount;
-
 /// Retrieves the users most up to date balance to determin whether or not the
 /// wallet has a sufficient balance to complete a reconcile
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL sufficient))completion;

@@ -109,10 +109,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
 
-    // Set wallet info for Confirmations when launching the browser or creating
-    // a wallet for the first time
-    auto wallet_info = legacy_bat_state_->GetWalletInfo();
-    SetConfirmationsWalletInfo(wallet_info);
+    SetConfirmationsWalletInfo();
   } else {
     BLOG(0, "Failed to initialize wallet " << result);
   }
@@ -404,19 +401,14 @@ void LedgerImpl::LoadLedgerState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadLedgerState(std::move(callback));
 }
 
-void LedgerImpl::SetConfirmationsWalletInfo(
-    const ledger::WalletInfoProperties& wallet_info_properties) {
+void LedgerImpl::SetConfirmationsWalletInfo() {
   if (!IsConfirmationsRunning()) {
     return;
   }
 
-  if (wallet_info_properties.key_info_seed.size() != SEED_LENGTH) {
-    BLOG(0, "Failed to initialize confirmations due to invalid wallet");
-    return;
-  }
-
+  const auto recovery_seed = braveledger_state::GetRecoverySeed(this);
   const std::vector<uint8_t> seed =
-      braveledger_bat_helper::getHKDF(wallet_info_properties.key_info_seed);
+      braveledger_bat_helper::getHKDF(recovery_seed);
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> secret_key;
 
@@ -427,7 +419,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
   }
 
   confirmations::WalletInfo wallet_info;
-  wallet_info.payment_id = wallet_info_properties.payment_id;
+  wallet_info.payment_id = GetPaymentId();
   wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secret_key);
 
   if (!wallet_info.IsValid()) {
@@ -795,8 +787,9 @@ void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
       callback);
 }
 
-bool LedgerImpl::IsWalletCreated() const {
-  return legacy_bat_state_->IsWalletCreated();
+bool LedgerImpl::IsWalletCreated() {
+  const auto stamp = braveledger_state::GetCreationStamp(this);
+  return stamp != 0u;
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(
@@ -885,25 +878,8 @@ void LedgerImpl::ResetReconcileStamp() {
   ledger_client_->ReconcileStampReset();
 }
 
-const std::string& LedgerImpl::GetPaymentId() const {
-  return legacy_bat_state_->GetPaymentId();
-}
-
-const ledger::WalletInfoProperties& LedgerImpl::GetWalletInfo() const {
-  return legacy_bat_state_->GetWalletInfo();
-}
-
-void LedgerImpl::SetWalletInfo(
-    const ledger::WalletInfoProperties& info) {
-  legacy_bat_state_->SetWalletInfo(info);
-
-  if (!initializing_) {
-    // Only update wallet info for Confirmations if |SetWalletInfo| was not
-    // called when launching the browser or creating a wallet for the first time
-    // (i.e. recovering a wallet), as these scenarios are covered in
-    // |OnWalletInitializedInternal|
-    SetConfirmationsWalletInfo(info);
-  }
+std::string LedgerImpl::GetPaymentId() {
+  return braveledger_state::GetPaymentId(this);
 }
 
 void LedgerImpl::GetRewardsInternalsInfo(
@@ -911,19 +887,17 @@ void LedgerImpl::GetRewardsInternalsInfo(
   ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
 
   // Retrieve the payment id.
-  info->payment_id = legacy_bat_state_->GetPaymentId();
+  info->payment_id = GetPaymentId();
 
   // Retrieve the boot stamp.
-  info->boot_stamp = legacy_bat_state_->GetCreationStamp();
+  info->boot_stamp = GetCreationStamp();
 
   // Retrieve the key info seed and validate it.
-  const ledger::WalletInfoProperties wallet_info =
-      legacy_bat_state_->GetWalletInfo();
-  if (wallet_info.key_info_seed.size() != SEED_LENGTH) {
+  const auto seed = braveledger_state::GetRecoverySeed(this);
+  if (seed.size() != SEED_LENGTH) {
     info->is_key_info_seed_valid = false;
   } else {
-    std::vector<uint8_t> secret_key =
-        braveledger_bat_helper::getHKDF(wallet_info.key_info_seed);
+    std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
     info->is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
@@ -968,10 +942,6 @@ void LedgerImpl::NormalizeContributeWinners(
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
-}
-
-double LedgerImpl::GetDefaultContributionAmount() {
-  return legacy_bat_state_->GetDefaultContributionAmount();
 }
 
 void LedgerImpl::HasSufficientBalanceToReconcile(
@@ -1133,10 +1103,6 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
 void LedgerImpl::GetExternalWallets(
     ledger::GetExternalWalletsCallback callback) {
   ledger_client_->GetExternalWallets(callback);
-}
-
-std::string LedgerImpl::GetCardIdAddress() const {
-  return legacy_bat_state_->GetCardIdAddress();
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,

@@ -89,21 +89,12 @@ uint64_t LegacyBatState::GetReconcileStamp() const {
   return state_->reconcile_timestamp;
 }
 
-bool LegacyBatState::IsWalletCreated() const {
-  return state_->boot_timestamp != 0u;
-}
-
 const std::string& LegacyBatState::GetPaymentId() const {
   return state_->wallet_info.payment_id;
 }
 
-const ledger::WalletInfoProperties& LegacyBatState::GetWalletInfo() const {
-  return state_->wallet_info;
-}
-
-void LegacyBatState::SetWalletInfo(
-    const ledger::WalletInfoProperties& wallet_info) {
-  state_->wallet_info = wallet_info;
+const std::vector<uint8_t>& LegacyBatState::GetRecoverySeed() const {
+  return state_->wallet_info.key_info_seed;
 }
 
 const ledger::WalletProperties& LegacyBatState::GetWalletProperties() const {
@@ -132,10 +123,6 @@ void LegacyBatState::SetWalletProperties(
 
 uint64_t LegacyBatState::GetCreationStamp() const {
   return state_->boot_timestamp;
-}
-
-double LegacyBatState::GetDefaultContributionAmount() {
-  return state_->wallet.fee_amount;
 }
 
 void LegacyBatState::SetInlineTipSetting(const std::string& key, bool enabled) {

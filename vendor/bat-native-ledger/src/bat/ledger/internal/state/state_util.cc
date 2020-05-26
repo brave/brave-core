@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
@@ -115,13 +116,13 @@ void SetAutoContributionAmount(
     bat_ledger::LedgerImpl* ledger,
     const double amount) {
   DCHECK(ledger);
-  ledger->SetBooleanState(ledger::kStateAutoContributeAmount, amount);
+  ledger->SetDoubleState(ledger::kStateAutoContributeAmount, amount);
 }
 
-bool GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger) {
+double GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
   const double amount =
-      ledger->GetBooleanState(ledger::kStateAutoContributeAmount);
+      ledger->GetDoubleState(ledger::kStateAutoContributeAmount);
   if (amount == 0.0) {
     // TODO(nejc): get default value
   }
@@ -156,6 +157,50 @@ uint64_t GetCreationStamp(bat_ledger::LedgerImpl* ledger) {
 void SetCreationStamp(bat_ledger::LedgerImpl* ledger, const uint64_t stamp) {
   DCHECK(ledger);
   ledger->SetUint64State(ledger::kStateCreationStamp, stamp);
+}
+
+std::string GetAnonymousCardId(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetStringState(ledger::kStateAnonymousCardId);
+}
+
+void SetAnonymousCardId(
+    bat_ledger::LedgerImpl* ledger,
+    const std::string& id) {
+  DCHECK(ledger);
+  ledger->SetStringState(ledger::kStateAnonymousCardId, id);
+}
+
+std::vector<uint8_t> GetRecoverySeed(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  const std::string& seed = ledger->GetStringState(ledger::kStateRecoverySeed);
+  std::string decoded_seed;
+  if (!base::Base64Decode(seed, &decoded_seed)) {
+    BLOG(0, "Problem decoding recovery seed");
+    NOTREACHED();
+    return {};
+  }
+
+  std::vector<uint8_t> vector_seed;
+  vector_seed.assign(decoded_seed.begin(), decoded_seed.end());
+  return vector_seed;
+}
+
+void SetRecoverySeed(
+    bat_ledger::LedgerImpl* ledger,
+    const std::vector<uint8_t>& seed) {
+  DCHECK(ledger);
+  ledger->SetStringState(ledger::kStateRecoverySeed, base::Base64Encode(seed));
+}
+
+std::string GetPaymentId(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetStringState(ledger::kStatePaymentId);
+}
+
+void SetPaymentId(bat_ledger::LedgerImpl* ledger, const std::string& id) {
+  DCHECK(ledger);
+  ledger->SetStringState(ledger::kStatePaymentId, id);
 }
 
 }  // namespace braveledger_state

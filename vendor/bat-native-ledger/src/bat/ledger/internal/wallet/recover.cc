@@ -6,11 +6,14 @@
 
 #include<utility>
 
+#include "base/json/json_reader.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
@@ -19,6 +22,72 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+
+namespace {
+
+ledger::Result ParseRecoverKeyResponse(
+    const std::string& response,
+    std::string* payment_id) {
+  DCHECK(payment_id);
+
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const auto* payment_id_string = dictionary->FindStringKey("paymentId");
+  if (!payment_id_string || payment_id_string->empty()) {
+    BLOG(0, "Payment id is wrong");
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  *payment_id = *payment_id_string;
+  return ledger::Result::LEDGER_OK;
+}
+
+ledger::Result ParseRecoverWalletResponse(
+    const std::string& response,
+    std::string* card_id,
+    double* balance) {
+  DCHECK(card_id && balance);
+
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const auto* balance_string = dictionary->FindStringKey("balance");
+  if (!balance_string) {
+    BLOG(0, "Balance is wrong");
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const auto* card_id_string = dictionary->FindStringPath("addresses.CARD_ID");
+  if (!card_id_string || card_id_string->empty()) {
+    BLOG(0, "Card id is wrong");
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool success = base::StringToDouble(*balance_string, balance);
+  if (!success) {
+    *balance = 0.0;
+  }
+
+  *card_id = *card_id_string;
+  return ledger::Result::LEDGER_OK;
+}
+
+}  // namespace
 
 namespace braveledger_wallet {
 
@@ -142,23 +211,28 @@ void Recover::RecoverWalletPublicKeyCallback(
     callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
-  std::string recoveryId;
-  braveledger_bat_helper::getJSONValue("paymentId", response.body, &recoveryId);
+
+  std::string recovery_id;
+  const auto result = ParseRecoverKeyResponse(response.body, &recovery_id);
+  if (result == ledger::Result::LEDGER_ERROR) {
+    callback(result, 0.0);
+    return;
+  }
 
   auto recover_callback = std::bind(&Recover::RecoverWalletCallback,
-                            this,
-                            _1,
-                            recoveryId,
-                            new_seed,
-                            std::move(callback));
+      this,
+      _1,
+      recovery_id,
+      new_seed,
+      std::move(callback));
   const std::string url = braveledger_request_util::BuildUrl
-      ((std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2);
+      ((std::string)WALLET_PROPERTIES + recovery_id, PREFIX_V2);
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, recover_callback);
 }
 
 void Recover::RecoverWalletCallback(
     const ledger::UrlResponse& response,
-    const std::string& recoveryId,
+    const std::string& recovery_id,
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
@@ -167,20 +241,22 @@ void Recover::RecoverWalletCallback(
     return;
   }
 
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-  ledger::WalletProperties properties = ledger_->GetWalletProperties();
   double balance = .0;
-  braveledger_bat_helper::getJSONWalletInfo(
+  std::string card_id;
+  const auto result = ParseRecoverWalletResponse(
       response.body,
-      &wallet_info);
-  braveledger_bat_helper::getJSONRecoverWallet(
-      response.body,
+      &card_id,
       &balance);
-  ledger_->SetWalletProperties(&properties);
+  if (result == ledger::Result::LEDGER_ERROR) {
+    callback(result, 0.0);
+    return;
+  }
 
-  wallet_info.payment_id = recoveryId;
-  wallet_info.key_info_seed = new_seed;
-  ledger_->SetWalletInfo(wallet_info);
+  braveledger_state::SetRecoverySeed(ledger_, new_seed);
+  braveledger_state::SetPaymentId(ledger_, recovery_id);
+  braveledger_state::SetAnonymousCardId(ledger_, card_id);
+  ledger_->SetConfirmationsWalletInfo();
+
   callback(ledger::Result::LEDGER_OK, balance);
 }
 

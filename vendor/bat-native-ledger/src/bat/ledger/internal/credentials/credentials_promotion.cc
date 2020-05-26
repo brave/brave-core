@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -183,13 +184,11 @@ void CredentialsPromotion::Claim(
   std::string json;
   base::JSONWriter::Write(body, &json);
 
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-
   const auto headers = braveledger_request_util::BuildSignHeaders(
       "post /v1/promotions/" + trigger.id,
       json,
       payment_id,
-      wallet_info.key_info_seed);
+      braveledger_state::GetRecoverySeed(ledger_));
 
   const std::string url = braveledger_request_util::ClaimCredsUrl(trigger.id);
   auto url_callback = std::bind(&CredentialsPromotion::OnClaim,
@@ -499,12 +498,11 @@ void CredentialsPromotion::RedeemTokens(
   if (redeem.type == ledger::RewardsType::TRANSFER) {
     payload = GenerateTransferTokensPayload(redeem, ledger_->GetPaymentId());
     url = braveledger_request_util::GetTransferTokens();
-    ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
     headers = braveledger_request_util::BuildSignHeaders(
         "post /v1/suggestions/claim",
         payload,
         ledger_->GetPaymentId(),
-        wallet_info.key_info_seed);
+        braveledger_state::GetRecoverySeed(ledger_));
   } else {
     if (redeem.publisher_key.empty()) {
       BLOG(0, "Publisher key is empty");

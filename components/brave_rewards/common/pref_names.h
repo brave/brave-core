@@ -39,6 +39,9 @@ extern const char kStateAutoContributeEnabled[];
 extern const char kStateAutoContributeAmount[];
 extern const char kStateNextReconcileStamp[];
 extern const char kStateCreationStamp[];
+extern const char kStateAnonymousCardId[];
+extern const char kStateRecoverySeed[];
+extern const char kStatePaymentId[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs

@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration_v2.h"
@@ -68,6 +69,21 @@ void StateMigrationV2::OnLoadState(
   ledger_->SetUint64State(
       ledger::kStateCreationStamp,
       legacy_state_->GetCreationStamp());
+
+  ledger_->SetStringState(
+      ledger::kStateAnonymousCardId,
+      legacy_state_->GetCardIdAddress());
+
+  const auto seed = legacy_state_->GetRecoverySeed();
+  ledger_->SetStringState(
+      ledger::kStateRecoverySeed,
+      base::Base64Encode(seed));
+
+  ledger_->SetStringState(
+      ledger::kStatePaymentId,
+      legacy_state_->GetPaymentId());
+
+  callback(ledger::Result::LEDGER_OK);
 }
 
 }  // namespace braveledger_state

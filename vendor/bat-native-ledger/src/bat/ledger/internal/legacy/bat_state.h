@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/legacy/client_properties.h"
@@ -39,13 +40,9 @@ class LegacyBatState {
 
   uint64_t GetReconcileStamp() const;
 
-  bool IsWalletCreated() const;
-
   const std::string& GetPaymentId() const;
 
-  const ledger::WalletInfoProperties& GetWalletInfo() const;
-
-  void SetWalletInfo(const ledger::WalletInfoProperties& info);
+  const std::vector<uint8_t>& GetRecoverySeed() const;
 
   const ledger::WalletProperties& GetWalletProperties() const;
 
@@ -53,8 +50,6 @@ class LegacyBatState {
       ledger::WalletProperties* properties);
 
   uint64_t GetCreationStamp() const;
-
-  double GetDefaultContributionAmount();
 
   void SetInlineTipSetting(const std::string& key, bool enabled);
 

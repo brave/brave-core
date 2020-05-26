@@ -525,8 +525,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   );
 }
 
-BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributionAmount)
-
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion
 {
   ledger->HasSufficientBalanceToReconcile(completion);

@@ -38,10 +38,10 @@ class RewardsStateBrowserTest
   }
 
   bool SetUpUserDataDirectory() override {
-    int32_t version = 0;
-    GetMigrationVersionFromTest(&version);
-    CopyPublisherFile(version);
-    CopyStateFile(version);
+    int32_t current_version = 0;
+    GetMigrationVersionFromTest(&current_version);
+    CopyPublisherFile(current_version);
+    CopyStateFile(current_version);
     return true;
   }
 
@@ -139,8 +139,8 @@ class RewardsStateBrowserTest
     *path = test_path;
   }
 
-  void CopyPublisherFile(const int32_t version) const {
-    if (version != 1) {
+  void CopyPublisherFile(const int32_t current_version) const {
+    if (current_version != 0) {
       return;
     }
 
@@ -151,8 +151,8 @@ class RewardsStateBrowserTest
     ASSERT_TRUE(base::CopyFile(test_path, profile_path));
   }
 
-  void CopyStateFile(const int32_t version) const {
-    if (version != 2) {
+  void CopyStateFile(const int32_t current_version) const {
+    if (current_version != 1) {
       return;
     }
 
@@ -171,9 +171,6 @@ class RewardsStateBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetInteger("brave.rewards.version"),
-      1);
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
       5);
@@ -218,6 +215,27 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
   EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.wallet.payment_id"),
+      "eea767c4-cd27-4411-afd4-78a9c6b54dbc");
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.wallet.seed"),
+      "PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I=");
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.wallet.anonymous_card_id"),
+      "cf5b388c-eea2-4c98-bec2-f8daf39881a4");
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetUint64("brave.rewards.creation_stamp"),
+      1590484778ul);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetUint64("brave.rewards.ac.next_reconcile_stamp"),
+      1593076778ul);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetDouble("brave.rewards.ac.amount"),
+      20.0);
+  EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.enabled"),
-      false);
+      true);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+      true);
 }

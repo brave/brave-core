@@ -87,7 +87,7 @@ class MockLedgerImpl : public LedgerImpl {
       void(ledger::PendingContributionList,
           ledger::ResultCallback));
 
-  MOCK_CONST_METHOD0(GetReconcileStamp, uint64_t());
+  MOCK_METHOD0(GetReconcileStamp, uint64_t());
 
   MOCK_METHOD0(GetRewardsMainEnabled, bool());
 
@@ -183,7 +183,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(OnRestorePublishers,
       void(const ledger::Result, ledger::ResultCallback));
 
-  MOCK_CONST_METHOD0(IsWalletCreated, bool());
+  MOCK_METHOD0(IsWalletCreated, bool());
 
   MOCK_METHOD3(GetPublisherActivityFromUrl,
       void(uint64_t,
@@ -233,13 +233,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(ResetReconcileStamp, void());
 
-  MOCK_CONST_METHOD0(GetPaymentId, const std::string&());
-
-  MOCK_CONST_METHOD0(GetWalletInfo,
-      const ledger::WalletInfoProperties&());
-
-  MOCK_METHOD1(SetWalletInfo,
-      void(const ledger::WalletInfoProperties&));
+  MOCK_METHOD0(GetPaymentId, std::string());
 
   MOCK_METHOD1(GetConfirmationsWalletInfo,
       const confirmations::WalletInfo(
@@ -269,8 +263,6 @@ class MockLedgerImpl : public LedgerImpl {
           uint32_t));
 
   MOCK_CONST_METHOD2(SetTimer, void(uint64_t, uint32_t*));
-
-  MOCK_METHOD0(GetDefaultContributionAmount, double());
 
   MOCK_METHOD1(HasSufficientBalanceToReconcile,
       void(ledger::HasSufficientBalanceToReconcileCallback));
@@ -340,8 +332,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 
   MOCK_METHOD1(GetExternalWallets, void(ledger::GetExternalWalletsCallback));
-
-  MOCK_CONST_METHOD0(GetCardIdAddress, std::string());
 
   MOCK_METHOD2(GetExternalWallet,
       void(const std::string&, ledger::ExternalWalletCallback));

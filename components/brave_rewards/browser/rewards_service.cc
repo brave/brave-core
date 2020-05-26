@@ -74,9 +74,12 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDoublePref(prefs::kStateScoreA, 0.0);
   registry->RegisterDoublePref(prefs::kStateScoreB, 0.0);
   registry->RegisterBooleanPref(prefs::kStateAutoContributeEnabled, false);
-  registry->RegisterBooleanPref(prefs::kStateAutoContributeAmount, 0.0);
+  registry->RegisterDoublePref(prefs::kStateAutoContributeAmount, 0.0);
   registry->RegisterUint64Pref(prefs::kStateNextReconcileStamp, 0ull);
   registry->RegisterUint64Pref(prefs::kStateCreationStamp, 0ull);
+  registry->RegisterStringPref(prefs::kStateAnonymousCardId, "");
+  registry->RegisterStringPref(prefs::kStateRecoverySeed, "");
+  registry->RegisterStringPref(prefs::kStatePaymentId, "");
 }
 
 }  // namespace brave_rewards

@@ -231,7 +231,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RestorePublishers(ledger::ResultCallback callback) = 0;
 
-  virtual bool IsWalletCreated() const = 0;
+  virtual bool IsWalletCreated() = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
@@ -245,8 +245,6 @@ class LEDGER_EXPORT Ledger {
   virtual void RemoveRecurringTip(
     const std::string& publisher_key,
     ResultCallback callback) = 0;
-
-  virtual double GetDefaultContributionAmount() = 0;
 
   virtual uint64_t GetCreationStamp() = 0;
 
