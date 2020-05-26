@@ -83,6 +83,7 @@ java_strings_grd("android_brave_strings_grd") {
     "values-fa/android_brave_strings.xml",
     "values-fi/android_brave_strings.xml",
     "values-fr/android_brave_strings.xml",
+    "values-fr-rCA/android_brave_strings.xml",
     "values-gl/android_brave_strings.xml",
     "values-gu/android_brave_strings.xml",
     "values-hi/android_brave_strings.xml",
@@ -136,6 +137,7 @@ java_strings_grd("android_brave_strings_grd") {
     "values-uz/android_brave_strings.xml",
     "values-vi/android_brave_strings.xml",
     "values-zh-rCN/android_brave_strings.xml",
+    "values-zh-rHK/android_brave_strings.xml",
     "values-zh-rTW/android_brave_strings.xml",
     "values-zu/android_brave_strings.xml",
   ]

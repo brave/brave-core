@@ -28,6 +28,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <output filename="values-fi/android_brave_strings.xml" lang="fi" type="android" />
     <output filename="values-tl/android_brave_strings.xml" lang="fil" type="android" />
     <output filename="values-fr/android_brave_strings.xml" lang="fr" type="android" />
+    <output filename="values-fr-rCA/android_brave_strings.xml" lang="fr-CA" type="android" />
     <output filename="values-gl/android_brave_strings.xml" lang="gl" type="android" />
     <output filename="values-gu/android_brave_strings.xml" lang="gu" type="android" />
     <output filename="values-hi/android_brave_strings.xml" lang="hi" type="android" />
@@ -80,6 +81,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <output filename="values-uz/android_brave_strings.xml" lang="uz" type="android" />
     <output filename="values-vi/android_brave_strings.xml" lang="vi" type="android" />
     <output filename="values-zh-rCN/android_brave_strings.xml" lang="zh-CN" type="android" />
+    <output filename="values-zh-rHK/android_brave_strings.xml" lang="zh-HK" type="android" />
     <output filename="values-zh-rTW/android_brave_strings.xml" lang="zh-TW" type="android" />
     <output filename="values-zu/android_brave_strings.xml" lang="zu" type="android" />
   </outputs>
