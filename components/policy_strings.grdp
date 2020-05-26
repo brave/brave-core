@@ -155,6 +155,9 @@
   <message name="IDS_POLICY_VALUE_FORMAT_ERROR" desc="The text displayed in the status column when a policy value doesn't match the expected format.">
     Value doesn't match format.
   </message>
+  <message name="IDS_POLICY_CLOUD_SOURCE_ONLY_ERROR" desc="The text displayed in the status column when a policy that should only be set in the cloud is set from another source.">
+    Ignored because the policy is not set by a cloud source.
+  </message>
   <message name="IDS_POLICY_DEFAULT_SEARCH_DISABLED" desc="The text displayed in the status column when a policy value has been ignored because default search has not been enabled.">
     Ignored because default search is not enabled by policy.
   </message>
@@ -181,9 +184,6 @@
   </message>
   <message name="IDS_POLICY_INVALID_SECURE_DNS_MODE_ERROR" desc="The text displayed in the status column when the value for DnsOverHttpsMode is invalid.">
     Invalid DnsOverHttps mode.
-  </message>
-  <message name="IDS_POLICY_SECURE_DNS_MODE_NOT_SUPPORTED_ERROR" desc="The text displayed in the status column when the value for DnsOverHttpsMode is secure, which is not supported yet.">
-    The DnsOverHttps mode <ph name="SECURE_DNS_MODE_SECURE">'secure'</ph> is not yet supported, the mode has been set to <ph name="SECURE_DNS_MODE_OFF">'off'</ph>.
   </message>
   <message name="IDS_POLICY_SECURE_DNS_TEMPLATES_INVALID_ERROR" desc="The text displayed in the status column when one or more of the DnsOverHttpsTemplates server template URIs is invalid.">
     One or more of the DnsOverHttpsTemplates server template URIs is invalid and will not be used.
@@ -361,6 +361,9 @@ Additional details:
   <message name="IDS_POLICY_LABEL_ERROR" desc="Label for the error row in the policy table.">
     Error
   </message>
+  <message name="IDS_POLICY_LABEL_DEPRECATED" desc="Label for the status of a deprecated policy.">
+    Deprecated
+  </message>
   <message name="IDS_POLICY_LABEL_IGNORED" desc="Label for the ignored row in the policy table.">
     Ignored
   </message>
@@ -528,5 +531,16 @@ Additional details:
   </message>
   <message name="IDS_POLICY_SIGNIN_PROFILE" desc="Label to indicate that the policy is for the sign-in screen profile.">
     sign-in screen profile
+  </message>
+
+  <!-- Strings for Disabled chrome://.* screen -->
+  <message name="IDS_CHROME_URLS_DISABLED_PAGE_HEADER" desc="A heading for the user when the application is blocked.">
+    Application is blocked
+  </message>
+  <message name="IDS_CHROME_URLS_DISABLED_PAGE_TITLE" desc="The title for the blocked chrome URLs page.">
+    Application blocked by your administrator
+  </message>
+  <message name="IDS_CHROME_URLS_DISABLED_PAGE_MESSAGE" desc="A paragraph informing the user that the application is blocked.">
+    The application has been blocked by your administrator
   </message>
 </grit-part>

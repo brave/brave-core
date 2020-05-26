@@ -1,0 +1,25 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//components/vector_icons/vector_icons.gni")
+
+aggregate_vector_icons("brave_components_vector_icons") {
+  icon_directory = "."
+
+  icons = [ "autoplay_status.icon" ]
+}
+
+static_library("vector_icons") {
+  sources = get_target_outputs(":brave_components_vector_icons")
+
+  defines = [ "BRAVE_COMPONENTS_VECTOR_ICONS_IMPL" ]
+
+  deps = [
+    ":brave_components_vector_icons",
+    "//base",
+    "//skia",
+    "//ui/gfx",
+  ]
+}

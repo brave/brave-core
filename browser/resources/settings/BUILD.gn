@@ -8,13 +8,19 @@ import("//tools/grit/grit_rule.gni")
 grit("resources") {
   source = "settings_resources.grd"
 
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
+  deps = [ ":polymer3_elements" ]
   defines = [
     "is_release_channel=$is_release_channel",
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
   ]
 
-  source_is_generated = optimize_webui
+  enable_input_discovery_for_gn_analyze = optimize_webui
 
   outputs = [
     "grit/brave_settings_resources.h",
@@ -59,4 +65,17 @@ if (optimize_webui) {
       rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
     ]
   }
+}
+
+group("polymer3_elements") {
+  public_deps = [
+    # Sub-folder targets
+    "brave_appearance_page:polymer3_elements",
+    "brave_privacy_page:polymer3_elements",
+    "default_brave_shields_page:polymer3_elements",
+    "social_blocking_page:polymer3_elements",
+    # TODO(petemill): Add Local targets (e.g. brave_settings_overrides)
+    # when settings is rendered fully with ES Modules / polymer3, e.g.:
+    # ":modulize",
+  ]
 }

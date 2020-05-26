@@ -100,6 +100,9 @@
     <message name="IDS_MANAGEMENT_REPORT_DEVICE_NETWORK_INTERFACES" desc="Message stating that administrators see device network interfaces.">
       Network addresses
     </message>
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_CRASH_REPORTS" desc="Message stating that administrators see the numbers and causes of the crashes that occurred on the device recently.">
+      Numbers and causes of the crashes that occurred recently
+    </message>
     <message name="IDS_MANAGEMENT_REPORT_PRINTING" desc="Message stating that administrators can see names of printed files.">
       Names of files that you print
     </message>
@@ -166,21 +169,21 @@
     Performance data and crash reports
   </message>
 
-  <!-- Strings related to Enterprise Service Hooks -->
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Enterprise Service Hooks section of the page">
-    Enterprise Service Hooks
+  <!-- Strings related to Brave Enterprise Connectors -->
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise Connectors section of the page">
+    Brave Enterprise Connectors
   </message>
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Enterprise Service Hooks section of the page">
-    Your administrator has enabled Enterprise Service Hooks on your browser. These hooks have access to some of your data.
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise Connectors section of the page">
+    Your administrator has enabled Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
   </message>
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Enterprise Service Hooks section of the page">
-    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Enterprise Service Hooks on your browser. These hooks have access to some of your data.
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise Connectors section of the page">
+    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
   </message>
   <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_NAME" desc="Name for the data loss prevention feature">
     Data Loss Prevention
   </message>
-  <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_PERMISSIONS" desc="Permissions description for the data loss prevention feature">
-    Scan the contents of the files that you download or upload in Brave.
+  <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_PERMISSIONS" desc="Permissions description for the data loss prevention feature.  The part that says 'that you download or upload in Brave' applies only to files, not the clipboard">
+    Scan the contents of the clipboard, as well as files that you download or upload in Brave.
   </message>
   <message name="IDS_MANAGEMENT_MALWARE_SCANNING_NAME" desc="Name for the malware scanning feature">
     Malware Scanning
@@ -192,6 +195,6 @@
     Enterprise Reporting
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_PERMISSIONS" desc="Permissions description for the enterprise reporting feature">
-    Share data about security events that have been flagged by Enterprise Service Hooks with your administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
+    Share data about security events that have been flagged by Brave Enterprise Connectors with your administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
   </message>
 </grit-part>

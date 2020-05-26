@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-index 58a8eae8ed6101654ba77cde12d719231bca9814..7becff27aa290dd7db1bdc17f08841900290e720 100644
+index 59e399de0f7bdf299fdebfb747d471a7e0abcd34..25d44423224e8e54205c1a2b9e4209308462b4e1 100644
 --- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 +++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 @@ -11,6 +11,7 @@
@@ -10,7 +10,7 @@ index 58a8eae8ed6101654ba77cde12d719231bca9814..7becff27aa290dd7db1bdc17f0884190
  #include "cc/paint/paint_flags.h"
  #include "chrome/browser/ui/browser.h"
  #include "chrome/browser/ui/browser_otr_state.h"
-@@ -248,7 +249,7 @@ void BrowserAppMenuButton::ShowMenu(int run_types) {
+@@ -246,7 +247,7 @@ void BrowserAppMenuButton::ShowMenu(int run_types) {
        promo_feature_ == InProductHelpFeature::kReopenTab;
  
    RunMenu(

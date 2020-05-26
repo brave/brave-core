@@ -13,7 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.Preference;
+import androidx.preference.Preference;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
 import android.os.Build;
@@ -21,16 +21,18 @@ import android.os.Build;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.settings.homepage.BraveHomepageSettings;
-import org.chromium.chrome.browser.settings.privacy.BravePrivacySettings;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.components.browser_ui.settings.ChromeBasePreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
@@ -57,6 +59,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
+    private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_RATE_BRAVE = "rate_brave";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
@@ -144,7 +147,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         findPreference(PREF_SYNC).setOrder(++order);
         findPreference(PREF_ACCESSIBILITY).setOrder(++order);
         findPreference(PREF_CONTENT_SETTINGS).setOrder(++order);
-        findPreference(MainSettings.PREF_LANGUAGES).setOrder(++order);
+        findPreference(PREF_LANGUAGES).setOrder(++order);
         findPreference(MainSettings.PREF_DATA_REDUCTION).setOrder(++order);
         findPreference(MainSettings.PREF_DOWNLOADS).setOrder(++order);
         // This preference doesn't exist by default in Release mode
@@ -204,7 +207,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
                 int padding = dp2px(20);
                 titleTextView.setPadding(padding, padding, padding, padding);
                 titleTextView.setTextSize(18);
-                titleTextView.setTextColor(context.getResources().getColor(R.color.standard_mode_tint));
+                titleTextView.setTextColor(context.getResources().getColor(R.color.default_icon_color_tint_list));
                 titleTextView.setTypeface(null, Typeface.BOLD);
 
                 AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.Theme_Chromium_AlertDialog)

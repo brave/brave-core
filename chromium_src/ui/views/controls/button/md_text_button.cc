@@ -153,8 +153,10 @@ void BraveTextButton::UpdateColors() {
   if (GetProminent()) {
     return;
   }
+  const ui::NativeTheme* theme = GetNativeTheme();
   // Override different text hover color
-  if (!color_utils::IsInvertedColorScheme()) {
+  if (theme->GetHighContrastColorScheme() !=
+      ui::NativeTheme::HighContrastColorScheme::kDark) {
     SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
     SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
   }
@@ -164,7 +166,6 @@ void BraveTextButton::UpdateColors() {
     // First, get the same background fill color that MdTextButton does.
     // It is undfortunate to copy these lines almost as-is. Consider otherwise
     // patching it in via a #define.
-    const ui::NativeTheme* theme = GetNativeTheme();
     SkColor bg_color =
         theme->GetSystemColor(ui::NativeTheme::kColorId_DialogBackground);
     if (GetBgColorOverride()) {

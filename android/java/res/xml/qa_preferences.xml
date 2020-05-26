@@ -7,31 +7,31 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:orderingFromXml="true">
 
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_rewards_staging_server"
         android:title="Use Rewards staging server"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="qa_maximize_initial_ads_number"
         android:title="Maximize initial ads number"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off"
         android:defaultValue="true" />
 
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="qa_debug_ntp"
         android:title="Enable debugging NTP"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off"
         android:defaultValue="false" />
 
-    <org.chromium.chrome.browser.settings.ChromeBasePreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_import_rewards_db"
         android:title="Import Rewards Database"/>
 
-    <org.chromium.chrome.browser.settings.ChromeBasePreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_export_rewards_db"
         android:title="Export Rewards Database" />
 

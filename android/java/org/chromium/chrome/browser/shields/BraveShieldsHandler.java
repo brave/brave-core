@@ -351,7 +351,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private void setUpMainLayout() {
         String favIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(mTabId);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
-        String url = currentActiveTab.getUrl();
+        String url = currentActiveTab.getUrlString();
         final String favicon_url = (favIconURL.isEmpty()) ? url : favIconURL;
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
 
@@ -466,7 +466,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         });
         ImageView mCookiesIcon = mCookiesLayout.findViewById(R.id.toggle_favicon);
         mCookiesIcon.setImageResource(R.drawable.ic_chevron_right);
-        mCookiesIcon.setColorFilter(mContext.getResources().getColor(R.color.standard_mode_tint));
+        mCookiesIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
         TextView mCookiesText = mCookiesLayout.findViewById(R.id.toggle_text);
         mCookiesText.setText(R.string.block_cross_site_cookies);
 
@@ -533,7 +533,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         });
         ImageView mFingerPrintingIcon = mFingerPrintingLayout.findViewById(R.id.toggle_favicon);
         mFingerPrintingIcon.setImageResource(R.drawable.ic_chevron_right);
-        mFingerPrintingIcon.setColorFilter(mContext.getResources().getColor(R.color.standard_mode_tint));
+        mFingerPrintingIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
         TextView mFingerPrintingText = mFingerPrintingLayout.findViewById(R.id.toggle_text);
         mFingerPrintingText.setText(R.string.block_cross_site_fingerprinting);
 

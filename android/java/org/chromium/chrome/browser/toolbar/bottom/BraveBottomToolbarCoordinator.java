@@ -13,14 +13,17 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
-import org.chromium.chrome.browser.partnercustomizations.HomepageManager;
+import org.chromium.chrome.browser.homepage.HomepageManager;
+import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
@@ -38,19 +41,18 @@ public class BraveBottomToolbarCoordinator
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
     private ActivityTabProvider mBraveTabProvider;
-    private OnClickListener mOriginalHomeButtonListener;
+    private Runnable mOriginalHomeButtonRunnable;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
     BraveBottomToolbarCoordinator(ViewStub stub, ActivityTabProvider tabProvider,
-            OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
-            ObservableSupplier<OnClickListener> shareButtonListener,
-            OnLongClickListener tabsSwitcherLongClickListner,
-            ThemeColorProvider themeColorProvider) {
-        super(stub, tabProvider, homeButtonListener, searchAcceleratorListener, shareButtonListener,
-                tabsSwitcherLongClickListner, themeColorProvider);
+            OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
+            ObservableSupplier<ShareDelegate> shareDelegateSupplier, Supplier<Boolean> showStartSurfaceCallable,
+            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction) {
+        super(stub, tabProvider, tabsSwitcherLongClickListner, themeColorProvider, shareDelegateSupplier,
+                showStartSurfaceCallable, openHomepageAction, setUrlBarFocusAction);
         mBraveTabProvider = tabProvider;
-        mOriginalHomeButtonListener = homeButtonListener;
+        mOriginalHomeButtonRunnable = openHomepageAction;
     }
 
     @Override
@@ -80,14 +82,12 @@ public class BraveBottomToolbarCoordinator
     }
 
     @Override
-    void initializeWithNative(OnClickListener tabSwitcherListener,
-            OnClickListener newTabClickListener, OnClickListener closeTabsClickListener,
+    void initializeWithNative(OnClickListener tabSwitcherListener, OnClickListener newTabClickListener,
             AppMenuButtonHelper menuButtonHelper, OverviewModeBehavior overviewModeBehavior,
-            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
-            ViewGroup topToolbarRoot) {
-        super.initializeWithNative(tabSwitcherListener, newTabClickListener, closeTabsClickListener,
-                menuButtonHelper, overviewModeBehavior, tabCountProvider, incognitoStateProvider,
-                topToolbarRoot);
+            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider, ViewGroup topToolbarRoot,
+            Runnable closeAllTabsAction) {
+        super.initializeWithNative(tabSwitcherListener, newTabClickListener, menuButtonHelper, overviewModeBehavior,
+                tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
 
         View root = (View) topToolbarRoot.getParent();
         View bottom_toolbar_browsing = root.findViewById(R.id.bottom_toolbar_browsing);
@@ -100,7 +100,7 @@ public class BraveBottomToolbarCoordinator
             final OnClickListener homeButtonListener = v -> {
                 final boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
                 if (isHomepageEnabled) {
-                    mOriginalHomeButtonListener.onClick(v);
+                    mOriginalHomeButtonRunnable.run();
                 } else {
                     newTabClickListener.onClick(v);
                 }

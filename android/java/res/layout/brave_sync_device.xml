@@ -38,7 +38,7 @@
         style="@style/ListItemEndIcon"
         android:contentDescription="@string/remove"
         android:src="@drawable/ic_delete_white_24dp"
-        app:tint="@color/standard_mode_tint"
+        app:tint="@color/default_icon_color_tint_list"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true" />
 

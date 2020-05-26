@@ -43,9 +43,9 @@ source_set("browser") {
     "//components/sessions",
     "//components/user_prefs",
     "//content/public/browser",
-    "//content/public/common",
     "//net/base/registry_controlled_domains",
     "//services/metrics/public/cpp:metrics_cpp",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
     "//ui/base",
     "//url",
   ]

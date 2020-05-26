@@ -30,13 +30,6 @@
 #include "content/public/browser/host_zoom_map.h"
 #endif
 
-namespace {
-const GURL kBraveURL("https://www.brave.com");
-const GURL kBatURL("https://basicattentiontoken.org");
-const GURL kGoogleURL("https://www.google.com");
-const GURL kAbcURL("https://www.abc.com");
-}  // namespace
-
 class BraveSiteSettingsCounterTest : public testing::Test {
  public:
   void SetUp() override {
@@ -92,6 +85,10 @@ class BraveSiteSettingsCounterTest : public testing::Test {
 
 // Tests that the counter correctly counts each setting.
 TEST_F(BraveSiteSettingsCounterTest, Count) {
+  const GURL kBraveURL("https://www.brave.com");
+  const GURL kBatURL("https://basicattentiontoken.org");
+  const GURL kGoogleURL("https://www.google.com");
+  const GURL kAbcURL("https://www.abc.com");
   // Check below four settings for different host are counted properly.
   map()->SetContentSettingDefaultScope(
       kBraveURL, GURL(), ContentSettingsType::PLUGINS,

@@ -20,13 +20,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace {
-const GURL kBraveURL("https://www.brave.com");
-const GURL kBatURL("https://basicattentiontoken.org");
-const GURL kGoogleURL("https://www.google.com");
-const GURL kAbcURL("https://www.abc.com");
-}  // namespace
-
 class BraveBrowsingDataRemoverDelegateTest : public testing::Test {
  public:
   void SetUp() override {
@@ -62,6 +55,10 @@ class BraveBrowsingDataRemoverDelegateTest : public testing::Test {
 };
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
+  const GURL kBraveURL("https://www.brave.com");
+  const GURL kBatURL("https://basicattentiontoken.org");
+  const GURL kGoogleURL("https://www.google.com");
+  const GURL kAbcURL("https://www.abc.com");
   // Four settings are added.
   // First two settings are shields settings in PLUGINS type.
   // Javascript is not counted as shields type because it's stored to

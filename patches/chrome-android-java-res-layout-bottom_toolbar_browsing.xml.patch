@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 76d517641db816c12bd35ae6497cd172eea71fd0..4eec0ef3fc85ebd5f604d5869f86827f38afab64 100644
+index 341f1563bd43eeb18d0b79a0d024613ae6e42643..97b06f3285973c08a13c1c4e195717d6237c5321 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 @@ -16,9 +16,9 @@
@@ -12,7 +12,7 @@ index 76d517641db816c12bd35ae6497cd172eea71fd0..4eec0ef3fc85ebd5f604d5869f86827f
 -    <org.chromium.chrome.browser.toolbar.HomeButton
 +    <org.chromium.chrome.browser.toolbar.BraveHomeButton
          android:id="@+id/bottom_home_button"
-         app:tint="@color/standard_mode_tint"
+         app:tint="@color/default_icon_color_tint_list"
          android:background="?attr/selectableItemBackgroundBorderless"
 @@ -26,6 +26,7 @@
          android:visibility="gone"

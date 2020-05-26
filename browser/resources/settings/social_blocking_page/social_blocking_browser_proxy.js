@@ -15,6 +15,7 @@ cr.define('settings', function() {
 
   cr.addSingletonGetter(SocialBlockingBrowserProxyImpl);
 
+  // #cr_define_end
   return {
     SocialBlockingBrowserProxy,
     SocialBlockingBrowserProxyImpl

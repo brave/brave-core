@@ -1,0 +1,28 @@
+diff --git a/chrome/installer/mac/signing/parts.py b/chrome/installer/mac/signing/parts.py
+index def2456b325bb4cc25b35a44dd6069fef8293726..e637c1716a858f858d1ce83497508a92a4190ed9 100644
+--- a/chrome/installer/mac/signing/parts.py
++++ b/chrome/installer/mac/signing/parts.py
+@@ -10,6 +10,7 @@ import os.path
+ 
+ from . import commands, signing
+ from .model import CodeSignOptions, CodeSignedProduct, VerifyOptions
++from signing_helper import AddBravePartsForSigning, GenerateBraveWidevineSigFile
+ 
+ _PROVISIONPROFILE_EXT = '.provisionprofile'
+ _PROVISIONPROFILE_DEST = 'embedded.provisionprofile'
+@@ -132,6 +133,7 @@ def get_parts(config):
+             library_basename.replace('.dylib', ''),
+             verify_options=verify_options)
+ 
++    parts = AddBravePartsForSigning(parts, config)
+     return parts
+ 
+ 
+@@ -195,6 +197,7 @@ def sign_chrome(paths, config, sign_framework=False):
+                 continue
+             signing.sign_part(paths, config, part)
+ 
++        GenerateBraveWidevineSigFile(paths, config, parts['framework'])
+         # Sign the framework bundle.
+         signing.sign_part(paths, config, parts['framework'])
+ 

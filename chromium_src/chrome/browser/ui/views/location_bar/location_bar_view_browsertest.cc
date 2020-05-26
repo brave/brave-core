@@ -11,7 +11,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/location_bar_model_impl.h"
-#include "components/omnibox/common/omnibox_features.h"
 #include "content/public/test/url_loader_interceptor.h"
 #include "net/cert/ct_policy_status.h"
 #include "net/ssl/ssl_info.h"
@@ -32,9 +31,7 @@ class SecurityIndicatorTest
     : public InProcessBrowserTest,
       public ::testing::WithParamInterface<SecurityIndicatorTestParams> {
  public:
-  SecurityIndicatorTest() : InProcessBrowserTest(), cert_(nullptr) {
-    feature_list_.InitAndEnableFeature(omnibox::kSimplifyHttpsIndicator);
-  }
+  SecurityIndicatorTest() : InProcessBrowserTest(), cert_(nullptr) {}
 
   void SetUpInProcessBrowserTestFixture() override {
     cert_ =
@@ -80,8 +77,6 @@ class SecurityIndicatorTest
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
-
   scoped_refptr<net::X509Certificate> cert_;
 
   std::unique_ptr<content::URLLoaderInterceptor> url_loader_interceptor_;

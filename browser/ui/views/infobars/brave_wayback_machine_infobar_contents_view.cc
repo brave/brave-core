@@ -67,6 +67,7 @@ BraveWaybackMachineInfoBarContentsView::
 ~BraveWaybackMachineInfoBarContentsView() {}
 
 void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
+  views::View::OnThemeChanged();
   const SkColor background_color = GetColor(kInfoBarLabelBackgroundColor);
   const SkColor text_color = GetColor(kInfoBarLabelTextColor);
   for (auto* label : labels_) {
@@ -121,9 +122,8 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   AddChildView(separator_);
 
   const views::FlexSpecification label_flex_rule =
-      views::FlexSpecification::ForSizeRule(
-          views::MinimumFlexSizeRule::kScaleToMinimum,
-          views::MaximumFlexSizeRule::kPreferred);
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
+                               views::MaximumFlexSizeRule::kPreferred);
   auto* label = CreateLabel(
       l10n_util::GetStringUTF16(
           IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT));
@@ -156,9 +156,9 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   place_holder_view->SetProperty(views::kMarginsKey, gfx::Insets(12, 0));
   place_holder_view->SetProperty(
       views::kFlexBehaviorKey,
-      views::FlexSpecification::ForSizeRule(
-          views::MinimumFlexSizeRule::kScaleToZero,
-          views::MaximumFlexSizeRule::kUnbounded).WithOrder(3));
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kUnbounded)
+          .WithOrder(3));
   AddChildView(place_holder_view);
 
   label = CreateLabel(

@@ -19,7 +19,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "content/public/common/resource_type.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 class AdBlockServiceTest;
 
@@ -40,9 +40,12 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
-  bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
-    const std::string& tab_host, bool* did_match_exception,
-    bool* cancel_request_explicitly, std::string* mock_data_url) override;
+  bool ShouldStartRequest(const GURL& url,
+                          blink::mojom::ResourceType resource_type,
+                          const std::string& tab_host,
+                          bool* did_match_exception,
+                          bool* cancel_request_explicitly,
+                          std::string* mock_data_url) override;
   void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);

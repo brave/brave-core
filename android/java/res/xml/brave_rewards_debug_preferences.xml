@@ -7,7 +7,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:orderingFromXml="true">
 
-    <org.chromium.chrome.browser.settings.ChromeBasePreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="export_rewards_db"
         android:title="Export Rewards Database" />
 

@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
-index 369eadb04f79c569d7fdb6e1aa8171ccaf5a7e1a..40bf2ff54975fb2bc79ed26df8012fdfc7ce0fbd 100644
+index 2d5c7f94389664cdfad0e4764477043f0735bc3e..25097eff0af644a39f9fd5e4a9cd86422fb173d8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
-@@ -280,6 +280,7 @@ public class TabSwitcherModeTTPhone extends OptimizedFrameLayout
+@@ -291,6 +291,7 @@ public class TabSwitcherModeTTPhone extends OptimizedFrameLayout
          if (BottomToolbarVariationManager.isTabSwitcherOnBottom() && !shouldShowIncognitoToggle()) {
              mToggleTabStackButton.setVisibility(isVisible ? GONE : VISIBLE);
          }
-+        setMenuButtonVisibility(!isVisible || (FeatureUtilities.isBottomToolbarEnabled() && !BottomToolbarVariationManager.isMenuButtonOnBottom()));
++        setMenuButtonVisibility(!isVisible || (BottomToolbarConfiguration.isBottomToolbarEnabled() && !BottomToolbarVariationManager.isMenuButtonOnBottom()));
      }
  
      private void setNewTabButtonVisibility(boolean isButtonVisible) {

@@ -20,10 +20,4 @@ brave_blink_sub_modules = [
 
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/modules/modules_idl_files.gni
-brave_modules_idl_files = get_path_info([
-  "//brave/third_party/blink/renderer/modules/brave/brave.idl",
-], "abspath")
-
-brave_modules_dependency_idl_files = get_path_info([
-  "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
-], "abspath")
+brave_idl_imports = [ "//brave/third_party/blink/renderer/modules/brave/idls.gni" ]

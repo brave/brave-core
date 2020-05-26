@@ -9,7 +9,7 @@ package org.chromium.chrome.browser.onboarding;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -41,7 +41,7 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
         }
 
         OnboardingViewPagerAdapter onboardingViewPagerAdapter = new OnboardingViewPagerAdapter(
-                this, getFragmentManager(), this, onboardingType, fromSettings);
+                this, getSupportFragmentManager(), this, onboardingType, fromSettings);
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(onboardingViewPagerAdapter);
     }

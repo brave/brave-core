@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.Button;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;

@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.h b/components/sync/engine_impl/sync_scheduler_impl.h
-index 37124f93a88d5bf661e05b8a663513c000470d00..3897a864ee792469b8a0104356020eb7b3ea5216 100644
+index 3dd41b315c1b2c141688bc4c971ba79f04bf20ee..837dbbaf433970b0aaeb0bd7a3c4bdab7997e08f 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.h
 +++ b/components/sync/engine_impl/sync_scheduler_impl.h
 @@ -88,6 +88,7 @@ class SyncSchedulerImpl : public SyncScheduler {

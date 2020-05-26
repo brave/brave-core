@@ -1,0 +1,69 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//testing/test.gni")
+
+source_set("brave_ads_unit_tests") {
+  testonly = true
+
+  if (brave_ads_enabled) {
+    sources = [
+      "//brave/components/brave_ads/browser/ads_service_impl_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_is_mobile_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.h",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/client_mock.h",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/client_mock.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_confirmation_filter_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_confirmation_type_filter_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_date_range_filter_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/sorts/ad_conversions_sort_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/sorts/ads_history_sort_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/page_classifier/page_classifier_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/purchase_intent/funnel_sites_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/purchase_intent/keywords_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/purchase_intent/purchase_intent_classifier_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/url_util_unittest.cc",
+    ]
+
+    if (!is_android) {
+      # TODO(https://github.com/brave/brave-browser/issues/9550):
+      # Temporarily disable Brave Ads tests which are passing in the detailed
+      # logs but failing in the summary
+      sources += [ "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_tabs_unittest.cc" ]
+    }
+
+    deps = [
+      "//brave/browser:browser_process",
+      "//brave/components/brave_ads/browser:browser",
+      "//brave/components/brave_ads/browser:testutil",
+      "//brave/components/brave_rewards/browser:browser",
+      "//brave/components/brave_rewards/common:common",
+      "//brave/vendor/bat-native-ads",
+      "//brave/vendor/bat-native-usermodel",
+      "//chrome/browser:browser",
+      "//components/prefs:prefs",
+      "//content/test:test_support",
+    ]
+
+    data = [
+      "//brave/vendor/bat-native-ads/resources/",
+      "//brave/vendor/bat-native-ads/test/data/",
+    ]
+
+    configs += [ "//brave/vendor/bat-native-ads:internal_config" ]
+
+  }  # if (brave_ads_enabled)
+}  # source_set("brave_ads_unit_tests")

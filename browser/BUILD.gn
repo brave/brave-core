@@ -23,7 +23,9 @@ source_set("browser_process") {
     "//chrome/browser/*",
     "//brave/browser/*",
     "//brave:browser_dependencies",
-    "//brave/test:*"
+    "//brave/components/brave_ads/test:*",
+    "//brave/components/brave_rewards/test:*",
+    "//brave/test:*",
   ]
 
   sources = [
@@ -65,8 +67,8 @@ source_set("browser_process") {
     "component_updater/brave_component_updater_configurator.h",
     "component_updater/brave_component_updater_delegate.cc",
     "component_updater/brave_component_updater_delegate.h",
-    "geolocation/brave_geolocation_permission_context.cc",
-    "geolocation/brave_geolocation_permission_context.h",
+    "geolocation/brave_geolocation_permission_context_delegate.cc",
+    "geolocation/brave_geolocation_permission_context_delegate.h",
     "metrics/metrics_reporting_util.cc",
     "metrics/metrics_reporting_util.h",
     "search_engines/guest_window_search_engine_provider_service.cc",
@@ -116,7 +118,6 @@ source_set("browser_process") {
     "content_settings",
     "download",
     "net",
-    "permissions",
     "profiles",
     "renderer_context_menu",
     "ui",
@@ -181,6 +182,7 @@ source_set("browser_process") {
     "ntp_background_images",
     "//services/network/public/cpp",
     "//services/service_manager/embedder",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
   ]

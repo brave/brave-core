@@ -8,8 +8,8 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/permission_bubble/mock_permission_prompt_factory.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -19,6 +19,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_request.h"
+#include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "net/dns/mock_host_resolver.h"
 
 const char kVideoPlaying[] = "Video playing";
@@ -105,10 +106,10 @@ class BraveContentSettingsAgentImplAutoplayTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
                        AllowAutoplay) {
   std::string result;
-  PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
-      contents());
+  permissions::PermissionRequestManager* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents());
   auto popup_prompt_factory =
-      std::make_unique<MockPermissionPromptFactory>(manager);
+      std::make_unique<permissions::MockPermissionPromptFactory>(manager);
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
@@ -129,10 +130,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
                        BlockAutoplay) {
   std::string result;
   BlockAutoplay();
-  PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
-      contents());
+  permissions::PermissionRequestManager* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents());
   auto popup_prompt_factory =
-      std::make_unique<MockPermissionPromptFactory>(manager);
+      std::make_unique<permissions::MockPermissionPromptFactory>(manager);
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
