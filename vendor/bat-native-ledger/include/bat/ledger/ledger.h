@@ -288,9 +288,12 @@ class LEDGER_EXPORT Ledger {
                              const std::map<std::string, std::string>& data,
                              ledger::PublisherInfoCallback callback) = 0;
 
-  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
+  virtual void SetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform,
+      bool enabled) = 0;
 
-  virtual bool GetInlineTipSetting(const std::string& key) = 0;
+  virtual bool GetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
       const std::string& type,

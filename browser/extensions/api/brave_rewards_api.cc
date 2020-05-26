@@ -904,14 +904,15 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   return RespondNow(OneArgument(std::move(list)));
 }
 
-BraveRewardsGetInlineTipSettingFunction::
-~BraveRewardsGetInlineTipSettingFunction() {
+BraveRewardsGetInlineTippingPlatformEnabledFunction::
+~BraveRewardsGetInlineTippingPlatformEnabledFunction() {
 }
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetInlineTipSettingFunction::Run() {
-  std::unique_ptr<brave_rewards::GetInlineTipSetting::Params> params(
-      brave_rewards::GetInlineTipSetting::Params::Create(*args_));
+BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
+  std::unique_ptr<brave_rewards::GetInlineTippingPlatformEnabled::Params>
+      params(brave_rewards::GetInlineTippingPlatformEnabled::Params::Create(
+          *args_));
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -920,15 +921,17 @@ BraveRewardsGetInlineTipSettingFunction::Run() {
     return RespondNow(OneArgument(std::make_unique<base::Value>(false)));
   }
 
-  rewards_service->GetInlineTipSetting(
+  rewards_service->GetInlineTippingPlatformEnabled(
       params->key,
       base::BindOnce(
-          &BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting,
+          &BraveRewardsGetInlineTippingPlatformEnabledFunction::
+          OnInlineTipSetting,
           this));
   return RespondLater();
 }
 
-void BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting(bool value) {
+void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
+    bool value) {
   Respond(OneArgument(std::make_unique<base::Value>(value)));
 }
 

@@ -83,6 +83,18 @@ void StateMigrationV2::OnLoadState(
       ledger::kStatePaymentId,
       legacy_state_->GetPaymentId());
 
+  ledger_->SetBooleanState(
+      ledger::kStateInlineTipRedditEnabled,
+      legacy_state_->GetInlineTipSetting("reddit"));
+
+  ledger_->SetBooleanState(
+      ledger::kStateInlineTipTwitterEnabled,
+      legacy_state_->GetInlineTipSetting("twitter"));
+
+  ledger_->SetBooleanState(
+      ledger::kStateInlineTipGithubEnabled,
+      legacy_state_->GetInlineTipSetting("github"));
+
   callback(ledger::Result::LEDGER_OK);
 }
 

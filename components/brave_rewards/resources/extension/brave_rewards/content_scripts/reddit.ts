@@ -419,7 +419,7 @@ const configureBraveTipAction = () => {
   clearTimeout(timeout)
   chrome.runtime.sendMessage('rewardsEnabled', function (rewards) {
     const msg = {
-      type: 'inlineTipSetting',
+      type: 'inlineTippingPlatformEnabled',
       key: 'reddit'
     }
     chrome.runtime.sendMessage(msg, function (inlineTip) {

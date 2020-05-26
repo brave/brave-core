@@ -42,6 +42,9 @@ extern const char kStateCreationStamp[];
 extern const char kStateAnonymousCardId[];
 extern const char kStateRecoverySeed[];
 extern const char kStatePaymentId[];
+extern const char kStateInlineTipRedditEnabled[];
+extern const char kStateInlineTipTwitterEnabled[];
+extern const char kStateInlineTipGithubEnabled[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs

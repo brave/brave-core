@@ -354,9 +354,12 @@ class LedgerImpl : public ledger::Ledger {
                      const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback) override;
 
-  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+  void SetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform,
+      bool enabled) override;
 
-  bool GetInlineTipSetting(const std::string& key) override;
+  bool GetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
       const std::string& type,

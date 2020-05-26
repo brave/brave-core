@@ -51,8 +51,6 @@ class LegacyBatState {
 
   uint64_t GetCreationStamp() const;
 
-  void SetInlineTipSetting(const std::string& key, bool enabled);
-
   bool GetInlineTipSetting(const std::string& key) const;
 
  private:

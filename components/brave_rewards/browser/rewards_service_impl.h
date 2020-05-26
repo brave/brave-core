@@ -240,11 +240,13 @@ class RewardsServiceImpl : public RewardsService,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
-  void SetInlineTipSetting(const std::string& key, bool enabled) override;
-
-  void GetInlineTipSetting(
+  void SetInlineTippingPlatformEnabled(
       const std::string& key,
-      GetInlineTipSettingCallback callback) override;
+      bool enabled) override;
+
+  void GetInlineTippingPlatformEnabled(
+      const std::string& key,
+      GetInlineTippingPlatformEnabledCallback callback) override;
 
   void GetShareURL(
       const std::string& type,
@@ -376,7 +378,9 @@ class RewardsServiceImpl : public RewardsService,
       GetRecurringTipsCallback callback,
       ledger::PublisherInfoList list);
 
-  void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
+  void OnInlineTipSetting(
+      GetInlineTippingPlatformEnabledCallback callback,
+      bool enabled);
 
   void OnShareURL(GetShareURLCallback callback, const std::string& url);
 

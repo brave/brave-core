@@ -90,6 +90,18 @@ std::string GetPaymentId(bat_ledger::LedgerImpl* ledger);
 
 void SetPaymentId(bat_ledger::LedgerImpl* ledger, const std::string& id);
 
+std::string ConvertInlineTipPlatformToString(
+    const ledger::InlineTipsPlatforms platform);
+
+bool GetInlineTippingPlatformEnabled(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::InlineTipsPlatforms platform);
+
+void SetInlineTippingPlatformEnabled(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::InlineTipsPlatforms platform,
+    const bool enabled);
+
 }  // namespace braveledger_state
 
 #endif  // BRAVELEDGER_STATE_STATE_UTIL_H_

@@ -154,9 +154,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       // Must return true for asynchronous calls to sendResponse
       return true
     }
-    case 'inlineTipSetting': {
+    case 'inlineTippingPlatformEnabled': {
       // Check if inline tip is enabled
-      chrome.braveRewards.getInlineTipSetting(msg.key, function (enabled: boolean) {
+      chrome.braveRewards.getInlineTippingPlatformEnabled(msg.key, function (enabled: boolean) {
         sendResponse({ enabled })
       })
       // Must return true for asynchronous calls to sendResponse

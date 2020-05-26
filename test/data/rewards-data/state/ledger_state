@@ -44,5 +44,9 @@
       ]
     }
   },
-  "inlineTip": {}
+  "inlineTip": {
+    "github": false,
+    "reddit": true,
+    "twitter": false
+  }
 }

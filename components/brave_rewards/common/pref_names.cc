@@ -50,5 +50,8 @@ const char kStateCreationStamp[] = "brave.rewards.creation_stamp";
 const char kStateAnonymousCardId[] = "brave.rewards.wallet.anonymous_card_id";
 const char kStateRecoverySeed[] = "brave.rewards.wallet.seed";
 const char kStatePaymentId[] = "brave.rewards.wallet.payment_id";
+const char kStateInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";
+const char kStateInlineTipTwitterEnabled[] = "brave.rewards.inline_tip.twitter";
+const char kStateInlineTipGithubEnabled[] = "brave.rewards.inline_tip.github";
 }  // namespace prefs
 }  // namespace brave_rewards

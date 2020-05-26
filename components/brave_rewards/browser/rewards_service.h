@@ -82,7 +82,7 @@ using RefreshPublisherCallback =
     base::OnceCallback<void(uint32_t, const std::string&)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
-using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
+using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::PendingContributionInfoList>)>;
@@ -287,11 +287,13 @@ class RewardsService : public KeyedService {
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
 
-  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
-
-  virtual void GetInlineTipSetting(
+  virtual void SetInlineTippingPlatformEnabled(
       const std::string& key,
-      GetInlineTipSettingCallback callback) = 0;
+      bool enabled) = 0;
+
+  virtual void GetInlineTippingPlatformEnabled(
+      const std::string& key,
+      GetInlineTippingPlatformEnabledCallback callback) = 0;
 
   virtual void GetShareURL(
       const std::string& type,

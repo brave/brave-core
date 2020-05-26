@@ -203,4 +203,38 @@ void SetPaymentId(bat_ledger::LedgerImpl* ledger, const std::string& id) {
   ledger->SetStringState(ledger::kStatePaymentId, id);
 }
 
+std::string ConvertInlineTipPlatformToKey(
+    const ledger::InlineTipsPlatforms platform) {
+  switch (platform) {
+    case ledger::InlineTipsPlatforms::REDDIT: {
+      return ledger::kStateInlineTipRedditEnabled;
+    }
+    case ledger::InlineTipsPlatforms::TWITTER: {
+      return ledger::kStateInlineTipTwitterEnabled;
+    }
+    case ledger::InlineTipsPlatforms::GITHUB: {
+      return ledger::kStateInlineTipGithubEnabled;
+    }
+    case ledger::InlineTipsPlatforms::NONE: {
+      NOTREACHED();
+      return "";
+    }
+  }
+}
+
+bool GetInlineTippingPlatformEnabled(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::InlineTipsPlatforms platform) {
+  DCHECK(ledger);
+  return ledger->GetBooleanState(ConvertInlineTipPlatformToKey(platform));
+}
+
+void SetInlineTippingPlatformEnabled(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::InlineTipsPlatforms platform,
+    const bool enabled) {
+  DCHECK(ledger);
+  ledger->SetBooleanState(ConvertInlineTipPlatformToKey(platform), enabled);
+}
+
 }  // namespace braveledger_state

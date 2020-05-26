@@ -337,12 +337,15 @@ class BraveRewardsGetAllNotificationsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetInlineTipSettingFunction : public ExtensionFunction {
+class BraveRewardsGetInlineTippingPlatformEnabledFunction :
+    public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getInlineTipSetting", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION(
+      "braveRewards.getInlineTippingPlatformEnabled",
+      UNKNOWN)
 
  protected:
-  ~BraveRewardsGetInlineTipSettingFunction() override;
+  ~BraveRewardsGetInlineTippingPlatformEnabledFunction() override;
 
   ResponseAction Run() override;
 

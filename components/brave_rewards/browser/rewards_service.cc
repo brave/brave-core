@@ -80,6 +80,9 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kStateAnonymousCardId, "");
   registry->RegisterStringPref(prefs::kStateRecoverySeed, "");
   registry->RegisterStringPref(prefs::kStatePaymentId, "");
+  registry->RegisterBooleanPref(prefs::kStateInlineTipRedditEnabled, false);
+  registry->RegisterBooleanPref(prefs::kStateInlineTipTwitterEnabled, false);
+  registry->RegisterBooleanPref(prefs::kStateInlineTipGithubEnabled, false);
 }
 
 }  // namespace brave_rewards

@@ -1042,12 +1042,15 @@ void LedgerImpl::SaveMediaInfo(const std::string& type,
   bat_media_->SaveMediaInfo(type, data, callback);
 }
 
-void LedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
-  legacy_bat_state_->SetInlineTipSetting(key, enabled);
+void LedgerImpl::SetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    bool enabled) {
+  braveledger_state::SetInlineTippingPlatformEnabled(this, platform, enabled);
 }
 
-bool LedgerImpl::GetInlineTipSetting(const std::string& key) {
-  return legacy_bat_state_->GetInlineTipSetting(key);
+bool LedgerImpl::GetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform) {
+  return braveledger_state::GetInlineTippingPlatformEnabled(this, platform);
 }
 
 std::string LedgerImpl::GetShareURL(

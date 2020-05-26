@@ -125,10 +125,6 @@ uint64_t LegacyBatState::GetCreationStamp() const {
   return state_->boot_timestamp;
 }
 
-void LegacyBatState::SetInlineTipSetting(const std::string& key, bool enabled) {
-  state_->inline_tips[key] = enabled;
-}
-
 bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
   if (state_->inline_tips.find(key) == state_->inline_tips.end()) {
     // not found, all tips are on by default

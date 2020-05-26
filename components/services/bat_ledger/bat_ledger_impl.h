@@ -154,11 +154,13 @@ class BatLedgerImpl : public mojom::BatLedger,
       const base::flat_map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
-  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+  void SetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform,
+      bool enabled) override;
 
-  void GetInlineTipSetting(
-    const std::string& key,
-    GetInlineTipSettingCallback callback) override;
+  void GetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    GetInlineTippingPlatformEnabledCallback callback) override;
 
   void GetShareURL(
     const std::string& type,

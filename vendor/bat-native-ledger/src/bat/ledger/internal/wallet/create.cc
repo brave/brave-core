@@ -301,6 +301,18 @@ void Create::RegisterPersonaCallback(
   braveledger_state::SetAnonymousCardId(ledger_, card_id);
   ledger_->SetCreationStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
+  braveledger_state::SetInlineTippingPlatformEnabled(
+      ledger_,
+      ledger::InlineTipsPlatforms::REDDIT,
+      true);
+  braveledger_state::SetInlineTippingPlatformEnabled(
+      ledger_,
+      ledger::InlineTipsPlatforms::TWITTER,
+      true);
+  braveledger_state::SetInlineTippingPlatformEnabled(
+      ledger_,
+      ledger::InlineTipsPlatforms::GITHUB,
+      true);
   callback(ledger::Result::WALLET_CREATED);
 }
 

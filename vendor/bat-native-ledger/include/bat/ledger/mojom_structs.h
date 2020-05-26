@@ -83,6 +83,8 @@ using ExcludeFilter = mojom::ExcludeFilter;
 using ExternalWallet = mojom::ExternalWallet;
 using ExternalWalletPtr = mojom::ExternalWalletPtr;
 
+using InlineTipsPlatforms = mojom::InlineTipsPlatforms;
+
 using MediaEventInfo = mojom::MediaEventInfo;
 using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
 

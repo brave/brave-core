@@ -155,11 +155,11 @@ class MockRewardsService : public RewardsService {
              void(const std::string&,
                   const std::map<std::string, std::string>&,
                   brave_rewards::SaveMediaInfoCallback));
-  MOCK_METHOD2(SetInlineTipSetting,
+  MOCK_METHOD2(SetInlineTippingPlatformEnabled,
              void(const std::string& key, bool enabled));
-  MOCK_METHOD2(GetInlineTipSetting,
+  MOCK_METHOD2(GetInlineTippingPlatformEnabled,
              void(const std::string& key,
-                  brave_rewards::GetInlineTipSettingCallback callback));
+                  brave_rewards::GetInlineTippingPlatformEnabledCallback));
   MOCK_METHOD3(GetShareURL,
              void(const std::string& type,
                   const std::map<std::string, std::string>& args,

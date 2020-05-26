@@ -944,7 +944,7 @@
         ]
       },
       {
-        "name": "getInlineTipSetting",
+        "name": "getInlineTippingPlatformEnabled",
         "type": "function",
         "description": "Gets setting for inline tip for provided key",
         "parameters": [

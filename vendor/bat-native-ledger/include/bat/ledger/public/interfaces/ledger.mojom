@@ -540,3 +540,10 @@ struct UrlResponse {
   map<string, string> headers;
 };
 
+enum InlineTipsPlatforms {
+  NONE = 0,
+  REDDIT = 1,
+  TWITTER = 2,
+  GITHUB = 3
+};
+

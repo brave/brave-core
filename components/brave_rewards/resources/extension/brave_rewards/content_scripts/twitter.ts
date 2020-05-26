@@ -262,7 +262,7 @@ const configureBraveTipAction = () => {
   clearTimeout(timeout)
   chrome.runtime.sendMessage('rewardsEnabled', function (rewards) {
     const msg = {
-      type: 'inlineTipSetting',
+      type: 'inlineTippingPlatformEnabled',
       key: 'twitter'
     }
     chrome.runtime.sendMessage(msg, function (inlineTip) {

@@ -299,9 +299,11 @@ class MockLedgerImpl : public LedgerImpl {
           const std::map<std::string, std::string>&,
           ledger::PublisherInfoCallback));
 
-  MOCK_METHOD2(SetInlineTipSetting, void(const std::string&, bool));
+  MOCK_METHOD2(SetInlineTippingPlatformEnabled,
+      void(const ledger::InlineTipsPlatforms platform, bool));
 
-  MOCK_METHOD1(GetInlineTipSetting, bool(const std::string&));
+  MOCK_METHOD1(GetInlineTippingPlatformEnabled,
+      bool(const ledger::InlineTipsPlatforms platform));
 
   MOCK_METHOD2(GetShareURL,
       std::string(const std::string&,

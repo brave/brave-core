@@ -270,6 +270,22 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
+ledger::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
+    const std::string& key) {
+  if (key == "reddit") {
+    return ledger::InlineTipsPlatforms::REDDIT;
+  }
+  if (key == "twitter") {
+    return ledger::InlineTipsPlatforms::TWITTER;
+  }
+  if (key == "github") {
+    return ledger::InlineTipsPlatforms::GITHUB;
+  }
+
+  NOTREACHED();
+  return ledger::InlineTipsPlatforms::TWITTER;
+}
+
 const char pref_prefix[] = "brave.rewards.";
 
 }  // namespace
@@ -2532,23 +2548,26 @@ RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
 }
 
-void RewardsServiceImpl::SetInlineTipSetting(const std::string& key,
-                                             bool enabled) {
-  bat_ledger_->SetInlineTipSetting(key, enabled);
+void RewardsServiceImpl::SetInlineTippingPlatformEnabled(
+    const std::string& key,
+    bool enabled) {
+  const auto platform = ConvertInlineTipStringToPlatform(key);
+  bat_ledger_->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
-void RewardsServiceImpl::GetInlineTipSetting(
+void RewardsServiceImpl::GetInlineTippingPlatformEnabled(
       const std::string& key,
-      GetInlineTipSettingCallback callback) {
-  bat_ledger_->GetInlineTipSetting(
-      key,
+      GetInlineTippingPlatformEnabledCallback callback) {
+  const auto platform = ConvertInlineTipStringToPlatform(key);
+  bat_ledger_->GetInlineTippingPlatformEnabled(
+      platform,
       base::BindOnce(&RewardsServiceImpl::OnInlineTipSetting,
           AsWeakPtr(),
           std::move(callback)));
 }
 
 void RewardsServiceImpl::OnInlineTipSetting(
-    GetInlineTipSettingCallback callback,
+    GetInlineTippingPlatformEnabledCallback callback,
     bool enabled) {
   std::move(callback).Run(enabled);
 }

@@ -678,14 +678,16 @@ void BatLedgerImpl::StartMonthlyContribution() {
   ledger_->StartMonthlyContribution();
 }
 
-void BatLedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
-  ledger_->SetInlineTipSetting(key, enabled);
+void BatLedgerImpl::SetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    bool enabled) {
+  ledger_->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
-void BatLedgerImpl::GetInlineTipSetting(
-    const std::string& key,
-    GetInlineTipSettingCallback callback) {
-  std::move(callback).Run(ledger_->GetInlineTipSetting(key));
+void BatLedgerImpl::GetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    GetInlineTippingPlatformEnabledCallback callback) {
+  std::move(callback).Run(ledger_->GetInlineTippingPlatformEnabled(platform));
 }
 
 void BatLedgerImpl::GetShareURL(

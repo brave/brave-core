@@ -151,7 +151,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetOneTimeTips(
     std::unique_ptr<brave_rewards::ContentSiteList> list);
 
-  void SetInlineTipSetting(const base::ListValue* args);
+  void SetInlineTippingPlatformEnabled(const base::ListValue* args);
 
   void GetPendingContributions(const base::ListValue* args);
   void OnGetPendingContributions(
@@ -428,8 +428,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getRewardsMainEnabled",
       base::BindRepeating(&RewardsDOMHandler::GetRewardsMainEnabled,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.setInlineTipSetting",
-      base::BindRepeating(&RewardsDOMHandler::SetInlineTipSetting,
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.setInlineTippingPlatformEnabled",
+      base::BindRepeating(&RewardsDOMHandler::SetInlineTippingPlatformEnabled,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getPendingContributions",
       base::BindRepeating(&RewardsDOMHandler::GetPendingContributions,
@@ -1459,7 +1460,8 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
       "brave_rewards.recurringTipRemoved", base::Value(success));
 }
 
-void RewardsDOMHandler::SetInlineTipSetting(const base::ListValue* args) {
+void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
+    const base::ListValue* args) {
   std::string key;
   args->GetString(0, &key);
 
@@ -1467,7 +1469,7 @@ void RewardsDOMHandler::SetInlineTipSetting(const base::ListValue* args) {
   args->GetString(1, &value);
 
   if (rewards_service_) {
-    rewards_service_->SetInlineTipSetting(key, value == "true");
+    rewards_service_->SetInlineTippingPlatformEnabled(key, value == "true");
   }
 }
 

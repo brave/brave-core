@@ -32,6 +32,9 @@ namespace ledger {
   const char kStateAnonymousCardId[] = "wallet.anonymous_card_id";
   const char kStateRecoverySeed[] = "wallet.seed";
   const char kStatePaymentId[] = "wallet.payment_id";
+  const char kStateInlineTipRedditEnabled[] = "inline_tip.reddit";
+  const char kStateInlineTipTwitterEnabled[] = "inline_tip.twitter";
+  const char kStateInlineTipGithubEnabled[] = "inline_tip.github";
 
 }  // namespace ledger
 

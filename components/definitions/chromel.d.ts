@@ -124,7 +124,7 @@ declare namespace chrome.braveRewards {
   }
   const refreshPublisher: (publisherKey: string, callback: (status: number, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
-  const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
+  const getInlineTippingPlatformEnabled: (key: string, callback: (enabled: boolean) => void) => {}
   const fetchBalance: (callback: (balance: RewardsExtension.Balance) => void) => {}
   const onReconcileComplete: {
     addListener: (callback: (result: number, type: number) => void) => void
