@@ -34,6 +34,7 @@ extension UIImageView {
         
         if let url = url, let customIcon = FaviconFetcher.getCustomIcon(for: url) {
             image = UIImage(contentsOfFile: customIcon.url.path)
+            self.contentMode = .scaleAspectFit
             backgroundColor = customIcon.color
             completionBlock?(customIcon.color, url)
             return
