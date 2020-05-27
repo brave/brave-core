@@ -1,0 +1,53 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="brave_sync_code_dialog.html">
+
+<dom-module id="settings-brave-sync-setup">
+  <template>
+    <style include="settings-shared">
+      .sync-setup-actions
+      {
+        display: flex;
+        flex-direction: row;
+      }
+      .sync-setup-actions > *
+      {
+        margin-right: 8px;
+      }
+      .sync-setup-actions:last-child
+      {
+        margin-right: 0;
+      }
+      paper-spinner-lite
+      {
+        width: 16px;
+        height: 16px;
+      }
+    </style>
+
+    <div class="sync-setup-actions">
+      <cr-button class="action-button"
+        on-click="handleStartSyncChain_"
+        disabled="[[isGettingSyncCode_]]"
+      >
+        <paper-spinner-lite hidden="[[!isGettingSyncCode_]]">
+        </paper-spinner-lite>
+        <span hidden="[[isGettingSyncCode_]]">$i18n{braveSyncStartNewChain}</span>
+      </cr-button>
+      <cr-button on-click="handleJoinSyncChain_">
+        $i18n{braveSyncEnterCode}
+      </cr-button>
+    </div>
+
+    <template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
+      <settings-brave-sync-code-dialog
+        code-type="{{syncCodeDialogType_}}"
+        sync-code="{{syncCode_}}"
+        is-invalid-sync-code="{{isInvalidSyncCode_}}"
+        on-done="handleSyncCodeDialogDone_"
+      ></settings-brave-sync-code-dialog>
+    </template>
+
+  </template>
+  <script src="brave_sync_setup.js"></script>
+</dom-module>

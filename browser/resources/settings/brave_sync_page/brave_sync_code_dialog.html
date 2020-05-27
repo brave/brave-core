@@ -1,0 +1,150 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<dom-module id="settings-brave-sync-code-dialog">
+  <template>
+    <style include="settings-shared">
+      .tertiary-button
+      {
+        border: none;
+        background: none;
+        color: var(--cr-primary-text-color);
+        text-decoration: underline;
+        font-family: Muli, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .button-group > *
+      {
+        margin-right: 8px;
+      }
+      .button-group:last-child
+      {
+        margin-right: 0;
+      }
+      .invalid-sync-code
+      {
+        color: red;
+      }
+    </style>
+
+    <!-- device chooser -->
+    <template is="dom-if" if="[[isCodeType('choose',codeType)]]">
+      <cr-dialog
+        on-close="handleClose_"
+        show-close-button
+        show-on-attach
+      >
+        <div slot="title">
+          $i18n{braveSyncChooseDeviceTitle}
+        </div>
+        <div slot="body">$i18n{braveSyncChooseDeviceDesc}</div>
+        <div slot="button-container" class="button-group">
+          <cr-button class="action-button"
+            on-click="handleChooseMobile_"
+          >
+            $i18n{braveSyncChooseDeviceMobileTitle}
+          </cr-button>
+          <cr-button class="action-button"
+            on-click="handleChooseComputer_"
+          >
+            $i18n{braveSyncChooseDeviceComputerTitle}
+          </cr-button>
+        </div>
+      </cr-dialog>
+    </template>
+
+    <!-- qr code -->
+    <template is="dom-if" if="[[isCodeType('qr',codeType)]]">
+      <cr-dialog
+        on-close="handleClose_"
+        show-close-button
+        show-on-attach
+      >
+        <div slot="title">$i18n{braveSyncScanCodeTitle}</div>
+        <div slot="body">
+          $i18n{braveSyncScanCodeDesc1}
+          $i18n{braveSyncScanCodeDesc2}
+          $i18n{braveSyncScanCodeDesc3}
+        </div>
+        <div slot="button-container" class="button-group">
+          <button class="tertiary-button"
+            on-click="handleChooseComputer_"
+          >
+            $i18n{braveSyncViewCodeButton}
+          </button>
+          <cr-button class="action-button" on-click="handleDone_">
+            $i18n{ok}
+          </cr-button>
+        </div>
+      </cr-dialog>
+    </template>
+
+    <!-- words -->
+    <template is="dom-if" if="[[isCodeType('words',codeType)]]">
+      <cr-dialog
+        on-close="handleClose_"
+        show-close-button
+        show-on-attach
+      >
+        <div slot="title">$i18n{braveSyncViewCodeTitle}</div>
+        <div slot="body">
+          <div>
+            $i18n{braveSyncViewCodeDesc1}
+            $i18n{braveSyncViewCodeDesc2}
+            $i18n{braveSyncViewCodeDesc3}
+          </div>
+          <textarea id="syncCode" readonly>[[syncCode]]</textarea>
+          <div slot="button-container">
+            <cr-button class="action-button" on-click="handleSyncCodeCopy_">
+              Copy
+            </cr-button>
+          </div>
+        </div>
+        <div slot="button-container" class="button-group">
+          <button class="tertiary-button"
+            on-click="handleChooseMobile_"
+          >
+            $i18n{braveSyncViewCodeQRCodeButton}
+          </button>
+          <cr-button class="action-button"
+            on-click="handleDone_"
+          >
+            $i18n{ok}
+          </cr-button>
+        </div>
+        </div>
+      </cr-dialog>
+    </template>
+
+    <!-- input words-->
+    <template is="dom-if" if="[[isCodeType('input',codeType)]]">
+      <cr-dialog
+        on-close="handleClose_"
+        show-close-button
+        show-on-attach
+      >
+        <div slot="title">$i18n{braveSyncEnterCodeTitle}</div>
+        <div slot="body">
+          <div>$i18n{braveSyncEnterCodeDesc}</div>
+          <textarea id="enterSyncCode" value="{{syncCode::input}}"></textarea>
+          <template is="dom-if" if="[[isInvalidSyncCode]]">
+            <div class="invalid-sync-code">
+              <!-- TODO(petemill): translate -->
+              Invalid sync code, please check and try again.
+            </div>
+          </template>
+        </div>
+        <div slot="button-container">
+          <cr-button class="action-button"
+            on-click="handleDone_"
+          >
+            $i18n{confirm}
+          </cr-button>
+        </div>
+      </cr-dialog>
+    </template>
+
+  </template>
+  <script src="brave_sync_code_dialog.js"></script>
+</dom-module>

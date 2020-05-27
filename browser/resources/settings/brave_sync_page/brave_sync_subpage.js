@@ -34,14 +34,13 @@ Polymer({
     },
 
     /**
-     * The current page status. Defaults to |CONFIGURE| such that the searching
-     * algorithm can search useful content when the page is not visible to the
-     * user.
-     * @private {?settings.PageStatus}
+     * Current page status
+     * 'configure' | 'setup' | 'spinner'
+     * @private
      */
     pageStatus_: {
       type: String,
-      value: settings.PageStatus.CONFIGURE,
+      value: 'configure',
     },
 
     /**
@@ -73,6 +72,13 @@ Polymer({
     },
 
     /** @private */
+    syncDisabledByAdmin_: {
+      type: Boolean,
+      value: false,
+      computed: 'computeSyncDisabledByAdmin_(syncStatus.managed)',
+    },
+
+    /** @private */
     syncSectionDisabled_: {
       type: Boolean,
       value: false,
@@ -81,19 +87,11 @@ Polymer({
           'syncStatus.hasError, syncStatus.statusAction, ' +
           'syncPrefs.trustedVaultKeysRequired)',
     },
-
-    /** @private */
-    showSetupCancelDialog_: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** @private */
-    showInvalidSyncCodeDialog_: {
-      type: Boolean,
-      value: false,
-    },
   },
+
+  observers: [
+    'updatePageStatus_(syncStatus.*)'
+  ],
 
   /** @private {?settings.SyncBrowserProxy} */
   browserProxy_: null,
@@ -122,16 +120,10 @@ Polymer({
   unloadCallback_: null,
 
   /**
-   * Whether the user decided to abort sync.
+   * Whether the user completed setup successfully.
    * @private {boolean}
    */
-  didAbort_: true,
-
-  /**
-   * Whether the user confirmed the cancellation of sync.
-   * @private {boolean}
-   */
-  setupCancelConfirmed_: false,
+  setupSuccessful_: false,
 
   /** @override */
   created: function() {
@@ -141,10 +133,7 @@ Polymer({
   /** @override */
   attached: function() {
     this.addWebUIListener(
-        'page-status-changed', this.handlePageStatusChanged_.bind(this));
-    this.addWebUIListener(
-        'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
-
+      'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
     const router = settings.Router.getInstance();
     if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
       this.onNavigateToPage_();
@@ -168,6 +157,11 @@ Polymer({
     }
   },
 
+  updatePageStatus_: function () {
+    const isFirstSetup = this.syncStatus && this.syncStatus.firstSetupInProgress
+    this.pageStatus_ = isFirstSetup ? 'setup' : 'configure'
+  },
+
   /**
    * @return {boolean}
    * @private
@@ -182,36 +176,12 @@ Polymer({
               settings.StatusAction.RETRIEVE_TRUSTED_VAULT_KEYS));
   },
 
-  /** @private */
-  onSetupCancelDialogBack_: function() {
-    this.$$('#setupCancelDialog').cancel();
-    chrome.metricsPrivate.recordUserAction(
-        'Signin_Signin_CancelCancelAdvancedSyncSettings');
-  },
-
-  /** @private */
-  onSetupCancelDialogConfirm_: function() {
-    this.setupCancelConfirmed_ = true;
-    this.$$('#setupCancelDialog').close();
-    const router = settings.Router.getInstance();
-    router.navigateTo(router.getRoutes().BRAVE_SYNC);
-    chrome.metricsPrivate.recordUserAction(
-        'Signin_Signin_ConfirmCancelAdvancedSyncSettings');
-  },
-
-  /** @private */
-  onSetupCancelDialogClose_: function() {
-    this.showSetupCancelDialog_ = false;
-  },
-
-  /** @private */
-  onInvalidSyncCodeDialogClose_: function() {
-    this.showInvalidSyncCodeDialog_ = false;
-  },
-
-  /** @private */
-  onInvalidSyncCodeDialogConfirm_: function() {
-    this.$$('#invalidSyncCodeDialog').close();
+  /**
+   * @return {boolean}
+   * @private
+   */
+  computeSyncDisabledByAdmin_() {
+    return this.syncStatus != undefined && !!this.syncStatus.managed;
   },
 
   /** @protected */
@@ -225,37 +195,6 @@ Polymer({
     if (router.getRoutes().BRAVE_SYNC_SETUP.contains(router.getCurrentRoute())) {
       return;
     }
-
-    const searchParams = router.getQueryParameters().get('search');
-    if (searchParams) {
-      // User navigated away via searching. Cancel sync without showing
-      // confirmation dialog.
-      this.onNavigateAwayFromPage_();
-      return;
-    }
-
-    const userActionCancelsSetup = this.syncStatus &&
-        this.syncStatus.firstSetupInProgress && this.didAbort_;
-    if (userActionCancelsSetup && !this.setupCancelConfirmed_) {
-      chrome.metricsPrivate.recordUserAction(
-          'Signin_Signin_BackOnAdvancedSyncSettings');
-      // Show the 'Cancel sync?' dialog.
-      // Yield so that other |currentRouteChanged| observers are called,
-      // before triggering another navigation (and another round of observers
-      // firing). Triggering navigation from within an observer leads to some
-      // undefined behavior and runtime errors.
-      requestAnimationFrame(() => {
-        router.navigateTo(router.getRoutes().BRAVE_SYNC_SETUP);
-        this.showSetupCancelDialog_ = true;
-        // Flush to make sure that the setup cancel dialog is attached.
-        Polymer.dom.flush();
-        this.$$('#setupCancelDialog').showModal();
-      });
-      return;
-    }
-
-    // Reset variable.
-    this.setupCancelConfirmed_ = false;
 
     this.onNavigateAwayFromPage_();
   },
@@ -273,14 +212,11 @@ Polymer({
   onNavigateToPage_: function() {
     const router = settings.Router.getInstance();
     assert(router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP);
-
     if (this.beforeunloadCallback_) {
       return;
     }
 
-    // Display loading page until the settings have been retrieved.
-    this.pageStatus_ = settings.PageStatus.SPINNER;
-
+    // Triggers push of prefs to our handler
     this.browserProxy_.didNavigateToSyncPage();
 
     this.beforeunloadCallback_ = event => {
@@ -306,11 +242,7 @@ Polymer({
       return;
     }
 
-    // Reset the status to CONFIGURE such that the searching algorithm can
-    // search useful content when the page is not visible to the user.
-    this.pageStatus_ = settings.PageStatus.CONFIGURE;
-
-    this.browserProxy_.didNavigateAwayFromSyncPage(this.didAbort_);
+    this.browserProxy_.didNavigateAwayFromSyncPage(!this.setupSuccessful_);
 
     window.removeEventListener('beforeunload', this.beforeunloadCallback_);
     this.beforeunloadCallback_ = null;
@@ -325,7 +257,7 @@ Polymer({
    * Handler for when the sync preferences are updated.
    * @private
    */
-  handleSyncPrefsChanged_: function(syncPrefs) {
+  handleSyncPrefsChanged_: async function(syncPrefs) {
     this.syncPrefs = syncPrefs;
     // Enforce encryption
     if (this.syncStatus && !this.syncStatus.firstSetupInProgress) {
@@ -333,88 +265,28 @@ Polymer({
         this.syncPrefs.encryptAllData = true;
         this.syncPrefs.setNewPassphrase = true;
         this.syncPrefs.passphrase = this.passphrase_;
-
-        this.browserProxy_.setSyncEncryption(this.syncPrefs)
-          .then(this.handlePageStatusChanged_.bind(this));
+        await this.browserProxy_.setSyncEncryption(this.syncPrefs)
       } else if (this.syncPrefs.passphraseRequired) {
         this.syncPrefs.setNewPassphrase = false;
         this.syncPrefs.passphrase = this.passphrase_;
-        this.browserProxy_.setSyncEncryption(this.syncPrefs)
-          .then(this.handlePageStatusChanged_.bind(this));
+        await this.browserProxy_.setSyncEncryption(this.syncPrefs)
       }
     }
-    this.pageStatus_ = settings.PageStatus.CONFIGURE;
   },
 
   /**
-   * Called when the page status updates.
-   * @param {!settings.PageStatus} pageStatus
+   * Called when setup is complete and sync code is set
    * @private
    */
-  handlePageStatusChanged_: function(pageStatus) {
-    switch (pageStatus) {
-      case settings.PageStatus.SPINNER:
-      case settings.PageStatus.TIMEOUT:
-      case settings.PageStatus.CONFIGURE:
-        this.pageStatus_ = pageStatus;
-        return;
-      case settings.PageStatus.DONE:
-        const router = settings.Router.getInstance();
-        if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
-          router.navigateTo(router.getRoutes().BRAVE_SYNC);
-        }
-        return;
-      case settings.PageStatus.PASSPHRASE_FAILED:
-        if (this.pageStatus_ == this.pages_.CONFIGURE && this.syncPrefs &&
-            this.syncPrefs.passphraseRequired) {
-          // This won't happen because client need valid seed/passphrase to be
-          // able to get data from server.
-        }
-        return;
-    }
-
-    assertNotReached();
-  },
-
-  /**
-   * @return {boolean}
-   * @private
-   */
-  shouldShowSyncControl_: function() {
-    return this.syncStatus !== undefined &&
-        !!this.syncStatus.syncSystemEnabled;
-  },
-
-  /**
-   * @param {!CustomEvent<boolean>} e The event passed from
-   *     settings-sync-control.
-   * @private
-   */
-  onSyncSetupDone_: function(e) {
+  onSetupSuccess_: function() {
+    this.setupSuccessful_ = true
+    // This navigation causes the firstSetupInProgress flag to be marked as false
+    // via `didNavigateAwayFromSyncPage`.
     const router = settings.Router.getInstance();
-    if (e.detail) {
-      this.browserProxy_.setSyncCode(this.passphrase_).then((success) => {
-        if (success) {
-          this.didAbort_ = false;
-          router.navigateTo(router.getRoutes().BRAVE_SYNC);
-        } else {
-          this.passphrase_ = '';
-          this.showInvalidSyncCodeDialog_ = true;
-          Polymer.dom.flush();
-          this.$$('#invalidSyncCodeDialog').showModal();
-        }
-      });
-    } else {
+    if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
       router.navigateTo(router.getRoutes().BRAVE_SYNC);
     }
   },
-
-  onResetSyncChain_: function() {
-    this.browserProxy_.resetSyncChain();
-    this.didAbort_ = true;
-    const router = settings.Router.getInstance();
-    router.navigateTo(router.getRoutes().BRAVE_SYNC);
-  }
 });
 
 })();
