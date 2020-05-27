@@ -335,7 +335,7 @@ export class RewardsPanel extends React.Component<Props, State> {
                 onVerifyClick={onVerifyClick}
                 onDisconnectClick={this.onDisconnectClick}
                 goToUphold={this.goToUphold}
-                userName={utils.getUserName(externalWallet)}
+                greetings={utils.getGreetings(externalWallet)}
                 actions={this.getActions()}
               >
                 <WalletPanelDisabled

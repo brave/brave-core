@@ -484,6 +484,7 @@
       <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">{{currency}} not used by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_GRANTS" desc="">Grants</message>
+      <message name="IDS_BRAVE_UI_GREETINGS_VERIFIED" desc="">Hello, {{name}}!</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_INCLUDE_IN_AUTO" desc="">Include in Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>

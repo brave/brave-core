@@ -92,7 +92,7 @@ void UpholdUser::OnGet(
     return;
   }
 
-  const auto* name = dictionary->FindStringKey("name");
+  const auto* name = dictionary->FindStringKey("firstName");
   if (name) {
     user.name = *name;
   }

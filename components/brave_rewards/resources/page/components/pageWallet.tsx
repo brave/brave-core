@@ -442,13 +442,13 @@ class PageWallet extends React.Component<Props, State> {
     window.open(externalWallet.accountUrl, '_self')
   }
 
-  getUserName = () => {
+  getGreetings = () => {
     const { externalWallet } = this.props.rewardsData
-    if (!externalWallet) {
+    if (!externalWallet || !externalWallet.userName) {
       return ''
     }
 
-    return externalWallet.userName
+    return getLocale('greetingsVerified', { name: externalWallet.userName })
   }
 
   onDisconnectClick = () => {
@@ -772,7 +772,7 @@ class PageWallet extends React.Component<Props, State> {
           onVerifyClick={onVerifyClick}
           onDisconnectClick={this.onDisconnectClick}
           goToUphold={this.goToUphold}
-          userName={this.getUserName()}
+          greetings={this.getGreetings()}
           onlyAnonWallet={onlyAnonWallet}
         >
           {

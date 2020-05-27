@@ -139,12 +139,12 @@ export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet
   }
 }
 
-export const getUserName = (externalWallet?: RewardsExtension.ExternalWallet) => {
-  if (!externalWallet) {
+export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) => {
+  if (!externalWallet || !externalWallet.userName) {
     return ''
   }
 
-  return externalWallet.userName
+  return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
 export const handleUpholdLink = (link: string, externalWallet?: RewardsExtension.ExternalWallet) => {
