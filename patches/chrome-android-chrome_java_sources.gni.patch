@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 95b13fbb677e18d90cf2ab84c18bba2394057307..d6a712c4eaf342b3bc38fd7055ebc1d04e08e62c 100644
+index 31d2542cc54f41979c7949b0fb431713b03c89fc..6198695fe5aec4b70581b07a0fe4fffca043cfa6 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1884,3 +1884,4 @@ chrome_java_sources = [
+@@ -1799,3 +1799,4 @@ chrome_java_sources = [
    "java/src/org/chromium/chrome/browser/widget/bottomsheet/EmptyBottomSheetObserver.java",
    "java/src/org/chromium/chrome/browser/widget/bottomsheet/TouchRestrictingFrameLayout.java",
  ]

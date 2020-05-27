@@ -1,8 +1,8 @@
 diff --git a/build/toolchain/win/setup_toolchain.py b/build/toolchain/win/setup_toolchain.py
-index 2ab240da454821965080c82899c382a57d674d80..6163afd0959c6e9746a88c7637b5f0bbd0739035 100644
+index 9c936c69d6849fa8e6f5b1c73823f61b26e96e4a..3ae10951cb06ecf4c357258a6727ed52b2300eb3 100644
 --- a/build/toolchain/win/setup_toolchain.py
 +++ b/build/toolchain/win/setup_toolchain.py
-@@ -273,6 +273,7 @@ def main():
+@@ -260,6 +260,7 @@ def main():
          return s if re.match(r'^[a-zA-Z0-9._/\\:-]*$', s) else '"' + s + '"'
        include_I = ' '.join([q('/I' + i) for i in include])
        include_imsvc = ' '.join([q('-imsvc' + i) for i in include])

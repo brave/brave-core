@@ -1,13 +1,13 @@
 diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
-index 19cfeaa3a18292b2d7f2ea1fbd3c5167ec25c9cf..93c001dde27811d066f3d823640d290436d0f227 100644
+index 28706cb404647bf0de772086dedffa1f99787c4d..3cbc17384a6a5c403354c502c90a630356fc44d6 100644
 --- a/components/browser_ui/widget/android/java/res/values/dimens.xml
 +++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
-@@ -63,7 +63,7 @@
+@@ -60,7 +60,7 @@
      <dimen name="modern_toolbar_background_size">40dp</dimen>
      <!-- Sometimes the modern toolbar is shown at 48dp so a corner radius of
           24dp is needed to completely round the corners. -->
 -    <dimen name="modern_toolbar_background_corner_radius">24dp</dimen>
 +    <dimen name="modern_toolbar_background_corner_radius">8dp</dimen>
  
-     <!-- TextBubble dimensions -->
-     <dimen name="text_bubble_margin">4dp</dimen>
+     <!-- Promo cards dimensions -->
+     <dimen name="promo_image_size">24dp</dimen>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/about_page/about_page.js b/chrome/browser/resources/settings/about_page/about_page.js
-index f1fee25e8a512e3c1752de61ddca78987e0eda86..2356179a10a353cefa6d3027630c234252212236 100644
+index 12cc0209ebba128913929de9c957cae7141dcc43..778e6b7803b615a81c2c233bd1c7173f2f8ba5cf 100644
 --- a/chrome/browser/resources/settings/about_page/about_page.js
 +++ b/chrome/browser/resources/settings/about_page/about_page.js
-@@ -173,7 +173,14 @@ Polymer({
+@@ -213,7 +213,14 @@ Polymer({
  
    /** @private */
    onRelaunchTap_() {

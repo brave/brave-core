@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tools/rollup_plugin.js b/chrome/browser/resources/tools/rollup_plugin.js
-index f462ab10cb0483f3576dd55c60465d655296f10d..d1936fabc946b0ee47f438535f5e51e8cc4f1c55 100644
+index d6c49bf8164571c0d86904bc7dea45dfc6912ffe..510f2aca1942faa14a025b809ca65194a2805b55 100644
 --- a/chrome/browser/resources/tools/rollup_plugin.js
 +++ b/chrome/browser/resources/tools/rollup_plugin.js
-@@ -71,6 +71,8 @@ export default function plugin(srcPath, genPath, rootPath, host, excludes) {
+@@ -78,6 +78,8 @@ export default function plugin(srcPath, genPath, rootPath, host, excludes) {
          return joinPaths(polymerSrcPath, pathFromPolymer);
        }
  
