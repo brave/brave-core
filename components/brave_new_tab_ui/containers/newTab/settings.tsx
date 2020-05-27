@@ -184,6 +184,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     }
                     return (
                       <SettingsSidebarButton
+                        tabIndex={0}
                         key={`sidebar-button-${index}`}
                         activeTab={activeTab === index}
                         onClick={this.setActiveTab.bind(this, index)}

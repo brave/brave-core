@@ -28,6 +28,10 @@ export const SettingsContent = styled<{}, 'div'>('div')`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 40px;
+
+  @media screen and (max-width: 1150px) {
+    grid-gap: 0px;
+  }
 `
 
 export const SettingsSidebar = styled<{}, 'aside'>('aside')`
@@ -97,10 +101,6 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
   display: flex;
   align-items: center;
   background: inherit;
-
-  &:focus {
-    outline: none;
-  }
 
   &:hover {
     ${SettingsSidebarSVGContent} {
