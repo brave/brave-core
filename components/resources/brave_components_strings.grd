@@ -176,7 +176,7 @@
       <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
       <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Customize Dashboard</message>
       <message name="IDS_BRAVE_NEW_TAB_CUSTOMIZE" desc="Title for dashboard settings">Customize</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Image</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Images</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text for settings show clock option">Show Clock</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
