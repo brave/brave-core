@@ -253,6 +253,10 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   if (brave::IsWhitelistedFingerprintingException(primary_url, secondary_url)) {
     return true;
   }
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kFingerprintingProtectionV2)) {
+    return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
+  }
   ContentSettingsForOneType rules;
   if (content_setting_rules_) {
       rules = content_setting_rules_->fingerprinting_rules;
