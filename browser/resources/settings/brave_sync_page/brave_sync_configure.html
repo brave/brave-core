@@ -1,6 +1,8 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 
-<dom-module id="settings-brave-sync-devicelist">
+<link rel="import" href="brave_sync_code_dialog.html">
+
+<dom-module id="settings-brave-sync-configure">
   <template>
     <style include="settings-shared">
       .device-list {
@@ -16,13 +18,11 @@
         border-bottom: 2px solid rgb(222, 223, 228);
         border-top: 2px solid rgb(222, 223, 228);
         font-size: 12px;
-        /* color: rgb(75, 76, 92); */
         text-transform: uppercase;
       }
 
       tbody {
         font-size: 14px;
-        /* color: rgb(104, 105, 120); */
       }
 
       th, td {
@@ -52,6 +52,14 @@
       }
 
     </style>
+
+    <!-- Device list goes here -->
+    <h2>Device List</h2>
+    <p class="subtitle">
+      The device list below includes all devices in your sync chain.
+      Each device can be managed from any other device.
+    </p>
+
     <table class="device-list">
       <thead>
         <tr>
@@ -71,6 +79,32 @@
       </tbody>
     </table>
 
+    <div class="device-actions">
+      <cr-button on-click="onViewSyncCode_">
+        $i18n{braveSyncViewCodeButton}
+      </cr-button>
+      <cr-button class="action-button"
+                on-click="onAddDevice_">
+        $i18n{braveSyncAddDevice}
+      </cr-button>
+    </div>
+
+    <settings-sync-controls sync-status="[[syncStatus]]">
+    </settings-sync-controls>
+
+    <cr-button class="action-button"
+      on-click="onResetSyncChain_">
+      $i18n{braveSyncResetButton}
+    </cr-button>
+
+    <template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
+      <settings-brave-sync-code-dialog
+        sync-code="[[syncCode_]]"
+        code-type="{{syncCodeDialogType_}}"
+        on-done="onSyncCodeDialogDone_">
+      </settings-brave-sync-code-dialog>
+    </template>
+
   </template>
-  <script src="brave_sync_devicelist.js"></script>
+  <script src="brave_sync_configure.js"></script>
 </dom-module>

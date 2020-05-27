@@ -113,6 +113,10 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
 
 void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   AllowJavascript();
+  CHECK_EQ(1U, args->GetSize());
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
+
   syncer::SyncService* sync_service =
       ProfileSyncServiceFactory::IsSyncAllowed(profile_)
              ? ProfileSyncServiceFactory::GetForProfile(profile_)
@@ -125,6 +129,7 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   brave_sync_prefs.Clear();
 
   // Sync prefs will be clear in ProfileSyncService::StopImpl
+  ResolveJavascriptCallback(*callback_id, base::Value());
 }
 
 base::Value BraveSyncHandler::GetSyncDeviceList() {

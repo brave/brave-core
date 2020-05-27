@@ -43,14 +43,16 @@
       <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_HTML" file="brave_reset_page/brave_reset_profile_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_JS" file="brave_reset_page/brave_reset_profile_dialog_behavior.js" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_CONTROL_JS" file="brave_sync_page/brave_sync_control.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_CONTROL_HTML" file="brave_sync_page/brave_sync_control.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_JS" file="brave_sync_page/brave_sync_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_HTML" file="brave_sync_page/brave_sync_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_SUBPAGE_JS" file="brave_sync_page/brave_sync_subpage.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_SUBPAGE_HTML" file="brave_sync_page/brave_sync_subpage.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_DEVICELIST_JS" file="brave_sync_page/brave_sync_devicelist.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_DEVICELIST_HTML" file="brave_sync_page/brave_sync_devicelist.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_CONFIGURE_JS" file="brave_sync_page/brave_sync_configure.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_CONFIGURE_HTML" file="brave_sync_page/brave_sync_configure.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_SETUP_JS" file="brave_sync_page/brave_sync_setup.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_SETUP_HTML" file="brave_sync_page/brave_sync_setup.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_CODE_DIALOG_JS" file="brave_sync_page/brave_sync_code_dialog.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_CODE_DIALOG_HTML" file="brave_sync_page/brave_sync_code_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <!-- brave help and tips -->
       <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_HTML" file="brave_help_tips_page/brave_help_tips_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_JS" file="brave_help_tips_page/brave_help_tips_browser_proxy.js" type="chrome_html" preprocess="true" />
