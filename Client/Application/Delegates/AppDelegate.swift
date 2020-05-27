@@ -260,9 +260,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         if let urp = UserReferralProgram.shared {
-            if isFirstLaunch {
+            if Preferences.URP.referralLookupOutstanding.value == nil {
+                // This preference has never been set, and this means it is a new or upgraded user.
+                // That distinction must be made to know if a network request for ref-code look up should be made.
+                
+                // Setting this to an explicit value so it will never get overwritten on subsequent launches.
+                // Upgrade users should not have ref code ping happening.
+                Preferences.URP.referralLookupOutstanding.value = isFirstLaunch
+            }
+            
+            if Preferences.URP.referralLookupOutstanding.value == true {
                 let refCode = UserReferralProgram.sanitize(input: UIPasteboard.general.string)
-                if refCode != nil { UIPasteboard.general.clearPasteboard() }
+                if refCode != nil {
+                    UrpLog.log("Clipboard ref code found: " + (UIPasteboard.general.string ?? "!Clipboard Empty!"))
+                    UrpLog.log("Clearing clipboard.")
+                    UIPasteboard.general.clearPasteboard()
+                }
                 
                 urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
                     if let code = referralCode {
