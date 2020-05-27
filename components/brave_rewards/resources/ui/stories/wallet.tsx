@@ -90,7 +90,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
         alert={showAlert ? alert : undefined}
         walletState={state}
         onDisconnectClick={doNothing}
-        userName={'Brave Software'}
+        greetings={'Hello, Brave!'}
       >
         Some content
       </WalletWrapper>

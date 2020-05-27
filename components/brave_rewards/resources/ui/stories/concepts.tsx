@@ -491,7 +491,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
           }, 'unverified') as WalletState}
           onVerifyClick={onVerifyClick}
           onDisconnectClick={onDisconnectClick}
-          userName={text('user name', 'jennrhim')}
+          greetings={text('Greetings', 'Hello, Brave!')}
           onlyAnonWallet={boolean('Anon Wallet Only', false)}
         >
           <WalletSummarySlider
