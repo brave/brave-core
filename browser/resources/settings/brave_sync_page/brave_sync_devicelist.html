@@ -1,0 +1,76 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<dom-module id="settings-brave-sync-devicelist">
+  <template>
+    <style include="settings-shared">
+      .device-list {
+        margin: 24px 0;
+        min-width: 100%;
+        border-collapse: collapse;
+        font-family: Muli, sans-serif;
+        font-weight: 500;
+        text-align: left;
+      }
+
+      thead {
+        border-bottom: 2px solid rgb(222, 223, 228);
+        border-top: 2px solid rgb(222, 223, 228);
+        font-size: 12px;
+        /* color: rgb(75, 76, 92); */
+        text-transform: uppercase;
+      }
+
+      tbody {
+        font-size: 14px;
+        /* color: rgb(104, 105, 120); */
+      }
+
+      th, td {
+        padding: 12px 0;
+      }
+
+      th:first-child,
+      td:first-child {
+        padding-left: 12px;
+      }
+
+      th:last-child,
+      td:last-child {
+        padding-right: 12px;
+      }
+
+      tbody tr {
+        border-bottom: 1px solid rgb(228, 232, 236);
+      }
+
+      .device-name {
+        max-width: 30ch;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+      }
+
+    </style>
+    <table class="device-list">
+      <thead>
+        <tr>
+          <th><span class="device-name">Device Name</span></th>
+          <th>Last Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template is="dom-repeat" items="[[deviceList_]]">
+          <tr>
+            <td>
+              <span class="device-name">[[item.name]]<template is="dom-if" if="[[item.isCurrentDevice]]"> (This Device)</template></span>
+            </td>
+            <td>[[getDeviceDisplayDate(item)]]</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+  </template>
+  <script src="brave_sync_devicelist.js"></script>
+</dom-module>
