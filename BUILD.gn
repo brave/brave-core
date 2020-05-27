@@ -68,10 +68,6 @@ if (is_win) {
 
   group("mini_installer_dependencies") {
     deps = [ ":brave" ]
-
-    if (build_delta_installer) {
-      deps += [ ":copy_courgette_binary" ]
-    }
   }
 }
 
