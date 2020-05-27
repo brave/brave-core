@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java
-index b01096b84918d8f30153270f3f9eeda7969f0ec5..d3c412581c3c6adb10005dd684f18b78d17a72f0 100644
+index 9c39293d4688570a93191c83fb6d58600ee7509d..703b155fdb893e39a0f7a954c8b206bc8ce7c2be 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java
 @@ -30,7 +30,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;

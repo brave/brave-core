@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a980555deef 100644
+index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442b2175715 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -29,8 +29,8 @@ declare_args() {
+@@ -30,8 +30,8 @@ declare_args() {
  assert(is_linux)
  
  packaging_files_executables = [
@@ -13,7 +13,7 @@ index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a98
    "$root_out_dir/crashpad_handler",
  ]
  packaging_files_shlibs = []
-@@ -140,10 +140,15 @@ action("merge_rpm_dependencies") {
+@@ -167,10 +167,15 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -30,7 +30,7 @@ index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a98
    script = "//build/gn_run_binary.py"
    sources = [
      "//buildtools/third_party/eu-strip/bin/eu-strip",
-@@ -210,7 +215,7 @@ branding_dir_100 =
+@@ -208,7 +213,7 @@ branding_dir_100 =
  copy("common_packaging_files") {
    visibility = [ ":*" ]
    sources = [
@@ -39,7 +39,7 @@ index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a98
      "common/apt.include",
      "common/default-app-block.template",
      "common/default-app.template",
-@@ -233,8 +238,8 @@ copy("common_packaging_files") {
+@@ -231,8 +236,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -50,7 +50,7 @@ index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a98
      ]
    }
  
-@@ -335,6 +340,12 @@ group("installer_deps") {
+@@ -333,6 +338,12 @@ group("installer_deps") {
      "//sandbox/linux:chrome_sandbox",
      "//third_party/crashpad/crashpad/handler:crashpad_handler",
    ]
@@ -63,7 +63,7 @@ index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a98
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -360,6 +371,9 @@ group("installer_deps") {
+@@ -367,6 +378,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -73,7 +73,7 @@ index 9c92012ce3b4b0db28f29046240720da04997d98..0f3bdfe2d0d928168ca55bb33a747a98
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -523,3 +537,6 @@ linux_package("beta") {
+@@ -530,3 +544,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }
