@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 4a7c610cec562ed067a86629b8a6f5d0b8758ddf..e5b2f7a726b7efe4d3f5dfe2322a1d375e49f631 100644
+index bf9fefaa55ccc4b0b48717bb2961aa9904a37e4c..7cb927c534beec8aed8e209761004b479494a8b5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -64,7 +64,7 @@ import java.util.Set;
+@@ -65,7 +65,7 @@ import java.util.Set;
   * Settings fragment to customize Sync options (data types, encryption). Can be accessed from
   * {@link SyncAndServicesSettings}.
   */

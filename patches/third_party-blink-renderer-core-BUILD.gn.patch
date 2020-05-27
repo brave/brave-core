@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index e9ef6e2aca7f9eb868b00fe4732ec10403a9a769..b53d766383485e6bb8b9b640383945de382b1fd7 100644
+index c89f727a5a34e06f98d37ef51e9cb4687bca521e..ef8d3628ccc047adde15f5e520aefe705f2c77ee 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
-@@ -146,6 +146,7 @@ component("core") {
+@@ -147,6 +147,7 @@ component("core") {
  
    visibility = []  # Allow re-assignment of list.
    visibility = [ "//third_party/blink/*" ]
