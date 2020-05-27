@@ -233,6 +233,55 @@ public class BraveQAPreferences extends BravePreferenceFragment
     }
 
     @Override
+    public void OnWalletInitialized(int error_code) {}
+
+    @Override
+    public void OnWalletProperties(int error_code) {}
+
+    @Override
+    public void OnPublisherInfo(int tabId) {}
+
+    @Override
+    public void OnGetCurrentBalanceReport(double[] report) {}
+
+    @Override
+    public void OnNotificationAdded(String id, int type, long timestamp, String[] args) {}
+
+    @Override
+    public void OnNotificationsCount(int count) {}
+
+    @Override
+    public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {}
+
+    @Override
+    public void OnNotificationDeleted(String id) {}
+
+    @Override
+    public void OnIsWalletCreated(boolean created) {}
+
+    @Override
+    public void OnGetPendingContributionsTotal(double amount) {}
+
+    @Override
+    public void OnGetRewardsMainEnabled(boolean enabled) {
+    }
+
+    @Override
+    public void OnGetAutoContributeProps() {}
+
+    @Override
+    public void OnGetReconcileStamp(long timestamp) {}
+
+    @Override
+    public void OnRecurringDonationUpdated() {}
+
+    @Override
+    public void OnRewardsMainEnabled(boolean enabled) {}
+
+    @Override
+    public void OnFetchPromotions() {}
+
+    @Override
     public void onCreatePreferences(Bundle bundle, String s) {}
 
     @Override
