@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
+index 610c9dc95ea789a83263cda36e254cdb0ea1a6a1..7985ade875f051d5cf6e40af469fc6ee280e51b6 100644
+--- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
++++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
+@@ -134,7 +134,7 @@ public class ChosenObjectSettings extends SiteSettingsPreferenceFragment {
+                     .launchSettingsHelpAndFeedbackActivity(getActivity());
+             return true;
+         }
+-        return false;
++        return super.onOptionsItemSelected(item);
+     }
+ 
+     @Override
