@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
-index fcd66fcd425aeb5bea889467df41ed5f5dfea3ad..7990f507adf491a81867f6a255aa863bb26e572d 100644
+index 760ab2a80ae37cfabbd30043d89227ad2b28d2c0..42d588e871d9bff749fbd66743a2c8b4b20950a4 100644
 --- a/ui/views/controls/button/md_text_button.h
 +++ b/ui/views/controls/button/md_text_button.h
-@@ -65,7 +65,9 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+@@ -57,7 +57,9 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
    MdTextButton(ButtonListener* listener, int button_context);
  
   private:

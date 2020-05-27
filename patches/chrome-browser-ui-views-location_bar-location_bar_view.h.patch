@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 6ee9457c3daf10e6bee50bd822c8694416969180..afd7cf00bf63637a696c1c2e6de17afc3501b52f 100644
+index cad99d56bf40408d5b38554497b3e6e83cca8673..e6c22548d224585bc342599fa5531042269483fa 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -106,6 +106,7 @@ class LocationBarView : public LocationBar,
@@ -26,7 +26,7 @@ index 6ee9457c3daf10e6bee50bd822c8694416969180..afd7cf00bf63637a696c1c2e6de17afc
    void Layout() override;
    void OnThemeChanged() override;
    void ChildPreferredSizeChanged(views::View* child) override;
-@@ -227,6 +230,7 @@ class LocationBarView : public LocationBar,
+@@ -228,6 +231,7 @@ class LocationBarView : public LocationBar,
                                       on_icon_fetched) const override;
  
   private:

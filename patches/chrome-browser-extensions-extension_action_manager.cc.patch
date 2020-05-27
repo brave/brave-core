@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_action_manager.cc b/chrome/browser/extensions/extension_action_manager.cc
-index b835944360e3315a346a2b06e32ec4743e0d9488..6cc5f2a6cd384543c397a655cbb7b50813d4e884 100644
+index 81278a6c02b324c7fc286ecb419aa2bc84cfc04a..bcd2e82b3686eabaeba855493333df82f8bf29e9 100644
 --- a/chrome/browser/extensions/extension_action_manager.cc
 +++ b/chrome/browser/extensions/extension_action_manager.cc
-@@ -108,6 +108,7 @@ ExtensionAction* ExtensionActionManager::GetExtensionAction(
+@@ -109,6 +109,7 @@ ExtensionAction* ExtensionActionManager::GetExtensionAction(
          ExtensionAction::ActionIconSize(),
          ExtensionAction::FallbackIcon().AsImageSkia(), nullptr));
    }

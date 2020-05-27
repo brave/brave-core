@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
-index 314e7b3ea90ee9b10a94b98c973a02f6d18933a1..6acc65331dd44b5332914be4df19e4d6f10f46d9 100644
+index 6bc1a9c4d0510f9b36c2ce100ab51d6daceb8f9d..e22bfaa55100caef0a9140f0c13df0b1bd4f7a42 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
-@@ -31,7 +31,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+@@ -30,7 +30,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+  * Autofill credit cards fragment, which allows the user to edit credit cards and control
   * payment apps.
-  * TODO(crbug.com/949269): Add tests for AutofillProfilesFragment.
   */
 -public class AutofillPaymentMethodsFragment extends PreferenceFragmentCompat
 +public class AutofillPaymentMethodsFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment

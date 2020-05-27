@@ -1,5 +1,5 @@
 diff --git a/chrome/install_static/install_modes.cc b/chrome/install_static/install_modes.cc
-index 8454b2ab6871c950ed976aafdbec8cfacb506e95..a2d56d3b6fcfcf23f781bcf680797a7122e4fcd9 100644
+index b8195c5e6b5030dbcee06389284cc3e3a82f116e..08ed31808e33c7d644c3cd2668404c5277bdfc07 100644
 --- a/chrome/install_static/install_modes.cc
 +++ b/chrome/install_static/install_modes.cc
 @@ -11,6 +11,9 @@ namespace install_static {
@@ -18,5 +18,5 @@ index 8454b2ab6871c950ed976aafdbec8cfacb506e95..a2d56d3b6fcfcf23f781bcf680797a71
  }
 +#endif
  #else
- std::wstring GetUnregisteredKeyPathForProduct(const wchar_t* product) {
-   return std::wstring(L"Software\\").append(product);
+ std::wstring GetUnregisteredKeyPathForProduct() {
+   return std::wstring(L"Software\\").append(kProductPathName);

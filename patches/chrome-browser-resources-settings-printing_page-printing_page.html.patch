@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/printing_page/printing_page.html b/chrome/browser/resources/settings/printing_page/printing_page.html
-index 4547f2e115c0626ce7dc182c5f27c136192cafa8..9edc1feda32f456712f0ae9aa48975c3ec058fd9 100644
+index e8d4761c5f642f3a0119c32e0c43cdc467958a03..c8455eac11ac41a437d3e7ab2963134af50cc4e1 100644
 --- a/chrome/browser/resources/settings/printing_page/printing_page.html
 +++ b/chrome/browser/resources/settings/printing_page/printing_page.html
-@@ -20,10 +20,12 @@
+@@ -6,10 +6,12 @@
          <cr-link-row label="$i18n{localPrintersTitle}"
              on-click="onTapLocalPrinters_" external></cr-link-row>
  </if>

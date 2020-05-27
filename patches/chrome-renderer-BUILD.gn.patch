@@ -1,9 +1,9 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index 88cbad65b714c264344728d903e89ed1eff9d671..bd57882c9b65362367eae648459907ebe40cd965 100644
+index 2ea489762ef580d57d472a0303fc11107b53ffae..e8d2046dfafc17dfc8c599890006de1ac351e4f9 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -129,6 +129,7 @@ jumbo_static_library("renderer") {
-   defines = []
+@@ -128,6 +128,7 @@ static_library("renderer") {
+   public_deps = [ "//components/contextual_search:buildflags" ]
  
    deps = [
 +    "//brave/renderer",
