@@ -148,7 +148,7 @@
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->
-      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Ads and trackers blocked</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated time saved</message>
       <message name="IDS_BRAVE_NEW_TAB_ESTIMATED_BANDWIDTH_SAVED" desc="total bandwidth saved from blocking ads and trackers">Estimated bandwidth saved</message>
