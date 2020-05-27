@@ -191,7 +191,7 @@
         Ask when a site wants to install Widevine on your computer.
       </message>
       <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
-        Private Window with Tor
+        Private window with Tor
       </message>
       <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
         Tor hides your IP address from the sites you visit.
@@ -250,7 +250,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Hides the Brave Rewards button in the location bar when Brave Rewards is not enabled
       </message>
       <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
-        Always show bookmarks on New Tab page
+        Always show bookmarks on new tab page
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
@@ -406,7 +406,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Block scripts
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_LOOK_AND_FEEL_TITLE" desc="The title the settings section with interface options such as showing the resources blocked badge">
-        Look &amp; Feel
+        Look &amp; feel
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
         Show the number of blocked items on the Shields icon
@@ -452,7 +452,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- WebRTC Policy Setting -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
-        WebRTC IP Handling Policy
+        WebRTC IP handling policy
       </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL" desc="WebRTC policy setting sub-label">
         Learn more
@@ -471,7 +471,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Push Messaging -->
       <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
-        Use Google Services for Push Messaging
+        Use Google services for push messaging
       </message>
       <!-- Brave Sync Settings -->
       <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
@@ -604,9 +604,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Begin Setup
       </message>
-      <!-- Help Tips Page -->
-      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help Tips' section of Brave Settings">
-        Help Tips
+      <!-- Help tips Page -->
+      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help tips' section of Brave Settings">
+        Help tips
       </message>
       <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
         Show Wayback Machine prompt on 404 pages
