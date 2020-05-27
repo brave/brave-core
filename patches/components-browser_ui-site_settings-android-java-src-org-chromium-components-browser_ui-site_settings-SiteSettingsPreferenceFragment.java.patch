@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsPreferenceFragment.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsPreferenceFragment.java
+index 645563abd734c404180abef525adef8d593748a9..0c0009fa9baa49a7114d4d05c86fe1b1722dbca7 100644
+--- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsPreferenceFragment.java
++++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsPreferenceFragment.java
+@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
+ /**
+  * Preference fragment for showing the Site Settings UI.
+  */
+-public abstract class SiteSettingsPreferenceFragment extends PreferenceFragmentCompat {
++public abstract class SiteSettingsPreferenceFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     private SiteSettingsClient mSiteSettingsClient;
+ 
+     /**
