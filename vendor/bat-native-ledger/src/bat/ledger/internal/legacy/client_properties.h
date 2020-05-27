@@ -31,10 +31,6 @@ struct ClientProperties {
   WalletProperties wallet;
   uint64_t boot_timestamp;
   uint64_t reconcile_timestamp;
-  std::string persona_id;
-  std::string user_id;
-  std::string registrar_vk;
-  std::string pre_flight;
   double fee_amount;
   bool user_changed_fee;
   bool auto_contribute;

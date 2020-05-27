@@ -151,42 +151,6 @@ const std::string& LegacyBatState::GetPaymentId() const {
   return state_->wallet_info.payment_id;
 }
 
-const std::string& LegacyBatState::GetPersonaId() const {
-  return state_->persona_id;
-}
-
-void LegacyBatState::SetPersonaId(const std::string& persona_id) {
-  state_->persona_id = persona_id;
-  SaveState();
-}
-
-const std::string& LegacyBatState::GetUserId() const {
-  return state_->user_id;
-}
-
-void LegacyBatState::SetUserId(const std::string& user_id) {
-  state_->user_id = user_id;
-  SaveState();
-}
-
-const std::string& LegacyBatState::GetRegistrarVK() const {
-  return state_->registrar_vk;
-}
-
-void LegacyBatState::SetRegistrarVK(const std::string& registrar_vk) {
-  state_->registrar_vk = registrar_vk;
-  SaveState();
-}
-
-const std::string& LegacyBatState::GetPreFlight() const {
-  return state_->pre_flight;
-}
-
-void LegacyBatState::SetPreFlight(const std::string& pre_flight) {
-  state_->pre_flight = pre_flight;
-  SaveState();
-}
-
 const ledger::WalletInfoProperties& LegacyBatState::GetWalletInfo() const {
   return state_->wallet_info;
 }

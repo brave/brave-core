@@ -23,56 +23,41 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_wallet {
+namespace {
 
-Create::Create(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
-  initAnonize();
-}
+std::string GetAnonizeProof(
+    const std::string& registrarVK,
+    const std::string& id,
+    std::string* preFlight) {
+  DCHECK(preFlight);
 
-Create::~Create() {
-}
-
-void Create::Start(ledger::ResultCallback callback) {
-  auto req_callback = std::bind(&Create::RequestCredentialsCallback,
-      this,
-      _1,
-      std::move(callback));
-
-  const std::string url =
-      braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2);
-
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, req_callback);
-}
-
-std::string Create::GetAnonizeProof(const std::string& registrarVK,
-                                    const std::string& id,
-                                    std::string* preFlight) {
   const char* cred = makeCred(id.c_str());
-  if (cred != nullptr) {
-    *preFlight = cred;
-    // should fix in
-    // https://github.com/brave-intl/bat-native-anonize/issues/11
-    free((void*)cred); // NOLINT
-  } else {
+  if (!cred) {
     return "";
   }
-  const char* proofTemp = registerUserMessage(preFlight->c_str(),
-                                              registrarVK.c_str());
-  std::string proof;
-  if (proofTemp != nullptr) {
-    proof = proofTemp;
-    // should fix in
-    // https://github.com/brave-intl/bat-native-anonize/issues/11
-    free((void*)proofTemp); // NOLINT
-  } else {
+
+  *preFlight = cred;
+  // should fix in
+  // https://github.com/brave-intl/bat-native-anonize/issues/11
+  free((void*)cred); // NOLINT
+
+  const char* proof_temp = registerUserMessage(
+      preFlight->c_str(),
+      registrarVK.c_str());
+
+  if (!proof_temp) {
     return "";
   }
+
+  std::string proof = proof_temp;
+  // should fix in
+  // https://github.com/brave-intl/bat-native-anonize/issues/11
+  free((void*)proof_temp); // NOLINT
 
   return proof;
 }
 
-std::string Create::StringifyRequestCredentials(
+std::string StringifyRequestCredentials(
     const std::string& proof,
     const std::string& label,
     const std::string& public_key,
@@ -104,6 +89,29 @@ std::string Create::StringifyRequestCredentials(
   return json;
 }
 
+}  // namespace
+
+namespace braveledger_wallet {
+
+Create::Create(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
+  initAnonize();
+}
+
+Create::~Create() = default;
+
+void Create::Start(ledger::ResultCallback callback) {
+  auto req_callback = std::bind(&Create::RequestCredentialsCallback,
+      this,
+      _1,
+      std::move(callback));
+
+  const std::string url =
+      braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2);
+
+  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, req_callback);
+}
+
 void Create::RequestCredentialsCallback(
       const ledger::UrlResponse& response,
       ledger::ResultCallback callback) {
@@ -114,19 +122,11 @@ void Create::RequestCredentialsCallback(
     return;
   }
 
-  std::string persona_id = ledger_->GetPersonaId();
-
-  if (persona_id.empty()) {
-    persona_id = base::GenerateGUID();
-    ledger_->SetPersonaId(persona_id);
-  }
   // Anonize2 limit is 31 octets
-  std::string user_id = persona_id;
+  std::string user_id = base::GenerateGUID();
   user_id.erase(
       std::remove(user_id.begin(), user_id.end(), '-'), user_id.end());
   user_id.erase(12, 1);
-
-  ledger_->SetUserId(user_id);
 
   std::string registrar_vk;
   if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
@@ -137,10 +137,8 @@ void Create::RequestCredentialsCallback(
     return;
   }
   DCHECK(!registrar_vk.empty());
-  ledger_->SetRegistrarVK(registrar_vk);
   std::string pre_flight;
   std::string proof = GetAnonizeProof(registrar_vk, user_id, &pre_flight);
-  ledger_->SetPreFlight(pre_flight);
 
   if (proof.empty()) {
     BLOG(0, "Proof is empty");
@@ -192,10 +190,13 @@ void Create::RequestCredentialsCallback(
 
   // We should use simple callbacks on iOS
   const std::string url = braveledger_request_util::BuildUrl(
-      (std::string)REGISTER_PERSONA + "/" + ledger_->GetUserId(), PREFIX_V2);
+      (std::string)REGISTER_PERSONA + "/" + user_id, PREFIX_V2);
   auto on_register = std::bind(&Create::RegisterPersonaCallback,
       this,
       _1,
+      user_id,
+      pre_flight,
+      registrar_vk,
       std::move(callback));
 
   ledger_->LoadURL(
@@ -209,6 +210,9 @@ void Create::RequestCredentialsCallback(
 
 void Create::RegisterPersonaCallback(
       const ledger::UrlResponse& response,
+      const std::string& user_id,
+      const std::string& pre_flight,
+      const std::string& registrar_vk,
       ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
@@ -225,11 +229,12 @@ void Create::RegisterPersonaCallback(
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
+
   const char* masterUserToken = registerUserFinal(
-      ledger_->GetUserId().c_str(),
+      user_id.c_str(),
       verification.c_str(),
-      ledger_->GetPreFlight().c_str(),
-      ledger_->GetRegistrarVK().c_str());
+      pre_flight.c_str(),
+      registrar_vk.c_str());
 
   if (masterUserToken != nullptr) {
     // should fix in

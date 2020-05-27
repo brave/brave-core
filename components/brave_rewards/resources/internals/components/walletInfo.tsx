@@ -32,12 +32,6 @@ export const WalletInfo = (props: Props) => {
         {getLocale('walletPaymentId')} {info.walletPaymentId || ''}
       </div>
       <div>
-        {getLocale('personaId')}: {info.personaId}
-      </div>
-      <div>
-        {getLocale('userId')}: {info.userId}
-      </div>
-      <div>
         {getLocale('bootStamp')}: {new Date(info.bootStamp * 1000).toLocaleDateString()}
       </div>
     </>

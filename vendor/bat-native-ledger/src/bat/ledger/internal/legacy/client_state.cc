@@ -21,13 +21,9 @@ const char kAutoContributeKey[] = "auto_contribute";
 const char kBootTimestampKey[] = "bootStamp";
 const char kFeeAmountKey[] = "fee_amount";
 const char kInlineTipsKey[] = "inlineTip";
-const char kPersonaIdKey[] = "personaId";
-const char kPreFlightKey[] = "preFlight";
 const char kReconcileTimestampKey[] = "reconcileStamp";
-const char kRegistrarVkKey[] = "registrarVK";
 const char kRewardsEnabledKey[] = "rewards_enabled";
 const char kUserChangedFeeKey[] = "user_changed_fee";
-const char kUserIdKey[] = "userId";
 const char kWalletInfoKey[] = "walletInfo";
 const char kWalletKey[] = "walletProperties";
 
@@ -120,38 +116,6 @@ bool ClientState::FromDict(
   }
   client_properties.reconcile_timestamp =
       static_cast<uint64_t>(*reconcile_timestamp);
-
-  // Persona Id
-  const auto* persona_id = dictionary->FindStringKey(kPersonaIdKey);
-  if (!persona_id) {
-    NOTREACHED();
-    return false;
-  }
-  client_properties.persona_id = *persona_id;
-
-  // User Id
-  const auto* user_id = dictionary->FindStringKey(kUserIdKey);
-  if (!user_id) {
-    NOTREACHED();
-    return false;
-  }
-  client_properties.user_id = *user_id;
-
-  // Registrar VK
-  const auto* registrar_vk = dictionary->FindStringKey(kRegistrarVkKey);
-  if (!registrar_vk) {
-    NOTREACHED();
-    return false;
-  }
-  client_properties.registrar_vk = *registrar_vk;
-
-  // Pre Flight
-  const auto* pre_flight = dictionary->FindStringKey(kPreFlightKey);
-  if (!pre_flight) {
-    NOTREACHED();
-    return false;
-  }
-  client_properties.pre_flight = *pre_flight;
 
   // Fee Amount
   const auto fee_amount = dictionary->FindDoubleKey(kFeeAmountKey);
@@ -252,18 +216,6 @@ bool ClientState::ToJson(
 
   writer->String(kReconcileTimestampKey);
   writer->Uint64(properties.reconcile_timestamp);
-
-  writer->String(kPersonaIdKey);
-  writer->String(properties.persona_id.c_str());
-
-  writer->String(kUserIdKey);
-  writer->String(properties.user_id.c_str());
-
-  writer->String(kRegistrarVkKey);
-  writer->String(properties.registrar_vk.c_str());
-
-  writer->String(kPreFlightKey);
-  writer->String(properties.pre_flight.c_str());
 
   writer->String(kFeeAmountKey);
   writer->Double(properties.fee_amount);

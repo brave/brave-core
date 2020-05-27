@@ -149,8 +149,6 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
       current_reconciles->Append(std::move(reconcile_info));
     }
     info_dict.SetList("currentReconciles", std::move(current_reconciles));
-    info_dict.SetString("personaId", info->persona_id);
-    info_dict.SetString("userId", info->user_id);
     info_dict.SetInteger("bootStamp", info->boot_stamp);
   }
   web_ui()->CallJavascriptFunctionUnsafe(

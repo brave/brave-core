@@ -207,8 +207,6 @@ struct ReconcileInfo {
 struct RewardsInternalsInfo {
   string payment_id;
   bool is_key_info_seed_valid;
-  string persona_id;
-  string user_id;
   uint64 boot_stamp;
 
   map<string, ReconcileInfo> current_reconciles;

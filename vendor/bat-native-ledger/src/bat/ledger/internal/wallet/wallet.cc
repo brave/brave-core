@@ -49,17 +49,12 @@ Wallet::~Wallet() {
 void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
   const auto stamp = ledger_->GetBootStamp();
-  const auto persona_id = ledger_->GetPersonaId();
 
-  if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
+  if (!payment_id.empty() && stamp != 0) {
     BLOG(1, "Wallet already exists");
     callback(ledger::Result::WALLET_CREATED);
     return;
   }
-
-  BLOG(0, "Wallet creation didn't finish or corrupted. We need to clear "
-      "persona Id and start again");
-  ledger_->SetPersonaId("");
 
   create_->Start(std::move(callback));
 }
@@ -455,9 +450,8 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const std::string payment_id = ledger_->GetPaymentId();
   const std::string passphrase = GetWalletPassphrase();
   const uint64_t stamp = ledger_->GetBootStamp();
-  const std::string persona_id = ledger_->GetPersonaId();
 
-  if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
+  if (!payment_id.empty() && stamp != 0) {
     BLOG(0, "Wallet is ok");
     callback(ledger::Result::WALLET_CREATED);
     return;
