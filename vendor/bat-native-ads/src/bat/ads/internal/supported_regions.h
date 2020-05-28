@@ -313,10 +313,15 @@ const std::map<int, std::set<std::string>> kSupportedRegions = {
       "057",  // Micronesia
       "061"   // Polynesia
     }
+  },
+  {
+    9, {
+      "830"   // Channel Islands
+    }
   }
 
   // IMPORTANT: When adding new schema versions |newly_supported_locale_| must
-  // be updated in |BraveRewardsBrowserTest| to reflect a locale from the latest
+  // be updated in |BraveAdsBrowserTest| to reflect a locale from the latest
   // schema version
 };
 
