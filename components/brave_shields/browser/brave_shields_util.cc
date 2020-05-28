@@ -106,6 +106,38 @@ ControlType ControlTypeFromString(const std::string& string) {
   }
 }
 
+std::string FingerprintingControlTypeToString(ControlType type) {
+  switch (type) {
+    case ControlType::ALLOW:
+      return "allow";
+    case ControlType::BLOCK:
+      return "block";
+    case ControlType::BLOCK_THIRD_PARTY:
+      FALLTHROUGH;
+    case ControlType::DEFAULT:
+      return "default";
+    default:
+      NOTREACHED();
+      return "invalid";
+  }
+}
+
+ControlType FingerprintingControlTypeFromString(const std::string& string) {
+  const bool v2_enabled = base::FeatureList::IsEnabled(
+      features::kFingerprintingProtectionV2);
+
+  if (string == "allow") {
+    return ControlType::ALLOW;
+  } else if (string == "block") {
+    return ControlType::BLOCK;
+  } else if (string == "default") {
+    return v2_enabled ?  ControlType::DEFAULT : ControlType::BLOCK_THIRD_PARTY;
+  } else {
+    NOTREACHED();
+    return ControlType::INVALID;
+  }
+}
+
 void SetBraveShieldsEnabled(Profile* profile,
                         bool enable,
                         const GURL& url) {

@@ -30,8 +30,8 @@ Polymer({
       type: Array,
       value: function() {
         return [
-          {value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies')},
           {value: 'block', name: loadTimeData.getString('blockAllCookies')},
+          {value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies')},
           {value: 'allow', name: loadTimeData.getString('allowAllCookies')}
         ]
       }
@@ -42,8 +42,8 @@ Polymer({
       type: Array,
       value: function() {
         return [
-          {value: 'block_third_party', name: loadTimeData.getString('block3rdPartyFingerprinting')},
-          {value: 'block', name: loadTimeData.getString('blockAllFingerprinting')},
+          {value: 'block', name: loadTimeData.getString('strictFingerprinting')},
+          {value: 'default', name: loadTimeData.getString('standardFingerprinting')},
           {value: 'allow', name: loadTimeData.getString('allowAllFingerprinting')}
         ]
       }

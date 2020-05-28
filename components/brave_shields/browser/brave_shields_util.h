@@ -29,6 +29,9 @@ ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
 
+std::string FingerprintingControlTypeToString(ControlType type);
+ControlType FingerprintingControlTypeFromString(const std::string& string);
+
 void SetBraveShieldsEnabled(Profile* profile, bool enable, const GURL& url);
 // reset to the default value
 void ResetBraveShieldsEnabled(Profile* profile, const GURL& url);
