@@ -393,6 +393,9 @@ struct UnblindedToken {
   double value;
   string creds_id;
   uint64 expires_at;
+  uint64 redeemed_at;
+  string redeem_id;
+  RewardsType redeem_type;
 };
 
 enum Platform {

@@ -45,6 +45,8 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   bool CreateTableV18(ledger::DBTransaction* transaction);
 
+  bool CreateTableV26(ledger::DBTransaction* transaction);
+
   bool CreateIndexV10(ledger::DBTransaction* transaction);
 
   bool CreateIndexV15(ledger::DBTransaction* transaction);
@@ -52,6 +54,8 @@ class DatabaseUnblindedToken: public DatabaseTable {
   bool CreateIndexV18(ledger::DBTransaction* transaction);
 
   bool CreateIndexV20(ledger::DBTransaction* transaction);
+
+  bool CreateIndexV26(ledger::DBTransaction* transaction);
 
   bool MigrateToV10(ledger::DBTransaction* transaction);
 
@@ -62,6 +66,8 @@ class DatabaseUnblindedToken: public DatabaseTable {
   bool MigrateToV18(ledger::DBTransaction* transaction);
 
   bool MigrateToV20(ledger::DBTransaction* transaction);
+
+  bool MigrateToV26(ledger::DBTransaction* transaction);
 
   void OnGetRecords(
       ledger::DBCommandResponsePtr response,

@@ -845,3 +845,64 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(contribution_queue.completed_at, 0u);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_26_UnblindedTokens) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("unblinded_tokens"), 10);
+
+    const std::string query =
+        "SELECT token_id, token_value, public_key, value, creds_id, "
+        "expires_at, redeemed_at, redeem_id, redeem_type "
+        "FROM unblinded_tokens";
+    sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
+
+    ledger::UnblindedTokenPtr token;
+    std::vector<std::string> actual_values;
+    while (sql.Step()) {
+      if (!token) {
+        token = ledger::UnblindedToken::New();
+        token->id = sql.ColumnInt(0);
+        token->token_value = sql.ColumnString(1);
+        token->public_key = sql.ColumnString(2);
+        token->value = sql.ColumnDouble(3);
+        token->creds_id = sql.ColumnString(4);
+        token->expires_at = sql.ColumnInt(5);
+        token->redeemed_at = sql.ColumnInt(6);
+        token->redeem_id = sql.ColumnString(7);
+        token->redeem_type = static_cast<ledger::RewardsType>(sql.ColumnInt(8));
+      }
+
+      actual_values.push_back(sql.ColumnString(1));
+    }
+
+    std::vector<std::string> expected_values {
+      "CAuK3b4QJFJFt7+3YRcQsVJyyxkXHxb/+iFOVMIlcmbwqPkgp/ZvDVjBAQgycZwzAZiy+16qMfkV2BKbnqHaZsZPNLL/k7mzU8TRN+ATPd9OFzPxjaMl47VRY5WdTWBg",  // NOLINT
+      "hMVLYdVOXqdQG6YIBQsnwspHicBNxCsGNyNOIFcPnI6rcNG95kKTsSlX24zDtGj+embVm5NnGAZExsj8nSEoupDg9SP7X0Rjs47u7lU4MJL6pXtzq9rG7k1XxSF/FM55",  // NOLINT
+      "9G2sE0OVjaL0q0irv9ORUcSLEDOTGlTkqdNKDJ8WdmupKLKHKCpLQg2o1pIM2A05RXuzFnmmRx2fNzOiLm8gTbiRU8IpYxtDbrJho7onf4jlpWVPKT00SveDjIQI9vFQ",  // NOLINT
+      "0SYyiiPh/wCriIvT5nrvclMWQ9vgBBYs2iNvauTjzAj2ASUPMaD0tzY7Hc+JYrjnEJsjGE8Sv9q0lAOYpUsI3VbFDjVHol1LZ4gG9Ocr8M6hVC+NhOmS86h+tefIaLIQ",  // NOLINT
+      "/pdeeRaAzPuixPkQMTAV0jh7N96MNF260LSrWgYvkg6oXmcOJL96R6TqWn/Xg04Gfa6tqHxCa5u/XRuAYnLdoWBLdsRrnbTOuCyeqz/ZSIC3nJas+ekarGjvs4gWJM0c",  // NOLINT
+      "w8z/jYtWFmEs2UApoZspA2r1arHfPLKe6iDkmeuLSf6OqMytazevGPhL3fJmiCFgIKlH9GJxV9eoE3I3eN4XtY5FNctfkBobBosTmBsYL3F+wyjd2VJaUD8G+cVgbjxr",  // NOLINT
+      "stDkJ7aVeYxwDeQ/2BMaGIF0OeJ8mzsHeWC9bvAoN3vZ00tg5n+v5H2+RxQjH9N/AKTMCpgofrzrY9jLopu80aCQLKyUHPwvBTFzAWcB52WKezKJSF3w/4dPmxMtWuIh",  // NOLINT
+      "I314N1AbpsngcTnCtF1yBvZwkgsG0CxH9r6PAz9XqqUGf2kSJydzt3kFJn+9uXWxXtwQVT4geeUjes7kQEm2Qwy4HU//AI40wss/eNo2wF89jJQXf7q/hEGMh2fgoe00",  // NOLINT
+      "p9OnZd7B+z5HowTYKMZfSiXZrwKa6mg9QqcyUcrNlGL+mfb67ELH0ZkzI3mIPcoTGtcfjlPEw8mPZ3PJSgUJ09TrCSOyMBiDInziQdmsNs0W4scEfeOldjt5at/XZaN5",  // NOLINT
+      "xflp6Qq67V2d+ImPjy510woQktdQhIL5z5TZO9toUhj912+viJ6qIEiwQf/AG+JI7sQzsLudysEM4H2mJ+i7HGQi0ZYoW5GnYz9WocOB3L8MXtsM91IzdYPIPXnAzgMh"   // NOLINT
+    };
+
+    EXPECT_EQ(expected_values, actual_values);
+    EXPECT_EQ(token->id, 1ul);
+    EXPECT_EQ(token->token_value, "CAuK3b4QJFJFt7+3YRcQsVJyyxkXHxb/+iFOVMIlcmbwqPkgp/ZvDVjBAQgycZwzAZiy+16qMfkV2BKbnqHaZsZPNLL/k7mzU8TRN+ATPd9OFzPxjaMl47VRY5WdTWBg");  // NOLINT
+    EXPECT_EQ(token->public_key,
+        "7oIW+qlloH8W0WS0nTNrkm4y58jaxQk3hui/tlhRSyE=");
+    EXPECT_EQ(token->value, 0.25);
+    EXPECT_EQ(token->creds_id, "ffccd899-8cba-422e-a762-a58c47a728ac");
+    EXPECT_EQ(token->expires_at, 1595870924ul);
+    EXPECT_EQ(token->redeemed_at, 1594870924ul);
+    EXPECT_EQ(token->redeem_id, "ew5suU8UjcRdwc2+dUjzsr1iOJpOMzRK");
+    EXPECT_EQ(token->redeem_type, ledger::RewardsType::ONE_TIME_TIP);
+  }
+}
