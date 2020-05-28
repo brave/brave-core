@@ -17,6 +17,8 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/content_paths.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -24,6 +26,22 @@
 #include "url/gurl.h"
 
 using net::test_server::EmbeddedTestServer;
+
+bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
+                              std::string iframe_id,
+                              const GURL& url) {
+  std::string script = base::StringPrintf(
+      "setTimeout(\""
+      "var iframes = document.getElementById('%s');iframes.src='%s';"
+      "\",0)",
+      iframe_id.c_str(), url.spec().c_str());
+
+  content::TestNavigationManager navigation_manager(
+      content::WebContents::FromRenderFrameHost(frame), url);
+  bool result = ExecuteScript(frame, script);
+  navigation_manager.WaitForNavigationFinished();
+  return result;
+}
 
 class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
  public:
@@ -63,7 +81,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         embedded_test_server()->GetURL("b.com", "/set-cookie?name=Good");
     subdomain_first_party_cookie_url_ =
         embedded_test_server()->GetURL("subdomain.a.com",
-                                       "/set-cookie?name=Good");
+                                       "/set-cookie?name=subdomainacom");
     google_oauth_cookie_url_ =
         https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
 
@@ -132,10 +150,10 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                             url));
   }
 
-  void NavigateFrameTo(const GURL url) {
+  void NavigateFrameTo(const GURL url, const std::string& id = "test") {
     content::WebContents* web_contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    EXPECT_TRUE(NavigateIframeToURL(web_contents, "test", url));
+    EXPECT_TRUE(NavigateIframeToURL(web_contents, id, url));
   }
 
   void BlockGoogleOAuthCookies() {
@@ -229,6 +247,28 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, DefaultCookiesBlocked) {
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
 
+// 1stpartydomain.com -> 3rdpartydomain.com -> 1stpartydomain.com nested iframe
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyCookiesBlockedNestedFirstPartyIframe) {
+  DefaultBlockThirdPartyCookies();
+
+  ui_test_utils::NavigateToURL(browser(), url_);
+
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  NavigateFrameTo(
+      embedded_test_server()->GetURL("b.com", "/iframe_cookie.html"),
+      "nested_iframe");
+
+  content::RenderFrameHost* child_frame =
+      content::ChildFrameAt(web_contents->GetMainFrame(), 0);
+  NavigateRenderFrameToURL(child_frame, "iframe_cookie",
+      subdomain_first_party_cookie_url_);
+
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
+}
+
+
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        PrefToggleBlockAllToBlockThirdParty) {
   DefaultBlockAllCookies();
@@ -249,7 +289,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(subdomain_first_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -326,7 +366,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(subdomain_first_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,

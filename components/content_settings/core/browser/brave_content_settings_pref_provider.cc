@@ -313,6 +313,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       rules.push_back(CloneRule(rule));
       brave_cookie_rules_[incognito].push_back(CloneRule(rule));
   }
+  // non-pref based exceptions should go in the cookie_settings_base.cc
+  // chromium_src override
 
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
