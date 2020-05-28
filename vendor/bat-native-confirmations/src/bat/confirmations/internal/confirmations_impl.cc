@@ -18,6 +18,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave_base/random.h"
 
@@ -387,8 +388,12 @@ bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
     return false;
   }
 
-  auto next_token_redemption_date_in_seconds =
-      std::stoull(next_token_redemption_date_in_seconds_value->GetString());
+  uint64_t next_token_redemption_date_in_seconds;
+  if (!base::StringToUint64(
+      next_token_redemption_date_in_seconds_value->GetString(),
+          &next_token_redemption_date_in_seconds)) {
+    return false;
+  }
 
   payout_tokens_->set_token_redemption_timestamp_in_seconds(
       MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds));
@@ -564,8 +569,11 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
     auto* timestamp_in_seconds_value =
         confirmation_dictionary->FindKey("timestamp_in_seconds");
     if (timestamp_in_seconds_value) {
-      auto timestamp_in_seconds =
-          std::stoull(timestamp_in_seconds_value->GetString());
+      uint64_t timestamp_in_seconds;
+      if (!base::StringToUint64(timestamp_in_seconds_value->GetString(),
+          &timestamp_in_seconds)) {
+        continue;
+      }
 
       confirmation_info.timestamp_in_seconds = timestamp_in_seconds;
     }
@@ -648,8 +656,11 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     auto* timestamp_in_seconds_value =
         transaction_dictionary->FindKey("timestamp_in_seconds");
     if (timestamp_in_seconds_value) {
-      auto timestamp_in_seconds =
-          std::stoull(timestamp_in_seconds_value->GetString());
+      uint64_t timestamp_in_seconds;
+      if (!base::StringToUint64(timestamp_in_seconds_value->GetString(),
+          &timestamp_in_seconds)) {
+        continue;
+      }
 
       info.timestamp_in_seconds =
           MigrateTimestampToDoubleT(timestamp_in_seconds);

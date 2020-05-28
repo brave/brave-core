@@ -20,6 +20,7 @@
 #include "base/time/time.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -466,7 +467,9 @@ bool AdConversions::GetFromDictionary(
   if (!timestamp) {
     return false;
   }
-  ad_conversion.timestamp_in_seconds = std::stoull(*timestamp);
+  if (!base::StringToUint64(*timestamp, &ad_conversion.timestamp_in_seconds)) {
+    return false;
+  }
 
   // Creative Set Id
   const auto* creative_set_id =
