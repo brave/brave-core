@@ -32,6 +32,26 @@ namespace {
 
 using content::BrowserThread;
 
+class ScopedOpenFile {
+ public:
+  explicit ScopedOpenFile(const base::FilePath& file_path) {
+    file_ = base::OpenFile(file_path, "r");
+  }
+
+  ~ScopedOpenFile() {
+    if (file_)
+      base::CloseFile(file_);
+  }
+
+  bool CanRead() const { return !!file_; }
+
+  ScopedOpenFile(const ScopedOpenFile&) = delete;
+  ScopedOpenFile& operator=(const ScopedOpenFile&) = delete;
+
+ private:
+  FILE* file_ = nullptr;
+};
+
 class FullDiskAccessConfirmDialogDelegate
     : public TabModalConfirmDialogDelegate {
  public:
@@ -104,7 +124,8 @@ bool HasProperDiskAccessPermission(uint16_t imported_items) {
 
   if (imported_items & importer::FAVORITES) {
     const base::FilePath bookmarks_path = safari_dir.Append("Bookmarks.plist");
-    if(!PathIsWritable(bookmarks_path)) {
+    ScopedOpenFile open_file(bookmarks_path);
+    if(!open_file.CanRead()) {
       LOG(ERROR) << __func__ << " " << bookmarks_path << " is not accessible."
                  << " Please check full disk access permission.";
       return false;
@@ -112,8 +133,15 @@ bool HasProperDiskAccessPermission(uint16_t imported_items) {
   }
 
   if (imported_items & importer::HISTORY) {
-    const base::FilePath history_path = safari_dir.Append("History.plist");
-    if(!PathIsWritable(history_path)) {
+    // HISTORY is set if plist or db exists.
+    base::FilePath history_path = safari_dir.Append("History.plist");
+    if (!base::PathExists(history_path)) {
+      history_path = safari_dir.Append("History.db");
+      DCHECK(base::PathExists(history_path));
+    }
+
+    ScopedOpenFile open_file(history_path);
+    if(!open_file.CanRead()) {
       LOG(ERROR) << __func__ << " " << history_path << " is not accessible."
                  << " Please check full disk access permission.";
       return false;
