@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/page_visibility.js b/chrome/browser/resources/settings/page_visibility.js
+index 458b47d8ffe7d400bd66433dcc4a2d4582a846cf..b3e7e1c71b7fd5768f6a1dbe5a267398b065160c 100644
+--- a/chrome/browser/resources/settings/page_visibility.js
++++ b/chrome/browser/resources/settings/page_visibility.js
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ 
+ import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
++import 'brave_page_visibility.m.js'
+ 
+ /**
+  * Specifies page visibility based on incognito status and Chrome OS guest mode.

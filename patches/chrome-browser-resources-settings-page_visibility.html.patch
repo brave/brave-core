@@ -1,9 +1,0 @@
-diff --git a/chrome/browser/resources/settings/page_visibility.html b/chrome/browser/resources/settings/page_visibility.html
-index e0d41b12cc6c46ee7906f0ff24ffe246af695b28..66e5b935db4f15c5c69d0bd2ea403f18ef834877 100644
---- a/chrome/browser/resources/settings/page_visibility.html
-+++ b/chrome/browser/resources/settings/page_visibility.html
-@@ -2,3 +2,4 @@
- <link rel="import" href="i18n_setup.html">
- 
- <script src="page_visibility.js"></script>
-+<script src="brave_page_visibility.js"></script>
