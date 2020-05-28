@@ -66,8 +66,7 @@ public class BraveDbUtil {
 
     public void ImportRewardsDb(Dialog dlg, String fileToImport) {
         Context context = ContextUtils.getApplicationContext();
-        mRewardsDst = context.getApplicationInfo().dataDir + File.separator + REWARDS_DB_SRC_DIR + File.separator
-                + PUBLISHER_INFO_DB;
+        mRewardsDst = importDestinationPath();
 
         mRewardsSrc = fileToImport.isEmpty()
                 ? Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()
@@ -114,6 +113,10 @@ public class BraveDbUtil {
             dlg.dismiss();
         Context context = ContextUtils.getApplicationContext();
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        if (isImport) {
+            File file = new File(mRewardsSrc);
+            file.delete();
+        }
     }
 
     private boolean copyFile(String src, String dst) {
@@ -124,7 +127,7 @@ public class BraveDbUtil {
             succeeded = true;
             in.close();
         } catch (IOException e) {
-            Log.e(TAG, "Error on copying database file: " + e);
+            Log.e(TAG, "Error on copying database file (" + src + " -> " + dst +  "): " + e);
         }
         return succeeded;
     }
@@ -187,6 +190,19 @@ public class BraveDbUtil {
     public void cleanUpDbOperationRequest() {
         setPerformDbExportOnStart(false);
         setPerformDbImportOnStart(false);
+        if (!dbImportFile().isEmpty()) {
+            File file = new File(dbImportFile());
+            file.delete();
+        }
         setDbImportFile("");
+    }
+
+    public String importDestinationPath() {
+        return ContextUtils.getApplicationContext().getApplicationInfo().dataDir + File.separator
+                + REWARDS_DB_SRC_DIR + File.separator + PUBLISHER_INFO_DB;
+    }
+
+    public static String getTag() {
+        return TAG;
     }
 }
