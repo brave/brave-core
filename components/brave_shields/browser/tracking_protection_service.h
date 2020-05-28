@@ -57,7 +57,6 @@ class TrackingProtectionService : public LocalDataFilesObserver {
   bool ShouldStoreState(HostContentSettingsMap* map,
                         int render_process_id,
                         int render_frame_id,
-                        const GURL& top_origin_url,
                         const GURL& origin_url) const;
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
