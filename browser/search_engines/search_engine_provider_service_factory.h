@@ -1,12 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SEARCH_ENGINE_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_SEARCH_ENGINE_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+class Profile;
+class SearchEngineProviderService;
 
 // The purpose of this factory is to configure proper search engine provider to
 // private/guest/tor profile before it is referenced.
@@ -18,6 +22,11 @@ class SearchEngineProviderServiceFactory
   static SearchEngineProviderServiceFactory* GetInstance();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
+                           GuestWindowControllerTest);
+  // Only for test.
+  static SearchEngineProviderService* GetForProfile(Profile* profile);
+
   friend
       struct base::DefaultSingletonTraits<SearchEngineProviderServiceFactory>;
   SearchEngineProviderServiceFactory();
@@ -36,4 +45,4 @@ class SearchEngineProviderServiceFactory
   DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderServiceFactory);
 };
 
-#endif  // BRAVE_BROWSER_SEARCH_ENGINE_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_

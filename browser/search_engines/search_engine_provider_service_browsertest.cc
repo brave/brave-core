@@ -7,6 +7,8 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
+#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -209,7 +211,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   if (brave::IsRegionForQwant(guest_profile))
     return;
 
-  auto* service = TemplateURLServiceFactory::GetForProfile(guest_profile);
+  auto* template_service =
+      TemplateURLServiceFactory::GetForProfile(guest_profile);
 
   // alternative pref is initially disabled.
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
@@ -220,14 +223,20 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
   // Check guest profile's search provider is set to ddg.
-  EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
+  EXPECT_EQ(template_service->GetDefaultSearchProvider()->data().prepopulate_id,
             provider_id);
 
   auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       guest_profile->GetPrefs(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   TemplateURL bing_url(*bing_data);
-  service->SetUserSelectedDefaultSearchProvider(&bing_url);
+  template_service->SetUserSelectedDefaultSearchProvider(&bing_url);
+
+  auto* search_engine_provider_service =
+      static_cast<GuestWindowSearchEngineProviderService*>(
+          SearchEngineProviderServiceFactory::GetForProfile(guest_profile));
+  search_engine_provider_service->OnTemplateURLServiceChanged();
+
   // Check alternative pref is turned off.
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
 
@@ -236,6 +245,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
-  service->SetUserSelectedDefaultSearchProvider(&ddg_url);
+  template_service->SetUserSelectedDefaultSearchProvider(&ddg_url);
+  search_engine_provider_service->OnTemplateURLServiceChanged();
   EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
 }
