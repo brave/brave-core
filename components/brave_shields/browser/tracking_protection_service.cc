@@ -122,7 +122,6 @@ void TrackingProtectionService::DeleteRenderFrameKey(int render_process_id,
 bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
                                                  int render_process_id,
                                                  int render_frame_id,
-                                                 const GURL& top_origin_url,
                                                  const GURL& origin_url) const {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!IsSmartTrackingProtectionEnabled()) {
@@ -189,7 +188,6 @@ void TrackingProtectionService::UpdateFirstPartyStorageTrackers(
 bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
                                                  int render_process_id,
                                                  int render_frame_id,
-                                                 const GURL& top_origin_url,
                                                  const GURL& origin_url) const {
   return true;
 }
