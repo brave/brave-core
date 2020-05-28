@@ -27,7 +27,9 @@ class DatabaseContributionQueue: public DatabaseTable {
 
   void GetFirstRecord(ledger::GetFirstContributionQueueCallback callback);
 
-  void DeleteRecord(const std::string& id, ledger::ResultCallback callback);
+  void MarkRecordAsComplete(
+      const std::string& id,
+      ledger::ResultCallback callback);
 
  private:
   bool CreateTableV9(ledger::DBTransaction* transaction);
@@ -39,6 +41,8 @@ class DatabaseContributionQueue: public DatabaseTable {
   bool MigrateToV15(ledger::DBTransaction* transaction);
 
   bool MigrateToV23(ledger::DBTransaction* transaction);
+
+  bool MigrateToV24(ledger::DBTransaction* transaction);
 
   void OnInsertOrUpdate(
       ledger::DBCommandResponsePtr response,

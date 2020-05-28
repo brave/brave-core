@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_contribution_queue_publishers.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -358,29 +359,6 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
   }
 
   callback(std::move(list));
-}
-
-void DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
-    ledger::DBTransaction* transaction,
-    const std::string& queue_id) {
-  DCHECK(transaction);
-
-  if (queue_id.empty()) {
-    BLOG(0, "Queue id is empty");
-    return;
-  }
-
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s WHERE contribution_queue_id = ?",
-      kTableName);
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
-  command->command = query;
-
-  BindString(command.get(), 0, queue_id);
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace braveledger_database

@@ -300,22 +300,23 @@ void Contribution::OneTimeTip(
   tip_->Process(publisher_key, amount, callback);
 }
 
-void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
+void Contribution::OnMarkContributionQueueAsComplete(
+    const ledger::Result result) {
   queue_in_progress_ = false;
   CheckContributionQueue();
 }
 
-void Contribution::DeleteContributionQueue(const std::string& id) {
+void Contribution::MarkContributionQueueAsComplete(const std::string& id) {
   if (id.empty()) {
     BLOG(0, "Queue id is empty");
     return;
   }
 
-  auto callback = std::bind(&Contribution::OnDeleteContributionQueue,
+  auto callback = std::bind(&Contribution::OnMarkContributionQueueAsComplete,
       this,
       _1);
 
-  ledger_->DeleteContributionQueue(id, callback);
+  ledger_->MarkContributionQueueAsComplete(id, callback);
 }
 
 void Contribution::CreateNewEntry(
@@ -329,7 +330,7 @@ void Contribution::CreateNewEntry(
 
   if (queue->publishers.empty() || !balance || wallet_type.empty()) {
     BLOG(0, "Queue data is wrong");
-    DeleteContributionQueue(queue->id);
+    MarkContributionQueueAsComplete(queue->id);
     return;
   }
 
@@ -473,7 +474,7 @@ void Contribution::OnEntrySaved(
 
     ledger_->SaveContributionQueue(queue->Clone(), save_callback);
   } else {
-    DeleteContributionQueue(queue->id);
+    MarkContributionQueueAsComplete(queue->id);
   }
 }
 
@@ -516,7 +517,7 @@ void Contribution::Process(
 
   if (queue->amount == 0 || queue->publishers.empty()) {
     BLOG(0, "Amount/publisher is empty");
-    DeleteContributionQueue(queue->id);
+    MarkContributionQueueAsComplete(queue->id);
     return;
   }
 
@@ -527,13 +528,13 @@ void Contribution::Process(
 
   if (!have_enough_balance) {
     BLOG(1, "Not enough balance");
-    DeleteContributionQueue(queue->id);
+    MarkContributionQueueAsComplete(queue->id);
     return;
   }
 
   if (queue->amount == 0) {
     BLOG(0, "Amount is 0");
-    DeleteContributionQueue(queue->id);
+    MarkContributionQueueAsComplete(queue->id);
     return;
   }
 

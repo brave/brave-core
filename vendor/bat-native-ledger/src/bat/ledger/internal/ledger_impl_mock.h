@@ -445,7 +445,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(SaveContributionQueue,
       void(ledger::ContributionQueuePtr, ledger::ResultCallback));
 
-  MOCK_METHOD2(DeleteContributionQueue,
+  MOCK_METHOD2(MarkContributionQueueAsComplete,
       void(const uint64_t, ledger::ResultCallback));
 
   MOCK_METHOD1(GetFirstContributionQueue,

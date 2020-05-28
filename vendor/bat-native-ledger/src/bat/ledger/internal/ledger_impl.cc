@@ -1384,10 +1384,10 @@ void LedgerImpl::SaveContributionQueue(
   bat_database_->SaveContributionQueue(std::move(info), callback);
 }
 
-void LedgerImpl::DeleteContributionQueue(
+void LedgerImpl::MarkContributionQueueAsComplete(
     const std::string& id,
     ledger::ResultCallback callback) {
-  bat_database_->DeleteContributionQueue(id, callback);
+  bat_database_->MarkContributionQueueAsComplete(id, callback);
 }
 
 void LedgerImpl::GetFirstContributionQueue(

@@ -29,6 +29,8 @@ std::string FromContributionQueueToString(ledger::ContributionQueuePtr info) {
   queue.SetIntKey("type", static_cast<int>(info->type));
   queue.SetStringKey("amount", std::to_string(info->amount));
   queue.SetBoolKey("partial", info->partial);
+  queue.SetStringKey("created_at", std::to_string(info->created_at));
+  queue.SetStringKey("completed_at", std::to_string(info->completed_at));
   queue.SetKey("publishers", std::move(publishers));
 
   std::string json;
@@ -69,6 +71,16 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
   auto partial = dictionary->FindBoolKey("partial");
   if (partial) {
     queue->partial = *partial;
+  }
+
+  const auto* created_at = dictionary->FindStringKey("created_at");
+  if (created_at) {
+    base::StringToUint64(*created_at, &queue->created_at);
+  }
+
+  const auto* completed_at = dictionary->FindStringKey("completed_at");
+  if (completed_at) {
+    base::StringToUint64(*completed_at, &queue->completed_at);
   }
 
   const auto* publishers = dictionary->FindListKey("publishers");

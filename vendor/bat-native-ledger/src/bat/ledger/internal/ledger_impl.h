@@ -506,7 +506,7 @@ class LedgerImpl : public ledger::Ledger {
     ledger::ContributionQueuePtr info,
     ledger::ResultCallback callback);
 
-  void DeleteContributionQueue(
+  void MarkContributionQueueAsComplete(
     const std::string& id,
     ledger::ResultCallback callback);
 

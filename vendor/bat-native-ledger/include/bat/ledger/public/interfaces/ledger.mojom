@@ -342,6 +342,8 @@ struct ContributionQueue {
   RewardsType type;
   double amount;
   bool partial;
+  uint64 created_at;
+  uint64 completed_at;
 
   array<ContributionQueuePublisher> publishers;
 };
