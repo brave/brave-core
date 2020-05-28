@@ -81,7 +81,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         embedded_test_server()->GetURL("b.com", "/set-cookie?name=Good");
     subdomain_first_party_cookie_url_ =
         embedded_test_server()->GetURL("subdomain.a.com",
-                                       "/set-cookie?name=Good");
+                                       "/set-cookie?name=subdomainacom");
     google_oauth_cookie_url_ =
         https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
 
@@ -289,7 +289,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(subdomain_first_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -366,7 +366,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(subdomain_first_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=Good");
+  ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
