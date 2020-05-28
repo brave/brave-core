@@ -13,11 +13,10 @@
 #include "base/files/file_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
-#include "chrome/browser/extensions/extension_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "crypto/aead.h"
@@ -33,8 +32,10 @@
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/browser/extension_prefs.h"
 
-BraveWalletService::BraveWalletService(content::BrowserContext* context)
+BraveWalletService::BraveWalletService(content::BrowserContext* context,
+        std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate)
     : context_(context),
+      brave_wallet_delegate_(std::move(brave_wallet_delegate)),
       extension_registry_observer_(this),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
@@ -305,22 +306,16 @@ bool BraveWalletService::IsCryptoWalletsReady() const {
 }
 
 bool BraveWalletService::ShouldShowLazyLoadInfobar() const {
-  Profile* profile = Profile::FromBrowserContext(context_);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
-      profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+      prefs->GetInteger(kBraveWalletWeb3Provider));
   return provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS &&
       !IsCryptoWalletsReady();
 }
 
 void BraveWalletService::LoadCryptoWalletsExtension(LoadUICallback callback) {
   load_ui_callback_ = std::move(callback);
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(context_)->extension_service();
-  if (service) {
-    extensions::ComponentLoader* loader = service->component_loader();
-    static_cast<extensions::BraveComponentLoader*>(loader)->
-        AddEthereumRemoteClientExtension();
-  }
+  brave_wallet_delegate_->LoadCryptoWalletsExtension(context_);
 }
 
 void BraveWalletService::CryptoWalletsExtensionReady() {

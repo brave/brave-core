@@ -26,6 +26,7 @@
 #include "extensions/browser/extension_registry_observer.h"
 #include "url/gurl.h"
 
+class BraveWalletDelegate;
 class PrefChangeRegistrar;
 class PrefService;
 
@@ -41,7 +42,8 @@ class BrowserContext;
 class BraveWalletService : public KeyedService,
     public extensions::ExtensionRegistryObserver {
  public:
-  explicit BraveWalletService(content::BrowserContext* context);
+  explicit BraveWalletService(content::BrowserContext* context,
+      std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate);
   ~BraveWalletService() override;
   using LoadUICallback = base::OnceCallback<void()>;
 
@@ -81,6 +83,7 @@ class BraveWalletService : public KeyedService,
 
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+  std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate_;
   ScopedObserver<extensions::ExtensionRegistry,
       extensions::ExtensionRegistryObserver> extension_registry_observer_{this};
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
