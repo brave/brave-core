@@ -138,6 +138,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
   registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
+  // clear default popular sites
+  registry->SetDefaultPrefValue(prefs::kPopularSitesJsonPref,
+      base::Value(base::Value::Type::LIST));
 #endif
 
   // Hangouts
