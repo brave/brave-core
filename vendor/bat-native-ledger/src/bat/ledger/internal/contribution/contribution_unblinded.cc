@@ -86,10 +86,13 @@ namespace braveledger_contribution {
 
 Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_promotion_ = braveledger_credentials::CredentialsFactory::Create(
       ledger_,
       ledger::CredsBatchType::PROMOTION);
-  DCHECK(credentials_);
+  credentials_sku_ = braveledger_credentials::CredentialsFactory::Create(
+      ledger_,
+      ledger::CredsBatchType::SKU);
+  DCHECK(credentials_promotion_ && credentials_sku_);
 }
 
 Unblinded::~Unblinded() = default;
@@ -393,7 +396,13 @@ void Unblinded::OnProcessTokens(
     redeem.token_list = token_list;
     redeem.contribution_id = contribution->contribution_id;
 
-    credentials_->RedeemTokens(redeem, redeem_callback);
+    if (redeem.processor == ledger::ContributionProcessor::UPHOLD ||
+        redeem.processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS) {
+      credentials_sku_->RedeemTokens(redeem, redeem_callback);
+      return;
+    }
+
+    credentials_promotion_->RedeemTokens(redeem, redeem_callback);
     return;
   }
 

@@ -111,7 +111,8 @@ class Unblinded {
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
+  std::unique_ptr<braveledger_credentials::Credentials> credentials_promotion_;
+  std::unique_ptr<braveledger_credentials::Credentials> credentials_sku_;
 };
 
 }  // namespace braveledger_contribution
