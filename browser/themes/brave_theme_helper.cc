@@ -82,6 +82,10 @@ SkColor BraveThemeHelper::GetDefaultColor(
     return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
   }
 #endif
+
+  if (theme_supplier)
+    return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
+
   // Brave Tor profiles are always 'incognito' (for now)
   if (!incognito && is_tor_or_guest_) {
     incognito = true;
@@ -112,6 +116,11 @@ base::Optional<SkColor> BraveThemeHelper::GetOmniboxColor(
                                         has_custom_color);
   }
 #endif
+
+  if (theme_supplier)
+    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier,
+                                        has_custom_color);
+
   const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
                     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   incognito = incognito || is_tor_or_guest_;
