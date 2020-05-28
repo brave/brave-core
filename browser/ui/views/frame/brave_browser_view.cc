@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
-#include <utility>
-
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -14,10 +12,6 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/event_monitor.h"
-
-#if defined(USE_AURA)
-#include "ui/aura/window.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
