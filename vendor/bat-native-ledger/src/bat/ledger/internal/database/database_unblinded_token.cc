@@ -496,12 +496,6 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     return;
   }
 
-  if (redeem_id.empty()) {
-    BLOG(0, "Redeem id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
