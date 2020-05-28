@@ -76,6 +76,10 @@ class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
   }
 
   void Stop() {
+    if (!monitor_.get())
+      // We already stopped
+      return;
+
     // Remove event handler
     auto* widget = browser_view_->GetWidget();
     monitor_.reset();
