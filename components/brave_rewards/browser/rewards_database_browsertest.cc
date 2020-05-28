@@ -774,7 +774,7 @@ IN_PROC_BROWSER_TEST_F(
 
     ledger::ContributionQueue contribution_queue;
     const std::string query =
-        "SELECT contribution_queue_id, type, amount, partial, created_at "
+        "SELECT contribution_queue_id, type, amount, partial "
         "FROM contribution_queue LIMIT 1";
     sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
     while (sql.Step()) {
@@ -810,5 +810,38 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(contribution_queue_id, "1");
     EXPECT_EQ(contribution_queue_publisher.publisher_key, "2");
     EXPECT_EQ(contribution_queue_publisher.amount_percent, 456.0);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_24_ContributionQueue) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("contribution_queue"), 1);
+
+    ledger::ContributionQueue contribution_queue;
+    const std::string query =
+        "SELECT contribution_queue_id, type, amount, partial, created_at, "
+        "completed_at "
+        "FROM contribution_queue LIMIT 1";
+    sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
+    while (sql.Step()) {
+      contribution_queue.id = sql.ColumnString(0);
+      contribution_queue.type =
+          static_cast<ledger::RewardsType>(sql.ColumnInt(1));
+      contribution_queue.amount = sql.ColumnDouble(2);
+      contribution_queue.partial = static_cast<bool>(sql.ColumnInt(3));
+      contribution_queue.created_at = sql.ColumnInt64(4);
+      contribution_queue.completed_at = sql.ColumnInt64(5);
+    }
+
+    EXPECT_EQ(contribution_queue.id, "1");
+    EXPECT_EQ(contribution_queue.type, ledger::RewardsType::ONE_TIME_TIP);
+    EXPECT_EQ(contribution_queue.amount, 456.0);
+    EXPECT_EQ(contribution_queue.partial, true);
+    EXPECT_EQ(contribution_queue.completed_at, 0u);
   }
 }

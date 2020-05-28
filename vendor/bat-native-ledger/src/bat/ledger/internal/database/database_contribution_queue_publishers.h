@@ -28,10 +28,6 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
       const std::string& queue_id,
       ContributionQueuePublishersListCallback callback);
 
-  void DeleteRecordsByQueueId(
-      ledger::DBTransaction* transaction,
-      const std::string& queue_id);
-
  private:
   bool CreateTableV9(ledger::DBTransaction* transaction);
 

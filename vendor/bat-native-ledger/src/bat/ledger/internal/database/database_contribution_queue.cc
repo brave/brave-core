@@ -9,6 +9,7 @@
 #include "base/guid.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/bind_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -90,6 +91,9 @@ bool DatabaseContributionQueue::Migrate(
     case 23: {
       return MigrateToV23(transaction);
     }
+    case 24: {
+      return MigrateToV24(transaction);
+    }
     default: {
       return true;
     }
@@ -163,6 +167,27 @@ bool DatabaseContributionQueue::MigrateToV23(
   }
 
   if (!publishers_->Migrate(transaction, 23)) {
+    BLOG(0, "Table couldn't be migrated");
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseContributionQueue::MigrateToV24(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "ALTER TABLE %s ADD completed_at TIMESTAMP NOT NULL DEFAULT 0",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!publishers_->Migrate(transaction, 24)) {
     BLOG(0, "Table couldn't be migrated");
     return false;
   }
@@ -244,7 +269,8 @@ void DatabaseContributionQueue::GetFirstRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT contribution_queue_id, type, amount, partial "
-      "FROM %s ORDER BY created_at ASC LIMIT 1",
+      "FROM %s WHERE completed_at = 0 "
+      "ORDER BY created_at ASC LIMIT 1",
       kTableName);
 
   auto command = ledger::DBCommand::New();
@@ -321,7 +347,7 @@ void DatabaseContributionQueue::OnGetPublishers(
   callback(std::move(queue));
 }
 
-void DatabaseContributionQueue::DeleteRecord(
+void DatabaseContributionQueue::MarkRecordAsComplete(
     const std::string& id,
     ledger::ResultCallback callback) {
   if (id.empty()) {
@@ -333,18 +359,17 @@ void DatabaseContributionQueue::DeleteRecord(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "DELETE FROM %s WHERE contribution_queue_id = ?",
+      "UPDATE %s SET completed_at = ? WHERE contribution_queue_id = ?",
       kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
 
-  BindString(command.get(), 0, id);
+  BindInt64(command.get(), 0, braveledger_time_util::GetCurrentTimeStamp());
+  BindString(command.get(), 1, id);
 
   transaction->commands.push_back(std::move(command));
-
-  publishers_->DeleteRecordsByQueueId(transaction.get(), id);
 
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,

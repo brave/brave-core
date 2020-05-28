@@ -144,9 +144,9 @@ class Contribution {
       ledger::ContributionQueuePtr queue,
       ledger::BalancePtr balance);
 
-  void DeleteContributionQueue(const std::string& id);
+  void MarkContributionQueueAsComplete(const std::string& id);
 
-  void OnDeleteContributionQueue(const ledger::Result result);
+  void OnMarkContributionQueueAsComplete(const ledger::Result result);
 
   void RetryUnblindedContribution(
       ledger::ContributionInfoPtr contribution,
