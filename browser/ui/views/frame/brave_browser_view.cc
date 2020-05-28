@@ -91,8 +91,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {}
 
 BraveBrowserView::~BraveBrowserView() {
-  DCHECK(!mru_cycling_event_handler_);
   mru_cycling_event_handler_.reset();
+  DCHECK(!mru_cycling_event_handler_);
 }
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
