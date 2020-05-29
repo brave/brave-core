@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,6 +39,10 @@ void BraveSyncHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "SyncSetupGetSyncCode",
       base::BindRepeating(&BraveSyncHandler::HandleGetSyncCode,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "SyncGetQRCode",
+      base::BindRepeating(&BraveSyncHandler::HandleGetQRCode,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
@@ -87,6 +92,27 @@ void BraveSyncHandler::HandleGetSyncCode(const base::ListValue* args) {
   }
 
   ResolveJavascriptCallback(*callback_id, base::Value(sync_code));
+}
+
+void BraveSyncHandler::HandleGetQRCode(const base::ListValue* args) {
+  AllowJavascript();
+  CHECK_EQ(2U, args->GetSize());
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
+  const base::Value* sync_code;
+  CHECK(args->Get(1, &sync_code));
+  // TODO(petemill): Wait until at least cr82 for QRCodeGenerator to be in tree.
+  // const char* input_data_string = sync_code.c_str();
+  // auto input_data = base::span<const uint8_t>(
+  //         reinterpret_cast<const uint8_t*>(input_data_string),
+  //             strlen(input_data_string));
+  // // Generate QR code data
+  // uint8_t qr_data_buf[QRCode::kInputBytes];
+  // QRCodeGenerator generator;
+  // base::span<const uint8_t, QRCodeGenerator::kTotalSize> code =
+  //     generator.Generate(input_data);
+  // ResolveJavascriptCallback(*callback_id, base::Value(code));
+  ResolveJavascriptCallback(*callback_id, base::Value(false));
 }
 
 void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
