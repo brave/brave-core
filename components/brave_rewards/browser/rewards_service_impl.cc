@@ -1062,21 +1062,20 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
 void RewardsServiceImpl::OnGetWalletProperties(
     GetWalletPropertiesCallback callback,
-    const ledger::Result result,
-    ledger::WalletPropertiesPtr properties) {
-  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
-  if (properties) {
-    wallet_properties.reset(new brave_rewards::WalletProperties);
-    wallet_properties->parameters_choices = properties->parameters_choices;
-    wallet_properties->monthly_amount = properties->fee_amount;
-    wallet_properties->default_tip_choices = properties->default_tip_choices;
-    wallet_properties->default_monthly_tip_choices =
-        properties->default_monthly_tip_choices;
-  }
-
-  std::move(callback).Run(
-      static_cast<int32_t>(result),
-      std::move(wallet_properties));
+    ledger::RewardsParametersPtr properties) {
+//  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
+//  if (properties) {
+//    wallet_properties.reset(new brave_rewards::WalletProperties);
+//    wallet_properties->parameters_choices = properties->parameters_choices;
+//    wallet_properties->monthly_amount = properties->fee_amount;
+//    wallet_properties->default_tip_choices = properties->default_tip_choices;
+//    wallet_properties->default_monthly_tip_choices =
+//        properties->default_monthly_tip_choices;
+//  }
+//
+//  std::move(callback).Run(
+//      static_cast<int32_t>(result),
+//      std::move(wallet_properties));
 }
 
 void RewardsServiceImpl::GetWalletProperties(

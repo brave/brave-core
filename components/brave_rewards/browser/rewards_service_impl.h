@@ -339,8 +339,7 @@ class RewardsServiceImpl : public RewardsService,
                               const std::string& data);
   void OnGetWalletProperties(
       GetWalletPropertiesCallback callback,
-      const ledger::Result result,
-      ledger::WalletPropertiesPtr properties);
+      ledger::RewardsParametersPtr properties);
   void OnFetchPromotions(
     const ledger::Result result,
     ledger::PromotionList promotions);

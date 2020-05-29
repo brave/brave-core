@@ -45,14 +45,19 @@
 #define PAYMENTS_DEVELOPMENT_SERVER            \
 "https://payment.rewards.brave.software"
 
+#define API_STAGING_SERVER              \
+"https://api.rewards.bravesoftware.com"
+#define API_PRODUCTION_SERVER           \
+"https://api.rewards.brave.com"
+#define API_DEVELOPMENT_SERVER            \
+"https://api.rewards.brave.software"
+
 #define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"
 #define PREFIX_V4                       "/v4"
 #define PREFIX_V5                       "/v5"
 #define REGISTER_PERSONA                "/registrar/persona"
-#define WALLET_PROPERTIES               "/wallet/"
-#define WALLET_PROPERTIES_END           "/balance"
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
 #define GET_PROMOTION_ATTESTATION       "/attestations/"

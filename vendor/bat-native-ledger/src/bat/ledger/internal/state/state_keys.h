@@ -35,6 +35,12 @@ namespace ledger {
   const char kStateInlineTipRedditEnabled[] = "inline_tip.reddit";
   const char kStateInlineTipTwitterEnabled[] = "inline_tip.twitter";
   const char kStateInlineTipGithubEnabled[] = "inline_tip.github";
+  const char kStateParametersRate[] = "parameters.rate";
+  const char kStateParametersAutoContributeChoice[] = "parameters.ac.choice";
+  const char kStateParametersAutoContributeChoices[] = "parameters.ac.choices";
+  const char kStateParametersTipChoices[] = "parameters.tip.choices";
+  const char kStateParametersMonthlyTipChoices[] =
+      "parameters.tip.monthly_choices";
 
 }  // namespace ledger
 

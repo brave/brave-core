@@ -281,8 +281,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetWalletProperties(
       CallbackHolder<GetWalletPropertiesCallback>* holder,
-      const ledger::Result result,
-      ledger::WalletPropertiesPtr properties);
+      ledger::RewardsParametersPtr properties);
 
   static void OnSetPublisherExclude(
       CallbackHolder<SetPublisherExcludeCallback>* holder,

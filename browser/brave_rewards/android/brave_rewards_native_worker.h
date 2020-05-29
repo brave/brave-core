@@ -214,7 +214,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetWalletProperties(
         brave_rewards::RewardsService* rewards_service,
-        const int32_t result,
         std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
 
     void OnNotificationAdded(

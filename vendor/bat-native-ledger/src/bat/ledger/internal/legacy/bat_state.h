@@ -44,11 +44,6 @@ class LegacyBatState {
 
   const std::vector<uint8_t>& GetRecoverySeed() const;
 
-  const ledger::WalletProperties& GetWalletProperties() const;
-
-  void SetWalletProperties(
-      ledger::WalletProperties* properties);
-
   uint64_t GetCreationStamp() const;
 
   bool GetInlineTipSetting(const std::string& key) const;

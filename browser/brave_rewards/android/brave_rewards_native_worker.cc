@@ -237,7 +237,6 @@ void BraveRewardsNativeWorker::OnWalletInitialized(
 
 void BraveRewardsNativeWorker::OnGetWalletProperties(
     brave_rewards::RewardsService* rewards_service,
-    const int32_t result,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   if (wallet_properties) {
     wallet_properties_ = *wallet_properties;

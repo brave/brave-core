@@ -200,7 +200,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
   void OnGetWalletProperties(
-      const int32_t result,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
 
   // RewardsServiceObserver implementation
@@ -506,17 +505,13 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetWalletProperties(
-    const int32_t result,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::DictionaryValue data;
-  data.SetInteger("status", result);
-  auto walletInfo = std::make_unique<base::DictionaryValue>();
-
-  if (result == 0 && wallet_properties) {
+  if (wallet_properties) {
     auto choices = std::make_unique<base::ListValue>();
     for (double const& choice : wallet_properties->parameters_choices) {
       choices->AppendDouble(choice);

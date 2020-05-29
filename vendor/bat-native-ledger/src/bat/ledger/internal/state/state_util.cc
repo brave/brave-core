@@ -3,11 +3,50 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "base/base64.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
+
+namespace {
+
+std::string VectorDoubleToString(const std::vector<double>& items) {
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& item : items) {
+    list.Append(base::Value(item));
+  }
+
+  std::string items_string;
+  base::JSONWriter::Write(list, &items_string);
+
+  return items_string;
+}
+
+std::vector<double> StringToVectorDouble(const std::string& items_string) {
+  base::Optional<base::Value> list = base::JSONReader::Read(items_string);
+  if (!list || !list->is_list()) {
+    return {};
+  }
+
+  base::ListValue* list_value = nullptr;
+  if (!list->GetAsList(&list_value)) {
+    return {};
+  }
+
+  std::vector<double> items;
+  for (auto& item : list_value->GetList()) {
+    items.push_back(item.GetDouble());
+  }
+
+  return items;
+}
+
+}  // namespace
 
 namespace braveledger_state {
 
@@ -121,10 +160,10 @@ void SetAutoContributionAmount(
 
 double GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
-  const double amount =
+  double amount =
       ledger->GetDoubleState(ledger::kStateAutoContributeAmount);
   if (amount == 0.0) {
-    // TODO(nejc): get default value
+    amount = GetAutoContributeChoice(ledger);
   }
 
   return amount;
@@ -235,6 +274,85 @@ void SetInlineTippingPlatformEnabled(
     const bool enabled) {
   DCHECK(ledger);
   ledger->SetBooleanState(ConvertInlineTipPlatformToKey(platform), enabled);
+}
+
+void SetRewardsParameters(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::RewardsParameters& parameters) {
+  DCHECK(ledger);
+  ledger->SetDoubleState(ledger::kStateParametersRate, parameters.rate);
+  ledger->SetDoubleState(
+      ledger::kStateParametersAutoContributeChoice,
+      parameters.auto_contribute_choice);
+  ledger->SetStringState(
+      ledger::kStateParametersAutoContributeChoices,
+      VectorDoubleToString(parameters.auto_contribute_choices));
+  ledger->SetStringState(
+      ledger::kStateParametersTipChoices,
+      VectorDoubleToString(parameters.tip_choices));
+  ledger->SetStringState(
+      ledger::kStateParametersMonthlyTipChoices,
+      VectorDoubleToString(parameters.monthly_tip_choices));
+}
+
+ledger::RewardsParametersPtr GetRewardsParameters(
+    bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  auto parameters = ledger::RewardsParameters::New();
+  parameters->rate = GetRate(ledger);
+  parameters->auto_contribute_choice = GetAutoContributeChoice(ledger);
+  parameters->auto_contribute_choices = GetAutoContributeChoices(ledger);
+  parameters->tip_choices = GetTipChoices(ledger);
+  parameters->monthly_tip_choices = GetMonthlyTipChoices(ledger);
+
+  return parameters;
+}
+
+double GetRate(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetDoubleState(ledger::kStateParametersRate);
+}
+
+double GetAutoContributeChoice(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetDoubleState(ledger::kStateParametersAutoContributeChoice);
+}
+
+std::vector<double> GetAutoContributeChoices(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  const std::string amounts_string =
+      ledger->GetStringState(ledger::kStateParametersAutoContributeChoices);
+  std::vector<double> amounts = StringToVectorDouble(amounts_string);
+
+  const double current_amount = GetAutoContributionAmount(ledger);
+  auto contains_amount = std::find(
+      amounts.begin(),
+      amounts.end(),
+      current_amount);
+
+  if (contains_amount == amounts.end()) {
+    amounts.push_back(current_amount);
+    std::sort(amounts.begin(), amounts.end());
+    ledger->SetStringState(
+      ledger::kStateParametersAutoContributeChoices,
+      VectorDoubleToString(amounts));
+  }
+
+  return amounts;
+}
+
+std::vector<double> GetTipChoices(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  const std::string amounts_string =
+      ledger->GetStringState(ledger::kStateParametersTipChoices);
+  return StringToVectorDouble(amounts_string);
+}
+
+std::vector<double> GetMonthlyTipChoices(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  const std::string amounts_string =
+      ledger->GetStringState(ledger::kStateParametersMonthlyTipChoices);
+  return StringToVectorDouble(amounts_string);
 }
 
 }  // namespace braveledger_state

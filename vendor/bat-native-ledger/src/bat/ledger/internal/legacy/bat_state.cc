@@ -97,30 +97,6 @@ const std::vector<uint8_t>& LegacyBatState::GetRecoverySeed() const {
   return state_->wallet_info.key_info_seed;
 }
 
-const ledger::WalletProperties& LegacyBatState::GetWalletProperties() const {
-  return state_->wallet;
-}
-
-void LegacyBatState::SetWalletProperties(
-    ledger::WalletProperties* properties) {
-  double amount = GetAutoContributionAmount();
-  bool amount_changed = GetUserChangedContribution();
-  if (amount_changed) {
-    auto hasAmount = std::find(properties->parameters_choices.begin(),
-                               properties->parameters_choices.end(),
-                               amount);
-
-    if (hasAmount == properties->parameters_choices.end()) {
-      // amount is missing in the list
-      properties->parameters_choices.push_back(amount);
-      std::sort(properties->parameters_choices.begin(),
-                properties->parameters_choices.end());
-    }
-  }
-
-  state_->wallet = *properties;
-}
-
 uint64_t LegacyBatState::GetCreationStamp() const {
   return state_->boot_timestamp;
 }

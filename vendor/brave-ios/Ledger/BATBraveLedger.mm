@@ -450,7 +450,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 - (void)fetchWalletDetails:(void (^)(BATWalletProperties * _Nullable))completion
 {
-  ledger->GetWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
+  ledger->GetWalletProperties(^(ledger::Result result, ledger::RewardsParametersPtr info) {
     if (result == ledger::Result::LEDGER_OK) {
       if (info) {
         self.walletInfo = [[BATWalletProperties alloc] initWithWalletPropertiesPtr:std::move(info)];

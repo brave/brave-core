@@ -226,7 +226,7 @@ void Recover::RecoverWalletPublicKeyCallback(
       new_seed,
       std::move(callback));
   const std::string url = braveledger_request_util::BuildUrl
-      ((std::string)WALLET_PROPERTIES + recovery_id, PREFIX_V2);
+      ("/wallet/" + recovery_id, PREFIX_V2);
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, recover_callback);
 }
 

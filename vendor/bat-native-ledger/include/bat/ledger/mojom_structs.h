@@ -137,6 +137,9 @@ using RewardsInternalsInfoPtr = mojom::RewardsInternalsInfoPtr;
 
 using RewardsType = mojom::RewardsType;
 
+using RewardsParameters = mojom::RewardsParameters;
+using RewardsParametersPtr = mojom::RewardsParametersPtr;
+
 using ServerPublisherInfo = mojom::ServerPublisherInfo;
 using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
 
@@ -182,9 +185,6 @@ using UrlResponsePtr = mojom::UrlResponsePtr;
 
 using VisitData = mojom::VisitData;
 using VisitDataPtr = mojom::VisitDataPtr;
-
-using WalletProperties = mojom::WalletProperties;
-using WalletPropertiesPtr = mojom::WalletPropertiesPtr;
 
 using WalletStatus = mojom::WalletStatus;
 

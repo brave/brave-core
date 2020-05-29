@@ -53,22 +53,6 @@ class ClientStateTest : public ::testing::Test {
     return wallet_info_properties;
   }
 
-  WalletProperties GetWalletProperties() const {
-    WalletProperties wallet_properties;
-    wallet_properties.fee_amount = std::numeric_limits<double>::max();
-    wallet_properties.parameters_choices = {
-      5.0,
-      10.0,
-      15.0,
-      20.0,
-      25.0,
-      50.0,
-      100.0
-    };
-
-    return wallet_properties;
-  }
-
   std::map<std::string, bool> GetInlineTips(
       const int count) const {
     std::map<std::string, bool> inline_tips;
@@ -85,7 +69,6 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMinValues) {
   // Arrange
   ClientProperties client_properties;
   client_properties.wallet_info = GetWalletInfoProperties();
-  client_properties.wallet = GetWalletProperties();
   client_properties.boot_timestamp =
       std::numeric_limits<uint32_t>::min();
   client_properties.reconcile_timestamp =
@@ -110,7 +93,6 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMinValues) {
   // Arrange
   ClientProperties client_properties;
   client_properties.wallet_info = GetWalletInfoProperties();
-  client_properties.wallet = GetWalletProperties();
   client_properties.boot_timestamp =
       std::numeric_limits<uint32_t>::min();
   client_properties.reconcile_timestamp =
@@ -136,7 +118,6 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMaxValues) {
   // Arrange
   ClientProperties client_properties;
   client_properties.wallet_info = GetWalletInfoProperties();
-  client_properties.wallet = GetWalletProperties();
   client_properties.boot_timestamp =
       std::numeric_limits<uint32_t>::max();
   client_properties.reconcile_timestamp =
@@ -161,7 +142,6 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMaxValues) {
   // Arrange
   ClientProperties client_properties;
   client_properties.wallet_info = GetWalletInfoProperties();
-  client_properties.wallet = GetWalletProperties();
   client_properties.boot_timestamp =
       std::numeric_limits<uint32_t>::max();
   client_properties.reconcile_timestamp =

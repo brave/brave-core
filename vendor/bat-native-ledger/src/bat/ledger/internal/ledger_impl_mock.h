@@ -127,7 +127,7 @@ class MockLedgerImpl : public LedgerImpl {
       void(ledger::Result, ledger::ResultCallback));
 
   MOCK_CONST_METHOD1(GetWalletProperties,
-      void(const ledger::OnWalletPropertiesCallback));
+      void(const ledger::WalletPropertiesCallback));
 
   MOCK_CONST_METHOD1(FetchPromotions,
       void(ledger::FetchPromotionCallback));
@@ -238,12 +238,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(GetConfirmationsWalletInfo,
       const confirmations::WalletInfo(
           const ledger::WalletInfoProperties&));
-
-  MOCK_CONST_METHOD0(GetWalletProperties,
-      const ledger::WalletProperties&());
-
-  MOCK_METHOD1(SetWalletProperties,
-      void(ledger::WalletProperties*));
 
   MOCK_METHOD0(GetCreationStamp, uint64_t());
 

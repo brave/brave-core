@@ -51,11 +51,6 @@ class Wallet {
 
   std::string GetWalletPassphrase() const;
 
-  void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
-
-  ledger::WalletPropertiesPtr WalletPropertiesToWalletInfo(
-    const ledger::WalletProperties& properties);
-
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
   void GetExternalWallet(const std::string& wallet_type,
@@ -78,10 +73,6 @@ class Wallet {
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
  private:
-  void WalletPropertiesCallback(
-      const ledger::UrlResponse& response,
-      ledger::OnWalletPropertiesCallback callback);
-
   void OnGetExternalWallet(
     const std::string& wallet_type,
     ledger::ExternalWalletCallback callback,

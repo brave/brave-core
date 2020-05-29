@@ -126,7 +126,6 @@ class BraveRewardsGetWalletPropertiesFunction : public ExtensionFunction {
 
  private:
   void OnGet(
-      const int32_t result,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
 };
 

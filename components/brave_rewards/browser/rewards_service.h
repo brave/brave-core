@@ -123,7 +123,6 @@ using GetAllPromotionsCallback =
     base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
 
 using GetWalletPropertiesCallback = base::OnceCallback<void(
-    const int32_t,
     std::unique_ptr<brave_rewards::WalletProperties>)>;
 
 class RewardsService : public KeyedService {

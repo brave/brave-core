@@ -35,9 +35,7 @@ Balance::~Balance() {
 void Balance::Fetch(ledger::FetchBalanceCallback callback) {
   std::string payment_id = ledger_->GetPaymentId();
 
-  std::string path = (std::string)WALLET_PROPERTIES
-      + payment_id
-      + WALLET_PROPERTIES_END;
+  std::string path = "/wallet/" + payment_id + "/balance";
   const std::string url = braveledger_request_util::BuildUrl(
       path,
       PREFIX_V2,

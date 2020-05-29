@@ -53,5 +53,14 @@ const char kStatePaymentId[] = "brave.rewards.wallet.payment_id";
 const char kStateInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";
 const char kStateInlineTipTwitterEnabled[] = "brave.rewards.inline_tip.twitter";
 const char kStateInlineTipGithubEnabled[] = "brave.rewards.inline_tip.github";
+const char kStateParametersRate[] = "brave.rewards.parameters.rate";
+const char kStateParametersAutoContributeChoice[] =
+    "brave.rewards.parameters.ac.choice";
+const char kStateParametersAutoContributeChoices[] =
+    "brave.rewards.parameters.ac.choices";
+const char kStateParametersTipChoices[] =
+    "brave.rewards.parameters.tip.choices";
+const char kStateParametersMonthlyTipChoices[] =
+    "brave.rewards.parameters.tip.monthly_choices";
 }  // namespace prefs
 }  // namespace brave_rewards

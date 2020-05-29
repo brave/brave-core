@@ -424,7 +424,6 @@ BraveRewardsGetWalletPropertiesFunction::Run() {
 }
 
 void BraveRewardsGetWalletPropertiesFunction::OnGet(
-    const int32_t result,
     std::unique_ptr<::brave_rewards::WalletProperties> wallet_properties) {
   auto data = std::make_unique<base::DictionaryValue>();
 

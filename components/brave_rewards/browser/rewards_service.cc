@@ -83,6 +83,15 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kStateInlineTipRedditEnabled, false);
   registry->RegisterBooleanPref(prefs::kStateInlineTipTwitterEnabled, false);
   registry->RegisterBooleanPref(prefs::kStateInlineTipGithubEnabled, false);
+  registry->RegisterDoublePref(prefs::kStateParametersRate, 0.0);
+  registry->RegisterDoublePref(
+      prefs::kStateParametersAutoContributeChoice,
+      0.0);
+  registry->RegisterStringPref(
+      prefs::kStateParametersAutoContributeChoices,
+      "");
+  registry->RegisterStringPref(prefs::kStateParametersTipChoices, "");
+  registry->RegisterStringPref(prefs::kStateParametersMonthlyTipChoices, "");
 }
 
 }  // namespace brave_rewards

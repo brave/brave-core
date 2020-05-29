@@ -66,6 +66,9 @@ class SKU;
 namespace braveledger_state {
 class State;
 }
+namespace braveledger_api {
+class API;
+}
 
 namespace confirmations {
 class Confirmations;
@@ -189,8 +192,7 @@ class LedgerImpl : public ledger::Ledger {
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::ResultCallback callback);
 
-  void GetWalletProperties(
-      ledger::OnWalletPropertiesCallback callback) const override;
+  void GetWalletProperties(ledger::WalletPropertiesCallback callback) override;
 
   void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 
@@ -301,11 +303,6 @@ class LedgerImpl : public ledger::Ledger {
   void ResetReconcileStamp();
 
   virtual std::string GetPaymentId();
-
-  const ledger::WalletProperties& GetWalletProperties() const;
-
-  void SetWalletProperties(
-      ledger::WalletProperties* properties);
 
   uint64_t GetCreationStamp() override;
 
@@ -708,6 +705,8 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& list,
       ledger::ResultCallback callback);
 
+  void FetchParameters();
+
  private:
   void OnStateInitialized(
       const ledger::Result result,
@@ -802,6 +801,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_report::Report> bat_report_;
   std::unique_ptr<braveledger_sku::SKU> bat_sku_;
   std::unique_ptr<braveledger_state::State> bat_state_;
+  std::unique_ptr<braveledger_api::API> bat_api_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

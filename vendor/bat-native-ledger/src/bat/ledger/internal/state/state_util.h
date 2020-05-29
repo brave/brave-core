@@ -102,6 +102,23 @@ void SetInlineTippingPlatformEnabled(
     const ledger::InlineTipsPlatforms platform,
     const bool enabled);
 
+void SetRewardsParameters(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::RewardsParameters& parameters);
+
+ledger::RewardsParametersPtr GetRewardsParameters(
+    bat_ledger::LedgerImpl* ledger);
+
+double GetRate(bat_ledger::LedgerImpl* ledger);
+
+double GetAutoContributeChoice(bat_ledger::LedgerImpl* ledger);
+
+std::vector<double> GetAutoContributeChoices(bat_ledger::LedgerImpl* ledger);
+
+std::vector<double> GetTipChoices(bat_ledger::LedgerImpl* ledger);
+
+std::vector<double> GetMonthlyTipChoices(bat_ledger::LedgerImpl* ledger);
+
 }  // namespace braveledger_state
 
 #endif  // BRAVELEDGER_STATE_STATE_UTIL_H_

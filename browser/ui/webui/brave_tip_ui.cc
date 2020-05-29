@@ -80,7 +80,6 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_rewards::Balance> balance);
 
   void OnGetWalletProperties(
-      const int32_t result,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
 
   // RewardsServiceObserver implementation
@@ -188,17 +187,15 @@ static std::unique_ptr<base::ListValue> CreateListOfDoubles(
 }
 
 void RewardsTipDOMHandler::OnGetWalletProperties(
-    const int32_t result,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::DictionaryValue data;
-  data.SetInteger("status", result);
   auto walletInfo = std::make_unique<base::DictionaryValue>();
 
-  if (result == 0 && wallet_properties) {
+  if (wallet_properties) {
     walletInfo->SetList("choices",
         CreateListOfDoubles(wallet_properties->parameters_choices));
     walletInfo->SetList("defaultTipChoices",

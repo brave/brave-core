@@ -28,7 +28,6 @@ struct ClientProperties {
       const ClientProperties& rhs) const;
 
   WalletInfoProperties wallet_info;
-  WalletProperties wallet;
   uint64_t boot_timestamp;
   uint64_t reconcile_timestamp;
   double fee_amount;

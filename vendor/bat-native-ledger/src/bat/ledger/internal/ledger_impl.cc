@@ -16,6 +16,7 @@
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/confirmations/confirmations.h"
+#include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -43,6 +44,7 @@ using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
 using namespace braveledger_sku; //  NOLINT
 using namespace braveledger_state; //  NOLINT
+using namespace braveledger_api; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -61,6 +63,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
     bat_state_(new State(this)),
+    bat_api_(new API(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -108,6 +111,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
+    bat_api_->Initialize();
 
     SetConfirmationsWalletInfo();
   } else {
@@ -685,8 +689,8 @@ void LedgerImpl::ContributionCompleted(
 }
 
 void LedgerImpl::GetWalletProperties(
-    ledger::OnWalletPropertiesCallback callback) const {
-  bat_wallet_->GetWalletProperties(callback);
+    ledger::WalletPropertiesCallback callback) {
+  callback(braveledger_state::GetRewardsParameters(this));
 }
 
 void LedgerImpl::ClaimPromotion(
@@ -766,6 +770,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   bat_contribution_->OnTimer(timer_id);
   bat_publisher_->OnTimer(timer_id);
   bat_promotion_->OnTimer(timer_id);
+  bat_api_->OnTimer(timer_id);
 }
 
 void LedgerImpl::SaveRecurringTip(
@@ -909,15 +914,6 @@ void LedgerImpl::GetRewardsInternalsInfo(
 
 void LedgerImpl::StartMonthlyContribution() {
   bat_contribution_->StartMonthlyContribution();
-}
-
-const ledger::WalletProperties& LedgerImpl::GetWalletProperties() const {
-  return legacy_bat_state_->GetWalletProperties();
-}
-
-void LedgerImpl::SetWalletProperties(
-    ledger::WalletProperties* properties) {
-  legacy_bat_state_->SetWalletProperties(properties);
 }
 
 uint64_t LedgerImpl::GetCreationStamp() {
@@ -1648,6 +1644,10 @@ void LedgerImpl::SaveProcessedPublisherList(
     const std::vector<std::string>& list,
     ledger::ResultCallback callback) {
   bat_database_->SaveProcessedPublisherList(list, callback);
+}
+
+void LedgerImpl::FetchParameters() {
+  bat_api_->FetchParameters();
 }
 
 }  // namespace bat_ledger
