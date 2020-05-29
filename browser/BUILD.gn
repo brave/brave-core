@@ -240,6 +240,7 @@ source_set("browser_process") {
       "//brave/browser/android/preferences",
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
+      "//components/ntp_tiles",
     ]
   }
 
