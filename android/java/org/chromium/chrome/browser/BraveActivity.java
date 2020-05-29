@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
+import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
@@ -400,5 +402,27 @@ public abstract class BraveActivity extends ChromeActivity {
                     BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET, true);
             sharedPreferencesEditor.apply();
         }
+    }
+
+    @Override
+    public void performPreInflationStartup() {
+        BraveDbUtil dbUtil = BraveDbUtil.getInstance();
+        if (dbUtil.dbOperationRequested()) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage(dbUtil.performDbExportOnStart() ? "Exporting database, please wait..."
+                        : "Importing database, please wait...")
+                .setCancelable(false)
+                .create();
+            dialog.setCanceledOnTouchOutside(false);
+            if (dbUtil.performDbExportOnStart()) {
+                dbUtil.setPerformDbExportOnStart(false);
+                dbUtil.ExportRewardsDb(dialog);
+            } else if (dbUtil.performDbImportOnStart() && !dbUtil.dbImportFile().isEmpty()) {
+                dbUtil.setPerformDbImportOnStart(false);
+                dbUtil.ImportRewardsDb(dialog, dbUtil.dbImportFile());
+            }
+            dbUtil.cleanUpDbOperationRequest();
+        }
+        super.performPreInflationStartup();
     }
 }

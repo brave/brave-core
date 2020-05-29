@@ -5,9 +5,12 @@
 
 package org.chromium.chrome.browser.settings.developer;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +33,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.chrome.browser.util.BraveDbUtil;
 
 /**
  * Settings fragment containing preferences for QA team.
@@ -42,6 +46,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final String PREF_QA_DEBUG_NTP= "qa_debug_ntp";
 
     private static final String QA_ADS_PER_HOUR = "qa_ads_per_hour";
+    private static final String QA_IMPORT_REWARDS_DB = "qa_import_rewards_db";
+    private static final String QA_EXPORT_REWARDS_DB = "qa_export_rewards_db";
+
+    private static final int CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_IMPORT_REQUEST_CODE + 1;
 
     private static final int MAX_ADS = 50;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
@@ -49,6 +57,11 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mIsStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
+
+    private Preference mImportRewardsDb;
+    private Preference mExportRewardsDb;
+    private BraveDbUtil mDbUtil;
+    private String mFileToImport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,12 +84,40 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if(mDebugNTP != null) {
             mDebugNTP.setOnPreferenceChangeListener(this);
         }
+
+        mDbUtil = BraveDbUtil.getInstance();
+
+        mImportRewardsDb = findPreference(QA_IMPORT_REWARDS_DB);
+        mExportRewardsDb = findPreference(QA_EXPORT_REWARDS_DB);
+        setRewardsDbClickListeners();
+        checkQACode();
+    }
+
+    private void setRewardsDbClickListeners() {
+        if (mImportRewardsDb != null) {
+            mImportRewardsDb.setOnPreferenceClickListener( preference -> {
+                Intent intent = new Intent()
+                        .setType("*/*")
+                        .setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(intent, "Select a file"), CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE);
+                return true;
+            });
+        }
+
+        if (mExportRewardsDb != null) {
+            mExportRewardsDb.setOnPreferenceClickListener( preference -> {
+                if (isStoragePermissionGranted(true)) {
+                    requestRestart(false);
+                }
+                return true;
+            });
+        }
     }
 
     @Override
     public void onStart() {
         BraveRewardsNativeWorker.getInstance().AddObserver(this);
-        checkQACode();
         super.onStart();
     }
 
@@ -177,6 +218,21 @@ public class BraveQAPreferences extends BravePreferenceFragment
     }
 
     @Override
+    public void OnResetTheWholeState(boolean success) {
+        if (success) {
+            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
+            sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
+            sharedPreferencesEditor.apply();
+            BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
+        } else {
+            BraveRelaunchUtils.askForRelaunchCustom(getActivity());
+        }
+    }
+
+    @Override
     public void OnWalletInitialized(int error_code) {}
 
     @Override
@@ -220,21 +276,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     public void OnRecurringDonationUpdated() {}
 
     @Override
-    public void OnResetTheWholeState(boolean success) {
-        if (success) {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
-            sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
-            sharedPreferencesEditor.apply();
-            BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
-            BraveRelaunchUtils.askForRelaunch(getActivity());
-        } else {
-            BraveRelaunchUtils.askForRelaunchCustom(getActivity());
-        }
-    }
-
-    @Override
     public void OnRewardsMainEnabled(boolean enabled) {}
 
     @Override
@@ -242,4 +283,55 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {}
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (STORAGE_PERMISSION_EXPORT_REQUEST_CODE == requestCode) {
+                requestRestart(false);
+            } else if (STORAGE_PERMISSION_IMPORT_REQUEST_CODE == requestCode) {
+                requestRestart(true);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            mFileToImport = data.getData().getPath();
+            String pathParts[] = mFileToImport.split(":");
+            if (pathParts.length == 2) {
+                mFileToImport = pathParts[1];
+            }
+            if (isStoragePermissionGranted(false)) {
+                requestRestart(true);
+            }
+        }
+    }
+
+    private void requestRestart(boolean isImport) {
+        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int button) {
+                if (button == AlertDialog.BUTTON_POSITIVE) {
+                    if (isImport) {
+                        mDbUtil.setPerformDbImportOnStart(true);
+                        mDbUtil.setDbImportFile(mFileToImport);
+                    } else {
+                        mDbUtil.setPerformDbExportOnStart(true);
+                    }
+                    BraveRelaunchUtils.restart();
+                }
+            }
+        };
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog)
+                .setMessage(
+                        "This operation requires restart. Would you like to restart application and start operation?")
+                .setPositiveButton(R.string.ok, onClickListener).setNegativeButton(R.string.cancel, onClickListener);
+        Dialog dialog = alertDialog.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 }
