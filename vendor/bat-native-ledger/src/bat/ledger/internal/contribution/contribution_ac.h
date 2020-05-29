@@ -23,7 +23,7 @@ class ContributionAC {
 
   ~ContributionAC();
 
-  void Process();
+  void Process(const uint64_t reconcile_stamp);
 
  private:
   void PreparePublisherList(ledger::PublisherInfoList list);
