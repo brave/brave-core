@@ -82,6 +82,12 @@ extension URL {
         }
         return val
     }
+    
+    mutating public func append(pathComponents: String...) {
+        pathComponents.forEach {
+            self.appendPathComponent($0)
+        }
+    }
 
     public func getResourceLongLongForKey(_ key: String) -> Int64? {
         return (getResourceValueForKey(key) as? NSNumber)?.int64Value

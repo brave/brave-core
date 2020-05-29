@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Ошибка браузера";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Неверный формат платежных данных";
+
 /* Suffix for error strings */
 "tryAgain" = ". Повторите попытку.";
 

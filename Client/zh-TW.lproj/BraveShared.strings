@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "用戶端錯誤";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "付款要求的詳細資訊無效";
+
 /* Suffix for error strings */
 "tryAgain" = "，請再試一次。";
 

@@ -9,7 +9,33 @@ import Shared
 import BraveRewards
 
 class NTPTableViewController: TableViewController {
-    let sponsoredRow = Row.boolRow(title: Strings.newTabPageSettingsSponsoredImages, option: Preferences.NewTabPage.backgroundSponsoredImages)
+    enum BackgroundImageType: RepresentableOptionType {
+        
+        case defaultImages
+        case sponsored
+        case superReferrer(String)
+        
+        var key: String {
+            displayString
+        }
+        
+        public var displayString: String {
+            switch self {
+            case .defaultImages: return "(\(Strings.NTP.settingsDefaultImagesOnly))"
+            case .sponsored: return Strings.NTP.settingsSponsoredImagesSelection
+            case .superReferrer(let referrer): return referrer
+            }
+        }
+    }
+    
+    init() {
+        super.init(style: .grouped)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,41 +43,76 @@ class NTPTableViewController: TableViewController {
         // Hides unnecessary empty rows
         tableView.tableFooterView = UIView()
         
-        navigationItem.title = Strings.newTabPageSettingsTitle
+        navigationItem.title = Strings.NTP.settingsTitle
         tableView.accessibilityIdentifier = "NewTabPageSettings.tableView"
-        dataSource.sections = [section]
+        loadSections()
         
-        // Sponsored switch is only enabled if the background images is enabled also.
-        self.sponsoredSwitch?.isEnabled = Preferences.NewTabPage.backgroundImages.value
+        Preferences.NewTabPage.backgroundImages.observe(from: self)
     }
     
-    private lazy var section: Section = {
-        var rows = [
-            Row.boolRow(title: Strings.newTabPageSettingsBackgroundImages, option: Preferences.NewTabPage.backgroundImages, onValueChange: {
-                newValue in
-                // Since overriding, does not auto-adjust this setting.
-                Preferences.NewTabPage.backgroundImages.value = newValue
-                
-                // If turning off normal background images, turn of sponsored images as well.
-                Preferences.NewTabPage.backgroundSponsoredImages.value = newValue
-                
-                // Update sponsored switch to both on/off to follow background images.
-                self.sponsoredSwitch?.isOn = newValue
-                
-                // Need to update every time.
-                self.sponsoredSwitch?.isEnabled = newValue
-            })
-        ]
+    private func loadSections() {
+        var section = Section(rows: [Row.boolRow(title: Strings.NTP.settingsAutoOpenKeyboard,
+                                                 option: Preferences.NewTabPage.autoOpenKeyboard),
+                                     Row.boolRow(title: Strings.NTP.settingsBackgroundImages,
+                                                 option: Preferences.NewTabPage.backgroundImages)])
         
-        if BraveAds.isCurrentLocaleSupported() {
-            rows.append(sponsoredRow)
+        if Preferences.NewTabPage.backgroundImages.value {
+            section.rows.append(backgroundImagesSetting(section: section))
         }
-        rows.append(.boolRow(title: Strings.newTabPageSettingsAutoOpenKeyboard,
-                             option: Preferences.NewTabPage.autoOpenKeyboard))
-        return Section(rows: rows)
+        
+        dataSource.sections = [section]
+    }
+    
+    private func selectedItem() -> BackgroundImageType {
+        if let referrer = Preferences.NewTabPage.selectedCustomTheme.value {
+            return .superReferrer(referrer)
+        }
+        
+        return Preferences.NewTabPage.backgroundSponsoredImages.value ? .sponsored : .defaultImages
+    }
+    
+    private lazy var backgroundImageOptions: [BackgroundImageType] = {
+        var available: [BackgroundImageType] = [.defaultImages, .sponsored]
+        available += Preferences.NewTabPage.installedCustomThemes.value.map {
+            .superReferrer($0)
+        }
+        return available
     }()
     
-    private var sponsoredSwitch: UISwitch? {
-        return sponsoredRow.accessory.view as? SwitchAccessoryView
+    private func backgroundImagesSetting(section: Section) -> Row {
+        var row = Row(
+            text: Strings.NTP.settingsBackgroundImageSubMenu,
+            detailText: selectedItem().displayString,
+            accessory: .disclosureIndicator,
+            cellClass: MultilineSubtitleCell.self)
+        
+        row.selection = { [unowned self] in
+            // Show options for tab bar visibility
+            let optionsViewController = OptionSelectionViewController<BackgroundImageType>(
+                options: self.backgroundImageOptions,
+                selectedOption: self.selectedItem(),
+                optionChanged: { _, option in
+                    // Should turn this off whenever possible to prevent unnecessary resource downloading
+                    Preferences.NewTabPage.backgroundSponsoredImages.value = option == .sponsored
+                    
+                    if case .superReferrer(let referrer) = option {
+                        Preferences.NewTabPage.selectedCustomTheme.value = referrer
+                    } else {
+                        Preferences.NewTabPage.selectedCustomTheme.value = nil
+                    }
+                    
+                    self.dataSource.reloadCell(row: row, section: section, displayText: option.displayString)
+                }
+            )
+            optionsViewController.navigationItem.title = Strings.NTP.settingsBackgroundImageSubMenu
+            self.navigationController?.pushViewController(optionsViewController, animated: true)
+        }
+        return row
+    }
+}
+
+extension NTPTableViewController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        loadSections()
     }
 }

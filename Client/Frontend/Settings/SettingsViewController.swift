@@ -36,6 +36,12 @@ extension DataSource {
         }
         return IndexPath(row: row, section: section)
     }
+    
+    func reloadCell(row: Row, section: Section, displayText: String) {
+        if let indexPath = indexPath(rowUUID: row.uuid, sectionUUID: section.uuid) {
+            sections[indexPath.section].rows[indexPath.row].detailText = displayText
+        }
+    }
 }
 
 protocol SettingsDelegate: class {
@@ -136,12 +142,6 @@ class SettingsViewController: TableViewController {
             rows: []
         )
         
-        let reloadCell = { (row: Row, displayString: String) in
-            if let indexPath = self.dataSource.indexPath(rowUUID: row.uuid, sectionUUID: display.uuid) {
-                self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = displayString
-            }
-        }
-        
         let themeSubtitle = Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
         var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
         row.selection = { [unowned self] in
@@ -150,7 +150,7 @@ class SettingsViewController: TableViewController {
                 selectedOption: Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value),
                 optionChanged: { [unowned self] _, option in
                     Preferences.General.themeNormalMode.value = option.rawValue
-                    reloadCell(row, option.displayString)
+                    self.dataSource.reloadCell(row: row, section: display, displayText: option.displayString)
                     self.applyTheme(self.theme)
                 }
             )
@@ -160,7 +160,7 @@ class SettingsViewController: TableViewController {
         }
         display.rows.append(row)
         
-        display.rows.append(Row(text: Strings.newTabPageSettingsTitle,
+        display.rows.append(Row(text: Strings.NTP.settingsTitle,
             selection: { [unowned self] in
                 self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
             },
@@ -181,7 +181,7 @@ class SettingsViewController: TableViewController {
                     selectedOption: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value),
                     optionChanged: { _, option in
                         Preferences.General.tabBarVisibility.value = option.rawValue
-                        reloadCell(row, option.displayString)
+                        self.dataSource.reloadCell(row: row, section: display, displayText: option.displayString)
                     }
                 )
                 optionsViewController.headerText = Strings.showTabsBar

@@ -59,7 +59,7 @@ class BrowserViewController: UIViewController {
     fileprivate var findInPageBar: FindInPageBar?
     
     // Single data source used for all favorites vcs
-    fileprivate let backgroundDataSource = NTPBackgroundDataSource()
+    let backgroundDataSource = NTPDataSource()
     
     var loadQueue = Deferred<Void>()
 
@@ -236,6 +236,7 @@ class BrowserViewController: UIViewController {
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
+        Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
@@ -259,8 +260,69 @@ class BrowserViewController: UIViewController {
         notificationsHandler?.actionOccured = { [weak self] notification, action in
             guard let self = self else { return }
             if action == .opened {
-                let request = URLRequest(url: notification.targetURL)
+                var url = URL(string: notification.targetURL)
+                if url == nil, let percentEncodedURLString =
+                    notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    // Try to percent-encode the string and try that
+                    url = URL(string: percentEncodedURLString)
+                }
+                guard let targetURL = url else {
+                    assertionFailure("Invalid target URL for creative instance id: \(notification.creativeInstanceID)")
+                    return
+                }
+                let request = URLRequest(url: targetURL)
                 self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+            }
+        }
+        
+        backgroundDataSource.initializeFavorites = { sites in
+            DispatchQueue.main.async {
+                defer { Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true }
+                
+                if Preferences.NewTabPage.preloadedFavoritiesInitialized.value
+                    || Bookmark.hasFavorites { return }
+                
+                guard let sites = sites, sites.count > 0 else {
+                    FavoritesHelper.addDefaultFavorites()
+                    return
+                }
+                
+                let customFavorites = sites.compactMap { $0.asFavoriteSite }
+                Bookmark.addFavorites(from: customFavorites)
+            }
+        }
+        
+        backgroundDataSource.replaceFavoritesIfNeeded = { sites in
+            if Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value { return }
+            
+            guard let sites = sites, sites.count > 0 else { return }
+            
+            DispatchQueue.main.async {
+                let defaultFavorites = PreloadedFavorites.getList()
+                let currentFavorites = Bookmark.allFavorites
+                
+                if defaultFavorites.count != currentFavorites.count {
+                    return
+                }
+                
+                let exactSameFavorites = Bookmark.allFavorites
+                    .filter {
+                        guard let urlString = $0.url,
+                            let url = URL(string: urlString),
+                            let title = $0.displayTitle else {
+                                return false
+                        }
+                        
+                        return defaultFavorites.contains(where: { defaultFavorite in
+                            defaultFavorite.url == url && defaultFavorite.title == title
+                        })
+                }
+                
+                if currentFavorites.count == exactSameFavorites.count {
+                    let customFavorites = sites.compactMap { $0.asFavoriteSite }
+                    Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value = true
+                    Bookmark.forceOverwriteFavorites(with: customFavorites)
+                }
             }
         }
     }
@@ -1124,9 +1186,9 @@ class BrowserViewController: UIViewController {
             
             //Another Fix for: https://github.com/brave/brave-ios/pull/2296
             //Disable any sort of privileged execution contexts
-            //IE: The user must explicitly type OR must explicitly tap a bookmark they have saved.
+            //IE: The user must explicitly tap a bookmark they have saved.
             //Block all other contexts such as redirects, downloads, embed, linked, etc..
-            if visitType == .typed || visitType == .bookmark {
+            if visitType == .bookmark {
                 if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
                     webView.evaluateJavaScript(code, completionHandler: { _, error in
                         if let error = error {
@@ -1253,38 +1315,54 @@ class BrowserViewController: UIViewController {
                 tab.secureContentState = .insecure
             }
             
-            topToolbar.secureContentState = tab.secureContentState
+            if tabManager.selectedTab === tab {
+                topToolbar.secureContentState = tab.secureContentState
+            }
         case .serverTrust:
             guard let tab = tabManager[webView] else {
                 break
             }
 
-            tab.secureContentState = .insecure
+            tab.secureContentState = .unknown
             
             guard let serverTrust = tab.webView?.serverTrust else {
-                if let url = tab.webView?.url {
-                    if url.isAboutHomeURL || url.isAboutURL {
+                if let url = tab.webView?.url ?? tab.url {
+                    if url.isAboutHomeURL || url.isAboutURL || url.scheme == "about" {
                         tab.secureContentState = .localHost
-                        topToolbar.secureContentState = .localHost
+                        if tabManager.selectedTab === tab {
+                            topToolbar.secureContentState = .localHost
+                        }
                         break
                     }
                     
                     if url.isErrorPageURL {
                         if ErrorPageHelper.certificateError(for: url) != 0 {
                             tab.secureContentState = .insecure
-                            topToolbar.secureContentState = .insecure
+                            if tabManager.selectedTab === tab {
+                                topToolbar.secureContentState = .insecure
+                            }
                             break
                         }
                     }
                     
                     if url.isReaderModeURL || url.isLocal {
                         tab.secureContentState = .unknown
-                        topToolbar.secureContentState = .unknown
+                        if tabManager.selectedTab === tab {
+                            topToolbar.secureContentState = .unknown
+                        }
                         break
                     }
+                    
+                    //All our checks failed, we show the page as insecure
+                    tab.secureContentState = .insecure
+                } else {
+                    //When there is no URL, it's likely a new tab.
+                    tab.secureContentState = .localHost
                 }
                 
-                topToolbar.secureContentState = tab.secureContentState
+                if tabManager.selectedTab === tab {
+                    topToolbar.secureContentState = tab.secureContentState
+                }
                 break
             }
             
@@ -1357,7 +1435,9 @@ class BrowserViewController: UIViewController {
         updateRewardsButtonState()
         
         topToolbar.currentURL = tab.url?.displayURL
-        topToolbar.secureContentState = tab.secureContentState
+        if tabManager.selectedTab === tab {
+            topToolbar.secureContentState = tab.secureContentState
+        }
         
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
         navigationToolbar.updatePageStatus(isPage)
@@ -3365,7 +3445,20 @@ extension BrowserViewController: FavoritesDelegate {
     func didTapShowMoreFavorites() {
         topToolbarDidTapBookmarkButton(nil, favorites: true)
     }
-    
+
+    func didTapQRButton(url: URL) {
+        let qrPopup = QRCodePopupView(url: url)
+        qrPopup.showWithType(showType: .flyUp)
+        qrPopup.qrCodeShareHandler = { [weak self] url in
+            guard let self = self else { return }
+            
+            let viewRect = CGRect(origin: self.view.center, size: .zero)
+            
+            self.presentActivityViewController(url, sourceView: self.view, sourceRect: viewRect,
+                                                arrowDirection: .any)
+        }
+    }
+
     func openBrandedImageCallout(state: BrandedImageCalloutState?) {
         guard let state = state, state.hasDetailViewController else { return }
         
@@ -3435,6 +3528,9 @@ extension BrowserViewController: PreferencesObserver {
             }
         case Preferences.Rewards.hideRewardsIcon.key:
             updateRewardsButtonState()
+        case Preferences.NewTabPage.selectedCustomTheme.key:
+            Preferences.NTP.ntpCheckDate.value = nil
+            backgroundDataSource.startFetching()
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break

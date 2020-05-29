@@ -233,7 +233,7 @@ extension BraveLedger {
           completion(false)
           return
         }
-        self.claimPromotion(attestation.publicKeyHash) { result, nonce in
+        self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
           if result != .ledgerOk {
             completion(false)
             return

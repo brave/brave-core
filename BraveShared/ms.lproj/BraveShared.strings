@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Carian peribadi dengan DuckDuckGo?";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave gagal";
+
 /* No comment provided by engineer. */
 "Delete" = "Padam";
 
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "Tab Baharu";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "Papan Kekunci Terbuka Auto";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "Tunjukkan Imej Latar Belakang";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "Tunjukkan Imej Tajaan";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "Halaman Tab Baru";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "Tunjukkan Selanjutnya";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Sila masukkan semua perkataan dan cuba lagi.";
 
@@ -627,6 +615,27 @@
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Ketahui lebih lanjut tentang imej tajaan";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Papan Kekunci Buka Secara Automatik";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Tunjukkan Imej Latar Belakang";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Imej Latar belakang";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Imej Gagal Sahaja";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Tajaan Imej";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Halaman Tab Baru";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Tunjukkan Lagi";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Anda boleh menyokong pencipta web dengan token.";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Terma Penggunaan";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Kongsi...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Kongsi Brave dengan rakan anda!";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatik";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Terang";
+
+/* Name for app theme settings */
+"themesSettings" = "Tema";
 
 /* History tableview section header */
 "Today" = "Hari Ini";

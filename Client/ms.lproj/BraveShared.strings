@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Ralat pelanggan";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Butiran tidak sah dalam permintaan pembayaran";
+
 /* Suffix for error strings */
 "tryAgain" = ", sila cuba lagi.";
 

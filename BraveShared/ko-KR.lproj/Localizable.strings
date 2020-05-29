@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Brave Shields 정보";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "고급 컨트롤";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "광고 등 유쾌하지 않은 콘텐츠 차단 완료";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "자세히 알아보기";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "글로벌 Shields 기본값 변경";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "글로벌 컨트롤";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "사이트가 깨진 것으로 표시되면 Shields 해제 권장";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "해제";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "사용";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Brave에서 본 광고에 대한 리워드를 받으실 시간입니다.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields 메뉴 닫기";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "깨진 사이트 신고";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "복원된 북마크";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "복원된 즐겨찾기";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Brave의 개인정보 보호 없이 이 사이트를 브라우징하고 계십니다. Shields 사용 시 제대로 작동하지 않나요?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";

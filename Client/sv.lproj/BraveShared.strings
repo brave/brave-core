@@ -1,5 +1,11 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Klientfel";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Ogiltiga uppgifter i betalningsbegäran";
+
 /* Suffix for error strings */
-"tryAgain" = ". Försök igen.";
+"tryAgain" = ", försök igen.";
 
 /* Error handling U2F authentication. */
 "U2FAuthenticationError" = "Det gick inte att autentisera säkerhetskoden";

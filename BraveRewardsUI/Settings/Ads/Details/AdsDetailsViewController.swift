@@ -143,7 +143,7 @@ extension AdsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
       cell.accessoryView = BATUSDPairView().then {
         $0.batContainer.amountLabel.text = BATValue(estimatedEarnings).displayString
         $0.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(estimatedEarnings, includeCurrencyCode: false)
-        $0.bounds = CGRect(origin: .zero, size: $0.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize))
+        $0.bounds = CGRect(origin: .zero, size: $0.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize))
       }
     case .nextPayment:
       cell.label.text = Strings.nextPaymentDate
