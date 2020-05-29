@@ -11,40 +11,38 @@
 
 #include "base/strings/string16.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
-#include "chrome/renderer/content_settings_agent_impl.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/content_settings/renderer/content_settings_agent_impl.h"
 
 namespace blink {
 class WebLocalFrame;
 }
 
+namespace content_settings {
+
 // Handles blocking content per content settings for each RenderFrame.
-class BraveContentSettingsAgentImpl
-    : public ContentSettingsAgentImpl {
+class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
  public:
   BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
-      bool should_whitelist,
-      service_manager::BinderRegistry* registry);
+                                bool should_whitelist,
+                                std::unique_ptr<Delegate> delegate);
   ~BraveContentSettingsAgentImpl() override;
 
  protected:
   bool AllowScript(bool enabled_per_settings) override;
-  void DidNotAllowScript() override;
   bool AllowScriptFromSource(bool enabled_per_settings,
-      const blink::WebURL& script_url) override;
+                             const blink::WebURL& script_url) override;
+  void DidNotAllowScript() override;
 
-  bool AllowFingerprinting(bool enabled_per_settings) override;
-
-  BraveFarblingLevel GetBraveFarblingLevel() override;
+  void BraveSpecificDidBlockJavaScript(const base::string16& details);
 
   bool AllowAutoplay(bool default_value) override;
 
-  void BraveSpecificDidBlockJavaScript(
-    const base::string16& details);
+  bool AllowFingerprinting(bool enabled_per_settings) override;
+  void DidBlockFingerprinting(const base::string16& details);
 
-  void DidBlockFingerprinting(
-    const base::string16& details);
+  BraveFarblingLevel GetBraveFarblingLevel() override;
 
  private:
   ContentSetting GetFPContentSettingFromRules(
@@ -76,5 +74,7 @@ class BraveContentSettingsAgentImpl
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };
+
+}  // namespace content_settings
 
 #endif  // BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
