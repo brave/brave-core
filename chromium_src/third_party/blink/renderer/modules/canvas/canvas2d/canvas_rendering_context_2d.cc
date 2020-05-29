@@ -5,9 +5,9 @@
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 
-#define BRAVE_RTC_PEER_CONNECTION                                              \
-  if (!AllowFingerprinting(Document::From(GetExecutionContext())->GetFrame())) \
-    return ScriptPromise::CastUndefined(script_state);
+#define BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT          \
+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) \
+    return MakeGarbageCollected<TextMetrics>();
 
-#include "../../../../../../../third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc"
-#undef BRAVE_RTC_PEER_CONNECTION
+#include "../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc"
+#undef BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT

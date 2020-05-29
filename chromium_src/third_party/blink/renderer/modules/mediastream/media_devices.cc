@@ -5,9 +5,10 @@
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 
-#define BRAVE_RTC_PEER_CONNECTION                                              \
-  if (!AllowFingerprinting(Document::From(GetExecutionContext())->GetFrame())) \
-    return ScriptPromise::CastUndefined(script_state);
+#define BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES          \
+  if (!AllowFingerprinting(frame)) {                   \
+    return ScriptPromise::CastUndefined(script_state); \
+  }
 
-#include "../../../../../../../third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc"
-#undef BRAVE_RTC_PEER_CONNECTION
+#include "../../../../../../third_party/blink/renderer/modules/mediastream/media_devices.cc"
+#undef BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES

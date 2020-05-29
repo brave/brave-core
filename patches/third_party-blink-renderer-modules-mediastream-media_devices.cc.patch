@@ -1,22 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 1fc3e9ae1c57f287fb7badb80b915ba8703c6da4..d8ea07ec461d4ec20d1b5a4650789f141527f577 100644
+index 323c7e42421a80803dd9579066e5616ca8ccbe3d..3603281c6ac71aff4dcea032978cfb6e17d3f45a 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -6,6 +6,7 @@
- 
- #include <utility>
- 
-+#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
- #include "mojo/public/cpp/bindings/remote.h"
- #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
- #include "third_party/blink/public/platform/task_type.h"
-@@ -76,6 +77,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state,
+@@ -74,6 +74,7 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state,
                                        "Current frame is detached.");
      return ScriptPromise();
    }
-+  if (!AllowFingerprinting(frame)) {
-+    return ScriptPromise::CastUndefined(script_state);
-+  }
++  BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES
  
    auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
    ScriptPromise promise = resolver->Promise();
