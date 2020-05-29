@@ -109,7 +109,7 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
     ledger::SKUOrderItemList list) {
   DCHECK(transaction);
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     return;
   }
 
@@ -143,7 +143,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     const std::string& order_id,
     GetSKUOrderItemsCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    BLOG(1, "Order id is empty");
     callback({});
     return;
   }

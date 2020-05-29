@@ -204,7 +204,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdateList(
     const std::vector<ledger::PublisherBanner>& list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -245,7 +245,7 @@ void DatabaseServerPublisherBanner::GetRecord(
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback(nullptr);
     return;
   }
@@ -293,6 +293,8 @@ void DatabaseServerPublisherBanner::OnGetRecord(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback(nullptr);
     return;
   }

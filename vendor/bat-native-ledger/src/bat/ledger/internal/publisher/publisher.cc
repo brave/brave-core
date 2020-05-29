@@ -469,7 +469,7 @@ void Publisher::synopsisNormalizerInternal(
     const ledger::PublisherInfoList* list,
     uint32_t /* next_record */) {
   if (list->empty()) {
-    BLOG(0, "Publisher list is empty");
+    BLOG(1, "Publisher list is empty");
     return;
   }
 

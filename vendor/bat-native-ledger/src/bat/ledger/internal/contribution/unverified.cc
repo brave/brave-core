@@ -51,7 +51,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     double balance,
     const ledger::PendingContributionInfoList& list) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     return;
   }
 

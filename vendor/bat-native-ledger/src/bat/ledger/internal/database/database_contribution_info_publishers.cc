@@ -290,7 +290,7 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
   DCHECK(transaction);
 
   if (!info) {
-    BLOG(0, "Info is null");
+    BLOG(1, "Info is null");
     return;
   }
 
@@ -317,7 +317,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherListCallback callback) {
   if (contribution_ids.empty()) {
-    BLOG(0, "Contribution ids is empty");
+    BLOG(1, "Contribution ids is empty");
     callback({});
     return;
   }
@@ -382,7 +382,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
-    BLOG(0, "Contribution ids is empty");
+    BLOG(1, "Contribution ids is empty");
     callback({});
     return;
   }
@@ -463,7 +463,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
-    BLOG(0, "Data is empty " << contribution_id << "/" << publisher_key);
+    BLOG(1, "Data is empty " << contribution_id << "/" << publisher_key);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

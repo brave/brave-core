@@ -374,7 +374,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -446,7 +446,7 @@ void DatabaseUnblindedToken::GetSpendableRecordsByTriggerIds(
     const std::vector<std::string>& trigger_ids,
     ledger::GetUnblindedTokenListCallback callback) {
   if (trigger_ids.empty()) {
-    BLOG(0, "Trigger id is empty");
+    BLOG(1, "Trigger id is empty");
     callback({});
     return;
   }
@@ -491,7 +491,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::string& redeem_id,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
-    BLOG(0, "List of ids is empty");
+    BLOG(1, "List of ids is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -525,7 +525,7 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
     const std::vector<ledger::CredsBatchType>& batch_types,
     ledger::GetUnblindedTokenListCallback callback) {
   if (batch_types.empty()) {
-    BLOG(0, "Batch types is empty");
+    BLOG(1, "Batch types is empty");
     callback({});
     return;
   }

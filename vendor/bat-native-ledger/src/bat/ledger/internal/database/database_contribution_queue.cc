@@ -199,7 +199,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
     ledger::ContributionQueuePtr info,
     ledger::ResultCallback callback) {
   if (!info) {
-    BLOG(0, "Queue is null");
+    BLOG(1, "Queue is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -306,7 +306,6 @@ void DatabaseContributionQueue::OnGetFirstRecord(
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(0, "Record size is not correct");
     callback(nullptr);
     return;
   }
@@ -351,7 +350,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
     const std::string& id,
     ledger::ResultCallback callback) {
   if (id.empty()) {
-    BLOG(0, "Id is empty");
+    BLOG(1, "Id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

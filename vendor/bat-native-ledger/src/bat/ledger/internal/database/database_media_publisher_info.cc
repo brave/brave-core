@@ -165,7 +165,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
-    BLOG(0, "Data is empty " << media_key << "/" << publisher_key);
+    BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -196,7 +196,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
     const std::string& media_key,
     ledger::PublisherInfoCallback callback) {
   if (media_key.empty()) {
-    BLOG(0, "Media key is empty");
+    BLOG(1, "Media key is empty");
     return callback(ledger::Result::LEDGER_ERROR, {});
   }
 
@@ -244,12 +244,14 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
     ledger::PublisherInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    BLOG(1, "Response is wrong");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback(ledger::Result::NOT_FOUND, {});
     return;
   }

@@ -366,7 +366,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
     ledger::PendingContributionList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -531,7 +531,7 @@ void DatabasePendingContribution::DeleteRecord(
     const uint64_t id,
     ledger::ResultCallback callback) {
   if (id == 0) {
-    BLOG(0, "Id is 0");
+    BLOG(1, "Id is 0");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

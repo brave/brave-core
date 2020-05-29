@@ -101,7 +101,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
     ledger::SKUTransactionPtr transaction,
     ledger::ResultCallback callback) {
   if (!transaction) {
-    BLOG(0, "Transcation is null");
+    BLOG(1, "Transcation is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -140,7 +140,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
     const std::string& external_transaction_id,
     ledger::ResultCallback callback) {
   if (transaction_id.empty() || external_transaction_id.empty()) {
-    BLOG(0, "Data is empty " <<
+    BLOG(1, "Data is empty " <<
         transaction_id << "/" << external_transaction_id);
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -174,7 +174,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     const std::string& order_id,
     ledger::GetSKUTransactionCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    BLOG(1, "Order id is empty");
     callback(nullptr);
     return;
   }
@@ -221,6 +221,8 @@ void DatabaseSKUTransaction::OnGetRecord(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback(nullptr);
     return;
   }

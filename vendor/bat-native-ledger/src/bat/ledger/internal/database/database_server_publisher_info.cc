@@ -186,7 +186,7 @@ void DatabaseServerPublisherInfo::GetRecord(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback(nullptr);
     return;
   }

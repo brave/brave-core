@@ -404,7 +404,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
-    BLOG(0, "Info is null");
+    BLOG(1, "Info is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -495,6 +495,8 @@ void DatabaseContributionInfo::OnGetRecord(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback(nullptr);
     return;
   }
@@ -531,7 +533,7 @@ void DatabaseContributionInfo::OnGetPublishers(
       contribution_string);
 
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    BLOG(1, "Contribution is null");
     callback(nullptr);
     return;
   }
@@ -579,7 +581,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
     const int year,
     ledger::PublisherInfoListCallback callback) {
   if (year == 0) {
-    BLOG(0, "Year is 0");
+    BLOG(1, "Year is 0");
     callback({});
     return;
   }
@@ -672,7 +674,7 @@ void DatabaseContributionInfo::GetContributionReport(
     const int year,
     ledger::GetContributionReportCallback callback) {
   if (year == 0) {
-    BLOG(0, "Year is 0");
+    BLOG(1, "Year is 0");
     callback({});
     return;
   }
@@ -892,7 +894,7 @@ void DatabaseContributionInfo::UpdateStep(
     const ledger::ContributionStep step,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    BLOG(1, "Contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -925,7 +927,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
     const int32_t retry_count,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    BLOG(1, "Contribution id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
