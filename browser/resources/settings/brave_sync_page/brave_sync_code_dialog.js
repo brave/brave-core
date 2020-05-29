@@ -37,6 +37,7 @@
 
     observers: [
       'updateSyncCodeValidity_(syncCode)',
+      'getQRCode_(syncCode, codeType)',
     ],
 
     attached: function() {
@@ -68,6 +69,14 @@
 
     handleDone_: function() {
       this.fire('done')
+    },
+
+    getQRCode_: async function() {
+      if (!this.syncCode || this.codeType !== 'qr') {
+        return
+      }
+      const data = await cr.sendWithPromise('SyncGetQRCode', this.syncCode)
+      // TODO(petemill): generate a canvas / image
     },
 
   });

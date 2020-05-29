@@ -32,6 +32,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleGetDeviceList(const base::ListValue* args);
   void HandleGetSyncCode(const base::ListValue* args);
   void HandleSetSyncCode(const base::ListValue* args);
+  void HandleGetQRCode(const base::ListValue* args);
   void HandleReset(const base::ListValue* args);
 
   base::Value GetSyncDeviceList();
