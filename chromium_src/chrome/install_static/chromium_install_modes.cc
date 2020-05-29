@@ -23,19 +23,6 @@ const wchar_t kProductPathName[] = L"Brave-Browser-Development";
 
 const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
 
-#if defined(OFFICIAL_BUILD)
-const wchar_t kBinariesAppGuid[] = L"{F7526127-0B8A-406F-8998-282BEA40103A}";
-#else
-const wchar_t kBinariesAppGuid[] = L"";
-#endif
-
-#if defined(OFFICIAL_BUILD)
-// Brave integrates with Brave Update, so the app GUID above is used.
-const wchar_t kBinariesPathName[] = L"";
-#else
-const wchar_t kBinariesPathName[] = L"Brave Binaries";
-#endif
-
 const char kSafeBrowsingName[] = "chromium";
 
 #if defined(OFFICIAL_BUILD)
@@ -73,7 +60,6 @@ const InstallConstants kInstallModes[] = {
         true,  // Supports system-level installs.
         true,  // Supports in-product set as default browser UX.
         true,  // Supports retention experiments.
-        true,  // Supported multi-install.
         icon_resources::kApplicationIndex,  // App icon resource index.
         IDR_MAINFRAME,                      // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
@@ -111,7 +97,6 @@ const InstallConstants kInstallModes[] = {
         true,   // Supports system-level installs.
         true,   // Supports in-product set as default browser UX.
         true,   // Supports retention experiments.
-        false,  // Did not support multi-install.
         icon_resources::kBetaApplicationIndex,  // App icon resource index.
         IDR_X005_BETA,                          // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
@@ -149,7 +134,6 @@ const InstallConstants kInstallModes[] = {
         true,   // Supports system-level installs.
         true,   // Supports in-product set as default browser UX.
         true,   // Supports retention experiments.
-        false,  // Did not support multi-install.
         icon_resources::kDevApplicationIndex,  // App icon resource index.
         IDR_X004_DEV,                          // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
@@ -187,7 +171,6 @@ const InstallConstants kInstallModes[] = {
         true,   // Support system-level installs.
         true,   // Support in-product set as default browser UX.
         true,   // Supports retention experiments.
-        false,  // Did not support multi-install.
         icon_resources::kSxSApplicationIndex,  // App icon resource index.
         IDR_SXS,                               // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
@@ -228,7 +211,6 @@ const InstallConstants kInstallModes[] = {
         true,   // Supports system-level installs.
         true,   // Supports in-product set as default browser UX.
         false,  // Does not support retention experiments.
-        true,   // Supported multi-install.
         icon_resources::kApplicationIndex,  // App icon resource index.
         IDR_MAINFRAME,                      // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
