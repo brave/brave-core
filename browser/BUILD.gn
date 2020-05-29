@@ -160,7 +160,6 @@ source_set("browser_process") {
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//components/keyed_service/content",
-    "//components/ntp_tiles",
     "//components/password_manager/core/common",
     "//components/permissions",
     "//components/policy/core/browser",
@@ -243,6 +242,7 @@ source_set("browser_process") {
       "//brave/browser/android/preferences",
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
+      "//components/ntp_tiles",
     ]
   }
 
