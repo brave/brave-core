@@ -18,7 +18,7 @@ public interface BraveRewardsObserver {
   default public void OnIsWalletCreated(boolean created) {};
   default public void OnGetPendingContributionsTotal(double amount) {};
   default public void OnGetRewardsMainEnabled(boolean enabled) {};
-  default public void OnGetAutoContributeProps() {};
+  default public void OnGetAutoContributeProperties() {};
   default public void OnGetReconcileStamp(long timestamp) {};
   default public void OnRecurringDonationUpdated() {};
   default public void OnResetTheWholeState(boolean success) {};

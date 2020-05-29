@@ -146,7 +146,7 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
     public void OnGetRewardsMainEnabled(boolean enabled) {}
 
     @Override
-    public void OnGetAutoContributeProps() {}
+    public void OnGetAutoContributeProperties() {}
 
     @Override
     public void OnGetReconcileStamp(long timestamp) {}

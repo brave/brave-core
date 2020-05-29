@@ -165,7 +165,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void OnGetAutoContributeProps() {}
+    public void OnGetAutoContributeProperties() {}
 
     @Override
     public void OnGetReconcileStamp(long timestamp) {}

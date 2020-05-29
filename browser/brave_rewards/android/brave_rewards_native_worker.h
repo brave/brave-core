@@ -136,7 +136,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void GetRewardsMainEnabled(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
 
-    void GetAutoContributeProps(JNIEnv* env,
+    void GetAutoContributeProperties(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
 
     bool IsAutoContributeEnabled(JNIEnv* env,
@@ -189,7 +189,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetGetReconcileStamp(uint64_t timestamp);
 
-    void OnGetAutoContributeProps(
+    void OnGetAutoContributeProperties(
         std::unique_ptr<brave_rewards::AutoContributeProps> info);
 
     void OnGetRewardsMainEnabled(bool enabled);
@@ -201,11 +201,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
         int32_t error_code) override;
 
-    void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
-        int error_code,
-        std::unique_ptr<brave_rewards::WalletProperties> wallet_properties)
-            override;
-
     void OnPanelPublisherInfo(
         brave_rewards::RewardsService* rewards_service,
         int error_code,
@@ -216,6 +211,11 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         brave_rewards::RewardsService* rewards_service,
         const int32_t result,
         const brave_rewards::BalanceReport& balance_report);
+
+    void OnGetWalletProperties(
+        brave_rewards::RewardsService* rewards_service,
+        const int32_t result,
+        std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
 
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
