@@ -64,8 +64,6 @@ bool IsBraveShieldsDown(const blink::WebFrame* frame,
   return setting == CONTENT_SETTING_BLOCK;
 }
 
-// This method can only be used for brave plugin content settings because
-// they are implemented incorrectly and swap primary/secondary url
 template <typename URL>
 ContentSetting GetBraveContentSettingFromRules(
     const ContentSettingsForOneType& shield_rules,
@@ -79,9 +77,8 @@ ContentSetting GetBraveContentSettingFromRules(
   const GURL& primary_url = GetOriginOrURL(frame);
   const GURL& secondary_gurl = secondary_url;
   for (const auto& rule : rules) {
-    // this swap is intentional - see comment at the beginning of the method
-    if (rule.primary_pattern.Matches(secondary_gurl) &&
-        rule.secondary_pattern.Matches(primary_url)) {
+    if (rule.primary_pattern.Matches(primary_url) &&
+        rule.secondary_pattern.Matches(secondary_gurl)) {
       return rule.GetContentSetting();
     }
   }
@@ -295,10 +292,13 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   if (base::FeatureList::IsEnabled(
       brave_shields::features::kFingerprintingProtectionV2)) {
     if (setting == CONTENT_SETTING_BLOCK) {
+      VLOG(1) << "farbling level MAXIMUM";
       return BraveFarblingLevel::MAXIMUM;
     } else if (setting == CONTENT_SETTING_ALLOW) {
+      VLOG(1) << "farbling level OFF";
       return BraveFarblingLevel::OFF;
     } else {
+      VLOG(1) << "farbling level BALANCED";
       return BraveFarblingLevel::BALANCED;
     }
   } else {
