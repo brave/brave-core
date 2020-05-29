@@ -105,7 +105,9 @@ class Contribution {
       ledger::ResultCallback callback);
 
  private:
-  void StartAutoContribute(const ledger::Result result);
+  void StartAutoContribute(
+      const ledger::Result result,
+      const uint64_t reconcile_stamp);
 
   void ContributionCompletedSaved(const ledger::Result result);
 

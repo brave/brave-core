@@ -150,25 +150,31 @@ void Contribution::ResetReconcileStamp() {
 }
 
 void Contribution::StartMonthlyContribution() {
+  const auto reconcile_stamp = ledger_->GetReconcileStamp();
+  ResetReconcileStamp();
+
   if (!ledger_->GetRewardsMainEnabled()) {
-    ResetReconcileStamp();
     return;
   }
+
   BLOG(1, "Staring monthly contribution");
 
   auto callback = std::bind(&Contribution::StartAutoContribute,
       this,
-      _1);
+      _1,
+      reconcile_stamp);
 
   monthly_->Process(callback);
 }
 
-void Contribution::StartAutoContribute(const ledger::Result result) {
+void Contribution::StartAutoContribute(
+    const ledger::Result result,
+    const uint64_t reconcile_stamp) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Monthly contribution failed");
   }
 
-  ac_->Process();
+  ac_->Process(reconcile_stamp);
 }
 
 void Contribution::OnBalance(

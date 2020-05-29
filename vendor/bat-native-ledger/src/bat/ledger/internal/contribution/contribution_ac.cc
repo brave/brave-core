@@ -22,7 +22,7 @@ ContributionAC::ContributionAC(bat_ledger::LedgerImpl* ledger,
 
 ContributionAC::~ContributionAC() = default;
 
-void ContributionAC::Process() {
+void ContributionAC::Process(const uint64_t reconcile_stamp) {
   if (!ledger_->GetRewardsMainEnabled() || !ledger_->GetAutoContribute()) {
     BLOG(1, "Auto contribution is off");
     return;
@@ -34,7 +34,7 @@ void ContributionAC::Process() {
       "",
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
-      ledger_->GetReconcileStamp(),
+      reconcile_stamp,
       false,
       ledger_->GetPublisherMinVisits());
 
@@ -43,7 +43,6 @@ void ContributionAC::Process() {
       _1);
 
   ledger_->GetActivityInfoList(0, 0, std::move(filter), get_callback);
-  contribution_->ResetReconcileStamp();
 }
 
 void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
