@@ -5,7 +5,14 @@
 <dom-module id="settings-brave-sync-configure">
   <template>
     <style include="settings-shared">
-      .device-list {
+      h1
+      {
+        font-weight: 600;
+        margin-top: 0;
+      }
+
+      .device-list
+      {
         margin: 24px 0;
         min-width: 100%;
         border-collapse: collapse;
@@ -14,36 +21,43 @@
         text-align: left;
       }
 
-      thead {
+      thead
+      {
         border-bottom: 2px solid rgb(222, 223, 228);
         border-top: 2px solid rgb(222, 223, 228);
         font-size: 12px;
         text-transform: uppercase;
       }
 
-      tbody {
+      tbody
+      {
         font-size: 14px;
       }
 
-      th, td {
+      th, td
+      {
         padding: 12px 0;
       }
 
       th:first-child,
-      td:first-child {
+      td:first-child
+      {
         padding-left: 12px;
       }
 
       th:last-child,
-      td:last-child {
+      td:last-child
+      {
         padding-right: 12px;
       }
 
-      tbody tr {
+      tbody tr
+      {
         border-bottom: 1px solid rgb(228, 232, 236);
       }
 
-      .device-name {
+      .device-name
+      {
         max-width: 30ch;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -51,51 +65,77 @@
         display: block;
       }
 
+      .device-actions
+      {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        column-gap: 8px;
+        justify-content: end;
+      }
+
+      section
+      {
+        margin-top: 20px;
+      }
+
     </style>
 
     <!-- Device list goes here -->
-    <h2>Device List</h2>
-    <p class="subtitle">
-      The device list below includes all devices in your sync chain.
-      Each device can be managed from any other device.
-    </p>
+    <section class="devices">
+      <h1>Device List</h1>
+      <p class="subtitle">
+        The device list below includes all devices in your sync chain.
+        Each device can be managed from any other device.
+      </p>
 
-    <table class="device-list">
-      <thead>
-        <tr>
-          <th><span class="device-name">Device Name</span></th>
-          <th>Last Active</th>
-        </tr>
-      </thead>
-      <tbody>
-        <template is="dom-repeat" items="[[deviceList_]]">
+      <table class="device-list">
+        <thead>
           <tr>
-            <td>
-              <span class="device-name">[[item.name]]<template is="dom-if" if="[[item.isCurrentDevice]]"> (This Device)</template></span>
-            </td>
-            <td>[[getDeviceDisplayDate(item)]]</td>
+            <th><span class="device-name">Device Name</span></th>
+            <th>Last Active</th>
           </tr>
-        </template>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <template is="dom-repeat" items="[[deviceList_]]">
+            <tr>
+              <td>
+                <span class="device-name">[[item.name]]<template is="dom-if" if="[[item.isCurrentDevice]]"> (This Device)</template></span>
+              </td>
+              <td>[[getDeviceDisplayDate(item)]]</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
 
-    <div class="device-actions">
-      <cr-button on-click="onViewSyncCode_">
-        $i18n{braveSyncViewCodeButton}
-      </cr-button>
+      <div class="device-actions">
+        <cr-button on-click="onViewSyncCode_">
+          $i18n{braveSyncViewCodeButton}
+        </cr-button>
+        <cr-button class="action-button"
+                  on-click="onAddDevice_">
+          $i18n{braveSyncAddDevice}
+        </cr-button>
+      </div>
+    </section>
+
+    <!-- Sync Settings -->
+    <section class="settings">
+      <h1>Sync Settings</h1>
+      <p>
+        Manage what information you would like to sync between devices.
+        These settings only effect this device.
+      </p>
+      <settings-sync-controls sync-status="[[syncStatus]]">
+      </settings-sync-controls>
+    </section>
+
+    <section class="cancel">
       <cr-button class="action-button"
-                on-click="onAddDevice_">
-        $i18n{braveSyncAddDevice}
+        on-click="onResetSyncChain_">
+        $i18n{braveSyncResetButton}
       </cr-button>
-    </div>
-
-    <settings-sync-controls sync-status="[[syncStatus]]">
-    </settings-sync-controls>
-
-    <cr-button class="action-button"
-      on-click="onResetSyncChain_">
-      $i18n{braveSyncResetButton}
-    </cr-button>
+    </section>
 
     <template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
       <settings-brave-sync-code-dialog

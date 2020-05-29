@@ -5,16 +5,29 @@
 <dom-module id="settings-brave-sync-setup">
   <template>
     <style include="settings-shared">
-      .sync-setup-actions
+      .sync-setup
+      {
+        /* break out of indent for the setup only */
+        margin-left: calc(var(--cr-section-indent-padding) * -1);
+        display: grid;
+        grid-template-columns: 30% auto;
+        grid-template-rows: auto;
+        column-gap: 20px;
+      }
+      .graphic img
+      {
+        max-width: 100%;
+      }
+      .actions
       {
         display: flex;
         flex-direction: row;
       }
-      .sync-setup-actions > *
+      .actions > *
       {
         margin-right: 8px;
       }
-      .sync-setup-actions:last-child
+      .actions:last-child
       {
         margin-right: 0;
       }
@@ -24,19 +37,33 @@
         height: 16px;
       }
     </style>
-
-    <div class="sync-setup-actions">
-      <cr-button class="action-button"
-        on-click="handleStartSyncChain_"
-        disabled="[[isGettingSyncCode_]]"
-      >
-        <paper-spinner-lite hidden="[[!isGettingSyncCode_]]">
-        </paper-spinner-lite>
-        <span hidden="[[isGettingSyncCode_]]">$i18n{braveSyncStartNewChain}</span>
-      </cr-button>
-      <cr-button on-click="handleJoinSyncChain_">
-        $i18n{braveSyncEnterCode}
-      </cr-button>
+    <div class="sync-setup">
+      <div class="graphic">
+        <img src="chrome://settings/brave_sync_page/start_icon.svg" />
+      </div>
+      <div class="content">
+        <h1>Sync Setup</h1>
+        <p>
+          To start, you will need Brave installed on all the devices you
+          plan to sync. Then, securely link them together with a sync code.
+        </p>
+        <div class="actions">
+          <cr-button class="action-button"
+            on-click="handleStartSyncChain_"
+            disabled="[[isGettingSyncCode_]]"
+          >
+            <paper-spinner-lite hidden="[[!isGettingSyncCode_]]">
+            </paper-spinner-lite>
+            <span hidden="[[isGettingSyncCode_]]">$i18n{braveSyncStartNewChain}</span>
+          </cr-button>
+          <cr-button
+            on-click="handleJoinSyncChain_"
+            disabled="[[isGettingSyncCode_]]"
+          >
+            $i18n{braveSyncEnterCode}
+          </cr-button>
+        </div>
+      </div>
     </div>
 
     <template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
