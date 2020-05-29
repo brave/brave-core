@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_ACCESS_TOKEN_FETCHER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/macros.h"
 #include "base/time/time.h"
@@ -19,11 +20,8 @@ class AccessTokenFetcher {
   explicit AccessTokenFetcher(AccessTokenConsumer* consumer);
   virtual ~AccessTokenFetcher();
 
-  virtual void Start(const std::string& client_id,
-                     const std::string& client_secret,
-                     const std::string& timestamp) = 0;
-
-  virtual void StartGetTimestamp() = 0;
+  virtual void Start(const std::vector<uint8_t>& public_key,
+                     const std::vector<uint8_t>& private_key) = 0;
 
   // Cancels the current request and informs the consumer.
   virtual void CancelRequest() = 0;
@@ -39,9 +37,6 @@ class AccessTokenFetcher {
 
   // Fires |OnGetTokenFailure| on |consumer_|.
   void FireOnGetTokenFailure(const GoogleServiceAuthError& error);
-
-  void FireOnGetTimestampSuccess(const std::string& ts);
-  void FireOnGetTimestampFailure(const GoogleServiceAuthError& error);
 
  private:
   AccessTokenConsumer* consumer_;
