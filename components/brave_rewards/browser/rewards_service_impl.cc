@@ -866,6 +866,11 @@ void RewardsServiceImpl::OnReconcileComplete(
 
 void RewardsServiceImpl::LoadLedgerState(
     ledger::OnLoadCallback callback) {
+  if (!profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabledMigrated)) {
+    bat_ledger_->GetRewardsMainEnabled(
+        base::BindOnce(&RewardsServiceImpl::SetRewardsMainEnabledPref,
+          AsWeakPtr()));
+  }
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadStateOnFileTaskRunner, ledger_state_path_),
       base::BindOnce(&RewardsServiceImpl::OnLedgerStateLoaded,
@@ -906,11 +911,6 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 
 void RewardsServiceImpl::LoadPublisherState(
     ledger::OnLoadCallback callback) {
-  if (!profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabledMigrated)) {
-    bat_ledger_->GetRewardsMainEnabled(
-        base::BindOnce(&RewardsServiceImpl::SetRewardsMainEnabledPref,
-          AsWeakPtr()));
-  }
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, publisher_state_path_),
       base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded,
