@@ -500,7 +500,7 @@
 "DisabledAutoContributeMessage" = "Belöna skaparna för det innehåll som du älskar. Din månatliga betalning distribueras över webbplatserna som du besöker.";
 
 /* Message that is displayed on monthly contribution section when user disables rewards */
-"DisabledMonthlyContributionMessage" = "Ditt månatliga bidrag kommer att skickas var 30e dag.";
+"DisabledMonthlyContributionMessage" = "Ditt månatliga bidrag kommer att skickas var 30 dag.";
 
 /* Message that is displayed on tips section when user disables rewards */
 "DisabledTipsMessage" = "Tipsa direkt när du hittar pärlor. Låt folk veta med en snabb tweet om gillar.";
@@ -596,7 +596,7 @@
 "PendingContributionDetailAmount" = "Belopp";
 
 /* No comment provided by engineer. */
-"PendingContributionDetailPendingUntil" = "Väntande fram till ";
+"PendingContributionDetailPendingUntil" = "Väntande fram till";
 
 /* The button that removes a specific pending contributions while on viewing said contributions details */
 "PendingContributionDetailRemove" = "Raderade väntande donation";

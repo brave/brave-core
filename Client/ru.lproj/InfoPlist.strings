@@ -6,22 +6,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "NFCReaderUsageDescription" = "Приложению требуется доступ к чтению данных NFC, чтобы обмениваться сведениями с вашим электронным ключом YubiKey.";
 
-/* (No Comment) */
+/* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Вы сможете снимать и загружать фото.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Для доступа к сохраненным учетным данным требуется Face ID.";
 
-/* (No Comment) */
+/* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Посещаемые сайты могут запрашивать местоположение.";
 
-/* (No Comment) */
+/* Privacy - Microphone Usage Description */
 "NSMicrophoneUsageDescription" = "Вы сможете снимать и загружать видео.";
 
-/* (No Comment) */
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Вы сможете сохранять фото.";
 
-/* (No Comment) */
+/* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Вы сможете сохранять и загружать фото.";
 
 /* (No Comment) */

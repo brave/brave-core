@@ -154,4 +154,8 @@ class MockTopSitesDelegate: FavoritesDelegate {
     func openBrandedImageCallout(state: BrandedImageCalloutState?) {
         // Protocol conformance
     }
+    
+    func didTapQRButton(url: URL) {
+        // Protocol conformance
+    }
 }

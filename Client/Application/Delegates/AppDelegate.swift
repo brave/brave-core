@@ -256,17 +256,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Preferences.Review.launchCount.value += 1
         
         if isFirstLaunch {
-            FavoritesHelper.addDefaultFavorites()
             profile?.searchEngines.regionalSearchEngineSetup()
         }
+        
         if let urp = UserReferralProgram.shared {
-            if isFirstLaunch {
-                urp.referralLookup { url in
-                    guard let url = url?.asURL else { return }
+            if Preferences.URP.referralLookupOutstanding.value == nil {
+                // This preference has never been set, and this means it is a new or upgraded user.
+                // That distinction must be made to know if a network request for ref-code look up should be made.
+                
+                // Setting this to an explicit value so it will never get overwritten on subsequent launches.
+                // Upgrade users should not have ref code ping happening.
+                Preferences.URP.referralLookupOutstanding.value = isFirstLaunch
+            }
+            
+            if Preferences.URP.referralLookupOutstanding.value == true {
+                var refCode: String?
+                
+                if Preferences.URP.referralCode.value == nil {
+                    UrpLog.log("No ref code exists on launch, attempting clipboard retrieval")
+                    refCode = UserReferralProgram.sanitize(input: UIPasteboard.general.string)
+                }
+                
+                if refCode != nil {
+                    UrpLog.log("Clipboard ref code found: " + (UIPasteboard.general.string ?? "!Clipboard Empty!"))
+                    UrpLog.log("Clearing clipboard.")
+                    UIPasteboard.general.clearPasteboard()
+                }
+                
+                urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
+                    if let code = referralCode {
+                        let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
+                        let retryDeadline = Date() + retryTime
+                        
+                        Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
+                        
+                        self.browserViewController.backgroundDataSource
+                            .fetchSpecificResource(.superReferral(code: code))
+                    } else {
+                        self.browserViewController.backgroundDataSource.startFetching()
+                    }
+                    
+                    guard let url = offerUrl?.asURL else { return }
                     self.browserViewController.openReferralLink(url: url)
                 }
             } else {
                 urp.pingIfEnoughTimePassed()
+                browserViewController.backgroundDataSource.startFetching()
             }
         } else {
             log.error("Failed to initialize user referral program")

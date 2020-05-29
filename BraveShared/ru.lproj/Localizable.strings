@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "О щитах Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Дополнительные настройки";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Заблокированные рекламные объявления и вредоносные элементы";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Подробнее…";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Изменить общие настройки щитов по умолчанию";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Общие настройки";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Проблемы с сайтом? Попробуйте выключить щиты.";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Щиты Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "выключены";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "включены";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Вас ждет награда за просмотр объявлений в Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрыть меню «Щиты»";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Пожаловаться на проблемы с сайтом";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Восстановленные закладки";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Восстановленное избранное";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Вы выключили защиту конфиденциальности. Сайт неправильно отображается при включенных щитах?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";

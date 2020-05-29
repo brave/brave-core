@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Brave Shields – informacje";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Opcje zaawansowane";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Zablokowano reklamy i inne natrętne elementy";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Dowiedz się więcej";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Zmień globalne ustawienia domyślne ochrony ";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Opcje globalne";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Jeśli strona wygląda nieprawidłowo, spróbuj wyłączyć funkcję ochrony";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Wyłącz";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Włącz";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Czas otrzymać nagrodę za reklamy, które oglądasz, korzystając z Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Zamknij menu Shields";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Zgłoś nieprawidłową stronę";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Przywrócone zakładki";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Przywrócone ulubione";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Przeglądasz tę stronę bez użycia ochrony prywatności Brave. Czy nie działa ona właściwie przy włączonej ochronie?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";

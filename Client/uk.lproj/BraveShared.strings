@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Помилка клієнта";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Недійсні дані в запиті платежу";
+
 /* Suffix for error strings */
 "tryAgain" = ", спробуйте ще раз.";
 

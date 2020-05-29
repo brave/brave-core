@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "使用 DuckDuckGo 執行隱私搜尋？";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave 預設";
+
 /* No comment provided by engineer. */
 "Delete" = "刪除";
 
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "新增分頁";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "自動打開鍵盤";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "顯示背景圖片";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "顯示贊助圖片";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "新增分頁";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "顯示更多";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "請輸入所有詞語並重試。";
 
@@ -627,6 +615,27 @@
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "深入了解贊助圖片";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "自動開啟鍵盤";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "顯示背景圖片";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "背景圖片";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "僅顯示預設圖片";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "贊助圖片";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "新增分頁";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "顯示更多";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "您可以用代幣來贊助網路創作者。";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "使用條款";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "分享...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "與好友分享 Brave！";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "自動";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "亮";
+
+/* Name for app theme settings */
+"themesSettings" = "主題";
 
 /* History tableview section header */
 "Today" = "今天";

@@ -55,7 +55,7 @@ class TabLocationView: UIView {
         }
     }
 
-    var secureContentState: TabSecureContentState = .insecure {
+    var secureContentState: TabSecureContentState = .unknown {
         didSet {
             updateLockImageView()
         }

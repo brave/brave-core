@@ -7,6 +7,7 @@ import BraveRewards
 import BraveShared
 import Shared
 import Static
+import CoreServices
 
 private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 
@@ -48,6 +49,15 @@ public class QASettingsViewController: TableViewController {
     $0.placeholder = "0"
   }
   
+  private let customUserAgentTextField = UITextField().then {
+    $0.borderStyle = .roundedRect
+    $0.autocorrectionType = .no
+    $0.autocapitalizationType = .none
+    $0.spellCheckingType = .no
+    $0.returnKeyType = .done
+    $0.textAlignment = .right
+  }
+  
   @objc private func reconcileTimeEditingEnded() {
     guard let value = Int32(reconcileTimeTextField.text ?? "") else {
       let alert = UIAlertController(title: "Invalid value", message: "Time has been reset to 0 (no override)", preferredStyle: .alert)
@@ -74,6 +84,10 @@ public class QASettingsViewController: TableViewController {
   @objc private func adsDismissalEditingEnded() {
     let value = Int(adsDismissalTextField.text ?? "") ?? 0
     Preferences.Rewards.adsDurationOverride.value = value > 0 ? value : nil
+  }
+  
+  @objc private func customUserAgentEditingEnded() {
+    rewards.ledger.customUserAgent = customUserAgentTextField.text
   }
   
   private var numpadDismissalToolbar: UIToolbar {
@@ -111,6 +125,12 @@ public class QASettingsViewController: TableViewController {
     adsDismissalTextField.inputAccessoryView = numpadDismissalToolbar
     adsDismissalTextField.text = "\(Preferences.Rewards.adsDurationOverride.value ?? 0)"
     
+    customUserAgentTextField.addTarget(self, action: #selector(customUserAgentEditingEnded), for: .editingDidEnd)
+    customUserAgentTextField.delegate = self
+    customUserAgentTextField.frame = CGRect(x: 0, y: 0, width: 125, height: 32)
+    customUserAgentTextField.inputAccessoryView = numpadDismissalToolbar
+    customUserAgentTextField.text = rewards.ledger.customUserAgent
+    
     KeyboardHelper.defaultHelper.addDelegate(self)
     
     dataSource.sections = [
@@ -132,7 +152,8 @@ public class QASettingsViewController: TableViewController {
           Row(text: "Use Short Retries", accessory: .switchToggle(value: BraveLedger.useShortRetries, { value in
             BraveLedger.useShortRetries = value
           })),
-          Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self)
+          Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self),
+          Row(text: "Custom User Agent", detailText: "Non-persistant. Empty = default", accessory: .view(customUserAgentTextField), cellClass: MultilineSubtitleCell.self)
         ]
       ),
       Section(
@@ -177,10 +198,18 @@ public class QASettingsViewController: TableViewController {
         ]
       ),
       Section(
+        header: .title("Database"),
         rows: [
-          Row(text: "Share Rewards Database", selection: {
+          Row(text: "Import Rewards Database", selection: {
+            self.tappedImportRewardsDatabase()
+          }, cellClass: ButtonCell.self),
+          Row(text: "Export Rewards Database", selection: {
             self.tappedShareRewardsDatabase()
           }, cellClass: ButtonCell.self),
+        ]
+      ),
+      Section(
+        rows: [
           Row(text: "Reset Rewards", selection: {
             self.tappedReset()
           }, cellClass: ButtonCell.self)
@@ -197,10 +226,22 @@ public class QASettingsViewController: TableViewController {
     }
   }
   
+  private func tappedImportRewardsDatabase() {
+    let docPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeData), String(kUTTypeDatabase)], in: .import)
+    if #available(iOS 13.0, *) {
+      docPicker.shouldShowFileExtensions = true
+    }
+    docPicker.delegate = self
+    self.present(docPicker, animated: true)
+  }
+  
   private func tappedShareRewardsDatabase() {
     guard let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
-    let dbPath = (appSupportPath as NSString).appendingPathComponent("rewards")
+    let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
     let activity = UIActivityViewController(activityItems: [URL(fileURLWithPath: dbPath)], applicationActivities: nil)
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      activity.popoverPresentationController?.sourceView = view
+    }
     self.present(activity, animated: true)
   }
   
@@ -281,6 +322,13 @@ extension QASettingsViewController: KeyboardHelperDelegate {
   }
 }
 
+extension QASettingsViewController: UITextFieldDelegate {
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+}
+
 fileprivate class MultilineSubtitleCell: SubtitleCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -291,5 +339,33 @@ fileprivate class MultilineSubtitleCell: SubtitleCell {
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+extension QASettingsViewController: UIDocumentPickerDelegate {
+  public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    guard let documentURL = urls.first, documentURL.pathExtension == "db" else { return }
+    guard let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
+    let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
+    do {
+      _ = try FileManager.default.replaceItemAt(URL(fileURLWithPath: dbPath), withItemAt: documentURL)
+      if FileManager.default.fileExists(atPath: "\(dbPath)-journal") {
+        try FileManager.default.removeItem(atPath: "\(dbPath)-journal")
+      }
+      let alert = UIAlertController(
+        title: "Database Imported",
+        message: "Brave must be restarted after importing a database for data to be read from it correctly.",
+        preferredStyle: .alert
+      )
+      alert.addAction(UIAlertAction(title: "Exit Now", style: .destructive, handler: { _ in
+        fatalError()
+      }))
+      alert.addAction(UIAlertAction(title: "Later…", style: .default, handler: nil))
+      present(alert, animated: true)
+    } catch {
+      let alert = UIAlertController(title: "Failed To Import Database", message: error.localizedDescription, preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      present(alert, animated: true)
+    }
   }
 }

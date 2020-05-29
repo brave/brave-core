@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Om Brave sköldar";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Avancerade kontroller";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Annonser och andra läskiga saker blockerade";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Läs mer";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Ändra standardinställningar för globala sköldar";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Globala kontroller";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Om webbplatsen visas bruten försök med sköldar nere";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave sköldar";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Ner";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Upp";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Dags att belönas för de annonser du har sett i Brave.";
 
@@ -74,7 +105,7 @@
 "OBShieldsDetail" = "Blockera sekretessinträngande spårare så att du kan bläddra utan att följas på webben";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
+"OBShieldsTitle" = "Brave sköldar";
 
 /* Button to show the Brave Rewards Ads. */
 "OBShowMeButton" = "Visa";
@@ -94,17 +125,23 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Stäng sköldmenyn";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Rapportera en bruten webbplats";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Återställda bokmärken";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Återställda favoriter";
 
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Du surfar på den här webbplatsen utan Braves sekretesskydd. Fungerar den inte korrekt med sköldar uppe?";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sätt på sökförslag?";
 
 /* No comment provided by engineer. */
-"UserWalletBATNotAllowedLearnMore" = "Lär dig mer";
+"UserWalletBATNotAllowedLearnMore" = "Läs mer";
 
 /* No comment provided by engineer. */
 "UserWalletBATNotAllowedMessage" = "BAT stöds för närvarande inte i din region baserat på den plats där ditt konto har öppnats. Återkom senare för tillgänglighet.";

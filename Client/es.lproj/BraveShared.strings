@@ -1,3 +1,9 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Error de cliente";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Datos no válidos en la solicitud de pago";
+
 /* Suffix for error strings */
 "tryAgain" = ", vuelve a intentarlo.";
 

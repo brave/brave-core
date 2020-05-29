@@ -109,7 +109,7 @@ class BookmarkTests: CoreDataTestCase {
     // MARK: - Create
     
     func testSimpleCreate() {
-        let url = "http://brave.com"
+        let url = "https://brave.com"
         let title = "Brave"
         
         let result = createAndWait(url: URL(string: url), title: title)
@@ -133,8 +133,8 @@ class BookmarkTests: CoreDataTestCase {
         let validate = BookmarkValidation.validateBookmark
         XCTAssertTrue(validate("Brave", "https://brave.com"))
         XCTAssertTrue(validate("Brave", "https://brave.com/"))
-        XCTAssertTrue(validate("Brave", "http://brave.com"))
-        XCTAssertTrue(validate("Brave", "http://brave.com/"))
+        XCTAssertTrue(validate("Brave", "https://brave.com"))
+        XCTAssertTrue(validate("Brave", "https://brave.com/"))
         XCTAssertFalse(validate(nil, "https://brave.com"))
         XCTAssertTrue(validate("Brave", nil))
         XCTAssertFalse(validate("Brave", "https"))
@@ -197,7 +197,7 @@ class BookmarkTests: CoreDataTestCase {
     }
     
     func testCreateFolder() {
-        let url = "http://brave.com"
+        let url = "https://brave.com"
         let title = "Brave"
         let folderName = "FolderName"
         
@@ -212,7 +212,7 @@ class BookmarkTests: CoreDataTestCase {
     
     func testMassInsert() {
         for i in 1...100 {
-            let url = URL(string: "http://brave.com/\(i)")!
+            let url = URL(string: "https://brave.com/\(i)")!
             let title = "Brave\(i)"
             
             createAndWait(url: url, title: title)
@@ -225,7 +225,7 @@ class BookmarkTests: CoreDataTestCase {
     // MARK: - Read
     
     func testContains() {
-        let url = URL(string: "http://brave.com")!
+        let url = URL(string: "https://brave.com")!
         let wrongUrl = URL(string: "http://wrong.brave.com")!
         createAndWait(url: url, title: nil)
         
@@ -270,15 +270,43 @@ class BookmarkTests: CoreDataTestCase {
         let bookmarksCount = 3
         insertBookmarks(amount: bookmarksCount)
         // Adding a favorite(non-bookmark type of bookmark)
-        createAndWait(url: URL(string: "http://brave.com"), title: "Brave", isFavorite: true)
+        createAndWait(url: URL(string: "https://brave.com"), title: "Brave", isFavorite: true)
         XCTAssertEqual(Bookmark.getAllBookmarks().count, bookmarksCount)
+    }
+    
+    func testHasFavorites() {
+        XCTAssertFalse(Bookmark.hasFavorites)
+        
+        insertBookmarks(amount: 3)
+        
+        XCTAssertFalse(Bookmark.hasFavorites)
+        
+        createAndWait(url: URL(string: "https://brave.com"), title: "Brave", isFavorite: true)
+        
+        XCTAssert(Bookmark.hasFavorites)
+    }
+    
+    func testGetAllFavorites() {
+        createAndWait(url: URL(string: "http://example.com/1"), title: "Example1", isFavorite: true)
+        insertBookmarks(amount: 3)
+        createAndWait(url: URL(string: "http://example.com/2"), title: "Example2", isFavorite: true)
+        
+        let allFavorites = Bookmark.allFavorites
+        XCTAssertEqual(allFavorites.count, 2)
+        
+        XCTAssert(allFavorites.contains(where: { $0.title == "Example1" }))
+        XCTAssert(allFavorites.contains(where: { $0.title == "Example2" }))
+        XCTAssertFalse(allFavorites.contains(where: { $0.title == "Example3" }))
+        
+        createAndWait(url: URL(string: "http://example.com/3"), title: "Example3", isFavorite: true)
+        XCTAssertEqual(Bookmark.allFavorites.count, 3)
     }
     
     // MARK: - Update
     
     func testUpdateBookmark() {
         let context = DataController.viewContext
-        let url = "http://brave.com"
+        let url = "https://brave.com"
         let customTitle = "Brave"
         let newUrl = "http://updated.example.com"
         let newCustomTitle = "Example"
@@ -310,7 +338,7 @@ class BookmarkTests: CoreDataTestCase {
     
     func testUpdateBookmarkNoChanges() {
         let customTitle = "Brave"
-        let url = "http://brave.com"
+        let url = "https://brave.com"
                 
         let object = createAndWait(url: URL(string: url), title: "title", customTitle: customTitle)
         XCTAssertEqual(Bookmark.getAllBookmarks().count, 1)
@@ -328,7 +356,7 @@ class BookmarkTests: CoreDataTestCase {
     
     func testUpdateBookmarkBadUrl() {
         let customTitle = "Brave"
-        let url = "http://brave.com"
+        let url = "https://brave.com"
         let badUrl = "   " // Empty spaces cause URL(string:) to return nil
         
         let object = createAndWait(url: URL(string: url), title: "title", customTitle: customTitle)
@@ -451,10 +479,34 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(syncOrdersSorted, expectedOrder)
     }
     
+    func testForceOverwriteFavorites() {
+        let regularBookmarksCount = 3
+        insertBookmarks(amount: regularBookmarksCount)
+        createAndWait(url: URL(string: "http://example.com/1"), title: "Example1", isFavorite: true)
+        createAndWait(url: URL(string: "http://example.com/2"), title: "Example2", isFavorite: true)
+        
+        let newFavorites = [(URL(string: "http://example.com/3")!, "Example3"),
+                            (URL(string: "http://example.com/4")!, "Example4"),
+                            (URL(string: "http://example.com/5")!, "Example5")]
+        
+        backgroundSaveAndWaitForExpectation {
+            Bookmark.forceOverwriteFavorites(with: newFavorites)
+        }
+        
+        let updatedFavorites = Bookmark.allFavorites
+        XCTAssertEqual(updatedFavorites.count, newFavorites.count)
+        
+        XCTAssert(updatedFavorites.contains(where: { $0.title == "Example4" }))
+        XCTAssertFalse(updatedFavorites.contains(where: { $0.title == "Example1" }))
+        
+        // Make sure we don't delete any normal bookmarks by accident.
+        XCTAssertEqual(Bookmark.getAllBookmarks().count, regularBookmarksCount)
+    }
+    
     // MARK: - Delete
     
     func testRemoveByUrl() {
-        let url = URL(string: "http://brave.com")!
+        let url = URL(string: "https://brave.com")!
         let wrongUrl = URL(string: "http://wrong.brave.com")!
         
         createAndWait(url: url, title: "Brave")
@@ -475,7 +527,7 @@ class BookmarkTests: CoreDataTestCase {
     // MARK: - Syncable
     
     func testAddSyncable() {
-        let url = URL(string: "http://brave.com")!
+        let url = URL(string: "https://brave.com")!
         let title = "Brave"
         
         let site = SyncSite()
@@ -495,7 +547,7 @@ class BookmarkTests: CoreDataTestCase {
     }
     
     func testUpdateSyncable() {
-        let url = URL(string: "http://brave.com")!
+        let url = URL(string: "https://brave.com")!
         let title = "Brave"
         
         let newUrl = "http://example.com"
@@ -532,7 +584,7 @@ class BookmarkTests: CoreDataTestCase {
     }
     
     func testAsDictionary() {
-        let url = URL(string: "http://brave.com")!
+        let url = URL(string: "https://brave.com")!
         let title = "Brave"
         
         backgroundSaveAndWaitForExpectation {
@@ -596,7 +648,7 @@ class BookmarkTests: CoreDataTestCase {
     private func insertBookmarks(amount: Int, parent: Bookmark? = nil) {
         let bookmarksBeforeInsert = try! DataController.viewContext.count(for: fetchRequest)
         
-        let url = "http://brave.com/"
+        let url = "https://brave.com/"
         for i in 1...amount {
             let title = String(i)
             createAndWait(url: URL(string: url + title), title: title, parentFolder: parent)

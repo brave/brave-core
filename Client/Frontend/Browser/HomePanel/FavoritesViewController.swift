@@ -17,6 +17,7 @@ protocol FavoritesDelegate: AnyObject {
     func didSelect(input: String)
     func didTapDuckDuckGoCallout()
     func didTapShowMoreFavorites()
+    func didTapQRButton(url: URL)
     func openBrandedImageCallout(state: BrandedImageCalloutState?)
 }
 
@@ -51,7 +52,7 @@ class FavoritesViewController: UIViewController, Themeable {
         return view
     }()
     private let dataSource: FavoritesDataSource
-    private let backgroundDataSource: NTPBackgroundDataSource?
+    private let backgroundDataSource: NTPDataSource?
 
     private let braveShieldStatsView = BraveShieldStatsView(frame: CGRect.zero).then {
         $0.autoresizingMask = [.flexibleWidth]
@@ -60,7 +61,7 @@ class FavoritesViewController: UIViewController, Themeable {
     private lazy var favoritesOverflowButton = RoundInterfaceView().then {
         let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         let button = UIButton(type: .system).then {
-            $0.setTitle(Strings.newTabPageShowMoreFavorites, for: .normal)
+            $0.setTitle(Strings.NTP.showMoreFavorites, for: .normal)
             $0.appearanceTextColor = .white
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
             $0.addTarget(self, action: #selector(showFavorites), for: .touchUpInside)
@@ -100,6 +101,18 @@ class FavoritesViewController: UIViewController, Themeable {
         }
     }
     
+    private lazy var shareWithQRButton = QRCodeButton().then {
+        $0.setImage(#imageLiteral(resourceName: "qr_code_button"), for: .normal)
+        $0.contentMode = .scaleAspectFit
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 24
+        $0.backgroundColor = .white
+        $0.clipsToBounds = true
+        $0.layer.shadowRadius = 1
+        $0.layer.shadowOpacity = 0.5
+        $0.isHidden = true
+    }
+    
     private lazy var imageSponsorButton = UIButton().then {
         $0.adjustsImageWhenHighlighted = false
         $0.addTarget(self, action: #selector(showSponsoredSite), for: .touchUpInside)
@@ -135,25 +148,49 @@ class FavoritesViewController: UIViewController, Themeable {
     @objc private func showFavorites() {
         delegate?.didTapShowMoreFavorites()
     }
+
+    @objc private func qrButtonTapped() {
+        shareWithQRButton.qrButtonTapped?()
+    }
     
     // MARK: - Init/lifecycle
     
     private var backgroundViewInfo: (imageView: UIImageView, portraitCenterConstraint: Constraint, landscapeCenterConstraint: Constraint)?
-    private var background: (wallpaper: NTPBackgroundDataSource.Background, sponsor: NTPBackgroundDataSource.Sponsor?)? {
+    private var background: (wallpaper: NTPBackground, backgroundType: NTPDataSource.BackgroundType)? {
         didSet {
-            let noSponsor = background?.sponsor == nil
+            // Setup defaults
+            var hideQR = true
+            var hideImageCredit = true
+            var hideSponsor = true
             
-            // Image Sponsor
-            imageSponsorButton.setImage(background?.sponsor?.logo.image, for: .normal)
-            imageSponsorButton.isHidden = noSponsor
-            
-            // Image Credit
-            imageCreditButton.isHidden = true
-            if noSponsor, let name = background?.wallpaper.credit?.name {
-                let photoByText = String(format: Strings.photoBy, name)
-                imageCreditInternalButton.setTitle(photoByText, for: .normal)
-                imageCreditButton.isHidden = false
+            switch background?.backgroundType {
+            case .regular, .none:
+                if let name = background?.wallpaper.credit?.name {
+                    let photoByText = String(format: Strings.photoBy, name)
+                    imageCreditInternalButton.setTitle(photoByText, for: .normal)
+                    hideImageCredit = false
+                }
+            case .withBrandLogo(let logo):
+                if var logo = logo {
+                    imageSponsorButton.setImage(logo.image, for: .normal)
+                    hideSponsor = false
+                }
+            case .withQRCode(let code):
+                hideQR = false
+                shareWithQRButton.qrButtonTapped = { [weak self] in
+                    let referralQueryParam = [URLQueryItem(name: "ref", value: code)]
+                    
+                    var baseUrl = URLComponents(string: "https://brave.com/")
+                    baseUrl?.queryItems = referralQueryParam
+                    
+                    guard let url = baseUrl?.url else { return }
+                    self?.delegate?.didTapQRButton(url: url)
+                }
             }
+            
+            shareWithQRButton.isHidden = hideQR
+            imageCreditButton.isHidden = hideImageCredit
+            imageSponsorButton.isHidden = hideSponsor
         }
     }
     
@@ -174,7 +211,7 @@ class FavoritesViewController: UIViewController, Themeable {
     private var rewards: BraveRewards?
     
     init(profile: Profile, dataSource: FavoritesDataSource = FavoritesDataSource(), fromOverlay: Bool,
-         rewards: BraveRewards?, backgroundDataSource: NTPBackgroundDataSource?) {
+         rewards: BraveRewards?, backgroundDataSource: NTPDataSource?) {
         self.profile = profile
         self.dataSource = dataSource
         self.fromOverlay = fromOverlay
@@ -247,6 +284,7 @@ class FavoritesViewController: UIViewController, Themeable {
         collection.addSubview(favoritesOverflowButton)
         collection.addSubview(ddgButton)
         view.addSubview(imageCreditButton)
+        view.addSubview(shareWithQRButton)
         view.addSubview(imageSponsorButton)
         
         ddgButton.addSubview(ddgLogo)
@@ -256,12 +294,15 @@ class FavoritesViewController: UIViewController, Themeable {
         
         Preferences.NewTabPage.backgroundImages.observe(from: self)
         Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
+        Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
         
         // Doens't this get called twice?
         collectionContentSizeObservation = collection.observe(\.contentSize, options: [.new, .initial]) { [weak self] _, _ in
             self?.updateDuckDuckGoButtonLayout()
         }
         updateDuckDuckGoVisibility()
+        
+        shareWithQRButton.addTarget(self, action: #selector(qrButtonTapped), for: .touchDown)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -296,7 +337,15 @@ class FavoritesViewController: UIViewController, Themeable {
         
         if !Preferences.NewTabPage.backgroundImages.value { return nil }
         
-        let isSponsoredImage = background?.sponsor != nil
+        let isSponsoredImage = { () -> Bool in
+            switch background?.backgroundType {
+            case .withBrandLogo:
+                return true
+            case .regular, .withQRCode, .none:
+                return false
+            }
+        }()
+        
         let state = BrandedImageCalloutState
             .getState(rewardsEnabled: rewardsEnabled,
                       adsEnabled: adsEnabled,
@@ -452,9 +501,14 @@ class FavoritesViewController: UIViewController, Themeable {
     }
     
     @objc private func showSponsoredSite() {
-        guard let url = background?.sponsor?.logo.destinationUrl else { return }
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
-        delegate?.didSelect(input: url)
+        switch background?.backgroundType {
+        case .withBrandLogo(let logo):
+            guard let logo = logo else { return }
+            UIImpactFeedbackGenerator(style: .medium).bzzt()
+            delegate?.didSelect(input: logo.destinationUrl)
+        default:
+            break
+        }
     }
     
     // MARK: - Constraints setup
@@ -542,6 +596,18 @@ class FavoritesViewController: UIViewController, Themeable {
                 $0.centerX.equalToSuperview()
             }
         }
+        
+        shareWithQRButton.snp.remakeConstraints {
+            $0.size.equalTo(48)
+            $0.bottom.equalTo(view.safeArea.bottom).inset(24)
+            
+            if isLandscape && isIphone {
+                $0.left.equalTo(view.safeArea.left).offset(48)
+            } else {
+                $0.centerX.equalToSuperview()
+            }
+        }
+
     }
     
     private func resetBackgroundImage() {
@@ -728,4 +794,8 @@ extension FavoritesViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
         self.resetBackgroundImage()
     }
+}
+
+private class QRCodeButton: UIButton {
+    var qrButtonTapped: (() -> Void)?
 }

@@ -301,6 +301,9 @@
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "DuckDuckGo로 비공개 검색을 하시겠습니까?";
 
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave 기본값";
+
 /* No comment provided by engineer. */
 "Delete" = "삭제";
 
@@ -574,21 +577,6 @@
 /* New Tab title */
 "NewTab" = "새 탭";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"NewTabPageSettingsAutoOpenKeyboard" = "키보드 자동으로 열기";
-
-/* A setting to enable or disable background images on the main screen. */
-"NewTabPageSettingsBackgroundImages" = "백그라운드 이미지 표시";
-
-/* A setting to enable or disable sponsored images from showing on the main screen. */
-"NewTabPageSettingsSponsoredImages" = "스폰서 이미지 표시";
-
-/* Title on settings page to adjust the primary home screen functionality. */
-"NewTabPageSettingsTitle" = "새 탭 페이지";
-
-/* A button title to show more bookmarks, that opens a new menu. */
-"NewTabPageShowMoreFavorites" = "더보기";
-
 /* Sync Alert */
 "NotEnoughWordsDescription" = "모든 단어를 입력한 후 다시 시도하십시오.";
 
@@ -627,6 +615,27 @@
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "스폰서 이미지 자세히 알아보기";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "키보드 자동으로 열기";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "백그라운드 이미지 표시";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "백그라운드 이미지";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "기본 이미지만";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "스폰서 이미지";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "새 탭 페이지";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "더보기";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "토큰으로 웹 제작자를 지원할 수 있습니다.";
@@ -1159,6 +1168,12 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "이용 약관";
 
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "공유...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "친구에게 Brave를 공유해주세요!";
+
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "자동";
 
@@ -1173,6 +1188,9 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "밝음";
+
+/* Name for app theme settings */
+"themesSettings" = "테마";
 
 /* History tableview section header */
 "Today" = "오늘";

@@ -1,3 +1,34 @@
+/* The body of the screen explaining Brave Shields
+   The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Informazioni su Brave Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Comandi avanzati";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Pubblicità e altre scocciature bloccate";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Scopri di più";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Modifica le impostazioni generali di Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Comandi generali";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Se il sito si vede male, prova Shields";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Su";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Giù";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "È il momento di ricevere un premio per le pubblicità che hai visto su Brave.";
 
@@ -94,11 +125,17 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Chiudi il menu Scudi";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Segnala un sito malfunzionante";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Segnalibri ripristinati";
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Preferiti ripristinati";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Stai navigando sul sito senza le protezioni alla privacy di Brave. Non funziona bene con Shields attivato?";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Attivare i suggerimenti di ricerca?";

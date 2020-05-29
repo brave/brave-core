@@ -299,7 +299,7 @@
 "BraveRewardsPoweredByUphold" = "Din Brave-lommebok er drevet av Uphold";
 
 /* No comment provided by engineer. */
-"BraveRewardsPublisherSendTip" = "Send et tips …";
+"BraveRewardsPublisherSendTip" = "Send tips …";
 
 /* No comment provided by engineer. */
 "BraveRewardsRecurringTipTitle" = "Gjentakende tips";
@@ -752,7 +752,7 @@
 "UserWalletVerifiedButtonTitle" = "Lommebok bekreftet";
 
 /* No comment provided by engineer. */
-"WalletCreationErrorBody" = "Noe gikk galt da du opprettet lommeboken. Prøv på nytt.";
+"WalletCreationErrorBody" = "Auda! Noe gikk galt. Prøv på nytt.";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorTitle" = "Feil";

@@ -16,11 +16,23 @@ public class UserReferralProgram {
     public static let shared = UserReferralProgram()
     
     private static let apiKeyPlistKey = "API_KEY"
+    private static let clipboardPrefix = "F83AB73F-9852-4F01-ABA8-7830B8825993"
     
     struct HostUrl {
         static let staging = "https://brave-laptop-updates-staging.herokuapp.com"
         static let prod = "https://laptop-updates.brave.com"
     }
+    
+    // In case of network problems when looking for referrral code
+    // we retry the call few times while the app is still alive.
+    private struct ReferralLookupRetry {
+        var timer: Timer?
+        var currentCount = 0
+        let retryLimit = 10
+        let retryTimeInterval = AppConstants.buildChannel.isPublic ? 3.minutes : 1.minutes
+    }
+    
+    private var referralLookupRetry = ReferralLookupRetry()
     
     let service: UrpService
     
@@ -29,6 +41,7 @@ public class UserReferralProgram {
             return Bundle.main.infoDictionary?[key] as? String
         }
         
+        // This should _probably_ correspond to the baseUrl for NTPDownloader
         let host = AppConstants.buildChannel == .developer ? HostUrl.staging : HostUrl.prod
         
         guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
@@ -44,13 +57,38 @@ public class UserReferralProgram {
     }
     
     /// Looks for referral and returns its landing page if possible.
-    public func referralLookup(completion: @escaping (String?) -> Void) {
+    public func referralLookup(refCode: String?, completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
         UrpLog.log("first run referral lookup")
         
-        service.referralCodeLookup { referral, _ in
+        let referralBlock: (ReferralData?, UrpError?) -> Void = { [weak self] referral, error in
+            guard let self = self else { return }
+            
+            if error == BraveShared.UrpError.endpointError {
+                UrpLog.log("URP look up had endpoint error, will retry on next launch.")
+                self.referralLookupRetry.timer?.invalidate()
+                self.referralLookupRetry.timer = nil
+                
+                // Hit max retry attempts.
+                if self.referralLookupRetry.currentCount > self.referralLookupRetry.retryLimit { return }
+                
+                self.referralLookupRetry.currentCount += 1
+                self.referralLookupRetry.timer =
+                    Timer.scheduledTimer(withTimeInterval: self.referralLookupRetry.retryTimeInterval,
+                                         repeats: true) { [weak self] _ in
+                        self?.referralLookup(refCode: refCode) { refCode, offerUrl in
+                            completion(refCode, offerUrl)
+                        }
+                }
+                return
+            }
+            
+            // Connection "succeeded"
+            
+            Preferences.URP.referralLookupOutstanding.value = false
             guard let ref = referral else {
                 log.info("No referral code found")
                 UrpLog.log("No referral code found")
+                completion(nil, nil)
                 return
             }
             
@@ -63,7 +101,7 @@ public class UserReferralProgram {
                     }
                 }
                 
-                completion(ref.offerPage)
+                completion(ref.referralCode, ref.offerPage)
                 UrpLog.log("Extended referral code found, opening landing page: \(ref.offerPage ?? "404")")
                 // We do not want to persist referral data for extended URPs
                 return
@@ -72,12 +110,25 @@ public class UserReferralProgram {
             Preferences.URP.downloadId.value = ref.downloadId
             Preferences.URP.referralCode.value = ref.referralCode
             
+            self.referralLookupRetry.timer?.invalidate()
+            self.referralLookupRetry.timer = nil
+            
             UrpLog.log("Found referral: downloadId: \(ref.downloadId), code: \(ref.referralCode)")
             // In case of network errors or getting `isFinalized = false`, we retry the api call.
             self.initRetryPingConnection(numberOfTimes: 30)
             
-            completion(nil)
+            completion(ref.referralCode, nil)
         }
+        
+        if let refCode = refCode {
+            // This is also potentially set after server network request,
+            //  esp important for binaries that require server ref code retrieval.
+            Preferences.URP.referralCode.value = refCode
+        }
+        
+        // Since ref-code method may not be repeatable (e.g. clipboard was cleared), this should be retrieved from prefs,
+        //  and not use the passed in referral code.
+        service.referralCodeLookup(refCode: UserReferralProgram.getReferralCode(), completion: referralBlock)
     }
     
     private func initRetryPingConnection(numberOfTimes: Int32) {
@@ -178,6 +229,24 @@ public class UserReferralProgram {
             return referralCode
         }
         return nil
+    }
+    
+    /// Passing string, attempts to derive a ref code from it.
+    /// Uses very strict matching.
+    /// Returns the sanitized code, or nil if no code was found
+    public class func sanitize(input: String?) -> String? {
+        guard
+            var input = input,
+            input.hasPrefix(self.clipboardPrefix),
+            input.count > self.clipboardPrefix.count
+            else { return nil }
+        
+        // +1 to strip off `:` that proceeds the defined prefix
+        input.removeFirst(self.clipboardPrefix.count + 1)
+        let valid = input.range(of: #"\b[A-Z]{3}[0-9]{3}\b"#, options: .regularExpression) != nil
+
+        // Both conditions must be met
+        return valid ? input : nil
     }
     
     /// Same as `customHeaders` only blocking on result, to gaurantee data is available

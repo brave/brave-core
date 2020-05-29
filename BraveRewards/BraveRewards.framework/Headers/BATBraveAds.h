@@ -57,8 +57,6 @@ NS_SWIFT_NAME(BraveAds)
 /// The environment that ads is communicating with. See ledger's BATEnvironment
 /// for appropriate values.
 @property (nonatomic, class) int environment;
-/// Marks if this is being ran in a test environment. Defaults to false
-@property (nonatomic, class, getter=isTesting) BOOL testing;
 
 #pragma mark - Initialization / Shutdown
 
@@ -87,10 +85,6 @@ NS_SWIFT_NAME(BraveAds)
 
 /// Remove all cached history (should be called when the user clears their browser history)
 - (void)removeAllHistory:(void (^)(BOOL))completion;
-
-/// Should be called when the user invokes "Show Sample Ad" on the Client; a Notification is then sent
-/// to the Client for processing
-- (void)serveSampleAd;
 
 #pragma mark - Confirmations
 
