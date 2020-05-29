@@ -534,7 +534,7 @@ class BraveAdsBrowserTest
   brave_ads::AdsServiceImpl* ads_service_;
 
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
-  const std::string newly_supported_locale_ = "en_053";
+  const std::string newly_supported_locale_ = "en_830";
 
   std::unique_ptr<brave_ads::NotificationHelperMock> notification_helper_mock_;
 
@@ -574,7 +574,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion) {
   // IMPORTANT: When adding new schema versions |newly_supported_locale_| must
   // be updated in |BraveAdsBrowserTest| to reflect a locale from the latest
-  // schema version in "bat-native-ads/src/bat/ads/internal/static_values.h"
+  // schema version in "bat-native-ads/src/bat/ads/internal/supported_regions.h"
 
   GetPrefs()->SetInteger(brave_ads::prefs::kSupportedRegionsLastSchemaVersion,
       brave_ads::prefs::kSupportedRegionsSchemaVersionNumber);
