@@ -80,6 +80,10 @@ export class Panel extends React.Component<Props, State> {
     chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
       this.props.actions.onRecurringTips(tips)
     })
+
+    chrome.braveRewards.getWalletProperties((properties: RewardsExtension.WalletProperties) => {
+      this.props.actions.onWalletProperties(properties)
+    })
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

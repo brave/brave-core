@@ -82,7 +82,7 @@ void BraveRewardsNativeWorker::OnCreateWallet(int32_t result) {
 void BraveRewardsNativeWorker::GetWalletProperties(JNIEnv* env, const
         base::android::JavaParamRef<jobject>& jcaller) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->FetchWalletProperties();
+    brave_rewards_service_->GetWalletProperties();
   }
 }
 

@@ -148,35 +148,6 @@
         ]
       },
       {
-        "name": "onWalletProperties",
-        "type": "function",
-        "description": "Fired when wallet properties (balance) is fetched",
-        "parameters": [
-          {
-            "name": "properties",
-            "type": "object",
-            "properties": {
-              "defaultTipChoices": {
-                "type": "array",
-                "description": "default tip choices for one-time tips",
-                "items": {
-                  "type": "number",
-                  "minimum": 0
-                }
-              },
-              "defaultMonthlyTipChoices": {
-                "type": "array",
-                "description": "default tip choices for recurring tips",
-                "items": {
-                  "type": "number",
-                  "minimum": 0
-                }
-              }
-            }
-          }
-        ]
-      },
-      {
         "name": "onAdsEnabled",
         "type": "function",
         "description": "",
@@ -515,7 +486,36 @@
         "name": "getWalletProperties",
         "type": "function",
         "description": "Get default values that we get from the server",
-        "parameters": []
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "properties",
+                "type": "object",
+                "properties": {
+                  "defaultTipChoices": {
+                    "type": "array",
+                    "description": "default tip choices for one-time tips",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "defaultMonthlyTipChoices": {
+                    "type": "array",
+                    "description": "default tip choices for recurring tips",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "getBalanceReport",

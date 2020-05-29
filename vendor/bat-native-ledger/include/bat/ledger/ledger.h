@@ -169,7 +169,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetAutoContribute() const = 0;
 
-  virtual void FetchWalletProperties(
+  virtual void GetWalletProperties(
       OnWalletPropertiesCallback callback) const = 0;
 
   virtual void FetchPromotions(
@@ -220,7 +220,7 @@ class LEDGER_EXPORT Ledger {
   virtual void GetAllBalanceReports(
       ledger::GetBalanceReportListCallback callback) const = 0;
 
-  virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;
+  virtual ledger::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
 
   virtual void RecoverWallet(
       const std::string& pass_phrase,

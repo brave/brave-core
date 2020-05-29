@@ -26,11 +26,7 @@ class ConfirmationsClientMock : public ConfirmationsClient {
   MOCK_METHOD1(OnWalletInitialized, void(
       ledger::Result result));
 
-  MOCK_METHOD0(FetchWalletProperties, void());
-
-  MOCK_METHOD2(OnWalletProperties, void(
-      ledger::Result result,
-      ledger::WalletPropertiesPtr));
+  MOCK_METHOD0(GetWalletProperties, void());
 
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,

@@ -69,9 +69,9 @@ void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
 }
 
 // static
-void BatLedgerImpl::OnFetchWalletProperties(
-    CallbackHolder<FetchWalletPropertiesCallback>* holder,
-    ledger::Result result,
+void BatLedgerImpl::OnGetWalletProperties(
+    CallbackHolder<GetWalletPropertiesCallback>* holder,
+    const ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -79,18 +79,19 @@ void BatLedgerImpl::OnFetchWalletProperties(
   delete holder;
 }
 
-void BatLedgerImpl::FetchWalletProperties(
-    FetchWalletPropertiesCallback callback) {
-  // delete in OnFetchWalletProperties
-  auto* holder = new CallbackHolder<FetchWalletPropertiesCallback>(
+void BatLedgerImpl::GetWalletProperties(
+    GetWalletPropertiesCallback callback) {
+  // delete in OnGetWalletProperties
+  auto* holder = new CallbackHolder<GetWalletPropertiesCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->FetchWalletProperties(
-      std::bind(BatLedgerImpl::OnFetchWalletProperties, holder, _1, _2));
+  ledger_->GetWalletProperties(
+      std::bind(BatLedgerImpl::OnGetWalletProperties, holder, _1, _2));
 }
 
-void BatLedgerImpl::GetAutoContributeProps(
-    GetAutoContributePropsCallback callback) {
-  ledger::AutoContributePropsPtr props = ledger_->GetAutoContributeProps();
+void BatLedgerImpl::GetAutoContributeProperties(
+    GetAutoContributePropertiesCallback callback) {
+  ledger::AutoContributePropertiesPtr props =
+      ledger_->GetAutoContributeProperties();
   std::move(callback).Run(std::move(props));
 }
 

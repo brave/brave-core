@@ -115,7 +115,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_CONST_METHOD1(GetAllBalanceReports,
       void(ledger::GetBalanceReportListCallback));
 
-  MOCK_METHOD0(GetAutoContributeProps, ledger::AutoContributePropsPtr());
+  MOCK_METHOD0(GetAutoContributeProperties,
+      ledger::AutoContributePropertiesPtr());
 
   MOCK_METHOD1(SaveLedgerState, void(const std::string&));
 
@@ -131,11 +132,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(OnWalletInitializedInternal,
       void(ledger::Result, ledger::ResultCallback));
 
-  MOCK_METHOD2(OnWalletProperties,
-      void(ledger::Result,
-          const ledger::WalletProperties&));
-
-  MOCK_CONST_METHOD1(FetchWalletProperties,
+  MOCK_CONST_METHOD1(GetWalletProperties,
       void(const ledger::OnWalletPropertiesCallback));
 
   MOCK_CONST_METHOD1(FetchPromotions,

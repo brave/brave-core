@@ -10,7 +10,11 @@ import { defaultState } from '../storage'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
-    case types.INIT_AUTOCONTRIBUTE_SETTINGS: {
+    case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
+      chrome.send('brave_rewards.getAutoContributeProperties')
+      break
+    }
+    case types.ON_AUTO_CONTRIBUTE_PROPERTIES: {
       state = { ...state }
       let properties = action.payload.properties
       let ui = state.ui

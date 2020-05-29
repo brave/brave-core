@@ -35,7 +35,9 @@ class MockRewardsService : public RewardsService {
   ~MockRewardsService() {}
 
   MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
-  MOCK_METHOD0(FetchWalletProperties, void());
+  MOCK_METHOD1(
+      GetWalletProperties,
+      void(brave_rewards::GetWalletPropertiesCallback callback));
   MOCK_METHOD7(GetContentSiteList,
       void(uint32_t,
            uint32_t,
@@ -122,8 +124,8 @@ class MockRewardsService : public RewardsService {
                      brave_rewards::RewardsNotificationService*());
   MOCK_METHOD0(CheckImported, bool());
   MOCK_METHOD0(SetBackupCompleted, void());
-  MOCK_METHOD1(GetAutoContributeProps,
-      void(const brave_rewards::GetAutoContributePropsCallback&));
+  MOCK_METHOD1(GetAutoContributeProperties,
+      void(const brave_rewards::GetAutoContributePropertiesCallback&));
   MOCK_METHOD1(GetPendingContributionsTotal,
       void(const brave_rewards::GetPendingContributionsTotalCallback&));
   MOCK_CONST_METHOD1(GetRewardsMainEnabled,

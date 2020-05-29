@@ -28,10 +28,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnWalletInitialized(
       RewardsService* rewards_service,
       int32_t result) {}
-  virtual void OnWalletProperties(
-      RewardsService* rewards_service,
-      int error_code,
-      std::unique_ptr<brave_rewards::WalletProperties> properties) {}
   virtual void OnFetchPromotions(
       RewardsService* rewards_service,
       const uint32_t result,

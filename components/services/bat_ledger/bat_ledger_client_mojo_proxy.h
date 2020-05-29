@@ -27,9 +27,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       mojom::BatLedgerClientAssociatedPtrInfo client_info);
   ~BatLedgerClientMojoProxy() override;
 
-  void OnWalletProperties(
-      ledger::Result result,
-      ledger::WalletPropertiesPtr properties) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& contribution_id,
                            const double amount,

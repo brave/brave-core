@@ -25,8 +25,8 @@ using ActivityInfoFilterOrderPairPtr = mojom::ActivityInfoFilterOrderPairPtr;
 
 using ActivityMonth = mojom::ActivityMonth;
 
-using AutoContributeProps = mojom::AutoContributeProps;
-using AutoContributePropsPtr = mojom::AutoContributePropsPtr;
+using AutoContributeProperties = mojom::AutoContributeProperties;
+using AutoContributePropertiesPtr = mojom::AutoContributePropertiesPtr;
 
 using Balance = mojom::Balance;
 using BalancePtr = mojom::BalancePtr;

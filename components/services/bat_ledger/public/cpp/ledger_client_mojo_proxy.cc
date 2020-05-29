@@ -41,14 +41,6 @@ void LedgerClientMojoProxy::LoadLedgerState(LoadLedgerStateCallback callback) {
       std::bind(LedgerClientMojoProxy::OnLoadLedgerState, holder, _1, _2));
 }
 
-void LedgerClientMojoProxy::OnWalletProperties(
-    const ledger::Result result,
-    ledger::WalletPropertiesPtr properties) {
-  ledger_client_->OnWalletProperties(
-      result,
-      std::move(properties));
-}
-
 // static
 void LedgerClientMojoProxy::OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,

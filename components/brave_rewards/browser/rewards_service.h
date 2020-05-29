@@ -24,6 +24,7 @@
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/monthly_report.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -55,7 +56,7 @@ using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
-using GetAutoContributePropsCallback = base::Callback<void(
+using GetAutoContributePropertiesCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(int)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(int)>;
@@ -121,13 +122,17 @@ using GetAllMonthlyReportIdsCallback =
 using GetAllPromotionsCallback =
     base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
 
+using GetWalletPropertiesCallback = base::OnceCallback<void(
+    const int32_t,
+    std::unique_ptr<brave_rewards::WalletProperties>)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
   ~RewardsService() override;
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
-  virtual void FetchWalletProperties() = 0;
+  virtual void GetWalletProperties(GetWalletPropertiesCallback callback) = 0;
   virtual void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -226,8 +231,8 @@ class RewardsService : public KeyedService {
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual void SetBackupCompleted() = 0;
-  virtual void GetAutoContributeProps(
-    const GetAutoContributePropsCallback& callback) = 0;
+  virtual void GetAutoContributeProperties(
+    const GetAutoContributePropertiesCallback& callback) = 0;
   virtual void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(

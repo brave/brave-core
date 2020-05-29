@@ -765,45 +765,24 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
   }
 }
 
-void RewardsServiceImpl::OnWalletProperties(
-    const ledger::Result result,
-    ledger::WalletPropertiesPtr properties) {
-  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
-  for (auto& observer : observers_) {
-    if (properties) {
-      wallet_properties.reset(new brave_rewards::WalletProperties);
-      wallet_properties->parameters_choices = properties->parameters_choices;
-      wallet_properties->monthly_amount = properties->fee_amount;
-      wallet_properties->default_tip_choices = properties->default_tip_choices;
-      wallet_properties->default_monthly_tip_choices =
-          properties->default_monthly_tip_choices;
-    }
-    // webui
-    observer.OnWalletProperties(this,
-                                static_cast<int>(result),
-                                std::move(wallet_properties));
-  }
-}
-
-void RewardsServiceImpl::OnGetAutoContributeProps(
-    const GetAutoContributePropsCallback& callback,
-    ledger::AutoContributePropsPtr props) {
+void RewardsServiceImpl::OnGetAutoContributeProperties(
+    const GetAutoContributePropertiesCallback& callback,
+    ledger::AutoContributePropertiesPtr props) {
   if (!props) {
     callback.Run(nullptr);
     return;
   }
 
-  auto auto_contri_props =
-    std::make_unique<brave_rewards::AutoContributeProps>();
-  auto_contri_props->enabled_contribute = props->enabled_contribute;
-  auto_contri_props->contribution_min_time = props->contribution_min_time;
-  auto_contri_props->contribution_min_visits = props->contribution_min_visits;
-  auto_contri_props->contribution_non_verified =
+  auto properties = std::make_unique<brave_rewards::AutoContributeProps>();
+  properties->enabled_contribute = props->enabled_contribute;
+  properties->contribution_min_time = props->contribution_min_time;
+  properties->contribution_min_visits = props->contribution_min_visits;
+  properties->contribution_non_verified =
     props->contribution_non_verified;
-  auto_contri_props->contribution_videos = props->contribution_videos;
-  auto_contri_props->reconcile_stamp = props->reconcile_stamp;
+  properties->contribution_videos = props->contribution_videos;
+  properties->reconcile_stamp = props->reconcile_stamp;
 
-  callback.Run(std::move(auto_contri_props));
+  callback.Run(std::move(properties));
 }
 
 void RewardsServiceImpl::OnGetRewardsInternalsInfo(
@@ -826,13 +805,15 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
   std::move(callback).Run(std::move(rewards_internals_info));
 }
 
-void RewardsServiceImpl::GetAutoContributeProps(
-    const GetAutoContributePropsCallback& callback) {
+void RewardsServiceImpl::GetAutoContributeProperties(
+    const GetAutoContributePropertiesCallback& callback) {
   if (!Connected())
     return;
 
-  bat_ledger_->GetAutoContributeProps(base::BindOnce(
-        &RewardsServiceImpl::OnGetAutoContributeProps, AsWeakPtr(), callback));
+  bat_ledger_->GetAutoContributeProperties(base::BindOnce(
+        &RewardsServiceImpl::OnGetAutoContributeProperties,
+        AsWeakPtr(),
+        callback));
 }
 
 void RewardsServiceImpl::OnRecoverWallet(
@@ -1110,26 +1091,35 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   callback(response);
 }
 
-void RewardsServiceImpl::OnFetchWalletProperties(
+void RewardsServiceImpl::OnGetWalletProperties(
+    GetWalletPropertiesCallback callback,
     const ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
-  OnWalletProperties(result, std::move(properties));
+  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
+  if (properties) {
+    wallet_properties.reset(new brave_rewards::WalletProperties);
+    wallet_properties->parameters_choices = properties->parameters_choices;
+    wallet_properties->monthly_amount = properties->fee_amount;
+    wallet_properties->default_tip_choices = properties->default_tip_choices;
+    wallet_properties->default_monthly_tip_choices =
+        properties->default_monthly_tip_choices;
+  }
+
+  std::move(callback).Run(
+      static_cast<int32_t>(result),
+      std::move(wallet_properties));
 }
 
-void RewardsServiceImpl::FetchWalletProperties() {
-  if (ready().is_signaled()) {
-    if (!Connected()) {
-      return;
-    }
-
-    bat_ledger_->FetchWalletProperties(
-        base::BindOnce(&RewardsServiceImpl::OnFetchWalletProperties,
-                       AsWeakPtr()));
-  } else {
-    ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::FetchWalletProperties,
-            base::Unretained(this)));
+void RewardsServiceImpl::GetWalletProperties(
+    GetWalletPropertiesCallback callback) {
+  if (!Connected()) {
+    return;
   }
+
+  bat_ledger_->GetWalletProperties(
+      base::BindOnce(&RewardsServiceImpl::OnGetWalletProperties,
+                     AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnFetchPromotions(

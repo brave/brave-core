@@ -24,11 +24,7 @@ using ::testing::_;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
-  MockRewardsServiceObserver() {}
   MOCK_METHOD2(OnWalletInitialized, void(RewardsService*, int32_t));
-  MOCK_METHOD3(OnWalletProperties, void(RewardsService*,
-      int,
-      std::unique_ptr<brave_rewards::WalletProperties>));
   MOCK_METHOD3(OnFetchPromotions, void(RewardsService*,
       const uint32_t,
       const std::vector<brave_rewards::Promotion>& list));
@@ -90,13 +86,6 @@ class RewardsServiceTest : public testing::Test {
   std::unique_ptr<MockRewardsServiceObserver> observer_;
   base::ScopedTempDir temp_dir_;
 };
-
-TEST_F(RewardsServiceTest, OnWalletProperties) {
-  // We always need to call observer as we report errors back even when we have
-  // null pointer
-  EXPECT_CALL(*observer(), OnWalletProperties(_, 1, _)).Times(1);
-  rewards_service()->OnWalletProperties(ledger::Result::LEDGER_ERROR, nullptr);
-}
 
 // add test for strange entries
 

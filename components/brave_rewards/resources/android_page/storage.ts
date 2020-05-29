@@ -23,9 +23,6 @@ export const defaultState: Rewards.State = {
   contributionVideos: true,
   donationAbilityYT: true,
   donationAbilityTwitter: true,
-  walletInfo: {
-    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
-  },
   recoveryKey: '',
   reconcileStamp: 0,
   ui: {
@@ -74,7 +71,8 @@ export const defaultState: Rewards.State = {
     year: -1
   },
   monthlyReportIds: [],
-  currentCountryCode: ''
+  currentCountryCode: '',
+  autoContributeChoices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
 }
 
 const cleanData = (state: Rewards.State) => {

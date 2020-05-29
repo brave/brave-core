@@ -23,10 +23,6 @@ class MockLedgerClient : public LedgerClient {
   MockLedgerClient();
   ~MockLedgerClient() override;
 
-  MOCK_METHOD2(OnWalletProperties, void(
-      ledger::Result result,
-      ledger::WalletPropertiesPtr));
-
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
       const std::string& contribution_id,

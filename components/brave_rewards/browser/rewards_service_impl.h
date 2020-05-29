@@ -112,7 +112,7 @@ class RewardsServiceImpl : public RewardsService,
           notification_observer);
   void StartLedger();
   void CreateWallet(CreateWalletCallback callback) override;
-  void FetchWalletProperties() override;
+  void GetWalletProperties(GetWalletPropertiesCallback callback) override;
   void FetchPromotions() override;
   void ClaimPromotion(
       const std::string& promotion_id,
@@ -208,8 +208,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetShortRetries(bool short_retries);
   void GetShortRetries(const GetShortRetriesCallback& callback);
 
-  void GetAutoContributeProps(
-      const GetAutoContributePropsCallback& callback) override;
+  void GetAutoContributeProperties(
+      const GetAutoContributePropertiesCallback& callback) override;
   void GetPendingContributionsTotal(
       const GetPendingContributionsTotalCallback& callback) override;
   void GetRewardsMainEnabled(
@@ -323,7 +323,6 @@ class RewardsServiceImpl : public RewardsService,
 
  private:
   friend class ::BraveRewardsBrowserTest;
-  FRIEND_TEST_ALL_PREFIXES(RewardsServiceTest, OnWalletProperties);
 
   const base::OneShotEvent& ready() const { return ready_; }
 
@@ -339,8 +338,10 @@ class RewardsServiceImpl : public RewardsService,
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
-  void OnFetchWalletProperties(const ledger::Result result,
-                               ledger::WalletPropertiesPtr properties);
+  void OnGetWalletProperties(
+      GetWalletPropertiesCallback callback,
+      const ledger::Result result,
+      ledger::WalletPropertiesPtr properties);
   void OnFetchPromotions(
     const ledger::Result result,
     ledger::PromotionList promotions);
@@ -373,9 +374,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::BalanceReportInfoPtr report);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
-  void OnWalletProperties(
-      const ledger::Result result,
-      ledger::WalletPropertiesPtr properties) override;
 
   void OnGetOneTimeTips(
       GetRecurringTipsCallback callback,
@@ -610,9 +608,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetTransactionHistory(
       GetTransactionHistoryCallback callback,
       const std::string& json);
-  void OnGetAutoContributeProps(
-      const GetAutoContributePropsCallback& callback,
-      ledger::AutoContributePropsPtr props);
+  void OnGetAutoContributeProperties(
+      const GetAutoContributePropertiesCallback& callback,
+      ledger::AutoContributePropertiesPtr props);
   void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
                                  ledger::RewardsInternalsInfoPtr info);
   void SetRewardsMainEnabledPref(bool enabled);

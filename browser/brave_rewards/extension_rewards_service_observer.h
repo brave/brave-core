@@ -30,10 +30,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   // RewardsServiceObserver implementation
   void OnWalletInitialized(RewardsService* rewards_service,
                            int32_t result) override;
-  void OnWalletProperties(RewardsService* rewards_service,
-                          int error_code,
-                          std::unique_ptr<brave_rewards::WalletProperties>
-                              wallet_properties) override;
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
       const brave_rewards::ContentSiteList& list) override;

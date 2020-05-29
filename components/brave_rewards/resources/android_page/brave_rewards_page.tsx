@@ -57,7 +57,7 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletCreateFailed()
   }
 
-  function walletProperties (properties: {status: number, wallet: Rewards.WalletProperties, monthlyAmount: number}) {
+  function walletProperties (properties: {status: number, choices: number[], monthlyAmount: number}) {
     getActions().onWalletProperties(properties)
   }
 
@@ -105,8 +105,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onCurrentTips(list)
   }
 
-  function initAutoContributeSettings (properties: any) {
-    getActions().onInitAutoContributeSettings(properties)
+  function autoContributeProperties (properties: any) {
+    getActions().onAutoContributeProperties(properties)
   }
 
   function adsData (adsData: Rewards.AdsData) {
@@ -194,7 +194,7 @@ window.cr.define('brave_rewards', function () {
     contributionAmount,
     recurringTips,
     currentTips,
-    initAutoContributeSettings,
+    autoContributeProperties,
     adsData,
     pendingContributions,
     onPendingContributionSaved,

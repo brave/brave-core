@@ -156,21 +156,6 @@ void BraveProfileWriter::OnWalletBackupComplete(bool result) {
   rewards_service_->RecoverWallet(ledger_.passphrase);
 }
 
-void BraveProfileWriter::OnWalletProperties(
-  brave_rewards::RewardsService* rewards_service,
-  int error_code,
-  std::unique_ptr<brave_rewards::WalletProperties> properties) {
-  if (error_code) {
-    // Cancel the import if wallet properties failed
-    // (ex: creation failed, wallet is corrupt, etc)
-    std::ostringstream msg;
-    msg << "An error occurred getting wallet properties "
-      << "(error_code=" << error_code << ")";
-    CancelWalletImport(msg.str());
-    return;
-  }
-}
-
 void BraveProfileWriter::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
@@ -325,7 +310,7 @@ void BraveProfileWriter::OnIsWalletCreated(bool created) {
   // (after properties are fetched) should be considered for backup.
   LOG(INFO) << "Wallet exists; fetching details...";
   rewards_service_->AddObserver(this);
-  rewards_service_->FetchWalletProperties();
+  rewards_service_->GetWalletProperties();
   rewards_service_->FetchBalance(base::BindOnce(
           &BraveProfileWriter::OnFetchBalance,
           AsWeakPtr()));
