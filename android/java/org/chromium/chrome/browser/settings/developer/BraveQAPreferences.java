@@ -25,6 +25,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.FileUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -36,6 +38,11 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.chrome.browser.util.BraveDbUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
 
 /**
  * Settings fragment containing preferences for QA team.
@@ -306,15 +313,20 @@ public class BraveQAPreferences extends BravePreferenceFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            mFileToImport = data.getData().getPath();
-            String pathParts[] = mFileToImport.split(":");
-            if (pathParts.length == 2) {
-                mFileToImport = pathParts[1];
+        if (requestCode == CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK
+                && data != null) {
+            try {
+                InputStream in =
+                        ContextUtils.getApplicationContext().getContentResolver().openInputStream(
+                                data.getData());
+                mFileToImport = mDbUtil.importDestinationPath() + ".prep";
+                FileUtils.copyStreamToFile(in, new File(mFileToImport));
+                in.close();
+            } catch (IOException e) {
+                Log.e(BraveDbUtil.getTag(), "Error on preparing database file: " + e);
+                return;
             }
-            if (isStoragePermissionGranted(false)) {
-                requestRestart(true);
-            }
+            requestRestart(true);
         }
     }
 
@@ -330,6 +342,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
                         mDbUtil.setPerformDbExportOnStart(true);
                     }
                     BraveRelaunchUtils.restart();
+                } else {
+                    mDbUtil.cleanUpDbOperationRequest();
                 }
             }
         };
