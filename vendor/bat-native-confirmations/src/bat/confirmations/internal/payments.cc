@@ -12,6 +12,7 @@
 #include "bat/confirmations/internal/time_util.h"
 
 #include "base/json/json_reader.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -88,8 +89,10 @@ bool Payments::SetFromDictionary(base::DictionaryValue* dictionary) {
       return false;
     }
 
-    payment.transaction_count =
-        std::stoull(transaction_count_value->GetString());
+    if (!base::StringToUint64(transaction_count_value->GetString(),
+        &payment.transaction_count)) {
+      return false;
+    }
 
     payments.push_back(payment);
   }
@@ -303,7 +306,9 @@ bool Payments::GetTransactionCountFromDictionary(
     return false;
   }
 
-  *transaction_count = std::stoull(transaction_count_value);
+  if (!base::StringToUint64(transaction_count_value, transaction_count)) {
+    return false;
+  }
 
   return true;
 }
