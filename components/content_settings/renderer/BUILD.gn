@@ -1,0 +1,31 @@
+import("//build/config/features.gni")
+
+source_set("renderer") {
+  visibility = [
+    "//chrome/renderer/*",
+    "//components/content_settings/renderer/*",
+    "//brave/renderer/*",
+    "//brave:child_dependencies",
+    "//brave/test:*"
+  ]
+
+  sources = [
+    "brave_content_settings_agent_impl.cc",
+    "brave_content_settings_agent_impl.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/brave_shields/common",
+    "//chrome/common",
+    "//components/content_settings/core/common",
+    "//components/content_settings/renderer",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public:blink",
+    "//brave/content:common",
+    "//url",
+  ]
+}

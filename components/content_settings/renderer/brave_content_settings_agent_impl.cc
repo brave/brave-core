@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/renderer/brave_content_settings_agent_impl.h"
+#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
 #include <string>
 #include <utility>
@@ -33,6 +33,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
 
+namespace content_settings {
 namespace {
 
 GURL GetOriginOrURL(
@@ -70,9 +71,10 @@ bool IsBraveShieldsDown(const blink::WebFrame* frame,
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
     bool should_whitelist,
-    service_manager::BinderRegistry* registry)
-    : ContentSettingsAgentImpl(render_frame, should_whitelist, registry) {
-}
+    std::unique_ptr<Delegate> delegate)
+    : ContentSettingsAgentImpl(render_frame,
+                               should_whitelist,
+                               std::move(delegate)) {}
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {
 }
@@ -182,8 +184,8 @@ bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
   return !content_setting_rules_ ||
-         ::IsBraveShieldsDown(frame, secondary_url,
-                              content_setting_rules_->brave_shields_rules);
+         ::content_settings::IsBraveShieldsDown(
+             frame, secondary_url, content_setting_rules_->brave_shields_rules);
 }
 
 bool BraveContentSettingsAgentImpl::AllowFingerprinting(
@@ -295,3 +297,5 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   return allow;
 }
+
+}  // namespace content_settings
