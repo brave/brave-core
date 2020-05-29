@@ -88,7 +88,7 @@ void DatabaseSKUOrder::InsertOrUpdate(
     ledger::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order is null");
+    BLOG(1, "Order is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -129,7 +129,7 @@ void DatabaseSKUOrder::UpdateStatus(
     const ledger::SKUOrderStatus status,
     ledger::ResultCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    BLOG(1, "Order id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -160,7 +160,7 @@ void DatabaseSKUOrder::GetRecord(
     const std::string& order_id,
     ledger::GetSKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    BLOG(1, "Order id is empty");
     callback({});
     return;
   }
@@ -208,6 +208,8 @@ void DatabaseSKUOrder::OnGetRecord(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback({});
     return;
   }
@@ -235,7 +237,7 @@ void DatabaseSKUOrder::OnGetRecordItems(
     ledger::GetSKUOrderCallback callback) {
   auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
   if (!order) {
-    BLOG(0, "Order is null");
+    BLOG(1, "Order is null");
     callback({});
     return;
   }
@@ -248,7 +250,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
     const std::string& contribution_id,
     ledger::GetSKUOrderCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    BLOG(1, "Contribution id is empty");
     callback({});
     return;
   }
@@ -289,7 +291,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
-    BLOG(0, "Order/contribution id is empty " <<
+    BLOG(1, "Order/contribution id is empty " <<
         order_id << "/" << contribution_id);
     callback(ledger::Result::LEDGER_ERROR);
     return;

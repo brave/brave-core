@@ -137,7 +137,7 @@ void Uphold::FetchBalance(
   if (!wallet ||
       wallet->token.empty() ||
       wallet->address.empty()) {
-    BLOG(0, "Wallet data is empty");
+    BLOG(1, "Wallet data is empty");
     callback(ledger::Result::LEDGER_OK, 0.0);
     return;
   }

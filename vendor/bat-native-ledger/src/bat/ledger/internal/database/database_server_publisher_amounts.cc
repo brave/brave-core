@@ -185,7 +185,7 @@ void DatabaseServerPublisherAmounts::InsertOrUpdateList(
   DCHECK(transaction);
 
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     return;
   }
 
@@ -221,7 +221,7 @@ void DatabaseServerPublisherAmounts::InsertOrUpdateList(
   }
 
   if (query.empty()) {
-    BLOG(0, "Query is empty");
+    BLOG(1, "Query is empty");
     return;
   }
 
@@ -237,7 +237,7 @@ void DatabaseServerPublisherAmounts::GetRecord(
     const std::string& publisher_key,
     ServerPublisherAmountsCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback({});
     return;
   }

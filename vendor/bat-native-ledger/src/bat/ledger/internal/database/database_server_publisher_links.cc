@@ -245,7 +245,7 @@ void DatabaseServerPublisherLinks::GetRecord(
     const std::string& publisher_key,
     ServerPublisherLinksCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback({});
     return;
   }

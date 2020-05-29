@@ -83,7 +83,7 @@ void DatabaseProcessedPublisher::InsertOrUpdateList(
     const std::vector<std::string>& list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -115,7 +115,7 @@ void DatabaseProcessedPublisher::WasProcessed(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

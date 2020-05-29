@@ -452,7 +452,7 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const uint64_t stamp = ledger_->GetBootStamp();
 
   if (!payment_id.empty() && stamp != 0) {
-    BLOG(0, "Wallet is ok");
+    BLOG(1, "Wallet is ok");
     callback(ledger::Result::WALLET_CREATED);
     return;
   }

@@ -603,7 +603,7 @@ void Promotion::CorruptedPromotionFixed(const ledger::Result result) {
 
 void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
   if (list.empty()) {
-    BLOG(0, "Creds list is empty");
+    BLOG(1, "Creds list is empty");
     ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
     return;
   }

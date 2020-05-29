@@ -126,7 +126,7 @@ void DatabaseBalanceReport::InsertOrUpdate(
     ledger::BalanceReportInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info || info->id.empty()) {
-    BLOG(0, "Id is empty");
+    BLOG(1, "Id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -164,7 +164,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
     ledger::BalanceReportInfoList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    BLOG(1, "List is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -207,7 +207,7 @@ void DatabaseBalanceReport::SetAmount(
     double amount,
     ledger::ResultCallback callback) {
   if (month == ledger::ActivityMonth::ANY || year == 0) {
-    BLOG(0, "Record size is not correct " << month << "/" << year);
+    BLOG(1, "Record size is not correct " << month << "/" << year);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -253,7 +253,7 @@ void DatabaseBalanceReport::GetRecord(
     int year,
     ledger::GetBalanceReportCallback callback) {
   if (month == ledger::ActivityMonth::ANY || year == 0) {
-    BLOG(0, "Record size is not correct " << month << "/" << year);
+    BLOG(1, "Record size is not correct " << month << "/" << year);
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
@@ -316,6 +316,8 @@ void DatabaseBalanceReport::OnGetRecord(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }

@@ -85,7 +85,7 @@ void DatabaseInitialize::ExecuteCreateScript(
     const int table_version,
     ledger::ResultCallback callback) {
   if (script.empty()) {
-    BLOG(0, "Script is empty");
+    BLOG(1, "Script is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

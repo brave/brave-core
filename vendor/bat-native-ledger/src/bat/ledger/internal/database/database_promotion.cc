@@ -223,7 +223,7 @@ void DatabasePromotion::InsertOrUpdate(
     ledger::PromotionPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
-    BLOG(0, "Info is null");
+    BLOG(1, "Info is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -265,7 +265,7 @@ void DatabasePromotion::GetRecord(
     const std::string& id,
     ledger::GetPromotionCallback callback) {
   if (id.empty()) {
-    BLOG(0, "Id is empty");
+    BLOG(1, "Id is empty");
     return callback({});
   }
 
@@ -319,6 +319,8 @@ void DatabasePromotion::OnGetRecord(
   }
 
   if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback({});
     return;
   }
@@ -419,7 +421,7 @@ void DatabasePromotion::DeleteRecordList(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
-    BLOG(0, "List of ids is empty");
+    BLOG(1, "List of ids is empty");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -447,7 +449,7 @@ void DatabasePromotion::SaveClaimId(
     const std::string& claim_id,
     ledger::ResultCallback callback) {
   if (promotion_id.empty() || claim_id.empty()) {
-    BLOG(0, "Data is empty " << promotion_id << "/" << claim_id);
+    BLOG(1, "Data is empty " << promotion_id << "/" << claim_id);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -509,7 +511,7 @@ void DatabasePromotion::UpdateRecordsStatus(
     const ledger::PromotionStatus status,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
-    BLOG(0, "List of ids is empty");
+    BLOG(1, "List of ids is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -539,7 +541,7 @@ void DatabasePromotion::CredentialCompleted(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
   if (promotion_id.empty()) {
-    BLOG(0, "Promotion id is empty");
+    BLOG(1, "Promotion id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -573,7 +575,7 @@ void DatabasePromotion::GetRecords(
     const std::vector<std::string>& ids,
     ledger::GetPromotionListCallback callback) {
   if (ids.empty()) {
-    BLOG(0, "List of ids is empty");
+    BLOG(1, "List of ids is empty");
     callback({});
     return;
   }
@@ -657,7 +659,7 @@ void DatabasePromotion::GetRecordsByType(
     const std::vector<ledger::PromotionType>& types,
     ledger::GetPromotionListCallback callback) {
   if (types.empty()) {
-    BLOG(0, "List of types is empty");
+    BLOG(1, "List of types is empty");
     callback({});
     return;
   }
@@ -709,7 +711,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
-    BLOG(0, "List of ids is empty");
+    BLOG(1, "List of ids is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

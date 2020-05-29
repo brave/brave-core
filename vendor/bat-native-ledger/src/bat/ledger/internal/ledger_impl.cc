@@ -114,7 +114,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     auto wallet_info = legacy_bat_state_->GetWalletInfo();
     SetConfirmationsWalletInfo(wallet_info);
   } else {
-    BLOG(0, "Failed to initialize wallet");
+    BLOG(0, "Failed to initialize wallet " << result);
   }
 }
 
@@ -123,7 +123,7 @@ void LedgerImpl::Initialize(
     ledger::ResultCallback callback) {
   DCHECK(!initializing_);
   if (initializing_) {
-    BLOG(0, "Already initializing ledger");
+    BLOG(1, "Already initializing ledger");
     return;
   }
 

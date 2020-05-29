@@ -25,7 +25,7 @@ bool DatabaseTable::InsertIndex(
   DCHECK(!key.empty());
 
   if (!transaction) {
-    BLOG(0, "Transactions is null");
+    BLOG(1, "Transactions is null");
     return false;
   }
 

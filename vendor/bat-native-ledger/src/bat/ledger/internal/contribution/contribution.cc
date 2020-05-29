@@ -473,7 +473,7 @@ void Contribution::OnEntrySaved(
       braveledger_bind_util::FromContributionQueueToString(queue->Clone()));
 
     ledger_->SaveContributionQueue(queue->Clone(), save_callback);
-  } else {
+  } else if (queue->type != ledger::RewardsType::ONE_TIME_TIP) {
     MarkContributionQueueAsComplete(queue->id);
   }
 }

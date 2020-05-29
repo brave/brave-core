@@ -133,7 +133,7 @@ void DatabaseCredsBatch::InsertOrUpdate(
     ledger::CredsBatchPtr creds,
     ledger::ResultCallback callback) {
   if (!creds) {
-    BLOG(0, "Creds is null");
+    BLOG(1, "Creds is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -224,7 +224,8 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(0, "Record size is not correct");
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
     callback(nullptr);
     return;
   }
@@ -251,7 +252,7 @@ void DatabaseCredsBatch::SaveSignedCreds(
     ledger::CredsBatchPtr creds,
     ledger::ResultCallback callback) {
   if (!creds) {
-    BLOG(0, "Creds is null");
+    BLOG(1, "Creds is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

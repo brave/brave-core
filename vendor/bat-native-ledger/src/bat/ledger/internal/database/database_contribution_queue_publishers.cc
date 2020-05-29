@@ -268,7 +268,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     ledger::ContributionQueuePublisherList list,
     ledger::ResultCallback callback) {
   if (id.empty() || list.empty()) {
-    BLOG(0, "Empty data");
+    BLOG(1, "Empty data");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -303,7 +303,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
     const std::string& queue_id,
     ContributionQueuePublishersListCallback callback) {
   if (queue_id.empty()) {
-    BLOG(0, "Queue id is empty");
+    BLOG(1, "Queue id is empty");
     callback({});
     return;
   }

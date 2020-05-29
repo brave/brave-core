@@ -175,7 +175,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
     ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -278,7 +278,7 @@ void DatabaseRecurringTip::DeleteRecord(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    BLOG(1, "Publisher key is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
