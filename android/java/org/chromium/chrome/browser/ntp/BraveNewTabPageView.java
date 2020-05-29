@@ -57,6 +57,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
+import org.chromium.chrome.browser.offlinepages.DownloadUiActionFlags;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -501,8 +502,13 @@ public class BraveNewTabPageView extends NewTabPageView {
                     menu.add(R.string.contextmenu_save_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            RequestCoordinatorBridge.getForProfile(mProfile).savePageLater(
-                                topSite.getDestinationUrl(), OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, true /* userRequested */);
+                            if (mTab != null) {
+                                OfflinePageBridge.getForProfile(mProfile).scheduleDownload(mTab.getWebContents(),
+                                        OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, topSite.getDestinationUrl(), DownloadUiActionFlags.ALL);
+                            } else {
+                                RequestCoordinatorBridge.getForProfile(mProfile).savePageLater(
+                                        topSite.getDestinationUrl(), OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, true /* userRequested */);
+                            }
                             return true;
                         }
                     });
