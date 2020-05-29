@@ -66,8 +66,7 @@ void WaitForAccessTokenResponse(brave_sync::FakeAccessTokenFetcher* fetcher);
 #define BRAVE_SET_ACCESS_TOKEN_RESPONSE                                        \
   access_token_fetcher->SetAccessTokenResponseForTest(                         \
       brave_sync::AccessTokenConsumer::TokenResponse(                          \
-          "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1), \
-          ""));
+          "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1)));
 #define BRAVE_ON_REFRESH_TOKEN_UPDATED  \
   CoreAccountInfo account_info;         \
   account_info.account_id = account_id; \

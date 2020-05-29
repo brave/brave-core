@@ -20,8 +20,7 @@ class AccessTokenConsumer {
   struct TokenResponse {
     TokenResponse() = default;
     TokenResponse(const std::string& access_token,
-                  const base::Time& expiration_time,
-                  const std::string& id_token);
+                  const base::Time& expiration_time);
     TokenResponse(const TokenResponse& response);
 
     // access token.
@@ -30,10 +29,6 @@ class AccessTokenConsumer {
     // The date until which the |access_token| can be used.
     // This value has a built-in safety margin, so it can be used as-is.
     base::Time expiration_time;
-
-    // Contains extra information regarding the user's currently registered
-    // services.
-    std::string id_token;
   };
 
   AccessTokenConsumer() = default;
@@ -44,10 +39,6 @@ class AccessTokenConsumer {
 
   // Failure callback.
   virtual void OnGetTokenFailure(const GoogleServiceAuthError& error);
-
-  virtual void OnGetTimestampSuccess(const std::string& ts);
-
-  virtual void OnGetTimestampFailure(const GoogleServiceAuthError& error);
 
   DISALLOW_COPY_AND_ASSIGN(AccessTokenConsumer);
 };

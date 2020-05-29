@@ -23,13 +23,8 @@
       const brave_sync::AccessTokenConsumer::TokenResponse& token_response) \
       override;                                                             \
   void OnGetTokenFailure(const GoogleServiceAuthError& error) override;     \
-  void OnGetTimestampSuccess(const std::string& ts) override;               \
-  void OnGetTimestampFailure(const GoogleServiceAuthError& error) override; \
                                                                             \
  private:                                                                   \
-  void GenerateClientIdAndSecret(                                           \
-      std::string* client_id, std::string* client_secrect,                  \
-      const std::string& server_timestamp, std::string* timestamp);         \
   void AccessTokenFetchedDoNothing(                                         \
       GoogleServiceAuthError error,                                         \
       signin::AccessTokenInfo access_token_info) {}                         \

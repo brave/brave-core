@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_FAKE_ACCESS_TOKEN_FETCHER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -19,11 +20,8 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
   explicit FakeAccessTokenFetcher(AccessTokenConsumer* consumer);
   ~FakeAccessTokenFetcher() override;
 
-  void Start(const std::string& client_id,
-                     const std::string& client_secret,
-                     const std::string& timestamp) override;
-
-  void StartGetTimestamp() override;
+  void Start(const std::vector<uint8_t>& public_key,
+             const std::vector<uint8_t>& private_key) override;
 
   // Cancels the current request and informs the consumer.
   void CancelRequest() override;
@@ -35,7 +33,7 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
 
  private:
   void OnGetTokenSuccess(
-    const AccessTokenConsumer::TokenResponse& token_response);
+      const AccessTokenConsumer::TokenResponse& token_response);
   void OnGetTokenFailure(const GoogleServiceAuthError& error);
 
   AccessTokenConsumer::TokenResponse pending_response_;
@@ -48,5 +46,5 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
 
   DISALLOW_COPY_AND_ASSIGN(FakeAccessTokenFetcher);
 };
-}   // namespace brave_sync
+}  // namespace brave_sync
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_FAKE_ACCESS_TOKEN_FETCHER_H_

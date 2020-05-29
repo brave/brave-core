@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/task_environment.h"
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "net/base/net_errors.h"
@@ -31,26 +32,26 @@ namespace {
 
 constexpr char kSyncServiceURL[] = "https://sync-test.brave.com";
 
-constexpr char kValidTokenResponse[] = R"(
-    {
-      "access_token": "at1",
-      "expires_in": 3600,
-      "id_token": "id_token"
-    })";
-
-constexpr char kTokenResponseNoAccessToken[] = R"(
-    {
-      "expires_in": 3600,
-    })";
-
-constexpr char kValidFailureTokenResponse[] = R"(
-    {
-      "error": "invalid_grant"
-    })";
+constexpr char kPublicKey[] =
+    "f58ca446f0c33ee7e8e9874466da442b2e764afd77ad46034bdff9e01f9b87d4";
+constexpr char kPrivateKey[] =
+    "b5abda6940984c5153a2ba3653f047f98dfb19e39c3e02f07c8bbb0bd8e8872ef58ca446"
+    "f0c33ee7e8e9874466da442b2e764afd77ad46034bdff9e01f9b87d4";
 
 constexpr char kValidTimestampResponse[] = R"(
     {
-      "timestamp": "1588741616"
+      "timestamp": "1588741616",
+      "expires_in": 3600
+    })";
+
+constexpr char kTokenResponseNoTimestamp[] = R"(
+    {
+      "expires_in": 3600,
+    })";
+
+constexpr char kValidFailureTimestampResponse[] = R"(
+    {
+      "error": "invalid_grant"
     })";
 
 class MockAccessTokenConsumer : public AccessTokenConsumer {
@@ -61,10 +62,6 @@ class MockAccessTokenConsumer : public AccessTokenConsumer {
   MOCK_METHOD1(OnGetTokenSuccess,
                void(const AccessTokenConsumer::TokenResponse&));
   MOCK_METHOD1(OnGetTokenFailure, void(const GoogleServiceAuthError& error));
-
-  MOCK_METHOD1(OnGetTimestampSuccess, void(const std::string& ts));
-  MOCK_METHOD1(OnGetTimestampFailure,
-               void(const GoogleServiceAuthError& error));
 };
 
 class URLLoaderFactoryInterceptor {
@@ -82,33 +79,18 @@ class AccessTokenFetcherImplTest : public testing::Test {
   AccessTokenFetcherImplTest()
       : fetcher_(&consumer_,
                  url_loader_factory_.GetSafeWeakWrapper(),
-                 GURL(kSyncServiceURL),
-                 "refresh_token") {
+                 GURL(kSyncServiceURL)) {
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &URLLoaderFactoryInterceptor::Intercept,
         base::Unretained(&url_loader_factory_interceptor_)));
+    base::HexStringToBytes(kPublicKey, &public_key_);
+    base::HexStringToBytes(kPrivateKey, &private_key_);
     base::RunLoop().RunUntilIdle();
   }
 
-  void SetupGetAccessToken(int net_error_code,
+  void SetupGetTimestamp(int net_error_code,
                            net::HttpStatusCode http_response_code,
                            const std::string& body) {
-    GURL url = fetcher_.MakeGetAccessTokenUrl();
-    if (net_error_code == net::OK) {
-      url_loader_factory_.AddResponse(url.spec(), body, http_response_code);
-    } else {
-      url_loader_factory_.AddResponse(
-          url, network::mojom::URLResponseHead::New(), body,
-          network::URLLoaderCompletionStatus(net_error_code));
-    }
-
-    EXPECT_CALL(url_loader_factory_interceptor_,
-                Intercept(resourceRequestUrlEquals(url)));
-  }
-
-  void SetupGetTimestamp(int net_error_code,
-                         net::HttpStatusCode http_response_code,
-                         const std::string& body) {
     GURL url = fetcher_.MakeGetTimestampUrl();
     if (net_error_code == net::OK) {
       url_loader_factory_.AddResponse(url.spec(), body, http_response_code);
@@ -122,19 +104,6 @@ class AccessTokenFetcherImplTest : public testing::Test {
                 Intercept(resourceRequestUrlEquals(url)));
   }
 
-  void SetupAccessTokenProxyError() {
-    GURL url = fetcher_.MakeGetAccessTokenUrl();
-    url_loader_factory_.AddResponse(
-        url,
-        network::CreateURLResponseHead(net::HTTP_PROXY_AUTHENTICATION_REQUIRED),
-        std::string(),
-        network::URLLoaderCompletionStatus(net::ERR_TUNNEL_CONNECTION_FAILED),
-        network::TestURLLoaderFactory::Redirects(),
-        network::TestURLLoaderFactory::kSendHeadersOnNetworkError);
-
-    EXPECT_CALL(url_loader_factory_interceptor_,
-                Intercept(resourceRequestUrlEquals(url)));
-  }
   void SetupTimestampProxyError() {
     GURL url = fetcher_.MakeGetTimestampUrl();
     url_loader_factory_.AddResponse(
@@ -149,50 +118,30 @@ class AccessTokenFetcherImplTest : public testing::Test {
                 Intercept(resourceRequestUrlEquals(url)));
   }
 
+  std::vector<uint8_t> GetPublicKey() { return public_key_; }
+  std::vector<uint8_t> GetPrivateKey() { return private_key_; }
+
  protected:
   base::test::SingleThreadTaskEnvironment task_environment_;
   MockAccessTokenConsumer consumer_;
   URLLoaderFactoryInterceptor url_loader_factory_interceptor_;
   network::TestURLLoaderFactory url_loader_factory_;
   AccessTokenFetcherImpl fetcher_;
+  std::vector<uint8_t> public_key_;
+  std::vector<uint8_t> private_key_;
 };
-
-TEST_F(AccessTokenFetcherImplTest, GetAccessTokenRequestFailure) {
-  SetupGetAccessToken(net::ERR_FAILED, net::HTTP_OK, std::string());
-  EXPECT_CALL(consumer_, OnGetTokenFailure(_)).Times(1);
-  fetcher_.Start("client_id", "client_secret", "timestamp");
-  base::RunLoop().RunUntilIdle();
-}
 
 TEST_F(AccessTokenFetcherImplTest, GetTimestampRequestFailure) {
   SetupGetTimestamp(net::ERR_FAILED, net::HTTP_OK, std::string());
-  EXPECT_CALL(consumer_, OnGetTimestampFailure(_)).Times(1);
-  fetcher_.StartGetTimestamp();
-  base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(AccessTokenFetcherImplTest, GetAccessTokenResponseCodeFailure) {
-  SetupGetAccessToken(net::OK, net::HTTP_FORBIDDEN, std::string());
   EXPECT_CALL(consumer_, OnGetTokenFailure(_)).Times(1);
-  fetcher_.Start("client_id", "client_secret", "timestamp");
+  fetcher_.Start(GetPublicKey(), GetPrivateKey());
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(AccessTokenFetcherImplTest, GetTimestampResponseCodeFailure) {
   SetupGetTimestamp(net::OK, net::HTTP_FORBIDDEN, std::string());
-  EXPECT_CALL(consumer_, OnGetTimestampFailure(_)).Times(1);
-  fetcher_.StartGetTimestamp();
-  base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(AccessTokenFetcherImplTest, AccessTokenProxyFailure) {
-  GoogleServiceAuthError expected_error =
-      GoogleServiceAuthError::FromConnectionError(
-          net::ERR_TUNNEL_CONNECTION_FAILED);
-  ASSERT_TRUE(expected_error.IsTransientError());
-  SetupAccessTokenProxyError();
-  EXPECT_CALL(consumer_, OnGetTokenFailure(expected_error)).Times(1);
-  fetcher_.Start("client_id", "client_secret", "timestamp");
+  EXPECT_CALL(consumer_, OnGetTokenFailure(_)).Times(1);
+  fetcher_.Start(GetPublicKey(), GetPrivateKey());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -202,99 +151,56 @@ TEST_F(AccessTokenFetcherImplTest, TimestampProxyFailure) {
           net::ERR_TUNNEL_CONNECTION_FAILED);
   ASSERT_TRUE(expected_error.IsTransientError());
   SetupTimestampProxyError();
-  EXPECT_CALL(consumer_, OnGetTimestampFailure(expected_error)).Times(1);
-  fetcher_.StartGetTimestamp();
+  EXPECT_CALL(consumer_, OnGetTokenFailure(expected_error)).Times(1);
+  fetcher_.Start(GetPublicKey(), GetPrivateKey());
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(AccessTokenFetcherImplTest, AccessTokenSuccess) {
-  SetupGetAccessToken(net::OK, net::HTTP_OK, kValidTokenResponse);
-  EXPECT_CALL(consumer_, OnGetTokenSuccess(_)).Times(1);
-  fetcher_.Start("client_id", "client_secret", "timestamp");
-  base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(AccessTokenFetcherImplTest, TimestampSuccess) {
   SetupGetTimestamp(net::OK, net::HTTP_OK, kValidTimestampResponse);
-  EXPECT_CALL(consumer_, OnGetTimestampSuccess(_)).Times(1);
-  fetcher_.StartGetTimestamp();
+  EXPECT_CALL(consumer_, OnGetTokenSuccess(_)).Times(1);
+  fetcher_.Start(GetPublicKey(), GetPrivateKey());
   base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(AccessTokenFetcherImplTest, MakeGetAccessTokenBody) {
-  std::string body =
-      "client_id=cid1&"
-      "client_secret=cs1&"
-      "timestamp=1234&"
-      "refresh_token=rt1";
-  EXPECT_EQ(body, AccessTokenFetcherImpl::MakeGetAccessTokenBody(
-                      "cid1", "cs1", "1234", "rt1"));
-}
-
-TEST_F(AccessTokenFetcherImplTest, ParseGetAccessTokenResponseNoBody) {
-  std::string at;
-  int expires_in;
-  std::string id_token;
-  auto empty_body = std::make_unique<std::string>("");
-  EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetAccessTokenSuccessResponse(
-      std::move(empty_body), &at, &expires_in, &id_token));
-  EXPECT_TRUE(at.empty());
 }
 
 TEST_F(AccessTokenFetcherImplTest, ParseGetTimestampResponseNoBody) {
   std::string ts;
+  int expires_in;
   auto empty_body = std::make_unique<std::string>("");
   EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetTimestampSuccessResponse(
-      std::move(empty_body), &ts));
+      std::move(empty_body), &ts, &expires_in));
   EXPECT_TRUE(ts.empty());
-}
-
-TEST_F(AccessTokenFetcherImplTest, ParseGetAccessTokenResponseBadJson) {
-  std::string at;
-  int expires_in;
-  std::string id_token;
-  EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetAccessTokenSuccessResponse(
-      std::make_unique<std::string>("foo"), &at, &expires_in, &id_token));
-  EXPECT_TRUE(at.empty());
 }
 
 TEST_F(AccessTokenFetcherImplTest, ParseGetTimestampResponseBadJson) {
   std::string ts;
-  EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetTimestampSuccessResponse(
-      std::make_unique<std::string>("foo"), &ts));
-  EXPECT_TRUE(ts.empty());
-}
-
-TEST_F(AccessTokenFetcherImplTest, ParseGetAccessTokenResponseSuccess) {
-  std::string at;
   int expires_in;
-  std::string id_token;
-  EXPECT_TRUE(AccessTokenFetcherImpl::ParseGetAccessTokenSuccessResponse(
-      std::make_unique<std::string>(kValidTokenResponse), &at, &expires_in,
-      &id_token));
-  EXPECT_EQ("at1", at);
-  EXPECT_EQ(3600, expires_in);
-  EXPECT_EQ("id_token", id_token);
+  EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetTimestampSuccessResponse(
+      std::make_unique<std::string>("foo"), &ts, &expires_in));
+  EXPECT_TRUE(ts.empty());
 }
 
 TEST_F(AccessTokenFetcherImplTest, ParseGetTimestampResponseSuccess) {
   std::string ts;
+  int expires_in;
   EXPECT_TRUE(AccessTokenFetcherImpl::ParseGetTimestampSuccessResponse(
-      std::make_unique<std::string>(kValidTimestampResponse), &ts));
+      std::make_unique<std::string>(kValidTimestampResponse), &ts,
+      &expires_in));
   EXPECT_EQ("1588741616", ts);
+  EXPECT_EQ(3600, expires_in);
 }
 
-TEST_F(AccessTokenFetcherImplTest, ParseGetAccessTokenFailureInvalidError) {
+TEST_F(AccessTokenFetcherImplTest, ParseGetTimestampFailureInvalidError) {
   std::string error;
-  EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetAccessTokenFailureResponse(
-      std::make_unique<std::string>(kTokenResponseNoAccessToken), &error));
+  EXPECT_FALSE(AccessTokenFetcherImpl::ParseGetTimestampFailureResponse(
+      std::make_unique<std::string>(kTokenResponseNoTimestamp), &error));
   EXPECT_TRUE(error.empty());
 }
 
-TEST_F(AccessTokenFetcherImplTest, ParseGetAccessTokenFailure) {
+TEST_F(AccessTokenFetcherImplTest, ParseGetTimestampFailure) {
   std::string error;
-  EXPECT_TRUE(AccessTokenFetcherImpl::ParseGetAccessTokenFailureResponse(
-      std::make_unique<std::string>(kValidFailureTokenResponse), &error));
+  EXPECT_TRUE(AccessTokenFetcherImpl::ParseGetTimestampFailureResponse(
+      std::make_unique<std::string>(kValidFailureTimestampResponse), &error));
   EXPECT_EQ("invalid_grant", error);
 }
 

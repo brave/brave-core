@@ -16,7 +16,8 @@
     return;                                               \
   }
 
-#define BRAVE_REQUEST_ACCESS_TOKEN_2 access_token_fetcher_->StartGetTimestamp();
+#define BRAVE_REQUEST_ACCESS_TOKEN_2 \
+  access_token_fetcher_->Start(public_key_, private_key_);
 
 // We don't use account_id in production but it is required to be set this
 // partiuclar value in order to get invalidation running
@@ -50,7 +51,7 @@ void SyncAuthManager::CreateAccessTokenFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& sync_service_url) {
   access_token_fetcher_ = std::make_unique<brave_sync::AccessTokenFetcherImpl>(
-      this, url_loader_factory, sync_service_url, "");
+      this, url_loader_factory, sync_service_url);
 }
 
 void SyncAuthManager::SetAccessTokenFetcherForTest(
@@ -95,55 +96,16 @@ void SyncAuthManager::ResetKeys() {
 
 void SyncAuthManager::OnGetTokenSuccess(
     const brave_sync::AccessTokenConsumer::TokenResponse& token_response) {
-  AccessTokenFetched(GoogleServiceAuthError(GoogleServiceAuthError::NONE),
-                     signin::AccessTokenInfo(token_response.access_token,
-                                             token_response.expiration_time,
-                                             token_response.id_token));
+  AccessTokenFetched(
+      GoogleServiceAuthError(GoogleServiceAuthError::NONE),
+      signin::AccessTokenInfo(token_response.access_token,
+                              token_response.expiration_time, ""));
   VLOG(1) << __func__ << " Token: " << access_token_;
 }
 
 void SyncAuthManager::OnGetTokenFailure(const GoogleServiceAuthError& error) {
   LOG(ERROR) << __func__ << ": " << error.error_message();
   AccessTokenFetched(error, signin::AccessTokenInfo());
-}
-
-void SyncAuthManager::OnGetTimestampSuccess(const std::string& ts) {
-  VLOG(1) << __func__ << " Timestamp: " << ts;
-  std::string client_id, client_secret, timestamp;
-  GenerateClientIdAndSecret(&client_id, &client_secret, ts, &timestamp);
-  access_token_fetcher_->Start(client_id, client_secret, timestamp);
-}
-
-void SyncAuthManager::OnGetTimestampFailure(
-    const GoogleServiceAuthError& error) {
-  LOG(ERROR) << __func__ << ": " << error.error_message();
-  AccessTokenFetched(error, signin::AccessTokenInfo());
-}
-
-void SyncAuthManager::GenerateClientIdAndSecret(
-    std::string* client_id,
-    std::string* client_secret,
-    const std::string& server_timestamp,
-    std::string* timestamp) {
-  DCHECK(client_id);
-  DCHECK(client_secret);
-
-  *client_id = base::HexEncode(public_key_.data(), public_key_.size());
-
-  *timestamp =
-      base::HexEncode(server_timestamp.data(), server_timestamp.size());
-
-  std::vector<uint8_t> timestamp_bytes;
-  base::HexStringToBytes(*timestamp, &timestamp_bytes);
-  std::vector<uint8_t> signature;
-  brave_sync::crypto::Sign(timestamp_bytes, private_key_, &signature);
-  DCHECK(brave_sync::crypto::Verify(timestamp_bytes, signature, public_key_));
-
-  *client_secret = base::HexEncode(signature.data(), signature.size());
-
-  VLOG(1) << "client_id= " << *client_id;
-  VLOG(1) << "client_secret= " << *client_secret;
-  VLOG(1) << "timestamp= " << *timestamp;
 }
 
 }  // namespace syncer

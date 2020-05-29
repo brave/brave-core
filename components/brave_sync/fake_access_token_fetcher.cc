@@ -18,21 +18,21 @@ FakeAccessTokenFetcher::FakeAccessTokenFetcher(AccessTokenConsumer* consumer)
 
 FakeAccessTokenFetcher::~FakeAccessTokenFetcher() {}
 
-void FakeAccessTokenFetcher::Start(const std::string& client_id,
-                                   const std::string& client_secret,
-                                   const std::string& timestamp) {
+void FakeAccessTokenFetcher::Start(const std::vector<uint8_t>& public_key,
+                                   const std::vector<uint8_t>& private_key) {
   AccessTokenConsumer::TokenResponse response = pending_response_;
   if (response.access_token.empty())
-    response = AccessTokenConsumer::TokenResponse("access_token",
-        base::Time::Now() + base::TimeDelta::FromHours(1), "");
+    response = AccessTokenConsumer::TokenResponse(
+        "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
   if (pending_error_.state() == GoogleServiceAuthError::NONE) {
     base::ThreadTaskRunnerHandle::Get()->PostTask(
         FROM_HERE, base::BindOnce(&FakeAccessTokenFetcher::OnGetTokenSuccess,
-          weak_ptr_factory_.GetWeakPtr(), response));
+                                  weak_ptr_factory_.GetWeakPtr(), response));
   } else {
     base::ThreadTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE, base::BindOnce(&FakeAccessTokenFetcher::OnGetTokenFailure,
-          weak_ptr_factory_.GetWeakPtr(), pending_error_));
+        FROM_HERE,
+        base::BindOnce(&FakeAccessTokenFetcher::OnGetTokenFailure,
+                       weak_ptr_factory_.GetWeakPtr(), pending_error_));
   }
 }
 
@@ -65,10 +65,6 @@ void FakeAccessTokenFetcher::OnGetTokenFailure(
   if (on_available_)
     std::move(on_available_).Run();
   pending_error_ = GoogleServiceAuthError();
-}
-
-void FakeAccessTokenFetcher::StartGetTimestamp() {
-  FireOnGetTimestampSuccess("dummy_timestamp");
 }
 
 void FakeAccessTokenFetcher::CancelRequest() {}
