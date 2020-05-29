@@ -106,6 +106,36 @@ bool DatabaseUnblindedToken::CreateTableV18(
   return true;
 }
 
+bool DatabaseUnblindedToken::CreateTableV26(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+    "CREATE TABLE %s ("
+      "token_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+      "token_value TEXT,"
+      "public_key TEXT,"
+      "value DOUBLE NOT NULL DEFAULT 0,"
+      "creds_id TEXT,"
+      "expires_at TIMESTAMP NOT NULL DEFAULT 0,"
+      "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+      "redeemed_at TIMESTAMP NOT NULL DEFAULT 0,"
+      "redeem_id TEXT,"
+      "redeem_type INTEGER NOT NULL DEFAULT 0,"
+      "CONSTRAINT %s_unique "
+      "    UNIQUE (token_value, public_key)"
+    ")",
+    kTableName,
+    kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  return true;
+}
+
 bool DatabaseUnblindedToken::CreateIndexV10(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
@@ -140,6 +170,19 @@ bool DatabaseUnblindedToken::CreateIndexV20(
   return this->InsertIndex(transaction, kTableName, "redeem_id");
 }
 
+bool DatabaseUnblindedToken::CreateIndexV26(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  bool success = this->InsertIndex(transaction, kTableName, "creds_id");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(transaction, kTableName, "redeem_id");
+}
+
 bool DatabaseUnblindedToken::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
@@ -160,6 +203,9 @@ bool DatabaseUnblindedToken::Migrate(
     }
     case 20: {
       return MigrateToV20(transaction);
+    }
+    case 26: {
+      return MigrateToV26(transaction);
     }
     default: {
       return true;
@@ -364,6 +410,56 @@ bool DatabaseUnblindedToken::MigrateToV20(ledger::DBTransaction* transaction) {
 
   if (!CreateIndexV20(transaction)) {
     BLOG(0, "Index couldn't be created");
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseUnblindedToken::MigrateToV26(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      kTableName);
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
+    BLOG(0, "Table couldn't be renamed");
+    return false;
+  }
+
+  std::string query =
+      "DROP INDEX IF EXISTS unblinded_tokens_creds_id_index; "
+      "DROP INDEX IF EXISTS unblinded_tokens_redeem_id_index;";
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!CreateTableV26(transaction)) {
+    BLOG(0, "Table couldn't be created");
+    return false;
+  }
+
+  if (!CreateIndexV26(transaction)) {
+    BLOG(0, "Index couldn't be created");
+    return false;
+  }
+
+  query = base::StringPrintf(
+      "INSERT OR IGNORE INTO %s "
+      "(token_id, token_value, public_key, value, creds_id, expires_at, "
+      "created_at, redeemed_at, redeem_id, redeem_type) "
+      "SELECT token_id, token_value, public_key, value, creds_id, expires_at, "
+      "created_at, redeemed_at, redeem_id, redeem_type "
+      "FROM %s",
+      kTableName,
+      temp_table_name.c_str());
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!DropTable(transaction, temp_table_name)) {
+    BLOG(0, "Table couldn't be dropped");
     return false;
   }
 
