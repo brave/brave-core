@@ -1,0 +1,15 @@
+diff --git a/extensions/common/api/sockets_udp.idl b/extensions/common/api/sockets_udp.idl
+index 784a31d25d77573f467e6a703e519cad86c674f0..d8e8ae3d1bfdffa2dfbc0e6906bf5b6d981f08a7 100644
+--- a/extensions/common/api/sockets_udp.idl
++++ b/extensions/common/api/sockets_udp.idl
+@@ -26,6 +26,10 @@ namespace sockets.udp {
+     // The size of the buffer used to receive data. If the buffer is too small
+     // to receive the UDP packet, data is lost. The default value is 4096.
+     long? bufferSize;
++
++		// Flag indicating if the address can be reused even if another process has
++		// already bound a socket on it.
++    boolean? allowAddressReuse;
+   };
+ 
+   // Result of <code>create</code> call.

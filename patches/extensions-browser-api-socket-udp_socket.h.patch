@@ -1,0 +1,35 @@
+diff --git a/extensions/browser/api/socket/udp_socket.h b/extensions/browser/api/socket/udp_socket.h
+index bc655989882c3f6e80b0144797cce54922a15153..6178fa7b07c9f8fd2599f35fb2249eb4e123b88c 100644
+--- a/extensions/browser/api/socket/udp_socket.h
++++ b/extensions/browser/api/socket/udp_socket.h
+@@ -54,13 +54,18 @@ class UDPSocket : public Socket, public network::mojom::UDPSocketListener {
+   void LeaveGroup(const std::string& address,
+                   net::CompletionOnceCallback callback);
+ 
+-  // Multicast options must be set before Bind()/Connect() is called.
++  // Multicast options must be set before BBind()/Connect() is called.
+   int SetMulticastTimeToLive(int ttl);
+   int SetMulticastLoopbackMode(bool loopback);
+ 
+   // Sets broadcast to |enabled|. Can only be called after a successful Bind().
+   void SetBroadcast(bool enabled, net::CompletionOnceCallback callback);
+ 
++  bool allow_address_reuse() const { return allow_address_reuse_; }
++  void set_allow_address_reuse(bool allow_address_reuse) {
++    allow_address_reuse_ = allow_address_reuse;
++  }
++
+   const std::vector<std::string>& GetJoinedGroups() const;
+ 
+  protected:
+@@ -112,6 +117,10 @@ class UDPSocket : public Socket, public network::mojom::UDPSocketListener {
+   RecvFromCompletionCallback recv_from_callback_;
+ 
+   std::vector<std::string> multicast_groups_;
++
++  // Flag indicating whether address can be reused even if another process
++  // has bound a socket on it - see sockets_udp.idl.
++  bool allow_address_reuse_;
+ };
+ 
+ // UDP Socket instances from the "sockets.udp" namespace. These are regular

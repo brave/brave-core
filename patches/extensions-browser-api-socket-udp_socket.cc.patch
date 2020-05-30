@@ -1,0 +1,24 @@
+diff --git a/extensions/browser/api/socket/udp_socket.cc b/extensions/browser/api/socket/udp_socket.cc
+index 0f129a64cbb949eb35bf29f768f609843f2ee409..9f63ceeb2c768b44255362eae7c16b6f608129a5 100644
+--- a/extensions/browser/api/socket/udp_socket.cc
++++ b/extensions/browser/api/socket/udp_socket.cc
+@@ -38,7 +38,8 @@ UDPSocket::UDPSocket(
+     : Socket(owner_extension_id),
+       socket_(std::move(socket)),
+       socket_options_(network::mojom::UDPSocketOptions::New()),
+-      is_bound_(false) {
++      is_bound_(false),
++      allow_address_reuse_(false) {
+   listener_receiver_.Bind(std::move(listener_receiver));
+ }
+ 
+@@ -74,6 +75,9 @@ void UDPSocket::Bind(const std::string& address,
+     std::move(callback).Run(net::ERR_INVALID_ARGUMENT);
+     return;
+   }
++
++  socket_options_->allow_address_reuse = allow_address_reuse_;
++
+   socket_->Bind(ip_end_point, std::move(socket_options_),
+                 base::BindOnce(&UDPSocket::OnBindCompleted,
+                                base::Unretained(this), std::move(callback)));

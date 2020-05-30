@@ -1,0 +1,14 @@
+diff --git a/extensions/browser/api/sockets_udp/sockets_udp_api.cc b/extensions/browser/api/sockets_udp/sockets_udp_api.cc
+index aedfe02ea34fa88c2b902797256b866dcf003591..40d7a8a22dd6aec60e00e9e695bb7bbf6db55632 100644
+--- a/extensions/browser/api/sockets_udp/sockets_udp_api.cc
++++ b/extensions/browser/api/sockets_udp/sockets_udp_api.cc
+@@ -86,6 +86,9 @@ void SetSocketProperties(ResumableUDPSocket* socket,
+   if (properties->buffer_size.get()) {
+     socket->set_buffer_size(*properties->buffer_size);
+   }
++  if (properties->allow_address_reuse.get()) {
++    socket->set_allow_address_reuse(*properties->allow_address_reuse);
++  }
+ }
+ 
+ SocketsUdpCreateFunction::SocketsUdpCreateFunction() {}
