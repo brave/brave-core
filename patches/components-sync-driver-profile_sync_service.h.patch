@@ -1,22 +1,20 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index c2761cef61443ebc0c991fe203717c2ac07afc8c..ba00b29daedf0ceb99339ff9e331a31cf03b6249 100644
+index b71429377b2068f103656834068a079fded3822d..c9b0c63bf59d6d1b83afabbfccb5b421586ac3f2 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -99,7 +99,8 @@ class ProfileSyncService : public SyncService,
-     std::string debug_identifier;
+@@ -101,6 +101,7 @@ class ProfileSyncService : public SyncService,
      bool autofill_enable_account_wallet_storage = false;
      bool enable_passwords_account_storage = false;
--
-+  
-+  BRAVE_INIT_PARAMS_H_
+ 
++   BRAVE_INIT_PARAMS_H_
     private:
      DISALLOW_COPY_AND_ASSIGN(InitParams);
    };
-@@ -268,6 +269,7 @@ class ProfileSyncService : public SyncService,
-   // generate a secret. Returns empty string if keystore key is not available.
-   std::string GetExperimentalAuthenticationSecretForTest() const;
+@@ -273,6 +274,7 @@ class ProfileSyncService : public SyncService,
  
-+  BRAVE_PROFILE_SYNC_SERVICE_H_
+   static std::string GenerateCacheGUIDForTest();
+ 
++ BRAVE_PROFILE_SYNC_SERVICE_H_
   private:
    // Passed as an argument to StopImpl to control whether or not the sync
    // engine should clear its data directory when it shuts down. See StopImpl

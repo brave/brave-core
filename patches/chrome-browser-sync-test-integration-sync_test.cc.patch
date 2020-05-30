@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/test/integration/sync_test.cc b/chrome/browser/sync/test/integration/sync_test.cc
-index 354efffb8f49913c4222bac758f4ef001ff1f361..bdfe326efac2b5b34e25edab6bfbe2adfc889d03 100644
+index 83dd9562ae7e95a165b3e466f458c1fa115634c1..127cba776a157a764ff0e194eb0227220276a46e 100644
 --- a/chrome/browser/sync/test/integration/sync_test.cc
 +++ b/chrome/browser/sync/test/integration/sync_test.cc
-@@ -600,6 +600,7 @@ void SyncTest::InitializeProfile(int index, Profile* profile) {
+@@ -641,6 +641,7 @@ void SyncTest::InitializeProfile(int index, Profile* profile) {
      profile_sync_service->OverrideNetworkForTest(
          fake_server::CreateFakeServerHttpPostProviderFactory(
              GetFakeServer()->AsWeakPtr()));
@@ -10,7 +10,7 @@ index 354efffb8f49913c4222bac758f4ef001ff1f361..bdfe326efac2b5b34e25edab6bfbe2ad
    }
  
    ProfileSyncServiceHarness::SigninType singin_type =
-@@ -1052,8 +1053,9 @@ void SyncTest::SetOAuth2TokenResponse(const std::string& response_data,
+@@ -1110,8 +1111,9 @@ void SyncTest::SetOAuth2TokenResponse(const std::string& response_data,
    auto response_head = network::mojom::URLResponseHead::New();
    response_head->headers =
        base::MakeRefCounted<net::HttpResponseHeaders>(response);

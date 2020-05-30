@@ -1,20 +1,20 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
-index e722941579e7334776ccf566fe8306a0625fa939..5901610f97ae4b554c6e3a48d5d138f8de320761 100644
+index 05544df447ed85b35336f58d94057e262356086c..f1d1c2e3b0ab5b1d469006240b0ca90c4eb7e9b1 100644
 --- a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
 +++ b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
 @@ -219,6 +219,9 @@ cr.define('settings', function() {
-      * @return {!Promise<!HistoryRecordingEnabled>}
+      * manager in passwords section on page load.
       */
-     queryIsHistoryRecordingEnabled() {}
+     sendSyncPrefsChanged() {}
 +    getSyncCode() {}
 +    setSyncCode(syncCode) {}
 +    resetSyncChain() {}
    }
  
    /**
-@@ -321,6 +324,18 @@ cr.define('settings', function() {
-     queryIsHistoryRecordingEnabled() {
-       return cr.sendWithPromise('GetIsHistoryRecordingEnabledAndCanBeUsed');
+@@ -326,6 +329,18 @@ cr.define('settings', function() {
+     sendSyncPrefsChanged() {
+       chrome.send('SyncPrefsDispatch');
      }
 +    /** @override */
 +    getSyncCode() {

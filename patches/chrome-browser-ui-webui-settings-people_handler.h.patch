@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.h b/chrome/browser/ui/webui/settings/people_handler.h
-index 2f4824bd8d6bf10e28d0b5a4907147c7774d40e9..ccf7f79107bd7b7941b9d3b1bc06c74694f24abb 100644
+index 50093e129c35c9ec7f2b43b466757f1f58ecfde4..24f11736ec7648ff3d1303a890a7d0772587f0cd 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.h
 +++ b/chrome/browser/ui/webui/settings/people_handler.h
-@@ -65,6 +65,7 @@ class PeopleHandler : public SettingsPageUIHandler,
+@@ -60,6 +60,7 @@ class PeopleHandler : public SettingsPageUIHandler,
  
    bool is_configuring_sync() const { return configuring_sync_; }
  

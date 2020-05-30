@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service_startup_unittest.cc b/components/sync/driver/profile_sync_service_startup_unittest.cc
-index 3aefc9df0a6ef46ce5b38bef50ff0bb89c462657..3d6b3ff622b5e0814dd284e2d0948d0e7416ebae 100644
+index 6c775a7e8ac28a81dbec4de197dfd76d80033616..7da5c306757c396f6649c93680137089d3473acd 100644
 --- a/components/sync/driver/profile_sync_service_startup_unittest.cc
 +++ b/components/sync/driver/profile_sync_service_startup_unittest.cc
 @@ -88,11 +88,13 @@ class ProfileSyncServiceStartupTest : public testing::Test {
