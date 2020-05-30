@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/profile_sync_service_unittest.cc b/components/sync/driver/profile_sync_service_unittest.cc
-index c0ea431335795750538ed2532891714a00f49d52..cf7a43d2b22e528ce9c931eadcac4c3904945391 100644
+index 18070e022acdc50224d42ee70f9594e1970aa476..8eb2a24b2efeae867f52705551cc1773828c40e0 100644
 --- a/components/sync/driver/profile_sync_service_unittest.cc
 +++ b/components/sync/driver/profile_sync_service_unittest.cc
-@@ -164,14 +164,18 @@ class ProfileSyncServiceTest : public ::testing::Test {
+@@ -165,14 +165,18 @@ class ProfileSyncServiceTest : public ::testing::Test {
    void SetUp() override {
      base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
          switches::kSyncDeferredStartupTimeoutSeconds, "0");
@@ -16,13 +16,13 @@ index c0ea431335795750538ed2532891714a00f49d52..cf7a43d2b22e528ce9c931eadcac4c39
    }
  
 -  void SignIn() { identity_test_env()->MakePrimaryAccountAvailable(kTestUser); }
-+  void SignIn() { identity_test_env()->MakePrimaryAccountAvailable(kTestUser); 
++  void SignIn() { identity_test_env()->MakePrimaryAccountAvailable(kTestUser);
 +    BRAVE_SIGN_IN
 +  }
  
    void CreateService(ProfileSyncService::StartBehavior behavior) {
      DCHECK(!service_);
-@@ -844,6 +848,7 @@ TEST_F(ProfileSyncServiceTest, SignOutRevokeAccessToken) {
+@@ -855,6 +859,7 @@ TEST_F(ProfileSyncServiceTest, SignOutRevokeAccessToken) {
              service()->GetTransportState());
  
    const CoreAccountId primary_account_id =
@@ -30,7 +30,7 @@ index c0ea431335795750538ed2532891714a00f49d52..cf7a43d2b22e528ce9c931eadcac4c39
        identity_manager()->GetPrimaryAccountId();
  
    // Make sure the expected account_id was passed to the SyncEngine.
-@@ -867,6 +872,7 @@ TEST_F(ProfileSyncServiceTest, SignOutRevokeAccessToken) {
+@@ -878,6 +883,7 @@ TEST_F(ProfileSyncServiceTest, SignOutRevokeAccessToken) {
        signin::PrimaryAccountMutator::ClearAccountsAction::kDefault,
        signin_metrics::SIGNOUT_TEST,
        signin_metrics::SignoutDelete::IGNORE_METRIC);

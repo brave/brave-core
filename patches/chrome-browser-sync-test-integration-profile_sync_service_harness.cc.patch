@@ -1,20 +1,20 @@
 diff --git a/chrome/browser/sync/test/integration/profile_sync_service_harness.cc b/chrome/browser/sync/test/integration/profile_sync_service_harness.cc
-index 4c7dc543076ae2bba47c63ff249c6912b9a8fde3..91640d10635619ef63a9f781938a8344d4589f23 100644
+index c8bc4ea6e714af8848d5268072919230d230e54e..8a14a5778bc515acca40cd9b4db6e96b42615a66 100644
 --- a/chrome/browser/sync/test/integration/profile_sync_service_harness.cc
 +++ b/chrome/browser/sync/test/integration/profile_sync_service_harness.cc
-@@ -153,6 +153,7 @@ ProfileSyncServiceHarness::ProfileSyncServiceHarness(
- ProfileSyncServiceHarness::~ProfileSyncServiceHarness() { }
+@@ -151,6 +151,7 @@ ProfileSyncServiceHarness::ProfileSyncServiceHarness(
+ ProfileSyncServiceHarness::~ProfileSyncServiceHarness() = default;
  
  bool ProfileSyncServiceHarness::SignInPrimaryAccount() {
 +  BRAVE_SIGN_IN_PRIMARY_ACCOUNT
    // TODO(crbug.com/871221): This function should distinguish primary account
    // (aka sync account) from secondary accounts (content area signin). Let's
    // migrate tests that exercise transport-only sync to secondary accounts.
-@@ -268,6 +269,7 @@ void ProfileSyncServiceHarness::ResetSyncForPrimaryAccount() {
+@@ -240,6 +241,7 @@ void ProfileSyncServiceHarness::ResetSyncForPrimaryAccount() {
+ 
  #if !defined(OS_CHROMEOS)
  void ProfileSyncServiceHarness::SignOutPrimaryAccount() {
-   DCHECK(!username_.empty());
 +  BRAVE_SIGN_OUT_PRIMARY_ACCOUNT
+   DCHECK(!username_.empty());
    signin::ClearPrimaryAccount(
        IdentityManagerFactory::GetForProfile(profile_),
-       signin::ClearPrimaryAccountPolicy::REMOVE_ALL_ACCOUNTS);

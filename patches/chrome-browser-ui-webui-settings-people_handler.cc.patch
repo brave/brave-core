@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 0450cae3f0fb0a34530727974247ae1c1d0e07e2..6c624205c5f01e4aa1e2e77ab922898a39060520 100644
+index 57cd1e34ebbc19681692a7e4100677ab0510daea..3461263e3d76b5bac7972e9b10bea13c1a08ca96 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
-@@ -94,6 +94,7 @@ struct SyncConfigInfo {
+@@ -89,6 +89,7 @@ struct SyncConfigInfo {
  };
  
  bool IsSyncSubpage(const GURL& current_url) {
 +  BRAVE_IS_SYNC_SUBPAGE
-   if (current_url == chrome::GetSettingsUrl(chrome::kSyncSetupSubPage))
-     return true;
- #if defined(OS_CHROMEOS)
-@@ -348,6 +349,7 @@ void PeopleHandler::RegisterMessages() {
+   return current_url == chrome::GetSettingsUrl(chrome::kSyncSetupSubPage);
+ }
+ 
+@@ -330,6 +331,7 @@ void PeopleHandler::RegisterMessages() {
        "SyncStartKeyRetrieval",
        base::BindRepeating(&PeopleHandler::HandleStartKeyRetrieval,
                            base::Unretained(this)));
@@ -18,7 +18,7 @@ index 0450cae3f0fb0a34530727974247ae1c1d0e07e2..6c624205c5f01e4aa1e2e77ab922898a
  }
  
  void PeopleHandler::OnJavascriptAllowed() {
-@@ -864,6 +866,7 @@ void PeopleHandler::CloseSyncSetup() {
+@@ -797,6 +799,7 @@ void PeopleHandler::CloseSyncSetup() {
  
      service->LoginUIClosed(this);
    }
@@ -26,7 +26,7 @@ index 0450cae3f0fb0a34530727974247ae1c1d0e07e2..6c624205c5f01e4aa1e2e77ab922898a
  
    // Alert the sync service anytime the sync setup dialog is closed. This can
    // happen due to the user clicking the OK or Cancel button, or due to the
-@@ -924,7 +927,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
+@@ -861,7 +864,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
  
  void PeopleHandler::BeforeUnloadDialogCancelled() {
    // The before unload dialog is only shown during the first sync setup.
@@ -35,7 +35,7 @@ index 0450cae3f0fb0a34530727974247ae1c1d0e07e2..6c624205c5f01e4aa1e2e77ab922898a
    syncer::SyncService* service = GetSyncService();
    DCHECK(service && service->IsSetupInProgress() &&
           !service->GetUserSettings()->IsFirstSetupComplete());
-@@ -977,6 +980,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
+@@ -909,6 +912,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsFirstSetupComplete() &&
            identity_manager->HasPrimaryAccount());
@@ -43,7 +43,7 @@ index 0450cae3f0fb0a34530727974247ae1c1d0e07e2..6c624205c5f01e4aa1e2e77ab922898a
  
    const sync_ui_util::StatusLabels status_labels =
        sync_ui_util::GetStatusLabels(profile_);
-@@ -1125,6 +1129,7 @@ void PeopleHandler::MarkFirstSetupComplete() {
+@@ -1056,6 +1060,7 @@ void PeopleHandler::MarkFirstSetupComplete() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {

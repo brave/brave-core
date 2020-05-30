@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service_bundle.cc b/components/sync/driver/profile_sync_service_bundle.cc
-index 10a206ae9d3b32fdbcf888a10dd49fd8b940eb8f..636f21b32afb4c7435052130ab544e44d71d974d 100644
+index a3d3ac3093baa43b20a0b80d0583ac7fc22fcf64..a02755ee2b035ddd52806ff0a25d428b6e6187f2 100644
 --- a/components/sync/driver/profile_sync_service_bundle.cc
 +++ b/components/sync/driver/profile_sync_service_bundle.cc
 @@ -24,6 +24,7 @@ using testing::Return;
@@ -10,7 +10,7 @@ index 10a206ae9d3b32fdbcf888a10dd49fd8b940eb8f..636f21b32afb4c7435052130ab544e44
    identity_test_env_.SetAutomaticIssueOfAccessTokens(true);
    identity_provider_ = std::make_unique<invalidation::ProfileIdentityProvider>(
        identity_manager());
-@@ -60,6 +61,7 @@ ProfileSyncService::InitParams ProfileSyncServiceBundle::CreateBasicInitParams(
+@@ -59,6 +60,7 @@ ProfileSyncService::InitParams ProfileSyncServiceBundle::CreateBasicInitParams(
    init_params.network_connection_tracker =
        network::TestNetworkConnectionTracker::GetInstance();
    init_params.debug_identifier = "dummyDebugName";
