@@ -6,7 +6,7 @@
 #include <string>
 
 #include "brave/common/pref_names.h"
-#include "chrome/android/chrome_jni_headers/InterceptNavigationDelegateImpl_jni.h"
+#include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
@@ -17,6 +17,7 @@
 #include "net/base/escape.h"
 #include "url/gurl.h"
 
+namespace external_intents {
 namespace {
 
 using navigation_interception::InterceptNavigationDelegate;
@@ -72,3 +73,5 @@ static void JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
       web_contents,
       std::make_unique<BraveInterceptNavigationDelegate>(env, jdelegate));
 }
+
+}  // namespace external_intents
