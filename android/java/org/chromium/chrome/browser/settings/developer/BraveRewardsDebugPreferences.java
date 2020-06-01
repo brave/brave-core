@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.util.BraveDbUtil;
  * Settings fragment containing preferences for QA team.
  */
 public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
+    public static final String KEY = "brave_rewards_debug_preferences";
     private static final String QA_EXPORT_REWARDS_DB = "export_rewards_db";
 
     private Preference mExportRewardsDb;
