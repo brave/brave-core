@@ -31,8 +31,22 @@ public struct PaymentRequest: Decodable {
                 public let value: String
             }
         }
+        public let skuTokens: [String]
         public let total: Item
         public let displayItems: [Item]
+        
+        private enum CodingKeys: String, CodingKey {
+            case id
+            case total
+            case displayItems
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            skuTokens = try container.decode(String.self, forKey: .id).split(separator: ";").map(String.init)
+            total = try container.decode(Item.self, forKey: .total)
+            displayItems = try container.decode([Item].self, forKey: .displayItems)
+        }
     }
     
     // name of the message passed from JS to Swift
