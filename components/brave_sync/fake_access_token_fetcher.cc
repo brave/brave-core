@@ -51,20 +51,27 @@ void FakeAccessTokenFetcher::SetTokenResponseError(
   pending_error_ = error;
 }
 
+void FakeAccessTokenFetcher::KeepTokenResponseErrorOnce() {
+  keep_pending_error_ = true;
+}
+
 void FakeAccessTokenFetcher::OnGetTokenSuccess(
     const AccessTokenConsumer::TokenResponse& token_response) {
+  pending_response_ = AccessTokenConsumer::TokenResponse();
   FireOnGetTokenSuccess(token_response);
   if (on_available_)
     std::move(on_available_).Run();
-  pending_response_ = AccessTokenConsumer::TokenResponse();
 }
 
 void FakeAccessTokenFetcher::OnGetTokenFailure(
     const GoogleServiceAuthError& error) {
+  if (!keep_pending_error_)
+    pending_error_ = GoogleServiceAuthError();
+  else
+    keep_pending_error_ = false;
   FireOnGetTokenFailure(error);
   if (on_available_)
     std::move(on_available_).Run();
-  pending_error_ = GoogleServiceAuthError();
 }
 
 void FakeAccessTokenFetcher::CancelRequest() {}

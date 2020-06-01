@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/sync_auth_manager_unittest.cc b/components/sync/driver/sync_auth_manager_unittest.cc
-index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a42d9de399 100644
+index 3272ebc0356a664e815224da2bf5e88f4988ec9a..dc2f150f807f6fc1f5bb2ab7f1d4d55dcbe1d9c3 100644
 --- a/components/sync/driver/sync_auth_manager_unittest.cc
 +++ b/components/sync/driver/sync_auth_manager_unittest.cc
 @@ -84,6 +84,7 @@ TEST_F(SyncAuthManagerTest, IgnoresEventsIfNotRegistered) {
@@ -118,7 +118,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
  
    auth_manager->RegisterForAuthNotifications();
  
-@@ -289,8 +303,9 @@ TEST_F(SyncAuthManagerTest, ForwardsCredentialsEvents) {
+@@ -289,26 +303,30 @@ TEST_F(SyncAuthManagerTest, ForwardsCredentialsEvents) {
  
    // Once an access token is available, the callback should get run.
    EXPECT_CALL(credentials_changed, Run());
@@ -130,7 +130,11 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // Now the refresh token gets updated. The access token will get dropped, so
-@@ -301,14 +316,16 @@ TEST_F(SyncAuthManagerTest, ForwardsCredentialsEvents) {
+   // this should cause another notification.
+   EXPECT_CALL(credentials_changed, Run());
+   identity_env()->SetRefreshTokenForPrimaryAccount();
++  BRAVE_FORWARDS_CREDENTIALS_EVENTS
+   ASSERT_TRUE(auth_manager->GetCredentials().access_token.empty());
  
    // Once a new token is available, there's another notification.
    EXPECT_CALL(credentials_changed, Run());
@@ -149,7 +153,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
  }
  
-@@ -316,14 +333,16 @@ TEST_F(SyncAuthManagerTest, RequestsAccessTokenOnSyncStartup) {
+@@ -316,14 +334,16 @@ TEST_F(SyncAuthManagerTest, RequestsAccessTokenOnSyncStartup) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -168,7 +172,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
  
    EXPECT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  }
-@@ -333,14 +352,16 @@ TEST_F(SyncAuthManagerTest,
+@@ -333,14 +353,16 @@ TEST_F(SyncAuthManagerTest,
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -187,7 +191,84 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
  
    // The access token fetch should get retried (with backoff, hence no actual
    // request yet), without exposing an auth error.
-@@ -427,6 +448,7 @@ TEST_F(SyncAuthManagerTest, AbortsAccessTokenFetchOnPersistentFailure) {
+@@ -359,14 +381,16 @@ TEST_F(
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_EXPECT_REQUEST_CANCELED
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+ 
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
+-      GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
++  //     GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   // Expect retry with backoff.
+   EXPECT_TRUE(auth_manager->IsRetryingAccessTokenFetchForTest());
+@@ -377,21 +401,24 @@ TEST_F(SyncAuthManagerTest,
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_EXPECT_REQUEST_CANCELED
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+ 
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
+-      GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
++  //     GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN_AND_KEEP_ERROR_ONCE
+ 
+   // Expect no backoff the first time the request is canceled.
+   EXPECT_FALSE(auth_manager->IsRetryingAccessTokenFetchForTest());
+ 
+   // Cancel the retry as well.
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
+-      GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
++  //     GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   // Expect retry with backoff when the first retry was also canceled.
+   EXPECT_TRUE(auth_manager->IsRetryingAccessTokenFetchForTest());
+@@ -402,21 +429,24 @@ TEST_F(SyncAuthManagerTest,
+   CoreAccountId account_id =
+       identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
+   auto auth_manager = CreateAuthManager();
++  BRAVE_SIGN_IN_1_EXPECT_REQUEST_CANCELED
+   auth_manager->RegisterForAuthNotifications();
+   ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
+             account_id);
+ 
+   auth_manager->ConnectionOpened();
+ 
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
+-      GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithError(
++  //     GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   // Expect no backoff the first time the request is canceled.
+   EXPECT_FALSE(auth_manager->IsRetryingAccessTokenFetchForTest());
+ 
+   // Retry is a success.
+-  identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
+-      "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  // identity_env()->WaitForAccessTokenRequestIfNecessaryAndRespondWithToken(
++  //     "access_token", base::Time::Now() + base::TimeDelta::FromHours(1));
++  BRAVE_WAIT_FOR_ACCESS_TOKEN
+ 
+   ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
+   // Don't expect any backoff when the retry is a success.
+@@ -427,6 +457,7 @@ TEST_F(SyncAuthManagerTest, AbortsAccessTokenFetchOnPersistentFailure) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -195,7 +276,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    auth_manager->RegisterForAuthNotifications();
    ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
              account_id);
-@@ -437,8 +459,9 @@ TEST_F(SyncAuthManagerTest, AbortsAccessTokenFetchOnPersistentFailure) {
+@@ -437,8 +468,9 @@ TEST_F(SyncAuthManagerTest, AbortsAccessTokenFetchOnPersistentFailure) {
        GoogleServiceAuthError::FromInvalidGaiaCredentialsReason(
            GoogleServiceAuthError::InvalidGaiaCredentialsReason::
                CREDENTIALS_REJECTED_BY_SERVER);
@@ -207,7 +288,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
  
    // Auth error should get exposed; no retry.
    EXPECT_FALSE(auth_manager->IsRetryingAccessTokenFetchForTest());
-@@ -449,13 +472,15 @@ TEST_F(SyncAuthManagerTest, FetchesNewAccessTokenWithBackoffOnServerError) {
+@@ -449,13 +481,15 @@ TEST_F(SyncAuthManagerTest, FetchesNewAccessTokenWithBackoffOnServerError) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -225,7 +306,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // The server is returning AUTH_ERROR - maybe something's wrong with the
-@@ -473,13 +498,15 @@ TEST_F(SyncAuthManagerTest, ExposesServerError) {
+@@ -473,13 +507,15 @@ TEST_F(SyncAuthManagerTest, ExposesServerError) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -243,7 +324,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // Now a server error happens.
-@@ -497,13 +524,15 @@ TEST_F(SyncAuthManagerTest, ClearsServerErrorOnSyncDisable) {
+@@ -497,13 +533,15 @@ TEST_F(SyncAuthManagerTest, ClearsServerErrorOnSyncDisable) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -261,7 +342,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // A server error happens.
-@@ -524,13 +553,15 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnExpiry) {
+@@ -524,13 +562,15 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnExpiry) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -279,7 +360,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // Now everything is okay for a while.
-@@ -545,8 +576,9 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnExpiry) {
+@@ -545,8 +585,9 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnExpiry) {
    // Should immediately drop the access token and fetch a new one (no backoff).
    EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
  
@@ -291,7 +372,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    EXPECT_EQ(auth_manager->GetCredentials().access_token, "access_token_2");
  }
  
-@@ -554,13 +586,15 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnRefreshTokenUpdate) {
+@@ -554,13 +595,15 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnRefreshTokenUpdate) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -309,7 +390,12 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // Now everything is okay for a while.
-@@ -575,8 +609,9 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnRefreshTokenUpdate) {
+@@ -571,12 +614,14 @@ TEST_F(SyncAuthManagerTest, RequestsNewAccessTokenOnRefreshTokenUpdate) {
+ 
+   // But then the refresh token changes.
+   identity_env()->SetRefreshTokenForPrimaryAccount();
++  BRAVE_REQUESTS_NEW_ACCESS_TOKEN_ON_REFRESH_TOKEN_UPDATE
+ 
    // Should immediately drop the access token and fetch a new one (no backoff).
    EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
  
@@ -321,7 +407,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    EXPECT_EQ(auth_manager->GetCredentials().access_token, "access_token_2");
  }
  
-@@ -584,6 +619,7 @@ TEST_F(SyncAuthManagerTest, DoesNotRequestAccessTokenAutonomously) {
+@@ -584,6 +629,7 @@ TEST_F(SyncAuthManagerTest, DoesNotRequestAccessTokenAutonomously) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -329,15 +415,15 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    auth_manager->RegisterForAuthNotifications();
    ASSERT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
              account_id);
-@@ -599,6 +635,7 @@ TEST_F(SyncAuthManagerTest, DoesNotRequestAccessTokenAutonomously) {
+@@ -599,6 +645,7 @@ TEST_F(SyncAuthManagerTest, DoesNotRequestAccessTokenAutonomously) {
    identity_env()->SetCallbackForNextAccessTokenRequest(
        access_token_requested.Get());
    identity_env()->SetRefreshTokenForPrimaryAccount();
-+  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER
++  BRAVE_DOES_NOT_REQUEST_ACCESS_TOKEN_AUTONOMOUSLY
  
    // Make sure no access token request was sent. Since the request goes through
    // posted tasks, we have to spin the message loop.
-@@ -611,13 +648,15 @@ TEST_F(SyncAuthManagerTest, ClearsCredentialsOnRefreshTokenRemoval) {
+@@ -611,13 +658,15 @@ TEST_F(SyncAuthManagerTest, ClearsCredentialsOnRefreshTokenRemoval) {
    CoreAccountId account_id =
        identity_env()->MakePrimaryAccountAvailable("test@email.com").account_id;
    auto auth_manager = CreateAuthManager();
@@ -355,7 +441,7 @@ index 3272ebc0356a664e815224da2bf5e88f4988ec9a..a1093736935218105ec9b127fcd470a4
    ASSERT_EQ(auth_manager->GetCredentials().access_token, "access_token");
  
    // Now everything is okay for a while.
-@@ -633,6 +672,7 @@ TEST_F(SyncAuthManagerTest, ClearsCredentialsOnRefreshTokenRemoval) {
+@@ -633,6 +682,7 @@ TEST_F(SyncAuthManagerTest, ClearsCredentialsOnRefreshTokenRemoval) {
    identity_env()->SetCallbackForNextAccessTokenRequest(
        access_token_requested.Get());
    identity_env()->RemoveRefreshTokenForPrimaryAccount();

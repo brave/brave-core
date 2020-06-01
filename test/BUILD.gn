@@ -575,7 +575,6 @@ test("brave_browser_tests") {
     "//chrome/browser/sync/test/integration/single_client_typed_urls_sync_test.cc",
     "//chrome/browser/sync/test/integration/single_client_user_events_sync_test.cc",
     "//chrome/browser/sync/test/integration/single_client_wallet_sync_test.cc",
-    "//chrome/browser/sync/test/integration/single_client_web_apps_sync_test.cc",
     "//chrome/browser/sync/test/integration/sync_auth_test.cc",
     "//chrome/browser/sync/test/integration/sync_errors_test.cc",
     "//chrome/browser/sync/test/integration/sync_exponential_backoff_test.cc",

@@ -31,6 +31,8 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
   void SetTokenResponseCallback(base::OnceClosure on_available);
   void SetTokenResponseError(const GoogleServiceAuthError& error);
 
+  void KeepTokenResponseErrorOnce();
+
  private:
   void OnGetTokenSuccess(
       const AccessTokenConsumer::TokenResponse& token_response);
@@ -41,6 +43,8 @@ class FakeAccessTokenFetcher : public AccessTokenFetcher {
   GoogleServiceAuthError pending_error_;
 
   base::OnceClosure on_available_;
+
+  bool keep_pending_error_ = false;
 
   base::WeakPtrFactory<FakeAccessTokenFetcher> weak_ptr_factory_{this};
 

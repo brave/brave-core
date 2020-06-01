@@ -28,7 +28,7 @@
     AccountInfo account_info;                                    \
     account_info.account_id =                                    \
         CoreAccountId::FromString("gaia_id_for_user_gmail.com"); \
-    account_info.gaia = "gaia_id";                               \
+    account_info.gaia = "gaia_id_for_test_user_gmail.com";       \
     account_info.email = "sync@brave.com";                       \
     SyncAccountInfo account(account_info, true);                 \
     return account;                                              \
