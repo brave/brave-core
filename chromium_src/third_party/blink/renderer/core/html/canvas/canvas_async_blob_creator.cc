@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 
 #define BRAVE_CANVAS_ASYNC_BLOB_CREATOR                               \
-  Document* document = Document::From(context);                       \
+  Document* document = To<LocalDOMWindow>(context)->document();       \
   if (document) {                                                     \
     image_ = brave::BraveSessionCache::From(*document).PerturbPixels( \
         document->GetFrame(), image_);                                \
