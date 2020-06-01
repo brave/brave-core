@@ -201,7 +201,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                         {this.getTabIcon(index, activeTab === index)}
                         <SettingsSidebarButtonText
                           isActive={activeTab === index}
-                          data-text={getLocale(name)}>
+                          data-text={getLocale(name)}
+                        >
                           {getLocale(name)}
                         </SettingsSidebarButtonText>
                       </SettingsSidebarButton>
