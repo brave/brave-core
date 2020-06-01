@@ -92,6 +92,42 @@ def main():
             '//part[@file="settings_chromium_strings.grdp"]')[0]
         elem1.set('file', 'settings_brave_strings.grdp')
 
+    if filename == 'extensions_strings':
+        for child in xml_tree.getroot():
+            if child.tag != 'outputs':
+                continue
+            ifElem = etree.Element('if')
+            ifElem.set('expr', 'is_android')
+            add_extensions_output(ifElem, 'af')
+            add_extensions_output(ifElem, 'as')
+            add_extensions_output(ifElem, 'az')
+            add_extensions_output(ifElem, 'be')
+            add_extensions_output(ifElem, 'bs')
+            add_extensions_output(ifElem, 'eu')
+            add_extensions_output(ifElem, 'fr-CA')
+            add_extensions_output(ifElem, 'gl')
+            add_extensions_output(ifElem, 'hy')
+            add_extensions_output(ifElem, 'is')
+            add_extensions_output(ifElem, 'ka')
+            add_extensions_output(ifElem, 'kk')
+            add_extensions_output(ifElem, 'km')
+            add_extensions_output(ifElem, 'ky')
+            add_extensions_output(ifElem, 'lo')
+            add_extensions_output(ifElem, 'mk')
+            add_extensions_output(ifElem, 'mn')
+            add_extensions_output(ifElem, 'my')
+            add_extensions_output(ifElem, 'ne')
+            add_extensions_output(ifElem, 'or')
+            add_extensions_output(ifElem, 'pa')
+            add_extensions_output(ifElem, 'si')
+            add_extensions_output(ifElem, 'sq')
+            add_extensions_output(ifElem, 'ur')
+            add_extensions_output(ifElem, 'uz')
+            add_extensions_output(ifElem, 'zh-HK')
+            add_extensions_output(ifElem, 'zu')
+            child.append(ifElem)
+            break
+
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
     previous_to_grit_root = grit_root.getprevious()
@@ -110,6 +146,13 @@ def main():
     with open(source_string_path, mode='w') as f:
         f.write(transformed_content)
     print '-----------'
+
+def add_extensions_output(ifElem, lang):
+    outputElem = etree.Element('output')
+    outputElem.set('filename', 'extensions_strings_' + lang + '.pak')
+    outputElem.set('type', 'data_package')
+    outputElem.set('lang', lang)
+    ifElem.append(outputElem)
 
 
 if __name__ == '__main__':
