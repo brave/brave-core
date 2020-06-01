@@ -333,6 +333,8 @@ const locale: Record<string, string> = {
   dashboardSettingsTitle: 'Customize Dashboard',
   showBackgroundImg: 'Show background image',
   showBraveStats: 'Show Brave Stats',
+  showBinance: 'Show Binance',
+  showTogether: 'Show Brave Together',
   showClock: 'Show Clock',
   showTopSites: 'Show Top Sites',
   showRewards: 'Show Rewards',
