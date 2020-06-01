@@ -79,13 +79,11 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
     int32_t result,
     std::unique_ptr<brave_rewards::Balance> balance);
 
-  // RewardsServiceObserver implementation
-  void OnWalletProperties(
-      brave_rewards::RewardsService* rewards_service,
-      int error_code,
-      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties)
-      override;
+  void OnGetWalletProperties(
+      const int32_t result,
+      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
 
+  // RewardsServiceObserver implementation
   void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
                            bool success) override;
 
@@ -175,7 +173,9 @@ void RewardsTipDOMHandler::GetWalletProperties(const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
-  rewards_service_->FetchWalletProperties();
+  rewards_service_->GetWalletProperties(
+      base::Bind(&RewardsTipDOMHandler::OnGetWalletProperties,
+                 weak_factory_.GetWeakPtr()));
 }
 
 static std::unique_ptr<base::ListValue> CreateListOfDoubles(
@@ -187,20 +187,18 @@ static std::unique_ptr<base::ListValue> CreateListOfDoubles(
   return result;
 }
 
-void RewardsTipDOMHandler::OnWalletProperties(
-    brave_rewards::RewardsService* rewards_service,
-    int error_code,
+void RewardsTipDOMHandler::OnGetWalletProperties(
+    const int32_t result,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
-  base::DictionaryValue result;
-  result.SetInteger("status", error_code);
+  base::DictionaryValue data;
+  data.SetInteger("status", result);
   auto walletInfo = std::make_unique<base::DictionaryValue>();
 
-  if (error_code == 0 && wallet_properties) {
+  if (result == 0 && wallet_properties) {
     walletInfo->SetList("choices",
         CreateListOfDoubles(wallet_properties->parameters_choices));
     walletInfo->SetList("defaultTipChoices",
@@ -209,10 +207,10 @@ void RewardsTipDOMHandler::OnWalletProperties(
         CreateListOfDoubles(wallet_properties->default_monthly_tip_choices));
   }
 
-  result.SetDictionary("wallet", std::move(walletInfo));
+  data.SetDictionary("wallet", std::move(walletInfo));
 
   web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.walletProperties", result);
+      "brave_rewards_tip.walletProperties", data);
 }
 
 void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {

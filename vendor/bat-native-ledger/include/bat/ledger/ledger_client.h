@@ -72,10 +72,6 @@ class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
 
-  virtual void OnWalletProperties(
-      Result result,
-      ledger::WalletPropertiesPtr properties) = 0;
-
   virtual void OnReconcileComplete(
       const Result result,
       const std::string& contribution_id,

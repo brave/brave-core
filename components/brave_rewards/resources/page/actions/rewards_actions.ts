@@ -22,10 +22,16 @@ export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
 
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
-export const onWalletProperties = (properties: {status: number, wallet: Rewards.WalletProperties, monthlyAmount: number}) =>
+export const onWalletProperties = (properties: {status: number, choices: number[], monthlyAmount: number}) =>
   action(types.ON_WALLET_PROPERTIES, {
     properties
   })
+
+export const getAutoContributeProperties = () => action(types.GET_AUTO_CONTRIBUTE_PROPERTIES)
+
+export const onAutoContributeProperties = (properties: any) => action(types.ON_AUTO_CONTRIBUTE_PROPERTIES, {
+  properties
+})
 
 export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
 
@@ -135,10 +141,6 @@ export const onCurrentTips = (list: Rewards.Publisher[]) => action(types.ON_CURR
 export const getTipTable = () => action(types.GET_TIP_TABLE)
 
 export const getContributeList = () => action(types.GET_CONTRIBUTE_LIST)
-
-export const onInitAutoContributeSettings = (properties: any) => action(types.INIT_AUTOCONTRIBUTE_SETTINGS, {
-  properties
-})
 
 export const getAdsData = () => action(types.GET_ADS_DATA)
 

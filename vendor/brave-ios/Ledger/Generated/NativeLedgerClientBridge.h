@@ -19,7 +19,6 @@
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
-- (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback;
 - (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;

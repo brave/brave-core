@@ -26,7 +26,6 @@ private:
   void Log(const char * file, const int line, const int verbose_level, const std::string & message) const override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
-  void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void ResetState(const std::string & name, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::ResultCallback callback) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;

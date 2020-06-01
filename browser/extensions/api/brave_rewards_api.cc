@@ -412,10 +412,39 @@ ExtensionFunction::ResponseAction
 BraveRewardsGetWalletPropertiesFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->FetchWalletProperties();
+  if (!rewards_service) {
+    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    return RespondNow(OneArgument(std::move(data)));
   }
-  return RespondNow(NoArguments());
+
+  rewards_service->GetWalletProperties(base::BindOnce(
+      &BraveRewardsGetWalletPropertiesFunction::OnGet,
+      this));
+  return RespondLater();
+}
+
+void BraveRewardsGetWalletPropertiesFunction::OnGet(
+    const int32_t result,
+    std::unique_ptr<::brave_rewards::WalletProperties> wallet_properties) {
+  auto data = std::make_unique<base::DictionaryValue>();
+
+  if (!wallet_properties) {
+    return Respond(OneArgument(std::move(data)));
+  }
+
+  auto tip_choices = std::make_unique<base::ListValue>();
+  for (auto const& item : wallet_properties->default_tip_choices) {
+    tip_choices->Append(base::Value(item));
+  }
+  data->SetList("defaultTipChoices", std::move(tip_choices));
+
+  auto monthly_choices = std::make_unique<base::ListValue>();
+  for (auto const& item : wallet_properties->default_monthly_tip_choices) {
+    monthly_choices->Append(base::Value(item));
+  }
+  data->SetList("defaultMonthlyTipChoices", std::move(monthly_choices));
+
+  Respond(OneArgument(std::move(data)));
 }
 
 BraveRewardsGetBalanceReportFunction::

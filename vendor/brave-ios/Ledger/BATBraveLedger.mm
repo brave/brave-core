@@ -446,8 +446,14 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 - (void)fetchWalletDetails:(void (^)(BATWalletProperties * _Nullable))completion
 {
-  ledger->FetchWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
-    [self onWalletProperties:result arg1:std::move(info)];
+  ledger->GetWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
+    if (result == ledger::Result::LEDGER_OK) {
+      if (info) {
+        self.walletInfo = [[BATWalletProperties alloc] initWithWalletPropertiesPtr:std::move(info)];
+      } else {
+        self.walletInfo = nil;
+      }
+    }
     const auto __weak weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
@@ -455,17 +461,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       }
     });
   });
-}
-
-- (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1
-{
-  if (result == ledger::Result::LEDGER_OK) {
-    if (arg1.get() != nullptr) {
-      self.walletInfo = [[BATWalletProperties alloc] initWithWalletPropertiesPtr:std::move(arg1)];
-    } else {
-      self.walletInfo = nil;
-    }
-  }
 }
 
 - (void)fetchBalance:(void (^)(BATBalance * _Nullable))completion
@@ -1010,10 +1005,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (BATAutoContributeProps *)autoContributeProps
+- (BATAutoContributeProperties *)autoContributeProperties
 {
-  ledger::AutoContributePropsPtr props = ledger->GetAutoContributeProps();
-  return [[BATAutoContributeProps alloc] initWithAutoContributePropsPtr:std::move(props)];
+  ledger::AutoContributePropertiesPtr props = ledger->GetAutoContributeProperties();
+  return [[BATAutoContributeProperties alloc] initWithAutoContributePropertiesPtr:std::move(props)];
 }
 
 #pragma mark - Pending Contributions

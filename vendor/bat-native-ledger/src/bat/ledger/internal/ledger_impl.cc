@@ -685,8 +685,8 @@ void LedgerImpl::SetAutoContribute(bool enabled) {
   legacy_bat_state_->SetAutoContribute(enabled);
 }
 
-ledger::AutoContributePropsPtr LedgerImpl::GetAutoContributeProps() {
-  ledger::AutoContributePropsPtr props = ledger::AutoContributeProps::New();
+ledger::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
+  auto props = ledger::AutoContributeProperties::New();
   props->enabled_contribute = GetAutoContribute();
   props->contribution_min_time = GetPublisherMinVisitTime();
   props->contribution_min_visits = GetPublisherMinVisits();
@@ -748,19 +748,7 @@ void LedgerImpl::ContributionCompleted(
       type);
 }
 
-void LedgerImpl::OnWalletProperties(
-    ledger::Result result,
-    const ledger::WalletProperties& properties) {
-  ledger::WalletPropertiesPtr wallet;
-
-  if (result == ledger::Result::LEDGER_OK) {
-    wallet = bat_wallet_->WalletPropertiesToWalletInfo(properties);
-  }
-
-  ledger_client_->OnWalletProperties(result, std::move(wallet));
-}
-
-void LedgerImpl::FetchWalletProperties(
+void LedgerImpl::GetWalletProperties(
     ledger::OnWalletPropertiesCallback callback) const {
   bat_wallet_->GetWalletProperties(callback);
 }

@@ -116,8 +116,6 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
     BLOG(0, "Corrupted wallet");
     ledger::PromotionList empty_list;
     callback(ledger::Result::CORRUPTED_DATA, std::move(empty_list));
-    ledger::WalletProperties properties;
-    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_DATA, properties);
     return;
   }
 

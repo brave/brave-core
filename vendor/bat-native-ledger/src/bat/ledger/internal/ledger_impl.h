@@ -180,7 +180,7 @@ class LedgerImpl : public ledger::Ledger {
   void GetAllBalanceReports(
       ledger::GetBalanceReportListCallback callback) const override;
 
-  ledger::AutoContributePropsPtr GetAutoContributeProps() override;
+  ledger::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
   void SaveLedgerState(
       const std::string& data,
@@ -198,10 +198,7 @@ class LedgerImpl : public ledger::Ledger {
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::ResultCallback callback);
 
-  void OnWalletProperties(ledger::Result result,
-                          const ledger::WalletProperties&);
-
-  void FetchWalletProperties(
+  void GetWalletProperties(
       ledger::OnWalletPropertiesCallback callback) const override;
 
   void FetchPromotions(ledger::FetchPromotionCallback callback) const override;

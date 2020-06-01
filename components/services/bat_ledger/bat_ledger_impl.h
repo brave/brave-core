@@ -33,10 +33,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     const bool execute_create_script,
     InitializeCallback callback) override;
   void CreateWallet(CreateWalletCallback callback) override;
-  void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
+  void GetWalletProperties(GetWalletPropertiesCallback callback) override;
 
-  void GetAutoContributeProps(
-      GetAutoContributePropsCallback callback) override;
+  void GetAutoContributeProperties(
+      GetAutoContributePropertiesCallback callback) override;
   void GetPublisherMinVisitTime(
       GetPublisherMinVisitTimeCallback callback) override;
   void GetPublisherMinVisits(
@@ -277,9 +277,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       ledger::Result result,
       double balance);
 
-  static void OnFetchWalletProperties(
-      CallbackHolder<FetchWalletPropertiesCallback>* holder,
-      ledger::Result result,
+  static void OnGetWalletProperties(
+      CallbackHolder<GetWalletPropertiesCallback>* holder,
+      const ledger::Result result,
       ledger::WalletPropertiesPtr properties);
 
   static void OnSetPublisherExclude(

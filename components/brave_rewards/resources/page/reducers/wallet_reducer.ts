@@ -52,7 +52,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         ui.walletCorrupted = true
       } else {
         state.contributionMonthly = action.payload.properties.monthlyAmount
-        state.walletInfo = action.payload.properties.wallet
+        state.autoContributeChoices = action.payload.properties.choices
         ui.walletServerProblem = false
         ui.walletCorrupted = false
       }

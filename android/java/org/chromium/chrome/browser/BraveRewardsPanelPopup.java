@@ -1322,7 +1322,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         }
         thisObject.mBraveRewardsNativeWorker.GetRecurringDonations();
 
-        mBraveRewardsNativeWorker.GetAutoContributeProps();
+        mBraveRewardsNativeWorker.GetAutoContributeProperties();
     }
 
     @Override
@@ -1494,7 +1494,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
 
     @Override
-    public void OnGetAutoContributeProps() {
+    public void OnGetAutoContributeProperties() {
         mAutoContributeEnabled  = mBraveRewardsNativeWorker.IsAutoContributeEnabled();
         mBraveRewardsNativeWorker.GetRecurringDonations();
     }

@@ -121,7 +121,7 @@ struct Balance {
   map<string, double> wallets;
 };
 
-struct AutoContributeProps {
+struct AutoContributeProperties {
   bool enabled_contribute;
   uint64 contribution_min_time;
   int32 contribution_min_visits;

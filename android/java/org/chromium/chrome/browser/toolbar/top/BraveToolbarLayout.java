@@ -593,7 +593,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   @Override
-  public void OnGetAutoContributeProps() {}
+  public void OnGetAutoContributeProperties() {}
 
   @Override
   public void OnGetReconcileStamp(long timestamp) {}

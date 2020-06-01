@@ -44,9 +44,6 @@ void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::Pub
 void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) {
   [bridge_ onReconcileComplete:result viewingId:viewing_id type:type amount:amount];
 }
-void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
-  [bridge_ onWalletProperties:result arg1:std::move(arg1)];
-}
 void NativeLedgerClient::ResetState(const std::string & name, ledger::ResultCallback callback) {
   [bridge_ resetState:name callback:callback];
 }

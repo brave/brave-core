@@ -93,7 +93,6 @@ void LegacyBatState::SetContributionAmount(double amount) {
     properties.parameters_choices.push_back(amount);
     std::sort(properties.parameters_choices.begin(),
               properties.parameters_choices.end());
-    ledger_->OnWalletProperties(ledger::Result::LEDGER_OK, properties);
     state_->wallet = properties;
   }
 

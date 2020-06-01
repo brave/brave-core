@@ -26,10 +26,9 @@ interface BatLedgerService {
 interface BatLedger {
   Initialize(bool execute_create_script) => (ledger.mojom.Result result);
   CreateWallet() => (ledger.mojom.Result result);
-  FetchWalletProperties() =>
-      (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
+  GetWalletProperties() => (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
 
-  GetAutoContributeProps() => (ledger.mojom.AutoContributeProps props);
+  GetAutoContributeProperties() => (ledger.mojom.AutoContributeProperties props);
   GetPublisherMinVisitTime() => (int32 min_visit_time);
   GetPublisherMinVisits() => (int32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);
@@ -164,7 +163,6 @@ interface BatLedgerClient {
   LoadPublisherState() => (ledger.mojom.Result result, string data);
   SaveLedgerState(string ledger_state) => (ledger.mojom.Result result);
 
-  OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
       double amount, ledger.mojom.RewardsType type);
 

@@ -110,10 +110,6 @@ chrome.braveRewards.onPromotionFinish.addListener((result: RewardsExtension.Resu
   })
 })
 
-chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension.WalletProperties) => {
-  rewardsPanelActions.onWalletProperties(properties)
-})
-
 // Fetch initial data required to refresh state, keeping in mind
 // that the extension process be restarted at any time.
 // TODO(petemill): Move to initializer function or single 'init' action.
@@ -130,6 +126,8 @@ chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       rewardsPanelActions.onAllNotifications(list)
     })
-    chrome.braveRewards.getWalletProperties()
+    chrome.braveRewards.getWalletProperties((properties: RewardsExtension.WalletProperties) => {
+      rewardsPanelActions.onWalletProperties(properties)
+    })
   }
 })

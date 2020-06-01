@@ -19,14 +19,14 @@ describe('rewards reducer', () => {
     }
   })
 
-  describe('INIT_AUTOCONTRIBUTE_SETTINGS', () => {
+  describe('ON_AUTO_CONTRIBUTE_PROPERTIES', () => {
     describe('empty wallet', () => {
       it('import flow - empty', () => {
         const expectedState: Rewards.State = { ...defaultState }
         expectedState.ui.emptyWallet = true
 
         const assertion = reducers(undefined, {
-          type: types.INIT_AUTOCONTRIBUTE_SETTINGS,
+          type: types.ON_AUTO_CONTRIBUTE_PROPERTIES,
           payload: {
             properties: {
               ui: {
@@ -45,7 +45,7 @@ describe('rewards reducer', () => {
         expectedState.ui.emptyWallet = false
 
         const assertion = reducers(undefined, {
-          type: types.INIT_AUTOCONTRIBUTE_SETTINGS,
+          type: types.ON_AUTO_CONTRIBUTE_PROPERTIES,
           payload: {
             properties: {
               ui: {
@@ -72,7 +72,7 @@ describe('rewards reducer', () => {
         const assertion = reducers({
           rewardsData: initState
         }, {
-          type: types.INIT_AUTOCONTRIBUTE_SETTINGS,
+          type: types.ON_AUTO_CONTRIBUTE_PROPERTIES,
           payload: {
             properties: {
               ui: {

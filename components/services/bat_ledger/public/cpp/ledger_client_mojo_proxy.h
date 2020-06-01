@@ -26,9 +26,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   // bat_ledger::mojom::BatLedgerClient
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
-  void OnWalletProperties(
-      const ledger::Result result,
-      ledger::WalletPropertiesPtr properties) override;
   void OnReconcileComplete(
       const ledger::Result result,
       const std::string& contribution_id,

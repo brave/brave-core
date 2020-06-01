@@ -75,6 +75,7 @@ class SettingsPage extends React.Component<Props, State> {
     }
 
     this.actions.getWalletProperties()
+    this.actions.getAutoContributeProperties()
     this.actions.getBalance()
     this.balanceTimerId = setInterval(() => {
       this.actions.getBalance()

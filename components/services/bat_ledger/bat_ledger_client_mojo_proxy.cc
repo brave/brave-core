@@ -74,16 +74,6 @@ void BatLedgerClientMojoProxy::LoadURL(
       method, base::BindOnce(&OnLoadURL, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::OnWalletProperties(
-    ledger::Result result,
-    ledger::WalletPropertiesPtr properties) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->OnWalletProperties(result,
-                                         std::move(properties));
-}
-
 void BatLedgerClientMojoProxy::OnReconcileComplete(
     ledger::Result result,
     const std::string& contribution_id,

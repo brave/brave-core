@@ -219,7 +219,7 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
     public void OnGetRewardsMainEnabled(boolean enabled) {}
 
     @Override
-    public void OnGetAutoContributeProps() {}
+    public void OnGetAutoContributeProperties() {}
 
     @Override
     public void OnRecurringDonationUpdated() {}

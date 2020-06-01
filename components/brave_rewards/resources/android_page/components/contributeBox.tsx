@@ -238,7 +238,7 @@ class ContributeBox extends React.Component<Props, State> {
   render () {
     const {
       enabledMain,
-      walletInfo,
+      autoContributeChoices,
       contributionMonthly,
       enabledContribute,
       reconcileStamp,
@@ -247,7 +247,7 @@ class ContributeBox extends React.Component<Props, State> {
       balance,
       ui
     } = this.props.rewardsData
-    const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, balance.rates)
+    const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(autoContributeChoices, balance.rates)
     const contributeRows = this.getContributeRows(autoContributeList)
     const excludedRows = this.getExcludedRows(excludedList)
     const topRows = contributeRows.slice(0, 5)
