@@ -29,6 +29,7 @@
       <output filename="components_strings_pa.pak" type="data_package" lang="pa" />
       <output filename="components_strings_si.pak" type="data_package" lang="si" />
       <output filename="components_strings_sq.pak" type="data_package" lang="sq" />
+      <output filename="components_strings_sr-Latn.pak" type="data_package" lang="sr-Latn" />
       <output filename="components_strings_ur.pak" type="data_package" lang="ur" />
       <output filename="components_strings_uz.pak" type="data_package" lang="uz" />
       <output filename="components_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
@@ -172,6 +173,7 @@
       <output filename="java/res/values-sl/components_strings.xml" lang="sl" type="android" context="android_java" />
       <output filename="java/res/values-sq/components_strings.xml" lang="sq" type="android" context="android_java" />
       <output filename="java/res/values-sr/components_strings.xml" lang="sr" type="android" context="android_java" />
+      <output filename="java/res/values-b+sr+Latn/components_strings.xml" lang="sr-Latn" type="android" context="android_java" />
       <output filename="java/res/values-sv/components_strings.xml" lang="sv" type="android" context="android_java" />
       <output filename="java/res/values-sw/components_strings.xml" lang="sw" type="android" context="android_java" />
       <output filename="java/res/values-ta/components_strings.xml" lang="ta" type="android" context="android_java" />

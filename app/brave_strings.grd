@@ -31,6 +31,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <output filename="chromium_strings_pa.pak" type="data_package" lang="pa" />
       <output filename="chromium_strings_si.pak" type="data_package" lang="si" />
       <output filename="chromium_strings_sq.pak" type="data_package" lang="sq" />
+      <output filename="chromium_strings_sr-Latn.pak" type="data_package" lang="sr-Latn" />
       <output filename="chromium_strings_ur.pak" type="data_package" lang="ur" />
       <output filename="chromium_strings_uz.pak" type="data_package" lang="uz" />
       <output filename="chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
@@ -282,7 +283,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </message>
       </if>
       <message name="IDS_ABOUT_TERMS_OF_SERVICE" desc="The terms of service label in the About box." translateable="false">
-        Not used in Brave. Placeholder to keep resource maps in sync. It expects one argument: <ph name="ARGUMENT">$1</ph>.
+        Not used in Brave. Placeholder to keep resource maps in sync.
       </message>
       <if expr="is_macosx">
         <message name="IDS_MAC_10_9_OBSOLETE_NOW" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using is no longer supported.">
@@ -340,7 +341,7 @@ Brave cannot read and write to its data directory:
       </message>
       <if expr="chromeos">
         <message name="IDS_EULA_CHECKBOX_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-          Optional: Help make Brave better by automatically sending usage statistics and crash reports to Brave.
+          Optional: Help improve Chrome OS features and performance by automatically sending diagnostic and usage data to Brave.
         </message>
       </if>
       <message name="IDS_PROFILE_TOO_NEW_ERROR" desc="Error displayed on startup when the profile is from a newer version of the product and can not be read">
@@ -712,10 +713,10 @@ Brave is unable to recover your settings.
           Chrome OS System
         </message>
         <message name="IDS_SYNC_NEEDS_KEYS_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys and resume sync.">
-          Chrome OS could not sync your data. Fix now.
+          Chrome OS could not sync your data.
         </message>
         <message name="IDS_SYNC_NEEDS_KEYS_FOR_PASSWORDS_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys, required to resume syncing of passwords specifically (other sync data works normally).">
-          Chrome OS could not sync your passwords. Fix now.
+          Chrome OS could not sync your passwords.
         </message>
         <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to update their sync passphrase.">
           Chrome OS could not sync your data. Please update your Sync passphrase.
@@ -993,6 +994,9 @@ Brave is unable to recover your settings.
 
       <!-- Runtime permission strings -->
       <if expr="is_android">
+        <message name="IDS_INFOBAR_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to augmented reality capabilities, but Brave is missing the Android camera permission.">
+          Brave needs permission to access your camera to create a 3D map of your surroundings
+        </message>
         <message name="IDS_INFOBAR_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
           Brave needs permission to access your camera for this site
         </message>
@@ -1104,6 +1108,17 @@ Brave is unable to recover your settings.
           Help us improve Brave
         </message>
       </if>
+      <!-- Brave parent extension/app install blocking dialog. -->
+      <if expr="chromeos">
+        <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
+         Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Adding this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
+        </message>
+        <message name="IDS_EXTENSION_ENABLE_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
+         Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Enabling this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
+        </message>
+
+      </if>
+
     </messages>
   </release>
 </grit>
