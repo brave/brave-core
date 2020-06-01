@@ -8,11 +8,12 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.view.LayoutInflater;
 
 import org.chromium.chrome.R;
@@ -40,6 +41,12 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
                 mContext.getResources().getString(R.string.save_data_and_battery_text),
                 mContext.getResources().getString(R.string.websites_load_faster_text),
                 mContext.getResources().getString(R.string.get_weekly_updates_text)
+            );
+    private static final List<Integer> mImages = Arrays.asList(
+                R.drawable.ic_adsblocked,
+                R.drawable.ic_datasaved,
+                R.drawable.ic_timesaved,
+                null
             );
 
     public OnboardingBottomSheetViewPagerAdapter(int onboardingType, NewTabPageListener newTabPageListener) {
@@ -92,6 +99,12 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
 
             }
         });
+
+        ImageView mImage = layout.findViewById(R.id.onboarding_image);
+        if (mImages.get(position) != null) {
+            mImage.setVisibility(View.VISIBLE);
+            mImage.setImageResource(mImages.get(position));
+        }
 
         container.addView(layout);
         return layout;
