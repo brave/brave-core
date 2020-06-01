@@ -54,7 +54,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
-    private static final String PREF_WELCOME_TOUR = "welcome_tour";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_HOMEPAGE = "homepage";
@@ -74,7 +73,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
 
         overrideChromiumPreferences();
-        initWelcomeTourPreference();
         initRateBrave();
     }
 
@@ -195,35 +193,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         // Replace fragment.
         findPreference(PREF_PRIVACY).setFragment(BravePrivacySettings.class.getName());
         findPreference(PREF_HOMEPAGE).setFragment(BraveHomepageSettings.class.getName());
-    }
-
-    private void initWelcomeTourPreference() {
-        findPreference(PREF_WELCOME_TOUR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                final Context context = preference.getContext();
-                final TextView titleTextView = new TextView (context);
-                titleTextView.setText(context.getResources().getString(R.string.welcome_tour_dialog_text));
-                int padding = dp2px(20);
-                titleTextView.setPadding(padding, padding, padding, padding);
-                titleTextView.setTextSize(18);
-                titleTextView.setTextColor(context.getResources().getColor(R.color.default_icon_color_tint_list));
-                titleTextView.setTypeface(null, Typeface.BOLD);
-
-                AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.Theme_Chromium_AlertDialog)
-                    .setView(titleTextView)
-                    .setPositiveButton(R.string.continue_button, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            OnboardingPrefManager.getInstance().showOnboarding(context, true);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create();
-                alertDialog.show();
-                return true;
-            }
-        });
     }
 
     private void initRateBrave() {
