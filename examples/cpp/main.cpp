@@ -267,7 +267,7 @@ void TestClassId() {
   assert(stylesheet == "[]");
 }
 
-void TestHostnameCosmetics() {
+void TestUrlCosmetics() {
   Engine engine(
       "a.com###element\n"
       "b.com##.ads\n"
@@ -277,42 +277,46 @@ void TestHostnameCosmetics() {
       "b.*##div:style(background: #fff)\n"
   );
 
-  std::string a_resources = engine.hostnameCosmeticResources("a.com");
-  std::string a_order1(R"({"hide_selectors":["a[href=\"b.com\"]","#element"],"style_selectors":{},"exceptions":[".block"],"injected_script":""})");
-  std::string a_order2(R"({"hide_selectors":["#element","a[href=\"b.com\"]"],"style_selectors":{},"exceptions":[".block"],"injected_script":""})");
+  std::string a_resources = engine.urlCosmeticResources("https://a.com");
+  std::string a_order1(R"({"hide_selectors":["a[href=\"b.com\"]","#element"],"style_selectors":{},"exceptions":[".block"],"injected_script":"","generichide":false})");
+  std::string a_order2(R"({"hide_selectors":["#element","a[href=\"b.com\"]"],"style_selectors":{},"exceptions":[".block"],"injected_script":"","generichide":false})");
   assert(a_resources == a_order1 || a_resources == a_order2);
 
-  std::string b_resources = engine.hostnameCosmeticResources("b.com");
-  std::string b_order1(R"({"hide_selectors":["a[href=\"b.com\"]",".ads"],"style_selectors":{"div":["background: #fff"]},"exceptions":[],"injected_script":""})");
-  std::string b_order2(R"({"hide_selectors":[".ads","a[href=\"b.com\"]"],"style_selectors":{"div":["background: #fff"]},"exceptions":[],"injected_script":""})");
+  std::string b_resources = engine.urlCosmeticResources("https://b.com");
+  std::string b_order1(R"({"hide_selectors":["a[href=\"b.com\"]",".ads"],"style_selectors":{"div":["background: #fff"]},"exceptions":[],"injected_script":"","generichide":false})");
+  std::string b_order2(R"({"hide_selectors":[".ads","a[href=\"b.com\"]"],"style_selectors":{"div":["background: #fff"]},"exceptions":[],"injected_script":"","generichide":false})");
   assert(b_resources == b_order1 || b_resources == b_order2);
 
-  // The hostname should not include a URL path
-  std::string bad_b_resources = engine.hostnameCosmeticResources("b.com/index.html");
-  std::string bad_b_result(R"({"hide_selectors":["a[href=\"b.com\"]"],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  // The URL may include a path
+  std::string path_b_resources = engine.urlCosmeticResources("https://b.com/index.html");
+  assert(path_b_resources == b_order1 || path_b_resources == b_order2);
+
+  // However, it must be a full URL, including scheme
+  std::string bad_b_resources = engine.urlCosmeticResources("b.com");
+  std::string bad_b_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
   assert(bad_b_resources == bad_b_result);
 }
 
-void TestSubdomainHostnameCosmetics() {
+void TestSubdomainUrlCosmetics() {
   Engine engine(
       "a.co.uk##.element\n"
       "good.a.*#@#.element\n"
   );
 
-  std::string a_resources = engine.hostnameCosmeticResources("a.co.uk");
-  std::string a_result(R"({"hide_selectors":[".element"],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  std::string a_resources = engine.urlCosmeticResources("http://a.co.uk");
+  std::string a_result(R"({"hide_selectors":[".element"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
   assert(a_resources == a_result);
 
-  std::string bad_a_resources = engine.hostnameCosmeticResources("bad.a.co.uk");
-  std::string bad_a_result(R"({"hide_selectors":[".element"],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  std::string bad_a_resources = engine.urlCosmeticResources("https://bad.a.co.uk");
+  std::string bad_a_result(R"({"hide_selectors":[".element"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
   assert(bad_a_resources == bad_a_result);
 
-  std::string good_a_resources = engine.hostnameCosmeticResources("good.a.co.uk");
-  std::string good_a_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[".element"],"injected_script":""})");
+  std::string good_a_resources = engine.urlCosmeticResources("https://good.a.co.uk");
+  std::string good_a_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[".element"],"injected_script":"","generichide":false})");
   assert(good_a_resources == good_a_result);
 
-  std::string still_good_a_resources = engine.hostnameCosmeticResources("still.good.a.co.uk");
-  std::string still_good_a_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[".element"],"injected_script":""})");
+  std::string still_good_a_resources = engine.urlCosmeticResources("http://still.good.a.co.uk");
+  std::string still_good_a_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[".element"],"injected_script":"","generichide":false})");
   assert(still_good_a_resources == still_good_a_result);
 }
 
@@ -322,8 +326,8 @@ void TestCosmeticScriptletResources() {
       "2.a.com##+js(scriptlet2.js, argument)\n"
   );
 
-  std::string a_unloaded = engine.hostnameCosmeticResources("a.com");
-  std::string a_unloaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  std::string a_unloaded = engine.urlCosmeticResources("https://a.com");
+  std::string a_unloaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
   assert(a_unloaded == a_unloaded_result);
 
   engine.addResources(R"([
@@ -331,13 +335,41 @@ void TestCosmeticScriptletResources() {
       {"name": "scriptlet2", "aliases": [], "kind": "template", "content": "d2luZG93LmxvY2F0aW9uLmhyZWYgPSAie3sxfX0i" }]
   )");
 
-  std::string a_loaded = engine.hostnameCosmeticResources("a.com");
-  std::string a_loaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"console.log(\"Hi\");\n"})");
+  std::string a_loaded = engine.urlCosmeticResources("https://a.com");
+  std::string a_loaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"console.log(\"Hi\");\n","generichide":false})");
   assert(a_loaded == a_loaded_result);
 
-  std::string a2_loaded = engine.hostnameCosmeticResources("2.a.com");
-  std::string a2_loaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"console.log(\"Hi\");\nwindow.location.href = \"argument\"\n"})");
+  std::string a2_loaded = engine.urlCosmeticResources("https://2.a.com");
+  std::string a2_loaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"console.log(\"Hi\");\nwindow.location.href = \"argument\"\n","generichide":false})");
   assert(a2_loaded == a2_loaded_result);
+}
+
+void TestGenerichide() {
+  Engine engine(
+      "##a[href=\"generic.com\"]\n"
+      "@@||b.com$generichide\n"
+      "b.com##.block\n"
+      "##.block\n"
+      "@@||a.com/test.html$generichide\n"
+      "a.com##.block\n"
+  );
+
+  std::string b_resources = engine.urlCosmeticResources("https://b.com");
+  std::string b_result(R"({"hide_selectors":[".block"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":true})");
+  assert(b_resources == b_result);
+
+  std::string b_path_resources = engine.urlCosmeticResources("https://b.com/test.html");
+  std::string b_path_result(R"({"hide_selectors":[".block"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":true})");
+  assert(b_path_resources == b_path_result);
+
+  std::string a_resources = engine.urlCosmeticResources("https://a.com");
+  std::string a_order1(R"({"hide_selectors":[".block","a[href=\"generic.com\"]"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
+  std::string a_order2(R"({"hide_selectors":["a[href=\"generic.com\"]",".block"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
+  assert(a_resources == a_order1 || a_resources == a_order2);
+
+  std::string a_path_resources = engine.urlCosmeticResources("https://a.com/test.html");
+  std::string a_path_result(R"({"hide_selectors":[".block"],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":true})");
+  assert(a_path_resources == a_path_result);
 }
 
 void TestDefaultLists() {
@@ -390,8 +422,9 @@ int main() {
   TestDefaultLists();
   TestRegionalLists();
   TestClassId();
-  TestHostnameCosmetics();
-  TestSubdomainHostnameCosmetics();
+  TestUrlCosmetics();
+  TestSubdomainUrlCosmetics();
+  TestGenerichide();
   TestCosmeticScriptletResources();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;

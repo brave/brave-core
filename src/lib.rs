@@ -232,16 +232,16 @@ pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> 
     new_list
 }
 
-/// Returns a set of cosmetic filtering resources specific to the given hostname, in JSON format
+/// Returns a set of cosmetic filtering resources specific to the given url, in JSON format
 #[no_mangle]
-pub unsafe extern "C" fn engine_hostname_cosmetic_resources(
+pub unsafe extern "C" fn engine_url_cosmetic_resources(
     engine: *mut Engine,
-    hostname: *const c_char,
+    url: *const c_char,
 ) -> *mut c_char {
-    let hostname = CStr::from_ptr(hostname).to_str().unwrap();
+    let url = CStr::from_ptr(url).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let ptr = CString::new(serde_json::to_string(&engine.hostname_cosmetic_resources(hostname))
+    let ptr = CString::new(serde_json::to_string(&engine.url_cosmetic_resources(url))
         .unwrap_or_else(|_| "".into()))
         .expect("Error: CString::new()")
         .into_raw();

@@ -125,8 +125,8 @@ void Engine::addResources(const std::string& resources) {
   engine_add_resources(raw, resources.c_str());
 }
 
-const std::string Engine::hostnameCosmeticResources(const std::string& hostname) {
-  char* resources_raw = engine_hostname_cosmetic_resources(raw, hostname.c_str());
+const std::string Engine::urlCosmeticResources(const std::string& url) {
+  char* resources_raw = engine_url_cosmetic_resources(raw, url.c_str());
   const std::string resources_json = std::string(resources_raw);
 
   c_char_buffer_destroy(resources_raw);
