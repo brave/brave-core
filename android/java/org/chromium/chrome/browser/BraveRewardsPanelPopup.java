@@ -150,6 +150,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private boolean mTippingInProgress;
     private final Handler mHandler = new Handler();
     private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
+    private static final int WALLET_BALANCE_LIMIT = 25;
 
     private boolean mClaimInProcess;
     private boolean mWalletCreateInProcess;
@@ -1131,7 +1132,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                 Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
                 if (btnVerifyWallet != null) {
-                    if (walletBalance < 25) {
+                    if (walletBalance < WALLET_BALANCE_LIMIT) {
                         btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button_disabled);
                     } else {
                         btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
@@ -1640,7 +1641,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         btnVerifyWallet.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (walletBalance < 25) {
+                if (walletBalance < WALLET_BALANCE_LIMIT) {
                     Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
                 } else {
                     switch (status) {
