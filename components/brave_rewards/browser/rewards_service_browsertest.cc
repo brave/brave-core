@@ -2862,28 +2862,3 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetACOff) {
       }));
   run_loop_second.Run();
 }
-
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetEmpty) {
-  EnableRewards();
-  uint64_t current_stamp = 0;
-
-  base::RunLoop run_loop_first;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        current_stamp = stamp;
-        run_loop_first.Quit();
-      }));
-  run_loop_first.Run();
-
-  ClaimPromotionViaCode();
-
-  rewards_service_->StartMonthlyContributionForTest();
-
-  base::RunLoop run_loop_second;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        ASSERT_NE(current_stamp, stamp);
-        run_loop_second.Quit();
-      }));
-  run_loop_second.Run();
-}
