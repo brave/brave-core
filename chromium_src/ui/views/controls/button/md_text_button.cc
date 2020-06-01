@@ -9,11 +9,7 @@
 
 // Override button creation to return BraveTextButton instances
 #define Create Create_ChromiumImpl
-#define CreateSecondaryUiBlueButton CreateSecondaryUiBlueButton_ChromiumImpl
-#define CreateSecondaryUiButton CreateSecondaryUiButton_ChromiumImpl
 #include "../../../../../ui/views/controls/button/md_text_button.cc"
-#undef CreateSecondaryUiButton
-#undef CreateSecondaryUiBlueButton
 #undef Create
 
 namespace {
@@ -60,26 +56,9 @@ class BraveTextButton : public MdTextButton {
 };
 
 //
-// These static CreateXYZ functions purely exist to make sure BraveTextButtons
+// This static Create function purely exists to make sure BraveTextButtons
 // are created instead of MdTextButtons.
 //
-
-// static
-std::unique_ptr<LabelButton> MdTextButton::CreateSecondaryUiButton(
-    ButtonListener* listener,
-    const base::string16& text) {
-  return MdTextButton::Create(listener, text, style::CONTEXT_BUTTON_MD);
-}
-
-// static
-std::unique_ptr<LabelButton> MdTextButton::CreateSecondaryUiBlueButton(
-    ButtonListener* listener,
-    const base::string16& text) {
-  auto md_button =
-      MdTextButton::Create(listener, text, style::CONTEXT_BUTTON_MD);
-  md_button->SetProminent(true);
-  return md_button;
-}
 
 // static
 std::unique_ptr<MdTextButton> MdTextButton::Create(ButtonListener* listener,
