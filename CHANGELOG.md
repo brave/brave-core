@@ -2,9 +2,9 @@
 
 ## [1.17](https://github.com/brave/brave-ios/releases/tag/v1.17)
 
- - Implemented super referral improvements. ([2539](https://github.com/brave/brave-ios/issues/2539))
+ - Implemented super referral improvements. ([#2539](https://github.com/brave/brave-ios/issues/2539))
  - Fixed an issue where grants were not claimed in first attempt. ([#2146](https://github.com/brave/brave-ios/issues/2146)
- - Fixed an issue where Javascript URLs should only work for bookmarklets. ([2463](https://github.com/brave/brave-ios/issues/2463))
+ - Fixed an issue where Javascript URLs should only work for bookmarklets. ([#2463](https://github.com/brave/brave-ios/issues/2463))
 
 
 ## [1.16.2](https://github.com/brave/brave-ios/releases/tag/v1.16.2)
