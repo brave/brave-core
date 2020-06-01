@@ -329,7 +329,7 @@ export class RewardsPanel extends React.Component<Props, State> {
                 compact={true}
                 contentPadding={false}
                 gradientTop={'249,251,252'}
-                balance={total.toFixed(1)}
+                balance={total.toFixed(3)}
                 showSecActions={false}
                 showCopy={false}
                 onlyAnonWallet={this.state.onlyAnonWallet}

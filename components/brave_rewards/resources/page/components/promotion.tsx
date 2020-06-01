@@ -161,7 +161,7 @@ class Promotion extends React.Component<Props, State> {
 
     let type = 'ugp'
     let promoId
-    let tokens = '0.0'
+    let tokens = '0.000'
     let date = ''
 
     if (promotion.type) {
@@ -172,7 +172,7 @@ class Promotion extends React.Component<Props, State> {
       promoId = promotion.promotionId
     }
     if (promotion.amount) {
-      tokens = promotion.amount.toFixed(1)
+      tokens = promotion.amount.toFixed(3)
     }
 
     if (promotion.type !== 1) { // Rewards.PromotionTypes.ADS

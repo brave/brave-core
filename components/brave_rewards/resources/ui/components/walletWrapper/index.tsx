@@ -558,7 +558,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const hasGrants = this.hasGrants(grants)
 
     let date = ''
-    let grantAmount = '0.0'
+    let grantAmount = '0.000'
 
     if (grant) {
       if (grant.expiresAt) {
@@ -566,7 +566,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       }
 
       if (grant.amount) {
-        grantAmount = grant.amount.toFixed(1)
+        grantAmount = grant.amount.toFixed(3)
       }
 
       if (grant.captchaImage && grant.captchaStatus !== 'finished') {
@@ -676,7 +676,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         {
                           grants && grants.map((grant: Grant, i: number) => {
                             return <StyledGrant key={`${id}-grant-${i}`}>
-                              <b>{grant.amount.toFixed(1)} {batFormatString}</b>
+                              <b>{grant.amount.toFixed(3)} {batFormatString}</b>
                               {
                                 grant.type === 1
                                 ? <span>{getLocale('adsEarnings')}</span>

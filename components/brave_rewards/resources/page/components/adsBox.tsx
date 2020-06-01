@@ -330,7 +330,7 @@ class AdsBox extends React.Component<Props, State> {
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
               onlyAnonWallet={onlyAnonWallet}
-              value={estimatedPendingRewards.toFixed(1)}
+              value={estimatedPendingRewards.toFixed(3)}
               converted={utils.convertBalance(estimatedPendingRewards, parameters.rate)}
             />
           </List>

@@ -73,7 +73,7 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       ])
       state = { ...state }
       state.finished = true
-      state.currentTipAmount = amount.toFixed(1)
+      state.currentTipAmount = amount.toFixed(3)
       state.currentTipRecurring = payload.recurring
 
       break

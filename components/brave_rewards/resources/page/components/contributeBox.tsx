@@ -166,7 +166,7 @@ class ContributeBox extends React.Component<Props, State> {
           <ControlWrapper text={getLocale('contributionMonthly')}>
             <Select
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
             >
               {
                 monthlyList.map((choice: MonthlyChoice) => {
@@ -271,7 +271,7 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             floating={true}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+            value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
             showAllContents={true}
           >
             {
