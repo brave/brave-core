@@ -5,8 +5,8 @@
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 
-#define BRAVE_RTC_PEER_CONNECTION                                              \
-  if (!AllowFingerprinting(Document::From(GetExecutionContext())->GetFrame())) \
+#define BRAVE_RTC_PEER_CONNECTION                                                              \
+  if (!AllowFingerprinting(To<LocalDOMWindow>(GetExecutionContext())->document()->GetFrame())) \
     return ScriptPromise::CastUndefined(script_state);
 
 #include "../../../../../../../third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc"
