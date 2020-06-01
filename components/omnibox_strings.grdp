@@ -241,11 +241,25 @@
   <message name="IDS_ACC_TAB_SWITCH_BUTTON" desc="Announcement when tab switch button focused.">
     Tab switch button, press Enter to switch to this tab
   </message>
-  <!-- Accessibility suffix for suggestions when the remove button is focused.-->
+  <!-- Accessibility suffix for suggestions when the remove button is focused. -->
   <message name="IDS_ACC_REMOVE_SUGGESTION_FOCUSED_PREFIX" desc="Announcement when remove suggestion button is focused.">
     Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>
   </message>
   <message name="IDS_ACC_REMOVE_SUGGESTION_BUTTON" desc="Announcement when remove suggestion button is focused.">
     Remove Suggestion button, press Enter to remove this suggestion
+  </message>
+  <!-- Tooltip labels for the omnibox popup header show/hide toggle button. -->
+  <message name="IDS_TOOLTIP_HEADER_SHOW_SUGGESTIONS_BUTTON" desc="Tooltip for the Show Suggestions button on section headers.">
+    Show suggestions
+  </message>
+  <message name="IDS_TOOLTIP_HEADER_HIDE_SUGGESTIONS_BUTTON" desc="Tooltip for the Hide Suggestions button on section headers.">
+    Hide suggestions
+  </message>
+  <!-- Accessibility labels for the omnibox popup header show/hide toggle button. -->
+  <message name="IDS_ACC_HEADER_SHOW_SUGGESTIONS_BUTTON" desc="Announcement for the Show Suggestions button on section headers.">
+    Show the "<ph name="SECTION">$1<ex>related to recent searches</ex></ph>" section
+  </message>
+  <message name="IDS_ACC_HEADER_HIDE_SUGGESTIONS_BUTTON" desc="Announcement for the Hide Suggestions button on section headers.">
+    Hide the "<ph name="SECTION">$1<ex>related to recent searches</ex></ph>" section
   </message>
 </grit-part>

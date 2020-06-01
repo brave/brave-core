@@ -35,6 +35,7 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="generated_resources_pa.pak" type="data_package" lang="pa" />
       <output filename="generated_resources_si.pak" type="data_package" lang="si" />
       <output filename="generated_resources_sq.pak" type="data_package" lang="sq" />
+      <output filename="generated_resources_sr-Latn.pak" type="data_package" lang="sr-Latn" />
       <output filename="generated_resources_ur.pak" type="data_package" lang="ur" />
       <output filename="generated_resources_uz.pak" type="data_package" lang="uz" />
       <output filename="generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
@@ -166,6 +167,7 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="java/res/values-sl/generated_resources.xml" lang="sl" type="android" context="android_java" />
       <output filename="java/res/values-sq/generated_resources.xml" lang="sq" type="android" context="android_java" />
       <output filename="java/res/values-sr/generated_resources.xml" lang="sr" type="android" context="android_java" />
+      <output filename="java/res/values-b+sr+Latn/generated_resources.xml" lang="sr-Latn" type="android" context="android_java" />
       <output filename="java/res/values-sv/generated_resources.xml" lang="sv" type="android" context="android_java" />
       <output filename="java/res/values-sw/generated_resources.xml" lang="sw" type="android" context="android_java" />
       <output filename="java/res/values-ta/generated_resources.xml" lang="ta" type="android" context="android_java" />
@@ -1610,34 +1612,34 @@ are declared in tools/grit/grit_rule.gni.
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> was blocked by Advanced Protection.
       </message>
       <message name="IDS_PROMPT_DEEP_SCANNING_DOWNLOAD" desc="Message shown in the download shelf when a download is being scanned">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is being scanned.
+        Checking <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> with your organization's security policies...
       </message>
       <message name="IDS_PROMPT_CONFIRM_MIXED_CONTENT_DOWNLOAD" desc="Message shown to the user to validate the download when the download content is a mixed-content download.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_TOO_LARGE" desc="Message shown in the download shelf when a download is blocked for being too large">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is too large for cloud scanning and has been blocked from opening.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is too big for a security check. You can open files up to 50 MB.
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_PASSWORD_PROTECTED" desc="Message shown in the download shelf when a download is blocked for being encrypted">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is encrypted and has been blocked from opening.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is encrypted. Ask its owner to decrypt.
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_DEEP_SCANNED_SAFE" desc="Message shown in the download shelf when a download is finished being scanned, and no issues were found">
-        Scan complete, no issues identified.
+        Security checks are done
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_SENSITIVE_CONTENT_WARNING" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to warn the user">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> contains sensitive content.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> has sensitive content
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_SENSITIVE_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> contains sensitive content, and has been blocked.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> has sensitive or dangerous content. Ask its owner to fix.
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_DEEP_SCANNED_OPENED_DANGEROUS" desc="Message shown in the download shelf when a download is finished being scanned, and issues were found">
-        Download contains malware.
+        This file is dangerous
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_WARNING" desc="Message shown in the download shelf when a download is mixed content, and Brave needs to show a warning.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download is mixed content, and Brave has blocked it.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
       </message>
       <message name="IDS_PROMPT_APP_DEEP_SCANNING" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
@@ -1652,28 +1654,28 @@ are declared in tools/grit/grit_rule.gni.
         This type of file may harm your computer.
       </message>
       <message name="IDS_BLOCK_REASON_MIXED_CONTENT" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is mixed-content.">
-        This file can't be downloaded securely.
+        This file can't be downloaded securely
       </message>
       <message name="IDS_BLOCK_REASON_DEEP_SCANNING" desc="Message shown on chrome://downloads when a download is being scanned">
         This file is being scanned.
       </message>
       <message name="IDS_DEEP_SCANNED_SAFE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this this download was deep scanned, and found to be safe.">
-        Scan complete, no issues identified.
+        Security checks are done
       </message>
       <message name="IDS_DEEP_SCANNED_OPENED_DANGEROUS_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this this download was deep scanned, and found to be malicious.">
-        Download contains malware.
+        This file is dangerous
       </message>
       <message name="IDS_BLOCK_REASON_SENSITIVE_CONTENT_WARNING" desc="Message shown to the user on chrome://downloads page to explain this download is showing a warning because it contains sensitive content">
-        This file contains sensitive content.
+        This file has sensitive content
       </message>
       <message name="IDS_SENSITIVE_CONTENT_BLOCKED_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it contains sensitive content">
-        This file has been blocked because it contains sensitive content.
+        This file has sensitive or dangerous content. Ask its owner to fix.
       </message>
       <message name="IDS_BLOCKED_TOO_LARGE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is too large for deep scanning">
-        This file is too large for cloud scanning and has been blocked from opening.
+        This file is too big for a security check. You can open files up to 50 MB.
       </message>
       <message name="IDS_BLOCKED_PASSWORD_PROTECTED_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is password protected">
-        This file is encrypted and has been blocked from opening.
+        This file is encrypted. Ask its owner to decrypt.
       </message>
 
       <if expr="chromeos">
@@ -2060,17 +2062,6 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
-      <!-- Dialog that asks whether user wants to participate in Safe Browsing Extended Reporting -->
-      <message name="IDS_FEEDBACK_SERVICE_DIALOG_EXPLANATION_SCOUT" desc="Explanation of the dialog asking whether the user wants to upload some system information and page content for Safe Browsing analysis">
-        You can help improve Safe Browsing by sending some system information and page content to Brave.
-      </message>
-      <message name="IDS_FEEDBACK_SERVICE_DIALOG_OK_BUTTON_LABEL" desc="Button that elects to upload suspected malicious files for analysis">
-        Yes, I want to help
-      </message>
-      <message name="IDS_FEEDBACK_SERVICE_DIALOG_CANCEL_BUTTON_LABEL" desc="Button that elects not to upload suspected malicious files for analysis (default button)">
-        No, thanks
-      </message>
-
       <!-- Ambient badge -->
       <if expr="is_android">
         <message name="IDS_AMBIENT_BADGE_INSTALL" desc="String for the ambient badge promoting an app installation">
@@ -2123,8 +2114,14 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_BOOKMARK_APP_AX_BUBBLE_NAME_LABEL" desc="Text preceding the name of a bookmark app, read by spoken feedback.">
         Shortcut name
       </message>
+      <message name="IDS_BOOKMARK_APP_BUBBLE_OPEN_AS_TAB" desc="Checkbox text for opening the bookmark app as a browser tab.">
+        Open as tab
+      </message>
       <message name="IDS_BOOKMARK_APP_BUBBLE_OPEN_AS_WINDOW" desc="Checkbox text for opening the bookmark app as a window.">
         Open as window
+      </message>
+      <message name="IDS_BOOKMARK_APP_BUBBLE_OPEN_AS_TABBED_WINDOW" desc="Checkbox text for opening the bookmark app as a tabbed window.">
+        Open as tabbed window
       </message>
 
       <!-- Finish policy app installation dialog -->
@@ -2330,20 +2327,6 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
-      <!-- Web Share Target picker dialog -->
-      <message name="IDS_WEBSHARE_TARGET_PICKER_TITLE" desc="Title of the dialog to choose a target for sharing.">
-        Share via
-      </message>
-      <message name="IDS_WEBSHARE_TARGET_PICKER_LABEL" desc="Text of the main label in the dialog to choose a target for sharing.">
-        Choose an app to share to:
-      </message>
-      <message name="IDS_WEBSHARE_TARGET_PICKER_COMMIT" desc="Title of the button to share content to the chosen application.">
-        Share
-      </message>
-      <message name="IDS_WEBSHARE_TARGET_DIALOG_ITEM_TEXT" desc="Text for a Web Share Target item in the Web Share Target dialog.">
-        <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> (<ph name="APP_URL">$2<ex>https://google.com/maps</ex></ph>)
-      </message>
-
       <!-- Content blocking strings -->
       <message name="IDS_MANAGE" desc="Text for a button on permission bubbles, which opens a more detailed content settings page where users can manage that particular setting.">
         Manage
@@ -2517,6 +2500,12 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ALLOW_BUTTON" desc="Text displayed on a button that enables notifications for a site. This button is part of the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
         Allow for this site
       </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_COMPACT_ALLOW_BUTTON" desc="Text displayed on a button that enables notifications for a site. This button is part of the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+        Allow
+      </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CONTINUE_BLOCKING_BUTTON" desc="Text displayed on a button that reaffirms that notifications should remain disabled for a site. This button is part of the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+        Continue blocking
+      </message>
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_EARLY_PROMO" desc="Text of the blocked notifications indicator promo, that shows under the blocked notifications indicator in the address bar. The promo follows the user action of blocking notifications for the site they are visiting, and informs the user that we (Brave) understood that they do not usually accept notification prompts, and we will automatically block notification prompts in the future.">
         Got it. By default, new sites that you visit won't send you notifications.
       </message>
@@ -2525,6 +2514,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
         Most profiles block notifications from this site
+      </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ABUSIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave because the site is known to employ dark patterns to trick users into accepting the permission.">
+        This site may be trying to trick you into allowing intrusive notifications
       </message>
 
       <!-- Cookie controls strings. -->
@@ -3088,8 +3080,8 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- DevTools attached infobar -->
-      <message name="IDS_DEV_TOOLS_INFOBAR_LABEL" desc="Label displayed in an infobar when external debugger is attached to the browser">
-        "<ph name="CLIENT_NAME">$1<ex>Extension Foo</ex></ph>" is debugging this browser
+      <message name="IDS_DEV_TOOLS_INFOBAR_LABEL" desc="Label displayed in an infobar when external debugger is attached to the browser.  The label does not disappear until the user dismisses it, even if the debugger is detached, and so should not imply that the debugger must still be debugging the browser, only that it was, and could still be.">
+        "<ph name="CLIENT_NAME">$1<ex>Extension Foo</ex></ph>" started debugging this browser
       </message>
 
       <!-- DevTools file system access -->
@@ -3574,12 +3566,28 @@ are declared in tools/grit/grit_rule.gni.
 
       <!-- Extension alerts. -->
       <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert">
-        Confirm Changes
+        {NUM_EXTENSIONS, plural,
+        =1 {This extension may be dangerous}
+        other {These extensions may be dangerous}}
       </message>
-      <message name="IDS_EXTENSION_ALERT_ITEM_BLACKLISTED" desc="A statement that an extension has been newly blacklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
+      <message name="IDS_APP_ALERT_TITLE" desc="Titlebar of the app notification alert">
+       {NUM_APPS, plural,
+        =1 {This app may be dangerous}
+        other {These apps may be dangerous}}
+      </message>
+       <message name="IDS_EXTENSION_AND_APP_ALERT_TITLE" desc="Titlebar of the extension and app notification alert">
+        These items may be dangerous
+      </message>
+      <message name="IDS_EXTENSION_ALERT_ITEM_BLACKLISTED_OTHER" desc="A statement that an extension has been newly blacklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
         The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" was automatically disabled.
       </message>
-      <message name="IDS_APP_ALERT_ITEM_BLACKLISTED" desc="A statement that a packaged app has been newly blacklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
+      <message name="IDS_EXTENSION_ALERT_ITEM_BLACKLISTED_MALWARE" desc="A statement that an extension has been newly blacklisted for malware.">
+        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it contains malware
+      </message>
+      <message name="IDS_EXTENSION_ALERT_ITEM_BLACKLISTED_MALWARE_PLURAL" desc="A statement that an extension has been newly blacklisted for malware.">
+        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it contains malware.
+      </message>
+      <message name="IDS_APP_ALERT_ITEM_BLACKLISTED_OTHER" desc="A statement that a packaged app has been newly blacklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
         The app "<ph name="EXTENSION_NAME">$1<ex>Gmail</ex></ph>" was automatically removed.
       </message>
       <message name="IDS_EXTENSION_ALERT_ITEM_OK" desc="The title of the default button acknowledging the information presented.">
@@ -3854,9 +3862,6 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_VPN" desc="Permission string for access to VPN API.">
           Access your network traffic
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_WEB_CONNECTABLE" desc="Permission string for allowing websites to connect to extensions.">
-          Communicate with cooperating websites
         </message>
 
         <message name="IDS_EXTENSION_PROMPT_WARNING_CONTENT_SETTINGS" desc="Permission string for access to content settings.">
@@ -4257,6 +4262,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_INSTALL_PROMPT_ASK_A_PARENT_BUTTON" desc="Text for the ask-a-parent button on the extension install prompt.">
         Ask a parent
       </message>
+      <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_TITLE" desc="Text for the title of the dialog indicating that a parent has blocked installing extensions and apps.">
+        Can't add <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph>
+      </message>
+      <message name="IDS_EXTENSION_ENABLE_BLOCKED_BY_PARENT_PROMPT_TITLE" desc="Text for the title of the dialog indicating that a parent has blocked enabling extensions and apps.">
+        Can't enable <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph>
+      </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_GO_GET_A_PARENT_FOR_EXTENSION_LABEL" desc="Text for the title section of the parent permission dialog asking child to get a parent to approve.">
         Go get a parent to approve "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
       </message>
@@ -4408,6 +4419,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_DISABLE_DEVELOPER_MODE_BODY" desc="Body of a dialog warning users they have development mode extensions running">
         Extensions running in developer mode can harm your computer. If you're not a developer, you should disable these extensions running in developer mode to stay safe.
       </message>
+
+      <!-- Begin Extension Settings Overridden Dialog strings. -->
+      <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_CHANGE_IT_BACK" desc="The text of the button to revert to old settings; displayed in the dialog describing settings overridden by an extension.">
+        Change it back
+      </message>
+      <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_IGNORE" desc="The text of the button to ignore the settings changes, allowing the extension changes to remain in effect. Displayed in the dialog describing settings overridden by an extension.">
+        Ignore
+      </message>
+      <!-- End Extension Settings Overridden Dialog strings. -->
 
       <!-- Extensions Menu bubble -->
       <message name="IDS_EXTENSIONS_MENU_TITLE" desc="Title of the Extensions Menu">
@@ -4612,6 +4632,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COMPONENTS_EVT_STATUS_DOWNLOADING" desc="Service Status">
         Component downloading
+      </message>
+      <message name="IDS_COMPONENTS_EVT_STATUS_UPDATING" desc="Service Status">
+        Component updating
       </message>
 
       <if expr="enable_plugins">
@@ -5047,9 +5070,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_KEYWORD_TEXT_MD" desc="Text shown in the search button at the front of the omnibox when the user has selected a keyword, in MD (no final colon)">
         Search <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
-      <message name="IDS_CLICK_TO_VIEW_DOODLE" desc="Prompts users to click on an icon to view a Brave doodle. Normally, today's Brave doodle is shown when the user opens a new tab (if there is a doodle today). If there is a doodle, but it cannot be shown, Brave puts an icon next to the regular Brave logo. The icon uses this label for accessibility. If the user clicks the icon, Brave will show the doodle.">
-        Click to view today’s doodle
-      </message>
       <message name="IDS_OMNIBOX_CLEAR_ALL" desc="Accessibility text for the button that deletes all text input from the omnibox on touch devices.">
         Clear input
       </message>
@@ -5129,9 +5149,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_LINKS_INVALID_URL" desc="Error message for when an invalid URL is provided while creating a custom link. (On the New Tab Page)">
        Type a valid URL
       </message>
-      <message name="IDS_NTP_CUSTOM_LINKS_SHORTCUT_EXISTS" desc="Error message for when the shortcut being created already exists. (On the New Tab Page)">
-       Shortcut already exists
-      </message>
       <message name="IDS_NTP_CUSTOM_LINKS_CANT_CREATE" desc="A catchall error message for when the shortcut cannot be created. (On the New Tab Page)">
        Can’t create shortcut
       </message>
@@ -5165,9 +5182,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_BG_DAILY_REFRESH" desc="The text label for the daily background randomization option.  (On the New Tab Page)">
         Refresh daily
       </message>
-      <message name="IDS_NTP_CUSTOM_BG_SURPRISE_ME" desc="The text label for the random background option. (On the New Tab Page)">
-        Surprise me
-      </message>
       <message name="IDS_NTP_CUSTOM_BG_RESTORE_DEFAULT" desc="The text label for the restore default option for background customization. (On the New Tab Page)">
         Restore default background
       </message>
@@ -5185,12 +5199,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOM_BG_BACKGROUNDS_UNAVAILABLE" desc="Error message for when background customization is not available. (On the New Tab Page)">
         Backgrounds are unavailable. Try again later.
-      </message>
-      <message name="IDS_NTP_CUSTOM_BG_IMAGE_UNAVAILABLE" desc="Error message for when the selected background image is not available. (On the New Tab Page)">
-        Image is unavailable. Try again later.
-      </message>
-      <message name="IDS_NTP_CUSTOM_BG_IMAGE_NOT_USABLE" desc="Error message for when an uploaded image is not usuable as a custom background. (On the New Tab Page)">
-        This image can't be used. Choose a different image.
       </message>
       <message name="IDS_NTP_CUSTOM_BG_BACK_LABEL" desc="Accessibility label for the back arrow on the background picker dialog. (On the New Tab Page)">
         Back
@@ -5429,9 +5437,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_FIND" desc="The tooltip for the find button">
         Find
       </message>
-      <message name="IDS_TOOLTIP_WEBUI_TAB_STRIP_TAB_COUNTER" desc="The tooltip for the button which toggles the tab strip. It counts the number of open tabs. [ICU Syntax]">
-        {NUM_OPEN_TABS, plural, =1 {# open tab, press to toggle tab strip} other {# open tabs, press to toggle tab strip}}
-      </message>
 
       <!-- Strings for intent picker -->
       <if expr="not is_android">
@@ -5580,9 +5585,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
       </message>
-      <message name="IDS_WEBUI_TAB_STRIP_PROMO" desc="Promotional UI shown next to the tab counter button to encourage its use">
-        Find your tabs here
-      </message>
 
       <!-- Browser Hung Plugin Detector -->
       <if expr="is_win">
@@ -5669,6 +5671,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
         </message>
+        <message name="IDS_PASSWORD_MANAGER_MOVE_BUTTON" desc="Move button text for password manager">
+          Move
+        </message>
         <if expr="use_titlecase">
           <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="In Title Case: Update button text for password manager">
             Update Password
@@ -5688,6 +5693,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MANAGE" desc="Text for the 'Manage Passwords' icon's 'saving passwords' state">
           Manage your passwords
         </message>
+        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MOVE" desc="Text for the 'Manage Passwords' icon's 'move password to account' state">
+          Move your password
+        </message>
         <message name="IDS_PASSWORD_MANAGER_IMPORT_BUTTON" desc="The label of the button for importing passwords. The button appears next to the list of saved passwords in Brave's settings.">
           Import
         </message>
@@ -5702,6 +5710,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
           Password
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_MOVE_TITLE" desc="The title of the 'move password to account' bubble">
+          Move to Brave Account?
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
+          Move your password to your Brave account to access it securely wherever you're signed in
         </message>
       </if>
       <if expr="is_android">
@@ -5832,7 +5846,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Report anonymously
         </message>
         <message name="IDS_FEEDBACK_SCREENSHOT_LABEL" desc="Label for the screenshot field if current screenshots are being shown">
-          Include this screenshot
+          Include this screenshot and titles of open tabs
         </message>
         <message name="IDS_FEEDBACK_SCREENSHOT_A11Y_TEXT" desc="Accessibility label text for screenshot of system, which shows contents of screen apart from feedback dialog">
           Screenshot of programs that are currently on the screen
@@ -5876,9 +5890,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_FEEDBACK_ATTACH_FILE_LABEL" desc="Text for the label for the attached filename">
           Attach file
-        </message>
-        <message name="IDS_FEEDBACK_READING_FILE" desc="Text to display if reading a file when the user clicks the send report button">
-          Reading file..
         </message>
         <message name="IDS_FEEDBACK_ATTACH_FILE_TO_BIG" desc="Text to display if the file being attached is too big">
           Selected file is too big (max size: 3mb).
@@ -6065,12 +6076,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PICTURE_IN_PICTURE_BACK_TO_TAB_CONTROL_TEXT" desc="Text label of the back to tab control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Back to tab
       </message>
-      <message name="IDS_PICTURE_IN_PICTURE_MUTE_CONTROL_TEXT" desc="Text label of the mute control button. The button appears when the user hovers over the Picture-in-Picture window and the video is currently unmuted.">
-        Mute
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_UNMUTE_CONTROL_TEXT" desc="Text label of the mute control button. The button appears when the user hovers over the Picture-in-Picture window and the video is currently muted.">
-        Unmute
-      </message>
       <message name="IDS_PICTURE_IN_PICTURE_SKIP_AD_CONTROL_TEXT" desc="Text label of the skip ad control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Skip Ad
       </message>
@@ -6088,24 +6093,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_PREVIOUS_TRACK_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes previous track action.">
         Previous track
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_CLOSE_TITLE" desc="Text label of the title for the confirmation dialog. This dialog appears when the user tries to close a tab / window while in Picture-in-Picture mode.">
-        Are you sure you want to close this tab?
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_LEAVE_TITLE" desc="Text label of the description for the confirmation dialog. This dialog appears when the user tries to leave a page while in Picture-in-Picture mode.">
-        Are you sure you want to leave this page?
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_DESCRIPTION" desc="Text label of the description for the confirmation dialog. This dialog appears when the user tries to close a tab / window or leave a page while in Picture-in-Picture mode.">
-        The video in picture-in-picture mode will stop playing.
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_CLOSE_TEXT" desc="Text label of the close button. The button appears in the confirmation dialog when the user tries to close a tab or window while in Picture-in-Picture mode.">
-        Close
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_LEAVE_TEXT" desc="Text label of the leave button. The button appears in the confirmation dialog when the user tries to leave a page while in Picture-in-Picture mode.">
-        Leave
-      </message>
-      <message name="IDS_PICTURE_IN_PICTURE_CANCEL_TEXT" desc="Text label of the cancel button. The button appears in the confirmation dialog when the user tries to close a tab / window or leave a page while in Picture-in-Picture mode.">
-        Cancel
       </message>
 
       <!-- Load State -->
@@ -6190,11 +6177,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_SITE" desc="The label of the tab context menu item for unmuting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute site} other {Unmute sites}}
         </message>
-        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_GROUP" desc="The label of the tab context menu item for creating a new tab group and adding one or more tabs to it.">
-          Add to new group
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Add tab to group}
+          other {Add tabs to group}}
         </message>
-        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_EXISTING_GROUP" desc="The label of the tab context menu submenu for adding one or more tabs to an existing tab group.">
-          Add to existing group
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_GROUP" desc="The label of the tab context menu item for creating a new tab group and adding one or more tabs to it. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Add tab to new group}
+          other {Add tabs to new group}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
+          New group
         </message>
         <message name="IDS_TAB_CXMENU_REMOVE_TAB_FROM_GROUP" desc="The label of the tab context menu item for removing one or more tabs from the groups that contain them.">
           Remove from group
@@ -6250,11 +6244,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_SITE" desc="In Title Case: The label of the tab context menu item for unmuting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute Site} other {Unmute Sites}}
         </message>
-        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_GROUP" desc="In Title Case: The label of the tab context menu item for creating a new tab group and adding one or more tabs to it.">
-          Add to New Group
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="In Title Case: The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Add Tab to Group}
+          other {Add Tabs to Group}}
         </message>
-        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_EXISTING_GROUP" desc="In Title Case: The label of the tab context menu submenu for adding one or more tabs to an existing tab group.">
-          Add to Existing Group
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_GROUP" desc="In Title Case: The label of the tab context menu item for creating a new tab group and adding one or more tabs to it. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Add Tab to New Group}
+          other {Add Tabs to New Group}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
+          New Group
         </message>
         <message name="IDS_TAB_CXMENU_REMOVE_TAB_FROM_GROUP" desc="In Title Case: The label of the tab context menu item for removing one or more tabs from the groups that contain them.">
           Remove From Group
@@ -6275,6 +6276,32 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="In Title Case: The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New Window
         </message>
+      </if>
+
+      <!-- WebUI Tab Strip -->
+      <if expr="enable_webui_tab_strip">
+        <message name="IDS_WEBUI_TAB_STRIP_PROMO" desc="Promotional UI shown next to the tab counter button to encourage its use">
+          Find your tabs here
+        </message>
+        <message name="IDS_TOOLTIP_WEBUI_TAB_STRIP_TAB_COUNTER" desc="The tooltip for the button which toggles the tab strip. It counts the number of open tabs. [ICU Syntax]">
+          {NUM_OPEN_TABS, plural, =1 {# open tab, press to toggle tab strip} other {# open tabs, press to toggle tab strip}}
+        </message>
+        <if expr="not use_titlecase">
+          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_NEW_TAB" desc="The label of a context menu item used to create a new tab and switch to it.">
+            New tab
+          </message>
+          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_CLOSE_TAB" desc="The label of a context menu item used to close the current tab.">
+            Close tab
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_NEW_TAB" desc="The label of a context menu item used to create a new tab and switch to it.">
+            New Tab
+          </message>
+          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_CLOSE_TAB" desc="The label of a context menu item used to close the current tab.">
+            Close Tab
+          </message>
+        </if>
       </if>
 
       <!-- Strings for Window Titles in Menus -->
@@ -6741,19 +6768,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Share via QR code strings -->
       <if expr="not use_titlecase">
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Generate QR code for this Page context menu item.">
-          Generate QR code for this page
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Create QR code for this Page context menu item.">
+          Create QR code for this page
         </message>
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Generate QR code for this Image context menu item.">
-          Generate QR code for this image
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Create QR code for this Image context menu item.">
+          Create QR code for this image
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Generate QR code for this Page context menu item.">
-          Generate QR code for this Page
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Create QR code for this Page context menu item.">
+          Create QR code for this Page
         </message>
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Generate QR code for this Image context menu item.">
-          Generate QR code for this Image
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Create QR code for this Image context menu item.">
+          Create QR code for this Image
         </message>
       </if>
       <if expr="not is_android">
@@ -6761,7 +6788,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           QR code
         </message>
         <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_TOOLTIP" desc="Tooltip for the omnibox icon label for the QR code Generator">
-          Generate QR code for this Page
+          Create QR code for this Page
         </message>
       </if>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TITLE" desc="Title for the QR Generator dialog.">
@@ -7426,8 +7453,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_EXTERNAL_PROTOCOL_CANCEL_BUTTON_TEXT" desc="Button in External Protocol Dialog that does not launch the application associated with the protocol">
           Cancel
         </message>
-        <message name="IDS_EXTERNAL_PROTOCOL_CHECKBOX_TEXT" desc="Checkbox to ask the user whether they would like their decision remembered.">
-          Always open links of this type in the associated app
+        <message name="IDS_EXTERNAL_PROTOCOL_CHECKBOX_PER_ORIGIN_TEXT" desc="The External Protocol Dialog is shown when a navigation is started from a webpage, such as https://google.com, to a URL where the protocol indicates that a different software application on the machine should be opened, external to the browser. For example, 'skype:' may indicate that the Skype application be opened. This string describes a checkbox that allows the user to opt out of seeing this confirmation dialog in the future from pages with the same origin as the current page, when trying to launch the same protocol currently being launched">
+          Always allow <ph name="ORIGIN">$1<ex>https://google.com</ex></ph> to open links of this type in the associated app
         </message>
       </if>
       <if expr="chromeos">
@@ -7798,9 +7825,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
           Translate this page?
         </message>
-        <message name="IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_NEW" desc="Text to show for the translate bubble label when that page is in specified language and ask if should translate.">
-          Do you want Brave to translate this page from <ph name="source_language">$1<ex>Spanish</ex></ph> to <ph name="target_language">$2<ex>English</ex></ph>?
-        </message>
         <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_TITLE" desc="Title text for the options panel.">
           Options
         </message>
@@ -7811,9 +7835,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           This page could not be translated
         </message>
         <if expr="not use_titlecase">
-          <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_LINK" desc="Text to show for the translate bubble link label to jump to the advanced panel.">
-            Options
-          </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_BUTTON" desc="Text to show for the translate bubble button to jump to the advanced panel.">
             Options
           </message>
@@ -7844,9 +7865,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_TRANSLATING" desc="Text to show for the translate bubble label when page is currently being translated by servers">
             Translating...
           </message>
-          <message name="IDS_TRANSLATE_BUBBLE_TRANSLATED" desc="Text to show for the translate bubble label when the page has been translated from one language to another">
-            This page has been translated
-          </message>
           <message name="IDS_TRANSLATE_BUBBLE_REVERT" desc="Text to show for the translate bubble button to revert translation of translated page">
             Show original
           </message>
@@ -7856,23 +7874,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_ALWAYS" desc="Text to show for the translate bubble checkbox to always translate from one language to another">
             Always translate
           </message>
-          <message name="IDS_TRANSLATE_BUBBLE_ALWAYS_DO_THIS" desc="Text to show for the translate bubble checkbox to always translate from one language to another in 2016Q2 UI">
-            Always do this
-          </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPTIONS_MENU_BUTTON" desc="Text to show for the translate bubble 'Options' menu button">
             Options
-          </message>
-          <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE" desc="Text to show for the translate bubble label when the page could not be translated.">
-            This page could not be translated
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_PAGE_LANGUAGE" desc="Text to show for the translate bubble label next to the combobox of the page language">
             Page language:
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_TRANSLATION_LANGUAGE" desc="Text to show for the translate bubble label next to the combobox of the target language for Translate">
             Translation language:
-          </message>
-          <message name="IDS_TRANSLATE_BUBBLE_LANGUAGE_SETTINGS" desc="Text to show for the translate bubble link label next to jump to the language setting page.">
-            Language settings
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_TARGET" desc="Text to show as the title in the advanced source language view for TAB UI">
             Language to translate into
@@ -7882,9 +7891,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
         </if>
         <if expr="use_titlecase">
-          <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_LINK" desc="In Title Case: Text to show for the translate bubble link label to jump to the advanced panel.">
-            Options
-          </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_BUTTON" desc="In Title Case: Text to show for the translate bubble button to jump to the advanced panel.">
             Options
           </message>
@@ -7915,9 +7921,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_TRANSLATING" desc="In Title Case: Text to show for the translate bubble label when page is currently being translated by servers">
             Translating...
           </message>
-          <message name="IDS_TRANSLATE_BUBBLE_TRANSLATED" desc="In Title Case: Text to show for the translate bubble label when the page has been translated from one language to another">
-            This Page Has Been Translated
-          </message>
           <message name="IDS_TRANSLATE_BUBBLE_REVERT" desc="In Title Case: Text to show for the translate bubble button to revert translation of translated page">
             Show Original
           </message>
@@ -7927,23 +7930,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_ALWAYS" desc="In Title Case: Text to show for the translate bubble checkbox to always translate from one language to another">
             Always Translate
           </message>
-          <message name="IDS_TRANSLATE_BUBBLE_ALWAYS_DO_THIS" desc="In Title Case: Text to show for the translate bubble checkbox to always translate from one language to another in 2016Q2 UI">
-            Always Do This
-          </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPTIONS_MENU_BUTTON" desc="In Title Case: Text to show for the translate bubble 'Options' button">
             Options
-          </message>
-          <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE" desc="In Title Case: Text to show for the translate bubble label when the page could not be translated.">
-            This Page Could Not Be Translated
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_PAGE_LANGUAGE" desc="In Title Case: Text to show for the translate bubble label next to the combobox of the page language">
             Page Language:
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_TRANSLATION_LANGUAGE" desc="In Title Case: Text to show for the translate bubble label next to the combobox of the target language for Translate">
             Translation Language:
-          </message>
-          <message name="IDS_TRANSLATE_BUBBLE_LANGUAGE_SETTINGS" desc="In Title Case: Text to show for the translate bubble link label next to jump to the language setting page.">
-            Language Settings
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_TARGET" desc="In Title Case: Text to show as the title in the advanced source language view for TAB UI">
             Language to Translate into
@@ -7985,6 +7979,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_TITLE" desc="Title of an infobar that informs the user that notifications are blocked. [CHAR_LIMIT=32]">
           Notifications blocked
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_ABUSIVE_MESSAGE" desc="Description for the expanded infobar that informs the user that notifications are automatically blocked because the site is known to employ dark patterns to trick users into accepting the permission.">
+          This site may be trying to trick you into allowing intrusive notifications.
         </message>
       </if>
 
@@ -8825,6 +8822,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Dark Theme
       </message>
 
+      <!-- Live caption. -->
+      <message name="IDS_LIVE_CAPTION_BUBBLE_TITLE" desc="Title for the Live Caption bubble">
+        Live Caption
+      </message>
+      <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
+        Live Caption is not available right now
+      </message>
+
       <!-- Media Galleries. -->
       <if expr="not is_android">
         <message name="IDS_MEDIA_GALLERIES_DIALOG_HEADER" desc="Header for media gallery permissions dialog.">
@@ -9611,15 +9616,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
     </if>
 
-    <!-- NTP content suggestions strings -->
-    <message name="IDS_NTP_DOWNLOAD_SUGGESTIONS_SECTION_HEADER" desc="Header of the downloads section, which is a list of pages (or files) that the user downloaded, displayed as cards on the New Tab Page.">
-      Downloads
-    </message>
-
-    <message name="IDS_NTP_DOWNLOADS_SUGGESTIONS_SECTION_EMPTY" desc="On the New Tab Page, text of card explaining to the user that they can expect to see some download related content suggestions in this section in the future.">
-      Your downloads appear here
-    </message>
-
     <!-- Automation infobar -->
     <message name="IDS_CONTROLLED_BY_AUTOMATION" desc="Message shown when the browser session is being controlled by an automated test.">
       Brave is being controlled by automated test software.
@@ -9634,28 +9630,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <ph name="URL">
           $1<ex>maps.google.com</ex>
         </ph> wants to see the make and model of your Security Key
-      </message>
-    </if>
-
-    <!-- Media capture notification strings -->
-    <if expr="is_android or enable_vr">
-      <message name="IDS_VIDEO_CALL_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC video call is in progress." formatter_data="android_java">
-        Accessing video input
-      </message>
-      <message name="IDS_AUDIO_CALL_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC audio call is in progress" formatter_data="android_java">
-        Accessing audio input
-      </message>
-      <message name="IDS_VIDEO_AUDIO_CALL_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC video and audio call is in progress" formatter_data="android_java">
-        Accessing audio and video input
-      </message>
-      <message name="IDS_VIDEO_CALL_INCOGNITO_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC video call is in progress in private mode." formatter_data="android_java">
-        A site is accessing video input
-      </message>
-      <message name="IDS_AUDIO_CALL_INCOGNITO_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC audio call is in progress in private mode." formatter_data="android_java">
-        A site is accessing audio input
-      </message>
-      <message name="IDS_VIDEO_AUDIO_CALL_INCOGNITO_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC video and audio call is in progress in private mode." formatter_data="android_java">
-        A site is accessing audio and video input
       </message>
     </if>
 
@@ -9850,12 +9824,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
       </message>
-      <message name="IDS_WEBAUTHN_WELCOME_SCREEN_TITLE" desc="Title of the dialog shown the very first time the user wants to authenticate on a web site using a security key.">
-        <ph name="APP_NAME">$1<ex>google.com</ex></ph> wants to verify your identity
-      </message>
-      <message name="IDS_WEBAUTHN_WELCOME_SCREEN_DESCRIPTION" desc="Description in the dialog shown the very first time the user wants to authenticate on a web site using a security key.">
-        Verifying your identity helps protect your personal information
-      </message>
       <message name="IDS_WEBAUTHN_WELCOME_SCREEN_NEXT" desc="Button text to continue using a security key for authentication on the web for the very first time.">
         Continue
       </message>
@@ -9864,9 +9832,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_SELECTION_DESCRIPTION" desc="Description in the dialog instructing the user to choose how they want to connect their security key with their computer, e.g. USB or Bluetooth.">
         Pick an option
-      </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_BLE" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) connected to the computer over Bluetooth Low Energy.">
-        Bluetooth security key
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_USB" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) plugged in to the USB port of the computer.">
         USB security key
@@ -9931,65 +9896,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_BLUETOOTH_POWER_ON_MANUAL_NEXT" desc="Button text. The user clicks this once they manually turned on Bluetooth, so that Brave would retry connecting to security keys over Bluetooth.">
         Try again
       </message>
-      <message name="IDS_WEBAUTHN_BLE_PAIRING_BEGIN_TITLE" desc="Title of the dialog explaining to the user that they first need to pair a Bluetooth security key (an external physical device for user authentication) with their computer, and only after they can use it to sign in to web sites on their computer.">
-        Ready to pair your security key?
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_PAIRING_BEGIN_DESCRIPTION" desc="Description in the dialog explaining to the user that they first need to pair a Bluetooth security key (an external physical device for user authentication) with their computer, and only after they can use it to sign in to web sites on their computer.">
-        Pair your security key to this device so you can use it to sign into your account
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_PAIRING_BEGIN_NEXT" desc="Button text to initiate pairing of a Bluetooth security key with their computer.">
-        Begin
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_ENTER_PAIRING_MODE_TITLE" desc="Title of the dialog instructing the user to put their Bluetooth security key (an external physical device for user authentication) into pairing mode. This is achieved by holding down the button on the device for 5 seconds, or longer.">
-        Get into pairing mode
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_ENTER_PAIRING_MODE_DESCRIPTION" desc="Description in the dialog instructing the user to put their Bluetooth security key (an external physical device for user authentication) into pairing mode. This is achieved by holding down the button on the device for 5 seconds, or longer.">
-        Press and hold the button on your security key for at least 5 seconds
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_DEVICE_SELECTION_TITLE" desc="Title of the dialog instructing the user to select their Bluetooth security key (an external physical device for user authentication) from a list of nearby Bluetooth devices. The user can identify their security key in the list by the name printed on the back of the security key.">
-        Select your security key
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_DEVICE_SELECTION_DESCRIPTION" desc="Description in the dialog instructing the user to select their Bluetooth security key (an external physical device for user authentication) from a list of nearby Bluetooth devices. The user can identify their security key in the list by the name printed on the back of the security key.">
-        Find the name printed on the back of your security key
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_DEVICE_SELECTION_SEARCHING_LABEL" desc="Label text. Displayed while Brave is scanning for nearby Bluetooth devices.">
-        Searching...
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_DEVICE_SELECTION_REMINDER_LABEL" desc="Label text. Reminds the user that their Bluetooth security key (an external physical device for user authentication) will only show up in the list of nearby Bluetooth devices if they put it into pairing mode. This is achieved by holding down the button on the device for 5 seconds, or longer.">
-        If your security key isn't listed, press its button for at least 5 seconds.
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_TITLE" desc="Title of the dialog shown when instructing the user to enter the PIN code (a 6-digit number) to pair a Bluetooth security key (an external physical device for user authentication) with their computer.">
-        Pair with <ph name="DEVICE_NAME">$1<ex>VHGSHSSN</ex></ph>
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_DESCRIPTION" desc="Description in the dialog shown when instructing the user to enter the PIN code to pair a Bluetooth security key (an external physical device for user authentication) with their computer. The PIN code is a 6-digit secret number written on the back of the device.">
-        Find the 6-digit PIN on the back of your security key
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_PIN_LABEL" desc="Label text. Displayed next to a text box where the user enters the PIN code (a 6-digit number) to pair a Bluetooth device.">
-        PIN
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_NEXT" desc="Button text. The user clicks this button once they have entered the PIN code (a 6-digit number) into a text vbox, so that the pairing of the Bluetooth device can continue.">
-        Next
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_VERIFYING_TITLE" desc="Title of the dialog informing the user that verifying a Bluetooth security key (an external physical device for user authentication) is in progress.">
-        Verifying your security key...
-      </message>
-      <message name="IDS_WEBAUTHN_BLE_ACTIVATE_DESCRIPTION" desc="Description in the dialog instructing the user to activate (e.g. press a button on) their Bluetooth security key (an external physical device for user authentication).">
-        Press the button on the security key
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_LABEL" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a different hardware-based authentication mechanism from what they have selected previously.">
         Choose another option
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_USB" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a security key (an external physical device for user authentication) plugged in to the USB port of the computer.">
         Verify via USB
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_BLE" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a security key (an external physical device for user authentication) connected to the user's computer over Bluetooth Low Energy.">
-        Verify via Bluetooth
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_PAIR_PHONE" desc="Menu item text. The user selects this to begin the process of pairing with a previously unknown smartphone.">
         Pair with new phone
-      </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_ANOTHER_BLE" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a Bluetooth security key (an external physical device for user authentication connected over Bluetooth Low Energy) that they haven't used on this computer before.">
-        Add another Bluetooth security key
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_NFC" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a security key (an external physical device for user authentication) connected to the computer over Near-Field Communication.">
         Verify via NFC
@@ -10072,8 +9986,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- WebAuthn authenticator internal user verification -->
+      <message name="IDS_WEBAUTHN_INLINE_ENROLLMENT_CANCEL_LABEL" desc="The label on a button allowing users to skip fingerprint registration when setting up a fingerprint enabled authenticator.">
+        Skip
+      </message>
       <message name="IDS_WEBAUTHN_UV_RETRY_TITLE" desc="The title on a dialog shown to the user when a previous attempt to verify their identity through fingerprints failed, and they are being asked to try again.">
-       Fingerprint not recognized
+        Fingerprint not recognized
       </message>
       <message name="IDS_WEBAUTHN_UV_RETRY_DESCRIPTION" desc="The description on a dialog shown to the user when a previous attempt to verify their identity through fingerprints failed, and they are being asked to try again.">
         Your fingerprint couldn't be recognized. Try again.
@@ -10088,12 +10005,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- WebAuthn account selection for resident keys -->
-      <message name="IDS_WEBAUTHN_ACCOUNT_COLUMN" desc="The title of a column in a table under which will be a list of usernames or email addresses, e.g. joe@gmail.com.">
-        Account
-      </message>
-      <message name="IDS_WEBAUTHN_NAME_COLUMN" desc="The title of a column in a table under which will be a list of names on accounts, i.e. names of profiles. For example, Joe Smith.">
-        Name
-      </message>
       <message name="IDS_WEBAUTHN_SELECT_ACCOUNT" desc="The title on a dialog where the user is expected to select an account from a list. For example, the list may include several identities, e.g. joe@gmail.com, mary@gmail.com, and the user has to select one to login as.">
         Select an account to sign in
       </message>
@@ -10179,61 +10090,50 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Scanning
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of uploaded data to see if it complies with enterprise policies">
-      Your organization is scanning this upload for security approval.
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of pasted data to see if it complies with enterprise policies">
-      Your organization is scanning the pasted data for security approval.
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_DATA_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of dragged data to see if it complies with enterprise policies">
-      Your organization is scanning the dragged data for security approval.
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of dragged files to see if they complies with enterprise policies">
-      Your organization is scanning the dragged files for security approval.
+      {NUM_FILES, plural,
+        =0 {Checking this data with your organization's security policies...}
+        =1 {Checking this file with your organization's security policies...}
+      other {Checking these files with your organization's security policies...}}
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SUCCESS_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of data when it complies with enterprise policies">
-      Scan complete, everything's good to go.
+      {NUM_FILES, plural,
+        =0 {Security checks are done. Your data will be uploaded.}
+        =1 {Security checks are done. Your file will be uploaded.}
+      other {Security checks are done. Your files will be uploaded.}}
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of uploaded data when it doesn't comply with enterprise security policies">
-      This upload violates your organization's security policies and can't be completed.
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of pasted data when it doesn't comply with enterprise security policies">
-      This data violates your organization's security policies and can't be pasted.
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_DATA_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged data when it doesn't comply with enterprise security policies">
-      This data violates your organization's security policies and can't be dropped.
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged files when they doesn't comply with enterprise security policies">
-      These files violate your organization's security policies and can't be dropped.
+      {NUM_FILES, plural,
+        =0 {This data has sensitive or dangerous content. Remove this content and try again.}
+        =1 {This file has sensitive or dangerous content. Remove this content and try again.}
+       other {These files have sensitive or dangerous content. Remove this content and try again.}}
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of uploaded data when it doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
-      This upload violates your organization's security policies. Do you want to proceed anyway?
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of pasted data when it doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
-      This pasted data violates your organization's security policies. Do you want to proceed anyway?
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_DATA_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged data when it doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
-      This dropped data violates your organization's security policies. Do you want to proceed anyway?
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged files when they doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
-      These dropped files violate your organization's security policies. Do you want to proceed anyway?
+      {NUM_FILES, plural,
+        =0 {This data has sensitive or dangerous content}
+        =1 {This file has sensitive or dangerous content}
+      other {These files have sensitive or dangerous content}}
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_TIMEOUT_MESSAGE" desc="Message shown in tab modal dialog after a deep scan times out.">
       Something went wrong. Scanning could not be completed. Please try again.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_PROCEED_BUTTON" desc="Text shown in the proceed button of a tab modal dialog after performing a deep scan of data to ignore the obtained warning and proceed with the upload.">
-      Proceed anyway
+      Continue anyway
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CANCEL_WARNING_BUTTON" desc="Text shown in the cancel button of a tab modal dialog after performing a deep scan of data to acknowledge the obtained warning and close the dialog.">
       Cancel
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CANCEL_UPLOAD_BUTTON" desc="Text shown in the cancel button of a tab modal dialog while performing a deep scan of data to see if it complies with enterprise policies">
-      Cancel upload
+      Cancel
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_LARGE_FILE_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the file to be scanned is too large according to the enterprise policies">
-      Your organization can scan files up to 50 MB. Try uploading a smaller file.
+      {NUM_FILES, plural,
+        =1 {This file is too big for a security check. You can upload files up to 50 MB.}
+      other {Some of these files are too big for a security check. You can upload files up to 50 MB.}}
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_ENCRYPTED_FILE_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the uploaded file to be scanned is encrypted and when this is not allowed by enterprise policies">
-      This upload is encrypted and violates your organization's security policies.
+      {NUM_FILES, plural,
+        =1 {This file is encrypted. Ask its owner to decrypt.}
+      other {Some of these files are encrypted. Ask their owner to decrypt.}}
     </message>
 
 
@@ -10250,10 +10150,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Deep scanning more info dialog strings -->
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_TITLE" desc="Title shown in tab modal dialog when the user opens a download that recommends deep scanning">
-      Scan before opening?
+      Scan file before opening?
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the user opens a download that recommends deep scanning">
-        The selected file is unknown and may be dangerous. Send to Brave Advanced Protection for scanning?
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in tab modal dialog when the user opens a download that recommends deep scanning">
       Send
@@ -10315,9 +10215,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Learn more
     </message>
 
-    <!-- Speech On-Device API -->
-    <message name="IDS_UTILITY_PROCESS_SODA_SERVICE_NAME" desc="The name of the service process used to interface with the Speech On-Demand API.">
-      SODA Service
+    <!-- Speech Recognition -->
+    <message name="IDS_UTILITY_PROCESS_SPEECH_RECOGNITION_SERVICE_NAME" desc="The name of the service process used to interface with the Speech On-Demand API.">
+      Speech recognition service
     </message>
 
     <!-- App pause prompt -->

@@ -169,6 +169,9 @@
   <message name="IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing open tabs between multiple browser instances.">
     Open Tabs
   </message>
+  <message name="IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of Wi-Fi networks across devices.">
+    Wi-Fi networks
+  </message>
   <message name="IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL" desc="Label for the checkbox which causes all properties to be synced.">
     Sync everything
   </message>
@@ -251,4 +254,15 @@
   <message name="IDS_SETTINGS_ABOUT_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
     Checking for updates
   </message>
+
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
+        Themes &amp; Wallpapers
+      </message>
+    </if>
+  <if expr="not chromeos">
+      <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
+        Themes
+    </message>
+  </if>
 </grit-part>
