@@ -5,10 +5,10 @@
 
 #include "third_party/blink/renderer/modules/battery/battery_manager.h"
 
-#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/dom_exception.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/modules/battery/battery_dispatcher.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 
@@ -25,7 +25,7 @@ BatteryManager::~BatteryManager() = default;
 
 BatteryManager::BatteryManager(ExecutionContext* context)
     : ExecutionContextLifecycleStateObserver(context),
-      PlatformEventController(Document::From(context)) {}
+      PlatformEventController(*To<LocalDOMWindow>(context)) {}
 
 ScriptPromise BatteryManager::StartRequest(ScriptState* script_state) {
   if (!battery_property_) {
