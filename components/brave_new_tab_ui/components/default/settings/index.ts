@@ -220,13 +220,19 @@ interface SettingsRowProps {
 export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr 36px;
+  grid-template-columns: auto max-content;
   align-items: center;
   width: 100%;
   height: 28px;
   ${p => p.isChildSetting && css`
     padding-left: 36px;
   `}
+
+  /* TODO(petemill): Use specific Component for Content and Control sides */
+  :last-child
+  {
+    justify-self: end;
+  }
 `
 
 export const SettingsText = styled<{}, 'span'>('span')`
