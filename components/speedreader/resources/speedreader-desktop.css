@@ -3,30 +3,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2em;
-  line-height: 1em;
+  font-size: 2.2em;
+  line-height: 1.3em;
   margin-top: 0;
   margin-bottom: 0.5em;
 }
 
 h2 {
   font-size: 1.5em;
-  line-height: 1em;
+  line-height: 1.4em;
 }
 
 h3 {
-  font-size: 1.5em;
+  font-size: 1.2em;
   line-height: 1em;
 }
 
 h4, h5, h6 {
-  font-size: 1.5em;
-  line-height: 1em;
-  margin: 1em 0;
+  font-size: 1.1em;
+  line-height: 1.3em;
 }
 
 p {
-  font-size: 1em;
+  font-size: 1.2em;
   line-height: 1.5em;
 }
 
@@ -72,27 +71,29 @@ p {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: inherit;
 }
 
 a[href] {
-  color: rgb(65, 110, 210);
+  color: #4C54D2;
 }
 
 #article {
   text-rendering: optimizeLegibility;
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Georgia", "Times New Roman", Times, serif;
 }
 
 #article * {
   /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
-  max-width: 100%;
+  max-width: 680;
 }
 
 #article img {
   /* By default, images are centered on their own line. */
-  margin: 0.5em auto;
+  margin-bottom: 0.5em;
   display: block;
+  width: 100%;
   height: auto;
 }
 
@@ -116,8 +117,8 @@ a[href] {
 }
 
 #article .leading-image, #article figure {
-  font-size: 0.75em;
-  line-height: 1.5em;
+  font-size: 0.85em;
+  line-height: 1.4em;
 }
 
 body.watch #article .leading-image, body.watch #article figure {
@@ -236,6 +237,12 @@ body.watch #article .float {
   max-width: none;
 }
 
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: #495057;
+}
+
 #article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -246,6 +253,10 @@ body.watch #article .float {
 
 figure {
   margin: 0;
+}
+
+figure img {
+  width: 100%;
 }
 
 body:not(.watch) figure:not(.float) {
