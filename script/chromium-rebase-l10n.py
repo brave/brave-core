@@ -187,6 +187,22 @@ def main():
         applyIsAndroidOr(xml_tree, '//structure[@name="IDR_NTP_DEFAULT_FAVICON"]')
         applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SIGNAL_0_BAR"]')
 
+    if filename == 'theme_resources':
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_ACCESSIBILITY_CAPTIONS_PREVIEW_BACKGROUND"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_APP_WINDOW_CLOSE"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_BOOKMARK_BAR_APPS_SHORTCUT"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_CLOSE_1"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_DOWNLOADS_FAVICON"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_HELP_MENU"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_MANAGEMENT_FAVICON"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_PRERENDER"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_PROFILES_DICE_TURN_ON_SYNC"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SAFETY_TIP_LOOKALIKE_ILLUSTRATION_DARK"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SETTINGS_FAVICON"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_COOKIE_BLOCKING_ON_HEADER"]')
+        applyIsAndroidOr(xml_tree, '//structure[@file="chromium/webstore_icon.png"]')
+        applyIsAndroidOr(xml_tree, '//structure[@file="google_chrome/webstore_icon.png"]')
+
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
     previous_to_grit_root = grit_root.getprevious()
