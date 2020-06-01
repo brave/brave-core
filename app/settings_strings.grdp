@@ -4,13 +4,6 @@
 <grit-part>
   <message name="IDS_SETTINGS_EMPTY_STRING" desc="Empty string, exist only to make code generic. No translation required." />
 
-  <!-- Main Page -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
-      Some settings belonging to <ph name="PRIMARY_EMAIL">$1<ex>john@google.com</ex></ph> are being shared with you. These settings only affect your account when using multiple sign-in.
-    </message>
-  </if>
-
   <!-- Shared across multiple pages -->
   <message name="IDS_SETTINGS_CONTINUE" desc="Label for 'Continue' buttons.">
     Continue
@@ -67,27 +60,6 @@
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Subtitle of the setting to enable Live Caption.">
     Live caption detects speech in media and automatically generates captions for all media playing in Brave.
   </message>
-  <if expr="chromeos">
-    <!-- Android Apps Page -->
-    <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
-      Google Play Store
-    </message>
-    <message name="IDS_SETTINGS_ANDROID_SETTINGS_TITLE" desc="The title of Android settings section in case Play Store app is not available.">
-      Android settings
-    </message>
-    <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
-      Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
-    </message>
-    <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
-         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
-    <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
-      Apps you’ve downloaded from Google Play will be deleted from this Bravebook.
-      <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
-      Content you’ve purchased such as movies, TV shows, music, books, or other in-app purchases may also be deleted.
-      <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
-      This doesn’t affect apps or content on other devices.
-    </message>
-  </if>
 
   <!-- Appearance Page -->
   <message name="IDS_SETTINGS_APPEARANCE" desc="Name of the settings page which displays appearance preferences.">
@@ -198,12 +170,6 @@
     </message>
   </if>
   <if expr="chromeos">
-    <message name="IDS_SETTINGS_DEVICE_OFF" desc="In Settings pages, the label when a bluetooth, wifi, or mobile device is off (disabled)." meaning="Device is disabled.">
-      Off
-    </message>
-    <message name="IDS_SETTINGS_DEVICE_ON" desc="In Settings pages, the label when a bluetooth, wifi, or mobile device is on (enabled)." meaning="Device is enabled.">
-      On
-    </message>
     <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart BraveOS.">
       Restart
     </message>
@@ -336,24 +302,6 @@
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_DESCRIPTION" desc="Explanation of the passwords bulk check feature found within the password settings.">
     Keep your passwords safe from data breaches and other security issues
   </message>
-  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_OFFLINE" desc="Error message when the password check can't be completed because the user is offline.">
-    <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> can't check your passwords. Try checking your internet connection.
-  </message>
-  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_SIGNED_OUT" desc="Error message when the password check can't be completed because the user is not signed in.">
-    <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> can check your passwords when you sign in with your Brave Account
-  </message>
-  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_NO_PASSWORDS" desc="Error message when the password check can't be completed since no passwords could be checked.">
-    No saved passwords. <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> can check your passwords when you save them.
-  </message>
-  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT_GOOGLE_ACCOUNT" desc="Error message when the password check can't be completed since the user hit the quota limit, but the user is able to check their passwords in their Brave account.">
-    <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;</ph>check passwords in your Brave Account<ph name="END_LINK">&lt;/a&gt;</ph>.
-  </message>
-  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Error message when the password check can't be completed since the user hit the quota limit.">
-    <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> can't check your passwords. Try again after 24 hours.
-  </message>
-  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_GENERIC" desc="Error message when the password check can't be completed for an unspecified reason.">
-    <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> can't check your passwords. Try again later.
-  </message>
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORDS_COUNT" desc="Number of compromised passwords present in the database">
     {COUNT, plural,
       =0 {No compromised passwords found}
@@ -396,9 +344,6 @@
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_REASON_PHISHED_AND_LEAKED" desc="Password compromise reason shown when a password was reused on a phishing site and found in a data breach.">
     Entered on deceptive site and found in data breach
   </message>
-  <message name="IDS_SETTINGS_NO_COMPROMISED_CREDENTIALS_LABEL" desc="Label which is shown when there were no compromised passwords detected.">
-    <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> will notify you when you sign in with a compromised password
-  </message>
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_SHOW" desc="Action menu item for a row which displays a compromised password. The password value, which is initialy obfuscated, will be show in plain text.">
     Show password
   </message>
@@ -428,6 +373,12 @@
   </message>
   <message name="IDS_SETTINGS_COMPROMISED_EDIT_PASSWORD_APP" desc="A label for the field, which displays the app for which the password was saved. The field is part of a dialog, which allows the user to edit the password.">
     App
+  </message>
+  <message name="IDS_SETTINGS_COMPROMISED_ALREADY_CHANGED_PASSWORD" desc="A link which asks if user has already changed the password.">
+    Already changed this password?
+  </message>
+  <message name="IDS_SETTINGS_COMPROMISED_EDIT_DISCLAIMER_TITLE" desc="A title for the dialog which asks the user passwords was changed.">
+    Did you already change this password on <ph name="WEBSITE">$1<ex>airbnb.com</ex></ph>?
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_SAVE_PASSWORDS_TOGGLE_LABEL" desc="Label for a toggle that allows users to be prompted if they want to save their passwords when logging into webpages.">
     Offer to save passwords
@@ -503,6 +454,14 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD" desc="Label for an undo tooltip following a saved password deletion.">
     Password deleted
+  </message>
+  <!-- TODO(crbug.com/1062344): Make it translateable and add translation screenshots once final mocks are available. -->
+  <message translateable="false" name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT" desc="Label for an undo tooltip following deletion of a password from the account.">
+    Password deleted from your Brave Account
+  </message>
+  <!-- TODO(crbug.com/1062344): Make it translateable and add translation screenshots once final mocks are available. -->
+  <message translateable="false" name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_DEVICE" desc="Label for an undo tooltip following deletion of a password from the device.">
+    Password deleted from this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
     View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave Account<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -744,6 +703,50 @@
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_WRITE_ERROR_FORMAT" desc="The text in the error dialog for PKCS #12 file write errors.">
       There was an error while trying to write the file: <ph name="ERROR_TEXT">$1<ex>Permission denied.</ex></ph>.
     </message>
+    <if expr="chromeos">
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LIST_HEADER" desc="Header that lists the certificate provisioning processes.">
+        Certificates are being provisioned for these certificate profiles
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_REFRESH" desc="Text on the button to refresh the status of a certificate provisioning process.">
+        Refresh
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_DETAILS" desc="Text on the button to show debug details about a certificate provisioning process and title of the dialog that shows the details.">
+        Details
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_ADVANCED" desc="Text on the button to show advanced entries on the certificate provisioning details dialog.">
+        Advanced
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_PREPARING_CSR" desc="Status description of a certificate provisioning process when the client is preparing the Certificate signing request (CSR) ">
+        Preparing certificate signing request
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_PREPARING_CSR_WAITING" desc="Status description of a certificate provisioning process when the client is waiting for the server to aid in preparation of the Certificate signing request (CSR)">
+        Preparing certificate signing request (waiting on server)
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_WAITING_FOR_CA" desc="Status description of a certificate provisioning process when the client is waiting for a certificate to be issued">
+        Waiting for the CA to issue a certificate
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_SUCCESS" desc="Status description of a certificate provisioning process that has succeeded">
+        Success
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_FAILURE" desc="Status description of a certificate provisioning process that has failed">
+        Failure
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_CANCELED" desc="Status description of a certificate provisioning process that has been canceled">
+        Canceled
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_CERTIFICATE_PROFILE" desc="Label of the field that displays the client certificate profile of a certificate provisioning process">
+        Certificate Profile
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS" desc="Label of the field that displays certificate provisioning status">
+        Status
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_ID" desc="Label of the field that displays certificate provisioning status id, which is a number (e.g. 6)">
+        Status Id
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LAST_UPDATE" desc="Label of the field that displays when a certificate provisioning process had the last update">
+        Last Update
+      </message>
+    </if>
   </if>
 
   <!-- Clear Browsing Data -->
@@ -864,590 +867,6 @@
   <message name="IDS_SETTINGS_OPEN_FILE_TYPES_AUTOMATICALLY" desc="The information label for the 'Clear auto-opening settings' button">
     Open certain file types automatically after downloading
   </message>
-
-  <!-- SMB File Shares -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_URL" desc="Title for the input that lets users specify the name of an SMB URL.">
-      File share URL
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_NAME" desc="Title for the input that lets users specify the display name of an SMB mount.">
-      Display name (optional)
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_USERNAME" desc="Title for the input that lets users specify their username for an SMB share.">
-      Username (optional)
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_PASSWORD" desc="Title for the input that lets users specify their password for an SMB Share.">
-      Password (optional)
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_SAVE_CREDENTIALS" desc="Label for the checkbox input that lets users have the username/password for an SMB share saved for the next login.">
-      Remember sign-in info
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_AUTHENTICATION_METHOD" desc="Title for the input that lets users specify their authentication method for an SMB Share.">
-      Authentication method
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_STANDARD_AUTHENTICATION" desc="Authentication method option indicating that fields for username and password should be shown to the user.">
-      Standard
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_KERBEROS_AUTHENTICATION" desc="Authentication method option to use a users Kerberos ticket to authenticate. Only availible for Active Directory users.">
-      SSO
-    </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_DISCOVERY_MESSAGE" desc="The message shown next to the loading spinner shown when searching for SMB shares.">
-      Looking for file shares
-    </message>
-  </if>
-
-  <!-- Easy Unlock Page -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_EASY_UNLOCK_SETUP" desc="The label of the button to set up Easy Unlock section on the settings page.">
-      Set up
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_DESCRIPTION" desc="The text that describes what Easy Unlock does.">
-      Unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your Android phone
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF" desc="The label of the button to disable Easy unlock on the settings page and the turn off Easy unlock dialog.">
-      Turn off
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF_TITLE" desc="The title of the Easy unlock turn off dialog.">
-      Turn off Smart Lock for <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>?
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF_DESCRIPTION" desc="The description text of the Easy unlock turn off dialog.">
-      If you turn off Smart Lock for <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>, you won’t be able to unlock your Brave devices using your phone. You'll need to type your password.
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF_OFFLINE_TITLE" desc="The title text on the Easy unlock turn off dialog when Easy unlock could not be turned off because the device is offline.">
-      Please connect to a network
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF_OFFLINE_MESSAGE" desc="The text on the Easy unlock turn off dialog when Easy unlock could not be turned off because the device is offline.">
-      You must be online to turn off Smart Lock because this setting is synced to your phone and other devices. Please connect to a network first.
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF_ERROR_TITLE" desc="The title text on the Easy unlock turn off dialog when Easy unlock could not be turned off because there is a server error.">
-      Smart Lock is unavailable
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_TURN_OFF_ERROR_MESSAGE" desc="The text on the Easy unlock turn off dialog when Easy unlock could not be turned off because there is a server error.">
-      Smart Lock is currently unavailable. Please try again later.
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_ALLOW_SIGN_IN_LABEL" desc="The label text on the Easy unlock settings page for the radio box to allow the EasyUnlock on the sign-in screen (in addition to the lock screen).">
-      Use Smart Lock to sign in to your Brave Account
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_LABEL" desc="The text on the Easy unlock settings page indicating how close the phone should be for unlock to work.">
-      Distance needed for phone to unlock this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_VERY_CLOSE" desc="The text on the Easy unlock settings page indicating the phone should be very close for the unlock to work.">
-      Very close
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_CLOSE" desc="The text on the Easy unlock settings page indicating the phone should be close for the unlock to work." meaning="An adjective, not a verb, like 'nearby'.">
-      Close
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_FAR" desc="The text on the Easy unlock settings page indicating the phone can be far for the unlock to work.">
-      Far
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_VERY_FAR" desc="The text on the Easy unlock settings page indicating the phone can be very far for the unlock to work.">
-      Very far
-    </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_OPTIONS" desc="Heading for options for the Smart Lock feature.">
-      Smart Lock options
-    </message>
-  </if>
-
-  <!-- Strings specific to the Settings Internet Page -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_INTERNET_CONFIG" desc="Title for the network configuration dialog.">
-      Configure network
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_CONFIG_SHARE" desc="Settings &gt; Internet &gt; Network config: Label for setting allowing other device users to use the network configuration.">
-      Allow other users of this device to use this network
-    </message>
-    <message name="IDS_SETTINGS_HIDDEN_NETWORK_WARNING" desc="Settings &gt; Internet &gt; Network config: Text shown when auto connect to the WiFi network is enabled, warning about the dangers of auto-connecting to hidden networks.">
-      Automatically connecting to a hidden network allows others to see your device and some network settings, and is not recommended.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_CONFIG_SAVE_CREDENTIALS" desc="Settings &gt; Internet &gt; Network config: Label for the setting to save identity and password.">
-      Save identity and password
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CA_USE_DEFAULT" desc="Settings &gt; Internet &gt; Network config: Label for selecting the default Certificate Authority for an EAP network.">
-      Default
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CA_DO_NOT_CHECK" desc="Settings &gt; Internet &gt; Network config: Label for selecting that no Certificate Authority should be used for an EAP network.">
-      Do not check
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NO_USER_CERT" desc="Settings &gt; Internet &gt; Network config: Label for selecting that no User Certificate should be used when connected to an OpenVPN network.">
-      No user certificate
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NAME" desc="Settings &gt; Internet &gt; Network config: Formatting string for network certificate names.">
-      <ph name="ISSUED_BY">$1<ex>Brave Inc</ex></ph> [<ph name="ISSUED_TO">$2<ex>John Doe</ex></ph>]
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NAME_HARDWARE_BACKED" desc="Settings &gt; Internet &gt; Network configuration: Formatting string for network certificate names that are hardware backed.">
-      <ph name="ISSUED_BY">$1<ex>Brave Inc</ex></ph> [<ph name="ISSUED_TO">$2<ex>John Doe</ex></ph>] (hardware-backed)
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NONE_INSTALLED" desc="Settings &gt; Internet &gt; Network configuration: Label when no certificates are installed.">
-      None installed
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_REQUIRE_HARDWARE_BACKED" desc="In the network connect dialog, when creating a VPN or enterprise Wi-Fi connection, error message to display when a non hardware-backed user certificate is selected.">
-      User certificate must be hardware-backed.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_ACCESS_POINT" desc="Settings &gt; Internet &gt; Network details: Access Point section label.">
-      Access Point
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS" desc="Settings &gt; Network: Name servers label.">
-      Name servers
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_AUTOMATIC" desc="Settings &gt; Internet &gt; Network details: Label for setting automatic name servers.">
-      Automatic name servers
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_CUSTOM" desc="Settings &gt; Internet &gt; Network details: Label for setting custom name servers.">
-      Custom name servers
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_GOOGLE" desc="Settings &gt; Internet &gt; Network details: Label for setting Brave name servers.">
-      Brave name servers
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for custom nameserver input box.">
-      Custom nameserver <ph name="INPUT_INDEX">$1<ex>1</ex></ph>
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD" desc="Settings &gt; Internet &gt; Network details: Web Proxy Auto Discovery (WPAD) label.">
-      Web Proxy Auto Discovery URL:
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD_NONE" desc="Settings &gt; Internet &gt; Network details: Value for Web Proxy Auto Discovery when no URL is provided.">
-      Not provided
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CHOOSE_MOBILE" desc="Settings &gt; Internet &gt; Network details: Label for control to choose a mobile data network.">
-      Mobile data network
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN" desc="Settings &gt; Internet &gt; Network details: Label for button to start a Cellular scan.">
-      Scan
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN_COMPLETED" desc="Settings &gt; Internet &gt; Network details: Status text when a scan has completed.">
-      Scan completed
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN_CONNECTED_HELP" desc="Settings &gt; Internet &gt; Network details: Help message for scan button when network is connected.">
-      Disconnect to enable scanning
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCANNING" desc="Settings &gt; Internet &gt; Network details: Status text when a scan is in progress.">
-      Scanning...
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_NO_NETWORKS" desc="Settings &gt; Internet &gt; Network details: Dropdown text when no cellular networks were found after a scan.">
-      No networks
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ENFORCED_POLICY" desc="Settings &gt; Internet &gt; Network details: Text to show when a network proxy is policy enforced.">
-      This proxy is enforced by your administrator
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED" desc="Settings &gt; Internet &gt; Network details: Text next to the checkbox for allowing proxy settings for shared networks.">
-      Allow proxies for shared networks
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_ENABLE_WARNING_TITLE" desc="Settings &gt; Internet &gt; Network details: Title for warning dialog when changing the allow shared proxies setting is enabled.">
-      Allow proxies for shared networks
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_DISABLE_WARNING_TITLE" desc="Settings &gt; Internet &gt; Network details: Title for warning dialog when changing the allow shared proxies setting is disabled.">
-      Disallow proxies for shared networks
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_WARNING_MESSAGE" desc="Settings &gt; Internet &gt; Network details: Warning message when changing the allow shared proxies setting.">
-      Changing this setting will affect all shared networks
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_TYPE_DIRECT" desc="Radio used to tell it to just connect directly, not use a proxy.">
-      Direct Internet connection
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_TYPE_MANUAL" desc="Radio used to tell it to configure manually.">
-      Manual proxy configuration
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_TYPE_PAC" desc="Radio to select configuring from a URL.">
-      Automatic proxy configuration
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_TYPE_WPAD" desc="Label for the checkbox that controls whether to use an autoconfiguration URL.">
-      Web proxy autodiscovery
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_USE_SAME" desc="Settings &gt; Internet &gt; Network details: Label for checkbox indicating that a network proxy uses the same value for all protocols.">
-      Use the same proxy for all protocols
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPTION_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Accessibility only label for input field to add proxy exceptions.">
-      Host or domain to exclude
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPTION_LIST" desc="Settings &gt; Internet &gt; Network details: Label for list of network proxy exceptions.">
-      Do not use the proxy settings for these hosts and domains:
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPT_REMOVE_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for button to remove proxy exception.">
-      Remove exception for <ph name="HOST_NAME">$1<ex>example.com</ex></ph>
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ADD_EXCEPTION" desc="Settings &gt; Internet &gt; Network details: Label for button to add a network proxy exception.">
-      Add exception
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_CONNECTION_TYPE" desc="Settings &gt; Internet &gt; Network details: Label for proxy connection type dropdown.">
-      Connection type
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_CONNECTION_TYPE_DIALOG" desc="Label for proxy connection type dropdown in the network details dialog used in the login screen.">
-      Proxy connection type
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_AUTO_CONFIG" desc="Settings &gt; Internet &gt; Network details: Label for proxy autoconfiguration URL input.">
-      Autoconfiguration URL:
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for all proxies.">
-      Proxy
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_HOST_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for proxy host input field.">
-      <ph name="INPUT_LABEL">$1<ex>HTTP Proxy</ex></ph> - Host
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_HTTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for HTTP proxy.">
-      HTTP Proxy
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_SHTTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for SHTTP proxy.">
-      Secure HTTP Proxy
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_FTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for FTP proxy.">
-      FTP Proxy
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_SOCKS_HOST" desc="Settings &gt; Internet &gt; Network details: Label for SOCKS host proxy.">
-      SOCKS Host
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT" desc="Settings &gt; Internet &gt; Network details: Label for proxy port input.">
-      Port
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for proxy port number input field.">
-      <ph name="INPUT_LABEL">$1<ex>HTTP Proxy</ex></ph> - Port
-    </message>
-
-    <!-- Settings > Internet > SIM lock/unlock dialog -->
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for buton to change the PIN.">
-      Change PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CARD_MISSING" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when SIM card is missing.">
-      Missing SIM card
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CARD_LOCKED" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when SIM card is locked.">
-      SIM card is locked
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCK_ENABLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for checkbox to enable SIM card locking.">
-      Enable SIM card locking (require PIN to use mobile data)
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_CHANGE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for dialog button to change a PIN.">
-      Change
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_ENTER" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for dialog button to enter a PIN; note that in this context, 'Enter' refers to the act of entering a PIN, not the name of a key on the keyboard." meaning="Enter a PIN into the device. [Verb]">
-      Enter
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_UNLOCK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for button to unlock the SIM card.">
-      Unlock
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PIN_TITLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Title for enter PIN dialog.">
-      Enter SIM PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN_TITLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Title for change PIN dialog.">
-      Change SIM PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCKED_TITLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Title for SIM locked dialog.">
-      SIM Card is locked
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCKED_WARNING" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Warning for SIM locked dialog when PUK is required.">
-      Your SIM card will be permanently disabled if you cannot enter the correct PIN Unlock Key.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a PIN.">
-      Enter PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_OLD_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering an old (current) PIN.">
-      Enter old PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_NEW_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a new PIN.">
-      Enter new PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_RE_ENTER_NEW_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for re-entering a new PIN.">
-      Re-enter new PIN
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a PUK.">
-      Enter PIN Unlock Key
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INCORRECT_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an incorrect PIN was entered.">
-      Incorrect PIN. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INCORRECT_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an incorrect PUK was entered.">
-      Incorrect PUK. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INVALID_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an invalid PIN was entered.">
-      Invalid PIN. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INVALID_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an invalid PUK was entered.">
-      Invalid PUK. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
-    </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_PIN_MISMATCH" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when PIN values do not match.">
-      PIN values do not match.
-    </message>
-  </if>
-
-  <!-- Network error strings. -->
-  <if expr="chromeos">
-    <message name="IDS_NETWORK_ERROR_CANNOT_CHANGE_SHARED_CONFIG" desc="Network error message shown when attempting to change a shared network configuration if the operation is not allowed">
-      Changing shared network configurations is not allowed
-    </message>
-    <message name="IDS_NETWORK_ERROR_NO_USER_CERT" desc="In the network connect dialog, when creating a VPN or enterprise Wi-Fi connection, error message to display when no user certificates are installed.">
-      Please install a user certificate.
-    </message>
-    <message name="IDS_NETWORK_ERROR_POLICY_CONTROLLED" desc="Network error message shown when attempting to remove or illegally modify a policy controlled network">
-      Network is policy controlled
-    </message>
-    <message name="IDS_NETWORK_ERROR_PASSPHRASE_REQUIRED" desc="Network error message shown when a passphrase is required to connect to a network but was not supplied.">
-      Passphrase required
-    </message>
-    <message name="IDS_NETWORK_ERROR_UNKNOWN" desc="Network error message shown for an unknown or unexpected network configuration error">
-      Error configuring network
-    </message>
-  </if>
-
-  <!-- Strings translating ONC (Open Network Configuration) properties -->
-  <!-- and translatable values. See onc_spec.md for more information. -->
-  <if expr="chromeos">
-    <message name="IDS_ONC_IPV4_ADDRESS" desc="ONC Property label for ipv4-IPAddress">
-      IP address
-    </message>
-    <message name="IDS_ONC_IPV4_GATEWAY" desc="ONC Property label for ipv4-Gateway">
-      Gateway
-    </message>
-    <message name="IDS_ONC_IPV4_ROUTING_PREFIX" desc="ONC Property label for ipv4-RoutingPrefix">
-      Routing prefix
-    </message>
-    <message name="IDS_ONC_IPV6_ADDRESS" desc="ONC Property label for ipv6-Address">
-      IPv6 address
-    </message>
-    <message name="IDS_ONC_CELLULAR_ACTIVATION_STATE" desc="ONC Property label for Cellular.ActivationState">
-      Activation status
-    </message>
-    <message name="IDS_ONC_CELLULAR_ACTIVATION_STATE_ACTIVATED" desc="ONC Property value when Cellular.ActivationState = Activated">
-      Activated
-    </message>
-    <message name="IDS_ONC_CELLULAR_ACTIVATION_STATE_ACTIVATING" desc="ONC Property value when Cellular.ActivationState = Activating">
-      Activating
-    </message>
-    <message name="IDS_ONC_CELLULAR_ACTIVATION_STATE_NOT_ACTIVATED" desc="ONC Property value when Cellular.ActivationStat = NotActivated">
-      Not activated
-    </message>
-    <message name="IDS_ONC_CELLULAR_ACTIVATION_STATE_PARTIALLY_ACTIVATED" desc="ONC Property value when Cellular.ActivationState = PartiallyActivated">
-      Partially activated
-    </message>
-    <message name="IDS_ONC_CELLULAR_ACTIVATION_STATE_NO_SERVICE" desc="ONC Property value when Cellular.ActivationState = NoService">
-      No service
-    </message>
-    <message name="IDS_ONC_CELLULAR_APN_ACCESS_POINT_NAME" desc="ONC Property label for APN-AccessPointName">
-      Access point name
-    </message>
-    <message name="IDS_ONC_CELLULAR_APN_ACCESS_POINT_NAME_NONE" desc="ONC Property label for APN-AccessPointName = none (or empty)">
-      None
-    </message>
-    <message name="IDS_ONC_CELLULAR_APN_USERNAME" desc="ONC Property label for APN-Username">
-      Username
-    </message>
-    <message name="IDS_ONC_CELLULAR_APN_PASSWORD" desc="ONC Property label for APN-Password">
-      Password
-    </message>
-    <message name="IDS_ONC_CELLULAR_APN_AUTHENTICATION" desc="ONC Property label for APN-Authentication">
-      Authentication
-    </message>
-    <message name="IDS_ONC_CELLULAR_FAMILY" desc="ONC Property label for Cellular.Family">
-      Family
-    </message>
-    <message name="IDS_ONC_CELLULAR_FIRMWARE_REVISION" desc="ONC Property label for Cellular.FirmwareRevision">
-      Firmware revision
-    </message>
-    <message name="IDS_ONC_CELLULAR_HARDWARE_REVISION" desc="ONC Property label for Cellular.HardwareRevision">
-      Hardware revision
-    </message>
-    <message name="IDS_ONC_CELLULAR_HOME_PROVIDER_CODE" desc="ONC Property label for Cellular.HomeProvider.Code">
-      Home provider code
-    </message>
-    <message name="IDS_ONC_CELLULAR_HOME_PROVIDER_COUNTRY" desc="ONC Property label for Cellular.HomeProvider.Country">
-      Home provider country
-    </message>
-    <message name="IDS_ONC_CELLULAR_HOME_PROVIDER_NAME" desc="ONC Property label for Cellular.HomeProvider.Name">
-      Home provider name
-    </message>
-    <message name="IDS_ONC_CELLULAR_MANUFACTURER" desc="ONC Property label for Cellular.Manufacturer">
-      Manufacturer
-    </message>
-    <message name="IDS_ONC_CELLULAR_MODEL_ID" desc="ONC Property label for Cellular.ModelID">
-      Model ID
-    </message>
-    <message name="IDS_ONC_CELLULAR_NETWORK_TECHNOLOGY" desc="ONC Property label for Cellular.NetworkTechnology">
-      Technology
-    </message>
-    <message name="IDS_ONC_CELLULAR_ROAMING_STATE" desc="ONC Property label for Cellular.RoamingState">
-      Roaming status
-    </message>
-    <message name="IDS_ONC_CELLULAR_ROAMING_STATE_HOME" desc="ONC Property value when OncCellular.RoamingState = Home">
-      Home network, not roaming
-    </message>
-    <message name="IDS_ONC_CELLULAR_ROAMING_STATE_ROAMING" desc="ONC Property value when OncCellular.RoamingState = Roaming">
-      Roaming
-    </message>
-    <message name="IDS_ONC_CELLULAR_SERVING_OPERATOR_CODE" desc="ONC Property label for Cellular.ServingOperator.Code">
-      Operator code
-    </message>
-    <message name="IDS_ONC_CELLULAR_SERVING_OPERATOR_NAME" desc="ONC Property label for Cellular.ServingOperator.Name">
-      Operator
-    </message>
-    <message name="IDS_ONC_CONNECTED" desc="Settings &gt; Internet, text in network summary when a network is connected.">
-      Connected
-    </message>
-    <message name="IDS_ONC_CONNECTING" desc="Settings &gt; Internet, text in network summary when a network is connecting.">
-      Connecting
-    </message>
-    <message name="IDS_ONC_EAP_ANONYMOUS_IDENTITY" desc="ONC Property label for EAP.AnonymousIdentity">
-      Anonymous Identity
-    </message>
-    <message name="IDS_ONC_EAP_IDENTITY" desc="ONC Property label for EAP.Identity">
-      Identity
-    </message>
-    <message name="IDS_ONC_EAP_INNER" desc="ONC Property label for EAP.Inner (Phase 2 authentication)">
-      EAP Phase 2 authentication
-    </message>
-    <message name="IDS_ONC_EAP_INNER_AUTOMATIC" desc="ONC Property value for EAP.Inner = Automatic">
-      Automatic
-    </message>
-    <message name="IDS_ONC_EAP_INNER_MD5" desc="ONC Property value for EAP.Inner = MD5">
-      EAP-MD5
-    </message>
-    <message name="IDS_ONC_EAP_INNER_MSCHAP" desc="ONC Property value for EAP.Inner = MSCHAP">
-      MSCHAP
-    </message>
-    <message name="IDS_ONC_EAP_INNER_MSCHAPV2" desc="ONC Property value for EAP.Inner = MSCHAPv2">
-      MSCHAPv2
-    </message>
-    <message name="IDS_ONC_EAP_INNER_PAP" desc="ONC Property value for EAP.Inner = PAP">
-      PAP
-    </message>
-    <message name="IDS_ONC_EAP_INNER_CHAP" desc="ONC Property value for EAP.Inner = CHAP">
-      CHAP
-    </message>
-    <message name="IDS_ONC_EAP_INNER_GTC" desc="ONC Property value for EAP.Inner = GTC">
-      GTC
-    </message>
-    <message name="IDS_ONC_EAP_OUTER" desc="ONC Property label for EAP.Outer (Method)">
-      EAP method
-    </message>
-    <message name="IDS_ONC_EAP_OUTER_LEAP" desc="ONC Property value for EAP.Outer = LEAP">
-      LEAP
-    </message>
-    <message name="IDS_ONC_EAP_OUTER_PEAP" desc="ONC Property value for EAP.Outer = PEAP">
-      PEAP
-    </message>
-    <message name="IDS_ONC_EAP_OUTER_TLS" desc="ONC Property value for EAP.Outer = TLS">
-      EAP-TLS
-    </message>
-    <message name="IDS_ONC_EAP_OUTER_TTLS" desc="ONC Property value for EAP.Outer = TTLS">
-      EAP-TTLS
-    </message>
-    <message name="IDS_ONC_EAP_SERVER_CA" desc="ONC Property label for EAP Server CA Certificate">
-      Server CA certificate
-    </message>
-    <message name="IDS_ONC_EAP_SUBJECT_MATCH" desc="ONC Property label for EAP.SubjectMatch">
-      Subject match
-    </message>
-    <message name="IDS_ONC_EAP_USER_CERT" desc="ONC Property label for EAP User Certs">
-      User certificate
-    </message>
-    <message name="IDS_ONC_NOT_CONNECTED" desc="Settings &gt; Internet, text in network summary when a network is not connecting or connected.">
-      Not Connected
-    </message>
-    <message name="IDS_ONC_MAC_ADDRESS" desc="ONC Property label for MacAddress">
-      MAC address
-    </message>
-    <message name="IDS_ONC_NAME" desc="ONC Property label for the network Name (displayed when configuring a VPN service name)">
-      Service name
-    </message>
-    <message name="IDS_ONC_RESTRICTED_CONNECTIVITY" desc="ONC Property label for RestrictedConnectivity">
-      Restricted IP
-    </message>
-    <message name="IDS_ONC_TETHER_BATTERY_PERCENTAGE" desc="Settings &gt; Internet &gt; Title of section which displays the battery percentage of another device which provides a tether hotspot for the current device to connect to.">
-      Battery
-    </message>
-    <message name="IDS_ONC_TETHER_BATTERY_PERCENTAGE_VALUE" desc="Settings &gt; Internet &gt; Text contents of section which displays the battery percentage of another device which provides a tether hotspot for the current device to connect to.">
-      <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>%
-    </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH" desc="Settings &gt; Internet &gt; Title of section which displays the cellular signal strength of another device which provides a tether hotspot for the current device to connect to. The signal strength is displayed as a string (e.g., Strong)">
-      Signal strength
-    </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_WEAK" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is weak. The strength value is 1 on a scale from 1 (min) to 5 (max).">
-      Weak
-    </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_OKAY" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is okay. The strength value is 2 on a scale from 1 (min) to 5 (max).">
-      Okay
-    </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_GOOD" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is good. The strength value is 3 on a scale from 1 (min) to 5 (max).">
-      Fine
-    </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_STRONG" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is strong. The strength value is 4 on a scale from 1 (min) to 5 (max).">
-      Strong
-    </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_VERY_STRONG" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is very strong. The strength value is 5 on a scale from 1 (min) to 5 (max).">
-      Very strong
-    </message>
-    <message name="IDS_ONC_TETHER_CARRIER" desc="Settings &gt; Internet &gt; Title of section which displays the name of the cellular provider (e.g., Verizon) of another device which provides a tether hotspot for the current device to connect to. To be clear, the current device does not have cellular service; instead, another device has it and can provide data to the current device via a Wi-Fi hotspot.">
-      Cellular provider
-    </message>
-    <message name="IDS_ONC_TETHER_CARRIER_UNKNOWN" desc="Settings &gt; Internet &gt; Text displayed in the settings UI in place of a cellular provider when the actual name of the provider is unknown. In this context, the cellular provider refers to the carrier which provides mobile data service to another device which can start a tether hotspot to provide a data connection to the current device.">
-      Unknown carrier
-    </message>
-    <message name="IDS_ONC_VPN_HOST" desc="ONC Property label for VPN.Host">
-      Server hostname
-    </message>
-    <message name="IDS_ONC_VPN_IPSEC_GROUP" desc="ONC Property label for VPN.IPSec.Group">
-      Group name
-    </message>
-    <message name="IDS_ONC_VPN_IPSEC_PSK" desc="ONC Property label for VPN.IPSec.PSK">
-      Pre-shared key
-    </message>
-    <message name="IDS_ONC_VPN_OPENVPN_EXTRA_HOSTS" desc="ONC Property label for VPN.OpenVPN.ExtraHosts">
-      Extra hosts
-    </message>
-    <message name="IDS_ONC_VPN_OPENVPN_OTP" desc="ONC Property label for VPN.OpenVPN.OTP">
-      OTP
-    </message>
-    <message name="IDS_ONC_VPN_PASSWORD" desc="ONC Property label for VPN.OpenVPN.Password or VPN.L2TP.Password">
-      Password
-    </message>
-    <message name="IDS_ONC_VPN_USERNAME" desc="ONC Property label for VPN.OpenVPN.Username or VPN.L2TP.Username">
-      Username
-    </message>
-    <message name="IDS_ONC_VPN_THIRD_PARTY_VPN_PROVIDER_NAME" desc="ONC Property label for VPN.ThirdPartyVPN.ProviderName">
-      Provider name
-    </message>
-    <message name="IDS_ONC_VPN_TYPE" desc="ONC Property label for VPN.Type">
-      Provider type
-    </message>
-    <message name="IDS_ONC_VPN_TYPE_L2TP_IPSEC" desc="ONC Property label for VPN.Type.L2TP-IPSec">
-      L2TP/IPsec
-    </message>
-    <message name="IDS_ONC_VPN_TYPE_L2TP_IPSEC_PSK" desc="ONC Property label for configuring VPN.Type.L2TP-IPSec with AuthenticationType = PSK">
-      L2TP/IPsec + pre-shared key
-    </message>
-    <message name="IDS_ONC_VPN_TYPE_L2TP_IPSEC_CERT" desc="ONC Property label for configuring VPN.Type.L2TP-IPSec  with AuthenticationType = Cert">
-      L2TP/IPsec + user certificate
-    </message>
-    <message name="IDS_ONC_VPN_TYPE_OPENVPN" desc="ONC Property label for VPN.Type.OpenVPN">
-      Open VPN
-    </message>
-    <message name="IDS_ONC_VPN_TYPE_ARCVPN" desc="ONC Property label for VPN.Type.ARCVPN">
-      Android VPN
-    </message>
-    <message name="IDS_ONC_WIFI_FREQUENCY" desc="ONC Property label for WiFi.Frequency">
-      Frequency
-    </message>
-    <message name="IDS_ONC_WIFI_PASSWORD" desc="ONC Property label for WiFi.Password">
-      Password
-    </message>
-    <message name="IDS_ONC_WIFI_SECURITY" desc="ONC Property label for WiFi.Security">
-      Security
-    </message>
-    <message name="IDS_ONC_WIFI_SECURITY_NONE" desc="In settings &gt; Internet, a string specifying security type = none.">
-      None
-    </message>
-    <message name="IDS_ONC_WIFI_SECURITY_WEP" desc="In settings &gt; Internet, a string specifying security type = WEP.">
-      WEP
-    </message>
-    <message name="IDS_ONC_WIFI_SECURITY_PSK" desc="In settings &gt; Internet, a string specifying security type = PSK (either WPA-PSK or RSN-PSK).">
-      PSK (WPA or RSN)
-    </message>
-    <message name="IDS_ONC_WIFI_SECURITY_EAP" desc="In settings &gt; Internet, a string specifying security type = EAP (802.1X).">
-      EAP
-    </message>
-    <message name="IDS_ONC_WIFI_SIGNAL_STRENGTH" desc="ONC Property label for WiFi.SignalStrength">
-      Signal strength
-    </message>
-    <message name="IDS_ONC_WIFI_SSID" desc="ONC Property label for WiFi.SSID">
-      SSID
-    </message>
-  </if>
 
   <!-- On Startup Page -->
   <message name="IDS_SETTINGS_ON_STARTUP" desc="Name of the on startup page.">
@@ -1671,6 +1090,9 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_ICON_WARNING_ARIA_LABEL" desc="Accessibility text for a safety check child icon, that indicates a warning for the child check.">
     Warning
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW" desc="Text for a button that allows users to review safety check findings, such as compromised passwords or blocklisted extensions.">
+    Review
+  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_PRIMARY_LABEL" desc="'Updates' is an element in safety check that shows the update status of Brave.">
     Updates
   </message>
@@ -1680,13 +1102,17 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_PRIMARY_LABEL" desc="'Passwords' is an element in safety check that allows users to check for their passwords being compromised.">
     Passwords
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_BUTTON" desc="This button allows users to change their compromised passwords.">
-    {NUM_PASSWORDS, plural,
-     =1 {Change password}
-     other {Change passwords}}
+  <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their passwords.">
+    Review passwords
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED" desc="This text points out that Safe Browsing is enabled and that the user is protected.">
     Safe Browsing is on and protecting you from harmful sites and downloads
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD" desc="This text points out that Safe Browsing is enabled as standard protection.">
+    Standard Protection is on
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_ENHANCED" desc="This text points out that Safe Browsing is enabled as enhanced protection.">
+    Enhanced Protection is on
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_ADMIN" desc="This text points out that Safe Browsing is disabled by an administrator.">
     <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
@@ -1720,9 +1146,6 @@
     {NUM_EXTENSIONS, plural,
      =1 {Your administrator turned 1 potentially harmful extension back on}
      other {Your administrator turned {NUM_EXTENSIONS} potentially harmful extensions back on}}
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_BUTTON" desc="This button allows users to review their extensions settings.">
-    Review
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their extensions settings.">
     Review extensions
@@ -1811,12 +1234,6 @@
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TEXT" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
     Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
-    Enable Verified Access
-  </message>
-  <message name="IDS_SETTINGS_WAKE_ON_WIFI_DESCRIPTION" desc="In the settings tab, the text next to the checkbox for enabling quickly reconnecting to known Wi-Fi SSIDs.">
-    Keep Wi-Fi on during sleep
-  </message>
   <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
     Permissions and content settings
   </message>
@@ -1828,9 +1245,6 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_DESCRIPTION" desc="Description of the controls available on the security settings page">
     Safe Browsing (protection from dangerous sites) and other security settings
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_ADVANCED_SECTION_LABEL" desc="Name of the section in the     security settings page which groups advanced security settings">
-    Advanced security
   </message>
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM" desc="Name of the link which takes users     to the Brave Advanced Protection Program external webpage">
     Brave Advanced Protection Program
@@ -2130,7 +1544,7 @@
     Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in private radio toggle">
-    While in private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Some sites may not work properly.
+    While in private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="Label for block third party cookies radio toggle">
     Block third-party cookies
@@ -2139,7 +1553,7 @@
     Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_BULLET_TWO" desc="Description for the first bullet of block third party cookies radio toggle">
-    Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads.  Some sites may not work properly.
+    Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL" desc="Label for block all cookies radio toggle">
     Block all cookies (not recommended)
@@ -2151,7 +1565,7 @@
     Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL_BULLET_THREE" desc="Description for the third bullet of block all cookies radio toggle">
-    Many sites may not work properly
+    Features on many sites may break
   </message>
   <message name="IDS_SETTINGS_COOKIES_CLEAR_ON_EXIT" desc="Label for the toggle that allows the user to automatically delete their cookies and site data when they close all browser windows.">
     Clear cookies and site data when you close all windows
@@ -2488,6 +1902,15 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_BLOCK" desc="The block label for unsandboxed plugins in site settings.">
     Do not allow any site to use a plugin to access your computer
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT" desc="Label for the window placement site settings.">
+    Window placement
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK" desc="The ask label for the window placement site settings.">
+    Ask when a site wants to open and place windows on your screens
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCK" desc="The block label for the window placement site settings.">
+    Block sites from opening and placing windows on your screens
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED" desc="A generic Allowed label to show in Site Settings when Allow is NOT the recommended option.">
     Allowed
   </message>
@@ -2634,13 +2057,13 @@
     Clear all data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by all sites.">
-    This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites.
+    This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about clearing storage used by all sites, shown when there are installed apps.">
-    This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites and installed apps.
+    This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites and installed apps
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by all sites.">
-    You'll be signed out of all sites, including in open tabs.
+    You'll be signed out of all sites, including in open tabs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting all site data.">
     Clear site data
@@ -2682,13 +2105,13 @@
     All data stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> and any sites under it will be deleted. This includes cookies. You'll be signed out of these sites, including in open tabs.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_CONFIRMATION_NEW" desc="Text for the dialog that warns about clearing all storage data for a group of sites.">
-    This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> and any sites under it.
+    This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> and any sites under it
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about clearing all storage data for a group of sites that has only one installed app.">
-    This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph>, any sites under it, and its installed app.
+    This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph>, any sites under it, and its installed app
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_CONFIRMATION_INSTALLED_PLURAL" desc="Text for the dialog that warns about clearing all storage data for a group of sites that have more than one installed apps.">
-    This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph>, any sites under it, and its installed apps.
+    This will clear all data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph>, any sites under it, and its installed apps
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing all storage data.">
     You’ll be signed out of these sites, including in open tabs
@@ -2700,10 +2123,10 @@
     Offline data in installed apps will also be cleared
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ORIGIN_DELETE_CONFIRMATION" desc="Text for the dialog that warns about clearing all storage data for an origin.">
-    This will clear all data and cookies stored by <ph name="ORIGIN_NAME">$1<ex>www.example.com</ex></ph>.
+    This will clear all data and cookies stored by <ph name="ORIGIN_NAME">$1<ex>www.example.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ORIGIN_DELETE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about clearing all storage data for an origin that has one or more installed apps.">
-    This will clear all data and cookies stored by <ph name="ORIGIN_NAME">$1<ex>www.example.com</ex></ph> and its installed apps.
+    This will clear all data and cookies stored by <ph name="ORIGIN_NAME">$1<ex>www.example.com</ex></ph> and its installed apps
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_MULTIPLE" desc="Text for the dialog that warns about deleting all site data.">
     This will delete any data stored on your device for all the sites shown. Do you want to continue?
@@ -2886,50 +2309,6 @@
   <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the Brave profile photo of the user.">
     Brave Profile photo
   </message>
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_WEAK_PIN" desc="Message shown below the title that warns the user they have entered a PIN that is easy to guess.">
-      PIN may be easy to guess
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_TOO_SHORT" desc="Message shown below the title that tells the user that the PIN they entered needs to be at least minimum digits long.">
-      PIN must be at least <ph name="MINIMUM">$1<ex>4</ex></ph> digits
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_TOO_LONG" desc="Message shown below the title that tells the user that the PIN they entered needs to be less than maximum digits long.">
-      PIN must be less than <ph name="MAXIMUM">$1<ex>0</ex></ph> digits
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_MISMATCHED" desc="Message shown below the title that tells the user they have entered two different PIN values.">
-      PINs do not match
-    </message>
-    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ACCOUNT_REMOVED_MESSAGE" desc="Notification message after account removal.">
-      <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph> was removed from this device
-    </message>
-    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_EDUCATION_ACCOUNT" desc="Status label which indicates that specified account is a school/EDU account.">
-      School account
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON" desc="Text in the add fingerprint dialog telling users to place finger on the power button which is the sensor.">
-      Touch the power button with your finger
-    </message>
-     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the power button. Only visible by screen reader software.">
-      The fingerprint sensor is in the power button. Touch it lightly with any finger.
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD" desc="Text in the add fingerprint dialog telling users to place finger on the sensor on the keyboard.">
-      Touch the fingerprint sensor with your finger
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_LEFT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom left corner of the keyboard. Only visible by screen reader software.">
-      The fingerprint sensor is the bottom left-hand key on your keyboard. Touch it lightly with any finger.
-    </message>
-     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom right corner of the keyboard. Only visible by screen reader software.">
-      The fingerprint sensor is the bottom right-hand key on your keyboard. Touch it lightly with any finger.
-    </message>
-     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_TOP_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the top right corner of the keyboard. Only visible by screen reader software.">
-      The fingerprint sensor is the top right-hand key on your keyboard. Touch it lightly with any finger.
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_PASSWORD_LABEL" desc="An input box label that tells the user to enter their password in that input box.">
-      Password
-    </message>
-    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_INVALID_PASSWORD" desc="Text on a password field that tells the user the password is incorrect.">
-      Invalid password
-    </message>
-  </if>
 
   <message name="IDS_SETTINGS_PEOPLE_SIGN_IN" desc="The label of the button that lets user sign-in to chrome.">
     Sign in
@@ -2954,6 +2333,9 @@
   </message>
 
   <if expr="not chromeos">
+    <message name="IDS_SETTINGS_PROFILE_NAME_INPUT_LABEL" desc="Aria label of the input field where the user can edit the name associated with the profile.">
+      Name
+    </message>
     <message name="IDS_SETTINGS_PROFILE_SHORTCUT_TOGGLE_LABEL" desc="Label of the toggle that creates or removes a desktop shortcut for the profile.">
       Show desktop shortcut
     </message>
@@ -2977,19 +2359,6 @@
   <message name="IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT" desc="Label for the button that takes the user to the Brave Account website.">
     Manage your Brave Account
   </message>
-<if expr="chromeos">
-  <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
-    Themes &amp; Wallpapers
-  </message>
-  <message name="IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of Wi-Fi networks across devices.">
-    Wi-Fi networks
-  </message>
-</if>
-<if expr="not chromeos">
-  <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
-    Themes
-  </message>
-</if>
   <message name="IDS_SETTINGS_USER_EVENTS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables recording user events.">
     Activity and interactions
   </message>
@@ -3060,19 +2429,6 @@
     </message>
     <message name="IDS_SETTINGS_IMPORT_NO_PROFILE_FOUND" desc="Message displayed when we do not find any supported browser to import from.">
       No supported browser found
-    </message>
-  </if>
-
-  <!-- Add Supervision Dialog Strings -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_TITLE" desc="Title of dialog shown when a user closes the Add Supervision dialog after an account has been converted to use supervision.">
-      Sign out to finish?
-    </message>
-    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_SIGN_OUT_BUTTON_LABEL" desc="Text of sign-out button on dialog shown when the Add Supervision flow is closed, which results in a user being signed out.">
-      Sign out
-    </message>
-    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_CANCEL_BUTTON_LABEL" desc="Text of cancel button on dialog shown when the Add Supervision flow is closed, which results in a return to the Add Supervision flow.">
-      Cancel
     </message>
   </if>
 

@@ -25,6 +25,9 @@
   <message name="IDS_APP_MANAGEMENT_PIN_TO_SHELF" desc="Label for the pin to shelf button in the app settings page.">
     Pin to shelf
   </message>
+  <message name="IDS_APP_MANAGEMENT_PRINTING" desc="Label for the printing permission toggle.">
+    Printers
+  </message>
   <message name="IDS_APP_MANAGEMENT_SEARCH_PROMPT" desc="Prompt in search bar of main app management page.">
     Search apps
   </message>
