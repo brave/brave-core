@@ -60,6 +60,10 @@ base::LazyInstance<BraveContentBrowserClient>::DestructorAtExit
     g_brave_content_browser_client = LAZY_INSTANCE_INITIALIZER;
 #endif
 
+const char kBraveOriginTrialsPublicKey[] =
+    "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
+    "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
+
 BraveMainDelegate::BraveMainDelegate()
     : ChromeMainDelegate() {}
 
@@ -145,6 +149,12 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       switches::kExtensionContentVerificationEnforceStrict);
   command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
       "enforce");
+
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kOriginTrialPublicKey)) {
+    command_line.AppendSwitchASCII(switches::kOriginTrialPublicKey,
+                                   kBraveOriginTrialsPublicKey);
+  }
 
   // Brave's sync protocol does not use the sync service url
   command_line.AppendSwitchASCII(switches::kSyncServiceURL,
