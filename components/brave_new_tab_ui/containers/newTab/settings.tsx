@@ -116,23 +116,32 @@ export default class Settings extends React.PureComponent<Props, State> {
     ]
   }
 
-  getTabIcon (activeTab: number) {
-    switch (activeTab) {
+  getTabIcon (tab: number, isActiveTab: boolean) {
+    let srcUrl
+    switch (tab) {
       case 0:
-        return <SettingsSidebarSVGContent src={BackgroundImageIcon} />
+        srcUrl = BackgroundImageIcon
+        break
       case 1:
-        return <SettingsSidebarSVGContent src={NraveStatsIcon} />
+        srcUrl = NraveStatsIcon
+        break
       case 2:
-        return <SettingsSidebarSVGContent src={BraveRewardsIcon} />
+        srcUrl = BraveRewardsIcon
+        break
       case 3:
-        return <SettingsSidebarSVGContent src={TopSitesIcon} />
+        srcUrl = TopSitesIcon
+        break
       case 4:
-        return <SettingsSidebarSVGContent src={ClockIcon} />
+        srcUrl = ClockIcon
+        break
       case 5:
-        return <SettingsSidebarSVGContent src={MoreCardsIcon} />
+        srcUrl = MoreCardsIcon
+        break
       default:
-        return <SettingsSidebarSVGContent src={BackgroundImageIcon} />
+        srcUrl = BackgroundImageIcon
+        break
     }
+    return <SettingsSidebarSVGContent isActive={isActiveTab} src={srcUrl} />
   }
 
   render () {
@@ -189,8 +198,10 @@ export default class Settings extends React.PureComponent<Props, State> {
                         activeTab={activeTab === index}
                         onClick={this.setActiveTab.bind(this, index)}
                       >
-                        {this.getTabIcon(index)}
-                        <SettingsSidebarButtonText>
+                        {this.getTabIcon(index, activeTab === index)}
+                        <SettingsSidebarButtonText
+                          isActive={activeTab === index}
+                          data-text={getLocale(name)}>
                           {getLocale(name)}
                         </SettingsSidebarButtonText>
                       </SettingsSidebarButton>

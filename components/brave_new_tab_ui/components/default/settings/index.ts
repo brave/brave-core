@@ -61,35 +61,104 @@ export const SettingsSidebarActiveButtonSlider =
   transition-property: transform;
 `
 interface SettingsSidebarSVGContentProps {
-  src: string
+  src: string,
+  isActive: boolean
 }
 
 export const SettingsSidebarSVGContent = styled<SettingsSidebarSVGContentProps, 'div'>('div')`
+  position: relative;
   width: 20px;
   height: 20px;
   background: ${p => isDarkTheme(p) ? p.theme.palette.grey400 : p.theme.palette.grey800};
   -webkit-mask-image: url(${p => p.src});
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
+  flex-shrink: 0;
+
+  transition: background var(--sidebar-button-transition-timing) ease-in-out;
+
+  ${p => p.isActive && css`
+    --active-opacity: 1;
+  `}
+
+  /* Active version (hidden until item is active).
+    This is a separate element so that we can:
+    1. fade it in (no transition for background gradient) */
+  &:after {
+    position: absolute;
+    display: block;
+    content: '';
+    opacity: var(--active-opacity, 0);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    -webkit-mask-image: url(${p => p.src});
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    transition: opacity var(--sidebar-button-transition-timing) ease-in-out;
+  }
+
 `
 
-export const SettingsSidebarButtonText = styled<{}, 'span'>('span')`
+export const SettingsSidebarButtonText = styled<{ isActive: boolean }, 'span'>('span')`
   margin-left: 16px;
   font-weight: 500;
   font-size: 13px;
   font-family: ${p => p.theme.fontFamily.heading};
+  line-height: normal;
   color: ${p => p.theme.color.contextMenuForeground};
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
+              color var(--sidebar-button-transition-timing) ease-in-out;
 
   &:hover {
     color: ${p => p.theme.color.brandBrave};
   }
+
+  ${p => p.isActive && css`
+    --active-opacity: 1;
+    font-weight: 600;
+    color: ${p => p.theme.palette.magenta500};
+  `}
+
+  /* Active version (hidden until item is active).
+     This is a separate element so that we can:
+     1. fade it in (no transition for background gradient)
+     2. still show ellipsis for overflowing text (which doesn't show for
+     background-clip: text) */
+  &:after {
+    content: attr(data-text);
+    position: absolute;
+    opacity: var(--active-opacity, 0);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${p => p.theme.color.panelBackground};
+    background-size: 100%;
+    background-repeat: repeat;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
+                font-weight var(--sidebar-button-transition-timing) ease-in-out;
+  }
 `
+
 interface SettingsSidebarButtonProps {
   activeTab: boolean
 }
 
 export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'>('button')`
+  --sidebar-button-transition-timing: .12s;
   appearance: none;
   padding: 0;
   margin: 0;
@@ -110,30 +179,6 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
       color: ${p => p.theme.color.brandBrave};
     }
   }
-
-  ${SettingsSidebarSVGContent} {
-    ${p => p.activeTab && css`
-      background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
-    `}
-  }
-
-  ${SettingsSidebarButtonText} {
-    // Gradientify text
-    ${p => p.activeTab && css`
-      background: ${p => p.theme.color.panelBackground};
-    `}
-
-    ${p => p.activeTab && css`
-      font-weight: 600;
-      background-size: 100%;
-      background-repeat: repeat;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      -moz-background-clip: text;
-      -moz-text-fill-color: transparent;
-      transition: linear 0.3s background-image;
-      background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
-    `}
 `
 
 export const SettingsFeatureBody = styled<{}, 'section'>('section')`
