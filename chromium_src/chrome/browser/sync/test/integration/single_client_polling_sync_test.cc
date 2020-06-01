@@ -8,5 +8,8 @@
 // restore
 #define ShouldPollWhenIntervalExpiredAcrossRestarts \
   DISABLED_ShouldPollWhenIntervalExpiredAcrossRestarts
+#define ShouldUsePollIntervalFromPrefs \
+  DISABLED_ShouldUsePollIntervalFromPrefs
 #include "../../../../../../../chrome/browser/sync/test/integration/single_client_polling_sync_test.cc"
 #undef ShouldPollWhenIntervalExpiredAcrossRestarts
+#undef ShouldUsePollIntervalFromPrefs

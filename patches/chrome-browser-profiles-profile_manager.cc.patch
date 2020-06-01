@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/profiles/profile_manager.cc b/chrome/browser/profiles/profile_manager.cc
+index 7a7ba226f6dc86287480b4340c6d2dc9f5add235..fd9a435343aa2328920bf03ac4f4fb1c68f2f6a3 100644
+--- a/chrome/browser/profiles/profile_manager.cc
++++ b/chrome/browser/profiles/profile_manager.cc
+@@ -1216,8 +1216,8 @@ void ProfileManager::DoFinalInit(ProfileInfo* profile_info,
+   // At this point, the user policy service and the child account service
+   // had enough time to initialize and should have updated the user signout
+   // flag attached to the profile.
+-  signin_util::EnsureUserSignoutAllowedIsInitializedForProfile(profile);
+-  signin_util::EnsurePrimaryAccountAllowedForProfile(profile);
++  // signin_util::EnsureUserSignoutAllowedIsInitializedForProfile(profile);
++  // signin_util::EnsurePrimaryAccountAllowedForProfile(profile);
+ }
+ 
+ void ProfileManager::DoFinalInitForServices(Profile* profile,

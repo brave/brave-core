@@ -63,16 +63,24 @@ void WaitForAccessTokenResponse(brave_sync::FakeAccessTokenFetcher* fetcher);
   WaitForAccessTokenResponse(access_token_fetcher);
 #define BRAVE_ON_REFRESH_TOKEN_REMOVED \
   auth_manager->OnRefreshTokenRemovedForAccount(account_id);
-#define BRAVE_SET_ACCESS_TOKEN_RESPONSE                                        \
-  access_token_fetcher->SetAccessTokenResponseForTest(                         \
-      brave_sync::AccessTokenConsumer::TokenResponse(                          \
-          "access_token_2", base::Time::Now() + base::TimeDelta::FromHours(1)));
+#define BRAVE_SET_ACCESS_TOKEN_RESPONSE                \
+  access_token_fetcher->SetAccessTokenResponseForTest( \
+      brave_sync::AccessTokenConsumer::TokenResponse(  \
+          "access_token_2",                            \
+          base::Time::Now() + base::TimeDelta::FromHours(1)));
 #define BRAVE_ON_REFRESH_TOKEN_UPDATED  \
   CoreAccountInfo account_info;         \
   account_info.account_id = account_id; \
   auth_manager->OnRefreshTokenUpdatedForAccount(account_info);
 #define BRAVE_SET_ACCESS_TOKEN_RESPONSE_CALLBACK \
   access_token_fetcher->SetTokenResponseCallback(access_token_requested.Get());
+#define BRAVE_SIGN_IN_1_EXPECT_REQUEST_CANCELED \
+  BRAVE_SIGN_IN_1_WITH_ACCESS_TOKEN_FETCHER     \
+  access_token_fetcher->SetTokenResponseError(  \
+      GoogleServiceAuthError(GoogleServiceAuthError::REQUEST_CANCELED));
+#define BRAVE_WAIT_FOR_ACCESS_TOKEN_AND_KEEP_ERROR_ONCE \
+  access_token_fetcher->KeepTokenResponseErrorOnce();   \
+  BRAVE_WAIT_FOR_ACCESS_TOKEN
 
 #define BRAVE_FORWARDS_CREDENTIALS_EVENTS \
   BRAVE_SET_ACCESS_TOKEN_RESPONSE         \
@@ -129,6 +137,8 @@ void WaitForAccessTokenResponse(brave_sync::FakeAccessTokenFetcher* fetcher);
 #undef BRAVE_SET_ACCESS_TOKEN_RESPONSE
 #undef BRAVE_ON_REFRESH_TOKEN_UPDATED
 #undef BRAVE_SET_ACCESS_TOKEN_RESPONSE_CALLBACK
+#undef BRAVE_SIGN_IN_1_EXPECT_REQUEST_CANCELED
+#undef BRAVE_WAIT_FOR_ACCESS_TOKEN_AND_KEEP_ERROR_ONCE
 
 #undef BRAVE_FORWARDS_CREDENTIALS_EVENTS
 #undef BRAVE_RETRIES_ACCESS_TOKEN_FETCH_WITH_BACKOFF_ON_TRANSIENT_FAILURE
