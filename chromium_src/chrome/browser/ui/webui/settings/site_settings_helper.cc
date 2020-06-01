@@ -10,7 +10,7 @@
   if (name == "autoplay")                                                \
     return ContentSettingsType::AUTOPLAY;
 
-#include "../../../../../../chrome/browser/ui/webui/site_settings_helper.cc"
+#include "../../../../../../../chrome/browser/ui/webui/settings/site_settings_helper.cc"
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
 #undef ContentSettingsTypeToGroupName
 #undef HasRegisteredGroupName
