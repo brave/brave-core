@@ -128,6 +128,12 @@ def main():
             child.append(ifElem)
             break
 
+    if filename == 'ui_resources':
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_CLOSE_2"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_DEFAULT_FAVICON_32"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_NTP_DEFAULT_FAVICON"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SIGNAL_0_BAR"]')
+
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
     previous_to_grit_root = grit_root.getprevious()
@@ -153,6 +159,11 @@ def add_extensions_output(ifElem, lang):
     outputElem.set('type', 'data_package')
     outputElem.set('lang', lang)
     ifElem.append(outputElem)
+
+def applyIsAndroidOr(xml_tree, toFind):
+    elem = xml_tree.xpath(toFind)[0]
+    parent = elem.find('..')
+    parent.set('expr', 'is_android or ' + parent.get('expr'))
 
 
 if __name__ == '__main__':
