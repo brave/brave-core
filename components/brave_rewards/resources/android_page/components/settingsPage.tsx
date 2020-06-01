@@ -212,7 +212,7 @@ class SettingsPage extends React.Component<Props, State> {
         }
         <WalletInfoHeader
           onClick={this.onToggleWallet}
-          balance={total.toFixed(1).toString()}
+          balance={total.toFixed(3).toString()}
           id={'mobile-wallet'}
           onlyAnonWallet={onlyAnonWallet}
           converted={`${convertedBalance} USD`}

@@ -79,7 +79,7 @@ class TipBox extends React.Component<Props, State> {
           src: faviconUrl
         },
         contribute: {
-          tokens: item.percentage.toFixed(1),
+          tokens: item.percentage.toFixed(3),
           converted: utils.convertBalance(item.percentage, parameters.rate)
         },
         url: item.url,
@@ -195,7 +195,7 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens id={'tip-box-total'} onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
+          <Tokens id={'tip-box-total'} onlyAnonWallet={onlyAnonWallet} value={total.toFixed(3)} converted={converted} />
         </List>
         <TableDonation
           id={'tips-table'}

@@ -26,18 +26,18 @@ export const formatConverted = (converted: string, currency: string = 'USD'): st
 }
 
 export const handleContributionAmount = (amount: string) => {
-  let result = '0.0'
+  let result = '0.000'
   const amountSplit = amount.split('.')
   if (amountSplit && amountSplit[0].length > 18) {
-    const result = new BigNumber(amount).dividedBy('1e18').toFixed(1, BigNumber.ROUND_UP)
+    const result = new BigNumber(amount).dividedBy('1e18').toFixed(3, BigNumber.ROUND_UP)
 
     return result
   } else {
-    result = parseFloat(amount).toFixed(1)
+    result = parseFloat(amount).toFixed(3)
   }
 
   if (result === 'NaN') {
-    return '0.0'
+    return '0.000'
   }
 
   return result
