@@ -1,0 +1,17 @@
+{
+  "batRate": 1.43,
+  "autocontribute": {
+    "defaultChoice": 20,
+    "choices": [
+      5, 10, 15, 20, 25, 50, 100
+    ]
+  },
+  "tips": {
+    "defaultTipChoices": [
+      1, 5, 50
+    ],
+    "defaultMonthlyChoices": [
+      1, 10, 100
+    ]
+  }
+}

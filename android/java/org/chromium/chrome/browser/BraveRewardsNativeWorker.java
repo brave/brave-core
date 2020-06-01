@@ -188,9 +188,9 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void GetWalletProperties() {
+    public void GetRewardsParameters() {
         synchronized(lock) {
-            nativeGetWalletProperties(mNativeBraveRewardsNativeWorker);
+            nativeGetRewardsParameters(mNativeBraveRewardsNativeWorker);
         }
     }
 

@@ -13,8 +13,9 @@ export const defaultState: RewardsExtension.State = {
   walletCreating: false,
   walletCreateFailed: false,
   publishers: {},
-  walletProperties: {
-    defaultMonthlyTipChoices: []
+  parameters: {
+    monthlyTipChoices: [],
+    rate: 0
   },
   balanceReport: {
     ads: 0.0,

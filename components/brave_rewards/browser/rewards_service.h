@@ -24,7 +24,7 @@
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/monthly_report.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -122,8 +122,8 @@ using GetAllMonthlyReportIdsCallback =
 using GetAllPromotionsCallback =
     base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
 
-using GetWalletPropertiesCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::WalletProperties>)>;
+using GetRewardsParametersCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::RewardsParameters>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -131,7 +131,7 @@ class RewardsService : public KeyedService {
   ~RewardsService() override;
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
-  virtual void GetWalletProperties(GetWalletPropertiesCallback callback) = 0;
+  virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetContentSiteList(
       uint32_t start,
       uint32_t limit,

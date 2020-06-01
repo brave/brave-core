@@ -13,7 +13,7 @@ declare namespace RewardsExtension {
     walletCreated: boolean
     walletCreating: boolean
     walletCreateFailed: boolean
-    walletProperties: WalletProperties
+    parameters: RewardsParameters
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet
@@ -110,8 +110,9 @@ declare namespace RewardsExtension {
     hint: string
   }
 
-  export interface WalletProperties {
-    defaultMonthlyTipChoices: number[]
+  export interface RewardsParameters {
+    rate: number
+    monthlyTipChoices: number[]
   }
 
   export interface BalanceReport {

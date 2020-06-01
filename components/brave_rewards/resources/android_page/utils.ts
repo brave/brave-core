@@ -7,12 +7,12 @@ export let actions: any = null
 export const getActions = () => actions
 export const setActions = (newActions: any) => actions = newActions
 
-export const convertBalance = (tokens: number, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
-  if (tokens === 0 || !rates || !rates[currency]) {
+export const convertBalance = (tokens: number, rate: number): string => {
+  if (tokens === 0) {
     return '0.00'
   }
 
-  const converted = tokens * rates[currency]
+  const converted = tokens * rate
 
   if (isNaN(converted)) {
     return '0.00'
@@ -25,15 +25,15 @@ export const formatConverted = (converted: string, currency: string = 'USD'): st
   return `${converted} ${currency}`
 }
 
-export const generateContributionMonthly = (list: number[], rates: Record<string, number> | undefined) => {
-  if (!list) {
+export const generateContributionMonthly = (properties: Rewards.RewardsParameters) => {
+  if (!properties.autoContributeChoices) {
     return []
   }
 
-  return list.map((item: number) => {
+  return properties.autoContributeChoices.map((item: number) => {
     return {
       tokens: item.toFixed(1),
-      converted: convertBalance(item, rates)
+      converted: convertBalance(item, properties.rate)
     }
   })
 }

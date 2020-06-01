@@ -26,7 +26,7 @@ interface BatLedgerService {
 interface BatLedger {
   Initialize(bool execute_create_script) => (ledger.mojom.Result result);
   CreateWallet() => (ledger.mojom.Result result);
-  GetWalletProperties() => (ledger.mojom.RewardsParameters properties);
+  GetRewardsParameters() => (ledger.mojom.RewardsParameters properties);
 
   GetAutoContributeProperties() => (ledger.mojom.AutoContributeProperties props);
   GetPublisherMinVisitTime() => (int32 min_visit_time);

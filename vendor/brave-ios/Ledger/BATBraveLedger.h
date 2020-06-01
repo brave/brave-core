@@ -88,11 +88,11 @@ NS_SWIFT_NAME(BraveLedger)
 /// Creates a cryptocurrency wallet
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
 
-/// Fetch details about the users wallet (if they have one) and assigns it to `walletInfo`
-- (void)fetchWalletDetails:(nullable void (^)(BATWalletProperties * _Nullable))completion;
+/// Get parameters served from the server
+- (void)getRewardsParameters:(nullable void (^)(BATRewardsParameters * _Nullable))completion;
 
-/// The users wallet info if one has been created
-@property (nonatomic, readonly, nullable) BATWalletProperties *walletInfo;
+/// The parameters send from the server
+@property (nonatomic, readonly, nullable) BATRewardsParameters *rewardsParameters;
 
 /// Fetch details about the users wallet (if they have one) and assigns it to `balance`
 - (void)fetchBalance:(nullable void (^)(BATBalance * _Nullable))completion;

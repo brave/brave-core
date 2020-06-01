@@ -135,10 +135,10 @@ using Result = mojom::Result;
 using RewardsInternalsInfo = mojom::RewardsInternalsInfo;
 using RewardsInternalsInfoPtr = mojom::RewardsInternalsInfoPtr;
 
-using RewardsType = mojom::RewardsType;
-
 using RewardsParameters = mojom::RewardsParameters;
 using RewardsParametersPtr = mojom::RewardsParametersPtr;
+
+using RewardsType = mojom::RewardsType;
 
 using ServerPublisherInfo = mojom::ServerPublisherInfo;
 using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;

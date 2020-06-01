@@ -56,7 +56,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
@@ -1060,32 +1060,33 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   callback(response);
 }
 
-void RewardsServiceImpl::OnGetWalletProperties(
-    GetWalletPropertiesCallback callback,
+void RewardsServiceImpl::OnGetRewardsParameters(
+    GetRewardsParametersCallback callback,
     ledger::RewardsParametersPtr properties) {
-//  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
-//  if (properties) {
-//    wallet_properties.reset(new brave_rewards::WalletProperties);
-//    wallet_properties->parameters_choices = properties->parameters_choices;
-//    wallet_properties->monthly_amount = properties->fee_amount;
-//    wallet_properties->default_tip_choices = properties->default_tip_choices;
-//    wallet_properties->default_monthly_tip_choices =
-//        properties->default_monthly_tip_choices;
-//  }
-//
-//  std::move(callback).Run(
-//      static_cast<int32_t>(result),
-//      std::move(wallet_properties));
+  if (!properties) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::unique_ptr<brave_rewards::RewardsParameters> parameters(
+      new brave_rewards::RewardsParameters);
+  parameters->rate = properties->rate;
+  parameters->auto_contribute_choice = properties->auto_contribute_choice;
+  parameters->auto_contribute_choices = properties->auto_contribute_choices;
+  parameters->tip_choices = properties->tip_choices;
+  parameters->monthly_tip_choices = properties->monthly_tip_choices;
+
+  std::move(callback).Run(std::move(parameters));
 }
 
-void RewardsServiceImpl::GetWalletProperties(
-    GetWalletPropertiesCallback callback) {
+void RewardsServiceImpl::GetRewardsParameters(
+    GetRewardsParametersCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetWalletProperties(
-      base::BindOnce(&RewardsServiceImpl::OnGetWalletProperties,
+  bat_ledger_->GetRewardsParameters(
+      base::BindOnce(&RewardsServiceImpl::OnGetRewardsParameters,
                      AsWeakPtr(),
                      std::move(callback)));
 }

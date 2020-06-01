@@ -50,7 +50,10 @@ export const defaultState: NewTab.State = {
     walletCreated: false,
     walletCreating: false,
     walletCreateFailed: false,
-    walletCorrupted: false
+    walletCorrupted: false,
+    parameters: {
+      rate: 0
+    }
   },
   currentStackWidget: '',
   removedStackWidgets: [],

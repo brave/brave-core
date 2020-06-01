@@ -27,7 +27,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
@@ -69,7 +69,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
  private:
   void HandleCreateWalletRequested(const base::ListValue* args);
-  void GetWalletProperties(const base::ListValue* args);
+  void GetRewardsParameters(const base::ListValue* args);
   void GetAutoContributeProperties(const base::ListValue* args);
   void FetchPromotions(const base::ListValue* args);
   void ClaimPromotion(const base::ListValue* args);
@@ -199,8 +199,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
-  void OnGetWalletProperties(
-      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
+  void OnGetRewardsParameters(
+      std::unique_ptr<brave_rewards::RewardsParameters> parameters);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -328,8 +328,8 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getWalletProperties",
-      base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
+  web_ui()->RegisterMessageCallback("brave_rewards.getRewardsParameters",
+      base::BindRepeating(&RewardsDOMHandler::GetRewardsParameters,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAutoContributeProperties",
       base::BindRepeating(&RewardsDOMHandler::GetAutoContributeProperties,
@@ -495,33 +495,34 @@ void RewardsDOMHandler::HandleCreateWalletRequested(
                      rewards_service_));
 }
 
-void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
+void RewardsDOMHandler::GetRewardsParameters(const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
-  rewards_service_->GetWalletProperties(
-      base::BindOnce(&RewardsDOMHandler::OnGetWalletProperties,
+  rewards_service_->GetRewardsParameters(
+      base::BindOnce(&RewardsDOMHandler::OnGetRewardsParameters,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetWalletProperties(
-    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
+void RewardsDOMHandler::OnGetRewardsParameters(
+    std::unique_ptr<brave_rewards::RewardsParameters> parameters) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::DictionaryValue data;
-  if (wallet_properties) {
+  if (parameters) {
     auto choices = std::make_unique<base::ListValue>();
-    for (double const& choice : wallet_properties->parameters_choices) {
+    for (double const& choice : parameters->auto_contribute_choices) {
       choices->AppendDouble(choice);
     }
 
-    data.SetList("choices", std::move(choices));
-    data.SetDouble("monthlyAmount", wallet_properties->monthly_amount);
+    data.SetDouble("rate", parameters->rate);
+    data.SetDouble("autoContributeChoice", parameters->auto_contribute_choice);
+    data.SetList("autoContributeChoices", std::move(choices));
   }
   web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.walletProperties", data);
+        "brave_rewards.rewardsParameters", data);
 }
 
 void RewardsDOMHandler::OnWalletInitialized(

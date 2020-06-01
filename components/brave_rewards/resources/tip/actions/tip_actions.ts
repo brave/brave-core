@@ -18,11 +18,11 @@ export const onPublisherBanner = (data: RewardsTip.Publisher) => action(types.ON
   data
 })
 
-export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
+export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
-export const onWalletProperties = (properties: {status: number, wallet: RewardsTip.WalletProperties}) =>
-  action(types.ON_WALLET_PROPERTIES, {
-    properties
+export const onRewardsParameters = (parameters: RewardsTip.RewardsParameters) =>
+  action(types.ON_REWARDS_PARAMETERS, {
+    parameters
   })
 
 export const onTip = (publisherKey: string, amount: number, recurring: boolean) => action(types.ON_TIP, {

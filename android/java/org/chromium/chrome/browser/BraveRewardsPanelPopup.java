@@ -245,7 +245,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        thisObject.mBraveRewardsNativeWorker.GetWalletProperties();
+                        thisObject.mBraveRewardsNativeWorker.GetRewardsParameters();
                         mBraveRewardsNativeWorker.FetchGrants();
                     }
                 });
@@ -1448,7 +1448,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnNotificationDeleted(String id) {
         DismissNotification(id);
-        mBraveRewardsNativeWorker.GetWalletProperties();
     }
 
     @Override

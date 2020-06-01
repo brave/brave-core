@@ -33,7 +33,7 @@ class BatLedgerImpl : public mojom::BatLedger,
     const bool execute_create_script,
     InitializeCallback callback) override;
   void CreateWallet(CreateWalletCallback callback) override;
-  void GetWalletProperties(GetWalletPropertiesCallback callback) override;
+  void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
@@ -279,8 +279,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       ledger::Result result,
       double balance);
 
-  static void OnGetWalletProperties(
-      CallbackHolder<GetWalletPropertiesCallback>* holder,
+  static void OnGetRewardsParameters(
+      CallbackHolder<GetRewardsParametersCallback>* holder,
       ledger::RewardsParametersPtr properties);
 
   static void OnSetPublisherExclude(

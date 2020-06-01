@@ -478,14 +478,10 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
-    case types.ON_WALLET_PROPERTIES: {
+    case types.ON_REWARDS_PARAMETERS: {
       state = {
         ...state,
-        walletCreated: true,
-        walletCreateFailed: false,
-        walletCreating: false,
-        walletCorrupted: false,
-        walletProperties: payload.properties
+        parameters: payload.parameters
       }
       break
     }

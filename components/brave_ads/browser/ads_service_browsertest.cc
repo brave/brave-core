@@ -209,8 +209,8 @@ class BraveAdsBrowserTest
         base::ReadFileToString(path.AppendASCII("verify_persona_resp.json"),
                                &verification_));
     ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
-                               &wallet_properties_));
+        base::ReadFileToString(path.AppendASCII("parameters_resp.json"),
+                               &parameters_));
   }
 
   void GetTestResponse(const std::string& url,
@@ -231,9 +231,9 @@ class BraveAdsBrowserTest
                           ServerTypes::LEDGER) &&
                tmp.size() == 7) {
       *response = verification_;
-    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
+    } else if (URLMatches(url, "/wallet/", PREFIX_V2,
                           ServerTypes::BALANCE)) {
-      *response = wallet_properties_;
+      *response = parameters_;
     }
   }
 
@@ -548,7 +548,7 @@ class BraveAdsBrowserTest
 
   std::string registrarVK_;
   std::string verification_;
-  std::string wallet_properties_;
+  std::string parameters_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsSupported) {

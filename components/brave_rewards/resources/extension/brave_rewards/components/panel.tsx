@@ -81,8 +81,8 @@ export class Panel extends React.Component<Props, State> {
       this.props.actions.onRecurringTips(tips)
     })
 
-    chrome.braveRewards.getWalletProperties((properties: RewardsExtension.WalletProperties) => {
-      this.props.actions.onWalletProperties(properties)
+    chrome.braveRewards.getRewardsParameters((parameters: RewardsExtension.RewardsParameters) => {
+      this.props.actions.onRewardsParameters(parameters)
     })
   }
 
@@ -218,8 +218,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { balance, balanceReport } = this.props.rewardsPanelData
-    const { rates } = balance
+    const { parameters, balanceReport } = this.props.rewardsPanelData
 
     let props = {}
 
@@ -231,7 +230,7 @@ export class Panel extends React.Component<Props, State> {
           const tokens = item.toFixed(1)
           props[key] = {
             tokens,
-            converted: utils.convertBalance(item, rates)
+            converted: utils.convertBalance(item, parameters.rate)
           }
         }
       }
@@ -511,8 +510,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   generateAmounts = (publisher?: RewardsExtension.Publisher) => {
-    const { tipAmounts, walletProperties } = this.props.rewardsPanelData
-    const { rates } = this.props.rewardsPanelData.balance
+    const { tipAmounts, parameters } = this.props.rewardsPanelData
 
     const publisherKey = publisher && publisher.publisher_key
     let publisherAmounts = null
@@ -524,8 +522,8 @@ export class Panel extends React.Component<Props, State> {
     let initialAmounts = this.defaultTipAmounts
     if (publisherAmounts) {
       initialAmounts = publisherAmounts
-    } else if (walletProperties) {
-      const walletAmounts = walletProperties.defaultMonthlyTipChoices
+    } else if (parameters) {
+      const walletAmounts = parameters.monthlyTipChoices
       if (walletAmounts.length) {
         initialAmounts = walletAmounts
       }
@@ -536,7 +534,7 @@ export class Panel extends React.Component<Props, State> {
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
-        converted: utils.convertBalance(value, rates),
+        converted: utils.convertBalance(value, parameters.rate),
         selected: false
       }
     })
@@ -683,11 +681,10 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { pendingContributionTotal, enabledAC, externalWallet, balance, promotions } = this.props.rewardsPanelData
-    const { rates } = this.props.rewardsPanelData.balance
+    const { pendingContributionTotal, enabledAC, externalWallet, balance, promotions, parameters } = this.props.rewardsPanelData
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
-    const converted = utils.convertBalance(total, rates)
+    const converted = utils.convertBalance(total, parameters.rate)
     const notification = this.getNotification()
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)

@@ -126,8 +126,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(OnWalletInitializedInternal,
       void(ledger::Result, ledger::ResultCallback));
 
-  MOCK_CONST_METHOD1(GetWalletProperties,
-      void(const ledger::WalletPropertiesCallback));
+  MOCK_METHOD1(GetRewardsParameters,
+      void(const ledger::GetRewardsParametersCallback));
 
   MOCK_CONST_METHOD1(FetchPromotions,
       void(ledger::FetchPromotionCallback));

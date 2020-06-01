@@ -45,8 +45,8 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getConversion = () => {
-    const balance = this.props.rewardsData.balance
-    return utils.convertBalance(balance.total, balance.rates)
+    const { balance, parameters } = this.props.rewardsData
+    return utils.convertBalance(balance.total, parameters.rate)
   }
 
   generatePromotions = () => {
@@ -82,7 +82,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { balance, balanceReport } = this.props.rewardsData
+    const { balanceReport, parameters } = this.props.rewardsData
 
     let props = {}
 
@@ -94,7 +94,7 @@ class PageWallet extends React.Component<Props, State> {
           const tokens = item.toFixed(1)
           props[key] = {
             tokens,
-            converted: utils.convertBalance(item, balance.rates)
+            converted: utils.convertBalance(item, parameters.rate)
           }
         }
       }

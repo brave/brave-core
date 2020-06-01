@@ -112,7 +112,7 @@ class RewardsServiceImpl : public RewardsService,
           notification_observer);
   void StartLedger();
   void CreateWallet(CreateWalletCallback callback) override;
-  void GetWalletProperties(GetWalletPropertiesCallback callback) override;
+  void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void FetchPromotions() override;
   void ClaimPromotion(
       const std::string& promotion_id,
@@ -337,8 +337,8 @@ class RewardsServiceImpl : public RewardsService,
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
-  void OnGetWalletProperties(
-      GetWalletPropertiesCallback callback,
+  void OnGetRewardsParameters(
+      GetRewardsParametersCallback callback,
       ledger::RewardsParametersPtr properties);
   void OnFetchPromotions(
     const ledger::Result result,

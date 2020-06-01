@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/utility/importer/brave_importer.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
@@ -310,7 +310,7 @@ void BraveProfileWriter::OnIsWalletCreated(bool created) {
   // (after properties are fetched) should be considered for backup.
   LOG(INFO) << "Wallet exists; fetching details...";
   rewards_service_->AddObserver(this);
-  rewards_service_->GetWalletProperties();
+  rewards_service_->GetRewardsParameters();
   rewards_service_->FetchBalance(base::BindOnce(
           &BraveProfileWriter::OnFetchBalance,
           AsWeakPtr()));

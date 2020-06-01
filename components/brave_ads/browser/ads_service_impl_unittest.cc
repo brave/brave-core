@@ -36,8 +36,8 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
   MOCK_METHOD1(
-      GetWalletProperties,
-      void(brave_rewards::GetWalletPropertiesCallback callback));
+      GetRewardsParameters,
+      void(brave_rewards::GetRewardsParametersCallback callback));
   MOCK_METHOD7(GetContentSiteList,
       void(uint32_t,
            uint32_t,

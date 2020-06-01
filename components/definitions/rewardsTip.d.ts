@@ -1,7 +1,7 @@
 declare namespace RewardsTip {
   interface State {
     publishers: Record<string, Publisher>
-    walletInfo: WalletProperties
+    parameters: RewardsParameters
     finished: boolean
     error: boolean
     currentTipAmount?: string
@@ -69,10 +69,10 @@ declare namespace RewardsTip {
     postRelDate: string
   }
 
-  export interface WalletProperties {
-    choices: number[]
-    defaultTipChoices: number[]
-    defaultMonthlyTipChoices: number[]
+  export interface RewardsParameters {
+    rate: number
+    tipChoices: number[]
+    monthlyTipChoices: number[]
   }
 
   export interface Grant {

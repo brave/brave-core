@@ -141,8 +141,8 @@ namespace brave_test_resp {
   std::string creds_tokens_;
   std::string creds_tokens_prod_;
   std::string captcha_;
-  std::string wallet_properties_;
-  std::string wallet_properties_defaults_;
+  std::string balance_;
+  std::string parameters_;
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
@@ -372,13 +372,10 @@ class BraveRewardsBrowserTest
                           ServerTypes::LEDGER) &&
                tmp.size() == 7) {
       *response = brave_test_resp::verification_;
-    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                          ServerTypes::BALANCE)) {
-      if (show_defaults_in_properties_) {
-        *response = brave_test_resp::wallet_properties_defaults_;
-      } else {
-        *response = brave_test_resp::wallet_properties_;
-      }
+    } else if (URLMatches(url, "/wallet/", PREFIX_V2, ServerTypes::BALANCE)) {
+       *response = brave_test_resp::balance_;
+    }  else if (URLMatches(url, "/parameters", PREFIX_V1, ServerTypes::kAPI)) {
+        *response = brave_test_resp::parameters_;
     } else if (URLMatches(url, "/promotions?", PREFIX_V1,
                           ServerTypes::kPromotion)) {
       if (promotion_empty_key_) {
@@ -699,12 +696,10 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("creds_tokens_prod_resp.json"),
                                &brave_test_resp::creds_tokens_prod_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
-                               &brave_test_resp::wallet_properties_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("wallet_properties_resp_defaults.json"),
-        &brave_test_resp::wallet_properties_defaults_));
+    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("parameters_resp.json"),
+                               &brave_test_resp::parameters_));
+    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("balance_resp.json"),
+        &brave_test_resp::balance_));
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_auth_resp.json"),
         &brave_test_resp::uphold_auth_resp_));
@@ -2292,8 +2287,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
       "3zsistemi.si");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
-  show_defaults_in_properties_ = true;
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2313,11 +2307,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
 
   content::WebContents* popup = OpenRewardsPopup();
   const auto tip_options = GetRewardsPopupTipOptions(popup);
-  ASSERT_EQ(tip_options, std::vector<double>({ 0, 10, 20, 50 }));
+  ASSERT_EQ(tip_options, std::vector<double>({ 0, 1, 10, 100 }));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
-  show_defaults_in_properties_ = true;
   EnableRewards();
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
@@ -2328,17 +2321,16 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
   content::WebContents* site_banner =
       OpenSiteBanner(ContributionType::OneTimeTip);
   auto tip_options = GetSiteBannerTipOptions(site_banner);
-  ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
+  ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 50 }));
 
   site_banner = OpenSiteBanner(ContributionType::MonthlyTip);
   tip_options = GetSiteBannerTipOptions(site_banner);
-  ASSERT_EQ(tip_options, std::vector<double>({ 10, 20, 50 }));
+  ASSERT_EQ(tip_options, std::vector<double>({ 1, 10, 100 }));
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     SiteBannerDefaultPublisherAmounts) {
-  show_defaults_in_properties_ = true;
   EnableRewards();
 
   GURL url = https_server()->GetURL("laurenwags.github.io", "/index.html");
@@ -2840,7 +2832,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetACOff) {
   EnableRewards();
   uint64_t current_stamp = 0;
 
-  rewards_service_->SetAutoContribute(false);
+  rewards_service_->SetAutoContributeEnabled(false);
 
   base::RunLoop run_loop_first;
   rewards_service_->GetReconcileStamp(

@@ -7,20 +7,16 @@ import { convertBalance, formatConverted } from '../../../brave_rewards/resource
 
 describe('Rewards Settings - Utils', () => {
   describe('convertBalance', () => {
-    it('rates are empty', () => {
-      expect(convertBalance(10.0, {})).toBe('0.00')
+    it('token has letters', () => {
+      expect(convertBalance('test', 10)).toBe('0.00')
     })
 
-    it('rate is missing', () => {
-      expect(convertBalance(10.0, { 'USD': 10 }, 'EUR')).toBe('0.00')
+    it('rate is 0', () => {
+      expect(convertBalance(10.0, 0)).toBe('0.00')
     })
 
     it('all good', () => {
-      expect(convertBalance(10.0, { 'USD': 10 })).toBe('100.00')
-    })
-
-    it('currency is provided', () => {
-      expect(convertBalance(10.0, { 'USD': 10, 'EUR': 4 }, 'EUR')).toBe('40.00')
+      expect(convertBalance(10.0, 10)).toBe('100.00')
     })
   })
 

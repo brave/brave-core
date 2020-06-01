@@ -98,7 +98,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   brave_rewards::RewardsDatabase *rewardsDatabase;
 }
 @property (nonatomic, copy) NSString *storagePath;
-@property (nonatomic) BATWalletProperties *walletInfo;
+@property (nonatomic) BATRewardsParameters *rewardsParameters;
 @property (nonatomic) BATBalance *balance;
 @property (nonatomic) NSMutableDictionary<BATWalletType, BATExternalWallet *> *mExternalWallets;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
@@ -185,7 +185,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
     if (self.walletCreated) {
-      [self fetchWalletDetails:nil];
+      [self getRewardsParameters:nil];
       [self fetchBalance:nil];
       [self fetchExternalWalletForType:BATWalletTypeUphold completion:nil];
     }
@@ -448,20 +448,18 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
-- (void)fetchWalletDetails:(void (^)(BATWalletProperties * _Nullable))completion
+- (void)getRewardsParameters:(void (^)(BATRewardsParameters * _Nullable))completion
 {
-  ledger->GetWalletProperties(^(ledger::Result result, ledger::RewardsParametersPtr info) {
-    if (result == ledger::Result::LEDGER_OK) {
-      if (info) {
-        self.walletInfo = [[BATWalletProperties alloc] initWithWalletPropertiesPtr:std::move(info)];
-      } else {
-        self.walletInfo = nil;
-      }
+  ledger->GetRewardsParameters(^(ledger::RewardsParametersPtr info) {
+    if (info) {
+      self.rewardsParameters = [[BATRewardsParameters alloc] initWithRewardsParametersPtr:std::move(info)];
+    } else {
+      self.rewardsParameters = nil;
     }
     const auto __weak weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
-        completion(weakSelf.walletInfo);
+        completion(weakSelf.rewardsParameters);
       }
     });
   });

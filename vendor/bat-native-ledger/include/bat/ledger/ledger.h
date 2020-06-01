@@ -30,7 +30,7 @@ using PublisherBannerCallback =
     std::function<void(ledger::PublisherBannerPtr banner)>;
 using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
-using WalletPropertiesCallback =
+using GetRewardsParametersCallback =
     std::function<void(ledger::RewardsParametersPtr)>;
 using OnRefreshPublisherCallback =
     std::function<void(ledger::PublisherStatus)>;
@@ -167,7 +167,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetAutoContributeEnabled() = 0;
 
-  virtual void GetWalletProperties(WalletPropertiesCallback callback) = 0;
+  virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
 
   virtual void FetchPromotions(
       ledger::FetchPromotionCallback callback) const = 0;

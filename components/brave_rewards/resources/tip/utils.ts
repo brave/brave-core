@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
+export const convertBalance = (tokens: string, rate: number): string => {
   const tokensNum = parseFloat(tokens)
-  if (tokensNum === 0 || !rates || !rates[currency]) {
+  if (tokensNum === 0) {
     return '0.00'
   }
 
-  const converted = tokensNum * rates[currency]
+  const converted = tokensNum * rate
 
   if (isNaN(converted)) {
     return '0.00'

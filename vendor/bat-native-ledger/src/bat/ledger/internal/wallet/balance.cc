@@ -40,14 +40,14 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
       path,
       PREFIX_V2,
       braveledger_request_util::ServerTypes::BALANCE);
-  auto load_callback = std::bind(&Balance::OnWalletProperties,
+  auto load_callback = std::bind(&Balance::OnFetch,
                             this,
                             _1,
                             callback);
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
 }
 
-void Balance::OnWalletProperties(
+void Balance::OnFetch(
     const ledger::UrlResponse& response,
     ledger::FetchBalanceCallback callback) {
   ledger::BalancePtr balance = ledger::Balance::New();

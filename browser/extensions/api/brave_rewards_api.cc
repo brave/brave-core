@@ -405,11 +405,11 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetWalletPropertiesFunction::
-~BraveRewardsGetWalletPropertiesFunction() = default;
+BraveRewardsGetRewardsParametersFunction::
+~BraveRewardsGetRewardsParametersFunction() = default;
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetWalletPropertiesFunction::Run() {
+BraveRewardsGetRewardsParametersFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
@@ -417,31 +417,26 @@ BraveRewardsGetWalletPropertiesFunction::Run() {
     return RespondNow(OneArgument(std::move(data)));
   }
 
-  rewards_service->GetWalletProperties(base::BindOnce(
-      &BraveRewardsGetWalletPropertiesFunction::OnGet,
+  rewards_service->GetRewardsParameters(base::BindOnce(
+      &BraveRewardsGetRewardsParametersFunction::OnGet,
       this));
   return RespondLater();
 }
 
-void BraveRewardsGetWalletPropertiesFunction::OnGet(
-    std::unique_ptr<::brave_rewards::WalletProperties> wallet_properties) {
+void BraveRewardsGetRewardsParametersFunction::OnGet(
+    std::unique_ptr<::brave_rewards::RewardsParameters> parameters) {
   auto data = std::make_unique<base::DictionaryValue>();
 
-  if (!wallet_properties) {
+  if (!parameters) {
     return Respond(OneArgument(std::move(data)));
   }
 
-  auto tip_choices = std::make_unique<base::ListValue>();
-  for (auto const& item : wallet_properties->default_tip_choices) {
-    tip_choices->Append(base::Value(item));
-  }
-  data->SetList("defaultTipChoices", std::move(tip_choices));
-
+  data->SetDouble("rate", parameters->rate);
   auto monthly_choices = std::make_unique<base::ListValue>();
-  for (auto const& item : wallet_properties->default_monthly_tip_choices) {
+  for (auto const& item : parameters->monthly_tip_choices) {
     monthly_choices->Append(base::Value(item));
   }
-  data->SetList("defaultMonthlyTipChoices", std::move(monthly_choices));
+  data->SetList("monthlyTipChoices", std::move(monthly_choices));
 
   Respond(OneArgument(std::move(data)));
 }

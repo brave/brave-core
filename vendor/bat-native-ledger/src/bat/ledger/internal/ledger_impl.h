@@ -192,7 +192,8 @@ class LedgerImpl : public ledger::Ledger {
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::ResultCallback callback);
 
-  void GetWalletProperties(ledger::WalletPropertiesCallback callback) override;
+  void GetRewardsParameters(
+      ledger::GetRewardsParametersCallback callback) override;
 
   void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 

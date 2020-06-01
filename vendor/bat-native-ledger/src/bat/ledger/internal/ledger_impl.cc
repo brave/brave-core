@@ -688,8 +688,8 @@ void LedgerImpl::ContributionCompleted(
       type);
 }
 
-void LedgerImpl::GetWalletProperties(
-    ledger::WalletPropertiesCallback callback) {
+void LedgerImpl::GetRewardsParameters(
+    ledger::GetRewardsParametersCallback callback) {
   callback(braveledger_state::GetRewardsParameters(this));
 }
 

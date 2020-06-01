@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/brave_rewards/browser/promotion.h"
 #include "extensions/browser/extension_function.h"
 
@@ -115,18 +115,18 @@ class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetWalletPropertiesFunction : public ExtensionFunction {
+class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletProperties", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsParameters", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetWalletPropertiesFunction() override;
+  ~BraveRewardsGetRewardsParametersFunction() override;
 
   ResponseAction Run() override;
 
  private:
   void OnGet(
-      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
+      std::unique_ptr<brave_rewards::RewardsParameters> parameters);
 };
 
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
