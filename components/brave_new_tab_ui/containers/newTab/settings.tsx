@@ -1,28 +1,46 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 import {
   SettingsMenu,
-  SettingsRow,
-  SettingsText,
   SettingsTitle,
   SettingsWrapper,
-  IconButton,
-  IconButtonSideText
+  SettingsSidebar,
+  SettingsFeatureBody,
+  SettingsContent,
+  SettingsCloseIcon,
+  SettingsSidebarButton,
+  SettingsSidebarActiveButtonSlider,
+  SettingsSidebarButtonText,
+  SettingsSidebarSVGContent
 } from '../../components/default'
 
-import { Toggle } from '../../components/toggle'
-
 import { getLocale } from '../../../common/locale'
-import { SettingsIcon } from 'brave-ui/components/icons'
+
+// Icons
+import { CloseStrokeIcon } from 'brave-ui/components/icons'
+import BackgroundImageIcon from './settings/icons/backgroundImage.svg'
+import NraveStatsIcon from './settings/icons/braveStats.svg'
+import BraveRewardsIcon from './settings/icons/braveRewards.svg'
+import TopSitesIcon from './settings/icons/topSites.svg'
+import ClockIcon from './settings/icons/clock.svg'
+import MoreCardsIcon from './settings/icons/moreCards.svg'
+
+// Tabs
+import BackgroundImageSettings from './settings/backgroundImage'
+import BraveStatsSettings from './settings/braveStats'
+import BraveRewardsSettings from './settings/braveRewards'
+import TopSitesSettings from './settings/topSites'
+import ClockSettings from './settings/clock'
+import MoreCardsSettings from './settings/moreCards'
 
 export interface Props {
   textDirection: string
   showSettingsMenu: boolean
-  onClick: () => void
   onClickOutside: () => void
   toggleShowBackgroundImage: () => void
   toggleShowClock: () => void
@@ -45,28 +63,40 @@ export interface Props {
   togetherSupported: boolean
 }
 
-export default class Settings extends React.PureComponent<Props, {}> {
+type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'Rewards' | 'TopSites' | 'Clock' | 'moreCards'
+
+interface State {
+  activeTab: number
+}
+
+export default class Settings extends React.PureComponent<Props, State> {
   settingsMenuRef: React.RefObject<any>
   constructor (props: Props) {
     super(props)
     this.settingsMenuRef = React.createRef()
+    this.state = { activeTab: props.allowSponsoredWallpaperUI ? 0 : 1 }
   }
 
   handleClickOutside = (event: Event) => {
-    if (this.settingsMenuRef && !this.settingsMenuRef.current.contains(event.target)) {
+    if (
+      this.settingsMenuRef &&
+      this.settingsMenuRef.current &&
+      !this.settingsMenuRef.current.contains(event.target)
+    ) {
       this.props.onClickOutside()
     }
   }
 
   componentDidMount () {
     document.addEventListener('mousedown', this.handleClickOutside)
+    document.addEventListener('keydown', this.onKeyPressSettings)
   }
 
   componentWillUnmount () {
     document.removeEventListener('mousedown', this.handleClickOutside)
   }
 
-  onKeyPressSettings = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+  onKeyPressSettings = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       this.props.onClickOutside()
     }
@@ -74,6 +104,44 @@ export default class Settings extends React.PureComponent<Props, {}> {
 
   toggleShowBackgroundImage = () => {
     this.props.toggleShowBackgroundImage()
+  }
+
+  setActiveTab (activeTab: number) {
+    this.setState({ activeTab })
+  }
+
+  get activeTabOptions (): ActiveTabType[] {
+    return [
+      'BackgroundImage', 'BraveStats', 'Rewards', 'TopSites', 'Clock', 'moreCards'
+    ]
+  }
+
+  getTabIcon (tab: number, isActiveTab: boolean) {
+    let srcUrl
+    switch (tab) {
+      case 0:
+        srcUrl = BackgroundImageIcon
+        break
+      case 1:
+        srcUrl = NraveStatsIcon
+        break
+      case 2:
+        srcUrl = BraveRewardsIcon
+        break
+      case 3:
+        srcUrl = TopSitesIcon
+        break
+      case 4:
+        srcUrl = ClockIcon
+        break
+      case 5:
+        srcUrl = MoreCardsIcon
+        break
+      default:
+        srcUrl = BackgroundImageIcon
+        break
+    }
+    return <SettingsSidebarSVGContent isActive={isActiveTab} src={srcUrl} />
   }
 
   render () {
@@ -94,107 +162,119 @@ export default class Settings extends React.PureComponent<Props, {}> {
       showTogether,
       brandedWallpaperOptIn,
       allowSponsoredWallpaperUI,
-      onClick,
       toggleShowBinance,
       showBinance,
       binanceSupported,
       togetherSupported
     } = this.props
-    return (
-      <SettingsWrapper
-        textDirection={textDirection}
-        title={getLocale('dashboardSettingsTitle')}
-        innerRef={this.settingsMenuRef}
-      >
-        <IconButtonSideText textDirection={textDirection}>
-          <IconButton onClick={onClick} onKeyDown={this.onKeyPressSettings}><SettingsIcon/></IconButton>
-          {getLocale('customize')}
-        </IconButtonSideText>
-        {showSettingsMenu &&
-          <SettingsMenu textDirection={textDirection}>
-            <SettingsTitle>{getLocale('dashboardSettingsTitle')}</SettingsTitle>
-            {allowSponsoredWallpaperUI &&
-            <SettingsRow>
-              <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
-              <Toggle
-                onChange={this.toggleShowBackgroundImage}
-                checked={showBackgroundImage}
-                size='small'
-              />
-            </SettingsRow>
-            }
-            {allowSponsoredWallpaperUI &&
-            <SettingsRow isChildSetting={true}>
-              <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
-              <Toggle
-                onChange={toggleBrandedWallpaperOptIn}
-                // This option can only be enabled if
-                // users opt in for background images
-                checked={showBackgroundImage && brandedWallpaperOptIn}
-                disabled={!showBackgroundImage}
-                size='small'
-              />
-            </SettingsRow>
-            }
-            <SettingsRow>
-              <SettingsText>{getLocale('showRewards')}</SettingsText>
-              <Toggle
-                onChange={toggleShowRewards}
-                checked={showRewards}
-                size='small'
-              />
-            </SettingsRow>
-            {
-              togetherSupported
-              ? <SettingsRow>
-                  <SettingsText>{getLocale('showTogether')}</SettingsText>
-                  <Toggle
-                    onChange={toggleShowTogether}
-                    checked={showTogether}
-                    size='small'
-                  />
-                </SettingsRow>
-              : null
-            }
-            {
-              binanceSupported
-              ? <SettingsRow>
-                  <SettingsText>{getLocale('showBinance')}</SettingsText>
-                  <Toggle
-                    onChange={toggleShowBinance}
-                    checked={showBinance}
-                    size='small'
-                  />
-                </SettingsRow>
-              : null
-            }
-            <SettingsRow>
-              <SettingsText>{getLocale('showBraveStats')}</SettingsText>
-              <Toggle
-                onChange={toggleShowStats}
-                checked={showStats}
-                size='small'
-              />
-            </SettingsRow>
-            <SettingsRow>
-              <SettingsText>{getLocale('showClock')}</SettingsText>
-              <Toggle
-                onChange={toggleShowClock}
-                checked={showClock}
-                size='small'
-              />
-            </SettingsRow>
-            <SettingsRow>
-              <SettingsText>{getLocale('showTopSites')}</SettingsText>
-              <Toggle
-                onChange={toggleShowTopSites}
-                checked={showTopSites}
-                size='small'
-              />
-            </SettingsRow>
-        </SettingsMenu>
-      }
-      </SettingsWrapper>
-    )
+    const { activeTab } = this.state
+
+    return showSettingsMenu
+      ? (
+        <SettingsWrapper
+          textDirection={textDirection}
+          title={getLocale('dashboardSettingsTitle')}
+        >
+          <SettingsMenu innerRef={this.settingsMenuRef} textDirection={textDirection}>
+            <SettingsTitle id='settingsTitle'>
+              <h1>{getLocale('dashboardSettingsTitle')}</h1>
+              <SettingsCloseIcon onClick={this.props.onClickOutside}>
+                <CloseStrokeIcon />
+              </SettingsCloseIcon>
+            </SettingsTitle>
+            <SettingsContent id='settingsBody'>
+              <SettingsSidebar id='sidebar'>
+                <SettingsSidebarActiveButtonSlider translateTo={activeTab} />
+                {
+                  this.activeTabOptions.map((tabName, index) => {
+                    const name = index === (this.activeTabOptions.length - 1) ? tabName : `show${tabName}`
+                    if (index === 0 && !allowSponsoredWallpaperUI) {
+                      return <div key={`sidebar-button=${index}`} />
+                    }
+                    return (
+                      <SettingsSidebarButton
+                        tabIndex={0}
+                        key={`sidebar-button-${index}`}
+                        activeTab={activeTab === index}
+                        onClick={this.setActiveTab.bind(this, index)}
+                      >
+                        {this.getTabIcon(index, activeTab === index)}
+                        <SettingsSidebarButtonText
+                          isActive={activeTab === index}
+                          data-text={getLocale(name)}
+                        >
+                          {getLocale(name)}
+                        </SettingsSidebarButtonText>
+                      </SettingsSidebarButton>
+                    )
+                  })
+                }
+              </SettingsSidebar>
+              <SettingsFeatureBody id='content'>
+                {
+                  activeTab === 0
+                    ? (
+                    <BackgroundImageSettings
+                      toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
+                      toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+                      brandedWallpaperOptIn={brandedWallpaperOptIn}
+                      showBackgroundImage={showBackgroundImage}
+                    />
+                  ) : null
+                }
+                {
+                  activeTab === 1
+                    ? (
+                      <BraveStatsSettings
+                        toggleShowStats={toggleShowStats}
+                        showStats={showStats}
+                      />
+                    ) : null
+                }
+                {
+                  activeTab === 2
+                    ? (
+                      <BraveRewardsSettings
+                        toggleShowRewards={toggleShowRewards}
+                        showRewards={showRewards}
+                      />
+                    ) : null
+                }
+                {
+                  activeTab === 3
+                    ? (
+                      <TopSitesSettings
+                        toggleShowTopSites={toggleShowTopSites}
+                        showTopSites={showTopSites}
+                      />
+                    ) : null
+                }
+                {
+                  activeTab === 4
+                    ? (
+                      <ClockSettings
+                        toggleShowClock={toggleShowClock}
+                        showClock={showClock}
+                      />
+                    ) : null
+                }
+                {
+                  activeTab === 5
+                    ? (
+                      <MoreCardsSettings
+                        toggleShowBinance={toggleShowBinance}
+                        showBinance={showBinance}
+                        binanceSupported={binanceSupported}
+                        toggleShowTogether={toggleShowTogether}
+                        showTogether={showTogether}
+                        togetherSupported={togetherSupported}
+                      />
+                    ) : null
+                }
+              </SettingsFeatureBody>
+            </SettingsContent>
+          </SettingsMenu>
+        </SettingsWrapper>
+    ) : null
   }
 }

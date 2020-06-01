@@ -34,6 +34,9 @@ import * as rewardsActions from '../../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 
+// NTP features
+import Settings from './settings'
+
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
@@ -709,34 +712,37 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
-              onClickOutside={this.closeSettings}
-              backgroundImageInfo={newTabData.backgroundImage}
               onClickSettings={this.toggleSettings}
-              showSettingsMenu={showSettingsMenu}
+              backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
-              toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-              toggleShowClock={this.toggleShowClock}
-              toggleShowStats={this.toggleShowStats}
-              toggleShowTopSites={this.toggleShowTopSites}
-              toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
-              showBackgroundImage={newTabData.showBackgroundImage}
-              showClock={newTabData.showClock}
-              showStats={newTabData.showStats}
-              showTopSites={newTabData.showTopSites}
-              showRewards={newTabData.showRewards}
-              showTogether={newTabData.showTogether}
-              showBinance={newTabData.showBinance}
-              brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
-              allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
-              toggleShowRewards={this.toggleShowRewards}
-              toggleShowTogether={this.toggleShowTogether}
-              toggleShowBinance={this.toggleShowBinance}
-              binanceSupported={binanceState.binanceSupported}
-              togetherSupported={newTabData.togetherSupported}
             />
             </Page.FooterContent>
           </Page.Footer>
         </Page.Page>
+        <Settings
+          textDirection={newTabData.textDirection}
+          showSettingsMenu={showSettingsMenu}
+          onClickOutside={this.closeSettings}
+          toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+          toggleShowClock={this.toggleShowClock}
+          toggleShowStats={this.toggleShowStats}
+          toggleShowTopSites={this.toggleShowTopSites}
+          toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
+          showBackgroundImage={newTabData.showBackgroundImage}
+          showClock={newTabData.showClock}
+          showStats={newTabData.showStats}
+          showTopSites={newTabData.showTopSites}
+          showRewards={newTabData.showRewards}
+          showBinance={newTabData.showBinance}
+          brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
+          allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
+          toggleShowRewards={this.toggleShowRewards}
+          toggleShowBinance={this.toggleShowBinance}
+          binanceSupported={binanceState.binanceSupported}
+          togetherSupported={newTabData.togetherSupported}
+          toggleShowTogether={this.toggleShowTogether}
+          showTogether={newTabData.showTogether}
+        />
       </Page.App>
     )
   }

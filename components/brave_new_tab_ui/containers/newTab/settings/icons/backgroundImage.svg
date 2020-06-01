@@ -1,0 +1,7 @@
+<!--
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+<svg xmlns='http://www.w3.org/2000/svg' width='17' height='14' fill='none'><path fill='#5E6175' fillRule='evenodd' d='M11.073 4.828a1.287 1.287 0 112.572.001 1.287 1.287 0 01-2.572 0zm-9.005 7.719v-2.92l3.826-3.28 3.438 3.438a.643.643 0 00.84.06l2.085-1.563 2.675 3.211v1.054H2.068zM14.932 2.255v7.229l-2.079-2.495a.643.643 0 00-.88-.103L9.847 8.482 6.382 5.017a.643.643 0 00-.874-.034l-3.44 2.95V2.254h12.864zm0-1.286H2.068C1.358.969.78 1.546.78 2.255v10.292c0 .71.577 1.286 1.287 1.286h12.864c.71 0 1.287-.577 1.287-1.286V2.255c0-.71-.577-1.286-1.287-1.286z' clipRule='evenodd'/><mask width='17' height='14' x='0' y='0' maskUnits='userSpaceOnUse'><path fill='#fff' fillRule='evenodd' d='M11.073 4.828a1.287 1.287 0 112.572.001 1.287 1.287 0 01-2.572 0zm-9.005 7.719v-2.92l3.826-3.28 3.438 3.438a.643.643 0 00.84.06l2.085-1.563 2.675 3.211v1.054H2.068zM14.932 2.255v7.229l-2.079-2.495a.643.643 0 00-.88-.103L9.847 8.482 6.382 5.017a.643.643 0 00-.874-.034l-3.44 2.95V2.254h12.864zm0-1.286H2.068C1.358.969.78 1.546.78 2.255v10.292c0 .71.577 1.286 1.287 1.286h12.864c.71 0 1.287-.577 1.287-1.286V2.255c0-.71-.577-1.286-1.287-1.286z' clipRule='evenodd'/></mask></svg>

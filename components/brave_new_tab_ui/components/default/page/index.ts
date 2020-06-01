@@ -68,6 +68,11 @@ export const Page = styled<PageProps, 'div'>('div')`
   min-height: 100vh;
   align-items: flex-start;
 
+  /* lock the screen so when brave today is scroled
+  NTP items remain in the same place */
+  position: sticky;
+  top: 0;
+
   @media screen and (max-width: ${breakpointEveryBlock}) {
     display: flex;
     flex-direction: column;
@@ -140,6 +145,15 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
+export const GridItemNavigationBraveToday = styled<{}, 'span'>('span')`
+  position: absolute;
+  bottom: 60px;
+  text-align: center;
+  width: 100%;
+  color: white;
+  font-size: 24px;
+`
+
 export const Footer = styled<{}, 'footer'>('footer')`
   /* Child items are primary Grid items and can slot in to free spaces,
      so this element doesn't do anything on wider viewport widths. */
@@ -184,6 +198,7 @@ export const App = styled<AppProps, 'div'>('div')`
   box-sizing: border-box;
   display: flex;
   flex: 1;
+  flex-direction: column;
   transition: opacity .125s ease-out;
   opacity: ${p => p.dataIsReady ? 1 : 0};
 `
@@ -326,5 +341,24 @@ export const IconButtonSideText = styled<IconButtonSideTextProps, 'label'>('labe
     margin-right: ${p => p.textDirection === 'rtl' && '0'};
     /* No need to show the outline since the parent is handling it */
     outline: 0;
+  }
+`
+
+interface IconButtonContainerProps {
+  textDirection: string
+}
+
+export const IconButtonContainer = styled<IconButtonContainerProps, 'div'>('div')`
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin-right: ${p => p.textDirection === 'ltr' && '8px'};
+  margin-left: ${p => p.textDirection === 'rtl' && '8px'};
+  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
+  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
+
+  &:hover {
+    color: #ffffff;
   }
 `

@@ -32,6 +32,7 @@ export const StyleToggle = styled<Props, 'div'>('div')`
   box-sizing: border-box;
   position: relative;
   display: block;
+  cursor: pointer;
   height: ${(p) => p.size === 'small' ? '16px' : '24px'};
   width: ${(p) => p.size === 'small' ? '28px' : '40px'};
 
