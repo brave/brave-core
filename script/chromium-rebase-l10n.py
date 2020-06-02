@@ -203,6 +203,29 @@ def main():
         applyIsAndroidOr(xml_tree, '//structure[@file="chromium/webstore_icon.png"]')
         applyIsAndroidOr(xml_tree, '//structure[@file="google_chrome/webstore_icon.png"]')
 
+    if filename == 'browser_resources':
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SIGNIN_SHARED_CSS_JS"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_INCOGNITO_TAB_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_DISCARDS_MOJO_API_JS"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_BROWSER_SWITCH_APP_JS"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_ABOUT_SYS_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_PAGE_NOT_AVAILABLE_FOR_GUEST_APP_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_PLUGIN_DB_JSON"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_MANAGEMENT_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_SYNC_DISABLED_CONFIRMATION_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_SIGNIN_EMAIL_CONFIRMATION_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_CONTROL_BAR_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_IDENTITY_INTERNALS_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_MEDIA_ROUTER_INTERNALS_HTML"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_TAB_RANKER_EXAMPLE_PREPROCESSOR_CONFIG_PB"]')
+        elem = xml_tree.xpath('//structure[@name="IDR_INCOGNITO_TAB_HTML"]')[0]
+        elem.set('file', 'resources/ntp4/incognito_tab.html')
+        elem = xml_tree.xpath('//structure[@name="IDR_INCOGNITO_TAB_THEME_CSS"]')[0]
+        elem.set('file', 'resources/ntp4/incognito_tab_theme.css')
+
+    if filename == 'mojo_bindings_resources':
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_MOJO_MOJO_BINDINGS_JS"]')
+
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
     previous_to_grit_root = grit_root.getprevious()
