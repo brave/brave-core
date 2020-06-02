@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 323c7e42421a80803dd9579066e5616ca8ccbe3d..3603281c6ac71aff4dcea032978cfb6e17d3f45a 100644
+index 323c7e42421a80803dd9579066e5616ca8ccbe3d..6609a904b0b1c11f95eedd51f9a09acf7811f1b2 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -74,6 +74,7 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state,
-                                       "Current frame is detached.");
-     return ScriptPromise();
-   }
-+  BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES
+@@ -80,6 +80,7 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state,
+   requests_.insert(resolver);
  
-   auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
-   ScriptPromise promise = resolver->Promise();
+   LocalFrame* frame = LocalDOMWindow::From(script_state)->GetFrame();
++  BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES
+   GetDispatcherHost(frame)->EnumerateDevices(
+       true /* audio input */, true /* video input */, true /* audio output */,
+       true /* request_video_input_capabilities */,
