@@ -1,9 +1,5 @@
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 
-declare_args() {
-  brave_referrals_api_key = ""
-}
-
 source_set("browser") {
   public_deps = [
     "//brave/components/brave_referrals/buildflags",
@@ -14,8 +10,6 @@ source_set("browser") {
       "brave_referrals_service.cc",
       "brave_referrals_service.h",
     ]
-
-    defines = [ "BRAVE_REFERRALS_API_KEY=\"$brave_referrals_api_key\"" ]
 
     deps = [
       "//base",
