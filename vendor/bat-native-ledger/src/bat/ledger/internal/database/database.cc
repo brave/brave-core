@@ -586,7 +586,7 @@ void Database::GetSpendableUnblindedTokensByTriggerIds(
 }
 
 void Database::GetReservedUnblindedTokens(
-  const std::string& redeem_id,
+    const std::string& redeem_id,
     ledger::GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetReservedRecordList(redeem_id, callback);
 }

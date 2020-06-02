@@ -653,7 +653,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       "UPDATE %s SET redeem_id = ?, reserved_at = ? "
       "WHERE ( "
         "SELECT COUNT(*) FROM %s "
-        "WHERE reserved_at = 0 AND token_id IN (%s) "
+        "WHERE reserved_at = 0 AND redeemed_at = 0 AND token_id IN (%s) "
       ") = ? AND token_id IN (%s)",
       kTableName,
       kTableName,
@@ -667,6 +667,22 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
   BindString(command.get(), 0, redeem_id);
   BindInt64(command.get(), 1, braveledger_time_util::GetCurrentTimeStamp());
   BindInt64(command.get(), 2, ids.size());
+
+  transaction->commands.push_back(std::move(command));
+
+  query =
+      "UPDATE contribution_info SET step=?, retry_count=0 "
+      "WHERE contribution_id = ?";
+
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(
+      command.get(),
+      0,
+      static_cast<int>(ledger::ContributionStep::STEP_RESERVE));
+  BindString(command.get(), 1, redeem_id);
 
   transaction->commands.push_back(std::move(command));
 
@@ -704,6 +720,7 @@ void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
   }
 
   if (response->result->get_records().size() != expected_row_count) {
+    BLOG(0, "Records size doesn't match");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -724,7 +741,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET redeem_id = '', reserved_at = 0 "
-      "WHERE redeem_id = ?",
+      "WHERE redeem_id = ? AND redeemed_at = 0",
       kTableName);
 
   auto command = ledger::DBCommand::New();
@@ -756,7 +773,7 @@ void DatabaseUnblindedToken::GetReservedRecordList(
   const std::string query = base::StringPrintf(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
-      "WHERE ut.redeem_id = ? AND ut.reserved_at != 0",
+      "WHERE ut.redeem_id = ? AND ut.redeemed_at = 0 AND ut.reserved_at != 0",
       kTableName);
 
   auto command = ledger::DBCommand::New();
