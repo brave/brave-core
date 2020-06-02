@@ -104,7 +104,7 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(GetAdConversions, void(
       GetAdConversionsCallback callback));
 
-  MOCK_CONST_METHOD4(Log, void(
+  MOCK_METHOD4(Log, void(
       const char* file,
       const int line,
       const int verbose_level,

@@ -39,7 +39,7 @@ const getRetryStepString = (retryStep: number) => {
 }
 
 export const Contribution = (props: Props) => (
-  <div>
+  <>
     {getLocale('viewingId')} {props.reconcile.viewingId || ''}
     <br/>
     {getLocale('amount')} {props.reconcile.amount || ''}
@@ -48,5 +48,5 @@ export const Contribution = (props: Props) => (
     <br/>
     {getLocale('retryLevel')} {props.reconcile.retryLevel || ''}
     <br/>
-  </div>
+  </>
 )

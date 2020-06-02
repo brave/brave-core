@@ -23,7 +23,7 @@ private:
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) override;
-  void Log(const char * file, const int line, const int verbose_level, const std::string & message) const override;
+  void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void ResetState(const std::string & name, ledger::ResultCallback callback) override;

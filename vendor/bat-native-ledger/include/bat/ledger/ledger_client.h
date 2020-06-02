@@ -112,7 +112,7 @@ class LEDGER_EXPORT LedgerClient {
       const char* file,
       const int line,
       const int verbose_level,
-      const std::string& message) const = 0;
+      const std::string& message) = 0;
 
   virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
 

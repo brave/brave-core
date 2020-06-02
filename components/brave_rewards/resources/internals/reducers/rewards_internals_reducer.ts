@@ -15,7 +15,6 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
     state = storage.load()
   }
 
-  const startingState = state
   switch (action.type) {
     case types.GET_REWARDS_ENABLED:
       chrome.send('brave_rewards_internals.getRewardsEnabled')
@@ -45,12 +44,21 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state = { ...state }
       state.promotions = action.payload.promotions
       break
+    case types.GET_LOG:
+      chrome.send('brave_rewards_internals.getLog')
+      break
+    case types.ON_GET_LOG:
+      state = { ...state }
+      state.log = action.payload.log
+      break
+    case types.CLEAR_LOG:
+      chrome.send('brave_rewards_internals.clearLog')
+      break
+    case types.ON_CLEAR_LOG:
+      state.log = ''
+      break
     default:
       break
-  }
-
-  if (state !== startingState) {
-    storage.debouncedSave(state)
   }
 
   return state

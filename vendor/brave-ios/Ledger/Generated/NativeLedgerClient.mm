@@ -35,7 +35,7 @@ void NativeLedgerClient::LoadState(const std::string & name, ledger::OnLoadCallb
 void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) {
   [bridge_ loadURL:url headers:headers content:content contentType:contentType method:method callback:callback];
 }
-void NativeLedgerClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) const {
+void NativeLedgerClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) {
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {

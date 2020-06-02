@@ -5,9 +5,12 @@
 import * as React from 'react'
 
 import { Contribution } from './contribution'
+import { ButtonWrapper } from '../style'
+import { Button } from 'brave-ui/components'
 
 interface Props {
   items: RewardsInternals.CurrentReconcile[]
+  onGet: () => void
 }
 
 // Utils
@@ -20,7 +23,14 @@ export const Contributions = (props: Props) => {
 
   return (
     <>
-      <h3>{getLocale('contributionsInProgress')}</h3>
+      <ButtonWrapper>
+        <Button
+          text={getLocale('refreshButton')}
+          size={'medium'}
+          type={'accent'}
+          onClick={props.onGet}
+        />
+      </ButtonWrapper>
       {props.items.map((item, index) => (
         <>
           <div>

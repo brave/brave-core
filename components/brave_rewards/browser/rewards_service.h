@@ -125,6 +125,10 @@ using GetAllPromotionsCallback =
 using GetRewardsParametersCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsParameters>)>;
 
+using LoadDiagnosticLogCallback = base::OnceCallback<void(const std::string&)>;
+
+using ClearDiagnosticLogCallback = base::OnceCallback<void(const bool success)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -325,6 +329,19 @@ class RewardsService : public KeyedService {
 
   virtual void GetAllPromotions(
       GetAllPromotionsCallback callback) = 0;
+
+  virtual void DiagnosticLog(
+      const std::string& file,
+      const int line,
+      const int verbose_level,
+      const std::string& message) = 0;
+
+  virtual void LoadDiagnosticLog(
+      const int num_lines,
+      LoadDiagnosticLogCallback callback) = 0;
+
+  virtual void ClearDiagnosticLog(
+      ClearDiagnosticLogCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

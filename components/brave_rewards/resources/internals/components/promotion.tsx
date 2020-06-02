@@ -66,8 +66,7 @@ const getExpirationDate = (expiresAt: number) => {
 
 export const Promotion = (props: Props) => (
   <div>
-    {getLocale('promotionId')}: {props.promotion.promotionId}
-    <br/>
+    <h3>{props.promotion.promotionId}</h3>
     {getLocale('promotionStatus')}: {getStatus(props.promotion.status)}
     <br/>
     {getLocale('promotionAmount')}: {props.promotion.amount} {getLocale('bat')}

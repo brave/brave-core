@@ -8,9 +8,11 @@ import { connect } from 'react-redux'
 
 // Components
 import { Contributions } from './contributions'
-import { WalletInfo } from './walletInfo'
-import { Balance } from './balance'
 import { Promotions } from './promotions'
+import { General } from './general'
+import { Log } from './log'
+import { Tabs } from 'brave-ui/components'
+import { Wrapper, MainTitle, DisabledContent } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -21,45 +23,105 @@ interface Props {
   rewardsInternalsData: RewardsInternals.State
 }
 
-export class RewardsInternalsPage extends React.Component<Props, {}> {
+interface State {
+  currentTabId: string
+}
+
+export class RewardsInternalsPage extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      currentTabId: 'generalInfo'
+    }
+    this.getLog = this.getLog.bind(this)
+    this.clearLog = this.clearLog.bind(this)
+    this.getGeneralInfo = this.getGeneralInfo.bind(this)
+    this.getContributions = this.getContributions.bind(this)
+  }
+
   componentDidMount () {
-    this.getData()
+    this.getGeneralInfo()
   }
 
   get actions () {
     return this.props.actions
   }
 
-  getData = () => {
+  getGeneralInfo = () => {
     this.actions.getRewardsEnabled()
     this.actions.getRewardsInternalsInfo()
     this.actions.getBalance()
+  }
+
+  onTabChange = (tabId: string) => {
+    this.setState({ currentTabId: tabId })
+
+    switch (tabId) {
+      case 'promotions': {
+        this.getPromotions()
+        break
+      }
+      case 'contributions': {
+        this.getContributions()
+        break
+      }
+      case 'generalInfo': {
+        this.getGeneralInfo()
+        break
+      }
+    }
+  }
+
+  clearLog = () => {
+    this.actions.clearLog()
+  }
+
+  getLog = () => {
+    this.actions.getLog()
+  }
+
+  getPromotions = () => {
     this.actions.getPromotions()
   }
 
-  onRefresh = () => {
-    this.getData()
+  getContributions = () => {
+    // TODO add
   }
 
   render () {
-    const { isRewardsEnabled, balance, info, promotions } = this.props.rewardsInternalsData
-    if (isRewardsEnabled) {
+    const { isRewardsEnabled, info, promotions, log } = this.props.rewardsInternalsData
+
+    if (!isRewardsEnabled) {
       return (
-        <div id='rewardsInternalsPage'>
-          <WalletInfo state={this.props.rewardsInternalsData} />
-          <Balance info={balance} />
-          <Promotions items={promotions} />
-          <br/>
-          <br/>
-          <button type='button' onClick={this.onRefresh}>{getLocale('refreshButton')}</button>
-          <Contributions items={info.currentReconciles} />
-        </div>)
-    } else {
-      return (
-        <div id='rewardsInternalsPage'>
-          {getLocale('rewardsNotEnabled')} <a href='chrome://rewards' target='_blank'>chrome://rewards</a>
-        </div>)
+        <Wrapper id='rewardsInternalsPage'>
+          <MainTitle level={2}>{getLocale('mainTitle')}</MainTitle>
+          <DisabledContent>
+            {getLocale('rewardsNotEnabled')} <a href='brave://rewards' target='_blank'>brave://rewards</a>
+          </DisabledContent>
+        </Wrapper>)
     }
+
+    return (
+      <Wrapper id='rewardsInternalsPage'>
+        <MainTitle level={2}>{getLocale('mainTitle')}</MainTitle>
+        <Tabs
+          activeTabId={this.state.currentTabId}
+          onChange={this.onTabChange}
+        >
+          <div data-key='generalInfo' data-title={getLocale('tabGeneralInfo')}>
+            <General data={this.props.rewardsInternalsData} onGet={this.getGeneralInfo} />
+          </div>
+          <div data-key='logs' data-title={getLocale('tabLogs')}>
+            <Log log={log} onGet={this.getLog} onClear={this.clearLog} />
+          </div>
+          <div data-key='promotions' data-title={getLocale('tabPromotions')}>
+            <Promotions items={promotions} onGet={this.getPromotions} />
+          </div>
+          <div data-key='contributions' data-title={getLocale('tabContributions')}>
+            <Contributions items={info.currentReconciles} onGet={this.getContributions} />
+          </div>
+        </Tabs>
+      </Wrapper>)
   }
 }
 

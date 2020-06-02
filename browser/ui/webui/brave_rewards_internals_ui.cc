@@ -52,6 +52,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
     std::unique_ptr<brave_rewards::Balance> balance);
   void GetPromotions(const base::ListValue* args);
   void OnGetPromotions(const std::vector<brave_rewards::Promotion>& list);
+  void GetLog(const base::ListValue* args);
+  void OnGetLog(const std::string& log);
+  void ClearLog(const base::ListValue* args);
+  void OnClearLog(const bool success);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
@@ -85,6 +89,16 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.getPromotions",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::GetPromotions,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getLog",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetLog,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.clearLog",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::ClearLog,
           base::Unretained(this)));
 }
 
@@ -222,6 +236,52 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.promotions",
       std::move(promotions));
+}
+
+void RewardsInternalsDOMHandler::GetLog(const base::ListValue *args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->LoadDiagnosticLog(-1,
+      base::BindOnce(
+          &RewardsInternalsDOMHandler::OnGetLog,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetLog(const std::string& log) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.log",
+      base::Value(log));
+}
+
+void RewardsInternalsDOMHandler::ClearLog(const base::ListValue *args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->ClearDiagnosticLog(
+      base::BindOnce(
+          &RewardsInternalsDOMHandler::OnClearLog,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  if (!success) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.log",
+      base::Value(""));
 }
 
 }  // namespace

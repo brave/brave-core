@@ -1,0 +1,50 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License. v. 2.0. If a copy of the MPL was not distributed with this file.
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import styled from 'brave-ui/theme'
+import Heading, { HeadingProps } from 'brave-ui/components/text/heading'
+import { ComponentType } from 'react'
+
+export const Wrapper = styled<{}, 'div'>('div')`
+  width: 100%;
+  max-width: 1200px;
+  margin: 15px auto 0;
+  font-family: ${p => p.theme.fontFamily.body};
+  font-size: 14px;
+`
+
+export const MainTitle = styled(Heading as ComponentType<HeadingProps>)`
+  text-align: center;
+  margin-bottom: 30px;
+`
+
+export const LogTextArea = styled<{}, 'textarea'>('textarea')`
+  width: 100%;
+  height: 80vh;
+  margin-top: 10px;
+`
+
+export const LogControls = styled<{}, 'div'>('div')`
+  display: flex;
+  align-items: self-start;
+  justify-content: space-between;
+`
+
+export const ButtonWrapper = styled<{}, 'div'>('div')`
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+`
+
+export const DisabledContent = styled<{}, 'div'>('div')`
+  text-align: center;
+`
+
+export const ButtonGroup = styled<{}, 'div'>('div')`
+  display: flex;
+
+  > button {
+    margin-left: 10px;
+  }
+`

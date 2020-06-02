@@ -5,9 +5,12 @@
 import * as React from 'react'
 
 import { Promotion } from './promotion'
+import { ButtonWrapper } from '../style'
+import { Button } from 'brave-ui/components'
 
 interface Props {
   items: RewardsInternals.Promotion[]
+  onGet: () => void
 }
 
 // Utils
@@ -20,7 +23,14 @@ export const Promotions = (props: Props) => {
 
   return (
     <>
-      <h3>{getLocale('promotions')}</h3>
+      <ButtonWrapper>
+        <Button
+          text={getLocale('refreshButton')}
+          size={'medium'}
+          type={'accent'}
+          onClick={props.onGet}
+        />
+      </ButtonWrapper>
       {props.items.map((item, index) => (
         <div key={item.promotionId}>
           <Promotion promotion={item} />
