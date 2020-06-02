@@ -91,16 +91,22 @@ public class SKUPurchaseViewController: UIViewController, UIViewControllerTransi
   }
   
   @objc private func tappedBuyButton() {
-    guard let amount = Double(request.details.total.amount.value) else { return }
+    let items = zip(request.details.skuTokens, request.details.displayItems).map { (sku, item) in
+      return SKUOrderItem().then {
+        $0.sku = sku
+        $0.quantity = 1
+      }
+    }
+    
     // Start order transactions
     purchaseView.viewState = .processing
-    // TODO: Support changing view state during animation (currently crashes 😱)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-      // TODO: Remove this tip when we integrate with shared libs (https://github.com/brave/brave-ios/issues/2383)
-      self.rewards.ledger.tipPublisherDirectly(self.publisher, amount: amount, currency: "BAT") { result in
+    
+    rewards.ledger.processSKUItems(items) { (result, orderID) in
+      // Allow animations to complete
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
         self.purchaseView.viewState = .complete
-        self.responseHandler(.completed("04b5ec6e-d06e-4ad7-87b7-0e298d3ec444"))
       }
+      self.responseHandler(.completed(orderID))
     }
   }
   
