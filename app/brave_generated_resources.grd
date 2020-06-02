@@ -29,6 +29,7 @@
       <output filename="brave_generated_resources_pa.pak" type="data_package" lang="pa" />
       <output filename="brave_generated_resources_si.pak" type="data_package" lang="si" />
       <output filename="brave_generated_resources_sq.pak" type="data_package" lang="sq" />
+      <output filename="brave_generated_resources_sr-Latn.pak" type="data_package" lang="sr-Latn" />
       <output filename="brave_generated_resources_ur.pak" type="data_package" lang="ur" />
       <output filename="brave_generated_resources_uz.pak" type="data_package" lang="uz" />
       <output filename="brave_generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
