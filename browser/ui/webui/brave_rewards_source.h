@@ -34,7 +34,7 @@ class BraveRewardsSource : public content::URLDataSource {
   bool AllowCaching() override;
   bool ShouldReplaceExistingSource() override;
   bool ShouldServiceRequest(const GURL& url,
-                            content::ResourceContext* resource_context,
+                            content::BrowserContext* browser_context,
                             int render_process_id) override;
 
  private:
