@@ -55,6 +55,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/browser/brave_referrals/brave_referrals_service_factory.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #endif
 
@@ -111,7 +112,8 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_brave_browser_process = this;
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  brave_referrals_service_ = brave::BraveReferralsServiceFactory(local_state());
+  brave_referrals_service_ = brave::BraveReferralsServiceFactory::GetInstance()
+    ->GetForPrefs(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(

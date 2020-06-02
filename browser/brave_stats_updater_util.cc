@@ -4,9 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <ctime>
+#include <memory>
 
 #include "brave/browser/brave_stats_updater_util.h"
 
+#include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
@@ -97,5 +99,13 @@ base::Time GetYMDAsDate(const base::StringPiece& ymd) {
   return result;
 }
 
+std::string GetAPIKey() {
+  std::string api_key = BRAVE_STATS_API_KEY;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  if (env->HasVar("BRAVE_STATS_API_KEY"))
+    env->GetVar("BRAVE_STATS_API_KEY", &api_key);
+
+  return api_key;
+}
 
 }  // namespace brave

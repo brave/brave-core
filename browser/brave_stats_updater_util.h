@@ -24,6 +24,8 @@ int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetYMDAsDate(const base::StringPiece& ymd);
 
+std::string GetAPIKey();
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_
