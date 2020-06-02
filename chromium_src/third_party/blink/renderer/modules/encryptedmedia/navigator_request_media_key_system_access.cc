@@ -13,7 +13,12 @@ void MaybeOnWidevineRequest(MediaKeySystemAccessInitializer* initializer,
 }  // namespace
 }  // namespace blink
 
+// Notify Brave about the widevine availability request.
+#define BRAVE_NAVIGATOR_REQUEST_MEDIA_KEY_SYSTEM_ACCESS \
+  MaybeOnWidevineRequest(initializer, window->GetFrame());
+
 #include "../../../../../../../third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc"  // NOLINT
+#undef BRAVE_NAVIGATOR_REQUEST_MEDIA_KEY_SYSTEM_ACCESS
 
 #include "brave/components/brave_drm/brave_drm.mojom-blink.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
