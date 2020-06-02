@@ -17,6 +17,7 @@
 namespace brave {
 
 base::Time BraveStatsUpdaterParams::g_current_time;
+bool BraveStatsUpdaterParams::g_force_first_run = false;
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
     : BraveStatsUpdaterParams(pref_service,
@@ -58,6 +59,12 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
   return week_of_installation_;
 }
 
+std::string BraveStatsUpdaterParams::GetDateOfInstallationParam() const {
+  return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)
+      ? "null"
+      : brave::GetDateAsYMD(date_of_installation_);
+}
+
 std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
   return referral_promo_code_.empty() ? "none" : referral_promo_code_;
 }
@@ -70,6 +77,10 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   week_of_installation_ = pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
+  date_of_installation_ = brave::GetFirstRunTime(pref_service_);
+  DCHECK(!date_of_installation_.is_null());
+  if (ShouldForceFirstRun())
+    date_of_installation_ = GetCurrentTimeNow();
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   referral_promo_code_ = pref_service_->GetString(kReferralPromoCode);
 #endif
@@ -120,9 +131,19 @@ base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {
 }
 
 // static
+bool BraveStatsUpdaterParams::ShouldForceFirstRun() const {
+  return g_force_first_run;
+}
+
+// static
 void BraveStatsUpdaterParams::SetCurrentTimeForTest(
     const base::Time& current_time) {
   g_current_time = current_time;
+}
+
+// static
+void BraveStatsUpdaterParams::SetFirstRunForTest(bool first_run) {
+  g_force_first_run = first_run;
 }
 
 }  // namespace brave
