@@ -139,6 +139,14 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
 
 }  // namespace
 
+namespace BraveThemeProperties {
+
+bool IsBraveThemeProperties(int id) {
+  return id >= BRAVE_THEME_PROPERTIES_START &&
+         id <= BRAVE_THEME_PROPERTIES_LAST;
+}
+
+}  // namespace BraveThemeProperties
 // Returns a |nullopt| if the UI color is not handled by Brave.
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
     int id, bool incognito, dark_mode::BraveDarkModeType dark_mode) {
