@@ -70,15 +70,8 @@ export const StyledButton = styled<{}, 'button'>('button')`
   background: #0076ff;
   border-radius: 20px;
   height: 40px;
-  width: 184px;
+  width: 200px;
   font-size: 14px;
   cursor: pointer;
   border: none;
-`
-
-export const StyledLoader = styled<{}, 'div'>('div')`
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  vertical-align: bottom;
 `
