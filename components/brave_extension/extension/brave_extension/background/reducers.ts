@@ -7,9 +7,11 @@ import { combineReducers } from 'redux'
 import shieldsPanelReducer from './reducers/shieldsPanelReducer'
 import dappDetectionReducer from './reducers/dappDetectionReducer'
 import runtimeReducer from './reducers/runtimeReducer'
+import ampReducer from './reducers/ampReducer'
 
 export default combineReducers({
   shieldsPanel: shieldsPanelReducer,
   dappDetection: dappDetectionReducer,
+  amp: ampReducer,
   runtime: runtimeReducer
 })
