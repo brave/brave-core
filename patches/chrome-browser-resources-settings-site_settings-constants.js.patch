@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
+index 0bc63a422d1d1ca468a1222dd699d5fa9bb65d26..89dca72c11bd2ee16af52bed19170999b843ac84 100644
+--- a/chrome/browser/resources/settings/site_settings/constants.js
++++ b/chrome/browser/resources/settings/site_settings/constants.js
+@@ -42,6 +42,7 @@ cr.define('settings', function() {
+     HID_DEVICES: 'hid-devices',
+     AR: 'ar',
+     VR: 'vr',
++    AUTOPLAY: 'autoplay',
+   };
+ 
+   /**
