@@ -19,7 +19,6 @@ Balance::~Balance() {}
 
 Balance::Balance(const Balance& properties) {
   total = properties.total;
-  rates = properties.rates;
   wallets = properties.wallets;
 }
 
@@ -27,12 +26,6 @@ std::string Balance::toJson() {
   std::string json_str_root;
   base::DictionaryValue json_root;
   json_root.SetDoubleKey(kJsonTotal, total);
-
-  auto json_rates = std::make_unique<base::DictionaryValue>();
-  for (const auto & item : rates) {
-    json_rates->SetDoubleKey(item.first, item.second);
-  }
-  json_root.SetDictionary(kJsonRates, std::move(json_rates));
 
   auto json_wallets = std::make_unique<base::DictionaryValue>();
   for (const auto & item : wallets) {

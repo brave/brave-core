@@ -409,12 +409,6 @@ void RewardsTipDOMHandler::OnFetchBalance(
     if (result == 0 && balance) {
       balance_value->SetDouble("total", balance->total);
 
-      auto rates = std::make_unique<base::DictionaryValue>();
-      for (auto const& rate : balance->rates) {
-        rates->SetDouble(rate.first, rate.second);
-      }
-      balance_value->SetDictionary("rates", std::move(rates));
-
       auto wallets = std::make_unique<base::DictionaryValue>();
       for (auto const& wallet : balance->wallets) {
         wallets->SetDouble(wallet.first, wallet.second);

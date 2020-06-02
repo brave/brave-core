@@ -2704,7 +2704,6 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
 
   if (balance) {
     new_balance->total = balance->total;
-    new_balance->rates = base::FlatMapToMap(balance->rates);
     new_balance->wallets = base::FlatMapToMap(balance->wallets);
 
     if (balance->total > 0) {

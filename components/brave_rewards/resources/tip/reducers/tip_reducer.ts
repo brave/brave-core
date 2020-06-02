@@ -22,7 +22,6 @@ export const defaultState: RewardsTip.State = {
   reconcileStamp: 0,
   balance: {
     total: 0,
-    rates: {},
     wallets: {}
   }
 }

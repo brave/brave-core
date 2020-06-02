@@ -29,9 +29,6 @@ bool getJSONList(const std::string& fieldName,
                  const std::string& json,
                  std::vector<std::string>* value);
 
-bool getJSONRates(const std::string& json,
-                  std::map<std::string, double>* rates);
-
 bool getJSONTwitchProperties(
     const std::string& json,
     std::vector<std::map<std::string, std::string>>* parts);

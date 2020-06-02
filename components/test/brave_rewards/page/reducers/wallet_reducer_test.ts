@@ -128,7 +128,6 @@ describe('wallet reducer', () => {
         },
         balance: {
           total: 5,
-          rates: {},
           wallets: {}
         }
       }

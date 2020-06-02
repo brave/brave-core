@@ -1548,12 +1548,6 @@ void RewardsDOMHandler::OnFetchBalance(
     balance_value.SetDoubleKey("total", balance->total);
 
     if (result == 0) {
-      base::Value rates(base::Value::Type::DICTIONARY);
-      for (auto const& rate : balance->rates) {
-        rates.SetDoubleKey(rate.first, rate.second);
-      }
-      balance_value.SetKey("rates", std::move(rates));
-
       base::Value wallets(base::Value::Type::DICTIONARY);
       for (auto const& wallet : balance->wallets) {
         wallets.SetDoubleKey(wallet.first, wallet.second);

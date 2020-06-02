@@ -85,13 +85,6 @@ void Balance::OnFetch(
   }
   balance->user_funds = user_funds;
 
-  const auto* local_rates = dictionary->FindDictKey("rates");
-  if (local_rates) {
-    for (const auto& it : local_rates->DictItems()) {
-      balance->rates.insert(std::make_pair(it.first, it.second.GetDouble()));
-    }
-  }
-
   balance->wallets.insert(std::make_pair(ledger::kWalletAnonymous, total_anon));
 
 

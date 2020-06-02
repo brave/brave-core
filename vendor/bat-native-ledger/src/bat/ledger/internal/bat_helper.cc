@@ -139,36 +139,6 @@ bool getJSONBatchSurveyors(const std::string& json,
   return !error;
 }
 
-bool getJSONRates(const std::string& json,
-                  std::map<std::string, double>* rates) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(d.HasMember("rates") && d["rates"].IsObject() &&
-      d["rates"].HasMember("ETH") &&
-      d["rates"].HasMember("LTC") &&
-      d["rates"].HasMember("BTC") &&
-      d["rates"].HasMember("USD") &&
-      d["rates"].HasMember("EUR"));
-  }
-
-  if (!error) {
-    for (auto & i : d["rates"].GetObject()) {
-      double value = 0.0;
-      if (i.value.IsDouble()) {
-        value = i.value.GetDouble();
-      } else if (i.value.IsString()) {
-        value = std::stod(i.value.GetString());
-      }
-      rates->insert(std::make_pair(i.name.GetString(), value));
-    }
-  }
-  return !error;
-}
-
 bool getJSONResponse(const std::string& json,
                      unsigned int* statusCode,
                      std::string* error) {

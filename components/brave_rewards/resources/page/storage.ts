@@ -63,7 +63,6 @@ export const defaultState: Rewards.State = {
   excludedList: [],
   balance: {
     total: 0,
-    rates: {},
     wallets: {}
   },
   monthlyReport: {
