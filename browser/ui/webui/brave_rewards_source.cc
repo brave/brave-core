@@ -106,9 +106,9 @@ bool BraveRewardsSource::ShouldReplaceExistingSource() {
 
 bool BraveRewardsSource::ShouldServiceRequest(
     const GURL& url,
-    content::ResourceContext* resource_context,
+    content::BrowserContext* browser_context,
     int render_process_id) {
-  return URLDataSource::ShouldServiceRequest(url, resource_context,
+  return URLDataSource::ShouldServiceRequest(url, browser_context,
                                              render_process_id);
 }
 
