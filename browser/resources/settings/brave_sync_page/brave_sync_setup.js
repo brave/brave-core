@@ -8,8 +8,6 @@
  * 'brave-sync-setup' is the UI for starting or joining a sync chain
  * settings.
  */
-cr.exportPath('settings');
-
 Polymer({
   is: 'settings-brave-sync-setup',
 
@@ -61,10 +59,10 @@ Polymer({
 
   submitSyncCode_: async function () {
     this.isSubmittingSyncCode_ = true
-    const success = await this.syncBrowserProxy_.setSyncCode(this.syncCode_)
+    const syncCodeToSubmit = this.syncCode_ || ''
+    const success = await this.syncBrowserProxy_.setSyncCode(syncCodeToSubmit)
     this.isSubmittingSyncCode_ = false
     if (!success) {
-      //TODO(petemill): translate
       this.isInvalidSyncCode_ = true
     } else {
       this.syncCodeDialogType_ = undefined

@@ -54,6 +54,8 @@
       <structure name="IDR_SETTINGS_BRAVE_SYNC_CODE_DIALOG_JS" file="brave_sync_page/brave_sync_code_dialog.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_CODE_DIALOG_HTML" file="brave_sync_page/brave_sync_code_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_START_ICON_SVG" file="brave_sync_page/start_icon.svg" type="chrome_html" preprocess="true" compress="false" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_DEVICE_MOBILE_SVG" file="brave_sync_page/device_mobile.svg" type="chrome_html" preprocess="true" compress="false" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_DEVICE_COMPUTER_SVG" file="brave_sync_page/device_computer.svg" type="chrome_html" preprocess="true" compress="false" />
       <!-- brave help and tips -->
       <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_HTML" file="brave_help_tips_page/brave_help_tips_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_JS" file="brave_help_tips_page/brave_help_tips_browser_proxy.js" type="chrome_html" preprocess="true" />

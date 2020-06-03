@@ -3,6 +3,29 @@
 <dom-module id="settings-brave-sync-code-dialog">
   <template>
     <style include="settings-shared">
+      :host
+      {
+        --line-color: #c2c4cf;
+      }
+      @media (prefers-color-scheme: dark) {
+        :host
+        {
+          --line-color: #5e6175;
+        }
+      }
+      .dialog-title
+      {
+        display: block;
+        line-height: 1.6;
+        font-weight: 700;
+      }
+      .dialog-subtitle
+      {
+        margin-top: 10px;
+        display: block;
+        line-height: 1.4;
+        font-size: 90%;
+      }
       .tertiary-button
       {
         border: none;
@@ -26,6 +49,111 @@
       {
         color: red;
       }
+      .devices
+      {
+        margin: 0 20px 20px 20px;
+        padding: 0;
+        width: -webkit-fill-available;
+        height: 220px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-gap: 30px;
+        align-items: center;
+        justify-content: center;
+      }
+      .device
+      {
+        -webkit-appearance: none;
+        background: none;
+        box-sizing: border-box;
+        height: 100%;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--line-color);
+        border-image: initial;
+        border-radius: 6px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .device-image
+      {
+        margin-bottom: 20px;
+        height: 100px;
+      }
+      .device-title
+      {
+        align-self: unset;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        font-family: Poppins, sans-serif;
+      }
+      .sync-code-widget
+      {
+        margin: 0 20px;
+        width: -webkit-fill-available;
+        font-family: Muli, sans-serif;
+        padding: 10px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--line-color);
+        border-image: initial;
+        border-radius: 6px;
+      }
+      .sync-code-text
+      {
+        box-sizing: border-box;
+        min-height: 140px;
+        width: 100%;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--line-color);
+        border-radius: 6px;
+        padding: 15px 20px;
+        font-family: inherit;
+        font-size: 16px;
+        line-height: 26px;
+      }
+      .sync-code-footer
+      {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto;
+        align-items: center;
+        /* check muli */
+      }
+      .clipboard-button
+      {
+        margin: 0;
+        width: 24px;
+        height: 24px;
+      }
+      .sync-code-clipboard
+      {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        align-items: center;
+        gap: 10px;
+      }
+      .clipboard-success
+      {
+        transition: opacity 2s cubic-bezier(0.23, 1, 0.32, 1);
+        opacity: 0;
+      }
+      .clipboard-success.is-success-true
+      {
+        opacity: 1;
+      }
     </style>
 
     <!-- device chooser -->
@@ -36,20 +164,18 @@
         show-on-attach
       >
         <div slot="title">
-          $i18n{braveSyncChooseDeviceTitle}
+          <span clas="dialog-title">$i18n{braveSyncChooseDeviceTitle}</span>
+          <span class="dialog-subtitle">$i18n{braveSyncChooseDeviceDesc}</span>
         </div>
-        <div slot="body">$i18n{braveSyncChooseDeviceDesc}</div>
-        <div slot="button-container" class="button-group">
-          <cr-button class="action-button"
-            on-click="handleChooseMobile_"
-          >
-            $i18n{braveSyncChooseDeviceMobileTitle}
-          </cr-button>
-          <cr-button class="action-button"
-            on-click="handleChooseComputer_"
-          >
-            $i18n{braveSyncChooseDeviceComputerTitle}
-          </cr-button>
+        <div slot="body" class="devices">
+          <button class="device mobile" on-click="handleChooseMobile_">
+            <img class="device-image" src="chrome://settings/brave_sync_page/device_mobile.svg" />
+            <h2 class="device-title">$i18n{braveSyncChooseDeviceMobileTitle}</h2>
+          </button>
+          <button class="device computer" on-click="handleChooseComputer_">
+            <img class="device-image" src="chrome://settings/brave_sync_page/device_computer.svg" />
+            <h2 class="device-title">$i18n{braveSyncChooseDeviceComputerTitle}</h2>
+          </button>
         </div>
       </cr-dialog>
     </template>
@@ -61,11 +187,14 @@
         show-close-button
         show-on-attach
       >
-        <div slot="title">$i18n{braveSyncScanCodeTitle}</div>
+        <div slot="title">
+          <span clas="dialog-title">$i18n{braveSyncScanCodeTitle}</span>
+          <span class="dialog-subtitle">$i18n{braveSyncScanCodeDesc1}
+            $i18n{braveSyncScanCodeDesc2}
+            $i18n{braveSyncScanCodeDesc3}</span>
+        </div>
         <div slot="body">
-          $i18n{braveSyncScanCodeDesc1}
-          $i18n{braveSyncScanCodeDesc2}
-          $i18n{braveSyncScanCodeDesc3}
+          <div id="qrCode"></div>
         </div>
         <div slot="button-container" class="button-group">
           <button class="tertiary-button"
@@ -87,18 +216,26 @@
         show-close-button
         show-on-attach
       >
-        <div slot="title">$i18n{braveSyncViewCodeTitle}</div>
-        <div slot="body">
-          <div>
-            $i18n{braveSyncViewCodeDesc1}
+        <div slot="title">
+          <span clas="dialog-title">$i18n{braveSyncViewCodeTitle}</span>
+          <span class="dialog-subtitle">$i18n{braveSyncViewCodeDesc1}
             $i18n{braveSyncViewCodeDesc2}
-            $i18n{braveSyncViewCodeDesc3}
-          </div>
-          <textarea id="syncCode" readonly>[[syncCode]]</textarea>
-          <div slot="button-container">
-            <cr-button class="action-button" on-click="handleSyncCodeCopy_">
-              Copy
-            </cr-button>
+            $i18n{braveSyncViewCodeDesc3}</span>
+        </div>
+        <div slot="body" class="sync-code-widget">
+          <textarea class="sync-code-text" readonly>[[syncCode]]</textarea>
+          <div class="sync-code-footer">
+            [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
+            <div class="sync-code-clipboard">
+              <span class$="clipboard-success is-success-[[hasCopiedSyncCode_]]">
+                $i18n{braveSyncCopied}
+              </span>
+              <cr-icon-button
+                class="clipboard-button"
+                iron-icon="brave_settings:clipboard"
+                on-click="handleSyncCodeCopy_"
+                aria-label="Copy sync words to clipboard" />
+            </div>
           </div>
         </div>
         <div slot="button-container" class="button-group">
@@ -124,17 +261,23 @@
         show-close-button
         show-on-attach
       >
-        <div slot="title">$i18n{braveSyncEnterCodeTitle}</div>
-        <div slot="body">
-          <div>$i18n{braveSyncEnterCodeDesc}</div>
-          <textarea id="enterSyncCode" value="{{syncCode::input}}"></textarea>
-          <template is="dom-if" if="[[isInvalidSyncCode]]">
-            <div class="invalid-sync-code">
-              <!-- TODO(petemill): translate -->
-              Invalid sync code, please check and try again.
-            </div>
-          </template>
+        <div slot="title">
+          <span clas="dialog-title">$i18n{braveSyncEnterCodeTitle}</span>
+          <span class="dialog-subtitle">$i18n{braveSyncEnterCodeDesc}</span>
         </div>
+
+        <div slot="body" class="sync-code-widget">
+          <textarea class="sync-code-text" value="{{syncCode::input}}"></textarea>
+          <div class="sync-code-footer">
+            [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
+            <template is="dom-if" if="[[isInvalidSyncCode]]">
+              <div class="invalid-sync-code">
+                $i18n{braveSyncInvalidSyncCodeTitle}
+              </div>
+            </template>
+          </div>
+        </div>
+
         <div slot="button-container">
           <cr-button class="action-button"
             on-click="handleDone_"

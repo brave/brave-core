@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/containers/span.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,6 +23,21 @@
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
 #include "content/public/browser/web_ui.h"
+
+namespace {
+
+std::string StrFromUint8Array(const std::vector<uint8_t>& arr) {
+  std::string result;
+  for (size_t i = 0; i < arr.size(); ++i) {
+    result += base::NumberToString(static_cast<unsigned char>(arr.at(i)));
+    if (i != arr.size() - 1) {
+      result += ", ";
+    }
+  }
+  return result;
+}
+
+}  // namespace
 
 BraveSyncHandler::BraveSyncHandler() { }
 BraveSyncHandler::~BraveSyncHandler() { }
@@ -101,7 +117,17 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue* args) {
   CHECK(args->Get(0, &callback_id));
   const base::Value* sync_code;
   CHECK(args->Get(1, &sync_code));
-  // TODO(petemill): Wait until at least cr82 for QRCodeGenerator to be in tree.
+
+  std::vector<uint8_t> seed;
+  if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
+    LOG(ERROR) << "invalid sync code:" << sync_code->GetString();
+    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
+
+  std::string seed_serialized = StrFromUint8Array(seed);
+
+  // TODO(petemill): Use QRCodeGenerator
   // const char* input_data_string = sync_code.c_str();
   // auto input_data = base::span<const uint8_t>(
   //         reinterpret_cast<const uint8_t*>(input_data_string),
@@ -111,8 +137,8 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue* args) {
   // QRCodeGenerator generator;
   // base::span<const uint8_t, QRCodeGenerator::kTotalSize> code =
   //     generator.Generate(input_data);
-  // ResolveJavascriptCallback(*callback_id, base::Value(code));
-  ResolveJavascriptCallback(*callback_id, base::Value(false));
+  ResolveJavascriptCallback(*callback_id, base::Value(seed_serialized));
+  // ResolveJavascriptCallback(*callback_id, base::Value(false));
 }
 
 void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
