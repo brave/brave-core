@@ -313,7 +313,7 @@
       <part file="undo_strings.grdp" />
       <part file="version_ui_strings.grdp" />
 
-      <if expr="not is_ios">
+      <if expr="is_android or not is_android and not is_ios">
         <part file="management_strings.grdp" />
       </if>
       <if expr="is_android">
@@ -393,7 +393,7 @@
       <message name="IDS_PLUGIN_NOT_SUPPORTED" desc="The placeholder text for an unsupported plugin.">
         This plugin is not supported
       </message>
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or is_android or not is_android">
         <if expr="not use_titlecase">
           <message name="IDS_PRINT" desc="The text label of the Print... menu item. Opens a dialog box to select print settings">
             &amp;Print...
@@ -404,7 +404,7 @@
             &amp;Print...
           </message>
         </if>
-      <!--</if>-->
+      </if>
       <if expr="not use_titlecase">
         <message name="IDS_RECENTLY_CLOSED" desc="The section header for the Recently Closed section of the Recent Tabs menu.">
           Recently closed

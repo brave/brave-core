@@ -3,7 +3,7 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- Begin of Bookmarks Bar strings-->
-  <!--<if expr="not is_android">-->
+  <if expr="is_android or not is_android">
     <!-- The special folders created when importing from other other browsers. -->
     <if expr="is_win">
       <message name="IDS_BOOKMARK_GROUP_FROM_IE" desc="The group name of bookmarks from Internet Explorer">
@@ -22,7 +22,7 @@
     <message name="IDS_BOOKMARK_GROUP" desc="The group name of bookmarks imported from a file">
       Imported
     </message>
-  <!--</if>-->
+  </if>
 
   <if expr="not use_titlecase">
     <message name="IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT" desc="Name shown in the context menu to hide/show the apps shortcut in the bookmark bar">
@@ -101,11 +101,11 @@
     <message name="IDS_BOOKMARK_BAR_NEW_FOLDER" desc="Menu title for adding a new folder">
       Add &amp;folder...
     </message>
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="The toggle to show the bookmark bar">
         &amp;Show bookmarks
       </message>
-    <!--</if>-->
+    </if>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL" desc="In Title Case: Menu title for opening all urls in a bookmark folder">
@@ -153,11 +153,11 @@
     <message name="IDS_BOOKMARK_BAR_NEW_FOLDER" desc="In Title Case: Menu title for adding a new folder">
       Add &amp;Folder...
     </message>
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="In Title Case: The toggle to show the bookmark bar">
         &amp;Show Bookmarks
       </message>
-    <!--</if>-->
+    </if>
   </if>
   <message name="IDS_BOOKMARK_BAR_SHOULD_OPEN_ALL" desc="Message in the message box shown if user asks to open a lot of bookmarks in a folder. The number will always be 15 or more.">
     Are you sure you want to open <ph name="TAB_COUNT">$1<ex>20</ex></ph> tabs?
