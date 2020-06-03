@@ -729,7 +729,7 @@ IN_PROC_BROWSER_TEST_F(
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
 
-    EXPECT_EQ(CountTableRows("contribution_info_publishers"), 3);
+    EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
 
     ledger::ContributionPublisherList list;
     const std::string query =
@@ -746,19 +746,23 @@ IN_PROC_BROWSER_TEST_F(
 
       list.push_back(std::move(contribution_publishers));
     }
-    EXPECT_EQ(static_cast<int>(list.size()), 3);
+    EXPECT_EQ(static_cast<int>(list.size()), 4);
 
     EXPECT_EQ(list.at(0)->contribution_id, "1");
-    EXPECT_EQ(list.at(0)->publisher_key, "123");
+    EXPECT_EQ(list.at(0)->publisher_key, "publisher.com");
     EXPECT_EQ(list.at(0)->total_amount, 15.0);
-    EXPECT_EQ(list.at(0)->contributed_amount, 30.0);
+    EXPECT_EQ(list.at(0)->contributed_amount, 15.0);
     EXPECT_EQ(list.at(1)->contribution_id, "2");
-    EXPECT_EQ(list.at(1)->publisher_key, "456");
-    EXPECT_EQ(list.at(1)->total_amount, 30.0);
-    EXPECT_EQ(list.at(1)->contributed_amount, 45.0);
-    EXPECT_EQ(list.at(2)->contribution_id, "3");
-    EXPECT_EQ(list.at(2)->publisher_key, "789");
-    EXPECT_EQ(list.at(2)->total_amount, 100.0);
-    EXPECT_EQ(list.at(2)->contributed_amount, 150.0);
+    EXPECT_EQ(list.at(1)->publisher_key, "publisher.com");
+    EXPECT_EQ(list.at(1)->total_amount, 10.0);
+    EXPECT_EQ(list.at(1)->contributed_amount, 5.0);
+    EXPECT_EQ(list.at(2)->contribution_id, "2");
+    EXPECT_EQ(list.at(2)->publisher_key, "publisher.tv");
+    EXPECT_EQ(list.at(2)->total_amount, 5.0);
+    EXPECT_EQ(list.at(2)->contributed_amount, 5.0);
+    EXPECT_EQ(list.at(3)->contribution_id, "3");
+    EXPECT_EQ(list.at(3)->publisher_key, "publisher.org");
+    EXPECT_EQ(list.at(3)->total_amount, 1.0);
+    EXPECT_EQ(list.at(3)->contributed_amount, 1.0);
   }
 }

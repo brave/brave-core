@@ -239,7 +239,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV21(
     return false;
   }
 
-  const std::string query =
+  std::string query =
       "DROP INDEX IF EXISTS contribution_info_publishers_contribution_id_index;"
       " DROP INDEX IF EXISTS contribution_info_publishers_publisher_key_index;";
   auto command = ledger::DBCommand::New();
@@ -255,21 +255,22 @@ bool DatabaseContributionInfoPublishers::MigrateToV21(
     return false;
   }
 
-  const std::map<std::string, std::string> columns = {
-    { "contribution_id", "contribution_id" },
-    { "publisher_key", "publisher_key" },
-    { "total_amount", "total_amount" },
-    { "contributed_amount", "contributed_amount" }
-  };
-
-  if (!MigrateDBTable(
-      transaction,
-      temp_table_name,
+  query = base::StringPrintf(
+      "INSERT OR IGNORE INTO %s "
+      "(contribution_id, publisher_key, total_amount, contributed_amount) "
+      "SELECT contribution_id, publisher_key, total_amount, contributed_amount "
+      "FROM %s;",
       kTableName,
-      columns,
-      true)) {
+      temp_table_name.c_str());
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!DropTable(transaction, temp_table_name)) {
     return false;
   }
+
   return true;
 }
 
