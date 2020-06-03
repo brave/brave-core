@@ -422,8 +422,6 @@ class BraveContentSettingsAgentImplV2BrowserTest
     : public BraveContentSettingsAgentImplBrowserTest {
  public:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        brave_shields::features::kFingerprintingProtectionV2);
     BraveContentSettingsAgentImplBrowserTest::SetUp();
   }
 

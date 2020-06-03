@@ -36,8 +36,6 @@ using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
-using brave_shields::FingerprintingControlTypeFromString;
-using brave_shields::FingerprintingControlTypeToString;
 
 namespace extensions {
 namespace api {
@@ -371,7 +369,7 @@ BraveShieldsSetFingerprintingControlTypeFunction::Run() {
     return RespondNow(Error(kInvalidUrlError, params->url));
   }
 
-  auto control_type = FingerprintingControlTypeFromString(params->control_type);
+  auto control_type = ControlTypeFromString(params->control_type);
   if (control_type == ControlType::INVALID) {
     return RespondNow(Error(kInvalidControlTypeError, params->control_type));
   }
@@ -397,7 +395,7 @@ BraveShieldsGetFingerprintingControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto type = ::brave_shields::GetFingerprintingControlType(profile, url);
   auto result =
-      std::make_unique<base::Value>(FingerprintingControlTypeToString(type));
+      std::make_unique<base::Value>(ControlTypeToString(type));
 
   return RespondNow(OneArgument(std::move(result)));
 }

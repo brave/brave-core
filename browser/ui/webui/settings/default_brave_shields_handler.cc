@@ -16,8 +16,6 @@
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
-using brave_shields::FingerprintingControlTypeFromString;
-using brave_shields::FingerprintingControlTypeToString;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -154,7 +152,7 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
-      base::Value(FingerprintingControlTypeToString(setting)));
+      base::Value(ControlTypeToString(setting)));
 }
 
 void DefaultBraveShieldsHandler::SetFingerprintingControlType(
@@ -166,7 +164,7 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
 
   brave_shields::SetFingerprintingControlType(
       profile_,
-      FingerprintingControlTypeFromString(value),
+      ControlTypeFromString(value),
       GURL());
 }
 
