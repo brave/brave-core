@@ -13,6 +13,7 @@
     is: 'settings-brave-sync-code-dialog',
 
     behaviors: [
+      I18nBehavior
     ],
 
     properties: {
@@ -33,6 +34,14 @@
         value: false,
         notify: true
       },
+      syncCodeWordCount_: {
+        type: Number,
+        computed: 'computeSyncCodeWordCount_(syncCode)'
+      },
+      hasCopiedSyncCode_: {
+        type: Boolean,
+        value: false
+      },
     },
 
     observers: [
@@ -45,6 +54,13 @@
 
     updateSyncCodeValidity_: function() {
       this.isInvalidSyncCode = false
+    },
+
+    computeSyncCodeWordCount_: function() {
+      if (!this.syncCode) {
+        return 0
+      }
+      return this.syncCode.trim().split(' ').length
     },
 
     isCodeType: function(askingType) {
@@ -64,7 +80,12 @@
     },
 
     handleSyncCodeCopy_: function() {
+      window.clearTimeout(this.hasCopiedSyncCodeTimer_)
       navigator.clipboard.writeText(this.syncCode)
+      this.hasCopiedSyncCode_ = true
+      this.hasCopiedSyncCodeTimer_ = window.setTimeout(() => {
+        this.hasCopiedSyncCode_ = false
+      }, 4000)
     },
 
     handleDone_: function() {
@@ -76,6 +97,8 @@
         return
       }
       const data = await cr.sendWithPromise('SyncGetQRCode', this.syncCode)
+      console.log('qr code', data)
+      this.$$('#qrCode').innerText = data
       // TODO(petemill): generate a canvas / image
     },
 

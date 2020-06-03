@@ -484,6 +484,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Brave Sync title.">
         Sync Setup
       </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_WORD_COUNT" desc="Text for Brave Sync word count message.">
+        Word count: <ph name="WORD_COUNT">$1<ex>24</ex></ph>
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT" desc="The success state telling the user that a secret code was copied to the clipboard">
+        Copied!
+      </message>
       <message name="IDS_BRAVE_SYNC_SETUP_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">
         To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.
       </message>
@@ -542,13 +548,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Choose Device Type
       </message>
       <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_DESCRIPTION" desc="The Sync title to select which device to sync. Appears in the `choose device type` modal">
-        Choose the type of device you would like to sync to.
+        Which type of device would you like to sync to?
       </message>
       <message name="IDS_BRAVE_SYNC_INVALID_SYNC_CODE_TITLE" desc="Error message in dialog for when sync words are invalid (title)">
-        Invalid sync code.
-      </message>
-      <message name="IDS_BRAVE_SYNC_INVALID_SYNC_CODE_DESCRIPTION" desc="Error message in dialog for when sync words are invalid (description)">
-        Please try again.
+        Invalid sync code, please check and try again.
       </message>
       <message name="IDS_BRAVE_SYNC_RESET_BUTTON" desc="The Sync button that opens a modal to leave the current sync chain">
         Leave Sync Chain
