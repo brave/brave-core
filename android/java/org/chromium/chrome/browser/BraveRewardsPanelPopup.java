@@ -1504,37 +1504,38 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     @Override
     public void OnRewardsParameters(int errorCode) {
-      boolean former_walletDetailsReceived = walletDetailsReceived;
-      if (errorCode == BraveRewardsNativeWorker.LEDGER_OK) {
-          DismissNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID);
-          if (mBraveRewardsNativeWorker != null) {
-              BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
-              if (balance_obj != null) {
-                  walletBalance = balance_obj.mTotal;
-              }
+        boolean former_walletDetailsReceived = walletDetailsReceived;
+        if (errorCode == BraveRewardsNativeWorker.LEDGER_OK) {
+            DismissNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID);
+            if (mBraveRewardsNativeWorker != null) {
+                BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
+                if (balance_obj != null) {
+                    walletBalance = balance_obj.mTotal;
+                }
 
-              DecimalFormat df = new DecimalFormat("#.#");
-              df.setRoundingMode(RoundingMode.FLOOR);
-              df.setMinimumFractionDigits(1);
-              ((TextView) this.root.findViewById(R.id.br_bat_wallet))
-                      .setText(df.format(walletBalance));
-              ((TextView) this.root.findViewById(R.id.br_bat)).setText(batPointsText);
-              double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
-              String usdText =
-                      String.format(this.root.getResources().getString(R.string.brave_ui_usd),
-                              String.format(Locale.getDefault(), "%.2f", usdValue));
+                DecimalFormat df = new DecimalFormat("#.#");
+                df.setRoundingMode(RoundingMode.FLOOR);
+                df.setMinimumFractionDigits(1);
+                ((TextView) this.root.findViewById(R.id.br_bat_wallet))
+                .setText(df.format(walletBalance));
+                ((TextView) this.root.findViewById(R.id.br_bat)).setText(batPointsText);
+                double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
+                String usdText =
+                    String.format(this.root.getResources().getString(R.string.brave_ui_usd),
+                                  String.format(Locale.getDefault(), "%.2f", usdValue));
+                ((TextView)this.root.findViewById(R.id.br_usd_wallet)).setText(usdText);
 
-              Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
-              if (btnVerifyWallet != null) {
-                  if (walletBalance < WALLET_BALANCE_LIMIT) {
-                      btnVerifyWallet.setBackgroundResource(
-                              R.drawable.wallet_verify_button_disabled);
-                  } else {
-                      btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
-                  }
-              }
-          }
-          walletDetailsReceived = true;
+                Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
+                if (btnVerifyWallet != null) {
+                    if (walletBalance < WALLET_BALANCE_LIMIT) {
+                        btnVerifyWallet.setBackgroundResource(
+                            R.drawable.wallet_verify_button_disabled);
+                    } else {
+                        btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
+                    }
+                }
+            }
+            walletDetailsReceived = true;
         } else if (errorCode == BraveRewardsNativeWorker.LEDGER_ERROR) {   // No Internet connection
             String args[] = {};
             ShowNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID, REWARDS_NOTIFICATION_NO_INTERNET, 0, args);
