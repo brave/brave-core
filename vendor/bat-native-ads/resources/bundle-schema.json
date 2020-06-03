@@ -35,6 +35,9 @@
               "advertiserId": {
                 "type": "string"
               },
+              "priority": {
+                "type": "number"
+              },
               "perDay": {
                 "type": "number"
               },

@@ -71,6 +71,10 @@ Result BundleState::FromJson(
           info.advertiser_id = creative["advertiserId"].GetString();
         }
 
+        if (creative.HasMember("priority")) {
+          info.priority = creative["priority"].GetUint();
+        }
+
         if (creative.HasMember("perDay")) {
           info.per_day = creative["perDay"].GetUint();
         }
@@ -177,6 +181,9 @@ void SaveToJson(
 
       writer->String("advertiserId");
       writer->String(ad.advertiser_id.c_str());
+
+      writer->String("priority");
+      writer->Uint(ad.priority);
 
       writer->String("perDay");
       writer->Uint(ad.per_day);

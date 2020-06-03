@@ -102,6 +102,7 @@ class BundleStateDatabase {
   bool MigrateV2toV3();
   bool MigrateV3toV4();
   bool MigrateV4toV5();
+  bool MigrateV5toV6();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

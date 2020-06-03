@@ -63,6 +63,10 @@ Result CreativeAdNotificationInfo::FromJson(
     advertiser_id = document["advertiser_id"].GetString();
   }
 
+  if (document.HasMember("priority")) {
+    priority = document["priority"].GetUint();
+  }
+
   if (document.HasMember("per_day")) {
     per_day = document["per_day"].GetUint();
   }
@@ -123,6 +127,9 @@ void SaveToJson(
 
   writer->String("advertiser_id");
   writer->String(info.advertiser_id.c_str());
+
+  writer->String("priority");
+  writer->Uint(info.priority);
 
   writer->String("per_day");
   writer->Uint(info.per_day);

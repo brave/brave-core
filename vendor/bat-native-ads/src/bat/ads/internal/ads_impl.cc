@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <fstream>
 #include <functional>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -48,6 +49,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/l10n/browser/locale_helper.h"
@@ -933,13 +935,72 @@ void AdsImpl::OnServeAdNotification(
     return;
   }
 
+  eligible_ads = GetEligibleAdsForPriorities(eligible_ads);
+  if (eligible_ads.empty()) {
+    FailedToServeAdNotification("No eligible ads found");
+    return;
+  }
+
   BLOG(1, "Found " << eligible_ads.size() << " eligible ads");
 
   const int rand = base::RandInt(0, eligible_ads.size() - 1);
   const CreativeAdNotificationInfo ad = eligible_ads.at(rand);
+
+  if (ad.priority == 0) {
+    FailedToServeAdNotification("Pacing ad delivery [0]");
+    return;
+  }
+
+  const int rand_priority = base::RandInt(1, ad.priority);
+  if (rand_priority != 1) {
+    const std::string message = base::StringPrintf("Pacing ad delivery "
+        "[Roll(%d):%d]", ad.priority, rand_priority);
+
+    FailedToServeAdNotification(message);
+    return;
+  }
+
   ShowAdNotification(ad);
 
   SuccessfullyServedAd();
+}
+
+CreativeAdNotificationList AdsImpl::GetEligibleAdsForPriorities(
+    const CreativeAdNotificationList& ads) const {
+  std::map<unsigned int, CreativeAdNotificationList> prioritized_ads;
+
+  for (const auto& ad : ads) {
+    if (ad.priority == 0) {
+      continue;
+    }
+
+    const auto iter = prioritized_ads.find(ad.priority);
+    if (iter == prioritized_ads.end()) {
+      prioritized_ads.insert({ad.priority, {ad}});
+      continue;
+    }
+
+    iter->second.push_back(ad);
+  }
+
+  const auto iter = std::min_element(prioritized_ads.begin(),
+      prioritized_ads.end(), [](const auto& lhs, const auto& rhs) {
+    return lhs.first < rhs.first;
+  });
+
+  BLOG(2, iter->second.size() << " eligible ads with a priority of "
+      << iter->first);
+
+  for (const auto& prioritized_ad : prioritized_ads) {
+    if (prioritized_ad.first == iter->first) {
+      continue;
+    }
+
+    BLOG(2, prioritized_ad.second.size() << " ads with a priority of "
+        << prioritized_ad.first);
+  }
+
+  return iter->second;
 }
 
 void AdsImpl::SuccessfullyServedAd() {
