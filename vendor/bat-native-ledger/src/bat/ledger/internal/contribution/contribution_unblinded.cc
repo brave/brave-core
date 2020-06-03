@@ -133,11 +133,7 @@ void Unblinded::OnUnblindedTokens(
     ledger::UnblindedTokenList list,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  if (list.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list is empty";
-    callback(nullptr, {});
-    return;
-  }
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list is empty";
 
   std::vector<ledger::UnblindedToken> converted_list;
   for (auto& item : list) {
@@ -352,17 +348,22 @@ void Unblinded::OnProcessTokens(
     return;
   }
 
-  bool single_publisher = contribution->publishers.size() == 1;
-
-  for (auto& publisher : contribution->publishers) {
-    if (publisher->total_amount == publisher->contributed_amount) {
+  bool final_publisher = false;
+  for (auto publisher = contribution->publishers.begin();
+      publisher != contribution->publishers.end();
+      publisher++) {
+    if ((*publisher)->total_amount == (*publisher)->contributed_amount) {
       continue;
+    }
+
+    if (std::next(publisher) == contribution->publishers.end()) {
+      final_publisher = true;
     }
 
     std::vector<ledger::UnblindedToken> token_list;
     double current_amount = 0.0;
     for (auto& item : list) {
-      if (current_amount >= publisher->total_amount) {
+      if (current_amount >= (*publisher)->total_amount) {
         break;
       }
 
@@ -374,12 +375,12 @@ void Unblinded::OnProcessTokens(
         this,
         _1,
         contribution->contribution_id,
-        publisher->publisher_key,
-        single_publisher,
+        (*publisher)->publisher_key,
+        final_publisher,
         callback);
 
     braveledger_credentials::CredentialsRedeem redeem;
-    redeem.publisher_key = publisher->publisher_key;
+    redeem.publisher_key = (*publisher)->publisher_key;
     redeem.type = contribution->type;
     redeem.processor = contribution->processor;
     redeem.token_list = token_list;
@@ -403,7 +404,7 @@ void Unblinded::TokenProcessed(
     const ledger::Result result,
     const std::string& contribution_id,
     const std::string& publisher_key,
-    const bool single_publisher,
+    const bool final_publisher,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
@@ -416,7 +417,7 @@ void Unblinded::TokenProcessed(
       this,
       _1,
       contribution_id,
-      single_publisher,
+      final_publisher,
       callback);
 
   ledger_->UpdateContributionInfoContributedAmount(
@@ -428,9 +429,9 @@ void Unblinded::TokenProcessed(
 void Unblinded::ContributionAmountSaved(
     const ledger::Result result,
     const std::string& contribution_id,
-    const bool single_publisher,
+    const bool final_publisher,
     ledger::ResultCallback callback) {
-  if (single_publisher) {
+  if (final_publisher) {
     callback(result);
     return;
   }
