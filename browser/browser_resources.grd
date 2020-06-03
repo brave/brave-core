@@ -162,7 +162,7 @@
       <if expr="enable_plugins">
         <include name="IDR_PDF_MANIFEST" file="resources\pdf\manifest.json" type="BINDATA" />
       </if>
-      <if expr="is_android or is_win">
+      <if expr="is_win">
         <include name="IDR_PLUGIN_DB_JSON" file="resources\plugin_metadata\plugins_win.json" type="BINDATA" />
       </if>
       <if expr="is_macosx">
@@ -171,7 +171,7 @@
       <if expr="chromeos">
         <include name="IDR_PLUGIN_DB_JSON" file="resources\plugin_metadata\plugins_chromeos.json" type="BINDATA" />
       </if>
-      <if expr="desktop_linux">
+      <if expr="is_android or desktop_linux">
         <include name="IDR_PLUGIN_DB_JSON" file="resources\plugin_metadata\plugins_linux.json" type="BINDATA" />
       </if>
       <if expr="is_android or not is_android">

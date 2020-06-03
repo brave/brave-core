@@ -179,9 +179,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
       <!-- Settings specific strings -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <part file="settings_brave_strings.grdp" />
-      <!--</if>-->
+      </if>
 
       <message name="IDS_PRODUCT_NAME" desc="The Brave application name">
         Brave
@@ -784,7 +784,7 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Material Design User Manager -->
-      <if expr="not chromeos">
+      <if expr="is_android or not is_android and not chromeos">
         <!-- User pod remove sync warning text -->
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_SYNC" desc="Main text shown as a warning when attempting to remove an user.">
           This profile's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
@@ -855,7 +855,7 @@ Brave is unable to recover your settings.
         <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">Inbound rule for Brave Dev to allow mDNS traffic.</message>
       </if>
 
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave.">
           If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.
         </message>
@@ -881,7 +881,7 @@ Brave is unable to recover your settings.
             Open Link in Brave &amp;Private Window
           </message>
         </if>
-      <!--</if>-->
+      </if>
 
       <!-- Update Recommended dialog -->
       <if expr="not chromeos">
@@ -940,14 +940,14 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- Sync errors. Android uses native UI to handle Sync settings -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_SYNC_UPGRADE_CLIENT" desc="Message indicating client needs to be upgraded to the latest version.">
           Update Brave to start sync
         </message>
         <message name="IDS_SYNC_UPGRADE_CLIENT_BUTTON" desc="Button indicating client needs to be upgraded to the latest version.">
           Update Brave
         </message>
-      <!--</if>-->
+      </if>
 
       <!-- Upgrade recovery bubble -->
       <message name="IDS_RECOVERY_BUBBLE_TITLE" desc="Text for the title of the chrome recovery bubble view.">
@@ -1031,7 +1031,7 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Welcome page (chrome://welcome) strings -->
-      <if expr="not chromeos">
+      <if expr="is_android or not chromeos and not is_android">
         <message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Brave before.">
           Welcome to Brave
         </message>
@@ -1044,7 +1044,7 @@ Brave is unable to recover your settings.
         </message>
       </if>
       <!-- Relaunch notification bubble and dialog. -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <if expr="not chromeos">
           <message name="IDS_RELAUNCH_RECOMMENDED_TITLE" desc="The title of a dialog that tells users that a browser relaunch is recommended for an update available for some number of days.">
             {0, plural,
@@ -1086,9 +1086,9 @@ Brave is unable to recover your settings.
               other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
           </message>
         </if>
-      <!--</if>-->
+      </if>
       <!-- Brave launch blocking dialog. -->
-      <if expr="not chromeos">
+      <if expr="is_android or not is_android and not chromeos">
          <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_TOOLTIP" desc="The information message of Brave launch blocking dialog for machine level user cloud policy enrollment.">
           Launching Brave...
         </message>
@@ -1103,11 +1103,11 @@ Brave is unable to recover your settings.
         Share a Brave tab
       </message>
       <!-- User happiness tracking survey UI -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_HATS_BUBBLE_TITLE" translateable="false" desc="The title of Happiness Tracking Survey's invitation banner, it invites users to take a survey">
           Help us improve Brave
         </message>
-      <!--</if>-->
+      </if>
       <!-- Brave parent extension/app install blocking dialog. -->
       <if expr="chromeos">
         <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
