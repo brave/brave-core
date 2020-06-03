@@ -12,12 +12,6 @@
       brave_sync::Prefs::GetSeedPath(),                                    \
       base::Bind(&ProfileSyncService::OnBraveSyncPrefsChanged,             \
                  base::Unretained(this)));                                 \
-  if (!init_params.access_token_fetcher_for_test)                          \
-    auth_manager_->CreateAccessTokenFetcher(url_loader_factory_,           \
-                                            sync_service_url_);            \
-  else                                                                     \
-    auth_manager_->SetAccessTokenFetcherForTest(                           \
-        std::move(init_params.access_token_fetcher_for_test));             \
   brave_sync::Prefs brave_sync_prefs(sync_client_->GetPrefService());      \
   auth_manager_->DeriveSigningKeys(brave_sync_prefs.GetSeed());            \
   if (!brave_sync_prefs.IsSyncV1Migrated()) {                              \
@@ -29,6 +23,7 @@
   brave_sync_prefs_change_registrar_.RemoveAll();
 
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
+
 #undef BRAVE_PROFILE_SYNC_SERVICE
 #undef BRAVE_D_PROFILE_SYNC_SERVICE
 
@@ -45,11 +40,5 @@ void ProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
       auth_manager_->ResetKeys();
     }
   }
-}
-void ProfileSyncService::SetURLLoaderFactoryForTest(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  url_loader_factory_ = url_loader_factory;
-  auth_manager_->CreateAccessTokenFetcher(url_loader_factory_,
-                                          sync_service_url_);
 }
 }  // namespace syncer

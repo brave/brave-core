@@ -1,16 +1,8 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index b71429377b2068f103656834068a079fded3822d..c9b0c63bf59d6d1b83afabbfccb5b421586ac3f2 100644
+index b71429377b2068f103656834068a079fded3822d..289dfe27cadd74d9889cfa92f5eba4d6c4aab395 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -101,6 +101,7 @@ class ProfileSyncService : public SyncService,
-     bool autofill_enable_account_wallet_storage = false;
-     bool enable_passwords_account_storage = false;
- 
-+   BRAVE_INIT_PARAMS_H_
-    private:
-     DISALLOW_COPY_AND_ASSIGN(InitParams);
-   };
-@@ -273,6 +274,7 @@ class ProfileSyncService : public SyncService,
+@@ -273,6 +273,7 @@ class ProfileSyncService : public SyncService,
  
    static std::string GenerateCacheGUIDForTest();
  

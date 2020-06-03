@@ -5,67 +5,22 @@
 
 #include "brave/chromium_src/components/sync/driver/sync_auth_manager.h"
 
+#include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "components/signin/public/identity_manager/accounts_mutator.h"
+#include "components/signin/public/identity_manager/primary_account_mutator.h"
 
-#define BRAVE_REQUEST_ACCESS_TOKEN_1                      \
-  VLOG(1) << __func__;                                    \
-  if (private_key_.empty() || public_key_.empty()) {      \
-    request_access_token_backoff_.InformOfRequest(false); \
-    ScheduleAccessTokenRequest();                         \
-    return;                                               \
-  }
-
-#define BRAVE_REQUEST_ACCESS_TOKEN_2 \
-  access_token_fetcher_->Start(public_key_, private_key_);
-
-// We don't use account_id in production but it is required to be set this
-// partiuclar value in order to get invalidation running
-#define BRAVE_DETERMINE_ACCOUNT_TO_USE                           \
-  if (!public_key_.empty()) {                                    \
-    const std::string client_id =                                \
-        base::HexEncode(public_key_.data(), public_key_.size()); \
-    AccountInfo account_info;                                    \
-    account_info.account_id =                                    \
-        CoreAccountId::FromString("gaia_id_for_user_gmail.com"); \
-    account_info.gaia = "gaia_id_for_test_user_gmail.com";       \
-    account_info.email = "sync@brave.com";                       \
-    SyncAccountInfo account(account_info, true);                 \
-    return account;                                              \
-  } else {                                                       \
-    return SyncAccountInfo();                                    \
-  }
-
-#define BRAVE_CLEAR_ACCESS_TOKEN_AND_REQUEST \
-  if (access_token_fetcher_)                 \
-    access_token_fetcher_->CancelRequest();
+#define BRAVE_ACCESS_TOKEN_FETCHED                                \
+  if (!access_token_info.token.empty() && !public_key_.empty() && \
+      !private_key_.empty())                                      \
+    access_token_ = GenerateAccessToken(access_token_info.token);
 
 #include "../../../../../components/sync/driver/sync_auth_manager.cc"
-#undef BRAVE_REQUEST_ACCESS_TOKEN_1
-#undef BRAVE_REQUEST_ACCESS_TOKEN_2
-#undef BRAVE_DETERMINE_ACCOUNT_TO_USE
-#undef BRAVE_CLEAR_ACCESS_TOKEN_AND_REQUEST
+
+#undef BRAVE_ACCESS_TOKEN_FETCHED
 
 namespace syncer {
-
-void SyncAuthManager::CreateAccessTokenFetcher(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    const GURL& sync_service_url) {
-  access_token_fetcher_ = std::make_unique<brave_sync::AccessTokenFetcherImpl>(
-      this, url_loader_factory, sync_service_url);
-}
-
-void SyncAuthManager::SetAccessTokenFetcherForTest(
-    std::unique_ptr<brave_sync::AccessTokenFetcher> fetcher) {
-  access_token_fetcher_ = std::move(fetcher);
-  // This is to decouple FakeAccessTokenFetcher from non-test dependency
-  access_token_fetcher_->SetAccessTokenConsumerForTest(this);
-}
-
-brave_sync::AccessTokenFetcher*
-SyncAuthManager::GetAccessTokenFetcherForTest() {
-  return access_token_fetcher_.get();
-}
 
 void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   VLOG(1) << __func__ << " seed=" << seed;
@@ -81,32 +36,58 @@ void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes);
   brave_sync::crypto::DeriveSigningKeysFromSeed(seed_bytes, &HKDF_SALT,
                                                 &public_key_, &private_key_);
-  // cleanup temp account info
-  sync_account_ = SyncAccountInfo();
-  if (registered_for_auth_notifications_)
-    UpdateSyncAccountIfNecessary();
+  const std::string gaia_id =
+      base::HexEncode(public_key_.data(), public_key_.size());
+  const std::string email = "sync@brave.com";
+  if (!identity_manager_->HasPrimaryAccount()) {
+    const CoreAccountId account_id =
+        identity_manager_->GetAccountsMutator()->AddOrUpdateAccount(
+            gaia_id, email, "dummy_refresh_token", true,
+            signin_metrics::SourceForRefreshTokenOperation::
+                kInlineLoginHandler_Signin);
+    auto* primary_account_mutator =
+        identity_manager_->GetPrimaryAccountMutator();
+    primary_account_mutator->SetPrimaryAccount(account_id);
+  }
+  VLOG(1) << "account_id="
+          << identity_manager_->GetPrimaryAccountId().ToString();
 }
 
 void SyncAuthManager::ResetKeys() {
   VLOG(1) << __func__;
   public_key_.clear();
   private_key_.clear();
-  if (registered_for_auth_notifications_)
-    UpdateSyncAccountIfNecessary();
+  // Signout will be handled in PeopleHandler::CloseSyncSetup()
 }
 
-void SyncAuthManager::OnGetTokenSuccess(
-    const brave_sync::AccessTokenConsumer::TokenResponse& token_response) {
-  AccessTokenFetched(
-      GoogleServiceAuthError(GoogleServiceAuthError::NONE),
-      signin::AccessTokenInfo(token_response.access_token,
-                              token_response.expiration_time, ""));
-  VLOG(1) << __func__ << " Token: " << access_token_;
-}
+// OAuth2AccessTokenFetcherImpl is responsible for fetching timestamp back and
+// we compose the access token here
+std::string SyncAuthManager::GenerateAccessToken(const std::string& timestamp) {
+  DCHECK(!timestamp.empty() && !public_key_.empty() && !private_key_.empty());
+  const std::string public_key_hex =
+      base::HexEncode(public_key_.data(), public_key_.size());
 
-void SyncAuthManager::OnGetTokenFailure(const GoogleServiceAuthError& error) {
-  LOG(ERROR) << __func__ << ": " << error.error_message();
-  AccessTokenFetched(error, signin::AccessTokenInfo());
+  const std::string timestamp_hex =
+      base::HexEncode(timestamp.data(), timestamp.size());
+
+  std::vector<uint8_t> timestamp_bytes;
+  base::HexStringToBytes(timestamp_hex, &timestamp_bytes);
+  std::vector<uint8_t> signature;
+  brave_sync::crypto::Sign(timestamp_bytes, private_key_, &signature);
+  DCHECK(brave_sync::crypto::Verify(timestamp_bytes, signature, public_key_));
+
+  const std::string signed_timestamp_hex =
+      base::HexEncode(signature.data(), signature.size());
+
+  // base64(timestamp_hex|signed_timestamp_hex|public_key_hex)
+  const std::string access_token =
+      timestamp_hex + "|" + signed_timestamp_hex + "|" + public_key_hex;
+  std::string encoded_access_token;
+  base::Base64Encode(access_token, &encoded_access_token);
+  DCHECK(!encoded_access_token.empty());
+
+  VLOG(1) << "access_token= " << encoded_access_token;
+  return encoded_access_token;
 }
 
 }  // namespace syncer

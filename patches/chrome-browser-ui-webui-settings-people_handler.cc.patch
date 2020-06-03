@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 57cd1e34ebbc19681692a7e4100677ab0510daea..3461263e3d76b5bac7972e9b10bea13c1a08ca96 100644
+index 57cd1e34ebbc19681692a7e4100677ab0510daea..3beb2136f426fba4c045adde7dda2000fd56c0e5 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
 @@ -89,6 +89,7 @@ struct SyncConfigInfo {
@@ -18,24 +18,7 @@ index 57cd1e34ebbc19681692a7e4100677ab0510daea..3461263e3d76b5bac7972e9b10bea13c
  }
  
  void PeopleHandler::OnJavascriptAllowed() {
-@@ -797,6 +799,7 @@ void PeopleHandler::CloseSyncSetup() {
- 
-     service->LoginUIClosed(this);
-   }
-+  BRAVE_CLOSE_SYNC_SETUP
- 
-   // Alert the sync service anytime the sync setup dialog is closed. This can
-   // happen due to the user clicking the OK or Cancel button, or due to the
-@@ -861,7 +864,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
- 
- void PeopleHandler::BeforeUnloadDialogCancelled() {
-   // The before unload dialog is only shown during the first sync setup.
--  DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount());
-+  // DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount());
-   syncer::SyncService* service = GetSyncService();
-   DCHECK(service && service->IsSetupInProgress() &&
-          !service->GetUserSettings()->IsFirstSetupComplete());
-@@ -909,6 +912,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
+@@ -909,6 +911,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsFirstSetupComplete() &&
            identity_manager->HasPrimaryAccount());
@@ -43,11 +26,3 @@ index 57cd1e34ebbc19681692a7e4100677ab0510daea..3461263e3d76b5bac7972e9b10bea13c
  
    const sync_ui_util::StatusLabels status_labels =
        sync_ui_util::GetStatusLabels(profile_);
-@@ -1056,6 +1060,7 @@ void PeopleHandler::MarkFirstSetupComplete() {
- }
- 
- bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {
-+  return false;
-   return !IdentityManagerFactory::GetForProfile(profile_)
-               ->HasPrimaryAccount() ||
-          SigninErrorControllerFactory::GetForProfile(profile_)->HasError();

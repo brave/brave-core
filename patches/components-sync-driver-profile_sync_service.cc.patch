@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 44a6eb15256323c76a10dcd6c412e228ae822e60..80273e02176c0593ed4f7d7b67e77a086a757cf5 100644
+index 44a6eb15256323c76a10dcd6c412e228ae822e60..b3b144ce3d6139c7161034fb27934e25db7a6692 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
 @@ -265,6 +265,7 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
@@ -18,12 +18,3 @@ index 44a6eb15256323c76a10dcd6c412e228ae822e60..80273e02176c0593ed4f7d7b67e77a08
    if (identity_manager_)
      identity_manager_->RemoveObserver(this);
    sync_prefs_.RemoveSyncPrefObserver(this);
-@@ -1116,7 +1118,7 @@ void ProfileSyncService::OnActionableError(const SyncProtocolError& error) {
-       // that IsSyncRequested gets set to false, and Sync won't start again on
-       // the next browser startup.
-       StopAndClear();
--#if !defined(OS_CHROMEOS)
-+#if !defined(OS_CHROMEOS) && 0
-       // On every platform except ChromeOS, sign out the user after a dashboard
-       // clear.
-       if (!IsLocalSyncEnabled()) {
