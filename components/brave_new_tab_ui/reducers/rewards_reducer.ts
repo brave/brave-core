@@ -172,7 +172,8 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       const newRewardsState = {
         balance: initialRewardsDataPayload.balance,
         totalContribution: getTotalContributions(initialRewardsDataPayload.report),
-        adsEstimatedEarnings: initialRewardsDataPayload.adsEstimatedEarnings
+        adsEstimatedEarnings: initialRewardsDataPayload.adsEstimatedEarnings,
+        parameters: initialRewardsDataPayload.parameters
       }
 
       state = {

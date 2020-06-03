@@ -48,6 +48,10 @@ const cleanData = (state: RewardsExtension.State) => {
     state.balance = defaultState.balance
   }
 
+  if (!state.parameters) {
+    state.parameters = defaultState.parameters
+  }
+
   return state
 }
 

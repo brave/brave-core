@@ -216,12 +216,12 @@ declare namespace NewTab {
 
   export interface RewardsBalance {
     total: number
-    rates: Record<string, number>
     wallets: Record<string, number>
   }
 
   export interface RewardsParameters {
     rate: number
+    monthlyTipChoices: number[]
   }
 
   export interface DefaultSuperReferralTopSite {
