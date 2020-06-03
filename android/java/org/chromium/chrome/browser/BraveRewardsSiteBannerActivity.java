@@ -147,7 +147,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
         ((TextView)findViewById(R.id.wallet_amount_text)).setText(walletAmount);
 
-        double usdValue = mBraveRewardsNativeWorker.GetWalletRate("USD");
+        double usdValue = mBraveRewardsNativeWorker.GetWalletRate();
         double fiveBat = 5 * usdValue;
         double tenBat = 10 * usdValue;
         String oneBatRate = String.format(Locale.getDefault(), "%.2f", usdValue) + " USD";
@@ -460,19 +460,22 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
     }
 
     @Override
-    public void OnWalletProperties(int error_code){
-        if (error_code == 0) {
+    public void OnRewardsParameters(int errorCode) {
+        if (errorCode == 0) {
             if (mBraveRewardsNativeWorker != null) {
                 double balance = .0;
-                BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
-                if (rewards_balance != null){
-                    balance = rewards_balance.mTotal;
+                BraveRewardsBalance rewardsBalance = mBraveRewardsNativeWorker.GetWalletBalance();
+                if (rewardsBalance != null) {
+                    balance = rewardsBalance.mTotal;
                 }
                 DecimalFormat df = new DecimalFormat("#.#");
                 df.setRoundingMode(RoundingMode.FLOOR);
                 df.setMinimumFractionDigits(1);
-                String walletAmount = df.format(balance) + " "+ (isAnonWallet ? getResources().getString(R.string.brave_ui_bat_points_text) : getResources().getString(R.string.brave_ui_bat_text));
-                ((TextView)findViewById(R.id.wallet_amount_text)).setText(walletAmount);
+                String walletAmount = df.format(balance) + " "
+                        + (isAnonWallet ? getResources().getString(
+                                   R.string.brave_ui_bat_points_text)
+                                        : getResources().getString(R.string.brave_ui_bat_text));
+                ((TextView) findViewById(R.id.wallet_amount_text)).setText(walletAmount);
             }
         }
     }

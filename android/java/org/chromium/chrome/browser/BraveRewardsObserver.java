@@ -6,7 +6,7 @@ package org.chromium.chrome.browser;
 
 public interface BraveRewardsObserver {
   default public void OnWalletInitialized(int error_code) {};
-  default public void OnWalletProperties(int error_code) {};
+  default public void OnRewardsParameters(int errorCode) {};
   default public void OnPublisherInfo(int tabId) {};
   default public void OnGetCurrentBalanceReport(double[] report) {};
   default public void OnNotificationAdded(String id, int type, long timestamp,

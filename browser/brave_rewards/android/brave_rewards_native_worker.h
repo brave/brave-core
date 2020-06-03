@@ -64,8 +64,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& obj);
 
     double GetWalletRate(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& rate);
+        const base::android::JavaParamRef<jobject>& obj);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);

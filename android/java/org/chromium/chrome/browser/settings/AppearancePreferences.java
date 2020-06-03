@@ -126,9 +126,6 @@ public class AppearancePreferences extends BravePreferenceFragment
     public void OnWalletInitialized(int error_code) {}
 
     @Override
-    public void OnWalletProperties(int error_code) {}
-
-    @Override
     public void OnPublisherInfo(int tabId) {}
 
     @Override
