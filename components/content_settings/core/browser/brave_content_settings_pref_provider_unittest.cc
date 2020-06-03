@@ -92,10 +92,10 @@ class ShieldsCookieSetting : public ShieldsSetting {
 class ShieldsFingerprintingSetting : public ShieldsSetting {
  public:
   explicit ShieldsFingerprintingSetting(BravePrefProvider* provider)
-      : ShieldsSetting(
-            provider,
-            {{GURL(), brave_shields::kFingerprintingV2},
-             {GURL("https://firstParty/*"), brave_shields::kFingerprintingV2}}) {}
+      : ShieldsSetting(provider,
+                       {{GURL(), brave_shields::kFingerprintingV2},
+                       {GURL("https://firstParty/*"),
+                        brave_shields::kFingerprintingV2}}) {}
 };
 
 class ShieldsHTTPSESetting : public ShieldsSetting {
