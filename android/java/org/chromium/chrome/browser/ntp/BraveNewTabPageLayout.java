@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mBraveStatsView;
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private ViewGroup mainLayout;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -52,7 +53,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     protected void insertSiteSectionView() {
-        ViewGroup mainLayout = findViewById(R.id.ntp_main_layout);
+        mainLayout = findViewById(R.id.ntp_main_layout);
 
         mSiteSectionView = SiteSection.inflateSiteSection(mainLayout);
         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
@@ -61,16 +62,16 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         int variation = ExploreSitesBridge.getVariation();
         if (ExploreSitesBridge.isEnabled(variation)) {
             ((MarginLayoutParams) layoutParams).bottomMargin =
-                    getResources().getDimensionPixelOffset(
-                            R.dimen.tile_grid_layout_vertical_spacing);
+                getResources().getDimensionPixelOffset(
+                    R.dimen.tile_grid_layout_vertical_spacing);
         }
         mSiteSectionView.setLayoutParams(layoutParams);
 
         ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
         int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
         if (!mNTPBackgroundImagesBridge.isSuperReferral()
-            || !NTPBackgroundImagesBridge.enableSponsoredImages()
-            || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                || !NTPBackgroundImagesBridge.enableSponsoredImages()
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
@@ -78,16 +79,26 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     protected int getMaxTileRows() {
         boolean isMoreTabs = false;
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
+        if (chromeTabbedActivity != null) {
             TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
             isMoreTabs = tabModel.getCount() >= SponsoredImageUtil.MAX_TABS ? true : false;
         }
 
-        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-            && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
+        if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
             return 1;
         } else {
             return 2;
         }
+    }
+
+    public void removeDefaultTopSites() {
+        if (mainLayout != null && hasParent(mSiteSectionView)) {
+            mainLayout.removeView(mSiteSectionView);
+        }
+    }
+
+    private boolean hasParent(View view) {
+        return view != null && view.getParent() != null;
     }
 }
