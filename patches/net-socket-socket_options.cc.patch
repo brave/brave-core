@@ -1,0 +1,20 @@
+diff --git a/net/socket/socket_options.cc b/net/socket/socket_options.cc
+index 9589110cde2cbffcbfa610d9a3161e165ed0bd66..6d58fe76d42005ef296b0316a00b4ad5f7bd08c8 100644
+--- a/net/socket/socket_options.cc
++++ b/net/socket/socket_options.cc
+@@ -49,9 +49,15 @@ int SetReuseAddr(SocketDescriptor fd, bool reuse) {
+ #elif defined(OS_POSIX) || defined(OS_FUCHSIA)
+   int boolean_value = reuse ? 1 : 0;
+ #endif
++#if defined(SO_REUSEPORT) && !defined(OS_LINUX)
++  int rv = setsockopt(fd, SOL_SOCKET, SO_REUSEPORT,
++                      reinterpret_cast<const char*>(&boolean_value),
++                      sizeof(boolean_value));
++#else
+   int rv = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR,
+                       reinterpret_cast<const char*>(&boolean_value),
+                       sizeof(boolean_value));
++#endif
+   return rv == -1 ? MapSystemError(errno) : OK;
+ }
+ 
