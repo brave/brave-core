@@ -101,13 +101,13 @@ class Unblinded {
       const ledger::Result result,
       const std::string& contribution_id,
       const std::string& publisher_key,
-      const bool single_publisher,
+      const bool final_publisher,
       ledger::ResultCallback callback);
 
   void ContributionAmountSaved(
       const ledger::Result result,
       const std::string& contribution_id,
-      const bool single_publisher,
+      const bool final_publisher,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
