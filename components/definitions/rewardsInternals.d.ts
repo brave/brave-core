@@ -14,6 +14,7 @@ declare namespace RewardsInternals {
     }
     promotions: Promotion[]
     log: string
+    fullLog: string
   }
 
   export interface CurrentReconcile {

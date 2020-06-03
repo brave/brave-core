@@ -33,10 +33,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.state = {
       currentTabId: 'generalInfo'
     }
-    this.getLog = this.getLog.bind(this)
-    this.clearLog = this.clearLog.bind(this)
-    this.getGeneralInfo = this.getGeneralInfo.bind(this)
-    this.getContributions = this.getContributions.bind(this)
   }
 
   componentDidMount () {
@@ -57,16 +53,16 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.setState({ currentTabId: tabId })
 
     switch (tabId) {
+      case 'generalInfo': {
+        this.getGeneralInfo()
+        break
+      }
       case 'promotions': {
         this.getPromotions()
         break
       }
       case 'contributions': {
         this.getContributions()
-        break
-      }
-      case 'generalInfo': {
-        this.getGeneralInfo()
         break
       }
     }
@@ -76,8 +72,16 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.clearLog()
   }
 
-  getLog = () => {
-    this.actions.getLog()
+  getPartialLog = () => {
+    this.actions.getPartialLog()
+  }
+
+  getFullLog = () => {
+    this.actions.getFullLog()
+  }
+
+  downloadCompleted = () => {
+    this.actions.downloadCompleted()
   }
 
   getPromotions = () => {
@@ -85,11 +89,11 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   getContributions = () => {
-    // TODO add
+    // TODO(https://github.com/brave/brave-browser/issues/8633): implement
   }
 
   render () {
-    const { isRewardsEnabled, info, promotions, log } = this.props.rewardsInternalsData
+    const { isRewardsEnabled, info, promotions, log, fullLog } = this.props.rewardsInternalsData
 
     if (!isRewardsEnabled) {
       return (
@@ -112,7 +116,14 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
             <General data={this.props.rewardsInternalsData} onGet={this.getGeneralInfo} />
           </div>
           <div data-key='logs' data-title={getLocale('tabLogs')}>
-            <Log log={log} onGet={this.getLog} onClear={this.clearLog} />
+            <Log
+              log={log}
+              fullLog={fullLog}
+              onGet={this.getPartialLog}
+              onFullLog={this.getFullLog}
+              onClear={this.clearLog}
+              onDownloadCompleted={this.downloadCompleted}
+            />
           </div>
           <div data-key='promotions' data-title={getLocale('tabPromotions')}>
             <Promotions items={promotions} onGet={this.getPromotions} />

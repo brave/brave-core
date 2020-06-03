@@ -221,7 +221,7 @@ class MockRewardsService : public RewardsService {
       const int verbose_level,
       const std::string& message));
 
-  MOCK_METHOD1(LoadDiagnosticLog, void(
+  MOCK_METHOD2(LoadDiagnosticLog, void(
       const int num_lines,
       brave_rewards::LoadDiagnosticLogCallback callback));
 

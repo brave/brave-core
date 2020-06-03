@@ -15,7 +15,8 @@ const defaultState: RewardsInternals.State = {
     bootStamp: 0
   },
   promotions: [],
-  log: ''
+  log: '',
+  fullLog: ''
 }
 
 export const load = (): RewardsInternals.State => {

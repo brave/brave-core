@@ -47,8 +47,12 @@ window.cr.define('brave_rewards_internals', function () {
     getActions().onPromotions(promotions)
   }
 
-  function log (log: string) {
-    getActions().onGetLog(log)
+  function partialLog (log: string) {
+    getActions().onGetPartialLog(log)
+  }
+
+  function fullLog (log: string) {
+    getActions().onGetFullLog(log)
   }
 
   function initialize () {
@@ -69,7 +73,8 @@ window.cr.define('brave_rewards_internals', function () {
     onGetRewardsInternalsInfo,
     balance,
     promotions,
-    log
+    partialLog,
+    fullLog
   }
 })
 

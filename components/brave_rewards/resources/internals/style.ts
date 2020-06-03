@@ -48,3 +48,8 @@ export const ButtonGroup = styled<{}, 'div'>('div')`
     margin-left: 10px;
   }
 `
+
+export const Notice = styled<{}, 'div'>('div')`
+  font-size: 12px;
+  margin-top: 5px;
+`

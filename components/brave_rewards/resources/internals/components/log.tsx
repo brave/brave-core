@@ -6,19 +6,23 @@ import * as React from 'react'
 
 // Components
 import { Checkbox, Button } from 'brave-ui/components'
-import { LogTextArea, LogControls, ButtonGroup } from '../style'
+import { LogTextArea, LogControls, ButtonGroup, Notice } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
   log: string
+  fullLog: string
   onClear: () => void
   onGet: () => void
+  onFullLog: () => void
+  onDownloadCompleted: () => void
 }
 
 interface State {
   autoRefresh: boolean
+  downloadStarted: boolean
 }
 
 export class Log extends React.Component<Props, State> {
@@ -27,7 +31,15 @@ export class Log extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      autoRefresh: false
+      autoRefresh: false,
+      downloadStarted: false
+    }
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (this.props.fullLog.length !== 0) {
+      this.downloadFile(this.props.fullLog)
+      this.props.onDownloadCompleted()
     }
   }
 
@@ -44,6 +56,23 @@ export class Log extends React.Component<Props, State> {
     }
 
     clearInterval(this.interval)
+  }
+
+  downloadFile = (log: string) => {
+    const filename = 'brave_rewards_log.txt'
+    let element = document.createElement('a')
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(log))
+    element.setAttribute('download', filename)
+
+    element.style.display = 'none'
+    document.body.appendChild(element)
+
+    element.click()
+    document.body.removeChild(element)
+  }
+
+  preventDefault = (event: React.MouseEvent) => {
+    event.preventDefault()
   }
 
   render () {
@@ -71,9 +100,18 @@ export class Log extends React.Component<Props, State> {
               type={'accent'}
               onClick={this.props.onGet}
             />
+            <Button
+              text={getLocale('downloadButton')}
+              size={'medium'}
+              type={'accent'}
+              onClick={this.props.onFullLog}
+            />
           </ButtonGroup>
         </LogControls>
-        <LogTextArea value={this.props.log} readOnly={true}/>
+        <LogTextArea value={this.props.log} readOnly={true} onContextMenu={this.preventDefault}/>
+        <Notice>
+          {getLocale('logNotice', { numberOfLines: '5,000' })}
+        </Notice>
       </>
     )
   }

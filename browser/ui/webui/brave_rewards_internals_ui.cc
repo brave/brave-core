@@ -29,6 +29,8 @@
 
 namespace {
 
+const int g_partial_log_max_lines = 5000;
+
 class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
  public:
   RewardsInternalsDOMHandler();
@@ -52,8 +54,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
     std::unique_ptr<brave_rewards::Balance> balance);
   void GetPromotions(const base::ListValue* args);
   void OnGetPromotions(const std::vector<brave_rewards::Promotion>& list);
-  void GetLog(const base::ListValue* args);
-  void OnGetLog(const std::string& log);
+  void GetPartialLog(const base::ListValue* args);
+  void OnGetPartialLog(const std::string& log);
+  void GetFulllLog(const base::ListValue* args);
+  void OnGetFulllLog(const std::string& log);
   void ClearLog(const base::ListValue* args);
   void OnClearLog(const bool success);
 
@@ -91,9 +95,14 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
           &RewardsInternalsDOMHandler::GetPromotions,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards_internals.getLog",
+      "brave_rewards_internals.getPartialLog",
       base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetLog,
+          &RewardsInternalsDOMHandler::GetPartialLog,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getFullLog",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetFulllLog,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.clearLog",
@@ -238,24 +247,47 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
       std::move(promotions));
 }
 
-void RewardsInternalsDOMHandler::GetLog(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::GetPartialLog(const base::ListValue *args) {
   if (!rewards_service_) {
     return;
   }
 
-  rewards_service_->LoadDiagnosticLog(-1,
+  rewards_service_->LoadDiagnosticLog(
+      g_partial_log_max_lines,
       base::BindOnce(
-          &RewardsInternalsDOMHandler::OnGetLog,
+          &RewardsInternalsDOMHandler::OnGetPartialLog,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetLog(const std::string& log) {
+void RewardsInternalsDOMHandler::OnGetPartialLog(const std::string& log) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_internals.log",
+      "brave_rewards_internals.partialLog",
+      base::Value(log));
+}
+
+void RewardsInternalsDOMHandler::GetFulllLog(const base::ListValue *args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->LoadDiagnosticLog(
+      -1,
+      base::BindOnce(
+          &RewardsInternalsDOMHandler::OnGetFulllLog,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetFulllLog(const std::string& log) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.fullLog",
       base::Value(log));
 }
 
@@ -280,7 +312,7 @@ void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
   }
 
   web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_internals.log",
+      "brave_rewards_internals.partialLog",
       base::Value(""));
 }
 
