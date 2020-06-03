@@ -449,13 +449,10 @@
     <message name="IDS_SYNC_USER_NAME_IN_USE_ERROR" desc="An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile.">
       This account is already being used on this computer.
     </message>
-  </if>
-    <message name="IDS_SYNC_USER_NAME_IN_USE_BY_ERROR" desc="An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile. This error message includes the avatar name of the existing duplicate profile and only appears in the signin error tab modal dialog.">
-      This account is already being used on this computer by <ph name="AVATAR_NAME">$1<ex>Jane</ex></ph>.
-    </message>
+    </if>
 
   <!-- Android does not support multiple profiles and supervised users -->
-  <!--<if expr="not is_android">-->
+  <if expr="is_android or not is_android">
     <!-- Create Profile Dialog -->
     <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
       Add profile
@@ -486,9 +483,9 @@
     <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_OK" desc="Text on the button to confirm importing an existing supervised user.">
       Import supervised user
     </message>
-  <!--</if>-->
+  </if>
 
-  <!--<if expr="not is_android">-->
+  <if expr="is_android or not is_android">
     <!-- User manager web UI -->
     <if expr="use_titlecase">
       <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
@@ -660,5 +657,8 @@
     <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_OUTRO_USER_NOT_FOUND" desc="Text of the label asking the user if they see their name">
       Don't see your name?
     </message>
-  <!--</if>-->
-</grit-part>
+  </if>
+<message name="IDS_SYNC_USER_NAME_IN_USE_BY_ERROR" desc="An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile. This error message includes the avatar name of the existing duplicate profile and only appears in the signin error tab modal dialog.">
+      This account is already being used on this computer by <ph name="AVATAR_NAME">$1<ex>Jane</ex></ph>.
+    </message>
+  </grit-part>

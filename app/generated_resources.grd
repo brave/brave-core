@@ -292,10 +292,10 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Settings specific strings -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <part file="settings_strings.grdp" />
         <part file="shared_settings_strings.grdp" />
-      <!--</if>-->
+      </if>
 
       <!-- MD Extensions specific strings -->
       <if expr="enable_extensions">
@@ -303,7 +303,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Welcome strings -->
-      <if expr="not chromeos">
+      <if expr="is_android or not chromeos and not is_android">
         <part file="welcome_strings.grdp" />
       </if>
 
@@ -447,7 +447,7 @@ are declared in tools/grit/grit_rule.gni.
         Disable
       </message>
       <!-- Search strings are only used in webui, so no mobile. -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_SEARCH_CLEARED" desc="Message announced to screenreader users when search is cleared.">
           Search cleared
         </message>
@@ -472,10 +472,10 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_SHOW_BUBBLE_INACTIVE_DESCRIPTION" desc="Message announced to screen reader users when an inactive bubble gets shown.">
           Press Alt Shift A to show
         </message>
-      <!--</if>-->
+      </if>
 
        <!-- content area context menus. Android does not use it -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_CONTENT_CONTEXT_INSPECTELEMENT" desc="The name of the Inspect Element command in the content area context menu">
           I&amp;nspect
         </message>
@@ -930,7 +930,7 @@ are declared in tools/grit/grit_rule.gni.
             Suggest Password...
           </message>
         </if>
-      <!--</if>-->
+      </if>
 
       <if expr="not use_titlecase">
         <message name="IDS_CONTENT_CONTEXT_PLUGIN_RUN" desc="The name of the Run command on the blocked plugin context menu">
@@ -975,7 +975,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Page menu. Android has separate strings for its menu -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <if expr="not use_titlecase">
           <message name="IDS_NEW_TAB" desc="The text label of a menu item for opening a new tab">
             New &amp;tab
@@ -1124,7 +1124,7 @@ are declared in tools/grit/grit_rule.gni.
             Move Tab to New Window
           </message>
         </if>
-      <!--</if>-->
+      </if>
 
       <if expr="chromeos">
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
@@ -1879,7 +1879,7 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Download Context Menu Items -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <if expr="not use_titlecase">
           <if expr="is_macosx">
             <message name="IDS_DOWNLOAD_MENU_SHOW" desc="Mac: Show the file in the Finder, 'Show in Finder' item" meaning="'show in Finder' on Mac in Sentence case">
@@ -1990,7 +1990,7 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_DOWNLOAD_MENU_DEEP_SCAN" desc="Download context menu: send file for deep scanning">
           Scan file
         </message>
-      <!--</if>-->
+      </if>
 
       <!-- Touch Bar-->
       <if expr="is_macosx">
@@ -2076,14 +2076,14 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Desktop omnibox PWA install icon -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_OMNIBOX_PWA_INSTALL_ICON_LABEL" desc="String for the omnibox icon label promoting an app installation">
           Install
         </message>
         <message name="IDS_OMNIBOX_PWA_INSTALL_ICON_TOOLTIP" desc="Tooltip for the omnibox icon label promoting an app installation">
           Install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
         </message>
-      <!--</if>-->
+      </if>
 
       <!-- Bookmark app bubble -->
       <if expr="use_titlecase">
@@ -3131,7 +3131,7 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Task Manager Window -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <if expr="not use_titlecase">
           <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button">
             End process
@@ -3400,7 +3400,7 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_PLUGIN_VM_PREFIX" desc="The prefix for a Linux virtual machine row">
           Plugin Virtual Machine: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
         </message>
-      <!--</if>-->
+      </if>
 
       <if expr="chromeos">
         <message name="IDS_UTILITY_PROCESS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
@@ -3410,14 +3410,14 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_UTILITY_PROCESS_FILE_UTILITY_NAME" desc="The name of the utility process used for various Brave specific file operations.">
           Brave File Utilities
       </message>
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_UTILITY_PROCESS_PROFILE_IMPORTER_NAME" desc="The name of the utility process used for importing profiles.">
           Profile Importer
         </message>
-      <!--</if>-->
       <message name="IDS_UTILITY_PROCESS_QRCODE_GENERATOR_SERVICE_NAME" desc="The name of the utility process used for encoding QR codes.">
         QR Code Generator
       </message>
+      </if>
       <if expr="is_win">
         <message name="IDS_UTILITY_PROCESS_WIFI_CREDENTIALS_GETTER_NAME" desc="The name of the utility process used for getting the WiFi credentials">
           WiFi Credentials Getter
@@ -3454,7 +3454,7 @@ are declared in tools/grit/grit_rule.gni.
         To re-enable it, accept the new permissions:
       </message>
       <message name="IDS_EXTENSION_IS_BLACKLISTED" desc="Text displayed in an infobar when an extension is blacklisted and prevented from being installed.">
-        Brave has flagged "<ph name="EXTENSION_NAME">$1<ex>Brave Talk</ex></ph>" as malicious and installation has been prevented
+        Brave has flagged "<ph name="EXTENSION_NAME">$1<ex>Google Talk</ex></ph>" as malicious and installation has been prevented
       </message>
       <message name="IDS_EXTENSION_DISABLED_REMOTE_INSTALL_ERROR_TITLE" desc="Title of the notification that an extension or app was disabled due to it being installed server side, requiring an explicit permission check from the user.">
         <ph name="EXTENSION_NAME">$1<ex>Adblock</ex></ph> was added remotely
@@ -3968,10 +3968,10 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <if expr="chromeos">
         <message name="IDS_EXTENSION_CANT_INSTALL_IN_DEVICE_LOCAL_ACCOUNT" desc="Error message when a user tries to install or the administrator tries to force-install through policy an extension that is not allowed in a device-local account.">
-          <ph name="EXTENSION_NAME">$1<ex>Brave Talk</ex></ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>nckgahadagoaajjgafhacjanaoiihapd</ex></ph>") is not allowed in this type of session.
+          <ph name="EXTENSION_NAME">$1<ex>Google Talk</ex></ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>nckgahadagoaajjgafhacjanaoiihapd</ex></ph>") is not allowed in this type of session.
         </message>
         <message name="IDS_EXTENSION_CANT_INSTALL_ON_SIGNIN_SCREEN" desc="Error message when the administrator tries to force-install through policy an extension that is not allowed on a login screen.">
-          <ph name="EXTENSION_NAME">$1<ex>Brave Talk</ex></ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed on a login screen.
+          <ph name="EXTENSION_NAME">$1<ex>Google Talk</ex></ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed on a login screen.
         </message>
       </if>
       <message name="IDS_EXTENSION_MOVE_DIRECTORY_TO_PROFILE_FAILED" desc="">
@@ -4962,7 +4962,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- about:system strings -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_ABOUT_SYS_TITLE" desc="about:system page title">
           About System
         </message>
@@ -4990,7 +4990,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ABOUT_SYS_PARSE_ERROR" desc="error message displayed if parsing of custom uploaded log fails">
           Unable to parse file: <ph name="FILE_NAME">$1<ex>Log.txt</ex></ph>
         </message>
-      <!--</if>-->
+      </if>
 
       <!-- chrome://browser-switch strings -->
       <if expr="is_android or is_win or is_macosx or (is_linux and not chromeos)">
@@ -5074,7 +5074,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Press <ph name="SEARCH_KEY">$1<ex>Tab</ex></ph> to search <ph name="SITE_NAME">$2<ex>google.com</ex></ph>
       </message>
       <message name="IDS_OMNIBOX_EXTENSION_KEYWORD_HINT" desc="Shown to the user when the word(s) in the omnibox has an extension keyword associated with it. $1 is replaced with an image showing the tab key. $2 is replaced with the description of the keyword.">
-        Press <ph name="SEARCH_KEY">$1<ex>Tab</ex></ph> to send commands to <ph name="EXTENSION_NAME">$2<ex>Brave Talk</ex></ph>
+        Press <ph name="SEARCH_KEY">$1<ex>Tab</ex></ph> to send commands to <ph name="EXTENSION_NAME">$2<ex>Google Talk</ex></ph>
       </message>
       <message name="IDS_OMNIBOX_KEYWORD_HINT_KEY_ACCNAME" desc="The accessible name of the tab key image">
         Tab
@@ -5460,7 +5460,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Strings for intent picker -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_TOOLTIP_INTENT_PICKER_ICON" desc="The tooltip for the intent picker bubble icon">
           To open this link, choose an app
         </message>
@@ -5479,7 +5479,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_INITIATING_ORIGIN" desc="The label for the initiating origin of the intent picker.">
           From <ph name="ORIGIN">$1<ex>https://google.com</ex></ph>
         </message>
-      <!--</if>-->
+      </if>
 
       <!--Accessible name/action strings-->
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a private window">
@@ -5705,7 +5705,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Update password
           </message>
         </if>
-      </if>
         <message name="IDS_PASSWORD_MANAGER_BUBBLE_BLACKLIST_BUTTON" desc="Button text for the 'Save Password' bubble's 'Never remember for this site' option">
           Never
         </message>
@@ -5739,7 +5738,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
           Move your password to your Brave account to access it securely wherever you're signed in
         </message>
-      <!--</if>-->
+        </if>
       <if expr="is_android">
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Remember password' option">
           Save
@@ -5771,7 +5770,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- Android uses custom UI for Bookmark importing -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <!-- Import Settings Dialog -->
         <if expr="is_win">
           <message name="IDS_IMPORT_FROM_IE" desc="browser combo box: Microsoft Internet Explorer">
@@ -5804,7 +5803,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Import Bookmarks and Settings...
           </message>
         </if> <!-- is_macosx -->
-      <!--</if>--> <!-- not is_android -->
+      </if> <!-- not is_android -->
 
       <if expr="is_macosx">
         <!-- Confirm to quit panel -->
@@ -6598,7 +6597,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Settings related strings not specific to chrome://settings.
            (Settings specific strings are in settings_strings.grdp).
            Android uses native UI for settings -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_TOOLBAR_INFORM_SET_HOME_PAGE" desc="The confirmation message when dropping a link on the Home toolbar button">
            Your home page has been set.
         </message>
@@ -6721,7 +6720,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_RESET_PROFILE_SETTINGS_PROCESSING_SHORTCUTS" desc="A placeholder for the actual shortcuts in the Reset Profile Settings dialog (shortcut refers to the desktop icon on windows)">
           Processing shortcuts...
         </message>
-      <!--</if>-->
+      </if>
 
       <if expr="is_android">
         <message name="IDS_OPTIONS_HOMEPAGE_TITLE" desc="The title of Brave's homepage setting screen on Android. " formatter_data="android_java">
@@ -6805,14 +6804,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Create QR code for this Image
         </message>
       </if>
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_LABEL" desc="String for the omnibox icon label for the QR code Generator">
           QR code
         </message>
         <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_TOOLTIP" desc="Tooltip for the omnibox icon label for the QR code Generator">
           Create QR code for this Page
         </message>
-      <!--</if>-->
+      </if>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TITLE" desc="Title for the QR Generator dialog.">
         Scan QR code
       </message>
@@ -7025,7 +7024,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Managed UI on pages like chrome://settings and chrome://downloads -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <if expr="chromeos">
           <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
             Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
@@ -7040,7 +7039,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
           Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$2<ex>example.com</ex></ph>
         </message>
-      <!--</if>-->
+      </if>
 
       <!-- Cookies Window -->
       <message name="IDS_COOKIES_REMOVE_LABEL" desc="The label of the 'Remove' button in the Cookies Window">
@@ -7146,7 +7145,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Strings used for non-Android builds -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_APP_DEFAULT_PAGE_NAME" desc="Default name for the first 'Apps' page on the New Tab Page.">
           Apps
         </message>
@@ -7175,7 +7174,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_NEW_TAB_MOST_VISITED" desc="The name for the 'Most Visited' navigation control on the New Tab Page.">
           Most visited
         </message>
-      <!--</if>-->
+      </if>
 
       <message name="IDS_NEW_TAB_RESTORE_THUMBNAILS_SHORT_LINK" desc="The link that restores previously removed thumbnails. Context is 'Thumbnail removed. Undo | Restore all'">
         Restore all
@@ -7734,7 +7733,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Android uses native UI to handle Sync settings -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <!-- Sync options dialog strings -->
         <if expr="not chromeos">
           <message name="IDS_SYNC_OVERVIEW" desc="The message that appears in the options dialog when sync has not been set up by the user.">
@@ -7840,7 +7839,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             sign in
           </message>
         </if>
-      <!--</if>-->
+      </if>
 
       <!-- Translate Bubble -->
       <if expr="is_android or toolkit_views">
@@ -8853,7 +8852,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Media Galleries. -->
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_MEDIA_GALLERIES_DIALOG_HEADER" desc="Header for media gallery permissions dialog.">
           Media-File Permissions for "<ph name="EXTENSION">$1<ex>Photo Editor</ex></ph>"
         </message>
@@ -8900,7 +8899,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_MEDIA_GALLERIES_DIALOG_DELETE" desc="Text label of the menu item which removes selected media gallery access for all apps.">
           Permanently remove access for all apps
         </message>
-      <!--</if>-->
+      </if>
 
       <!-- App List. -->
       <if expr="chromeos">
@@ -8982,10 +8981,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Share an application window
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by the app itself.">
-        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen. Choose what you'd like to share.
+        <ph name="APP_NAME">$1<ex>Google Hangouts</ex></ph> wants to share the contents of your screen. Choose what you'd like to share.
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT_DELEGATED" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by a tab.">
-        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>. Choose what you'd like to share.
+        <ph name="APP_NAME">$1<ex>Google Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>. Choose what you'd like to share.
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE" desc="Text for the checkbox on the window picker dialog, when checked, audio will be shared, otherwise just video sharing">
         Share audio
@@ -9155,14 +9154,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Tab accessibility labels -->
-      <message name="IDS_TAB_AX_LABEL_MEDIA_RECORDING_FORMAT" desc="Accessibility label text, when the tab is recording media. Example: 'Brave Hangouts - Camera or microphone recording'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Camera or microphone recording
+      <message name="IDS_TAB_AX_LABEL_MEDIA_RECORDING_FORMAT" desc="Accessibility label text, when the tab is recording media. Example: 'Google Hangouts - Camera or microphone recording'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Hangouts</ex></ph> - Camera or microphone recording
       </message>
-      <message name="IDS_TAB_AX_LABEL_TAB_CAPTURING_FORMAT" desc="Accessibility label text, when the tab content is being captured and shared using screen sharing. Example: 'Brave Hangouts - Tab content shared'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Tab content shared
+      <message name="IDS_TAB_AX_LABEL_TAB_CAPTURING_FORMAT" desc="Accessibility label text, when the tab content is being captured and shared using screen sharing. Example: 'Google Hangouts - Tab content shared'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Hangouts</ex></ph> - Tab content shared
       </message>
-      <message name="IDS_TAB_AX_LABEL_PIP_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing a persistent video in Picture-in-Picture. Example: 'Brave Hangouts - Video playing in picture-in-picture mode'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Video playing in picture-in-picture mode
+      <message name="IDS_TAB_AX_LABEL_PIP_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing a persistent video in Picture-in-Picture. Example: 'Google Hangouts - Video playing in picture-in-picture mode'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Hangouts</ex></ph> - Video playing in picture-in-picture mode
       </message>
       <message name="IDS_TAB_AX_LABEL_AUDIO_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing audio. Example: 'Google Play Music - Audio playing'">
         <ph name="WINDOW_TITLE">$1<ex>Google Play Music</ex></ph> - Audio playing
@@ -9188,8 +9187,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_CRASHED_FORMAT" desc="Accessibility label text, when a tab has crashed. Example: 'Brave Search - Crashed'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Crashed
       </message>
-      <message name="IDS_TAB_AX_LABEL_DESKTOP_CAPTURING_FORMAT" desc="Accessibility label text, when the tab is capturing and sharing desktop content using screen sharing. Example: 'Brave Hangouts - Desktop content shared'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Desktop content shared
+      <message name="IDS_TAB_AX_LABEL_DESKTOP_CAPTURING_FORMAT" desc="Accessibility label text, when the tab is capturing and sharing desktop content using screen sharing. Example: 'Google Hangouts - Desktop content shared'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Hangouts</ex></ph> - Desktop content shared
       </message>
       <message name="IDS_TAB_AX_LABEL_VR_PRESENTING" desc="Accessibility label text, when the tab is presenting VR content to a headset. Example: 'A VR-enabled website - VR presenting to headset'">
         <ph name="WINDOW_TITLE">
@@ -9388,7 +9387,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <!-- Device Chooser Prompt -->
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth chooser details to the user in a popup when it is from a website.">
         <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to pair
@@ -9435,7 +9434,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_AND_PAIRED_STATUS_TEXT" desc="Text of the device name and paired status.">
         <ph name="DEVICE_NAME">$1<ex>device name</ex></ph> - Paired
       </message>
-    <!--</if>-->
+    </if>
     <message name="IDS_USB_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce USB chooser details to the user in a popup when it is from a website.">
       <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect
     </message>
@@ -9501,7 +9500,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Serial port chooser -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <message name="IDS_SERIAL_PORT_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce serial port chooser details to the user in a popup when it is from a website.">
         <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a serial port
       </message>
@@ -9517,10 +9516,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
         Connect
       </message>
-    <!--</if>-->
+    </if>
 
     <!-- HID (Human Interface Device) chooser -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <message name="IDS_HID_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce the Human Interface Device (HID) chooser details to the user in a popup when it is from a website.">
         <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a HID device
       </message>
@@ -9533,7 +9532,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_HID_CHOOSER_ITEM_WITH_NAME" desc="User option displaying the device name, vendor ID, and product ID for a Human Interface Device (HID).">
         <ph name="DEVICE_NAME">$1<ex>Wireless Controller</ex></ph> (Vendor: <ph name="VENDOR_ID">$2<ex>0x1234</ex></ph>, Product: <ph name="PRODUCT_ID">$3<ex>0xabcd</ex></ph>)
       </message>
-    <!--</if>-->
+    </if>
 
     <!-- Brave IME API activated bubble. -->
     <message name="IDS_IME_API_ACTIVATED_WARNING" desc="The Warning info when an IME extension is trying to activate.">
@@ -9581,7 +9580,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Framebust / Blocked Redirection intervention message -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <!-- Android strings are declared in android_chrome_strings.grd. -->
       <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
         Redirect blocked:
@@ -9592,7 +9591,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_REDIRECT_BLOCKED_TOOLTIP" desc="Tooltip text that appears when the user hovers over the &quot;Redirect blocked&quot; icon in the address bar. It means that a redirect (noun) was blocked by Brave on this page.">
          Redirect blocked on this page.
       </message>
-    <!--</if>-->
+    </if>
 
     <!-- Windows 10 toast strings -->
     <if expr="is_win">
@@ -9656,14 +9655,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Download open confirmation dialog -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_TITLE" desc="Title of the dialog prompt shown to users when an extension is trying to open a downloaded file.">
         Open download
       </message>
       <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_MESSAGE" desc="Text of the message of the download open confirmation dialog.">
         Allow <ph name="EXTENSION_NAME">$1<ex>Download Viewer</ex></ph> to open <ph name="FILE_NAME">$2<ex>abc.jpg</ex></ph>?
       </message>
-    <!--</if>-->
+    </if>
 
     <message name="IDS_CONFIRM_FILE_UPLOAD_TITLE" desc="Title of dialog for confirming that many files are about to be uploaded / given to the site. [ICU Syntax]">
       {0, plural,
@@ -9825,7 +9824,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Relaunch notification bubble and dialog. -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <if expr="not chromeos">
         <message name="IDS_RELAUNCH_ACCEPT_BUTTON" desc="The text in the accept button of a dialog that causes the browser to be relaunched immediately.">
           Relaunch now
@@ -9839,7 +9838,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_RELAUNCH_REQUIRED_CANCEL_BUTTON" desc="The text in the cancel button that dismisses a dialog telling users the browser must be relaunched.">
         Got it
       </message>
-    <!--</if>-->
+    </if>
 
     <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
     <if expr="is_android or is_win or is_macosx or desktop_linux or chromeos">
@@ -10085,7 +10084,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- User happiness tracking survey UI -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <if expr="use_titlecase">
         <message name="IDS_HATS_BUBBLE_OK_LABEL" translateable="false" desc="Button label on Happiness Tracking Survey's invitation banner, clicking the button gives the user's consent on taking the survey.">
           Take Survey
@@ -10099,7 +10098,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_HATS_BUBBLE_TEXT" translateable="false" desc="The text in Happiness Tracking Survey's invitation banner, it explains why users should take our survey.">
         Your feedback is important to us.
       </message>
-    <!--</if>-->
+    </if>
     <message name="IDS_NOTIFICATION_DEFAULT_HELPFUL_BUTTON_TEXT" desc="Text body for the helpful button in notifications sent from notification scheduler.">
       Helpful
     </message>
@@ -10269,7 +10268,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Extension request -->
-    <!--<if expr="not is_android">-->
+    <if expr="is_android or not is_android">
       <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_APPROVED_TITLE" desc="The notification title when there are some extension requests approved.">
         {NUM_EXTENSIONS, plural,
           =1 {An extension has been approved}
@@ -10296,7 +10295,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
           =1 {Click to view the extension}
           other {Click to view these extensions}}
       </message>
-    <!--</if>-->
-  </messages>
+    </if>
+  <message name="IDS_PASSWORD_MANAGER_BUBBLE_BLACKLIST_BUTTON" desc="Button text for the 'Save Password' bubble's 'Never remember for this site' option">
+          Never
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_SAVE" desc="Text for the 'Manage Passwords' icon's 'password to be saved' state">
+          Save your password
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MANAGE" desc="Text for the 'Manage Passwords' icon's 'saving passwords' state">
+          Manage your passwords
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IMPORT_BUTTON" desc="The label of the button for importing passwords. The button appears next to the list of saved passwords in Brave's settings.">
+          Import
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IMPORT_DIALOG_TITLE" desc="The title of the file selection dialog for importing passwords">
+          Import Passwords To Brave
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_EXPORT_DIALOG_TITLE" desc="The title of the file selection dialog for exporting passwords">
+          Export Passwords From Brave
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential">
+          Username
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
+          Password
+        </message>
+      </messages>
 </release>
 </grit>

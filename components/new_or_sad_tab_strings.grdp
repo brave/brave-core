@@ -117,7 +117,7 @@
       <message name="IDS_NEW_TAB_TITLE" desc="Title of the new tab page, not to be confused with the action of opening a new tab.">
         New Tab
       </message>
-      <!--<if expr="not is_android">-->
+      <if expr="is_android or not is_android">
         <message name="IDS_NEW_TAB_OTR_HEADING" desc="Heading used when a profile opens an OTR window">
           You’ve gone private
         </message>
@@ -130,7 +130,7 @@
         <message name="IDS_NEW_TAB_OTR_MESSAGE_WARNING" desc="OTR window warning message. This follows the IDS_NEW_TAB_OTR_DESCRIPTION paragraph">
           However, you aren’t invisible. Going private doesn’t hide your browsing from your employer, your internet service provider, or the websites you visit.
         </message>
-      <!--</if>-->
+      </if>
       <message name="IDS_NEW_TAB_UNDO_THUMBNAIL_REMOVE" desc="Action link text to undo removing a thumbnail from the most visited section.">
         Undo
       </message>
