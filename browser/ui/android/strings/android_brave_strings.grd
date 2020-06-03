@@ -331,13 +331,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Brave Rewards
       </message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT" desc="Text for brave rewards page">
-        for seeing privacy-respecting ads. Use them to support your favorite sites and creators.
+        by viewing privacy-respecting ads and support your favorite sites and creators by default.
       </message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT2" desc="Alternate Text for brave rewards page">
         for seeing privacy-respecting ads.
       </message>
       <message name="IDS_TERMS_TEXT" desc="Text for terms of service page">
-        By turning on Rewards, you agree to the
+        By tapping Earn &amp; Give, you agree to the
       </message>
       <message name="IDS_TERMS_OF_SERVICE" desc="Text for terms of service">
         Terms of Service
@@ -352,7 +352,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Brave will show your first ad in
       </message>
       <message name="IDS_BRAVE_ADS_ONBOARDING_TEXT" desc="Text for brave ads page">
-        To see ads from Brave Rewards, make sure Brave is allowed to show you notifications.
+        Now you'll earn token from Brave Ads.
       </message>
       <message name="IDS_THIS_IS_YOUR_FIRST_AD" desc="Text brave rewards notification.">
         This is your first Brave ad. Tap to learn more.
@@ -363,13 +363,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_FINISH" desc="Text for finish button">
         Finish
       </message>
-      <message name="IDS_PREFS_WELCOME_TOUR" desc="Title for welcome tour preferences.">
-        Welcome Tour
+      <message name="IDS_EARN_AND_GIVE" desc="Button text for rewards onboarding.">
+        Earn &amp; Give
       </message>
-      <message name="IDS_WELCOME_TOUR_DIALOG_TEXT" desc="Text for welcome tour dialog">
-        Relaunching Welcome Tour will not affect any existing settings.
+      <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
+        Continue to wallet
       </message>
-
       <message name="IDS_CONTINUE_BUTTON" desc="Generic label for a button to continue to the next screen. Used in multiple contexts. [CHAR-LIMIT=20]">
         Continue
       </message>

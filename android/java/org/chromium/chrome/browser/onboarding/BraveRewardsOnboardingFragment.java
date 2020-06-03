@@ -49,11 +49,7 @@ public class BraveRewardsOnboardingFragment extends Fragment {
     private Button btnNext;
 
     private static final String BRAVE_TERMS_PAGE =
-            "https://basicattentiontoken.org/user-terms-of-service/";
-
-    private int onboardingType = OnboardingPrefManager.NEW_USER_ONBOARDING;
-
-    private boolean fromSettings;
+        "https://basicattentiontoken.org/user-terms-of-service/";
 
     private boolean isAdsAvailable;
 
@@ -65,7 +61,7 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isAdsAvailable = OnboardingPrefManager.getInstance().isAdsAvailable();
 
         isAnonWallet = BraveRewardsHelper.isAnonWallet();
@@ -93,37 +89,16 @@ public class BraveRewardsOnboardingFragment extends Fragment {
     }
 
     private void setActions() {
-        if (fromSettings) {
-            if (!isAdsAvailable)
-                btnNext.setText(getResources().getString(R.string.finish));
-            else
-                btnNext.setText(getResources().getString(R.string.next));
-            btnSkip.setText(getResources().getString(R.string.skip));
-        } else {
-            btnSkip.setText(getResources().getString(R.string.no_thanks));
-        }
+        btnNext.setText(getResources().getString(R.string.earn_and_give));
+        btnSkip.setText(getResources().getString(R.string.skip));
 
-        Spanned textToInsert;
-
-        if (onboardingType == OnboardingPrefManager.EXISTING_USER_REWARDS_ON_ONBOARDING) {
-            bgImage.setImageResource(R.drawable.android_br_on);
-
-            tvTitle.setText(getResources().getString(R.string.brave_ads_existing_user_offer_title));
-
-            String braveRewardsText = "<b>" + String.format(getResources().getString(R.string.earn_tokens), isAnonWallet ? getResources().getString(R.string.point) : getResources().getString(R.string.token)) + "</b> " + getResources().getString(R.string.brave_rewards_onboarding_text2);
-            textToInsert = BraveRewardsHelper.spannedFromHtmlString(braveRewardsText);
-            tvText.setText(textToInsert);
-
-            btnNext.setText(getResources().getString(R.string.turn_on));
-        } else {
-            String braveRewardsText = "<b>" + String.format(getResources().getString(R.string.earn_tokens), isAnonWallet ? getResources().getString(R.string.point) : getResources().getString(R.string.token)) + "</b> " + getResources().getString(R.string.brave_rewards_onboarding_text);
-            textToInsert = BraveRewardsHelper.spannedFromHtmlString(braveRewardsText);
-            tvText.setText(textToInsert);
-        }
+        String braveRewardsText = "<b>" + String.format(getResources().getString(R.string.earn_tokens), isAnonWallet ? getResources().getString(R.string.point) : getResources().getString(R.string.token)) + "</b> " + getResources().getString(R.string.brave_rewards_onboarding_text);
+        Spanned textToInsert = BraveRewardsHelper.spannedFromHtmlString(braveRewardsText);
+        tvText.setText(textToInsert);
         tvText.setMovementMethod(new ScrollingMovementMethod());
 
         String termsText = getResources().getString(R.string.terms_text) + " "
-                + getResources().getString(R.string.terms_of_service) + ".";
+                           + getResources().getString(R.string.terms_of_service) + ".";
         Spanned textToAgree = BraveRewardsHelper.spannedFromHtmlString(termsText);
         SpannableString ss = new SpannableString(textToAgree.toString());
 
@@ -140,12 +115,12 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         };
 
         ss.setSpan(clickableSpan, getResources().getString(R.string.terms_text).length(),
-                ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                   ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         ForegroundColorSpan foregroundSpan =
-                new ForegroundColorSpan(getResources().getColor(R.color.onboarding_orange));
+            new ForegroundColorSpan(getResources().getColor(R.color.onboarding_orange));
         ss.setSpan(foregroundSpan, getResources().getString(R.string.terms_text).length(),
-                ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                   ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvAgree.setMovementMethod(LinkMovementMethod.getInstance());
         tvAgree.setText(ss);
 
@@ -161,43 +136,16 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fromSettings) {
-                    if (!isAdsAvailable) {
-                        getActivity().finish();
-                    }
-                    assert onViewPagerAction != null;
-                    if (onViewPagerAction != null) onViewPagerAction.onNext();
-                } else if (onboardingType
-                        == OnboardingPrefManager.EXISTING_USER_REWARDS_ON_ONBOARDING) {
-                    BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
-                    assert onViewPagerAction != null;
-                    if (onViewPagerAction != null) onViewPagerAction.onNext();
-                } else {
-                    Intent mBraveRewardsServiceIntent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsService.class);
-                    ContextUtils.getApplicationContext().startService(mBraveRewardsServiceIntent);
-
-                    if (PackageUtils.isFirstInstall(getActivity()) && !isAdsAvailable) {
-                        OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
-                        getActivity().finish();
-                    } else {
-                        assert onViewPagerAction != null;
-                        if (onViewPagerAction != null)
-                            onViewPagerAction.onNext();
-                    }
-                }
+                Intent mBraveRewardsServiceIntent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsService.class);
+                ContextUtils.getApplicationContext().startService(mBraveRewardsServiceIntent);
+                assert onViewPagerAction != null;
+                if (onViewPagerAction != null)
+                    onViewPagerAction.onNext();
             }
         });
     }
 
     public void setOnViewPagerAction(OnViewPagerAction onViewPagerAction) {
         this.onViewPagerAction = onViewPagerAction;
-    }
-
-    public void setOnboardingType(int onboardingType) {
-        this.onboardingType = onboardingType;
-    }
-
-    public void setFromSettings(boolean fromSettings) {
-        this.fromSettings = fromSettings;
     }
 }

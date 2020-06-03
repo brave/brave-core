@@ -218,7 +218,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         if (onboardingActivity == null) {
-            OnboardingPrefManager.getInstance().showOnboarding(this, false);
+            OnboardingPrefManager.getInstance().showOnboarding(this);
         }
 
         if(!RateUtils.getInstance(this).getPrefRateEnabled()) {

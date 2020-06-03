@@ -20,7 +20,7 @@ import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 public class TroubleshootingOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;
 
-    private Button btnStartBrowsing;
+    private Button btnContinueToWallet;
 
     public TroubleshootingOnboardingFragment() {
         // Required empty public constructor
@@ -41,17 +41,17 @@ public class TroubleshootingOnboardingFragment extends Fragment {
     }
 
     private void setActions() {
-        btnStartBrowsing.setOnClickListener(new View.OnClickListener() {
+        btnContinueToWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 assert onViewPagerAction != null;
-                if (onViewPagerAction != null) onViewPagerAction.onStartBrowsing();
+                if (onViewPagerAction != null) onViewPagerAction.onContinueToWallet();
             }
         });
     }
 
     private void initializeViews(View root) {
-        btnStartBrowsing = root.findViewById(R.id.btn_start_browsing);
+        btnContinueToWallet = root.findViewById(R.id.btn_continue_to_wallet);
     }
 
     public void setOnViewPagerAction(OnViewPagerAction onViewPagerAction) {

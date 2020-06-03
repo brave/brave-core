@@ -100,7 +100,7 @@ public class OnboardingPrefManager {
     public void setPrefOnboardingSkipCount() {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putInt(
-                PREF_ONBOARDING_SKIP_COUNT, getPrefOnboardingSkipCount() + 1);
+            PREF_ONBOARDING_SKIP_COUNT, getPrefOnboardingSkipCount() + 1);
         sharedPreferencesEditor.apply();
     }
 
@@ -114,35 +114,35 @@ public class OnboardingPrefManager {
 
     public boolean showOnboardingForSkip() {
         boolean shouldShow = getPrefNextOnboardingDate() == 0
-                || (getPrefNextOnboardingDate() > 0
-                        && System.currentTimeMillis() > getPrefNextOnboardingDate());
+                             || (getPrefNextOnboardingDate() > 0
+                                 && System.currentTimeMillis() > getPrefNextOnboardingDate());
         return shouldShow;
     }
 
     private boolean shouldShowNewUserOnboarding(Context context) {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
-                && PackageUtils.isFirstInstall(context)
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+                             && PackageUtils.isFirstInstall(context)
+                             && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         return shouldShow;
     }
 
     private boolean shouldShowExistingUserOnboardingIfRewardsIsSwitchedOff(Context context) {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
-                && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
-                && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+                             && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
+                             && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
+                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+                             && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         return shouldShow;
     }
 
     private boolean shouldShowExistingUserOnboardingIfRewardsIsSwitchedOn(Context context) {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
-                && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
-                && BraveRewardsPanelPopup.isBraveRewardsEnabled()
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+                             && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
+                             && BraveRewardsPanelPopup.isBraveRewardsEnabled()
+                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+                             && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         return shouldShow;
     }
@@ -155,45 +155,46 @@ public class OnboardingPrefManager {
         return BraveAdsNativeHelper.nativeIsNewlySupportedLocale(Profile.getLastUsedProfile());
     }
 
-    public void showOnboarding(Context context, boolean fromSettings) {
-        int onboardingType = -1;
-        if (fromSettings) {
-            onboardingType = NEW_USER_ONBOARDING;
-        } else {
-            if (shouldShowNewUserOnboarding(context)) {
-                onboardingType = NEW_USER_ONBOARDING;
-            } else if (shouldShowExistingUserOnboardingIfRewardsIsSwitchedOff(context)) {
-                onboardingType = EXISTING_USER_REWARDS_OFF_ONBOARDING;
-            } else if (shouldShowExistingUserOnboardingIfRewardsIsSwitchedOn(context)) {
-                onboardingType = EXISTING_USER_REWARDS_ON_ONBOARDING;
-            }
-        }
+    public void showOnboarding(Context context) {
+        // int onboardingType = -1;
+        // if (fromSettings) {
+        //     onboardingType = NEW_USER_ONBOARDING;
+        // } else {
+        //     if (shouldShowNewUserOnboarding(context)) {
+        //         onboardingType = NEW_USER_ONBOARDING;
+        //     } else if (shouldShowExistingUserOnboardingIfRewardsIsSwitchedOff(context)) {
+        //         onboardingType = EXISTING_USER_REWARDS_OFF_ONBOARDING;
+        //     } else if (shouldShowExistingUserOnboardingIfRewardsIsSwitchedOn(context)) {
+        //         onboardingType = EXISTING_USER_REWARDS_ON_ONBOARDING;
+        //     }
+        // }
 
-        if (onboardingType >= 0) {
-            Intent intent = new Intent(context, OnboardingActivity.class);
-            intent.putExtra(ONBOARDING_TYPE, onboardingType);
-            intent.putExtra(FROM_SETTINGS, fromSettings);
-            context.startActivity(intent);
-        }
+        // if (onboardingType >= 0) {
+        //     Intent intent = new Intent(context, OnboardingActivity.class);
+        //     intent.putExtra(ONBOARDING_TYPE, onboardingType);
+        //     intent.putExtra(FROM_SETTINGS, fromSettings);
+        //     context.startActivity(intent);
+        // }
+        Intent intent = new Intent(context, OnboardingActivity.class);
+        context.startActivity(intent);
     }
 
-    public void onboardingNotification(Context context, boolean fromSettings) {
-        if (!isOnboardingNotificationShown() || fromSettings) {
+    public void onboardingNotification(Context context) {
+        if (!isOnboardingNotificationShown()) {
             BraveOnboardingNotification.showOnboardingNotification(context);
-
             setOnboardingNotificationShown(true);
         }
     }
 
     public static Map<String, SearchEngineEnum> searchEngineMap =
-            new HashMap<String, SearchEngineEnum>() {
-                {
-                    put(GOOGLE, SearchEngineEnum.GOOGLE);
-                    put(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO);
-                    put(DUCKDUCKGOLITE, SearchEngineEnum.DUCKDUCKGOLITE);
-                    put(QWANT, SearchEngineEnum.QWANT);
-                    put(BING, SearchEngineEnum.BING);
-                    put(STARTPAGE, SearchEngineEnum.STARTPAGE);
-                }
-            };
+    new HashMap<String, SearchEngineEnum>() {
+        {
+            put(GOOGLE, SearchEngineEnum.GOOGLE);
+            put(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO);
+            put(DUCKDUCKGOLITE, SearchEngineEnum.DUCKDUCKGOLITE);
+            put(QWANT, SearchEngineEnum.QWANT);
+            put(BING, SearchEngineEnum.BING);
+            put(STARTPAGE, SearchEngineEnum.STARTPAGE);
+        }
+    };
 }
