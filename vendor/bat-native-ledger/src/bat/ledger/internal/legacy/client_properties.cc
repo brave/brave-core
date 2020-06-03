@@ -18,7 +18,6 @@ ClientProperties::ClientProperties()
 
 ClientProperties::ClientProperties(
     const ClientProperties& properties) {
-  wallet = properties.wallet;
   wallet_info = properties.wallet_info;
   boot_timestamp = properties.boot_timestamp;
   reconcile_timestamp = properties.reconcile_timestamp;
@@ -33,8 +32,7 @@ ClientProperties::~ClientProperties() = default;
 
 bool ClientProperties::operator==(
     const ClientProperties& rhs) const {
-  return wallet.Equals(rhs.wallet) &&
-      wallet_info == rhs.wallet_info &&
+  return wallet_info == rhs.wallet_info &&
       boot_timestamp == rhs.boot_timestamp &&
       reconcile_timestamp == rhs.reconcile_timestamp &&
       fee_amount == rhs.fee_amount &&

@@ -50,7 +50,7 @@ declare global {
       initialize: () => void
       walletCreated: chrome.events.Event<() => void>
       walletCreateFailed: chrome.events.Event<() => void>
-      walletProperties: chrome.events.Event<(properties: {status: number, wallet: Rewards.WalletProperties}) => void>
+      parameters: chrome.events.Event<(properties: Rewards.RewardsParameters) => void>
       walletPassphrase: chrome.events.Event<(pass: string) => void>
       recoverWalletData: chrome.events.Event<(properties: Rewards.RecoverWallet) => void>
       reconcileStamp: chrome.events.Event<(stamp: number) => void>

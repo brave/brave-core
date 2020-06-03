@@ -8,23 +8,15 @@ import { convertBalance } from '../../../brave_rewards/resources/tip/utils'
 describe('Rewards Panel extension - Utils', () => {
   describe('convertBalance', () => {
     it('token has letters', () => {
-      expect(convertBalance('test', { 'USD': 10 })).toBe('0.00')
+      expect(convertBalance('test', 10)).toBe('0.00')
     })
 
-    it('rates are empty', () => {
-      expect(convertBalance('10', {})).toBe('0.00')
-    })
-
-    it('rate is missing', () => {
-      expect(convertBalance('10', { 'USD': 10 }, 'EUR')).toBe('0.00')
+    it('rate is 0', () => {
+      expect(convertBalance('10', 0)).toBe('0.00')
     })
 
     it('all good', () => {
-      expect(convertBalance('10', { 'USD': 10 })).toBe('100.00')
-    })
-
-    it('currency is provided', () => {
-      expect(convertBalance('10', { 'USD': 10, 'EUR': 4 }, 'EUR')).toBe('40.00')
+      expect(convertBalance('10', 10)).toBe('100.00')
     })
   })
 })

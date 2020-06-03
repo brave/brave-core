@@ -80,10 +80,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
-  virtual void SaveLedgerState(
-      const std::string& ledger_state,
-      ResultCallback callback) = 0;
-
   virtual void LoadPublisherState(OnLoadCallback callback) = 0;
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;

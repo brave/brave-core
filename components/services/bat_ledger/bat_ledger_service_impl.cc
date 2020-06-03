@@ -48,9 +48,9 @@ void BatLedgerServiceImpl::SetDebug(bool is_debug) {
   ledger::is_debug = is_debug;
 }
 
-void BatLedgerServiceImpl::SetReconcileTime(int32_t time) {
+void BatLedgerServiceImpl::SetReconcileInterval(const int32_t interval) {
   DCHECK(!initialized_ || testing());
-  ledger::reconcile_time = time;
+  ledger::reconcile_interval = interval;
 }
 
 void BatLedgerServiceImpl::SetShortRetries(bool short_retries) {
@@ -70,8 +70,9 @@ void BatLedgerServiceImpl::GetDebug(GetDebugCallback callback) {
   std::move(callback).Run(ledger::is_debug);
 }
 
-void BatLedgerServiceImpl::GetReconcileTime(GetReconcileTimeCallback callback) {
-  std::move(callback).Run(ledger::reconcile_time);
+void BatLedgerServiceImpl::GetReconcileInterval(
+    GetReconcileIntervalCallback callback) {
+  std::move(callback).Run(ledger::reconcile_interval);
 }
 
 void BatLedgerServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {

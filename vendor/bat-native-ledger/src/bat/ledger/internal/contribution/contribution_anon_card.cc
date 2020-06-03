@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/request/request_sku.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/sku/sku_util.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -91,13 +92,12 @@ void ContributionAnonCard::SendTransaction(
     const std::string& order_id,
     const std::string& destination,
     ledger::TransactionCallback callback) {
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
   const std::string payload = GetTransactionPayload(
       amount,
       order_id,
       destination,
       ledger_->GetPaymentId(),
-      wallet_info.key_info_seed);
+      braveledger_state::GetRecoverySeed(ledger_));
 
   auto url_callback = std::bind(&ContributionAnonCard::OnSendTransaction,
       this,

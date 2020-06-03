@@ -11,7 +11,6 @@ namespace prefs {
 
 extern const char kHideBraveRewardsButton[];
 extern const char kBraveRewardsEnabled[];
-extern const char kBraveRewardsEnabledMigrated[];
 extern const char kRewardsNotifications[];
 extern const char kRewardsNotificationTimerInterval[];
 extern const char kRewardsBackupNotificationFrequency[];
@@ -36,6 +35,21 @@ extern const char kStateAllowNonVerified[];
 extern const char kStateAllowVideoContribution[];
 extern const char kStateScoreA[];
 extern const char kStateScoreB[];
+extern const char kStateAutoContributeEnabled[];
+extern const char kStateAutoContributeAmount[];
+extern const char kStateNextReconcileStamp[];
+extern const char kStateCreationStamp[];
+extern const char kStateAnonymousCardId[];
+extern const char kStateRecoverySeed[];
+extern const char kStatePaymentId[];
+extern const char kStateInlineTipRedditEnabled[];
+extern const char kStateInlineTipTwitterEnabled[];
+extern const char kStateInlineTipGithubEnabled[];
+extern const char kStateParametersRate[];
+extern const char kStateParametersAutoContributeChoice[];
+extern const char kStateParametersAutoContributeChoices[];
+extern const char kStateParametersTipChoices[];
+extern const char kStateParametersMonthlyTipChoices[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs

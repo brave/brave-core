@@ -73,7 +73,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Marks if this is being ran in a test environment. Defaults to false
 @property (nonatomic, class, getter=isTesting) BOOL testing;
 /// Number of minutes between reconciles override. Defaults to 0 (no override)
-@property (nonatomic, class) int reconcileTime;
+@property (nonatomic, class) int reconcileInterval;
 /// Whether or not to use short contribution retries. Defaults to false
 @property (nonatomic, class) BOOL useShortRetries;
 
@@ -88,11 +88,11 @@ NS_SWIFT_NAME(BraveLedger)
 /// Creates a cryptocurrency wallet
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
 
-/// Fetch details about the users wallet (if they have one) and assigns it to `walletInfo`
-- (void)fetchWalletDetails:(nullable void (^)(BATWalletProperties * _Nullable))completion;
+/// Get parameters served from the server
+- (void)getRewardsParameters:(nullable void (^)(BATRewardsParameters * _Nullable))completion;
 
-/// The users wallet info if one has been created
-@property (nonatomic, readonly, nullable) BATWalletProperties *walletInfo;
+/// The parameters send from the server
+@property (nonatomic, readonly, nullable) BATRewardsParameters *rewardsParameters;
 
 /// Fetch details about the users wallet (if they have one) and assigns it to `balance`
 - (void)fetchBalance:(nullable void (^)(BATBalance * _Nullable))completion;
@@ -106,8 +106,6 @@ NS_SWIFT_NAME(BraveLedger)
 /// Recover the users wallet using their passphrase
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase
                           completion:(nullable void (^)(NSError * _Nullable))completion;
-
-@property (nonatomic, readonly) double defaultContributionAmount;
 
 /// Retrieves the users most up to date balance to determin whether or not the
 /// wallet has a sufficient balance to complete a reconcile

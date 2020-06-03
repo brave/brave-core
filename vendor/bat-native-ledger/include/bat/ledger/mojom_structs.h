@@ -83,6 +83,8 @@ using ExcludeFilter = mojom::ExcludeFilter;
 using ExternalWallet = mojom::ExternalWallet;
 using ExternalWalletPtr = mojom::ExternalWalletPtr;
 
+using InlineTipsPlatforms = mojom::InlineTipsPlatforms;
+
 using MediaEventInfo = mojom::MediaEventInfo;
 using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
 
@@ -133,6 +135,9 @@ using Result = mojom::Result;
 using RewardsInternalsInfo = mojom::RewardsInternalsInfo;
 using RewardsInternalsInfoPtr = mojom::RewardsInternalsInfoPtr;
 
+using RewardsParameters = mojom::RewardsParameters;
+using RewardsParametersPtr = mojom::RewardsParametersPtr;
+
 using RewardsType = mojom::RewardsType;
 
 using ServerPublisherInfo = mojom::ServerPublisherInfo;
@@ -180,9 +185,6 @@ using UrlResponsePtr = mojom::UrlResponsePtr;
 
 using VisitData = mojom::VisitData;
 using VisitDataPtr = mojom::VisitDataPtr;
-
-using WalletProperties = mojom::WalletProperties;
-using WalletPropertiesPtr = mojom::WalletPropertiesPtr;
 
 using WalletStatus = mojom::WalletStatus;
 

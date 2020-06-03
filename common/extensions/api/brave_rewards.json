@@ -483,7 +483,7 @@
         ]
       },
       {
-        "name": "getWalletProperties",
+        "name": "getRewardsParameters",
         "type": "function",
         "description": "Get default values that we get from the server",
         "parameters": [
@@ -495,17 +495,13 @@
                 "name": "properties",
                 "type": "object",
                 "properties": {
-                  "defaultTipChoices": {
-                    "type": "array",
-                    "description": "default tip choices for one-time tips",
-                    "items": {
-                      "type": "number",
-                      "minimum": 0
-                    }
+                  "rate": {
+                    "type": "number",
+                    "description": "conversion rate for BAT"
                   },
-                  "defaultMonthlyTipChoices": {
+                  "monthlyTipChoices": {
                     "type": "array",
-                    "description": "default tip choices for recurring tips",
+                    "description": "default tip choices for monthly tips",
                     "items": {
                       "type": "number",
                       "minimum": 0
@@ -944,7 +940,7 @@
         ]
       },
       {
-        "name": "getInlineTipSetting",
+        "name": "getInlineTippingPlatformEnabled",
         "type": "function",
         "description": "Gets setting for inline tip for provided key",
         "parameters": [

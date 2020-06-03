@@ -35,21 +35,19 @@ Balance::~Balance() {
 void Balance::Fetch(ledger::FetchBalanceCallback callback) {
   std::string payment_id = ledger_->GetPaymentId();
 
-  std::string path = (std::string)WALLET_PROPERTIES
-      + payment_id
-      + WALLET_PROPERTIES_END;
+  std::string path = "/wallet/" + payment_id + "/balance";
   const std::string url = braveledger_request_util::BuildUrl(
       path,
       PREFIX_V2,
       braveledger_request_util::ServerTypes::BALANCE);
-  auto load_callback = std::bind(&Balance::OnWalletProperties,
+  auto load_callback = std::bind(&Balance::OnFetch,
                             this,
                             _1,
                             callback);
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
 }
 
-void Balance::OnWalletProperties(
+void Balance::OnFetch(
     const ledger::UrlResponse& response,
     ledger::FetchBalanceCallback callback) {
   ledger::BalancePtr balance = ledger::Balance::New();

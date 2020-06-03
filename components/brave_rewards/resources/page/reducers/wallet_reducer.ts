@@ -38,29 +38,12 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       state.walletCreateFailed = true
       break
-    case types.GET_WALLET_PROPERTIES:
-      chrome.send('brave_rewards.getWalletProperties')
+    case types.GET_REWARDS_PARAMETERS:
+      chrome.send('brave_rewards.getRewardsParameters')
       break
-    case types.ON_WALLET_PROPERTIES: {
+    case types.ON_REWARDS_PARAMETERS: {
       state = { ...state }
-      let ui = state.ui
-
-      // TODO NZ check why enum can't be used inside Rewards namespace
-      if (action.payload.properties.status === 1) {
-        ui.walletServerProblem = true
-      } else if (action.payload.properties.status === 17) {
-        ui.walletCorrupted = true
-      } else {
-        state.contributionMonthly = action.payload.properties.monthlyAmount
-        state.autoContributeChoices = action.payload.properties.choices
-        ui.walletServerProblem = false
-        ui.walletCorrupted = false
-      }
-
-      state = {
-        ...state,
-        ui
-      }
+      state.parameters = action.payload.properties
       break
     }
     case types.GET_WALLLET_PASSPHRASE:
@@ -147,6 +130,10 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       state = createWallet(state)
       state.firstLoad = false
+      break
+    }
+    case types.GET_CONTRIBUTION_AMOUNT: {
+      chrome.send('brave_rewards.getContributionAmount')
       break
     }
     case types.ON_CONTRIBUTION_AMOUNT: {

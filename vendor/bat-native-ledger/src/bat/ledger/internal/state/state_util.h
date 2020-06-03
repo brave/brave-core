@@ -7,6 +7,7 @@
 #define BRAVELEDGER_STATE_STATE_UTIL_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/mojom_structs.h"
@@ -48,6 +49,75 @@ void GetScoreValues(
     bat_ledger::LedgerImpl* ledger,
     double* a,
     double* b);
+
+void SetRewardsMainEnabled(bat_ledger::LedgerImpl* ledger, bool enabled);
+
+bool GetRewardsMainEnabled(bat_ledger::LedgerImpl* ledger);
+
+void SetAutoContributeEnabled(bat_ledger::LedgerImpl* ledger, bool enabled);
+
+bool GetAutoContributeEnabled(bat_ledger::LedgerImpl* ledger);
+
+void SetAutoContributionAmount(
+    bat_ledger::LedgerImpl* ledger,
+    const double amount);
+
+double GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger);
+
+uint64_t GetReconcileStamp(bat_ledger::LedgerImpl* ledger);
+
+void SetReconcileStamp(
+    bat_ledger::LedgerImpl* ledger,
+    const int reconcile_interval);
+
+uint64_t GetCreationStamp(bat_ledger::LedgerImpl* ledger);
+
+void SetCreationStamp(bat_ledger::LedgerImpl* ledger, const uint64_t stamp);
+
+std::string GetAnonymousCardId(bat_ledger::LedgerImpl* ledger);
+
+void SetAnonymousCardId(
+    bat_ledger::LedgerImpl* ledger,
+    const std::string& id);
+
+std::vector<uint8_t> GetRecoverySeed(bat_ledger::LedgerImpl* ledger);
+
+void SetRecoverySeed(
+    bat_ledger::LedgerImpl* ledger,
+    const std::vector<uint8_t>& seed);
+
+std::string GetPaymentId(bat_ledger::LedgerImpl* ledger);
+
+void SetPaymentId(bat_ledger::LedgerImpl* ledger, const std::string& id);
+
+std::string ConvertInlineTipPlatformToString(
+    const ledger::InlineTipsPlatforms platform);
+
+bool GetInlineTippingPlatformEnabled(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::InlineTipsPlatforms platform);
+
+void SetInlineTippingPlatformEnabled(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::InlineTipsPlatforms platform,
+    const bool enabled);
+
+void SetRewardsParameters(
+    bat_ledger::LedgerImpl* ledger,
+    const ledger::RewardsParameters& parameters);
+
+ledger::RewardsParametersPtr GetRewardsParameters(
+    bat_ledger::LedgerImpl* ledger);
+
+double GetRate(bat_ledger::LedgerImpl* ledger);
+
+double GetAutoContributeChoice(bat_ledger::LedgerImpl* ledger);
+
+std::vector<double> GetAutoContributeChoices(bat_ledger::LedgerImpl* ledger);
+
+std::vector<double> GetTipChoices(bat_ledger::LedgerImpl* ledger);
+
+std::vector<double> GetMonthlyTipChoices(bat_ledger::LedgerImpl* ledger);
 
 }  // namespace braveledger_state
 

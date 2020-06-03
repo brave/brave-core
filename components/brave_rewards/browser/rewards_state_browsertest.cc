@@ -38,9 +38,10 @@ class RewardsStateBrowserTest
   }
 
   bool SetUpUserDataDirectory() override {
-    int32_t version = 0;
-    GetMigrationVersionFromTest(&version);
-    CopyPublisherFile(version);
+    int32_t current_version = 0;
+    GetMigrationVersionFromTest(&current_version);
+    CopyPublisherFile(current_version);
+    CopyStateFile(current_version);
     return true;
   }
 
@@ -102,7 +103,6 @@ class RewardsStateBrowserTest
       int32_t result) override {
     const auto converted_result = static_cast<ledger::Result>(result);
     ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
-                converted_result == ledger::Result::NO_LEDGER_STATE ||
                 converted_result == ledger::Result::LEDGER_OK);
     wallet_initialized_ = true;
     if (wait_for_wallet_initialization_loop_) {
@@ -139,8 +139,8 @@ class RewardsStateBrowserTest
     *path = test_path;
   }
 
-  void CopyPublisherFile(const int32_t version) const {
-    if (version > 1) {
+  void CopyPublisherFile(const int32_t current_version) const {
+    if (current_version != 0) {
       return;
     }
 
@@ -148,6 +148,18 @@ class RewardsStateBrowserTest
     GetFilePath("publisher_state", &profile_path);
     base::FilePath test_path;
     GetTestFile("publisher_state", &test_path);
+    ASSERT_TRUE(base::CopyFile(test_path, profile_path));
+  }
+
+  void CopyStateFile(const int32_t current_version) const {
+    if (current_version != 1) {
+      return;
+    }
+
+    base::FilePath profile_path;
+    GetFilePath("ledger_state", &profile_path);
+    base::FilePath test_path;
+    GetTestFile("ledger_state", &test_path);
     ASSERT_TRUE(base::CopyFile(test_path, profile_path));
   }
 
@@ -159,9 +171,6 @@ class RewardsStateBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetInteger("brave.rewards.version"),
-      1);
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
       5);
@@ -202,4 +211,40 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
         EXPECT_EQ(report.recurring_donation, 5.4);
         EXPECT_EQ(report.one_time_donation, 5.5);
       }));
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.wallet.payment_id"),
+      "eea767c4-cd27-4411-afd4-78a9c6b54dbc");
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.wallet.seed"),
+      "PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I=");
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.wallet.anonymous_card_id"),
+      "cf5b388c-eea2-4c98-bec2-f8daf39881a4");
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetUint64("brave.rewards.creation_stamp"),
+      1590484778ul);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetUint64("brave.rewards.ac.next_reconcile_stamp"),
+      1593076778ul);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetDouble("brave.rewards.ac.amount"),
+      20.0);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.enabled"),
+      true);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+      true);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.reddit"),
+      true);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.twitter"),
+      false);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.github"),
+      false);
 }

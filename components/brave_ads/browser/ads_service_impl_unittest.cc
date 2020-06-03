@@ -36,8 +36,8 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
   MOCK_METHOD1(
-      GetWalletProperties,
-      void(brave_rewards::GetWalletPropertiesCallback callback));
+      GetRewardsParameters,
+      void(brave_rewards::GetRewardsParametersCallback callback));
   MOCK_METHOD7(GetContentSiteList,
       void(uint32_t,
            uint32_t,
@@ -90,11 +90,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetPublisherAllowVideos,
       void(const brave_rewards::GetPublisherAllowVideosCallback&));
   MOCK_CONST_METHOD1(SetPublisherAllowVideos, void(bool));
-  MOCK_CONST_METHOD1(SetContributionAmount, void(double));
-  MOCK_CONST_METHOD0(SetUserChangedContribution, void());
-  MOCK_METHOD1(GetAutoContribute,
-      void(brave_rewards::GetAutoContributeCallback));
-  MOCK_METHOD1(SetAutoContribute, void(bool));
+  MOCK_CONST_METHOD1(SetAutoContributionAmount, void(double));
+  MOCK_METHOD1(GetAutoContributeEnabled,
+      void(brave_rewards::GetAutoContributeEnabledCallback));
+  MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
   MOCK_CONST_METHOD0(UpdateAdsRewards, void());
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
   MOCK_METHOD1(IsWalletCreated,
@@ -103,8 +102,8 @@ class MockRewardsService : public RewardsService {
                                                  const std::string&,
                                                  const std::string&,
                                                  const std::string&));
-  MOCK_METHOD1(GetContributionAmount,
-      void(const brave_rewards::GetContributionAmountCallback&));
+  MOCK_METHOD1(GetAutoContributionAmount,
+      void(const brave_rewards::GetAutoContributionAmountCallback&));
   MOCK_METHOD2(GetPublisherBanner,
       void(const std::string&,
            brave_rewards::GetPublisherBannerCallback));
@@ -156,11 +155,11 @@ class MockRewardsService : public RewardsService {
              void(const std::string&,
                   const std::map<std::string, std::string>&,
                   brave_rewards::SaveMediaInfoCallback));
-  MOCK_METHOD2(SetInlineTipSetting,
+  MOCK_METHOD2(SetInlineTippingPlatformEnabled,
              void(const std::string& key, bool enabled));
-  MOCK_METHOD2(GetInlineTipSetting,
+  MOCK_METHOD2(GetInlineTippingPlatformEnabled,
              void(const std::string& key,
-                  brave_rewards::GetInlineTipSettingCallback callback));
+                  brave_rewards::GetInlineTippingPlatformEnabledCallback));
   MOCK_METHOD3(GetShareURL,
              void(const std::string& type,
                   const std::map<std::string, std::string>& args,

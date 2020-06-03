@@ -405,11 +405,11 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetWalletPropertiesFunction::
-~BraveRewardsGetWalletPropertiesFunction() = default;
+BraveRewardsGetRewardsParametersFunction::
+~BraveRewardsGetRewardsParametersFunction() = default;
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetWalletPropertiesFunction::Run() {
+BraveRewardsGetRewardsParametersFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
@@ -417,32 +417,26 @@ BraveRewardsGetWalletPropertiesFunction::Run() {
     return RespondNow(OneArgument(std::move(data)));
   }
 
-  rewards_service->GetWalletProperties(base::BindOnce(
-      &BraveRewardsGetWalletPropertiesFunction::OnGet,
+  rewards_service->GetRewardsParameters(base::BindOnce(
+      &BraveRewardsGetRewardsParametersFunction::OnGet,
       this));
   return RespondLater();
 }
 
-void BraveRewardsGetWalletPropertiesFunction::OnGet(
-    const int32_t result,
-    std::unique_ptr<::brave_rewards::WalletProperties> wallet_properties) {
+void BraveRewardsGetRewardsParametersFunction::OnGet(
+    std::unique_ptr<::brave_rewards::RewardsParameters> parameters) {
   auto data = std::make_unique<base::DictionaryValue>();
 
-  if (!wallet_properties) {
+  if (!parameters) {
     return Respond(OneArgument(std::move(data)));
   }
 
-  auto tip_choices = std::make_unique<base::ListValue>();
-  for (auto const& item : wallet_properties->default_tip_choices) {
-    tip_choices->Append(base::Value(item));
-  }
-  data->SetList("defaultTipChoices", std::move(tip_choices));
-
+  data->SetDouble("rate", parameters->rate);
   auto monthly_choices = std::make_unique<base::ListValue>();
-  for (auto const& item : wallet_properties->default_monthly_tip_choices) {
+  for (auto const& item : parameters->monthly_tip_choices) {
     monthly_choices->Append(base::Value(item));
   }
-  data->SetList("defaultMonthlyTipChoices", std::move(monthly_choices));
+  data->SetList("monthlyTipChoices", std::move(monthly_choices));
 
   Respond(OneArgument(std::move(data)));
 }
@@ -658,7 +652,7 @@ BraveRewardsGetACEnabledFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service->GetAutoContribute(base::BindOnce(
+  rewards_service->GetAutoContributeEnabled(base::BindOnce(
         &BraveRewardsGetACEnabledFunction::OnGetACEnabled,
         this));
   return RespondLater();
@@ -904,14 +898,15 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   return RespondNow(OneArgument(std::move(list)));
 }
 
-BraveRewardsGetInlineTipSettingFunction::
-~BraveRewardsGetInlineTipSettingFunction() {
+BraveRewardsGetInlineTippingPlatformEnabledFunction::
+~BraveRewardsGetInlineTippingPlatformEnabledFunction() {
 }
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetInlineTipSettingFunction::Run() {
-  std::unique_ptr<brave_rewards::GetInlineTipSetting::Params> params(
-      brave_rewards::GetInlineTipSetting::Params::Create(*args_));
+BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
+  std::unique_ptr<brave_rewards::GetInlineTippingPlatformEnabled::Params>
+      params(brave_rewards::GetInlineTippingPlatformEnabled::Params::Create(
+          *args_));
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -920,15 +915,17 @@ BraveRewardsGetInlineTipSettingFunction::Run() {
     return RespondNow(OneArgument(std::make_unique<base::Value>(false)));
   }
 
-  rewards_service->GetInlineTipSetting(
+  rewards_service->GetInlineTippingPlatformEnabled(
       params->key,
       base::BindOnce(
-          &BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting,
+          &BraveRewardsGetInlineTippingPlatformEnabledFunction::
+          OnInlineTipSetting,
           this));
   return RespondLater();
 }
 
-void BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting(bool value) {
+void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
+    bool value) {
   Respond(OneArgument(std::make_unique<base::Value>(value)));
 }
 

@@ -126,8 +126,8 @@ chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       rewardsPanelActions.onAllNotifications(list)
     })
-    chrome.braveRewards.getWalletProperties((properties: RewardsExtension.WalletProperties) => {
-      rewardsPanelActions.onWalletProperties(properties)
+    chrome.braveRewards.getRewardsParameters((parameters: RewardsExtension.RewardsParameters) => {
+      rewardsPanelActions.onRewardsParameters(parameters)
     })
   }
 })

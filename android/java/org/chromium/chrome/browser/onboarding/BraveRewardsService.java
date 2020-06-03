@@ -76,9 +76,6 @@ public class BraveRewardsService extends Service implements BraveRewardsObserver
     };
 
     @Override
-    public void OnWalletProperties(int error_code){};
-
-    @Override
     public void OnPublisherInfo(int tabId){};
 
     @Override

@@ -52,7 +52,7 @@ class Recover {
 
   void RecoverWalletCallback(
       const ledger::UrlResponse& response,
-      const std::string& recoveryId,
+      const std::string& recovery_id,
       const std::vector<uint8_t>& new_seed,
       ledger::RecoverWalletCallback callback);
 

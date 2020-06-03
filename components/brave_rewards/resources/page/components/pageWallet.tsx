@@ -151,8 +151,8 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getConversion = () => {
-    const balance = this.props.rewardsData.balance
-    return utils.convertBalance(balance.total, balance.rates)
+    const { balance, parameters } = this.props.rewardsData
+    return utils.convertBalance(balance.total, parameters.rate)
   }
 
   generatePromotions = () => {
@@ -277,8 +277,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { balance, balanceReport, pendingContributionTotal } = this.props.rewardsData
-    const { rates } = balance
+    const { parameters, balanceReport, pendingContributionTotal } = this.props.rewardsData
 
     let props = {}
 
@@ -290,7 +289,7 @@ class PageWallet extends React.Component<Props, State> {
           const tokens = item.toFixed(1)
           props[key] = {
             tokens,
-            converted: utils.convertBalance(item, rates)
+            converted: utils.convertBalance(item, parameters.rate)
           }
         }
       }
@@ -309,7 +308,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getPendingRows = (): PendingDetailRow[] => {
-    const { balance, pendingContributions } = this.props.rewardsData
+    const { parameters, pendingContributions } = this.props.rewardsData
     return pendingContributions.map((item: Rewards.PendingContribution) => {
       const verified = utils.isPublisherConnectedOrVerified(item.status)
       let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
@@ -336,7 +335,7 @@ class PageWallet extends React.Component<Props, State> {
         type,
         amount: {
           tokens: item.amount.toFixed(1),
-          converted: utils.convertBalance(item.amount, balance.rates)
+          converted: utils.convertBalance(item.amount, parameters.rate)
         },
         date: new Date(parseInt(item.expirationDate, 10) * 1000).toLocaleDateString(),
         onRemove: () => {
@@ -481,7 +480,7 @@ class PageWallet extends React.Component<Props, State> {
   getBalanceToken = (key: string) => {
     const {
       monthlyReport,
-      balance
+      parameters
     } = this.props.rewardsData
 
     let value = 0.0
@@ -491,7 +490,7 @@ class PageWallet extends React.Component<Props, State> {
 
     return {
       value: value.toFixed(1),
-      converted: utils.convertBalance(value, balance.rates)
+      converted: utils.convertBalance(value, parameters.rate)
     }
   }
 
@@ -523,7 +522,7 @@ class PageWallet extends React.Component<Props, State> {
   generateActivityRows = (): ExtendedActivityRow[] => {
     const {
       monthlyReport,
-      balance
+      parameters
     } = this.props.rewardsData
 
     if (!monthlyReport.contributions) {
@@ -551,7 +550,7 @@ class PageWallet extends React.Component<Props, State> {
               url: publisher.url,
               amount: {
                 tokens: publisher.weight.toFixed(1),
-                converted: utils.convertBalance(publisher.weight, balance.rates)
+                converted: utils.convertBalance(publisher.weight, parameters.rate)
               },
               type: this.getSummaryType(contribution.type),
               date: contribution.created_at
@@ -639,7 +638,7 @@ class PageWallet extends React.Component<Props, State> {
   generateTransactionRows = (): TransactionRow[] => {
     const {
       monthlyReport,
-      balance
+      parameters
     } = this.props.rewardsData
 
     if (!monthlyReport.transactions && !monthlyReport.contributions) {
@@ -656,7 +655,7 @@ class PageWallet extends React.Component<Props, State> {
           description: this.getTransactionDescription(transaction),
           amount: {
             value: transaction.amount.toFixed(1),
-            converted: utils.convertBalance(transaction.amount, balance.rates)
+            converted: utils.convertBalance(transaction.amount, parameters.rate)
           }
         }
       })
@@ -673,7 +672,7 @@ class PageWallet extends React.Component<Props, State> {
               description: this.getContributionDescription(contribution),
               amount: {
                 value: contribution.amount.toFixed(1),
-                converted: utils.convertBalance(contribution.amount, balance.rates),
+                converted: utils.convertBalance(contribution.amount, parameters.rate),
                 isNegative: true
               }
             }

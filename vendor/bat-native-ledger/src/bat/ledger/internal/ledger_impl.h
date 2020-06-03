@@ -66,6 +66,9 @@ class SKU;
 namespace braveledger_state {
 class State;
 }
+namespace braveledger_api {
+class API;
+}
 
 namespace confirmations {
 class Confirmations;
@@ -140,13 +143,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void SetPublisherAllowVideos(bool allow) override;
 
-  void SetContributionAmount(double amount) override;
+  void SetAutoContributionAmount(double amount) override;
 
-  void SetUserChangedContribution() override;
-
-  bool GetUserChangedContribution();
-
-  void SetAutoContribute(bool enabled) override;
+  void SetAutoContributeEnabled(bool enabled) override;
 
   void UpdateAdsRewards() override;
 
@@ -156,9 +155,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void PendingContributionSaved(const ledger::Result result);
 
-  uint64_t GetReconcileStamp() const override;
+  uint64_t GetReconcileStamp() override;
 
-  bool GetRewardsMainEnabled() const override;
+  bool GetRewardsMainEnabled() override;
 
   int GetPublisherMinVisitTime() override;  // In milliseconds
 
@@ -168,9 +167,9 @@ class LedgerImpl : public ledger::Ledger {
 
   bool GetPublisherAllowVideos() override;
 
-  double GetContributionAmount() const override;
+  double GetAutoContributionAmount() override;
 
-  bool GetAutoContribute() const override;
+  bool GetAutoContributeEnabled() override;
 
   void GetBalanceReport(
       const ledger::ActivityMonth month,
@@ -182,14 +181,9 @@ class LedgerImpl : public ledger::Ledger {
 
   ledger::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
-  void SaveLedgerState(
-      const std::string& data,
-      ledger::ResultCallback callback);
-
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
-  void SetConfirmationsWalletInfo(
-      const ledger::WalletInfoProperties& wallet_info_properties);
+  void SetConfirmationsWalletInfo();
 
   void LoadLedgerState(ledger::OnLoadCallback callback);
 
@@ -198,8 +192,8 @@ class LedgerImpl : public ledger::Ledger {
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::ResultCallback callback);
 
-  void GetWalletProperties(
-      ledger::OnWalletPropertiesCallback callback) const override;
+  void GetRewardsParameters(
+      ledger::GetRewardsParametersCallback callback) override;
 
   void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 
@@ -257,7 +251,7 @@ class LedgerImpl : public ledger::Ledger {
     const ledger::Result result,
     ledger::ResultCallback callback);
 
-  bool IsWalletCreated() const override;
+  bool IsWalletCreated() override;
 
   void GetPublisherActivityFromUrl(
       uint64_t windowId,
@@ -309,20 +303,11 @@ class LedgerImpl : public ledger::Ledger {
 
   void ResetReconcileStamp();
 
-  virtual const std::string& GetPaymentId() const;
+  virtual std::string GetPaymentId();
 
-  const ledger::WalletInfoProperties& GetWalletInfo() const;
+  uint64_t GetCreationStamp() override;
 
-  void SetWalletInfo(const ledger::WalletInfoProperties& info);
-
-  const ledger::WalletProperties& GetWalletProperties() const;
-
-  void SetWalletProperties(
-      ledger::WalletProperties* properties);
-
-  uint64_t GetBootStamp() const override;
-
-  void SetBootStamp(uint64_t stamp);
+  void SetCreationStamp(uint64_t stamp);
 
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
@@ -334,8 +319,6 @@ class LedgerImpl : public ledger::Ledger {
       uint32_t /* next_record */);
 
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
-
-  double GetDefaultContributionAmount() override;
 
   void HasSufficientBalanceToReconcile(
       ledger::HasSufficientBalanceToReconcileCallback callback) override;
@@ -369,9 +352,12 @@ class LedgerImpl : public ledger::Ledger {
                      const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback) override;
 
-  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+  void SetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform,
+      bool enabled) override;
 
-  bool GetInlineTipSetting(const std::string& key) override;
+  bool GetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
       const std::string& type,
@@ -403,8 +389,6 @@ class LedgerImpl : public ledger::Ledger {
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
-
-  std::string GetCardIdAddress() const;
 
   void GetExternalWallet(const std::string& wallet_type,
                          ledger::ExternalWalletCallback callback) override;
@@ -722,6 +706,8 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& list,
       ledger::ResultCallback callback);
 
+  void FetchParameters();
+
  private:
   void OnStateInitialized(
       const ledger::Result result,
@@ -789,11 +775,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  void OnLedgerStateLoaded(
-      ledger::Result result,
-      const std::string& data,
-      ledger::ResultCallback callback);
-
   void RefreshPromotions(bool retryAfterError);
 
   void DownloadPublisherList(
@@ -821,6 +802,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_report::Report> bat_report_;
   std::unique_ptr<braveledger_sku::SKU> bat_sku_;
   std::unique_ptr<braveledger_state::State> bat_state_;
+  std::unique_ptr<braveledger_api::API> bat_api_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

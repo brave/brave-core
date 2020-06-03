@@ -77,13 +77,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetPublisherAllowVideos, void(bool));
 
-  MOCK_METHOD1(SetContributionAmount, void(double));
+  MOCK_METHOD1(SetAutoContributionAmount, void(double));
 
-  MOCK_METHOD0(SetUserChangedContribution, void());
-
-  MOCK_METHOD0(GetUserChangedContribution, bool());
-
-  MOCK_METHOD1(SetAutoContribute, void(bool));
+  MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
 
   MOCK_METHOD0(UpdateAdsRewards, void());
 
@@ -91,9 +87,9 @@ class MockLedgerImpl : public LedgerImpl {
       void(ledger::PendingContributionList,
           ledger::ResultCallback));
 
-  MOCK_CONST_METHOD0(GetReconcileStamp, uint64_t());
+  MOCK_METHOD0(GetReconcileStamp, uint64_t());
 
-  MOCK_CONST_METHOD0(GetRewardsMainEnabled, bool());
+  MOCK_METHOD0(GetRewardsMainEnabled, bool());
 
   MOCK_METHOD0(GetPublisherMinVisitTime, int());
 
@@ -103,9 +99,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(GetPublisherAllowVideos, bool());
 
-  MOCK_CONST_METHOD0(GetContributionAmount, double());
+  MOCK_METHOD0(GetAutoContributionAmount, double());
 
-  MOCK_CONST_METHOD0(GetAutoContribute, bool());
+  MOCK_METHOD0(GetAutoContributeEnabled, bool());
 
   MOCK_CONST_METHOD3(GetBalanceReport,
       void(const ledger::ActivityMonth,
@@ -117,8 +113,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(GetAutoContributeProperties,
       ledger::AutoContributePropertiesPtr());
-
-  MOCK_METHOD1(SaveLedgerState, void(const std::string&));
 
   MOCK_METHOD1(LoadNicewareList, void(ledger::GetNicewareListCallback));
 
@@ -132,8 +126,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(OnWalletInitializedInternal,
       void(ledger::Result, ledger::ResultCallback));
 
-  MOCK_CONST_METHOD1(GetWalletProperties,
-      void(const ledger::OnWalletPropertiesCallback));
+  MOCK_METHOD1(GetRewardsParameters,
+      void(const ledger::GetRewardsParametersCallback));
 
   MOCK_CONST_METHOD1(FetchPromotions,
       void(ledger::FetchPromotionCallback));
@@ -189,7 +183,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(OnRestorePublishers,
       void(const ledger::Result, ledger::ResultCallback));
 
-  MOCK_CONST_METHOD0(IsWalletCreated, bool());
+  MOCK_METHOD0(IsWalletCreated, bool());
 
   MOCK_METHOD3(GetPublisherActivityFromUrl,
       void(uint64_t,
@@ -239,27 +233,15 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(ResetReconcileStamp, void());
 
-  MOCK_CONST_METHOD0(GetPaymentId, const std::string&());
-
-  MOCK_CONST_METHOD0(GetWalletInfo,
-      const ledger::WalletInfoProperties&());
-
-  MOCK_METHOD1(SetWalletInfo,
-      void(const ledger::WalletInfoProperties&));
+  MOCK_METHOD0(GetPaymentId, std::string());
 
   MOCK_METHOD1(GetConfirmationsWalletInfo,
       const confirmations::WalletInfo(
           const ledger::WalletInfoProperties&));
 
-  MOCK_CONST_METHOD0(GetWalletProperties,
-      const ledger::WalletProperties&());
+  MOCK_METHOD0(GetCreationStamp, uint64_t());
 
-  MOCK_METHOD1(SetWalletProperties,
-      void(ledger::WalletProperties*));
-
-  MOCK_CONST_METHOD0(GetBootStamp, uint64_t());
-
-  MOCK_METHOD1(SetBootStamp, void(uint64_t));
+  MOCK_METHOD1(SetCreationStamp, void(uint64_t));
 
   MOCK_METHOD6(SaveContributionInfo,
       void(const std::string&,
@@ -275,8 +257,6 @@ class MockLedgerImpl : public LedgerImpl {
           uint32_t));
 
   MOCK_CONST_METHOD2(SetTimer, void(uint64_t, uint32_t*));
-
-  MOCK_METHOD0(GetDefaultContributionAmount, double());
 
   MOCK_METHOD1(HasSufficientBalanceToReconcile,
       void(ledger::HasSufficientBalanceToReconcileCallback));
@@ -313,9 +293,11 @@ class MockLedgerImpl : public LedgerImpl {
           const std::map<std::string, std::string>&,
           ledger::PublisherInfoCallback));
 
-  MOCK_METHOD2(SetInlineTipSetting, void(const std::string&, bool));
+  MOCK_METHOD2(SetInlineTippingPlatformEnabled,
+      void(const ledger::InlineTipsPlatforms platform, bool));
 
-  MOCK_METHOD1(GetInlineTipSetting, bool(const std::string&));
+  MOCK_METHOD1(GetInlineTippingPlatformEnabled,
+      bool(const ledger::InlineTipsPlatforms platform));
 
   MOCK_METHOD2(GetShareURL,
       std::string(const std::string&,
@@ -346,8 +328,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 
   MOCK_METHOD1(GetExternalWallets, void(ledger::GetExternalWalletsCallback));
-
-  MOCK_CONST_METHOD0(GetCardIdAddress, std::string());
 
   MOCK_METHOD2(GetExternalWallet,
       void(const std::string&, ledger::ExternalWalletCallback));

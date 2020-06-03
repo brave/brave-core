@@ -26,7 +26,6 @@ declare namespace Rewards {
     addresses?: Record<AddressesType, Address>
     adsData: AdsData
     adsHistory: AdsHistory[]
-    autoContributeChoices: number[]
     autoContributeList: Publisher[]
     balance: Balance
     balanceReport?: BalanceReport
@@ -54,6 +53,7 @@ declare namespace Rewards {
     firstLoad: boolean | null
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]
+    parameters: RewardsParameters
     promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -80,6 +80,12 @@ declare namespace Rewards {
     }
     walletCreated: boolean
     walletCreateFailed: boolean
+  }
+
+  export interface RewardsParameters {
+    rate: number
+    autoContributeChoice: number
+    autoContributeChoices: number[]
   }
 
   export interface ComponentProps {

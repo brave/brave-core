@@ -23,15 +23,15 @@ namespace ledger {
 extern Environment _environment;
 extern bool is_debug;
 extern bool is_testing;
-extern int reconcile_time;  // minutes
+extern int reconcile_interval;  // minutes
 extern bool short_retries;
 
 using PublisherBannerCallback =
     std::function<void(ledger::PublisherBannerPtr banner)>;
 using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
-using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
-                                  ledger::WalletPropertiesPtr)>;
+using GetRewardsParametersCallback =
+    std::function<void(ledger::RewardsParametersPtr)>;
 using OnRefreshPublisherCallback =
     std::function<void(ledger::PublisherStatus)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
@@ -145,17 +145,15 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherAllowVideos(bool allow) = 0;
 
-  virtual void SetContributionAmount(double amount) = 0;
+  virtual void SetAutoContributionAmount(double amount) = 0;
 
-  virtual void SetUserChangedContribution() = 0;
-
-  virtual void SetAutoContribute(bool enabled) = 0;
+  virtual void SetAutoContributeEnabled(bool enabled) = 0;
 
   virtual void UpdateAdsRewards() = 0;
 
-  virtual uint64_t GetReconcileStamp() const = 0;
+  virtual uint64_t GetReconcileStamp() = 0;
 
-  virtual bool GetRewardsMainEnabled() const = 0;
+  virtual bool GetRewardsMainEnabled() = 0;
 
   virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
 
@@ -165,12 +163,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetPublisherAllowVideos() = 0;
 
-  virtual double GetContributionAmount() const = 0;
+  virtual double GetAutoContributionAmount() = 0;
 
-  virtual bool GetAutoContribute() const = 0;
+  virtual bool GetAutoContributeEnabled() = 0;
 
-  virtual void GetWalletProperties(
-      OnWalletPropertiesCallback callback) const = 0;
+  virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
 
   virtual void FetchPromotions(
       ledger::FetchPromotionCallback callback) const = 0;
@@ -233,7 +230,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RestorePublishers(ledger::ResultCallback callback) = 0;
 
-  virtual bool IsWalletCreated() const = 0;
+  virtual bool IsWalletCreated() = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
@@ -248,9 +245,7 @@ class LEDGER_EXPORT Ledger {
     const std::string& publisher_key,
     ResultCallback callback) = 0;
 
-  virtual double GetDefaultContributionAmount() = 0;
-
-  virtual uint64_t GetBootStamp() const = 0;
+  virtual uint64_t GetCreationStamp() = 0;
 
   virtual void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) = 0;
@@ -292,9 +287,12 @@ class LEDGER_EXPORT Ledger {
                              const std::map<std::string, std::string>& data,
                              ledger::PublisherInfoCallback callback) = 0;
 
-  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
+  virtual void SetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform,
+      bool enabled) = 0;
 
-  virtual bool GetInlineTipSetting(const std::string& key) = 0;
+  virtual bool GetInlineTippingPlatformEnabled(
+      const ledger::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
       const std::string& type,

@@ -45,7 +45,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
   }
 
   getRows = () => {
-    const { balance, recurringList } = this.props.rewardsData
+    const { parameters, recurringList } = this.props.rewardsData
     let recurring: DetailRow[] = []
 
     if (!recurringList) {
@@ -69,7 +69,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
         },
         contribute: {
           tokens: item.percentage.toFixed(1),
-          converted: utils.convertBalance(item.percentage, balance.rates)
+          converted: utils.convertBalance(item.percentage, parameters.rate)
         },
         url: item.url,
         type: 'recurring' as any,
@@ -86,7 +86,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
 
   render () {
     const {
-      balance,
+      parameters,
       recurringList,
       reconcileStamp
     } = this.props.rewardsData
@@ -95,7 +95,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(recurringList)
-    const converted = utils.convertBalance(total, balance.rates)
+    const converted = utils.convertBalance(total, parameters.rate)
 
     return (
       <BoxMobile

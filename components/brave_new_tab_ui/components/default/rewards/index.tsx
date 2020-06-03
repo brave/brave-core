@@ -42,6 +42,7 @@ export interface RewardsProps {
   enabledAds: boolean
   enabledMain: boolean
   balance: NewTab.RewardsBalance
+  parameters: NewTab.RewardsParameters
   promotions: NewTab.Promotion[]
   totalContribution: number
   walletCreated: boolean
@@ -165,7 +166,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
 
   renderAmountItem = (type: AmountItemType) => {
     const {
-      balance,
+      parameters,
       enabledAds,
       onEnableAds,
       adsEstimatedEarnings,
@@ -174,12 +175,12 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       adsSupported
     } = this.props
 
-    const rates = balance.rates || {}
+    const rate = parameters.rate || 0.0
     const showEnableAds = type === AmountItemType.ADS && !enabledAds && adsSupported
     const amount = type === AmountItemType.TIPS
       ? totalContribution
       : adsEstimatedEarnings
-    const converted = convertBalance(amount, rates)
+    const converted = convertBalance(amount, rate)
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
     return (

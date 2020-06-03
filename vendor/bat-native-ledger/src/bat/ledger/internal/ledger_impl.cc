@@ -16,6 +16,7 @@
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/confirmations/confirmations.h"
+#include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -43,6 +44,7 @@ using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
 using namespace braveledger_sku; //  NOLINT
 using namespace braveledger_state; //  NOLINT
+using namespace braveledger_api; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -61,6 +63,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
     bat_state_(new State(this)),
+    bat_api_(new API(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -108,11 +111,9 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
+    bat_api_->Initialize();
 
-    // Set wallet info for Confirmations when launching the browser or creating
-    // a wallet for the first time
-    auto wallet_info = legacy_bat_state_->GetWalletInfo();
-    SetConfirmationsWalletInfo(wallet_info);
+    SetConfirmationsWalletInfo();
   } else {
     BLOG(0, "Failed to initialize wallet " << result);
   }
@@ -183,19 +184,12 @@ void LedgerImpl::MaybeInitializeConfirmations(
 
   const bool is_enabled = GetBooleanState(ledger::kStateEnabled);
 
-  const bool is_enabled_migrated =
-      GetBooleanState(ledger::kStateEnabledMigrated);
-
-  if (is_enabled || !is_enabled_migrated) {
+  if (is_enabled) {
     InitializeConfirmations(callback);
-  } else {
-    auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
-        this,
-        _1,
-        _2,
-        std::move(callback));
-    LoadLedgerState(on_load);
+    return;
   }
+
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void LedgerImpl::InitializeConfirmations(
@@ -219,12 +213,7 @@ void LedgerImpl::OnConfirmationsInitialized(
     BLOG(0, "Failed to initialize confirmations");
   }
 
-  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
-      this,
-      _1,
-      _2,
-      std::move(callback));
-  LoadLedgerState(on_load);
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void LedgerImpl::StartConfirmations() {
@@ -316,7 +305,7 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
-  if (!GetRewardsMainEnabled() || !GetAutoContribute()) {
+  if (!GetRewardsMainEnabled() || !GetAutoContributeEnabled()) {
     return;
   }
 
@@ -416,49 +405,14 @@ void LedgerImpl::LoadLedgerState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadLedgerState(std::move(callback));
 }
 
-void LedgerImpl::OnLedgerStateLoaded(
-    ledger::Result result,
-    const std::string& data,
-    ledger::ResultCallback callback) {
-  if (result == ledger::Result::LEDGER_OK) {
-    if (!legacy_bat_state_->LoadState(data)) {
-      BLOG(0, "Successfully loaded but failed to parse ledger state.");
-      BLOG(1, "Failed ledger state: " << data);
-
-      callback(ledger::Result::INVALID_LEDGER_STATE);
-      return;
-    }
-
-    if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
-      BLOG(0, "Corrupted wallet");
-      callback(ledger::Result::CORRUPTED_DATA);
-      return;
-    }
-
-    callback(result);
-    return;
-  }
-
-  if (result != ledger::Result::NO_LEDGER_STATE) {
-    BLOG(0, "Failed to load ledger state");
-    BLOG(1, "Failed ledger state: " << data);
-  }
-  callback(result);
-}
-
-void LedgerImpl::SetConfirmationsWalletInfo(
-    const ledger::WalletInfoProperties& wallet_info_properties) {
+void LedgerImpl::SetConfirmationsWalletInfo() {
   if (!IsConfirmationsRunning()) {
     return;
   }
 
-  if (wallet_info_properties.key_info_seed.size() != SEED_LENGTH) {
-    BLOG(0, "Failed to initialize confirmations due to invalid wallet");
-    return;
-  }
-
+  const auto recovery_seed = braveledger_state::GetRecoverySeed(this);
   const std::vector<uint8_t> seed =
-      braveledger_bat_helper::getHKDF(wallet_info_properties.key_info_seed);
+      braveledger_bat_helper::getHKDF(recovery_seed);
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> secret_key;
 
@@ -469,7 +423,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
   }
 
   confirmations::WalletInfo wallet_info;
-  wallet_info.payment_id = wallet_info_properties.payment_id;
+  wallet_info.payment_id = GetPaymentId();
   wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secret_key);
 
   if (!wallet_info.IsValid()) {
@@ -483,12 +437,6 @@ void LedgerImpl::SetConfirmationsWalletInfo(
 
 void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadPublisherState(std::move(callback));
-}
-
-void LedgerImpl::SaveLedgerState(
-    const std::string& data,
-    ledger::ResultCallback callback) {
-  ledger_client_->SaveLedgerState(data, callback);
 }
 
 void LedgerImpl::LoadURL(
@@ -643,7 +591,7 @@ void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 }
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
-  legacy_bat_state_->SetRewardsMainEnabled(enabled);
+  braveledger_state::SetRewardsMainEnabled(this, enabled);
   bat_publisher_->SetPublisherServerListTimer(enabled);
 
   if (enabled) {
@@ -669,25 +617,17 @@ void LedgerImpl::SetPublisherAllowVideos(bool allow) {
   braveledger_state::SetPublisherAllowVideos(this, allow);
 }
 
-void LedgerImpl::SetContributionAmount(double amount) {
-  legacy_bat_state_->SetContributionAmount(amount);
+void LedgerImpl::SetAutoContributionAmount(double amount) {
+  braveledger_state::SetAutoContributionAmount(this, amount);
 }
 
-void LedgerImpl::SetUserChangedContribution() {
-  legacy_bat_state_->SetUserChangedContribution();
-}
-
-bool LedgerImpl::GetUserChangedContribution() {
-  return legacy_bat_state_->GetUserChangedContribution();
-}
-
-void LedgerImpl::SetAutoContribute(bool enabled) {
-  legacy_bat_state_->SetAutoContribute(enabled);
+void LedgerImpl::SetAutoContributeEnabled(bool enabled) {
+  braveledger_state::SetAutoContributeEnabled(this, enabled);
 }
 
 ledger::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
   auto props = ledger::AutoContributeProperties::New();
-  props->enabled_contribute = GetAutoContribute();
+  props->enabled_contribute = GetAutoContributeEnabled();
   props->contribution_min_time = GetPublisherMinVisitTime();
   props->contribution_min_visits = GetPublisherMinVisits();
   props->contribution_non_verified = GetPublisherAllowNonVerified();
@@ -696,8 +636,8 @@ ledger::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
   return props;
 }
 
-bool LedgerImpl::GetRewardsMainEnabled() const {
-  return legacy_bat_state_->GetRewardsMainEnabled();
+bool LedgerImpl::GetRewardsMainEnabled() {
+  return braveledger_state::GetRewardsMainEnabled(this);
 }
 
 int LedgerImpl::GetPublisherMinVisitTime() {
@@ -716,16 +656,16 @@ bool LedgerImpl::GetPublisherAllowVideos() {
   return braveledger_state::GetPublisherAllowVideos(this);
 }
 
-double LedgerImpl::GetContributionAmount() const {
-  return legacy_bat_state_->GetContributionAmount();
+double LedgerImpl::GetAutoContributionAmount() {
+  return braveledger_state::GetAutoContributionAmount(this);
 }
 
-bool LedgerImpl::GetAutoContribute() const {
-  return legacy_bat_state_->GetAutoContribute();
+bool LedgerImpl::GetAutoContributeEnabled() {
+  return braveledger_state::GetAutoContributeEnabled(this);
 }
 
-uint64_t LedgerImpl::GetReconcileStamp() const {
-  return legacy_bat_state_->GetReconcileStamp();
+uint64_t LedgerImpl::GetReconcileStamp() {
+  return braveledger_state::GetReconcileStamp(this);
 }
 
 void LedgerImpl::ContributionCompleted(
@@ -748,9 +688,9 @@ void LedgerImpl::ContributionCompleted(
       type);
 }
 
-void LedgerImpl::GetWalletProperties(
-    ledger::OnWalletPropertiesCallback callback) const {
-  bat_wallet_->GetWalletProperties(callback);
+void LedgerImpl::GetRewardsParameters(
+    ledger::GetRewardsParametersCallback callback) {
+  callback(braveledger_state::GetRewardsParameters(this));
 }
 
 void LedgerImpl::ClaimPromotion(
@@ -830,6 +770,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   bat_contribution_->OnTimer(timer_id);
   bat_publisher_->OnTimer(timer_id);
   bat_promotion_->OnTimer(timer_id);
+  bat_api_->OnTimer(timer_id);
 }
 
 void LedgerImpl::SaveRecurringTip(
@@ -851,8 +792,9 @@ void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
       callback);
 }
 
-bool LedgerImpl::IsWalletCreated() const {
-  return legacy_bat_state_->IsWalletCreated();
+bool LedgerImpl::IsWalletCreated() {
+  const auto stamp = braveledger_state::GetCreationStamp(this);
+  return stamp != 0u;
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(
@@ -937,29 +879,12 @@ void LedgerImpl::UpdateAdsRewards() {
 }
 
 void LedgerImpl::ResetReconcileStamp() {
-  legacy_bat_state_->ResetReconcileStamp();
+  braveledger_state::SetReconcileStamp(this, ledger::reconcile_interval);
   ledger_client_->ReconcileStampReset();
 }
 
-const std::string& LedgerImpl::GetPaymentId() const {
-  return legacy_bat_state_->GetPaymentId();
-}
-
-const ledger::WalletInfoProperties& LedgerImpl::GetWalletInfo() const {
-  return legacy_bat_state_->GetWalletInfo();
-}
-
-void LedgerImpl::SetWalletInfo(
-    const ledger::WalletInfoProperties& info) {
-  legacy_bat_state_->SetWalletInfo(info);
-
-  if (!initializing_) {
-    // Only update wallet info for Confirmations if |SetWalletInfo| was not
-    // called when launching the browser or creating a wallet for the first time
-    // (i.e. recovering a wallet), as these scenarios are covered in
-    // |OnWalletInitializedInternal|
-    SetConfirmationsWalletInfo(info);
-  }
+std::string LedgerImpl::GetPaymentId() {
+  return braveledger_state::GetPaymentId(this);
 }
 
 void LedgerImpl::GetRewardsInternalsInfo(
@@ -967,19 +892,17 @@ void LedgerImpl::GetRewardsInternalsInfo(
   ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
 
   // Retrieve the payment id.
-  info->payment_id = legacy_bat_state_->GetPaymentId();
+  info->payment_id = GetPaymentId();
 
   // Retrieve the boot stamp.
-  info->boot_stamp = legacy_bat_state_->GetBootStamp();
+  info->boot_stamp = GetCreationStamp();
 
   // Retrieve the key info seed and validate it.
-  const ledger::WalletInfoProperties wallet_info =
-      legacy_bat_state_->GetWalletInfo();
-  if (wallet_info.key_info_seed.size() != SEED_LENGTH) {
+  const auto seed = braveledger_state::GetRecoverySeed(this);
+  if (seed.size() != SEED_LENGTH) {
     info->is_key_info_seed_valid = false;
   } else {
-    std::vector<uint8_t> secret_key =
-        braveledger_bat_helper::getHKDF(wallet_info.key_info_seed);
+    std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
     info->is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
@@ -993,21 +916,12 @@ void LedgerImpl::StartMonthlyContribution() {
   bat_contribution_->StartMonthlyContribution();
 }
 
-const ledger::WalletProperties& LedgerImpl::GetWalletProperties() const {
-  return legacy_bat_state_->GetWalletProperties();
+uint64_t LedgerImpl::GetCreationStamp() {
+  return braveledger_state::GetCreationStamp(this);
 }
 
-void LedgerImpl::SetWalletProperties(
-    ledger::WalletProperties* properties) {
-  legacy_bat_state_->SetWalletProperties(properties);
-}
-
-uint64_t LedgerImpl::GetBootStamp() const {
-  return legacy_bat_state_->GetBootStamp();
-}
-
-void LedgerImpl::SetBootStamp(uint64_t stamp) {
-  legacy_bat_state_->SetBootStamp(stamp);
+void LedgerImpl::SetCreationStamp(uint64_t stamp) {
+  braveledger_state::SetCreationStamp(this, stamp);
 }
 void LedgerImpl::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
@@ -1024,10 +938,6 @@ void LedgerImpl::NormalizeContributeWinners(
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
-}
-
-double LedgerImpl::GetDefaultContributionAmount() {
-  return legacy_bat_state_->GetDefaultContributionAmount();
 }
 
 void LedgerImpl::HasSufficientBalanceToReconcile(
@@ -1128,12 +1038,15 @@ void LedgerImpl::SaveMediaInfo(const std::string& type,
   bat_media_->SaveMediaInfo(type, data, callback);
 }
 
-void LedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
-  legacy_bat_state_->SetInlineTipSetting(key, enabled);
+void LedgerImpl::SetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    bool enabled) {
+  braveledger_state::SetInlineTippingPlatformEnabled(this, platform, enabled);
 }
 
-bool LedgerImpl::GetInlineTipSetting(const std::string& key) {
-  return legacy_bat_state_->GetInlineTipSetting(key);
+bool LedgerImpl::GetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform) {
+  return braveledger_state::GetInlineTippingPlatformEnabled(this, platform);
 }
 
 std::string LedgerImpl::GetShareURL(
@@ -1189,10 +1102,6 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
 void LedgerImpl::GetExternalWallets(
     ledger::GetExternalWalletsCallback callback) {
   ledger_client_->GetExternalWallets(callback);
-}
-
-std::string LedgerImpl::GetCardIdAddress() const {
-  return legacy_bat_state_->GetCardIdAddress();
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
@@ -1735,6 +1644,10 @@ void LedgerImpl::SaveProcessedPublisherList(
     const std::vector<std::string>& list,
     ledger::ResultCallback callback) {
   bat_database_->SaveProcessedPublisherList(list, callback);
+}
+
+void LedgerImpl::FetchParameters() {
+  bat_api_->FetchParameters();
 }
 
 }  // namespace bat_ledger

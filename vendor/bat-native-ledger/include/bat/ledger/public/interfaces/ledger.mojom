@@ -107,11 +107,12 @@ struct VisitData {
   string favicon_url;
 };
 
-struct WalletProperties {
-  double fee_amount;
-  array<double> parameters_choices;
-  array<double> default_tip_choices;
-  array<double> default_monthly_tip_choices;
+struct RewardsParameters {
+  double rate;
+  double auto_contribute_choice;
+  array<double> auto_contribute_choices;
+  array<double> tip_choices;
+  array<double> monthly_tip_choices;
 };
 
 struct Balance {
@@ -538,5 +539,12 @@ struct UrlResponse {
   int32 status_code;
   string body;
   map<string, string> headers;
+};
+
+enum InlineTipsPlatforms {
+  NONE = 0,
+  REDDIT = 1,
+  TWITTER = 2,
+  GITHUB = 3
 };
 

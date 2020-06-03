@@ -26,7 +26,7 @@ class ConfirmationsClientMock : public ConfirmationsClient {
   MOCK_METHOD1(OnWalletInitialized, void(
       ledger::Result result));
 
-  MOCK_METHOD0(GetWalletProperties, void());
+  MOCK_METHOD0(GetRewardsParameters, void());
 
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
@@ -36,10 +36,6 @@ class ConfirmationsClientMock : public ConfirmationsClient {
 
   MOCK_METHOD1(LoadLedgerState, void(
       ledger::OnLoadCallback callback));
-
-  MOCK_METHOD2(SaveLedgerState, void(
-      const std::string& ledger_state,
-      ledger::ResultCallback callback));
 
   MOCK_METHOD1(LoadPublisherState, void(
       ledger::OnLoadCallback callback));

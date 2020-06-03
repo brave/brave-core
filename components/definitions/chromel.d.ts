@@ -64,7 +64,7 @@ declare namespace chrome.settingsPrivate {
 
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
-  const getWalletProperties: (callback: (properties: RewardsExtension.WalletProperties) => void) => {}
+  const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const tipSite: (tabId: number, publisherKey: string, monthly: boolean) => {}
   const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
@@ -124,7 +124,7 @@ declare namespace chrome.braveRewards {
   }
   const refreshPublisher: (publisherKey: string, callback: (status: number, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
-  const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
+  const getInlineTippingPlatformEnabled: (key: string, callback: (enabled: boolean) => void) => {}
   const fetchBalance: (callback: (balance: RewardsExtension.Balance) => void) => {}
   const onReconcileComplete: {
     addListener: (callback: (result: number, type: number) => void) => void

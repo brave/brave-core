@@ -245,7 +245,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        thisObject.mBraveRewardsNativeWorker.GetWalletProperties();
                         mBraveRewardsNativeWorker.FetchGrants();
                     }
                 });
@@ -755,7 +754,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             //read USD rate
-            double usdrate = mBraveRewardsNativeWorker.GetWalletRate("USD");
+            double usdrate = mBraveRewardsNativeWorker.GetWalletRate();
 
             TextView tv;
             if (null == convertView) {
@@ -1111,48 +1110,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     }
 
     @Override
-    public void OnWalletProperties(int error_code) {
-        boolean  former_walletDetailsReceived = walletDetailsReceived;
-        if (BraveRewardsNativeWorker.LEDGER_OK == error_code) {
-            DismissNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID);
-            if (mBraveRewardsNativeWorker != null) {
-                BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
-                if (balance_obj != null) {
-                    walletBalance = balance_obj.mTotal;
-                }
-
-                DecimalFormat df = new DecimalFormat("#.#");
-                df.setRoundingMode(RoundingMode.FLOOR);
-                df.setMinimumFractionDigits(1);
-                ((TextView)this.root.findViewById(R.id.br_bat_wallet)).setText(df.format(walletBalance));
-                ((TextView)this.root.findViewById(R.id.br_bat)).setText(batPointsText);
-                double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate("USD");
-                String usdText = String.format(this.root.getResources().getString(R.string.brave_ui_usd),
-                                               String.format(Locale.getDefault(), "%.2f", usdValue));
-
-                Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
-                if (btnVerifyWallet != null) {
-                    if (walletBalance < WALLET_BALANCE_LIMIT) {
-                        btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button_disabled);
-                    } else {
-                        btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
-                    }
-                }
-            }
-            walletDetailsReceived = true;
-        } else if (BraveRewardsNativeWorker.LEDGER_ERROR == error_code) {   // No Internet connection
-            String args[] = {};
-            ShowNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID, REWARDS_NOTIFICATION_NO_INTERNET, 0, args);
-        } else {
-            walletDetailsReceived = false;
-        }
-
-        if (former_walletDetailsReceived != walletDetailsReceived) {
-            EnableWalletDetails(walletDetailsReceived);
-        }
-    }
-
-    @Override
     public void OnFetchPromotions() {
         int currentGrantsCount = mBraveRewardsNativeWorker.GetCurrentGrantsCount();
         Button btGrants = (Button)this.root.findViewById(R.id.grants_dropdown);
@@ -1343,7 +1300,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             String usdValue = ERROR_CONVERT_PROBI;
             if (! Double.isNaN(probiDouble)) {
-                double usdValueDouble = probiDouble * mBraveRewardsNativeWorker.GetWalletRate("USD");
+                double usdValueDouble = probiDouble * mBraveRewardsNativeWorker.GetWalletRate();
                 usdValue = String.format(Locale.getDefault(), "%.2f USD", usdValueDouble);
             }
 
@@ -1448,7 +1405,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnNotificationDeleted(String id) {
         DismissNotification(id);
-        mBraveRewardsNativeWorker.GetWalletProperties();
     }
 
     @Override
@@ -1491,8 +1447,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         } else {
             mBraveRewardsNativeWorker.WalletExist();
         }
+        if (enabled) {
+            mBraveRewardsNativeWorker.GetRewardsParameters();
+        }
     }
-
 
     @Override
     public void OnGetAutoContributeProperties() {
@@ -1544,6 +1502,50 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnRewardsMainEnabled(boolean enabled) {}
 
+    @Override
+    public void OnRewardsParameters(int errorCode) {
+      boolean former_walletDetailsReceived = walletDetailsReceived;
+      if (errorCode == BraveRewardsNativeWorker.LEDGER_OK) {
+          DismissNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID);
+          if (mBraveRewardsNativeWorker != null) {
+              BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
+              if (balance_obj != null) {
+                  walletBalance = balance_obj.mTotal;
+              }
+
+              DecimalFormat df = new DecimalFormat("#.#");
+              df.setRoundingMode(RoundingMode.FLOOR);
+              df.setMinimumFractionDigits(1);
+              ((TextView) this.root.findViewById(R.id.br_bat_wallet))
+                      .setText(df.format(walletBalance));
+              ((TextView) this.root.findViewById(R.id.br_bat)).setText(batPointsText);
+              double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
+              String usdText =
+                      String.format(this.root.getResources().getString(R.string.brave_ui_usd),
+                              String.format(Locale.getDefault(), "%.2f", usdValue));
+
+              Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
+              if (btnVerifyWallet != null) {
+                  if (walletBalance < WALLET_BALANCE_LIMIT) {
+                      btnVerifyWallet.setBackgroundResource(
+                              R.drawable.wallet_verify_button_disabled);
+                  } else {
+                      btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
+                  }
+              }
+          }
+          walletDetailsReceived = true;
+        } else if (errorCode == BraveRewardsNativeWorker.LEDGER_ERROR) {   // No Internet connection
+            String args[] = {};
+            ShowNotification(REWARDS_NOTIFICATION_NO_INTERNET_ID, REWARDS_NOTIFICATION_NO_INTERNET, 0, args);
+        } else {
+            walletDetailsReceived = false;
+        }
+
+        if (former_walletDetailsReceived != walletDetailsReceived) {
+            EnableWalletDetails(walletDetailsReceived);
+        }
+    }
 
     void UpdateRecurentDonationSpinner(double amount) {
         int RequestedPosition = mTip_amount_spinner_data_adapter.getPosition ((int)amount);
@@ -1558,6 +1560,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             mTip_amount_spinner.setSelection(RequestedPosition);
         }
     }
+
     @Override
     public void OnGrantFinish(int result) {
         mBraveRewardsNativeWorker.GetAllNotifications();

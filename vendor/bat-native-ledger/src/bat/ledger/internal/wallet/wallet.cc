@@ -8,6 +8,7 @@
 #include <map>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
@@ -15,16 +16,16 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/unsigned_tx_properties.h"
-#include "bat/ledger/internal/legacy/wallet_info_properties.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/legacy/wallet_state.h"
 #include "bat/ledger/internal/legacy/unsigned_tx_state.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/state/state_util.h"
+#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
-#include "bat/ledger/internal/uphold/uphold.h"
 #include "net/http/http_status_code.h"
 
 #include "wally_bip39.h"  // NOLINT
@@ -48,7 +49,7 @@ Wallet::~Wallet() {
 
 void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
-  const auto stamp = ledger_->GetBootStamp();
+  const auto stamp = ledger_->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
     BLOG(1, "Wallet already exists");
@@ -59,82 +60,17 @@ void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   create_->Start(std::move(callback));
 }
 
-void Wallet::GetWalletProperties(ledger::OnWalletPropertiesCallback callback) {
-  std::string payment_id = ledger_->GetPaymentId();
-  std::string passphrase = GetWalletPassphrase();
-
-  if (payment_id.empty() || passphrase.empty()) {
-    BLOG(0, "Wallet corruption");
-    ledger::WalletProperties properties;
-    callback(ledger::Result::CORRUPTED_DATA,
-             WalletPropertiesToWalletInfo(properties));
-    return;
-  }
-
-  std::string path = (std::string)WALLET_PROPERTIES
-      + payment_id
-      + WALLET_PROPERTIES_END;
-  const std::string url = braveledger_request_util::BuildUrl(
-      path,
-      PREFIX_V2,
-      braveledger_request_util::ServerTypes::BALANCE);
-  auto load_callback = std::bind(&Wallet::WalletPropertiesCallback,
-                            this,
-                            _1,
-                            callback);
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
-}
-
-ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
-    const ledger::WalletProperties& properties) {
-  ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
-  wallet->parameters_choices = properties.parameters_choices;
-  wallet->fee_amount = ledger_->GetContributionAmount();
-  wallet->default_tip_choices = properties.default_tip_choices;
-  wallet->default_monthly_tip_choices = properties.default_monthly_tip_choices;
-
-  return wallet;
-}
-
-void Wallet::WalletPropertiesCallback(
-    const ledger::UrlResponse& response,
-    ledger::OnWalletPropertiesCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-  ledger::WalletProperties properties;
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR,
-             WalletPropertiesToWalletInfo(properties));
-    return;
-  }
-
-  ledger::WalletPropertiesPtr wallet;
-
-  const ledger::WalletState wallet_state;
-  bool ok = wallet_state.FromJson(response.body, &properties);
-
-  if (!ok) {
-    BLOG(0, "Failed to load wallet properties state");
-    callback(ledger::Result::LEDGER_ERROR, std::move(wallet));
-    return;
-  }
-
-  wallet = WalletPropertiesToWalletInfo(properties);
-
-  ledger_->SetWalletProperties(&properties);
-  callback(ledger::Result::LEDGER_OK, std::move(wallet));
-}
-
 std::string Wallet::GetWalletPassphrase() const {
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
+  const auto seed = braveledger_state::GetRecoverySeed(ledger_);
   std::string passPhrase;
-  if (wallet_info.key_info_seed.size() == 0) {
+  if (seed.size() == 0) {
     return passPhrase;
   }
 
   char* words = nullptr;
   int result = bip39_mnemonic_from_bytes(nullptr,
-                                         &wallet_info.key_info_seed.front(),
-                                         wallet_info.key_info_seed.size(),
+                                         &seed.front(),
+                                         seed.size(),
                                          &words);
   if (result != 0) {
     DCHECK(false);
@@ -327,8 +263,6 @@ std::string Wallet::GetClaimPayload(
     const std::string user_funds,
     const std::string new_address,
     const std::string anon_address) {
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-
   ledger::UnsignedTxProperties unsigned_tx;
   unsigned_tx.amount = user_funds;
   unsigned_tx.currency = "BAT";
@@ -345,8 +279,8 @@ std::string Wallet::GetClaimPayload(
   std::vector<std::string> header_values;
   header_values.push_back(header_digest);
 
-  std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(
-      wallet_info.key_info_seed);
+  const auto seed = braveledger_state::GetRecoverySeed(ledger_);
+  std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(seed);
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> new_secret_key;
   bool success = braveledger_bat_helper::getPublicKeyFromSeed(
@@ -410,8 +344,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
   }
 
   const std::string path = base::StringPrintf(
-      "%s%s/claim",
-      WALLET_PROPERTIES,
+      "/wallet/%s/claim",
       ledger_->GetPaymentId().c_str());
 
   const std::string url = braveledger_request_util::BuildUrl(
@@ -449,10 +382,9 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
 void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const std::string payment_id = ledger_->GetPaymentId();
   const std::string passphrase = GetWalletPassphrase();
-  const uint64_t stamp = ledger_->GetBootStamp();
+  const uint64_t stamp = ledger_->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
-    BLOG(1, "Wallet is ok");
     callback(ledger::Result::WALLET_CREATED);
     return;
   }

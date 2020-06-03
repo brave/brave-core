@@ -14,7 +14,7 @@ Environment _environment = Environment::PRODUCTION;
 
 bool is_debug = false;
 bool is_testing = false;
-int reconcile_time = 0;  // minutes
+int reconcile_interval = 0;  // minutes
 bool short_retries = false;
 
 // static

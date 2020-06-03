@@ -37,7 +37,7 @@ class Balance {
       base::flat_map<std::string, double> wallets);
 
  private:
-  void OnWalletProperties(
+  void OnFetch(
       const ledger::UrlResponse& response,
       ledger::FetchBalanceCallback callback);
 

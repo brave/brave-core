@@ -68,8 +68,8 @@ window.cr.define('brave_rewards_tip', function () {
     getActions().onPublisherBanner(data)
   }
 
-  function walletProperties (properties: {status: number, wallet: RewardsTip.WalletProperties}) {
-    getActions().onWalletProperties(properties)
+  function rewardsParameters (parameters: RewardsTip.RewardsParameters) {
+    getActions().onRewardsParameters(parameters)
   }
 
   function recurringTips (list: string[]) {
@@ -109,7 +109,7 @@ window.cr.define('brave_rewards_tip', function () {
   return {
     initialize,
     publisherBanner,
-    walletProperties,
+    rewardsParameters,
     recurringTips,
     reconcileStamp,
     recurringTipRemoved,

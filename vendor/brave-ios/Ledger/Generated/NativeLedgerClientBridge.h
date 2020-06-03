@@ -20,7 +20,6 @@
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
 - (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback;
-- (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;

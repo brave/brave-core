@@ -105,7 +105,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
     return (
       <StyledSelectWrapper>
         <StyledSelect
-          value={'show'}
+          value={monthlyAmount}
           onChange={this.props.onAmountChange}
         >
           {donationAmounts.map((token: Token, index: number) => {

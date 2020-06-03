@@ -56,7 +56,6 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kRewardsUserHasFunded, false);
   registry->RegisterTimePref(prefs::kRewardsAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kBraveRewardsEnabled, false);
-  registry->RegisterBooleanPref(prefs::kBraveRewardsEnabledMigrated, false);
   registry->RegisterDictionaryPref(prefs::kRewardsExternalWallets);
   registry->RegisterUint64Pref(prefs::kStateServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kStateUpholdAnonAddress, "");
@@ -74,6 +73,25 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kStateAllowVideoContribution, true);
   registry->RegisterDoublePref(prefs::kStateScoreA, 0.0);
   registry->RegisterDoublePref(prefs::kStateScoreB, 0.0);
+  registry->RegisterBooleanPref(prefs::kStateAutoContributeEnabled, false);
+  registry->RegisterDoublePref(prefs::kStateAutoContributeAmount, 0.0);
+  registry->RegisterUint64Pref(prefs::kStateNextReconcileStamp, 0ull);
+  registry->RegisterUint64Pref(prefs::kStateCreationStamp, 0ull);
+  registry->RegisterStringPref(prefs::kStateAnonymousCardId, "");
+  registry->RegisterStringPref(prefs::kStateRecoverySeed, "");
+  registry->RegisterStringPref(prefs::kStatePaymentId, "");
+  registry->RegisterBooleanPref(prefs::kStateInlineTipRedditEnabled, false);
+  registry->RegisterBooleanPref(prefs::kStateInlineTipTwitterEnabled, false);
+  registry->RegisterBooleanPref(prefs::kStateInlineTipGithubEnabled, false);
+  registry->RegisterDoublePref(prefs::kStateParametersRate, 0.0);
+  registry->RegisterDoublePref(
+      prefs::kStateParametersAutoContributeChoice,
+      0.0);
+  registry->RegisterStringPref(
+      prefs::kStateParametersAutoContributeChoices,
+      "");
+  registry->RegisterStringPref(prefs::kStateParametersTipChoices, "");
+  registry->RegisterStringPref(prefs::kStateParametersMonthlyTipChoices, "");
 }
 
 }  // namespace brave_rewards

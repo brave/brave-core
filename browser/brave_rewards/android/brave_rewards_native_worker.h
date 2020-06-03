@@ -21,7 +21,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 
@@ -53,7 +53,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void WalletExist(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
-    void GetWalletProperties(JNIEnv* env,
+    void GetRewardsParameters(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
     void GetPublisherInfo(JNIEnv* env,
@@ -64,8 +64,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& obj);
 
     double GetWalletRate(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& rate);
+        const base::android::JavaParamRef<jobject>& obj);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
@@ -212,10 +211,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const int32_t result,
         const brave_rewards::BalanceReport& balance_report);
 
-    void OnGetWalletProperties(
+    void OnGetRewardsParameters(
         brave_rewards::RewardsService* rewards_service,
-        const int32_t result,
-        std::unique_ptr<brave_rewards::WalletProperties> wallet_properties);
+        std::unique_ptr<brave_rewards::RewardsParameters> parameters);
 
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -275,7 +273,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         std::unique_ptr<brave_rewards::Balance> balance);
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     brave_rewards::RewardsService* brave_rewards_service_;
-    brave_rewards::WalletProperties wallet_properties_;
+    brave_rewards::RewardsParameters parameters_;
     brave_rewards::Balance balance_;
     brave_rewards::AutoContributeProps auto_contrib_properties_;
     PublishersInfoMap map_publishers_info_;  // <tabId, PublisherInfoPtr>

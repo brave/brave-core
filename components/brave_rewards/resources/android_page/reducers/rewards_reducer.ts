@@ -184,7 +184,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       let inlineTip = state.inlineTip
 
       inlineTip[key] = value
-      chrome.send('brave_rewards.setInlineTipSetting', [key, value.toString()])
+      chrome.send('brave_rewards.setInlineTippingPlatformEnabled', [key, value.toString()])
 
       state = {
         ...state,

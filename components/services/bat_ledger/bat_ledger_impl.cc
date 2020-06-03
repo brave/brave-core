@@ -69,23 +69,22 @@ void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
 }
 
 // static
-void BatLedgerImpl::OnGetWalletProperties(
-    CallbackHolder<GetWalletPropertiesCallback>* holder,
-    const ledger::Result result,
-    ledger::WalletPropertiesPtr properties) {
+void BatLedgerImpl::OnGetRewardsParameters(
+    CallbackHolder<GetRewardsParametersCallback>* holder,
+    ledger::RewardsParametersPtr parameters) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(properties));
+    std::move(holder->get()).Run(std::move(parameters));
   delete holder;
 }
 
-void BatLedgerImpl::GetWalletProperties(
-    GetWalletPropertiesCallback callback) {
-  // delete in OnGetWalletProperties
-  auto* holder = new CallbackHolder<GetWalletPropertiesCallback>(
+void BatLedgerImpl::GetRewardsParameters(
+    GetRewardsParametersCallback callback) {
+  // delete in OnGetRewardsParameters
+  auto* holder = new CallbackHolder<GetRewardsParametersCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->GetWalletProperties(
-      std::bind(BatLedgerImpl::OnGetWalletProperties, holder, _1, _2));
+  ledger_->GetRewardsParameters(
+      std::bind(BatLedgerImpl::OnGetRewardsParameters, holder, _1));
 }
 
 void BatLedgerImpl::GetAutoContributeProperties(
@@ -115,9 +114,9 @@ void BatLedgerImpl::GetPublisherAllowVideos(
   std::move(callback).Run(ledger_->GetPublisherAllowVideos());
 }
 
-void BatLedgerImpl::GetAutoContribute(
-    GetAutoContributeCallback callback) {
-  std::move(callback).Run(ledger_->GetAutoContribute());
+void BatLedgerImpl::GetAutoContributeEnabled(
+    GetAutoContributeEnabledCallback callback) {
+  std::move(callback).Run(ledger_->GetAutoContributeEnabled());
 }
 
 void BatLedgerImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
@@ -321,16 +320,12 @@ void BatLedgerImpl::SetPublisherAllowVideos(bool allow) {
   ledger_->SetPublisherAllowVideos(allow);
 }
 
-void BatLedgerImpl::SetUserChangedContribution() {
-  ledger_->SetUserChangedContribution();
+void BatLedgerImpl::SetAutoContributionAmount(double amount) {
+  ledger_->SetAutoContributionAmount(amount);
 }
 
-void BatLedgerImpl::SetContributionAmount(double amount) {
-  ledger_->SetContributionAmount(amount);
-}
-
-void BatLedgerImpl::SetAutoContribute(bool enabled) {
-  ledger_->SetAutoContribute(enabled);
+void BatLedgerImpl::SetAutoContributeEnabled(bool enabled) {
+  ledger_->SetAutoContributeEnabled(enabled);
 }
 
 void BatLedgerImpl::UpdateAdsRewards() {
@@ -394,9 +389,9 @@ void BatLedgerImpl::GetPublisherBanner(const std::string& publisher_id,
       std::bind(BatLedgerImpl::OnGetPublisherBanner, holder, _1));
 }
 
-void BatLedgerImpl::GetContributionAmount(
-    GetContributionAmountCallback callback) {
-  std::move(callback).Run(ledger_->GetContributionAmount());
+void BatLedgerImpl::GetAutoContributionAmount(
+    GetAutoContributionAmountCallback callback) {
+  std::move(callback).Run(ledger_->GetAutoContributionAmount());
 }
 
 void BatLedgerImpl::OnOneTimeTip(
@@ -442,8 +437,8 @@ void BatLedgerImpl::RemoveRecurringTip(
     std::bind(BatLedgerImpl::OnRemoveRecurringTip, holder, _1));
 }
 
-void BatLedgerImpl::GetBootStamp(GetBootStampCallback callback) {
-  std::move(callback).Run(ledger_->GetBootStamp());
+void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
+  std::move(callback).Run(ledger_->GetCreationStamp());
 }
 
 void BatLedgerImpl::GetRewardsMainEnabled(
@@ -682,14 +677,16 @@ void BatLedgerImpl::StartMonthlyContribution() {
   ledger_->StartMonthlyContribution();
 }
 
-void BatLedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
-  ledger_->SetInlineTipSetting(key, enabled);
+void BatLedgerImpl::SetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    bool enabled) {
+  ledger_->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
-void BatLedgerImpl::GetInlineTipSetting(
-    const std::string& key,
-    GetInlineTipSettingCallback callback) {
-  std::move(callback).Run(ledger_->GetInlineTipSetting(key));
+void BatLedgerImpl::GetInlineTippingPlatformEnabled(
+    const ledger::InlineTipsPlatforms platform,
+    GetInlineTippingPlatformEnabledCallback callback) {
+  std::move(callback).Run(ledger_->GetInlineTippingPlatformEnabled(platform));
 }
 
 void BatLedgerImpl::GetShareURL(

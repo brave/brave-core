@@ -104,6 +104,26 @@ std::string BuildPaymentsUrl() {
   return url;
 }
 
+std::string BuildApiUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING: {
+      url = API_STAGING_SERVER;
+      break;
+    }
+    case ledger::Environment::PRODUCTION: {
+      url = API_PRODUCTION_SERVER;
+      break;
+    }
+    case ledger::Environment::DEVELOPMENT: {
+      url = API_DEVELOPMENT_SERVER;
+      break;
+    }
+  }
+
+  return url;
+}
+
 }  // namespace
 
 namespace braveledger_request_util {
@@ -132,6 +152,10 @@ std::string BuildUrl(
     }
     case ServerTypes::kPayments: {
       url = BuildPaymentsUrl();
+      break;
+    }
+    case ServerTypes::kAPI: {
+      url = BuildApiUrl();
       break;
     }
   }

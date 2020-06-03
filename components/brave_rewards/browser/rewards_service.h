@@ -24,7 +24,7 @@
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/monthly_report.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -55,14 +55,14 @@ class RewardsServicePrivateObserver;
 using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
-using GetContributionAmountCallback = base::Callback<void(double)>;
+using GetAutoContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropertiesCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(int)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
-using GetAutoContributeCallback = base::OnceCallback<void(bool)>;
+using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
@@ -82,7 +82,7 @@ using RefreshPublisherCallback =
     base::OnceCallback<void(uint32_t, const std::string&)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
-using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
+using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::PendingContributionInfoList>)>;
@@ -122,9 +122,8 @@ using GetAllMonthlyReportIdsCallback =
 using GetAllPromotionsCallback =
     base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
 
-using GetWalletPropertiesCallback = base::OnceCallback<void(
-    const int32_t,
-    std::unique_ptr<brave_rewards::WalletProperties>)>;
+using GetRewardsParametersCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::RewardsParameters>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -132,7 +131,7 @@ class RewardsService : public KeyedService {
   ~RewardsService() override;
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
-  virtual void GetWalletProperties(GetWalletPropertiesCallback callback) = 0;
+  virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -190,11 +189,10 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherAllowVideos(
       const GetPublisherAllowVideosCallback& callback) = 0;
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
-  virtual void SetContributionAmount(double amount) const = 0;
-  virtual void SetUserChangedContribution() const = 0;
-  virtual void GetAutoContribute(
-      GetAutoContributeCallback callback) = 0;
-  virtual void SetAutoContribute(bool enabled) = 0;
+  virtual void SetAutoContributionAmount(double amount) const = 0;
+  virtual void GetAutoContributeEnabled(
+      GetAutoContributeEnabledCallback callback) = 0;
+  virtual void SetAutoContributeEnabled(bool enabled) = 0;
   virtual void UpdateAdsRewards() const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetBalanceReport(
@@ -207,8 +205,8 @@ class RewardsService : public KeyedService {
       const std::string& url,
       const std::string& favicon_url,
       const std::string& publisher_blob) = 0;
-  virtual void GetContributionAmount(
-      const GetContributionAmountCallback& callback) = 0;
+  virtual void GetAutoContributionAmount(
+      const GetAutoContributionAmountCallback& callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
   virtual void OnTip(
@@ -288,11 +286,13 @@ class RewardsService : public KeyedService {
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
 
-  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
-
-  virtual void GetInlineTipSetting(
+  virtual void SetInlineTippingPlatformEnabled(
       const std::string& key,
-      GetInlineTipSettingCallback callback) = 0;
+      bool enabled) = 0;
+
+  virtual void GetInlineTippingPlatformEnabled(
+      const std::string& key,
+      GetInlineTippingPlatformEnabledCallback callback) = 0;
 
   virtual void GetShareURL(
       const std::string& type,

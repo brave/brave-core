@@ -39,7 +39,7 @@ class Banner extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.actions.getWalletProperties()
+    this.actions.getRewardsParameters()
     this.actions.getBalance()
     this.actions.getRecurringTips()
     this.actions.getReconcileStamp()
@@ -56,7 +56,7 @@ class Banner extends React.Component<Props, State> {
 
   generateAmounts = () => {
     const { monthly } = this.props
-    const { balance, walletInfo } = this.props.rewardsDonateData
+    const { parameters } = this.props.rewardsDonateData
 
     const publisherAmounts = this.props.publisher.amounts
 
@@ -64,10 +64,10 @@ class Banner extends React.Component<Props, State> {
     let amounts = this.defaultTipAmounts
     if (publisherAmounts && publisherAmounts.length) {
       amounts = publisherAmounts
-    } else if (walletInfo) {
+    } else if (parameters) {
       const walletAmounts = monthly
-        ? walletInfo.defaultMonthlyTipChoices
-        : walletInfo.defaultTipChoices
+        ? parameters.monthlyTipChoices
+        : parameters.tipChoices
 
       if (walletAmounts.length) {
         amounts = walletAmounts
@@ -77,7 +77,7 @@ class Banner extends React.Component<Props, State> {
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
-        converted: utils.convertBalance(value.toString(), balance.rates),
+        converted: utils.convertBalance(value.toString(), parameters.rate),
         selected: false
       }
     })

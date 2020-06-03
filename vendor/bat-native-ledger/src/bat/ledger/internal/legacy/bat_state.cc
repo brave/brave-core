@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/legacy/client_state.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace braveledger_bat_state {
 
@@ -21,104 +22,62 @@ LegacyBatState::LegacyBatState(bat_ledger::LedgerImpl* ledger) :
       state_(new ledger::ClientProperties()) {
 }
 
-LegacyBatState::~LegacyBatState() {
+LegacyBatState::~LegacyBatState() = default;
+
+void LegacyBatState::Load(ledger::ResultCallback callback) {
+  auto load_callback = std::bind(&LegacyBatState::OnLoad,
+      this,
+      _1,
+      _2,
+      callback);
+  ledger_->LoadLedgerState(load_callback);
 }
 
-bool LegacyBatState::LoadState(const std::string& data) {
+void LegacyBatState::OnLoad(
+      const ledger::Result result,
+      const std::string& data,
+      ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result);
+    return;
+  }
+
   ledger::ClientProperties state;
   const ledger::ClientState client_state;
   if (!client_state.FromJson(data, &state)) {
     BLOG(0, "Failed to load client state: " << data);
-    return false;
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
   }
 
   state_.reset(new ledger::ClientProperties(state));
 
-  bool stateChanged = false;
-
   // fix timestamp ms to s conversion
   if (std::to_string(state_->reconcile_timestamp).length() > 10) {
     state_->reconcile_timestamp = state_->reconcile_timestamp / 1000;
-    stateChanged = true;
   }
 
   // fix timestamp ms to s conversion
   if (std::to_string(state_->boot_timestamp).length() > 10) {
     state_->boot_timestamp = state_->boot_timestamp / 1000;
-    stateChanged = true;
   }
 
-  if (stateChanged) {
-    SaveState();
-  }
-
-  return true;
-}
-
-void LegacyBatState::SaveState() {
-  const ledger::ClientState client_state;
-  const std::string data = client_state.ToJson(*state_);
-
-  auto save_callback = std::bind(&LegacyBatState::OnSaveState,
-      this,
-      _1);
-
-  ledger_->SaveLedgerState(data, save_callback);
-}
-
-void LegacyBatState::OnSaveState(const ledger::Result result) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Ledger state was not save successfully");
-    return;
-  }
-}
-
-void LegacyBatState::SetRewardsMainEnabled(bool enabled) {
-  state_->rewards_enabled = enabled;
-  SaveState();
+  callback(ledger::Result::LEDGER_OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {
   return state_->rewards_enabled;
 }
 
-void LegacyBatState::SetContributionAmount(double amount) {
-  ledger::WalletProperties properties = GetWalletProperties();
-  auto hasAmount = std::find(properties.parameters_choices.begin(),
-                             properties.parameters_choices.end(),
-                             amount);
-
-  if (hasAmount == properties.parameters_choices.end()) {
-    // amount is missing in the list
-    properties.parameters_choices.push_back(amount);
-    std::sort(properties.parameters_choices.begin(),
-              properties.parameters_choices.end());
-    state_->wallet = properties;
-  }
-
-  state_->fee_amount = amount;
-  SaveState();
-}
-
-double LegacyBatState::GetContributionAmount() const {
+double LegacyBatState::GetAutoContributionAmount() const {
   return state_->fee_amount;
-}
-
-void LegacyBatState::SetUserChangedContribution() {
-  state_->user_changed_fee = true;
-  SaveState();
 }
 
 bool LegacyBatState::GetUserChangedContribution() const {
   return state_->user_changed_fee;
 }
 
-void LegacyBatState::SetAutoContribute(bool enabled) {
-  state_->auto_contribute = enabled;
-  SaveState();
-}
-
-bool LegacyBatState::GetAutoContribute() const {
+bool LegacyBatState::GetAutoContributeEnabled() const {
   return state_->auto_contribute;
 }
 
@@ -130,83 +89,16 @@ uint64_t LegacyBatState::GetReconcileStamp() const {
   return state_->reconcile_timestamp;
 }
 
-void LegacyBatState::ResetReconcileStamp() {
-  if (ledger::reconcile_time > 0) {
-    state_->reconcile_timestamp =
-        braveledger_time_util::GetCurrentTimeStamp() +
-        ledger::reconcile_time * 60;
-  } else {
-    state_->reconcile_timestamp = braveledger_time_util::GetCurrentTimeStamp() +
-        braveledger_ledger::_reconcile_default_interval;
-  }
-  SaveState();
-}
-
-bool LegacyBatState::IsWalletCreated() const {
-  return state_->boot_timestamp != 0u;
-}
-
 const std::string& LegacyBatState::GetPaymentId() const {
   return state_->wallet_info.payment_id;
 }
 
-const ledger::WalletInfoProperties& LegacyBatState::GetWalletInfo() const {
-  return state_->wallet_info;
+const std::vector<uint8_t>& LegacyBatState::GetRecoverySeed() const {
+  return state_->wallet_info.key_info_seed;
 }
 
-void LegacyBatState::SetWalletInfo(
-    const ledger::WalletInfoProperties& wallet_info) {
-  state_->wallet_info = wallet_info;
-  SaveState();
-}
-
-const ledger::WalletProperties& LegacyBatState::GetWalletProperties() const {
-  return state_->wallet;
-}
-
-void LegacyBatState::SetWalletProperties(
-    ledger::WalletProperties* properties) {
-  double amount = GetContributionAmount();
-  double new_amount = properties->fee_amount;
-  bool amount_changed = GetUserChangedContribution();
-  if (amount_changed) {
-    auto hasAmount = std::find(properties->parameters_choices.begin(),
-                               properties->parameters_choices.end(),
-                               amount);
-
-    if (hasAmount == properties->parameters_choices.end()) {
-      // amount is missing in the list
-      properties->parameters_choices.push_back(amount);
-      std::sort(properties->parameters_choices.begin(),
-                properties->parameters_choices.end());
-    }
-  }
-
-  state_->wallet = *properties;
-
-  if (!amount_changed && amount != new_amount) {
-    SetContributionAmount(new_amount);
-  }
-
-  SaveState();
-}
-
-uint64_t LegacyBatState::GetBootStamp() const {
+uint64_t LegacyBatState::GetCreationStamp() const {
   return state_->boot_timestamp;
-}
-
-void LegacyBatState::SetBootStamp(uint64_t stamp) {
-  state_->boot_timestamp = stamp;
-  SaveState();
-}
-
-double LegacyBatState::GetDefaultContributionAmount() {
-  return state_->wallet.fee_amount;
-}
-
-void LegacyBatState::SetInlineTipSetting(const std::string& key, bool enabled) {
-  state_->inline_tips[key] = enabled;
-  SaveState();
 }
 
 bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {

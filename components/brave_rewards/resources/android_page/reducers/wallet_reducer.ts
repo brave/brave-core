@@ -36,10 +36,10 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       state.walletCreateFailed = true
       break
-    case types.GET_WALLET_PROPERTIES:
-      chrome.send('brave_rewards.getWalletProperties')
+    case types.GET_REWARDS_PARAMETERS:
+      chrome.send('brave_rewards.getRewardsParameters')
       break
-    case types.ON_WALLET_PROPERTIES: {
+    case types.ON_REWARDS_PARAMETERS: {
       state = { ...state }
       let ui = state.ui
 
@@ -49,8 +49,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       } else if (action.payload.properties.status === 17) {
         ui.walletCorrupted = true
       } else {
-        state.contributionMonthly = action.payload.properties.monthlyAmount
-        state.autoContributeChoices = action.payload.properties.choices
+        state.parameters = action.payload.properties
         ui.walletServerProblem = false
         ui.walletCorrupted = false
       }

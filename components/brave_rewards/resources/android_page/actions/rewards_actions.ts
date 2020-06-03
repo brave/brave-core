@@ -20,10 +20,10 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
 
 export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
 
-export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
+export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
-export const onWalletProperties = (properties: {status: number, choices: number[], monthlyAmount: number}) =>
-  action(types.ON_WALLET_PROPERTIES, {
+export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
+  action(types.ON_REWARDS_PARAMETERS, {
     properties
   })
 

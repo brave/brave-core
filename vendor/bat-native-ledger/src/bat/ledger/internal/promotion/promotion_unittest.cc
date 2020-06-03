@@ -69,7 +69,7 @@ class PromotionTest : public testing::Test {
   void SetUp() override {
     const std::string payment_id = "this_is_id";
     ON_CALL(*mock_ledger_impl_, GetPaymentId())
-      .WillByDefault(testing::ReturnRefOfCopy(payment_id));
+      .WillByDefault(testing::Return(payment_id));
 
     const std::string wallet_passphrase = "phrase";
     ON_CALL(*mock_ledger_impl_, GetWalletPassphrase())

@@ -71,7 +71,7 @@ class Contribution {
 
   void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
-  // Resets reconcile stamps
+  // Reset reconcile stamps
   void ResetReconcileStamp();
 
   void ContributeUnverifiedPublishers();

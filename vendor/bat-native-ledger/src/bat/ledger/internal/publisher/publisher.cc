@@ -294,7 +294,7 @@ void Publisher::SaveVisitInternal(
 
   if (new_visit &&
       (excluded ||
-       !ledger_->GetAutoContribute() ||
+       !ledger_->GetAutoContributeEnabled() ||
        min_duration_new ||
        verified_new)) {
     panel_info = publisher_info->Clone();
@@ -305,7 +305,7 @@ void Publisher::SaveVisitInternal(
 
     ledger_->SavePublisherInfo(std::move(publisher_info), callback);
   } else if (!excluded &&
-             ledger_->GetAutoContribute() &&
+             ledger_->GetAutoContributeEnabled() &&
              min_duration_ok &&
              verified_old) {
     publisher_info->visits += 1;

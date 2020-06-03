@@ -72,7 +72,11 @@ export const defaultState: Rewards.State = {
   },
   monthlyReportIds: [],
   currentCountryCode: '',
-  autoContributeChoices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
+  parameters: {
+    autoContributeChoice: 0,
+    autoContributeChoices: [],
+    rate: 0
+  }
 }
 
 const cleanData = (state: Rewards.State) => {

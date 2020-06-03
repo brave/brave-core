@@ -46,7 +46,7 @@ class TipBox extends React.Component<Props, State> {
   }
 
   getTipsRows = () => {
-    const { balance, tipsList } = this.props.rewardsData
+    const { parameters, tipsList } = this.props.rewardsData
     let tips: DetailRow[] = []
 
     if (!tipsList) {
@@ -69,7 +69,7 @@ class TipBox extends React.Component<Props, State> {
         },
         contribute: {
           tokens: item.percentage.toFixed(1),
-          converted: utils.convertBalance(item.percentage, balance.rates)
+          converted: utils.convertBalance(item.percentage, parameters.rate)
         },
         url: item.url,
         text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
@@ -91,7 +91,7 @@ class TipBox extends React.Component<Props, State> {
 
   render () {
     const {
-      balance,
+      parameters,
       ui,
       tipsList
     } = this.props.rewardsData
@@ -101,7 +101,7 @@ class TipBox extends React.Component<Props, State> {
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(tipsList)
-    const converted = utils.convertBalance(total, balance.rates)
+    const converted = utils.convertBalance(total, parameters.rate)
 
     return (
       <BoxMobile

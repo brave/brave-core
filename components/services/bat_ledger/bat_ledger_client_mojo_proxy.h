@@ -33,9 +33,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                            const ledger::RewardsType type) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void SaveLedgerState(
-      const std::string& ledger_state,
-      ledger::ResultCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void KillTimer(const uint32_t timer_id) override;
 

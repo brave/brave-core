@@ -9,7 +9,6 @@
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/legacy/client_state.h"
 #include "bat/ledger/internal/legacy/wallet_info_state.h"
-#include "bat/ledger/internal/legacy/wallet_state.h"
 #include "base/json/json_reader.h"
 
 namespace ledger {
@@ -25,7 +24,6 @@ const char kReconcileTimestampKey[] = "reconcileStamp";
 const char kRewardsEnabledKey[] = "rewards_enabled";
 const char kUserChangedFeeKey[] = "user_changed_fee";
 const char kWalletInfoKey[] = "walletInfo";
-const char kWalletKey[] = "walletProperties";
 
 }  // namespace
 
@@ -149,27 +147,6 @@ bool ClientState::FromDict(
   }
   client_properties.rewards_enabled = *rewards_enabled;
 
-  // Wallet
-  const auto* wallet_value = dictionary->FindKey(kWalletKey);
-  if (!wallet_value || !wallet_value->is_dict()) {
-    NOTREACHED();
-    return false;
-  }
-
-  const base::DictionaryValue* wallet_dictionary = nullptr;
-  wallet_value->GetAsDictionary(&wallet_dictionary);
-  if (!wallet_dictionary) {
-    NOTREACHED();
-    return false;
-  }
-
-  WalletProperties wallet;
-  const WalletState wallet_state;
-  if (!wallet_state.FromDict(wallet_dictionary, &wallet)) {
-    return false;
-  }
-  client_properties.wallet = wallet;
-
   // Inline Tips
   const auto* inline_tips_value = dictionary->FindKey(kInlineTipsKey);
   if (inline_tips_value) {
@@ -228,10 +205,6 @@ bool ClientState::ToJson(
 
   writer->String(kAutoContributeKey);
   writer->Bool(properties.auto_contribute);
-
-  writer->String(kWalletKey);
-  const WalletState wallet_state;
-  wallet_state.ToJson(writer, properties.wallet);
 
   writer->String(kInlineTipsKey);
   writer->StartObject();

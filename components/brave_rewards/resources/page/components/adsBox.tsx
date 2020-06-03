@@ -287,7 +287,7 @@ class AdsBox extends React.Component<Props, State> {
       adsHistory,
       enabledMain,
       firstLoad,
-      balance,
+      parameters,
       ui
     } = this.props.rewardsData
     const { onlyAnonWallet } = ui
@@ -331,7 +331,7 @@ class AdsBox extends React.Component<Props, State> {
             <Tokens
               onlyAnonWallet={onlyAnonWallet}
               value={estimatedPendingRewards.toFixed(1)}
-              converted={utils.convertBalance(estimatedPendingRewards, balance.rates)}
+              converted={utils.convertBalance(estimatedPendingRewards, parameters.rate)}
             />
           </List>
           <List title={getLocale('adsPaymentDate')}>

@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/legacy/client_properties.h"
@@ -25,57 +26,33 @@ class LegacyBatState {
   explicit LegacyBatState(bat_ledger::LedgerImpl* ledger);
   ~LegacyBatState();
 
-  bool LoadState(const std::string& data);
-
-  void SetRewardsMainEnabled(bool enabled);
+  void Load(ledger::ResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
 
-  void SetContributionAmount(double amount);
-
-  double GetContributionAmount() const;
-
-  void SetUserChangedContribution();
+  double GetAutoContributionAmount() const;
 
   bool GetUserChangedContribution() const;
 
-  void SetAutoContribute(bool enabled);
-
-  bool GetAutoContribute() const;
+  bool GetAutoContributeEnabled() const;
 
   const std::string& GetCardIdAddress() const;
 
   uint64_t GetReconcileStamp() const;
 
-  void ResetReconcileStamp();
-
-  bool IsWalletCreated() const;
-
   const std::string& GetPaymentId() const;
 
-  const ledger::WalletInfoProperties& GetWalletInfo() const;
+  const std::vector<uint8_t>& GetRecoverySeed() const;
 
-  void SetWalletInfo(const ledger::WalletInfoProperties& info);
-
-  const ledger::WalletProperties& GetWalletProperties() const;
-
-  void SetWalletProperties(
-      ledger::WalletProperties* properties);
-
-  uint64_t GetBootStamp() const;
-
-  void SetBootStamp(uint64_t stamp);
-
-  double GetDefaultContributionAmount();
-
-  void SetInlineTipSetting(const std::string& key, bool enabled);
+  uint64_t GetCreationStamp() const;
 
   bool GetInlineTipSetting(const std::string& key) const;
 
  private:
-  void SaveState();
-
-  void OnSaveState(const ledger::Result result);
+  void OnLoad(
+      const ledger::Result result,
+      const std::string& data,
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::ClientProperties> state_;

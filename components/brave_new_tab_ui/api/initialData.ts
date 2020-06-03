@@ -29,6 +29,7 @@ export type InitialRewardsData = {
   adsEstimatedEarnings: number
   report: NewTab.RewardsBalanceReport
   balance: NewTab.RewardsBalance
+  parameters: NewTab.RewardsParameters
 }
 
 const isIncognito: boolean = chrome.extension.inIncognitoContext
@@ -132,7 +133,8 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
     const [
       adsEstimatedEarnings,
       report,
-      balance
+      balance,
+      parameters
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.getAdsEstimatedEarnings((adsEstimatedEarnings: number) => {
         resolve(adsEstimatedEarnings)
@@ -146,12 +148,16 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       new Promise(resolve => {
         chrome.braveRewards.fetchPromotions()
         resolve(true)
-      })
+      }),
+      new Promise(resolve => chrome.braveRewards.getRewardsParameters((properties: NewTab.RewardsParameters) => {
+        resolve(parameters)
+      }))
     ])
     return {
       adsEstimatedEarnings,
       report,
-      balance
+      balance,
+      parameters
     } as InitialRewardsData
   } catch (err) {
     throw Error(err)

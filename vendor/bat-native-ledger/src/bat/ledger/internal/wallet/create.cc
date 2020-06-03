@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/guid.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/bat_helper.h"
@@ -15,6 +16,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
@@ -89,6 +91,43 @@ std::string StringifyRequestCredentials(
   return json;
 }
 
+ledger::Result ParseRegisterPersonaResponse(
+    const std::string& response,
+    std::string* payment_id,
+    std::string* card_id) {
+  DCHECK(payment_id && card_id);
+
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  BLOG(0, response);
+
+  const auto* payment_id_string =
+      dictionary->FindStringPath("wallet.paymentId");
+  if (!payment_id_string || payment_id_string->empty()) {
+    BLOG(0, "Payment id is wrong " << payment_id_string);
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const auto* card_id_string =
+      dictionary->FindStringPath("wallet.addresses.CARD_ID");
+  if (!card_id_string || card_id_string->empty()) {
+    BLOG(0, "Card id is wrong");
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  *payment_id = *payment_id_string;
+  *card_id = *card_id_string;
+  return ledger::Result::LEDGER_OK;
+}
+
 }  // namespace
 
 namespace braveledger_wallet {
@@ -146,11 +185,9 @@ void Create::RequestCredentialsCallback(
     return;
   }
 
-  ledger::WalletInfoProperties wallet_info;
   std::vector<uint8_t> key_info_seed = braveledger_bat_helper::generateSeed();
 
-  wallet_info.key_info_seed = key_info_seed;
-  ledger_->SetWalletInfo(wallet_info);
+  braveledger_state::SetRecoverySeed(ledger_, key_info_seed);
   std::vector<uint8_t> secretKey =
       braveledger_bat_helper::getHKDF(key_info_seed);
   std::vector<uint8_t> publicKey;
@@ -246,21 +283,36 @@ void Create::RegisterPersonaCallback(
     return;
   }
 
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-  double fee_amount = .0;
-  if (!braveledger_bat_helper::getJSONWalletInfo(
+  std::string payment_id;
+  std::string card_id;
+  const auto result = ParseRegisterPersonaResponse(
       response.body,
-      &wallet_info,
-      &fee_amount)) {
+      &payment_id,
+      &card_id);
+  if (result == ledger::Result::LEDGER_ERROR) {
     BLOG(0, "Can't get wallet info");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
-  ledger_->SetWalletInfo(wallet_info);
-  ledger_->SetContributionAmount(fee_amount);
-  ledger_->SetBootStamp(braveledger_time_util::GetCurrentTimeStamp());
+  ledger_->SetRewardsMainEnabled(true);
+  ledger_->SetAutoContributeEnabled(true);
+  braveledger_state::SetPaymentId(ledger_, payment_id);
+  braveledger_state::SetAnonymousCardId(ledger_, card_id);
+  ledger_->SetCreationStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
+  braveledger_state::SetInlineTippingPlatformEnabled(
+      ledger_,
+      ledger::InlineTipsPlatforms::REDDIT,
+      true);
+  braveledger_state::SetInlineTippingPlatformEnabled(
+      ledger_,
+      ledger::InlineTipsPlatforms::TWITTER,
+      true);
+  braveledger_state::SetInlineTippingPlatformEnabled(
+      ledger_,
+      ledger::InlineTipsPlatforms::GITHUB,
+      true);
   callback(ledger::Result::WALLET_CREATED);
 }
 

@@ -10,6 +10,7 @@
 #include <string>
 
 #include "bat/ledger/internal/state/state_migration_v1.h"
+#include "bat/ledger/internal/state/state_migration_v2.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -32,6 +33,7 @@ class StateMigration {
       ledger::ResultCallback callback);
 
   std::unique_ptr<StateMigrationV1> v1_;
+  std::unique_ptr<StateMigrationV2> v2_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

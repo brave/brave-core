@@ -23,7 +23,8 @@ ContributionAC::ContributionAC(bat_ledger::LedgerImpl* ledger,
 ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process(const uint64_t reconcile_stamp) {
-  if (!ledger_->GetRewardsMainEnabled() || !ledger_->GetAutoContribute()) {
+  if (!ledger_->GetRewardsMainEnabled() ||
+      !ledger_->GetAutoContributeEnabled()) {
     BLOG(1, "Auto contribution is off");
     return;
   }
@@ -75,7 +76,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
 
   auto queue = ledger::ContributionQueue::New();
   queue->type = ledger::RewardsType::AUTO_CONTRIBUTE;
-  queue->amount = ledger_->GetContributionAmount();
+  queue->amount = ledger_->GetAutoContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
 
