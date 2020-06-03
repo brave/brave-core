@@ -70,6 +70,8 @@ IN_PROC_BROWSER_TEST_F(ReferrerWhitelistServiceTest, IsWhitelistedReferrer) {
                                     GURL("https://api.geetest.com/ajax.php?")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("http://binance.com"),
                                     GURL("https://api.geetest.com/")));
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("http://binance.com"),
+                                    GURL("https://static.geetest.com/")));
   // not allowed with a different scheme
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("http://binance.com"),
                                      GURL("http://api.geetest.com/")));
