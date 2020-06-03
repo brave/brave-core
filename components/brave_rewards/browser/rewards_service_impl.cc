@@ -2442,6 +2442,7 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   bat_ledger_service_->SetTesting();
 
   SetPublisherMinVisitTime(1);
+  SetShortRetries(true);
 
   // this is needed because we are using braveledger_request_util::buildURL
   // directly in BraveRewardsBrowserTest

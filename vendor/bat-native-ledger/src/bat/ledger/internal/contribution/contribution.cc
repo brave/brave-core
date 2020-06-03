@@ -653,6 +653,11 @@ void Contribution::OnResult(
   }
 
   if (result == ledger::Result::RETRY_LONG) {
+    if (ledger::short_retries) {
+      SetRetryTimer(contribution->contribution_id, 1);
+      return;
+    }
+
     if (contribution->processor ==
         ledger::ContributionProcessor::BRAVE_TOKENS) {
       SetRetryTimer(contribution->contribution_id);

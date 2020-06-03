@@ -1820,6 +1820,81 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
       "-20.0BAT");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    AutoContributionMultiplePublishers) {
+  // Enable Rewards
+  EnableRewards();
+
+  ClaimPromotionViaCode();
+
+  // Visit verified publisher
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+  VisitPublisher("laurenwags.github.io", verified);
+
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
+
+  // Wait for reconciliation to complete successfully
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Make sure that balance is updated correctly
+  IsBalanceCorrect();
+
+  // Check that summary table shows the appropriate contribution
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[color=contribute]",
+      "-20.0BAT");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    AutoContributionMultiplePublishersUphold) {
+  SetUpUpholdWallet(50.0);
+  // Enable Rewards
+  EnableRewards();
+
+  ledger::SKUOrderItemList items;
+  auto item = ledger::SKUOrderItem::New();
+  item->order_item_id = "ed193339-e58c-483c-8d61-7decd3c24827";
+  item->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
+  item->quantity = 80;
+  item->price = 0.25;
+  item->description = "description";
+  item->type = ledger::SKUOrderItemType::SINGLE_USE;
+  items.push_back(std::move(item));
+
+  auto order = ledger::SKUOrder::New();
+  order->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
+  order->total_amount = 20;
+  order->merchant_id = "";
+  order->location = "brave.com";
+  order->items = std::move(items);
+  sku_order_ = std::move(order);
+
+  // Visit verified publisher
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+  VisitPublisher("laurenwags.github.io", verified);
+
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
+
+  // Wait for reconciliation to complete successfully
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Make sure that balance is updated correctly
+  IsBalanceCorrect();
+
+  // Check that summary table shows the appropriate contribution
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[color=contribute]",
+      "-20.0BAT");
+}
+
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
   EnableRewards();
 
