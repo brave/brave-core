@@ -37,7 +37,6 @@ export const defaultState: NewTab.State = {
     adsEstimatedEarnings: 0,
     balance: {
       total: 0,
-      rates: {},
       wallets: {}
     },
     dismissedNotifications: [],
@@ -52,7 +51,8 @@ export const defaultState: NewTab.State = {
     walletCreateFailed: false,
     walletCorrupted: false,
     parameters: {
-      rate: 0
+      rate: 0,
+      monthlyTipChoices: []
     }
   },
   currentStackWidget: '',
@@ -172,6 +172,10 @@ const cleanData = (state: NewTab.State) => {
     state.rewardsState.totalContribution = 0.0
   }
   /* tslint:enable */
+
+  if (!state.rewardsState.parameters) {
+    state.rewardsState.parameters = defaultState.rewardsState.parameters
+  }
 
   return state
 }

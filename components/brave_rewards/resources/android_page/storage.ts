@@ -84,6 +84,10 @@ const cleanData = (state: Rewards.State) => {
     state.balance = defaultState.balance
   }
 
+  if (!state.parameters) {
+    state.parameters = defaultState.parameters
+  }
+
   return state
 }
 

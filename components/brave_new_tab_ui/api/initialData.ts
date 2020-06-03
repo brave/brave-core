@@ -145,13 +145,13 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       new Promise(resolve => chrome.braveRewards.fetchBalance((balance: NewTab.RewardsBalance) => {
         resolve(balance)
       })),
+      new Promise(resolve => chrome.braveRewards.getRewardsParameters((parameters: NewTab.RewardsParameters) => {
+        resolve(parameters)
+      })),
       new Promise(resolve => {
         chrome.braveRewards.fetchPromotions()
         resolve(true)
-      }),
-      new Promise(resolve => chrome.braveRewards.getRewardsParameters((properties: NewTab.RewardsParameters) => {
-        resolve(parameters)
-      }))
+      })
     ])
     return {
       adsEstimatedEarnings,
