@@ -1,5 +1,5 @@
 diff --git a/google_apis/gaia/gaia_urls.cc b/google_apis/gaia/gaia_urls.cc
-index c3526692b92d06148591027e37c39fa981850595..57257f37e240e538ca053538639948098d69b738 100644
+index c3526692b92d06148591027e37c39fa981850595..2a3d35a063721caf6665859bf8e04594d2a83fe5 100644
 --- a/google_apis/gaia/gaia_urls.cc
 +++ b/google_apis/gaia/gaia_urls.cc
 @@ -17,7 +17,7 @@ namespace {
@@ -11,3 +11,11 @@ index c3526692b92d06148591027e37c39fa981850595..57257f37e240e538ca05353863994809
  const char kDefaultGoogleApisBaseUrl[] = "https://www.googleapis.com";
  const char kDefaultOAuthAccountManagerBaseUrl[] =
      "https://oauthaccountmanager.googleapis.com";
+@@ -174,6 +174,7 @@ GaiaUrls::GaiaUrls() {
+       oauth_account_manager_origin_url.Resolve(kOAuth2IssueTokenUrlSuffix);
+ 
+   gaia_login_form_realm_ = gaia_url_;
++  BRAVE_GAIA_URLS
+ }
+ 
+ GaiaUrls::~GaiaUrls() {

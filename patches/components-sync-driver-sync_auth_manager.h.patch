@@ -1,18 +1,8 @@
 diff --git a/components/sync/driver/sync_auth_manager.h b/components/sync/driver/sync_auth_manager.h
-index 72a72bee65056fae399b2bd5ca6dce065ddd519f..23971ea395a69af11fa1c8158ef23ccec065e95e 100644
+index 72a72bee65056fae399b2bd5ca6dce065ddd519f..0a2d9eeb589cb382c8f34427716653d8b2918c80 100644
 --- a/components/sync/driver/sync_auth_manager.h
 +++ b/components/sync/driver/sync_auth_manager.h
-@@ -36,7 +36,8 @@ struct SyncCredentials;
- // SyncAuthManager tracks the account to be used for Sync and its authentication
- // state. Note that this account may or may not be the primary account (as per
- // IdentityManager::GetPrimaryAccountInfo() etc).
--class SyncAuthManager : public signin::IdentityManager::Observer {
-+class SyncAuthManager : public signin::IdentityManager::Observer,
-+                        public brave_sync::AccessTokenConsumer {
-  public:
-   // Called when the existence of an authenticated account changes. It's
-   // guaranteed that this is only called for going from "no account" to "have
-@@ -121,6 +122,7 @@ class SyncAuthManager : public signin::IdentityManager::Observer {
+@@ -121,6 +121,7 @@ class SyncAuthManager : public signin::IdentityManager::Observer {
    bool IsRetryingAccessTokenFetchForTest() const;
    void ResetRequestAccessTokenBackoffForTest();
  

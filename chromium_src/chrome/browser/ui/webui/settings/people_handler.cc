@@ -27,16 +27,6 @@
       "SyncSetupReset", base::BindRepeating(&PeopleHandler::HandleReset, \
                                             base::Unretained(this)));
 
-#define BRAVE_CLOSE_SYNC_SETUP                                    \
-  syncer::SyncService* sync_service = GetSyncService();           \
-  if (sync_service &&                                             \
-      !sync_service->GetUserSettings()->IsFirstSetupComplete()) { \
-    DVLOG(1) << "Sync setup aborted by user action";              \
-    sync_service->StopAndClear();                                 \
-    brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());     \
-    brave_sync_prefs.Clear();                                     \
-  }
-
 #define BRAVE_IS_SYNC_SUBPAGE \
   return (current_url == chrome::GetSettingsUrl(kBraveSyncSetupPath));
 

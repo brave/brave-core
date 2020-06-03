@@ -41,12 +41,6 @@ void RegisterProfilePrefs(bool is_signin_profile,
   registry->SetDefaultPrefValue(
       spellcheck::prefs::kSpellCheckUseSpellingService, base::Value(false));
 
-  // Make sure sign into Brave is not enabled
-  // The older kSigninAllowed is deprecated and only in use in Android until
-  // C71.
-  registry->SetDefaultPrefValue(prefs::kSigninAllowedOnNextStartup,
-                                base::Value(false));
-
 #if defined(OS_LINUX)
   // Use brave theme by default instead of gtk theme.
   registry->SetDefaultPrefValue(prefs::kUsesSystemTheme, base::Value(false));
