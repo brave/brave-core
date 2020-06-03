@@ -14,6 +14,10 @@
 #define IDR_DEFAULT_FAVICON_64 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_DARK_32 IDR_DEFAULT_FAVICON_DARK
 #define IDR_DEFAULT_FAVICON_DARK_64 IDR_DEFAULT_FAVICON_DARK
+// FaviconSource was excluded from Android builds
+// https://chromium.googlesource.com/chromium/src/+/2ad1441f59880e901664277108e4a490f4b6ea88
+// But it is still used for icons in rewards webui, including Android page.
+// Thus we exclude desktop related code from it for Android builds.
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 // Exclude extension headers to avoid build errors
 #define EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_
@@ -51,6 +55,17 @@ class ExtensionRegistry {
 }  // namespace extensions
 }  // namespace
 #endif  // #if !BUILDFLAG(ENABLE_EXTENSIONS)
+// InstantService is only used on desktop
+#define CHROME_BROWSER_SEARCH_INSTANT_SERVICE_H_
+// Dummy class to workaround InstantService code on Android
+class InstantService {
+ public:
+  static bool ShouldServiceRequest(const GURL& url,
+                                   content::BrowserContext* browser_context,
+                                   int render_process_id) {
+    return false;
+  }
+};
 #endif  // #if defined(OS_ANDROID)
 
 #include "../../../../../chrome/browser/ui/webui/favicon_source.cc"  // NOLINT
