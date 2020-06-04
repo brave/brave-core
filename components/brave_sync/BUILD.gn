@@ -67,13 +67,6 @@ source_set("core") {
     ":features",
     ":prefs",
     "//base",
-    # Only for google_service_auth_error.h
-    "//google_apis:google_apis",
-    "//net:net",
-    "//net/traffic_annotation",
-    "//services/network/public/cpp:cpp_base",
-    "//services/network/public/cpp:cpp",
-    "//url:url",
   ]
 }
 

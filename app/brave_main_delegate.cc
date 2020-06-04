@@ -49,6 +49,19 @@
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #endif
 
+namespace {
+// staging "https://sync-v2.bravesoftware.com/v2" can be overrided by
+// switches::kSyncServiceURL manually
+#if defined(OFFICIAL_BUILD)
+// production
+const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
+#else
+// dev
+const char kBraveSyncServiceURL[] = "http://localhost:8295/v2";
+// const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
+#endif
+}  // namespace
+
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
 base::LazyInstance<BraveContentRendererClient>::DestructorAtExit
     g_brave_content_renderer_client = LAZY_INSTANCE_INITIALIZER;
@@ -148,7 +161,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Brave's sync protocol does not use the sync service url
   command_line.AppendSwitchASCII(switches::kSyncServiceURL,
-                                 "http://localhost:8295/v2");
+                                 kBraveSyncServiceURL);
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {
