@@ -163,6 +163,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       // on
       // this feature.
       features::kWebUIDarkMode.name,
+      blink::features::kPrefetchPrivacyChanges.name,
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(

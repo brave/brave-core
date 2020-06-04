@@ -59,6 +59,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
+    &blink::features::kPrefetchPrivacyChanges,
     &password_manager::features::kPasswordImport,
   };
 
