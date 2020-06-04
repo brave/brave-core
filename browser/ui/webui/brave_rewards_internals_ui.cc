@@ -52,6 +52,9 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetBalance(
     int32_t result,
     std::unique_ptr<brave_rewards::Balance> balance);
+  void GetContributions(const base::ListValue* args);
+  void OnGetContributions(
+      const std::vector<brave_rewards::ContributionInfo>& list);
   void GetPromotions(const base::ListValue* args);
   void OnGetPromotions(const std::vector<brave_rewards::Promotion>& list);
   void GetPartialLog(const base::ListValue* args);
@@ -88,6 +91,11 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.getBalance",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::GetBalance,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getContributions",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetContributions,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getPromotions",
@@ -162,16 +170,6 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
   if (info) {
     info_dict.SetString("walletPaymentId", info->payment_id);
     info_dict.SetBoolean("isKeyInfoSeedValid", info->is_key_info_seed_valid);
-    auto current_reconciles = std::make_unique<base::ListValue>();
-    for (const auto& item : info->current_reconciles) {
-      auto reconcile_info = std::make_unique<base::DictionaryValue>();
-      reconcile_info->SetString("viewingId", item.second.viewing_id_);
-      reconcile_info->SetString("amount", item.second.amount_);
-      reconcile_info->SetInteger("retryStep", item.second.retry_step_);
-      reconcile_info->SetInteger("retryLevel", item.second.retry_level_);
-      current_reconciles->Append(std::move(reconcile_info));
-    }
-    info_dict.SetList("currentReconciles", std::move(current_reconciles));
     info_dict.SetInteger("bootStamp", info->boot_stamp);
   }
   web_ui()->CallJavascriptFunctionUnsafe(
@@ -209,6 +207,54 @@ void RewardsInternalsDOMHandler::OnGetBalance(
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.balance",
       std::move(balance_value));
+}
+
+void RewardsInternalsDOMHandler::GetContributions(const base::ListValue *args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetAllContributions(base::BindOnce(
+      &RewardsInternalsDOMHandler::OnGetContributions,
+      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetContributions(
+    const std::vector<brave_rewards::ContributionInfo>& list) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value contributions(base::Value::Type::LIST);
+  for (const auto & item : list) {
+    base::Value contribution(base::Value::Type::DICTIONARY);
+    contribution.SetStringKey("id", item.contribution_id);
+    contribution.SetDoubleKey("amount", item.amount);
+    contribution.SetIntKey("type", item.type);
+    contribution.SetIntKey("step", item.step);
+    contribution.SetIntKey("retryCount", item.retry_count);
+    contribution.SetIntKey("createdAt", item.created_at);
+    contribution.SetIntKey("processor", item.processor);
+    base::Value publishers(base::Value::Type::LIST);
+    for (const auto& publisher_item : item.publishers) {
+      base::Value publisher(base::Value::Type::DICTIONARY);
+      publisher.SetStringKey(
+          "contributionId",
+          publisher_item.contribution_id);
+      publisher.SetStringKey("publisherKey", publisher_item.publisher_key);
+      publisher.SetDoubleKey("totalAmount", publisher_item.total_amount);
+      publisher.SetDoubleKey(
+          "contributedAmount",
+          publisher_item.contributed_amount);
+      publishers.Append(std::move(publisher));
+    }
+    contribution.SetPath("publishers", std::move(publishers));
+    contributions.Append(std::move(contribution));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.contributions",
+      std::move(contributions));
 }
 
 void RewardsInternalsDOMHandler::GetPromotions(const base::ListValue *args) {

@@ -265,8 +265,6 @@ class LEDGER_EXPORT Ledger {
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
 
-  // This uses a callback instead of returning directly so that
-  // GetCurrentReconciles() can be moved to the database later.
   virtual void GetRewardsInternalsInfo(
       ledger::RewardsInternalsInfoCallback callback) = 0;
 

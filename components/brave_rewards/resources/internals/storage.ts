@@ -11,9 +11,9 @@ const defaultState: RewardsInternals.State = {
   info: {
     isKeyInfoSeedValid: false,
     walletPaymentId: '',
-    currentReconciles: [],
     bootStamp: 0
   },
+  contributions: [],
   promotions: [],
   log: '',
   fullLog: ''

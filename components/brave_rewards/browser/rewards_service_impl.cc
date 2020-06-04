@@ -20,9 +20,8 @@
 #include "base/files/important_file_writer.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/json/json_string_value_serializer.h"
-#include "base/time/time.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -31,13 +30,14 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "bat/ledger/ledger.h"
+#include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/transactions_info.h"
 #include "brave/base/containers/utils.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -47,19 +47,20 @@
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/file_util.h"
-#include "brave/components/brave_rewards/browser/logging_util.h"
 #include "brave/components/brave_rewards/browser/logging.h"
+#include "brave/components/brave_rewards/browser/logging_util.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_database.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
-#include "brave/components/brave_rewards/browser/rewards_parameters.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
@@ -847,9 +848,6 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
   rewards_internals_info->payment_id = info->payment_id;
   rewards_internals_info->is_key_info_seed_valid = info->is_key_info_seed_valid;
   rewards_internals_info->boot_stamp = info->boot_stamp;
-
-  // TODO(https://github.com/brave/brave-browser/issues/8633)
-  // add active contributions
 
   std::move(callback).Run(std::move(rewards_internals_info));
 }
@@ -3525,6 +3523,40 @@ void RewardsServiceImpl::OnGetAllMonthlyReportIds(
     GetAllMonthlyReportIdsCallback callback,
     const std::vector<std::string>& ids) {
   std::move(callback).Run(ids);
+}
+
+void RewardsServiceImpl::GetAllContributions(
+    GetAllContributionsCallback callback) {
+  bat_ledger_->GetAllContributions(
+      base::BindOnce(&RewardsServiceImpl::OnGetAllContributions,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAllContributions(
+    GetAllContributionsCallback callback,
+    ledger::ContributionInfoList contributions) {
+  std::vector<brave_rewards::ContributionInfo> converted;
+  for (const auto& contribution_item : contributions) {
+    brave_rewards::ContributionInfo contribution;
+    contribution.contribution_id = contribution_item->contribution_id;
+    contribution.amount = contribution_item->amount;
+    contribution.type = static_cast<int>(contribution_item->type);
+    contribution.step = static_cast<int>(contribution_item->step);
+    contribution.retry_count = contribution_item->retry_count;
+    contribution.created_at = contribution_item->created_at;
+    contribution.processor = static_cast<int>(contribution_item->processor);
+    for (const auto& publisher_item : contribution_item->publishers) {
+      brave_rewards::ContributionPublisher publisher;
+      publisher.contribution_id = publisher_item->contribution_id;
+      publisher.publisher_key = publisher_item->publisher_key;
+      publisher.total_amount = publisher_item->total_amount;
+      publisher.contributed_amount = publisher_item->contributed_amount;
+      contribution.publishers.push_back(std::move(publisher));
+    }
+    converted.push_back(std::move(contribution));
+  }
+  std::move(callback).Run(std::move(converted));
 }
 
 void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {

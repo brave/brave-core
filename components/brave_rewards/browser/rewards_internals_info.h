@@ -9,8 +9,6 @@
 #include <map>
 #include <string>
 
-#include "brave/components/brave_rewards/browser/reconcile_info.h"
-
 namespace brave_rewards {
 
 struct RewardsInternalsInfo {
@@ -21,8 +19,6 @@ struct RewardsInternalsInfo {
   std::string payment_id;
   bool is_key_info_seed_valid;
   uint64_t boot_stamp;
-
-  std::map<std::string, ReconcileInfo> current_reconciles;
 };
 
 }  // namespace brave_rewards
