@@ -9,6 +9,7 @@
 
 #include "build/build_config.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
+#include "mojo/public/cpp/bindings/generic_pending_receiver.h"
 
 namespace tor {
 
@@ -42,7 +43,9 @@ void TorLauncherService::OnConnect(
     const service_manager::ConnectSourceInfo& source_info,
     const std::string& interface_name,
     mojo::ScopedMessagePipeHandle receiver_pipe) {
-  binders_.TryBind(interface_name, &receiver_pipe);
+  auto receiver =
+      mojo::GenericPendingReceiver(interface_name, std::move(receiver_pipe));
+  ignore_result(binders_.TryBind(&receiver));
 }
 
 void TorLauncherService::OnRemoteDisconnected() {
