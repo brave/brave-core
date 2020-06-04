@@ -22,6 +22,11 @@
 
 namespace syncer {
 
+namespace {
+const char kBraveSyncAccountRefreshToken[] = "dummy_refresh_token";
+const char kBraveSyncAccountEmail[] = "sync@brave.com";
+}  // namespace
+
 void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   VLOG(1) << __func__ << " seed=" << seed;
   if (seed.empty())
@@ -38,11 +43,11 @@ void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
                                                 &public_key_, &private_key_);
   const std::string gaia_id =
       base::HexEncode(public_key_.data(), public_key_.size());
-  const std::string email = "sync@brave.com";
   if (!identity_manager_->HasPrimaryAccount()) {
     const CoreAccountId account_id =
         identity_manager_->GetAccountsMutator()->AddOrUpdateAccount(
-            gaia_id, email, "dummy_refresh_token", true,
+            gaia_id, kBraveSyncAccountEmail, kBraveSyncAccountRefreshToken,
+            true,
             signin_metrics::SourceForRefreshTokenOperation::
                 kInlineLoginHandler_Signin);
     auto* primary_account_mutator =
