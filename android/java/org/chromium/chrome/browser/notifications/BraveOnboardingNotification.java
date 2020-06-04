@@ -77,7 +77,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action != null && action.equals(DEEP_LINK)) {
-            OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
+            // OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
 
             Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
             webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

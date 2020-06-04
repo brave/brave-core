@@ -31,6 +31,8 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
 
+        OnboardingPrefManager.getInstance().setOnboardingShown(true);
+
         OnboardingViewPagerAdapter onboardingViewPagerAdapter = new OnboardingViewPagerAdapter(
                 this, getSupportFragmentManager(), this);
         viewPager = findViewById(R.id.view_pager);

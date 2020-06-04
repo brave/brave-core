@@ -210,17 +210,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             mBraveSyncWorker = new BraveSyncWorker(app);
         }
 
-        OnboardingActivity onboardingActivity = null;
-        for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof OnboardingActivity)) continue;
-
-            onboardingActivity = (OnboardingActivity) ref;
-        }
-
-        if (onboardingActivity == null) {
-            OnboardingPrefManager.getInstance().showOnboarding(this);
-        }
-
         if(!RateUtils.getInstance(this).getPrefRateEnabled()) {
             RateUtils.getInstance(this).setPrefRateEnabled(true);
             RateUtils.getInstance(this).setNextRateDateAndCount();
