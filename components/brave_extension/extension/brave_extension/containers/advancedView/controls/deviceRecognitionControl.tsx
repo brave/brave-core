@@ -124,9 +124,9 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
             value={fingerprinting}
             onChange={this.onChangeBlockDeviceRecognition}
           >
-            <option value='block_third_party'>{getLocale('thirdPartyFingerprintingBlocked')}</option>
-            <option value='block'>{getLocale('allFingerprintingBlocked')}</option>
-            <option value='allow'>{getLocale('allFingerprintingAllowed')}</option>
+            <option value='block'>{getLocale('strictFingerprinting')}</option>
+            <option value='default'>{getLocale('standardFingerprinting')}</option>
+            <option value='allow'>{getLocale('allowAllFingerprinting')}</option>
           </SelectBox>
         </BlockedInfoRowForSelect>
         {

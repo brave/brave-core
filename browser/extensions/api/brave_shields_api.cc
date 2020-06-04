@@ -394,7 +394,8 @@ BraveShieldsGetFingerprintingControlTypeFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto type = ::brave_shields::GetFingerprintingControlType(profile, url);
-  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
+  auto result =
+      std::make_unique<base::Value>(ControlTypeToString(type));
 
   return RespondNow(OneArgument(std::move(result)));
 }

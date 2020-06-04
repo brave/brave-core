@@ -250,7 +250,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       } else if (block_type == kJavaScript) {
         prefs->SetUint64(kJavascriptBlocked,
             prefs->GetUint64(kJavascriptBlocked) + 1);
-      } else if (block_type == kFingerprinting) {
+      } else if (block_type == kFingerprintingV2) {
         prefs->SetUint64(kFingerprintingBlocked,
             prefs->GetUint64(kFingerprintingBlocked) + 1);
       }
@@ -322,7 +322,7 @@ void BraveShieldsWebContentsObserver::OnFingerprintingBlockedWithDetail(
   if (!web_contents) {
     return;
   }
-  DispatchBlockedEventForWebContents(brave_shields::kFingerprinting,
+  DispatchBlockedEventForWebContents(brave_shields::kFingerprintingV2,
       base::UTF16ToUTF8(details), web_contents);
 }
 

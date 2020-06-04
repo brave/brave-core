@@ -250,32 +250,8 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   if (brave::IsWhitelistedFingerprintingException(primary_url, secondary_url)) {
     return true;
   }
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kFingerprintingProtectionV2)) {
-    return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
-  }
-  ContentSettingsForOneType rules;
-  if (content_setting_rules_) {
-      rules = content_setting_rules_->fingerprinting_rules;
-  }
-  ContentSettingPatternSource default_rule = ContentSettingPatternSource(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      base::Value::FromUniquePtrValue(
-          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-      std::string(), false);
-  rules.push_back(default_rule);
-  ContentSetting setting =
-      GetFPContentSettingFromRules(rules, frame, secondary_url);
-  rules.pop_back();
-  bool allow = setting != CONTENT_SETTING_BLOCK;
-  allow = allow || IsWhitelistedForContentSettings();
 
-  if (!allow) {
-    DidBlockFingerprinting(base::UTF8ToUTF16(secondary_url.spec()));
-  }
-
-  return allow;
+  return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
 }
 
 BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
@@ -289,24 +265,15 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
         url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
   }
 
-  if (base::FeatureList::IsEnabled(
-      brave_shields::features::kFingerprintingProtectionV2)) {
-    if (setting == CONTENT_SETTING_BLOCK) {
-      VLOG(1) << "farbling level MAXIMUM";
-      return BraveFarblingLevel::MAXIMUM;
-    } else if (setting == CONTENT_SETTING_ALLOW) {
-      VLOG(1) << "farbling level OFF";
-      return BraveFarblingLevel::OFF;
-    } else {
-      VLOG(1) << "farbling level BALANCED";
-      return BraveFarblingLevel::BALANCED;
-    }
+  if (setting == CONTENT_SETTING_BLOCK) {
+    VLOG(1) << "farbling level MAXIMUM";
+    return BraveFarblingLevel::MAXIMUM;
+  } else if (setting == CONTENT_SETTING_ALLOW) {
+    VLOG(1) << "farbling level OFF";
+    return BraveFarblingLevel::OFF;
   } else {
-    if (setting == CONTENT_SETTING_ALLOW) {
-      return BraveFarblingLevel::OFF;
-    } else {
-      return BraveFarblingLevel::BALANCED;
-    }
+    VLOG(1) << "farbling level BALANCED";
+    return BraveFarblingLevel::BALANCED;
   }
 }
 

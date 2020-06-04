@@ -398,32 +398,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
   EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
-
-  // Farbling should be default if 3rd-party fingerprinting is blocked
-  // via content settings and kBraveFingerprintingV2 is disabled
-  BlockThirdPartyFingerprinting();
-  NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
-
-  // Farbling should be default if fingerprinting is blocked via
-  // content settings and kBraveFingerprintingV2 is disabled
-  BlockFingerprinting();
-  NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
 }
 
 class BraveContentSettingsAgentImplV2BrowserTest
     : public BraveContentSettingsAgentImplBrowserTest {
  public:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        brave_shields::features::kFingerprintingProtectionV2);
     BraveContentSettingsAgentImplBrowserTest::SetUp();
   }
 

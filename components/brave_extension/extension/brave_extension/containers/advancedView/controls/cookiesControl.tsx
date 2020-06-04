@@ -35,8 +35,8 @@ export default class CookiesControl extends React.PureComponent<Props, {}> {
             value={cookies}
             onChange={this.onChangeBlockCookies}
           >
-            <option value='block_third_party'>{getLocale('thirdPartyCookiesBlocked')}</option>
             <option value='block'>{getLocale('allCookiesBlocked')}</option>
+            <option value='block_third_party'>{getLocale('thirdPartyCookiesBlocked')}</option>
             <option value='allow'>{getLocale('allCookiesAllowed')}</option>
           </SelectBox>
         </BlockedInfoRowSingle>

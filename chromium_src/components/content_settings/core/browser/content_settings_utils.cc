@@ -5,21 +5,13 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
 
 #define BRAVE_GET_RENDER_CONTENT_SETTING_RULES                                \
   map->GetSettingsForOneType(ContentSettingsType::AUTOPLAY,                   \
                              ResourceIdentifier(), &(rules->autoplay_rules)); \
-  if (base::FeatureList::IsEnabled(                                           \
-          brave_shields::features::kFingerprintingProtectionV2)) {            \
-    map->GetSettingsForOneType(ContentSettingsType::PLUGINS,                  \
-                               brave_shields::kFingerprintingV2,              \
-                               &(rules->fingerprinting_rules));               \
-  } else {                                                                    \
-    map->GetSettingsForOneType(ContentSettingsType::PLUGINS,                  \
-                               brave_shields::kFingerprinting,                \
-                               &(rules->fingerprinting_rules));               \
-  }                                                                           \
+  map->GetSettingsForOneType(ContentSettingsType::PLUGINS,                    \
+                             brave_shields::kFingerprintingV2,                \
+                             &(rules->fingerprinting_rules));                 \
   map->GetSettingsForOneType(ContentSettingsType::PLUGINS,                    \
                              brave_shields::kBraveShields,                    \
                              &(rules->brave_shields_rules));

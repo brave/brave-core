@@ -379,13 +379,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Advanced view
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
-        Block trackers &amp; ads
+        Trackers &amp; ads blocking
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
-        Cookies
+        Cookie blocking
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
-        Fingerprinting
+        Fingerprinting blocking
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
         Upgrade connections to HTTPS
@@ -412,31 +412,31 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Allow LinkedIn embedded posts
       </message>
       <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_AGGRESSIVE" desc="Select value">
-        Trackers &amp; ads blocked (aggressive)
+        Aggressive
       </message>
       <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_STANDARD" desc="Select value">
-        Trackers &amp; ads blocked (standard)
+        Standard
       </message>
       <message name="IDS_SETTINGS_ALLOW_ADS_TRACKERS" desc="Select value">
-        Allow all trackers &amp; ads
+        Disabled
       </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
-        Only block cross-site cookies
+        Only cross-site
       </message>
       <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
-        Allow all cookies
+        Disabled
       </message>
       <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
-        Block all cookies
+        All
       </message>
-      <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_FINGERPRINTING" desc="Select value">
-        Block cross-site fingerprinting
+      <message name="IDS_SETTINGS_STANDARD_FINGERPRINTING" desc="Select value">
+        Standard
       </message>
-      <message name="IDS_SETTINGS_ALLOW_FINGERPRINTING" desc="Select value">
-        Allow all fingerprinting
+      <message name="IDS_SETTINGS_ALLOW_ALL_FINGERPRINTING" desc="Select value">
+        Disabled
       </message>
-      <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
-        Block all fingerprinting
+      <message name="IDS_SETTINGS_STRICT_FINGERPRINTING" desc="Select value">
+        Strict, may break sites
       </message>
       <!-- WebRTC Policy Setting -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">

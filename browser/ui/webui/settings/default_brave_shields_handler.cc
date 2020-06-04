@@ -162,9 +162,10 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
   std::string value;
   args->GetString(0, &value);
 
-  brave_shields::SetFingerprintingControlType(profile_,
-                                              ControlTypeFromString(value),
-                                              GURL());
+  brave_shields::SetFingerprintingControlType(
+      profile_,
+      ControlTypeFromString(value),
+      GURL());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
