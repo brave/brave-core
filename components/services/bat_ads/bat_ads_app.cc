@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
+#include "mojo/public/cpp/bindings/generic_pending_receiver.h"
 
 namespace bat_ads {
 
@@ -37,7 +38,9 @@ void BatAdsApp::OnConnect(
     const service_manager::ConnectSourceInfo& source_info,
     const std::string& interface_name,
     mojo::ScopedMessagePipeHandle receiver_pipe) {
-  binders_.TryBind(interface_name, &receiver_pipe);
+  auto receiver =
+      mojo::GenericPendingReceiver(interface_name, std::move(receiver_pipe));
+  ignore_result(binders_.TryBind(&receiver));
 }
 
 }  // namespace bat_ads
