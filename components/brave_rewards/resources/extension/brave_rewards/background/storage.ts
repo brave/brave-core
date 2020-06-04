@@ -34,7 +34,6 @@ export const defaultState: RewardsExtension.State = {
   tipAmounts: {},
   balance: {
     total: 0,
-    rates: {},
     wallets: {}
   }
 }

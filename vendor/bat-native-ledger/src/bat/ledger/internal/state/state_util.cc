@@ -355,4 +355,14 @@ std::vector<double> GetMonthlyTipChoices(bat_ledger::LedgerImpl* ledger) {
   return StringToVectorDouble(amounts_string);
 }
 
+void SetFetchOldBalanceEnabled(bat_ledger::LedgerImpl* ledger, bool enabled) {
+  DCHECK(ledger);
+  ledger->SetBooleanState(ledger::kStateFetchOldBalance, enabled);
+}
+
+bool GetFetchOldBalanceEnabled(bat_ledger::LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return ledger->GetBooleanState(ledger::kStateFetchOldBalance);
+}
+
 }  // namespace braveledger_state

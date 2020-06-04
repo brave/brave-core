@@ -299,6 +299,7 @@ void Create::RegisterPersonaCallback(
   ledger_->SetAutoContributeEnabled(true);
   braveledger_state::SetPaymentId(ledger_, payment_id);
   braveledger_state::SetAnonymousCardId(ledger_, card_id);
+  braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);
   ledger_->SetCreationStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
   braveledger_state::SetInlineTippingPlatformEnabled(

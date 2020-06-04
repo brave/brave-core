@@ -41,6 +41,7 @@ namespace ledger {
   const char kStateParametersTipChoices[] = "parameters.tip.choices";
   const char kStateParametersMonthlyTipChoices[] =
       "parameters.tip.monthly_choices";
+  const char kStateFetchOldBalance[] = "fetch_old_balance";
 
 }  // namespace ledger
 

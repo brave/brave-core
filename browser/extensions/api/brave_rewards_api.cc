@@ -958,12 +958,6 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
   if (result == 0 && balance) {
     balance_value->SetDoubleKey("total", balance->total);
 
-    base::Value rates(base::Value::Type::DICTIONARY);
-    for (auto const& rate : balance->rates) {
-      rates.SetDoubleKey(rate.first, rate.second);
-    }
-    balance_value->SetKey("rates", std::move(rates));
-
     base::Value wallets(base::Value::Type::DICTIONARY);
     for (auto const& rate : balance->wallets) {
       wallets.SetDoubleKey(rate.first, rate.second);
@@ -971,8 +965,6 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
     balance_value->SetKey("wallets", std::move(wallets));
   } else {
     balance_value->SetDoubleKey("total", 0.0);
-    base::Value rates(base::Value::Type::DICTIONARY);
-    balance_value->SetKey("rates", std::move(rates));
     base::Value wallets(base::Value::Type::DICTIONARY);
     balance_value->SetKey("wallets", std::move(wallets));
   }

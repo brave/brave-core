@@ -261,7 +261,6 @@ declare namespace Rewards {
 
   export interface Balance {
     total: number
-    rates: Record<string, number>
     wallets: Record<string, number>
   }
 

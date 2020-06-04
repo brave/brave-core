@@ -255,6 +255,7 @@ void Recover::RecoverWalletCallback(
   braveledger_state::SetRecoverySeed(ledger_, new_seed);
   braveledger_state::SetPaymentId(ledger_, recovery_id);
   braveledger_state::SetAnonymousCardId(ledger_, card_id);
+  braveledger_state::SetFetchOldBalanceEnabled(ledger_, true);
   ledger_->SetConfirmationsWalletInfo();
 
   callback(ledger::Result::LEDGER_OK, balance);

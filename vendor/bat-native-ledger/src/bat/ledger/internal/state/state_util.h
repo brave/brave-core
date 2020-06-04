@@ -119,6 +119,10 @@ std::vector<double> GetTipChoices(bat_ledger::LedgerImpl* ledger);
 
 std::vector<double> GetMonthlyTipChoices(bat_ledger::LedgerImpl* ledger);
 
+void SetFetchOldBalanceEnabled(bat_ledger::LedgerImpl* ledger, bool enabled);
+
+bool GetFetchOldBalanceEnabled(bat_ledger::LedgerImpl* ledger);
+
 }  // namespace braveledger_state
 
 #endif  // BRAVELEDGER_STATE_STATE_UTIL_H_

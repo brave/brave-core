@@ -18,13 +18,11 @@ struct Balance {
   std::string toJson();
 
   double total;
-  std::map<std::string, double> rates;
   std::map<std::string, double> wallets;
 
   // the values below are used as fields names while json serialization/
   // deserialization and expected to be unchanged
   static constexpr const char* kJsonWallets = "wallets";
-  static constexpr const char* kJsonRates = "rates";
   static constexpr const char* kJsonTotal = "total";
 };
 

@@ -11,11 +11,13 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -33,9 +35,19 @@ Balance::~Balance() {
 }
 
 void Balance::Fetch(ledger::FetchBalanceCallback callback) {
+  // if we don't have user funds in anon card anymore
+  // we can skip balance server ping
+  if (!braveledger_state::GetFetchOldBalanceEnabled(ledger_)) {
+    auto balance = ledger::Balance::New();
+    GetUnBlindedTokens(std::move(balance), callback);
+    return;
+  }
+
   std::string payment_id = ledger_->GetPaymentId();
 
-  std::string path = "/wallet/" + payment_id + "/balance";
+  std::string path = base::StringPrintf(
+      "/wallet/%s/balance",
+      payment_id.c_str());
   const std::string url = braveledger_request_util::BuildUrl(
       path,
       PREFIX_V2,
@@ -85,15 +97,11 @@ void Balance::OnFetch(
   }
   balance->user_funds = user_funds;
 
-  const auto* local_rates = dictionary->FindDictKey("rates");
-  if (local_rates) {
-    for (const auto& it : local_rates->DictItems()) {
-      balance->rates.insert(std::make_pair(it.first, it.second.GetDouble()));
-    }
-  }
-
   balance->wallets.insert(std::make_pair(ledger::kWalletAnonymous, total_anon));
 
+  if (balance->total == 0.0) {
+    braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);
+  }
 
   GetUnBlindedTokens(std::move(balance), callback);
 }
@@ -106,6 +114,7 @@ void Balance::GetUnBlindedTokens(
     callback(ledger::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
+
   auto tokens_callback = std::bind(&Balance::OnGetUnBlindedTokens,
       this,
       *balance,

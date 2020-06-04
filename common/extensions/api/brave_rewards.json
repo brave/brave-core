@@ -976,9 +976,6 @@
                   "total": {
                     "type": "any"
                   },
-                  "rates": {
-                    "type": "any"
-                  },
                   "wallets": {
                     "type": "any"
                   }

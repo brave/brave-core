@@ -23,11 +23,9 @@ class BraveRewardsBalance {
      * src/brave/components/brave_rewards/browser/balance.h
      */
     public static final String JSON_TOTAL = "total";
-    public static final String JSON_RATES = "rates";
     public static final String JSON_WALLETS = "wallets";
 
     double mTotal;
-    Map <String, Double> mRates;
     Map <String, Double> mWallets;
 
     BraveRewardsBalance (String json_balance) throws JSONException {
@@ -38,18 +36,9 @@ class BraveRewardsBalance {
         JSONObject jsonroot = new JSONObject(json_balance);
         mTotal = jsonroot.getDouble(JSON_TOTAL);
 
-        mRates = new HashMap <>();
-        JSONObject json_rates = jsonroot.getJSONObject(JSON_RATES);
-        Iterator<String> keys = json_rates.keys();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            Double val = json_rates.getDouble(key);
-            mRates.put (key, val);
-        }
-
         mWallets = new HashMap <>();
         JSONObject json_wallets = jsonroot.getJSONObject(JSON_WALLETS);
-        keys = json_wallets.keys();
+        Iterator<String> keys = json_wallets.keys();
         while(keys.hasNext()) {
             String key = keys.next();
             Double val = json_wallets.getDouble(key);
@@ -62,7 +51,6 @@ class BraveRewardsBalance {
     public String toString() {
         return "BraveRewardsBalance{" +
                 "mTotal=" + mTotal +
-                ", mRates=" + mRates +
                 ", mWallets=" + mWallets +'}';
     }
 }

@@ -118,7 +118,6 @@ struct RewardsParameters {
 struct Balance {
   double total;
   string user_funds;
-  map<string, double> rates;
   map<string, double> wallets;
 };
 
