@@ -28,13 +28,13 @@ Polymer({
      * The current sync status, supplied by SyncBrowserProxy.
      * @type {?settings.SyncStatus}
      */
-    syncStatus: Object,
 
     /**
      * Dictionary defining page visibility.
      * @type {!PageVisibility}
      */
     pageVisibility: Object,
+    syncStatus_: Object,
   },
 
   /** @private {?settings.SyncBrowserProxy} */
@@ -55,12 +55,11 @@ Polymer({
 
   /** @override */
   attached: function() {
-    // We can't get sync status from people page because of brave setting
-    // override
-    this.browserProxy_.getSyncStatus().then(
-        this.handleSyncStatus_.bind(this));
+    const onSyncStatus = this.handleSyncStatus_.bind(this)
+    this.browserProxy_.getSyncStatus().then(onSyncStatus);
+    this.addWebUIListener('sync-status-changed',onSyncStatus);
     this.addWebUIListener(
-        'sync-status-changed', this.handleSyncStatus_.bind(this));
+        'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
   },
 
   /** @private */
@@ -76,7 +75,30 @@ Polymer({
    * @private
    */
   handleSyncStatus_: function(syncStatus) {
-    this.syncStatus = syncStatus;
+    this.syncStatus_ = syncStatus;
   },
 
+  /**
+   * Handler for when the sync preferences are updated.
+   * @private
+   */
+  handleSyncPrefsChanged_: async function(syncPrefs) {
+    // Enforce encryption
+    if (this.syncStatus_ && !this.syncStatus_.firstSetupInProgress) {
+      if (!syncPrefs.encryptAllData) {
+        const syncCode = await this.browserProxy_.getSyncCode()
+        syncPrefs.encryptAllData = true;
+        syncPrefs.setNewPassphrase = true;
+        syncPrefs.passphrase = syncCode;
+        console.debug('sync set encryption', syncPrefs)
+        await this.browserProxy_.setSyncEncryption(syncPrefs)
+      } else if (syncPrefs.passphraseRequired) {
+        const syncCode = await this.browserProxy_.getSyncCode()
+        syncPrefs.setNewPassphrase = false;
+        syncPrefs.passphrase = syncCode;
+        console.debug('sync set encryption', syncPrefs)
+        await this.browserProxy_.setSyncEncryption(syncPrefs)
+      }
+    }
+  },
 });

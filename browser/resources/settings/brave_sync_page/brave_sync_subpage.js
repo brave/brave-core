@@ -13,19 +13,10 @@ Polymer({
   is: 'settings-brave-sync-subpage',
 
   behaviors: [
-    WebUIListenerBehavior,
     settings.RouteObserverBehavior,
   ],
 
   properties: {
-    /**
-     * Preferences state.
-     */
-    prefs: {
-      type: Object,
-      notify: true,
-    },
-
     /** @private */
     pages_: {
       type: Object,
@@ -44,12 +35,6 @@ Polymer({
     },
 
     /**
-     * Dictionary defining page visibility.
-     * @type {!PrivacyPageVisibility}
-     */
-    pageVisibility: Object,
-
-    /**
      * The current sync preferences, supplied by SyncBrowserProxy.
      * @type {settings.SyncPrefs|undefined}
      */
@@ -60,15 +45,6 @@ Polymer({
     /** @type {settings.SyncStatus} */
     syncStatus: {
       type: Object,
-    },
-
-    /**
-     * The passphrase is seed encode as bip39 keywords.
-     * @private
-     */
-    passphrase_: {
-      type: String,
-      value: '',
     },
 
     /** @private */
@@ -132,8 +108,6 @@ Polymer({
 
   /** @override */
   attached: function() {
-    this.addWebUIListener(
-      'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
     const router = settings.Router.getInstance();
     if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
       this.onNavigateToPage_();
@@ -250,27 +224,6 @@ Polymer({
     if (this.unloadCallback_) {
       window.removeEventListener('unload', this.unloadCallback_);
       this.unloadCallback_ = null;
-    }
-  },
-
-  /**
-   * Handler for when the sync preferences are updated.
-   * @private
-   */
-  handleSyncPrefsChanged_: async function(syncPrefs) {
-    this.syncPrefs = syncPrefs;
-    // Enforce encryption
-    if (this.syncStatus && !this.syncStatus.firstSetupInProgress) {
-      if (!this.syncPrefs.encryptAllData) {
-        this.syncPrefs.encryptAllData = true;
-        this.syncPrefs.setNewPassphrase = true;
-        this.syncPrefs.passphrase = this.passphrase_;
-        await this.browserProxy_.setSyncEncryption(this.syncPrefs)
-      } else if (this.syncPrefs.passphraseRequired) {
-        this.syncPrefs.setNewPassphrase = false;
-        this.syncPrefs.passphrase = this.passphrase_;
-        await this.browserProxy_.setSyncEncryption(this.syncPrefs)
-      }
     }
   },
 
