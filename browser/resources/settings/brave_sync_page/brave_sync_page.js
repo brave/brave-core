@@ -17,24 +17,14 @@ Polymer({
 
   properties: {
     /**
-     * Preferences state.
-     */
-    prefs: {
-      type: Object,
-      notify: true,
-    },
-
-    /**
      * The current sync status, supplied by SyncBrowserProxy.
      * @type {?settings.SyncStatus}
      */
-
-    /**
-     * Dictionary defining page visibility.
-     * @type {!PageVisibility}
-     */
-    pageVisibility: Object,
     syncStatus_: Object,
+    syncLabel_: {
+      type: String,
+      computed: 'computeSyncLabel_(syncStatus_.firstSetupInProgress)'
+    },
   },
 
   /** @private {?settings.SyncBrowserProxy} */
@@ -46,9 +36,9 @@ Polymer({
   },
 
   /** @private */
-  getSyncLabel_(syncStatus) {
-    const isAlreadySetup = this.syncStatus !== undefined &&
-        !this.syncStatus.firstSetupInProgress;
+  computeSyncLabel_() {
+    const isAlreadySetup = this.syncStatus_ !== undefined &&
+        !this.syncStatus_.firstSetupInProgress;
     const key = isAlreadySetup ? 'braveSyncManageActionLabel' : 'braveSyncSetupActionLabel';
     return I18nBehavior.i18n(key);
   },

@@ -338,7 +338,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       sectionSync.setAttribute('if', '[[showPage_(pageVisibility.braveSync)]]')
       sectionSync.innerHTML = `
         <settings-section page-title="${loadTimeData.getString('braveSync')}" section="braveSync">
-          <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
+          <settings-brave-sync-page></settings-brave-sync-page>
         </settings-section>
       `
       const sectionShields = document.createElement('template')
