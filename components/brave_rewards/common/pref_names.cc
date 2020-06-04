@@ -62,5 +62,7 @@ const char kStateParametersTipChoices[] =
     "brave.rewards.parameters.tip.choices";
 const char kStateParametersMonthlyTipChoices[] =
     "brave.rewards.parameters.tip.monthly_choices";
+const char kStateFetchOldBalance[] =
+    "brave.rewards.fetch_old_balance";
 }  // namespace prefs
 }  // namespace brave_rewards
