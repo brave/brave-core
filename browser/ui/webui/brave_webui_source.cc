@@ -292,6 +292,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cryptoWalletsDisclosureThree", IDS_BRAVE_WALLET_DISCLOSURE_THREE },
         { "cryptoWalletsDisclosureFour", IDS_BRAVE_WALLET_DISCLOSURE_FOUR },
         { "cryptoWalletsBraveRewards", IDS_BRAVE_WALLET_BRAVE_REWARDS },
+        { "cryptoWalletsDownloading", IDS_BRAVE_WALLET_DOWNLOADING },
         { "cryptoWalletsDisclosureConfirm", IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM }         // NOLINT
       }
     }, {
