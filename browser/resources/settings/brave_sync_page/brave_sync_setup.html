@@ -1,5 +1,7 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 
+<link rel="href" src="chrome://resources/html/cr.html">
+
 <link rel="import" href="brave_sync_code_dialog.html">
 
 <dom-module id="settings-brave-sync-setup">
@@ -69,7 +71,7 @@
     <template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
       <settings-brave-sync-code-dialog
         code-type="{{syncCodeDialogType_}}"
-        sync-code="{{syncCode_}}"
+        sync-code="{{syncCode}}"
         is-invalid-sync-code="{{isInvalidSyncCode_}}"
         on-done="handleSyncCodeDialogDone_"
       ></settings-brave-sync-code-dialog>

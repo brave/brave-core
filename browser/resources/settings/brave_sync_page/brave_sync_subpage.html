@@ -2,24 +2,17 @@
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/html/util.html">
-<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/cr_dialog/cr_dialog.html">
+
 <link rel="import" href="chrome://resources/cr_elements/cr_button/cr_button.html">
 <link rel="import" href="chrome://resources/cr_elements/cr_icon_button/cr_icon_button.html">
-<link rel="import" href="chrome://resources/cr_elements/cr_input/cr_input.html">
-<link rel="import" href="chrome://resources/cr_elements/cr_radio_button/cr_radio_button.html">
-<link rel="import" href="chrome://resources/cr_elements/cr_radio_group/cr_radio_group.html">
 <link rel="import" href="chrome://resources/cr_elements/icons.html">
 <link rel="import" href="chrome://resources/cr_elements/shared_style_css.html">
 <link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
-<link rel="import" href="chrome://resources/polymer/v1_0/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../people_page/sync_browser_proxy.html">
 <link rel="import" href="../people_page/sync_controls.html">
-<link rel="import" href="../privacy_page/personalization_options.html">
 <link rel="import" href="../route.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
-<link rel="import" href="brave_sync_control.html">
 <link rel="import" href="brave_sync_configure.html">
 <link rel="import" href="brave_sync_setup.html">
 
@@ -74,7 +67,7 @@
         </div>
 
         <template is="dom-if" if="[[isStatus_('configure', pageStatus_)]]">
-          <settings-brave-sync-configure syncStatus=[[syncStatus]]>
+          <settings-brave-sync-configure syncStatus="[[syncStatus]]">
           </settings-brave-sync-configure>
         </template>
 

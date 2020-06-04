@@ -22,15 +22,17 @@ Polymer({
      */
     syncStatus: Object,
     /**
+     * Configured sync code
+     */
+    syncCode: {
+      type: String,
+      notify: true
+    },
+    /**
      * List of devices in sync chain
      * @private
      */
     deviceList_: Array,
-    /**
-     * Configured sync code
-     * @private
-     */
-    syncCode_: String,
     /**
      * Sync code dialog type. Can only have 1 at a time, so use a single property.
      * 'qr' | 'words' | 'input' | 'choose' | null
@@ -52,7 +54,7 @@ Polymer({
       this.browserProxy_.getSyncCode(),
       cr.sendWithPromise('SyncGetDeviceList')
     ])
-    this.syncCode_ = syncCode
+    this.syncCode = syncCode
     this.addWebUIListener('device-info-changed', this.handleDeviceInfo_.bind(this))
     this.handleDeviceInfo_(deviceList)
   },

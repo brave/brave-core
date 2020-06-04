@@ -149,10 +149,16 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
   const base::Value* sync_code;
   CHECK(args->Get(1, &sync_code));
 
+  if (sync_code->GetString().empty()) {
+    LOG(ERROR) << "No sync code parameter provided!";
+    RejectJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
+
   std::vector<uint8_t> seed;
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
     LOG(ERROR) << "invalid sync code:" << sync_code->GetString();
-    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    RejectJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
@@ -169,10 +175,7 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
 
-  syncer::SyncService* sync_service =
-      ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? ProfileSyncServiceFactory::GetForProfile(profile_)
-             : nullptr;
+  auto* sync_service = GetSyncService();
   if (sync_service) {
     sync_service->GetUserSettings()->SetSyncRequested(false);
     sync_service->StopAndClear();
@@ -182,6 +185,12 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
 
   // Sync prefs will be clear in ProfileSyncService::StopImpl
   ResolveJavascriptCallback(*callback_id, base::Value());
+}
+
+syncer::SyncService* BraveSyncHandler::GetSyncService() const {
+  return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
+             ? ProfileSyncServiceFactory::GetForProfile(profile_)
+             : nullptr;
 }
 
 base::Value BraveSyncHandler::GetSyncDeviceList() {
