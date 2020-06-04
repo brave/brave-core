@@ -181,42 +181,6 @@ void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(JNIEnv* env,
     count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
 }
 
-ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncDeviceId(
-    JNIEnv* env) {
-  return ConvertUTF8ToJavaString(env,
-                                 GetOriginalProfile()->GetPrefs()->GetString(
-                                     brave_sync::prefs::kSyncDeviceId));
-}
-
-void JNI_BravePrefServiceBridge_SetSyncDeviceName(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& deviceName) {
-  return GetOriginalProfile()->GetPrefs()->SetString(
-      brave_sync::prefs::kSyncDeviceName,
-      ConvertJavaStringToUTF8(env, deviceName));
-}
-
-ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncDeviceName(
-    JNIEnv* env) {
-  return ConvertUTF8ToJavaString(env,
-                                 GetOriginalProfile()->GetPrefs()->GetString(
-                                     brave_sync::prefs::kSyncDeviceName));
-}
-
-void JNI_BravePrefServiceBridge_SetSyncSeed(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& seed) {
-  return GetOriginalProfile()->GetPrefs()->SetString(
-      brave_sync::prefs::kSyncSeed, ConvertJavaStringToUTF8(env, seed));
-}
-
-ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncSeed(
-    JNIEnv* env) {
-  return ConvertUTF8ToJavaString(env,
-                                 GetOriginalProfile()->GetPrefs()->GetString(
-                                     brave_sync::prefs::kSyncSeed));
-}
-
 void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(
     JNIEnv* env,
     jboolean value) {
