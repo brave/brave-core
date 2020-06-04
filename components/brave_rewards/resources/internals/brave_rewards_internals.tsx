@@ -10,6 +10,8 @@ import { getActions as getUtilActions, setActions } from './utils'
 
 // Components
 import App from './components/app'
+import { ThemeProvider } from 'brave-ui/theme'
+import Theme from 'brave-ui/theme/brave-default'
 
 // Utils
 import store from './store'
@@ -45,12 +47,22 @@ window.cr.define('brave_rewards_internals', function () {
     getActions().onPromotions(promotions)
   }
 
+  function partialLog (log: string) {
+    getActions().onGetPartialLog(log)
+  }
+
+  function fullLog (log: string) {
+    getActions().onGetFullLog(log)
+  }
+
   function initialize () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
 
     render(
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={Theme}>
+          <App />
+        </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
   }
@@ -60,7 +72,9 @@ window.cr.define('brave_rewards_internals', function () {
     onGetRewardsEnabled,
     onGetRewardsInternalsInfo,
     balance,
-    promotions
+    promotions,
+    partialLog,
+    fullLog
   }
 })
 

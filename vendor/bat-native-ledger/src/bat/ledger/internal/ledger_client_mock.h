@@ -70,7 +70,7 @@ class MockLedgerClient : public LedgerClient {
       const std::string& publisher_key,
       bool exclude));
 
-  MOCK_CONST_METHOD4(Log, void(
+  MOCK_METHOD4(Log, void(
       const char* file,
       const int line,
       const int verbose_level,

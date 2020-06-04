@@ -837,7 +837,7 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   wallet_info_ = WalletInfo(*info);
 
   BLOG(1, "SetWalletInfo:\n"
-      << "  Payment id: " << wallet_info_.payment_id
+      << "  Payment id: " << wallet_info_.payment_id << "\n"
       << "  Private key: ********");
 
   NotifyAdsIfConfirmationsIsReady();

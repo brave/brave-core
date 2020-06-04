@@ -10,5 +10,11 @@ export const enum types {
   GET_BALANCE = '@@rewards_internals/GET_BALANCE',
   ON_BALANCE = '@@rewards_internals/ON_BALANCE',
   GET_PROMOTIONS = '@@rewards_internals/GET_PROMOTIONS',
-  ON_PROMOTIONS = '@@rewards_internals/ON_PROMOTIONS'
+  ON_PROMOTIONS = '@@rewards_internals/ON_PROMOTIONS',
+  GET_PARTIAL_LOG = '@@rewards_internals/GET_PARTIAL_LOG',
+  ON_GET_PARTIAL_LOG = '@@rewards_internals/ON_GET_PARTIAL_LOG',
+  GET_FULL_LOG = '@@rewards_internals/GET_FULL_LOG',
+  ON_GET_FULL_LOG = '@@rewards_internals/ON_GET_FULL_LOG',
+  CLEAR_LOG = '@@rewards_internals/CLEAR_LOG',
+  DOWNLOAD_COMPLETED = '@@rewards_internals/DOWNLOAD_COMPLETED'
 }

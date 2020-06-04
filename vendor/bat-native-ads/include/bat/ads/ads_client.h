@@ -209,7 +209,7 @@ class ADS_EXPORT AdsClient {
       const char* file,
       const int line,
       const int verbose_level,
-      const std::string& message) const = 0;
+      const std::string& message) = 0;
 };
 
 }  // namespace ads

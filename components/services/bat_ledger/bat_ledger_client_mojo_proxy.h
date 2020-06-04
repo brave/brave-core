@@ -54,7 +54,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const char* file,
       const int line,
       const int verbose_level,
-      const std::string& message) const override;
+      const std::string& message) override;
 
   std::string URIEncode(const std::string& value) override;
 

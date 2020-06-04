@@ -115,6 +115,6 @@ void NativeAdsClient::GetAdConversions(ads::GetAdConversionsCallback callback) {
   [bridge_ getAdConversions:callback];
 }
 
-void NativeAdsClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) const {
+void NativeAdsClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) {
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }

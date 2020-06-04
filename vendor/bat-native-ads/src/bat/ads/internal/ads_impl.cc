@@ -489,7 +489,7 @@ void AdsImpl::OnTabUpdated(
 
 void AdsImpl::OnTabClosed(
     const int32_t tab_id) {
-  BLOG(2, "Tab id " << tab_id << "was closed");
+  BLOG(2, "Tab id " << tab_id << " was closed");
 
   OnMediaStopped(tab_id);
 

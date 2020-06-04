@@ -47,6 +47,9 @@
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/file_util.h"
+#include "brave/components/brave_rewards/browser/logging_util.h"
+#include "brave/components/brave_rewards/browser/logging.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_database.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -103,6 +106,11 @@ namespace brave_rewards {
 static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 namespace {
+
+base::File g_diagnostic_log;
+const int kDiagnosticLogMaxVerboseLevel = 6;
+const int kTailDiagnosticLogToNumLines = 20000;
+const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
 
 ContentSite PublisherInfoToContentSite(
     const ledger::PublisherInfo& publisher_info) {
@@ -217,6 +225,32 @@ bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
   return res;
 }
 
+std::string LoadDiagnosticLogOnFileTaskRunner(
+    const base::FilePath& path,
+    const int num_lines) {
+  if (!base::PathExists(path)) {
+    return "";
+  }
+
+  std::string value;
+  if (!TailFileAsString(&g_diagnostic_log, num_lines, &value)) {
+    return base::StringPrintf("ERROR: %s",
+        GetLastFileError(&g_diagnostic_log).c_str());
+  }
+
+  return value;
+}
+
+bool ClearDiagnosticLogOnFileTaskRunner(const base::FilePath& path) {
+  if (!base::PathExists(path)) {
+    return true;
+  }
+
+  g_diagnostic_log.Close();
+
+  return base::DeleteFile(path, false);
+}
+
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
@@ -301,12 +335,14 @@ bool IsMediaLink(const GURL& url,
 
 // read comment about file pathes at src\base\files\file_path.h
 #if defined(OS_WIN)
+const base::FilePath::StringType kDiagnosticLogPath(L"Rewards.log");
 const base::FilePath::StringType kLedger_state(L"ledger_state");
 const base::FilePath::StringType kPublisher_state(L"publisher_state");
 const base::FilePath::StringType kPublisher_info_db(L"publisher_info_db");
 const base::FilePath::StringType kPublishers_list(L"publishers_list");
 const base::FilePath::StringType kRewardsStatePath(L"rewards_service");
 #else
+const base::FilePath::StringType kDiagnosticLogPath("Rewards.log");
 const base::FilePath::StringType kLedger_state("ledger_state");
 const base::FilePath::StringType kPublisher_state("publisher_state");
 const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
@@ -330,6 +366,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      diagnostic_log_path_(profile_->GetPath().Append(kDiagnosticLogPath)),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
@@ -525,7 +562,7 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
     const std::string& result_string,
     const bool attestation_passed) {
   if (!token_received) {
-    VLOG(0) << "CreateWalletAttestationResult error: " << result_string;
+    BLOG(0, "CreateWalletAttestationResult error: " << result_string);
     OnWalletInitialized(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -922,7 +959,7 @@ void RewardsServiceImpl::LoadNicewareList(
       IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
 
   if (data.empty()) {
-    VLOG(0) << "Failed to read in niceware list";
+    BLOG(0, "Failed to read in niceware list");
   }
   callback(data.empty() ? ledger::Result::LEDGER_ERROR
                         : ledger::Result::LEDGER_OK, data);
@@ -1910,7 +1947,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
 
   auto it = current_media_fetchers_.find(url);
   if (it != current_media_fetchers_.end()) {
-    VLOG(1) << "Already fetching favicon: " << url;
+    BLOG(1, "Already fetching favicon: " << url);
     return;
   }
 
@@ -2259,11 +2296,134 @@ void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
       "rewards_notification_tips_processed");
 }
 
+bool MaybeTailDiagnosticLog(
+    const int num_lines) {
+  if (!g_diagnostic_log.IsValid()) {
+    return false;
+  }
+
+  static bool first_run = true;
+
+  const int64_t length = g_diagnostic_log.GetLength();
+  if (length == -1) {
+    return false;
+  }
+
+  if (!first_run && length <= kDiagnosticLogMaxFileSize) {
+    return true;
+  }
+
+  first_run = false;
+
+  if (!TailFile(&g_diagnostic_log, num_lines)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool WriteToDiagnosticLogOnFileTaskRunner(
+    const base::FilePath& log_path,
+    const int num_lines,
+    const std::string& file,
+    const int line,
+    const int verbose_level,
+    const std::string& message) {
+  if (!InitializeLog(&g_diagnostic_log, log_path)) {
+    VLOG(0) << "Failed to initialize diagnostic log: "
+        << GetLastFileError(&g_diagnostic_log);
+
+    return false;
+  }
+
+  const base::Time time = base::Time::Now();
+
+  const std::string log_entry =
+      FriendlyFormatLogEntry(time, file, line, verbose_level, message);
+
+  if (!WriteToLog(&g_diagnostic_log, log_entry)) {
+    VLOG(0) << "Failed to write to diagnostic log: "
+        << GetLastFileError(&g_diagnostic_log);
+
+    return false;
+  }
+
+  if (!MaybeTailDiagnosticLog(num_lines)) {
+    VLOG(0) << "Failed to vacuum diagnostic log";
+
+    return false;
+  }
+
+  return true;
+}
+
+void RewardsServiceImpl::DiagnosticLog(
+    const std::string& file,
+    const int line,
+    const int verbose_level,
+    const std::string& message) {
+  if (profile_->IsOffTheRecord()) {
+    return;
+  }
+
+  if (verbose_level > kDiagnosticLogMaxVerboseLevel) {
+    return;
+  }
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&WriteToDiagnosticLogOnFileTaskRunner,
+          diagnostic_log_path_, kTailDiagnosticLogToNumLines, file, line,
+              verbose_level, message),
+      base::BindOnce(&RewardsServiceImpl::OnWriteToLogOnFileTaskRunner,
+          AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnWriteToLogOnFileTaskRunner(
+    const bool success) {
+  DCHECK(success);
+}
+
+void RewardsServiceImpl::LoadDiagnosticLog(
+      const int num_lines,
+      LoadDiagnosticLogCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadDiagnosticLogOnFileTaskRunner, diagnostic_log_path_,
+          num_lines),
+      base::BindOnce(&RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner(
+    LoadDiagnosticLogCallback callback,
+    const std::string& value) {
+  std::move(callback).Run(value);
+}
+
+void RewardsServiceImpl::ClearDiagnosticLog(
+    ClearDiagnosticLogCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ClearDiagnosticLogOnFileTaskRunner, diagnostic_log_path_),
+      base::BindOnce(&RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner(
+    ClearDiagnosticLogCallback callback,
+    const bool success) {
+  std::move(callback).Run(success);
+}
+
 void RewardsServiceImpl::Log(
     const char* file,
     const int line,
     const int verbose_level,
-    const std::string& message) const {
+    const std::string& message) {
+  DCHECK(file);
+
+  DiagnosticLog(file, line, verbose_level, message);
+
   const int vlog_level = ::logging::GetVlogLevelHelper(file, strlen(file));
   if (verbose_level <= vlog_level) {
     ::logging::LogMessage(file, line, -verbose_level).stream() << message;

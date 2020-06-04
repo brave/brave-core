@@ -42,5 +42,5 @@ class NativeAdsClient : public ads::AdsClient {
   void SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::ResultCallback callback) override;
   void GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::GetCreativeAdNotificationsCallback callback) override;
   void GetAdConversions(ads::GetAdConversionsCallback callback) override;
-  void Log(const char * file, const int line, const int verbose_level, const std::string & message) const override;
+  void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
 };

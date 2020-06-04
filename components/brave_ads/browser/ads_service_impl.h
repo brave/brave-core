@@ -430,11 +430,17 @@ class AdsServiceImpl : public AdsService,
   void GetAdConversions(
       ads::GetAdConversionsCallback callback) override;
 
+  void DiagnosticLog(
+      const std::string& file,
+      const int line,
+      const int verbose_level,
+      const std::string& message);
+
   void Log(
       const char* file,
       const int line,
       const int verbose_level,
-      const std::string& message) const override;
+      const std::string& message) override;
 
   // BackgroundHelper::Observer implementation
   void OnBackground() override;

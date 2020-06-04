@@ -403,7 +403,7 @@ void BatAdsClientMojoBridge::Log(
     const char* file,
     const int line,
     const int verbose_level,
-    const std::string& message) const {
+    const std::string& message) {
   if (!connected()) {
     return;
   }
