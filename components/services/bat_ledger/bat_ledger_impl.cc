@@ -333,7 +333,7 @@ void BatLedgerImpl::SetAutoContribute(bool enabled) {
 }
 
 void BatLedgerImpl::UpdateAdsRewards() {
-  ledger_->UpdateAdsRewards();
+  ledger_->UpdateAdsRewards(false);
 }
 
 void BatLedgerImpl::OnTimer(uint32_t timer_id) {

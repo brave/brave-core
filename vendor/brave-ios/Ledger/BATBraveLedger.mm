@@ -1466,7 +1466,7 @@ BATLedgerBridge(BOOL,
 
 - (void)updateAdsRewards
 {
-  ledger->UpdateAdsRewards();
+  ledger->UpdateAdsRewards(false);
 }
 
 - (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion

@@ -1027,12 +1027,12 @@ void LedgerImpl::LogResponse(
     << "[ END RESPONSE ]";
 }
 
-void LedgerImpl::UpdateAdsRewards() {
+void LedgerImpl::UpdateAdsRewards(const bool should_refresh) {
   if (!IsConfirmationsRunning()) {
     return;
   }
 
-  bat_confirmations_->UpdateAdsRewards(false);
+  bat_confirmations_->UpdateAdsRewards(should_refresh);
 }
 
 void LedgerImpl::ResetReconcileStamp() {
