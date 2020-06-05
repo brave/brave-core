@@ -32,9 +32,6 @@
 <translation id="5040262127954254034">Privaatheid</translation>
 <translation id="3061707000357573562">Lapdiens</translation>
 <translation id="1914326953223720820">Uitpakdiens</translation>
-<translation id="1623104350909869708">Verhoed hierdie bladsy om bykomende dialoë te skep</translation>
-<translation id="2677748264148917807">Verlaat</translation>
-<translation id="5556459405103347317">Herlaai</translation>
 <translation id="2359808026110333948">Gaan voort</translation>
 <translation id="4378154925671717803">Foon</translation>
 <translation id="8131740175452115882">Bevestig</translation>
@@ -65,12 +62,13 @@
 <translation id="7701040980221191251">Geen</translation>
 <translation id="8428213095426709021">Instellings</translation>
 <translation id="9038649477754266430">Gebruik ’n voorspeldiens om blaaie vinniger te laai</translation>
+<translation id="2344028582131185878">Outomatiese aflaaie</translation>
+<translation id="3414952576877147120">Grootte:</translation>
 <translation id="4850886885716139402">Bekyk</translation>
 <translation id="7180611975245234373">Verfris</translation>
-<translation id="1426410128494586442">Ja</translation>
-<translation id="4250680216510889253">Nee</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3586931643579894722">Versteek besonderhede</translation>
+<translation id="5556459405103347317">Herlaai</translation>
 <translation id="614940544461990577">Probeer:</translation>
 <translation id="4943872375798546930">Geen resultate nie</translation>
 <translation id="8688672835843460752">Beskikbaar</translation>
@@ -88,6 +86,8 @@
 <translation id="4880827082731008257">Soekgeskiedenis</translation>
 <translation id="4756388243121344051">&amp;amp;Geskiedenis</translation>
 <translation id="1644574205037202324">Geskiedenis</translation>
+<translation id="1623104350909869708">Verhoed hierdie bladsy om bykomende dialoë te skep</translation>
+<translation id="2677748264148917807">Verlaat</translation>
 <translation id="3950820424414687140">Teken aan</translation>
 <translation id="8286036467436129157">Teken Aan</translation>
 <translation id="8503813439785031346">Gebruikersnaam</translation>
@@ -131,11 +131,12 @@
 <translation id="2586657967955657006">Knipbord</translation>
 <translation id="6059925163896151826">USB-toestelle</translation>
 <translation id="7638605456503525968">Reekspoorte</translation>
+<translation id="3784372983762739446">Bluetooth-toestelle</translation>
 <translation id="2215727959747642672">Lêerwysiging</translation>
 <translation id="6545864417968258051">Bluetooth-opsporing</translation>
 <translation id="534295439873310000">NFC-toestelle</translation>
-<translation id="4943703118917034429">Virtuele realiteit</translation>
-<translation id="3513704683820682405">Aangevulde realiteit</translation>
+<translation id="4670064810192446073">Virtuele realiteit</translation>
+<translation id="2025115093177348061">Aangevulde realiteit</translation>
 <translation id="5039804452771397117">Staan Toe</translation>
 <translation id="7053983685419859001">Versper</translation>
 <translation id="57838592816432529">Demp</translation>
@@ -151,6 +152,22 @@
 <translation id="7878562273885520351">U wagwoord is moontlik gekompromitteer</translation>
 <translation id="1089439967362294234">Verander Wagwoord</translation>
 <translation id="9008201768610948239">Ignoreer</translation>
+<translation id="808894953321890993">Verander wagwoord</translation>
+<translation id="5979084224081478209">Gaan wagwoorde na</translation>
+<translation id="6107012941649240045">Uitgereik aan</translation>
+<translation id="5030338702439866405">Uitgereik deur</translation>
+<translation id="5826507051599432481">Algemene naam (AN)</translation>
+<translation id="6898699227549475383">Organisasie (O)</translation>
+<translation id="3308006649705061278">Organisatoriese eenheid (OU)</translation>
+<translation id="8705331520020532516">Reeksnommer</translation>
+<translation id="1902576642799138955">Geldigheidtydperk</translation>
+<translation id="5895187275912066135">Uitgereik op</translation>
+<translation id="4121428309786185360">Verval op</translation>
+<translation id="4154664944169082762">Vingerafdrukke</translation>
+<translation id="7238585580608191973">SHA-256-vingerafdruk</translation>
+<translation id="5209518306177824490">SHA-1-vingerafdruk</translation>
+<translation id="6786747875388722282">Uitbreidings</translation>
+<translation id="7240120331469437312">Sertifikaatonderwerp se alternatiewe naam</translation>
 <translation id="10614374240317010">Nooit gestoor nie</translation>
 <translation id="5869522115854928033">Gestoorde wagwoorde</translation>
 <translation id="230699814587342492">Brave-wagwoorde</translation>
@@ -180,6 +197,36 @@
 <translation id="1197088940767939838">Oranje</translation>
 <translation id="1555130319947370107">Blou</translation>
 <translation id="138218114945450791">Ligblou</translation>
+<translation id="5612720917913232150"><ph name="URL"/> wil jou rekenaar se ligging gebruik</translation>
+<translation id="4733082559415072992"><ph name="URL"/> wil jou toestel se ligging gebruik</translation>
+<translation id="4677585247300749148"><ph name="URL"/> wil op toeganklikheidgebeurtenisse reageer</translation>
+<translation id="3461266716147554923"><ph name="URL"/> wil teks en prente wat na die knipbord gekopieer is, sien</translation>
+<translation id="131405271941274527"><ph name="URL"/> wil inligting stuur en ontvang wanneer jy jou foon op 'n NFC-toestel tik</translation>
+<translation id="5146995429444047494">Kennisgewings vir <ph name="ORIGIN"/> word geblokkeer</translation>
+<translation id="1195558154361252544">Kennisgewings word outomaties geblokkeer vir alle werwe behalwe dié wat jy toelaat</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> wil jou mikrofoon gebruik</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> wil jou kamera gebruik</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> wil vir jou kennisgewings stuur</translation>
+<translation id="6910240653697687763"><ph name="URL"/> wil volle beheer van jou MIDI-toestelle oorneem</translation>
+<translation id="503498442187459473"><ph name="HOST"/> wil jou kamera en mikrofoon gebruik</translation>
+<translation id="8282947398454257691">Jou unieke toestelidentifiseerder ken</translation>
+<translation id="8329449853370113380"><ph name="URL"/> wil beskermde inhoud speel. Brave Software sal jou toestel se identiteit verifieer.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> wil beskermde inhoud speel. Jou toestel se identiteit sal deur Brave Software geverifieer word en hierdie werf kan toegang daartoe kry.</translation>
+<translation id="3016780570757425217">Jou ligging ken</translation>
+<translation id="7221855153210829124">Wys kennisgewings</translation>
+<translation id="8606726445206553943">Gebruik jou MIDI-toestelle</translation>
+<translation id="7409836189476010449">Laat loop Flash</translation>
+<translation id="7438976808740265764">Flash Player sal ná Desember 2020 nie meer gesteun word nie.</translation>
+<translation id="4761104368405085019">Gebruik jou mikrofoon</translation>
+<translation id="9150045010208374699">Gebruik jou kamera</translation>
+<translation id="4953689047182316270">Reageer op toeganklikheidgebeurtenisse</translation>
+<translation id="6116338172782435947">Sien teks en prente wat na die knipbord gekopieer is</translation>
+<translation id="5804427196348435412">Gebruik NFC-toestelle</translation>
+<translation id="3194737229810486521"><ph name="URL"/> wil data permanent op jou toestel berg</translation>
+<translation id="1030706264415084469"><ph name="URL"/> wil groot data permanent op jou toestel berg</translation>
+<translation id="1712552549805331520"><ph name="URL"/> wil data permanent op jou plaaslike rekenaar berg</translation>
+<translation id="1997484222658892567"><ph name="URL"/> wil groot data permanent op jou plaaslike rekenaar berg</translation>
+<translation id="7648992873808071793">Berg lêers in hierdie toestel</translation>
 <translation id="4813512666221746211">Netwerkfout</translation>
 <translation id="3380365263193509176">Onbekende fout</translation>
 <translation id="5565735124758917034">Aktief</translation>
@@ -194,6 +241,8 @@
 <translation id="5720705177508910913">Huidige gebruiker</translation>
 <translation id="6965978654500191972">Toestel</translation>
 <translation id="4728558894243024398">Platform</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="4250680216510889253">Nee</translation>
 <translation id="1588438908519853928">Normaal</translation>
 <translation id="1974060860693918893">Gevorderd</translation>
 <translation id="5308380583665731573">Verbind</translation>
@@ -212,7 +261,6 @@
 <translation id="583281660410589416">Onbekend</translation>
 <translation id="9170848237812810038">Ontdoen</translation>
 <translation id="2972581237482394796">Herdoen</translation>
-<translation id="6786747875388722282">Uitbreidings</translation>
 <translation id="5804241973901381774">Toestemmings</translation>
 <translation id="8004582292198964060">Blaaier</translation>
 </translationbundle>

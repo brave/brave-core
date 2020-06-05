@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">Brave Software खाता</translation>
 <translation id="3157931365184549694">पुन: भण्डारण</translation>
 <translation id="5040262127954254034">गोपनीयता</translation>
-<translation id="1623104350909869708">यो पृष्ठलाई अतिरिक्त संवादहरू सिर्जना गर्नबाट रोक्नुहोस्</translation>
-<translation id="2677748264148917807">छोड्नुहोस्</translation>
-<translation id="5556459405103347317">पुन: लोड गर्नुहोस्</translation>
 <translation id="2359808026110333948">जारी राख्नुहोस्</translation>
 <translation id="4378154925671717803">फोन</translation>
 <translation id="8131740175452115882">निश्चित</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">हिसाब गर्दै...</translation>
 <translation id="7701040980221191251">कुनै पनि होइन</translation>
 <translation id="8428213095426709021">सेटिङहरू</translation>
+<translation id="2344028582131185878">स्वचालित डाउनलोडहरू</translation>
+<translation id="3414952576877147120">आकार:</translation>
 <translation id="4850886885716139402">हेर्नुहोस्</translation>
 <translation id="7180611975245234373">ताजा गर्नुहोस्</translation>
-<translation id="1426410128494586442">हो</translation>
-<translation id="4250680216510889253">होइन</translation>
 <translation id="4522570452068850558">विवरणहरू</translation>
 <translation id="3586931643579894722">विवरणहरू लुकाउनुहोस्</translation>
+<translation id="5556459405103347317">पुन: लोड गर्नुहोस्</translation>
 <translation id="614940544461990577">यसो गरी हेर्नुहोस्:</translation>
 <translation id="4943872375798546930">कुनै नतिजा छैन</translation>
 <translation id="8688672835843460752">उपलब्ध छ</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">खोज इतिहास</translation>
 <translation id="4756388243121344051">&amp;इतिहास</translation>
 <translation id="1644574205037202324">इतिहास</translation>
+<translation id="1623104350909869708">यो पृष्ठलाई अतिरिक्त संवादहरू सिर्जना गर्नबाट रोक्नुहोस्</translation>
+<translation id="2677748264148917807">छोड्नुहोस्</translation>
 <translation id="3950820424414687140">साइन इन गर्नुहोस्</translation>
 <translation id="8286036467436129157">साइन इन गर्नुहोस्</translation>
 <translation id="8503813439785031346">एक-पटके पाठ सन्देश</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">क्लिपबोर्ड</translation>
 <translation id="6059925163896151826">USB सम्बन्धी यन्त्रहरू</translation>
 <translation id="7638605456503525968">सिरियल पोर्टहरू</translation>
+<translation id="3784372983762739446">ब्लुटुथ उपकरणहरू</translation>
 <translation id="2215727959747642672">फाइल सम्पादन गर्दै</translation>
 <translation id="6545864417968258051">ब्लुटुथ स्क्यान गर्दै</translation>
 <translation id="534295439873310000">NFC यन्त्रहरू</translation>
-<translation id="4943703118917034429">भर्चुअल रियालिटी</translation>
-<translation id="3513704683820682405">अग्मेन्टेड रियालिटी</translation>
+<translation id="4670064810192446073">भर्चुअल रियालिटी</translation>
+<translation id="2025115093177348061">अग्मेन्टेड रियालिटी</translation>
 <translation id="5039804452771397117">अनुमति दिनुहोस्</translation>
 <translation id="7053983685419859001">रोक्नुहोस्</translation>
 <translation id="57838592816432529">म्यूट गर्नुहोस्</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">तपाईंको पासवर्ड जोखिममा पर्न सक्छ</translation>
 <translation id="1089439967362294234">पासवर्ड परिवर्तन गर्नुहोस्</translation>
 <translation id="9008201768610948239">बेवास्ता गर्नुहोस्</translation>
+<translation id="808894953321890993">पासवर्ड परिवर्तन गर्नुहोस्‌</translation>
+<translation id="5979084224081478209">पासवर्डहरूको जाँच गर्नुहोस्</translation>
+<translation id="6107012941649240045">लाई जारी गरिएको</translation>
+<translation id="5030338702439866405">द्वारा जारी गरिएको</translation>
+<translation id="5826507051599432481">साझा नाम (CN)</translation>
+<translation id="6898699227549475383">संगठन (सं)</translation>
+<translation id="3308006649705061278">सङ्गठनात्मक एकाइ (OU)</translation>
+<translation id="8705331520020532516">क्रम संख्या</translation>
+<translation id="1902576642799138955">वैधता अवधि</translation>
+<translation id="5895187275912066135">मा प्रकाशित</translation>
+<translation id="4121428309786185360">मा म्याद सकिन्छ</translation>
+<translation id="4154664944169082762">औँलाछापहरू</translation>
+<translation id="7238585580608191973">SHA-256 अङ्गुठाछाप</translation>
+<translation id="5209518306177824490">SHA-1 फिङ्गरप्रिन्ट</translation>
+<translation id="6786747875388722282">विस्तारहरू</translation>
+<translation id="7240120331469437312">प्रमाणपत्र विषय वैकल्पिक नाम</translation>
 <translation id="10614374240317010">कहिले पनि बचत नगर्नुहोस्</translation>
 <translation id="5869522115854928033">बचत गरिएका पासवर्डहरू</translation>
 <translation id="230699814587342492">Brave का पासवर्डहरू</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">सेतो</translation>
 <translation id="1197088940767939838">सुन्तला रङ</translation>
 <translation id="1555130319947370107">नीलो</translation>
+<translation id="5612720917913232150"><ph name="URL"/> तपाईंको कम्प्युटरको स्थान प्रयोग गर्न चाहन्छ</translation>
+<translation id="4733082559415072992"><ph name="URL"/> तपाईंको यन्त्रको स्थान प्रयोग गर्न चाहन्छ</translation>
+<translation id="4677585247300749148"><ph name="URL"/> पहुँचसम्बन्धी कार्यक्रमहरूमा प्रतिक्रिया दिन चाहन्छ</translation>
+<translation id="3461266716147554923"><ph name="URL"/> क्लिपबोर्डमा प्रतिलिपि गरिएको पाठ र छवि हेर्न चाहन्छ</translation>
+<translation id="131405271941274527"><ph name="URL"/> तपाईंले NFC यन्त्रहरूमा ट्याप गर्दा जानकारी पठाउन तथा प्राप्त गर्न चाहन्छ</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> का सूचनाहरूलाई रोक लगाइएको छ</translation>
+<translation id="1195558154361252544">तपाईंले अनुमति दिएका साइटबाहेक अन्य सबै साइटका सूचनाहरूलाई स्वतः रोक लगाइएको छ</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> तपाईंको माइक्रोफोन प्रयोग गर्न चाहन्छ</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> तपाईंको क्यामेरा प्रयोग गर्न चाहन्छ</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> तपाईंलाई सूचनाहरू पठाउन चाहन्छ</translation>
+<translation id="6910240653697687763"><ph name="URL"/> तपाईंका MIDI यन्त्रहरूमाथि पूर्ण नियन्त्रण प्राप्त गर्न चाहन्छ</translation>
+<translation id="503498442187459473"><ph name="HOST"/> तपाईंको क्यामेरा र माइक्रोफोन प्रयोग गर्न चाहन्छ</translation>
+<translation id="8282947398454257691">तपाईँको अद्वितीय यन्त्र पहिचानकर्ता जान्नुहोस्</translation>
+<translation id="8329449853370113380"><ph name="URL"/> संरक्षित गरिएको सामग्री प्ले गर्न चाहन्छ। Brave Software ले तपाईंको यन्त्रको पहिचान प्रमाणित गर्ने छ।</translation>
+<translation id="2650609753175229582"><ph name="URL"/> संरक्षित सामग्री प्ले गर्न चाहन्छ। Brave Software ले तपाईंको यन्त्रको पहिचान पुष्टि गर्ने छ र यो साइटले उक्त जानकारीमाथि पहुँच राख्न सक्ने छ।</translation>
+<translation id="3016780570757425217">तपाईँको स्थान जान्नुहोस्</translation>
+<translation id="7221855153210829124">सूचनाहरू देखाउनुहोस्</translation>
+<translation id="8606726445206553943">तपाईँका MIDI यन्त्रहरू प्रयोग गर्नुहोस्</translation>
+<translation id="7409836189476010449">फ्ल्यास सञ्चालन गर्नुहोस्</translation>
+<translation id="7438976808740265764">सन् २०२० को डिसेम्बरपछि Flash Player लाई समर्थन गरिने छैन।</translation>
+<translation id="4761104368405085019">आफ्नो माइक्रोफोन प्रयोग गर्नुहोस्</translation>
+<translation id="9150045010208374699">तपाइँको क्यामेरा प्रयोग गर्नुहोस्</translation>
+<translation id="4953689047182316270">पहुँचसम्बन्धी कार्यक्रमहरूमा प्रतिक्रिया दिनुहोस्</translation>
+<translation id="6116338172782435947">क्लिपबोर्डमा प्रतिलिपि गरिएका पाठ र छविहरू हेर्नुहोस्</translation>
+<translation id="5804427196348435412">NFC यन्त्रहरू प्रयोग गर्नुहोस्</translation>
+<translation id="3194737229810486521"><ph name="URL"/> तपाईंको यन्त्रमा स्थायी रूपमा डेटा भण्डारण गर्न चाहन्छ</translation>
+<translation id="1030706264415084469"><ph name="URL"/> तपाईंको यन्त्रमा स्थायी रूपमा ठूलो परिमाणको डेटा भण्डारण गर्न चाहन्छ</translation>
+<translation id="1712552549805331520"><ph name="URL"/> तपाईंको स्थानीय कम्प्युटरमा स्थायी रूपमा डेटा भण्डारण गर्न चाहन्छ</translation>
+<translation id="1997484222658892567"><ph name="URL"/> तपाईंको स्थानीय कम्प्युटरमा स्थायी रूपमा ठूलो परिमाणको डेटा भण्डारण गर्न चाहन्छ</translation>
+<translation id="7648992873808071793">यस यन्त्रमा फाइलहरू भण्डार गर्नुहोस्</translation>
 <translation id="4813512666221746211">सञ्जाल त्रुटि</translation>
 <translation id="3380365263193509176">अज्ञात त्रुटि</translation>
 <translation id="5565735124758917034">सक्रिय</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">हालको प्रयोगकर्ता</translation>
 <translation id="6965978654500191972">यन्त्र</translation>
 <translation id="4728558894243024398">प्लेटफर्म</translation>
+<translation id="1426410128494586442">हो</translation>
+<translation id="4250680216510889253">होइन</translation>
 <translation id="1588438908519853928">सामान्य</translation>
 <translation id="1974060860693918893">उन्नत</translation>
 <translation id="5308380583665731573">जडान गर्नुहोस्</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="9170848237812810038">&amp;पूर्वस्थितिमा फर्काउनुहोस्</translation>
 <translation id="2972581237482394796">&amp;फेरि गर्नुहोस्</translation>
-<translation id="6786747875388722282">विस्तारहरू</translation>
 <translation id="5804241973901381774">अनुमतिहरू</translation>
 <translation id="8004582292198964060">ब्राउजर</translation>
 </translationbundle>

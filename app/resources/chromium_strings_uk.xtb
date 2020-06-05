@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Допоможіть покращити Brave, надсилаючи звіти про аварійне завершення роботи та <ph name="UMA_LINK"/> в Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Вхід у мережу – Brave</translation>
+<translation id="8745514854244955877">Brave – Вхід у мережу– <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Вхід у мережу</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Бета-версія Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Версія Brave для розробників</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -42,8 +45,12 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="5785919770853225148">Brave збереже цей пароль в обліковому записі Brave Software. Не потрібно його запам’ятовувати.</translation>
 <translation id="8211837073776713955">Brave повідомляє, коли ваші паролі зламують</translation>
 <translation id="113959764510199339">Brave намагається показати паролі.</translation>
+<translation id="96347285368592620">Brave намагається скопіювати паролі.</translation>
+<translation id="2953892977076487219">Brave намагається змінити паролі.</translation>
 <translation id="7503098128120083822">Brave хоче експортувати ваші паролі.</translation>
 <translation id="8285294305439559616">Brave намагається показати паролі. Щоб дозволити, введіть свій пароль Windows.</translation>
+<translation id="8090497651549769448">Brave намагається скопіювати паролі. Щоб дозволити, введіть свій пароль Windows.</translation>
+<translation id="3861679447659630159">Brave намагається змінити паролі. Щоб дозволити, введіть свій пароль Windows.</translation>
 <translation id="5918095577778020936">Brave хоче експортувати ваші паролі. Щоб дозволити, введіть свій пароль Windows.</translation>
 <translation id="8320964054148936490">На цьому комп’ютері вже встановлено новішу версію Brave. Якщо програмне забезпечення не працює, видаліть Brave і повторіть спробу.</translation>
 <translation id="7691786510374174420">Не вдалося встановити через невизначену помилку. Якщо Brave зараз запущено, закрийте його та повторіть спробу.</translation>
@@ -190,7 +197,7 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="3262506503470845422">Отримати довідку щодо Brave</translation>
 <translation id="1864557848095568223">Оновлення Brave</translation>
 <translation id="1786715389543715322">Brave оновлюється (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Майже оновлено. Перезапустіть Brave, щоб завершити оновлення.</translation>
+<translation id="7914115000169617076">Майже готово. Перезапустіть Brave, щоб завершити оновлення. Вікна в режимі анонімного перегляду не відновляться й не відкриються знову.</translation>
 <translation id="8208853227947884571">У вас остання версія Brave</translation>
 <translation id="573759479754913123">Про ОС Brave</translation>
 <translation id="7573289029918943991">Щоб дізнатися, чи пристрій використовує актуальну версію операційної системи, перейдіть у <ph name="LINK_BEGIN"/>налаштування ОС Brave<ph name="LINK_END"/></translation>
@@ -208,6 +215,12 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="8586264863973514035">Щоб застосувати зміни, перезапустіть Brave</translation>
 <translation id="7021823858304886493">Дозволити вхід у Brave</translation>
 <translation id="1649714546770135458">Якщо вимкнути цей параметр, ви зможете входити на сайти Brave Software, як-от Gmail, без входу в Brave</translation>
+<translation id="2796517443093885402">Brave захищає від порушень безпеки даних, шкідливих розширень тощо</translation>
+<translation id="428541510811554120">Brave не може перевірити наявність оновлень. Перевірте інтернет-з'єднання.</translation>
+<translation id="2633397153656205379">Не вдалось оновити веб-переглядач Brave. <ph name="BEGIN_LINK"/>Вирішіть проблеми з оновленням Brave.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave не може перевірити паролі, оскільки ви не ввійшли в обліковий запис</translation>
+<translation id="7006260220514217183">Безпечний перегляд вимкнено. Brave радить увімкнути його.</translation>
+<translation id="1785833016412082453">Brave не може перевірити розширення. Повторіть спробу пізніше.</translation>
 <translation id="9220324636239049437">1 елемент буде видалено з цього пристрою. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">З цього пристрою буде видалено стільки елементів: <ph name="ITEMS_COUNT"/>. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Дані веб-перегляду буде видалено з цього пристрою. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>

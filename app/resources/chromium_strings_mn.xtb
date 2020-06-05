@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Алдаа ослын тайлан болон <ph name="UMA_LINK"/>-ыг Brave Software рүү илгээх замаар Brave-ыг улам сайжруулахад тусална уу.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Сүлжээнд нэвтрэх - Brave</translation>
+<translation id="8745514854244955877">Brave - Сүлжээнд нэвтрэх - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Сүлжээнд нэвтрэх</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Бета</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Дев</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Канари</translation>
@@ -40,8 +43,12 @@
 <translation id="5785919770853225148">Brave энэ нууц үгийг таны Brave Software Бүртгэлд хадгалах тул та үүнийг санах шаардлагагүй.</translation>
 <translation id="8211837073776713955">Хэрэв таны нууц үг алдагдсан байвал Brave танд мэдэгдэнэ</translation>
 <translation id="113959764510199339">Brave нь нууц үгийг үзүүлэхээр ачаалж байна.</translation>
+<translation id="96347285368592620">Brave нь нууц үгс хуулахыг оролдож байна.</translation>
+<translation id="2953892977076487219">Brave нууц үгсийг засахаар оролдож байна.</translation>
 <translation id="7503098128120083822">Brave таны төхөөрөмжийг экспортлох хүсэлтэй байна.</translation>
 <translation id="8285294305439559616">Brave нь нууц үгийг харуулахыг оролдож байна. Үүнийг зөвшөөрөхөөр бол  Windows нууц үгээ бичнэ үү.</translation>
+<translation id="8090497651549769448">Brave нь нууц үгс хуулахыг оролдож байна. Үүнийг зөвшөөрөхийн тулд Windows-н нууц үгээ бичнэ үү.</translation>
+<translation id="3861679447659630159">Brave нь нууц үгсийг засах гэж оролдож байна. Үүнийг зөвшөөрөхийн тулд Windows-н нууц үгээ бичнэ үү.</translation>
 <translation id="5918095577778020936">Brave таны нууц үгийг экспортлох хүсэлтэй байна. Үүнийг зөвшөөрч байгаа бол Windows-н нууц үгээ оруулна уу.</translation>
 <translation id="8320964054148936490">Энэ компьютерт Brave-ийн хамгийн сүүлийн үеийн хувилбар байна. Хэрэв програм ажиллахгүй байвал Brave-ийг устгаад, дахин суурьлуулж үзнэ үү.</translation>
 <translation id="7691786510374174420">Гэнэтийн асуудлаас болж суулгах ажиллагаа амжилтгүй боллоо. Хэрвээ Brave яг одоо ажиллаж байгаа бол хаагаад дахин оролдож үзнэ үү.</translation>
@@ -188,7 +195,7 @@
 <translation id="3262506503470845422">Brave-с тусламж авах</translation>
 <translation id="1864557848095568223">Brave-г шинэчилж байна</translation>
 <translation id="1786715389543715322">Brave-г шинэчилж байна (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Удахгүй шинэчилж дууслаа! Brave-н шинэчлэлийг дуусгахын тулд дахин ачаалж эхлүүлнэ үү.</translation>
+<translation id="7914115000169617076">Шинэчилж дуусаж байна! Шинэчлэлтийг дуусгахын тулд Brave-г дахин ачаална уу. Нууцлалтай цонхыг дахин нээхгүй.</translation>
 <translation id="8208853227947884571">Brave-г шинэчилсэн байна</translation>
 <translation id="573759479754913123">Brave үйлдлийн системийн тухай</translation>
 <translation id="7573289029918943991">Таны төхөөрөмж шинэчлэгдсэн эсэхийг харахын тулд <ph name="LINK_BEGIN"/>Brave үйлдлийн системийн тохиргоо<ph name="LINK_END"/> руу очно уу</translation>
@@ -206,6 +213,12 @@
 <translation id="8586264863973514035">Өөрчлөлтөө хэрэгжүүлэхийн тулд Brave-г дахин ажиллуулна уу</translation>
 <translation id="7021823858304886493">Brave-д нэвтрэхийг зөвшөөрөх</translation>
 <translation id="1649714546770135458">Үүнийг унтрааснаар та Gmail зэрэг Brave Software-н сайтуудад Brave-д нэвтрэлгүйгээр нэвтэрч болно</translation>
+<translation id="2796517443093885402">Brave нь таныг өгөгдлийн зөрчил, муу өргөтгөл болон бусад асуудлаас хамгаалахад туслах боломжтой</translation>
+<translation id="428541510811554120">Brave нь шинэчлэлтийг шалгах боломжгүй байна. Интернэт холболтоо шалгаж үзнэ үү.</translation>
+<translation id="2633397153656205379">Brave-г шинэчлээгүй, ямар нэг алдаа гарлаа. <ph name="BEGIN_LINK"/>Brave-г шинэчлэхтэй холбоотой асуудлууд болон амжилтгүй болсон шинэчлэлтүүдийг засна уу.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Та нэвтрээгүй байгаа тул Brave таны нууц үгсийг шалгах боломжгүй байна</translation>
+<translation id="7006260220514217183">Аюулгүй үзэх онцлог унтраалттай байна. Brave түүнийг асаахыг зөвлөж байна.</translation>
+<translation id="1785833016412082453">Brave таны өргөтгөлүүдийг шалгах боломжгүй байна. Дараа дахин оролдоно уу.</translation>
 <translation id="9220324636239049437">Энэ нь төхөөрөмжөөс 1 зүйл устгана. Өгөгдлөө дараа сэргээхийн тулд Brave-д <ph name="USER_EMAIL"/>-р нэвтэрнэ үү.</translation>
 <translation id="5853262807109651878">Энэ нь төхөөрөмжөөс <ph name="ITEMS_COUNT"/> зүйл устгана. Өгөгдлөө дараа сэргээхийн тулд Brave-д <ph name="USER_EMAIL"/>-р нэвтэрнэ үү.</translation>
 <translation id="4784414698887946907">Энэ нь төхөөрөмжөөс таны хайлтын түүхийг устгана. Өгөгдлөө дараа сэргээхийн тулд Brave-д <ph name="USER_EMAIL"/>-р нэвтэрнэ үү.</translation>

@@ -39,18 +39,6 @@
 <translation id="5040262127954254034">Privatësi</translation>
 <translation id="3061707000357573562">Mballos (Arno, Rregullo) Shërbimin</translation>
 <translation id="1914326953223720820">Hap Shërbimin</translation>
-<translation id="4926159001844873046"><ph name="SITE"/> thotë</translation>
-<translation id="3576616784287504635">Një faqe e ngjitur në <ph name="SITE"/> thotë</translation>
-<translation id="1532118530259321453">Kjo faqe thotë</translation>
-<translation id="5201306358585911203">Një faqe e trupëzuar në këtë faqe thotë</translation>
-<translation id="1623104350909869708">Pengoje këtë faqe të krijojë dialogë të tjerë</translation>
-<translation id="7862185352068345852">Të braktiset sajti?</translation>
-<translation id="9171296965991013597">Të braktiset aplikacioni?</translation>
-<translation id="2677748264148917807">Braktise</translation>
-<translation id="425582637250725228">Ndryshimet që bëtë mund të mos jenë ruajtur.</translation>
-<translation id="8079031581361219619">Të ringarkohet sajti?</translation>
-<translation id="6852204201400771460">Të ringarkohet aplikacioni?</translation>
-<translation id="5556459405103347317">Ringarkoje</translation>
 <translation id="2359808026110333948">Vazhdo</translation>
 <translation id="8066955247577885446">Na ndjeni, diç shkoi ters.</translation>
 <translation id="5946937721014915347">Po hapet <ph name="SITE_NAME"/>…</translation>
@@ -301,7 +289,9 @@ other {# sites}}</translation>
 <translation id="6989763994942163495">Trego konfigurimet e përparuara ...</translation>
 <translation id="9038649477754266430">Përdor një shërbim parashikimi që ti ngarkosh faqet më shpejt</translation>
 <translation id="3355823806454867987">Ndrysho konfigurimet e proxi-t ...</translation>
+<translation id="2344028582131185878">Shkarkimet automatike</translation>
 <translation id="4220128509585149162">Shëmbje</translation>
+<translation id="3414952576877147120">Madhësia:</translation>
 <translation id="1015730422737071372">Jep detaje të tjera</translation>
 <translation id="3759461132968374835">Ju nuk keni shëmbje të raportuara së fundmi. Shembjet që kanë ndodhur kur raportuesi i shëmbjeve ka qënë i çaktivizuar nuk do të shfaqen këtu.</translation>
 <translation id="5308689395849655368">Raportimi i shëmbjeve është i çaktivizuar</translation>
@@ -319,12 +309,10 @@ other {# sites}}</translation>
 <translation id="5540224163453853">Nuk mund të gjej artikullin e kërkuar.</translation>
 <translation id="4876188919622883022">Pamje e thjeshtuar</translation>
 <translation id="7485870689360869515">Nuk u gjetën të dhëna.</translation>
-<translation id="552553974213252141">A u nxorr në mënyrë korrekte teksti?</translation>
-<translation id="1426410128494586442">Po</translation>
-<translation id="4250680216510889253">Jo</translation>
 <translation id="7935318582918952113">Distiluesi DOM</translation>
 <translation id="4522570452068850558">Hollësi</translation>
 <translation id="3586931643579894722">Fshih detajet</translation>
+<translation id="5556459405103347317">Ringarkoje</translation>
 <translation id="3005723025932146533">Trego kopjen e ruajtur</translation>
 <translation id="3447661539832366887">I zoti i kësaj pajisjeje ka mbyllur lojën me dinozaur.</translation>
 <translation id="3287510313208355388">Shkarko kur je i lidhur me internetin</translation>
@@ -384,7 +372,6 @@ other {# sites}}</translation>
 <translation id="2955913368246107853">Mbyll shiritin e "gjej"</translation>
 <translation id="3808375843007691220">Paralajmërim: Funksione eksperimentale në vijim</translation>
 <translation id="2734544361860335147">Duke aktivizuar këto funksione, ti mund të humbësh të dhënat e shfletimit ose të kompromentosh sigurinë apo privatësinë tënde. Funksionet e aktivizuara aplikohen tek të gjithë përdoruesit e këtij shfletuesi.</translation>
-<translation id="8647750283161643317">Rivendos gjithçka si ka qënë në fillim</translation>
 <translation id="8688672835843460752">Në shitje</translation>
 <translation id="4989542687859782284">E padisponueshme</translation>
 <translation id="59174027418879706">E aktivizuar</translation>
@@ -422,6 +409,17 @@ other {# sites}}</translation>
 <translation id="362276910939193118">Shfaq Historikun e Plotë</translation>
 <translation id="1644574205037202324">Historiku</translation>
 <translation id="7668654391829183341">Pajisje e panjohur</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> thotë</translation>
+<translation id="3576616784287504635">Një faqe e ngjitur në <ph name="SITE"/> thotë</translation>
+<translation id="1532118530259321453">Kjo faqe thotë</translation>
+<translation id="5201306358585911203">Një faqe e trupëzuar në këtë faqe thotë</translation>
+<translation id="1623104350909869708">Pengoje këtë faqe të krijojë dialogë të tjerë</translation>
+<translation id="7862185352068345852">Të braktiset sajti?</translation>
+<translation id="9171296965991013597">Të braktiset aplikacioni?</translation>
+<translation id="2677748264148917807">Braktise</translation>
+<translation id="425582637250725228">Ndryshimet që bëtë mund të mos jenë ruajtur.</translation>
+<translation id="8079031581361219619">Të ringarkohet sajti?</translation>
+<translation id="6852204201400771460">Të ringarkohet aplikacioni?</translation>
 <translation id="3950820424414687140">Futu</translation>
 <translation id="8286036467436129157">Futu</translation>
 <translation id="7526934274050461096">LIdhja jote me këtë faqe interneti nuk është private</translation>
@@ -565,11 +563,12 @@ other {# sites}}</translation>
 <translation id="2129079103035905234">Sensorët e Lëvizjes</translation>
 <translation id="6059925163896151826">Pajisjet USB</translation>
 <translation id="7638605456503525968">Portat seriale</translation>
+<translation id="3784372983762739446">Pajisjet me Bluetooth</translation>
 <translation id="2215727959747642672">Modifikimi i skedarëve</translation>
 <translation id="6545864417968258051">Skanimi për Bluetooth</translation>
 <translation id="534295439873310000">Pajisjet me NFC</translation>
-<translation id="4943703118917034429">Realiteti virtual</translation>
-<translation id="3513704683820682405">Realiteti i zgjeruar</translation>
+<translation id="4670064810192446073">Realiteti virtual</translation>
+<translation id="2025115093177348061">Realiteti i zgjeruar</translation>
 <translation id="5039804452771397117">Lejoje</translation>
 <translation id="7053983685419859001">Bllokoji</translation>
 <translation id="57838592816432529">Hiqi zërin</translation>
@@ -615,18 +614,32 @@ other {# sites}}</translation>
 <translation id="8515152881111950319">Ti mund të humbësh të drejtën për tu futur në llogarinë tënde të organizatës apo të kesh vjedhje të identitetit. Brave rekomandon të ndryshosh tani fjalëkalimin tënd.</translation>
 <translation id="5304100303568917877">Ti mund të humbësh të drejtën për tu futur në llogarinë tënde <ph name="ORG_NAME"/> apo të kesh vjedhje të identitetit. Brave rekomandon të ndryshosh tani fjalëkalimin tënd.</translation>
 <translation id="1089439967362294234">Ndrysho fjalëkalimin</translation>
+<translation id="1186201132766001848">Kontrollo Fjalëkalimet</translation>
 <translation id="2505268675989099013">Mbro Llogarinë</translation>
 <translation id="9008201768610948239">Shpërfill</translation>
 <translation id="808894953321890993">Ndrysho fjalëkalimin</translation>
+<translation id="5979084224081478209">Kontrollo fjalëkalimet</translation>
 <translation id="5570825185877910964">Mbro llogarinë</translation>
 <translation id="7802523362929240268">Faqja e internetit është e rregullt</translation>
 <translation id="5344579389779391559">Kjo faqe mund të të marrë para</translation>
 <translation id="7016992613359344582">Këto para mund të merren një herë ose në mënyrë të përsëritur dhe mund të mos jenë të dukshme.</translation>
 <translation id="9004367719664099443">Seancë VR në vazhdim</translation>
 <translation id="528468243742722775">Fund</translation>
+<translation id="6107012941649240045">Lëshuar për</translation>
+<translation id="5030338702439866405">Lëshuar nga</translation>
+<translation id="5826507051599432481">Emri i zakonshëm (CN)</translation>
+<translation id="6898699227549475383">Organizata (O)</translation>
+<translation id="3308006649705061278">Njësia organizative (OU)</translation>
+<translation id="8705331520020532516">Numri i serisë</translation>
+<translation id="1902576642799138955">Periudha e vlefshmërisë</translation>
+<translation id="5895187275912066135">Lëshuar më</translation>
+<translation id="4121428309786185360">Skadon në</translation>
+<translation id="4154664944169082762">Gjurmë gishtash</translation>
+<translation id="7238585580608191973">Shenjë gishti SHA-256</translation>
+<translation id="5209518306177824490">Shenjë gishti SHA-1</translation>
+<translation id="6786747875388722282">Zgjerime</translation>
+<translation id="7240120331469437312">Emri alternativ i subjektit të certifikatës</translation>
 <translation id="4318312030194671742">Shërbimi i Kompozitorit të Shikimit Paraprak të Paint ???</translation>
-<translation id="1186201132766001848">Kontrollo Fjalëkalimet</translation>
-<translation id="5979084224081478209">Kontrollo fjalëkalimet</translation>
 <translation id="1476595624592550506">Ndrysho fjalëkalimin tënd</translation>
 <translation id="6014801569448771146">Kontrollo fjalëkalimet e tua</translation>
 <translation id="3764885446986388155">Një dhunim të dhënash në një faqe interneti apo aplikacion e ka zbuluar fjalëkalimin tënd. Brave rekomandon të kontrollosh fjalëkalimet e ruajtura menjëherë.</translation>
@@ -834,6 +847,36 @@ other {# sites}}</translation>
 <translation id="3789155188480882154">Madhësia 16</translation>
 <translation id="8090403583893450254">Madhësia 20</translation>
 <translation id="833262891116910667">Evidento</translation>
+<translation id="5612720917913232150"><ph name="URL"/> do të përdorë vendndodhjen e kompjuterit tënd</translation>
+<translation id="4733082559415072992"><ph name="URL"/> kërkon të përdorë vendndodhjen e pajisjes sate</translation>
+<translation id="4677585247300749148"><ph name="URL"/> kërkon të reagojë ndaj ngjarjeve të qasshmërisë</translation>
+<translation id="3461266716147554923"><ph name="URL"/> dëshiron të shikojë tekstin dhe imazhet e kopjuara te kujtesa e fragmenteve</translation>
+<translation id="131405271941274527"><ph name="URL"/> dëshiron që të dërgojë dhe të marrë informacion kur troket te telefoni në një pajisje me NFC</translation>
+<translation id="5146995429444047494">Njoftimet për <ph name="ORIGIN"/> janë bllokuar</translation>
+<translation id="1195558154361252544">Njoftimet janë bllokuar automatikisht për të gjitha sajtet përveçse për ato që lejon ti</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> kërkon të përdorë mikrofonin</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> kërkon të përdorë kamerën</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> dëshiron të të dërgojë njoftime</translation>
+<translation id="6910240653697687763"><ph name="URL"/> kërkon të marrë nën kontroll të plotë pajisjet e tua MIDI</translation>
+<translation id="503498442187459473"><ph name="HOST"/> kërkon të përdorë kamerën dhe mikrofonin</translation>
+<translation id="8282947398454257691">Njihu me identifikuesin unik të pajisjes tënde</translation>
+<translation id="8329449853370113380"><ph name="URL"/> dëshiron të luajë përmbajtje të mbrojtur. Identiteti i pajisjes sate do të verifikohet nga Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> dëshiron të luajë përmbajtjen e mbrojtur. Identiteti i pajisjes sate do të verifikohet nga Brave Software dhe mund të qaset nga ky sajt.</translation>
+<translation id="3016780570757425217">Njihu me vendndodhjen tënde</translation>
+<translation id="7221855153210829124">Shfaq njoftimet</translation>
+<translation id="8606726445206553943">Përdor pajisjet e tua MIDI</translation>
+<translation id="7409836189476010449">Ekzekuto Flash</translation>
+<translation id="7438976808740265764">Flash Player nuk do të mbështetet më pas dhjetorit 2020.</translation>
+<translation id="4761104368405085019">Përdor mikrofonin</translation>
+<translation id="9150045010208374699">Përdor kamerën</translation>
+<translation id="4953689047182316270">Reago ndaj ngjarjeve të qasshmërisë</translation>
+<translation id="6116338172782435947">Shiko tekstin dhe imazhet e kopjuara te kujtesa e fragmenteve</translation>
+<translation id="5804427196348435412">Përdor pajisjet me NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> kërkon të ruajë në mënyrë të përhershme të dhëna në pajisjen tënde</translation>
+<translation id="1030706264415084469"><ph name="URL"/> do të ruajë në mënyrë të përhershme të dhëna të mëdha në pajisjen tënde</translation>
+<translation id="1712552549805331520"><ph name="URL"/> kërkon të ruajë të dhëna në mënyrë të përhershme në kompjuterin tënd lokal</translation>
+<translation id="1997484222658892567"><ph name="URL"/> kërkon të ruajë të dhëna të mëdha në mënyrë të përhershme në kompjuterin tënd lokal</translation>
+<translation id="7648992873808071793">Ruaji skedarët në këtë pajisje</translation>
 <translation id="2721148159707890343">Kërkesa pati sukses</translation>
 <translation id="1821930232296380041">Kërkesë jo e vlefshme ose kërko parametrat</translation>
 <translation id="4813512666221746211">Gabim rrjeti</translation>
@@ -885,7 +928,6 @@ other {# sites}}</translation>
 <translation id="4926049483395192435">Duhet të specifikohet.</translation>
 <translation id="2479410451996844060">Kërkim URL i pavlefshëm.</translation>
 <translation id="6060009363608157444">Mënyrë DnsOverHttps e pavlefshme.</translation>
-<translation id="3057676462092457419">Mënyra DnsOverHttps <ph name="SECURE_DNS_MODE_SECURE">'secure'</ph> ende nuk mbështetet, mënyra është vendosur në <ph name="SECURE_DNS_MODE_OFF">'off'</ph>.</translation>
 <translation id="3428151540071562330">Nje ose më shumë modele URIs DnsOverHttpsTemplates të serverit janë invalide dhe nuk do të përdoren.</translation>
 <translation id="8891727572606052622">Mënyrë proksi invalide.</translation>
 <translation id="4493480324863638523">URL invalide. Duhet të jetë një URL me një skemë standarte, p.sh. http://example.com ose https://example.com.</translation>
@@ -910,6 +952,8 @@ other {# sites}}</translation>
 <translation id="1472675084647422956">Shfaq më shumë</translation>
 <translation id="6965978654500191972">Pajisja</translation>
 <translation id="4728558894243024398">Platforma</translation>
+<translation id="1426410128494586442">Po</translation>
+<translation id="4250680216510889253">Jo</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">E përparuar</translation>
 <translation id="5308380583665731573">Lidh</translation>
@@ -927,13 +971,11 @@ other {# sites}}</translation>
 <translation id="583281660410589416">I panjohur</translation>
 <translation id="9170848237812810038">&amp;amp;Zhbëje</translation>
 <translation id="2972581237482394796">&amp;amp;Ribëje</translation>
-<translation id="6786747875388722282">Zgjerime</translation>
 <translation id="5804241973901381774">Lejet</translation>
 <translation id="8004582292198964060">Shfletuesi</translation>
 <translation id="1822540298136254167">Faqet e internetit që ti viziton dhe koha e shpenzuar në to</translation>
 <translation id="7633909222644580952">Të dhënat e performancës dhe raportet e shëmbjeve</translation>
 <translation id="6826370046007623921">Parandalimi i Humbjes së të Dhënave</translation>
-<translation id="1612819149504950095">Skanerizo përmbajtjen e skedarëve që ti shkarkon apo ngarkon në Brave.</translation>
 <translation id="1298536327547837046">Duke Skanerizuar për Programe Keqbërës</translation>
 <translation id="6312541937207395104">Skanerizo skedarët që ti shkarkon ose ngarkon në Brave.</translation>
 <translation id="8220639454292072926">Enterprise Duke Raportuar</translation>

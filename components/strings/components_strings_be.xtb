@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">Уліковы запіс Brave Software</translation>
 <translation id="3157931365184549694">Аднавіць</translation>
 <translation id="5040262127954254034">Прыватнасць</translation>
-<translation id="1623104350909869708">Не дазваляць гэтай старонцы ствараць дадатковыя дыялогавыя вокны</translation>
-<translation id="2677748264148917807">Выйсці</translation>
-<translation id="5556459405103347317">Перазагрузіць</translation>
 <translation id="2359808026110333948">Працягнуць</translation>
 <translation id="4378154925671717803">Тэлефон</translation>
 <translation id="8131740175452115882">Пацвердзіць</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">Ідзе разлік...</translation>
 <translation id="7701040980221191251">Няма</translation>
 <translation id="8428213095426709021">Налады</translation>
+<translation id="2344028582131185878">Аўтаматычныя спампоўкі</translation>
+<translation id="3414952576877147120">Памер:</translation>
 <translation id="4850886885716139402">Праглядзець</translation>
 <translation id="7180611975245234373">Абнавіць</translation>
-<translation id="1426410128494586442">Так</translation>
-<translation id="4250680216510889253">Не</translation>
 <translation id="4522570452068850558">Падрабязнасці</translation>
 <translation id="3586931643579894722">Схаваць падрабязнасці</translation>
+<translation id="5556459405103347317">Перазагрузіць</translation>
 <translation id="614940544461990577">Паспрабуйце наступнае:</translation>
 <translation id="4943872375798546930">Няма вынікаў</translation>
 <translation id="8688672835843460752">Даступна</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">Гісторыя пошуку</translation>
 <translation id="4756388243121344051">&amp;Гісторыя</translation>
 <translation id="1644574205037202324">Гісторыя</translation>
+<translation id="1623104350909869708">Не дазваляць гэтай старонцы ствараць дадатковыя дыялогавыя вокны</translation>
+<translation id="2677748264148917807">Выйсці</translation>
 <translation id="3950820424414687140">Увайсці</translation>
 <translation id="8286036467436129157">Увайсці</translation>
 <translation id="8503813439785031346">Імя карыстальніка</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">Буфер абмену</translation>
 <translation id="6059925163896151826">Прылады USB</translation>
 <translation id="7638605456503525968">Паслядоўныя парты</translation>
+<translation id="3784372983762739446">Прылады Bluetooth</translation>
 <translation id="2215727959747642672">Змяненне файлаў</translation>
 <translation id="6545864417968258051">Пошук прылад Bluetooth</translation>
 <translation id="534295439873310000">Прылады NFC</translation>
-<translation id="4943703118917034429">Віртуальная рэальнасць</translation>
-<translation id="3513704683820682405">Дапоўненая рэальнасць</translation>
+<translation id="4670064810192446073">Віртуальная рэальнасць</translation>
+<translation id="2025115093177348061">Дапоўненая рэальнасць</translation>
 <translation id="5039804452771397117">Дазволіць</translation>
 <translation id="7053983685419859001">Заблакіраваць</translation>
 <translation id="57838592816432529">Выключыць</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">Ваш пароль можа быць раскрыты</translation>
 <translation id="1089439967362294234">Змяніць пароль</translation>
 <translation id="9008201768610948239">Ігнараваць</translation>
+<translation id="808894953321890993">Змяніць пароль</translation>
+<translation id="5979084224081478209">Праверыць паролі</translation>
+<translation id="6107012941649240045">Каму выдадзена</translation>
+<translation id="5030338702439866405">Хто выдаў</translation>
+<translation id="5826507051599432481">Звычайнае імя (ЗІ)</translation>
+<translation id="6898699227549475383">Арганізацыя (А)</translation>
+<translation id="3308006649705061278">Арганізацыйная адзінка (АА)</translation>
+<translation id="8705331520020532516">Серыйны нумар</translation>
+<translation id="1902576642799138955">Тэрмін дзеяння</translation>
+<translation id="5895187275912066135">Выдадзены</translation>
+<translation id="4121428309786185360">Заканчэнне тэрміну дзеяння:</translation>
+<translation id="4154664944169082762">Лічбавыя адбіткі</translation>
+<translation id="7238585580608191973">Лічбавы адбітак SHA-256</translation>
+<translation id="5209518306177824490">Лічбавы адбітак SHA-1:</translation>
+<translation id="6786747875388722282">Пашырэнні</translation>
+<translation id="7240120331469437312">Альтэрнатыўнае імя суб'екта сертыфіката</translation>
 <translation id="10614374240317010">Ніколі не захоўваліся</translation>
 <translation id="5869522115854928033">Захаваныя паролі</translation>
 <translation id="230699814587342492">Паролі Brave</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">Белы</translation>
 <translation id="1197088940767939838">Аранжавы</translation>
 <translation id="1555130319947370107">Сіні</translation>
+<translation id="5612720917913232150"><ph name="URL"/> запытвае доступ да вашага месцазнаходжання</translation>
+<translation id="4733082559415072992">Сайт <ph name="URL"/> запытвае дазвол на выкарыстанне звестак аб месцазнаходжанні прылады</translation>
+<translation id="4677585247300749148"><ph name="URL"/> запытвае дазвол адказваць на падзеі функцый спецыяльных магчымасцей</translation>
+<translation id="3461266716147554923">Сайт <ph name="URL"/> запытвае доступ на прагляд тэкстаў і відарысаў, скапіраваных у буфер абмену</translation>
+<translation id="131405271941274527">Сайт <ph name="URL"/> запытвае доступ на абмен інфармацыяй, калі вы націсканнем выбіраеце свой тэлефон на прыладзе NFC</translation>
+<translation id="5146995429444047494">Апавяшчэнні для <ph name="ORIGIN"/> заблакіраваны</translation>
+<translation id="1195558154361252544">Апавяшчэнні аўтаматычна блакіруюцца для ўсіх сайтаў, акрамя тых, якім вы далі дазвол іх паказваць</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> запытвае дазвол на выкарыстанне мікрафона</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> запытвае доступ да камеры</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> запытвае дазвол адпраўляць вам апавяшчэнні</translation>
+<translation id="6910240653697687763">Сайт <ph name="URL"/> запытвае поўны кантроль над прыладамі MIDI</translation>
+<translation id="503498442187459473"><ph name="HOST"/> запытвае доступ да камеры і мікрафона</translation>
+<translation id="8282947398454257691">Атрымаць доступ да ўнікальнага ідэнтыфікатара прылады</translation>
+<translation id="8329449853370113380"><ph name="URL"/> запытвае дазвол на прайграванне абароненага змесціва. Brave Software спраўдзіць ідэнтыфікатар вашай прылады.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> запытвае дазвол на прайграванне абароненага змесціва. Brave Software спраўдзіць ідэнтыфікатар вашай прылады; сайт можа атрымаць да яго доступ.</translation>
+<translation id="3016780570757425217">Ведаць ваша месцазнаходжанне</translation>
+<translation id="7221855153210829124">Паказваць апавяшчэнні</translation>
+<translation id="8606726445206553943">Выкарыстоўваць прылады MIDI</translation>
+<translation id="7409836189476010449">Запускаць Flash</translation>
+<translation id="7438976808740265764">Са снежня 2020 г. Flash Player падтрымлівацца не будзе.</translation>
+<translation id="4761104368405085019">Выкарыстоўваць мікрафон</translation>
+<translation id="9150045010208374699">Выкарыстоўваць камеру</translation>
+<translation id="4953689047182316270">Адказваць на падзеі функцый спецыяльных магчымасцей</translation>
+<translation id="6116338172782435947">Праглядаць тэкст і відарысы, скапіраваныя ў буфер абмену</translation>
+<translation id="5804427196348435412">выкарыстоўваць прылады NFC</translation>
+<translation id="3194737229810486521">Сайт <ph name="URL"/> запытвае дазволу захоўваць даныя на вашай прыладзе</translation>
+<translation id="1030706264415084469">Сайт <ph name="URL"/> запытвае дазволу захоўваць вялікі аб'ём даных на вашай прыладзе</translation>
+<translation id="1712552549805331520">Сайт <ph name="URL"/> запытвае дазволу захоўваць даныя на лакальным камп'ютары</translation>
+<translation id="1997484222658892567">Сайт <ph name="URL"/> запытвае дазволу захоўваць вялікі аб'ём даных на лакальным камп'ютары</translation>
+<translation id="7648992873808071793">Захоўваць файлы на гэтай прыладзе</translation>
 <translation id="4813512666221746211">Памылка сеткі</translation>
 <translation id="3380365263193509176">Невядомая памылка</translation>
 <translation id="5565735124758917034">Актыўны</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">Бягучы карыстальнік</translation>
 <translation id="6965978654500191972">Прылада</translation>
 <translation id="4728558894243024398">Платформа</translation>
+<translation id="1426410128494586442">Так</translation>
+<translation id="4250680216510889253">Не</translation>
 <translation id="1588438908519853928">Звычайны</translation>
 <translation id="1974060860693918893">Пашыраныя налады</translation>
 <translation id="5308380583665731573">Падключыцца</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">Невядома</translation>
 <translation id="9170848237812810038">&amp;Адрабіць</translation>
 <translation id="2972581237482394796">&amp;Узнавіць</translation>
-<translation id="6786747875388722282">Пашырэнні</translation>
 <translation id="5804241973901381774">Дазволы</translation>
 <translation id="8004582292198964060">Браўзер</translation>
 </translationbundle>

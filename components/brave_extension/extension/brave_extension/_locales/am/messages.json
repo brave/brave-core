@@ -55,6 +55,18 @@
     "message": "ድረ ገጽ ተሻጋሪ ተከታታዮች ታግደዋል",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ተከታታዮች እና ማስታወቂያዎች ታግደዋል (ሃይል የሚጠቀም)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ተከታታዮች እና ማስታወቂያዎች ታግደዋል (ስታንዳርድ)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "ሁሉንም ተከታታዮች እና ማስታወቂያዎች ፍቀድ",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "ግንኙነቶች ወደ HTTPS ተሻሽለዋል",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
