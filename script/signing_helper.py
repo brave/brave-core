@@ -120,16 +120,24 @@ def AddBravePartsForSigning(parts, config):
     return parts
 
 
-def GetBraveSigningConfig(config_class, development, mac_provisioning_profile=None):
-    if development:
-        return config_class
+def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
+    class ConfigNonChromeBranded(config_class):
+
+        @staticmethod
+        def is_chrome_branded():
+            return False
+
+    config_class = ConfigNonChromeBranded
 
     if mac_provisioning_profile is not None:
         provisioning_profile = mac_provisioning_profile
     else:
         # Retrieve provisioning profile exported by build/mac/sign_app.sh
         provisioning_profile = os.environ['MAC_PROVISIONING_PROFILE']
-        assert len(provisioning_profile), 'MAC_PROVISIONING_PROFILE is not set'
+
+    # If provisioning_profile is not set, then it's development config.
+    if not len(provisioning_profile):
+        return config_class
 
     class ProvisioningProfileCodeSignConfig(config_class):
 

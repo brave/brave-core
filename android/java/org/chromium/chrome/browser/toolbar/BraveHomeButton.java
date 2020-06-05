@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.partnercustomizations.HomepageManager;
+import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.tab.Tab;
 
 /**

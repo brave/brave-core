@@ -7,8 +7,8 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -16,6 +16,8 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 /**
  * Fragment to keep track of all the display related preferences.

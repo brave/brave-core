@@ -76,12 +76,18 @@ SkColor BraveThemeHelper::GetDefaultColor(
     int id,
     bool incognito,
     const CustomThemeSupplier* theme_supplier) const {
+  const bool is_brave_theme_properties =
+      BraveThemeProperties::IsBraveThemeProperties(id);
 #if defined(OS_LINUX)
   // IF gtk theme is selected, respect it.
-  if (IsUsingSystemTheme(theme_supplier)) {
+  if (!is_brave_theme_properties && IsUsingSystemTheme(theme_supplier)) {
     return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
   }
 #endif
+
+  if (!is_brave_theme_properties && theme_supplier)
+    return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
+
   // Brave Tor profiles are always 'incognito' (for now)
   if (!incognito && is_tor_or_guest_) {
     incognito = true;
@@ -97,6 +103,8 @@ SkColor BraveThemeHelper::GetDefaultColor(
   if (type == dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK) {
     incognito = true;
   }
+
+  DCHECK(!is_brave_theme_properties);
   return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
 }
 
@@ -112,6 +120,11 @@ base::Optional<SkColor> BraveThemeHelper::GetOmniboxColor(
                                         has_custom_color);
   }
 #endif
+
+  if (theme_supplier)
+    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier,
+                                        has_custom_color);
+
   const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
                     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   incognito = incognito || is_tor_or_guest_;

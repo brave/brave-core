@@ -1,0 +1,12 @@
+diff --git a/components/page_info/page_info_ui.cc b/components/page_info/page_info_ui.cc
+index 7cf58fb855df796ad18f6496a953a3e788052259..7b58404aa81c67a5ec07c4d525100bd38cf29940 100644
+--- a/components/page_info/page_info_ui.cc
++++ b/components/page_info/page_info_ui.cc
+@@ -547,6 +547,7 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+                                                    SkColor related_text_color) {
+   const gfx::VectorIcon* icon = &gfx::kNoneIcon;
+   switch (info.type) {
++    BRAVE_PAGE_INFO_UI_GET_PERMISSION_ICON
+     case ContentSettingsType::COOKIES:
+       icon = &vector_icons::kCookieIcon;
+       break;

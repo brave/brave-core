@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 02d2216a7d6ab75f5eb6663121a79f00f50788b1..eb564ffaadea9aa276038dea702c3e7baa8688ed 100644
+index 840e84fba887cbe7221f1fc39acd99b9b9c05639..4f58565fcae953a27e2fa558b3a84029ff31751e 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -421,4 +421,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
-   //     See https://crbug.com/910288.
-   resource_coordinator::ResourceCoordinatorTabHelper::CreateForWebContents(
-       web_contents);
-+  brave::AttachTabHelpers(web_contents);
+@@ -447,4 +447,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+ 
+   // This is common code for all of us. PLEASE DO YOUR PART to keep it tidy and
+   // organized.
++  BRAVE_TAB_HELPERS
  }

@@ -14,78 +14,78 @@
 
 namespace blink {
 
-  BatteryManager::~BatteryManager() = default;
+BatteryManager* BatteryManager::Create(ExecutionContext* context) {
+  BatteryManager* battery_manager =
+      MakeGarbageCollected<BatteryManager>(context);
+  battery_manager->UpdateStateIfNeeded();
+  return battery_manager;
+}
 
-  BatteryManager::BatteryManager(ExecutionContext* context)
-      : ContextLifecycleStateObserver(context),
-        PlatformEventController(To<Document>(context)) {}
+BatteryManager::~BatteryManager() = default;
 
-  BatteryManager* BatteryManager::Create(ExecutionContext* context) {
-    BatteryManager* battery_manager =
-    MakeGarbageCollected<BatteryManager>(context);
-    battery_manager->UpdateStateIfNeeded();
-    return battery_manager;
-  }
+BatteryManager::BatteryManager(ExecutionContext* context)
+    : ExecutionContextLifecycleStateObserver(context),
+      PlatformEventController(Document::From(context)) {}
 
-  ScriptPromise BatteryManager::StartRequest(ScriptState* script_state) {
-    if (!battery_property_) {
-      battery_property_ = MakeGarbageCollected<BatteryProperty>(
+ScriptPromise BatteryManager::StartRequest(ScriptState* script_state) {
+  if (!battery_property_) {
+    battery_property_ = MakeGarbageCollected<BatteryProperty>(
         ExecutionContext::From(script_state));
-      battery_property_->Resolve(this);
-    }
-    return battery_property_->Promise(script_state->World());
+    battery_property_->Resolve(this);
   }
+  return battery_property_->Promise(script_state->World());
+}
 
-  bool BatteryManager::charging() {
-    return true;
-  }
+bool BatteryManager::charging() {
+  return true;
+}
 
-  double BatteryManager::chargingTime() {
-    return 0;
-  }
+double BatteryManager::chargingTime() {
+  return 0;
+}
 
-  double BatteryManager::dischargingTime() {
-    return std::numeric_limits<double>::infinity();
-  }
+double BatteryManager::dischargingTime() {
+  return std::numeric_limits<double>::infinity();
+}
 
-  double BatteryManager::level() {
-    return 1.0;
-  }
+double BatteryManager::level() {
+  return 1.0;
+}
 
-  void BatteryManager::Trace(blink::Visitor* visitor) {
-    visitor->Trace(battery_property_);
-    PlatformEventController::Trace(visitor);
-    EventTargetWithInlineData::Trace(visitor);
-    ContextLifecycleStateObserver::Trace(visitor);
-  }
+void BatteryManager::DidUpdateData() {
+  return;
+}
 
-  bool BatteryManager::HasPendingActivity() const {
-    return false;
-  }
+void BatteryManager::RegisterWithDispatcher() {
+  return;
+}
 
-  void BatteryManager::ContextLifecycleStateChanged(
-      mojom::FrameLifecycleState) {
-    return;
-  }
+void BatteryManager::UnregisterWithDispatcher() {
+  return;
+}
 
-  void BatteryManager::UnregisterWithDispatcher() {
-    return;
-  }
+bool BatteryManager::HasLastData() {
+  return false;
+}
 
-  void BatteryManager::RegisterWithDispatcher() {
-    return;
-  }
+void BatteryManager::ContextLifecycleStateChanged(mojom::FrameLifecycleState) {
+  return;
+}
 
-  void BatteryManager::ContextDestroyed(ExecutionContext*) {
-    battery_property_ = nullptr;
-    return;
-  }
+void BatteryManager::ContextDestroyed() {
+  battery_property_ = nullptr;
+  return;
+}
 
-  void BatteryManager::DidUpdateData() {
-    return;
-  }
+bool BatteryManager::HasPendingActivity() const {
+  return false;
+}
 
-  bool BatteryManager::HasLastData() {
-    return false;
-  }
+void BatteryManager::Trace(blink::Visitor* visitor) {
+  visitor->Trace(battery_property_);
+  PlatformEventController::Trace(visitor);
+  EventTargetWithInlineData::Trace(visitor);
+  ExecutionContextLifecycleStateObserver::Trace(visitor);
+}
+
 }  // namespace blink

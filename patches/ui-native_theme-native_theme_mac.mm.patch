@@ -1,8 +1,8 @@
 diff --git a/ui/native_theme/native_theme_mac.mm b/ui/native_theme/native_theme_mac.mm
-index f383c46998ff27152a9af293c70a5a568d4cc36c..be99355f34b373f1c4f309fe64e85d22a29c2e97 100644
+index 92cbb499e69daf7673218783bcd7ea4699ba494a..d73e851887b2efc3d6a89dba83c4446bbc182a17 100644
 --- a/ui/native_theme/native_theme_mac.mm
 +++ b/ui/native_theme/native_theme_mac.mm
-@@ -204,6 +204,7 @@ SkColor NativeThemeMac::GetSystemColor(ColorId color_id,
+@@ -220,6 +220,7 @@ SkColor NativeThemeMac::GetSystemColor(ColorId color_id,
    }
    // Even with --secondary-ui-md, menus use the platform colors and styling, and
    // Mac has a couple of specific color overrides, documented below.

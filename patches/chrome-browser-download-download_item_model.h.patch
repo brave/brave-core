@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/download_item_model.h b/chrome/browser/download/download_item_model.h
-index fafc8502127e3fea2007ba3b30b91fe708932c75..49c73246c95af21ece9bf8d9ee571c11152c6fe1 100644
+index f4d67705cb663a02b74db2266d62de1dffab3cb9..657cf43e16268c5cc7924f4f487d682171f9152f 100644
 --- a/chrome/browser/download/download_item_model.h
 +++ b/chrome/browser/download/download_item_model.h
 @@ -101,6 +101,7 @@ class DownloadItemModel : public DownloadUIModel,

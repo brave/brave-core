@@ -16,7 +16,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.util.UrlConstants;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -154,7 +154,7 @@ public class BraveRewardsNativeWorker {
             public void run() {
                 Tab tab = BraveRewardsHelper.currentActiveTab();
                 if (tab != null && !tab.isIncognito()) {
-                    OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrl());
+                    OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
                 }
             }
         });

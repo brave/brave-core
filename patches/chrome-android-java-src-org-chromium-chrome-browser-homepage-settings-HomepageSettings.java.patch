@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java
+index 417aeb8fb25fab9e8518710a73f4105af502e5b4..1426d137d76a23084064b10e46791215979be73a 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java
+@@ -28,7 +28,7 @@ import org.chromium.components.url_formatter.UrlFormatter;
+ /**
+  * Fragment that allows the user to configure homepage related preferences.
+  */
+-public class HomepageSettings extends PreferenceFragmentCompat {
++public class HomepageSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     @VisibleForTesting
+     public static final String PREF_HOMEPAGE_SWITCH = "homepage_switch";
+     @VisibleForTesting

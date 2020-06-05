@@ -5,16 +5,15 @@
 
 package org.chromium.chrome.browser.externalnav;
 
-import org.chromium.chrome.browser.externalnav.ExternalNavigationHandler;
-import org.chromium.chrome.browser.externalnav.ExternalNavigationHandler.OverrideUrlLoadingResult;
+import org.chromium.components.external_intents.ExternalNavigationDelegate;
+import org.chromium.components.external_intents.ExternalNavigationHandler;
+import org.chromium.components.external_intents.ExternalNavigationParams;
+import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.BraveUphold;
 
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     private BraveUphold mBraveUphold;
-    public BraveExternalNavigationHandler(Tab tab) {
-        super(tab);
-    }
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
         super(delegate);

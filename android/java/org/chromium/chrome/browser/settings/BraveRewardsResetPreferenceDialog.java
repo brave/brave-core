@@ -6,7 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceDialogFragmentCompat;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;

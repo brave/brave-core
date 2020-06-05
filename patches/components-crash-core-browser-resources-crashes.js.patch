@@ -1,13 +1,13 @@
 diff --git a/components/crash/core/browser/resources/crashes.js b/components/crash/core/browser/resources/crashes.js
-index fb5d25b859fd2089b4a06cc917acfb4f4f40d889..a6610767c38dc9e870be67cb1302670f8470fb56 100644
+index 287eed28ae76ef4655441f376937ea395a405c57..d68f3bc8ac25c5a5e39675e9741513fb66bb7b6f 100644
 --- a/components/crash/core/browser/resources/crashes.js
 +++ b/components/crash/core/browser/resources/crashes.js
-@@ -130,7 +130,7 @@ function updateCrashList(
-       link.target = '_blank';
-       link.textContent = loadTimeData.getString('bugLinkText');
-       linkBlock.appendChild(link);
--      crashBlock.appendChild(linkBlock);
-+      //crashBlock.appendChild(linkBlock); // feature disabled in Brave
-     } else {
-       let textContentKey;
-       if (crash.state === 'pending_user_requested') {
+@@ -91,7 +91,7 @@ function updateCrashList(
+         crashLink.href = `https://goto.google.com/crash/${crash.id}`;
+         crashLink.target = '_blank';
+         crashLink.textContent = crash.id;
+-        uploadIdValue.appendChild(crashLink);
++        //uploadIdValue.appendChild(crashLink); // feature disabled in Brave
+       } else {
+         uploadIdValue.textContent = crash.id;
+       }

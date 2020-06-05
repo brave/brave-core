@@ -5,9 +5,8 @@
 
 package org.chromium.chrome.browser.partnercustomizations;
 
-public class BravePartnerBrowserCustomizations
-        extends PartnerBrowserCustomizations {
-    public static class ProviderPackage implements Provider {
+public class BravePartnerBrowserCustomizations {
+    public static class ProviderPackage implements PartnerBrowserCustomizations.Provider {
         @Override
         public String getHomepage() {
             return null;

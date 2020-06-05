@@ -161,12 +161,12 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
   // Returns the registry path for the product's ClientState key.
   std::wstring GetClientStateKeyPath() {
     std::wstring result(L"Software\\");
-    if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
       result.append(L"BraveSoftware\\Update\\ClientState\\");
       result.append(kInstallModes[test_data().index].app_guid);
-    } else {
+#else
       result.append(kProductPathName);
-    }
+#endif
     return result;
   }
 
@@ -255,8 +255,9 @@ TEST_P(MakeProductDetailsTest, AdditionalParametersChannels) {
 // Test that the "ap" value is cached during initialization.
 TEST_P(MakeProductDetailsTest, UpdateAp) {
   // This test is only valid for brands that integrate with Google Update.
-  if (!kUseGoogleUpdateIntegration)
+#if !defined(OFFICIAL_BUILD)
     return;
+#endif
 
   // With no value in the registry, the ap value should be empty.
   {
@@ -278,8 +279,9 @@ TEST_P(MakeProductDetailsTest, UpdateAp) {
 // Test that the cohort name is cached during initialization.
 TEST_P(MakeProductDetailsTest, UpdateCohortName) {
   // This test is only valid for brands that integrate with Google Update.
-  if (!kUseGoogleUpdateIntegration)
-    return;
+#if !defined(OFFICIAL_BUILD)
+  return;
+#endif
 
   // With no value in the registry, the cohort name should be empty.
   {

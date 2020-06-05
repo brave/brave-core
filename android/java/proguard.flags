@@ -10,4 +10,4 @@
 }
 -keepattributes JavascriptInterface
 
--keep class android.support.design.widget.BottomSheetBehavior { *; }
+-keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/importer_data_types.h b/chrome/common/importer/importer_data_types.h
-index 0fc90c62398a93eb89568ce78c8ded2bc9b232b6..61d3d5425a728a5b004ed4536d64d4e895510616 100644
+index 65cfcd480bd575bb5aa1953332c52b92a7606a70..388bec98f179047d56968531fb81bc7e75aafc41 100644
 --- a/chrome/common/importer/importer_data_types.h
 +++ b/chrome/common/importer/importer_data_types.h
 @@ -31,7 +31,7 @@ enum ImportItem {
@@ -11,7 +11,7 @@ index 0fc90c62398a93eb89568ce78c8ded2bc9b232b6..61d3d5425a728a5b004ed4536d64d4e8
  };
  
  // Information about a profile needed by an importer to do import work.
-@@ -83,6 +83,7 @@ enum VisitSource {
+@@ -84,6 +84,7 @@ enum VisitSource {
    VISIT_SOURCE_FIREFOX_IMPORTED = 1,
    VISIT_SOURCE_IE_IMPORTED = 2,
    VISIT_SOURCE_SAFARI_IMPORTED = 3,

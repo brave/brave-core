@@ -6,12 +6,13 @@
 package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
+import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 
 public class BackgroundVideoPlaybackPreference

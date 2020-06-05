@@ -108,9 +108,6 @@
       Save to Google Drive
     </message>
     <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_SHORT" desc="Print summary, explaining to the user how many pages will be printed.">
-      Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
-    </message>
-    <message name="IDS_PRINT_PREVIEW_NEW_SUMMARY_FORMAT_SHORT" desc="Print summary, explaining to the user how many pages will be printed. Same use as above, but omits the 'Total: '.">
       <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
     </message>
     <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_PLURAL" desc="Label shown in the print preview summary.">
@@ -132,7 +129,7 @@
       Out of bounds page reference, limit is <ph name="MAXIMUM_PAGE">$1<ex>1</ex></ph>
     </message>
     <message name="IDS_PRINT_PREVIEW_COPIES_INSTRUCTION" desc="Instruction shown when the user enters an invalid number of copies.">
-      Use a number to indicate how many copies to print (1 to 999).
+      Use a number to indicate how many copies to print (1 to <ph name="MAX_COPIES">$1<ex>1</ex></ph>).
     </message>
     <message name="IDS_PRINT_PREVIEW_SCALING_INSTRUCTION" desc="Instruction shown when the user enters an invalid scaling value.">
       Scale amount must be a number between 10 and 200.

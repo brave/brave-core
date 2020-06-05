@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -14,7 +15,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/spellcheck/browser/pref_names.h"
-#include "content/public/common/context_menu_params.h"
+#include "content/public/browser/context_menu_params.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -40,7 +41,7 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
     observer_.reset(new SpellingMenuObserver(menu_.get()));
     menu_->SetObserver(observer_.get());
     // Uncomment to print the menu to standard output for each test.
-    //menu_->EnablePrintMenu();
+    // menu_->EnablePrintMenu();
   }
 
   void InitMenu(const char* word, const char* suggestion) {

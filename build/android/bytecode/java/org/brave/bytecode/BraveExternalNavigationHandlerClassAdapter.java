@@ -13,7 +13,7 @@ public class BraveExternalNavigationHandlerClassAdapter extends BraveClassVisito
             "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler";
 
     static String sExternalNavigationHandlerClassName =
-            "org/chromium/chrome/browser/externalnav/ExternalNavigationHandler";
+            "org/chromium/components/external_intents/ExternalNavigationHandler";
 
     static String sMethodClobberCurrentTabWithFallbackUrl =
             "clobberCurrentTabWithFallbackUrl";

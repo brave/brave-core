@@ -11,7 +11,7 @@
     Experiments
   </message>
   <message name="IDS_FLAGS_UI_PAGE_RESET" translateable="false" desc="Label for button that resets the flags to their default value.">
-    Reset all to default
+    Reset all
   </message>
   <message name="IDS_FLAGS_UI_PAGE_WARNING" desc="A warning stating that the features of the page are experimental.">
     Warning: Experimental features ahead!
@@ -76,7 +76,7 @@
   <!-- about:flags/deprecated
       New entries here should also be added for about:flags above -->
   <message name="IDS_DEPRECATED_FEATURES_PAGE_RESET" desc="Label for button that resets the features to their default value.">
-    Reset all to default
+    Reset all
   </message>
   <message name="IDS_DEPRECATED_FEATURES_OWNER_WARNING" desc="A warning stating what system-wide features can only be set by the owner.">
     Features that apply system-wide can only be set by the owner: <ph name="OWNER_EMAIL">$1<ex>owner@email.com</ex></ph>

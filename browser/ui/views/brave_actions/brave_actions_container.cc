@@ -55,6 +55,11 @@ class BraveActionsContainer::EmptyExtensionsContainer
   bool IsActionVisibleOnToolbar(
     const ToolbarActionViewController* action) const override { return false; }
 
+  extensions::ExtensionContextMenuModel::ButtonVisibility GetActionVisibility(
+      const ToolbarActionViewController* action) const override {
+    return extensions::ExtensionContextMenuModel::VISIBLE;
+  }
+
   void UndoPopOut() override {}
 
   void SetPopupOwner(ToolbarActionViewController* popup_owner) override {}

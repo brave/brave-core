@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java
-index 0a0334dbfa223b494c4967f40243c2b092e902ab..26a6356df1f832954a204790f2351c48f4f2513b 100644
+index 282df7b2516842a6d2b77edfb0c622848cefdb36..aa1ffdead63ded4d7ecd79da03863881327c583b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java
-@@ -212,6 +212,7 @@ public class BookmarkAddEditFolderActivity extends SynchronousInitializationActi
+@@ -213,6 +213,7 @@ public class BookmarkAddEditFolderActivity extends SynchronousInitializationActi
              }
  
              BookmarkId newFolder = mModel.addFolder(mParentId, 0, mFolderTitle.getTrimmedText());

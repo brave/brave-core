@@ -81,6 +81,9 @@
   <message name="IDS_OMNIBOX_FILE" desc="Text shown in the omnibox to indicate a user is viewing a file.">
     File
   </message>
+  <message name="IDS_OMNIBOX_READER_MODE" desc="Text shown in the omnibox to indicate a user is viewing the reader mode view of an article.">
+    Reader Mode
+  </message>
   <message name="IDS_DRIVE_SUGGESTION_DOCUMENT" desc="Google Docs product name, for use in omnibox Docs result descriptions.">
     Google Docs
   </message>
@@ -97,6 +100,12 @@
     Google Drive
   </message>
   <message name="IDS_DRIVE_SUGGESTION_DESCRIPTION_TEMPLATE" desc="Product description for Google Drive omnibox results.">
+    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_OWNER">$2<ex>First Last</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$3<ex>Google Docs</ex></ph>
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_DESCRIPTION_TEMPLATE_WITHOUT_DATE" desc="Product description for Google Drive omnibox results when date is missing.">
+    <ph name="RESULT_OWNER">$1<ex>First Last</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Google Docs</ex></ph>
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_DESCRIPTION_TEMPLATE_WITHOUT_OWNER" desc="Product description for Google Drive omnibox results when owner is missing.">
     <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Google Docs</ex></ph>
   </message>
 

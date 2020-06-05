@@ -29,7 +29,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
         Assert.assertTrue(classExists("org/chromium/components/sync/AndroidSyncSettings"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/externalnav/ExternalNavigationHandler"));
+        Assert.assertTrue(classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
     }
 
@@ -44,9 +44,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge", "extensiveBookmarkChangesEnded"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge", "createBookmarkItem"));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/externalnav/ExternalNavigationHandler",
+        Assert.assertTrue(methodExists("org/chromium/components/external_intents/ExternalNavigationHandler",
                 "clobberCurrentTabWithFallbackUrl"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/LaunchIntentDispatcher", "isCustomTabIntent"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/homepage/HomepageManager", "shouldCloseAppWithZeroTabs"));
     }
 
     @Test

@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Settings-specific strings shared by Browser and Chrome OS settings -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Caption Subpage (strings used by the <settings-captions> element) -->
+  <message name="IDS_SETTINGS_CAPTIONS" desc="Name of the settings page which displays caption preferences.">
+    Captions
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_SETTINGS" desc="Name of settings section of the caption settings page.">
+    Settings
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_PREVIEW" desc="Name of preview section of the caption settings page.">
+    Preview
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the caption text size preference.">
+    Text size
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_FONT" desc="Name of the caption text font preference.">
+    Text font
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_COLOR" desc="Name of the caption text color preference.">
+    Text color
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_OPACITY" desc="Name of the caption text opacity preference.">
+    Text opacity
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_BACKGROUND_OPACITY" desc="Name of the caption background opacity preference.">
+    Background opacity
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_OPAQUE" desc="Name of the opaque opacity preference.">
+    Opaque
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_SEMI_TRANSPARENT" desc="Name of the semi-transparent opacity preference.">
+    Semi-transparent
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_TRANSPARENT" desc="Name of the transparent opacity preference.">
+    Transparent
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW" desc="Name of the caption text shadow preference.">
+    Text shadow
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_NONE" desc="Name of the None option for the caption text shadow.">
+    None
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_RAISED" desc="Name of the Raised option for the caption text shadow.">
+    Raised
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_DEPRESSED" desc="Name of the Depressed option for the caption text shadow.">
+    Depressed
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_UNIFORM" desc="Name of the Uniform option for the caption text shadow.">
+    Uniform
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_DROP_SHADOW" desc="Name of the Drop shadow option for the caption text shadow.">
+    Drop shadow
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_BACKGROUND_COLOR" desc="Name of the caption background color preference.">
+    Background color
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_BLACK" desc="Name of the Black color for the caption text or background.">
+    Black
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_WHITE" desc="Name of the White color for the caption text or background.">
+    White
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_RED" desc="Name of the Red color for the caption text or background.">
+    Red
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_GREEN" desc="Name of the Green color for the caption text or background.">
+    Green
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_BLUE" desc="Name of the Blue color for the caption text or background.">
+    Blue
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_YELLOW" desc="Name of the Yellow color for the caption text or background.">
+    Yellow
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_CYAN" desc="Name of the Cyan color for the caption text or background.">
+    Cyan
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_MAGENTA" desc="Name of the Magenta color for the caption text or background.">
+    Magenta
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_DEFAULT_SETTING" desc="Name of the default setting for the caption text.">
+    Default
+  </message>
+
+ <!-- Personalization Options SubPage (strings used by the <settings-personalization-options> element) -->
+  <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION" desc="The label of the checkbox to enable/disable url keyed anonymized data collection.">
+    Make searches and browsing better
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION_DESC" desc="The description of the checkbox to enable/disable url keyed anonymized data collection.">
+    Sends URLs of pages you visit to Brave
+  </message>
+  <message name="IDS_SETTINGS_SPELLING_PREF" desc="The documentation string of the 'Use Spelling' preference">
+    Enhanced spell check
+  </message>
+  <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The documentation string of the 'Use Suggest' preference">
+    Autocomplete searches and URLs
+  </message>
+  <message name="IDS_SETTINGS_SUGGEST_PREF_DESC" desc="The description of the 'Use Suggest' preference">
+    Sends some cookies and searches from the address bar and search box to your default search engine
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
+    Help improve Brave's features and performance
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
+    Automatically sends crash reports to Brave
+  </message>
+  <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
+    Show suggestions for similar pages when a page can't be found
+  </message>
+  <message name="IDS_SETTINGS_LINKDOCTOR_PREF_DESC" desc="The description of the 'Use Link Doctor' preference to help with navigation errors.">
+    Sends the web address of the page you're trying to reach to Brave
+  </message>
+  <message name="IDS_DRIVE_SUGGEST_PREF" desc="The documentation string of the 'Show Drive Results in Omnibox' preference - short description">
+    Google Drive search suggestions
+  </message>
+
+  <!-- Sync Accounts page (used by the <settings-sync-account-control> element) -->
+  <message name="IDS_SETTINGS_PEOPLE_SYNCING_TO_ACCOUNT" desc="The text displayed to the user that the profile is currently syncing to a specific account.">
+    Syncing to <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_PAUSED" desc="The label informing the user that sync is currently paused.">
+    Sync is paused
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT" desc="The text displayed to prompt users to sign in to chrome.">
+    Get Brave smarts in Brave
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_TURN_OFF" desc="The label for the button that lets the user turn off profile syncing with their gaia account.">
+    Turn off
+  </message>
+  <message name="IDS_SETTINGS_SETTINGS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing settings between multiple browser instances.">
+    Settings
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_NOT_WORKING" desc="The label informing the user that sync is currently not working.">
+    Sync isn't working
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_PASSWORDS_NOT_WORKING" desc="The label informing the user that password sync is currently not working.">
+    Error syncing passwords
+  </message>
+  <message name="IDS_SETTINGS_SYNC_ADVANCED_PAGE_TITLE" desc="Name of the settings page which manages data used by sync.">
+    Manage sync
+  </message>
+  <message name="IDS_SETTINGS_NEW_SYNC_ADVANCED_PAGE_TITLE" desc="Name of the settings page which manages data used by sync.">
+    Manage what you sync
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_ANOTHER_ACCOUNT" desc="The label for the button that lets the user choose another account to sync with.">
+    Use another account
+  </message>
+
+  <!-- Signout Subpage (strings used by the <settings-signout-dialog> element) -->
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_CONFIRM" desc="The text to display on the button to confirm the user wishes to stop syncing.">
+    Clear and Sign Out
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SIGN_OUT" desc="The label of the button that lets user sign-out of Brave.">
+    Sign out
+  </message>
+  <!-- Sync Control Subpage (strings used by the <settings-sync-controls> element) -->
+  <message name="IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
+    Addresses, phone numbers, and more
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing history between multiple browser instances.">
+    History
+  </message>
+  <message name="IDS_SETTINGS_EXTENSIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing extensions between multiple browser instances.">
+    Extensions
+  </message>
+  <message name="IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing open tabs between multiple browser instances.">
+    Open Tabs
+  </message>
+  <message name="IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL" desc="Label for the checkbox which causes all properties to be synced.">
+    Sync everything
+  </message>
+  <message name="IDS_SETTINGS_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
+    Apps
+  </message>
+  <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Brave services">
+    Other Brave services
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_SYNC" desc="Label for the radio button to customize sync data types.">
+    Customize sync
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DATA" desc="Title for sync data types list.">
+    Sync data
+  </message>
+
+  <!-- Sync page (strings used by the <settings-sync-page> element) -->
+  <message name="IDS_SETTINGS_PASSWORDS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords between multiple browser instances.">
+    Passwords
+  </message>
+  <message name="IDS_SETTINGS_PASSPHRASE_PLACEHOLDER" desc="Placeholder for the passphrase field.">
+    Passphrase
+  </message>
+  <message name="IDS_SETTINGS_EXISTING_PASSPHRASE_TITLE" desc="Title for the section where the user enters the passphrase.">
+    Encryption options
+  </message>
+  <message name="IDS_SETTINGS_SUBMIT_PASSPHRASE" desc="Text for the button which, when clicked, submits a sync password for verification.">
+    Submit
+  </message>
+  <message name="IDS_SETTINGS_ENCRYPT_WITH_GOOGLE_CREDENTIALS_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with the Brave login for the current browser profile.">
+    Encrypt synced passwords with your Brave username and password
+  </message>
+  <message name="IDS_SETTINGS_BOOKMARKS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing bookmarks between multiple browser instances.">
+    Bookmarks
+  </message>
+  <message name="IDS_SETTINGS_ENCRYPTION_OPTIONS" desc="Title for the section which includes options for encrypting sync settings.">
+    Encryption options
+  </message>
+  <message name="IDS_SETTINGS_MISMATCHED_PASSPHRASE_ERROR" desc="Error message when the passphrase and confirmation don't match.">
+    You must enter the same passphrase twice
+  </message>
+  <message name="IDS_SETTINGS_EMPTY_PASSPHRASE_ERROR" desc="Error message when the passphrase is empty.">
+    Empty passphrase is not allowed
+  </message>
+  <message name="IDS_SETTINGS_INCORRECT_PASSPHRASE_ERROR" desc="Message when the passphrase is incorrect.">
+    The passphrase you entered is incorrect
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_SYNCED_DATA_TITLE_UNIFIED_CONSENT" desc="Title for the link to manage Brave Sync data via Brave Dashboard when unified consent is enabled.">
+    Data from Brave sync
+  </message>
+  <message name="IDS_SETTINGS_NEW_MANAGE_SYNCED_DATA_TITLE_UNIFIED_CONSENT" desc="Title for the link to manage Brave Sync data via Brave Dashboard when unified consent is enabled.">
+    Review your synced data
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SYNC_AND_NON_PERSONALIZED_SERVICES" desc="The name of the settings page and the label of the button that takes the user to manage their sync and non-personalized services settings.">
+    Sync and Brave services
+  </message>
+  <message name="IDS_SETTINGS_PASSPHRASE_CONFIRMATION_PLACEHOLDER" desc="Placeholder for the confirm-passphrase field.">
+    Confirm passphrase
+  </message>
+  <message name="IDS_SETTINGS_SYNC_LOADING" desc="The message shown when waiting for the sync backend to start up.">
+    Please wait...
+  </message>
+  <message name="IDS_SETTINGS_SYNC_TIMEOUT" desc="Text explaining what to do if sync times out.">
+    Check your internet connection. If the problem continues, try signing out and signing in again.
+  </message>
+  <message name="IDS_SETTINGS_SYNC" desc="Name of the sync service.">
+    Sync
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SETTINGS_CANCEL_SYNC" desc="The label of button that allows user to cancel sync.">
+    Cancel sync
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_TITLE" desc="The title of the dialog to confirm the sync cancellation.">
+    Cancel sync?
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_BODY" desc="The body text of the dialog to confirm the sync cancellation.">
+    You can turn on sync anytime in settings
+  </message>
+
+  <!-- About Subpage-->
+  <message name="IDS_SETTINGS_ABOUT_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
+    Checking for updates
+  </message>
+</grit-part>

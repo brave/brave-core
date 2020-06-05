@@ -208,7 +208,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
                             text.setText(R.string.brave_shields_second_group_title);
                         } else if (1 == position) {
                             text.setTextColor(convertView.getContext().getResources().getColor(
-                                    R.color.standard_mode_tint));
+                                    R.color.default_icon_color_tint_list));
                             text.setTextSize(20);
                             text.setText(mTitle);
                         } else {

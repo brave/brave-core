@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabCreationState;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
@@ -26,7 +27,7 @@ public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObs
     public void onChange() {}
 
     @Override
-    public void onNewTabCreated(Tab tab) {}
+    public void onNewTabCreated(Tab tab, @TabCreationState int creationState) {}
 
     @Override
     public void onTabModelSelected(TabModel newModel, TabModel oldModel) {

@@ -25,24 +25,23 @@ public class SponsoredTab {
     public SponsoredTab(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
+        if (chromeTabbedActivity != null) {
             TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
             isMoreTabs = tabModel.getCount() > SponsoredImageUtil.MAX_TABS ? true : false;
         }
 
-        if (NTPUtil.shouldEnableNTPFeature(isMoreTabs)){
+        if (NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
             ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
             tabIndex = SponsoredImageUtil.getTabIndex();
             updateBannerPref();
         }
     }
 
-    public NTPImage getTabNTPImage() {
-        if (ntpImage != null) {
-            return ntpImage;
-        } else {
-            return NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
+    public NTPImage getTabNTPImage(boolean isReset) {
+        if (ntpImage == null || isReset) {
+            ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
         }
+        return ntpImage;
     }
 
     public void setNTPImage(NTPImage ntpImage) {

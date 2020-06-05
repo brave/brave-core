@@ -7,7 +7,7 @@ package org.chromium.chrome.browser;
 
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.ChromeSwitches;
+import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.firstrun.FirstRunStatus;
 
 public class BraveHelper {

@@ -62,7 +62,7 @@ void BraveExtensionService::AddComponentExtension(const Extension* extension) {
                                          syncer::StringOrdinal(),
                                          extensions::kInstallFlagNone,
                                          std::string(),
-                                         base::nullopt);
+                                         {} /* ruleset_checksums */);
   extensions::ContentSettingsService::Get(profile_)->OnExtensionPrefsLoaded(
       extension->id(), extension_prefs_);
 }

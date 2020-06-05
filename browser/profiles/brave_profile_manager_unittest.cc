@@ -238,7 +238,6 @@ TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
 }
 
 TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath dest_path =
       temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);

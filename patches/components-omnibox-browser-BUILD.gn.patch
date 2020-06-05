@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 34eb02f5de4131ac7365a83a8811273c2623ca2a..6172e8dee684d8a43eed1622537b3264f0079f0b 100644
+index 4757f16eaaae8df9a517a37112f2e0275a09d8e9..9658ad11323deff25462dfe27e0bc8a9a92aebba 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -258,6 +258,7 @@ jumbo_static_library("browser") {
@@ -9,4 +9,4 @@ index 34eb02f5de4131ac7365a83a8811273c2623ca2a..6172e8dee684d8a43eed1622537b3264
 +  if (brave_chromium_build) {  deps += [ "//brave/components/omnibox/browser" ] }
  
    if (is_android) {
-     deps += [ ":jni_headers" ]
+     sources += [

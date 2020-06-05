@@ -249,6 +249,7 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_sl.xtb" lang="sl" />
     <file path="resources/generated_resources_sq.xtb" lang="sq" />
     <file path="resources/generated_resources_sr.xtb" lang="sr" />
+    <file path="resources/generated_resources_sr-Latn.xtb" lang="sr-Latn" />
     <file path="resources/generated_resources_sv.xtb" lang="sv" />
     <file path="resources/generated_resources_sw.xtb" lang="sw" />
     <file path="resources/generated_resources_ta.xtb" lang="ta" />
@@ -285,11 +286,13 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos">
         <part file="chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
+        <part file="os_settings_search_tag_strings.grdp" />
       </if>
 
       <!-- Settings specific strings -->
       <if expr="not is_android">
         <part file="settings_strings.grdp" />
+        <part file="shared_settings_strings.grdp" />
       </if>
 
       <!-- MD Extensions specific strings -->
@@ -360,22 +363,18 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to
       </message>
-      <message name="IDS_PERMISSION_ALLOW" desc="Label on button to allow a permissions request.">
-        Allow
+      <message name="IDS_PERMISSIONS_BUBBLE_PROMPT_ACCESSIBLE_TITLE_ONE_PERM" desc="The label that is read by a screen reader to describe the permissions prompt bubble. This will be followed by the short name of a single permission.">
+        <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to: <ph name="PERMISSION">$2<ex>use your microphone</ex></ph>
       </message>
-      <message name="IDS_PERMISSION_DENY" desc="Label on button to deny a permissions request.">
-        Block
+      <message name="IDS_PERMISSIONS_BUBBLE_PROMPT_ACCESSIBLE_TITLE_TWO_PERMS" desc="The label that is read by a screen reader to describe the permissions prompt bubble. This will be followed by the short names of two permissions.">
+        <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to: <ph name="FIRST_PERMISSION">$2<ex>use your microphone</ex></ph> and <ph name="SECOND_PERMISSION">$3<ex>use your location</ex></ph>
+      </message>
+      <message name="IDS_PERMISSIONS_BUBBLE_PROMPT_ACCESSIBLE_TITLE_TWO_PERMS_MORE" desc="The label that is read by a screen reader to describe the permissions prompt bubble. This will be followed by the short names of two permissions, then an &quot;and more&quot; descriptive text indicating that the dialog's body contains the entire list of requested permissions.">
+        <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to: <ph name="FIRST_PERMISSION">$2<ex>use your microphone</ex></ph>, <ph name="SECOND_PERMISSION">$3<ex>use your location</ex></ph>, and more
       </message>
       <message name="IDS_PERMISSION_CUSTOMIZE" desc="Label on text button to allow the user to customize a permissions request.">
         Customize
       </message>
-
-      <!-- Runtime permission infobar strings -->
-      <if expr="is_android">
-        <message name="IDS_INFOBAR_UPDATE_PERMISSIONS_BUTTON_TEXT" desc="Button text shown when Brave does not have the necessary permission required to complete the requested tasks (e.g. a website has request location information, but Brave is missing that Android permission)." formatter_data="android_java">
-          Continue
-        </message>
-      </if>
 
       <message name="IDS_ALTERNATE_NAV_URL_VIEW_LABEL" desc="Label displayed in an infobar when a user searches for a term they may have meant to navigate to.">
         Did you mean to go to <ph name="SITE">$1<ex>http://intranetsite/</ex></ph>?
@@ -1086,8 +1085,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_SAVE_PAGE" desc="In Title Case: The text label of the Save Page As menu item">
             Save Page &amp;As...
           </message>
-          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Reader mode' menu item">
-            Reader mode
+          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Toggle Reader Mode' menu item">
+            Toggle Reader Mode
           </message>
           <message name="IDS_MORE_TOOLS_MENU" desc="In Title Case: The text label of the Tools submenu for touch">
             More Too&amp;ls
@@ -1582,6 +1581,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_STATUS_INTERRUPTED" desc="Status text for a download item that was interrupted.">
         Failed - <ph name="INTERRUPT_REASON">$1<ex>Disk full</ex></ph>
       </message>
+      <message name="IDS_DOWNLOAD_STATUS_SCANNED" desc="Status text for a download item that being scanned.">
+        Being scanned
+      </message>
       <message name="IDS_DOWNLOAD_UNCONFIRMED_PREFIX" desc="The prefix used in the unconfirmed download file.">
         Unconfirmed
       </message>
@@ -1638,7 +1640,7 @@ are declared in tools/grit/grit_rule.gni.
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
       </message>
       <message name="IDS_PROMPT_APP_DEEP_SCANNING" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning">
-        Advanced Protection recommends sending <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> to Brave to check for malware.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
       </message>
       <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
         This file is not commonly downloaded and may be dangerous.
@@ -1651,6 +1653,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_BLOCK_REASON_MIXED_CONTENT" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is mixed-content.">
         This file can't be downloaded securely.
+      </message>
+      <message name="IDS_BLOCK_REASON_DEEP_SCANNING" desc="Message shown on chrome://downloads when a download is being scanned">
+        This file is being scanned.
       </message>
       <message name="IDS_DEEP_SCANNED_SAFE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this this download was deep scanned, and found to be safe.">
         Scan complete, no issues identified.
@@ -1670,6 +1675,12 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_BLOCKED_PASSWORD_PROTECTED_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is password protected">
         This file is encrypted and has been blocked from opening.
       </message>
+
+      <if expr="chromeos">
+        <message name="IDS_PROMPT_BLOCKED_MIXED_DOWNLOAD_TITLE" desc="In the download notification, a title of the message shown on a download blocked for being insecure.">
+          Insecure download blocked
+        </message>
+      </if>
 
       <if expr="chromeos">
         <message name="IDS_PROMPT_BLOCKED_MALICIOUS_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown for blocked download">
@@ -1720,7 +1731,7 @@ are declared in tools/grit/grit_rule.gni.
         Open now
       </message>
       <message name="IDS_SCAN_DOWNLOAD" desc="Text shown to upload a file for deep scanning.">
-        Scan
+        Send
       </message>
 
       <!-- Download Tab Items -->
@@ -1841,6 +1852,18 @@ are declared in tools/grit/grit_rule.gni.
         <else>
           <message name="IDS_DOWNLOAD_COMPLETE_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is finished successfully. This message is for screen reader users.">
                    Download complete: <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>. Press Shift+F6 to cycle to the downloads bar area.
+          </message>
+        </else>
+      </if>
+      <if expr="is_macosx">
+        <then>
+          <message name="IDS_PROMPT_APP_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
+          </message>
+        </then>
+        <else>
+          <message name="IDS_PROMPT_APP_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning? Press Shift+F6 to cycle to the downloads bar area.
           </message>
         </else>
       </if>
@@ -2328,17 +2351,11 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_LIST_BULLET" desc="Unicode bullet for list items in permission bubbles.">
         •  <ph name="LIST_ITEM_TEXT">$1<ex>You might need permission to continue ...</ex></ph>
       </message>
-      <message name="IDS_AUTOMATIC_DOWNLOADS_TAB_LABEL" desc="Header for multiple automatic downloads page on Content Settings dialog">
-        Automatic Downloads
-      </message>
       <message name="IDS_BLOCKED_DOWNLOAD_NO_ACTION" desc="Radio button to keep blocking automatic downloads">
         Continue blocking automatic downloads of multiple files
       </message>
       <message name="IDS_BLOCKED_DOWNLOAD_UNBLOCK" desc="Radio button to unblock automatic downloads">
         Always allow <ph name="HOST">$1<ex>example.com</ex></ph> to download multiple files
-      </message>
-      <message name="IDS_BLOCKED_DOWNLOADS_LINK" desc="Link to downloads section of content blocking management dialog, displayed in bubble when a page tries to download files automatically.">
-        Manage download settings...
       </message>
       <message name="IDS_ALLOWED_DOWNLOAD_TITLE" desc="Title for the page action when automatic downloads were allowed">
         This site downloaded multiple files automatically
@@ -2367,9 +2384,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_ACCESSED_COOKIES_MESSAGE" desc="Tooltip and bubble info header text when a page wrote cookies or other site data.">
         This page set cookies.
-      </message>
-      <message name="IDS_BLOCKED_COOKIES_LINK" desc="Link to cookie section of content blocking management dialog, displayed in bubble when a page tries to write cookies or other site data.">
-        Manage cookie blocking...
       </message>
       <message name="IDS_BLOCKED_COOKIES_INFO" desc="Info link to a dialog showing the blocked/allowed cookies, displayed in bubble when a page tries to write cookies or other site data.">
         Show cookies and other site data...
@@ -2409,9 +2423,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_BLOCKED_POPUPS_REDIRECTS_NO_ACTION" desc="Radio button choice to continue blocking a site from showing popups and redirects, displayed in bubble when a page tries to display popups or redirects.">
         Continue blocking
-      </message>
-      <message name="IDS_BLOCKED_POPUPS_LINK" desc="Link to popups section of content blocking management dialog, displayed in bubble when a page tries to display popups.">
-        Manage pop-up blocking...
       </message>
       <message name="IDS_BLOCKED_MEDIASTREAM_MIC_AND_CAMERA_ALLOW" desc="Radio button choice to allow a site to access microphone and camera, displayed in bubble when a page tries to access microphone and camera.">
         Always allow <ph name="HOST">$1<ex>mail.google.com</ex></ph> to access your camera and microphone
@@ -2530,16 +2541,16 @@ are declared in tools/grit/grit_rule.gni.
         Block cookies
       </message>
       <message name="IDS_COOKIE_CONTROLS_TURN_OFF_BUTTON" desc="Label shown on a button that turns off cookie blocking for a specific site.">
-        Turn off for this site
+        Allow cookies
       </message>
       <message name="IDS_COOKIE_CONTROLS_NOT_WORKING_TITLE" desc="Label shown on a dialog that allows users to turn off third-party cookie blocking for a specific site.">
         Site not working?
       </message>
      <message name="IDS_COOKIE_CONTROLS_NOT_WORKING_DESCRIPTION" desc="Label shown on a dialog that allows users to turn off third-party cookie blocking for a specific site.">
-        Some sites use third-party cookies to load their pages. If a site isn't working, you can try turning off cookie blocking.
+        Some sites use third-party cookies to load their pages. If a site isn't working, you can try allowing cookies.
       </message>
       <message name="IDS_COOKIE_CONTROLS_BLOCKED_MESSAGE" desc="Text shown in the dialog that allows users to control cookie blocking.">
-        Sites can’t use your browsing activity across different sites to personalize ads
+        Sites can't use cookies that track you across the web
       </message>
       <message name="IDS_COOKIE_CONTROLS_TOOLTIP" desc="Tooltip shown on a page action icon that is shown when cookie blocking is enabled.">
         Third-party cookie blocking
@@ -2563,51 +2574,6 @@ are declared in tools/grit/grit_rule.gni.
           Serial
         </message>
       </if>
-
-      <!-- Certificate viewer dialog strings that are shared across all the platforms -->
-      <message name="IDS_CERT_INFO_SUBJECT_GROUP" desc="The label of the Issued To group in the general page of the certificate info dialog">
-        Issued To
-      </message>
-      <message name="IDS_CERT_INFO_ISSUER_GROUP" desc="The label of the Issued By group in the general page of the certificate info dialog">
-        Issued By
-      </message>
-      <message name="IDS_CERT_INFO_COMMON_NAME_LABEL" desc="The label of the Common Name field in the general page of the certificate info dialog.  (CN) is the name of this field in the standard">
-        Common Name (CN)
-      </message>
-      <message name="IDS_CERT_INFO_ORGANIZATION_LABEL" desc="The label of the Organization field in the general page of the certificate info dialog.  (O) is the name of this field in the standard">
-        Organization (O)
-      </message>
-      <message name="IDS_CERT_INFO_ORGANIZATIONAL_UNIT_LABEL" desc="The label of the Organizational Unit field in the general page of the certificate info dialog.  (OU) is the name of this field in the standard">
-        Organizational Unit (OU)
-      </message>
-      <message name="IDS_CERT_INFO_SERIAL_NUMBER_LABEL" desc="The label of the Serial Number field in the general page of the certificate info dialog.">
-        Serial Number
-      </message>
-      <message name="IDS_CERT_INFO_VALIDITY_GROUP" desc="The label of the group showing the validity (issued and expired dates) in the general page of the certificate info dialog">
-        Validity Period
-      </message>
-      <message name="IDS_CERT_INFO_ISSUED_ON_LABEL" desc="The label of the Issued On field in the general page of the certificate info dialog">
-        Issued On
-      </message>
-      <message name="IDS_CERT_INFO_EXPIRES_ON_LABEL" desc="The label of the Issued On field in the general page of the certificate info dialog">
-        Expires On
-      </message>
-      <message name="IDS_CERT_INFO_FINGERPRINTS_GROUP" desc="The label of the group showing the certificate fingerprints in the general page of the certificate info dialog">
-        Fingerprints
-      </message>
-      <message name="IDS_CERT_INFO_SHA256_FINGERPRINT_LABEL" desc="The label of the SHA-256 Fingerprint field in the general page of the certificate info dialog">
-        SHA-256 Fingerprint
-      </message>
-      <message name="IDS_CERT_INFO_SHA1_FINGERPRINT_LABEL" desc="The label of the SHA-1 Fingerprint field in the general page of the certificate info dialog">
-        SHA-1 Fingerprint
-      </message>
-
-      <message name="IDS_CERT_DETAILS_EXTENSIONS" desc="The label of the Extensions element in the details page of the certificate info dialog.">
-        Extensions
-      </message>
-      <message name="IDS_CERT_X509_SUBJECT_ALT_NAME" desc="description of extension Certificate Subject Alternative Name">
-        Certificate Subject Alternative Name
-      </message>
 
       <message name="IDS_CERT_EXPORT_TYPE_BASE64" desc="The description of saving a single certificate in base64 encoding.">
         Base64-encoded ASCII, single certificate
@@ -3385,6 +3351,12 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_RENDERER_PREFIX" desc="The prefix for a Task Manager renderer row, only is visible when no other task claims that process">
           Renderer: <ph name="RENDERER_URL">$1<ex>http://www.google.com</ex></ph>
         </message>
+        <message name="IDS_TASK_MANAGER_DEDICATED_WORKER_PREFIX" desc="The prefix for a Task Manager dedicated worker row">
+          Dedicated Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/dedicated-worker/basic/dedicated-worker.js</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_SHARED_WORKER_PREFIX" desc="The prefix for a Task Manager shared worker row">
+          Shared Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/shared-worker/basic/shared-worker.js</ex></ph>
+        </message>
         <message name="IDS_TASK_MANAGER_SERVICE_WORKER_PREFIX" desc="The prefix for a Task Manager service worker row">
           Service Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/service-worker/basic/service-worker.js</ex></ph>
         </message>
@@ -3451,6 +3423,9 @@ are declared in tools/grit/grit_rule.gni.
           Profile Importer
         </message>
       </if>
+      <message name="IDS_UTILITY_PROCESS_QRCODE_GENERATOR_SERVICE_NAME" desc="The name of the utility process used for encoding QR codes.">
+        QR Code Generator
+      </message>
       <if expr="is_win">
         <message name="IDS_UTILITY_PROCESS_WIFI_CREDENTIALS_GETTER_NAME" desc="The name of the utility process used for getting the WiFi credentials">
           WiFi Credentials Getter
@@ -3510,9 +3485,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_APP_UNINSTALL_PROMPT_TITLE" desc="Titlebar of the non-platform app and ARC(App Runtime for Brave) app uninstallation prompt window">
         Uninstall app?
       </message>
-      <message name="IDS_NON_PLATFORM_APP_UNINSTALL_PROMPT_HEADING" desc="First bold line in the content area of the non-platform app uninstallation prompt. Tells the user the app will be uninstalled if confirmed.">
-        "<ph name="APP_NAME">$1<ex>Gmail Checker</ex></ph>" will be uninstalled.
-      </message>
       <message name="IDS_ARC_APP_UNINSTALL_PROMPT_DATA_REMOVAL_WARNING" desc="Line in the content area of the ARC(App Runtime for Brave) app uninstallation prompt. Tells the user that local data associated with the app will be removed from this device.">
         Data associated with this app will be removed from this device.
       </message>
@@ -3530,6 +3502,15 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_EXTENSION_UNINSTALL_PROMPT_HEADING" desc="First bold line in the content area of the extension or app uninstallation prompt. Asks the user if they want to uninstall a particular extension or app.">
         Remove "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
+      </message>
+      <message name="IDS_EXTENSION_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Asks the user if they want to send installation request for a particular extension or app to their admin.">
+        Send a request to your administrator to install "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
+      </message>
+      <message name="IDS_EXTENSION_PENDING_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Tells the user their installation request for a particular extension or app is still pending review.">
+        You already requested "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+      </message>
+      <message name="IDS_EXTENSION_BLOCKED_BY_POLICY_PROMPT_TITLE" desc="Title of the extension or app install blocked prompt. Tells the user they can't install this extension as it's blocked by policy.">
+        Your admin has blocked "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
       </message>
       <message name="IDS_EXTENSION_PROGRAMMATIC_UNINSTALL_PROMPT_HEADING" desc="First bold line in the content area of the extension or app uninstallation prompt when the uninstallation is programmatically triggered by another extension. Asks the user if they want to uninstall a particular extension or app.">
         "<ph name="TRIGGERING_EXTENSION_NAME">$1<ex>Extension Manager</ex></ph>" would like to remove "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>".
@@ -3632,6 +3613,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_EXTENSION_WITHHOLD_PERMISSIONS" desc="Label next to the checkbox in the extension or app installation prompt, which indicates if a user wants to manually control which sites the extension can access.">
         Manually control site permissions.
+      </message>
+      <message name="IDS_EXTENSION_PROMPT_MESSAGE_FROM_ADMIN" desc="Second line in the content area of the extension of app blocked prompt. It gives user the additional message which comes from their administrator.">
+        From your administrator: <ph name="ADMIN_MESSAGE">$1<ex>Please visit www.example.com/extension for more information.</ex></ph>
       </message>
 
       <message name="IDS_EXTENSION_PERMISSION_LINE" desc="Template for item in list of privileges that an extension or app has">
@@ -3926,9 +3910,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_SCREENLOCK_PRIVATE" desc="Permission string for locking an unlocking the screen.">
           Lock and unlock the screen
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_OVERRIDE_BOOKMARKS_UI" desc="Permission string for overriding elements of the bookmarks user interface.">
-          Change the bookmarks user interface
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ACTIVITY_LOG_PRIVATE" desc="Permission string for the observing other extensions' API calls">
           Monitor the behavior of other extensions, including visited URLs
         </message>
@@ -4029,12 +4010,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_EXTENSION_INVALID_IMAGE_PATH" desc="">
         Could not load '<ph name="IMAGE_PATH">$1<ex>/path/to/file</ex></ph>' for theme.
-      </message>
-      <message name="IDS_EXTENSION_LOAD_ICON_FOR_PAGE_ACTION_FAILED" desc="">
-        Could not load icon '<ph name="ICON">$1<ex>icon.png</ex></ph>' for page action.
-      </message>
-      <message name="IDS_EXTENSION_LOAD_ICON_FOR_BROWSER_ACTION_FAILED" desc="">
-        Could not load icon '<ph name="ICON">$1<ex>icon.png</ex></ph>' for browser action.
       </message>
 
       <if expr="chromeos">
@@ -4278,6 +4253,42 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="Text for the install button on the extension install prompt, for a theme.">
         Add theme
+      </message>
+      <message name="IDS_EXTENSION_INSTALL_PROMPT_ASK_A_PARENT_BUTTON" desc="Text for the ask-a-parent button on the extension install prompt.">
+        Ask a parent
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_GO_GET_A_PARENT_FOR_EXTENSION_LABEL" desc="Text for the title section of the parent permission dialog asking child to get a parent to approve.">
+        Go get a parent to approve "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_EXTENSION_TYPE_EXTENSION" desc="The 'extension' extension type">
+        extension
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_EXTENSION_TYPE_APP" desc="The 'app' extension type">
+        app
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_CHILD_WANTS_TO_INSTALL_LABEL" desc="Text for the header section of the parent permission dialog explaining that the child is installing a extension that is requesting permissions.">
+        <ph name="CHILD_NAME">$1<ex>Junior</ex></ph> wants to install an <ph name="EXTENSION_TYPE">$2<ex>extension</ex></ph> that can:
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_APPROVE_BUTTON" desc="Text for the approve button on the parent permission prompt.">
+        Approve
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_CANCEL_BUTTON" desc="Text for the cancel button on the parent permission prompt.">
+        Cancel
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_SELECT_PARENT_LABEL" desc="Text for the label shown above the parent selector.">
+        Choose parent account for approval
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_PARENT_ACCOUNT_LABEL" desc="Text for the label shown above a single parent account email.">
+        Parent account
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_ENTER_PASSWORD_LABEL" desc="Text for the label shown above the parent password entry field.">
+        Enter password
+      </message>
+      <message name="IDS_PARENT_PERMISSION_PROMPT_PASSWORD_INCORRECT_LABEL" desc="Text for the label shown when the previously entered password was incorrect.">
+        Password incorrect
+      </message>
+      <message name="IDS_EXTENSION_INSTALL_PROMPT_REQUEST_BUTTON" desc="Text for the request button on the extension request prompt.">
+        Send
       </message>
       <message name="IDS_EXTENSION_PROMPT_UNINSTALL_BUTTON" desc="Text for the uninstall button on the extension uninstall prompt">
         Remove
@@ -4684,25 +4695,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <!-- End of Sync Promo strings for Desktop Identity Consistency. -->
 
-      <!-- Desktop iOS promotion. -->
-      <if expr="is_win">
-        <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TITLE" desc="Title for Brave iOS promotion appearing in the password bubble after a password is saved.">
-          Sync this password to your iPhone
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TITLE_V2" desc="Title for Brave iOS promotion appearing in the password bubble after a password is saved.">
-          Get this password on your iPhone
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TITLE_V3" desc="Title for Brave iOS promotion appearing in the password bubble after a password is saved.">
-          Share this password with your iPhone
-        </message>
-        <message name="IDS_DESKTOP_TO_IOS_PROMO_SEND_TO_PHONE" desc="The title of the send to phone button in the bubble promoting Brave for iphone.">
-          Send to phone
-        </message>
-        <message name="IDS_DESKTOP_TO_IOS_PROMO_NO_THANKS" desc="The title of the No Thanks button in the bubble promoting Brave for iPhone.">
-          No thanks
-        </message>
-      </if>
-
       <!-- Preview Stale Page UI -->
       <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_MINUTES" desc="The desciption stating how old a preview version of a page is in minutes. This is shown on the UI notifying the user that a preview page has been shown. The number of minutes will always be at least two so 'minutes' should be translated in the plural.">
          Updated <ph name="MINUTES">$1<ex>30</ex></ph> min ago
@@ -5082,6 +5074,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_CONFIRM_DELETE_FROM_CLIPBOARD" desc="A message within a modal dialog that confirms the user wants to delete a clipboard suggestion from the list dropdown in the omnibox." formatter_data="android_java">
         Remove suggestion from clipboard?
       </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SHOW_FULL_URLS" desc="In Title Case: The text label of the omnibox context menu option to show full URLs">
+          Always Show Full URLs
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SHOW_FULL_URLS" desc="The text label of the omnibox context menu option to show full URLs">
+          Always show full URLs
+        </message>
       </if>
 
       <!-- NTP -->
@@ -5512,31 +5514,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Reset to default zoom level
       </message>
 
-      <!-- Accessibility permission -->
-      <message name="IDS_ACCESSIBILITY_EVENTS_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to respond to accessibility events, for example if the user is using a screen reader and the site has custom accessibility features. Follows a prompt: 'This site would like to:'">
-        Respond to Accessibility Events
-      </message>
-      <if expr="is_android">
-        <message name="IDS_ACCESSIBILITY_EVENTS_INFOBAR_TEXT" desc="Text requesting permission for a site to listen to accessibility events, for example if the user has a screen reader or braille device enabled">
-          <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to respond to accessibility events
-        </message>
-        <message name="IDS_ACCESSIBILITY_EVENTS_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to listen to accessibility events, for example if the user has a screen reader or braille device enabled">
-          Accessibility Events
-        </message>
-      </if>
-
       <!-- Clipboard permission -->
-      <message name="IDS_CLIPBOARD_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to read data from the system clipboard. Follows a prompt: 'This site would like to:'">
-        See text and images copied to the clipboard
-      </message>
-      <if expr="is_android">
-        <message name="IDS_CLIPBOARD_INFOBAR_TEXT" desc="Text requesting permission for a site to read data from the system clipboard">
-          <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to see text and images copied to the clipboard
-        </message>
-        <message name="IDS_CLIPBOARD_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to read data from the system clipboard">
-          Clipboard
-        </message>
-      </if>
       <message name="IDS_ALLOWED_CLIPBOARD_TITLE" desc="Title of the info bubble shown when a site has been allowed access to read the contents of the system clipboard.">
         Clipboard read access allowed
       </message>
@@ -5736,6 +5714,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
           Update
         </message>
+        <message name="IDS_PASSWORD_SAVING_STATUS_TOGGLE" desc="Label for the toggle that shows whether saving passwords for the current site is enabled or disabled.">
+          Save passwords for this site
+        </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_DESCRIPTION" desc="Description for a field containing a password that belongs to a user.">
           Password for <ph name="username">$1<ex>Alexander</ex></ph>
         </message>
@@ -5929,9 +5910,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Dialog title">
         Clear browsing data
       </message>
-      <message name="IDS_FLASH_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to use Flash Plugins on the page. Preceded by the prompt 'This site would like to:'. 'Flash' is the name of a plugin and should not be translated.">
-        Run Flash
-      </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE" desc="A dialog informing the user that their Brave browsing history was deleted, but other forms of history can still be found on Brave My Activity.">
         The selected data has been removed from Brave and synced devices. Your Brave Account may have other forms of browsing history like searches and activity from other Brave services at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
@@ -5960,9 +5938,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
           {NUM_POPUPS,plural,=1{Pop-up blocked} other{# pop-ups blocked}}
         </message>
       </if>
-      <message name="IDS_HANDLERS_BUBBLE_MANAGE_LINK" desc="Link on the register protocol handler bubble that opens up the Content Settings management dialog.">
-        Manage handler settings...
-      </message>
 
       <message name="IDS_ZOOMLEVELS_CHROME_ERROR_PAGES_LABEL" desc="Label for zoom level list entry for Brave error pages.">
         (Brave error pages)
@@ -6232,6 +6207,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
           =1 {Move tab to new window}
           other {Move tabs to new window}}
         </message>
+        <message name="IDS_TAB_CXMENU_MOVETOANOTHERWINDOW" desc="The label of the 'Move tabs to another window' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Move tab to another window}
+          other {Move tabs to another window}}
+        </message>
+        <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
+          New window
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="In Title Case: The label of the 'New Tab to the Right' Tab context menu item.">
@@ -6284,6 +6267,32 @@ Keep your key file in a safe place. You will need it to create new versions of y
           =1 {Move Tab to New Window}
           other {Move Tabs to New Window}}
         </message>
+        <message name="IDS_TAB_CXMENU_MOVETOANOTHERWINDOW" desc="In Title Case: The label of the 'Move tabs to another window' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Move Tab to Another Window}
+          other {Move Tabs to Another Window}}
+        </message>
+        <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="In Title Case: The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
+          New Window
+        </message>
+      </if>
+
+      <!-- Strings for Window Titles in Menus -->
+      <if expr="not use_titlecase">
+        <message name="IDS_BROWSER_WINDOW_TITLE_MENU_ENTRY" desc="The format for details of the title displayed in tabs and popup windows. [ICU Syntax]">
+          {NUM_PAGES, plural,
+            =0 {<ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>}
+            =1 {<ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> and 1 other tab}
+            other {<ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> and # other tabs}}
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_BROWSER_WINDOW_TITLE_MENU_ENTRY" desc="In Title Case: The format for details of the title displayed in tabs and popup windows. [ICU Syntax]">
+          {NUM_PAGES, plural,
+            =0 {<ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>}
+            =1 {<ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> and 1 Other Tab}
+            other {<ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> and # Other Tabs}}
+        </message>
       </if>
 
       <!-- Tab Group Editor Bubble -->
@@ -6296,6 +6305,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_CLOSE_GROUP" desc="The label of the tab group header context menu item for closing all tabs in the current group.">
           Close group
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_MOVE_GROUP_TO_NEW_WINDOW" desc="The label of the tab group header context menu item for moving the entire group to a new window.">
+          Move group to new window
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="The label of the tab group header context menu item for sending feedback for tab groups.">
           Send feedback
@@ -6313,6 +6325,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_CLOSE_GROUP" desc="In Title Case: The label of the tab group header context menu item for closing all tabs in the current group.">
           Close Group
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_MOVE_GROUP_TO_NEW_WINDOW" desc="In Title Case: The label of the tab group header context menu item for moving the entire group to a new window.">
+          Move Group to New Window
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="In Title Case: The label of the tab group header context menu item for sending feedback for tab groups.">
           Send Feedback
@@ -6660,8 +6675,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <if expr="is_android">
-        <message name="IDS_OPTIONS_HOMEPAGE_TITLE" desc="The title of the home page overlay on Android" formatter_data="android_java">
-          Home page
+        <message name="IDS_OPTIONS_HOMEPAGE_TITLE" desc="The title of Brave's homepage setting screen on Android. " formatter_data="android_java">
+          Homepage
         </message>
       </if>
 
@@ -6764,19 +6779,25 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Sharing features. -->
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_TITLE_TEXT_CONTENT_UNKNOWN_DEVICE" desc="Title text displayed in a Remote Copy (for text content) notification when the source device name is unknown.">
-        Text shared from other device
+        Text copied from other device
       </message>
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_TITLE_TEXT_CONTENT" desc="Title text displayed in a Remote Copy (for text content) notification when the source device name is known.">
-        Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        Text copied from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
       </message>
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_TITLE_IMAGE_CONTENT_UNKNOWN_DEVICE" desc="Title text displayed in a Remote Copy (for image content) notification when the source device name is unknown.">
-        Image shared from other device
+        Image copied from other device
       </message>
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_TITLE_IMAGE_CONTENT" desc="Title text displayed in a Remote Copy (for image content) notification when the source device name is known.">
-        Image shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        Image copied from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
       </message>
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_DESCRIPTION" desc="Second line of text displayed in a Remote Copy notification.">
-        Copied to your clipboard
+        Press <ph name="MODIFIER_KEY_DESCRIPTION">$1<ex>Ctrl+V</ex></ph> to paste
+      </message>
+      <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_PREPARING_DOWNLOAD" desc="Subtext shown in a Remote Copy notification while preparing the image download.">
+        Preparing download
+      </message>
+      <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_PROCESSING_IMAGE" desc="Subtext shown in a Remote Copy notification while processing the received image.">
+        Processing image
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_MULTIPLE_DEVICES" desc="The label of item for click to call in context menu when multiple devices are available.">
@@ -6871,17 +6892,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COLLECTED_COOKIES_SESSION_RULE_CREATED" desc="A notification that is displayed when a content exception to allow cookies for session only was created.">
         Cookies from <ph name="DOMAIN">$1<ex>example.com</ex></ph> will be cleared on exit
       </message>
-      <if expr="is_macosx">
-        <message name="IDS_COLLECTED_COOKIES_MULTIPLE_ALLOW_RULES_CREATED" desc="A notification that is displayed when multiple content exceptions to allow cookies were created.">
-          Cookies from multiple sites allowed.
-        </message>
-        <message name="IDS_COLLECTED_COOKIES_MULTIPLE_BLOCK_RULES_CREATED" desc="A notification that is displayed when multiple content exceptions to block cookies were created.">
-          Cookies from multiple sites blocked.
-        </message>
-        <message name="IDS_COLLECTED_COOKIES_MULTIPLE_SESSION_RULES_CREATED" desc="A notification that is displayed when multiple content exceptions to allow cookies for session only were created.">
-          Cookies from multiple sites will be cleared on exit.
-        </message>
-      </if>
       <message name="IDS_COLLECTED_COOKIES_ALLOWED_COOKIES_TAB_LABEL" desc="The label in a tabbed pane that holds the UI controls for the cookies allowed while loading the page.">
         Allowed
       </message>
@@ -7034,23 +7044,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COOKIES_COOKIE_NONESELECTED" desc="Field value when no cookie is selected">
         no cookie selected
       </message>
-      <if expr="is_macosx">
-        <message name="IDS_COOKIES_LOCAL_STORAGE_KEY_LABEL" desc="The label of the Local Storage key being set">
-          Key:
-        </message>
-        <message name="IDS_COOKIES_LOCAL_STORAGE_VALUE_LABEL" desc="The label of the Local Storage value being set">
-          Value:
-        </message>
-      </if>
-      <message name="IDS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL" desc="The Local Storage Origin label">
-        Origin:
-      </message>
-      <message name="IDS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL" desc="The Local Storage Size on disk label">
-        Size on disk:
-      </message>
-      <message name="IDS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL" desc="The Local Storage Last modified label">
-        Last modified:
-      </message>
       <message name="IDS_COOKIES_COOKIES" desc="Label for folder under which a list of cookies appear">
         Cookies
       </message>
@@ -7060,14 +7053,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COOKIES_APPLICATION_CACHE" desc="The text shown when there is an Application Cache (name of an HTML standard) in the Cookies table">
         Application cache
       </message>
-      <message name="IDS_COOKIES_APPLICATION_CACHE_MANIFEST_LABEL" desc="The Manifest label (manifest is a URL specified by the application cache)">
-        Manifest:
-      </message>
-      <if expr="is_macosx">
-        <message name="IDS_COOKIES_SIZE_LABEL" desc="The Size label, to indicate how much space is taken by a database or application cache">
-          Size:
-        </message>
-      </if>
       <message name="IDS_COOKIES_WEB_DATABASES" desc="Label for the folder under which a list of web databases (name of an HTML standard) are displayed">
         Web databases
       </message>
@@ -7094,9 +7079,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COOKIES_FILE_SYSTEM_USAGE_NONE" desc="Value displayed when no file system of a particular type exists.">
         None
-      </message>
-      <message name="IDS_COOKIES_LAST_ACCESSED_LABEL" desc="The last access date label">
-        Last accessed:
       </message>
       <message name="IDS_COOKIES_SERVICE_WORKER" desc="The text shown when there is data for Service Workers within an origin (name of a Web standard) in the Cookies table">
         Service Workers
@@ -7484,6 +7466,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SAVE_PAGE_DESC_COMPLETE" desc="In the Save Page dialog, the description of saving both the HTML and all shown resources.">
         Webpage, Complete
       </message>
+      <message name="IDS_SAVE_PAGE_DESC_WEB_BUNDLE_FILE" desc="In the Save Page dialog, the description of saving both the HTML and all shown resources into a single Web Bundle file.">
+        Webpage, Single File (Web Bundle)
+      </message>
 
       <!-- General app failure messages -->
       <message name="IDS_PROFILE_ERROR_DIALOG_TITLE" desc="The title of the dialog shown when there's an error page">
@@ -7526,11 +7511,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MULTI_DOWNLOAD_WARNING" desc="Warning invoked if multiple downloads are attempted without user interaction.">
         <ph name="ORIGIN">$1<ex>https://backgroundfetch.com</ex></ph> wants to download multiple files
       </message>
-      <if expr="is_android">
-        <message name="IDS_MULTI_DOWNLOAD_WARNING_TITLE" desc="Title text for warning dialog invoked if multiple downloads are attempted without user interaction.">
-          Download
-        </message>
-      </if>
       <message name="IDS_MULTI_DOWNLOAD_PERMISSION_FRAGMENT" desc="Permission request shown if multiple downloads are attempted without user interaction and there are multiple permissions requested. Follows a prompt: 'This site would like to:'">
         Download multiple files
       </message>
@@ -7981,17 +7961,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Web and message center notifications -->
-      <message name="IDS_NOTIFICATIONS_INFOBAR_TEXT" desc="Text requesting permission for Web Notifications.">
-        <ph name="site">$1<ex>mail.google.com</ex></ph> wants to send you notifications
-      </message>
-      <if expr="is_android">
-        <message name="IDS_NOTIFICATIONS_PERMISSION_TITLE" desc="Title text for dialog requesting permission for Web Notifications.">
-          Notifications
-        </message>
-      </if>
-      <message name="IDS_NOTIFICATION_PERMISSIONS_FRAGMENT" desc="Permission sentence fragment to show following the prompt 'This site wants to:' in a permissions request">
-        Show notifications
-      </message>
       <message name="IDS_NOTIFICATION_BUTTON_SETTINGS" desc="Short button label to go to the notification settings panel">
         Settings
       </message>
@@ -8016,12 +7985,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_TITLE" desc="Title of an infobar that informs the user that notifications are blocked. [CHAR_LIMIT=32]">
           Notifications blocked
-        </message>
-        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_TITLE" desc="Text used as notification title when requesting permission for Web Notifications via a notification.">
-          Notifications for <ph name="ORIGIN">$1<ex>example.com</ex></ph> are blocked
-        </message>
-        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_MESSAGE" desc="Text used as notification message when requesting permission for Web Notifications via a notification.">
-          Notifications are automatically blocked for all sites except ones you allow
         </message>
       </if>
 
@@ -8455,22 +8418,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Geolocation messages -->
-      <if expr="not is_android">
-        <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Text requesting permission for a site to access the user's physical location">
-          <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your computer's location
-        </message>
-      </if>
-      <if expr="is_android">
-        <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Mobile: Text requesting permission for a site to access the user's physical location">
-          <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your device's location
-        </message>
-        <message name="IDS_GEOLOCATION_PERMISSION_TITLE" desc="Mobile: Title text for dialog requesting permission for a site to access the user's physical location">
-          Location
-        </message>
-      </if>
-      <message name="IDS_GEOLOCATION_INFOBAR_PERMISSION_FRAGMENT" desc="Permission fragment used in the permission bubble, after 'This site wants to:' asking for permission to access the user's physical location.">
-        Know your location
-      </message>
       <message name="IDS_GEOLOCATION_BUBBLE_SECTION_ALLOWED" desc="Heading for a section in the geolocation bubble listing all sites which are currently tracking the user's location.">
         This page contains elements from the following sites that are tracking your location:
       </message>
@@ -8483,9 +8430,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_GEOLOCATION_BUBBLE_CLEAR_LINK" desc="Link on the geolocation bubble that resets the list of allowed and blocked sites.">
         Clear these settings for future visits
       </message>
-      <message name="IDS_GEOLOCATION_BUBBLE_MANAGE_LINK" desc="Link on the geolocation bubble that opens up the Content Settings management dialog.">
-        Manage location settings...
-      </message>
       <message name="IDS_GEOLOCATION_ALLOWED_TOOLTIP" desc="Location bar icon tooltip text when a page is allowed to use geolocation.">
         This page is tracking your location.
       </message>
@@ -8494,17 +8438,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Web MIDI messages -->
-      <message name="IDS_MIDI_SYSEX_INFOBAR_TEXT" desc="Text requesting permission for a site to access MIDI devices with system exclusive messages.">
-        <ph name="URL">$1<ex>www.google.com</ex></ph> wants to get full control of your MIDI devices
-      </message>
-      <if expr="is_android">
-        <message name="IDS_MIDI_SYSEX_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access MIDI devices with system exclusive messages.">
-          MIDI Devices
-        </message>
-      </if>
-      <message name="IDS_MIDI_SYSEX_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to access MIDI devices with system exclusive messages, along with other permissions requests. Preceded by the prompt 'This site would like to:'">
-        Use your MIDI devices
-      </message>
       <message name="IDS_MIDI_SYSEX_ALLOWED_TOOLTIP" desc="Location bar icon tooltip text when a page is allowed to use MIDI system exclusive messages.">
         This page has full control of MIDI devices.
       </message>
@@ -8523,9 +8456,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MIDI_SYSEX_BUBBLE_CLEAR_LINK" desc="Link on the MIDI bubble that resets the list of allowed and blocked sites.">
         Clear these settings for future visits
       </message>
-      <message name="IDS_MIDI_SYSEX_BUBBLE_MANAGE_LINK" desc="Link on the MIDI bubble that opens up the Content Settings management dialog.">
-        Manage MIDI settings...
-      </message>
 
       <!-- Protocol Handler -->
       <message name="IDS_REGISTER_PROTOCOL_HANDLER_TOOLTIP" desc="Location bar icon tooltip text when a page wants to use registerProtocolHandler.">
@@ -8533,9 +8463,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Media Stream -->
-      <message name="IDS_MEDIASTREAM_BUBBLE_MANAGE_LINK" desc="Link on the media (camera and microphone) bubble that opens up the Content Settings management dialog for media settings.">
-        Manage media settings...
-      </message>
       <message name="IDS_MICROPHONE_CAMERA_ALLOWED" desc="Status text that is used as location bar icon tooltip text and as media settings bubble status text when a page is allowed to use the camera and microphone.">
         This page is accessing your camera and microphone.
       </message>
@@ -8609,20 +8536,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Protected media identifier permission infobar -->
-      <if expr="is_android or chromeos">
-        <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's protected media identifier.">
-          Know your unique device identifier
-        </message>
-        <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PER_ORIGIN_PROVISIONING_INFOBAR_TEXT" desc="Text requesting permission for a site to access protected media identifier. It shows the origin of the URL.">
-          <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected content. Your device’s identity will be verified by Brave.
-        </message>
-        <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PER_DEVICE_PROVISIONING_INFOBAR_TEXT" desc="Text requesting permission for a site to access protected media identifier. It shows the origin of the URL.">
-          <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected content. Your device's identity will be verified by Brave and may be accessed by this site.
-        </message>
-        <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access protected media identifier.">
-          Protected Media Identifier
-        </message>
-      </if>
       <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in a bubble and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
         View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave Account</ex></ph>
       </message>
@@ -8828,65 +8741,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Media Capture messages -->
-      <message name="IDS_MEDIA_CAPTURE_AUDIO_AND_VIDEO_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's microphone and camera.">
-        <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your camera and microphone
-      </message>
-      <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's microphone.">
-        <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your microphone
-      </message>
-      <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's camera.">
-        <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your camera
-      </message>
       <message name="IDS_MEDIA_CAPTURE_SCREEN_INFOBAR_TEXT" desc="Text requesting permission for a site to access the device's screen.">
         <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to share your screen
       </message>
-      <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's microphone.">
-        Use your microphone
-      </message>
-      <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's camera.">
-        Use your camera
-      </message>
-      <if expr="is_android">
-        <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access the device's microphone.">
-          Microphone
-        </message>
-        <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access the device's camera.">
-          Camera
-        </message>
-        <message name="IDS_MEDIA_CAPTURE_AUDIO_AND_VIDEO_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access the device's microphone and camera.">
-          Media
-        </message>
-      </if>
-
-      <!-- NFC permission -->
-      <message name="IDS_NFC_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use NFC. Follows a prompt: 'This site would like to:'">
-        Use NFC devices
-      </message>
-      <if expr="is_android">
-        <message name="IDS_NFC_INFOBAR_TEXT" desc="Text requesting permission for a site to use NFC">
-          <ph name="URL">$1<ex>google.com</ex></ph> wants to send and receive info when you tap your phone on an NFC device
-        </message>
-        <message name="IDS_NFC_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to use NFC">
-          NFC
-        </message>
-      </if>
-
-      <!-- WebXr permissions -->
-      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
-      <message name="IDS_VR_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use VR. Follows a prompt: 'This site would like to:">
-        Access Virtual Reality devices and data
-      </message>
-      <message name="IDS_AR_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use AR. Follows a prompt: 'This site would like to:">
-        Track camera position and map your room
-      </message>
-      <if expr="is_android">
-        <message name="IDS_VR_INFOBAR_TEXT" desc="Text requesting permission for a site to use VR">
-          <ph name="URL">$1<ex>google.com</ex></ph> wants to be able to start virtual reality sessions
-        </message>
-        <message name="IDS_AR_INFOBAR_TEXT" desc="Text requesting permission for a site to use AR">
-          <ph name="URL">$1<ex>google.com</ex></ph> wants to track camera position and map your room
-        </message>
-      </if>
 
       <!-- Sensor messages -->
       <message name="IDS_SENSORS_ALLOWED_TOOLTIP" desc="Location bar icon tooltip text when a page is allowed to use device's sensors.">
@@ -8930,30 +8787,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_ALLOWED_SENSORS_BLOCK" desc="Radio button choice to block a site from accessing device's sensors, displayed in bubble when location bar indicator inside is clicked.">
         Always block <ph name="HOST">$1<ex>mail.google.com</ex></ph> from accessing sensors
-      </message>
-
-      <!-- Quota messages -->
-      <if expr="is_android">
-        <message name="IDS_REQUEST_QUOTA_INFOBAR_TEXT" desc="Mobile: For Android device. Text requesting permission for a site to use a new (larger) quota to persistently store data on the device (e.g. for persistent-type filesystem).">
-          <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store data on your device
-        </message>
-        <message name="IDS_REQUEST_LARGE_QUOTA_INFOBAR_TEXT" desc="Mobile: For Android device. Text requesting permission for a site to use a new (larger) quota to persistently store large data on the user's device (e.g. for persistent-type filesystem).">
-          <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store large data on your device
-        </message>
-        <message name="IDS_REQUEST_QUOTA_PERMISSION_TITLE" desc="Mobile: For Android device. Title text for dialog requesting permission for a site to use a new (larger) quota to persistently store large data on the user's device (e.g. for persistent-type filesystem).">
-          Storage
-        </message>
-      </if>
-      <if expr="not is_android">
-        <message name="IDS_REQUEST_QUOTA_INFOBAR_TEXT" desc="Text requesting permission for a site to use a new (larger) quota to persistently store data on the user's local computer (e.g. for persistent-type filesystem).">
-          <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store data on your local computer
-        </message>
-        <message name="IDS_REQUEST_LARGE_QUOTA_INFOBAR_TEXT" desc="Text requesting permission for a site to use a new (larger) quota to persistently store large data on the user's local computer (e.g. for persistent-type filesystem).">
-          <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store large data on your local computer
-        </message>
-      </if>
-      <message name="IDS_REQUEST_QUOTA_PERMISSION_FRAGMENT" desc="Permission fragment presented in the permission bubble when the webapp requests new larger quota to persistently store data on the device. Follows a 'This site would like to:' prompt.">
-        Store files on this device
       </message>
 
       <!-- Shelf strings -->
@@ -9070,6 +8903,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_APP_LIST_CONTEXT_MENU_NEW_WINDOW" desc="Title text for the 'open new' context menu item of an app list item configured to open windowed">
           New window
+        </message>
+        <message name="IDS_APP_LIST_CONTEXT_MENU_NEW_TABBED_WINDOW" desc="Title text for the 'open new' context menu item of an app list item configured to open in a tabbed window">
+          New tabbed window
         </message>
         <message name="IDS_APP_LIST_CONTEXT_MENU_PIN" desc="Title text for the 'pin' context menu item of an app list item.">
           Pin to shelf
@@ -9375,7 +9211,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Command unavailable. Press control-N to open a new window.
         </message>
         <message name="IDS_A11Y_ALERT_WINDOW_OVERVIEW_MODE_ENTERED" desc="The accessible text read when the user enters window overview mode in Ash.">
-          Entered window overview mode. Press tab to navigate.
+          Entered window overview mode. Swipe to navigate, or press tab if using a keyboard.
         </message>
         <message name="IDS_A11Y_ALERT_WORKSPACE_FULLSCREEN_STATE_ENTERED" desc="The accessible text read when the current workspace state changes to fullscreen, which means the window in current workspace is fullcreen.">
           Entered full screen
@@ -9406,28 +9242,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_AUTO_REFRESH" desc="Instructions for how to auto-refresh the page">
         Add a query param in URL to auto-refresh the page: chrome://device-log/?refresh=&lt;sec&gt;
       </message>
-      <message name="IDS_DEVICE_LOG_REFRESH" desc="Button to refresh device log">
+      <message name="IDS_DEVICE_LOG_REFRESH" desc="Button to refresh device log entries">
         Refresh
       </message>
-      <message name="IDS_DEVICE_LOG_CLEAR" desc="Button to clear device log">
+      <message name="IDS_DEVICE_LOG_CLEAR" desc="Button to clear device log entries">
         Clear
+      </message>
+      <message name="IDS_DEVICE_LOG_CLEAR_TYPES" desc="Button to clear device type checkboxes">
+        Clear Types
       </message>
       <message name="IDS_DEVICE_LOG_NO_ENTRIES" desc="Text shown when device log is empty">
         No log entries
       </message>
-      <message name="IDS_DEVICE_LOG_LEVEL_SHOW" desc="'Show' label before logging level checkboxes">
-        Show:
+      <message name="IDS_DEVICE_LOG_LEVEL_LABEL" desc="Label for the logging level select dropdown">
+        Log Level:
       </message>
-      <message name="IDS_DEVICE_LOG_LEVEL_ERROR" desc="Error logging level checkbox">
+      <message name="IDS_DEVICE_LOG_LEVEL_ERROR" desc="Error logging level label">
         Error
       </message>
-      <message name="IDS_DEVICE_LOG_LEVEL_USER" desc="User logging level checkbox">
+      <message name="IDS_DEVICE_LOG_LEVEL_USER" desc="User logging level label">
         User
       </message>
-      <message name="IDS_DEVICE_LOG_LEVEL_EVENT" desc="Event logging level checkbox">
+      <message name="IDS_DEVICE_LOG_LEVEL_EVENT" desc="Event logging level label">
         Event
       </message>
-      <message name="IDS_DEVICE_LOG_LEVEL_DEBUG" desc="Debug logging level checkbox">
+      <message name="IDS_DEVICE_LOG_LEVEL_DEBUG" desc="Debug logging level label">
         Debug
       </message>
       <message name="IDS_DEVICE_LOG_TYPE_LOGIN" desc="Checkbox to enable showing events of type LOGIN">
@@ -9857,6 +9696,44 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Save changes
     </message>
 
+    <!-- New Native File System permission dialog -->
+    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming origin scoped write access to files using the Native File System API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close all tabs for this site
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming origin scoped write access to a directory using the Native File System API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close all tabs for this site
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_READ_PERMISSION_FILE_TEXT" desc="Text of dialog for confirming read access to files using the Native File System API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close all tabs for this site
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_READ_PERMISSION_DIRECTORY_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close all tabs for this site
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to a file using the Native File System API">
+      Let site edit <ph name="FILE_NAME">$1<ex>README.md</ex></ph>?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to (files in) a directory using the Native File System API">
+      Let site edit files?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_READ_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read access to a file using the Native File System API">
+      Let site view <ph name="FILE_NAME">$1<ex>README.md</ex></ph>?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_READ_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user if they intended to share a particular directory">
+      Let site view files?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_FILE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to a file using the Native File System API">
+      Edit file
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to a directory (and the files in it) using the Native File System API">
+      Edit files
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_VIEW_FILE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a file using the Native File System API">
+      View file
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_VIEW_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a directory (and the files in it) using the Native File System API">
+      View files
+    </message>
+
     <!-- Native File System usage indicator -->
     <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_USAGE_TOOLTIP" desc="Tooltip for the omnibox Native File System API file write access usage indicator.">
       This page is allowed to edit files
@@ -9879,11 +9756,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit the following files and folders
     </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_READABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently access">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view <ph name="FILENAME">$2<ex>README.md</ex></ph>
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently access">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view the following files
+    </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_READABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view files in the following folders
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view the following files and folders
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READ_AND_WRITE" desc="Text of the bubble showing what files and directories an origin can currently read and write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view and edit the following files and folders
@@ -10185,6 +10071,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Reinsert your security key and try again
       </message>
 
+      <!-- WebAuthn authenticator internal user verification -->
+      <message name="IDS_WEBAUTHN_UV_RETRY_TITLE" desc="The title on a dialog shown to the user when a previous attempt to verify their identity through fingerprints failed, and they are being asked to try again.">
+       Fingerprint not recognized
+      </message>
+      <message name="IDS_WEBAUTHN_UV_RETRY_DESCRIPTION" desc="The description on a dialog shown to the user when a previous attempt to verify their identity through fingerprints failed, and they are being asked to try again.">
+        Your fingerprint couldn't be recognized. Try again.
+      </message>
+      <message name="IDS_WEBAUTHN_UV_RETRY_ERROR_FAILED_RETRIES" desc="Error message displayed when the user's fingerprint is not recognized, and they are being asked to try again.">
+        {NUM_ATTEMPTS, plural,
+          =1 {You have one attempt remaining.}
+          other {You have # attempts remaining.}}
+      </message>
+      <message name="IDS_WEBAUTHN_UV_ERROR_LOCKED" desc="Error message. Displayed when the user's authenticator has been locked due to too many failed attempts to read their fingerprint, and they are required to enter a PIN to unlock it.">
+        Your security key is locked because your fingerprint couldn't be recognized. To unlock it, enter your PIN.
+      </message>
+
       <!-- WebAuthn account selection for resident keys -->
       <message name="IDS_WEBAUTHN_ACCOUNT_COLUMN" desc="The title of a column in a table under which will be a list of usernames or email addresses, e.g. joe@gmail.com.">
         Account
@@ -10303,11 +10205,35 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged files when they doesn't comply with enterprise security policies">
       These files violate your organization's security policies and can't be dropped.
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of uploaded data when it doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
+      This upload violates your organization's security policies. Do you want to proceed anyway?
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of pasted data when it doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
+      This pasted data violates your organization's security policies. Do you want to proceed anyway?
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_DATA_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged data when it doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
+      This dropped data violates your organization's security policies. Do you want to proceed anyway?
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged files when they doesn't comply with enterprise security policies to warn the user and allow them to proceed or not">
+      These dropped files violate your organization's security policies. Do you want to proceed anyway?
+    </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_TIMEOUT_MESSAGE" desc="Message shown in tab modal dialog after a deep scan times out.">
       Something went wrong. Scanning could not be completed. Please try again.
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PROCEED_BUTTON" desc="Text shown in the proceed button of a tab modal dialog after performing a deep scan of data to ignore the obtained warning and proceed with the upload.">
+      Proceed anyway
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_CANCEL_WARNING_BUTTON" desc="Text shown in the cancel button of a tab modal dialog after performing a deep scan of data to acknowledge the obtained warning and close the dialog.">
+      Cancel
+    </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CANCEL_UPLOAD_BUTTON" desc="Text shown in the cancel button of a tab modal dialog while performing a deep scan of data to see if it complies with enterprise policies">
       Cancel upload
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_LARGE_FILE_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the file to be scanned is too large according to the enterprise policies">
+      Your organization can scan files up to 50 MB. Try uploading a smaller file.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_ENCRYPTED_FILE_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the uploaded file to be scanned is encrypted and when this is not allowed by enterprise policies">
+      This upload is encrypted and violates your organization's security policies.
     </message>
 
 
@@ -10327,10 +10253,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Scan before opening?
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the user opens a download that recommends deep scanning">
-      The selected file is unknown and may be dangerous. Advanced Protection recommends sending this file to Brave to check for malware.
+        The selected file is unknown and may be dangerous. Send to Brave Advanced Protection for scanning?
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in tab modal dialog when the user opens a download that recommends deep scanning">
-      Scan
+      Send
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_CANCEL_BUTTON" desc="The text on the cancel button in tab modal dialog when the user opens a download that recommends deep scanning">
       Cancel
@@ -10370,13 +10296,54 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Verify
     </message>
 
+    <!-- App uninstall prompt title -->
+    <message name="IDS_PROMPT_APP_UNINSTALL_TITLE" desc="Title text for uninstalling an app.">
+      Uninstall "<ph name="APP_NAME">$1<ex>Gmail Checker</ex></ph>"?
+    </message>
+
+    <!-- App uninstall prompt for non-Brave -->
+    <message name="IDS_APP_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX_FOR_NON_GOOGLE" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time. Only used when uninstalling an app associated with a particular website.">
+      Also clear browsing data (<ph name="URL">$1<ex>pinterest.com</ex></ph>) which will sign you out of <ph name="DOMAIN">$2<ex>Pinterest.com</ex></ph>. <ph name="LEARN_MORE">$3<ex>Learn more</ex></ph>
+    </message>
+
+    <!-- App uninstall prompt for Brave -->
+    <message name="IDS_APP_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX_FOR_GOOGLE" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time for Brave hostnames. Only used when uninstalling an app associated with a Brave hostname.">
+      Also clear browsing data (<ph name="URL">$1<ex>www.google.com</ex></ph>) which may sign you out of Brave.com. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+    </message>
+
+    <message name="IDS_APP_UNINSTALL_PROMPT_LEARN_MORE" desc="The label that the user can click to learn more about removing associated data at uninstall time.">
+      Learn more
+    </message>
+
+    <!-- Speech On-Device API -->
+    <message name="IDS_UTILITY_PROCESS_SODA_SERVICE_NAME" desc="The name of the service process used to interface with the Speech On-Demand API.">
+      SODA Service
+    </message>
+
     <!-- App pause prompt -->
     <message name="IDS_APP_PAUSE_PROMPT_TITLE" desc="Titlebar of the app pause prompt window">
-      App paused
+      <ph name="APP_NAME">$1<ex>Gmail Checker</ex></ph> is paused
     </message>
 
     <message name="IDS_APP_PAUSE_HEADING" desc="Tells the user the app will be paused.">
-      The limit on "<ph name="APP_NAME">$1<ex>Brave Photos</ex></ph>" that your parent set ran out. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph>. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+    </message>
+
+    <message name="IDS_APP_PAUSE_HEADING_FOR_WEB_APPS" desc="Tells the user the app will be paused.">
+      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> Brave app. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+    </message>
+
+    <!-- App block prompt -->
+    <message name="IDS_APP_BLOCK_PROMPT_TITLE" desc="Titlebar of the app block prompt window">
+      <ph name="APP_NAME">$1<ex>Gmail Checker</ex></ph> is blocked
+    </message>
+
+    <message name="IDS_APP_BLOCK_HEADING_FOR_CHILD" desc="Tells the child the app is blocked.">
+      <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> is blocked by your parent. Ask your parent for permission to use this app.
+    </message>
+
+    <message name="IDS_APP_BLOCK_HEADING" desc="Tells the user the app is blocked.">
+      <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> is blocked by admin. Ask admin for permission to use this app.
     </message>
 
     <!-- Extension request -->

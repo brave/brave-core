@@ -1244,7 +1244,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
-        String url = currentActiveTab.getUrl();
+        String url = currentActiveTab.getUrlString();
         final String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
 
         mIconFetcher.retrieveLargeIcon(favicon_url, this);

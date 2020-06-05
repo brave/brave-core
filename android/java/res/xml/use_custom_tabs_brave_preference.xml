@@ -6,7 +6,7 @@
 
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_custom_tabs"
         android:title="@string/prefs_use_custom_tabs"
         android:summaryOn="@string/text_on"

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
-index ec4bcf12f7acb943b4702f10d8a90a1379d63e71..7ae563a87450bfe52fc0af0220fb265135eb8f85 100644
+index dffb0269e36decddf02b3d2ddf9076a4205342c5..59b15116669df1320de1d48dd5c3e3daea04ad95 100644
 --- a/chrome/android/java/res/layout/toolbar_phone.xml
 +++ b/chrome/android/java/res/layout/toolbar_phone.xml
 @@ -13,6 +13,7 @@
@@ -13,7 +13,7 @@ index ec4bcf12f7acb943b4702f10d8a90a1379d63e71..7ae563a87450bfe52fc0af0220fb2651
 @@ -20,6 +21,7 @@
          android:contentDescription="@string/accessibility_toolbar_btn_home"
          android:visibility="gone"
-         app:tint="@color/standard_mode_tint" />
+         app:tint="@color/default_icon_color_tint_list" />
 +-->
  
      <org.chromium.chrome.browser.omnibox.LocationBarPhone

@@ -9,7 +9,7 @@ grit("resources") {
   deps = [ ":modulize" ]
 
   # The .grd contains references to generated files.
-  source_is_generated = true
+  enable_input_discovery_for_gn_analyze = true
 
   outputs = [
     "grit/brave_webui_resources.h",
