@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index b946eea979a04f176d4b6f89658ad21be0ade4e9..7fac1cc740b9456d9323c2694977c59365284fc9 100644
+index b946eea979a04f176d4b6f89658ad21be0ade4e9..30d4c0067466843c0a6f6f5d5acf492bd63dd26c 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -63,6 +63,13 @@
@@ -91,7 +91,7 @@ index b946eea979a04f176d4b6f89658ad21be0ade4e9..7fac1cc740b9456d9323c2694977c593
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  if (GetDocument().GetPageGraph() != nullptr) {
 +    const NodeType node_type = root.getNodeType();
-+    if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++    if (node_type == kElementNode || node_type == kDocumentTypeNode || node_type == kDocumentFragmentNode) {
 +      GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
 +        DOMNodeIds::IdForNode(&root));
 +    } else {
