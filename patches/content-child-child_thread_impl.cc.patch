@@ -1,5 +1,5 @@
 diff --git a/content/child/child_thread_impl.cc b/content/child/child_thread_impl.cc
-index aee66825714b4b86e6021c2c4ab9cfd789c7c5ac..707366f0186c2ab85e9976b71f8441570e89428b 100644
+index 36574e68cb09076492902dd0a6e399472d568f7c..ff522b4319e6f1e19562f3ba8e0a2aedf9cf44fa 100644
 --- a/content/child/child_thread_impl.cc
 +++ b/content/child/child_thread_impl.cc
 @@ -180,6 +180,9 @@ class SuicideOnChannelErrorFilter : public IPC::MessageFilter {

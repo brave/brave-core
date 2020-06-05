@@ -21,10 +21,16 @@
       <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_BROWSER_PROXY_JS" file="social_blocking_page/social_blocking_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_PAGE_JS" file="social_blocking_page/social_blocking_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_PAGE_HTML" file="social_blocking_page/social_blocking_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <!-- appearance -->
       <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_HTML" file="brave_appearance_page/brave_appearance_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS" file="brave_appearance_page/brave_appearance_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_JS" file="brave_appearance_page/brave_appearance_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_HTML" file="brave_appearance_page/brave_appearance_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS" file="brave_appearance_page/brave_appearance_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BRAVE_THEME_HTML" file="brave_appearance_page/brave_theme.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BRAVE_THEME_JS" file="brave_appearance_page/brave_theme.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_TOOLBAR_HTML" file="brave_appearance_page/toolbar.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_TOOLBAR_JS" file="brave_appearance_page/toolbar.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_SUPER_REFERRAL_HTML" file="brave_appearance_page/super_referral.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_SUPER_REFERRAL_JS" file="brave_appearance_page/super_referral.js" type="chrome_html" preprocess="true" />
+
       <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="brave_page_visibility.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML" file="brave_privacy_page/brave_personalization_options.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS" file="brave_privacy_page/brave_personalization_options.js" type="chrome_html" preprocess="true" />
@@ -59,6 +65,7 @@
     </structures>
     <includes>
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />
+      <part file="settings_resources_v3.grdp" />
     </includes>
   </release>
 </grit>

@@ -9,8 +9,8 @@
 		<org.chromium.chrome.browser.settings.themes.BraveRadioButtonGroupCustomHomepageThemePreference/>
     </PreferenceCategory>
 	<PreferenceCategory android:title="@string/prefs_appearance">
-	    <org.chromium.chrome.browser.settings.themes.BraveRadioButtonGroupThemePreference
-	        android:fragment="org.chromium.chrome.browser.settings.themes.BraveThemePreferences"
+	    <org.chromium.chrome.browser.night_mode.settings.BraveRadioButtonGroupThemePreference
+	        android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
 	        android:key="ui_theme_pref" />
     </PreferenceCategory>
 </PreferenceScreen>

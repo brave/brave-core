@@ -65,6 +65,7 @@ export const StyledButtonWrapper = styled<StyleProps, 'button'>('button')`
   border-radius: 28px;
   background: inherit;
   border: none;
+  align-items: center;
   cursor: ${p => p.disabled ? 'default' : 'pointer'};
   ${p => getTypeStyle(p.type, p.disabled)}
 

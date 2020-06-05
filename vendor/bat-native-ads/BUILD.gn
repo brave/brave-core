@@ -21,6 +21,7 @@ config("external_config") {
 config("internal_config") {
   visibility = [
     ":*",
+    "//brave/components/brave_ads/test:*",
     "//brave/test:*",
   ]
   include_dirs = [ "src" ]
@@ -56,6 +57,7 @@ static_library("bat-native-ads-standalone") {
 source_set("headers") {
   visibility = [
     ":*",
+    "//brave/components/brave_ads/test:*",
     "//brave/test:*",
   ]
 

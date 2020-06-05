@@ -14,6 +14,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.MenuButton;
@@ -25,8 +26,6 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
  */
 public class BraveBrowsingModeBottomToolbarCoordinator
         extends BrowsingModeBottomToolbarCoordinator {
-    private Callback<OnClickListener> mBookmarkButtonListenerSupplierCallback;
-    private ObservableSupplier<OnClickListener> mBookmarkButtonListenerSupplier;
     private final BrowsingModeBottomToolbarLinearLayout mBraveToolbarRoot;
     private final ActivityTabProvider mBraveTabProvider;
     private final BookmarksButton mBookmarkButton;
@@ -46,15 +45,14 @@ public class BraveBrowsingModeBottomToolbarCoordinator
         if (BraveBottomToolbarVariationManager.isBraveVariation()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
-
-            mBookmarkButtonListenerSupplierCallback = bookmarkButtonListener -> {
-                mBookmarkButton.setOnClickListener(bookmarkButtonListener);
+            OnClickListener bookmarkClickHandler = v -> {
+                TabImpl tab = (TabImpl) mBraveTabProvider.get();
+                if (tab == null || tab.getActivity() == null) {
+                    return;
+                }
+                tab.getActivity().addOrEditBookmark(tab);
             };
-            // To avoid extensive patching we use shareButtonListenerSupplier for both
-            // share and bookmark buttons. Thus we can't use them both simultaneously.
-            mBookmarkButtonListenerSupplier = shareButtonListenerSupplier;
-            mBookmarkButton.setActivityTabProvider(mBraveTabProvider);
-            mBookmarkButtonListenerSupplier.addObserver(mBookmarkButtonListenerSupplierCallback);
+            mBookmarkButton.setOnClickListener(bookmarkClickHandler);
         }
         mMenuButton = mBraveToolbarRoot.findViewById(R.id.menu_button_wrapper);
         if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
@@ -85,9 +83,6 @@ public class BraveBrowsingModeBottomToolbarCoordinator
     @Override
     public void destroy() {
         super.destroy();
-        if (mBookmarkButtonListenerSupplier != null) {
-            mBookmarkButtonListenerSupplier.removeObserver(mBookmarkButtonListenerSupplierCallback);
-        }
         mBookmarkButton.destroy();
         mMenuButton.destroy();
     }

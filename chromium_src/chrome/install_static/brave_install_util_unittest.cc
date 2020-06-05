@@ -325,15 +325,15 @@ class InstallStaticUtilTest
     EXPECT_TRUE(!medium || system_level_);
 
     std::wstring result(L"Software\\");
-    if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
       result.append(L"BraveSoftware\\Update\\ClientState");
       if (medium)
         result.append(L"Medium");
       result.push_back(L'\\');
       result.append(mode_->app_guid);
-    } else {
+#else
       result.append(kProductPathName);
-    }
+#endif
     return result;
   }
 
@@ -422,13 +422,6 @@ TEST_P(InstallStaticUtilTest, GetUninstallRegistryPath) {
 }
 
 TEST_P(InstallStaticUtilTest, GetAppGuid) {
-  // For brands that do not integrate with Omaha/Google Update, the app guid is
-  // an empty string.
-  if (!kUseGoogleUpdateIntegration) {
-    EXPECT_STREQ(L"", GetAppGuid());
-    return;
-  }
-
 #if defined(OFFICIAL_BUILD)
   // The app guids for the brand's install modes; parallel to kInstallModes.
   static constexpr const wchar_t* kAppGuids[] = {
@@ -441,7 +434,9 @@ TEST_P(InstallStaticUtilTest, GetAppGuid) {
                 "kAppGuids out of date.");
   EXPECT_THAT(GetAppGuid(), StrCaseEq(kAppGuids[std::get<0>(GetParam())]));
 #else
-  FAIL() << "Not implemented.";
+  // For brands that do not integrate with Omaha/Google Update, the app guid is
+  // an empty string.
+  EXPECT_STREQ(L"", GetAppGuid());
 #endif
 }
 

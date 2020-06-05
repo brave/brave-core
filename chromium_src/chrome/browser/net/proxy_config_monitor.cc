@@ -20,6 +20,7 @@ namespace {
 std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
     Profile* profile) {
   auto* tor_service = TorProfileServiceFactory::GetForProfile(profile);
+  DCHECK(tor_service);
   return tor_service->CreateProxyConfigService();
 }
 #endif  // BUILDFLAG(ENABLE_TOR)

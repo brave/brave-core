@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/safe_browsing/client_side_model_loader.cc b/chrome/browser/safe_browsing/client_side_model_loader.cc
-index 1f626d44cb86745e6ae8fc257cd6a569312b20b0..5da42d9f12dc4a16089191c64ddb06131baea003 100644
+index 11e245be0c7b047d655370c1c5702e7a735ad2d0..aa991a834872a46f27b7f93160c3d3e559b27b6f 100644
 --- a/chrome/browser/safe_browsing/client_side_model_loader.cc
 +++ b/chrome/browser/safe_browsing/client_side_model_loader.cc
-@@ -34,7 +34,7 @@ namespace safe_browsing {
+@@ -58,7 +58,7 @@ std::string ReadFileIntoString(base::FilePath path) {
  const size_t ModelLoader::kMaxModelSizeBytes = 150 * 1024;
  const int ModelLoader::kClientModelFetchIntervalMs = 3600 * 1000;
  const char ModelLoader::kClientModelUrlPrefix[] =

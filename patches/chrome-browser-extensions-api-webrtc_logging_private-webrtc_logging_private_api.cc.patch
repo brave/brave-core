@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
-index bb110a5ba9bc6748e21c33df31ec1354f51a2057..3aa38f66ccc938cb119d5cde4a2096ee93422195 100644
+index 9ad9aefa707014f11cce82162d6440b076247f5e..d2e67d4c3c0fae1aa640148599c50977169ce21c 100644
 --- a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
 +++ b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
-@@ -87,6 +87,7 @@ std::string HashIdWithOrigin(const std::string& security_origin,
- content::RenderProcessHost* WebrtcLoggingPrivateFunction::RphFromRequest(
+@@ -88,6 +88,7 @@ content::RenderProcessHost* WebrtcLoggingPrivateFunction::RphFromRequest(
      const api::webrtc_logging_private::RequestInfo& request,
-     const std::string& security_origin) {
+     const std::string& security_origin,
+     std::string* error) {
 +  return nullptr; // feature disabled in Brave
    // There are 2 ways these API functions can get called.
    //

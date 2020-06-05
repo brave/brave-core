@@ -6,6 +6,7 @@
 #include "chrome/common/url_constants.h"
 
 #include "build/branding_buildflags.h"
+#include "chrome/common/webui_url_constants.h"
 
 namespace chrome {
 
@@ -36,6 +37,10 @@ const char kChooserUsbOverviewURL[] =
 
 const char kChromeBetaForumURL[] =
     "https://community.brave.com/c/beta-builds";
+
+const char kChromeFixUpdateProblems[] =
+    "https://support.brave.com/";
+
 const char kChromeReleaseNotesURL[] =
     "https://brave.com/latest/";
 
@@ -89,6 +94,9 @@ const char kChromeSearchRemoteNtpHost[] = "remote-ntp";
 
 const char kChromeSearchScheme[] = "chrome-search";
 
+const char kChromeUIUntrustedNewTabPageUrl[] =
+    "chrome-untrusted://new-tab-page/";
+
 const char kChromiumProjectURL[] = "https://github.com/brave/brave-browser/";
 
 const char kCloudPrintLearnMoreURL[] =
@@ -100,6 +108,10 @@ const char kCloudPrintCertificateErrorLearnMoreURL[] =
     "360017880792-How-do-I-print-from-Brave-";
 
 const char kContentSettingsExceptionsLearnMoreURL[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018205431-How-do-I-change-site-permissions-";
+
+const char kCookiesSettingsHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018205431-How-do-I-change-site-permissions-";
 
@@ -129,6 +141,9 @@ const char kExtensionControlledSettingLearnMoreURL[] =
 
 const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 
+const char kFlashDeprecationLearnMoreURL[] =
+    "https://blog.chromium.org/2017/07/so-long-and-thanks-for-all-flash.html";
+
 const char kGoogleAccountActivityControlsURL[] =
     "https://support.brave.com/";
 
@@ -143,8 +158,6 @@ const char kLearnMoreReportingURL[] =
     "360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
 const char kLegacySupervisedUserManagementDisplayURL[] =
-    "https://support.brave.com/";
-const char kLegacySupervisedUserManagementURL[] =
     "https://support.brave.com/";
 
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
@@ -162,6 +175,8 @@ const char kOmniboxLearnMoreURL[] =
 const char kPageInfoHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
+
+const char kPasswordCheckLearnMoreURL[] = "https://support.brave.com/";
 
 const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -184,13 +199,13 @@ const char kResetProfileSettingsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
 
+const char kSafeBrowsingHelpCenterURL[] =
+    "https://support.brave.com/";
+
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/";
 
 const char kSettingsSearchHelpURL[] =
-    "https://support.brave.com/";
-
-const char kSymantecSupportUrl[] =
     "https://support.brave.com/";
 
 const char kSyncAndGoogleServicesLearnMoreURL[] =
@@ -211,6 +226,9 @@ const char kSyncLearnMoreURL[] =
 const char kUpgradeHelpCenterBaseURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360025390311-How-do-I-download-and-install-Brave-";
+
+const char kWhoIsMyAdministratorHelpURL[] =
+    "https://support.brave.com/";
 
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";

@@ -46,7 +46,7 @@ bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
     URLPattern(URLPattern::SCHEME_ALL, "https://public.tableau.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://www.arcgis.com/*"),
   };
-  for (const auto exception : embed_exceptions) {
+  for (const auto& exception : embed_exceptions) {
     if (exception.MatchesURL(subresourceUrl)) {
       return true;
     }
@@ -73,7 +73,7 @@ bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
             "https://map.1passwordservices.com/*")})
     }
   };
-  for (const auto whitelist : whitelist_patterns) {
+  for (const auto& whitelist : whitelist_patterns) {
       if (whitelist.first.MatchesURL(firstPartyOrigin)) {
           return std::any_of(whitelist.second.begin(), whitelist.second.end(),
             [&subresourceUrl](const URLPattern& pattern) {

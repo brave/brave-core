@@ -343,7 +343,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         // Kick off the migration task only after the browser has
         // completed startup, as migration requires a profile.
         PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-            BrowserStartupController.get(LibraryProcessType.PROCESS_BROWSER)
+            BrowserStartupController.getInstance()
                     .addStartupCompletedObserver(new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {

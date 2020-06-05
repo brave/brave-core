@@ -103,6 +103,11 @@ const BraveClearSettingsMenuHighlightBehavior = {
   }
 }
 
+const SITE_SETTINGS_REMOVE_IDS = [
+  settings.ContentSettingsTypes.ADS,
+  settings.ContentSettingsTypes.BACKGROUND_SYNC,
+]
+
 // Polymer Component Behavior injection (like superclasses)
 BravePatching.RegisterPolymerComponentBehaviors({
   'settings-clear-browsing-data-dialog': [
@@ -133,6 +138,39 @@ BravePatching.RegisterPolymerComponentBehaviors({
         this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
           !(this.getPref('import_dialog_extensions').value &&
             this.selected_.extensions)
+      }
+    }
+  }],
+  'settings-site-settings-page': [{
+    registered: function() {
+      if (!this.properties || !this.properties.lists_ || !this.properties.lists_.value) {
+        console.error('[Brave Settings Overrides] Could not find polymer lists_ property')
+        return
+      }
+      const oldListsGetter = this.properties.lists_.value
+      this.properties.lists_.value = function () {
+        const lists_ = oldListsGetter()
+        if (!lists_ || !lists_.all) {
+          console.error('[Brave Settings Overrides] did not get lists_ data')
+          return
+        }
+        lists_.all = lists_.all.filter(item => !SITE_SETTINGS_REMOVE_IDS.includes(item.id))
+        let indexForAutoplay = lists_.all.findIndex(item => item.id === settings.ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
+        if (indexForAutoplay === -1) {
+          console.error('Could not find automatic downloads site settings item')
+        } else {
+          indexForAutoplay++
+          const autoplayItem = {
+            route: settings.routes.SITE_SETTINGS_AUTOPLAY,
+            id: 'autoplay',
+            label: 'siteSettingsAutoplay',
+            icon: 'cr:extension',
+            enabledLabel: 'siteSettingsAutoplayAsk',
+            disabledLabel: 'siteSettingsBlocked'
+          }
+          lists_.all.splice(indexForAutoplay, 0, autoplayItem)
+        }
+        return lists_
       }
     }
   }]
@@ -432,13 +470,25 @@ BravePatching.RegisterPolymerTemplateModifications({
     // (we remove the People section as a separate section).
     const page = templateContent.querySelector('settings-animated-pages[section=people]')
     page.setAttribute('section', 'getStarted')
-    const manageGoogleAccount = templateContent.querySelector('#manage-google-account')
+    // The 'Manage profile' button is inside the "signin-allowed" conditional template.
+    // We don't allow Google Sign-in, but we do allow local profile editing, so we have to turn
+    // the template back on and remove the google signin prompt.
+    const signinTemplate = templateContent.querySelector('template[is=dom-if][if="[[signinAllowed_]]"]')
+    if (!signinTemplate) {
+      console.error('[Brave Settings Overrides] People Page cannot find signin template')
+      return
+    }
+    // always show the template content
+    signinTemplate.setAttribute('if', 'true')
+    // remove the google account button
+    const manageGoogleAccount = signinTemplate.content.querySelector('#manage-google-account')
     if (!manageGoogleAccount) {
-      console.error('[Brave Settings Overrides] Could not find the google account settings item')
+      console.error('[Brave Settings Overrides] Could not find the google account settings item', templateContent, templateContent.innerHTML)
+      return
     }
     manageGoogleAccount.remove()
     // Edit profile item needs to know it's the first in the section
-    const firstItem = templateContent.querySelector('#edit-profile')
+    const firstItem = signinTemplate.content.querySelector('#edit-profile')
     if (!firstItem) {
       console.error('[Brave Settings Overrides] Could not find #edit-profile item in people_page')
       return

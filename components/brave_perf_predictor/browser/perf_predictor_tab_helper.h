@@ -21,11 +21,13 @@ namespace content {
 class NavigationHandle;
 class RenderFrameHost;
 class WebContents;
+}  // namespace content
 
+namespace blink {
 namespace mojom {
 class ResourceLoadInfo;
 }  // namespace mojom
-}  // namespace content
+}  // namespace blink
 
 namespace page_load_metrics {
 namespace mojom {
@@ -81,7 +83,7 @@ class PerfPredictorTabHelper
   void ResourceLoadComplete(
       content::RenderFrameHost* render_frame_host,
       const content::GlobalRequestID& request_id,
-      const content::mojom::ResourceLoadInfo& resource_load_info) override;
+      const blink::mojom::ResourceLoadInfo& resource_load_info) override;
 
   // If an interstitial page got attached during loading, we ignore the load as
   // adblocking does not have effect on interstitials

@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
+index 0cc63be36ceecf3d2661708d1dda55f8d6f160b4..f0a3374bd3aa80f9da255a332b90649140957e19 100644
+--- a/components/permissions/permission_manager.cc
++++ b/components/permissions/permission_manager.cc
+@@ -124,6 +124,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
+       return ContentSettingsType::AR;
+     case PermissionType::STORAGE_ACCESS_GRANT:
+       return ContentSettingsType::STORAGE_ACCESS;
++      BRAVE_PERMISSION_MANAGER_PERMISSION_TYPE_TO_CONTENT_SETTING_SAFE
+     case PermissionType::NUM:
+       break;
+   }

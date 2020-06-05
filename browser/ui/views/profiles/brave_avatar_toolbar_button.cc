@@ -11,7 +11,7 @@
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
-#include "ui/base/material_design/material_design_controller.h"
+#include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -28,17 +28,17 @@ void BraveAvatarToolbarButton::SetHighlight(
 }
 
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
-    const gfx::Image& gaia_image) const {
+    ButtonState state,
+    const gfx::Image& gaia_account_image) const {
   if (brave::IsTorProfile(browser_->profile()) ||
       browser_->profile()->IsGuestSession()) {
-    const int icon_size = ui::MaterialDesignController::touch_ui() ? 24 : 20;
-    const SkColor icon_color = GetThemeProvider()->GetColor(
-        ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
+    const int icon_size = ui::TouchUiController::Get()->touch_ui() ? 24 : 20;
+    const SkColor icon_color = GetForegroundColor(state);
     return gfx::CreateVectorIcon(brave::IsTorProfile(browser_->profile())
                                      ? kTorProfileIcon
                                      : kUserMenuGuestIcon,
                                  icon_size, icon_color);
   }
-  return AvatarToolbarButton::GetAvatarIcon(gaia_image);
+  return AvatarToolbarButton::GetAvatarIcon(state, gaia_account_image);
 }
 

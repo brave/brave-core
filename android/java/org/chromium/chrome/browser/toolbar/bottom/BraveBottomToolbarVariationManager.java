@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import org.chromium.chrome.browser.flags.FeatureUtilities;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 
 /**
   * Brave's extension for BottomToolbarVariationManager
@@ -16,12 +16,12 @@ public class BraveBottomToolbarVariationManager
 
     private static @Variations String getBraveVariation() {
         if (sBraveVariation != null) return sBraveVariation;
-        sBraveVariation = FeatureUtilities.getBottomToolbarVariation();
+        sBraveVariation = BOTTOM_TOOLBAR_VARIATION.getValue();
         return sBraveVariation;
     }
 
     public static boolean isBraveVariation() {
-        return FeatureUtilities.isBottomToolbarEnabled()
+        return BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && getBraveVariation().equals(Variations.NONE);
     }
 }

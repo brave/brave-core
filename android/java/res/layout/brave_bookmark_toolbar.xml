@@ -11,7 +11,7 @@
 
     <org.chromium.chrome.browser.toolbar.bottom.BookmarksButton
         android:id="@+id/bottom_bookmark_button"
-        app:tint="@color/standard_mode_tint"
+        app:tint="@color/default_icon_color_tint_list"
         style="@style/SplitToolbarButton"
         android:layout_gravity="center"
         android:contentDescription="@string/accessibility_toolbar_btn_home"

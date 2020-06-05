@@ -66,10 +66,11 @@ TEST(InstallModes, VerifyModes) {
       ASSERT_THAT(mode.logo_suffix, StrNe(L""));
 
     // The modes must have an appguid if Google Update integration is supported.
-    if (kUseGoogleUpdateIntegration)
+#if defined(OFFICIAL_BUILD)
       ASSERT_THAT(mode.app_guid, StrNe(L""));
-    else
+#else
       ASSERT_THAT(mode.app_guid, StrEq(L""));
+#endif
 
     // Every mode must have a base app name.
     ASSERT_THAT(mode.base_app_name, StrNe(L""));
@@ -94,98 +95,100 @@ TEST(InstallModes, VerifyModes) {
     // Every mode must have a toast activator CLSID.
     ASSERT_THAT(mode.toast_activator_clsid, Ne(CLSID_NULL));
 
-    // UNSUPPORTED and kUseGoogleUpdateIntegration are mutually exclusive.
-    if (kUseGoogleUpdateIntegration)
+    // UNSUPPORTED and BUILDFLAG(USE_GOOGLE_UPDATE_INTEGRATION) which we set for
+    // OFFICIAL_BUILD are mutually exclusive.
+#if defined(OFFICIAL_BUILD)
       ASSERT_THAT(mode.channel_strategy, Ne(ChannelStrategy::UNSUPPORTED));
-    else
+#else
       ASSERT_THAT(mode.channel_strategy, Eq(ChannelStrategy::UNSUPPORTED));
+#endif
   }
 }
 
 TEST(InstallModes, VerifyBrand) {
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     // Binaries were registered via an app guid with Google Update integration.
     ASSERT_THAT(kBinariesAppGuid, StrNe(L""));
     ASSERT_THAT(kBinariesPathName, StrEq(L""));
-  } else {
+#else
     // Binaries were registered via a different path name without.
     ASSERT_THAT(kBinariesAppGuid, StrEq(L""));
     ASSERT_THAT(kBinariesPathName, StrNe(L""));
-  }
+#endif
 }
 
 TEST(InstallModes, GetClientsKeyPath) {
   constexpr wchar_t kAppGuid[] = L"test";
 
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     ASSERT_THAT(GetClientsKeyPath(kAppGuid),
                 StrEq(L"Software\\BraveSoftware\\Update\\Clients\\test"));
-  } else {
+#else
     ASSERT_THAT(GetClientsKeyPath(kAppGuid),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));
-  }
+#endif
 }
 
 TEST(InstallModes, GetClientStateKeyPath) {
   constexpr wchar_t kAppGuid[] = L"test";
 
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     ASSERT_THAT(GetClientStateKeyPath(kAppGuid),
                 StrEq(L"Software\\BraveSoftware\\Update\\ClientState\\test"));
-  } else {
+#else
     ASSERT_THAT(GetClientStateKeyPath(kAppGuid),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));
-  }
+#endif
 }
 
 TEST(InstallModes, GetBinariesClientsKeyPath) {
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     ASSERT_THAT(
         GetBinariesClientsKeyPath(),
         StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
                   .append(kBinariesAppGuid)));
-  } else {
+#else
     ASSERT_THAT(
         GetBinariesClientsKeyPath(),
         StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
-  }
+#endif
 }
 
 TEST(InstallModes, GetBinariesClientStateKeyPath) {
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     ASSERT_THAT(
         GetBinariesClientStateKeyPath(),
         StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")
                   .append(kBinariesAppGuid)));
-  } else {
+#else
     ASSERT_THAT(GetBinariesClientStateKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
-  }
+#endif
 }
 
 TEST(InstallModes, GetClientStateMediumKeyPath) {
   constexpr wchar_t kAppGuid[] = L"test";
 
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     ASSERT_THAT(
         GetClientStateMediumKeyPath(kAppGuid),
         StrEq(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\test"));
-  } else {
+#else
     ASSERT_THAT(GetClientStateMediumKeyPath(kAppGuid),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));
-  }
+#endif
 }
 
 TEST(InstallModes, GetBinariesClientStateMediumKeyPath) {
-  if (kUseGoogleUpdateIntegration) {
+#if defined(OFFICIAL_BUILD)
     ASSERT_THAT(
         GetBinariesClientStateMediumKeyPath(),
         StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\"
                             "ClientStateMedium\\").append(kBinariesAppGuid)));
-  } else {
+#else
     ASSERT_THAT(GetBinariesClientStateMediumKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
-  }
+#endif
 }
 
 #if defined(OFFICIAL_BUILD)

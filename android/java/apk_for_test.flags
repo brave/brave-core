@@ -23,10 +23,14 @@
     *** createBookmarkItem(...);
 }
 
--keep class org.chromium.chrome.browser.externalnav.ExternalNavigationHandler {
+-keep class org.chromium.components.external_intents.ExternalNavigationHandler {
     *** clobberCurrentTabWithFallbackUrl(...);
 }
 
 -keep class org.chromium.chrome.browser.LaunchIntentDispatcher {
     *** isCustomTabIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.homepage.HomepageManager {
+    *** shouldCloseAppWithZeroTabs(...);
 }

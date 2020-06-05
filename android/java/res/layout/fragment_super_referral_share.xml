@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/share_brave_with_your_friends"
-            android:textColor="@color/standard_mode_tint"
+            android:textColor="@color/default_icon_color_tint_list"
             android:fontFamily="sans-serif"
             android:textStyle="bold"/>
 

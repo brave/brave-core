@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.html b/chrome/browser/resources/settings/settings_ui/settings_ui.html
-index 72edacc6b752b52481cab0d29f16304adf6163f9..659b216326d4fae5e2840687651fff0bee19b782 100644
+index 039fbacd628dd3ee531b8c78fb35c1fe6cc4f8ef..9d37680c97fef2a34b6c0262dd295ac56f5a2487 100644
 --- a/chrome/browser/resources/settings/settings_ui/settings_ui.html
 +++ b/chrome/browser/resources/settings/settings_ui/settings_ui.html
 @@ -3,7 +3,7 @@
@@ -10,4 +10,4 @@ index 72edacc6b752b52481cab0d29f16304adf6163f9..659b216326d4fae5e2840687651fff0b
 +<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
  <link rel="import" href="chrome://resources/cr_elements/icons.html">
  <link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
- <link rel="import" href="chrome://resources/html/find_shortcut_behavior.html">
+ <link rel="import" href="chrome://resources/html/assert.html">

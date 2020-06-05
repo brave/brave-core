@@ -1,0 +1,29 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
+index 6de2a5a56a313ae3e9c5fd6d106c16c6db357c8d..019b118cfded04a66a3ae026afe6f6c42607cefa 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
+@@ -34,7 +34,7 @@ import org.chromium.ui.text.SpanApplier;
+  * Fragment to keep track of the all the privacy related preferences.
+  */
+ public class PrivacySettings
+-        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
+     private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
+     private static final String PREF_USAGE_STATS = "usage_stats_reporting";
+@@ -148,6 +148,7 @@ public class PrivacySettings
+     @Override
+     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+         menu.clear();
++        super.onCreateOptionsMenu(menu, inflater);
+         MenuItem help =
+                 menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
+         help.setIcon(VectorDrawableCompat.create(
+@@ -162,6 +163,6 @@ public class PrivacySettings
+                     null);
+             return true;
+         }
+-        return false;
++        return super.onOptionsItemSelected(item);
+     }
+ }

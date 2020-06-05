@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 9698a4f43d0e1b027a8fa36f1accf4aa50c2d0d6..ae96b1709f46dc2b2afb69253946b6c0a3d6e017 100644
+index 6c10820db6d90ceaa2f3e3191b8c79b9ad59d849..48cf68595c9cb235969c137715e4caba382b5b23 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -26,7 +26,9 @@ cr.define('settings', function() {
+@@ -41,7 +41,9 @@ cr.define('settings', function() {
  
      // TODO(tommycli): Find a way to refactor these repetitive category
      // routes.
@@ -12,7 +12,7 @@ index 9698a4f43d0e1b027a8fa36f1accf4aa50c2d0d6..ae96b1709f46dc2b2afb69253946b6c0
      if (loadTimeData.getBoolean('enableWebXrContentSetting')) {
        r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
      }
-@@ -161,7 +163,9 @@ cr.define('settings', function() {
+@@ -188,7 +190,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

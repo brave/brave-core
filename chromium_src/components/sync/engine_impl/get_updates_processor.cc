@@ -56,7 +56,8 @@ void AddBookmarkSpecifics(sync_pb::EntitySpecifics* specifics,
   sync_pb::BookmarkSpecifics* bm_specifics = specifics->mutable_bookmark();
   bm_specifics->set_url(bookmark.site.location);
 
-  bm_specifics->set_title(bookmark.site.TryGetNonEmptyTitle());
+  bm_specifics->set_legacy_canonicalized_title(
+      bookmark.site.TryGetNonEmptyTitle());
   bm_specifics->set_creation_time_us(
       TimeToProtoTime(bookmark.site.creationTime));
   // base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
@@ -79,7 +80,7 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
                          sync_pb::EntitySpecifics* specifics,
                          const Bookmark& bookmark) {
   sync_pb::BookmarkSpecifics* bm_specifics = specifics->mutable_bookmark();
-  for (const auto metaInfo : bookmark.metaInfo) {
+  for (const auto& metaInfo : bookmark.metaInfo) {
     // version need to be incremented
     if (metaInfo.key != "version") {
       sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();

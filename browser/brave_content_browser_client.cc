@@ -96,7 +96,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
-#include "content/public/common/resource_type.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #endif
 
 #if BUILDFLAG(BINANCE_ENABLED)
@@ -293,7 +293,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   if (tab_helper && tab_helper->IsActiveForMainFrame()
       && request.resource_type
-          == static_cast<int>(content::ResourceType::kMainFrame)) {
+          == static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
     result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
         g_brave_browser_process->speedreader_whitelist(),
         base::ThreadTaskRunnerHandle::Get()));

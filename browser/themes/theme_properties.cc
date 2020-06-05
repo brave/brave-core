@@ -18,24 +18,26 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere
     // except active tab
-    case ThemeProperties::COLOR_FRAME:
-    case ThemeProperties::COLOR_BACKGROUND_TAB:
+    case ThemeProperties::COLOR_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return kLightFrame;
     // Window when the window is innactive, tabs and also tab bar everywhere
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
       return color_utils::HSLShift(kLightFrame, { -1, -1, 0.6 });
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_INACTIVE:
       return kLightToolbar;
-    case ThemeProperties::COLOR_TAB_TEXT:
+    case ThemeProperties::COLOR_TAB_FOREGROUND_ACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
+    case ThemeProperties::COLOR_TAB_FOREGROUND_INACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
@@ -59,13 +61,13 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere
     // except active tab
-    case ThemeProperties::COLOR_FRAME:
-    case ThemeProperties::COLOR_BACKGROUND_TAB:
+    case ThemeProperties::COLOR_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_ACTIVE:
       return kDarkFrame;
     // Window when the window is innactive, tabs and also tab bar everywhere
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
       return color_utils::HSLShift(kDarkFrame, { -1, -1, 0.6 });
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
@@ -73,11 +75,13 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_INACTIVE:
       return kDarkToolbar;
-    case ThemeProperties::COLOR_TAB_TEXT:
+    case ThemeProperties::COLOR_TAB_FOREGROUND_ACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xF3, 0xF3, 0xF3);
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
+    case ThemeProperties::COLOR_TAB_FOREGROUND_INACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
@@ -101,26 +105,25 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere
     // except active tab
-    case ThemeProperties::COLOR_FRAME:
-    case ThemeProperties::COLOR_FRAME_INCOGNITO:
-    case ThemeProperties::COLOR_BACKGROUND_TAB:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_INCOGNITO:
+    case ThemeProperties::COLOR_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_ACTIVE:
       return kPrivateFrame;
     // Window when the window is innactive, tabs and also tab bar everywhere
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
-    case ThemeProperties::COLOR_FRAME_INCOGNITO_INACTIVE:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_INCOGNITO_INACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
       return color_utils::HSLShift(kPrivateFrame, { -1, -1, 0.55 });
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_INACTIVE:
       return kPrivateToolbar;
-    case ThemeProperties::COLOR_TAB_TEXT:
+    case ThemeProperties::COLOR_TAB_FOREGROUND_ACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xF3, 0xF3, 0xF3);
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
-    case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
+    case ThemeProperties::COLOR_TAB_FOREGROUND_INACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
@@ -136,6 +139,14 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
 
 }  // namespace
 
+namespace BraveThemeProperties {
+
+bool IsBraveThemeProperties(int id) {
+  return id >= BRAVE_THEME_PROPERTIES_START &&
+         id <= BRAVE_THEME_PROPERTIES_LAST;
+}
+
+}  // namespace BraveThemeProperties
 // Returns a |nullopt| if the UI color is not handled by Brave.
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
     int id, bool incognito, dark_mode::BraveDarkModeType dark_mode) {

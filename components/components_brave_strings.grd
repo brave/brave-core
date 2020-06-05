@@ -170,6 +170,7 @@
     <file path="strings/components_chromium_strings_sl.xtb" lang="sl" />
     <file path="strings/components_chromium_strings_sq.xtb" lang="sq" />
     <file path="strings/components_chromium_strings_sr.xtb" lang="sr" />
+    <file path="strings/components_chromium_strings_sr-Latn.xtb" lang="sr-Latn" />
     <file path="strings/components_chromium_strings_sv.xtb" lang="sv" />
     <file path="strings/components_chromium_strings_sw.xtb" lang="sw" />
     <file path="strings/components_chromium_strings_ta.xtb" lang="ta" />

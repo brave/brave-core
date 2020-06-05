@@ -67,7 +67,7 @@ def create_config(config_args, development, mac_provisioning_profile):
 
         config_class = DevelopmentCodeSignConfig
 
-    config_class = GetBraveSigningConfig(config_class, development, mac_provisioning_profile)
+    config_class = GetBraveSigningConfig(config_class, mac_provisioning_profile)
     return config_class(*config_args)
 
 

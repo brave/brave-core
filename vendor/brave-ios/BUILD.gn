@@ -230,10 +230,10 @@ action("compile_coredata") {
 
 action("mojo_gen_wrappers") {
   script = "scripts/mojo/gen_model_wrappers.py"
-  pickled_ast = rebase_path("$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.p")
+  mojom_module = rebase_path("$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom-module")
   mojom_idl = rebase_path("//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom")
   inputs = [
-    pickled_ast,
+    mojom_module,
     mojom_idl,
     "scripts/mojo/mojom_objc_generator.py",
     "scripts/mojo/objc_templates/enum.tmpl",
@@ -252,7 +252,7 @@ action("mojo_gen_wrappers") {
   ]
   output_dir = rebase_path(target_gen_dir)
   args = [
-    "--pickled-ast=$pickled_ast",
+    "--mojom-module=$mojom_module",
     "--module-include-path=bat/ledger/public/interfaces",
     "--mojom-file=$mojom_idl",
     "--output-dir=$output_dir",

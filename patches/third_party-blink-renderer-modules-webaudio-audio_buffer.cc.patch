@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index a35049157303d807bb75de683db0aff4f4a0c18d..894a95b7467dbf16c431a791dc56d3d22c415581 100644
+index 37a1650dfa295c7bf25acf8fa4146c2475105bf1..f83f4980d524c6e84c63e5312c2eef354d5a2215 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-@@ -191,6 +191,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+@@ -189,6 +189,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
  }
  
  NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
@@ -10,7 +10,7 @@ index a35049157303d807bb75de683db0aff4f4a0c18d..894a95b7467dbf16c431a791dc56d3d2
      unsigned channel_index,
      ExceptionState& exception_state) {
    if (channel_index >= channels_.size()) {
-@@ -202,6 +203,7 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
+@@ -200,6 +201,7 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
      return NotShared<DOMFloat32Array>(nullptr);
    }
  
@@ -18,7 +18,7 @@ index a35049157303d807bb75de683db0aff4f4a0c18d..894a95b7467dbf16c431a791dc56d3d2
    return getChannelData(channel_index);
  }
  
-@@ -212,13 +214,15 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+@@ -210,13 +212,15 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
    return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
  }
  
@@ -37,7 +37,7 @@ index a35049157303d807bb75de683db0aff4f4a0c18d..894a95b7467dbf16c431a791dc56d3d2
                                    int32_t channel_number,
                                    size_t buffer_offset,
                                    ExceptionState& exception_state) {
-@@ -257,6 +261,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
+@@ -255,6 +259,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
    DCHECK_LE(buffer_offset + count, data_length);
  
    memcpy(dst, src + buffer_offset, count * sizeof(*src));

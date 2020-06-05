@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/tab_specific_content_settings.cc b/chrome/browser/content_settings/tab_specific_content_settings.cc
-index df87f900a26327eb3438a6ee3bd24e87388ef138..6c5407459045032475cca495cab097cfb651d929 100644
+index d67358495046ade865a9643fef9fcb63236af057..2777112e6cc341216e7c84b5cc22814927991d48 100644
 --- a/chrome/browser/content_settings/tab_specific_content_settings.cc
 +++ b/chrome/browser/content_settings/tab_specific_content_settings.cc
 @@ -240,6 +240,7 @@ bool TabSpecificContentSettings::IsContentBlocked(

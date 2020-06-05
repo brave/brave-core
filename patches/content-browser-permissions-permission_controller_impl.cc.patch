@@ -1,8 +1,8 @@
 diff --git a/content/browser/permissions/permission_controller_impl.cc b/content/browser/permissions/permission_controller_impl.cc
-index 8e93627ddb8ff468f2d4f70fb2361ec54e3c14f9..faf04cf878d71987b87b9644782894ae55bb674b 100644
+index a7cfeb8583939c2f56b41473176bc38ac03c1200..572ab911e351b97d86b9416e166a72398834937c 100644
 --- a/content/browser/permissions/permission_controller_impl.cc
 +++ b/content/browser/permissions/permission_controller_impl.cc
-@@ -61,6 +61,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
+@@ -64,6 +64,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
      case PermissionType::SENSORS:
      case PermissionType::AR:
      case PermissionType::VR:

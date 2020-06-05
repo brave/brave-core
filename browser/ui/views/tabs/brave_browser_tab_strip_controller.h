@@ -15,7 +15,9 @@ class BraveTabContextMenuContents;
 class BraveBrowserTabStripController : public BrowserTabStripController {
  public:
   BraveBrowserTabStripController(TabStripModel* model,
-                                 BrowserView* browser_view);
+                                 BrowserView* browser_view,
+                                 std::unique_ptr<TabMenuModelFactory>
+                                     menu_model_factory_override = nullptr);
   ~BraveBrowserTabStripController() override;
 
   // BrowserTabStripController overrides:
