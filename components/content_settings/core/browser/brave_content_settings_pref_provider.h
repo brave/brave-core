@@ -37,12 +37,12 @@ class BravePrefProvider : public PrefProvider,
 
   // content_settings::PrefProvider overrides:
   void ShutdownOnUIThread() override;
-  bool SetWebsiteSetting(
-      const ContentSettingsPattern& primary_pattern,
-      const ContentSettingsPattern& secondary_pattern,
-      ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
-      std::unique_ptr<base::Value>&& value) override;
+  bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
+                         const ContentSettingsPattern& secondary_pattern,
+                         ContentSettingsType content_type,
+                         const ResourceIdentifier& resource_identifier,
+                         std::unique_ptr<base::Value>&& value,
+                         const ContentSettingConstraints& constraints) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
       const ResourceIdentifier& resource_identifier,
