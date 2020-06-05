@@ -149,7 +149,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
 
-  virtual void UpdateAdsRewards() = 0;
+  virtual void UpdateAdsRewards(const bool should_refresh) = 0;
 
   virtual uint64_t GetReconcileStamp() = 0;
 

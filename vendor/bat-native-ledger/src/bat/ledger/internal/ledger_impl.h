@@ -147,7 +147,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void SetAutoContributeEnabled(bool enabled) override;
 
-  void UpdateAdsRewards() override;
+  void UpdateAdsRewards(const bool should_refresh) override;
 
   void SavePendingContribution(
       ledger::PendingContributionList list,

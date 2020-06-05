@@ -872,12 +872,12 @@ ledger::ActivityInfoFilterPtr LedgerImpl::CreateActivityFilter(
                                                min_visits);
 }
 
-void LedgerImpl::UpdateAdsRewards() {
+void LedgerImpl::UpdateAdsRewards(const bool should_refresh) {
   if (!IsConfirmationsRunning()) {
     return;
   }
 
-  bat_confirmations_->UpdateAdsRewards(false);
+  bat_confirmations_->UpdateAdsRewards(should_refresh);
 }
 
 void LedgerImpl::ResetReconcileStamp() {
