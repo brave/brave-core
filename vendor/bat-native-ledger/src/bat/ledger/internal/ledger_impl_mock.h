@@ -81,7 +81,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
 
-  MOCK_METHOD0(UpdateAdsRewards, void());
+  MOCK_METHOD1(UpdateAdsRewards, void(const bool));
 
   MOCK_METHOD2(SavePendingContribution,
       void(ledger::PendingContributionList,
