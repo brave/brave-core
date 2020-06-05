@@ -93,6 +93,10 @@ group("resources") {
     # "//brave/renderer:resources",
     "//brave/components/resources",
   ]
+
+  data_deps = [
+    "//brave/components/resources:about_credits"
+  ]
 }
 
 if (is_android) {
