@@ -169,7 +169,7 @@ class ContributeBox extends React.Component<Props, State> {
             <SelectMobile
               onlyAnonWallet={onlyAnonWallet}
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
               amountOptions={this.getAmountOptions(monthlyList)}
             />
           </ControlWrapper>
@@ -282,7 +282,7 @@ class ContributeBox extends React.Component<Props, State> {
             <SelectMobile
               floating={true}
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
               onlyAnonWallet={onlyAnonWallet}
               amountOptions={this.getAmountOptions(monthlyList)}
             />

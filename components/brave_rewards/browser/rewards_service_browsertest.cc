@@ -730,7 +730,7 @@ class BraveRewardsBrowserTest
   }
 
   static std::string BalanceDoubleToString(double amount) {
-    return base::StringPrintf("%.1f", amount);
+    return base::StringPrintf("%.3f", amount);
   }
 
   std::string GetBalance() const {
@@ -854,7 +854,7 @@ class BraveRewardsBrowserTest
     rewards_service_browsertest_utils::WaitForElementToContain(
         contents,
         selector,
-        "30.0 BAT");
+        "30.000 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
@@ -1016,9 +1016,9 @@ class BraveRewardsBrowserTest
     std::vector<double> tip_options =
         GetSiteBannerTipOptions(site_banner_contents);
     const double amount = tip_options.at(selection);
-    const std::string amount_str = base::StringPrintf("%2.1f", amount);
+    const std::string amount_str = base::StringPrintf("%.3f", amount);
 
-    // Select the tip amount (default is 1.0 BAT)
+    // Select the tip amount (default is 1.000 BAT)
     std::string amount_selector = base::StringPrintf(
         "div:nth-of-type(%u)>[data-test-id=amount-wrapper]",
         selection + 1);
@@ -1132,7 +1132,7 @@ class BraveRewardsBrowserTest
     rewards_service_browsertest_utils::WaitForElementToEqual(
         contents(),
         "#tip-box-total",
-        "0.0BAT0.00 USD");
+        "0.000BAT0.00 USD");
   }
 
   void IsBalanceCorrect() {
@@ -1817,7 +1817,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
-      "-20.0BAT");
+      "-20.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -1846,7 +1846,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
-      "-20.0BAT");
+      "-20.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -1892,7 +1892,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
-      "-20.0BAT");
+      "-20.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
@@ -2679,7 +2679,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color='contribute']",
-      "-5.0BAT");
+      "-5.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -2741,7 +2741,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color='contribute']",
-      "-5.0BAT");
+      "-5.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -2849,18 +2849,18 @@ IN_PROC_BROWSER_TEST_F(
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "#transactionTable",
-      "-30.0BAT");
+      "-30.000BAT");
 
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "#transactionTable",
-      "-20.0BAT");
+      "-20.000BAT");
 
   // Check that summary table shows the appropriate contribution
   rewards_service_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
-      "-50.0BAT");
+      "-50.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(

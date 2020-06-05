@@ -286,7 +286,7 @@ class PageWallet extends React.Component<Props, State> {
         const item = balanceReport[key]
 
         if (item !== 0) {
-          const tokens = item.toFixed(1)
+          const tokens = item.toFixed(3)
           props[key] = {
             tokens,
             converted: utils.convertBalance(item, parameters.rate)
@@ -334,7 +334,7 @@ class PageWallet extends React.Component<Props, State> {
         url: item.url,
         type,
         amount: {
-          tokens: item.amount.toFixed(1),
+          tokens: item.amount.toFixed(3),
           converted: utils.convertBalance(item.amount, parameters.rate)
         },
         date: new Date(parseInt(item.expirationDate, 10) * 1000).toLocaleDateString(),
@@ -489,7 +489,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     return {
-      value: value.toFixed(1),
+      value: value.toFixed(3),
       converted: utils.convertBalance(value, parameters.rate)
     }
   }
@@ -549,7 +549,7 @@ class PageWallet extends React.Component<Props, State> {
               },
               url: publisher.url,
               amount: {
-                tokens: publisher.weight.toFixed(1),
+                tokens: publisher.weight.toFixed(3),
                 converted: utils.convertBalance(publisher.weight, parameters.rate)
               },
               type: this.getSummaryType(contribution.type),
@@ -654,7 +654,7 @@ class PageWallet extends React.Component<Props, State> {
           type: this.getSummaryType(transaction.type),
           description: this.getTransactionDescription(transaction),
           amount: {
-            value: transaction.amount.toFixed(1),
+            value: transaction.amount.toFixed(3),
             converted: utils.convertBalance(transaction.amount, parameters.rate)
           }
         }
@@ -671,7 +671,7 @@ class PageWallet extends React.Component<Props, State> {
               type: this.getSummaryType(contribution.type),
               description: this.getContributionDescription(contribution),
               amount: {
-                value: contribution.amount.toFixed(1),
+                value: contribution.amount.toFixed(3),
                 converted: utils.convertBalance(contribution.amount, parameters.rate),
                 isNegative: true
               }
@@ -747,7 +747,7 @@ class PageWallet extends React.Component<Props, State> {
     const { total } = balance
     const { walletRecoverySuccess, emptyWallet, modalBackup, onlyAnonWallet } = ui
 
-    const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
+    const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(3))
 
     let onVerifyClick = undefined
     let showCopy = false
@@ -759,7 +759,7 @@ class PageWallet extends React.Component<Props, State> {
     return (
       <>
         <WalletWrapper
-          balance={total.toFixed(1)}
+          balance={total.toFixed(3)}
           converted={utils.formatConverted(this.getConversion())}
           actions={this.getActions()}
           onSettingsClick={this.onModalBackupOpen}

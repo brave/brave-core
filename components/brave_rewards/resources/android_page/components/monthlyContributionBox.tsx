@@ -68,7 +68,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           src: faviconUrl
         },
         contribute: {
-          tokens: item.percentage.toFixed(1),
+          tokens: item.percentage.toFixed(3),
           converted: utils.convertBalance(item.percentage, parameters.rate)
         },
         url: item.url,
@@ -115,7 +115,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
         }
         <List title={<StyledListContent>{getLocale('donationTotalMonthlyContribution')}</StyledListContent>}>
           <StyledTotalContent>
-            <Tokens value={total.toFixed(1)} converted={converted} />
+            <Tokens value={total.toFixed(3)} converted={converted} />
           </StyledTotalContent>
         </List>
         <List title={<StyledListContent>{getLocale('donationNextDate')}</StyledListContent>}>
