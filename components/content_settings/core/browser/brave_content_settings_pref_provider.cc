@@ -111,8 +111,9 @@ bool IsActive(const Rule& cookie_rule,
 
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
                                      bool off_the_record,
-                                     bool store_last_modified)
-    : PrefProvider(prefs, off_the_record, store_last_modified),
+                                     bool store_last_modified,
+                                     bool restore_session)
+    : PrefProvider(prefs, off_the_record, store_last_modified, restore_session),
       weak_factory_(this) {
   brave_pref_change_registrar_.Init(prefs_);
   brave_pref_change_registrar_.Add(
@@ -129,7 +130,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
           info->type(),
           std::make_unique<ContentSettingsPref>(
               info->type(), prefs_, &brave_pref_change_registrar_,
-              info->pref_name(), off_the_record_,
+              info->pref_name(), off_the_record_, restore_session,
               base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
       break;
     }
