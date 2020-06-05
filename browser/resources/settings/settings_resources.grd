@@ -43,6 +43,8 @@
       <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_HTML" file="brave_reset_page/brave_reset_profile_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_JS" file="brave_reset_page/brave_reset_profile_dialog_behavior.js" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_HTML" file="brave_sync_page/brave_sync_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS" file="brave_sync_page/brave_sync_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_JS" file="brave_sync_page/brave_sync_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_HTML" file="brave_sync_page/brave_sync_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_SUBPAGE_JS" file="brave_sync_page/brave_sync_subpage.js" type="chrome_html" preprocess="true" />

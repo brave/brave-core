@@ -49,7 +49,11 @@
       'getQRCode_(syncCode, codeType)',
     ],
 
-    attached: function() {
+    /** @private {?settings.BraveSyncBrowserProxy} */
+    syncBrowserProxy_: null,
+
+    created: function() {
+      this.syncBrowserProxy_ = settings.BraveSyncBrowserProxy.getInstance();
     },
 
     updateSyncCodeValidity_: function() {
@@ -96,7 +100,7 @@
       if (!this.syncCode || this.codeType !== 'qr') {
         return
       }
-      const data = await cr.sendWithPromise('SyncGetQRCode', this.syncCode)
+      const data = await this.syncBrowserProxy_.getQRCode(this.syncCode)
       console.log('qr code', data)
       this.$$('#qrCode').innerText = data
       // TODO(petemill): generate a canvas / image

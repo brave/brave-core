@@ -11,6 +11,9 @@
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
+namespace syncer {
+class SyncService;
+}
 class Profile;
 
 class BraveSyncHandler : public settings::SettingsPageUIHandler,
@@ -36,6 +39,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleReset(const base::ListValue* args);
 
   base::Value GetSyncDeviceList();
+  syncer::SyncService* GetSyncService() const;
 
   Profile* profile_ = nullptr;
 
