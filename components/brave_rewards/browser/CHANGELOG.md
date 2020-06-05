@@ -2,6 +2,22 @@
 
 ---
 
+### Changed API (5th June 2020)
+##### Related PR
+[https://github.com/brave/brave-core/pull/5748](https://github.com/brave/brave-core/pull/5748)
+##### Description
+With this PR we now pass `should_refresh`
+
+##### Change
+
+| | Old version | New version |
+|---|---|---|
+|  Signature    |  `UpdateAdsRewards`  | |
+|  Return value | | |
+|  Parameters   | | `const bool should_refresh` |
+
+---
+
 ### Changed API (11th November 2019)
 ##### Related PR
 [https://github.com/brave/brave-core/pull/3918](https://github.com/brave/brave-core/pull/3918)
