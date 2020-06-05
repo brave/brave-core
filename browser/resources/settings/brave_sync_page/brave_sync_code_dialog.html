@@ -274,7 +274,7 @@
         </div>
 
         <div slot="body" class="sync-code-widget">
-          <textarea class="sync-code-text" value="{{syncCode::input}}"></textarea>
+          <textarea autofocus class="sync-code-text" value="{{syncCode::input}}"></textarea>
           <div class="sync-code-footer">
             [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
             <template is="dom-if" if="[[isInvalidSyncCode]]">
