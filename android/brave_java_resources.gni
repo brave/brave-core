@@ -45,6 +45,7 @@ brave_java_resources = [
   "java/res/drawable/rounded_corners.xml",
   "java/res/drawable/bat_rewards_summary_gradient.xml",
   "java/res/drawable/wallet_verify_button.xml",
+  "java/res/drawable/wallet_verify_button_disabled.xml",
   "java/res/drawable/plain_checkbox.xml",
   "java/res/drawable/rect_round_corners_12.xml",
   "java/res/drawable/progress_indeterminate.xml",
@@ -666,7 +667,7 @@ brave_java_resources = [
   "java/res/values-h748dp/dimens.xml",
   "java/res/values-h765dp/dimens.xml",
   "java/res/values-h820dp/dimens.xml",
-  "java/res/values-night/brave_colors.xml",
+  "java/res/values-night/brave_colors.xml",et
   "java/res/values-v21/brave_styles.xml",
   "java/res/xml/brave_main_preferences.xml",
   "java/res/xml/background_video_playback_preference.xml",
