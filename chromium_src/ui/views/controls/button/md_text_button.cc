@@ -151,10 +151,7 @@ void BraveTextButton::UpdateColors() {
       bg_color = *GetBgColorOverride();
     }
     if (state() == STATE_PRESSED) {
-      SkColor shade =
-          GetNativeTheme()->GetSystemColor(
-              ui::NativeTheme::kColorId_ButtonPressedShade);
-      bg_color = color_utils::GetResultingPaintColor(shade, bg_color);
+      bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
     }
     // The only thing that differs for Brave is the stroke color
     SkColor stroke_color = kBraveBrandColor;
