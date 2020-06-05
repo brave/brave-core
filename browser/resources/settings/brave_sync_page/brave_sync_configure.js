@@ -46,13 +46,13 @@ Polymer({
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.SyncBrowserProxyImpl.getInstance();
+    this.browserProxy_ = settings.BraveSyncBrowserProxy.getInstance();
   },
 
   attached: async function() {
     const [syncCode, deviceList] = await Promise.all([
       this.browserProxy_.getSyncCode(),
-      cr.sendWithPromise('SyncGetDeviceList')
+      this.browserProxy_.getDeviceList()
     ])
     this.syncCode = syncCode
     this.addWebUIListener('device-info-changed', this.handleDeviceInfo_.bind(this))

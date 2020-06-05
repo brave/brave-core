@@ -36,11 +36,11 @@ Polymer({
     }
   },
 
-  /** @private {?settings.SyncBrowserProxy} */
+  /** @private {?settings.BraveSyncBrowserProxy} */
   syncBrowserProxy_: null,
 
   created: function() {
-    this.syncBrowserProxy_ = settings.SyncBrowserProxyImpl.getInstance();
+    this.syncBrowserProxy_ = settings.BraveSyncBrowserProxy.getInstance();
   },
 
   handleStartSyncChain_: async function () {

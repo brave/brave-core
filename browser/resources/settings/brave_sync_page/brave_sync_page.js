@@ -29,10 +29,13 @@ Polymer({
 
   /** @private {?settings.SyncBrowserProxy} */
   browserProxy_: null,
+  /** @private */
+  braveBrowserProxy_: null,
 
   /** @override */
   created: function() {
     this.browserProxy_ = settings.SyncBrowserProxyImpl.getInstance();
+    this.braveBrowserProxy_ = settings.BraveSyncBrowserProxy.getInstance();
   },
 
   /** @private */
@@ -65,6 +68,7 @@ Polymer({
    * @private
    */
   handleSyncStatus_: function(syncStatus) {
+    console.debug('Sync Status Update', syncStatus)
     this.syncStatus_ = syncStatus;
   },
 
@@ -76,14 +80,14 @@ Polymer({
     // Enforce encryption
     if (this.syncStatus_ && !this.syncStatus_.firstSetupInProgress) {
       if (!syncPrefs.encryptAllData) {
-        const syncCode = await this.browserProxy_.getSyncCode()
+        const syncCode = await this.braveBrowserProxy_.getSyncCode()
         syncPrefs.encryptAllData = true;
         syncPrefs.setNewPassphrase = true;
         syncPrefs.passphrase = syncCode;
         console.debug('sync set encryption', syncPrefs)
         await this.browserProxy_.setSyncEncryption(syncPrefs)
       } else if (syncPrefs.passphraseRequired) {
-        const syncCode = await this.browserProxy_.getSyncCode()
+        const syncCode = await this.braveBrowserProxy_.getSyncCode()
         syncPrefs.setNewPassphrase = false;
         syncPrefs.passphrase = syncCode;
         console.debug('sync set encryption', syncPrefs)
