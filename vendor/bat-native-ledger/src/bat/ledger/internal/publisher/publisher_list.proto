@@ -1,0 +1,30 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package publishers_pb;
+
+message PublisherList {
+  enum CompressionType {
+    NO_COMPRESSION = 0;
+  }
+
+  // The size, in bytes, of each hash prefix stored in the
+  // prefix list. This value must be between 4 and 32.
+  uint32 prefix_size = 1;
+
+  // The type of compression applied to the hash prefix list.
+  CompressionType compression_type = 2;
+
+  // The uncompressed size, in bytes, of the hash prefix list.
+  uint32 uncompressed_size = 3;
+
+  // A sorted list of fixed-length prefixes of SHA256 hashes
+  // corresponding to each publisher.
+  bytes prefixes = 4;
+}

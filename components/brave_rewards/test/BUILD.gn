@@ -28,6 +28,7 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_util_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/bat_helper_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/bat_util_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/publisher_list_reader_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/publisher_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/client_state_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/publisher_settings_state_unittest.cc",
