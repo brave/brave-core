@@ -30,7 +30,8 @@ class BravePrefProvider : public PrefProvider,
  public:
   BravePrefProvider(PrefService* prefs,
                     bool off_the_record,
-                    bool store_last_modified);
+                    bool store_last_modified,
+                    bool restore_session);
   ~BravePrefProvider() override;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
