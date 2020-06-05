@@ -15,7 +15,7 @@
     "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
     "test-unit": "jest -t",
-    "test-security": "python script/audit_deps.py",
+    "test-security": "python3 script/audit_deps.py .",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test"
   },
   "repository": {

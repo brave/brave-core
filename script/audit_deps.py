@@ -1,13 +1,28 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import sys
-import json
 import argparse
+import json
+import os
 import subprocess
+import sys
+
+from lib.config import SOURCE_ROOT
+
+
+SIMPLE_PATHS = [
+    os.path.dirname(os.path.dirname(SOURCE_ROOT)),
+    SOURCE_ROOT,
+    os.path.join(SOURCE_ROOT, 'components', 'brave_sync', 'extension', 'brave-sync'),
+]
+
+RECURSIVE_PATHS = [
+    os.path.join(SOURCE_ROOT, 'vendor'),
+]
 
 whitelisted_advisories = [
 ]
@@ -15,10 +30,36 @@ whitelisted_advisories = [
 
 def main():
     args = parse_args()
-    return audit_deps(args)
+    errors = 0
+
+    if args.input_dir:
+        return npm_audit(os.path.abspath(args.input_dir), args)
+
+    for path in SIMPLE_PATHS:
+        errors += npm_audit(path, args)
+
+    for base_dir in RECURSIVE_PATHS:
+        with os.scandir(base_dir) as it:
+            for entry in it:
+                if not entry.name.startswith('.') and entry.is_dir():
+                    errors += npm_audit(os.path.join(base_dir, entry.name), args)
+
+    return errors > 0
 
 
-def audit_deps(args):
+def npm_audit(path, args):
+    if os.path.isfile(os.path.join(path, 'package.json')) and \
+       os.path.isfile(os.path.join(path, 'package-lock.json')) and \
+       os.path.isdir(os.path.join(path, 'node_modules')):
+        print('Auditing %s' % path)
+        return audit_deps(path, args)
+    else:
+        print('Skipping audit of "%s" (no package.json or node_modules '
+              'directory found)' % path)
+        return 0
+
+
+def audit_deps(path, args):
     npm_cmd = 'npm'
     if sys.platform.startswith('win'):
         npm_cmd = 'npm.cmd'
@@ -27,15 +68,15 @@ def audit_deps(args):
 
     # Just run audit regularly if --audit_dev_deps is passed
     if args.audit_dev_deps:
-        return subprocess.call(npm_args)
+        return subprocess.call(npm_args, cwd=path)
 
     npm_args.append('--json')
-    audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE)
+    audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
     output, error_data = audit_process.communicate()
 
     try:
         # results from audit
-        result = json.loads(str(output))
+        result = json.loads(output.decode('UTF-8'))
     except ValueError:
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
@@ -80,6 +121,7 @@ def extract_resolutions(result):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Audit brave-core npm deps')
+    parser.add_argument('input_dir', nargs='?', help='Directory to check')
     parser.add_argument('--audit_dev_deps',
                         action='store_true',
                         help='Audit dev dependencies')
