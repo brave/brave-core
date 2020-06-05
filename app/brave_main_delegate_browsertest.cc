@@ -22,6 +22,10 @@
 
 using BraveMainDelegateBrowserTest = InProcessBrowserTest;
 
+const char kBraveOriginTrialsPublicKey[] =
+    "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
+    "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
+
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
                        DomainReliabilityServiceDisabled) {
   EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
@@ -38,6 +42,15 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
   const content::WebPreferences prefs =
       contents->GetRenderViewHost()->GetWebkitPreferences();
   EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
+  EXPECT_TRUE(
+      base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kOriginTrialPublicKey));
+  EXPECT_EQ(kBraveOriginTrialsPublicKey,
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kOriginTrialPublicKey));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
