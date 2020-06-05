@@ -68,19 +68,6 @@ pub fn rewrite_rules_to_content_handlers(
         Box::new(mark_retained_element),
     );
 
-    add_element_function(
-        &mut element_content_handlers,
-        &mut errors,
-        "head",
-        Box::new(|el: &mut Element| {
-            el.prepend(
-                r#"<link rel="stylesheet" href="/readermode.css" type="text/css">"#,
-                ContentType::Html,
-            );
-            Ok(())
-        }),
-    );
-
     let maybe_script = conf.content_script.clone();
     add_element_function(
         &mut element_content_handlers,
