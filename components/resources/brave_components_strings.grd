@@ -348,37 +348,31 @@
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH" desc="">Automatically refresh every 5 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Wallet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CLEAR_BUTTON" desc="">Clear</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_RECONCILE" desc="Current reconcile">Current Reconcile</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_AMOUNT" desc="Contributed Amount">Contributed amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION" desc="Contribution">Contribution</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_PROCESSOR" desc="Contribution processor">Processor:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP" desc="">Step:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_TABLE_EMPTY" desc="">Auto Contribute table empty</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_NOT_ENOUGH_FUNDS" desc="">Not enough funds</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_FAILED" desc="">Failed</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_COMPLETED" desc="">Completed</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_NO" desc="">Unknown</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_START" desc="">Start</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_PREPARE" desc="">Prepare</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RESERVE" desc="">Reserve</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_EXTERNAL_TRANSACTION" desc="">External transaction</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_CREDS" desc="">Creds</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_INVALID" desc="Invalid indicator">Invalid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key Info Seed:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE" desc="">We show the last {{numberOfLines}} lines of the log. If you want the whole log, you can download it above.</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_LEVEL" desc="Retry level">Retry Level:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP" desc="Retry step">Retry Step:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_CURRENT" desc="Retry step current">Current</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_FINAL" desc="Retry step final">Final</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PAYLOAD" desc="Retry step payload">Payload</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PREPARE" desc="Retry step prepare">Prepare</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PROOF" desc="Retry step proof">Proof</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_RECONCILE" desc="Retry step reconcile">Reconcile</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_REGISTER" desc="Retry step register">Register</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_UNKNOWN" desc="Retry step unknown">Unknown</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VIEWING" desc="Retry step viewing">Viewing</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VOTE" desc="Retry step vote">Vote</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_WINNERS" desc="Retry step winners">Winners</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED" desc="Rewards not enabled">Brave Rewards is not enabled. Enable it by visiting</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID" desc="Viewing ID">Viewing ID:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet Payment ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_TITLE" desc="">Rewards internals</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Wallet created</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE" desc="Total balance">Total balance</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS_IN_PROGRESS" desc="">Contributions in progress</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS" desc="">Ads</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIMED_AT" desc="">Claimed at</message>
@@ -397,11 +391,22 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_UGP" desc="">UGP</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION" desc="">Version</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_TITLE" desc="">Rewards internals</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED" desc="Rewards not enabled">Brave Rewards is not enabled. Enable it by visiting</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO" desc="">General info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS" desc="">Logs</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_PROMOTIONS" desc="">Promotions</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_AMOUNT" desc="Total Amount">Total amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE" desc="Total balance">Total balance</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet Payment ID:</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

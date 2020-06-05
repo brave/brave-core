@@ -17,6 +17,7 @@
 #include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
@@ -118,6 +119,9 @@ using GetMonthlyReportCallback = base::OnceCallback<void(
 
 using GetAllMonthlyReportIdsCallback =
     base::OnceCallback<void(const std::vector<std::string>&)>;
+
+using GetAllContributionsCallback = base::OnceCallback<void(
+    const std::vector<brave_rewards::ContributionInfo>&)>;
 
 using GetAllPromotionsCallback =
     base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
@@ -326,6 +330,9 @@ class RewardsService : public KeyedService {
 
   virtual void GetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback) = 0;
+
+  virtual void GetAllContributions(
+      GetAllContributionsCallback callback) = 0;
 
   virtual void GetAllPromotions(
       GetAllPromotionsCallback callback) = 0;
