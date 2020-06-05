@@ -20,11 +20,13 @@ class BraveEphemeralProvider : public EphemeralProvider {
 
  private:
   // EphemeralProvider overrides:
-  bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
-                         const ContentSettingsPattern& secondary_pattern,
-                         ContentSettingsType content_type,
-                         const ResourceIdentifier& resource_identifier,
-                         std::unique_ptr<base::Value>&& value) override;
+  bool SetWebsiteSetting(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsType content_type,
+      const ResourceIdentifier& resource_identifier,
+      std::unique_ptr<base::Value>&& value,
+      const ContentSettingConstraints& constraints = {}) override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveEphemeralProvider);
 };

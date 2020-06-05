@@ -50,7 +50,7 @@ class ShieldsSetting {
       provider_->SetWebsiteSetting(
           pattern, SecondaryUrlToPattern(url_source.first),
           ContentSettingsType::PLUGINS, url_source.second,
-          ContentSettingToValue(setting));
+          ContentSettingToValue(setting), {});
     }
   }
 
@@ -134,7 +134,7 @@ class ShieldsScriptSetting : public ShieldsSetting {
                                ContentSetting setting) override {
     provider_->SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
                                  ContentSettingsType::JAVASCRIPT, "",
-                                 ContentSettingToValue(setting));
+                                 ContentSettingToValue(setting), {});
   }
 
  private:
