@@ -238,6 +238,8 @@ void LedgerImpl::OnConfirmationsStarted(
   }
 
   BLOG(1, "Successfully started confirmations");
+
+  SetConfirmationsWalletInfo();
 }
 
 void LedgerImpl::ShutdownConfirmations() {
