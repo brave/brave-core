@@ -6,7 +6,7 @@
   "scripts": {
     "sync": "npm --prefix ../../ run sync --",
     "build": "npm --prefix ../../ run build --",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm --prefix ../../ run test --",
     "lint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
