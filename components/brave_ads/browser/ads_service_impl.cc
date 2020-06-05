@@ -557,8 +557,6 @@ void AdsServiceImpl::OnShutdownBatAds(
 
   Shutdown();
 
-  ResetAllState();
-
   VLOG(1) << "Successfully shutdown ads";
 }
 
