@@ -5,7 +5,9 @@
 
 #include "base/environment.h"
 #include "base/path_service.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/brave_stats_updater_params.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "chrome/browser/ui/browser.h"
