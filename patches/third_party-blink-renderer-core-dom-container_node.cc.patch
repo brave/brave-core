@@ -91,7 +91,7 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  if (GetDocument().GetPageGraph() != nullptr) {
 +    const NodeType node_type = root.getNodeType();
-+    if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++    if (node_type == kElementNode || node_type == kDocumentTypeNode || node_type == kDocumentFragmentNode) {
 +      GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
 +        DOMNodeIds::IdForNode(&root));
 +    } else {
