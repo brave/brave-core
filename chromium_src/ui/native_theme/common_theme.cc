@@ -27,8 +27,6 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
     case NativeTheme::kColorId_ButtonEnabledColor:
       return is_dark ? SK_ColorWHITE
                     : SkColorSetRGB(0x3b, 0x3e, 0x4f);
-    case NativeTheme::kColorId_ButtonPressedShade:
-      return SkColorSetA(kBraveColorBrand, is_dark ? 0x2b : 0x23);
     case NativeTheme::kColorId_ProminentButtonColor:
     case NativeTheme::kColorId_ProminentButtonFocusedColor:
       return kBraveColorBrand;

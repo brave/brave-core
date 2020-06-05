@@ -4,13 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/native_theme_mac.h"
 
 namespace ui {
 bool ShouldOverride(NativeTheme::ColorId color_id) {
   // Always theme for these colors:
   switch (color_id) {
-    case NativeTheme::kColorId_ButtonPressedShade:
-      return true;
+    // None at the moment
     default:
       break;
   }
@@ -41,4 +41,14 @@ bool ShouldOverride(NativeTheme::ColorId color_id) {
 
 }  // namespace ui
 
-#include "../../../../ui/native_theme/native_theme_mac.mm"  // NOLINT
+#define GetSystemButtonPressedColor GetSystemButtonPressedColor_ChromiumImpl
+#include "../../../../ui/native_theme/native_theme_mac.mm"
+#undef GetSystemButtonPressedColor
+
+namespace ui {
+
+SkColor NativeThemeMac::GetSystemButtonPressedColor(SkColor base_color) const {
+  return NativeTheme::GetSystemButtonPressedColor(base_color);
+}
+
+}  // namespace ui
