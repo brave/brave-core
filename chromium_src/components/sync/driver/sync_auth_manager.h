@@ -6,16 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_AUTH_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_AUTH_MANAGER_H_
 
-#define BRAVE_SYNC_AUTH_MANAGER_H_                                          \
-  void DeriveSigningKeys(const std::string& seed);                          \
-  void ResetKeys();                                                         \
-                                                                            \
- private:                                                                   \
-  std::string GenerateAccessToken(const std::string& timestamp);            \
-  std::vector<uint8_t> public_key_;                                         \
-  std::vector<uint8_t> private_key_;
+namespace syncer {
+class BraveSyncAuthManager;
+}  // namespace syncer
+
+#define BRAVE_SYNC_AUTH_MANAGER_H_ \
+  friend BraveSyncAuthManager; \
+  virtual
+
+#define RequestAccessToken virtual RequestAccessToken
 
 #include "../../../../../components/sync/driver/sync_auth_manager.h"
 
 #undef BRAVE_SYNC_AUTH_MANAGER_H_
+#undef RequestAccessToken
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_AUTH_MANAGER_H_

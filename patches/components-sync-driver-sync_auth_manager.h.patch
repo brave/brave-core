@@ -1,12 +1,12 @@
 diff --git a/components/sync/driver/sync_auth_manager.h b/components/sync/driver/sync_auth_manager.h
-index 72a72bee65056fae399b2bd5ca6dce065ddd519f..0a2d9eeb589cb382c8f34427716653d8b2918c80 100644
+index 72a72bee65056fae399b2bd5ca6dce065ddd519f..1ec376760d6fedcdb46b38a7915bbda76fcbade4 100644
 --- a/components/sync/driver/sync_auth_manager.h
 +++ b/components/sync/driver/sync_auth_manager.h
-@@ -121,6 +121,7 @@ class SyncAuthManager : public signin::IdentityManager::Observer {
-   bool IsRetryingAccessTokenFetchForTest() const;
+@@ -122,6 +122,7 @@ class SyncAuthManager : public signin::IdentityManager::Observer {
    void ResetRequestAccessTokenBackoffForTest();
  
-+ BRAVE_SYNC_AUTH_MANAGER_H_
   private:
++  BRAVE_SYNC_AUTH_MANAGER_H_
    SyncAccountInfo DetermineAccountToUse() const;
  
+   // Updates |sync_account_| to the appropriate account (i.e.
