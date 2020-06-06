@@ -162,7 +162,8 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
-    tools = [("cbindgen", "0.14.2")]
+    # TODO: remove the version number for cargo-audit
+    tools = [("cbindgen", "0.14.2"), ("cargo-audit", "0.12.0")]
     for tool in tools:
         cargo_install(tool)
 
