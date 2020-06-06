@@ -13,135 +13,135 @@ SuggestedSitesProvider::GetSuggestedSites() {
   {
     SuggestedSitesMatch(
       "binance.com",
-      GURL("https://www.binance.com?ref=39346846"),
+      GURL("https://www.binance.com?ref=AffiliateEaterID"),
       GURL("https://www.binance.com"),
-      base::ASCIIToUTF16("binance.com?ref=39346846"),
+      base::ASCIIToUTF16("binance.com?ref=AffiliateEaterID"),
       true)
   }, {
     SuggestedSitesMatch(
       "bitcoin",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=BTC&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=BTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "btc",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=BTC&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=BTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "ethereum",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=ETH&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=ETH&ref=AffiliateEaterID6&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=ETH"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "eth",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=ETH&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=ETH&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=ETH"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "litecoin",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=LTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=LTC&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=LTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "ltc",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=LTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=LTC&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=LTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "bnb",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BNB&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=BNB&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=BNB"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BNB&ref=39346846"),  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BNB&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "binance.us",
-      GURL("https://www.binance.us?ref=35089877"),
+      GURL("https://www.binance.us?ref=AffiliateEaterID"),
       GURL("https://www.binance.us"),
-      base::ASCIIToUTF16("binance.us?ref=35089877"),
+      base::ASCIIToUTF16("binance.us?ref=AffiliateEaterID"),
       true)
   }, {
     SuggestedSitesMatch(
       "bitcoin",
       GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BTC&ref=35089877&utm_source=brave"),
+           "?fiat=USD&crypto=BTC&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BTC"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BTC&ref=35089877"),  // NOLINT
+      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BTC&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "btc",
       GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BTC&ref=35089877&utm_source=brave"),
+           "?fiat=USD&crypto=BTC&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BTC"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BTC&ref=35089877"),  // NOLINT
+      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BTC&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
      "ethereum",
       GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=ETH&ref=35089877&utm_source=brave"),
+           "?fiat=USD&crypto=ETH&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.us/en/buy-sell-crypto?crypto=ETH"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=ETH&ref=35089877"),  // NOLINT
+      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=ETH&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "eth",
       GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=ETH&ref=35089877&utm_source=brave"),
+           "?fiat=USD&crypto=ETH&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.us/en/buy-sell-crypto?crypto=ETH"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=ETH&ref=35089877"),  // NOLINT
+      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=ETH&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "bnb",
       GURL("https://www.binance.us/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BNB&ref=35089877&utm_source=brave"),
+           "?fiat=USD&crypto=BNB&ref=AffiliateEaterID&utm_source=brave"),
       GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BNB"),
-      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BNB&ref=35089877"),  // NOLINT
+      base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BNB&ref=AffiliateEaterID"),  // NOLINT
       false)
   }, {
     SuggestedSitesMatch(
       "coinbase.com/join",
-      GURL("https://www.coinbase.com/join/sezc_n"),
+      GURL("https://www.coinbase.com/join/AffiliateEaterID"),
       GURL("https://www.coinbase.com/join"),
-      base::ASCIIToUTF16("coinbase.com/join/sezc_n"),
+      base::ASCIIToUTF16("coinbase.com/join/AffiliateEaterID"),
       true)
   }, {
     SuggestedSitesMatch(
       "ledger.com/pages/ledger-nano-x",
-      GURL("https://shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327"),
+      GURL("https://shop.ledger.com/pages/ledger-nano-x?r=AffiliateEaterID"),
       GURL("https://shop.ledger.com/pages/ledger-nano-x"),
-      base::ASCIIToUTF16("shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327"),
+      base::ASCIIToUTF16("shop.ledger.com/pages/ledger-nano-x?r=AffiliateEaterID"),
       true)
   }, {
     SuggestedSitesMatch(
       "trezor.io/product/trezor-one-metallic",
       GURL("https://shop.trezor.io/product/trezor-one-metallic"
-           "?offer_id=24&aff_id=3494"),
+           "?offer_id=24&aff_id=AffiliateEaterID"),
       GURL("https://shop.trezor.io/product/trezor-one-metallic"),
       base::ASCIIToUTF16("shop.trezor.io/product/trezor-one-metallic"
-                         "?offer_id=24&aff_id=3494"),
+                         "?offer_id=24&aff_id=AffiliateEaterID"),
       true)
   },
   };
