@@ -67,8 +67,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #else
   html_source->AddBoolean("isSyncDisabled", true);
 #endif
-  // force UI to have falsed signinAllowed in order to hide chromium sync UI
-  html_source->AddBoolean("signinAllowed", false);
   html_source->AddString("braveProductVersion",
     version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source);

@@ -14,20 +14,6 @@ config("brave_sync_config") {
   ]
 }
 
-source_set("prefs") {
-  sources = [
-    "brave_sync_prefs.cc",
-    "brave_sync_prefs.h",
-  ]
-
-  deps = [
-    "//base",
-    "//components/os_crypt",
-    "//components/prefs",
-    "//components/pref_registry",
-  ]
-}
-
 source_set("crypto") {
   sources = [
     "crypto/crypto.cc",
@@ -58,15 +44,29 @@ source_set("features") {
   ]
 }
 
-source_set("core") {
+source_set("network_time_helper") {
   sources = [
+    "network_time_helper.cc",
+    "network_time_helper.h",
   ]
 
   deps = [
-    ":crypto",
-    ":features",
-    ":prefs",
     "//base",
+    "//components/network_time",
+  ]
+}
+
+source_set("prefs") {
+  sources = [
+    "brave_sync_prefs.cc",
+    "brave_sync_prefs.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/os_crypt",
+    "//components/prefs",
+    "//components/pref_registry",
   ]
 }
 
@@ -75,7 +75,10 @@ source_set("brave_sync") {
   ]
 
   deps = [
-    ":core",
+    ":crypto",
+    ":features",
+    ":network_time_helper",
+    ":prefs",
     "buildflags",
     "//base",
   ]

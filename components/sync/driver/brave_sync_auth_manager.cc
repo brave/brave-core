@@ -3,31 +3,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/chromium_src/components/sync/driver/sync_auth_manager.h"
+#include "brave/components/sync/driver/brave_sync_auth_manager.h"
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "components/signin/public/identity_manager/accounts_mutator.h"
-#include "components/signin/public/identity_manager/primary_account_mutator.h"
-
-#define BRAVE_ACCESS_TOKEN_FETCHED                                \
-  if (!access_token_info.token.empty() && !public_key_.empty() && \
-      !private_key_.empty())                                      \
-    access_token_ = GenerateAccessToken(access_token_info.token);
-
-#include "../../../../../components/sync/driver/sync_auth_manager.cc"
-
-#undef BRAVE_ACCESS_TOKEN_FETCHED
+#include "brave/components/brave_sync/network_time_helper.h"
 
 namespace syncer {
 
-namespace {
-const char kBraveSyncAccountRefreshToken[] = "dummy_refresh_token";
-const char kBraveSyncAccountEmail[] = "sync@brave.com";
-}  // namespace
+BraveSyncAuthManager::BraveSyncAuthManager(
+    signin::IdentityManager* identity_manager,
+    const AccountStateChangedCallback& account_state_changed,
+    const CredentialsChangedCallback& credentials_changed)
+    : SyncAuthManager(identity_manager,
+                      account_state_changed,
+                      credentials_changed) {}
 
-void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
+BraveSyncAuthManager::~BraveSyncAuthManager() {}
+
+void BraveSyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   VLOG(1) << __func__ << " seed=" << seed;
   if (seed.empty())
     return;
@@ -41,33 +37,42 @@ void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes);
   brave_sync::crypto::DeriveSigningKeysFromSeed(seed_bytes, &HKDF_SALT,
                                                 &public_key_, &private_key_);
-  const std::string gaia_id =
-      base::HexEncode(public_key_.data(), public_key_.size());
-  if (!identity_manager_->HasPrimaryAccount()) {
-    const CoreAccountId account_id =
-        identity_manager_->GetAccountsMutator()->AddOrUpdateAccount(
-            gaia_id, kBraveSyncAccountEmail, kBraveSyncAccountRefreshToken,
-            true,
-            signin_metrics::SourceForRefreshTokenOperation::
-                kInlineLoginHandler_Signin);
-    auto* primary_account_mutator =
-        identity_manager_->GetPrimaryAccountMutator();
-    primary_account_mutator->SetPrimaryAccount(account_id);
-  }
-  VLOG(1) << "account_id="
-          << identity_manager_->GetPrimaryAccountId().ToString();
+  if (registered_for_auth_notifications_)
+    UpdateSyncAccountIfNecessary();
 }
 
-void SyncAuthManager::ResetKeys() {
+void BraveSyncAuthManager::ResetKeys() {
   VLOG(1) << __func__;
   public_key_.clear();
   private_key_.clear();
-  // Signout will be handled in PeopleHandler::CloseSyncSetup()
+  if (registered_for_auth_notifications_)
+    UpdateSyncAccountIfNecessary();
 }
 
-// OAuth2AccessTokenFetcherImpl is responsible for fetching timestamp back and
-// we compose the access token here
-std::string SyncAuthManager::GenerateAccessToken(const std::string& timestamp) {
+void BraveSyncAuthManager::RequestAccessToken() {
+  brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
+      base::BindOnce(&BraveSyncAuthManager::OnNetworkTimeFetched,
+                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse() const {
+  if (!public_key_.empty()) {
+    const std::string client_id =
+        base::HexEncode(public_key_.data(), public_key_.size());
+    AccountInfo account_info;
+    account_info.account_id = CoreAccountId::FromString(client_id);
+    account_info.gaia = client_id;
+    account_info.email = "sync@brave.com";
+    return SyncAccountInfo(account_info, true);
+  } else {
+    return SyncAccountInfo();
+  }
+}
+
+std::string BraveSyncAuthManager::GenerateAccessToken(
+    const std::string& timestamp) {
+  VLOG(1) << "timestamp=" << timestamp;
+
   DCHECK(!timestamp.empty() && !public_key_.empty() && !private_key_.empty());
   const std::string public_key_hex =
       base::HexEncode(public_key_.data(), public_key_.size());
@@ -93,6 +98,14 @@ std::string SyncAuthManager::GenerateAccessToken(const std::string& timestamp) {
 
   VLOG(1) << "access_token= " << encoded_access_token;
   return encoded_access_token;
+}
+
+void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
+  std::string timestamp = std::to_string(int64_t(time.ToJsTime()));
+  access_token_ = GenerateAccessToken(timestamp);
+  if (registered_for_auth_notifications_)
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, credentials_changed_callback_);
 }
 
 }  // namespace syncer

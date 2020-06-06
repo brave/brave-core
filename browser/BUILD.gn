@@ -132,6 +132,7 @@ source_set("browser_process") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_sync",
     "//brave/components/brave_wallet/browser/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
