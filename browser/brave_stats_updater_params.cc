@@ -77,10 +77,12 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   week_of_installation_ = pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
-  date_of_installation_ = brave::GetFirstRunTime(pref_service_);
-  DCHECK(!date_of_installation_.is_null());
-  if (ShouldForceFirstRun())
+  if (ShouldForceFirstRun()) {
     date_of_installation_ = GetCurrentTimeNow();
+  } else {
+    date_of_installation_ = brave::GetFirstRunTime(pref_service_);
+    DCHECK(!date_of_installation_.is_null());
+  }
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   referral_promo_code_ = pref_service_->GetString(kReferralPromoCode);
 #endif
