@@ -66,6 +66,6 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, TopSiteSuggestionsEnabledTest) {
 
 IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest,
     BraveSuggestedSiteSuggestionsEnabledTest) {
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
       kBraveSuggestedSiteSuggestionsEnabled));
 }
