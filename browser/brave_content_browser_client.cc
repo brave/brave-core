@@ -108,6 +108,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #endif
 
+//#if BUILDFLAG(PRIVATE_CHANNEL_ATTESTATION_ENABLED)
+#include "brave/components/private_channel/client_private_channel.h"
+//#endif
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,

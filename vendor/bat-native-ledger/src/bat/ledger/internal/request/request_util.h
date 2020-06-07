@@ -15,6 +15,7 @@ namespace braveledger_request_util {
 enum class ServerTypes {
   LEDGER,
   BALANCE,
+  PRIVATE_CHANNEL,
   kPublisher,
   kPromotion,
   kPayments,

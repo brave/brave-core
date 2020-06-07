@@ -10,6 +10,7 @@ if (is_android) {
 }
 
 dep_base = rebase_path("../..", "//")
+dep_components_base = rebase_path("../../components", "//")
 
 config("external_config") {
   visibility = [ ":*" ]
@@ -101,6 +102,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/api/api_parameters.h",
     "src/bat/ledger/internal/attestation/attestation.cc",
     "src/bat/ledger/internal/attestation/attestation.h",
+    "src/bat/ledger/internal/private_channel/private_channel.cc",
+    "src/bat/ledger/internal/private_channel/private_channel.h",
     "src/bat/ledger/internal/attestation/attestation_androidx.cc",
     "src/bat/ledger/internal/attestation/attestation_androidx.h",
     "src/bat/ledger/internal/attestation/attestation_desktop.cc",
@@ -266,6 +269,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/request/request_sku.h",
     "src/bat/ledger/internal/request/request_util.cc",
     "src/bat/ledger/internal/request/request_util.h",
+    "src/bat/ledger/internal/request/request_private_channel.cc",
+    "src/bat/ledger/internal/request/request_private_channel.h",
     "src/bat/ledger/internal/sku/sku.h",
     "src/bat/ledger/internal/sku/sku_brave.cc",
     "src/bat/ledger/internal/sku/sku_brave.h",
@@ -351,6 +356,7 @@ source_set("ledger") {
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("challenge_bypass_ristretto_ffi", dep_base),
     rebase_path("brave_base", dep_base),
+    rebase_path("./components/private_channel", dep_components_base),
   ]
 
   public_deps = [

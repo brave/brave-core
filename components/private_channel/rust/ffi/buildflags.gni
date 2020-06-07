@@ -1,0 +1,5 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  enable_private_channel = !is_ios
+}

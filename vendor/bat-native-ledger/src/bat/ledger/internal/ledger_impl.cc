@@ -34,6 +34,7 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
+using namespace braveledger_private_channel; //  NOLINT 
 using namespace braveledger_promotion; //  NOLINT
 using namespace braveledger_publisher; //  NOLINT
 using namespace braveledger_media; //  NOLINT
@@ -59,6 +60,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_media_(new Media(this)),
     legacy_bat_state_(new LegacyBatState(this)),
     bat_contribution_(new Contribution(this)),
+    bat_private_channel_(new PrivateChannel(this)),
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
@@ -112,6 +114,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
     bat_api_->Initialize();
+    bat_private_channel_->Initialize(true);
 
     SetConfirmationsWalletInfo();
   } else {
@@ -769,6 +772,7 @@ void LedgerImpl::OneTimeTip(
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
+  bat_private_channel_->OnTimer(timer_id);
   bat_contribution_->OnTimer(timer_id);
   bat_publisher_->OnTimer(timer_id);
   bat_promotion_->OnTimer(timer_id);

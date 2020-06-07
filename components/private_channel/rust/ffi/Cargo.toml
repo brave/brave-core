@@ -1,0 +1,25 @@
+[package]
+name = "private-channel-ffi"
+version = "0.1.0"
+authors = ["Goncalo Pestana <gpestana@brave.com>"]
+edition = "2018"
+
+[dependencies]
+brave_private_channel = { path = "./private-channel" }
+libc = "0.2"
+
+[lib]
+crate-type = [
+    "cdylib",
+    "staticlib",
+]
+name = "private_channel"
+
+[features]
+cbindgen = []
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
