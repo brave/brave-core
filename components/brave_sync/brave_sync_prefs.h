@@ -43,6 +43,9 @@ class Prefs {
   bool IsSyncV1MetaInfoCleared() const;
   void SetSyncV1MetaInfoCleared(bool is_cleared);
 
+  // It is only used to read whether sync v1 was enabled before upgrading
+  bool IsSyncV1Enabled() const;
+
   void Clear();
 
  private:

@@ -143,6 +143,10 @@ void Prefs::SetSyncV1MetaInfoCleared(bool is_cleared) {
   pref_service_->SetBoolean(kSyncV1MetaInfoCleared, is_cleared);
 }
 
+bool Prefs::IsSyncV1Enabled() const {
+  return pref_service_->GetBoolean(kSyncEnabled);
+}
+
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
 }
@@ -153,7 +157,8 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
 
   // Added 05/2020
   prefs->ClearPref(kSyncSeed);
-  prefs->ClearPref(kSyncEnabled);
+  // Clear this prefs after almost every users have migrated to sync v2
+  // prefs->ClearPref(kSyncEnabled);
   prefs->ClearPref(kDuplicatedBookmarksRecovered);
   prefs->ClearPref(kSyncDeviceId);
   prefs->ClearPref(kSyncDeviceIdV2);
