@@ -44,6 +44,9 @@ namespace braveledger_promotion {
 
 namespace {
 
+const int kFetchPromotionsThresholdInSeconds =
+    10 * base::Time::kSecondsPerMinute;
+
 void HandleExpiredPromotions(
     bat_ledger::LedgerImpl* ledger_impl,
     ledger::PromotionMap* promotions) {
@@ -72,6 +75,19 @@ void HandleExpiredPromotions(
           [](const ledger::Result _){});
     }
   }
+}
+
+ledger::PromotionList GetPromotionsForUI(
+    const ledger::PromotionMap& promotions) {
+  ledger::PromotionList promotions_ui;
+  for (const auto& item : promotions) {
+    if (item.second->status == ledger::PromotionStatus::ACTIVE ||
+        item.second->status == ledger::PromotionStatus::FINISHED) {
+      promotions_ui.push_back(item.second->Clone());
+    }
+  }
+
+  return promotions_ui;
 }
 
 }  // namespace
@@ -117,6 +133,23 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
     ledger::PromotionList empty_list;
     callback(ledger::Result::CORRUPTED_DATA, std::move(empty_list));
     return;
+  }
+
+  // If we fetched promotions recently, fulfill this request from the
+  // database instead of querying the server again
+  if (!ledger::is_testing) {
+    const uint64_t last_promo_stamp =
+        ledger_->GetUint64State(ledger::kStatePromotionLastFetchStamp);
+    const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
+    if (now - last_promo_stamp < kFetchPromotionsThresholdInSeconds) {
+      auto all_callback = std::bind(
+          &Promotion::OnGetAllPromotionsFromDatabase,
+          this,
+          _1,
+          callback);
+      ledger_->GetAllPromotions(all_callback);
+      return;
+    }
   }
 
   auto url_callback = std::bind(&Promotion::OnFetch,
@@ -224,18 +257,21 @@ void Promotion::OnGetAllPromotions(
         [](const ledger::Result _){});
   }
 
-  ledger::PromotionList promotions_ui;
-  for (auto & item : promotions) {
-    if (item.second->status == ledger::PromotionStatus::ACTIVE ||
-        item.second->status == ledger::PromotionStatus::FINISHED) {
-      promotions_ui.push_back(item.second->Clone());
-    }
-  }
+  ledger::PromotionList promotions_ui = GetPromotionsForUI(promotions);
 
   ProcessFetchedPromotions(
       ledger::Result::LEDGER_OK,
       std::move(promotions_ui),
       callback);
+}
+
+void Promotion::OnGetAllPromotionsFromDatabase(
+    ledger::PromotionMap promotions,
+    ledger::FetchPromotionCallback callback) {
+  HandleExpiredPromotions(ledger_, &promotions);
+
+  ledger::PromotionList promotions_ui = GetPromotionsForUI(promotions);
+  callback(ledger::Result::LEDGER_OK, std::move(promotions_ui));
 }
 
 void Promotion::LegacyClaimedSaved(

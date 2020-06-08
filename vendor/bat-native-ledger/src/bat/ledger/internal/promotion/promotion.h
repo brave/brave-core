@@ -61,6 +61,10 @@ class Promotion {
       const std::string& response,
       ledger::FetchPromotionCallback callback);
 
+  void OnGetAllPromotionsFromDatabase(
+      ledger::PromotionMap promotions,
+      ledger::FetchPromotionCallback callback);
+
   void LegacyClaimedSaved(
       const ledger::Result result,
       const std::string& promotion_string);
