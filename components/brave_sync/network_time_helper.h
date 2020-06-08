@@ -30,10 +30,14 @@ class NetworkTimeHelper {
 
   void GetNetworkTime(GetNetworkTimeCallback cb);
 
+  void SetNetworkTimeForTest(const base::Time& time);
+
  private:
   friend struct base::DefaultSingletonTraits<NetworkTimeHelper>;
 
   void GetNetworkTimeOnUIThread(GetNetworkTimeCallback cb);
+
+  base::Time network_time_for_test_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
