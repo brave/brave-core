@@ -6,12 +6,13 @@
 package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
+import androidx.fragment.app.ListFragment;
+
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 
 public class BraveSearchEnginePreference extends ListFragment {
     private SearchEngineAdapter mSearchEngineAdapter;

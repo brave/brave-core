@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.Build;
 
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
+import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;
 
 public class BraveNotificationManagerProxyImpl extends NotificationManagerProxyImpl {
     public BraveNotificationManagerProxyImpl(Context context) {

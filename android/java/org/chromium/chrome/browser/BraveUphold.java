@@ -5,14 +5,17 @@
   */
 package org.chromium.chrome.browser;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.support.v7.app.AlertDialog;
-import java.util.Locale;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -20,9 +23,8 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationParams;
-import org.chromium.chrome.R;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.Locale;
 
 //used from org.chromium.chrome.browser.externalnav
 public class BraveUphold implements BraveRewardsObserver {
