@@ -13,9 +13,10 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.MenuButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
@@ -47,10 +48,12 @@ public class BraveBrowsingModeBottomToolbarCoordinator
             getNewTabButtonParent().setVisibility(View.GONE);
             OnClickListener bookmarkClickHandler = v -> {
                 TabImpl tab = (TabImpl) mBraveTabProvider.get();
-                if (tab == null || tab.getActivity() == null) {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (tab == null || activity == null) {
+                    assert false;
                     return;
                 }
-                tab.getActivity().addOrEditBookmark(tab);
+                activity.addOrEditBookmark(tab);
             };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);
         }
