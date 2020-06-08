@@ -15,6 +15,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
+#include "net/base/isolation_info.h"
 
 namespace brave {
 
@@ -82,7 +83,8 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
     // for shields functionality. We should reconsider this machinery, also
     // given that this is always empty for subresources.
     ctx->tab_origin =
-        request.trusted_params->network_isolation_key.GetTopFrameOrigin()
+        request.trusted_params->isolation_info.network_isolation_key()
+            .GetTopFrameOrigin()
             .value_or(url::Origin())
             .GetURL();
   }
