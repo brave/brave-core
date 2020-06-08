@@ -181,7 +181,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
   
   func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    // Using the same reorder logic as in FavoritesDataSource
     Bookmark.reorderBookmarks(frc: bookmarksFRC, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
   }
   
@@ -209,7 +208,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       
       cell.backgroundColor = .clear
       cell.imageView?.contentMode = .scaleAspectFit
-      cell.imageView?.image = FaviconFetcher.defaultFavicon
+      cell.imageView?.image = FaviconFetcher.defaultFaviconImage
       cell.imageView?.layer.cornerRadius = 6
       cell.imageView?.layer.masksToBounds = true
       
@@ -218,11 +217,17 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         cell.imageView?.image = image
         cell.imageView?.contentMode = .center
         cell.imageView?.layer.borderWidth = 0.0
+        cell.imageView?.clearMonogramFavicon()
       } else {
         cell.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
         // favicon object associated through domain relationship - set from cache or download
-        cell.imageView?.setIconMO(item.domain?.favicon, forURL: URL(string: item.url ?? ""))
+        if let url = item.domain?.url?.asURL {
+            cell.imageView?.loadFavicon(for: url, domain: item.domain, fallbackMonogramCharacter: item.title?.first)
+        } else {
+            cell.imageView?.clearMonogramFavicon()
+            cell.imageView?.image = FaviconFetcher.defaultFaviconImage
+        }
       }
     }
     

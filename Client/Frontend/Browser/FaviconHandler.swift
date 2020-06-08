@@ -23,7 +23,7 @@ class FaviconHandler {
         unregister(tabObservers)
     }
 
-    func loadFaviconURL(_ faviconURL: String, forTab tab: Tab) -> Deferred<Maybe<(Favicon, Data?)>> {
+    func loadFaviconURL(_ faviconURL: String, type: IconType, forTab tab: Tab) -> Deferred<Maybe<(Favicon, Data?)>> {
         guard let iconURL = URL(string: faviconURL), let currentURL = tab.url else {
             return deferMaybe(FaviconError())
         }
@@ -53,7 +53,7 @@ class FaviconHandler {
         }
 
         let onCompletedSiteFavicon: ImageCacheCompletion = { image, data, _, _, url in
-            let favicon = Favicon(url: url.absoluteString, date: Date())
+            let favicon = Favicon(url: url.absoluteString, date: Date(), type: type)
 
             guard let image = image else {
                 favicon.width = 0
@@ -75,11 +75,10 @@ class FaviconHandler {
                 // instead before ultimately failing.
                 let siteIconURL = currentURL.domainURL.appendingPathComponent("favicon.ico")
                 imageOperation = webImageCache.load(from: siteIconURL, options: [.lowPriority], progress: onProgress, completion: onCompletedSiteFavicon)
-
                 return
             }
 
-            let favicon = Favicon(url: url.absoluteString, date: Date())
+            let favicon = Favicon(url: url.absoluteString, date: Date(), type: type)
             favicon.width = Int(image.size.width)
             favicon.height = Int(image.size.height)
 
@@ -95,12 +94,14 @@ class FaviconHandler {
 extension FaviconHandler: TabEventHandler {
     func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
         tab.favicons.removeAll(keepingCapacity: false)
-        guard let faviconURL = metadata.faviconURL else {
-            return
-        }
-
-        loadFaviconURL(faviconURL, forTab: tab) >>== { (favicon, data) in
-            TabEvent.post(.didLoadFavicon(favicon, with: data), for: tab)
+        if let iconURL = metadata.largeIconURL {
+            loadFaviconURL(iconURL, type: .appleIcon, forTab: tab) >>== { (favicon, data) in
+                TabEvent.post(.didLoadFavicon(favicon, with: data), for: tab)
+            }
+        } else if let iconURL = metadata.faviconURL {
+            loadFaviconURL(iconURL, type: .icon, forTab: tab) >>== { (favicon, data) in
+                TabEvent.post(.didLoadFavicon(favicon, with: data), for: tab)
+            }
         }
     }
 }

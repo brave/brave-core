@@ -40,8 +40,6 @@ platform :ios do
         "ClientTests/TabManagerTests/testQueryAddedTabs",
         "ClientTests/TabManagerTests/testQueryAddedPrivateTabs",
         "ClientTests/TabManagerTests/testQueryAddedMixedTabs",
-        "ClientTests/UIImageViewExtensionsTests/testAsyncSetIcon",
-        "ClientTests/UIImageViewExtensionsTests/testAsyncSetIconFail",
         "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
         "ClientTests/TabSessionTests",
         "ClientTests/ContentBlockerTests",

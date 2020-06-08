@@ -26,7 +26,7 @@ struct FavoritesHelper {
         }
     }
 
-    static func add(url: URL, title: String?, color: UIColor?) {
+    static func add(url: URL, title: String?) {
         Bookmark.addFavorite(url: url, title: title)
     }
 

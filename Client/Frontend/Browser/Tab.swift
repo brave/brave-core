@@ -84,6 +84,24 @@ class Tab: NSObject {
     var mimeType: String?
     var isEditing: Bool = false
     var shouldClassifyLoadsForAds = true
+    
+    /// The tabs new tab page controller.
+    ///
+    /// Should be setup in BVC then assigned here for future use.
+    var newTabPageViewController: NewTabPageViewController? {
+        willSet {
+            if newValue == nil {
+                deleteNewTabPageController()
+            }
+        }
+    }
+    
+    private func deleteNewTabPageController() {
+        guard let controller = newTabPageViewController, controller.parent != nil else { return }
+        controller.willMove(toParent: nil)
+        controller.removeFromParent()
+        controller.view.removeFromSuperview()
+    }
  
     // When viewing a non-HTML content type in the webview (like a PDF document), this URL will
     // point to a tempfile containing the content so it can be shared to external applications.
@@ -287,6 +305,7 @@ class Tab: NSObject {
 
     deinit {
         deleteWebView()
+        deleteNewTabPageController()
         contentScriptManager.helpers.removeAll()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         
@@ -347,6 +366,7 @@ class Tab: NSObject {
     }
 
     var displayFavicon: Favicon? {
+        if url?.isAboutHomeURL == true { return nil }
         return favicons.max { $0.width! < $1.width! }
     }
 

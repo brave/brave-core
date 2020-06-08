@@ -457,7 +457,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         // Some sites will only serve HTML that points to .ico files.
         // The FaviconFetcher is explicitly for getting high-res icons, so use the desktop user agent.
-        FaviconFetcher.userAgent = UserAgent.desktop
+        FaviconFetcher.htmlParsingUserAgent = UserAgent.desktop
     }
 
     fileprivate func presentEmailComposerWithLogs() {

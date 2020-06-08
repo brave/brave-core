@@ -115,13 +115,8 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       })
       
       if let dataSource = self.state.dataSource,
-        let pageURL = URL(string: self.publisherInfo.url),
-        let faviconURL = self.state.faviconURL {
-        dataSource.retrieveFavicon(for: pageURL, faviconURL: faviconURL, completion: { faviconData in
-          guard let faviconData = faviconData else { return }
-          self.tippingView.overviewView.faviconImageView.image = faviconData.image
-          self.tippingView.overviewView.faviconImageView.backgroundColor = faviconData.backgroundColor
-        })
+        let pageURL = URL(string: self.publisherInfo.url) {
+        dataSource.retrieveFavicon(for: pageURL, on: self.tippingView.overviewView.faviconImageView.imageView)
       }
       
       self.tippingView.overviewView.socialStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })

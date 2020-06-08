@@ -190,10 +190,6 @@ extension Domain {
                     context.delete($0)
                 }
             }
-            for obj in results {
-                // Cascading delete on favicon, it will also get deleted
-                context.delete(obj)
-            }
         } catch {
             let fetchError = error as NSError
             print(fetchError)
