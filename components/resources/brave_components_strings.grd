@@ -352,6 +352,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Wallet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CLEAR_BUTTON" desc="">Clear</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_AMOUNT" desc="Contributed Amount">Contributed amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_CREATED_AT" desc="">Created at:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION" desc="Contribution">Contribution</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_PROCESSOR" desc="Contribution processor">Processor:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP" desc="">Step:</message>

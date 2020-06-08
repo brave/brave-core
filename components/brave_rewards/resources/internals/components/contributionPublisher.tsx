@@ -4,21 +4,28 @@
 
 import * as React from 'react'
 
-interface Props {
-  publisher: RewardsInternals.ContributionPublisher
-}
+import { Publisher, PublisherKey } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
-export const ContributionPublisher = (props: Props) => (
-  <blockquote>
-    <h3>{props.publisher.publisherKey}</h3>
-    <div>
-      {getLocale('totalAmount')} {props.publisher.totalAmount} {getLocale('bat')}
-    </div>
-    <div>
-      {getLocale('contributedAmount')} {props.publisher.contributedAmount} {getLocale('bat')}
-    </div>
-  </blockquote>
-)
+interface Props {
+  publisher: RewardsInternals.ContributionPublisher
+}
+
+export const ContributionPublisher = (props: Props) => {
+  if (!props.publisher) {
+    return null
+  }
+
+  return (
+    <Publisher>
+      <PublisherKey>{props.publisher.publisherKey}</PublisherKey>
+      <div>
+        {getLocale('totalAmount')} {props.publisher.totalAmount} {getLocale('bat')}
+      </div>
+      <div>
+        {getLocale('contributedAmount')} {props.publisher.contributedAmount} {getLocale('bat')}
+      </div>
+    </Publisher>)
+}

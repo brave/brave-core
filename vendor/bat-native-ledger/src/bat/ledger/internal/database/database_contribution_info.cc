@@ -548,7 +548,7 @@ void DatabaseContributionInfo::GetAllRecords(
 
   const std::string query = base::StringPrintf(
     "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count,"
-    "ci.processor "
+    "ci.processor, ci.created_at "
     "FROM %s as ci ",
     kTableName);
 
@@ -562,7 +562,8 @@ void DatabaseContributionInfo::GetAllRecords(
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -798,7 +799,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
-      "ci.processor "
+      "ci.processor, ci.created_at "
       "FROM %s as ci WHERE ci.step > 0",
       kTableName);
 
@@ -812,7 +813,8 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -851,6 +853,7 @@ void DatabaseContributionInfo::OnGetList(
     info->retry_count = GetIntColumn(record_pointer, 4);
     info->processor = static_cast<ledger::ContributionProcessor>(
         GetIntColumn(record_pointer, 5));
+    info->created_at = GetInt64Column(record_pointer, 6);
 
     contribution_ids.push_back(info->contribution_id);
     list.push_back(std::move(info));
