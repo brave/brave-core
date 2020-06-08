@@ -6,6 +6,7 @@
 #ifndef BRAVELEDGER_PRIVATE_CHANNEL_ONE_H_
 #define BRAVELEDGER_PRIVATE_CHANNEL_ONE_H_
 
+#include <string>
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -15,17 +16,17 @@ class LedgerImpl;
 namespace braveledger_private_channel {
 
 static const uint64_t timers[] = {
-    1 * 60, // 60s
-    1 * 60 * 60,  // 1h
-    2 * 60 * 60,  // 2h
-    12 * 60 * 60,  // 12h
-    24 * 60 * 60,  // 24h
+    1 * 60,         // 60s
+    1 * 60 * 60,    // 1h
+    2 * 60 * 60,    // 2h
+    12 * 60 * 60,   // 12h
+    24 * 60 * 60,   // 24h
     48 * 60 * 60};  // 48h
 
 class PrivateChannel {
-  public:
+ public:
     explicit PrivateChannel(bat_ledger::LedgerImpl* ledger);
-    
+
     ~PrivateChannel();
 
     void Initialize(bool init_timer);
@@ -34,32 +35,32 @@ class PrivateChannel {
 
     void OnTimer(uint32_t timer_id);
 
-  private:
-  void StartProtocol();
+ private:
+    void StartProtocol();
 
-  void SecondRoundProtocol(
-    const std::string& encrypted_input,
-    std::string client_sk,
-    std::string wallet_id,
-    int input_size);
+    void SecondRoundProtocol(
+      const std::string& encrypted_input,
+      std::string client_sk,
+      std::string wallet_id,
+      int input_size);
 
-  void OnServerPublicKeyResponse(
-    const ledger::UrlResponse& response);
+    void OnServerPublicKeyResponse(
+      const ledger::UrlResponse& response);
 
-  void OnFirstRoundResponse(
-    std::string client_sk,
-    std::string wallet_id,
-    int input_size,
-    const ledger::UrlResponse& response);
+    void OnFirstRoundResponse(
+      std::string client_sk,
+      std::string wallet_id,
+      int input_size,
+      const ledger::UrlResponse& response);
 
-  void OnSecondRoundResponse(
-    const ledger::UrlResponse& response);
+    void OnSecondRoundResponse(
+      const ledger::UrlResponse& response);
 
-    bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-    const uint8_t* server_pk;
-    uint32_t attestation_timer_id_;
+      bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+      const uint8_t* server_pk;
+      uint32_t attestation_timer_id_;
 };
 
-} // braveledger_private_channel 
+}  // namespace braveledger_private_channel
 
 #endif  // BRAVELEDGER_PRIVATE_CHANNEL_ONE_H_

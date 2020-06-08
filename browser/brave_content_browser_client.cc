@@ -32,6 +32,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/private_channel/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
@@ -108,9 +109,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #endif
 
-//#if BUILDFLAG(PRIVATE_CHANNEL_ATTESTATION_ENABLED)
+#if BUILDFLAG(PRIVATE_CHANNEL_ENABLED)
 #include "brave/components/private_channel/client_private_channel.h"
-//#endif
+#endif
 
 namespace {
 

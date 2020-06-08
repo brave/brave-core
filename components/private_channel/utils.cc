@@ -5,18 +5,15 @@
 
 #include<string>
 #include <iostream>
-#include <regex>
-
 #include <algorithm>
-#include <string>
 
 #include "base/strings/string_tokenizer.h"
-#include "utils.h"
+#include "brave/components/private_channel/utils.h"
 
 std::string convert_to_str(const uint8_t* ptr, int size) {
   std::string str;
   for (int i = 0; i < size; i++) {
-    str.append(std::to_string(int(ptr[i])));
+    str.append(std::to_string(static_cast<int>(ptr[i])));
     if (i != size - 1) {
       str.append(", ");
     }
@@ -29,10 +26,10 @@ std::string convert_to_str(const uint8_t* ptr, int size) {
 void parse_str_response(const char* ptr, uint8_t* dst) {
   std::string str(ptr);
 
-  // remove parenthesis 
+  // remove parenthesis
   str.pop_back();
   str.erase(str.begin());
-  const char* str_ptr = str.c_str(); 
+  const char* str_ptr = str.c_str();
 
   base::CStringTokenizer token(str_ptr, str_ptr + std::strlen(str_ptr), ", ");
   uint i = 0;
@@ -44,7 +41,7 @@ void parse_str_response(const char* ptr, uint8_t* dst) {
 
 int get_size_response(const char* ptr) {
   std::string str(ptr);
-  const char* str_ptr = str.c_str(); 
+  const char* str_ptr = str.c_str();
   base::CStringTokenizer token(str_ptr, str_ptr + std::strlen(str_ptr), ", ");
   int i = 0;
   while (token.GetNext()) {

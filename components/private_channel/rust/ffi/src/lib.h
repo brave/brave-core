@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef PRIVATE_CHANNEL_RUST_FFI_H
-#define PRIVATE_CHANNEL_RUST_FFI_H
+#ifndef BRAVE_COMPONENTS_PRIVATE_CHANNEL_RUST_FFI_SRC_LIB_H_
+#define BRAVE_COMPONENTS_PRIVATE_CHANNEL_RUST_FFI_SRC_LIB_H_
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -40,4 +40,4 @@ C_ResultSecondRound client_second_round(const uint8_t *input,
                                         int input_size,
                                         const uint8_t *client_sk_encoded);
 
-#endif /* PRIVATE_CHANNEL_RUST_FFI_H */
+#endif /* BRAVE_COMPONENTS_PRIVATE_CHANNEL_RUST_FFI_SRC_LIB_H_ */

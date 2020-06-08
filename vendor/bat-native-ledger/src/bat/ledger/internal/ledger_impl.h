@@ -801,7 +801,8 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
-  std::unique_ptr<braveledger_private_channel::PrivateChannel> bat_private_channel_;
+  std::unique_ptr<braveledger_private_channel::PrivateChannel>
+    bat_private_channel_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;

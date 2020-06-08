@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PRIVATE_CHANNEL_H_
-#define BRAVE_COMPONENTS_PRIVATE_CHANNEL_H_
+#ifndef BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_
+#define BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_
 
+#include <string>
 #include "brave/components/private_channel/rust/ffi/src/private_channel.hpp"
-  
+
   struct ChallengeArtefacts {
     std::string client_sk;
     std::string client_pk;
@@ -31,8 +32,10 @@
     ~SecondRoundArtefacts();
   };
 
-ChallengeArtefacts ChallengeFirstRound(const char** input, int input_size, const uint8_t* server_pk_encoded);
+ChallengeArtefacts ChallengeFirstRound(
+  const char** input, int input_size, const uint8_t* server_pk_encoded);
 
-SecondRoundArtefacts SecondRound(const char* enc_input, int size, const char* client_sk);
+SecondRoundArtefacts SecondRound(
+  const char* enc_input, int size, const char* client_sk);
 
-#endif  // BRAVE_COMPONENTS_PRIVATE_CHANNEL_H_
+#endif  // BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_

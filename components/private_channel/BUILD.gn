@@ -5,7 +5,7 @@ import("//brave/components/private_channel/rust/ffi/config.gni")
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
-    "ENABLE_PRIVATE_CHANNEL=$enable_private_channel",
+    "PRIVATE_CHANNEL_ENABLED=$private_channel_enabled",
   ]
 }
 

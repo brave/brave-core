@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/request/request_private_channel.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/request/request_attestation.h"
 #include "bat/ledger/internal/request/request_util.h"
@@ -17,10 +18,12 @@ namespace braveledger_request_util  {
   }
 
   std::string GetStartProtocolUrl() {
-    return BuildUrl("/attestation/start", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL);
+    return BuildUrl("/attestation/start", PREFIX_V1,
+      ServerTypes::PRIVATE_CHANNEL);
   }
 
   std::string GetResultProtocolUrl() {
-    return BuildUrl("/attestation/result", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL);
+    return BuildUrl("/attestation/result", PREFIX_V1,
+      ServerTypes::PRIVATE_CHANNEL);
   }
-}
+}  // namespace braveledger_request_util
