@@ -29,9 +29,17 @@ void NetworkTimeHelper::SetNetworkTimeTracker(
 }
 
 void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
+  if (!network_time_for_test_.is_null()) {
+    std::move(cb).Run(network_time_for_test_);
+    return;
+  }
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                  base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
                                 weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
+}
+
+void NetworkTimeHelper::SetNetworkTimeForTest(const base::Time& time) {
+  network_time_for_test_ = time;
 }
 
 void NetworkTimeHelper::GetNetworkTimeOnUIThread(

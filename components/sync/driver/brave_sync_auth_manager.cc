@@ -7,7 +7,6 @@
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 
@@ -104,8 +103,7 @@ void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
   std::string timestamp = std::to_string(int64_t(time.ToJsTime()));
   access_token_ = GenerateAccessToken(timestamp);
   if (registered_for_auth_notifications_)
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE, credentials_changed_callback_);
+    credentials_changed_callback_.Run();
 }
 
 }  // namespace syncer
