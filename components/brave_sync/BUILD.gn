@@ -41,6 +41,7 @@ source_set("features") {
 
   deps = [
     "//base",
+    "buildflags",
   ]
 }
 
