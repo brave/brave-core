@@ -5,18 +5,19 @@
 
 package org.chromium.chrome.browser.settings.developer;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.chrome.browser.util.BraveDbUtil;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 /**
  * Settings fragment containing preferences for QA team.

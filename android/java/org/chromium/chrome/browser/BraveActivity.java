@@ -6,17 +6,17 @@
 package org.chromium.chrome.browser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,28 +39,28 @@ import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
-import org.chromium.components.embedder_support.util.UrlConstants;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
-import org.chromium.chrome.browser.rate.RateUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 /**
  * Brave's extension for ChromeActivity
@@ -227,12 +227,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void addOrEditBookmark(final Tab tabToBookmark) {
-        long tempBookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
+        BookmarkBridge bridge = (BookmarkBridge)mBookmarkBridgeSupplier.get();
+        if (bridge == null || !bridge.isEditBookmarksEnabled()) {
+            assert false;
+            return;
+        }
+        long tempBookmarkId = bridge.getUserBookmarkIdForTab(tabToBookmark);
         final boolean bCreateBookmark = (BookmarkId.INVALID_ID == tempBookmarkId);
 
         super.addOrEditBookmark(tabToBookmark);
 
-        final long bookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
+        final long bookmarkId = bridge.getUserBookmarkIdForTab(tabToBookmark);
         final BookmarkModel bookmarkModel = new BookmarkModel();
 
         bookmarkModel.finishLoadingBookmarkModel(() -> {
@@ -364,7 +369,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
-        if (tab != null && tab.getUrl().equals(url)) {
+        if (tab != null && tab.getUrlString().equals(url)) {
             return tab;
         }
 
