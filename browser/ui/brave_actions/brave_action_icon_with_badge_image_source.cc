@@ -7,7 +7,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_actions/constants.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/extensions/extension_action.h"
 #include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
 #include "chrome/grit/theme_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
