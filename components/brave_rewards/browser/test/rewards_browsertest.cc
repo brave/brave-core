@@ -408,7 +408,9 @@ class RewardsBrowserTest
             "[\"site2.com\",\"wallet_connected\",false,\"address5\",{}],"
             "[\"site3.com\",\"wallet_connected\",false,\"address6\",{}],"
             "[\"laurenwags.github.io\",\"wallet_connected\",false,\"address2\","
-              "{\"donationAmounts\": [5,10,20]}]"
+              "{\"donationAmounts\": [5,10,20]}],"
+            "[\"kjozwiakstaging.github.io\",\"wallet_connected\",false,\"aa\","
+              "{\"donationAmounts\": [5,50,100]}]"
             "]";
       }
 
@@ -2922,4 +2924,40 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, CheckIfReconcileWasResetACOff) {
         run_loop_second.Quit();
       }));
   run_loop_second.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsBrowserTest,
+    SplitProcessOneTimeTip) {
+  SetUpUpholdWallet(50.0);
+  EnableRewards();
+  ClaimPromotionViaCode();
+
+  TipPublisher(
+      "kjozwiakstaging.github.io",
+      ContributionType::OneTimeTip,
+      true,
+      1);
+
+  ActivateTabAtIndex(0);
+
+  rewards_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='showMonthlyReport']");
+
+  rewards_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='tab-oneTimeDonation']");
+
+  rewards_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "[data-test-id='activity-table-body'] tr:nth-of-type(1) "
+      "td:nth-of-type(3)",
+      "20.000BAT28.60 USD");
+
+  rewards_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "[data-test-id='activity-table-body'] tr:nth-of-type(2) "
+      "td:nth-of-type(3)",
+      "30.000BAT42.90 USD");
 }

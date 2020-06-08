@@ -24,12 +24,6 @@ bool HaveEnoughFundsToContribute(
     const bool partial,
     const double balance);
 
-void AdjustPublisherListAmounts(
-    ledger::ContributionQueuePublisherList publishers,
-    ledger::ContributionQueuePublisherList* publishers_new,
-    ledger::ContributionQueuePublisherList* publishers_left,
-    double reduce_fee_for);
-
 int32_t GetVotesFromAmount(const double amount);
 
 }  // namespace braveledger_contribution
