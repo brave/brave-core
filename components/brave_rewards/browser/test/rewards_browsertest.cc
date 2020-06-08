@@ -23,7 +23,7 @@
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/components/brave_rewards/browser/test/rewards_service_browsertest_utils.h"
+#include "brave/components/brave_rewards/browser/test/rewards_browsertest_utils.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -307,7 +307,7 @@ class BraveRewardsBrowserTest
 
   std::vector<double> GetSiteBannerTipOptions(
       content::WebContents* site_banner) {
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         site_banner,
         "[data-test-id=amount-wrapper] div span");
     auto options = content::EvalJs(
@@ -331,7 +331,7 @@ class BraveRewardsBrowserTest
 
   static std::vector<double> GetRewardsPopupTipOptions(
       content::WebContents* popup) {
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         popup,
         "option:not(:disabled)");
     auto options = content::EvalJs(
@@ -653,7 +653,7 @@ class BraveRewardsBrowserTest
 
     // Wait for the popup to load
     popup_observer.Wait();
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         popup_contents,
         "[data-test-id='rewards-panel']");
 
@@ -775,10 +775,10 @@ class BraveRewardsBrowserTest
     ui_test_utils::NavigateToURL(browser(), page_url);
     WaitForLoadStop(contents());
     // Opt in and create wallet to enable rewards
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         contents(),
         "[data-test-id='optInAction']");
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         contents(),
         "[data-test-id2='enableMain']");
   }
@@ -816,21 +816,21 @@ class BraveRewardsBrowserTest
 
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
-      rewards_service_browsertest_utils::WaitForElementThenClick(
+      rewards_browsertest_utils::WaitForElementThenClick(
           contents,
           "button");
     } else {
-      rewards_service_browsertest_utils::WaitForElementThenClick(
+      rewards_browsertest_utils::WaitForElementThenClick(
           contents,
           "[data-test-id='claimGrant']");
     }
 
     // Wait for CAPTCHA
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         contents,
         "[data-test-id='captcha']");
 
-    rewards_service_browsertest_utils::DragAndDrop(
+    rewards_browsertest_utils::DragAndDrop(
         contents,
         "[data-test-id=\"captcha-triangle\"]",
         "[data-test-id=\"captcha-drop\"]");
@@ -847,18 +847,18 @@ class BraveRewardsBrowserTest
     // Check that promotion notification shows the appropriate amount
     const std::string selector =
         use_panel ? "[id='root']" : "[data-test-id='newTokenGrant']";
-    rewards_service_browsertest_utils::WaitForElementToContain(
+    rewards_browsertest_utils::WaitForElementToContain(
         contents,
         selector,
         "Free Token Grant");
-    rewards_service_browsertest_utils::WaitForElementToContain(
+    rewards_browsertest_utils::WaitForElementToContain(
         contents,
         selector,
         "30.000 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
-      rewards_service_browsertest_utils::WaitForElementThenClick(
+      rewards_browsertest_utils::WaitForElementThenClick(
           contents, "#"
                     "grant-completed-ok");
     }
@@ -901,7 +901,7 @@ class BraveRewardsBrowserTest
     WaitForPublisherListNormalized();
 
     // Make sure site appears in auto-contribute table
-    rewards_service_browsertest_utils::WaitForElementToEqual(
+    rewards_browsertest_utils::WaitForElementToEqual(
         contents(),
         "[data-test-id='ac_link_" + publisher + "']",
         publisher);
@@ -935,7 +935,7 @@ class BraveRewardsBrowserTest
 
   std::string RewardsPageTipSummaryAmount() const {
     const std::string amount =
-        rewards_service_browsertest_utils::WaitForElementThenGetContent(
+        rewards_browsertest_utils::WaitForElementThenGetContent(
         contents(),
         "[data-test-id=summary-tips] [color=contribute] span span");
     return amount + " BAT";
@@ -954,7 +954,7 @@ class BraveRewardsBrowserTest
   }
 
   void RefreshPublisherListUsingRewardsPopup() const {
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         OpenRewardsPopup(),
         "[data-test-id='unverified-check-button']");
   }
@@ -973,7 +973,7 @@ class BraveRewardsBrowserTest
         : "[type='tip']";
 
     // Click button to initiate sending a tip.
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         popup_contents,
         buttonSelector);
 
@@ -1022,12 +1022,12 @@ class BraveRewardsBrowserTest
     std::string amount_selector = base::StringPrintf(
         "div:nth-of-type(%u)>[data-test-id=amount-wrapper]",
         selection + 1);
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         site_banner_contents,
         amount_selector);
 
     // Send the tip
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         site_banner_contents,
         "[data-test-id='send-tip-button']");
 
@@ -1073,19 +1073,19 @@ class BraveRewardsBrowserTest
     // Make sure that thank you banner shows correct publisher data
     // (domain and amount)
     {
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           confirmationText);
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           amount_str + " BAT");
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           "Share the good news:");
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           "" + GetBalance() + " BAT");
@@ -1115,7 +1115,7 @@ class BraveRewardsBrowserTest
           ? "[data-test-id='summary-monthly']"
           : "[data-test-id='summary-tips']";
 
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           contents(),
           selector,
           "-" + BalanceDoubleToString(amount) + "BAT");
@@ -1129,7 +1129,7 @@ class BraveRewardsBrowserTest
     // amount
     IsPendingBalanceCorrect();
 
-    rewards_service_browsertest_utils::WaitForElementToEqual(
+    rewards_browsertest_utils::WaitForElementToEqual(
         contents(),
         "#tip-box-total",
         "0.000BAT0.00 USD");
@@ -1137,7 +1137,7 @@ class BraveRewardsBrowserTest
 
   void IsBalanceCorrect() {
     const std::string balance = GetBalance() + " BAT";
-    rewards_service_browsertest_utils::WaitForElementToEqual(
+    rewards_browsertest_utils::WaitForElementToEqual(
         contents(),
         "[data-test-id='balance']",
         balance);
@@ -1145,7 +1145,7 @@ class BraveRewardsBrowserTest
 
   void IsPendingBalanceCorrect() {
     const std::string balance = GetPendingBalance() + " BAT";
-    rewards_service_browsertest_utils::WaitForElementToContain(
+    rewards_browsertest_utils::WaitForElementToContain(
         contents(),
         "[data-test-id='pending-contribution-box']",
         balance);
@@ -1458,21 +1458,21 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
   EnableRewards();
 
   // Toggle rewards off
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='enableMain']");
   std::string value =
-      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      rewards_browsertest_utils::WaitForElementThenGetAttribute(
         contents(),
         "[data-test-id2='enableMain']",
         "data-toggled");
   ASSERT_STREQ(value.c_str(), "false");
 
   // Toggle rewards back on
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='enableMain']");
-  value = rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+  value = rewards_browsertest_utils::WaitForElementThenGetAttribute(
       contents(),
       "[data-test-id2='enableMain']",
       "data-toggled");
@@ -1487,21 +1487,21 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
   EXPECT_TRUE(WaitForLoadStop(contents()));
 
   // toggle auto contribute off
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
   std::string value =
-      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      rewards_browsertest_utils::WaitForElementThenGetAttribute(
         contents(),
         "[data-test-id2='autoContribution']",
         "data-toggled");
   ASSERT_STREQ(value.c_str(), "false");
 
   // toggle auto contribute back on
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
-  value = rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+  value = rewards_browsertest_utils::WaitForElementThenGetAttribute(
       contents(),
       "[data-test-id2='autoContribution']",
       "data-toggled");
@@ -1511,10 +1511,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id='settingsButton']");
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       contents(),
       "#modal");
 }
@@ -1751,11 +1751,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "[id='wallet-panel']",
       "Brave Verified Creator");
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "[id='wallet-panel']",
       publisher);
@@ -1765,7 +1765,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   {
     const std::string favicon =
         "chrome://favicon/size/64@1x/https://" + publisher;
-    rewards_service_browsertest_utils::WaitForElementToContainHTML(
+    rewards_browsertest_utils::WaitForElementToContainHTML(
         popup_contents,
         "#wallet-panel",
         favicon);
@@ -1814,7 +1814,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
@@ -1843,7 +1843,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
@@ -1889,7 +1889,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
@@ -1905,11 +1905,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
   VisitPublisher("duckduckgo.com", verified);
 
   // toggle auto contribute off
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
   std::string value =
-      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      rewards_browsertest_utils::WaitForElementThenGetAttribute(
         contents(),
         "[data-test-id2='autoContribution']",
         "data-toggled");
@@ -1977,7 +1977,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting Twitter while Brave
@@ -1991,7 +1991,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting old Twitter
@@ -2007,7 +2007,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting old Twitter while
@@ -2021,7 +2021,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected into non-Twitter sites
@@ -2037,7 +2037,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting Reddit
@@ -2052,7 +2052,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting Reddit
@@ -2065,7 +2065,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected when visiting Reddit
@@ -2081,7 +2081,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting GitHub
@@ -2096,7 +2096,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting GitHub while Brave
@@ -2110,7 +2110,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected when not visiting GitHub
@@ -2126,7 +2126,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Check pending contributions
@@ -2143,12 +2143,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   TipPublisher(publisher, ContributionType::OneTimeTip);
 
   // Check that link for pending is shown and open modal
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id='reservedAllLink']");
 
   // Make sure that table is populated
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[id='pendingContributionTable'] a",
       publisher);
@@ -2331,7 +2331,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
   IsBalanceCorrect();
 
   // Check that wallet summary shows the appropriate tip amount
-  rewards_service_browsertest_utils::WaitForElementToEqual(
+  rewards_browsertest_utils::WaitForElementToEqual(
       contents(),
       "[data-test-id=summary-tips] [color=contribute] span span",
       ExpectedTipSummaryAmountString());
@@ -2345,18 +2345,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
   ASSERT_TRUE(popup_contents);
 
   // Check if insufficient funds notification is shown
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "#root",
       "Insufficient Funds");
 
   // Close notification
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       popup_contents,
       "[data-test-id=notification-close]");
 
   // Check if verified notification is shown
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "#root",
       "3zsistemi.si");
@@ -2423,12 +2423,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, NotVerifiedWallet) {
   EnableRewards();
 
   // Click on verify button
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "#verify-wallet-button");
 
   // Click on verify button in on boarding
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "#on-boarding-verify-button");
 
@@ -2573,7 +2573,7 @@ IN_PROC_BROWSER_TEST_F(
   IsBalanceCorrect();
 
   // Make sure that tips table is empty
-  rewards_service_browsertest_utils::WaitForElementToEqual(
+  rewards_browsertest_utils::WaitForElementToEqual(
       contents(),
       "#tips-table > div > div",
       "Have you tipped your favorite content creator today?");
@@ -2603,7 +2603,7 @@ IN_PROC_BROWSER_TEST_F(
   IsBalanceCorrect();
 
   // Make sure that tips table is empty
-  rewards_service_browsertest_utils::WaitForElementToEqual(
+  rewards_browsertest_utils::WaitForElementToEqual(
       contents(),
       "#tips-table > div > div",
       "Have you tipped your favorite content creator today?");
@@ -2676,7 +2676,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color='contribute']",
       "-5.000BAT");
@@ -2738,7 +2738,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Check that summary table shows the appropriate contribution
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color='contribute']",
       "-5.000BAT");
@@ -2772,7 +2772,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       popup_contents,
       "#panel-donate-monthly");
 }
@@ -2792,7 +2792,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
   ASSERT_TRUE(popup_contents);
 
   const std::string score =
-      rewards_service_browsertest_utils::WaitForElementThenGetContent(
+      rewards_browsertest_utils::WaitForElementThenGetContent(
           popup_contents,
           "[data-test-id='attention-score']");
   EXPECT_NE(score.find("100%"), std::string::npos);
@@ -2838,26 +2838,26 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(multiple_ac_reconcile_status_[0], ledger::Result::LEDGER_OK);
   ASSERT_EQ(multiple_ac_reconcile_status_[1], ledger::Result::LEDGER_OK);
 
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id='showMonthlyReport']");
 
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       contents(),
       "#transactionTable");
 
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "#transactionTable",
       "-30.000BAT");
 
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "#transactionTable",
       "-20.000BAT");
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-50.000BAT");
@@ -2870,7 +2870,7 @@ IN_PROC_BROWSER_TEST_F(
   EnableRewards();
 
   WaitForPromotionInitialization();
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       OpenRewardsPopup(),
       "[data-test-id=notification-close]",
       false);

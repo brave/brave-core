@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_SERVICE_BROWSERTEST_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_SERVICE_BROWSERTEST_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_BROWSERTEST_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_BROWSERTEST_UTILS_H_
 
 #include <string>
 #include "build/build_config.h"
@@ -13,7 +13,7 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace rewards_service_browsertest_utils {
+namespace rewards_browsertest_utils {
 
 void WaitForElementToAppear(
     content::WebContents* context,
@@ -55,6 +55,6 @@ void DragAndDrop(
 
 void IsMediaTipsInjected(content::WebContents* contents, bool should_appear);
 
-}  // namespace rewards_service_browsertest_utils
+}  // namespace rewards_browsertest_utils
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_SERVICE_BROWSERTEST_UTILS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_BROWSERTEST_UTILS_H_
