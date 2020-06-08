@@ -7,10 +7,11 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
 
-#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                    \
-  analyser_.fudge_factor_ = brave::BraveSessionCache::From(                  \
-                                *Document::From(node.GetExecutionContext())) \
-                                .GetFudgeFactor();
+#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                      \
+  ExecutionContext* context = node.GetExecutionContext();      \
+  analyser_.audio_farbling_callback_ =                         \
+      brave::BraveSessionCache::From(*Document::From(context)) \
+          .GetAudioFarblingCallback(Document::From(context)->GetFrame());
 
 #include "../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
 
