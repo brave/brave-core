@@ -472,6 +472,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL" desc="Brave Sync setup action label">
         Start using sync
       </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE" desc="Title for the Brave Sync settings setup section">
+        Sync Setup
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE" desc="Subtitle for the Brave Sync settings setup section">
+        To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.
+      </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
         Manage your sync'd devices
       </message>
@@ -480,6 +486,24 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_TITLE" desc="Brave Sync settings title">
         Sync Settings
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_SUBTITLE" desc="Brave Sync settings subtitle">
+        Manage what information you would like to sync between devices. These settings only effect this device.
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_TITLE" desc="Brave Sync device list title">
+        Device List
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_SUBTITLE" desc="Brave Sync device list subtitle">
+        The device list below includes all devices in your sync chain. Each device can be managed from any other device.
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_COLUMN" desc="Brave Sync device list table column title for device name">
+        Device Name
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_THIS_DEVICE" desc="Brave Sync device list label for device which is the device the user is currently using">
+        <ph name="DEVICE_NAME">$1<ex>my-computer-1</ex></ph> (This Device)
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_LAST_ACTIVE_COLUMN" desc="Brave Sync device list table column title for last active date">
+        Last Active
       </message>
       <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Brave Sync title.">
         Sync Setup
@@ -555,6 +579,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_SYNC_RESET_BUTTON" desc="The Sync button that opens a modal to leave the current sync chain">
         Leave Sync Chain
+      </message>
+      <message name="IDS_BRAVE_SYNC_RESET_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok with leaving sync">
+        If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
       </message>
       <!-- Help Tips Page -->
       <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help Tips' section of Brave Settings">
