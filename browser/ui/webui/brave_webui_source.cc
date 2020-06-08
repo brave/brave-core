@@ -835,6 +835,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "bootStamp", IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP },
         { "clearButton", IDS_BRAVE_REWARDS_INTERNALS_CLEAR_BUTTON },
         { "contributedAmount", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_AMOUNT },
+        { "contributionCreatedAt", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_CREATED_AT },         // NOLINT
         { "contribution", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION },
         { "contributionProcessor", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_PROCESSOR },         // NOLINT
         { "contributionStep", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP },
