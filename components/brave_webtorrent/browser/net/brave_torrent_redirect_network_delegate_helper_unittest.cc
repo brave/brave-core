@@ -86,8 +86,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        BittorrentMimeTypeRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kBittorrentMimeType);
@@ -116,8 +115,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        OctetStreamMimeTypeRedirectWithTorrentURL) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kOctetStreamMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kOctetStreamMimeType);
@@ -146,13 +144,12 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        OctetStreamMimeTypeRedirectWithTorrentFileName) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kOctetStreamMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kOctetStreamMimeType);
-  orig_response_headers->AddHeader(
-      "Content-Disposition: filename=\"sintel.torrent\"");
+  orig_response_headers->AddHeader("Content-Disposition",
+                                   "filename=\"sintel.torrent\"");
   std::string disposition;
   ASSERT_TRUE(orig_response_headers->GetNormalizedHeader("Content-Disposition",
                                                          &disposition));
@@ -183,8 +180,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        OctetStreamMimeTypeNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kOctetStreamMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kOctetStreamMimeType);
@@ -211,7 +207,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("Content-Type: text/html");
+  orig_response_headers->AddHeader("Content-Type", "text/html");
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, "text/html");
@@ -238,8 +234,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        WebtorrentInitiatedNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kBittorrentMimeType);
@@ -267,8 +262,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        WebtorrentInitiatedViewerURLRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kBittorrentMimeType);
@@ -300,8 +294,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        BittorrentNonMainFrameResourceNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
+  orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, kBittorrentMimeType);
