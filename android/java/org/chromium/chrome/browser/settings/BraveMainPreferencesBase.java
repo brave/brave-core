@@ -5,29 +5,32 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.AlertDialog;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.Preference;
 import android.util.DisplayMetrics;
-import android.os.Build;
+
+import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.components.browser_ui.settings.ChromeBasePreference;
-import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.components.browser_ui.settings.ChromeBasePreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
 
