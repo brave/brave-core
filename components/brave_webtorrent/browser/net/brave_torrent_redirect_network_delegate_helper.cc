@@ -71,7 +71,7 @@ int OnHeadersReceived_TorrentRedirectWork(
       brave_webtorrent_extension_id,
       "/extension/brave_webtorrent2.html?",
       ctx->request_url.spec()}));
-  (*override_response_headers)->AddHeader("Location: " + url.spec());
+  (*override_response_headers)->AddHeader("Location", url.spec());
   *allowed_unsafe_redirect_url = url;
   return net::OK;
 }
