@@ -18,14 +18,12 @@ class SuggestedSitesMatch {
   SuggestedSitesMatch(const std::string& match_string,
                       const GURL& destination_url,
                       const GURL& stripped_destination_url,
-                      const base::string16& display,
-                      const bool allow_default);
+                      const base::string16& display);
   ~SuggestedSitesMatch();
   std::string match_string_;
   GURL destination_url_;
   GURL stripped_destination_url_;
   base::string16 display_;
-  bool allow_default_;
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_MATCH_H_
