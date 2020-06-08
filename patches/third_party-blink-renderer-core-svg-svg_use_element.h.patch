@@ -1,0 +1,37 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_use_element.h b/third_party/blink/renderer/core/svg/svg_use_element.h
+index 3209a63904ab65e2b786a3344e463b8f59f5ef11..dcde6ab1934d6ea4a58bd61629c07d769043ad60 100644
+--- a/third_party/blink/renderer/core/svg/svg_use_element.h
++++ b/third_party/blink/renderer/core/svg/svg_use_element.h
+@@ -31,6 +31,11 @@
+ #include "third_party/blink/renderer/core/svg/svg_uri_reference.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ class SVGUseElement final : public SVGGraphicsElement,
+@@ -102,10 +107,18 @@ class SVGUseElement final : public SVGGraphicsElement,
+     kDontAddObserver,
+   };
+   Element* ResolveTargetElement(ObserveBehavior);
+-  void AttachShadowTree(SVGElement& target);
++  void AttachShadowTree(SVGElement& target
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++          , brave_page_graph::PageGraph* pg
++#endif
++      );
+   void DetachShadowTree();
+   CORE_EXPORT SVGElement* InstanceRoot() const;
+-  SVGElement* CreateInstanceTree(SVGElement& target_root) const;
++  SVGElement* CreateInstanceTree(SVGElement& target_root
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++          , brave_page_graph::PageGraph* pg
++#endif
++      ) const;
+   void ClearResourceReference();
+   bool HasCycleUseReferencing(const ContainerNode& target_instance,
+                               const SVGElement& new_target) const;
