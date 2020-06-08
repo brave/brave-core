@@ -2603,7 +2603,7 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   SetShortRetries(true);
 
   // this is needed because we are using braveledger_request_util::buildURL
-  // directly in BraveRewardsBrowserTest
+  // directly in RewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
   ledger::_environment = ledger::Environment::PRODUCTION;
   #else

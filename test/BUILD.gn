@@ -605,12 +605,12 @@ test("brave_browser_tests") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",
-      "//brave/components/brave_rewards/browser/rewards_database_browsertest.cc",
-      "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
-      "//brave/components/brave_rewards/browser/rewards_state_browsertest.cc",
-      "//brave/components/brave_rewards/browser/rewards_service_browsertest_utils.cc",
-      "//brave/components/brave_rewards/browser/rewards_service_browsertest_utils.h",
+      "//brave/components/brave_rewards/browser/test/rewards_browsertest.cc",
+      "//brave/components/brave_rewards/browser/test/rewards_browsertest_utils.cc",
+      "//brave/components/brave_rewards/browser/test/rewards_browsertest_utils.h",
+      "//brave/components/brave_rewards/browser/test/rewards_database_browsertest.cc",
+      "//brave/components/brave_rewards/browser/test/rewards_notification_browsertest.cc",
+      "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
       "//brave/components/brave_ads/browser/ads_service_browsertest.cc",
       "//brave/components/brave_ads/browser/notification_helper_mock.cc",
       "//brave/components/brave_ads/browser/notification_helper_mock.h",

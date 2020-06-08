@@ -12,7 +12,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 
-class BraveRewardsNotificationBrowserTest
+// npm run test -- brave_browser_tests --filter=RewardsNotificationBrowserTest.*
+
+class RewardsNotificationBrowserTest
     : public InProcessBrowserTest,
       public brave_rewards::RewardsNotificationServiceObserver {
  public:
@@ -96,7 +98,7 @@ class BraveRewardsNotificationBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsNotificationBrowserTest,
+    RewardsNotificationBrowserTest,
     AddGrantNotification) {
   rewards_notification_service_->AddObserver(this);
 
@@ -114,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsNotificationBrowserTest,
+    RewardsNotificationBrowserTest,
     AddGrantNotificationAndDeleteIt) {
   rewards_notification_service_->AddObserver(this);
 
@@ -137,7 +139,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsNotificationBrowserTest,
+    RewardsNotificationBrowserTest,
     AddGrantNotificationAndFakeItAndDeleteIt) {
   rewards_notification_service_->AddObserver(this);
 

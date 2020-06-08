@@ -8,49 +8,21 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "base/memory/weak_ptr.h"
-#include "base/test/bind_test_util.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/database/database_util.h"
-#include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/ledger.h"
-#include "brave/browser/extensions/api/brave_action_api.h"
-#include "brave/common/brave_paths.h"
-#include "brave/common/extensions/extension_constants.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/browser/notification_helper_mock.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
-#include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_types.h"
-#include "content/public/test/browser_test_utils.h"
-#include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/http_request.h"
-#include "net/test/embedded_test_server/http_response.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "sql/database.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -60,7 +32,7 @@
 class RewardsDatabaseBrowserTest
     : public InProcessBrowserTest,
       public brave_rewards::RewardsServiceObserver,
-      public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
+      public base::SupportsWeakPtr<RewardsBrowserTest> {
  public:
   RewardsDatabaseBrowserTest() {
   }

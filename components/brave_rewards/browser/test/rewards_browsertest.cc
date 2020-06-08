@@ -8,46 +8,41 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "base/memory/weak_ptr.h"
 #include "base/test/bind_test_util.h"
-#include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/request/request_sku.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/ledger.h"
-#include "brave/browser/extensions/api/brave_action_api.h"
-#include "brave/common/brave_paths.h"
-#include "brave/common/extensions/extension_constants.h"
-#include "brave/components/brave_rewards/browser/rewards_service_browsertest_utils.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "chrome/browser/ui/browser.h"
+#include "brave/common/brave_paths.h"
+#include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/test/rewards_browsertest_utils.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
-#include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_browser_tests --filter=BraveRewardsBrowserTest.*
+// npm run test -- brave_browser_tests --filter=RewardsBrowserTest.*
 
 using braveledger_request_util::ServerTypes;
 
@@ -148,17 +143,17 @@ namespace brave_test_resp {
   std::string uphold_commit_resp_;
 }  // namespace brave_test_resp
 
-class BraveRewardsBrowserTest
+class RewardsBrowserTest
     : public InProcessBrowserTest,
       public brave_rewards::RewardsServiceObserver,
       public brave_rewards::RewardsNotificationServiceObserver,
-      public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
+      public base::SupportsWeakPtr<RewardsBrowserTest> {
  public:
-  BraveRewardsBrowserTest() {
+  RewardsBrowserTest() {
     // You can do set-up work for each test here
   }
 
-  ~BraveRewardsBrowserTest() override {
+  ~RewardsBrowserTest() override {
     // You can do clean-up work that doesn't throw exceptions here
   }
 
@@ -185,7 +180,7 @@ class BraveRewardsBrowserTest
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(browser_profile));
     rewards_service_->ForTestingSetTestResponseCallback(
-        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+        base::BindRepeating(&RewardsBrowserTest::GetTestResponse,
                             base::Unretained(this)));
     rewards_service_->AddObserver(this);
     if (!rewards_service_->IsWalletInitialized()) {
@@ -307,7 +302,7 @@ class BraveRewardsBrowserTest
 
   std::vector<double> GetSiteBannerTipOptions(
       content::WebContents* site_banner) {
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         site_banner,
         "[data-test-id=amount-wrapper] div span");
     auto options = content::EvalJs(
@@ -331,7 +326,7 @@ class BraveRewardsBrowserTest
 
   static std::vector<double> GetRewardsPopupTipOptions(
       content::WebContents* popup) {
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         popup,
         "option:not(:disabled)");
     auto options = content::EvalJs(
@@ -579,25 +574,25 @@ class BraveRewardsBrowserTest
 
   void GetReconcileInterval() {
     rewards_service()->GetReconcileInterval(
-        base::Bind(&BraveRewardsBrowserTest::OnGetReconcileInterval,
+        base::Bind(&RewardsBrowserTest::OnGetReconcileInterval,
           base::Unretained(this)));
   }
 
   void GetShortRetries() {
     rewards_service()->GetShortRetries(
-        base::Bind(&BraveRewardsBrowserTest::OnGetShortRetries,
+        base::Bind(&RewardsBrowserTest::OnGetShortRetries,
           base::Unretained(this)));
   }
 
   void GetEnvironment() {
     rewards_service()->GetEnvironment(
-        base::Bind(&BraveRewardsBrowserTest::OnGetEnvironment,
+        base::Bind(&RewardsBrowserTest::OnGetEnvironment,
           base::Unretained(this)));
   }
 
   void GetDebug() {
     rewards_service()->GetDebug(
-        base::Bind(&BraveRewardsBrowserTest::OnGetDebug,
+        base::Bind(&RewardsBrowserTest::OnGetDebug,
           base::Unretained(this)));
   }
 
@@ -653,7 +648,7 @@ class BraveRewardsBrowserTest
 
     // Wait for the popup to load
     popup_observer.Wait();
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         popup_contents,
         "[data-test-id='rewards-panel']");
 
@@ -775,10 +770,10 @@ class BraveRewardsBrowserTest
     ui_test_utils::NavigateToURL(browser(), page_url);
     WaitForLoadStop(contents());
     // Opt in and create wallet to enable rewards
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         contents(),
         "[data-test-id='optInAction']");
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         contents(),
         "[data-test-id2='enableMain']");
   }
@@ -811,26 +806,26 @@ class BraveRewardsBrowserTest
 
     // Use the appropriate WebContents
     content::WebContents *contents =
-        use_panel ? OpenRewardsPopup() : BraveRewardsBrowserTest::contents();
+        use_panel ? OpenRewardsPopup() : RewardsBrowserTest::contents();
     ASSERT_TRUE(contents);
 
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
-      rewards_service_browsertest_utils::WaitForElementThenClick(
+      rewards_browsertest_utils::WaitForElementThenClick(
           contents,
           "button");
     } else {
-      rewards_service_browsertest_utils::WaitForElementThenClick(
+      rewards_browsertest_utils::WaitForElementThenClick(
           contents,
           "[data-test-id='claimGrant']");
     }
 
     // Wait for CAPTCHA
-    rewards_service_browsertest_utils::WaitForElementToAppear(
+    rewards_browsertest_utils::WaitForElementToAppear(
         contents,
         "[data-test-id='captcha']");
 
-    rewards_service_browsertest_utils::DragAndDrop(
+    rewards_browsertest_utils::DragAndDrop(
         contents,
         "[data-test-id=\"captcha-triangle\"]",
         "[data-test-id=\"captcha-drop\"]");
@@ -847,18 +842,18 @@ class BraveRewardsBrowserTest
     // Check that promotion notification shows the appropriate amount
     const std::string selector =
         use_panel ? "[id='root']" : "[data-test-id='newTokenGrant']";
-    rewards_service_browsertest_utils::WaitForElementToContain(
+    rewards_browsertest_utils::WaitForElementToContain(
         contents,
         selector,
         "Free Token Grant");
-    rewards_service_browsertest_utils::WaitForElementToContain(
+    rewards_browsertest_utils::WaitForElementToContain(
         contents,
         selector,
         "30.000 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
-      rewards_service_browsertest_utils::WaitForElementThenClick(
+      rewards_browsertest_utils::WaitForElementThenClick(
           contents, "#"
                     "grant-completed-ok");
     }
@@ -901,7 +896,7 @@ class BraveRewardsBrowserTest
     WaitForPublisherListNormalized();
 
     // Make sure site appears in auto-contribute table
-    rewards_service_browsertest_utils::WaitForElementToEqual(
+    rewards_browsertest_utils::WaitForElementToEqual(
         contents(),
         "[data-test-id='ac_link_" + publisher + "']",
         publisher);
@@ -935,7 +930,7 @@ class BraveRewardsBrowserTest
 
   std::string RewardsPageTipSummaryAmount() const {
     const std::string amount =
-        rewards_service_browsertest_utils::WaitForElementThenGetContent(
+        rewards_browsertest_utils::WaitForElementThenGetContent(
         contents(),
         "[data-test-id=summary-tips] [color=contribute] span span");
     return amount + " BAT";
@@ -954,7 +949,7 @@ class BraveRewardsBrowserTest
   }
 
   void RefreshPublisherListUsingRewardsPopup() const {
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         OpenRewardsPopup(),
         "[data-test-id='unverified-check-button']");
   }
@@ -973,7 +968,7 @@ class BraveRewardsBrowserTest
         : "[type='tip']";
 
     // Click button to initiate sending a tip.
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         popup_contents,
         buttonSelector);
 
@@ -1022,12 +1017,12 @@ class BraveRewardsBrowserTest
     std::string amount_selector = base::StringPrintf(
         "div:nth-of-type(%u)>[data-test-id=amount-wrapper]",
         selection + 1);
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         site_banner_contents,
         amount_selector);
 
     // Send the tip
-    rewards_service_browsertest_utils::WaitForElementThenClick(
+    rewards_browsertest_utils::WaitForElementThenClick(
         site_banner_contents,
         "[data-test-id='send-tip-button']");
 
@@ -1073,19 +1068,19 @@ class BraveRewardsBrowserTest
     // Make sure that thank you banner shows correct publisher data
     // (domain and amount)
     {
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           confirmationText);
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           amount_str + " BAT");
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           "Share the good news:");
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
           "body",
           "" + GetBalance() + " BAT");
@@ -1115,7 +1110,7 @@ class BraveRewardsBrowserTest
           ? "[data-test-id='summary-monthly']"
           : "[data-test-id='summary-tips']";
 
-      rewards_service_browsertest_utils::WaitForElementToContain(
+      rewards_browsertest_utils::WaitForElementToContain(
           contents(),
           selector,
           "-" + BalanceDoubleToString(amount) + "BAT");
@@ -1129,7 +1124,7 @@ class BraveRewardsBrowserTest
     // amount
     IsPendingBalanceCorrect();
 
-    rewards_service_browsertest_utils::WaitForElementToEqual(
+    rewards_browsertest_utils::WaitForElementToEqual(
         contents(),
         "#tip-box-total",
         "0.000BAT0.00 USD");
@@ -1137,7 +1132,7 @@ class BraveRewardsBrowserTest
 
   void IsBalanceCorrect() {
     const std::string balance = GetBalance() + " BAT";
-    rewards_service_browsertest_utils::WaitForElementToEqual(
+    rewards_browsertest_utils::WaitForElementToEqual(
         contents(),
         "[data-test-id='balance']",
         balance);
@@ -1145,7 +1140,7 @@ class BraveRewardsBrowserTest
 
   void IsPendingBalanceCorrect() {
     const std::string balance = GetPendingBalance() + " BAT";
-    rewards_service_browsertest_utils::WaitForElementToContain(
+    rewards_browsertest_utils::WaitForElementToContain(
         contents(),
         "[data-test-id='pending-contribution-box']",
         balance);
@@ -1320,7 +1315,7 @@ class BraveRewardsBrowserTest
   void CheckInsufficientFundsForTesting() {
     rewards_service_->MaybeShowNotificationAddFundsForTesting(
         base::BindOnce(
-            &BraveRewardsBrowserTest::ShowNotificationAddFundsForTesting,
+            &RewardsBrowserTest::ShowNotificationAddFundsForTesting,
             AsWeakPtr()));
   }
 
@@ -1445,7 +1440,7 @@ class BraveRewardsBrowserTest
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
 };
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RenderWelcome) {
   // Enable Rewards
   EnableRewards();
   EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(),
@@ -1453,33 +1448,33 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
       "chrome://rewards/");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleRewards) {
   // Enable Rewards
   EnableRewards();
 
   // Toggle rewards off
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='enableMain']");
   std::string value =
-      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      rewards_browsertest_utils::WaitForElementThenGetAttribute(
         contents(),
         "[data-test-id2='enableMain']",
         "data-toggled");
   ASSERT_STREQ(value.c_str(), "false");
 
   // Toggle rewards back on
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='enableMain']");
-  value = rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+  value = rewards_browsertest_utils::WaitForElementThenGetAttribute(
       contents(),
       "[data-test-id2='enableMain']",
       "data-toggled");
   ASSERT_STREQ(value.c_str(), "true");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleAutoContribute) {
   EnableRewards();
 
   // once rewards has loaded, reload page to activate auto-contribute
@@ -1487,39 +1482,39 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
   EXPECT_TRUE(WaitForLoadStop(contents()));
 
   // toggle auto contribute off
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
   std::string value =
-      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      rewards_browsertest_utils::WaitForElementThenGetAttribute(
         contents(),
         "[data-test-id2='autoContribution']",
         "data-toggled");
   ASSERT_STREQ(value.c_str(), "false");
 
   // toggle auto contribute back on
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
-  value = rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+  value = rewards_browsertest_utils::WaitForElementThenGetAttribute(
       contents(),
       "[data-test-id2='autoContribution']",
       "data-toggled");
   ASSERT_STREQ(value.c_str(), "true");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id='settingsButton']");
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       contents(),
       "#modal");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, HandleFlagsSingleArg) {
   testing::InSequence s;
   // SetEnvironment(ledger::Environment::PRODUCTION)
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
@@ -1670,7 +1665,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   RunUntilIdle();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, HandleFlagsMultipleFlags) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
@@ -1691,7 +1686,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
   RunUntilIdle();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
@@ -1713,7 +1708,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
 }
 
 // #1 - Claim promotion via settings page
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaSettingsPage) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ClaimPromotionViaSettingsPage) {
   // Enable Rewards
   EnableRewards();
 
@@ -1723,7 +1718,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaSettingsPage) {
 }
 
 // #2 - Claim promotion via panel
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaPanel) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ClaimPromotionViaPanel) {
   // Enable Rewards
   EnableRewards();
 
@@ -1733,7 +1728,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaPanel) {
 }
 
 // #3 - Panel shows correct publisher data
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        PanelShowsCorrectPublisherData) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -1751,11 +1746,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "[id='wallet-panel']",
       "Brave Verified Creator");
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "[id='wallet-panel']",
       publisher);
@@ -1765,7 +1760,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   {
     const std::string favicon =
         "chrome://favicon/size/64@1x/https://" + publisher;
-    rewards_service_browsertest_utils::WaitForElementToContainHTML(
+    rewards_browsertest_utils::WaitForElementToContainHTML(
         popup_contents,
         "#wallet-panel",
         favicon);
@@ -1773,7 +1768,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // #4a - Visit verified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitVerifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, VisitVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1783,7 +1778,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitVerifiedPublisher) {
 }
 
 // #4b - Visit unverified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitUnverifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, VisitUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1793,7 +1788,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitUnverifiedPublisher) {
 }
 
 // #5 - Auto contribution
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, AutoContribution) {
   // Enable Rewards
   EnableRewards();
 
@@ -1814,13 +1809,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     AutoContributionMultiplePublishers) {
   // Enable Rewards
   EnableRewards();
@@ -1843,13 +1838,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     AutoContributionMultiplePublishersUphold) {
   SetUpUpholdWallet(50.0);
   // Enable Rewards
@@ -1889,13 +1884,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, AutoContributeWhenACOff) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -1905,11 +1900,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
   VisitPublisher("duckduckgo.com", verified);
 
   // toggle auto contribute off
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
   std::string value =
-      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      rewards_browsertest_utils::WaitForElementThenGetAttribute(
         contents(),
         "[data-test-id2='autoContribution']",
         "data-toggled");
@@ -1920,7 +1915,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
 }
 
 // #6 - Tip verified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1931,7 +1926,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
 }
 
 // #7 - Tip unverified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1942,7 +1937,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
 }
 
 // #8 - Recurring tip for verified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RecurringTipForVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
@@ -1954,7 +1949,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // #9 - Recurring tip for unverified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RecurringTipForUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
@@ -1966,7 +1961,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is injected when visiting Twitter
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -1977,12 +1972,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting Twitter while Brave
 // Rewards is disabled
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/twitter");
@@ -1991,11 +1986,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting old Twitter
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsInjectedOnOldTwitter) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2007,12 +2002,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting old Twitter while
 // Brave Rewards is disabled
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsNotInjectedWhenRewardsDisabledOldTwitter) {
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
@@ -2021,11 +2016,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected into non-Twitter sites
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsNotInjectedOnNonTwitter) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2037,11 +2032,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting Reddit
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RedditTipsInjectedOnReddit) {
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -2052,11 +2047,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting Reddit
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RedditTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Reddit in a new tab
   GURL url = https_server()->GetURL("reddit.com", "/reddit");
@@ -2065,11 +2060,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected when visiting Reddit
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RedditTipsNotInjectedOnNonReddit) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2081,11 +2076,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting GitHub
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -2096,12 +2091,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting GitHub while Brave
 // Rewards is disabled
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        GitHubTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to GitHub in a new tab
   GURL url = https_server()->GetURL("github.com", "/github");
@@ -2110,11 +2105,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected when not visiting GitHub
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        GitHubTipsNotInjectedOnNonGitHub) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2126,11 +2121,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
+  rewards_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Check pending contributions
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        PendingContributionTip) {
   const std::string publisher = "example.com";
 
@@ -2143,18 +2138,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   TipPublisher(publisher, ContributionType::OneTimeTip);
 
   // Check that link for pending is shown and open modal
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id='reservedAllLink']");
 
   // Make sure that table is populated
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[id='pendingContributionTable'] a",
       publisher);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
   AddNotificationServiceObserver();
   EnableRewardsViaCode();
@@ -2174,7 +2169,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        InsufficientNotificationForACNotEnoughFunds) {
   AddNotificationServiceObserver();
   EnableRewards();
@@ -2203,7 +2198,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        InsufficientNotificationForInsufficientAmount) {
   AddNotificationServiceObserver();
   EnableRewards();
@@ -2239,7 +2234,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        InsufficientNotificationForVerifiedInsufficientAmount) {
   AddNotificationServiceObserver();
   EnableRewards();
@@ -2276,7 +2271,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Test whether rewards is disabled in private profile.
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PrefsTestInPrivateWindow) {
   EnableRewards();
   auto* profile = browser()->profile();
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(
@@ -2287,7 +2282,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
       brave_rewards::prefs::kBraveRewardsEnabled));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ProcessPendingContributions) {
   AddNotificationServiceObserver();
 
   alter_publisher_list_ = true;
@@ -2331,7 +2326,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
   IsBalanceCorrect();
 
   // Check that wallet summary shows the appropriate tip amount
-  rewards_service_browsertest_utils::WaitForElementToEqual(
+  rewards_browsertest_utils::WaitForElementToEqual(
       contents(),
       "[data-test-id=summary-tips] [color=contribute] span span",
       ExpectedTipSummaryAmountString());
@@ -2345,24 +2340,24 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
   ASSERT_TRUE(popup_contents);
 
   // Check if insufficient funds notification is shown
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "#root",
       "Insufficient Funds");
 
   // Close notification
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       popup_contents,
       "[data-test-id=notification-close]");
 
   // Check if verified notification is shown
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "#root",
       "3zsistemi.si");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2385,7 +2380,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
   ASSERT_EQ(tip_options, std::vector<double>({ 0, 1, 10, 100 }));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
   EnableRewards();
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
@@ -2404,7 +2399,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     SiteBannerDefaultPublisherAmounts) {
   EnableRewards();
 
@@ -2419,16 +2414,16 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, NotVerifiedWallet) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
   EnableRewards();
 
   // Click on verify button
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "#verify-wallet-button");
 
   // Click on verify button in on boarding
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "#on-boarding-verify-button");
 
@@ -2456,7 +2451,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, NotVerifiedWallet) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TipWithVerifiedWallet) {
   SetUpUpholdWallet(50.0);
 
@@ -2473,7 +2468,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   VerifyTip(amount, should_contribute, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
   SetUpUpholdWallet(50.0);
 
@@ -2511,7 +2506,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipConnectedPublisherAnon) {
   // Enable Rewards
   EnableRewards();
 
@@ -2529,7 +2524,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     TipConnectedPublisherAnonAndConnected) {
   SetUpUpholdWallet(50.0);
 
@@ -2550,7 +2545,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     TipConnectedPublisherConnected) {
   SetUpUpholdWallet(50.0, ledger::WalletStatus::CONNECTED);
 
@@ -2573,14 +2568,14 @@ IN_PROC_BROWSER_TEST_F(
   IsBalanceCorrect();
 
   // Make sure that tips table is empty
-  rewards_service_browsertest_utils::WaitForElementToEqual(
+  rewards_browsertest_utils::WaitForElementToEqual(
       contents(),
       "#tips-table > div > div",
       "Have you tipped your favorite content creator today?");
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     TipConnectedPublisherVerified) {
   SetUpUpholdWallet(50.0);
 
@@ -2603,14 +2598,14 @@ IN_PROC_BROWSER_TEST_F(
   IsBalanceCorrect();
 
   // Make sure that tips table is empty
-  rewards_service_browsertest_utils::WaitForElementToEqual(
+  rewards_browsertest_utils::WaitForElementToEqual(
       contents(),
       "#tips-table > div > div",
       "Have you tipped your favorite content creator today?");
 }
 
 // Ensure that we can make a one-time tip of a non-integral amount.
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipNonIntegralAmount) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2624,7 +2619,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
 }
 
 // Ensure that we can make a recurring tip of a non-integral amount.
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RecurringTipNonIntegralAmount) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2640,7 +2635,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
   ASSERT_EQ(reconciled_tip_total_, 2.5);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     RecurringAndPartialAutoContribution) {
   // Enable Rewards
   EnableRewards();
@@ -2676,13 +2671,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color='contribute']",
       "-5.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     MultipleRecurringOverBudgetAndPartialAutoContribution) {
   // Enable Rewards
   EnableRewards();
@@ -2738,19 +2733,19 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Check that summary table shows the appropriate contribution
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color='contribute']",
       "-5.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
-  BraveRewardsBrowserTest,
+  RewardsBrowserTest,
   NewTabPageWidgetEnableRewards) {
   EnableRewards(true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PanelDontDoRequests) {
   // Open the Rewards popup
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
@@ -2759,7 +2754,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
   ASSERT_FALSE(request_made_);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowMonthlyIfACOff) {
   EnableRewardsViaCode();
   rewards_service_->SetAutoContributeEnabled(false);
 
@@ -2772,12 +2767,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       popup_contents,
       "#panel-donate-monthly");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
   EnableRewards();
 
   VisitPublisher("3zsistemi.si", true);
@@ -2792,14 +2787,14 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
   ASSERT_TRUE(popup_contents);
 
   const std::string score =
-      rewards_service_browsertest_utils::WaitForElementThenGetContent(
+      rewards_browsertest_utils::WaitForElementThenGetContent(
           popup_contents,
           "[data-test-id='attention-score']");
   EXPECT_NE(score.find("100%"), std::string::npos);
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     SplitProcessorAutoContribution) {
   SetUpUpholdWallet(50.0);
 
@@ -2838,45 +2833,45 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(multiple_ac_reconcile_status_[0], ledger::Result::LEDGER_OK);
   ASSERT_EQ(multiple_ac_reconcile_status_[1], ledger::Result::LEDGER_OK);
 
-  rewards_service_browsertest_utils::WaitForElementThenClick(
+  rewards_browsertest_utils::WaitForElementThenClick(
       contents(),
       "[data-test-id='showMonthlyReport']");
 
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       contents(),
       "#transactionTable");
 
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "#transactionTable",
       "-30.000BAT");
 
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "#transactionTable",
       "-20.000BAT");
 
   // Check that summary table shows the appropriate contribution
-  rewards_service_browsertest_utils::WaitForElementToContain(
+  rewards_browsertest_utils::WaitForElementToContain(
       contents(),
       "[color=contribute]",
       "-50.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     PromotionHasEmptyPublicKey) {
   promotion_empty_key_ = true;
   EnableRewards();
 
   WaitForPromotionInitialization();
-  rewards_service_browsertest_utils::WaitForElementToAppear(
+  rewards_browsertest_utils::WaitForElementToAppear(
       OpenRewardsPopup(),
       "[data-test-id=notification-close]",
       false);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasReset) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, CheckIfReconcileWasReset) {
   EnableRewards();
   uint64_t current_stamp = 0;
 
@@ -2903,7 +2898,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasReset) {
   run_loop_second.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetACOff) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, CheckIfReconcileWasResetACOff) {
   EnableRewards();
   uint64_t current_stamp = 0;
 

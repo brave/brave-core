@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/rewards_service_browsertest_utils.h"
+#include "brave/components/brave_rewards/browser/test/rewards_browsertest_utils.h"
 
 #include "content/public/test/browser_test_utils.h"
 
-namespace rewards_service_browsertest_utils {
+namespace rewards_browsertest_utils {
 
 static const char kWaitForElementToAppearScript[] = R"(
     const waitForElementToAppear = (selector) => {
@@ -394,4 +394,4 @@ void IsMediaTipsInjected(content::WebContents* context, bool should_appear) {
   WaitForElementToAppear(context, ".action-brave-tip", should_appear);
 }
 
-}  // namespace rewards_service_browsertest_utils
+}  // namespace rewards_browsertest_utils

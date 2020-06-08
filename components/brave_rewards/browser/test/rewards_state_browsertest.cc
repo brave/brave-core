@@ -22,14 +22,13 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest.*
 
 class RewardsStateBrowserTest
     : public InProcessBrowserTest,
       public brave_rewards::RewardsServiceObserver,
-      public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
+      public base::SupportsWeakPtr<RewardsBrowserTest> {
  public:
   RewardsStateBrowserTest() {
   }
