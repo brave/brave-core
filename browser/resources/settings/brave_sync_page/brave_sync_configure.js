@@ -12,6 +12,7 @@ Polymer({
   is: 'settings-brave-sync-configure',
 
   behaviors: [
+    I18nBehavior,
     WebUIListenerBehavior,
   ],
 
@@ -84,7 +85,7 @@ Polymer({
 
   onResetSyncChain_: async function() {
     // TODO(petemill): translate message
-    const messageText = 'If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?'
+    const messageText = this.i18n('braveSyncResetConfirmation')
     const shouldReset = confirm(messageText)
     if (!shouldReset) {
       return

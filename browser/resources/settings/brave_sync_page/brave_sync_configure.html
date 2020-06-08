@@ -1,6 +1,7 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 
 <link rel="import" src="chrome://resources/html/cr.html">
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="../router.html">
 <link rel="import" href="brave_sync_browser_proxy.html">
@@ -87,24 +88,28 @@
 
     <!-- Device list goes here -->
     <section class="devices">
-      <h1>Device List</h1>
-      <p class="subtitle">
-        The device list below includes all devices in your sync chain.
-        Each device can be managed from any other device.
-      </p>
+      <h1>$i18n{braveSyncDeviceListTitle}</h1>
+      <p class="subtitle">$i18n{braveSyncDeviceListSubtitle}</p>
 
       <table class="device-list">
         <thead>
           <tr>
-            <th><span class="device-name">Device Name</span></th>
-            <th>Last Active</th>
+            <th>
+              <span class="device-name">$i18n{braveSyncDeviceListNameColumn}</span>
+            </th>
+            <th>$i18n{braveSyncDeviceListLastActiveColumn}</th>
           </tr>
         </thead>
         <tbody>
           <template is="dom-repeat" items="[[deviceList_]]">
             <tr>
               <td>
-                <span class="device-name">[[item.name]]<template is="dom-if" if="[[item.isCurrentDevice]]"> (This Device)</template></span>
+                <template is="dom-if" if="[[item.isCurrentDevice]]">
+                  <span class="device-name">[[i18n('braveSyncDeviceListNameThisDevice', item.name)]]</span>
+                </template>
+                <template is="dom-if" if="[[!item.isCurrentDevice]]">
+                  <span class="device-name">[[item.name]]</span>
+                </template>
               </td>
               <td>[[getDeviceDisplayDate(item)]]</td>
             </tr>
@@ -125,11 +130,8 @@
 
     <!-- Sync Settings -->
     <section class="settings">
-      <h1>Sync Settings</h1>
-      <p>
-        Manage what information you would like to sync between devices.
-        These settings only effect this device.
-      </p>
+      <h1>$i18n{braveSyncSettingsTitle}</h1>
+      <p>$i18n{braveSyncSettingsSubtitle}</p>
       <settings-sync-controls sync-status="[[syncStatus]]">
       </settings-sync-controls>
     </section>
