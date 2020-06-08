@@ -48,6 +48,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
@@ -369,6 +370,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     const GURL& request_url,
     const GURL& document_url,
     bool is_main_frame,
+    const std::string& method,
     blink::mojom::ReferrerPtr* referrer) {
   DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -377,24 +379,26 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 #endif
 
-  if (!is_main_frame) {
-    // Hide referrers only for top-level navigations, otherwise stick to
-    // Chromium defaults.
-    // https://github.com/brave/brave-browser/issues/8696
-    return;
-  }
-
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AllowReferrers(profile,
                                                              document_url);
   const bool shields_up = brave_shields::GetBraveShieldsEnabled(profile,
                                                                 document_url);
-  // Top-level navigations get empty referrers (brave/brave-browser#3422).
-  GURL replacement_referrer_url;
+  // Some top-level navigations get empty referrers (brave/brave-browser#3422).
+  network::mojom::ReferrerPolicy policy = (*referrer)->policy;
+  if (is_main_frame) {
+    if ((method == "GET" || method == "HEAD") &&
+        !net::registry_controlled_domains::SameDomainOrHost(
+            (*referrer)->url, request_url,
+            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+      policy = network::mojom::ReferrerPolicy::kNever;
+    }
+  }
+
   content::Referrer new_referrer;
-  if (brave_shields::ShouldSetReferrer(
+  if (brave_shields::MaybeChangeReferrer(
       allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
-          replacement_referrer_url, (*referrer)->policy, &new_referrer)) {
+      policy, &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }

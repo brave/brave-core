@@ -3,6 +3,19 @@
 <head>
  <title>Link navigation test</title>
  <script>
+  function run() {
+    const params = new URLSearchParams(document.location.search);
+    const policy = params.get('policy');
+
+    if (policy) {
+      const meta = document.createElement("meta");
+      meta.name = "referrer";
+      meta.content = policy;
+      document.head.appendChild(meta);
+    }
+  }
+ </script>
+ <script>
   function clickLink(url) {
     link = document.getElementById("link");
     link.setAttribute("href", url);
@@ -16,7 +29,7 @@
   }
  </script>
 </head>
-<body>
+<body onload="run()" >
  <a href="" id="link">Navigate away</a>
 </body>
 </html>

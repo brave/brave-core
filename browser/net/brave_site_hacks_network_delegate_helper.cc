@@ -15,6 +15,9 @@
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/common/url_constants.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -89,10 +92,34 @@ void ApplyPotentialQueryStringFilter(const GURL& request_url,
   }
 }
 
+bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
+  if (ctx->tab_origin.SchemeIs(kChromeExtensionScheme)) {
+    return false;
+  }
+
+  if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
+      ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
+    // Frame navigations are handled in NavigationRequest.
+    return false;
+  }
+
+  content::Referrer new_referrer;
+  if (brave_shields::MaybeChangeReferrer(
+          ctx->allow_referrers, ctx->allow_brave_shields,
+          GURL(ctx->referrer), ctx->tab_origin, ctx->request_url,
+          content::Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
+              ctx->referrer_policy), &new_referrer)) {
+    ctx->new_referrer = new_referrer.url;
+    return true;
+  }
+  return false;
+}
+
 }  // namespace
 
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
+  ApplyPotentialReferrerBlock(ctx);
   if (ctx->request_url.has_query()) {
     ApplyPotentialQueryStringFilter(ctx->request_url, &ctx->new_url_spec);
   }

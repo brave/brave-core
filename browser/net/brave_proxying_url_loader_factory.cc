@@ -325,8 +325,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   DCHECK(ctx_);
-  if (!ctx_->new_referrer.is_empty()) {
-    request_.referrer = ctx_->new_referrer;
+  if (ctx_->new_referrer.has_value()) {
+    request_.referrer = ctx_->new_referrer.value();
   }
 
   if (proxied_client_receiver_.is_bound())

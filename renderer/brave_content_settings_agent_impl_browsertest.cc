@@ -291,14 +291,27 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     return value;
   }
 
-  void NavigateDirectlyToPageWithLink(const GURL& url) {
-    NavigateToPageWithLink(url);
-    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
-    EXPECT_EQ(main_frame->GetLastCommittedURL(), url);
+  // Returns the URL from which we are navigating away.
+  GURL NavigateDirectlyToPageWithLink(
+      const GURL& url, const std::string& referrer_policy = {}) {
+    const std::string link_query = referrer_policy.empty() ?
+                                   "" : "?policy=" + referrer_policy;
+    GURL link(link_url().spec() + link_query);
+    ui_test_utils::NavigateToURL(browser(), link);
+
+    std::string clickLink =
+        "domAutomationController.send(clickLink('" + url.spec() + "'));";
+    bool success = false;
+    EXPECT_TRUE(
+        ExecuteScriptAndExtractBool(contents(), clickLink.c_str(), &success));
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(WaitForLoadStop(contents()));
+
+    return link;
   }
 
   void RedirectToPageWithLink(const GURL& url, const GURL& final_url) {
-    NavigateToPageWithLink(url);
+    NavigateDirectlyToPageWithLink(url);
     content::RenderFrameHost* main_frame = contents()->GetMainFrame();
     EXPECT_EQ(main_frame->GetLastCommittedURL(), final_url);
   }
@@ -353,20 +366,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   std::map<GURL, std::string> last_referrers_;
 
   base::ScopedTempDir temp_user_data_dir_;
-
-  void NavigateToPageWithLink(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), link_url());
-    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
-    EXPECT_EQ(main_frame->GetLastCommittedURL(), link_url());
-
-    std::string clickLink =
-        "domAutomationController.send(clickLink('" + url.spec() + "'));";
-    bool success = false;
-    EXPECT_TRUE(
-        ExecuteScriptAndExtractBool(contents(), clickLink.c_str(), &success));
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(WaitForLoadStop(contents()));
-  }
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -681,6 +680,22 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+
+  // Check that a less restrictive policy is not respected.
+  NavigateDirectlyToPageWithLink(
+      cross_site_url(), "no-referrer-when-downgrade");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+
+  // Check that "no-referrer" policy is respected as more restrictive.
+  NavigateDirectlyToPageWithLink(same_origin_url(), "no-referrer");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(same_origin_url()), "");
+
+  NavigateDirectlyToPageWithLink(cross_site_url(), "no-referrer");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+
 }
 
 //TODO(iefremov): https://github.com/brave/brave-browser/issues/7933
@@ -750,6 +765,46 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
             url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+
+  // Check that a less restrictive policy is respected.
+  GURL link = NavigateDirectlyToPageWithLink(
+      cross_site_url(), "no-referrer-when-downgrade");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), link.spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), link.spec());
+
+  // Check that "no-referrer" policy is respected.
+  NavigateDirectlyToPageWithLink(same_origin_url(), "no-referrer");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(same_origin_url()), "");
+
+  NavigateDirectlyToPageWithLink(cross_site_url(), "no-referrer");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+
+  // Check that "same-origin" policy is respected.
+  link = NavigateDirectlyToPageWithLink(same_origin_url(), "same-origin");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), link.spec());
+  EXPECT_EQ(GetLastReferrer(same_origin_url()), link.spec());
+
+  NavigateDirectlyToPageWithLink(same_site_url(), "same-origin");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(same_site_url()), "");
+
+  // Check that "strict-origin" policy is respected.
+  link = NavigateDirectlyToPageWithLink(same_site_url(), "strict-origin");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
+                             link.GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), link.GetOrigin().spec());
+
+  NavigateDirectlyToPageWithLink(same_origin_url(), "strict-origin");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
+                             link.GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(same_origin_url()), link.GetOrigin().spec());
+
+  NavigateDirectlyToPageWithLink(cross_site_url(), "strict-origin");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
+                             link.GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), link.GetOrigin().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

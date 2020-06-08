@@ -14,6 +14,7 @@
   virtual void MaybeHideReferrer(                               \
       BrowserContext* browser_context, const GURL& request_url, \
       const GURL& document_url, bool is_main_frame,             \
+      const std::string& method,                                \
       blink::mojom::ReferrerPtr* referrer) {}
 
 #include "../../../../../content/public/browser/content_browser_client.h"
