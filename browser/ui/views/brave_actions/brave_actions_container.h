@@ -28,7 +28,7 @@
 
 class BraveActionViewController;
 class BraveActionsContainerTest;
-class BraveRewardsBrowserTest;
+class RewardsBrowserTest;
 
 namespace extensions {
 class ExtensionActionManager;
@@ -108,7 +108,7 @@ class BraveActionsContainer : public views::View,
 
  private:
   friend class ::BraveActionsContainerTest;
-  friend class ::BraveRewardsBrowserTest;
+  friend class ::RewardsBrowserTest;
 
   class EmptyExtensionsContainer;
 

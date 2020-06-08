@@ -66,13 +66,13 @@ class GreaselionService;
 #endif
 
 class Profile;
-class BraveRewardsBrowserTest;
+class RewardsBrowserTest;
 
 namespace brave_rewards {
 
 class RewardsDatabase;
 class RewardsNotificationServiceImpl;
-class BraveRewardsBrowserTest;
+class RewardsBrowserTest;
 
 using GetEnvironmentCallback = base::Callback<void(ledger::Environment)>;
 using GetDebugCallback = base::Callback<void(bool)>;
@@ -327,7 +327,7 @@ class RewardsServiceImpl : public RewardsService,
   void ForTestingSetTestResponseCallback(GetTestResponseCallback callback);
 
  private:
-  friend class ::BraveRewardsBrowserTest;
+  friend class ::RewardsBrowserTest;
 
   const base::OneShotEvent& ready() const { return ready_; }
 

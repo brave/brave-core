@@ -42,7 +42,7 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-// npm run test -- brave_browser_tests --filter=BraveRewardsBrowserTest.*
+// npm run test -- brave_browser_tests --filter=RewardsBrowserTest.*
 
 using braveledger_request_util::ServerTypes;
 
@@ -143,17 +143,17 @@ namespace brave_test_resp {
   std::string uphold_commit_resp_;
 }  // namespace brave_test_resp
 
-class BraveRewardsBrowserTest
+class RewardsBrowserTest
     : public InProcessBrowserTest,
       public brave_rewards::RewardsServiceObserver,
       public brave_rewards::RewardsNotificationServiceObserver,
-      public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
+      public base::SupportsWeakPtr<RewardsBrowserTest> {
  public:
-  BraveRewardsBrowserTest() {
+  RewardsBrowserTest() {
     // You can do set-up work for each test here
   }
 
-  ~BraveRewardsBrowserTest() override {
+  ~RewardsBrowserTest() override {
     // You can do clean-up work that doesn't throw exceptions here
   }
 
@@ -180,7 +180,7 @@ class BraveRewardsBrowserTest
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(browser_profile));
     rewards_service_->ForTestingSetTestResponseCallback(
-        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+        base::BindRepeating(&RewardsBrowserTest::GetTestResponse,
                             base::Unretained(this)));
     rewards_service_->AddObserver(this);
     if (!rewards_service_->IsWalletInitialized()) {
@@ -574,25 +574,25 @@ class BraveRewardsBrowserTest
 
   void GetReconcileInterval() {
     rewards_service()->GetReconcileInterval(
-        base::Bind(&BraveRewardsBrowserTest::OnGetReconcileInterval,
+        base::Bind(&RewardsBrowserTest::OnGetReconcileInterval,
           base::Unretained(this)));
   }
 
   void GetShortRetries() {
     rewards_service()->GetShortRetries(
-        base::Bind(&BraveRewardsBrowserTest::OnGetShortRetries,
+        base::Bind(&RewardsBrowserTest::OnGetShortRetries,
           base::Unretained(this)));
   }
 
   void GetEnvironment() {
     rewards_service()->GetEnvironment(
-        base::Bind(&BraveRewardsBrowserTest::OnGetEnvironment,
+        base::Bind(&RewardsBrowserTest::OnGetEnvironment,
           base::Unretained(this)));
   }
 
   void GetDebug() {
     rewards_service()->GetDebug(
-        base::Bind(&BraveRewardsBrowserTest::OnGetDebug,
+        base::Bind(&RewardsBrowserTest::OnGetDebug,
           base::Unretained(this)));
   }
 
@@ -806,7 +806,7 @@ class BraveRewardsBrowserTest
 
     // Use the appropriate WebContents
     content::WebContents *contents =
-        use_panel ? OpenRewardsPopup() : BraveRewardsBrowserTest::contents();
+        use_panel ? OpenRewardsPopup() : RewardsBrowserTest::contents();
     ASSERT_TRUE(contents);
 
     // Claim promotion via settings page or panel, as instructed
@@ -1315,7 +1315,7 @@ class BraveRewardsBrowserTest
   void CheckInsufficientFundsForTesting() {
     rewards_service_->MaybeShowNotificationAddFundsForTesting(
         base::BindOnce(
-            &BraveRewardsBrowserTest::ShowNotificationAddFundsForTesting,
+            &RewardsBrowserTest::ShowNotificationAddFundsForTesting,
             AsWeakPtr()));
   }
 
@@ -1440,7 +1440,7 @@ class BraveRewardsBrowserTest
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
 };
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RenderWelcome) {
   // Enable Rewards
   EnableRewards();
   EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(),
@@ -1448,7 +1448,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
       "chrome://rewards/");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleRewards) {
   // Enable Rewards
   EnableRewards();
 
@@ -1474,7 +1474,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
   ASSERT_STREQ(value.c_str(), "true");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleAutoContribute) {
   EnableRewards();
 
   // once rewards has loaded, reload page to activate auto-contribute
@@ -1503,7 +1503,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
   ASSERT_STREQ(value.c_str(), "true");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
   rewards_browsertest_utils::WaitForElementThenClick(
@@ -1514,7 +1514,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
       "#modal");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, HandleFlagsSingleArg) {
   testing::InSequence s;
   // SetEnvironment(ledger::Environment::PRODUCTION)
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
@@ -1665,7 +1665,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   RunUntilIdle();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, HandleFlagsMultipleFlags) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
@@ -1686,7 +1686,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
   RunUntilIdle();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
@@ -1708,7 +1708,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
 }
 
 // #1 - Claim promotion via settings page
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaSettingsPage) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ClaimPromotionViaSettingsPage) {
   // Enable Rewards
   EnableRewards();
 
@@ -1718,7 +1718,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaSettingsPage) {
 }
 
 // #2 - Claim promotion via panel
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaPanel) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ClaimPromotionViaPanel) {
   // Enable Rewards
   EnableRewards();
 
@@ -1728,7 +1728,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaPanel) {
 }
 
 // #3 - Panel shows correct publisher data
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        PanelShowsCorrectPublisherData) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -1768,7 +1768,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // #4a - Visit verified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitVerifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, VisitVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1778,7 +1778,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitVerifiedPublisher) {
 }
 
 // #4b - Visit unverified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitUnverifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, VisitUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1788,7 +1788,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitUnverifiedPublisher) {
 }
 
 // #5 - Auto contribution
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, AutoContribution) {
   // Enable Rewards
   EnableRewards();
 
@@ -1815,7 +1815,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
       "-20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     AutoContributionMultiplePublishers) {
   // Enable Rewards
   EnableRewards();
@@ -1844,7 +1844,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       "-20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     AutoContributionMultiplePublishersUphold) {
   SetUpUpholdWallet(50.0);
   // Enable Rewards
@@ -1890,7 +1890,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       "-20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, AutoContributeWhenACOff) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -1915,7 +1915,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
 }
 
 // #6 - Tip verified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1926,7 +1926,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
 }
 
 // #7 - Tip unverified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
@@ -1937,7 +1937,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
 }
 
 // #8 - Recurring tip for verified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RecurringTipForVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
@@ -1949,7 +1949,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // #9 - Recurring tip for unverified publisher
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RecurringTipForUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
@@ -1961,7 +1961,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is injected when visiting Twitter
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -1977,7 +1977,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
 
 // Brave tip icon is not injected when visiting Twitter while Brave
 // Rewards is disabled
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/twitter");
@@ -1990,7 +1990,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is injected when visiting old Twitter
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsInjectedOnOldTwitter) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2007,7 +2007,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 // Brave tip icon is not injected when visiting old Twitter while
 // Brave Rewards is disabled
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsNotInjectedWhenRewardsDisabledOldTwitter) {
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
@@ -2020,7 +2020,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is not injected into non-Twitter sites
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TwitterTipsNotInjectedOnNonTwitter) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2036,7 +2036,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is injected when visiting Reddit
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RedditTipsInjectedOnReddit) {
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -2051,7 +2051,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
 }
 
 // Brave tip icon is not injected when visiting Reddit
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RedditTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Reddit in a new tab
   GURL url = https_server()->GetURL("reddit.com", "/reddit");
@@ -2064,7 +2064,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is not injected when visiting Reddit
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        RedditTipsNotInjectedOnNonReddit) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2080,7 +2080,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is injected when visiting GitHub
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -2096,7 +2096,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
 
 // Brave tip icon is not injected when visiting GitHub while Brave
 // Rewards is disabled
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        GitHubTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to GitHub in a new tab
   GURL url = https_server()->GetURL("github.com", "/github");
@@ -2109,7 +2109,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Brave tip icon is not injected when not visiting GitHub
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        GitHubTipsNotInjectedOnNonGitHub) {
   // Enable Rewards
   EnableRewardsViaCode();
@@ -2125,7 +2125,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Check pending contributions
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        PendingContributionTip) {
   const std::string publisher = "example.com";
 
@@ -2149,7 +2149,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       publisher);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
   AddNotificationServiceObserver();
   EnableRewardsViaCode();
@@ -2169,7 +2169,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        InsufficientNotificationForACNotEnoughFunds) {
   AddNotificationServiceObserver();
   EnableRewards();
@@ -2198,7 +2198,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        InsufficientNotificationForInsufficientAmount) {
   AddNotificationServiceObserver();
   EnableRewards();
@@ -2234,7 +2234,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        InsufficientNotificationForVerifiedInsufficientAmount) {
   AddNotificationServiceObserver();
   EnableRewards();
@@ -2271,7 +2271,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 // Test whether rewards is disabled in private profile.
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PrefsTestInPrivateWindow) {
   EnableRewards();
   auto* profile = browser()->profile();
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(
@@ -2282,7 +2282,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
       brave_rewards::prefs::kBraveRewardsEnabled));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ProcessPendingContributions) {
   AddNotificationServiceObserver();
 
   alter_publisher_list_ = true;
@@ -2357,7 +2357,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
       "3zsistemi.si");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2380,7 +2380,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDefaultMonthlyTipChoices) {
   ASSERT_EQ(tip_options, std::vector<double>({ 0, 1, 10, 100 }));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
   EnableRewards();
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
@@ -2399,7 +2399,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     SiteBannerDefaultPublisherAmounts) {
   EnableRewards();
 
@@ -2414,7 +2414,7 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, NotVerifiedWallet) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
   EnableRewards();
 
   // Click on verify button
@@ -2451,7 +2451,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, NotVerifiedWallet) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        TipWithVerifiedWallet) {
   SetUpUpholdWallet(50.0);
 
@@ -2468,7 +2468,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   VerifyTip(amount, should_contribute, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
   SetUpUpholdWallet(50.0);
 
@@ -2506,7 +2506,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipConnectedPublisherAnon) {
   // Enable Rewards
   EnableRewards();
 
@@ -2524,7 +2524,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     TipConnectedPublisherAnonAndConnected) {
   SetUpUpholdWallet(50.0);
 
@@ -2545,7 +2545,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     TipConnectedPublisherConnected) {
   SetUpUpholdWallet(50.0, ledger::WalletStatus::CONNECTED);
 
@@ -2575,7 +2575,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     TipConnectedPublisherVerified) {
   SetUpUpholdWallet(50.0);
 
@@ -2605,7 +2605,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 // Ensure that we can make a one-time tip of a non-integral amount.
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, TipNonIntegralAmount) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2619,7 +2619,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
 }
 
 // Ensure that we can make a recurring tip of a non-integral amount.
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RecurringTipNonIntegralAmount) {
   EnableRewards();
 
   ClaimPromotionViaCode();
@@ -2635,7 +2635,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
   ASSERT_EQ(reconciled_tip_total_, 2.5);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     RecurringAndPartialAutoContribution) {
   // Enable Rewards
   EnableRewards();
@@ -2677,7 +2677,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       "-5.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     MultipleRecurringOverBudgetAndPartialAutoContribution) {
   // Enable Rewards
   EnableRewards();
@@ -2740,12 +2740,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(
-  BraveRewardsBrowserTest,
+  RewardsBrowserTest,
   NewTabPageWidgetEnableRewards) {
   EnableRewards(true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PanelDontDoRequests) {
   // Open the Rewards popup
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
@@ -2754,7 +2754,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
   ASSERT_FALSE(request_made_);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowMonthlyIfACOff) {
   EnableRewardsViaCode();
   rewards_service_->SetAutoContributeEnabled(false);
 
@@ -2772,7 +2772,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
       "#panel-donate-monthly");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
   EnableRewards();
 
   VisitPublisher("3zsistemi.si", true);
@@ -2794,7 +2794,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     SplitProcessorAutoContribution) {
   SetUpUpholdWallet(50.0);
 
@@ -2859,7 +2859,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(
-    BraveRewardsBrowserTest,
+    RewardsBrowserTest,
     PromotionHasEmptyPublicKey) {
   promotion_empty_key_ = true;
   EnableRewards();
@@ -2871,7 +2871,7 @@ IN_PROC_BROWSER_TEST_F(
       false);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasReset) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, CheckIfReconcileWasReset) {
   EnableRewards();
   uint64_t current_stamp = 0;
 
@@ -2898,7 +2898,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasReset) {
   run_loop_second.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetACOff) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, CheckIfReconcileWasResetACOff) {
   EnableRewards();
   uint64_t current_stamp = 0;
 

@@ -28,7 +28,7 @@
 class RewardsStateBrowserTest
     : public InProcessBrowserTest,
       public brave_rewards::RewardsServiceObserver,
-      public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
+      public base::SupportsWeakPtr<RewardsBrowserTest> {
  public:
   RewardsStateBrowserTest() {
   }
