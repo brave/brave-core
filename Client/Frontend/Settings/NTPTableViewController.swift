@@ -51,9 +51,7 @@ class NTPTableViewController: TableViewController {
     }
     
     private func loadSections() {
-        var section = Section(rows: [Row.boolRow(title: Strings.NTP.settingsAutoOpenKeyboard,
-                                                 option: Preferences.NewTabPage.autoOpenKeyboard),
-                                     Row.boolRow(title: Strings.NTP.settingsBackgroundImages,
+        var section = Section(rows: [Row.boolRow(title: Strings.NTP.settingsBackgroundImages,
                                                  option: Preferences.NewTabPage.backgroundImages)])
         
         if Preferences.NewTabPage.backgroundImages.value {

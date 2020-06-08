@@ -9,6 +9,7 @@ import Data
 import Shared
 import BraveShared
 import BraveUI
+import Storage
 
 private let log = Logger.rewardsLogger
 
@@ -256,14 +257,8 @@ extension BrowserViewController: RewardsDataSource {
         return url.host
     }
     
-    func retrieveFavicon(for pageURL: URL, faviconURL: URL?, completion: @escaping (FaviconData?) -> Void) {
-        let favicon = UIImageView()
-        DispatchQueue.main.async {
-            favicon.setIconMO(nil, forURL: faviconURL ?? pageURL, completed: { color, url in
-                guard let image = favicon.image else { return }
-                completion(FaviconData(image: image, backgroundColor: color))
-            })
-        }
+    func retrieveFavicon(for pageURL: URL, on imageView: UIImageView) {
+        imageView.loadFavicon(for: pageURL)
     }
     
     func pageHTML(for tabId: UInt64, completionHandler: @escaping (String?) -> Void) {

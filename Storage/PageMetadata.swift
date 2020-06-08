@@ -11,6 +11,7 @@ enum MetadataKeys: String {
     case type = "type"
     case provider = "provider"
     case favicon = "icon"
+    case largeIcon = "largeIcon"
     case keywords = "keywords"
 }
 
@@ -26,6 +27,7 @@ public struct PageMetadata {
     public let type: String?
     public let providerName: String?
     public let faviconURL: String?
+    public let largeIconURL: String?
     public let keywordsString: String?
     public var keywords: Set<String> {
         guard let string = keywordsString else {
@@ -36,7 +38,7 @@ public struct PageMetadata {
         return Set(strings)
     }
 
-    public init(id: Int?, siteURL: String, mediaURL: String?, title: String?, description: String?, type: String?, providerName: String?, faviconURL: String? = nil, keywords: String? = nil) {
+    public init(id: Int?, siteURL: String, mediaURL: String?, title: String?, description: String?, type: String?, providerName: String?, faviconURL: String? = nil, largeIconURL: String? = nil, keywords: String? = nil) {
         self.id = id
         self.siteURL = siteURL
         self.mediaURL = mediaURL
@@ -45,6 +47,7 @@ public struct PageMetadata {
         self.type = type
         self.providerName = providerName
         self.faviconURL = faviconURL
+        self.largeIconURL = largeIconURL
         self.keywordsString = keywords
     }
 
@@ -55,6 +58,6 @@ public struct PageMetadata {
 
         return PageMetadata(id: nil, siteURL: siteURL, mediaURL: dict[MetadataKeys.imageURL.rawValue] as? String,
                             title: dict[MetadataKeys.title.rawValue] as? String, description: dict[MetadataKeys.description.rawValue] as? String,
-                            type: dict[MetadataKeys.type.rawValue] as? String, providerName: dict[MetadataKeys.provider.rawValue] as? String, faviconURL: dict[MetadataKeys.favicon.rawValue] as? String, keywords: dict[MetadataKeys.keywords.rawValue] as? String)
+                            type: dict[MetadataKeys.type.rawValue] as? String, providerName: dict[MetadataKeys.provider.rawValue] as? String, faviconURL: dict[MetadataKeys.favicon.rawValue] as? String, largeIconURL: dict[MetadataKeys.largeIcon.rawValue] as? String, keywords: dict[MetadataKeys.keywords.rawValue] as? String)
     }
 }

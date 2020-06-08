@@ -792,6 +792,7 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         let tab = tabs[indexPath.item]
 
         tabCell.titleText.text = tab.displayTitle
+        tabCell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
 
         if !tab.displayTitle.isEmpty {
             tabCell.accessibilityLabel = tab.displayTitle
@@ -801,8 +802,16 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         tabCell.isAccessibilityElement = true
         tabCell.accessibilityHint = Strings.tabTrayCellCloseAccessibilityHint
 
-        if let favIcon = tab.displayFavicon, let url = URL(string: favIcon.url) {
-            tabCell.favicon.setIcon(favIcon, forURL: url)
+        tabCell.favicon.clearMonogramFavicon()
+        
+        // Tab may not be restored and so may not include a tab URL yet...
+        if let favicon = tab.displayFavicon, let url = favicon.url.asURL {
+            WebImageCacheManager.shared.load(from: url, completion: { image, _, _, _, loadedURL in
+                guard url == loadedURL else { return }
+                tabCell.favicon.image = image ?? FaviconFetcher.defaultFaviconImage
+            })
+        } else if let url = tab.url, !url.isLocal {
+            tabCell.favicon.loadFavicon(for: url)
         } else {
             tabCell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
         }

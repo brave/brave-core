@@ -1,10 +1,36 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
 import BraveShared
+import BraveUI
+
+class StatsSectionProvider: NSObject, NTPSectionProvider {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func registerCells(to collectionView: UICollectionView) {
+        collectionView.register(NewTabCollectionViewCell<BraveShieldStatsView>.self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return collectionView.dequeueReusableCell(for: indexPath) as NewTabCollectionViewCell<BraveShieldStatsView>
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        size.height = 110
+        return size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+}
 
 class BraveShieldStatsView: UIView, Themeable {
     func applyTheme(_ theme: Theme) {
@@ -19,25 +45,25 @@ class BraveShieldStatsView: UIView, Themeable {
     
     fileprivate let millisecondsPerItem: Int = 50
     
-    lazy var adsStatView: StatView = {
+    private lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.shieldsAdAndTrackerStats
         return statView
     }()
-
-    lazy var httpsStatView: StatView = {
+    
+    private lazy var httpsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.shieldsHttpsStats
         return statView
     }()
     
-    lazy var timeStatView: StatView = {
+    private lazy var timeStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.shieldsTimeStats
         return statView
     }()
     
-    lazy var stats: [StatView] = {
+    private lazy var stats: [StatView] = {
         return [self.adsStatView, self.httpsStatView, self.timeStatView]
     }()
     
@@ -79,10 +105,6 @@ class BraveShieldStatsView: UIView, Themeable {
         timeStatView.stat = timeSaved
     }
     
-    func applyTheme(_ themeName: String) {
-        
-    }
-    
     var timeSaved: String {
         get {
             let estimatedMillisecondsSaved = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * millisecondsPerItem
@@ -115,7 +137,7 @@ class BraveShieldStatsView: UIView, Themeable {
     }
 }
 
-class StatView: UIView {
+private class StatView: UIView {
     var color: UIColor = UX.greyJ {
         didSet {
             statLabel.appearanceTextColor = color
@@ -175,7 +197,7 @@ class StatView: UIView {
     }
 }
 
-fileprivate extension Int {
+private extension Int {
     var decimalFormattedString: String? {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal

@@ -42,7 +42,6 @@ private struct BrowserViewControllerUX {
 }
 
 class BrowserViewController: UIViewController {
-    var favoritesViewController: FavoritesViewController?
     var webViewContainer: UIView!
     var topToolbar: TopToolbarView!
     var tabsBar: TabsBarViewController!
@@ -220,6 +219,10 @@ class BrowserViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
+        for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
+            tab.newTabPageViewController = nil
+        }
     }
 
     fileprivate func didInit() {
@@ -426,10 +429,7 @@ class BrowserViewController: UIViewController {
         }
 
         view.setNeedsUpdateConstraints()
-        if let home = favoritesViewController {
-            home.view.setNeedsUpdateConstraints()
-        }
-
+        
         if let tab = tabManager.selectedTab,
                let webView = tab.webView {
             updateURLBar()
@@ -540,6 +540,8 @@ class BrowserViewController: UIViewController {
         }
         
         KeyboardHelper.defaultHelper.addDelegate(self)
+        
+        view.addLayoutGuide(pageOverlayLayoutGuide)
 
         webViewContainerBackdrop = UIView()
         webViewContainerBackdrop.backgroundColor = UIColor.Photon.grey50
@@ -742,7 +744,6 @@ class BrowserViewController: UIViewController {
         
         updateTabCountUsingTabManager(tabManager)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
-        favoritesViewController?.updateDuckDuckGoVisibility()
         
         if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger.selectedTabId == 0 {
             rewards.ledger.selectedTabId = tabId
@@ -979,6 +980,9 @@ class BrowserViewController: UIViewController {
         }
         statusBarOverlay.isHidden = false
     }
+    
+    /// A layout guide defining where the favorites and NTP overlay are placed
+    private let pageOverlayLayoutGuide = UILayoutGuide()
 
     override func updateViewConstraints() {
         webViewContainer.snp.remakeConstraints { make in
@@ -999,7 +1003,7 @@ class BrowserViewController: UIViewController {
         
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
-        favoritesViewController?.view.snp.remakeConstraints { make in
+        pageOverlayLayoutGuide.snp.remakeConstraints { make in
             webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
             
             make.left.right.equalTo(self.view)
@@ -1026,73 +1030,129 @@ class BrowserViewController: UIViewController {
         
         super.updateViewConstraints()
     }
-
-    fileprivate func showHomePanelController(inline: Bool) {
-        homePanelIsInline = inline
-
-        if favoritesViewController == nil {
-            let homePanelController = FavoritesViewController(profile: profile,
-                                                              fromOverlay: !inline,
-                                                              rewards: rewards,
-                                                              backgroundDataSource: backgroundDataSource)
-            homePanelController.delegate = self
-            homePanelController.view.alpha = 0
-            homePanelController.applyTheme(Theme.of(tabManager.selectedTab))
-
-            self.favoritesViewController = homePanelController
-
-            addChild(homePanelController)
-            view.addSubview(homePanelController.view)
-            homePanelController.didMove(toParent: self)
+    
+    private(set) var favoritesController: FavoritesViewController?
+    
+    private func displayFavoritesController() {
+        if favoritesController == nil {
+            let favoritesController = FavoritesViewController { [weak self] bookmark, action in
+                self?.handleBookmarkAction(bookmark: bookmark, action: action)
+            }
+            favoritesController.applyTheme(Theme.of(tabManager.selectedTab))
+            self.favoritesController = favoritesController
+            
+            addChild(favoritesController)
+            view.addSubview(favoritesController.view)
+            favoritesController.didMove(toParent: self)
+            
+            favoritesController.view.snp.makeConstraints {
+                $0.top.leading.trailing.equalTo(pageOverlayLayoutGuide)
+                $0.bottom.equalTo(view)
+            }
         }
-        guard let homePanelController = self.favoritesViewController else {
+        guard let favoritesController = favoritesController else { return }
+        favoritesController.view.alpha = 0.0
+        let animator = UIViewPropertyAnimator(duration: 0.2, dampingRatio: 1.0) {
+            favoritesController.view.alpha = 1
+        }
+        animator.addCompletion { _ in
+            self.webViewContainer.accessibilityElementsHidden = true
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
+        }
+        animator.startAnimation()
+    }
+    
+    private func hideFavoritesController() {
+        guard let controller = favoritesController else { return }
+        self.favoritesController = nil
+        UIView.animate(withDuration: 0.1, delay: 0, options: [.beginFromCurrentState], animations: {
+            controller.view.alpha = 0.0
+        }, completion: { _ in
+            controller.willMove(toParent: nil)
+            controller.view.removeFromSuperview()
+            controller.removeFromParent()
+            self.webViewContainer.accessibilityElementsHidden = false
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
+        })
+    }
+    
+    fileprivate func showNewTabPageController() {
+        guard let selectedTab = tabManager.selectedTab else { return }
+        if selectedTab.newTabPageViewController == nil {
+            let ntpController = NewTabPageViewController(tab: selectedTab,
+                                                         profile: profile,
+                                                         dataSource: backgroundDataSource,
+                                                         rewards: rewards)
+            ntpController.delegate = self
+            selectedTab.newTabPageViewController = ntpController
+        }
+        guard let ntpController = selectedTab.newTabPageViewController else {
             assertionFailure("homePanelController is still nil after assignment.")
             return
         }
         
-        // We have to run this animation, even if the view is already showing because there may be a hide animation running
-        // and we want to be sure to override its results.
-        UIView.animate(withDuration: 0.2, animations: { () -> Void in
-            homePanelController.view.alpha = 1
-        }, completion: { finished in
-            if finished {
-                self.webViewContainer.accessibilityElementsHidden = true
-                UIAccessibility.post(notification: .screenChanged, argument: nil)
+        if let activeController = activeNewTabPageViewController, ntpController != activeController {
+            // Remove active controller first
+            activeController.willMove(toParent: nil)
+            activeController.removeFromParent()
+            activeController.view.removeFromSuperview()
+        }
+        
+        if ntpController.parent == nil {
+            activeNewTabPageViewController = ntpController
+            
+            addChild(ntpController)
+            view.addSubview(ntpController.view)
+            ntpController.didMove(toParent: self)
+            
+            ntpController.view.snp.makeConstraints {
+                $0.edges.equalTo(pageOverlayLayoutGuide)
             }
-        })
-        view.setNeedsUpdateConstraints()
-    }
-    
-    fileprivate func hideHomePanelController() {
-        if let controller = favoritesViewController {
-            self.favoritesViewController = nil
-            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: { () -> Void in
-                controller.view.alpha = 0
-            }, completion: { _ in
-                controller.willMove(toParent: nil)
-                controller.view.removeFromSuperview()
-                controller.removeFromParent()
-                self.webViewContainer.accessibilityElementsHidden = false
-                UIAccessibility.post(notification: .screenChanged, argument: nil)
-
-                // Refresh the reading view toolbar since the article record may have changed
-                if let readerMode = self.tabManager.selectedTab?.getContentScript(name: ReaderMode.name()) as? ReaderMode, readerMode.state == .active {
-                    self.showReaderModeBar(animated: false)
+            ntpController.view.layoutIfNeeded()
+            
+            // We have to run this animation, even if the view is already showing because there may be a hide animation running
+            // and we want to be sure to override its results.
+            UIView.animate(withDuration: 0.2, animations: {
+                ntpController.view.alpha = 1
+            }, completion: { finished in
+                if finished {
+                    self.webViewContainer.accessibilityElementsHidden = true
+                    UIAccessibility.post(notification: .screenChanged, argument: nil)
                 }
             })
         }
+    }
+    
+    private(set) weak var activeNewTabPageViewController: NewTabPageViewController?
+    
+    fileprivate func hideActiveNewTabPageController() {
+        guard let controller = activeNewTabPageViewController else { return }
+        UIView.animate(withDuration: 0.2, animations: {
+            controller.view.alpha = 0.0
+        }, completion: { finished in
+            controller.willMove(toParent: nil)
+            controller.view.removeFromSuperview()
+            controller.removeFromParent()
+            self.webViewContainer.accessibilityElementsHidden = false
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
+            
+            // Refresh the reading view toolbar since the article record may have changed
+            if let readerMode = self.tabManager.selectedTab?.getContentScript(name: ReaderMode.name()) as? ReaderMode, readerMode.state == .active {
+                self.showReaderModeBar(animated: false)
+            }
+        })
     }
 
     fileprivate func updateInContentHomePanel(_ url: URL?) {
         if !topToolbar.inOverlayMode {
             guard let url = url else {
-                hideHomePanelController()
+                hideActiveNewTabPageController()
                 return
             }
             if url.isAboutHomeURL && !url.isErrorPageURL {
-                showHomePanelController(inline: true)
+                showNewTabPageController()
             } else if !url.isLocalUtility || url.isReaderModeURL || url.isErrorPageURL {
-                hideHomePanelController()
+                hideActiveNewTabPageController()
             }
         }
     }
@@ -1118,9 +1178,7 @@ class BrowserViewController: UIViewController {
             make.left.right.bottom.equalTo(self.view)
             return
         }
-
-        favoritesViewController?.view?.isHidden = true
-
+        
         searchController!.didMove(toParent: self)
     }
     
@@ -1171,7 +1229,6 @@ class BrowserViewController: UIViewController {
             searchController.view.removeFromSuperview()
             searchController.removeFromParent()
             self.searchController = nil
-            favoritesViewController?.view?.isHidden = false
             searchLoader = nil
         }
     }
@@ -1485,7 +1542,7 @@ class BrowserViewController: UIViewController {
         let freshTab = tabManager.selectedTab
         
         // Focus field only if requested and background images are not supported
-        if attemptLocationFieldFocus && Preferences.NewTabPage.autoOpenKeyboard.value {
+        if attemptLocationFieldFocus {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
                 // Without a delay, the text field fails to become first responder
                 // Check that the newly created tab is still selected.
@@ -1528,7 +1585,7 @@ class BrowserViewController: UIViewController {
             // We don't allow to have 2 same favorites.
             if !FavoritesHelper.isAlreadyAdded(url) {
                 let addToFavoritesActivity = AddToFavoritesActivity() { [weak tab] in
-                    FavoritesHelper.add(url: url, title: tab?.displayTitle, color: nil)
+                    FavoritesHelper.add(url: url, title: tab?.displayTitle)
                 }
                 activities.append(addToFavoritesActivity)
             }
@@ -1693,16 +1750,13 @@ class BrowserViewController: UIViewController {
             return .flyDown
         }
         popup.addButton(title: Strings.DDGCalloutEnable, type: .primary) { [weak self] in
-            self?.duckDuckGoPopup = nil
-            
-            if self?.profile == nil {
-                return .flyUp
-            }
+            guard let self = self else { return .flyUp }
+            self.duckDuckGoPopup = nil
             
             Preferences.Popups.duckDuckGoPrivateSearch.value = true
-            self?.profile.searchEngines.setDefaultEngine(OpenSearchEngine.EngineNames.duckDuckGo, forType: .privateMode)
+            self.profile.searchEngines.setDefaultEngine(OpenSearchEngine.EngineNames.duckDuckGo, forType: .privateMode)
             
-            self?.favoritesViewController?.updateDuckDuckGoVisibility()
+            self.tabManager.selectedTab?.newTabPageViewController?.updateDuckDuckGoVisibility()
             
             return .flyUp
         }
@@ -1887,7 +1941,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
-        if let selectedTab = tabManager.selectedTab, favoritesViewController == nil {
+        if let selectedTab = tabManager.selectedTab, favoritesController == nil {
             // Only scroll to top if we are not showing the home view controller
             selectedTab.webView?.scrollView.setContentOffset(CGPoint.zero, animated: true)
         }
@@ -1942,12 +1996,13 @@ extension BrowserViewController: TopToolbarDelegate {
             if let toast = clipboardBarDisplayHandler?.clipboardToast {
                 toast.removeFromSuperview()
             }
-            showHomePanelController(inline: false)
+            displayFavoritesController()
         }
     }
 
     func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
         hideSearchController()
+        hideFavoritesController()
         updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
     }
 
@@ -2397,20 +2452,6 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         updateInContentHomePanel(selected?.url as URL?)
-        
-        // Kind of a goofy work around for specific edge-case
-        // If creating a new tab from the tab tray, the focus behavior is kind of weird.
-        // Also, due to the significant time required before url focus (closing tab tray, creating tab, selecting)
-        //   the time delay here is pretty significant, hence a check inside to prevent highlighting the url bar
-        //   if the user navigated to a new tab.
-        if Preferences.NewTabPage.autoOpenKeyboard.value {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(800)) {
-                // Only highlight location bar if still on a NTP.
-                if tabManager.selectedTab?.url?.isAboutHomeURL == true {
-                    self.focusLocationField()
-                }
-            }
-        }
     }
 
     func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
@@ -3312,15 +3353,19 @@ extension BrowserViewController: TabTrayDelegate {
 extension BrowserViewController: Themeable {
     
     var themeableChildren: [Themeable?]? {
-        return [topToolbar, toolbar, readerModeBar, tabsBar, favoritesViewController]
+        return [topToolbar,
+                toolbar,
+                readerModeBar,
+                tabsBar,
+                tabManager.selectedTab?.newTabPageViewController,
+                favoritesController]
     }
     
     func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        
         theme.applyAppearanceProperties()
+        
+        styleChildren(theme: theme)
 
-        view.backgroundColor = theme.colors.home
         statusBarOverlay.backgroundColor = topToolbar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()
     }
@@ -3432,21 +3477,66 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     }
 }
 
-extension BrowserViewController: FavoritesDelegate {
-    
-    func didSelect(input: String) {
+extension BrowserViewController: NewTabPageDelegate {
+    func navigateToInput(_ input: String, inNewTab: Bool, switchingToPrivateMode: Bool) {
+        let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing || switchingToPrivateMode
+        if inNewTab {
+            tabManager.addTabAndSelect(isPrivate: isPrivate)
+        }
         processAddressBar(text: input, visitType: .bookmark)
     }
     
-    func didTapDuckDuckGoCallout() {
+    func handleBookmarkAction(bookmark: Bookmark, action: BookmarksAction) {
+        guard let url = bookmark.url else { return }
+        switch action {
+        case .opened(let inNewTab, let switchingToPrivateMode):
+            navigateToInput(
+                url,
+                inNewTab: inNewTab,
+                switchingToPrivateMode: switchingToPrivateMode
+            )
+        case .edited:
+            guard let title = bookmark.displayTitle, let urlString = bookmark.url else { return }
+            let editPopup = UIAlertController.userTextInputAlert(title: Strings.editBookmark, message: urlString,
+                                                                 startingText: title, startingText2: bookmark.url,
+                                                                 placeholder2: urlString,
+                                                                 keyboardType2: .URL) { callbackTitle, callbackUrl in
+                                                                    if let cTitle = callbackTitle, !cTitle.isEmpty, let cUrl = callbackUrl, !cUrl.isEmpty {
+                                                                        if URL(string: cUrl) != nil {
+                                                                            bookmark.update(customTitle: cTitle, url: cUrl)
+                                                                        }
+                                                                    }
+            }
+            self.present(editPopup, animated: true)
+        }
+    }
+
+    
+    func focusURLBar() {
+        focusLocationField()
+    }
+    
+    func tappedDuckDuckGoCallout() {
         presentDuckDuckGoCallout(force: true)
     }
     
-    func didTapShowMoreFavorites() {
-        topToolbarDidTapBookmarkButton(nil, favorites: true)
+    func brandedImageCalloutActioned(_ state: BrandedImageCalloutState) {
+        guard state.hasDetailViewController else { return }
+        
+        let vc = NTPLearnMoreViewController(state: state, rewards: rewards)
+        
+        vc.linkHandler = { [weak self] url in
+            self?.tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+        }
+        
+        addChild(vc)
+        view.addSubview(vc.view)
+        vc.view.snp.remakeConstraints {
+            $0.right.top.bottom.leading.equalToSuperview()
+        }
     }
-
-    func didTapQRButton(url: URL) {
+    
+    func tappedQRCodeButton(url: URL) {
         let qrPopup = QRCodePopupView(url: url)
         qrPopup.showWithType(showType: .flyUp)
         qrPopup.qrCodeShareHandler = { [weak self] url in
@@ -3455,23 +3545,7 @@ extension BrowserViewController: FavoritesDelegate {
             let viewRect = CGRect(origin: self.view.center, size: .zero)
             
             self.presentActivityViewController(url, sourceView: self.view, sourceRect: viewRect,
-                                                arrowDirection: .any)
-        }
-    }
-
-    func openBrandedImageCallout(state: BrandedImageCalloutState?) {
-        guard let state = state, state.hasDetailViewController else { return }
-        
-        let vc = NTPLearnMoreViewController(state: state, rewards: rewards)
-        
-        vc.linkHandler = { [weak self] url in
-            self?.tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-        }
-
-        addChild(vc)
-        view.addSubview(vc.view)
-        vc.view.snp.remakeConstraints {
-            $0.right.top.bottom.leading.equalToSuperview()
+                                               arrowDirection: .any)
         }
     }
 }

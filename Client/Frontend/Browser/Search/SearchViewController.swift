@@ -486,11 +486,8 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
                 cell.imageView?.contentMode = .scaleAspectFit
                 cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
                 cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
-                cell.imageView?.setIcon(site.icon, forURL: site.tileURL, scaledDefaultIconSize: CGSize(width: SearchViewControllerUX.iconSize, height: SearchViewControllerUX.iconSize), completed: { (color, url) in
-                    if site.tileURL == url {
-                        cell.imageView?.backgroundColor = color
-                    }
-                })
+                cell.imageView?.image = UIImage()
+                cell.imageView?.loadFavicon(for: site.tileURL)
             }
             return cell
         }
