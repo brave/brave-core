@@ -93,6 +93,10 @@ friend NodeHTMLElement;
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& tag_name,
     const ElementType element_type = kElementTypeDefault);
+  // Used if it's possible the element has already been added previously
+  void TryRegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
+    const WTF::String& tag_name,
+    const ElementType element_type = kElementTypeDefault);
   void RegisterHTMLTextNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& text);
   void RegisterHTMLElementNodeInserted(const blink::DOMNodeId node_id,
