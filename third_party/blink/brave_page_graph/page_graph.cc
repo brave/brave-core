@@ -418,6 +418,13 @@ void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
   AddEdge(new EdgeNodeCreate(this, acting_node, new_node));
 }
 
+void PageGraph::TryRegisterHTMLElementNodeCreated(const DOMNodeId node_id,
+    const String& tag_name, const ElementType element_type) {
+  if(element_nodes_.count(node_id) == 0) {
+    RegisterHTMLElementNodeCreated(node_id, tag_name, element_type);
+  }
+}
+
 void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
     const String& text) {
   string local_text(text.Utf8().data());
