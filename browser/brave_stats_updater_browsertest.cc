@@ -54,6 +54,9 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
         testing_local_state_.registry());
     InitEmbeddedTestServer();
     SetBaseUpdateURLForTest();
+    // Simulate sentinel file creation as if chrome_browser_main.h was called,
+    // which reads in the sentinel value and caches it.
+    brave::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
   void InitEmbeddedTestServer() {

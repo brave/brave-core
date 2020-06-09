@@ -36,16 +36,13 @@ class BraveStatsUpdaterTest: public testing::Test {
     brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
+    brave::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
 
   void SetCurrentTimeForTest(const base::Time& current_time) {
     brave::BraveStatsUpdaterParams::SetCurrentTimeForTest(current_time);
-  }
-
-  void SetFirstRunForTest(bool first_run) {
-    brave::BraveStatsUpdaterParams::SetFirstRunForTest(first_run);
   }
 
  private:
@@ -168,7 +165,6 @@ TEST_F(BraveStatsUpdaterTest, HasDateOfInstallationFirstRun) {
 
   ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
   SetCurrentTimeForTest(current_time);
-  SetFirstRunForTest(true);
 
   brave::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), kToday, kThisWeek, kThisMonth);
