@@ -246,18 +246,22 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   generateTabs = () => {
     const tabs = [
       {
+        id: 'transactions',
         title: getLocale('transactions'),
         content: this.getTransactionTable
       },
       {
+        id: 'monthlyContributions',
         title: getLocale('monthlyContributions'),
         content: this.getMonthlyContributionTable
       },
       {
+        id: 'autoContribute',
         title: getLocale('autoContribute'),
         content: this.getAutoContributeTable
       },
       {
+        id: 'oneTimeDonation',
         title: getLocale('oneTimeDonation'),
         content: this.getOneTimeTips
       }
@@ -277,6 +281,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
                   selected={selected}
                   isFirst={isFirst}
                   onClick={this.changeTab.bind(this, i)}
+                  data-test-id={`tab-${tab.id}`}
                 >
                   {tab.title}
                 </Tab>
@@ -284,7 +289,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
             })
           }
         </Tabs>
-        <TabContent>
+        <TabContent data-test-id={`activity-table-body`}>
           {tabs[this.state.currentTab].content()}
         </TabContent>
       </>
