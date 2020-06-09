@@ -301,9 +301,9 @@ pole...</translation>
 <translation id="6991128190741664836">Hiljem</translation>
 <translation id="8851456134224363571">Tore! Kas sooviksite jätta meile hinnangu Play Store’is?</translation>
 <translation id="8668962040900592974">Andke meile teada, kuidas saaksime paremaks saada</translation>
-<translation id="4406937629441301400">Teenige seda pilti vaadates tokeneid ja makske need loojatele edasi <ph name="LOE EDASI"/></translation>
+<translation id="4406937629441301400">Teenige seda pilti vaadates tokeneid ja makske need loojatele edasi <ph name="LEARN_MORE"/></translation>
 <translation id="8693132237667961044">Teenige selle pildi vaatamiseks tokeneid. Lülitage sisse teeni ja anna, et nõuda oma osa.</translation>
-<translation id="6632345639591919543">Seda pilti vaadates teenite tokeneid.\n<ph name="LOE_EDASI">1%1$s</ph></translation>
+<translation id="6632345639591919543">Seda pilti vaadates teenite tokeneid.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Selle pildi vaatamise eest teenite tokeneid.</translation>
 <translation id="7952665812649667034">Ma olen valmis teenima ja andma</translation>
 <translation id="7877201489035217175">Lisateave spondeeritud piltide kohta</translation>
