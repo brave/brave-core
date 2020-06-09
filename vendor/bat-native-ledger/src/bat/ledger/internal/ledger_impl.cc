@@ -1316,12 +1316,6 @@ void LedgerImpl::GetAllPromotions(
   bat_database_->GetAllPromotions(callback);
 }
 
-void LedgerImpl::DeletePromotionList(
-    const std::vector<std::string>& ids,
-    ledger::ResultCallback callback) {
-  bat_database_->DeletePromotionList(ids, callback);
-}
-
 void LedgerImpl::SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {

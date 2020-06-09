@@ -417,33 +417,6 @@ void DatabasePromotion::OnGetAllRecords(
   callback(std::move(map));
 }
 
-void DatabasePromotion::DeleteRecordList(
-    const std::vector<std::string>& ids,
-    ledger::ResultCallback callback) {
-  if (ids.empty()) {
-    BLOG(1, "List of ids is empty");
-    callback(ledger::Result::LEDGER_OK);
-    return;
-  }
-
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s WHERE promotion_id IN (%s)",
-      kTableName,
-      GenerateStringInCase(ids).c_str());
-
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
-  transaction->commands.push_back(std::move(command));
-
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
-}
-
 void DatabasePromotion::SaveClaimId(
     const std::string& promotion_id,
     const std::string& claim_id,

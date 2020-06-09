@@ -37,10 +37,6 @@ class DatabasePromotion: public DatabaseTable {
   void GetAllRecords(
       ledger::GetAllPromotionsCallback callback);
 
-  void DeleteRecordList(
-      const std::vector<std::string>& ids,
-      ledger::ResultCallback callback);
-
   void SaveClaimId(
       const std::string& promotion_id,
       const std::string& claim_id,

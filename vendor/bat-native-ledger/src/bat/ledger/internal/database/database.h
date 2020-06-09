@@ -245,10 +245,6 @@ class Database {
 
   void GetAllPromotions(ledger::GetAllPromotionsCallback callback);
 
-  void DeletePromotionList(
-      const std::vector<std::string>& ids,
-      ledger::ResultCallback callback);
-
   void SavePromotionClaimId(
       const std::string& promotion_id,
       const std::string& claim_id,
