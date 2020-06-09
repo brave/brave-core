@@ -7,7 +7,6 @@
 
 #import "DataController.h"
 #import "BATLedgerDatabase.h"
-#import "RewardsLogger.h"
 #import "CoreDataModels.h"
 #import "BATBraveLedger.h"
 #import "brave/components/brave_rewards/browser/rewards_database.h"
@@ -45,10 +44,6 @@
   [super setUp];
 
   DataController.shared = [[TempTestDataController alloc] init];
-  
-  [BATBraveRewardsLogger configureWithLogCallback:^(int verboseLevel, int line, NSString * _Nonnull file, NSString * _Nonnull data) {
-    NSLog(@"%@", data);
-  } withFlush:^{ }];
   
   const auto name = [NSString stringWithFormat:@"%@.sqlite", NSUUID.UUID.UUIDString];
   self.dbPath = [NSTemporaryDirectory() stringByAppendingPathComponent:name];
