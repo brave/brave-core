@@ -4094,13 +4094,6 @@ Only you can see what your camera is looking at. The site can't see your camera'
       <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_FAILURE" desc="Toast message displayed when there is a failure in playing back a paint preview for the demo. Used in paint preview demo mode." translateable="false">
         Paint Preview playback failed.
       </message>
-
-      <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
-        Show top sites in autocomplete
-      </message>
-      <message name="IDS_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES_TITLE" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
-        Show suggested sites in autocomplete
-      </message>
     </messages>
   </release>
 </grit>

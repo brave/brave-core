@@ -1152,6 +1152,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_REQUIRED_MINIUM_BALANCE" desc="Text for verify wallet minimum required balance.">
         A minimum balance of 25 BAT is required to verify.
       </message>
+      <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
+        Show top sites in autocomplete
+      </message>
+      <message name="IDS_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES_TITLE" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
+        Show suggested sites in autocomplete
+      </message>
     </messages>
   </release>
 </grit>
