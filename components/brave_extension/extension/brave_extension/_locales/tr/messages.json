@@ -55,6 +55,18 @@
     "message": "Siteler arası iz sürücüler engellendi",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "İzleyiciler ve reklamlar engellendi (agresif)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "İzleyiciler ve reklamlar engellendi (standart)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Tüm izleyici ve reklamlara izin ver",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "Bağlantılar HTTPS'e yükseltildi",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

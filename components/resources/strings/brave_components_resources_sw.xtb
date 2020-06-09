@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sw">
-<translation id="4339730410920731698">Matangazo na Vifuatiliaji Vimezuiwa</translation>
+<translation id="5288293905681750318">Vifuatiliaji na matangazo yamezuiwa</translation>
 <translation id="2313532038420432247">Vipandishaji vya HTTPS</translation>
-<translation id="7679428712334662192">Kadirio la Muda Uliookolewa</translation>
-<translation id="8411095021655121794">Kipimo Data Kilichokadiriwa Kimehifadhiwa</translation>
+<translation id="788493840831967104">Wakati wa kuhifadhiwa</translation>
+<translation id="2318592590318590295">Kipimo Data kimehifadhiwa</translation>
 <translation id="5206618227023752085">Tovuti maarufu imeondolewa.</translation>
 <translation id="2079545284768500474">Tendua</translation>
 <translation id="6040143037577758943">Funga</translation>
@@ -34,6 +34,8 @@
 <translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
 <translation id="3446024864193919737">Onyesha Brave Rewards</translation>
 <translation id="6274899614137380422">Onyesha Binance</translation>
+<translation id="5551238871320268996">Brave Pamoja</translation>
+<translation id="4799744519698299121">Kadi zaidi</translation>
 <translation id="3870475560794762985">Onyesha Picha Zinazodhaminiwa</translation>
 <translation id="2875302873837723333">tovuti maarufu</translation>
 <translation id="8173998484743827990">Takwimu za Brave</translation>
@@ -177,30 +179,35 @@
 <translation id="2852258589816753010">BAT haitumiki kwa sasa katika eneo lako. Tafadhali rejelea <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> kwa masasisho.</translation>
 <translation id="2564425876266960486">Hitilafu wakati wa kuunda kadi ya Brave Browser BAT</translation>
 <translation id="7422678632904904341">Kiasi:</translation>
-<translation id="5923611424721173182">Suluhisho la Sasa</translation>
+<translation id="5025866799968038247">Taarifa ya salio</translation>
+<translation id="1642443162274867084">Waleti imeundwa</translation>
 <translation id="5457113250005438886">Si sahihi</translation>
 <translation id="7687511348932340294">Mzizi wa Taarifa Muhimu:</translation>
-<translation id="7180611975245234373">Onyesha upya</translation>
-<translation id="3292669871848742742">Kiwango cha Kujaribu Tena:</translation>
-<translation id="2026565607270413420">Hatua ya Kujaribu Tena:</translation>
-<translation id="2461822463642141190">Ya Sasa</translation>
-<translation id="4516620156082016131">Ya Mwisho</translation>
-<translation id="68932200202726709">Kiwango cha malipo</translation>
-<translation id="8654112359048700618">Andaa</translation>
-<translation id="419610644429723755">Ushahidi</translation>
-<translation id="8851921643210663606">Suluhisha</translation>
-<translation id="839736845446313156">Sajili</translation>
-<translation id="583281660410589416">Haijulikani</translation>
-<translation id="1822318934917272490">Kutazama</translation>
-<translation id="9165277745676544288">Amua</translation>
-<translation id="7311077304864384837">Washindi</translation>
-<translation id="5771119664738037159">Brave Rewards haijawezeshwa. Iwezeshe kwa kutembelea</translation>
-<translation id="4235360514405112390">Halali</translation>
-<translation id="2700943637868737038">Kitambulisho Kutazama:</translation>
-<translation id="3576689061489548788">Kitambulisho cha Malipo ya Waleti:</translation>
 <translation id="758790787422117549">Kitambulisho Binafsi</translation>
+<translation id="3671566813999349838">Kiasi</translation>
+<translation id="751223241692981112">Imedaiwa kwenye</translation>
+<translation id="3913089081619091801">Kitambulisho cha Dai</translation>
+<translation id="972516647724462985">Itaisha muda saa</translation>
+<translation id="3970114302595058915">Kitambulisho</translation>
+<translation id="8511126279042126492">Ukuzaji wa historia</translation>
+<translation id="4250680216510889253">La</translation>
+<translation id="1426410128494586442">Ndio</translation>
+<translation id="8102423594645796250">Ukuzaji</translation>
+<translation id="7805768142964895445">Hali</translation>
+<translation id="5565735124758917034">Inatumika</translation>
+<translation id="2196753816869469810">Imethibitishwa</translation>
+<translation id="1098052486217676340">Imekamilika</translation>
+<translation id="8000774832235490222">Zaidi</translation>
+<translation id="2448312741937722512">Aina</translation>
+<translation id="5334568292977026472">UGP</translation>
+<translation id="3798449238516105146">Toleo</translation>
+<translation id="7180611975245234373">Onyesha upya</translation>
+<translation id="5771119664738037159">Brave Rewards haijawezeshwa. Iwezeshe kwa kutembelea</translation>
+<translation id="6672180611914406778">Jumla ya salio</translation>
 <translation id="2223892939866251845">Kitambulisho cha Mtumiaji</translation>
-<translation id="1642443162274867084">Waleti imeundwa</translation>
+<translation id="4235360514405112390">Halali</translation>
+<translation id="2326487656644542536">Taarifa ya pochi</translation>
+<translation id="3576689061489548788">Kitambulisho cha Malipo ya Waleti:</translation>
 <translation id="5094577350232361255">kuhusu</translation>
 <translation id="4918086044614829423">Kubali</translation>
 <translation id="5916290544882167205">Programu ya Brave. Brave ni alama ya biashara iliyosajiliwa ya Brave Software. Majina ya tovuti yanaweza kuwa alama za biashara au alama za biashara zilizosajiliwa za mmiliki wa tovuti.</translation>
@@ -220,7 +227,6 @@
 <translation id="5317780077021120954">Hifadhi</translation>
 <translation id="5441565662498481293">Unatuma zawadi kiotomatiki kwa:</translation>
 <translation id="2827387977307390755">Ruhusu michango katika</translation>
-<translation id="3671566813999349838">Kiasi</translation>
 <translation id="3819257035322786455">Hifadhi Mbadala</translation>
 <translation id="1312977698678162065">Lipwa kwa kutazama matangazo muafaka ambayo yanaheshimu faragha yako.</translation>
 <translation id="4396256076373444156">Kusanya pointi unapotazama matangazo yanayofaa ambayo yanaheshimu faragha yako.</translation>
@@ -281,6 +287,7 @@
 <translation id="7513117072433487074">{{currency}} isiyotumiwa kufikia tarehe ya mwisho itarejeshwa kiotomatiki kwenye Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Tarehe ya Mwisho ya Kuisha Ruzuku</translation>
 <translation id="2104073734684466851">Ruzuku</translation>
+<translation id="2291686779354188838">Hujambo, {{name}}!</translation>
 <translation id="1389143276807887637">ingiza</translation>
 <translation id="7335371657242627509">Jumuisha kwenye Auto-Contribute</translation>
 <translation id="8446884382197647889">Jifunze Zaidi</translation>
@@ -323,7 +330,6 @@
 <translation id="6381574025952123568">Sakio Anzia</translation>
 <translation id="532275381857891532">Historia ya Matangazo ya Siku 7</translation>
 <translation id="4923459931733593730">Malipo</translation>
-<translation id="5693657857413982604">Malipo yanayotolewa kila siku ya {{day}} ya mwezi.</translation>
 <translation id="6104680658798556671">Malipo hayakufanyika.</translation>
 <translation id="3138528956349114724">Tovuti zilizobanwa sasa</translation>
 <translation id="2337632028350283479">Hivi ndivyo michango ya kila mwezi hufanya kazi:</translation>
@@ -371,6 +377,8 @@
 <translation id="8014425282125849700">Mara moja moja, utakuwa unapewa ruzuku ya kianzio kutioka Brave. Hakikisha upo tayari kwa ofa hiyo!</translation>
 <translation id="2185598236335233939">Tafuta arifa unapoendelea kutumia Brave. Salio lako la BAT Points litaongezeka kwa kila tangazo unalotazama.</translation>
 <translation id="1370034647041840967">Pata kianzio kwa umakini wako kwenye matangazo na walipe moja kwa moja watengeneza maudhui unaowathamini!</translation>
+<translation id="1701701253000051237">Ongeza, toa na udhibiti fedha kwenye <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Pochi yako ya Brave inaendeshwa na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
 <translation id="6401272292123354754">Brave Rewards imejengwa kwenye Basic Attention Token. jifunze Zaidi kuhusu BAT</translation>
 <translation id="7823359893981882407">hapa</translation>
 <translation id="4483635855837696643">Rejesha Wallet Yako</translation>
@@ -413,7 +421,6 @@
 <translation id="3983104749597726322">Tuma Ujumbe wa Tweet</translation>
 <translation id="5636843789453098076">Mzawadie @{{ user }} kwa ujumbe wake wa tweet:</translation>
 <translation id="4242384385082203046">Mzawadie @{{ user }} kwa ujumbe wake wa tweet!</translation>
-<translation id="2448312741937722512">Aina</translation>
 <translation id="8772672608371898774">Mchapishaji wa Brave Aliyethibitishwa</translation>
 <translation id="5050370287908180130">Tazama Taarifa ya Kila Mwezi kwa Maelezo Zaidi</translation>
 <translation id="8615803647903750175">Shughuli ya Walet</translation>
@@ -464,6 +471,7 @@
 <translation id="3699674790322420653">Kamilisha uthibitishaji pochi</translation>
 <translation id="9200453331904391567">Ondoa kwenye Brave Rewards</translation>
 <translation id="46988480989545156">Thibitisha pochi</translation>
+<translation id="4986087720311945758">Huduma yetu ya pochi inatolewa na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
 <translation id="6771734945114850124">Tafadhali kuwa na kitambulisho chako kinachotolewa na serikali.</translation>
 <translation id="8697510149346635496">Toa BAT unayopata kwa kutazama matangazo yanayoheshimu faragha</translation>
 <translation id="1481480653609649134">Nunua BAT ya ziada kwa kadi za mikopo na vyanzo vingine</translation>
@@ -497,6 +505,9 @@
 <translation id="6759185676704303656">Unalipwa ili kutazama picha hii ya mandharinyuma.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/> kuhusu picha zinazodhaminiwa katika Brave Rewards.</translation>
 <translation id="6113004497629356998">Ficha picha zinazodhaminiwa</translation>
+<translation id="5977237145327845546">Anzisha simu ya video ya faragha na marafiki na wenzako.</translation>
+<translation id="5850325887346946383">Anzisha simu ya video</translation>
+<translation id="3651550649176056334">Kuhusu data yako</translation>
 <translation id="223536150967420869">Nunua</translation>
 <translation id="5110244215256675209">Nunua Sarafu Pepe</translation>
 <translation id="5749014321384313843">Ningependa kutumia...</translation>
@@ -523,8 +534,9 @@
 <translation id="3909193058140362331">Ubadilishaji haukuchakatwa. Tafadhali jaribu tena.</translation>
 <translation id="5721542149042740780">Kiasi ulichoweka kinazidi kiasi ulichonacho sasa.</translation>
 <translation id="7144878232160441200">Jaribu tena</translation>
-<translation id="92653931566014756">Anwani Haipatikani</translation>
+<translation id="7431764818502638140">Ikiwa Haipatikani</translation>
 <translation id="6409345078064530735">Anwani ya Mwekaji Pesa</translation>
+<translation id="7153116947319792513">Memo ya Kuweka Pesa</translation>
 <translation id="1383876407941801731">Tafuta</translation>
 <translation id="6432284126416751397">Thibitisha Ubadilishanaji</translation>
 <translation id="1301340234286078471">Badilisha</translation>
@@ -599,6 +611,13 @@
 <translation id="5286379413446391050">Haikuweza kuunganishwa na seva za Kuoanisha</translation>
 <translation id="2410472020237369473">Saa ya kompyuta yako inaweza kuwa imerekebishwa kwa muda usio sahihi au majira ya muda yasiyo sahihi. Kagua mipangilio yako ya saa.</translation>
 <translation id="5655621391922317800">Pochi za Crypto</translation>
+<translation id="616639131065447379">Karibu Brave Crypto Wallets</translation>
+<translation id="1740464057879304704">Crypto Wallets hukuwezesha kutumia cryptocurrency na rasilimali zinazohusinana katika Brave. Crypto Wallets hutumia tokeni za Ethereum kama vile ETH na BAT, na pia vikusanywa na hukuwezesha kufanya kazi na programu na kandarasi nyingine mahiri. Yote haya yanawalenga watu wanaofahamu Ethereum na mifumo mingine ya blockchain au wanaofurahia kujifunza.</translation>
+<translation id="4855440621031541830">Tumia tu Crypto Wallets ikiwa unakubali kwamba ni wewe unayewajibikia hatari zote zinazohusishwa na matumizi haya na kuwa Brave Software haiwajibiki wala kulaumiwa kwa hasara yoyote ikiwa ni pamoja na hasara zinazoandamana ambazo unaweza kupitia kutokana na matumizi haya.</translation>
+<translation id="3187473319809074178">Yote haya ni tofauti na</translation>
+<translation id="8327818101454798856">Kwa hivyo ikiwa ulikuwa ukisubiri kutvovuti zao uzipendazo, nenda hapo badala yake.</translation>
+<translation id="4894106830958548828">Ninaelewa</translation>
+<translation id="453977518730680921">Fungua video/picha kiotomati</translation>
 <translation id="7701466644604753106">WASHA Speedreader</translation>
 <translation id="763042262431778831">ZIMA Speedreader</translation>
 </translationbundle>

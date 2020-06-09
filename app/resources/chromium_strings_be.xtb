@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Дапамагаць палепшыць Brave, адпраўляючы ў Brave Software справаздачы аб збоях і <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Уваход у сетку – Brave</translation>
+<translation id="8745514854244955877">Brave – Уваход у сетку – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Уваход у сетку</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave (бэта-версія)</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +47,12 @@
 <translation id="5785919770853225148">Brave захавае гэты пароль у вашым Уліковым запісе Brave Software. Вам не трэба запамінаць яго.</translation>
 <translation id="8211837073776713955">Brave апавяшчае вас у выпадку ўзлому вашых пароляў</translation>
 <translation id="113959764510199339">Brave спрабуе паказаць паролі.</translation>
+<translation id="96347285368592620">Brave спрабуе скапіраваць паролі.</translation>
+<translation id="2953892977076487219">Brave спрабуе змяніць паролі.</translation>
 <translation id="7503098128120083822">Brave запытвае дазвол на экспартаванне вашых пароляў.</translation>
 <translation id="8285294305439559616">Brave спрабуе паказаць паролі. Каб дазволіць гэта, увядзіце пароль Windows.</translation>
+<translation id="8090497651549769448">Brave спрабуе скапіраваць паролі. Каб дазволіць гэта, увядзіце пароль Windows.</translation>
+<translation id="3861679447659630159">Brave спрабуе змяніць паролі. Каб дазволіць гэта, увядзіце пароль Windows.</translation>
 <translation id="5918095577778020936">Brave запытвае дазвол на экспартаванне вашых пароляў. Каб дазволіць гэта, увядзіце пароль Windows.</translation>
 <translation id="8320964054148936490">На гэтым камп'ютары ўжо ўсталявана навейшая версія Brave. Калі праграма не працуе, выдаліце Brave і паўтарыце спробу.</translation>
 <translation id="7691786510374174420">Збой усталявання з-за нявызначанай памылкі. Калі Brave зараз запушчаны, закрыйце яго і паўтарыце спробу.</translation>
@@ -192,7 +199,7 @@
 <translation id="3262506503470845422">Атрымаць дапамогу па Brave</translation>
 <translation id="1864557848095568223">Ідзе абнаўленне Brave</translation>
 <translation id="1786715389543715322">Brave абнаўляецца (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Амаль гатова! Каб завяршыць абнаўленне, перазапусціце Brave.</translation>
+<translation id="7914115000169617076">Амаль гатова! Каб завяршыць абнаўленне, перазапусціце Brave. Вокны ў рэжыме інкогніта не будуць адкрыты паўторна.</translation>
 <translation id="8208853227947884571">Brave абноўлены</translation>
 <translation id="573759479754913123">Пра Brave OS</translation>
 <translation id="7573289029918943991">Каб даведацца, ці абноўлена прылада, адкрыйце <ph name="LINK_BEGIN"/>Налады Brave OS<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@
 <translation id="8586264863973514035">Каб прымяніць змяненні, перазапусціце Brave</translation>
 <translation id="7021823858304886493">Дазволіць уваход у Brave</translation>
 <translation id="1649714546770135458">Выключыўшы гэта, вы зможаце ўваходзіць на сайты Brave Software, такія як Gmail, не ўваходзячы ў Brave</translation>
+<translation id="2796517443093885402">Brave дапамагае прадухіляць праблемы, звязаныя з уцечкай даных, выкарыстаннем няправільных пашырэнняў і г. д.</translation>
+<translation id="428541510811554120">Браўзеру Brave не ўдаецца праверыць наяўнасць абнаўленняў. Паспрабуйце праверыць падключэнне да інтэрнэту.</translation>
+<translation id="2633397153656205379">Brave не абнавіўся. Нешта пайшло не так. <ph name="BEGIN_LINK"/>Выправіце праблемы з абнаўленнем Brave і памылкі абнаўлення.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave не можа праверыць вашы паролі, пакуль вы не ўвойдзеце ва ўліковы запіс</translation>
+<translation id="7006260220514217183">"Бяспечны прагляд" выключаны. Brave рэкамендуе ўключыць гэты рэжым.</translation>
+<translation id="1785833016412082453">Браўзеру Brave не ўдаецца праверыць пашырэнні. Паўтарыце спробу пазней.</translation>
 <translation id="9220324636239049437">Будзе выдалены 1 элемент з гэтай прылады. Каб потым атрымаць свае даныя, увайдзіце ва ўліковы запіс Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">З гэтай прылады будзе выдалена наступная колькасць элементаў: <ph name="ITEMS_COUNT"/>. Каб потым атрымаць свае даныя, увайдзіце ў Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Гэта дзеянне выдаліць з прылады даныя прагляду старонак у інтэрнэце. Каб потым атрымаць свае даныя, увайдзіце ва ўліковы запіс Brave як <ph name="USER_EMAIL"/>.</translation>

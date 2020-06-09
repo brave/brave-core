@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="6132506775968708399">Blokovat soubory cookies třetích stran</translation>
 <translation id="7835726359440951858">Blokovat reklamy a sledování</translation>
-<translation id="520895744850022668">HTTPS všude</translation>
+<translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
 <translation id="94154759592465111">Blokovat skripty</translation>
 <translation id="7458422973722236530">Ochrana pomocí otisku prstu</translation>
-<translation id="252011129655042182">Reklamy a trackery</translation>
+<translation id="5709627087332022422">Blokovat trackery mezi weby</translation>
 <translation id="6754976710186182237">Způsoby sledování</translation>
 <translation id="2313532038420432247">Aktualizace na HTTPS</translation>
 <translation id="7461425058443653485">Skripty blokovány</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Standardní karta</translation>
 <translation id="3377025655491224618">Soukromá karta</translation>
 <translation id="9148058034647219655">Ukončit</translation>
+<translation id="520895744850022668">HTTPS všude</translation>
 <translation id="8710614491157212477">Pokud je to možné, otevře podporované stránky pomocí HTTPS namísto HTTP</translation>
 <translation id="8387201461264842096">Blokování reklam</translation>
 <translation id="1934885595886623674">Zabránit načítání reklam</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Po ukončení zavřít karty</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
 <translation id="4339730410920731698">Reklamy a trackery jsou zablokovány</translation>
+<translation id="6761596877474675418">Data uložena</translation>
 <translation id="3034562645284925177">Odhadovaná úspora času</translation>
 <translation id="6572660632052512096">Režim stolního počítače</translation>
 <translation id="1340503115760585811">Povolit zobrazení plochy pro nové karty</translation>
@@ -159,7 +161,7 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="1713542052890184975">Zálohujte, prosím, svoji Brave peněženku.</translation>
 <translation id="2323069945529668668">Jejda!</translation>
 <translation id="7510166204621526816">Server Brave Rewards neodpovídá. Opravíme to co nejdříve.</translation>
-<translation id="2626799779920242286">Zkuste to znovu později.</translation>
+<translation id="7117228822971127758">Zkuste to znovu později</translation>
 <translation id="3068742524072211213">vyprší <ph name="DATE"/></translation>
 <translation id="4292832015778676417">výdělek z reklam</translation>
 <translation id="683765328936486920">na YouTube</translation>
@@ -231,7 +233,6 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="6199596294742117349">Toto je soukromá karta</translation>
 <translation id="5858455511731621847">Přestože weby, které navštívíte na soukromých kartách, nejsou ukládány ve vašem zařízení, pro vašeho poskytovatele internetových služeb, zaměstnavatele nebo stránky, které navštěvujete, nejste anonymní ani neviditelní.</translation>
 <translation id="5789441016350810005">Brave Ads odesílané, když je prohlížeč na pozadí</translation>
-<translation id="7127980134843952133">Historie stahování</translation>
 <translation id="3690140184638701871">Příspěvky a dýška</translation>
 <translation id="844921671123185605">Vaše měsíční dýška byla zpracována!</translation>
 <translation id="3124090095880236567">Zapněte Ads</translation>
@@ -254,15 +255,82 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="8522669544471808198">Zobrazit pozadí</translation>
 <translation id="3870475560794762985">Zobrazit sponzorované obrázky</translation>
 <translation id="8297488609722895137">Fotka od: <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Dostávejte za prohlížení tohoto pozadí zaplaceno.</translation>
-<translation id="4836823081419522426">U tohoto soukromého sponzorství budete dostávat 70 % z reklamních příjmů. Můžete je využít na podporu tvůrců webového obsahu. Pro získání svého podílu zapněte Brave Rewards.</translation>
-<translation id="7307847920988946894">Zapnout Rewards</translation>
 <translation id="1605521356929094020">Zapnout Brave Ads</translation>
-<translation id="1647482814782886825">Zapnutím Rewards souhlasíte s <ph name="TERMS_OF_SERVICE"/>. Také můžete <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Kliknutím na Vydělávat &amp; Give, souhlasíte s <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Dostávejte za prohlížení tohoto pozadí zaplaceno.</translation>
 <translation id="7136586167396205364">Skrýt sponzorované obrázky</translation>
 <translation id="2927095357213611519">Tokeny můžete podpořit webové tvůrce.\nVydělejte si tokeny prohlížením reklam, které respektují soukromí.</translation>
-<translation id="4016415345213871193">Za prohlížení tohoto pozadí dostáváte zaplaceno.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> o sponzorovaných obrázcích v Brave Rewards. Také můžete <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Také můžete <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Dostávejte za prohlížení tohoto pozadí zaplaceno. Zapněte Brave Ads a získejte svůj podíl.</translation>
+<translation id="213787746370741250">Otevírat panely ve Vlastních panelech</translation>
+<translation id="8030169304546394654">Odpojeno</translation>
+<translation id="8267327690882073581">Ověřit peněženku</translation>
+<translation id="543510923939676996">Ověřená peněženka</translation>
+<translation id="8673913984316081937">Ověřování vaší peněženky je volitelné</translation>
+<translation id="8558636200953226885">Pokud však provedete ověření, můžete...</translation>
+<translation id="8697510149346635496">Vyberte si BAT, které vyděláte zobrazováním reklam dodržujících soukromí.</translation>
+<translation id="1481480653609649134">Další BAT nakoupíte prostřednictvím platebních karet a jiných zdrojů</translation>
+<translation id="9096003370755878766">Vyberte si BAT, které jste nedávno přidali do peněženky Odměny Brave</translation>
+<translation id="1554282356558968486">Správa peněženky je zajišťována</translation>
+<translation id="6569877533335686968">Potvrdit</translation>
+<translation id="8465442795593991224">Společnost Uphold může v závislosti na požadovaných službách vyžadovat ověření vaší totožnosti.</translation>
+<translation id="723054503945711909">Společnost Brave Software Inc. nezpracovává, nepřechovává ani nezpřístupňuje žádné osobní údaje, které poskytujete společnosti Uphold při zakládání uživatelského účtu.</translation>
+<translation id="3699674790322420653">Dokončit ověření peněženky</translation>
+<translation id="2193391216824305230">Uživatelská peněženka</translation>
+<translation id="7591798679868259510">Přejít na můj Uphold účet</translation>
+<translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
+<translation id="6239274080752256452">Výběr prostředků</translation>
+<translation id="8874184842967597500">Nepřipojeno</translation>
+<translation id="3368922792935385530">Připojeno</translation>
+<translation id="4569155249847375786">Ověřeno</translation>
+<translation id="5358719431303818601">Odpojení neověřeno</translation>
+<translation id="4241449868720191203">Odpojení ověřeno</translation>
+<translation id="3248185426436836442">Probíhá</translation>
+<translation id="8108013093558639183">BAT není momentálně podporován ve vaší oblasti založené na místě otevření vašeho účtu. Dostupnost zkontrolujte později.</translation>
+<translation id="4190454391025419535">Oblast nepodporována</translation>
+<translation id="6830703472632069884">Při ověřování vaší peněženky se vyskytl problém, zkuste to prosím později.</translation>
+<translation id="3512533646933434345">Chyba ověření peněženky</translation>
+<translation id="2260513517001048012">POZNÁMKA: Tento Ověřený tvůrce Brave dosud nekonfiguroval svůj účet k přijímání příspěvků od uživatelů Brave. Váš prohlížeč se bude snažit o přispění, dokud nedojde k ověření nebo dokud nepřejde 90 dní.</translation>
+<translation id="4488355059795908907">Tento Ověřený tvůrce Brave ještě nekonfiguroval svůj účet pro přijímání příspěvků od uživatelů Brave. Jakékoliv vámi zaslané příspěvky zůstanou ve vaší peněžence, dokud tento proces nedokončí.</translation>
+<translation id="2495032782748793764">Brave Výchozí</translation>
+<translation id="9132378787893584761">Sdílejte Brave se svými přáteli!</translation>
+<translation id="717952606991220586">Jejda, něco se pokazilo. Zkuste to prosím později.</translation>
+<translation id="2524310205387880526">Ohodnotit Brave</translation>
+<translation id="6680650203439190394">Ohodnotit</translation>
+<translation id="2635089463885398597">Jak byste ohodnotili vaši zkušenost s Brave?</translation>
+<translation id="141901961143729572">Sdílet svoje dojmy</translation>
+<translation id="7961015016161918242">Nikdy</translation>
+<translation id="1275213816424141989">Možná později</translation>
+<translation id="6991128190741664836">Později</translation>
+<translation id="8851456134224363571">Skvělé! Nevadilo by vám zanechat nám hodnocení na Play Store?</translation>
+<translation id="8668962040900592974">Dejte nám vědět, jak se můžeme zlepšit</translation>
+<translation id="4406937629441301400">Získávejte žetony za zobrazení tohoto obrázku a zhodnoťte jej tvůrcům. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Získávejte tokeny za zobrazení tohoto obrázku. Zapněte Vydělávat &amp; Give pro nárokování vašeho podílu.</translation>
+<translation id="6632345639591919543">Získáváte žetony za zobrazení tohoto obrázku.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Získáváte žetony za zobrazení tohoto obrázku.</translation>
+<translation id="7952665812649667034">Jsem připraven vydělávat &amp; Give</translation>
+<translation id="7877201489035217175">Zjistit více o sponzorovaných obrázcích</translation>
+<translation id="828092975561478703">Za každý sponzorovaný obrázek, který zobrazíte, získáte 70% zisku v žetonech. S Reklamami Brave máte vždy kontrolu nad reklami, které vidíte.</translation>
+<translation id="4941539331405513605">Blokovat cookies napříč stránkami</translation>
+<translation id="3763681089644577874">Blokovat Cookies</translation>
+<translation id="614747795780742163">Zabraňuje webovým stránkám ukládat informace o vašich předchozích návštěvách</translation>
+<translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
+<translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
+<translation id="5963670684159057574">Blokovat získávání otisku napříč weby</translation>
+<translation id="3895527457258986253">Blokovat otisky prstů</translation>
+<translation id="184568144098869637">Zabraňuje prohlížeči rozpoznávat vaše zařízení</translation>
+<translation id="4540198958192073185">Blokovat všechny otisky prstů</translation>
+<translation id="769702552748212954">Povolit všechna získávání otisku</translation>
+<translation id="2888409909650566510">Reklamy a další podezřelé\nthings blokovány</translation>
+<translation id="6930134873084561197">Stránky často obsahují cookies a skripty, které se pokoušejí identifikovat vás a vaše zařízení. Chtějí pracovat s daty o vaší identitě a sledovat vás skrze webovou dokumentaci toho, co děláte na každé stránce.\n\nBrave tyto věci blokuje, abyste mohli prohlížet bez toho, abyste byli sledováni.</translation>
+<translation id="8553998445606452168">O Štítech Brave</translation>
+<translation id="8912304686498704084">NAHORU</translation>
+<translation id="4963218453264888510">DOLŮ</translation>
+<translation id="7474113515179313724">Tuto stránku prohlížíte bez ochrany soukromí od Brave. Se zapnutými Štíty nefunguje?</translation>
+<translation id="9055546041146396417">Pokud se stránka zdá nefunkční, zkuste Vypnutí štítů.</translation>
+<translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
+<translation id="8510478288840333677">Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
+<translation id="5429200298326665264">Poznámka: Tato adresa stránky bude zaslána spolu s číslem vaší verze Brave a vaší IP adresou (která nebude uložena).</translation>
+<translation id="5299848999918506028">Děkujeme!</translation>
+<translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
+<translation id="650318023204990401">Pokročilé nastavení</translation>
+<translation id="7182293319417450928">Pro ověření je vyžadován minimální rozpočet 25 BAT.</translation>
 </translationbundle>

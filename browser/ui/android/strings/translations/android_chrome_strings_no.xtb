@@ -3,10 +3,6 @@
 <translationbundle lang="no">
 <translation id="8428213095426709021">Innstillinger</translation>
 <translation id="2498359688066513246">Hjelp og tilbakemelding</translation>
-<translation id="8378714024927312812">Administreres av organisasjonen din</translation>
-<translation id="9019902583201351841">Administrert av foreldrene dine</translation>
-<translation id="4645575059429386691">Administreres av foreldrene dine</translation>
-<translation id="4883854917563148705">Administrerte innstillinger kan ikke tilbakestilles</translation>
 <translation id="4307992518367153382">Generelt</translation>
 <translation id="1974060860693918893">Avansert</translation>
 <translation id="1146678959555564648">Slå på VR-modus</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Når du logger på Brave Software-kontoen din, blir denne funksjonen slått på</translation>
 <translation id="10614374240317010">Aldri lagret</translation>
 <translation id="3098842761938485917">Se og administrer lagrede passord i <ph name="BEGIN_LINK"/>Brave Software-kontoen<ph name="END_LINK"/> din</translation>
+<translation id="8988028529677883095">Bruk telefonen som sikkerhetsnøkkel</translation>
 <translation id="8562452229998620586">Lagrede passord listes opp her.</translation>
+<translation id="1303339473099049190">Finner ikke det passordet. Kontrollér stavemåten, og prøv på nytt.</translation>
 <translation id="8084114998886531721">Lagret passord</translation>
 <translation id="2870560284913253234">Nettsted</translation>
 <translation id="8503813439785031346">Brukernavn</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Lås opp for å se passordet ditt</translation>
 <translation id="6221633008163990886">Lås opp for å eksportere passordene dine</translation>
 <translation id="230699814587342492">Brave-passord</translation>
-<translation id="6075798973483050474">Endre startsiden</translation>
-<translation id="854522910157234410">Åpne denne siden</translation>
+<translation id="1925021887439448749">Skriv inn en egendefinert nettadresse</translation>
 <translation id="8127542551745560481">Endre startsiden</translation>
+<translation id="854522910157234410">Åpne denne siden</translation>
+<translation id="5063487983358782016">Startsiden for Brave</translation>
 <translation id="2482878487686419369">Varsler</translation>
 <translation id="6255999984061454636">Innholdsforslag</translation>
 <translation id="805047784848435650">Basert på nettlesingsloggen din</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Personvern</translation>
 <translation id="4991384657077828949">Bidra til å gjøre Brave sikrere</translation>
 <translation id="1943176487615318915">For å oppdage farlige apper og nettsteder sender Brave nettadressene til noen av sidene du besøker, begrenset systeminformasjon og noe sideinnhold til Brave Software.</translation>
-<translation id="3181954750937456830">Safe Browsing (beskytter deg og enheten din mot farlige nettsteder)</translation>
-<translation id="7315322926489145388">Sender Brave Software nettadressene til noen av sidene du besøker, når sikkerheten din står i fare</translation>
+<translation id="3201899458094819285">Safe Browsing (beskytter deg og enheten din mot farlige nettsteder)</translation>
+<translation id="2876369937070532032">Sender Brave Software nettadressene til noen av sidene du besøker, når sikkerheten din står i fare</translation>
 <translation id="3738139272394829648">Trykk for å søke</translation>
-<translation id="7865281998841143447">Finn ut mer om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender ord til Brave Software Søk sammen med den omkringliggende konteksten, og definisjoner, bilder, søkeresultater og annen informasjon returneres.
+<translation id="4749189475009528195">Finn ut mer om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender ord til Brave Software Søk sammen med den omkringliggende konteksten, og definisjoner, bilder, søkeresultater og annen informasjon returneres.
 
-Trykk på ord for å søke etter dem. For å justere søketermen, utfør et langt trykk for å merke tekst. For å finstemme søket, dra panelet så det åpnes, trykk på utvid-ikonet for å åpne en ny fane, og trykk så på søkefeltet.</translation>
-<translation id="3292859206215580147">Finn ut mer om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender ord til Brave Software Søk sammen med den omkringliggende konteksten, og definisjoner, bilder, søkeresultater og annen informasjon returneres.
+Trykk på et ord for å søke. For å finstemme søket, trykk og hold inne for å merke flere eller færre ord. For å redigere søket, åpne panelet, trykk på ikonet for å åpne i en ny fane, og gjør endringer i søkefeltet.</translation>
+<translation id="934250516944040460">Finn ut mer om emner på nettsteder uten å forlate siden. «Trykk for å søke» sender ord til Brave Software Søk sammen med den omkringliggende konteksten, og definisjoner, bilder, søkeresultater og annen informasjon returneres.
 
-Utfør lange trykk på ord for å søke etter dem. For å finstemme søket, juster merkingen. Du kan også dra panelet så det åpnes, trykke på utvid-ikonet for å åpne en ny fane og så trykke på søkefeltet.</translation>
+Trykk og hold inne på et ord for å søke. For å finstemme søket, merk flere eller færre ord. For å redigere søket, åpne panelet, trykk på ikonet for å åpne i en ny fane, og gjør endringer i søkefeltet.</translation>
 <translation id="6209156474097347789">Trykk for å søke sender det valgte ordet og den aktive siden som kontekst til Brave Software Søk. Du kan slå av dette i <ph name="BEGIN_LINK"/>Innstillinger<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Tillat</translation>
 <translation id="780301667611848630">Nei takk</translation>
@@ -206,7 +205,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="6295158916970320988">Alle nettsteder</translation>
 <translation id="8380167699614421159">Dette nettstedet viser forstyrrende eller villedende annonser</translation>
 <translation id="1919345977826869612">Annonser</translation>
-<translation id="3513704683820682405">Utvidet virkelighet</translation>
+<translation id="2025115093177348061">Utvidet virkelighet</translation>
 <translation id="6447842834002726250">Informasjonskapsler</translation>
 <translation id="6196640612572343990">Blokkér informasjonskapsler fra tredjeparter</translation>
 <translation id="6782111308708962316">Forhindrer at nettsteder fra tredjeparter lagrer og leser data i informasjonskapsler</translation>
@@ -217,6 +216,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="1717218214683051432">Bevegelsessensorer</translation>
 <translation id="2091887806945687916">Lyd</translation>
 <translation id="2586657967955657006">Utklippstavle</translation>
+<translation id="4670064810192446073">Virtuell virkelighet</translation>
 <translation id="6320088164292336938">Vibrering</translation>
 <translation id="4226663524361240545">Varsler kan gjøre at enheten vibrerer</translation>
 <translation id="1446450296470737166">Full kontroll over MIDI-enheter</translation>
@@ -235,6 +235,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="2537296579376733324">Alle informasjonskapsler, kun på dette nettstedet</translation>
 <translation id="7882806643839505685">Tillat lyd for et bestemt nettsted.</translation>
 <translation id="4468959413250150279">Kutt lyden for et bestemt nettsted.</translation>
+<translation id="7828557259026017104">Informasjonskapsler er filer som opprettes av nettsteder du besøker. Nettsteder bruker dem til å huske preferansene dine. Informasjonskapsler fra tredjeparter opprettes av andre nettsteder. Disse nettstedene eier noe av innholdet, for eksempel annonser eller bilder, som du ser på nettsiden du besøker.</translation>
 <translation id="1994173015038366702">Nettadressen til nettstedet</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Bruk</translation>
@@ -246,10 +247,14 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="8116925261070264013">Kuttet lyd</translation>
 <translation id="8300705686683892304">Administreres av app</translation>
 <translation id="6192792657125177640">Unntak</translation>
-<translation id="257931822824936280">Utvidet – klikk for å minimere.</translation>
-<translation id="5100237604440890931">Minimert – klikk for å utvide</translation>
 <translation id="857943718398505171">Tillatt (anbefales)</translation>
 <translation id="2913331724188855103">Tillat at nettsteder lagrer og leser data i informasjonskapsler (anbefales).</translation>
+<translation id="2212565012507486665">Tillat informasjonskapsler</translation>
+<translation id="8648684608605749476">Blokkér informasjonskapsler fra tredjepart i inkognitomodus</translation>
+<translation id="2687403674020088961">Blokkér alle informasjonskapsler (anbefales ikke)</translation>
+<translation id="1044891598689252897">Nettsteder kommer til å fungere som normalt</translation>
+<translation id="7993619969781047893">Det kan hende at funksjoner på enkelte nettsteder slutter å fungere</translation>
+<translation id="1509960214886564027">Det kan hende at funksjoner på mange nettsteder slutter å fungere</translation>
 <translation id="5335288049665977812">Tillat nettsteder å kjøre JavaScript (anbefales)</translation>
 <translation id="5527111080432883924">Spør før nettsteder får tilgang til tekst og bilder fra utklipptavlen (anbefalt)</translation>
 <translation id="6912998170423641340">Blokkér nettsteder fra å få tilgang til tekst og bilder fra utklippstavlen</translation>
@@ -259,12 +264,12 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="2107397443965016585">Spør før nettsteder får tillatelse til å spille beskyttet innhold (anbefalt)</translation>
 <translation id="2910701580606108292">Spør før nettsteder kan spille av beskyttet innhold</translation>
 <translation id="757524316907819857">Blokkér nettsteder fra å spille av beskyttet innhold</translation>
-<translation id="4935305910887312910">Spør før nettsteder får tillatelse til å motta kameraposisjonen din eller kartlegge rommet ditt (anbefales)</translation>
-<translation id="884828189055900810">Blokkér nettsteder fra å motta kameraposisjonen din eller kartlegge rommet ditt</translation>
+<translation id="2182457891543959921">Spør før nettsteder får lage 3D-kart av omgivelsene dine eller spore kameraposisjonen (anbefales)</translation>
+<translation id="3538390592868664640">Blokkér nettsteder fra å lage 3D-kart av omgivelsene dine eller spore kameraposisjonen</translation>
 <translation id="5710871682236653961">Spør før nettsteder får tillatelse til å sende og motta info når du berører NFC-enheter (anbefales)</translation>
 <translation id="7572498721684305250">Blokkér nettsteder fra å sende og motta info når du berører NFC-enheter</translation>
-<translation id="3312292613668865961">Spør før nettsteder får tilgang til virtuell virkelighet-enheten din eller -dataene dine (anbefales)</translation>
-<translation id="8698438463325761328">Blokkér nettsteder fra å få tilgang til virtuell virkelighet-enheten din og -dataene dine</translation>
+<translation id="4887024562049524730">Spør før nettsteder får bruke virtuell virkelighet-enheten din eller -dataene dine (anbefales)</translation>
+<translation id="6439114592976064011">Blokkér nettsteder fra å bruke virtuell virkelighet-enheten din og -dataene dine</translation>
 <translation id="3277252321222022663">Gi nettsteder tilgang til sensorer (anbefalt)</translation>
 <translation id="5048398596102334565">Gi nettsteder tilgang til bevegelsessensorer (anbefalt)</translation>
 <translation id="8816026460808729765">Blokkér nettsteder fra å få tilgang til sensorer</translation>
@@ -414,6 +419,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="4062305924942672200">Juridisk informasjon</translation>
 <translation id="4256782883801055595">Lisenser for åpen kildekode</translation>
 <translation id="1138681184697033370">Vilkår for bruk av Brave</translation>
+<translation id="2368444735104192323">Tilleggsvilkår for bruk av Brave og Brave OS</translation>
 <translation id="7392539049993970338">Merknad om personvern for Brave</translation>
 <translation id="2968755619301702150">Visningsprogram for sertifikater</translation>
 <translation id="1360432990279830238">Vil du logge av og slå av synkronisering?</translation>
@@ -432,6 +438,8 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="8636825310635137004">For å få fanene dine fra de andre enhetene du bruker, slå på synkronisering.</translation>
 <translation id="3269956123044984603">For å få fanene dine fra de andre enhetene du bruker, slå på «Synkroniser data automatisk» i kontoinnstillingene for Android.</translation>
 <translation id="5157964048453367290">Faner du har åpnet i Brave på de andre enhetene dine, vises her.</translation>
+<translation id="5795872532621730126">Søk etter og bla gjennom</translation>
+<translation id="9086302186042011942">Synkroniserer</translation>
 <translation id="4684427112815847243">Synkroniser alt</translation>
 <translation id="2709516037105925701">Autofyll</translation>
 <translation id="8820817407110198400">Bokmerker</translation>
@@ -549,10 +557,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="2532336938189706096">Nettvisning</translation>
 <translation id="6005538289190791541">Foreslått passord</translation>
 <translation id="4634124774493850572">Bruk passord</translation>
-<translation id="8285489906452138776">Brave trenger tilgang til kameraet ditt for dette nettstedet.</translation>
-<translation id="320189792589364011">Brave trenger tilgang til mikrofonen din for dette nettstedet.</translation>
-<translation id="7988136689212463100">Brave trenger tilgang til kameraet ditt og mikrofonen din for dette nettstedet.</translation>
-<translation id="4931190655840828017">Brave trenger tilgang til posisjonen din for å kunne dele den med dette nettstedet.</translation>
 <translation id="3088191967551450609">Brave må ha lagringstilgang for å laste ned filer.</translation>
 <translation id="8942627711005830162">Åpne i et annet vindu</translation>
 <translation id="4195643157523330669">Åpne i ny fane</translation>
@@ -600,8 +604,9 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="2146738493024040262">Åpne instant-appen</translation>
 <translation id="7016516562562142042">tillatt for den aktive søkemotoren</translation>
 <translation id="6177111841848151710">Blokkert for den aktive søkemotoren</translation>
-<translation id="145097072038377568">Slått av i Android-innstillingene</translation>
+<translation id="7000754031042624318">Slått av i Android-innstillingene</translation>
 <translation id="8007176423574883786">Slått av for denne enheten</translation>
+<translation id="6864395892908308021">Denne enheten kan ikke lese NFC</translation>
 <translation id="164269334534774161">Du ser en lokal kopi av denne siden fra <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Denne siden uten nett er fra <ph name="CREATION_TIME"/> og kan avvike fra nettversjonen.</translation>
 <translation id="8840953339110955557">Denne siden kan avvike fra nettversjonen.</translation>
@@ -706,10 +711,10 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">ÅÅ</translation>
 <translation id="724102042129299115">Førsteinntrykk ved bruk av Brave</translation>
-<translation id="2700285883409956633">Ved å bruke dette programmet samtykker du i Braves <ph name="BEGIN_LINK1"/>vilkår for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>merknad om personvern<ph name="END_LINK2"/>.</translation>
-<translation id="1640714894372474981">Når du bruker denne appen, godtar du <ph name="BEGIN_LINK1"/>vilkårene for bruk<ph name="END_LINK1"/> av Brave, <ph name="BEGIN_LINK2"/>merknaden om personvern<ph name="END_LINK2"/> og <ph name="BEGIN_LINK3"/>merknaden om personvern for Brave Software-kontoer som administreres med Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> åpnes i Brave. Ved å fortsette godtar du <ph name="BEGIN_LINK1"/>vilkårene for bruk<ph name="END_LINK1"/> av Brave og <ph name="BEGIN_LINK2"/>merknaden om personvern<ph name="END_LINK2"/>.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> åpnes i Brave. Ved å fortsette godtar du <ph name="BEGIN_LINK1"/>vilkårene for bruk<ph name="END_LINK1"/> av Brave og <ph name="BEGIN_LINK2"/>merknaden om personvern<ph name="END_LINK2"/> samt <ph name="BEGIN_LINK3"/>merknaden om personvern for Brave Software-kontoer som administreres med Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Ved å bruke Brave samtykker du i <ph name="BEGIN_LINK1"/>Brave Softwares vilkår for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>tilleggsvilkårene for bruk av Brave Software Brave og Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Ved å bruke Brave samtykker du i <ph name="BEGIN_LINK1"/>Brave Softwares vilkår for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>tilleggsvilkårene for bruk av Brave Software Brave og Brave OS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Merknaden om personvern for Brave Software-kontoer som administreres via Family Link<ph name="END_LINK3"/>, gjelder også.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> åpnes i Brave. Ved å fortsette samtykker du i <ph name="BEGIN_LINK1"/>Brave Softwares vilkår for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>tilleggsvilkårene for bruk av Brave Software Brave og Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> åpnes i Brave. Ved å fortsette samtykker du i <ph name="BEGIN_LINK1"/>Brave Softwares vilkår for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>tilleggsvilkårene for bruk av Brave Software Brave og Brave OS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Merknaden om personvern for Brave Software-kontoer som administreres via Family Link<ph name="END_LINK3"/>, gjelder også.</translation>
 <translation id="673197144963363525">Gjør Brave bedre ved å sende bruksstatistikk og programstopprapporter til Brave Software.</translation>
 <translation id="3518985090088779359">Godta og fortsett</translation>
 <translation id="7207456302801184289">Velkommen til Brave</translation>
@@ -814,7 +819,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="6963766334940102469">Slett bokmerker</translation>
 <translation id="4351244548802238354">Lukk dialogboks</translation>
 <translation id="451872707440238414">Søk i bokmerkene dine</translation>
-<translation id="8901170036886848654">Fant ingen bokmerker</translation>
+<translation id="6447558397796644647">Finner ikke dette bokmerket. Kontrollér stavemåten, eller legg til et nytt bokmerke.</translation>
 <translation id="6404511346730675251">Rediger bokmerket</translation>
 <translation id="3894427358181296146">Legg til en mappe</translation>
 <translation id="5327248766486351172">Navn</translation>
@@ -829,6 +834,8 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="6811034713472274749">Siden er klar til å vises</translation>
 <translation id="4561979708150884304">Ingen tilkobling</translation>
 <translation id="8274165955039650276">Se nedlastinger</translation>
+<translation id="4320177379694898372">Ingen internettilkobling</translation>
+<translation id="6397616442223433927">På nettet igjen</translation>
 <translation id="2082238445998314030">Resultat <ph name="RESULT_NUMBER"/> av <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Ingen resultater</translation>
 <translation id="981121421437150478">Uten nett</translation>
@@ -845,9 +852,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="6773423637732432200">Kan ikke oppdatere Brave. Flere alternativer</translation>
 <translation id="1383876407941801731">Søk</translation>
 <translation id="3328801116991980348">Informasjon om nettstedet</translation>
-<translation id="5391532827096253100">Tilkoblingen din til dette nettstedet er ikke sikker. Informasjon om nettstedet</translation>
-<translation id="6206551242102657620">Tilkoblingen er sikker. Informasjon om nettstedet</translation>
-<translation id="6963642900430330478">Denne siden er farlig. Informasjon om nettstedet</translation>
 <translation id="9070377983101773829">Start talesøk</translation>
 <translation id="4968908871398201967">Privat modus</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> åpen fane – trykk for å bytte fane}other{<ph name="OPEN_TABS_MANY"/> åpne faner – trykk for å bytte fane}}</translation>
@@ -944,6 +948,11 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="5197729504361054390">Kontaktene du velger, deles med <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Bildedekoder</translation>
 <translation id="8067883171444229417">Spill av videoen</translation>
+<translation id="5876056640971328065">Sett videoen på pause</translation>
+<translation id="3594780231884063836">Kutt lyden i videoen</translation>
+<translation id="783819812427904514">Slå på lyden i videoen</translation>
+<translation id="3114012059975132928">Videospiller</translation>
+<translation id="5489227211564503167">Medgått tid: <ph name="ELAPSED_TIME"/> av <ph name="TOTAL_TIME"/>.</translation>
 <translation id="6560414384669816528">Søk med Sogou</translation>
 <translation id="5406914950576900927">Brave kan bruke <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> for søk i Kina. Du kan endre dette i <ph name="BEGIN_LINK"/>Innstillinger<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Behold Brave Software</translation>
@@ -987,6 +996,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="1875543012935658554">Åpne Brave på nytt.</translation>
 <translation id="79859296434321399">Du må installere ARCore for å se innhold med utvidet virkelighet</translation>
 <translation id="8558485628462305855">Du må oppdatere ARCore for å se innhold med utvidet virkelighet</translation>
+<translation id="3513704683820682405">Utvidet virkelighet</translation>
 <translation id="6410973561433500075">Vil du starte AR fra <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">Når du er i AR, kan det hende at dette nettstedet kan
 • lage et 3D-kart over omgivelsene dine
@@ -1035,6 +1045,8 @@ Det er bare du som kan se hva kameraet ditt ser på. Nettstedet kan ikke se bild
 <translation id="9028914725102941583">Slå på synkronisering for å dele på tvers av enheter</translation>
 <translation id="6162454065885854378">For å dele noe på telefonen med en annen enhet, slå på synkronisering i Brave-innstillingene på begge enhetene</translation>
 <translation id="6084271560289605378">Gå til Brave-innstillingene</translation>
+<translation id="2746024117903470217">For å dele denne siden med en annen enhet, slå på synkronisering i Brave-innstillingene på den andre enheten</translation>
+<translation id="7760665516427405230">For å dele denne siden med andre enheter, slå på synkronisering i Brave-innstillingene</translation>
 <translation id="2318045970523081853">Trykk for å ringe</translation>
 <translation id="9209888181064652401">Kan ikke ringe</translation>
 <translation id="2860954141821109167">Kontrollér at en telefon-app er påslått på denne enheten</translation>
@@ -1090,11 +1102,17 @@ Det er bare du som kan se hva kameraet ditt ser på. Nettstedet kan ikke se bild
 <translation id="6201345951596836663">Linken er kopiert</translation>
 <translation id="6597891566292541626">Plassér QR-/strekkoden i denne rammen.</translation>
 <translation id="3140134512074889489">Slå på kameraet for å skanne QR-koder</translation>
+<translation id="5149323899804758325">For å skanne QR-koder, endre innstillingene slik at Brave kan bruke kameraet</translation>
 <translation id="2359808026110333948">Fortsett</translation>
+<translation id="8233540874193135768">For å skanne QR-koder, bruk en enhet med kamera.</translation>
+<translation id="6297765934698848803">Organisasjonen som administrerer enheten din, har slått av kameraet.</translation>
+<translation id="4321739720395210191">Kan ikke åpne kameraet. Start enheten på nytt, og prøv igjen.</translation>
+<translation id="234265804618409743">Kan ikke åpne kameraet. Noe gikk galt.</translation>
+<translation id="7173114856073700355">Åpne Innstillinger</translation>
+<translation id="1311657260431405215">Denne QR-koden er ikke noen nettadresse: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Brave Software Notifications Platform</translation>
 <translation id="8516012719330875537">Bilderedigeringsprogram</translation>
-<translation id="6092062101542170135">For å fortsette, slå på NFC i Android-innstillingene</translation>
-<translation id="5860491529813859533">Slå på</translation>
 <translation id="8926666909099850184">NFC er av for denne enheten. Slå det på i <ph name="BEGIN_LINK"/>Android-innstillingene<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Vil du at <ph name="DOMAIN"/> skal slå på VR-modus?</translation>
 <translation id="4353114845960720315">Når du er i VR, kan dette nettstedet finne ut mer om følgende:</translation>

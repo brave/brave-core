@@ -60,7 +60,7 @@
     "description": "BAT Points text"
   },
   "batPointsMessage": {
-    "message": "można używać jako nagrody Brave, aby wspierać ulubionych twórców treści. Punktów BAT nie można wymienić na BAT.",
+    "message": "można używać jako Nagrody Brave, aby wspierać ulubionych twórców treści. Punktów BAT nie można wymienić na BAT.",
     "description": "Text for BAT Point helper message"
   },
   "on": {
@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Punkt odebrany",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Cześć, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

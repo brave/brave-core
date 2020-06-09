@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Opprett en ny profil</translation>
 <translation id="2666990579225592931">Åpne et gjestevindu</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
-<translation id="7450557937477381864">Lukk Chrome</translation>
-<translation id="7008934821596358692">For å avslutte importering, lukk alle Chrome-vinduer.</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="3699882589215410581">Installer og kjør Widevine</translation>
 <translation id="8926389886865778422">Ikke spør igjen</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
 
 Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
-<translation id="453977518730680921">Autoavspill media</translation>
 <translation id="410351446219883937">Autospill</translation>
 <translation id="2240268017737062801">Spør når en nettside ønsker å autoavspille media</translation>
 <translation id="3371702087847741961">Spør når et nettsted vil automatisk spille av media (anbefalt)</translation>
@@ -39,11 +36,14 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
 <translation id="1520361618554057102">Vis alltid bokmerker på Ny fane-siden</translation>
 <translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
+<translation id="597020512043916976">Vis toppsider med autofullførte forslag</translation>
+<translation id="264150068416846820">Vis Brave-foreslåtte side med autofullførte forslag</translation>
 <translation id="7781069478569868053">Ny fane-side</translation>
 <translation id="2467749191278759605">Tilpass Brave-oversikten</translation>
 <translation id="1717331825806276156">Bakgrunnsbilder</translation>
 <translation id="1820041496463124489">Sponsede bilder</translation>
 <translation id="8173998484743827990">Brave-statistikk</translation>
+<translation id="5551238871320268996">Brave Sammen</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Populære nettsteder</translation>
 <translation id="1776831331757823105">Klokke</translation>
@@ -72,9 +72,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7390783310074170337">Standard visning</translation>
 <translation id="130615081792797568">Enkel visning</translation>
 <translation id="2360360976480535628">Avansert visning</translation>
-<translation id="5709627087332022422">Blokker tredjeparts sporere.</translation>
-<translation id="6447842834002726250">Informasjonskapsler</translation>
-<translation id="6522412052085018663">Fingeravtrykk</translation>
+<translation id="2133317862976486547">Blokker sporing &amp; annonser</translation>
+<translation id="4385707520896576447">Informasjonskapsler</translation>
+<translation id="4978786495456601191">Fingeravtrykk</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="4824468494729001999">Blokker skript</translation>
 <translation id="519861640102428255">Utseende og funksjonalitet</translation>
@@ -83,12 +83,11 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
-<translation id="4699812599455071925">Blokker kun tredjeparts informasjonskapsler</translation>
-<translation id="5657156137487675418">Tillatt alle informasjonskapsler</translation>
-<translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
-<translation id="5963670684159057574">Blokker bruk av fingeravtrykk på tvers av nettsteder</translation>
-<translation id="769702552748212954">Tillat all bruk av fingeravtrykk</translation>
-<translation id="4540198958192073185">Blokker alle fingeravtrykk</translation>
+<translation id="4078738236287221428">Sporing &amp; annonser blokkert (aggressivt)</translation>
+<translation id="7740996059027112821">Sporing &amp; annonser blokkert (standard)</translation>
+<translation id="4176463684765177261">Tillat all sporing &amp; annonser</translation>
+<translation id="5770288601196774623">Blokker kun tredjeparts informasjonskapsler</translation>
+<translation id="3587482841069643663">Blokker alle informasjonskapsler</translation>
 <translation id="8942080017911802454">Håndteringspolitikk for WebRTC IP</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -110,6 +109,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7701040980221191251">Ingen</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Web3-leverandør for bruk av Dapps</translation>
+<translation id="5913089932885076110">Last inn kryptolommeboken ved oppstart</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
 <translation id="1765684547504191670">Bruker Media Router-komponenten for å aktivere Chromecast i nettleseren.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
@@ -171,10 +171,13 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6469509880167172749">Send helt privat produktdiagnostikk til Brave automatisk</translation>
 <translation id="7090566321964540749">Denne anonyme infoen lar Brave kun beregne den totale bruken av visse funksjoner.</translation>
 <translation id="9111960429693394744">Vil du bruke Braves kryptolommebøker eller MetaMask for Dapps?</translation>
+<translation id="8721775358057000783">Ønsker du å starte opp kryptolommeboken for web3-støtte på denne siden?</translation>
 <translation id="7583735190612229830">Konfigurer Crypto Wallets til å fungere sammen med denne og lignende apper.</translation>
-<translation id="8337117349965899723">Bruk Crypto Wallets</translation>
+<translation id="4823406846571523661">Sett opp kryptolommebok</translation>
 <translation id="5756155765711979898">Bruk MetaMask</translation>
 <translation id="6754134632841262799">OPPSETT</translation>
+<translation id="8199661191594897555">Start kryptolommeboken og last inn igjen</translation>
+<translation id="8428213095426709021">Innstillinger</translation>
 <translation id="4552520379838695057">Beklager, men den siden mangler.</translation>
 <translation id="2609895996619941644">Vil du se om det finnes en lagret versjon på Wayback Machine?</translation>
 <translation id="8053093028263274061">Beklager, men ingen lagret versjon er tilgjengelig.</translation>
@@ -185,8 +188,10 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
 <translation id="796831669370432378">For å legge til bokmerker, klikk på bokmerkeknappen ved siden av adressefeltet.</translation>
 <translation id="4989337484121655457">Fullstendig disktilgang kreves</translation>
-<translation id="8025559074845816210">Brave trenger fullstendig disktilgang for å importere bokmerkene dine fra Safari.</translation>
+<translation id="5501596373144334003">Brave trenger komplett disktilgang for å importere dine bokmerker og din historikk fra Safari.</translation>
 <translation id="8515328844674404333">Finn ut hvordan du gir fullstendig disktilgang i systeminnstillingene.</translation>
 <translation id="6414878884710400018">Åpne systeminnstillingene</translation>
 <translation id="5570470519803062774">Innstillinger for nettstedet og Shields</translation>
+<translation id="8487693399751278191">Importer bokmerker nå ...</translation>
+<translation id="2557899542277210112">For rask tilgang, plasser dine bokmerker her på bokmerkeraden.</translation>
 </translationbundle>

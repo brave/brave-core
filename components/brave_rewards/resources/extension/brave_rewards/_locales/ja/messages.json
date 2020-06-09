@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "ポイント付与",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "$name$!さん、こんにちは！",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

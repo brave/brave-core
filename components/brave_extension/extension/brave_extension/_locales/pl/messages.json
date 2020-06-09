@@ -55,6 +55,18 @@
     "message": "Zablokowane skrypty śledzące",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Blokowanie trackerów i reklam (agresywne)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Blokowanie trackerów i reklam (standardowe)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Zezwól na skrypty śledzące i reklamy",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "Aktualizacje HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
@@ -80,15 +92,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Zablokowano opcję logowania odciskiem palca przez inne strony",
+    "message": "Zablokuj rozpoznawanie urządzenia przez strony trzecie",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Zablokowano próby logowania odciskiem palca",
+    "message": "Zablokuj rozpoznawanie urządzenia",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Zezwalaj na wszystkie próby logowania odciskiem palca",
+    "message": "Zezwalaj na rozpoznawanie urządzenia",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

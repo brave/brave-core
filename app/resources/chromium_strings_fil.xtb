@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Tumulong na gawing mas mahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat ng pag-crash at <ph name="UMA_LINK"/> sa Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Pag-sign in sa Network - Brave</translation>
+<translation id="8745514854244955877">Brave - Pag-sign in sa Network - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Pag-sign in sa Network</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -44,8 +47,12 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="5785919770853225148">Ise-save ng Brave ang password na ito sa iyong Brave Software Account. Hindi mo na ito kailangang tandaan.</translation>
 <translation id="8211837073776713955">Ipinapaalam sa iyo ng Brave kung nakompromiso ang mga password mo</translation>
 <translation id="113959764510199339">Sinusubukan ng Brave na magpakita ng mga password.</translation>
+<translation id="96347285368592620">Sinusubukan ng Brave na kopyahin ang mga password.</translation>
+<translation id="2953892977076487219">Sinusubukan ng Brave na i-edit ang mga password.</translation>
 <translation id="7503098128120083822">Gustong i-export ng Brave ang iyong mga password.</translation>
 <translation id="8285294305439559616">Sinusubukan ng Brave na ipakita ang mga password. I-type ang password sa Windows upang payagan ito.</translation>
+<translation id="8090497651549769448">Sinusubukan ng Brave na kopyahin ang mga password. I-type ang iyong password sa Windows para payagan ito.</translation>
+<translation id="3861679447659630159">Sinusubukan ng Brave na i-edit ang mga password. I-type ang iyong password sa Windows para payagan ito.</translation>
 <translation id="5918095577778020936">Gustong i-export ng Brave ang iyong mga password. I-type ang iyong password sa Windows para payagan ito.</translation>
 <translation id="8320964054148936490">May mas bagong bersyon ng Brave na ang computer na ito. Kung hindi gumagana ang software, mangyaring i-uninstall ang Brave at subukang muli.</translation>
 <translation id="7691786510374174420">Nabigo ang pag-install dahil sa hindi natukoy na error. Kung kasalukuyang tumatakbo ang Brave, pakisara ito at subukang muli.</translation>
@@ -192,7 +199,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="3262506503470845422">Humingi ng tulong sa Brave</translation>
 <translation id="1864557848095568223">Ina-update ang Brave</translation>
 <translation id="1786715389543715322">Ina-update ang Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Halos napapanahon na! Muling ilunsad ang Brave upang tapusin ang pag-a-update.</translation>
+<translation id="7914115000169617076">Malapit nang maging up to date! Ilunsad ulit ang Brave para tapusin ang pag-update. Hindi bubukas ulit ang mga incognito window.</translation>
 <translation id="8208853227947884571">Napapanahon ang Brave</translation>
 <translation id="573759479754913123">Tungkol sa Brave OS</translation>
 <translation id="7573289029918943991">Para makita kung up to date ang iyong device, pumunta sa <ph name="LINK_BEGIN"/>Mga Setting ng Brave OS<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8586264863973514035">Para ilapat ang iyong mga pagbabago, muling ilunsad ang Brave</translation>
 <translation id="7021823858304886493">Pagayan ang pag-sign in sa Brave</translation>
 <translation id="1649714546770135458">Kapag na-off ito, maaari kang mag-sign in sa mga site ng Brave Software tulad ng Gmail nang hindi nagsa-sign in sa Brave</translation>
+<translation id="2796517443093885402">Makakatulong ang Brave na panatilihin kang ligtas laban sa mga paglabag sa data, sirang extension, at higit pa</translation>
+<translation id="428541510811554120">Hindi matingnan ng Brave kung may mga update. Subukang tingnan ang iyong koneksyon sa internet.</translation>
+<translation id="2633397153656205379">Hindi na-update ang Brave, nagkaproblema. <ph name="BEGIN_LINK"/>Ayusin ang mga problema sa pag-update ng Brave at ang mga hindi naisagawang pag-update dito.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Hindi masusuri ng Brave ang iyong mga password dahil hindi ka naka-sign in</translation>
+<translation id="7006260220514217183">Naka-off ang Ligtas na Pag-browse. Inirerekomenda ng Brave na i-on ito.</translation>
+<translation id="1785833016412082453">Hindi masuri ng Brave ang iyong mga extension. Subukan ulit sa ibang pagkakataon.</translation>
 <translation id="9220324636239049437">Magde-delete ito ng 1 item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Magde-delete ito ng <ph name="ITEMS_COUNT"/> (na) item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Ide-delete nito ang iyong data mula sa pag-browse sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>

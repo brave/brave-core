@@ -39,18 +39,6 @@
 <translation id="5040262127954254034">Личные данные</translation>
 <translation id="3061707000357573562">Исправление сервиса</translation>
 <translation id="1914326953223720820">Распаковщик файлов</translation>
-<translation id="4926159001844873046"><ph name="SITE"/> сообщает</translation>
-<translation id="3576616784287504635">Встроенная страница по адресу <ph name="SITE"/> сообщает</translation>
-<translation id="1532118530259321453">Подтвердите действие</translation>
-<translation id="5201306358585911203">Подтвердите действие</translation>
-<translation id="1623104350909869708">Запретить создание дополнительных диалоговых окон на этой странице</translation>
-<translation id="7862185352068345852">Закрыть сайт?</translation>
-<translation id="9171296965991013597">Закрыть приложение?</translation>
-<translation id="2677748264148917807">Закрыть</translation>
-<translation id="425582637250725228">Возможно, внесенные изменения не сохранятся.</translation>
-<translation id="8079031581361219619">Перезагрузить сайт?</translation>
-<translation id="6852204201400771460">Перезапустить приложение?</translation>
-<translation id="5556459405103347317">Перезагрузить</translation>
 <translation id="2359808026110333948">Продолжить</translation>
 <translation id="8066955247577885446">Извините, что-то пошло не так.</translation>
 <translation id="5946937721014915347">Загрузка <ph name="SITE_NAME"/>…</translation>
@@ -162,6 +150,14 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="2267047181501709434">Подтверждение личности...</translation>
 <translation id="9065203028668620118">Редактировать</translation>
 <translation id="6771143571626203666">Из Brave Pay</translation>
+<translation id="6846340164947227603">Использовать номер виртуальной карты</translation>
+<translation id="5745980000221562234">{NUM_CARDS, plural,
+      =1 {Выбрать виртуальный номер для этой карты}
+      other {Выбрать карту}}</translation>
+<translation id="5824687817967109979">{NUM_CARDS, plural,
+      =1 {Когда вы оплатите покупку, с этой карты будут списаны средства, но её настоящий номер не будет передан сайту. Для дополнительной безопасности, будет сгенерирован временный CVC-код.}
+      other {Когда вы оплатите покупку, с карты, которую вы выберете, будут списаны средства, но её настоящий номер не будет передан сайту. Для дополнительной безопасности, будет сгенерирован временный CVC-код}}</translation>
+<translation id="6120179357481664955">Помните ваш UPI ID?</translation>
 <translation id="2835170189407361413">Очистить данные</translation>
 <translation id="935608979562296692">ОЧИСТИТЬ ФОРМУ</translation>
 <translation id="5029568752722684782">Удалить данные</translation>
@@ -225,6 +221,7 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="7004583254764674281">Используйте Windows Hello, чтобы подтверждать карты быстрее</translation>
 <translation id="6064217302520318294">Блокировка экрана</translation>
+<translation id="3377736046129930310">Используйте экран блокировки, чтобы быстрее подтверждать карты</translation>
 <translation id="3631244953324577188">Биометрия</translation>
 <translation id="7081308185095828845">Эта возможность недоступна на Вашем устройстве</translation>
 <translation id="5490432419156082418">Адреса и другая информация</translation>
@@ -272,19 +269,23 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="6337133576188860026">Освободится <ph name="SIZE"/>. Некоторые сайты будут открываться медленнее, когда Вы зайдёте на них в слежующий раз</translation>
 <translation id="2316887270356262533">Освободится не более 1 МБ. Некоторые сайты будут открываться медленнее, когда Вы зайдёте на них в слежующий раз</translation>
 <translation id="7701040980221191251">Нет</translation>
+<translation id="5908541034548427511"><ph name="TYPE_1"/> (синхронизировано)</translation>
+<translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8433057134996913067">На большинстве сайтов будет выполнен выход из аккаунта.</translation>
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="765676359832457558">Скрыть дополнительные настройки...</translation>
 <translation id="6989763994942163495">Показать дополнительные настройки...</translation>
 <translation id="9038649477754266430">Использовать подсказки для ускорения загрузки страниц</translation>
 <translation id="3355823806454867987">Изменить настройки прокси-сервера...</translation>
+<translation id="2344028582131185878">Автоматическая загрузка</translation>
 <translation id="4220128509585149162">Сбои в работе</translation>
+<translation id="2639739919103226564">Состояние:</translation>
+<translation id="3414952576877147120">Размер:</translation>
 <translation id="1015730422737071372">Сообщить дополнительную информацию</translation>
 <translation id="3759461132968374835">Нет записей о недавних сбоях. Сбои, которые произошли, когда запись сбоев была отключена, не отображаются.</translation>
 <translation id="5308689395849655368">Отчеты о сбоях отключены.</translation>
 <translation id="6489534406876378309">Начать загрузку сведений об ошибках</translation>
 <translation id="2239100178324503013">Отправить</translation>
-<translation id="1126551341858583091">Размер локального хранилища <ph name="CRASH_SIZE"/>.</translation>
 <translation id="6451458296329894277">Подтвердите повторную отправку формы</translation>
 <translation id="8241707690549784388">Страница, на которую вы переходите, использует информацию, которую Вы ввели. Возвращение к этой странице может привести к тому, что все Ваши действия повторятся. Хотите ли Вы продолжить?</translation>
 <translation id="1549470594296187301">Для использования этой функции необходимо включить JavaScript.</translation>
@@ -296,12 +297,10 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="4325863107915753736">Не удалось найти статью</translation>
 <translation id="5540224163453853">Не удалось найти указанную статью</translation>
 <translation id="7485870689360869515">Данные не найдены.</translation>
-<translation id="552553974213252141">Правильно ли извлечен текст?</translation>
-<translation id="1426410128494586442">Да</translation>
-<translation id="4250680216510889253">Нет</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
 <translation id="4522570452068850558">Детали</translation>
 <translation id="3586931643579894722">Скрыть подробности</translation>
+<translation id="5556459405103347317">Перезагрузить</translation>
 <translation id="3005723025932146533">Открыть сохраненную копию</translation>
 <translation id="3447661539832366887">Владелец этого устройства отключил игру с динозавром.</translation>
 <translation id="3287510313208355388">Скачать при подключении к Интернету</translation>
@@ -348,7 +347,6 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="4558551763791394412">Попробуйте отключить ваши расширения.</translation>
 <translation id="4943872375798546930">Нет результатов</translation>
 <translation id="2955913368246107853">Закрыть панель поиска</translation>
-<translation id="8647750283161643317">Сбросить настройки</translation>
 <translation id="8688672835843460752">Доступный</translation>
 <translation id="4989542687859782284">Недоступный</translation>
 <translation id="59174027418879706">Включено</translation>
@@ -379,6 +377,17 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="362276910939193118">Показать всю историю</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="7668654391829183341">Неизвестное устройство</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> сообщает</translation>
+<translation id="3576616784287504635">Встроенная страница по адресу <ph name="SITE"/> сообщает</translation>
+<translation id="1532118530259321453">Подтвердите действие</translation>
+<translation id="5201306358585911203">Подтвердите действие</translation>
+<translation id="1623104350909869708">Запретить создание дополнительных диалоговых окон на этой странице</translation>
+<translation id="7862185352068345852">Закрыть сайт?</translation>
+<translation id="9171296965991013597">Закрыть приложение?</translation>
+<translation id="2677748264148917807">Закрыть</translation>
+<translation id="425582637250725228">Возможно, внесенные изменения не сохранятся.</translation>
+<translation id="8079031581361219619">Перезагрузить сайт?</translation>
+<translation id="6852204201400771460">Перезапустить приложение?</translation>
 <translation id="3950820424414687140">Вход</translation>
 <translation id="8286036467436129157">Вход</translation>
 <translation id="7526934274050461096">Подключение к сайту не защищено</translation>
@@ -434,11 +443,12 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="2586657967955657006">Буфер обмена</translation>
 <translation id="6059925163896151826">USB-устройства</translation>
 <translation id="7638605456503525968">Последовательные порты</translation>
+<translation id="3784372983762739446">Устройства Bluetooth</translation>
 <translation id="2215727959747642672">Редактирование файлов</translation>
 <translation id="6545864417968258051">Поиск Bluetooth-устройств</translation>
 <translation id="534295439873310000">Устройства с функцией NFC</translation>
-<translation id="4943703118917034429">Виртуальная реальность</translation>
-<translation id="3513704683820682405">Дополненная реальность</translation>
+<translation id="4670064810192446073">Виртуальная реальность</translation>
+<translation id="2025115093177348061">Дополненная реальность</translation>
 <translation id="5039804452771397117">Разрешить</translation>
 <translation id="7053983685419859001">Блокировать</translation>
 <translation id="57838592816432529">Отключить звук</translation>
@@ -454,9 +464,24 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="5932224571077948991">Сайт показывает навязчивую или вводящую в заблуждение рекламу</translation>
 <translation id="7878562273885520351">Злоумышленники могли узнать ваш пароль</translation>
 <translation id="1089439967362294234">Сменить пароль</translation>
-<translation id="9008201768610948239">Пропустить</translation>
 <translation id="1186201132766001848">Проверить пароли</translation>
+<translation id="9008201768610948239">Пропустить</translation>
+<translation id="808894953321890993">Сменить пароль</translation>
 <translation id="5979084224081478209">Проверить пароли</translation>
+<translation id="6107012941649240045">Выдан:</translation>
+<translation id="5030338702439866405">Выдан:</translation>
+<translation id="5826507051599432481">Общее имя (CN)</translation>
+<translation id="6898699227549475383">Организация (O)</translation>
+<translation id="3308006649705061278">Подразделение (OU)</translation>
+<translation id="8705331520020532516">Серийный номер</translation>
+<translation id="1902576642799138955">Срок действия</translation>
+<translation id="5895187275912066135">Дата выдачи</translation>
+<translation id="4121428309786185360">Срок действия</translation>
+<translation id="4154664944169082762">Отпечатки</translation>
+<translation id="7238585580608191973">Отпечаток SHA-256</translation>
+<translation id="5209518306177824490">Отпечаток SHA-1</translation>
+<translation id="6786747875388722282">Расширения</translation>
+<translation id="7240120331469437312">Альтернативное имя субъекта сертификата</translation>
 <translation id="4876305945144899064">Имя пользователя не указано</translation>
 <translation id="10614374240317010">Сайты, пароли для которых не сохраняются</translation>
 <translation id="5869522115854928033">Сайты с сохраненными паролями</translation>
@@ -548,6 +573,36 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="6044573915096792553">Размер: 12</translation>
 <translation id="3789155188480882154">Размер: 16</translation>
 <translation id="8090403583893450254">Размер: 20</translation>
+<translation id="5612720917913232150">Сайт <ph name="URL"/> запрашивает данные о местоположении вашего компьютера.</translation>
+<translation id="4733082559415072992">Сайт <ph name="URL"/> запрашивает данные о местоположении вашего устройства.</translation>
+<translation id="4677585247300749148">Сайт <ph name="URL"/> запрашивает доступ к специальным возможностям.</translation>
+<translation id="3461266716147554923">Сайт <ph name="URL"/> запрашивает доступ к тексту и изображениям, скопированным в буфер обмена.</translation>
+<translation id="131405271941274527">Сайт <ph name="URL"/> запрашивает разрешение на обмен информацией через NFC.</translation>
+<translation id="5146995429444047494">Уведомления для сайта <ph name="ORIGIN"/> заблокированы.</translation>
+<translation id="1195558154361252544">Уведомления со всех сайтов, кроме тех, которым вы предоставили отдельные разрешения, автоматически блокируются.</translation>
+<translation id="3532844647053365774">Сайт <ph name="HOST"/> запрашивает доступ к микрофону.</translation>
+<translation id="7108634116785509031">Сайт <ph name="HOST"/> запрашивает доступ к камере.</translation>
+<translation id="5426179911063097041">С сайта <ph name="SITE"/> поступил запрос на отправку уведомлений.</translation>
+<translation id="6910240653697687763">Сайт <ph name="URL"/> запрашивает полный контроль над MIDI-устройствами.</translation>
+<translation id="503498442187459473">Сайт <ph name="HOST"/> запрашивает доступ к камере и микрофону.</translation>
+<translation id="8282947398454257691">доступ к уникальному идентификатору устройства</translation>
+<translation id="8329449853370113380">С сайта <ph name="URL"/> поступил запрос на воспроизведение защищенного контента. Для вашего устройства будет проведена проверка Brave Software.</translation>
+<translation id="2650609753175229582">Сайт <ph name="URL"/> собирается воспроизвести защищенный контент. Ваше устройство пройдет проверку в Brave Software, и этот сайт сможет получать к нему доступ.</translation>
+<translation id="3016780570757425217">доступ к данным о вашем местоположении</translation>
+<translation id="7221855153210829124">Показ уведомлений</translation>
+<translation id="8606726445206553943">использование MIDI-устройств</translation>
+<translation id="7409836189476010449">Запустить Flash</translation>
+<translation id="7438976808740265764">Поддержка Flash Player будет прекращена в декабре 2020 года.</translation>
+<translation id="4761104368405085019">Использование микрофона</translation>
+<translation id="9150045010208374699">Использование камеры</translation>
+<translation id="4953689047182316270">Использование специальных возможностей</translation>
+<translation id="6116338172782435947">Просмотр текста и изображений, скопированных в буфер обмена</translation>
+<translation id="5804427196348435412">Использование устройств с функцией NFC</translation>
+<translation id="3194737229810486521">Сайт <ph name="URL"/> запрашивает разрешение на постоянное хранение данных на вашем устройстве.</translation>
+<translation id="1030706264415084469">Сайт <ph name="URL"/> запрашивает разрешение на постоянное хранение большого объема данных на вашем устройстве.</translation>
+<translation id="1712552549805331520">Сайт <ph name="URL"/> запрашивает разрешение на постоянное хранение данных на вашем компьютере.</translation>
+<translation id="1997484222658892567">Сайт <ph name="URL"/> запрашивает разрешение на постоянное хранение большого объема данных на вашем компьютере.</translation>
+<translation id="7648992873808071793">сохранение файлов на этом устройстве</translation>
 <translation id="2721148159707890343">Запрос выполнен успешно</translation>
 <translation id="1821930232296380041">Недопустимый запрос или неверные параметры запроса</translation>
 <translation id="4813512666221746211">Ошибка сети</translation>
@@ -634,7 +689,6 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="3452404311384756672">Выберите интервал:</translation>
 <translation id="8202370299023114387">Конфликт</translation>
 <translation id="7535087603100972091">Значение</translation>
-<translation id="2639739919103226564">Состояние:</translation>
 <translation id="2392959068659972793">Показывать правила, значения которых не заданы</translation>
 <translation id="7182878459783632708">Правила не заданы</translation>
 <translation id="8488350697529856933">Объект применения</translation>
@@ -661,6 +715,8 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="1592005682883173041">Доступ к данным на устройстве</translation>
 <translation id="7135130955892390533">Показать статус</translation>
 <translation id="3761718714832595332">Скрыть статус</translation>
+<translation id="1426410128494586442">Да</translation>
+<translation id="4250680216510889253">Нет</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="1588438908519853928">Обычный</translation>
 <translation id="6949872517221025916">Сбросить пароль</translation>
@@ -757,7 +813,6 @@ other {Карты и их платёжный адреса сохранены. В
 <translation id="1559528461873125649">Данный файл или каталог не существует</translation>
 <translation id="2609632851001447353">Варианты</translation>
 <translation id="1294154142200295408">Модификации для командной строки</translation>
-<translation id="6786747875388722282">Расширения</translation>
 <translation id="5804241973901381774">Разрешения</translation>
 <translation id="8004582292198964060">Браузер</translation>
 </translationbundle>

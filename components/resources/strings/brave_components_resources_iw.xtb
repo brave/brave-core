@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
-<translation id="4339730410920731698">מודעות וגששים חסומים</translation>
+<translation id="5288293905681750318">עוקבים &amp; פרסומות חסומים</translation>
 <translation id="2313532038420432247">שדרוגי HTTPS</translation>
-<translation id="7679428712334662192">זמן משוער שנחסך</translation>
-<translation id="8411095021655121794">אמדן רוחב הפס שנחסך</translation>
+<translation id="788493840831967104">זמן שנחסך</translation>
+<translation id="2318592590318590295">רוחב פס שנחסך</translation>
 <translation id="5206618227023752085">תצוגה ממוזערת הוסרה.</translation>
 <translation id="2079545284768500474">בטל</translation>
 <translation id="6040143037577758943">סגירה</translation>
@@ -34,6 +34,8 @@
 <translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="3446024864193919737">הצג את Brave Rewards</translation>
 <translation id="6274899614137380422">הצג את Binance</translation>
+<translation id="5551238871320268996">Brave ביחד</translation>
+<translation id="4799744519698299121">עוד כרטיסים</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
 <translation id="2875302873837723333">אתרים מובילים</translation>
 <translation id="8173998484743827990">נתונים סטטיסטיים של Brave</translation>
@@ -178,31 +180,36 @@
 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
 <translation id="2564425876266960486">אירעה שגיאה ביצירת כרטיס BAT של דפדפן Brave</translation>
 <translation id="7422678632904904341">סכום:</translation>
-<translation id="5923611424721173182">הסדר נוכחי</translation>
+<translation id="5025866799968038247">מידע על יתרה</translation>
+<translation id="1642443162274867084">הארנק נוצר</translation>
 <translation id="5457113250005438886">לא תקף</translation>
 <translation id="7687511348932340294">זרע מידע מפתח</translation>
+<translation id="758790787422117549">מזהה אישיות</translation>
+<translation id="3671566813999349838">כמות</translation>
+<translation id="751223241692981112">נתבע ב-</translation>
+<translation id="3913089081619091801">מזהה תביעה</translation>
+<translation id="972516647724462985">יפוג ב-</translation>
+<translation id="3970114302595058915">זיהוי</translation>
+<translation id="8511126279042126492">מבצע מורשת</translation>
+<translation id="4250680216510889253">לא</translation>
+<translation id="1426410128494586442">כן</translation>
+<translation id="8102423594645796250">מבצעים</translation>
+<translation id="7805768142964895445">סטטוס</translation>
+<translation id="5565735124758917034">פעיל</translation>
+<translation id="2196753816869469810">מאושר</translation>
+<translation id="1098052486217676340">הסתיים</translation>
+<translation id="8000774832235490222">גמור</translation>
+<translation id="2448312741937722512">סוג</translation>
+<translation id="5334568292977026472">UGP</translation>
+<translation id="3798449238516105146">גרסה</translation>
 <translation id="7180611975245234373">רענן</translation>
-<translation id="3292669871848742742">נסה/י שנית רמה:</translation>
-<translation id="2026565607270413420">נסה/י שוב צעד:</translation>
-<translation id="2461822463642141190">נוכחי</translation>
-<translation id="4516620156082016131">סופי</translation>
-<translation id="68932200202726709">מטען</translation>
-<translation id="8654112359048700618">הכן/י</translation>
-<translation id="419610644429723755">הוכחה</translation>
-<translation id="8851921643210663606">הסדר</translation>
-<translation id="839736845446313156">הירשם</translation>
-<translation id="583281660410589416">לא ידוע</translation>
-<translation id="1822318934917272490">צופה</translation>
-<translation id="9165277745676544288">הצבע/י</translation>
-<translation id="7311077304864384837">זוכים</translation>
 <translation id="5771119664738037159">Brave Rewards אינו זמין.
 ניתן לאפשר אותו באמצעות ביקור</translation>
-<translation id="4235360514405112390">תקף</translation>
-<translation id="2700943637868737038">מזהה צפייה:</translation>
-<translation id="3576689061489548788">מזהה תשלום ארנק:</translation>
-<translation id="758790787422117549">מזהה אישיות</translation>
+<translation id="6672180611914406778">יתרה כוללת</translation>
 <translation id="2223892939866251845">מזהה משתמש</translation>
-<translation id="1642443162274867084">הארנק נוצר</translation>
+<translation id="4235360514405112390">תקף</translation>
+<translation id="2326487656644542536">פרטי ארנק</translation>
+<translation id="3576689061489548788">מזהה תשלום ארנק:</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">אשר</translation>
 <translation id="5916290544882167205">Brave .Brave Software הוא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
@@ -222,7 +229,6 @@
 <translation id="5317780077021120954">שמור</translation>
 <translation id="5441565662498481293">את/ה שולח/ת אוטומטי טיפ אל:</translation>
 <translation id="2827387977307390755">לאפשר טיפים ב-</translation>
-<translation id="3671566813999349838">כמות</translation>
 <translation id="3819257035322786455">גיבוי</translation>
 <translation id="1312977698678162065">קבלו תשלום כדי להציג מודעות רלוונטיות שמכבדות את פרטיותכם.</translation>
 <translation id="4396256076373444156">צבר/י נקודות בעת צפייה במודעות רלוונטיות השומרות על פרטיותך.</translation>
@@ -283,6 +289,7 @@
 <translation id="7513117072433487074">{{currency}} שפג תוקפם לפני השימוש יוחזרו באופן אוטומטי למאגר גידול המשתמשים של Brave.</translation>
 <translation id="279567716178902927">תאריך תפוגת מענק</translation>
 <translation id="2104073734684466851">מענקים</translation>
+<translation id="2291686779354188838">שלום, {{name}}!</translation>
 <translation id="1389143276807887637">ייבוא</translation>
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="8446884382197647889">למידע נוסף</translation>
@@ -325,7 +332,6 @@
 <translation id="6381574025952123568">יתרת פתיחה</translation>
 <translation id="532275381857891532">היסטוריית מודעות של 7 ימים</translation>
 <translation id="4923459931733593730">תשלום</translation>
-<translation id="5693657857413982604">התשלום מתבצע ב-{{day}} בכל חודש.</translation>
 <translation id="6104680658798556671">התשלום לא בוצע.</translation>
 <translation id="3138528956349114724">אתרים מוצמדים נמצאים כעת</translation>
 <translation id="2337632028350283479">להלן האופן בו תרומות חודשיות עובדות:</translation>
@@ -373,6 +379,8 @@
 <translation id="8014425282125849700">מדי פעם, יוצעו לכם קופונים חינם על ידי Brave. שימו עין על ההתראות!</translation>
 <translation id="2185598236335233939">חפש/י התראות על מודעות פרסומת בעוד הנך ממשיכ/ה להשתמש ב-Brave. יתרת נקודות ה-BAT שלך תגדל עם כל מודעה בה תצפה/י.</translation>
 <translation id="1370034647041840967">הרוויחו אסימונים עבור תשומת הלב שלכם למודעות ושתפו אותם כדי לתמוך ביוצרי תוכן שאתם מעריכים!</translation>
+<translation id="1701701253000051237">הוספ/י, משכ/י ונהל/י כספים ב-<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">ארנק Brave שלך מופעל על ידי <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
 <translation id="6401272292123354754">Brave Rewards מבוסס על טכנולוגית Basic Attention Token. למדו עוד על BAT</translation>
 <translation id="7823359893981882407">כאן</translation>
 <translation id="4483635855837696643">שחזרו את הארנק שלכם</translation>
@@ -415,7 +423,6 @@
 <translation id="3983104749597726322">ציוץ</translation>
 <translation id="5636843789453098076">תן/י ל-@{{ user }} טיפ על הציוץ שלו:</translation>
 <translation id="4242384385082203046">תן/י ל-@{{ user }} טיפ על הציוץ שלו!</translation>
-<translation id="2448312741937722512">סוג</translation>
 <translation id="8772672608371898774">מפרסם מאומת של Brave</translation>
 <translation id="5050370287908180130">צפייה בהצהרה החודשית עבור פרטים</translation>
 <translation id="8615803647903750175">פעילות ארנק</translation>
@@ -466,6 +473,7 @@
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="46988480989545156">אימות ארנק</translation>
+<translation id="4986087720311945758">שירות הארנק שלנו מסופק על ידי <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
 <translation id="6771734945114850124">נא להכין את תעודת הזהות שלך שהונפקה על ידי הממשלה בהישג יד.</translation>
 <translation id="8697510149346635496">משיכת BAT שאת/ה מרוויח/ה מצפייה במודעות שמכבדות פרטיות</translation>
 <translation id="1481480653609649134">רכישת BAT נוספים באמצעות כרטיסי אשראי ומקורות אחרים</translation>
@@ -499,6 +507,9 @@
 <translation id="6759185676704303656">הנכם #8217; מקבלים תשלום עבור צפייה בתמונת רקע זו.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>למדו עוד<ph name="LINK_END"/> על אודות תמונות ממומנות ב-Brave Rewards.</translation>
 <translation id="6113004497629356998">הסתר תמונות ממומנות</translation>
+<translation id="5977237145327845546">התחל שיחת וידאו פרטית עם חבריך ועמיתיך.</translation>
+<translation id="5850325887346946383">התחל שיחת וידאו</translation>
+<translation id="3651550649176056334">לגבי הנתונים שלך</translation>
 <translation id="223536150967420869">קנייה</translation>
 <translation id="5110244215256675209">קנה קריפטו</translation>
 <translation id="5749014321384313843">אני רוצה להוציא...</translation>
@@ -525,8 +536,9 @@
 <translation id="3909193058140362331">עיבוד ההמרה נכשל. נא לנסות שוב.</translation>
 <translation id="5721542149042740780">הסכום שהזנת עלה על הסכום הזמין שעומד רשותך.</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
-<translation id="92653931566014756">הכתובת לא זמינה</translation>
+<translation id="7431764818502638140">המידע אינו זמין</translation>
 <translation id="6409345078064530735">כתובת להפקדה</translation>
+<translation id="7153116947319792513">תזכורת פקדון</translation>
 <translation id="1383876407941801731">חיפוש</translation>
 <translation id="6432284126416751397">אישור המרה</translation>
 <translation id="1301340234286078471">המרה</translation>
@@ -601,6 +613,13 @@
 <translation id="5286379413446391050">לא ניתן להתחבר לשרתי Sync</translation>
 <translation id="2410472020237369473">ייתכן ששעון המחשב שלך מוגדר לשעה או לאזור זמן לא נכונים. נא לבדוק את הגדרות השעון.</translation>
 <translation id="5655621391922317800">ארנקי קריפטו</translation>
+<translation id="616639131065447379">ברוכים הבאים לארנקי קריפטו Brave</translation>
+<translation id="1740464057879304704">ארנקי קריפטו מאפשרים לך לעבוד עם מטבע קריפטו ונכסים קשורים ב-Brave. ארנקי קריפטו תומכים בטוקני את'ריום כמו ETH ו-BAT, כמו גם דברים שניתן לאסוף, ומאפשרים לך לעבוד עם  Ðאפליקציות וחוזים חכמים אחרים. כל זה מיועד לאנשים שמכירים את את'ריום ומערכות בלוקצ'יין אחרות — או שנלהבים ללמוד.</translation>
+<translation id="4855440621031541830">השתמש/י בארנקי קריפטו רק אם את/ה מסכימ/ה לכך שאת/ה בלבד אחראי/ת לכל סיכון הקשור בשימוש זה, וכי Brave Software אינה נושאת בכל אחריות להפסד כלשהו לרבות הפסדים אקראיים או הפסדים מהם הנך עלול/ה לסבול כתוצאה משימוש זה.</translation>
+<translation id="3187473319809074178">כל זה נפרד לחלוטין מ-</translation>
+<translation id="8327818101454798856">אז אם חיפשת לתמוך באתרים המועדפים עליך, המשכ/י לשם במקום זאת.</translation>
+<translation id="4894106830958548828">אני מבינ/ה</translation>
+<translation id="453977518730680921">ניגון אוטומטי של מדיה</translation>
 <translation id="7701466644604753106">הפעלת Speedreader</translation>
 <translation id="763042262431778831">כיבוי Speedreader</translation>
 </translationbundle>

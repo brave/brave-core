@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Vytvoriť nový profil</translation>
 <translation id="2666990579225592931">Otvoriť okno hosťa</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nie je povolené v prehliadači Brave.</translation>
-<translation id="7450557937477381864">Zatvoriť Chrome</translation>
-<translation id="7008934821596358692">Pre dokončenie importovania zatvorte všetky okná Chrome.</translation>
 <translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="3699882589215410581">Nainštalovať a spustiť Widevine</translation>
 <translation id="8926389886865778422">Túto otázku už nezobrazovať</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widewine je časť kódu Digital Rights Management (DRM), ktorý v Brave Software nevlastníme a nemôžeme kontrolovať. Tento kód je načítaný zo serverov Google, nie z našich vlastných serverov. Táto funkcia funguje iba ak ju povolíte. Našich používateľov odraďujeme od používania DRM, ale rešpektujeme ich voľbu a oznávame, že niektorí používatelia Brave chcú používať služby, ktoré DRM požadujú. 
 
 Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Widevine.</translation>
-<translation id="453977518730680921">Automatické prehrávanie médií</translation>
 <translation id="410351446219883937">Automatické prehrávanie</translation>
 <translation id="2240268017737062801">Opýtať sa, keď stránka bude chcieť automaticky prehrať médiá</translation>
 <translation id="3371702087847741961">Opýtať sa, keď stránka bude chcieť automaticky prehrať médiá (odporúčané)</translation>
@@ -39,11 +36,14 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7635711399568194460">Keď nie sú povolené Brave odmeny, tlačidlo Brave odmeny na paneli lokality sa skryje</translation>
 <translation id="1520361618554057102">Vždy zobrazovať záložky na Novej karte</translation>
 <translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
+<translation id="597020512043916976">Zobraziť top stránky v návrhoch na automatické dopĺňanie</translation>
+<translation id="264150068416846820">Zobraziť stránky, ktoré odporúča Brave, v návrhoch na automatické dopĺňanie</translation>
 <translation id="7781069478569868053">Stránka novej karty</translation>
 <translation id="2467749191278759605">Prispôsobte si svoj informačný panel Brave</translation>
 <translation id="1717331825806276156">Obrázky na pozadí</translation>
 <translation id="1820041496463124489">Sponzorované obrázky</translation>
 <translation id="8173998484743827990">Štatistiky Brave</translation>
+<translation id="5551238871320268996">Brave spolu</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Top stránky</translation>
 <translation id="1776831331757823105">Hodiny</translation>
@@ -72,23 +72,22 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7390783310074170337">Štandardné zobrazenie</translation>
 <translation id="130615081792797568">Jednoduché zobrazenie</translation>
 <translation id="2360360976480535628">Rozšírené zobrazenie</translation>
-<translation id="5709627087332022422">Blokovať cross-site trackery</translation>
-<translation id="6447842834002726250">Súbory cookie</translation>
-<translation id="6522412052085018663">Odtlačky prstov</translation>
+<translation id="2133317862976486547">Blokovať sledovače &amp; reklamy</translation>
+<translation id="4385707520896576447">Súbory cookie</translation>
+<translation id="4978786495456601191">Odtlačky prstov</translation>
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
-<translation id="519861640102428255">Pozrieť &amp;amp; Pocítiť</translation>
+<translation id="519861640102428255">Pozrieť &amp; Pocítiť</translation>
 <translation id="4800195524776354947">Zobraziť počet blokovaných položiek na ikone Štíty</translation>
 <translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
-<translation id="4699812599455071925">Iba blokuje cross-site súbory cookie</translation>
-<translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
-<translation id="6883611015375728278">Zakázať všetky cookies</translation>
-<translation id="5963670684159057574">Blokovať cross-site odtlačky prstov</translation>
-<translation id="769702552748212954">Povoliť všetky odtlačky prstov</translation>
-<translation id="4540198958192073185">Blokovať fingerprinting</translation>
+<translation id="4078738236287221428">Sledovače &amp; reklamy zablokované (agresívne)</translation>
+<translation id="7740996059027112821">Sledovače &amp; reklamy zablokované (štandardné)</translation>
+<translation id="4176463684765177261">Povoliť všetky sledovače &amp; reklamy</translation>
+<translation id="5770288601196774623">Iba blokuje cross-site súbory cookie</translation>
+<translation id="3587482841069643663">Zakázať všetky cookies</translation>
 <translation id="8942080017911802454">Zásady manipulácie WebRTC IP</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="8798099450830957504">Predvolené</translation>
@@ -110,6 +109,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7701040980221191251">Žiadne</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Poskytovateľ Web3 na používanie Dapps</translation>
+<translation id="5913089932885076110">Načítať Crypto Wallets pri štarte</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
 <translation id="1765684547504191670">Používa prvok Media Router na povolenie Chromecastu v prehliadači.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
@@ -171,10 +171,13 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6469509880167172749">Automatické odosielanie výlučne vlastných produktových analýz do Brave</translation>
 <translation id="7090566321964540749">Táto anonymná informácia umožní Brave len odhadnúť celkové využívanie určitých funkcií .</translation>
 <translation id="9111960429693394744">Chceli by ste pre Dapps použiť krypto peňaženku Brave alebo MetaMask?</translation>
+<translation id="8721775358057000783">Chcete na tejto stránke spustiť Crypto Wallets pre web3 podporu?</translation>
 <translation id="7583735190612229830">Nastavte Krypto peňaženky na interakciu s touto aplikáciou a ďalšími podobnými.</translation>
-<translation id="8337117349965899723">Použiť Krypto peňaženky</translation>
+<translation id="4823406846571523661">Nastaviť Crypto Wallets</translation>
 <translation id="5756155765711979898">Použiť MetaMasku</translation>
 <translation id="6754134632841262799">NASTAVENIA</translation>
+<translation id="8199661191594897555">Spustite Crypto Wallets a znova načítajte</translation>
+<translation id="8428213095426709021">Nastavenia</translation>
 <translation id="4552520379838695057">Ľutujeme, táto stránka chýba.</translation>
 <translation id="2609895996619941644">Chcete skontrolovať, či je k dispozícii uložená verzia na Wayback Machine?</translation>
 <translation id="8053093028263274061">Ľutujeme, žiadna uložená verzia nie je k dispozícii.</translation>
@@ -185,8 +188,10 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
 <translation id="796831669370432378">Ak chcete pridať záložku, kliknite na tlačidlo záložky vedľa panela s adresou</translation>
 <translation id="4989337484121655457">Vyžadanie úplného prístupu na disk</translation>
-<translation id="8025559074845816210">Brave potrebuje na import vašich záložiek zo Safari  úplný prístup na disk.</translation>
+<translation id="5501596373144334003">Brave vyžaduje úplný prístup na disk, aby mohol zo Safari importovať vaše záložky a históriu.</translation>
 <translation id="8515328844674404333">Zistite, ako udeliť úplný prístup na disk zo svojich systémových preferencií.</translation>
 <translation id="6414878884710400018">Otvoriť systémové predvoľby</translation>
 <translation id="5570470519803062774">Nastavenia stránky a štítov</translation>
+<translation id="8487693399751278191">Importovať záložky teraz...</translation>
+<translation id="2557899542277210112">Pre rýchly prístup umiestnite svoje záložky sem na panel so záložkami.</translation>
 </translationbundle>

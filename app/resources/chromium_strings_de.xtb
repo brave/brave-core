@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">Absturzberichte und <ph name="UMA_LINK"/> zur Verbesserung von Brave an Brave Software senden</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Netzwerkanmeldung – Brave</translation>
+<translation id="8745514854244955877">Brave – Netzwerkanmeldung – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Netzwerkanmeldung</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -45,8 +48,12 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="5785919770853225148">Brave speichert dieses Passwort in Ihrem Brave Software-Konto. Sie müssen es sich also nicht merken.</translation>
 <translation id="8211837073776713955">Brave wird Sie informieren, sollten Ihre Passwörter nicht mehr sicher sein</translation>
 <translation id="113959764510199339">Brave versucht Passwörter anzuzeigen.</translation>
+<translation id="96347285368592620">Brave versucht, Passwörter zu kopieren.</translation>
+<translation id="2953892977076487219">Brave versucht, Passwörter zu bearbeiten.</translation>
 <translation id="7503098128120083822">Brave möchte Ihre Passwörter exportieren.</translation>
 <translation id="8285294305439559616">Brave möchte Passwörter anzeigen. Geben Sie Ihr Windows-Passwort ein, um dies zuzulassen.</translation>
+<translation id="8090497651549769448">Brave versucht, Passwörter zu kopieren. Geben Sie Ihr Windows-Passwort ein, um dies zuzulassen.</translation>
+<translation id="3861679447659630159">Brave versucht, Passwörter zu bearbeiten. Geben Sie Ihr Windows-Passwort ein, um dies zuzulassen.</translation>
 <translation id="5918095577778020936">Brave möchte Ihre Passwörter exportieren. Wenn Sie dies zulassen möchten, geben Sie Ihr Windows-Passwort ein.</translation>
 <translation id="8320964054148936490">Auf diesem Computer befindet sich bereits eine neuere Version von Brave. Falls die Software nicht funktioniert, deinstallieren Sie Brave bitte und versuchen Sie es erneut.</translation>
 <translation id="7691786510374174420">Die Installation konnte aufgrund eines undefinierten Fehlers nicht abgeschlossen werden. Falls Brave derzeit ausgeführt wird, schließen Sie es bitte und versuchen Sie es erneut.</translation>
@@ -199,7 +206,7 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="3262506503470845422">Hilfe für Brave aufrufen</translation>
 <translation id="1864557848095568223">Brave wird aktualisiert</translation>
 <translation id="1786715389543715322">Brave wird aktualisiert (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Fast fertig! Starten Sie Brave neu, um die Aktualisierung abzuschließen.</translation>
+<translation id="7914115000169617076">Fast geschafft! Brave zum Abschluss der Aktualisierung neu starten. Inkognitofenster werden nicht wieder geöffnet.</translation>
 <translation id="8208853227947884571">Brave ist auf dem neuesten Stand</translation>
 <translation id="573759479754913123">Über Brave OS</translation>
 <translation id="7573289029918943991">Sie können anhand der <ph name="LINK_BEGIN"/>Einstellungen von Brave OS<ph name="LINK_END"/> sehen, ob Ihr Gerät auf dem neuesten Stand ist</translation>
@@ -215,6 +222,12 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="8586264863973514035">Starten Sie Brave neu, um die Änderungen zu übernehmen</translation>
 <translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
 <translation id="1649714546770135458">Wenn Sie diese Einstellung deaktivieren, können Sie sich auf Websites von Brave Software wie beispielsweise Gmail anmelden, ohne sich auch in Brave anmelden zu müssen</translation>
+<translation id="2796517443093885402">Brave kann dazu beitragen, Sie beispielsweise vor Datenpannen und schädlichen Erweiterungen zu schützen</translation>
+<translation id="428541510811554120">Brave kann nicht nach Updates suchen. Überprüfen Sie Ihre Internetverbindung.</translation>
+<translation id="2633397153656205379">Brave wurde aufgrund eines Fehlers nicht aktualisiert. Wie Sie Updateprobleme und Fehler bei der Aktualisierung von Brave beheben, <ph name="BEGIN_LINK"/>erfahren Sie hier<ph name="END_LINK"/>.</translation>
+<translation id="8622246347342688645">Brave kann Ihre Passwörter nicht prüfen, da Sie nicht angemeldet sind</translation>
+<translation id="7006260220514217183">Safe Browsing ist deaktiviert. Es wird empfohlen, diese Funktion zu aktivieren.</translation>
+<translation id="1785833016412082453">Brave kann Ihre Erweiterungen nicht prüfen. Versuchen Sie es später noch einmal.</translation>
 <translation id="9220324636239049437">Dadurch wird 1 Element von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="5853262807109651878">Dadurch werden <ph name="ITEMS_COUNT"/> Elemente von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="4784414698887946907">Dadurch werden Ihre Browserdaten von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>

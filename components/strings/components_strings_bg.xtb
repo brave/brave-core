@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">Поверителност</translation>
 <translation id="3061707000357573562">Услуга за корекции</translation>
 <translation id="1914326953223720820">Услуга за разкомпресиране</translation>
-<translation id="1623104350909869708">Да не се създават допълнителни диалогови прозорци от тази страница</translation>
-<translation id="2677748264148917807">Излизане</translation>
-<translation id="5556459405103347317">Повторно зареждане</translation>
 <translation id="2359808026110333948">Напред</translation>
 <translation id="4378154925671717803">Телефон</translation>
 <translation id="8131740175452115882">Потвърждаване</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">Няма</translation>
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="9038649477754266430">Използване на услуга за предвиждане с цел по-бързо зареждане на страниците</translation>
+<translation id="2344028582131185878">Автоматични изтегляния</translation>
+<translation id="3414952576877147120">Размер:</translation>
 <translation id="4850886885716139402">Изглед</translation>
 <translation id="7180611975245234373">Опресняване</translation>
-<translation id="1426410128494586442">Да</translation>
-<translation id="4250680216510889253">Не</translation>
 <translation id="4522570452068850558">Подробности</translation>
 <translation id="3586931643579894722">Скриване на подробностите</translation>
+<translation id="5556459405103347317">Повторно зареждане</translation>
 <translation id="614940544461990577">Изпробвайте следното:</translation>
 <translation id="4943872375798546930">Няма резултати</translation>
 <translation id="8688672835843460752">Свободно място</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">Търсене в историята</translation>
 <translation id="4756388243121344051">&amp;История</translation>
 <translation id="1644574205037202324">История</translation>
+<translation id="1623104350909869708">Да не се създават допълнителни диалогови прозорци от тази страница</translation>
+<translation id="2677748264148917807">Излизане</translation>
 <translation id="3950820424414687140">Вход</translation>
 <translation id="8286036467436129157">Вход</translation>
 <translation id="8503813439785031346">Потребителско име</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">Буферна памет</translation>
 <translation id="6059925163896151826">USB устройства</translation>
 <translation id="7638605456503525968">Серийни портове</translation>
+<translation id="3784372983762739446">Bluetooth устройства</translation>
 <translation id="2215727959747642672">Редактиране на файлове</translation>
 <translation id="6545864417968258051">Сканиране за устройства с Bluetooth</translation>
 <translation id="534295439873310000">Устройства с NFC</translation>
-<translation id="4943703118917034429">Виртуална реалност</translation>
-<translation id="3513704683820682405">Обогатена реалност</translation>
+<translation id="4670064810192446073">Виртуална реалност</translation>
+<translation id="2025115093177348061">Обогатена реалност</translation>
 <translation id="5039804452771397117">Позволи</translation>
 <translation id="7053983685419859001">Блокиране</translation>
 <translation id="57838592816432529">Заглушаване</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">На сайта се показват натрапчиви или подвеждащи реклами</translation>
 <translation id="7878562273885520351">Възможно е паролата ви да е компрометирана</translation>
 <translation id="1089439967362294234">Промяна на паролата</translation>
-<translation id="9008201768610948239">Пренебрегване</translation>
 <translation id="1186201132766001848">Проверка на паролите</translation>
+<translation id="9008201768610948239">Пренебрегване</translation>
+<translation id="808894953321890993">Промяна на паролата</translation>
 <translation id="5979084224081478209">Проверка на паролите</translation>
+<translation id="6107012941649240045">Издаден на</translation>
+<translation id="5030338702439866405">Издаден от</translation>
+<translation id="5826507051599432481">Общо име (CN)</translation>
+<translation id="6898699227549475383">Организация (О)</translation>
+<translation id="3308006649705061278">Организационна единица (OU)</translation>
+<translation id="8705331520020532516">Сериен номер</translation>
+<translation id="1902576642799138955">Период на валидност</translation>
+<translation id="5895187275912066135">Издаден на</translation>
+<translation id="4121428309786185360">Изтича на</translation>
+<translation id="4154664944169082762">Пръстови отпечатъци</translation>
+<translation id="7238585580608191973">Пръстов отпечатък SHA-256</translation>
+<translation id="5209518306177824490">Пръстов отпечатък SHA-1</translation>
+<translation id="6786747875388722282">Разширения</translation>
+<translation id="7240120331469437312">Алтернативно име на субекта на сертификата</translation>
 <translation id="10614374240317010">Незапазвани никога</translation>
 <translation id="5869522115854928033">Запазени пароли</translation>
 <translation id="230699814587342492">Пароли в Brave</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">оранжево</translation>
 <translation id="1555130319947370107">синьо</translation>
 <translation id="138218114945450791">Светло син</translation>
+<translation id="5612720917913232150"><ph name="URL"/> иска да използва местоположението на компютъра ви</translation>
+<translation id="4733082559415072992"><ph name="URL"/> иска да използва местоположението на устройството ви</translation>
+<translation id="4677585247300749148"><ph name="URL"/> иска да реагира на събития за достъпност</translation>
+<translation id="3461266716147554923"><ph name="URL"/> иска да преглежда текста и изображенията, копирани в буферната памет</translation>
+<translation id="131405271941274527"><ph name="URL"/> иска да изпраща и да получава информация при докосване на телефона ви до устройства с NFC</translation>
+<translation id="5146995429444047494">Известията за <ph name="ORIGIN"/> са блокирани</translation>
+<translation id="1195558154361252544">Известията се блокират автоматично за всички сайтове освен за онези, за които ги разрешите</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> иска да използва микрофона ви</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> иска да използва камерата ви</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> иска да ви изпраща известия</translation>
+<translation id="6910240653697687763"><ph name="URL"/> иска да получи пълен контрол над MIDI устройствата ви</translation>
+<translation id="503498442187459473"><ph name="HOST"/> иска да използва камерата и микрофона ви</translation>
+<translation id="8282947398454257691">Достъп до уникалния идентификатор на устройството ви</translation>
+<translation id="8329449853370113380"><ph name="URL"/> иска да възпроизвежда защитено съдържание. Идентичността на устройството ви ще бъде удостоверена от Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> иска разрешение за възпроизвеждане на защитено съдържание. Идентичността на устройството ви ще бъде потвърдена от Brave Software и този сайт може да осъществи достъп до нея.</translation>
+<translation id="3016780570757425217">Достъп до местоположението ви.</translation>
+<translation id="7221855153210829124">Показва известия</translation>
+<translation id="8606726445206553943">Да използва MIDI устройствата ви.</translation>
+<translation id="7409836189476010449">Изпълни Flash</translation>
+<translation id="7438976808740265764">Поддръжката на Flash Player ще бъде прекратена след декември 2020 г.</translation>
+<translation id="4761104368405085019">Използване на микрофона ви</translation>
+<translation id="9150045010208374699">Използване на камерата ви</translation>
+<translation id="4953689047182316270">Реагиране на събития за достъпност</translation>
+<translation id="6116338172782435947">Да преглежда текста и изображенията, копирани в буферната памет</translation>
+<translation id="5804427196348435412">Използване на устройства с NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> иска да съхранява за постоянно данни на устройството ви</translation>
+<translation id="1030706264415084469"><ph name="URL"/> иска да съхранява за постоянно голямо количество данни на устройството ви</translation>
+<translation id="1712552549805331520"><ph name="URL"/> иска да съхранява за постоянно данни на локалния ви компютър</translation>
+<translation id="1997484222658892567"><ph name="URL"/> иска да съхранява за постоянно голямо количество данни на локалния ви компютър</translation>
+<translation id="7648992873808071793">Да съхранява файлове на това устройство.</translation>
 <translation id="4813512666221746211">Грешка в мрежата</translation>
 <translation id="3380365263193509176">Неизвестна грешка</translation>
 <translation id="5565735124758917034">Активно</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">Текущият потребител</translation>
 <translation id="6965978654500191972">Устройство</translation>
 <translation id="4728558894243024398">Платформа</translation>
+<translation id="1426410128494586442">Да</translation>
+<translation id="4250680216510889253">Не</translation>
 <translation id="2380886658946992094">Правен</translation>
 <translation id="1588438908519853928">Нормално</translation>
 <translation id="1974060860693918893">Разширени</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">Неизвестно</translation>
 <translation id="9170848237812810038">&amp;Отмяна</translation>
 <translation id="2972581237482394796">&amp;Възстановяване</translation>
-<translation id="6786747875388722282">Разширения</translation>
 <translation id="5804241973901381774">Разрешения</translation>
 <translation id="8004582292198964060">Браузър</translation>
 </translationbundle>

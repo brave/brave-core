@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">Brave Software հաշիվ</translation>
 <translation id="3157931365184549694">Վերականգնել</translation>
 <translation id="5040262127954254034">Գաղտնիություն</translation>
-<translation id="1623104350909869708">Թույլ չտալ այս էջին ստեղծել լրացուցիչ երկխոսություններ</translation>
-<translation id="2677748264148917807">Դուրս գալ էջից</translation>
-<translation id="5556459405103347317">Վերաբեռնել</translation>
 <translation id="2359808026110333948">Շարունակել</translation>
 <translation id="4378154925671717803">Հեռախոս</translation>
 <translation id="8131740175452115882">Հաստատել</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">Հաշվարկում…</translation>
 <translation id="7701040980221191251">Չկա</translation>
 <translation id="8428213095426709021">Կարգավորումներ</translation>
+<translation id="2344028582131185878">Ավտոմատ ներբեռնումներ</translation>
+<translation id="3414952576877147120">Չափը՝</translation>
 <translation id="4850886885716139402">Տեսք</translation>
 <translation id="7180611975245234373">Թարմացնել</translation>
-<translation id="1426410128494586442">Այո</translation>
-<translation id="4250680216510889253">Ոչ</translation>
 <translation id="4522570452068850558">Մանրամասներ</translation>
 <translation id="3586931643579894722">Թաքցնել մանրամասները</translation>
+<translation id="5556459405103347317">Վերաբեռնել</translation>
 <translation id="614940544461990577">Փորձեք՝</translation>
 <translation id="4943872375798546930">Արդյունքներ չկան</translation>
 <translation id="8688672835843460752">Հասանելի է</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">Որոնել պատմությունում</translation>
 <translation id="4756388243121344051">&amp;Պատմություն</translation>
 <translation id="1644574205037202324">Պատմություն</translation>
+<translation id="1623104350909869708">Թույլ չտալ այս էջին ստեղծել լրացուցիչ երկխոսություններ</translation>
+<translation id="2677748264148917807">Դուրս գալ էջից</translation>
 <translation id="3950820424414687140">Մուտք գործել</translation>
 <translation id="8286036467436129157">Մուտք գործել</translation>
 <translation id="8503813439785031346">Օգտանուն</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">Սեղմատախտակ</translation>
 <translation id="6059925163896151826">USB սարքեր</translation>
 <translation id="7638605456503525968">Հաջորդական միացքներ</translation>
+<translation id="3784372983762739446">Bluetooth սարքեր</translation>
 <translation id="2215727959747642672">Ֆայլի փոփոխում</translation>
 <translation id="6545864417968258051">Bluetooth սարքերի որոնում</translation>
 <translation id="534295439873310000">NFC սարքեր</translation>
-<translation id="4943703118917034429">Վիրտուալ իրականություն</translation>
-<translation id="3513704683820682405">Լրացված իրականություն</translation>
+<translation id="4670064810192446073">Վիրտուալ իրականություն</translation>
+<translation id="2025115093177348061">Լրացված իրականություն</translation>
 <translation id="5039804452771397117">Թույլ տալ</translation>
 <translation id="7053983685419859001">Արգելափակել</translation>
 <translation id="57838592816432529">Անջատել ձայնը</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">Ձեր գաղտնաբառը կարող են գողանալ</translation>
 <translation id="1089439967362294234">Փոխել գաղտնաբառը</translation>
 <translation id="9008201768610948239">Անտեսել</translation>
+<translation id="808894953321890993">Փոխել գաղտնաբառը</translation>
+<translation id="5979084224081478209">Ստուգել գաղտնաբառերը</translation>
+<translation id="6107012941649240045">Տրված`</translation>
+<translation id="5030338702439866405">Թողարկող`</translation>
+<translation id="5826507051599432481">Ընդհանուր անուն (CN)</translation>
+<translation id="6898699227549475383">Կազմակերպություն (O)</translation>
+<translation id="3308006649705061278">Ստորաբաժանում (OU)</translation>
+<translation id="8705331520020532516">Սերիական համարը</translation>
+<translation id="1902576642799138955">Վավերության ժամկետ</translation>
+<translation id="5895187275912066135">Թողարկված է՝</translation>
+<translation id="4121428309786185360">Ժամկետը լրանում է`</translation>
+<translation id="4154664944169082762">Մատնահետքեր</translation>
+<translation id="7238585580608191973">SHA-256 մատնահետք</translation>
+<translation id="5209518306177824490">SHA-1 մատնահետք</translation>
+<translation id="6786747875388722282">Ընդլայնումներ</translation>
+<translation id="7240120331469437312">Վկայագրի սուբյեկտի այլընտրանքային անունը</translation>
 <translation id="10614374240317010">Կայքեր, որոնց համար գաղտնաբառերը երբեք չեն պահվում</translation>
 <translation id="5869522115854928033">Պահված գաղտնաբառեր</translation>
 <translation id="230699814587342492">Brave-ի գաղտնաբառեր</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">Սպիտակ</translation>
 <translation id="1197088940767939838">Նարնջագույն</translation>
 <translation id="1555130319947370107">Կապույտ</translation>
+<translation id="5612720917913232150"><ph name="URL"/> կայքն ուզում է օգտագործել ձեր համակարգչի տեղադրությունը</translation>
+<translation id="4733082559415072992"><ph name="URL"/> կայքն ուզում է օգտագործել ձեր սարքի տեղադրությունը</translation>
+<translation id="4677585247300749148"><ph name="URL"/> կայքն ուզում է օգտագործել հատուկ գործողությունները</translation>
+<translation id="3461266716147554923"><ph name="URL"/> կայքն ուզում է տեսնել սեղմատախտակին պատճենված տեքստն ու պատկերները</translation>
+<translation id="131405271941274527"><ph name="URL"/> կայքը թույլտվություն է խնդրում՝ NFC-ի միջոցով տվյալներ փոխանակելու համար։</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> կայքի ծանուցումներն արգելափակված են</translation>
+<translation id="1195558154361252544">Բացի ձեր նշած կայքերից՝ մնացած բոլոր կայքերի համար ծանուցումներն ավտոմատ արգելափակվում են:</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> կայքն ուզում է օգտագործել ձեր խոսափողը</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> կայքն ուզում է օգտագործել ձեր տեսախցիկը</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> կայքն ուզում է ձեզ ծանուցումներ ուղարկել</translation>
+<translation id="6910240653697687763"><ph name="URL"/> կայքն ուզում է ամբողջովին վերահսկել ձեր MIDI սարքերը</translation>
+<translation id="503498442187459473"><ph name="HOST"/> կայքն ուզում է օգտագործել տեսախցիկն ու խոսափողը</translation>
+<translation id="8282947398454257691">Իմանալ ձեր հատուկ սարքի նույնացուցիչը</translation>
+<translation id="8329449853370113380"><ph name="URL"/> կայքն ուզում է պաշտպանված բովանդակություն նվագարկել: Ձեր սարքը կնույնականացվի Brave Software-ի կողմից:</translation>
+<translation id="2650609753175229582"><ph name="URL"/>-ն ուզում է նվագարկել պաշտպանված բովանդակությունը։ Brave Software-ը կստուգի ձեր սարքը, և այն կարող է հասանելի դառնալ այս կայքին։</translation>
+<translation id="3016780570757425217">Իմանալ ձեր տեղադրությունը</translation>
+<translation id="7221855153210829124">Ցույց տալ ծանուցումները</translation>
+<translation id="8606726445206553943">Օգտագործել ձեր MIDI սարքերը</translation>
+<translation id="7409836189476010449">Flash աշխատեցնել</translation>
+<translation id="7438976808740265764">Flash Player-ը 2020 թ․-ի դեկտեմբերից այլևս չի աջակցվի։</translation>
+<translation id="4761104368405085019">Օգտագործել խոսափողը</translation>
+<translation id="9150045010208374699">Օգտագործել տեսախցիկը</translation>
+<translation id="4953689047182316270">Արձագանքել մատչելիության գործողություններին</translation>
+<translation id="6116338172782435947">Տեսնել սեղմատախտակին պատճենված տեքստը և պատկերները</translation>
+<translation id="5804427196348435412">Օգտագործել NFC սարքերը</translation>
+<translation id="3194737229810486521"><ph name="URL"/> կայքն ուզում է ձեր սարքում մեծ ծավալով տվյալներ մշտապես պահել</translation>
+<translation id="1030706264415084469"><ph name="URL"/> կայքն ուզում է ձեր սարքում մեծ ծավալով տվյալներ մշտապես պահել</translation>
+<translation id="1712552549805331520"><ph name="URL"/> կայքն ուզում է ձեր համակարգչում տվյալներ մշտապես պահել</translation>
+<translation id="1997484222658892567"><ph name="URL"/> կայքն ուզում է ձեր համակարգչում մեծ ծավալով տվյալներ մշտապես պահել</translation>
+<translation id="7648992873808071793">Պահել ֆայլերն այս սարքում</translation>
 <translation id="4813512666221746211">Ցանցի սխալ</translation>
 <translation id="3380365263193509176">Անհայտ սխալ</translation>
 <translation id="5565735124758917034">Ակտիվ է</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">ընթացիկ օգտատիրոջը</translation>
 <translation id="6965978654500191972">Սարք</translation>
 <translation id="4728558894243024398">Հենք</translation>
+<translation id="1426410128494586442">Այո</translation>
+<translation id="4250680216510889253">Ոչ</translation>
 <translation id="1588438908519853928">Սովորական</translation>
 <translation id="1974060860693918893">Լրացուցիչ</translation>
 <translation id="5308380583665731573">Կապակցվել</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">Անհայտ</translation>
 <translation id="9170848237812810038">&amp;Հետարկել</translation>
 <translation id="2972581237482394796">&amp;Վերարկել</translation>
-<translation id="6786747875388722282">Ընդլայնումներ</translation>
 <translation id="5804241973901381774">Թույլտվություններ</translation>
 <translation id="8004582292198964060">Դիտարկիչ</translation>
 </translationbundle>

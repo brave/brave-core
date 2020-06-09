@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Shields</translation>
 <translation id="6132506775968708399">Block 3rd party cookies</translation>
 <translation id="7835726359440951858">Block ads and tracking</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="94154759592465111">Block Scripts</translation>
 <translation id="7458422973722236530">Fingerprinting Protection</translation>
-<translation id="252011129655042182">Ads and trackers</translation>
+<translation id="5709627087332022422">Block cross-site trackers</translation>
 <translation id="6754976710186182237">Fingerprint methods</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="7461425058443653485">Scripts Blocked</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Standard tab</translation>
 <translation id="3377025655491224618">Incognito Tab</translation>
 <translation id="9148058034647219655">Exit</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Opens supported sites using HTTPS instead of HTTP when possible</translation>
 <translation id="8387201461264842096">Ad block</translation>
 <translation id="1934885595886623674">Prevents ads from loading</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="1680858055899097121">Don't persist tabs between browsing sessions</translation>
 <translation id="4339730410920731698">Ads and Trackers Blocked</translation>
+<translation id="6761596877474675418">Data saved</translation>
 <translation id="3034562645284925177">Est. time saved</translation>
 <translation id="6572660632052512096">Desktop mode</translation>
 <translation id="1340503115760585811">Enable desktop view for new tabs</translation>
@@ -159,7 +161,7 @@ month ...</translation>
 <translation id="1713542052890184975">Please backup your Brave wallet.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">The Brave Rewards server is not responding. We will fix this as soon as possible.</translation>
-<translation id="2626799779920242286">Please try again later.</translation>
+<translation id="7117228822971127758">Please try again later</translation>
 <translation id="3068742524072211213">expires on <ph name="DATE"/></translation>
 <translation id="4292832015778676417">earned from ads</translation>
 <translation id="683765328936486920">on YouTube</translation>
@@ -227,8 +229,7 @@ month ...</translation>
 <translation id="6199596294742117349">This is a private tab</translation>
 <translation id="5858455511731621847">Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer or the sites you are visiting.</translation>
 <translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
-<translation id="7127980134843952133">Download history</translation>
-<translation id="3690140184638701871">Contributions &amp;amp; Tips</translation>
+<translation id="3690140184638701871">Contributions &amp; Tips</translation>
 <translation id="844921671123185605">Your monthly tips have been processed!</translation>
 <translation id="3124090095880236567">Turn on Ads</translation>
 <translation id="2975780980638932742">Brave Ads has arrived!</translation>
@@ -250,15 +251,82 @@ month ...</translation>
 <translation id="8522669544471808198">Show background images</translation>
 <translation id="3870475560794762985">Show sponsored images</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Get paid to see this background image.</translation>
-<translation id="4836823081419522426">You'll receive 70% of the ad revenue for this private sponsorship which can be used to support web content creators. Turn on Brave Rewards to claim your share.</translation>
-<translation id="7307847920988946894">Turn on Rewards</translation>
 <translation id="1605521356929094020">Turn on Brave Ads</translation>
-<translation id="1647482814782886825">By turning on Rewards, you agree to the <ph name="TERMS_OF_SERVICE"/>. You can also choose to <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">By tapping Earn &amp; Give, you agree to the <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Get paid to see this background image.</translation>
 <translation id="7136586167396205364">Hide sponsored images</translation>
 <translation id="2927095357213611519">You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.</translation>
-<translation id="4016415345213871193">You’re getting paid to see this background image.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> about sponsored images in Brave Rewards. You can also choose to <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">You can also choose to <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Get paid to see this background image. Turn on Brave Ads to claim your share.</translation>
+<translation id="213787746370741250">Open tabs in Custom Tabs</translation>
+<translation id="8030169304546394654">Disconnected</translation>
+<translation id="8267327690882073581">Verify Wallet</translation>
+<translation id="543510923939676996">Wallet verified</translation>
+<translation id="8673913984316081937">Verifying your wallet is optional</translation>
+<translation id="8558636200953226885">But if you verify, you can...</translation>
+<translation id="8697510149346635496">Withdraw BAT that you earn from viewing privacy-respecting ads</translation>
+<translation id="1481480653609649134">Purchase additional BAT with credit cards and other sources</translation>
+<translation id="9096003370755878766">Withdraw BAT that you may have previously added to your Brave Rewards wallet</translation>
+<translation id="1554282356558968486">Our wallet service is provided by</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
+<translation id="723054503945711909">Brave Software Inc. does not process, store or access any of the personal information that you provide to Uphold when you create an account with them.</translation>
+<translation id="3699674790322420653">Complete wallet verification</translation>
+<translation id="2193391216824305230">User Wallet</translation>
+<translation id="7591798679868259510">Go to my Uphold account</translation>
+<translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
+<translation id="6239274080752256452">Withdraw Funds</translation>
+<translation id="8874184842967597500">Not connected</translation>
+<translation id="3368922792935385530">Connected</translation>
+<translation id="4569155249847375786">Verified</translation>
+<translation id="5358719431303818601">Disconnected not verified</translation>
+<translation id="4241449868720191203">Disconnected verified</translation>
+<translation id="3248185426436836442">Pending</translation>
+<translation id="8108013093558639183">BAT is not currently supported in your region based on the location where your account is opened. Check back later for availability.</translation>
+<translation id="4190454391025419535">Region not supported</translation>
+<translation id="6830703472632069884">There was a problem verifying your wallet, please try again later.</translation>
+<translation id="3512533646933434345">Wallet verification error</translation>
+<translation id="2260513517001048012">NOTE: this Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
+<translation id="4488355059795908907">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.</translation>
+<translation id="2495032782748793764">Brave Default</translation>
+<translation id="9132378787893584761">Share Brave with your friends!</translation>
+<translation id="717952606991220586">Oops, something is wrong. Please try again later.</translation>
+<translation id="2524310205387880526">Rate Brave</translation>
+<translation id="6680650203439190394">Rate</translation>
+<translation id="2635089463885398597">How would you rate your experience with Brave?</translation>
+<translation id="141901961143729572">Share your thoughts</translation>
+<translation id="7961015016161918242">Never</translation>
+<translation id="1275213816424141989">Maybe later</translation>
+<translation id="6991128190741664836">Later</translation>
+<translation id="8851456134224363571">Great! Would you mind leaving us a rating on the Play Store?</translation>
+<translation id="8668962040900592974">Let us know know how we can improve</translation>
+<translation id="4406937629441301400">Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Earn tokens for viewing this image. Turn on Earn &amp; Give to claim your share.</translation>
+<translation id="6632345639591919543">You're earning tokens for viewing this image.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">You're earning tokens for viewing this image.</translation>
+<translation id="7952665812649667034">I'm ready to Earn &amp; Give</translation>
+<translation id="7877201489035217175">Learn more about sponsored images</translation>
+<translation id="828092975561478703">For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.</translation>
+<translation id="4941539331405513605">Block cross-site cookies</translation>
+<translation id="3763681089644577874">Block Cookies</translation>
+<translation id="614747795780742163">Prevents websites from storing information about your previous visits</translation>
+<translation id="6883611015375728278">Block all cookies</translation>
+<translation id="5657156137487675418">Allow all cookies</translation>
+<translation id="5963670684159057574">Block cross-site fingerprinting</translation>
+<translation id="3895527457258986253">Block fingerprinting</translation>
+<translation id="184568144098869637">Prevents browser from recognising your device</translation>
+<translation id="4540198958192073185">Block all fingerprinting</translation>
+<translation id="769702552748212954">Allow all fingerprinting</translation>
+<translation id="2888409909650566510">Ads and other creepy\nthings blocked</translation>
+<translation id="6930134873084561197">Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking to see what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.</translation>
+<translation id="8553998445606452168">About Brave Shields</translation>
+<translation id="8912304686498704084">UP</translation>
+<translation id="4963218453264888510">DOWN</translation>
+<translation id="7474113515179313724">You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?</translation>
+<translation id="9055546041146396417">If this site appears broken, try Shields down.</translation>
+<translation id="1209739344687072997">Report a broken site</translation>
+<translation id="8510478288840333677">Let Brave's developers know that this site doesn't work properly with Shields:</translation>
+<translation id="5429200298326665264">Note: this site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
+<translation id="5299848999918506028">Thank you!</translation>
+<translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
+<translation id="650318023204990401">Advanced controls</translation>
+<translation id="7182293319417450928">A minimum balance of 25 BAT is required to verify.</translation>
 </translationbundle>

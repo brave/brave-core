@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">将崩溃报告和<ph name="UMA_LINK"/>发送给Brave Software，帮助我们完善Brave。</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 网络登录 - Brave</translation>
+<translation id="8745514854244955877">Brave - 网络登录 - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - 网络登录</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 测试版</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave 开发者版</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -45,8 +48,12 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5785919770853225148">Brave 会将此密码保存在您的 Brave Software 帐号中，因此您不必记住它。</translation>
 <translation id="8211837073776713955">Brave 会让您知道您的密码是否曾被泄露</translation>
 <translation id="113959764510199339">Brave 正尝试显示密码。</translation>
+<translation id="96347285368592620">Brave 正在尝试复制密码。</translation>
+<translation id="2953892977076487219">Brave 正在尝试修改密码。</translation>
 <translation id="7503098128120083822">Brave 想导出您的密码。</translation>
 <translation id="8285294305439559616">Brave正在尝试显示密码，请输入您的Windows密码以允许此操作。</translation>
+<translation id="8090497651549769448">Brave 正在尝试复制密码。请输入您的 Windows 密码以允许此操作。</translation>
+<translation id="3861679447659630159">Brave 正在尝试修改密码。请输入您的 Windows 密码以允许此操作。</translation>
 <translation id="5918095577778020936">Brave 想导出您的密码。请输入您的 Windows 密码以允许此操作。</translation>
 <translation id="8320964054148936490">此计算机已安装了更高版本的 Brave。如果软件无法正常运行，请卸载 Brave 并重试。</translation>
 <translation id="7691786510374174420">未知错误导致安装失败。如果 Brave 正在运行，请将其关闭，然后重试。</translation>
@@ -199,7 +206,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="3262506503470845422">获取有关 Brave 的帮助</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
 <translation id="1786715389543715322">正在更新 Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">即将更新到最新版本！重新启动 Brave 即可完成更新。</translation>
+<translation id="7914115000169617076">离最新版本只有一步之遥了！重新启动 Brave 即可完成更新。无痕式窗口不会自动重新打开。</translation>
 <translation id="8208853227947884571">Brave 已是最新版本</translation>
 <translation id="573759479754913123">关于 Brave 操作系统</translation>
 <translation id="7573289029918943991">若想确认您设备上的操作系统是否是最新版本，请前往 <ph name="LINK_BEGIN"/>Brave 操作系统设置<ph name="LINK_END"/></translation>
@@ -217,6 +224,12 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8586264863973514035">要想应用您的更改，请重新启动 Brave</translation>
 <translation id="7021823858304886493">允许登录 Brave</translation>
 <translation id="1649714546770135458">关闭此功能后，您无需登录 Brave 即可登录 Gmail 等 Brave Software 网站</translation>
+<translation id="2796517443093885402">Brave 有助于保护您免受数据泄露、不良扩展程序等问题的影响</translation>
+<translation id="428541510811554120">Brave 无法检查是否有更新。请检查您的互联网连接。</translation>
+<translation id="2633397153656205379">Brave 未能更新，因为出了点问题。<ph name="BEGIN_LINK"/>请解决导致 Brave 更新失败的问题<ph name="END_LINK"/>。</translation>
+<translation id="8622246347342688645">Brave 无法检查您的密码，因为您未登录</translation>
+<translation id="7006260220514217183">“安全浏览”功能已关闭。Brave 建议开启此功能。</translation>
+<translation id="1785833016412082453">Brave 无法检查您的扩展程序。请稍后重试。</translation>
 <translation id="9220324636239049437">这会从这台设备上删除 1 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="5853262807109651878">这会从这台设备上删除 <ph name="ITEMS_COUNT"/> 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="4784414698887946907">这会从这台设备上删除您的浏览数据。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>

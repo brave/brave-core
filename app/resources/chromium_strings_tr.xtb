@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">Kilitlenme raporlarını ve <ph name="UMA_LINK"/> bilgilerini Brave Software'a göndererek, Brave'u daha iyi hale getirmeye yardımcı olun</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Ağda Oturum Açın - Brave</translation>
+<translation id="8745514854244955877">Brave - Ağda Oturum Açın - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Ağda Oturum Açın</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -43,8 +46,12 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="5785919770853225148">Brave, şifrenizi Brave Software Hesabınızda kaydedecek. Bu şekilde şifreyi hatırlamanız gerekmez.</translation>
 <translation id="8211837073776713955">Brave, şifrelerinizin güvenliğinin ihlal edilip edilmediğini size bildirir</translation>
 <translation id="113959764510199339">Brave, şifreleri göstermeye çalışıyor.</translation>
+<translation id="96347285368592620">Brave şifreleri kopyalamaya çalışıyor.</translation>
+<translation id="2953892977076487219">Brave şifreleri düzenlemeye çalışıyor.</translation>
 <translation id="7503098128120083822">Brave, şifrelerinizi dışa aktarmak istiyor.</translation>
 <translation id="8285294305439559616">Brave şifreleri göstermeye çalışıyor. Buna izin vermek için Windows şifrenizi yazın.</translation>
+<translation id="8090497651549769448">Brave şifreleri kopyalamaya çalışıyor. Buna izin vermek için Windows şifrenizi yazın.</translation>
+<translation id="3861679447659630159">Brave şifreleri düzenlemeye çalışıyor. Buna izin vermek için Windows şifrenizi yazın.</translation>
 <translation id="5918095577778020936">Brave, şifrelerinizi dışa aktarmak istiyor. Buna izin vermek için Windows şifrenizi yazın.</translation>
 <translation id="8320964054148936490">Bu bilgisayarda Brave'un daha yeni bir sürümü de var. Yazılım çalışmıyorsa, Brave'u kaldırın ve tekrar deneyin.</translation>
 <translation id="7691786510374174420">Belirlenemeyen bir hata nedeniyle yükleme başarısız oldu. Brave şu anda çalışır durumdaysa kapatıp yeniden deneyin.</translation>
@@ -83,7 +90,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="4054452651944170004">Brave menüsünde gizle</translation>
 <translation id="5660079256336839395">Brave Menüsünde Gizle</translation>
 <translation id="6134859571175647580">Uyarı: Brave, uzantıların tarama geçmişinizi kaydetmesini engelleyemez. Gizli modda bu uzantıyı devre dışı bırakmak için bu seçeneğin onay işaretini kaldırın.</translation>
-<translation id="777113543093865885">Brave'dan kaldır...</translation>
+<translation id="777113543093865885">Brave'den kaldır...</translation>
 <translation id="6078442581074612226">Brave'da</translation>
 <translation id="1448049584457347995">Brave'u daha güvenli bir hale getirmek için <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmeyen ve bilginiz dışında eklenmiş olabilecek bazı uzantıları devre dışı bıraktık.</translation>
 <translation id="8848045066928358658">Brave'u daha güvenli bir hale getirmek için <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmeyen ve bilginiz dışında eklenmiş olabilecek aşağıdaki uzantıyı devre dışı bıraktık.</translation>
@@ -197,7 +204,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="3262506503470845422">Brave'la ilgili yardım alın</translation>
 <translation id="1864557848095568223">Brave güncelleniyor</translation>
 <translation id="1786715389543715322">Brave güncelleniyor (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Az kaldı! Güncellemeyi tamamlamak için Brave'u yeniden başlatın.</translation>
+<translation id="7914115000169617076">Güncel hale gelmek üzere! Güncellemenin tamamlanması için Brave'u yeniden başlatın. Gizli pencereler yeniden açılmayacak.</translation>
 <translation id="8208853227947884571">Brave güncel durumda</translation>
 <translation id="573759479754913123">Brave OS hakkında</translation>
 <translation id="7573289029918943991">Cihazınızın güncel olup olmadığını görmek için <ph name="LINK_BEGIN"/>Brave OS Ayarları<ph name="LINK_END"/>'na gidin</translation>
@@ -215,6 +222,12 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8586264863973514035">Yaptığınız değişiklikleri uygulamak için Brave'u yeniden başlatın</translation>
 <translation id="7021823858304886493">Brave'da oturum açmaya izin verin</translation>
 <translation id="1649714546770135458">Bu özelliği kapatarak Brave'da oturum açmadan Gmail gibi Brave Software sitelerinde oturum açabilirsiniz</translation>
+<translation id="2796517443093885402">Brave veri ihlallerine, kötü uzantılara ve diğer tehditlere karşı güvende kalmanıza yardımcı olabilir</translation>
+<translation id="428541510811554120">Brave güncellemeleri denetleyemiyor. İnternet bağlantınızı kontrol etmeyi deneyin.</translation>
+<translation id="2633397153656205379">Brave güncellenmedi. Bir sorun oluştu. <ph name="BEGIN_LINK"/>Brave güncelleme sorunlarını ve başarısız güncellemeleri düzeltin.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Oturum açmadığınız için Brave, şifrelerinizi kontrol edemiyor</translation>
+<translation id="7006260220514217183">Güvenli Tarama kapalı. Brave bunun açılmasını öneriyor.</translation>
+<translation id="1785833016412082453">Brave, uzantılarınızı kontrol edemiyor. Daha sonra tekrar deneyin.</translation>
 <translation id="9220324636239049437">Bu işlem 1 öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="5853262807109651878">Bu işlem, <ph name="ITEMS_COUNT"/> öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="4784414698887946907">Bu işlem tarama verilerinizi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
