@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave Software te verzenden</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Inloggen bij netwerk - Brave</translation>
+<translation id="8745514854244955877">Brave - Inloggen bij netwerk - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Inloggen bij netwerk</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bèta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave voor ontwikkelaars</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -47,8 +50,12 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="5785919770853225148">Brave slaat dit wachtwoord op in je Brave Software-account. Je hoeft het niet te onthouden.</translation>
 <translation id="8211837073776713955">Brave laat het je weten als je wachtwoorden mogelijk niet veilig meer zijn</translation>
 <translation id="113959764510199339">Brave probeert wachtwoorden weer te geven.</translation>
+<translation id="96347285368592620">Brave probeert wachtwoorden te kopiëren.</translation>
+<translation id="2953892977076487219">Brave probeert wachtwoorden te bewerken.</translation>
 <translation id="7503098128120083822">Brave wil je wachtwoorden exporteren.</translation>
 <translation id="8285294305439559616">Brave probeert wachtwoorden weer te geven. Geef je Windows-wachtwoord op om dit toe te staan.</translation>
+<translation id="8090497651549769448">Brave probeert wachtwoorden te kopiëren. Geef je Windows-wachtwoord op om dit toe te staan.</translation>
+<translation id="3861679447659630159">Brave probeert wachtwoorden te bewerken. Geef je Windows-wachtwoord op om dit toe te staan.</translation>
 <translation id="5918095577778020936">Brave wil je wachtwoorden exporteren. Geef je Windows-wachtwoord op om dit toe te staan.</translation>
 <translation id="8320964054148936490">Deze computer beschikt al over een recentere versie van Brave. Als de software niet werkt, moet je Brave verwijderen en het opnieuw proberen.</translation>
 <translation id="7691786510374174420">De installatie is mislukt wegens een onbekende fout. Als Brave momenteel actief is, moet je Brave sluiten en het opnieuw proberen.</translation>
@@ -201,7 +208,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="3262506503470845422">Hulp bij Brave</translation>
 <translation id="1864557848095568223">Brave updaten</translation>
 <translation id="1786715389543715322">Brave updaten (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Updaten bijna voltooid. Start Brave opnieuw op om de update te voltooien.</translation>
+<translation id="7914115000169617076">Bijna klaar met updaten. Start Brave opnieuw om de update te voltooien. Incognitovensters worden niet opnieuw geopend.</translation>
 <translation id="8208853227947884571">Brave is up-to-date</translation>
 <translation id="573759479754913123">Over Brave OS</translation>
 <translation id="7573289029918943991">Ga naar de <ph name="LINK_BEGIN"/>instellingen van Brave OS<ph name="LINK_END"/> om te kijken of je apparaat up-to-date is</translation>
@@ -217,6 +224,12 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8586264863973514035">Als je de wijzigingen wilt toepassen, start je Brave opnieuw</translation>
 <translation id="7021823858304886493">Inloggen bij Brave toestaan</translation>
 <translation id="1649714546770135458">Als je dit uitschakelt, kun je inloggen bij Brave Software-sites zoals Gmail zonder in te loggen bij Brave</translation>
+<translation id="2796517443093885402">Brave kan je beschermen tegen gegevenslekken, schadelijke extensies en meer</translation>
+<translation id="428541510811554120">Brave kan niet checken op updates. Check de internetverbinding.</translation>
+<translation id="2633397153656205379">Brave is niet geüpdatet. Er is een fout opgetreden. <ph name="BEGIN_LINK"/>Updateproblemen en mislukte updates voor Brave verhelpen<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave kan je wachtwoorden niet checken omdat je niet bent ingelogd.</translation>
+<translation id="7006260220514217183">Safe Browsing is uitgeschakeld. Brave raadt je aan deze functie in te schakelen.</translation>
+<translation id="1785833016412082453">Brave kan je extensies niet checken. Probeer het later opnieuw.</translation>
 <translation id="9220324636239049437">Hiermee wordt 1 item verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Hiermee worden <ph name="ITEMS_COUNT"/> items verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Hiermee worden je browsergegevens verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>

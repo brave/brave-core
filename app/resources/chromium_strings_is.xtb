@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Hjálpaðu til við að bæta Brave með því að senda tilkynningar um hrun og <ph name="UMA_LINK"/> til Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – innskráning á net – Brave</translation>
+<translation id="8745514854244955877">Brave – innskráning á net – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – innskráning á net</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - tilraunaútgáfa Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="5785919770853225148">Brave mun vista þetta aðgangsorð á Brave Software reikningnum þínum. Þú þarft ekki að muna það.</translation>
 <translation id="8211837073776713955">Brave lætur þig vita ef aðgangsorðin þín eru einhvern tímann í hættu</translation>
 <translation id="113959764510199339">Brave er að reyna að birta aðgangsorð.</translation>
+<translation id="96347285368592620">Brave er að reyna að afrita aðgangsorð.</translation>
+<translation id="2953892977076487219">Brave er að reyna að breyta aðgangsorðum.</translation>
 <translation id="7503098128120083822">Brave vill flytja út aðgangsorðin þín.</translation>
 <translation id="8285294305439559616">Brave er að reyna að sýna aðgangsorð. Sláðu inn Windows-aðgangsorðið þitt til að heimila þetta.</translation>
+<translation id="8090497651549769448">Brave er að reyna að afrita aðgangsorð. Sláðu inn Windows-aðgangsorðið þitt til að leyfa það.</translation>
+<translation id="3861679447659630159">Brave er að reyna að breyta aðgangsorðum. Sláðu inn Windows-aðgangsorðið þitt til að leyfa það.</translation>
 <translation id="5918095577778020936">Brave vill flytja út aðgangsorðin þín. Sláðu inn Windows-aðgangsorðið þitt til að leyfa það.</translation>
 <translation id="8320964054148936490">Á þessari tölvu er þegar nýrri útgáfa af Brave. Ef hugbúnaðurinn virkar ekki skaltu fjarlægja Brave og reyna aftur.</translation>
 <translation id="7691786510374174420">Uppsetning mistókst vegna ótilgreindrar villu. Ef Brave er í gangi eins og er skaltu loka því og reyna aftur.</translation>
@@ -192,7 +199,7 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="3262506503470845422">Fá hjálp með Brave</translation>
 <translation id="1864557848095568223">Uppfærir Brave</translation>
 <translation id="1786715389543715322">Uppfærir Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Næstum uppfært! Endurræstu Brave til að ljúka uppfærslunni.</translation>
+<translation id="7914115000169617076">Næstum því uppfært! Endurræstu Brave til að ljúka við uppfærslu. Huliðsgluggar enduropnast ekki.</translation>
 <translation id="8208853227947884571">Brave er uppfært</translation>
 <translation id="573759479754913123">Um Brave OS</translation>
 <translation id="7573289029918943991">Opnaðu <ph name="LINK_BEGIN"/>stillingar Brave OS<ph name="LINK_END"/> til að athuga hvort tækið sé uppfært</translation>
@@ -210,6 +217,12 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="8586264863973514035">Endurræstu Brave til að breytingarnar taki gildi</translation>
 <translation id="7021823858304886493">Leyfa innskráningu í Brave</translation>
 <translation id="1649714546770135458">Með því að slökkva á þessu geturðu skráð þig inn á Brave Software vefsvæði eins og Gmail án þess að skrá þig inn í Brave</translation>
+<translation id="2796517443093885402">Brave getur veitt þér vernd gegn öryggisbrotum, hættulegum viðbótum og fleira</translation>
+<translation id="428541510811554120">Brave getur ekki athugað með uppfærslur. Athugaðu nettenginguna þína.</translation>
+<translation id="2633397153656205379">Brave uppfærðist ekki þar sem eitthvað fór úrskeiðis. <ph name="BEGIN_LINK"/>Lagaðu uppfærsluvandamál Brave og uppfærslur sem mistókust.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave getur ekki athugað aðgangsorðin þín því þú ert ekki skráð(ur) inn</translation>
+<translation id="7006260220514217183">Slökkt er á öruggri vefskoðun. Brave mælir með því að kveikt sé á henni.</translation>
+<translation id="1785833016412082453">Brave getur ekki athugað viðbæturnar þínar. Reyndu aftur síðar.</translation>
 <translation id="9220324636239049437">Þetta mun eyða einu atriði úr þessu tæki. Skráðu þig inn í Brave sem <ph name="USER_EMAIL"/> til að endurheimta gögnin síðar.</translation>
 <translation id="5853262807109651878">Þetta mun eyða <ph name="ITEMS_COUNT"/> atriðum úr þessu tæki. Skráðu þig inn í Brave sem <ph name="USER_EMAIL"/> til að endurheimta gögnin síðar.</translation>
 <translation id="4784414698887946907">Þetta mun eyða vefskoðunargögnunum þínum úr þessu tæki. Skráðu þig inn í Brave sem <ph name="USER_EMAIL"/> til að endurheimta gögnin síðar.</translation>

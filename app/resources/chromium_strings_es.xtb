@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">Ayuda a mejorar Brave enviando informes sobre fallos y <ph name="UMA_LINK"/> a Brave</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/>, inicio de sesión en la red, Brave</translation>
+<translation id="8745514854244955877">Brave, inicio de sesión en la red, <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/>, inicio de sesión en la red</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> ‑ Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> ‑ Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> ‑ Brave Canary</translation>
@@ -47,8 +50,12 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="5785919770853225148">Brave guardará esta contraseña en tu Cuenta Brave para que no tengas que recordarla.</translation>
 <translation id="8211837073776713955">Brave te avisará si tus contraseñas están en riesgo</translation>
 <translation id="113959764510199339">Brave está intentando mostrar contraseñas.</translation>
+<translation id="96347285368592620">Brave está intentando copiar contraseñas.</translation>
+<translation id="2953892977076487219">Brave está intentando cambiar contraseñas.</translation>
 <translation id="7503098128120083822">Brave quiere exportar tus contraseñas.</translation>
 <translation id="8285294305439559616">Brave está intentando mostrar contraseñas. Para permitirlo, escribe tu contraseña de Windows.</translation>
+<translation id="8090497651549769448">Brave está intentando copiar contraseñas. Para permitirlo, escribe tu contraseña de Windows.</translation>
+<translation id="3861679447659630159">Brave está intentando cambiar contraseñas. Para permitirlo, escribe tu contraseña de Windows.</translation>
 <translation id="5918095577778020936">Brave quiere exportar tus contraseñas. Escribe tu contraseña de Windows para permitirlo.</translation>
 <translation id="8320964054148936490">Este ordenador ya cuenta con una versión más reciente de Brave. Si el software no funciona, desinstala Brave y vuelve a intentarlo.</translation>
 <translation id="7691786510374174420">La instalación ha fallado debido a un error no especificado. Si Brave se está ejecutando, ciérralo y vuelve a intentarlo.</translation>
@@ -157,7 +164,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="1807774211756215222">Abrir enlace en una pestaña nueva de Brave</translation>
 <translation id="4624945300945265642">Abrir enlace en una ventana privada de Brave</translation>
 <translation id="7863882214613921971">Abrir enlace en una pestaña nueva de Brave</translation>
-<translation id="6554952862405000915">Abrir Enlace en una Ventana Privada de Brave</translation>
+<translation id="6554952862405000915">Abrir Enlace en una Ventana privada de Brave</translation>
 <translation id="4805806622840861220">Reiniciar Brave</translation>
 <translation id="8274659559228306809">{COUNT, plural,
           =0 {Hay una nueva actualización disponible para Brave y será aplicada cuando reinicies el dispositivo.}
@@ -212,7 +219,7 @@ other {Brave se reiniciará en # segundos}}</translation>
 <translation id="3262506503470845422">Obtener ayuda de Brave</translation>
 <translation id="1864557848095568223">Actualizando Brave</translation>
 <translation id="1786715389543715322">Actualizando Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Brave casi ha terminado de actualizarse. Reinícialo para completar la actualización.</translation>
+<translation id="7914115000169617076">La actualización ya casi ha terminado. Reinicia Brave para completar la actualización. Las ventanas de incógnito no se volverán a abrir.</translation>
 <translation id="8208853227947884571">Brave está actualizado</translation>
 <translation id="573759479754913123">Información de Brave OS</translation>
 <translation id="7573289029918943991">Para comprobar si tu dispositivo está actualizado, ve a la <ph name="LINK_BEGIN"/>configuración de Brave OS<ph name="LINK_END"/></translation>
@@ -230,6 +237,12 @@ other {Brave se reiniciará en # segundos}}</translation>
 <translation id="8586264863973514035">Para aplicar los cambios, reinicia Brave</translation>
 <translation id="7021823858304886493">Permitir el inicio de sesión en Brave</translation>
 <translation id="1649714546770135458">Si está opción está desactivada, puedes iniciar sesión en sitios de Brave, como Gmail, sin hacerlo en Brave</translation>
+<translation id="2796517443093885402">Brave puede protegerte frente a quiebras de seguridad de datos, extensiones dañinas y mucho más</translation>
+<translation id="428541510811554120">Brave no puede comprobar si hay actualizaciones. Revisa tu conexión a Internet.</translation>
+<translation id="2633397153656205379">Brave no se ha actualizado, algo no va bien. <ph name="BEGIN_LINK"/>Soluciona los problemas y errores de actualización de Brave<ph name="END_LINK"/>.</translation>
+<translation id="8622246347342688645">Brave no puede comprobar tus contraseñas porque no has iniciado sesión</translation>
+<translation id="7006260220514217183">La función Navegación Segura está desactivada. Brave recomienda activarla.</translation>
+<translation id="1785833016412082453">Brave no puede comprobar tus extensiones. Vuelve a intentarlo más tarde.</translation>
 <translation id="9220324636239049437">Esto eliminará un elemento de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Se eliminarán <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Se eliminarán tus datos de navegación de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>

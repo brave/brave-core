@@ -3,10 +3,6 @@
 <translationbundle lang="fa">
 <translation id="8428213095426709021">تنظیمات</translation>
 <translation id="2498359688066513246">راهنمایی و بازخورد</translation>
-<translation id="8378714024927312812">توسط سازمانتان مدیریت می‌شود</translation>
-<translation id="9019902583201351841">مدیریت شده توسط والدین شما</translation>
-<translation id="4645575059429386691">مدیریت شده توسط والدین شما</translation>
-<translation id="4883854917563148705">تنظیمات مدیریت‌شده بازنشانی نشدند</translation>
 <translation id="4307992518367153382">موارد اصلی</translation>
 <translation id="1974060860693918893">پیشرفته</translation>
 <translation id="1146678959555564648">‏VR را وارد کنید</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">‏وقتی به «حساب Brave Software» خود وارد می‌شوید، این ویژگی روشن می‌شود</translation>
 <translation id="10614374240317010">هرگز ذخیره نمی‌شود</translation>
 <translation id="3098842761938485917">‏در <ph name="BEGIN_LINK"/>حساب Brave Software<ph name="END_LINK"/> خود گذرواژه‌های ذخیره‌شده را مشاهده و مدیریت کنید</translation>
+<translation id="8988028529677883095">استفاده از تلفن به‌عنوان کلید امنیتی</translation>
 <translation id="8562452229998620586">گذرواژه‌های ذخیره شده در اینجا ظاهر می‌شود.</translation>
+<translation id="1303339473099049190">گذرواژه پیدا نشد. املای آن را بررسی و دوباره امتحان کنید.</translation>
 <translation id="8084114998886531721">گذرواژه ذخیره‌شده</translation>
 <translation id="2870560284913253234">سایت</translation>
 <translation id="8503813439785031346">نام کاربری</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">برای مشاهده گذرواژه‌تان، قفل صفحه را باز کنید</translation>
 <translation id="6221633008163990886">برای صادر کردن گذرواژه‌ها، قفل را باز کنید</translation>
 <translation id="230699814587342492">‏گذرواژه‌های Brave</translation>
-<translation id="6075798973483050474">ویرایش صفحه اصلی</translation>
-<translation id="854522910157234410">باز کردن این صفحه</translation>
+<translation id="1925021887439448749">نشانی وب سفارشی وارد کنید</translation>
 <translation id="8127542551745560481">ویرایش صفحه اصلی</translation>
+<translation id="854522910157234410">باز کردن این صفحه</translation>
+<translation id="5063487983358782016">‏صفحه اصلی Brave</translation>
 <translation id="2482878487686419369">اعلان‌ها</translation>
 <translation id="6255999984061454636">پیشنهادهای محتوا</translation>
 <translation id="805047784848435650">براساس سابقه مرور شما</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">حریم خصوصی</translation>
 <translation id="4991384657077828949">‏کمک به بهبود امنیت Brave</translation>
 <translation id="1943176487615318915">‏برای حذف برنامه‌ها و سایت‌های خطرناک، Brave نشانی‌های وب برخی از صفحه‌هایی را که بازدید می‌کنید، اطلاعات سیستم محدود و برخی از محتوای صفحه را به Brave Software می‌فرستد.</translation>
-<translation id="3181954750937456830">مرور ایمن (از شما و دستگاهتان درمقابل سایت‌های خطرناک محافظت می‌کند)</translation>
-<translation id="7315322926489145388">‏اگر امنیتتان درخطر باشد، نشانی وب برخی از صفحه‌هایی را که بازدید می‌کنید به Brave Software می‌فرستد</translation>
+<translation id="3201899458094819285">مرور ایمن (از شما و دستگاهتان درمقابل سایت‌های خطرناک محافظت می‌کند)</translation>
+<translation id="2876369937070532032">‏اگر امنیتتان درخطر باشد، نشانی وب برخی از صفحه‌هایی را که بازدید می‌کنید به Brave Software می‌فرستد</translation>
 <translation id="3738139272394829648">لمس کردن برای جستجو</translation>
-<translation id="7865281998841143447">‏بدون اینکه صفحه را ترک کنید، درباره موضوعات در وب‌سایت‌ها اطلاعاتی به دست آورید. «لمس برای جستجو»، کلمه و متن اطراف آن را به «جستجوی Brave Software» ارسال می‌کند و معانی، تصاویر، نتایج جستجو و سایر جزئیات را بازمی‌گرداند.
+<translation id="4749189475009528195">‏بدون اینکه صفحه را ترک کنید، درباره موضوعات در وب‌سایت‌ها اطلاعاتی کسب کنید. «لمس برای جستجو» کلمه و بافت پیرامون آن را برای «جستجوی Brave Software» ارسال می‌کند و معانی، تصاویر، نتایج جستجو و سایر جزئیات را بازمی‌گرداند.
 
-روی واژه‌ها ضربه بزنید تا جستجویی برای آن‌ها ایجاد کنید. برای تنظیم عبارت جستجو، فشار طولانی دهید تا انتخاب شود. برای پالایش جستجو، پانل را با لغزاندن باز کنید، روی نماد بزرگ کردن ضربه بزنید تا برگه جدیدی ایجاد کنید و سپس روی جعبه جستجو ضربه بزنید.</translation>
-<translation id="3292859206215580147">‏بدون اینکه صفحه را ترک کنید، درباره موضوعات در وب‌سایت‌ها اطلاعاتی به دست آورید. «لمس برای جستجو»، کلمه و متن اطراف آن را به «جستجوی Brave Software» ارسال می‌کند و معانی، تصاویر، نتایج جستجو و سایر جزئیات را بازمی‌گرداند.
+برای جستجو، کافی است روی کلمه‌ای ضربه بزنید. برای پالایش جستجو، با لمس کردن و نگه داشتنْ کلمه‌های بیشتر یا کمتری را انتخاب کنید. برای ویرایش جستجو، پانل را باز کنید، روی نماد ضربه بزنید تا در برگه جدیدی باز شود و تغییرات را در مربع جستجو وارد کنید.</translation>
+<translation id="934250516944040460">‏بدون اینکه صفحه را ترک کنید، درباره موضوعات در وب‌سایت‌ها اطلاعاتی کسب کنید. «لمس برای جستجو»، کلمه و زمینه اطراف آن را برای «جستجوی Brave Software» ارسال می‌کند و معانی، تصاویر، نتایج جستجو و سایر جزئیات را بازمی‌گرداند.
 
-واژه‌ها را فشار طولانی دهید تا جستجویی برای آن‌ها ایجاد کنید. برای پالایش جستجویتان، مورد انتخابی را تنظیم کنید. همچنین می‌توانید پانل را با لغزاندن باز کنید، روی نماد بزرگ کردن ضربه بزنید تا برگه جدیدی ایجاد کنید و سپس روی جعبه جستجو ضربه بزنید.</translation>
+برای جستجو، کافی است کلمه‌ای را لمس کنید و نگه دارید. برای پالایش جستجو، کلمات بیشتر یا کمتری را انتخاب کنید. برای ویرایش جستجو، پانل را باز کنید، روی نماد ضربه بزنید تا در برگه جدیدی باز شود و تغییرات را در جعبه جستجو وارد کنید.</translation>
 <translation id="6209156474097347789">‏«لمس برای جستجو» کلمه انتخاب شده و صفحه کنونی را به عنوان محتوای زمینه به جستجوی Brave Software ارسال می‌کند. می‌توانید آن را در <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> خاموش کنید.</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="780301667611848630">نه متشکرم</translation>
@@ -206,7 +205,7 @@
 <translation id="6295158916970320988">همه سایت‌ها</translation>
 <translation id="8380167699614421159">این سایتْ آگهی‌های مزاحم یا گمراه‌کننده نشان می‌دهد</translation>
 <translation id="1919345977826869612">آگهی‌ها</translation>
-<translation id="3513704683820682405">واقعیت افزوده</translation>
+<translation id="2025115093177348061">واقعیت افزوده</translation>
 <translation id="6447842834002726250">کوکی‌ها</translation>
 <translation id="6196640612572343990">مسدود کردن کوکی‌های شخص ثالث</translation>
 <translation id="6782111308708962316">جلوگیری از ذخیره کردن و خواندن داده‌های کوکی توسط وب‌سایت‌های شخص ثالث</translation>
@@ -217,6 +216,7 @@
 <translation id="1717218214683051432">حسگرهای حرکتی</translation>
 <translation id="2091887806945687916">صدا</translation>
 <translation id="2586657967955657006">بریده‌دان</translation>
+<translation id="4670064810192446073">واقعیت مجازی</translation>
 <translation id="6320088164292336938">لرزش</translation>
 <translation id="4226663524361240545">اعلان‌ها ممکن است دستگاه را بلرزانند</translation>
 <translation id="1446450296470737166">‏اجازه کنترل کامل دستگاه‌های MIDI</translation>
@@ -235,6 +235,7 @@
 <translation id="2537296579376733324">همه کوکی‌ها، تنها در این سایت</translation>
 <translation id="7882806643839505685">پخش صدا برای سایت خاصی مجاز شود.</translation>
 <translation id="4468959413250150279">سایتی خاص بی‌صدا شود.</translation>
+<translation id="7828557259026017104">کوکی‌ها فایل‌هایی هستند که توسط وب‌سایت‌هایی که بازدید می‌کنید ایجاد می‌شوند. سایت‌ها برای به‌خاطر سپردن اولویت‌هایتان از آن‌ها استفاده می‌کنند. کوکی‌های شخص ثالث را سایت‌های دیگری ایجاد می‌کنند. برخی از محتواها مثل آگهی‌ها یا تصاویر موجود در صفحه وبی که از آن دیدن می‌کنید، متعلق به این سایت‌ها هستند.</translation>
 <translation id="1994173015038366702">نشانی وب سایت</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">کاربر</translation>
@@ -246,10 +247,14 @@
 <translation id="8116925261070264013">صامت‌شده</translation>
 <translation id="8300705686683892304">مدیریت‌شده توسط برنامه</translation>
 <translation id="6192792657125177640">موارد استثنا</translation>
-<translation id="257931822824936280">بزرگ‌شده - برای کوچک کردن کلیک کنید.</translation>
-<translation id="5100237604440890931">کوچک شده - برای بزرگ کردن کلیک کنید.</translation>
 <translation id="857943718398505171">مجاز (توصیه می‌شود)</translation>
 <translation id="2913331724188855103">سایت‌ها مجاز به ذخیره و خواندن داده‌های کوکی باشند (توصیه می‌شود)</translation>
+<translation id="2212565012507486665">مجاز کردن کوکی ها</translation>
+<translation id="8648684608605749476">مسدود کردن کوکی‌های شخص ثالث در «حالت ناشناس»</translation>
+<translation id="2687403674020088961">مسدود کردن همه کوکی‌ها (توصیه نمی‌شود)</translation>
+<translation id="1044891598689252897">عملکرد سایت‌ها عادی خواهد بود</translation>
+<translation id="7993619969781047893">ویژگی‌های بعضی از سایت‌ها ممکن است درست کار نکنند</translation>
+<translation id="1509960214886564027">ویژگی‌های بسیاری از سایت‌ها ممکن است درست کار نکنند</translation>
 <translation id="5335288049665977812">مجاز کردن همه سایت‌ها برای اجرای جاوااسکریپت (توصیه‌ می‌شود)</translation>
 <translation id="5527111080432883924">قبل از اینکه به سایت‌ها اجازه داده شود به نوشتار و تصاویر بریده‌دان دسترسی پیدا کنند سؤال شود (توصیه می‌شود)</translation>
 <translation id="6912998170423641340">سایت‌ها از خواندن نوشتار و تصاویر بریده‌دان منع شوند</translation>
@@ -259,12 +264,12 @@
 <translation id="2107397443965016585">قبل از اجازه به سایت‌ها برای پخش محتوای محافظت‌شده سؤال شود (توصیه می‌شود)</translation>
 <translation id="2910701580606108292">قبل از اجازه دادن به سایت‌ها برای پخش محتوای محافظت‌شده سؤال شود</translation>
 <translation id="757524316907819857">مسدود کردن سایت‌ها برای پخش محتوای محافظت‌شده</translation>
-<translation id="4935305910887312910">قبل از اجازه دادن به سایت‌ها برای دریافت موقعیت دوربین یا نقشه‌برداری از اتاق سؤال شود (توصیه می‌شود)</translation>
-<translation id="884828189055900810">دریافت موقعیت دوربین و نقشه‌برداری از اتاق برای سایت‌ها مسدود شود</translation>
+<translation id="2182457891543959921">قبل از اینکه به سایت‌ها اجازه داده شود نقشه سه‌بعدی از محیط ایجاد کنند یا موقعیت دوربین را ردیابی کنند سؤال شود (توصیه می‌شود)</translation>
+<translation id="3538390592868664640">قابلیت سایت‌ها برای ایجاد نقشه سه‌بعدی از محیط یا ردیابی موقعیت دوربین مسدود می‌شود</translation>
 <translation id="5710871682236653961">‏وقتی روی دستگاه‌های NFC ضربه می‌زنید، قبل از ارسال و دریافت اطلاعات سؤال شود (توصیه می‌شود)</translation>
 <translation id="7572498721684305250">‏وقتی روی دستگاه‌های NFC ضربه می‌زنید، ارسال و دریافت اطلاعات در سایت‌ها مسدود شود</translation>
-<translation id="3312292613668865961">قبل از اجازه دادن به سایت‌ها برای دسترسی به دستگاه و داده‌های واقعیت مجازی سؤال شود (توصیه می‌شود)</translation>
-<translation id="8698438463325761328">دسترسی به دستگاه و داده‌های واقعیت مجازی برای سایت‌ها مسدود شود</translation>
+<translation id="4887024562049524730">قبل از اینکه به سایت‌ها اجازه داده شود به دستگاه و داده‌های واقعیت مجازی دسترسی یابند سؤال شود (توصیه می‌شود)</translation>
+<translation id="6439114592976064011">دسترسی سایت‌ها به دستگاه و داده‌های واقعیت مجازی مسدود شود</translation>
 <translation id="3277252321222022663">مجاز بودن دسترسی سایت‌ها به حسگرها (توصیه می‌شود)</translation>
 <translation id="5048398596102334565">مجاز بودن دسترسی سایت‌ها به حسگرهای حرکتی (توصیه می‌شود)</translation>
 <translation id="8816026460808729765">سایت‌ها نمی‌توانند به حسگرها دسترسی داشته باشند</translation>
@@ -414,6 +419,7 @@
 <translation id="4062305924942672200">اطلاعات حقوقی</translation>
 <translation id="4256782883801055595">مجوزهای متن‌باز</translation>
 <translation id="1138681184697033370">‏شرایط خدمات Brave</translation>
+<translation id="2368444735104192323">‏شرایط خدمات تکمیلی Brave و سیستم‌عامل Brave</translation>
 <translation id="7392539049993970338">‏اخطار حریم خصوصی Brave</translation>
 <translation id="2968755619301702150">بیننده گواهی</translation>
 <translation id="1360432990279830238">از سیستم خارج و همگام‌سازی خاموش شود؟</translation>
@@ -432,6 +438,8 @@
 <translation id="8636825310635137004">برای دسترسی به برگه‌هایتان در دستگاه‌های دیگر، همگام‌سازی را روشن کنید.</translation>
 <translation id="3269956123044984603">‏برای دسترسی به برگه‌ها از دستگاه‌های دیگرتان، «همگام‌سازی خودکار داده‌ها» را در تنظیمات حساب Android روشن کنید.</translation>
 <translation id="5157964048453367290">‏برگه‌هایی که در دستگاه‌های دیگر در Brave باز کرده‌اید، در اینجا نمایان می‌شوند.</translation>
+<translation id="5795872532621730126">جستجو و مرور</translation>
+<translation id="9086302186042011942">همگام‌سازی</translation>
 <translation id="4684427112815847243">همگام‌سازی همه</translation>
 <translation id="2709516037105925701">تکمیل خودکار</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
@@ -549,10 +557,6 @@
 <translation id="2532336938189706096">نمای وب</translation>
 <translation id="6005538289190791541">گذرواژه پیشنهادی</translation>
 <translation id="4634124774493850572">استفاده از گذرواژه</translation>
-<translation id="8285489906452138776">‏Brave به مجوز دسترسی به دوربین برای این سایت نیاز دارد.</translation>
-<translation id="320189792589364011">‏Brave برای این سایت به مجوز دسترسی به میکروفون نیاز دارد.</translation>
-<translation id="7988136689212463100">‏Brave برای این سایت به مجوز دسترسی به دوربین و میکروفون نیاز دارد.</translation>
-<translation id="4931190655840828017">‏Brave برای اشتراک‌گذاری مکانتان با این سایت باید به مکانتان دسترسی داشته باشد.</translation>
 <translation id="3088191967551450609">‏Brave برای بارگیری فایل‌ها باید به حافظه دسترسی داشته باشد.</translation>
 <translation id="8942627711005830162">باز کردن در پنجره دیگر</translation>
 <translation id="4195643157523330669">باز کردن در برگهٔ جدید</translation>
@@ -600,8 +604,9 @@
 <translation id="2146738493024040262">برنامه فوری را باز کنید</translation>
 <translation id="7016516562562142042">برای موتور جستجوی فعلی مجاز است</translation>
 <translation id="6177111841848151710">برای موتور جستجوی فعلی مسدود شده است</translation>
-<translation id="145097072038377568">‏در تنظیمات Android مسدود شد</translation>
+<translation id="7000754031042624318">‏در تنظیمات Android غیرفعال شده است</translation>
 <translation id="8007176423574883786">برای این دستگاه غیرفعال شد</translation>
+<translation id="6864395892908308021">‏این دستگاه نمی‌تواند NFC را بخواند</translation>
 <translation id="164269334534774161">شما در حال تماشای کپی آفلاین این صفحه از <ph name="CREATION_TIME"/> هستید</translation>
 <translation id="4594952190837476234">این صفحه آفلاین مربوط به تاریخ <ph name="CREATION_TIME"/> است و ممکن است با نسخه آنلاین متفاوت باشد.</translation>
 <translation id="8840953339110955557">ممکن است این صفحه با نسخه آنلاین متفاوت باشد.</translation>
@@ -706,10 +711,10 @@
 <translation id="3244271242291266297">ماه</translation>
 <translation id="605721222689873409">سال</translation>
 <translation id="724102042129299115">‏اولین تجربه اجرا Brave</translation>
-<translation id="2700285883409956633">‏استفاده از این برنامه به معنای اعلام موافقت شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>اعلامیه حریم خصوصی<ph name="END_LINK2"/> Brave است.</translation>
-<translation id="1640714894372474981">‏درصورت استفاده از این برنامه، با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>اعلان حریم خصوصی<ph name="END_LINK2"/> و <ph name="BEGIN_LINK3"/>اعلان حریم خصوصی برای حساب‌های Brave Software مدیریت‌شده با Family Link<ph name="END_LINK3"/> مربوط به Brave موافقت می‌کنید.</translation>
-<translation id="4218324479468769727">‏<ph name="APP_NAME"/> در Brave باز می‌شود. درصورت ادامه دادن، با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>اعلان حریم خصوصی<ph name="END_LINK2"/> Brave موافقت می‌کنید.</translation>
-<translation id="5071615083211946659">‏<ph name="APP_NAME"/> در Brave باز خواهد شد. درصورت ادامه دادن، با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>اعلان حریم خصوصی<ph name="END_LINK2"/> Brave و <ph name="BEGIN_LINK3"/>اعلان حریم خصوصی برای حساب‌های Brave Software مدیریت‌شده با Family<ph name="END_LINK3"/> موافقت می‌کنید.</translation>
+<translation id="7766792282581704663">‏با استفاده کردن از Brave، با <ph name="BEGIN_LINK1"/>شرایط خدمات Brave Software<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>شرایط خدمات تکمیلی Brave Software Brave و سیستم‌عامل Brave<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
+<translation id="4301045550182524767">‏با استفاده کردن از Brave، با <ph name="BEGIN_LINK1"/>شرایط خدمات Brave Software<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>شرایط خدمات تکمیلی Brave Software Brave و سیستم‌عامل Brave<ph name="END_LINK2"/> موافقت می‌کنید. <ph name="BEGIN_LINK3"/>اعلان حریم‌خصوصی برای «حساب‌های Brave Software» مدیریت‌شده با Family Link<ph name="END_LINK3"/> نیز اعمال می‌شود.</translation>
+<translation id="4993481112200507346">‏<ph name="APP_NAME"/> در Brave باز می‌شود. با ادامه دادن، با <ph name="BEGIN_LINK1"/>شرایط خدمات Brave Software<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>شرایط خدمات تکمیلی Brave Software Brave و سیستم‌عامل Brave<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
+<translation id="8725391159384120485">‏<ph name="APP_NAME"/> در Brave باز می‌شود. با ادامه دادن، با <ph name="BEGIN_LINK1"/>شرایط خدمات Brave Software<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>شرایط خدمات تکمیلی Brave Software Brave و سیستم‌عامل Brave<ph name="END_LINK2"/> موافقت می‌کنید. <ph name="BEGIN_LINK3"/>اعلان حریم‌خصوصی برای «حساب‌های Brave Software» مدیریت‌شده با Family Link<ph name="END_LINK3"/> نیز اعمال می‌شود.</translation>
 <translation id="673197144963363525">‏‫با ارسال آمار کاربرد و گزارش‌های خرابی به Brave Software، به بهتر شدن Brave کمک کنید.</translation>
 <translation id="3518985090088779359">پذیرش و ادامه</translation>
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
@@ -814,7 +819,7 @@
 <translation id="6963766334940102469">حذف نشانک‌ها</translation>
 <translation id="4351244548802238354">بستن کادر گفتگو</translation>
 <translation id="451872707440238414">جستجوی نشانک‌های شما</translation>
-<translation id="8901170036886848654">نشانکی پیدا نشد</translation>
+<translation id="6447558397796644647">آن نشانک پیدا نشد. املای خود را بررسی کنید یا نشانک جدیدی را اضافه کنید.</translation>
 <translation id="6404511346730675251">ویرایش نشانک</translation>
 <translation id="3894427358181296146">افزودن پوشه</translation>
 <translation id="5327248766486351172">نام</translation>
@@ -829,6 +834,8 @@
 <translation id="6811034713472274749">صفحه آماده مشاهده است</translation>
 <translation id="4561979708150884304">اتصال برقرار نیست</translation>
 <translation id="8274165955039650276">مشاهده بارگیری‌ها</translation>
+<translation id="4320177379694898372">اتصال اینترنتی ندارید</translation>
+<translation id="6397616442223433927">دوباره آنلاین شدید</translation>
 <translation id="2082238445998314030"><ph name="RESULT_NUMBER"/> نتیجه از <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">نتیجه‌ای پیدا نشد</translation>
 <translation id="981121421437150478">آفلاین</translation>
@@ -845,9 +852,6 @@
 <translation id="6773423637732432200">‏Brave به‌روزرسانی نشد. گزینه‌های دیگر</translation>
 <translation id="1383876407941801731">جستجو</translation>
 <translation id="3328801116991980348">اطلاعات سایت</translation>
-<translation id="5391532827096253100">اتصال شما به این سایت امن نیست. اطلاعات سایت</translation>
-<translation id="6206551242102657620">اتصال امن است. اطلاعات سایت</translation>
-<translation id="6963642900430330478">این صفحه خطرناک است. اطلاعات سایت</translation>
 <translation id="9070377983101773829">شروع جستجوی گفتاری</translation>
 <translation id="4968908871398201967">حالت خصوصی</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> برگه باز، برای جستجوی برگه ضربه بزنید}one{<ph name="OPEN_TABS_MANY"/> برگه باز، برای جستجوی برگه ضربه بزنید}other{<ph name="OPEN_TABS_MANY"/> برگه باز، برای جستجوی برگه ضربه بزنید}}</translation>
@@ -944,6 +948,11 @@
 <translation id="5197729504361054390">مخاطبین انتخابی شما با <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> هم‌رسانی می‌شود.</translation>
 <translation id="1779089405699405702">رمزگشای تصویر</translation>
 <translation id="8067883171444229417">پخش ویدیو</translation>
+<translation id="5876056640971328065">مکث ویدیو</translation>
+<translation id="3594780231884063836">بی‌صدا کردن ویدیو</translation>
+<translation id="783819812427904514">با صدا کردن ویدیو</translation>
+<translation id="3114012059975132928">پخش‌کننده ویدیو</translation>
+<translation id="5489227211564503167">زمان سپری‌شده: <ph name="ELAPSED_TIME"/> از <ph name="TOTAL_TIME"/>.</translation>
 <translation id="6560414384669816528">‏جستجو با Sogou</translation>
 <translation id="5406914950576900927">‏Brave می‌تواند از <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> برای جستجو در چین استفاده کند. در <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> می‌توانید این را تغییر دهید.</translation>
 <translation id="6456271171669383967">‏حفظ Brave Software</translation>
@@ -987,6 +996,7 @@
 <translation id="1875543012935658554">‏Brave را دوباره باز کنید.</translation>
 <translation id="79859296434321399">‏برای مشاهده محتوای واقعیت افزوده، ARCore را نصب کنید</translation>
 <translation id="8558485628462305855">‏برای مشاهده محتوای واقعیت افزوده، ARCore را به‌روزرسانی کنید</translation>
+<translation id="3513704683820682405">واقعیت افزوده</translation>
 <translation id="6410973561433500075">‏از <ph name="DOMAIN"/> وارد حالت AR می‌شوید؟</translation>
 <translation id="3849365399446680203">‏وقتی در حالت AR هستید، این سایت می‌تواند:
 • نقشه‌ای سه‌بعدی از محیط شما ایجاد کند
@@ -1035,6 +1045,8 @@
 <translation id="9028914725102941583">برای اشتراک‌گذاری بین دستگاه‌ها، «همگام‌سازی» را روشن کنید</translation>
 <translation id="6162454065885854378">‏برای به‌اشتراک گذاشتن چیزی از تلفنتان با دستگاهی دیگر، در تنظیمات Brave هر دو دستگاه «همگام‌سازی» را روشن کنید</translation>
 <translation id="6084271560289605378">‏به تنظیمات Brave بروید</translation>
+<translation id="2746024117903470217">‏برای هم‌رسانی این صفحه در دستگاهی دیگر، همگام‌سازی را در تنظیمات Brave در دستگاه دیگر روشن کنید</translation>
+<translation id="7760665516427405230">‏برای هم‌رسانی این صفحه با دستگاه دیگر، همگام‌سازی را در تنظیمات Brave روشن کنید.</translation>
 <translation id="2318045970523081853">برای برقراری تماس، ضربه بزنید.</translation>
 <translation id="9209888181064652401">برقراری تماس ممکن نیست</translation>
 <translation id="2860954141821109167">مطمئن شوید برنامه تلفن در این دستگاه فعال باشد</translation>
@@ -1090,11 +1102,17 @@
 <translation id="6201345951596836663">پیوند کپی شد</translation>
 <translation id="6597891566292541626">‏کد QR/بارکد را در این قاب قرار دهید.</translation>
 <translation id="3140134512074889489">‏برای اسکن کردن کد QR، لطفاً دوربین را فعال کنید</translation>
+<translation id="5149323899804758325">‏برای اسکن کردن کد QR، تنظیمات را تغییر دهید تا Brave بتواند از دوربین استفاده کند</translation>
 <translation id="2359808026110333948">ادامه</translation>
+<translation id="8233540874193135768">‏برای اسکن کردن کد QR، از دستگاه دوربین‌داری استفاده کنید.</translation>
+<translation id="6297765934698848803">سازمانی که دستگاهتان را مدیریت می‌کند دوربین را خاموش کرده است.</translation>
+<translation id="4321739720395210191">نمی‌توان دوربین را باز کرد. دستگاه را بازراه‌اندازی و دوباره امتحان کنید.</translation>
+<translation id="234265804618409743">نمی‌توان دوربین را باز کرد. مشکلی پیش آمد.</translation>
+<translation id="7173114856073700355">باز کردن تنظیمات</translation>
+<translation id="1311657260431405215">‏این کد QR یک نشانی وب نیست: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">‏پلتفورم اعلان‌های Brave Software</translation>
 <translation id="8516012719330875537">ویرایشگر تصویر</translation>
-<translation id="6092062101542170135">‏برای ادامه دادن، NFC را در تنظیمات Android روشن کنید</translation>
-<translation id="5860491529813859533">روشن کردن</translation>
 <translation id="8926666909099850184">‏NFC برای این دستگاه خاموش است. در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> آن را روشن کنید.</translation>
 <translation id="4808319664292298116">‏VR از <ph name="DOMAIN"/> وارد شود؟</translation>
 <translation id="4353114845960720315">‏وقتی در حالت VR هستید، این سایت می‌تواند به این موارد پی ببرد:</translation>

@@ -55,6 +55,18 @@
     "message": "Οι ιχνηλάτες μεταξύ ιστοτόπων αποκλείστηκαν",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Trackers & διαφημίσεις αποκλείστηκαν (επιθετικό)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Trackers & διαφημίσεις αποκλείστηκαν (συμβατικό)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Αποδοχή όλων των trackers & διαφημίσεων",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "Οι συνδέσεις αναβαθμίστηκαν σε HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

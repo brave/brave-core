@@ -1,21 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sq">
-<translation id="8428213095426709021">Konfigurime</translation>
+<translation id="8428213095426709021">Rregullime</translation>
 <translation id="2498359688066513246">Ndihmë dhe komente</translation>
-<translation id="8378714024927312812">Administruar nga enti juaj</translation>
-<translation id="9019902583201351841">Menaxhuar nga prindërit e tu</translation>
-<translation id="4645575059429386691">Menaxhohet nga prindi yt</translation>
-<translation id="4883854917563148705">Cilësimet e menaxhuara nuk mund të rivendosen</translation>
 <translation id="4307992518367153382">Bazat</translation>
 <translation id="1974060860693918893">Të mëtejshme</translation>
 <translation id="1146678959555564648">Hyr në VR</translation>
 <translation id="987264212798334818">Të përgjithshme</translation>
-<translation id="5186185447130319458">I fshehtë</translation>
+<translation id="5186185447130319458">Private</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Shkarkime</translation>
 <translation id="218608176142494674">Ndarja</translation>
-<translation id="8004582292198964060">Shfletuesi</translation>
+<translation id="8004582292198964060">Shfletues</translation>
 <translation id="1105960400813249514">Regjistrimi i ekranit</translation>
 <translation id="4875775213178255010">Sugjerimet e përmbajtjes</translation>
 <translation id="2021896219286479412">Kontrollet e sajtit në ekranin e plotë</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Kur identifikohesh në "Llogarinë tënde të Brave Software", kjo veçori është e aktivizuar</translation>
 <translation id="10614374240317010">Nuk u ruaj asnjëherë</translation>
 <translation id="3098842761938485917">Shfaq dhe menaxho fjalëkalimet e ruajtura në <ph name="BEGIN_LINK"/>llogarinë tënde të Brave Software<ph name="END_LINK"/></translation>
+<translation id="8988028529677883095">Përdore telefonin si çelës sigurie</translation>
 <translation id="8562452229998620586">Fjalëkalimet e ruajtura do të shfaqen këtu.</translation>
+<translation id="1303339473099049190">Ai fjalëkalim nuk mund të gjendet. Kontrollo drejtshkrimin dhe provo përsëri.</translation>
 <translation id="8084114998886531721">Fjalëkalimi i ruajtur</translation>
 <translation id="2870560284913253234">Sajti</translation>
 <translation id="8503813439785031346">Emri i përdoruesit</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Shkyçe për të parë fjalëkalimin</translation>
 <translation id="6221633008163990886">Shkyç për të eksportuar fjalëkalimet e tua</translation>
 <translation id="230699814587342492">Fjalëkalimet e Brave</translation>
-<translation id="6075798973483050474">Redakto faqen bazë</translation>
-<translation id="854522910157234410">Hape këtë faqe</translation>
+<translation id="1925021887439448749">Fut adresën e personalizuar të uebit</translation>
 <translation id="8127542551745560481">Modifiko faqen bazë</translation>
+<translation id="854522910157234410">Hape këtë faqe</translation>
+<translation id="5063487983358782016">Faqja kryesore e Brave</translation>
 <translation id="2482878487686419369">Njoftime</translation>
 <translation id="6255999984061454636">Sugjerimet e përmbajtjes</translation>
 <translation id="805047784848435650">Bazuar në historikun tënd të shfletimit</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Privatësi</translation>
 <translation id="4991384657077828949">Ndihmo në përmirësimin e sigurisë së Brave</translation>
 <translation id="1943176487615318915">Për të zbuluar aplikacionet dhe sajtet e rrezikshme, Brave dërgon URL-të e disa faqeve që viziton, informacione të kufizuara të sistemit dhe disa përmbajtje faqesh te Brave Software</translation>
-<translation id="3181954750937456830">"Shfletimi i sigurt" (të mbron ty dhe pajisjen tënde nga sajtet e rrezikshme)</translation>
-<translation id="7315322926489145388">Dërgon URL-të e disa faqeve që viziton te Brave Software, kur siguria jote është në rrezik</translation>
+<translation id="3201899458094819285">"Shfletimi i sigurt" (të mbron ty dhe pajisjen tënde nga sajtet e rrezikshme)</translation>
+<translation id="2876369937070532032">Dërgon URL-të e disa faqeve që viziton te Brave Software, kur siguria jote është në rrezik</translation>
 <translation id="3738139272394829648">Prek për të kërkuar</translation>
-<translation id="7865281998841143447">Mëso për temat në sajtet e uebit pa u larguar nga faqja. "Trokit për të kërkuar" dërgon një fjalë dhe kontekstin e saj rrethues te "Kërko me Brave Software", duke sjellë përkufizime, fotografi, rezultate kërkimi dhe detaje të tjera.
+<translation id="4749189475009528195">Mëso për temat në sajtet e uebit pa u larguar nga faqja. "Trokit për të kërkuar" dërgon një fjalë dhe kontekstin e saj rrethues te "Kërko në Brave Software", duke sjellë përkufizime, fotografi, rezultate kërkimi dhe detaje të tjera.
 
-Trokit te një fjalë për të krijuar një kërkim për të. Për të rregulluar termin e kërkimit, kryej një shtypje të gjatë për ta zgjedhur. Për ta përsosur kërkimin, hape panelin me rrëshqitje, trokit tek ikona e zgjerimit për të bërë një skedë të re dhe më pas trokit te kutia e kërkimit.</translation>
-<translation id="3292859206215580147">Mëso për temat në sajtet e uebit pa u larguar nga faqja. "Trokit për të kërkuar" dërgon një fjalë dhe kontekstin e saj rrethues te "Kërko në Brave Software", duke sjellë përkufizime, fotografi, rezultate kërkimi dhe detaje të tjera.
+Trokit te një fjalë për të kërkuar. Për ta përsosur kërkimin, preke dhe mbaje shtypur për të përzgjedhur më shumë ose më pak fjalë. Për ta modifikuar kërkimin, hape panelin, trokit tek ikona për ta hapur në një skedë të re dhe bëj ndryshimet në kutinë e kërkimit.</translation>
+<translation id="934250516944040460">Mëso për temat në sajtet e uebit pa u larguar nga faqja. "Trokit për të kërkuar" dërgon një fjalë dhe kontekstin e saj rrethues te "Kërko në Brave Software", duke sjellë përkufizime, fotografi, rezultate kërkimi dhe detaje të tjera.
 
-Kryej një shtypje të gjatë te një fjalë për të krijuar një kërkim për të. Për ta përsosur kërkimin, rregullo përzgjedhjen. Mund ta hapësh gjithashtu panelin me rrëshqitje, të trokasësh tek ikona e zgjerimit për të bërë një skedë të re dhe më pas të trokasësh te kutia e kërkimit.</translation>
+Prek dhe mbaj shtypur një fjalë për ta kërkuar. Për të përsosur kërkimin, zgjidh më shumë ose më pak fjalë. Për ta modifikuar kërkimin, hape panelin, trokit tek ikona për ta hapur në një skedë të re dhe bëj ndryshimet në kutinë e kërkimit.</translation>
 <translation id="6209156474097347789">"Prek për të kërkuar" dërgon fjalën e zgjedhur dhe faqen aktuale si kontekst te "Kërkimi i Brave Software". Mund ta çaktivizosh te <ph name="BEGIN_LINK"/>Cilësimet<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Lejoje</translation>
 <translation id="780301667611848630">Jo, faleminderit</translation>
@@ -206,7 +205,7 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="6295158916970320988">Të gjitha sajtet</translation>
 <translation id="8380167699614421159">Ky sajt shfaq reklama ndërhyrëse ose mashtruese</translation>
 <translation id="1919345977826869612">Reklama</translation>
-<translation id="3513704683820682405">Realiteti i zgjeruar</translation>
+<translation id="2025115093177348061">Realiteti i zgjeruar</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">Blloko kukit e palëve të treta</translation>
 <translation id="6782111308708962316">Parandalo sajtet e uebit të palëve të treta që të ruajnë dhe lexojnë të dhënat e kukive</translation>
@@ -217,6 +216,7 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="1717218214683051432">Sensorët e lëvizjes</translation>
 <translation id="2091887806945687916">Tingulli</translation>
 <translation id="2586657967955657006">Kujtesa e fragmenteve</translation>
+<translation id="4670064810192446073">Realiteti virtual</translation>
 <translation id="6320088164292336938">Dridhja</translation>
 <translation id="4226663524361240545">Njoftimet mund të bëjnë që pajisja të dridhet</translation>
 <translation id="1446450296470737166">Lejo kontrollin e plotë të pajisjeve MIDI</translation>
@@ -235,6 +235,7 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="2537296579376733324">Të gjitha kukit, vetëm në këtë sajt</translation>
 <translation id="7882806643839505685">Lejo tingullin për një sajt specifik.</translation>
 <translation id="4468959413250150279">Hiq zërin për një sajt specifik.</translation>
+<translation id="7828557259026017104">Kukit janë skedarë të krijuar nga sajtet e uebit që viziton ti. Përdori ato për të kujtuar preferencat e tua. Kukit e palëve të treta krijohen nga sajte të tjera. Këto sajte zotërojnë disa nga përmbajtjet, si p.sh. reklamat ose imazhet që ti shikon në faqen e uebit që viziton.</translation>
 <translation id="1994173015038366702">URL-ja e sajtit</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Përdorimi</translation>
@@ -246,10 +247,14 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="8116925261070264013">Zëri i çaktivizuar</translation>
 <translation id="8300705686683892304">Menaxhuar nga aplikacioni</translation>
 <translation id="6192792657125177640">Përjashtimet</translation>
-<translation id="257931822824936280">I zgjeruar - kliko për ta palosur.</translation>
-<translation id="5100237604440890931">I palosur - kliko për ta zgjeruar</translation>
 <translation id="857943718398505171">Lejuar (rekomandohet)</translation>
 <translation id="2913331724188855103">Lejo faqet të ruajnë dhe lexojnë të dhënat e kukive (rekomandohet)</translation>
+<translation id="2212565012507486665">Lejo kukit</translation>
+<translation id="8648684608605749476">Blloko kukit e palëve të treta në modalitetin "I fshehtë"</translation>
+<translation id="2687403674020088961">Blloko të gjitha kukit (nuk rekomandohet)</translation>
+<translation id="1044891598689252897">Sajtet do të punojnë normalisht</translation>
+<translation id="7993619969781047893">Veçoritë në disa sajte mund të ndalojnë së funksionuari</translation>
+<translation id="1509960214886564027">Veçoritë në shumë sajte mund të ndalojnë së funksionuari</translation>
 <translation id="5335288049665977812">Lejoji sajtet të ekzekutojnë JavaScript (rekomandohet)</translation>
 <translation id="5527111080432883924">Pyet përpara se të lejosh sajtet të lexojnë tekstin dhe imazhet nga kujtesa e fragmenteve (rekomandohet)</translation>
 <translation id="6912998170423641340">Blloko sajtet që të mos lexojnë tekstin dhe imazhet nga kujtesa e fragmenteve</translation>
@@ -259,12 +264,12 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="2107397443965016585">Pyet përpara se sajtet të lejohen të luajnë përmbajtje të mbrojtura (rekomandohet)</translation>
 <translation id="2910701580606108292">Pyet përpara se sajtet të lejohen të luajnë përmbajtje të mbrojtura</translation>
 <translation id="757524316907819857">Blloko sajtet që të mos luajnë përmbajtje të mbrojtura</translation>
-<translation id="4935305910887312910">Pyet përpara se sajtet të lejohen të marrin pozicionin e kamerës ose të krijojnë një hartë të dhomës sate (rekomandohet)</translation>
-<translation id="884828189055900810">Blloko sajtet që të mos marrin pozicionin e kamerës ose të mos krijojnë një hartë të dhomës sate</translation>
+<translation id="2182457891543959921">Pyet përpara se të lejosh krijimin nga sajtet të një harte 3D të ambientit tënd rrethues ose gjurmimin prej tyre të pozicionit të kamerës (rekomandohet)</translation>
+<translation id="3538390592868664640">Blloko krijimin nga sajtet të një harte 3D të ambientit tënd rrethues ose gjurmimin prej tyre të pozicionit të kamerës</translation>
 <translation id="5710871682236653961">Pyet përpara se sajtet të lejohen të dërgojnë dhe të marrin informacione kur troket pajisjet me NFC (rekomandohet)</translation>
 <translation id="7572498721684305250">Blloko sajtet që të mos dërgojnë dhe marrin informacione kur troket pajisjet me NFC</translation>
-<translation id="3312292613668865961">Pyet përpara se sajtet të lejohen të kenë qasje te pajisja e realitetit virtual dhe të dhënat e tua (rekomandohet)</translation>
-<translation id="8698438463325761328">Blloko sajtet që të mos kenë qasje te pajisja e realitetit virtual dhe të dhënat e tua</translation>
+<translation id="4887024562049524730">Pyet përpara se sajtet të lejohen të përdorin pajisjen e realitetit virtual dhe të dhënat e tua (rekomandohet)</translation>
+<translation id="6439114592976064011">Blloko sajtet që të mos përdorin pajisjen e realitetit virtual dhe të dhënat e tua</translation>
 <translation id="3277252321222022663">Lejoju faqeve të të hapin sensorët (rekomandohet)</translation>
 <translation id="5048398596102334565">Lejoju faqeve të të hapin sensorët e lëvizjes (rekomandohet)</translation>
 <translation id="8816026460808729765">Bllokojua faqeve hapjen e sensorëve</translation>
@@ -414,6 +419,7 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="4062305924942672200">Informacioni ligjor</translation>
 <translation id="4256782883801055595">Licencat me burim të hapur</translation>
 <translation id="1138681184697033370">Kushtet e shërbimit të Brave</translation>
+<translation id="2368444735104192323">Kushtet shtesë të shërbimit të Brave Software Brave dhe të sistemit operativ Brave</translation>
 <translation id="7392539049993970338">Njoftimi i privatësisë së Brave</translation>
 <translation id="2968755619301702150">Shikuesi i certifikatave</translation>
 <translation id="1360432990279830238">Do të dalësh dhe çaktivizosh sinkronizimin?</translation>
@@ -432,6 +438,8 @@ Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të
 <translation id="8636825310635137004">Për të marrë skedat e tua nga pajisjet e tjera, aktivizo sinkronizimin.</translation>
 <translation id="3269956123044984603">Për të marrë skedat e tua nga pajisjet e tjera, aktivizo "Sinkronizo automatikisht të dhënat" në cilësimet e llogarisë së Android.</translation>
 <translation id="5157964048453367290">Skedat që ke hapur në Brave në pajisjet e tjera do të shfaqen këtu.</translation>
+<translation id="5795872532621730126">Kërko dhe shfleto</translation>
+<translation id="9086302186042011942">Po sinkronizon</translation>
 <translation id="4684427112815847243">Sinkronizo gjithçka</translation>
 <translation id="2709516037105925701">Vetëplotësim</translation>
 <translation id="8820817407110198400">Faqerojtës</translation>
@@ -549,10 +557,6 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="2532336938189706096">Pamja e uebit</translation>
 <translation id="6005538289190791541">Fjalëkalimi i sugjeruar</translation>
 <translation id="4634124774493850572">Përdor fjalëkalimin</translation>
-<translation id="8285489906452138776">Brave ka nevojë për leje për t'u qasur te kamera jote për këtë sajt.</translation>
-<translation id="320189792589364011">Brave ka nevojë për leje për t'u qasur te mikrofoni yt për këtë sajt.</translation>
-<translation id="7988136689212463100">Brave ka nevojë për leje për t'u qasur te kamera dhe mikrofoni yt për këtë sajt.</translation>
-<translation id="4931190655840828017">Brave ka nevojë për qasje te vendndodhja jote për të ndarë vendndodhjen me këtë sajt.</translation>
 <translation id="3088191967551450609">Brave ka nevojë për qasje te hapësira ruajtëse për të shkarkuar skedarë.</translation>
 <translation id="8942627711005830162">Hap në një dritare tjetër</translation>
 <translation id="4195643157523330669">Hape në skedë të re</translation>
@@ -600,8 +604,9 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="2146738493024040262">Hap aplikacionin e çastit</translation>
 <translation id="7016516562562142042">Lejuar për motorin aktual të kërkimit</translation>
 <translation id="6177111841848151710">Bllokuar për motorin aktual të kërkimit</translation>
-<translation id="145097072038377568">E çaktivizuar te "Cilësimet" e Android</translation>
+<translation id="7000754031042624318">E çaktivizuar te cilësimet e Android</translation>
 <translation id="8007176423574883786">E çaktivizuar për këtë pajisje</translation>
+<translation id="6864395892908308021">Kjo pajisje nuk mund të lexojë NFC-në</translation>
 <translation id="164269334534774161">Po shikon një kopje jashtë linje të kësaj faqeje nga <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Kjo faqe jashtë linje është nga <ph name="CREATION_TIME"/> dhe mund të ndryshojë nga versioni në linjë.</translation>
 <translation id="8840953339110955557">Kjo faqe mund të ndryshojë nga versioni në linjë.</translation>
@@ -706,10 +711,10 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">VV</translation>
 <translation id="724102042129299115">Përvoja e ekzekutimit të parë të Brave</translation>
-<translation id="2700285883409956633">Duke përdorur këtë aplikacion, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Politikën e privatësisë<ph name="END_LINK2"/> së Brave.</translation>
-<translation id="1640714894372474981">Duke përdorur këtë aplikacion, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Njoftimin e privatësisë<ph name="END_LINK2"/> të Brave dhe <ph name="BEGIN_LINK3"/>Njoftimin e privatësisë për llogaritë e Brave Software të menaxhuara me Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Njoftimin e privatësisë<ph name="END_LINK2"/> së Brave.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Njoftimin e privatësisë<ph name="END_LINK2"/> së Brave dhe <ph name="BEGIN_LINK3"/>Njoftimin e privatësisë për llogaritë e Brave Software të menaxhuara me Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Duke përdorur Brave, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit të Brave Software<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Kushtet shtesë të shërbimit të Brave Software Brave dhe të sistemit operativ Brave<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Duke përdorur Brave, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit të Brave Software<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Kushtet shtesë të shërbimit të Brave Software Brave dhe të sistemit operativ Brave<ph name="END_LINK2"/>. Zbatohet gjithashtu <ph name="BEGIN_LINK3"/>"Njoftimi i privatësisë" për "Llogaritë e menaxhuara të Brave Software" me Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit të Brave Software<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Kushtet shtesë të shërbimit të Brave Software Brave dhe të sistemit operativ Brave<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit të Brave Software<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Kushtet shtesë të shërbimit të Brave Software Brave dhe të sistemit operativ Brave<ph name="END_LINK2"/>. Zbatohet gjithashtu <ph name="BEGIN_LINK3"/>"Njoftimi i privatësisë" për "Llogaritë e menaxhuara të Brave Software" me Family Link<ph name="END_LINK3"/>.</translation>
 <translation id="673197144963363525">Ndihmo në përmirësimin e Brave duke dërguar automatikisht te Brave Software statistika përdorimi dhe raporte të ndërprerjeve aksidentale.</translation>
 <translation id="3518985090088779359">Prano dhe vazhdo</translation>
 <translation id="7207456302801184289">Mirë se vini në Brave</translation>
@@ -814,7 +819,7 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="6963766334940102469">Fshi faqeshënuesit</translation>
 <translation id="4351244548802238354">Mbyll dialogun</translation>
 <translation id="451872707440238414">Kërko te faqeshënuesit</translation>
-<translation id="8901170036886848654">Nuk u gjetën faqeshënues</translation>
+<translation id="6447558397796644647">Ai faqeshënues nuk mund të gjendet. Kontrollo nëse e ke shkruar saktë ose shto një faqeshënues të ri</translation>
 <translation id="6404511346730675251">Përpunoni faqerojtës</translation>
 <translation id="3894427358181296146">Shtoni dosje</translation>
 <translation id="5327248766486351172">Emër</translation>
@@ -829,6 +834,8 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="6811034713472274749">Faqja është gati për parje</translation>
 <translation id="4561979708150884304">Nuk ka lidhje</translation>
 <translation id="8274165955039650276">Shiko shkarkimet</translation>
+<translation id="4320177379694898372">Nuk ka lidhje me internetin</translation>
+<translation id="6397616442223433927">Përsëri në linjë</translation>
 <translation id="2082238445998314030">Rezultati <ph name="RESULT_NUMBER"/> nga <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Asnjë rezultat</translation>
 <translation id="981121421437150478">Jashtë linje</translation>
@@ -845,9 +852,6 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="6773423637732432200">Brave nuk mund të përditësohet. Më shumë opsione</translation>
 <translation id="1383876407941801731">Kërko</translation>
 <translation id="3328801116991980348">Informacionet rreth sajtit</translation>
-<translation id="5391532827096253100">Lidhja jote me këtë faqe nuk është e sigurt. Informacioni i faqes</translation>
-<translation id="6206551242102657620">Lidhja është e sigurt. Informacioni i faqes</translation>
-<translation id="6963642900430330478">Kjo faqe është e rrezikshme. Informacioni i faqes</translation>
 <translation id="9070377983101773829">Nis kërkimin me zë</translation>
 <translation id="4968908871398201967">Modaliteti "i fshehtë"</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> skedë e hapur, trokit për të ndërruar skedat}other{<ph name="OPEN_TABS_MANY"/> skeda të hapura, trokit për të ndërruar skedat}}</translation>
@@ -944,6 +948,11 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="5197729504361054390">Kontaktet që zgjedh do të ndahen me <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Dekoduesi i imazheve</translation>
 <translation id="8067883171444229417">Luaj videon</translation>
+<translation id="5876056640971328065">Vendose videon në pauzë</translation>
+<translation id="3594780231884063836">Çaktivizo zërin e videos</translation>
+<translation id="783819812427904514">Aktivizo zërin e videos</translation>
+<translation id="3114012059975132928">Luajtësi i videos</translation>
+<translation id="5489227211564503167">Koha e kaluar: <ph name="ELAPSED_TIME"/> nga <ph name="TOTAL_TIME"/>.</translation>
 <translation id="6560414384669816528">Kërko me Sogou</translation>
 <translation id="5406914950576900927">Brave mund të përdorë <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> për kërkimin në Kinë. Mund ta ndryshosh këtë te <ph name="BEGIN_LINK"/>Cilësimet<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Mbaj Brave Software</translation>
@@ -987,6 +996,7 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="1875543012935658554">Rihap Brave.</translation>
 <translation id="79859296434321399">Për të parë përmbajtje realiteti të zgjeruar, instalo ARCore</translation>
 <translation id="8558485628462305855">Për të parë përmbajtje realiteti të zgjeruar, përditëso ARCore</translation>
+<translation id="3513704683820682405">Realiteti i zgjeruar</translation>
 <translation id="6410973561433500075">Do të hysh në AR nga <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">Kur je në AR, ky sajt mund të arrijë:
 • të krijojë një hartë 3D të ambientit tënd
@@ -1035,6 +1045,8 @@ Vetëm ti mund të shohësh se çfarë po shikon kamera. Sajti nuk mund të shik
 <translation id="9028914725102941583">Aktivizo sinkronizimin për të ndarë mes pajisjeve</translation>
 <translation id="6162454065885854378">Për të ndarë diçka nga telefoni yt në një pajisje tjetër, aktivizo sinkronizimin në cilësimet e Brave në të dyja pajisjet</translation>
 <translation id="6084271560289605378">Shko te "Cilësimet" e Brave</translation>
+<translation id="2746024117903470217">Për ta ndarë këtë faqe në një pajisje tjetër, aktivizo sinkronizimin në cilësimet e Brave në pajisjen tjetër</translation>
+<translation id="7760665516427405230">Për ta ndarë këtë faqe në një pajisje tjetër, aktivizo sinkronizimin në cilësimet e Brave</translation>
 <translation id="2318045970523081853">Trokit për të bërë një telefonatë</translation>
 <translation id="9209888181064652401">Telefonatat nuk mund të kryhen</translation>
 <translation id="2860954141821109167">Sigurohu që një aplikacion i telefonit të jetë i aktivizuar në këtë pajisje</translation>
@@ -1090,11 +1102,17 @@ Vetëm ti mund të shohësh se çfarë po shikon kamera. Sajti nuk mund të shik
 <translation id="6201345951596836663">Lidhja u kopjua</translation>
 <translation id="6597891566292541626">Pozicionoje kodin QR/barkodin në këtë kornizë.</translation>
 <translation id="3140134512074889489">Aktivizo kamerën për të skanuar një kod QR</translation>
+<translation id="5149323899804758325">Për të skanuar një kod QR, ndrysho cilësimet e tua në mënyrë që Brave të mund të përdorë kamerën tënde</translation>
 <translation id="2359808026110333948">Vazhdo</translation>
+<translation id="8233540874193135768">Për të skanuar një kod QR, përdor një pajisje me kamerë.</translation>
+<translation id="6297765934698848803">Organizata që menaxhon pajisjen tënde ka çaktivizuar kamerën tënde.</translation>
+<translation id="4321739720395210191">Kamera nuk mund të hapet. Rinise pajisjen dhe provo përsëri.</translation>
+<translation id="234265804618409743">Kamera nuk mund të hapet. Ndodhi një gabim.</translation>
+<translation id="7173114856073700355">Hap cilësimet</translation>
+<translation id="1311657260431405215">Ky kod QR nuk është URL: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Platforma e njoftimeve të Brave Software</translation>
 <translation id="8516012719330875537">Redaktori i imazheve</translation>
-<translation id="6092062101542170135">Për të vazhduar, aktivizo NFC-në te cilësimet e Android</translation>
-<translation id="5860491529813859533">Aktivizo</translation>
 <translation id="8926666909099850184">Veçoria NFC është joaktive për këtë pajisje. Aktivizoje te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Do të hysh në VR nga <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Kur je në VR, ky sajt mund të arrijë të mësojë për:</translation>

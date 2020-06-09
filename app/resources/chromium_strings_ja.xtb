@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">障害レポートと<ph name="UMA_LINK"/>を Brave Software に自動送信して Brave の機能向上に役立てる</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ネットワークにログイン - Brave</translation>
+<translation id="8745514854244955877">Brave - ネットワークにログイン - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - ネットワークにログイン</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -45,8 +48,12 @@
 <translation id="5785919770853225148">このパスワードは Brave Software アカウントに保存されるため、覚えておく必要はありません。</translation>
 <translation id="8211837073776713955">Brave では、特定のパスワードが侵害された事実の有無がわかります</translation>
 <translation id="113959764510199339">Brave はパスワードを表示しようとしています。</translation>
+<translation id="96347285368592620">Brave がパスワードをコピーしようとしています。</translation>
+<translation id="2953892977076487219">Brave でパスワードを編集しようとしています。</translation>
 <translation id="7503098128120083822">Brave からパスワードをエクスポートするための許可を求められています。</translation>
 <translation id="8285294305439559616">Brave でパスワードを表示しようとしています。続行するには、Windows のパスワードを入力してください。</translation>
+<translation id="8090497651549769448">Brave がパスワードをコピーしようとしています。続行するには、Windows のパスワードを入力してください。</translation>
+<translation id="3861679447659630159">Brave でパスワードを編集しようとしています。続行するには、Windows のパスワードを入力してください。</translation>
 <translation id="5918095577778020936">Brave からパスワードをエクスポートするための許可を求められています。許可するには Windows のパスワードを入力してください。</translation>
 <translation id="8320964054148936490">新しいバージョンの Brave が既にインストールされています。ソフトウェアが動作しない場合は、Brave をアンインストールしてからもう一度お試しください。</translation>
 <translation id="7691786510374174420">原因不明のエラーによりインストールが失敗しました。実行中の Brave を終了してからもう一度お試しください。</translation>
@@ -199,7 +206,7 @@
 <translation id="3262506503470845422">Brave のヘルプを見る</translation>
 <translation id="1864557848095568223">Brave を更新しています</translation>
 <translation id="1786715389543715322">Brave を更新しています（<ph name="PROGRESS_PERCENT"/>）</translation>
-<translation id="2182657378556811785">Brave を再起動して更新を完了してください。</translation>
+<translation id="7914115000169617076">アップデートが適用されました。更新を完了するには Brave を再起動してください。再起動後、シークレット ウィンドウは自動的に開きません。</translation>
 <translation id="8208853227947884571">Brave は最新版です</translation>
 <translation id="573759479754913123">Brave OS について</translation>
 <translation id="7573289029918943991">デバイスが最新の状態かどうか確認するには、<ph name="LINK_BEGIN"/>Brave OS の設定<ph name="LINK_END"/>をご覧ください</translation>
@@ -217,6 +224,12 @@
 <translation id="8586264863973514035">変更を適用するには Brave を再起動してください</translation>
 <translation id="7021823858304886493">Brave へのログインを許可する</translation>
 <translation id="1649714546770135458">この設定を無効にすると、Brave にログインすることなく Gmail などの Brave Software サイトにログインできます</translation>
+<translation id="2796517443093885402">Brave でデータ侵害や不正な拡張機能などの脅威から保護できているか確認します</translation>
+<translation id="428541510811554120">Brave がアップデートを確認できません。インターネット接続を確認してみてください。</translation>
+<translation id="2633397153656205379">エラーが発生したため、Brave が更新されませんでした。<ph name="BEGIN_LINK"/>Brave の更新に関する問題を解決してください。<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">ログインしていないため、Brave でパスワードを確認できません</translation>
+<translation id="7006260220514217183">セーフ ブラウジングがオフになっています。Brave はオンにすることをおすすめしています。</translation>
+<translation id="1785833016412082453">Brave で拡張機能を確認できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="9220324636239049437">この端末から 1 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="5853262807109651878">この端末から <ph name="ITEMS_COUNT"/> 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="4784414698887946907">この端末から閲覧データを削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>

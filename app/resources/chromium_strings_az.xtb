@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Qəza raportlarını və <ph name="UMA_LINK"/> linkini Brave Software'a göndərməklə Brave'un daha keyfiyyətli olmasına yardım olun</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Şəbəkəyə Giriş - Brave</translation>
+<translation id="8745514854244955877">Brave - Şəbəkəyə Giriş - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Şəbəkəyə Giriş</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -40,8 +43,12 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="5785919770853225148">Brave bu parolu Brave Software Hesabında yadda saxlayacaq. Onu yadda saxlamalı olmayacaqsınız.</translation>
 <translation id="8211837073776713955">Brave parollarınızın oğurlanıb-oğurlanmadığı haqqında Sizə məlumat verir</translation>
 <translation id="113959764510199339">Brave parolları göstərməyə çalışır.</translation>
+<translation id="96347285368592620">Brave parolları kopyalamağa çalışır.</translation>
+<translation id="2953892977076487219">Brave parolları redaktə etməyə çalışır.</translation>
 <translation id="7503098128120083822">Brave parollarınızı eksport etmək istəyir.</translation>
 <translation id="8285294305439559616">Brave parolları göstərməyə çalışır. buna icazə vermək üçün Windows parolunuzu yazın.</translation>
+<translation id="8090497651549769448">Brave parolları kopyalamağa çalışır. Buna icazə vermək üçün Windows parolunuzu yazın.</translation>
+<translation id="3861679447659630159">Brave parolları redaktə etməyə çalışır. Buna icazə vermək üçün Windows parolunuzu yazın.</translation>
 <translation id="5918095577778020936">Brave parollarınızı eksport etmək istəyir. Buna icazə vermək üçün Windows parolunu yazın.</translation>
 <translation id="8320964054148936490">Bu kompüterdə Brave'um daha son versiyası var. Proqram təminatı işləmirsə, Chroimum'u sistemdən silin və yenidən cəhd edin.</translation>
 <translation id="7691786510374174420">Naməlum xəta üzündən quraşdırmaq alınmadı. Əgər Brave hazırda işləyirsə, lütfən, qapadın və yenidən cəhd edin.</translation>
@@ -188,7 +195,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="3262506503470845422">Brave ilə yardım alın</translation>
 <translation id="1864557848095568223">Brave güncəlləşir</translation>
 <translation id="1786715389543715322">Brave güncəllənir (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Güncəllənmək üzrədir. Güncəlləşməni tamamlamaq üçün Brave'u yenidən işə salın.</translation>
+<translation id="7914115000169617076">Güncəllənmək üzrədir! Güncəlləməni tamamlamaq üçün Brave'u yenidən başladın. Anonim pəncərələr yenidən açılmayacaq.</translation>
 <translation id="8208853227947884571">Brave güncəldir</translation>
 <translation id="573759479754913123">Brave OS haqqında</translation>
 <translation id="7573289029918943991">Cihazınızın güncəl olub-olmadığına baxmaq üçün <ph name="LINK_BEGIN"/>Brave OS Ayarlarına<ph name="LINK_END"/> keçin</translation>
@@ -206,6 +213,12 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8586264863973514035">Dəyişiklikləri tətbiq etmək üçün Brave'u yenidən başladın</translation>
 <translation id="7021823858304886493">Brave girişinə icazə verin</translation>
 <translation id="1649714546770135458">Bunu deaktiv etməklə Brave'a giriş etmədən Gmail kimi Brave Software saytlarına daxil ola bilərsiniz</translation>
+<translation id="2796517443093885402">Brave Sizi data pozuntuları, xətalı artırmalar və digər güvənlik məsələlərinə qarşı qoruya bilər</translation>
+<translation id="428541510811554120">Brave güncəlləmələri yoxlaya bilmir. İnternet bağlantınızı yoxlamağa cəhd edin.</translation>
+<translation id="2633397153656205379">Brave güncəllənmədi, xəta baş verdi. <ph name="BEGIN_LINK"/>Brave'un güncəllənmə problemlərini və alınmayan güncəllənmələri həll edin.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Hesaba daxil olmadığınız üçün Brave parollarınızı yoxlaya bilmir</translation>
+<translation id="7006260220514217183">Təhlükəsiz Baxış deaktivdir. Brave onu aktiv etməyi tövsiyə edir.</translation>
+<translation id="1785833016412082453">Brave artırmalarınızı yoxlaya bilmir. Sonra yenidən cəhd edin.</translation>
 <translation id="9220324636239049437">1 element cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün <ph name="USER_EMAIL"/> kimi Bravea daxil olun.</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> element bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>
 <translation id="4784414698887946907">Brauzinq datanız bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>

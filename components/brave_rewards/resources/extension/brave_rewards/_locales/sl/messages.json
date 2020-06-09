@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Točka za donacijo",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Pozdravljeni, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

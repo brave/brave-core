@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Гранти у балах",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Вітаємо, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

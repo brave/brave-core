@@ -3,10 +3,6 @@
 <translationbundle lang="sk">
 <translation id="8428213095426709021">Nastavenia</translation>
 <translation id="2498359688066513246">Pomocník a spätná väzba</translation>
-<translation id="8378714024927312812">Spravované vašou organizáciou</translation>
-<translation id="9019902583201351841">Spravované vašimi rodičmi</translation>
-<translation id="4645575059429386691">Spravované vaším rodičom</translation>
-<translation id="4883854917563148705">Spravované nastavenia sa nedajú resetovať</translation>
 <translation id="4307992518367153382">Základy</translation>
 <translation id="1974060860693918893">Rozšírené</translation>
 <translation id="1146678959555564648">Zadať VR</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Keď sa prihlásite do svojho účtu Brave Software, táto funkcia je zapnutá</translation>
 <translation id="10614374240317010">Nikdy neukladať</translation>
 <translation id="3098842761938485917">Zobrazenie a správa uložených hesiel v <ph name="BEGIN_LINK"/>účte Brave Software<ph name="END_LINK"/></translation>
+<translation id="8988028529677883095">Používať telefón ako bezpečnostný kľúč</translation>
 <translation id="8562452229998620586">Tu sa zobrazia uložené heslá.</translation>
+<translation id="1303339473099049190">Dané heslo sa nepodarilo nájsť. Skontrolujte pravopis a skúste to znova.</translation>
 <translation id="8084114998886531721">Uložené heslo</translation>
 <translation id="2870560284913253234">Web</translation>
 <translation id="8503813439785031346">Meno používateľa</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Heslo sa zobrazí po odomknutí</translation>
 <translation id="6221633008163990886">Heslá budete môcť exportovať po odomknutí</translation>
 <translation id="230699814587342492">Heslá Chromu</translation>
-<translation id="6075798973483050474">Úprava domovskej stránky</translation>
-<translation id="854522910157234410">Otvoriť túto stránku</translation>
+<translation id="1925021887439448749">Zadajte vlastnú webovú adresu</translation>
 <translation id="8127542551745560481">Upraviť domovskú stránku</translation>
+<translation id="854522910157234410">Otvoriť túto stránku</translation>
+<translation id="5063487983358782016">Domovská stránky Chromu</translation>
 <translation id="2482878487686419369">Upozornenia</translation>
 <translation id="6255999984061454636">Návrhy obsahu</translation>
 <translation id="805047784848435650">Na základe vašej histórie prehliadania</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Ochrana súkromia</translation>
 <translation id="4991384657077828949">Pomoc so zlepšením zabezpečenia Chromu</translation>
 <translation id="1943176487615318915">Brave odosiela Googlu webové adresy niektorých navštívených stránok, obmedzené informácie o systéme a obsah niektorých stránok na účely rozpoznávania nebezpečných aplikácií a webov.</translation>
-<translation id="3181954750937456830">Bezpečné prehliadanie (chráni vás aj zariadenie pred nebezpečnými webmi)</translation>
-<translation id="7315322926489145388">Pri ohrození zabezpečenia odosiela Googlu webové adresy niektorých navštívených stránok</translation>
+<translation id="3201899458094819285">Bezpečné prehliadanie (chráni vás aj zariadenie pred nebezpečnými webmi)</translation>
+<translation id="2876369937070532032">Pri ohrození zabezpečenia odosiela Googlu webové adresy niektorých navštívených stránok</translation>
 <translation id="3738139272394829648">Vyhľadávanie klepnutím</translation>
-<translation id="7865281998841143447">Zistite viac o témach na weboch bez toho, aby ste museli opustiť stránku. Funkcia Vyhľadávanie klepnutím odošle slovo a súvisiaci kontext do Vyhľadávania Brave Software a vráti definície, obrázky, výsledky vyhľadávania a ďalšie podrobnosti.
+<translation id="4749189475009528195">Zistite viac o témach na weboch bez toho, aby ste museli opustiť stránku. Funkcia Vyhľadávanie klepnutím odošle slovo a súvisiaci kontext do Vyhľadávania Brave Software a vráti definície, obrázky, výsledky vyhľadávania a ďalšie podrobnosti.
 
-Ak chcete nejaké slovo vyhľadať, klepnite naň. Ak chcete hľadaný výraz upraviť, vyberte ho dlhým stlačením. Ak chcete spresniť vyhľadávanie, prejdením prstom otvorte panel, klepnutím na ikonu rozbalenia načítajte novú kartu a potom klepnite na vyhľadávacie pole.</translation>
-<translation id="3292859206215580147">Zistite viac o témach na weboch bez toho, aby ste museli opustiť stránku. Funkcia Vyhľadávanie klepnutím odošle slovo a súvisiaci kontext do Vyhľadávania Brave Software a vráti definície, obrázky, výsledky vyhľadávania a ďalšie podrobnosti.
+Vyhľadávanie spustíte klepnutím na ľubovoľné slovo. Spresníte ho pridržaním väčšieho alebo menšieho počtu slov. Ak chcete vyhľadávania upraviť, otvorte panel, klepnutím na príslušnú ikonu otvorte novú kartu a vykonajte zmeny vo vyhľadávacom poli.</translation>
+<translation id="934250516944040460">Zistite viac o témach na weboch bez toho, aby ste museli opustiť stránku. Funkcia Vyhľadávanie klepnutím odošle slovo a súvisiaci kontext do Vyhľadávania Brave Software a vráti definície, obrázky, výsledky vyhľadávania a ďalšie podrobnosti.
 
-Ak chcete vyhľadať nejaké slovo, dlho ho stlačte. Ak chcete vyhľadávanie spresniť, upravte výber. Môžete tiež prejdením prstom otvoriť panel, klepnutím na ikonu rozbalenia načítať novú kartu a potom klepnúť na vyhľadávacie pole.</translation>
+Vyhľadávanie spustíte pridržaním ľubovoľného slova. Spresníte ho výberom väčšieho alebo menšieho počtu slov. Ak chcete vyhľadávania upraviť, otvorte panel, klepnutím na príslušnú ikonu otvorte novú kartu a vykonajte zmeny vo vyhľadávacom poli.</translation>
 <translation id="6209156474097347789">Funkcia vyhľadávania klepnutím odošle vybrané slovo a súčasnú stránku ako kontext do Vyhľadávania Brave Software. Môžete ju vypnúť v <ph name="BEGIN_LINK"/>Nastaveniach<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Povoliť</translation>
 <translation id="780301667611848630">Nie, ďakujem</translation>
@@ -206,7 +205,7 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="6295158916970320988">Všetky stránky</translation>
 <translation id="8380167699614421159">Tento web zobrazuje obťažujúce alebo zavádzajúce reklamy</translation>
 <translation id="1919345977826869612">Reklamy</translation>
-<translation id="3513704683820682405">Rozšírená realita</translation>
+<translation id="2025115093177348061">Rozšírená realita</translation>
 <translation id="6447842834002726250">Súbory cookie</translation>
 <translation id="6196640612572343990">Blokovať súbory cookie tretích strán</translation>
 <translation id="6782111308708962316">Brániť webom tretích strán ukladať a čítať súbory cookie</translation>
@@ -217,6 +216,7 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="1717218214683051432">Senzory pohybu</translation>
 <translation id="2091887806945687916">Zvuk</translation>
 <translation id="2586657967955657006">Schránka</translation>
+<translation id="4670064810192446073">Virtuálna realita</translation>
 <translation id="6320088164292336938">Vibrovanie</translation>
 <translation id="4226663524361240545">Upozornenia môžu pri prijatí na zariadení spustiť vibrovanie</translation>
 <translation id="1446450296470737166">Povoliť úplné ovlád. zar. MIDI</translation>
@@ -235,6 +235,7 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="2537296579376733324">Všetky súbory cookie, iba na tomto webe</translation>
 <translation id="7882806643839505685">Povoliť zvuk pre konkrétny web.</translation>
 <translation id="4468959413250150279">Vypnite zvuk konkrétneho webu.</translation>
+<translation id="7828557259026017104">Súbory cookie sú vytvárané webmi, ktoré navštívite. Pamätajú si pomocou nich vaše predvoľby. Súbory cookie tretích strán sú vytvárané ďalšími webmi. Tieto weby sú vlastníkmi prvkov obsahu, ktorý sa zobrazuje na navštívenej webovej stránke (napríklad reklamy alebo obrázky).</translation>
 <translation id="1994173015038366702">Webová adresa</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Použitie</translation>
@@ -246,10 +247,14 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="8116925261070264013">Zvuk bol vypnutý</translation>
 <translation id="8300705686683892304">Spravované aplikáciou</translation>
 <translation id="6192792657125177640">Výnimky</translation>
-<translation id="257931822824936280">Rozbalená (zbalíte ju kliknutím)</translation>
-<translation id="5100237604440890931">Zbalená (rozbalíte ju kliknutím)</translation>
 <translation id="857943718398505171">Povolené (odporúčané)</translation>
 <translation id="2913331724188855103">Povoliť webom ukladať a čítať súbory cookie (odporučané)</translation>
+<translation id="2212565012507486665">Povoliť súbory cookie</translation>
+<translation id="8648684608605749476">Blokovať súbory cookie tretích strán v anonymnom režime</translation>
+<translation id="2687403674020088961">Blokovať všetky súbory cookie (neodporúča sa)</translation>
+<translation id="1044891598689252897">Weby budú fungovať normálne</translation>
+<translation id="7993619969781047893">Funkcie na niektorých weboch môžu zlyhávať</translation>
+<translation id="1509960214886564027">Funkcie na mnohých weboch môžu zlyhávať</translation>
 <translation id="5335288049665977812">Povoliť webom spúšťať JavaScript (odporúča sa)</translation>
 <translation id="5527111080432883924">Pýtať sa, či chcete povoliť webu čítať text a obrázky v schránke (odporúčané)</translation>
 <translation id="6912998170423641340">Zakázať webom čítať text a obrázky v schránke</translation>
@@ -259,12 +264,12 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="2107397443965016585">Pýtať sa, či chcete povoliť webu prehrávať chránený obsah (odporúčané)</translation>
 <translation id="2910701580606108292">Pýtať sa, či chcete povoliť webu prehrávať chránený obsah</translation>
 <translation id="757524316907819857">Zakázať webom prehrávať chránený obsah</translation>
-<translation id="4935305910887312910">Opýtať sa, či chcete povoliť webom dostávať polohu kamery alebo mapovať vašu miestnosť (odporúčané)</translation>
-<translation id="884828189055900810">Blokovať weby, aby nemohli používať polohu kamery ani mapovať vašu miestnosť</translation>
+<translation id="2182457891543959921">Opýtať sa, či chcete povoliť webom vytvoriť 3D mapu vášho okolia alebo sledovať umiestnenie kamier (odporúčané)</translation>
+<translation id="3538390592868664640">Zabráňte webom vytvárať 3D mapu vášho okolia či sledovať umiestnenie kamier</translation>
 <translation id="5710871682236653961">Pýtať sa, či chcete povoliť webom odosielať a prijímať informácie, keď priložíte zariadenia NFC (odporúčané)</translation>
 <translation id="7572498721684305250">Blokovať odosielanie a prijímanie informácií webmi, keď priložíte zariadenia NFC</translation>
-<translation id="3312292613668865961">Opýtať sa, či chcete povoliť webom používať vaše zariadenia a údaje virtuálnej reality (odporúčané)</translation>
-<translation id="8698438463325761328">Blokovať weby, aby nemohli používať vaše zariadenie a údaje virtuálnej reality</translation>
+<translation id="4887024562049524730">Opýtať sa, či chcete povoliť webom používať vaše zariadenie a údaje virtuálnej reality (odporúčané)</translation>
+<translation id="6439114592976064011">Blokovať weby, aby nemohli používať vaše zariadenie a údaje virtuálnej reality</translation>
 <translation id="3277252321222022663">Povoliť webom prístup k senzorom (odporúčané)</translation>
 <translation id="5048398596102334565">Povoliť webom prístup k senzorom pohybu (odporúčané)</translation>
 <translation id="8816026460808729765">Zablokovať webom prístup k senzorom</translation>
@@ -414,6 +419,7 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="4062305924942672200">Právne informácie</translation>
 <translation id="4256782883801055595">Licencie open source</translation>
 <translation id="1138681184697033370">Zmluvné podmienky prehliadača Brave</translation>
+<translation id="2368444735104192323">Dodatočné zmluvné podmienky prehliadača Brave a systému Brave OS</translation>
 <translation id="7392539049993970338">Oznámenie o ochrane súkromia prehliadača Brave</translation>
 <translation id="2968755619301702150">Zobrazovač certifikátov</translation>
 <translation id="1360432990279830238">Odhlásiť sa a vypnúť synchronizáciu?</translation>
@@ -432,6 +438,8 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="8636825310635137004">Ak chcete získať karty zo svojich ostatných zariadení, zapnite synchronizáciu.</translation>
 <translation id="3269956123044984603">Ak chcete získať karty z vašich ďalších zariadení, zapnite v nastaveniach účtu Android možnosť Automaticky synchronizovať dáta.</translation>
 <translation id="5157964048453367290">Tu sa zobrazia karty, ktoré ste otvorili v Brave na iných zariadeniach.</translation>
+<translation id="5795872532621730126">Vyhľadávanie a prehliadanie</translation>
+<translation id="9086302186042011942">Prebieha synchronizácia</translation>
 <translation id="4684427112815847243">Synchronizovať všetko</translation>
 <translation id="2709516037105925701">Automatické dopĺňanie</translation>
 <translation id="8820817407110198400">Záložky</translation>
@@ -549,10 +557,6 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="2532336938189706096">Webové zobrazenie</translation>
 <translation id="6005538289190791541">Navrhované heslo</translation>
 <translation id="4634124774493850572">Použiť heslo</translation>
-<translation id="8285489906452138776">Brave potrebuje povolenie pre tento web na prístup k vášmu fotoaparátu.</translation>
-<translation id="320189792589364011">Brave potrebuje povolenie pre tento web na prístup k vášmu mikrofónu.</translation>
-<translation id="7988136689212463100">Brave potrebuje povolenie pre tento web na prístup k vášmu fotoaparátu a mikrofónu.</translation>
-<translation id="4931190655840828017">Brave potrebuje prístup k vašej polohe, aby ju mohol zdieľať s týmto webom.</translation>
 <translation id="3088191967551450609">Brave potrebuje na sťahovanie súborov prístup k úložisku.</translation>
 <translation id="8942627711005830162">Otvoriť v ďalšom okne</translation>
 <translation id="4195643157523330669">Otvoriť na novej karte</translation>
@@ -600,8 +604,9 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="2146738493024040262">Otvoriť okamžitú aplikáciu</translation>
 <translation id="7016516562562142042">Povolené v aktuálnom vyhľadávači</translation>
 <translation id="6177111841848151710">Blokované v aktuálnom vyhľadávači</translation>
-<translation id="145097072038377568">Vypnuté v nastaveniach Androidu</translation>
+<translation id="7000754031042624318">Vypnuté v nastaveniach Androidu</translation>
 <translation id="8007176423574883786">Vypnuté v tomto zariadení</translation>
+<translation id="6864395892908308021">Toto zariadenie nedokáže čítať NFC</translation>
 <translation id="164269334534774161">Zobrazuje sa offline kópia tejto stránky z <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Táto offline stránka je z <ph name="CREATION_TIME"/> a líši sa od online verzie.</translation>
 <translation id="8840953339110955557">Táto stránka sa môže líšiť od online verzie.</translation>
@@ -706,10 +711,10 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">RR</translation>
 <translation id="724102042129299115">Skúsenosť pri prvom spustení Chromu</translation>
-<translation id="2700285883409956633">Používaním tejto aplikácie vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>oznámením o ochrane súkromia<ph name="END_LINK2"/> prehliadača Brave.</translation>
-<translation id="1640714894372474981">Používaním tejto aplikácie vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami<ph name="END_LINK1"/> prehliadača Brave a <ph name="BEGIN_LINK2"/>oznámením o ochrane súkromia<ph name="END_LINK2"/>, ako aj <ph name="BEGIN_LINK3"/>oznámením o ochrane súkromia pre účty Brave Software spravované pomocou aplikácie Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>upozornením o ochrane súkromia<ph name="END_LINK2"/> Chromu.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>oznámením o ochrane súkromia<ph name="END_LINK2"/> Chromu, ako aj <ph name="BEGIN_LINK3"/>oznámením o ochrane súkromia pre účty Brave Software spravované pomocou aplikácie Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Používaním Chromu vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave Software<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave Software Brave a systému Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Používaním Chromu vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave Software<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave Software Brave a systému Brave OS<ph name="END_LINK2"/>. Platí aj <ph name="BEGIN_LINK3"/>oznámenie o ochrane súkromia pre účty Brave Software spravované pomocou aplikácie Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave Software<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave Software Brave a systému Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave Software<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave Software Brave a systému Brave OS<ph name="END_LINK2"/>. Platí aj <ph name="BEGIN_LINK3"/>oznámenie o ochrane súkromia pre účty Brave Software spravované pomocou aplikácie Family Link<ph name="END_LINK3"/>.</translation>
 <translation id="673197144963363525">Odosielať štatistiky používania a prehľady chýb Googlu a pomáhať tak zlepšovať Brave</translation>
 <translation id="3518985090088779359">Prijať a pokračovať</translation>
 <translation id="7207456302801184289">Víta vás prehliadač Brave</translation>
@@ -814,7 +819,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="6963766334940102469">Odstrániť záložky</translation>
 <translation id="4351244548802238354">Zavrieť dialógové okno</translation>
 <translation id="451872707440238414">Prehľadať záložky</translation>
-<translation id="8901170036886848654">Nenašli sa žiadne záložky</translation>
+<translation id="6447558397796644647">Príslušnú záložku sa nepodarilo nájsť. Skontrolujte pravopis alebo pridajte novú.</translation>
 <translation id="6404511346730675251">Upraviť záložku</translation>
 <translation id="3894427358181296146">Pridanie priečinka</translation>
 <translation id="5327248766486351172">Názov</translation>
@@ -829,6 +834,8 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="6811034713472274749">Stránka je pripravená na prezeranie</translation>
 <translation id="4561979708150884304">Bez pripojenia</translation>
 <translation id="8274165955039650276">Zobraziť stiahnuté</translation>
+<translation id="4320177379694898372">Žiadne internetové pripojenie</translation>
+<translation id="6397616442223433927">Sme späť online</translation>
 <translation id="2082238445998314030">Výsledok <ph name="RESULT_NUMBER"/> z <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Žiadne výsledky</translation>
 <translation id="981121421437150478">Offline</translation>
@@ -845,9 +852,6 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="6773423637732432200">Brave sa nedá aktualizovať. Ďalšie možnosti</translation>
 <translation id="1383876407941801731">Vyhľadávanie</translation>
 <translation id="3328801116991980348">Informácie o stránkach</translation>
-<translation id="5391532827096253100">Spojenie s týmto webom nie je zabezpečené. Informácie o webe</translation>
-<translation id="6206551242102657620">Spojenie je zabezpečené. Informácie o webe</translation>
-<translation id="6963642900430330478">Táto stránka je nebezpečná. Informácie o webe</translation>
 <translation id="9070377983101773829">Spustiť hlasové vyhľadávanie</translation>
 <translation id="4968908871398201967">Súkromné prehliadanie</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> otvorená karta, karty prepnete klepnutím}few{<ph name="OPEN_TABS_MANY"/> otvorené karty, karty prepnete klepnutím}many{<ph name="OPEN_TABS_MANY"/> open tabs, tap to switch tabs}other{<ph name="OPEN_TABS_MANY"/> otvorených kariet, karty prepnete klepnutím}}</translation>
@@ -944,6 +948,11 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="5197729504361054390">Vybrané kontakty budú zdieľané s webom <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Dekodér obrázkov</translation>
 <translation id="8067883171444229417">Prehrať video</translation>
+<translation id="5876056640971328065">Pozastaviť video</translation>
+<translation id="3594780231884063836">Vypnúť zvuk videa</translation>
+<translation id="783819812427904514">Zapnúť zvuk videa</translation>
+<translation id="3114012059975132928">Prehrávač videa</translation>
+<translation id="5489227211564503167">Uplynutý čas: <ph name="ELAPSED_TIME"/> z <ph name="TOTAL_TIME"/>.</translation>
 <translation id="6560414384669816528">Vyhľadávať pomocou Sogou</translation>
 <translation id="5406914950576900927">Brave môže použiť <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> na vyhľadávanie v Číne. Táto možnosť sa dá zmeniť v <ph name="BEGIN_LINK"/>Nastaveniach<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Ponechať Brave Software</translation>
@@ -987,6 +996,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="1875543012935658554">Znova otvorte Brave.</translation>
 <translation id="79859296434321399">Ak chcete zobraziť obsah v rozšírenej realite, nainštalujte si ARCore</translation>
 <translation id="8558485628462305855">Ak chcete zobraziť obsah v rozšírenej realite, aktualizujte ARCore</translation>
+<translation id="3513704683820682405">Rozšírená realita</translation>
 <translation id="6410973561433500075">Chcete prejsť do RR z domény <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">Keď ste v RR, tento web môže:
 • vytvoriť 3D mapu vášho prostredia;
@@ -1035,6 +1045,8 @@ Iba vy vidíte, čo je v zábere fotoaparátu. Tomuto webu sa nezobrazujú obr�
 <translation id="9028914725102941583">Zapnite synchronizáciu a zdieľajte medzi zariadeniami</translation>
 <translation id="6162454065885854378">Ak chcete niečo zo svojho telefónu zdieľať s iným zariadením, zapnite v oboch synchronizáciu v nastaveniach Chromu</translation>
 <translation id="6084271560289605378">Prejsť do nastavení Chromu</translation>
+<translation id="2746024117903470217">Ak chcete zdieľať túto stránku s iným zariadením, zapnite synchronizáciu v nastaveniach Chromu druhého zariadenia</translation>
+<translation id="7760665516427405230">Ak chcete zdieľať túto stránku s iným zariadením, zapnite synchronizáciu v nastaveniach Chromu</translation>
 <translation id="2318045970523081853">Zavolajte klepnutím</translation>
 <translation id="9209888181064652401">Nedá sa volať</translation>
 <translation id="2860954141821109167">Skontrolujte, či je v tomto zariadení povolená aplikácia pre telefóny</translation>
@@ -1090,11 +1102,17 @@ Iba vy vidíte, čo je v zábere fotoaparátu. Tomuto webu sa nezobrazujú obr�
 <translation id="6201345951596836663">Odkaz bol skopírovaný</translation>
 <translation id="6597891566292541626">Poloha QR kódu alebo čiarového kódu v tomto ráme.</translation>
 <translation id="3140134512074889489">Ak chcete skenovať QR kód, povoľte svoj fotoaparát</translation>
+<translation id="5149323899804758325">Ak chcete skenovať kód QR, zmeňte nastavenia, aby Brave mohol použiť vašu kameru</translation>
 <translation id="2359808026110333948">Pokračovať</translation>
+<translation id="8233540874193135768">Ak chcete nasnímať kód QR, použite zariadenie s kamerou.</translation>
+<translation id="6297765934698848803">Organizácia, ktorá spravuje vaše zariadenie, vypla vašu kameru.</translation>
+<translation id="4321739720395210191">Vaša kamera sa nedá otvoriť. Reštartujte zariadenie a skúste to znova.</translation>
+<translation id="234265804618409743">Vaša kamera sa nedá otvoriť. Vyskytol sa problém.</translation>
+<translation id="7173114856073700355">Otvoriť Nastavenia</translation>
+<translation id="1311657260431405215">Tento QR kód nie je webová adresa: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Brave Software Notifications Platform</translation>
 <translation id="8516012719330875537">Editor obrázkov</translation>
-<translation id="6092062101542170135">Ak chcete pokračovať, zapnite NFC v nastaveniach Androidu</translation>
-<translation id="5860491529813859533">Zapnúť</translation>
 <translation id="8926666909099850184">Technológia NFC je v tomto zariadení vypnutá. Zapnite ju v <ph name="BEGIN_LINK"/>Nastaveniach Androidu<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Chcete prejsť do VR z domény <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Keď budete vo VR, tento web môže získať informácie o:</translation>

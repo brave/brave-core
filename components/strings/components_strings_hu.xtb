@@ -38,14 +38,6 @@
 <translation id="5040262127954254034">Adatvédelem</translation>
 <translation id="3061707000357573562">Javítókészlet szolgáltatás</translation>
 <translation id="1914326953223720820">Kicsomagolási szolgáltatás</translation>
-<translation id="1623104350909869708">Akadályozza meg, hogy ez az oldal további párbeszédablakokat hozzon létre.</translation>
-<translation id="7862185352068345852">Oldal elhagyása?</translation>
-<translation id="9171296965991013597">Alkalmazás elhagyása?</translation>
-<translation id="2677748264148917807">Lap elhagyása</translation>
-<translation id="425582637250725228">A végrehajtott módosítások nincsenek mentve.</translation>
-<translation id="8079031581361219619">Oldal újratöltése?</translation>
-<translation id="6852204201400771460">Alkalmazás újratöltése?</translation>
-<translation id="5556459405103347317">Újratöltés</translation>
 <translation id="2359808026110333948">Tovább</translation>
 <translation id="8066955247577885446">Elnézést, hiba történt.</translation>
 <translation id="3963837677003247395">Manuális folytatás?</translation>
@@ -104,12 +96,13 @@
 <translation id="7701040980221191251">Nincs</translation>
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="9038649477754266430">A várható kifejezés szolgáltatás használata az oldalak gyorsabb betöltése érdekében</translation>
+<translation id="2344028582131185878">Automatikus letöltések</translation>
+<translation id="3414952576877147120">Méret:</translation>
 <translation id="4850886885716139402">Nézet</translation>
 <translation id="7180611975245234373">Frissítés</translation>
-<translation id="1426410128494586442">Igen</translation>
-<translation id="4250680216510889253">Nem</translation>
 <translation id="4522570452068850558">Részletek</translation>
 <translation id="3586931643579894722">Részletek elrejtése</translation>
+<translation id="5556459405103347317">Újratöltés</translation>
 <translation id="614940544461990577">Próbálja ki a következőket:</translation>
 <translation id="4943872375798546930">Nincs találat</translation>
 <translation id="8688672835843460752">Rendelkezésre áll</translation>
@@ -128,6 +121,13 @@
 <translation id="4880827082731008257">Keresés az előzmények között</translation>
 <translation id="4756388243121344051">&amp;Előzmények</translation>
 <translation id="1644574205037202324">Előzmények</translation>
+<translation id="1623104350909869708">Akadályozza meg, hogy ez az oldal további párbeszédablakokat hozzon létre.</translation>
+<translation id="7862185352068345852">Oldal elhagyása?</translation>
+<translation id="9171296965991013597">Alkalmazás elhagyása?</translation>
+<translation id="2677748264148917807">Lap elhagyása</translation>
+<translation id="425582637250725228">A végrehajtott módosítások nincsenek mentve.</translation>
+<translation id="8079031581361219619">Oldal újratöltése?</translation>
+<translation id="6852204201400771460">Alkalmazás újratöltése?</translation>
 <translation id="3950820424414687140">Bejelentkezés</translation>
 <translation id="8286036467436129157">Bejelentkezés</translation>
 <translation id="8503813439785031346">Felhasználónév</translation>
@@ -172,11 +172,12 @@
 <translation id="2586657967955657006">Vágólap</translation>
 <translation id="6059925163896151826">USB-eszközök</translation>
 <translation id="7638605456503525968">Soros portok</translation>
+<translation id="3784372983762739446">Bluetooth-eszközök</translation>
 <translation id="2215727959747642672">Fájlszerkesztés</translation>
 <translation id="6545864417968258051">Bluetooth-alapú keresés</translation>
 <translation id="534295439873310000">NFC-eszközök</translation>
-<translation id="4943703118917034429">Virtuális valóság</translation>
-<translation id="3513704683820682405">Kiterjesztett valóság</translation>
+<translation id="4670064810192446073">Virtuális valóság</translation>
+<translation id="2025115093177348061">Kiterjesztett valóság</translation>
 <translation id="5039804452771397117">Engedélyezés</translation>
 <translation id="7053983685419859001">Tiltás</translation>
 <translation id="57838592816432529">Némítás</translation>
@@ -192,9 +193,24 @@
 <translation id="5932224571077948991">A webhely tolakodó vagy félrevezető hirdetéseket jelenít meg</translation>
 <translation id="7878562273885520351">Előfordultat, hogy jelszava már nem biztonságos</translation>
 <translation id="1089439967362294234">Jelszó módosítása</translation>
-<translation id="9008201768610948239">Mellőzés</translation>
 <translation id="1186201132766001848">Jelszavak ellenőrzése</translation>
+<translation id="9008201768610948239">Mellőzés</translation>
+<translation id="808894953321890993">Jelszó módosítása</translation>
 <translation id="5979084224081478209">Jelszavak ellenőrzése</translation>
+<translation id="6107012941649240045">Tulajdonos</translation>
+<translation id="5030338702439866405">Kiállította:</translation>
+<translation id="5826507051599432481">Név (CN)</translation>
+<translation id="6898699227549475383">Szervezet (O)</translation>
+<translation id="3308006649705061278">Szervezeti egység (OU)</translation>
+<translation id="8705331520020532516">Sorozatszám</translation>
+<translation id="1902576642799138955">Érvényesség időtartama</translation>
+<translation id="5895187275912066135">Kiállítva</translation>
+<translation id="4121428309786185360">Lejár:</translation>
+<translation id="4154664944169082762">Ujjlenyomatok</translation>
+<translation id="7238585580608191973">SHA-256 ujjlenyomat</translation>
+<translation id="5209518306177824490">SHA-1 ujjlenyomat</translation>
+<translation id="6786747875388722282">Kiterjesztések</translation>
+<translation id="7240120331469437312">Tanúsítványtulajdonos egyéb neve</translation>
 <translation id="10614374240317010">Az alábbi oldalakról soha ne mentsen jelszavakat</translation>
 <translation id="5869522115854928033">Mentett jelszavak</translation>
 <translation id="230699814587342492">Brave-jelszavak</translation>
@@ -225,6 +241,36 @@
 <translation id="1197088940767939838">Narancssárga</translation>
 <translation id="1555130319947370107">Kék</translation>
 <translation id="138218114945450791">Világoskék</translation>
+<translation id="5612720917913232150">A(z) <ph name="URL"/> webhely a számítógép helyadatait szeretné használni</translation>
+<translation id="4733082559415072992">A(z) <ph name="URL"/> az eszköz helyadatait szeretné használni</translation>
+<translation id="4677585247300749148">A(z) <ph name="URL"/> kisegítő lehetőségekkel kapcsolatos eseményekre szeretne válaszolni</translation>
+<translation id="3461266716147554923">A(z) <ph name="URL"/> webhely szeretné megtekinteni a vágólapra másolt szövegeket és képeket</translation>
+<translation id="131405271941274527">A(z) <ph name="URL"/> adatokat akar küldeni, amikor Ön rákoppint telefonjára egy NFC-eszközön</translation>
+<translation id="5146995429444047494">A(z) <ph name="ORIGIN"/> értesítései le vannak tiltva</translation>
+<translation id="1195558154361252544">Az Ön által engedélyezett webhelyek kivételével a böngésző automatikusan letiltja az értesítéseket</translation>
+<translation id="3532844647053365774">A(z) <ph name="HOST"/> használni szeretné a mikrofont</translation>
+<translation id="7108634116785509031">A(z) <ph name="HOST"/> webhely használni szeretné a kamerát</translation>
+<translation id="5426179911063097041">A(z) <ph name="SITE"/> értesítéseket szeretne küldeni Önnek</translation>
+<translation id="6910240653697687763">A(z) <ph name="URL"/> webhely teljes hozzáférést kér a MIDI-eszközökhöz</translation>
+<translation id="503498442187459473">A(z) <ph name="HOST"/> webhely használni szeretné a kamerát és a mikrofont</translation>
+<translation id="8282947398454257691">Az egyedi eszközazonosító megtekintése</translation>
+<translation id="8329449853370113380">A(z) <ph name="URL"/> védett tartalmat szeretne lejátszani. A Brave Software ellenőrzi az eszköz azonosító adatait.</translation>
+<translation id="2650609753175229582">A(z) <ph name="URL"/> védett tartalmat szeretne lejátszani. Miután a Brave Software azonosítja az eszközt, hozzáférést adhat a webhely számára.</translation>
+<translation id="3016780570757425217">Az Ön tartózkodási helyének megismerése</translation>
+<translation id="7221855153210829124">Értesítéseket megjeleníteni</translation>
+<translation id="8606726445206553943">MIDI-eszközök használata</translation>
+<translation id="7409836189476010449">Flash futtatása</translation>
+<translation id="7438976808740265764">A böngésző 2020 decembere után már nem támogatja a Flash Player használatát.</translation>
+<translation id="4761104368405085019">Mikrofon használata</translation>
+<translation id="9150045010208374699">Kamera használata</translation>
+<translation id="4953689047182316270">Válasz kisegítő lehetőségekkel kapcsolatos eseményekre</translation>
+<translation id="6116338172782435947">Megtekinteni a vágólapra másolt szövegeket és képeket</translation>
+<translation id="5804427196348435412">NFC-eszközök használata</translation>
+<translation id="3194737229810486521">A(z) <ph name="URL"/> webhely állandó jelleggel adatokat szeretne tárolni az eszközön</translation>
+<translation id="1030706264415084469">A(z) <ph name="URL"/> webhely állandó jelleggel nagy méretű adatokat szeretne tárolni az eszközön</translation>
+<translation id="1712552549805331520">A(z) <ph name="URL"/> webhely állandó jelleggel adatokat szeretne tárolni a helyi számítógépen</translation>
+<translation id="1997484222658892567">A(z) <ph name="URL"/> webhely állandó jelleggel nagy méretű adatokat szeretne tárolni a helyi számítógépen</translation>
+<translation id="7648992873808071793">Fájlok tárolása ezen az eszközön</translation>
 <translation id="4813512666221746211">Hálózati hiba</translation>
 <translation id="3380365263193509176">Ismeretlen hiba</translation>
 <translation id="5565735124758917034">Aktív</translation>
@@ -240,6 +286,8 @@
 <translation id="5720705177508910913">Jelenlegi felhasználó</translation>
 <translation id="6965978654500191972">Készülék</translation>
 <translation id="4728558894243024398">Platform</translation>
+<translation id="1426410128494586442">Igen</translation>
+<translation id="4250680216510889253">Nem</translation>
 <translation id="2380886658946992094">Jogi információk</translation>
 <translation id="1588438908519853928">Normál</translation>
 <translation id="1974060860693918893">Speciális</translation>
@@ -261,7 +309,6 @@
 <translation id="583281660410589416">Ismeretlen</translation>
 <translation id="9170848237812810038">&amp;Visszavonás</translation>
 <translation id="2972581237482394796">&amp;Újra</translation>
-<translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="5804241973901381774">Engedélyek</translation>
 <translation id="8004582292198964060">Böngésző</translation>
 </translationbundle>

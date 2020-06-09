@@ -3,10 +3,6 @@
 <translationbundle lang="nl">
 <translation id="8428213095426709021">Instellingen</translation>
 <translation id="2498359688066513246">Hulp en feedback</translation>
-<translation id="8378714024927312812">Beheerd door je organisatie</translation>
-<translation id="9019902583201351841">Beheerd door je ouders</translation>
-<translation id="4645575059429386691">Beheerd door je ouder</translation>
-<translation id="4883854917563148705">Beheerde instellingen kunnen niet worden gereset</translation>
 <translation id="4307992518367153382">Basisinstellingen</translation>
 <translation id="1974060860693918893">Geavanceerd</translation>
 <translation id="1146678959555564648">VR activeren</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Als je inlogt op je Brave Software-account, wordt deze functie ingeschakeld</translation>
 <translation id="10614374240317010">Nooit opgeslagen</translation>
 <translation id="3098842761938485917">Bekijk en beheer opgeslagen wachtwoorden in je <ph name="BEGIN_LINK"/>Brave Software-account<ph name="END_LINK"/></translation>
+<translation id="8988028529677883095">Telefoon gebruiken als beveiligingssleutel</translation>
 <translation id="8562452229998620586">Opgeslagen wachtwoorden worden hier weergegeven.</translation>
+<translation id="1303339473099049190">Kan dat wachtwoord niet vinden. Check de spelling en probeer het opnieuw.</translation>
 <translation id="8084114998886531721">Opgeslagen wachtwoord</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="8503813439785031346">Gebruikersnaam</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Ontgrendelen om je wachtwoord te bekijken</translation>
 <translation id="6221633008163990886">Ontgrendel het apparaat om je wachtwoorden te exporteren</translation>
 <translation id="230699814587342492">Brave-wachtwoorden</translation>
-<translation id="6075798973483050474">Homepage bewerken</translation>
-<translation id="854522910157234410">Deze pagina openen</translation>
+<translation id="1925021887439448749">Aangepast webadres opgeven</translation>
 <translation id="8127542551745560481">Homepage bewerken</translation>
+<translation id="854522910157234410">Deze pagina openen</translation>
+<translation id="5063487983358782016">Homepage van Brave</translation>
 <translation id="2482878487686419369">Meldingen</translation>
 <translation id="6255999984061454636">Contentsuggesties</translation>
 <translation id="805047784848435650">Op basis van je browsegeschiedenis</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="4991384657077828949">Help de beveiliging van Brave te verbeteren</translation>
 <translation id="1943176487615318915">Brave verzendt de URL's van sommige pagina's die je bezoekt, beperkte systeemgegevens en bepaalde paginacontent naar Brave Software om gevaarlijke apps en sites te detecteren</translation>
-<translation id="3181954750937456830">Safe Browsing (hiermee worden jij en je apparaat beschermd tegen gevaarlijke sites)</translation>
-<translation id="7315322926489145388">Verzendt URL's van bepaalde pagina's die je bezoekt naar Brave Software wanneer je beveiliging risico loopt</translation>
+<translation id="3201899458094819285">Safe Browsing (hiermee worden jij en je apparaat beschermd tegen gevaarlijke sites)</translation>
+<translation id="2876369937070532032">Verzendt URL's van bepaalde pagina's die je bezoekt naar Brave Software wanneer je beveiliging risico loopt</translation>
 <translation id="3738139272394829648">Tikken om te zoeken</translation>
-<translation id="7865281998841143447">Bekijk informatie over onderwerpen op websites zonder de pagina te verlaten. 'Tikken om te zoeken' stuurt een woord en contextuele informatie voor het woord naar Brave Software Zoeken, waarna er definities, afbeeldingen, zoekresultaten en andere gegevens worden weergegeven.
+<translation id="4749189475009528195">Bekijk informatie over onderwerpen op websites zonder de pagina te verlaten. 'Tikken om te zoeken' stuurt een woord en contextuele informatie voor het woord naar Brave Software Zoeken, waarna er definities, afbeeldingen, zoekresultaten en andere gegevens worden weergegeven.
 
-Tik op een woord om er een zoekopdracht voor te maken. Als je de zoekterm wilt aanpassen, selecteer je deze door er lang op te drukken. Als je je zoekopdracht wilt verfijnen, schuif je het deelvenster open, tik je op het uitvouwicoon om een nieuw tabblad te maken en tik je daarna op het zoekvak.</translation>
-<translation id="3292859206215580147">Bekijk informatie over onderwerpen op websites zonder de pagina te verlaten. 'Tikken om te zoeken' stuurt een woord en contextuele informatie voor het woord naar Brave Software Zoeken, waarna er definities, afbeeldingen, zoekresultaten en andere gegevens worden weergegeven.
+Tik op een woord om te zoeken. Je kunt je zoekopdracht verfijnen door te tikken en vast te houden om meer of minder woorden te selecteren. Als je je zoekopdracht wilt bewerken, open je het deelvenster. Tik dan op het icoon voor openen in een nieuw tabblad en breng je wijzigingen aan in het zoekvak.</translation>
+<translation id="934250516944040460">Bekijk informatie over onderwerpen op websites zonder de pagina te verlaten. 'Tikken om te zoeken' stuurt een woord en contextuele informatie voor het woord naar Brave Software Zoeken, waarna er definities, afbeeldingen, zoekresultaten en andere gegevens worden weergegeven.
 
-Druk lang op een woord om er een zoekopdracht voor te maken. Pas de selectie aan om je zoekopdracht te verfijnen. Je kunt het deelvenster ook openschuiven, op het uitvouwicoon tikken om een nieuw tabblad te maken en daarna op het zoekvak tikken.</translation>
+Tik op een woord en houd dit vast om te zoeken. Selecteer meer of minder woorden om je zoekopdracht te verfijnen. Als je je zoekopdracht wilt bewerken, open je het deelvenster. Tik dan op het icoon voor openen in een nieuw tabblad en breng je wijzigingen aan in het zoekvak.</translation>
 <translation id="6209156474097347789">Met 'Tikken om te zoeken' worden het geselecteerde woord en de huidige pagina als context naar Brave Software Zoeken verzonden. Je kunt deze functie uitschakelen via <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Toestaan</translation>
 <translation id="780301667611848630">Nee, bedankt</translation>
@@ -206,7 +205,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="6295158916970320988">Alle sites</translation>
 <translation id="8380167699614421159">Deze site geeft opdringerige of misleidende advertenties weer</translation>
 <translation id="1919345977826869612">Advertenties</translation>
-<translation id="3513704683820682405">Augmented reality</translation>
+<translation id="2025115093177348061">Augmented reality</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">Indirecte cookies blokkeren</translation>
 <translation id="6782111308708962316">Voorkomen dat websites van derden cookiegegevens opslaan en lezen</translation>
@@ -217,6 +216,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="1717218214683051432">Bewegingssensoren</translation>
 <translation id="2091887806945687916">Geluid</translation>
 <translation id="2586657967955657006">Klembord</translation>
+<translation id="4670064810192446073">Virtual reality</translation>
 <translation id="6320088164292336938">Trillen</translation>
 <translation id="4226663524361240545">Het apparaat kan trillen bij meldingen</translation>
 <translation id="1446450296470737166">Volledig beheer van MIDI-apparaten toestaan</translation>
@@ -235,6 +235,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="2537296579376733324">Alle cookies, alleen op deze site</translation>
 <translation id="7882806643839505685">Geluid toestaan voor een specifieke site.</translation>
 <translation id="4468959413250150279">Geluid dempen voor een specifieke site.</translation>
+<translation id="7828557259026017104">Cookies zijn bestanden die worden gemaakt door websites die je bezoekt. Sites gebruiken ze om je voorkeuren te onthouden. Cookies van derden worden gemaakt door andere sites. Deze sites zijn eigenaar van een deel van de content (zoals advertenties of afbeeldingen) die je ziet op de webpagina die je bezoekt.</translation>
 <translation id="1994173015038366702">Site-URL</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Gebruik</translation>
@@ -246,10 +247,14 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="8116925261070264013">Gedempt</translation>
 <translation id="8300705686683892304">Beheerd door app</translation>
 <translation id="6192792657125177640">Uitzonderingen</translation>
-<translation id="257931822824936280">Uitgevouwen; klik om samen te vouwen.</translation>
-<translation id="5100237604440890931">Samengevouwen; klik om uit te vouwen.</translation>
 <translation id="857943718398505171">Toegestaan (aanbevolen)</translation>
 <translation id="2913331724188855103">Sites toestaan cookiegegevens op te slaan en te lezen (aanbevolen)</translation>
+<translation id="2212565012507486665">Cookies toestaan</translation>
+<translation id="8648684608605749476">Cookies van derden blokkeren in incognitomodus</translation>
+<translation id="2687403674020088961">Alle cookies blokkeren (niet aanbevolen)</translation>
+<translation id="1044891598689252897">Sites werken naar behoren</translation>
+<translation id="7993619969781047893">Functies op bepaalde sites werken mogelijk niet meer</translation>
+<translation id="1509960214886564027">Functies op veel sites werken mogelijk niet meer</translation>
 <translation id="5335288049665977812">Sites toestaan JavaScript uit te voeren (aanbevolen)</translation>
 <translation id="5527111080432883924">Vragen voordat sites toestemming krijgen om tekst en afbeeldingen vanaf het klembord te lezen (aanbevolen)</translation>
 <translation id="6912998170423641340">Voorkomen dat sites tekst en afbeeldingen vanaf het klembord kunnen lezen</translation>
@@ -259,12 +264,12 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="2107397443965016585">Vragen voordat sites beschermde content mogen afspelen (aanbevolen)</translation>
 <translation id="2910701580606108292">Vragen voordat sites beschermde content mogen afspelen</translation>
 <translation id="757524316907819857">Blokkeren dat sites beschermde content kunnen afspelen</translation>
-<translation id="4935305910887312910">Vragen voordat sites toegang krijgen tot je camerapositie of je ruimte in kaart mogen brengen (aanbevolen)</translation>
-<translation id="884828189055900810">Voorkomen dat sites je camerapositie ontvangen of je ruimte in kaart brengen</translation>
+<translation id="2182457891543959921">Vragen voordat sites een 3D-kaart van je omgeving mogen maken of de camerapositie mogen volgen (aanbevolen)</translation>
+<translation id="3538390592868664640">Voorkomen dat sites een 3D-kaart van je omgeving maken of de camerapositie volgen</translation>
 <translation id="5710871682236653961">Vragen voordat sites informatie mogen sturen en ontvangen als je NFC-apparaten tegen elkaar houdt (aanbevolen)</translation>
 <translation id="7572498721684305250">Voorkomen dat sites informatie sturen en ontvangen als je NFC-apparaten tegen elkaar houdt</translation>
-<translation id="3312292613668865961">Vragen voordat sites toegang krijgen tot je VR-apparaat en -gegevens (aanbevolen)</translation>
-<translation id="8698438463325761328">Voorkomen dat sites toegang krijgen tot je VR-apparaat en -gegevens</translation>
+<translation id="4887024562049524730">Vragen voordat sites je virtualreality-apparaat en -gegevens mogen gebruiken (aanbevolen)</translation>
+<translation id="6439114592976064011">Voorkomen dat sites je virtualreality-apparaat en -gegevens gebruiken</translation>
 <translation id="3277252321222022663">Sites toegang geven tot sensoren (aanbevolen)</translation>
 <translation id="5048398596102334565">Sites toegang geven tot bewegingssensoren (aanbevolen)</translation>
 <translation id="8816026460808729765">Sites geen toegang tot sensoren geven</translation>
@@ -414,6 +419,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="4062305924942672200">Juridische informatie</translation>
 <translation id="4256782883801055595">Open-sourcelicenties</translation>
 <translation id="1138681184697033370">Servicevoorwaarden van Brave</translation>
+<translation id="2368444735104192323">Aanvullende servicevoorwaarden van Brave Software Brave en Brave OS</translation>
 <translation id="7392539049993970338">Privacybeleid van Brave</translation>
 <translation id="2968755619301702150">Certificaatviewer</translation>
 <translation id="1360432990279830238">Uitloggen en synchroniseren uitschakelen?</translation>
@@ -432,6 +438,8 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="8636825310635137004">Schakel synchronisatie in om de tabbladen op je andere apparaten te bekijken</translation>
 <translation id="3269956123044984603">Schakel in je account bij de instellingen van Android 'Gegevens automatisch synchroniseren' in om de tabbladen op je andere apparaten te bekijken.</translation>
 <translation id="5157964048453367290">Tabbladen die je op andere apparaten in Brave hebt geopend, worden hier weergegeven.</translation>
+<translation id="5795872532621730126">Zoeken en browsen</translation>
+<translation id="9086302186042011942">Synchroniseren</translation>
 <translation id="4684427112815847243">Alles synchroniseren</translation>
 <translation id="2709516037105925701">Automatisch aanvullen</translation>
 <translation id="8820817407110198400">Bladwijzers</translation>
@@ -549,10 +557,6 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="2532336938189706096">Webweergave</translation>
 <translation id="6005538289190791541">Voorgesteld wachtwoord</translation>
 <translation id="4634124774493850572">Wachtwoord gebruiken</translation>
-<translation id="8285489906452138776">Brave heeft toegangsrechten voor je camera nodig voor deze site.</translation>
-<translation id="320189792589364011">Brave heeft toegangsrechten voor je microfoon nodig voor deze site.</translation>
-<translation id="7988136689212463100">Brave heeft toegangsrechten voor je camera en microfoon nodig voor deze site.</translation>
-<translation id="4931190655840828017">Brave heeft toegang tot je locatie nodig om je locatie met deze site te delen.</translation>
 <translation id="3088191967551450609">Brave heeft toegang tot de opslag nodig om deze bestanden te kunnen downloaden.</translation>
 <translation id="8942627711005830162">Openen in een ander venster</translation>
 <translation id="4195643157523330669">Openen op nieuw tabblad</translation>
@@ -600,8 +604,9 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="2146738493024040262">Instant-app openen</translation>
 <translation id="7016516562562142042">Toegestaan voor huidige zoekmachine</translation>
 <translation id="6177111841848151710">Geblokkeerd voor de huidige zoekmachine</translation>
-<translation id="145097072038377568">Uitgeschakeld in Android-instellingen</translation>
+<translation id="7000754031042624318">Uitgeschakeld in Android-instellingen</translation>
 <translation id="8007176423574883786">Uitgeschakeld voor dit apparaat</translation>
+<translation id="6864395892908308021">Dit apparaat kan NFC niet lezen</translation>
 <translation id="164269334534774161">Je bekijkt een offline exemplaar van deze pagina van <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Deze offline pagina is van <ph name="CREATION_TIME"/> en kan afwijken van de online versie.</translation>
 <translation id="8840953339110955557">Deze pagina kan afwijken van de online versie.</translation>
@@ -706,10 +711,10 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">JJ</translation>
 <translation id="724102042129299115">Functionaliteit bij eerste uitvoering van Brave</translation>
-<translation id="2700285883409956633">Als je deze app gebruikt, ga je akkoord met de <ph name="BEGIN_LINK1"/>servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>privacybeleid<ph name="END_LINK2"/> van Brave.</translation>
-<translation id="1640714894372474981">Door deze app te gebruiken, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/> van Brave en het <ph name="BEGIN_LINK3"/>Privacyverklaring voor Brave Software-accounts die worden beheerd met Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> wordt geopend in Brave. Als je doorgaat, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/> van Brave.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> wordt geopend in Brave. Als je doorgaat, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/> van Brave en het <ph name="BEGIN_LINK3"/>Privacyverklaring voor Brave Software-accounts die worden beheerd met Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Door Brave te gebruiken, ga je akkoord met de <ph name="BEGIN_LINK1"/>servicevoorwaarden van Brave Software<ph name="END_LINK1"/> en met de <ph name="BEGIN_LINK2"/>aanvullende servicevoorwaarden van Brave Software Brave en Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Door Brave te gebruiken, ga je akkoord met de <ph name="BEGIN_LINK1"/>servicevoorwaarden van Brave Software<ph name="END_LINK1"/> en met de <ph name="BEGIN_LINK2"/>aanvullende servicevoorwaarden van Brave Software Brave en Brave OS<ph name="END_LINK2"/>. Ook is de <ph name="BEGIN_LINK3"/>privacyverklaring voor Brave Software-accounts die worden beheerd met Family Link<ph name="END_LINK3"/> van toepassing.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> wordt geopend in Brave. Als je doorgaat, ga je akkoord met de <ph name="BEGIN_LINK1"/>servicevoorwaarden van Brave Software<ph name="END_LINK1"/> en met de <ph name="BEGIN_LINK2"/>aanvullende servicevoorwaarden van Brave Software Brave en Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> wordt geopend in Brave. Als je doorgaat, ga je akkoord met de <ph name="BEGIN_LINK1"/>servicevoorwaarden van Brave Software<ph name="END_LINK1"/> en met de <ph name="BEGIN_LINK2"/>aanvullende servicevoorwaarden van Brave Software Brave en Brave OS<ph name="END_LINK2"/>. Ook is de <ph name="BEGIN_LINK3"/>privacyverklaring voor Brave Software-accounts die worden beheerd met Family Link<ph name="END_LINK3"/> van toepassing.</translation>
 <translation id="673197144963363525">Verzend automatisch gebruiksstatistieken en crashmeldingen naar Brave Software.</translation>
 <translation id="3518985090088779359">Accept. en doorgaan</translation>
 <translation id="7207456302801184289">Welkom bij Brave</translation>
@@ -814,7 +819,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="6963766334940102469">Bladwijzers verwijderen</translation>
 <translation id="4351244548802238354">Dialoogvenster sluiten</translation>
 <translation id="451872707440238414">Zoek in je bladwijzers</translation>
-<translation id="8901170036886848654">Geen bladwijzers gevonden</translation>
+<translation id="6447558397796644647">Kan die bookmark niet vinden. Controleer de spelling of voeg een nieuwe bookmark toe.</translation>
 <translation id="6404511346730675251">Bladwijzer bewerken</translation>
 <translation id="3894427358181296146">Map toevoegen</translation>
 <translation id="5327248766486351172">Naam</translation>
@@ -829,6 +834,8 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="6811034713472274749">Pagina kan nu worden bekeken</translation>
 <translation id="4561979708150884304">Geen verbinding</translation>
 <translation id="8274165955039650276">Downloads bekijken</translation>
+<translation id="4320177379694898372">Geen internetverbinding</translation>
+<translation id="6397616442223433927">Weer online</translation>
 <translation id="2082238445998314030">Resultaat <ph name="RESULT_NUMBER"/> van <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Geen resultaten</translation>
 <translation id="981121421437150478">Offline</translation>
@@ -845,9 +852,6 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="6773423637732432200">Brave kan niet updaten. Meer opties</translation>
 <translation id="1383876407941801731">Zoeken</translation>
 <translation id="3328801116991980348">Site-informatie</translation>
-<translation id="5391532827096253100">Je verbinding met deze site is niet beveiligd. Site-informatie</translation>
-<translation id="6206551242102657620">De verbinding is beveiligd. Site-informatie</translation>
-<translation id="6963642900430330478">Deze pagina is gevaarlijk. Site-informatie</translation>
 <translation id="9070377983101773829">Gesproken zoekopdracht starten</translation>
 <translation id="4968908871398201967">Privé-mode</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> geopend tabblad, tik om tussen tabbladen te schakelen}other{<ph name="OPEN_TABS_MANY"/> geopende tabbladen, tik om tussen tabbladen te schakelen}}</translation>
@@ -944,6 +948,11 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="5197729504361054390">De contacten die je selecteert, worden gedeeld met <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Image Decoder</translation>
 <translation id="8067883171444229417">Video afspelen</translation>
+<translation id="5876056640971328065">Video pauzeren</translation>
+<translation id="3594780231884063836">Video dempen</translation>
+<translation id="783819812427904514">Dempen van video opheffen</translation>
+<translation id="3114012059975132928">Videospeler</translation>
+<translation id="5489227211564503167">De verstreken tijd is <ph name="ELAPSED_TIME"/> van <ph name="TOTAL_TIME"/>.</translation>
 <translation id="6560414384669816528">Zoeken met Sogou</translation>
 <translation id="5406914950576900927">Brave kan <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> gebruiken voor zoekopdrachten in China. Je kunt dit wijzigen in <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Brave Software blijven gebruiken</translation>
@@ -987,6 +996,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="1875543012935658554">Open Brave opnieuw.</translation>
 <translation id="79859296434321399">Installeer ARCore om augmented reality-content te bekijken</translation>
 <translation id="8558485628462305855">Update ARCore om augmented reality-content te bekijken</translation>
+<translation id="3513704683820682405">Augmented reality</translation>
 <translation id="6410973561433500075">Wil je AR vanaf <ph name="DOMAIN"/> starten?</translation>
 <translation id="3849365399446680203">Deze site kan mogelijk het volgende doen als AR actief is:
 • Een 3D-kaart van je omgeving maken
@@ -1035,6 +1045,8 @@ Alleen jij kunt zien wat je camera ziet. De site kan de beelden van je camera ni
 <translation id="9028914725102941583">Schakel de synchronisatie in om content op apparaten te delen</translation>
 <translation id="6162454065885854378">Als je iets op je telefoon wilt delen met een ander apparaat, schakel je de synchronisatie in de Brave-instellingen op beide apparaten in</translation>
 <translation id="6084271560289605378">Naar Brave-instellingen</translation>
+<translation id="2746024117903470217">Als je deze pagina wilt delen met een ander apparaat, schakel je op het andere apparaat synchronisatie in via de Brave-instellingen</translation>
+<translation id="7760665516427405230">Als je deze pagina wilt delen met een ander apparaat, schakel je synchronisatie in via de Brave-instellingen</translation>
 <translation id="2318045970523081853">Tik om te bellen</translation>
 <translation id="9209888181064652401">Kan niet bellen</translation>
 <translation id="2860954141821109167">Zorg ervoor dat een telefoon-app is ingeschakeld op dit apparaat</translation>
@@ -1090,11 +1102,17 @@ Alleen jij kunt zien wat je camera ziet. De site kan de beelden van je camera ni
 <translation id="6201345951596836663">Link gekopieerd</translation>
 <translation id="6597891566292541626">Zorg dat de QR-/streepjescode binnen dit kader valt.</translation>
 <translation id="3140134512074889489">Schakel je camera in om een QR-code te scannen</translation>
+<translation id="5149323899804758325">Als je een QR-code wilt scannen, wijzig je de instellingen zodat Brave de camera kan gebruiken</translation>
 <translation id="2359808026110333948">Doorgaan</translation>
+<translation id="8233540874193135768">Als je een QR-code wilt scannen, gebruik je een apparaat met een camera.</translation>
+<translation id="6297765934698848803">De organisatie die je apparaat beheert, heeft de camera uitgeschakeld.</translation>
+<translation id="4321739720395210191">Kan de camera niet openen. Start het apparaat opnieuw op en probeer het nogmaals.</translation>
+<translation id="234265804618409743">Kan de camera niet openen. Er is iets misgegaan.</translation>
+<translation id="7173114856073700355">Instellingen openen</translation>
+<translation id="1311657260431405215">Deze QR-code is geen URL: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Platform voor Brave Software-meldingen</translation>
 <translation id="8516012719330875537">Bewerkingsprogramma voor afbeeldingen</translation>
-<translation id="6092062101542170135">Schakel NFC in bij de Android-instellingen om door te gaan</translation>
-<translation id="5860491529813859533">Inschakelen</translation>
 <translation id="8926666909099850184">NFC is uitgeschakeld voor dit apparaat. Schakel deze functie in via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Wil je VR van <ph name="DOMAIN"/> starten?</translation>
 <translation id="4353114845960720315">Als VR actief is, kan deze site mogelijk informatie verzamelen over het volgende:</translation>

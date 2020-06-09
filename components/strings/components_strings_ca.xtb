@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">Privadesa</translation>
 <translation id="3061707000357573562">Servei de pedaç</translation>
 <translation id="1914326953223720820">Descomprimeix el servei</translation>
-<translation id="1623104350909869708">Impedeix que aquesta pàgina creï quadres de diàleg addicionals</translation>
-<translation id="2677748264148917807">Surt</translation>
-<translation id="5556459405103347317">Torna a carregar</translation>
 <translation id="2359808026110333948">Continua</translation>
 <translation id="4378154925671717803">Telèfon</translation>
 <translation id="8131740175452115882">Confirma</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">Cap</translation>
 <translation id="8428213095426709021">Configuració</translation>
 <translation id="9038649477754266430">Utilitza un servei de predicció per poder carregar les pàgines més ràpidament</translation>
+<translation id="2344028582131185878">Baixades automàtiques</translation>
+<translation id="3414952576877147120">Mida:</translation>
 <translation id="4850886885716139402">Mostra</translation>
 <translation id="7180611975245234373">Actualitza</translation>
-<translation id="1426410128494586442">Sí</translation>
-<translation id="4250680216510889253">No</translation>
 <translation id="4522570452068850558">Detalls</translation>
 <translation id="3586931643579894722">Oculta els detalls</translation>
+<translation id="5556459405103347317">Torna a carregar</translation>
 <translation id="614940544461990577">Prova el següent:</translation>
 <translation id="4943872375798546930">No hi ha cap resultat</translation>
 <translation id="8688672835843460752">Disponible</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">Cerca a l'historial</translation>
 <translation id="4756388243121344051">&amp;Historial</translation>
 <translation id="1644574205037202324">Historial</translation>
+<translation id="1623104350909869708">Impedeix que aquesta pàgina creï quadres de diàleg addicionals</translation>
+<translation id="2677748264148917807">Surt</translation>
 <translation id="3950820424414687140">Inicia la sessió</translation>
 <translation id="8286036467436129157">Inicia la sessió</translation>
 <translation id="8503813439785031346">Nom d'usuari</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">Porta-retalls</translation>
 <translation id="6059925163896151826">Dispositius USB</translation>
 <translation id="7638605456503525968">Ports en sèrie</translation>
+<translation id="3784372983762739446">Dispositius Bluetooth</translation>
 <translation id="2215727959747642672">Edició de fitxers</translation>
 <translation id="6545864417968258051">Cerca de dispositius Bluetooth</translation>
 <translation id="534295439873310000">Dispositius amb NFC</translation>
-<translation id="4943703118917034429">Realitat virtual</translation>
-<translation id="3513704683820682405">Realitat augmentada</translation>
+<translation id="4670064810192446073">Realitat virtual</translation>
+<translation id="2025115093177348061">Realitat augmentada</translation>
 <translation id="5039804452771397117">Permet</translation>
 <translation id="7053983685419859001">Bloqueja</translation>
 <translation id="57838592816432529">Silencia</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">El lloc web mostra anuncis intrusius o enganyosos</translation>
 <translation id="7878562273885520351">La teva contrasenya pot estar en perill</translation>
 <translation id="1089439967362294234">Canvia la contrasenya</translation>
-<translation id="9008201768610948239">Ignora</translation>
 <translation id="1186201132766001848">Comprova les contrasenyes</translation>
+<translation id="9008201768610948239">Ignora</translation>
+<translation id="808894953321890993">Canvia la contrasenya</translation>
 <translation id="5979084224081478209">Comprova les contrasenyes</translation>
+<translation id="6107012941649240045">Emès per a</translation>
+<translation id="5030338702439866405">Emès per</translation>
+<translation id="5826507051599432481">Nom comú (CN)</translation>
+<translation id="6898699227549475383">Organització (O)</translation>
+<translation id="3308006649705061278">Unitat organitzativa (OU)</translation>
+<translation id="8705331520020532516">Número de sèrie</translation>
+<translation id="1902576642799138955">Període de validesa</translation>
+<translation id="5895187275912066135">Emès el</translation>
+<translation id="4121428309786185360">Caduca el</translation>
+<translation id="4154664944169082762">Empremtes</translation>
+<translation id="7238585580608191973">Empremta SHA-256</translation>
+<translation id="5209518306177824490">Empremta SHA-1</translation>
+<translation id="6786747875388722282">Extensions</translation>
+<translation id="7240120331469437312">Nom alternatiu del subjecte del certificat</translation>
 <translation id="10614374240317010">Contrasenyes que no es desen mai</translation>
 <translation id="5869522115854928033">Contrasenyes desades</translation>
 <translation id="230699814587342492">Contrasenyes de Brave</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">Taronja</translation>
 <translation id="1555130319947370107">Blau</translation>
 <translation id="138218114945450791">Blau Cel</translation>
+<translation id="5612720917913232150"><ph name="URL"/> vol utilitzar la ubicació de l'ordinador</translation>
+<translation id="4733082559415072992"><ph name="URL"/> vol utilitzar la ubicació del dispositiu</translation>
+<translation id="4677585247300749148"><ph name="URL"/> vol respondre als esdeveniments d'accessibilitat</translation>
+<translation id="3461266716147554923"><ph name="URL"/> vol veure el text i les imatges copiats al porta-retalls</translation>
+<translation id="131405271941274527"><ph name="URL"/> vol enviar i rebre informació quan el teu telèfon toca un dispositiu NFC</translation>
+<translation id="5146995429444047494">Les notificacions per a <ph name="ORIGIN"/> estan bloquejades</translation>
+<translation id="1195558154361252544">Les notificacions de tots els llocs web estan bloquejades automàticament excepte les que permetis</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> vol utilitzar el micròfon</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> vol utilitzar la càmera</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> et vol enviar notificacions</translation>
+<translation id="6910240653697687763"><ph name="URL"/> vol obtenir un control total dels teus dispositius MIDI</translation>
+<translation id="503498442187459473"><ph name="HOST"/> vol utilitzar la càmera i el micròfon</translation>
+<translation id="8282947398454257691">Saber l'identificador únic del dispositiu</translation>
+<translation id="8329449853370113380"><ph name="URL"/> vol reproduir contingut protegit. Brave Software verificarà la identitat del teu dispositiu.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> vol reproduir contingut protegit. Brave Software verificarà la identitat del teu dispositiu i aquest lloc web hi podrà accedir.</translation>
+<translation id="3016780570757425217">Saber la vostra ubicació</translation>
+<translation id="7221855153210829124">Mostrar notificacions</translation>
+<translation id="8606726445206553943">Utilitzar els dispositius MIDI</translation>
+<translation id="7409836189476010449">Executar Flash</translation>
+<translation id="7438976808740265764">Flash Player ja no s'admetrà a partir de desembre de 2020.</translation>
+<translation id="4761104368405085019">Utilitzar el micròfon</translation>
+<translation id="9150045010208374699">Utilitzar la càmera</translation>
+<translation id="4953689047182316270">Respondre als esdeveniments d'accessibilitat</translation>
+<translation id="6116338172782435947">Veure el text i les imatges copiats al porta-retalls</translation>
+<translation id="5804427196348435412">Utilitza dispositius amb NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> vol emmagatzemar dades al dispositiu de manera permanent</translation>
+<translation id="1030706264415084469"><ph name="URL"/> vol emmagatzemar una gran quantitat de dades al dispositiu de manera permanent</translation>
+<translation id="1712552549805331520"><ph name="URL"/> vol emmagatzemar dades a l'ordinador local de manera permanent</translation>
+<translation id="1997484222658892567"><ph name="URL"/> vol emmagatzemar una gran quantitat de dades a l'ordinador local de manera permanent</translation>
+<translation id="7648992873808071793">Emmagatzema fitxers en aquest dispositiu</translation>
 <translation id="4813512666221746211">Error de xarxa</translation>
 <translation id="3380365263193509176">Error desconegut</translation>
 <translation id="5565735124758917034">Actiu</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">Usuari actual</translation>
 <translation id="6965978654500191972">Dispositiu</translation>
 <translation id="4728558894243024398">Plataforma</translation>
+<translation id="1426410128494586442">Sí</translation>
+<translation id="4250680216510889253">No</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Configuració avançada</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">Desconegut</translation>
 <translation id="9170848237812810038">&amp;Desfés</translation>
 <translation id="2972581237482394796">&amp;Refés</translation>
-<translation id="6786747875388722282">Extensions</translation>
 <translation id="5804241973901381774">Permisos</translation>
 <translation id="8004582292198964060">Navegador</translation>
 </translationbundle>

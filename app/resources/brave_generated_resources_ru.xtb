@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Создать профиль</translation>
 <translation id="2666990579225592931">Открыть окно в гостевом режиме</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID расширения "<ph name="EXTENSION_ID"/>") не разрешено в Brave.</translation>
-<translation id="7450557937477381864">Закрыть Chrome</translation>
-<translation id="7008934821596358692">Чтобы завершить импорт, закройте все окна Chrome.</translation>
 <translation id="6786747875388722282">Расширения</translation>
 <translation id="3699882589215410581">Установить и запустить Widevine</translation>
 <translation id="8926389886865778422">Больше не спрашивать</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine является частью кода Управления цифровыми правами (DRM), в отношении которого Brave Software не имеет прав на владение и изучение. Код Google Widevine загружается из серверов Google, а не наших серверов. Он загружается только в том случае, если вы включите эту опцию. Мы не рекомендуем использовать DRM, но мы уважаем выбор пользователя и признаем, что некоторые пользователи Brave хотели бы пользоваться услугами, которые его требуют.
 
 Установив данное расширение, вы соглашаетесь с Условиями пользования Google Widevine. Вы соглашаетесь с тем, что Brave не несет ответственности за любой ущерб или убытки, причиненные в связи с использованием вами Google Widevine.</translation>
-<translation id="453977518730680921">Автозапуск аудио и видео</translation>
 <translation id="410351446219883937">Автовоспроизведение</translation>
 <translation id="2240268017737062801">Спрашивать, когда сайт хочет автоматически воспроизводить аудио или видео</translation>
 <translation id="3371702087847741961">Спрашивать, когда сайт хочет автоматически воспроизвести медиафайлы (рекомендуется)</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">Скрывает кнопку «Награды Brave» в адресной строке, когда «Награды Brave» не включены</translation>
 <translation id="1520361618554057102">Всегда показывать закладки при открытии новой вкладки</translation>
 <translation id="5802665280774361839">Показывать автозаполнение в адресной строке</translation>
+<translation id="597020512043916976">Показывать лучшие сайты при автодополнении ввода</translation>
+<translation id="264150068416846820">Показывать предлагаемые Brave сайты при автодополнении ввода</translation>
 <translation id="7781069478569868053">Страница новой вкладки</translation>
 <translation id="2467749191278759605">Настройте свою панель Brave</translation>
 <translation id="1717331825806276156">Фоновые изображения</translation>
 <translation id="1820041496463124489">Рекламные изображения</translation>
 <translation id="8173998484743827990">Статистика Brave</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Лучшие сайты</translation>
 <translation id="1776831331757823105">Часы</translation>
@@ -72,9 +72,9 @@
 <translation id="7390783310074170337">Стандартный вид</translation>
 <translation id="130615081792797568">Простой вид</translation>
 <translation id="2360360976480535628">Расширенный вид</translation>
-<translation id="5709627087332022422">Блокировать скрытые трекеры</translation>
-<translation id="6447842834002726250">Файлы сookie</translation>
-<translation id="6522412052085018663">Фингерпринтинг</translation>
+<translation id="2133317862976486547">Блокировать трекеры и рекламу</translation>
+<translation id="4385707520896576447">Файлы сookie</translation>
+<translation id="4978786495456601191">Фингерпринтинг</translation>
 <translation id="3570081523466826008">Подключаться по HTTPS</translation>
 <translation id="4824468494729001999">Блокировать скрипты</translation>
 <translation id="519861640102428255">Смотрите и чувствуйте</translation>
@@ -83,12 +83,11 @@
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
-<translation id="4699812599455071925">Блокировать сторонние cookies</translation>
-<translation id="5657156137487675418">Разрешить все файлы cookie</translation>
-<translation id="6883611015375728278">Блокировать все куки-файлы</translation>
-<translation id="5963670684159057574">Блокировать цифровые отпечатки между сайтами</translation>
-<translation id="769702552748212954">Разрешить все цифровые отпечатки</translation>
-<translation id="4540198958192073185">Блокировать все использование отпечатков пальцев</translation>
+<translation id="4078738236287221428">Трекеры и реклама блокируются (агрессивно)</translation>
+<translation id="7740996059027112821">Трекеры и реклама блокируются (стандарт)</translation>
+<translation id="4176463684765177261">Разрешить все трекеры и рекламу</translation>
+<translation id="5770288601196774623">Блокировать сторонние cookies</translation>
+<translation id="3587482841069643663">Блокировать все куки-файлы</translation>
 <translation id="8942080017911802454">Политика WebRTC в отношении IP-адресов</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
 <translation id="8798099450830957504">По умолчанию</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">Нет</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Провайдер web3 для Dapps</translation>
+<translation id="5913089932885076110">Загружать криптовалютные кошельки при запуске</translation>
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="1765684547504191670">Использует компонент Media Router для включения Chromecast в браузере.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">Автоматически отправлять полностью конфиденциальную аналитику в Brave</translation>
 <translation id="7090566321964540749">Эта анонимная информация позволяет Brave оценить, как люди используют определенные функции.</translation>
 <translation id="9111960429693394744">Хотите ли вы использовать криптокошельки Brave или MetaMask для Dapps?</translation>
+<translation id="8721775358057000783">Хотите запустить криптовалютные кошельки для включения поддержки web3 на этой странице?</translation>
 <translation id="7583735190612229830">Настройте Криптовалютные кошельки для взаимодействия с этим и другими похожими приложениями.</translation>
-<translation id="8337117349965899723">Использовать Криптовалютные кошельки</translation>
+<translation id="4823406846571523661">Настройка криптовалютных кошельков</translation>
 <translation id="5756155765711979898">Использовать MetaMask</translation>
 <translation id="6754134632841262799">ЗАГРУЗКА</translation>
+<translation id="8199661191594897555">Запустить криптовалютные кошельки и перезагрузить</translation>
+<translation id="8428213095426709021">Настройки</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
 <translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
 <translation id="796831669370432378">Для добавления закладки нажмите кнопку закладки рядом с адресной строкой.</translation>
 <translation id="4989337484121655457">Требуется полный доступ к диску</translation>
-<translation id="8025559074845816210">Brave нужен полный доступ к диску для импорта ваших закладок из Safari.</translation>
+<translation id="5501596373144334003">Чтобы импортировать ваши закладки и историю из Safari, нужно предоставить Brave полный доступ к диску.</translation>
 <translation id="8515328844674404333">Узнайте, как дать полный доступ к диску из ваших Системных настроек.</translation>
 <translation id="6414878884710400018">Настройки открытой системы</translation>
 <translation id="5570470519803062774">Настройки сайта и Shields</translation>
+<translation id="8487693399751278191">Импортировать закладки...</translation>
+<translation id="2557899542277210112">Разместите свои закладки на панели закладок для быстрого доступа.</translation>
 </translationbundle>

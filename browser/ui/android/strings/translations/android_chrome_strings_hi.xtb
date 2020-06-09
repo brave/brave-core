@@ -3,10 +3,6 @@
 <translationbundle lang="hi">
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="2498359688066513246">सहायता और फ़ीडबैक</translation>
-<translation id="8378714024927312812">आपके संगठन की ओर से प्रबंधित</translation>
-<translation id="9019902583201351841">आपके अभिभावकों द्वारा प्रबंधित</translation>
-<translation id="4645575059429386691">आपके अभिभावक द्वारा प्रबंधित</translation>
-<translation id="4883854917563148705">प्रबंधित सेटिंग रीसेट नहीं की जा सकती हैं</translation>
 <translation id="4307992518367153382">बुनियादी चीज़ें</translation>
 <translation id="1974060860693918893">बेहतर</translation>
 <translation id="1146678959555564648">VR डालें</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">जब आप अपने Brave Software खाते में लॉग इन करते हैं, तो यह सुविधा चालू हो जाती है</translation>
 <translation id="10614374240317010">कभी नहीं सेव किया गया</translation>
 <translation id="3098842761938485917">अपने <ph name="BEGIN_LINK"/>Brave Software खाते<ph name="END_LINK"/> में सेव किए गए पासवर्ड देखें और उन्हें प्रबंधित करें</translation>
+<translation id="8988028529677883095">फ़ोन को सुरक्षा कुंजी की तरह इस्तेमाल करें</translation>
 <translation id="8562452229998620586">सहेजे गए पासवर्ड यहां दिखाई देंगे.</translation>
+<translation id="1303339473099049190">वह पासवर्ड नहीं मिला. अपनी वर्तनी की जांच करें और फिर से कोशिश करें.</translation>
 <translation id="8084114998886531721">सहेजा गया पासवर्ड</translation>
 <translation id="2870560284913253234">साइट</translation>
 <translation id="8503813439785031346">उपयोगकर्ता नाम</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">अपना पासवर्ड देखने के लिए अनलॉक करें</translation>
 <translation id="6221633008163990886">अपने पासवर्ड निर्यात करने के लिए अनलॉक करें</translation>
 <translation id="230699814587342492">Brave पासवर्ड</translation>
-<translation id="6075798973483050474">होम पेज में बदलाव करें</translation>
-<translation id="854522910157234410">यह पेज खोलें</translation>
+<translation id="1925021887439448749">पसंद के मुताबिक वेब पता डालें</translation>
 <translation id="8127542551745560481">होम पेज में बदलाव करें</translation>
+<translation id="854522910157234410">यह पेज खोलें</translation>
+<translation id="5063487983358782016">Brave का होम पेज</translation>
 <translation id="2482878487686419369">सूचनाएं</translation>
 <translation id="6255999984061454636">सामग्री के सुझाव</translation>
 <translation id="805047784848435650">आपके ब्राउज़िंग इतिहास के आधार पर</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">निजता</translation>
 <translation id="4991384657077828949">'Brave सुरक्षा' को बेहतर बनाने में मदद करें</translation>
 <translation id="1943176487615318915">खतरनाक ऐप्लिकेशन और साइटों का पता लगाने के लिए, Brave ऐसे कुछ पेज का यूआरएल Brave Software को भेजता है जिन पर आप जाते हैं. साथ ही, वह सिस्टम की सीमित जानकारी और पेज की कुछ सामग्री भी Brave Software को भेजता है</translation>
-<translation id="3181954750937456830">सुरक्षित ब्राउज़िंग (आपकी और आपके डिवाइस की खतरनाक साइट से सुरक्षा करती है)</translation>
-<translation id="7315322926489145388">आपकी सुरक्षा को खतरा होने पर उन पेज के यूआरएल भेजे जाते हैं जिन पर आप Brave Software के ज़रिए जाते हैं.</translation>
+<translation id="3201899458094819285">सुरक्षित ब्राउज़िंग (आपकी और आपके डिवाइस की खतरनाक साइट से सुरक्षा करती है)</translation>
+<translation id="2876369937070532032">आपकी सुरक्षा को खतरा होने पर उन पेज के यूआरएल भेजे जाते हैं जिन पर आप Brave Software के ज़रिए जाते हैं.</translation>
 <translation id="3738139272394829648">खोजने के लिए छुएं</translation>
-<translation id="7865281998841143447">पेज को बंद किए बिना, वेबसाइटों पर दिए गए विषयों के बारे में जानें. 'खोजने के लिए टैप करें' सुविधा, 'Brave Software सर्च' को कोई शब्द और उससे जुड़ी जानकारी भेजती है. इससे, परिभाषाएं, फ़ोटो, खोज नतीजे, और दूसरी जानकारियां हासिल होती हैं.
+<translation id="4749189475009528195">पेज को बंद किए बिना, वेबसाइटों पर दिए गए विषयों के बारे में जानें. 'खोजने के लिए टैप करें' सुविधा, 'Brave Software सर्च' को शब्द और उससे जुड़ी जानकारी भेजती है. इसके बाद, 'सर्च' पर आपको उस शब्द की परिभाषाएं, फ़ोटो, खोज के नतीजे वगैरह दिखते हैं.
 
-किसी शब्द को खोजने के लिए उस पर टैप करें. खोज के लिए अपने शब्द को एडजस्ट करने के लिए, उसे चुनने के लिए दबाकर रखें. अपनी खोज बेहतर बनाने के लिए, पैनल को स्लाइड करके खोलें. फिर 'बड़ा करें' आइकॉन पर टैप करके नया बॉक्स बनाएं. उसके बाद खोज बॉक्स पर टैप करें.</translation>
-<translation id="3292859206215580147">पेज को बंद किए बिना, वेबसाइटों पर दिए गए विषयों के बारे में जानें. 'खोजने के लिए टैप करें' सुविधा, 'Brave Software सर्च' को कोई शब्द और उससे जुड़ी जानकारी भेजती है. इससे, परिभाषाएं, फ़ोटो, खोज नतीजे, और दूसरी जानकारियां हासिल होती हैं.
+खाेजने के लिए किसी शब्द पर टैप करें. अगर आप अपनी खोज को फ़िल्टर करना चाहते हैं, ताे ज़्यादा या कम शब्दों काे चुनने के लिए, स्क्रीन को दबाकर रखें. अपनी खाेज में बदलाव करने के लिए, पैनल को खोलें. आइकॉन पर टैप करके, उसे नए टैब में खाेलें. इसके बाद, खोज बॉक्स में शब्द को बदलें.</translation>
+<translation id="934250516944040460">पेज को बंद किए बिना, वेबसाइटों पर दिए गए विषयों के बारे में जानें. 'खोजने के लिए टैप करें' सुविधा, 'Brave Software सर्च' को शब्द और उससे जुड़ी जानकारी भेजती है. इसके बाद, 'सर्च' पर आपको उस शब्द की परिभाषाएं, फ़ोटो, खोज के नतीजे वगैरह दिखते हैं.
 
-किसी शब्द को खोजने के लिए उसे दबाकर रखें. अपनी खोज को बेहतर बनाने के लिए, चुने गए शब्द को एडजस्ट करें. आप पैनल को स्लाइड करके खोल भी सकते हैं. फिर 'बड़ा करें' आइकॉन पर टैप करके नया टैब बनाएं. उसके बाद खोज बॉक्स पर टैप करें.</translation>
+खाेजने के लिए किसी भी शब्द को दबाकर रखें. अपनी खोज को फ़िल्टर करने के लिए, ज़्यादा या कम शब्दों काे चुनें. अपनी खाेज में बदलाव करने के लिए, पैनल को खोलें. आइकॉन पर टैप करके, उसे नए टैब में खाेलें. इसके बाद, खोज बॉक्स में शब्द को बदलें.</translation>
 <translation id="6209156474097347789">'खोजने के लिए छुएं' सुविधा चुने हुए शब्‍द और मौजूदा पेज को संदर्भ के रूप में 'Brave Software सर्च' पर भेजती है. आप इसे <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> में जाकर बंद कर सकते हैं.</translation>
 <translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="780301667611848630">नहीं, रहने दें</translation>
@@ -206,7 +205,7 @@
 <translation id="6295158916970320988">सभी साइटें</translation>
 <translation id="8380167699614421159">इस साइट में तंग करने वाले या गुमराह करने वाले विज्ञापन दिखाई देते हैं</translation>
 <translation id="1919345977826869612">विज्ञापन</translation>
-<translation id="3513704683820682405">ऑगमेंटेड रिएलिटी (AR)</translation>
+<translation id="2025115093177348061">ऑगमेंटेड रिएलिटी (एआर)</translation>
 <translation id="6447842834002726250">कुकी</translation>
 <translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
 <translation id="6782111308708962316">तृतीय पक्ष वेबसाइट को कुकी डेटा सहेजने और पढ़ने से रोकें</translation>
@@ -217,6 +216,7 @@
 <translation id="1717218214683051432">मोशन सेंसर</translation>
 <translation id="2091887806945687916">आवाज़</translation>
 <translation id="2586657967955657006">क्लिपबोर्ड</translation>
+<translation id="4670064810192446073">वर्चुअल रिएलिटी</translation>
 <translation id="6320088164292336938">कंपन</translation>
 <translation id="4226663524361240545">नोटिफ़िकेशन से डिवाइस में कंपन हो सकता है</translation>
 <translation id="1446450296470737166">MIDI डिवाइस के पूरे नियंत्रण की अनुमति दें</translation>
@@ -235,6 +235,7 @@
 <translation id="2537296579376733324">सिर्फ़ इस साइट की सभी कुकी</translation>
 <translation id="7882806643839505685">किसी खास साइट के लिए आवाज़ की अनुमति दें.</translation>
 <translation id="4468959413250150279">किसी खास साइट के लिए आवाज़ बंद करें.</translation>
+<translation id="7828557259026017104">आप जिन वेबसाइटों पर जाते हैं उनकी बनाई फ़ाइलें कुकी कहलाती हैं. आपकी प्राथमिकताओं को याद रखने के लिए, साइटें उनका इस्तेमाल करती हैं. अन्य साइटें, तीसरे पक्ष की कुकी बनाती हैं. इन साइटों पर विज्ञापन या इमेज जैसी कुछ सामग्री होती हैं. ये उस वेबपेज पर दिखती है जिस पर आप जाते हैं.</translation>
 <translation id="1994173015038366702">साइट URL</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">उपयोग</translation>
@@ -246,10 +247,14 @@
 <translation id="8116925261070264013">आवाज़ बंद की गई</translation>
 <translation id="8300705686683892304">ऐप्लिकेशन प्रबंधित करता है</translation>
 <translation id="6192792657125177640">अपवाद</translation>
-<translation id="257931822824936280">बड़ा किया गया - छोटा करने के लिए क्‍लिक करें.</translation>
-<translation id="5100237604440890931">छोटा किया गया - पूरा खोलने के लिए क्लिक करें.</translation>
 <translation id="857943718398505171">अनुमति दी गई (सुझाया गया)</translation>
 <translation id="2913331724188855103">साइटों को कुकी डेटा सेव करने और पढ़ने की अनुमति दें (सुझाए गए)</translation>
+<translation id="2212565012507486665">कुकी की अनुमति दें</translation>
+<translation id="8648684608605749476">गुप्त मोड के दौरान तीसरे पक्ष की कुकी को ब्लॉक करें</translation>
+<translation id="2687403674020088961">सभी कुकी ब्लॉक करें (हम ऐसा करने का सुझाव नहीं देते)</translation>
+<translation id="1044891598689252897">साइटें सामान्य रूप से काम करेंगी</translation>
+<translation id="7993619969781047893">शायद कुछ साइटों पर सुविधाएं ठीक से काम न करें</translation>
+<translation id="1509960214886564027">शायद कई साइटों पर सुविधाएं ठीक से काम न करें</translation>
 <translation id="5335288049665977812">साइटों को JavaScript चलाने की अनुमति दें (हम इस सेटिंग को चालू रखने का सुझाव देते हैं)</translation>
 <translation id="5527111080432883924">साइटों को क्लिपबोर्ड से टेक्स्ट और इमेज पढ़ने की अनुमति देने से पहले पूछें (हम इस सेटिंग को चालू रखने का सुझाव देते हैं)</translation>
 <translation id="6912998170423641340">साइटों को क्लिपबोर्ड से टेक्स्ट और इमेज पढ़ने से रोकें</translation>
@@ -259,12 +264,12 @@
 <translation id="2107397443965016585">साइटों को सुरक्षित सामग्री चलाने देने से पहले पूछें (ऐसा करने का सुझाव दिया जाता है)</translation>
 <translation id="2910701580606108292">साइटों को सुरक्षित सामग्री चलाने की अनुमति देने से पहले पूछें</translation>
 <translation id="757524316907819857">साइटों को सुरक्षित सामग्री चलाने से रोकें</translation>
-<translation id="4935305910887312910">साइटों को कैमरे की स्थिति ऐक्सेस करने या आपके कमरे को मैप करने की अनुमति देने से पहले पूछें (सुझाया गया)</translation>
-<translation id="884828189055900810">साइटों को आपके कैमरे की स्थिति ऐक्सेस करने या आपके कमरे को मैप करने से रोकें</translation>
+<translation id="2182457891543959921">किसी साइट को आपके आस-पास की जगह का 3D मैप बनाने या कैमरे की स्थिति ट्रैक करने की अनुमति देने से पहले पूछें (सुझाया गया)</translation>
+<translation id="3538390592868664640">साइटों को अपने आस-पास की जगह का 3D मैप बनाने या कैमरे की स्थिति ट्रैक करने से रोकें</translation>
 <translation id="5710871682236653961">NFC डिवाइस पर टैप करने के बाद, साइटों को जानकारी भेजने और पाने की अनुमति देने से पहले पूछें (सुझाया गया)</translation>
 <translation id="7572498721684305250">NFC डिवाइस पर टैप करने के बाद, साइटों को जानकारी भेजने और पाने पर रोक लगाएं</translation>
-<translation id="3312292613668865961">साइटों को अपने वर्चुअल रिएलिटी वाले डिवाइस और डेटा को ऐक्सेस करने की अनुमति देने से पहले पूछें (सुझाया गया)</translation>
-<translation id="8698438463325761328">साइटों को अपने वर्चुअल रिएलिटी वाले डिवाइस और डेटा को ऐक्सेस करने से रोकें</translation>
+<translation id="4887024562049524730">साइटों को अपने वर्चुअल रिएलिटी वाले डिवाइस और डेटा का इस्तेमाल करने की अनुमति देने से पहले पूछें (हम इसका सुझाव देते हैं)</translation>
+<translation id="6439114592976064011">साइटों को अपने वर्चुअल रिएलिटी वाले डिवाइस और डेटा का इस्तेमाल करने से रोकें</translation>
 <translation id="3277252321222022663">साइटों को सेंसर ऐक्सेस करने दें (सुझाया गया)</translation>
 <translation id="5048398596102334565">साइटों को मोशन सेंसर ऐक्‍सेस करने दें (सुझाया गया)</translation>
 <translation id="8816026460808729765">साइटों को सेंसर ऐक्सेस करने से रोकें</translation>
@@ -414,6 +419,7 @@
 <translation id="4062305924942672200">कानूनी जानकारी</translation>
 <translation id="4256782883801055595">ओपन सोर्स लाइसेंस</translation>
 <translation id="1138681184697033370">Brave सेवा की शर्तें</translation>
+<translation id="2368444735104192323">Brave और Brave OS की सेवा की अतिरिक्त शर्तें</translation>
 <translation id="7392539049993970338">Brave निजता सूचना</translation>
 <translation id="2968755619301702150">प्रमाणपत्र व्यूअर</translation>
 <translation id="1360432990279830238">साइन आउट करें और सिंक बंद करें?</translation>
@@ -432,6 +438,8 @@
 <translation id="8636825310635137004">अपने अन्य डिवाइस से अपने टैब पाने के लिए, सिंक करना चालू करें.</translation>
 <translation id="3269956123044984603">अपने अन्य डिवाइस से अपने टैब पाने के लिए, Android खाता सेटिंग में “डेटा अपने-आप सिंक करें” चालू करें.</translation>
 <translation id="5157964048453367290">अपने अन्य डिवाइस पर खोले गए टैब यहां दिखाई देंगे.</translation>
+<translation id="5795872532621730126">खोजें और ब्राउज़ करें</translation>
+<translation id="9086302186042011942">समन्वयित हो रहा है</translation>
 <translation id="4684427112815847243">सब कुछ सिंक करें</translation>
 <translation id="2709516037105925701">ऑटोमैटिक भरना</translation>
 <translation id="8820817407110198400">बुकमार्क</translation>
@@ -549,10 +557,6 @@
 <translation id="2532336938189706096">वेब व्यू</translation>
 <translation id="6005538289190791541">सुझाया गया पासवर्ड</translation>
 <translation id="4634124774493850572">पासवर्ड का इस्तेमाल करें</translation>
-<translation id="8285489906452138776">Brave को इस साइट के लिए आपका कैमरा एक्सेस करने की अनुमति चाहिए.</translation>
-<translation id="320189792589364011">Brave को इस साइट के लिए आपका माइक्रोफ़ोन एक्सेस करने की अनुमति चाहिए.</translation>
-<translation id="7988136689212463100">Brave को इस साइट के लिए आपका कैमरा और माइक्रोफ़ोन के एक्सेस करने की अनुमति चाहिए.</translation>
-<translation id="4931190655840828017">इस साइट से आपकी जगह की जानकारी शेयर करने के लिए Brave को आपकी जगह की जानकारी का एक्सेस चाहिए</translation>
 <translation id="3088191967551450609">फ़ाइलें डाउनलोड करने के लिए Brave को मेमोरी के ऐक्‍सेस की ज़रूरत होगी.</translation>
 <translation id="8942627711005830162">दूसरी विंडो में खोलें</translation>
 <translation id="4195643157523330669">नए टैब में खोलें</translation>
@@ -600,8 +604,9 @@
 <translation id="2146738493024040262">इंस्टैंट ऐप्लिकेशन खोलें</translation>
 <translation id="7016516562562142042">मौजूदा सर्च इंजन के लिए अनुमति दी गई है</translation>
 <translation id="6177111841848151710">मौजूदा सर्च इंजन के लिए ब्लॉक किया गया है</translation>
-<translation id="145097072038377568">Android सेटिंग में बंद कर दिया गया है</translation>
+<translation id="7000754031042624318">Android सेटिंग में बंद कर दिया गया है</translation>
 <translation id="8007176423574883786">इस डिवाइस के लिए बंद कर दिया गया है</translation>
+<translation id="6864395892908308021">इस डिवाइस के साथ NFC काम नहीं कर सकता</translation>
 <translation id="164269334534774161">आप <ph name="CREATION_TIME"/> से इस पेज की ऑफ़लाइन कॉपी देख रहे हैं</translation>
 <translation id="4594952190837476234">यह पेज <ph name="CREATION_TIME"/> का है और यह ऑनलाइन वर्शन से अलग हो सकता है.</translation>
 <translation id="8840953339110955557">यह पेज ऑनलाइन वर्शन से अलग हो सकता है.</translation>
@@ -706,10 +711,10 @@
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
 <translation id="724102042129299115">Brave पहली बार चलाने का अनुभव</translation>
-<translation id="2700285883409956633">इस ऐप्‍लिकेशन का इस्तेमाल करके, आप Brave की <ph name="BEGIN_LINK1"/>सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>निजता सूचना<ph name="END_LINK2"/> से सहमत होते हैं.</translation>
-<translation id="1640714894372474981">इस ऐप्लिकेशन के इस्तेमाल का मतलब है कि आप Brave की <ph name="BEGIN_LINK1"/>सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>निजता सूचना<ph name="END_LINK2"/> और <ph name="BEGIN_LINK3"/>Family Link से प्रबंधित होने वाले Brave Software खातों के लिए निजता सूचना<ph name="END_LINK3"/> से सहमत हैं.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> Brave में खुलेगा. जारी रखकर, आप Brave की <ph name="BEGIN_LINK1"/>सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>निजता सूचना<ph name="END_LINK2"/> से सहमत होते हैं.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> Brave में खुलेगा. जारी रखकर, आप Brave की <ph name="BEGIN_LINK1"/>सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>निजता सूचना<ph name="END_LINK2"/> और <ph name="BEGIN_LINK3"/>Family Link से प्रबंधित होने वाले Brave Software खातों के लिए निजता सूचना<ph name="END_LINK3"/> से सहमत होते हैं.</translation>
+<translation id="7766792282581704663">Brave इस्तेमाल करने का मतलब है कि आप <ph name="BEGIN_LINK1"/>Brave Software की सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>Brave Software Brave और Brave OS की सेवा की अतिरिक्त शर्तों<ph name="END_LINK2"/> से सहमत हैं.</translation>
+<translation id="4301045550182524767">Brave इस्तेमाल करने का मतलब है कि आप <ph name="BEGIN_LINK1"/>Brave Software की सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>Brave Software Brave और Brave OS की सेवा की अतिरिक्त शर्तों<ph name="END_LINK2"/> से सहमत हैं. साथ ही, आप <ph name="BEGIN_LINK3"/>Family Link से प्रबंधित होने वाले Brave Software खातों के लिए निजता सूचना<ph name="END_LINK3"/> से भी सहमत हैं.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/>, Brave में खुलेगा. जारी रखने का मतलब है कि आप <ph name="BEGIN_LINK1"/>Brave Software की सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>Brave Software Brave और Brave OS की सेवा की अतिरिक्त शर्तों<ph name="END_LINK2"/> से सहमत हैं.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/>, Brave में खुलेगा. जारी रखने का मतलब है कि आप <ph name="BEGIN_LINK1"/>Brave Software की सेवा की शर्तों<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>Brave Software Brave और Brave OS की सेवा की अतिरिक्त शर्तों<ph name="END_LINK2"/> से सहमत हैं. साथ ही, आप <ph name="BEGIN_LINK3"/>Family Link से प्रबंधित होने वाले Brave Software खातों के लिए निजता सूचना<ph name="END_LINK3"/> से भी सहमत हैं.</translation>
 <translation id="673197144963363525">Brave Software को इस्तेमाल के आंकड़े और खराबी रिपोर्ट भेजकर Brave को बेहतर बनाने में मदद करें.</translation>
 <translation id="3518985090088779359">स्‍वीकार करें और जारी रखें</translation>
 <translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
@@ -814,7 +819,7 @@
 <translation id="6963766334940102469">बुकमार्क मिटाएं</translation>
 <translation id="4351244548802238354">संवाद बंद करें</translation>
 <translation id="451872707440238414">अपने बुकमार्क में खोजें</translation>
-<translation id="8901170036886848654">कोई बुकमार्क नहीं मिला</translation>
+<translation id="6447558397796644647">वह बुकमार्क नहीं मिला. वर्तनी जांचें या नया बुकमार्क जोड़ें.</translation>
 <translation id="6404511346730675251">बुकमार्क में बदलाव करें</translation>
 <translation id="3894427358181296146">फ़ोल्डर जोड़ें</translation>
 <translation id="5327248766486351172">नाम</translation>
@@ -829,6 +834,8 @@
 <translation id="6811034713472274749">पेज देखने के लिए तैयार है</translation>
 <translation id="4561979708150884304">कोई कनेक्शन नहीं</translation>
 <translation id="8274165955039650276">डाउनलोड देखें</translation>
+<translation id="4320177379694898372">कोई इंटरनेट कनेक्‍शन नहीं</translation>
+<translation id="6397616442223433927">इंटरनेट कनेक्शन फिर से जुड़ गया</translation>
 <translation id="2082238445998314030"><ph name="TOTAL_RESULTS"/> में से <ph name="RESULT_NUMBER"/> परिणाम</translation>
 <translation id="4943872375798546930">कोई परिणाम नहीं</translation>
 <translation id="981121421437150478">ऑफ़लाइन</translation>
@@ -845,9 +852,6 @@
 <translation id="6773423637732432200">Brave अपडेट नहीं किया जा सकता. ज़्यादा विकल्प</translation>
 <translation id="1383876407941801731">खोजें</translation>
 <translation id="3328801116991980348">साइट जानकारी</translation>
-<translation id="5391532827096253100">इस साइट से आपका कनेक्शन सुरक्षित नहीं है. साइट की जानकारी</translation>
-<translation id="6206551242102657620">कनेक्शन सुरक्षित है. साइट की जानकारी</translation>
-<translation id="6963642900430330478">यह पेज खतरनाक है. साइट की जानकारी</translation>
 <translation id="9070377983101773829">बोलकर खोज चालू करें</translation>
 <translation id="4968908871398201967">निजी मोड</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> टैब खुला है, एक टैब से दूसरे टैब पर जाने के लिए टैप करें}one{<ph name="OPEN_TABS_MANY"/> टैब खुले हैं, एक टैब से दूसरे टैब पर जाने के लिए टैप करें}other{<ph name="OPEN_TABS_MANY"/> टैब खुले हैं, एक टैब से दूसरे टैब पर जाने के लिए टैप करें}}</translation>
@@ -944,6 +948,11 @@
 <translation id="5197729504361054390">आप जो संपर्क चुनेंगे उन्हें <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> के साथ शेयर किया जाएगा.</translation>
 <translation id="1779089405699405702">इमेज डीकोडर</translation>
 <translation id="8067883171444229417">वीडियो चलाएं</translation>
+<translation id="5876056640971328065">वीडियो रोकें</translation>
+<translation id="3594780231884063836">वीडियो म्यूट करें</translation>
+<translation id="783819812427904514">वीडियो अनम्यूट करें</translation>
+<translation id="3114012059975132928">वीडियो प्लेयर</translation>
+<translation id="5489227211564503167"><ph name="TOTAL_TIME"/> में से <ph name="ELAPSED_TIME"/> का समय बीत चुका है.</translation>
 <translation id="6560414384669816528">Sogou से खोजें</translation>
 <translation id="5406914950576900927">चीन में खोज करने के लिए Brave, <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> का इस्तेमाल कर सकता है. आप इसे <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> में बदल सकते हैं.</translation>
 <translation id="6456271171669383967">Brave Software को डिफ़ॉल्ट बनाए रखें</translation>
@@ -987,6 +996,7 @@
 <translation id="1875543012935658554">Brave को फिर से खोलें.</translation>
 <translation id="79859296434321399">'बढ़ी हुई वास्तविकता' की सामग्री देखने के लिए, ARCore इंस्टॉल करें</translation>
 <translation id="8558485628462305855">'बढ़ी हुई वास्तविकता' की सामग्री देखने के लिए, ARCore अपडेट करें</translation>
+<translation id="3513704683820682405">ऑगमेंटेड रिएलिटी (AR)</translation>
 <translation id="6410973561433500075">क्या आप <ph name="DOMAIN"/> से एआर (ऑगमेंटेड रिएलिटी) में जाना चाहते हैं?</translation>
 <translation id="3849365399446680203">जब आप एआर (ऑगमेंटेड रिएलिटी) इस्तेमाल कर रहे होते हैं, तो यह साइट:
 • आपके आस-पास के माहौल का 3D मैप बना सकती है
@@ -1035,6 +1045,8 @@
 <translation id="9028914725102941583">सभी डिवाइस पर शेयर करने के लिए सिंक की सुविधा चालू करें</translation>
 <translation id="6162454065885854378">अपने फ़ोन से किसी दूसरे डिवाइस पर कुछ शेयर करने के लिए, दोनों डिवाइस पर Brave की सेटिंग में जाकर सिंक की सुविधा चालू करें</translation>
 <translation id="6084271560289605378">Brave की सेटिंग में जाएं</translation>
+<translation id="2746024117903470217">इस पेज को किसी और डिवाइस पर शेयर करने के लिए, दूसरे डिवाइस की Brave सेटिंग में सिंक की सुविधा चालू करें</translation>
+<translation id="7760665516427405230">इस पेज को किसी और डिवाइस पर शेयर करने के लिए, Brave सेटिंग में सिंक की सुविधा चालू करें</translation>
 <translation id="2318045970523081853">कॉल करने के लिए टैप करें</translation>
 <translation id="9209888181064652401">कॉल नहीं कर पा रहे</translation>
 <translation id="2860954141821109167">पक्का करें कि इस डिवाइस पर फ़ोन ऐप्लिकेशन चालू है</translation>
@@ -1090,11 +1102,17 @@
 <translation id="6201345951596836663">लिंक कॉपी किया गया</translation>
 <translation id="6597891566292541626">इस फ़्रेम में क्यूआर/बार कोड रखें.</translation>
 <translation id="3140134512074889489">क्यूआर कोड स्कैन करने के लिए, कृपया कैमरा चालू करें</translation>
+<translation id="5149323899804758325">क्यूआर कोड को स्कैन करने के लिए, अपनी सेटिंग बदलें, ताकि Brave आपके कैमरे का इस्तेमाल कर सके</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
+<translation id="8233540874193135768">क्यूआर कोड को स्कैन करने के लिए, कैमरे वाला डिवाइस इस्तेमाल करें</translation>
+<translation id="6297765934698848803">आपके डिवाइस काे प्रबंधित करने वाले संगठन ने आपका कैमरा बंद कर दिया है.</translation>
+<translation id="4321739720395210191">कैमरा खाेला नहीं जा सकता. अपने डिवाइस को रीस्टार्ट करके, फिर से कोशिश करें.</translation>
+<translation id="234265804618409743">कैमरा खाेला नहीं जा सकता. कोई गड़बड़ी हुई.</translation>
+<translation id="7173114856073700355">सेटिंग खोलें</translation>
+<translation id="1311657260431405215">यह क्यूआर कोड, यूआरएल नहीं है: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Brave Software सूचना प्लैटफ़ॉर्म</translation>
 <translation id="8516012719330875537">इमेज एडिटर</translation>
-<translation id="6092062101542170135">जारी रखने के लिए, Android सेटिंग में जाकर NFC को चालू करें</translation>
-<translation id="5860491529813859533">चालू करें</translation>
 <translation id="8926666909099850184">इस डिवाइस पर NFC बंद है. <ph name="BEGIN_LINK"/>Android सेटिंग<ph name="END_LINK"/> में इसे चालू करें.</translation>
 <translation id="4808319664292298116"><ph name="DOMAIN"/> से वीआर डालें?</translation>
 <translation id="4353114845960720315">जब आप वीआर इस्तेमाल करते हैं, तो साइट ये बातें जान सकती है:</translation>

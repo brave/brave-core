@@ -55,6 +55,18 @@
     "message": "ক্রশ-সাইট ট্র্যাকারগুলি ব্লক করা হয়েছে",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ট্র্যাকারগুলি এবং বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে (আক্রমণাত্মক)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ট্র্যাকারগুলি এবং বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে (মানক)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "সমস্ত ট্র্যাকার এবং বিজ্ঞাপনকে অনুমোদন করুন",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "সংযোগগুলি HTTPS এ আপগ্রেড করা হয়েছে",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

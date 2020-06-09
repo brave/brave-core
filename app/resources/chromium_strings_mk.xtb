@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Помогнете да го подобриме Brave со испраќање извештаи за падови и <ph name="UMA_LINK"/> до Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Мрежно најавување - Brave</translation>
+<translation id="8745514854244955877">Brave - Мрежно најавување - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Мрежно најавување</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="5785919770853225148">Brave ќе ја зачува лозинкава во вашата сметка на Brave Software. Не мора да ја запомните.</translation>
 <translation id="8211837073776713955">Brave ве известува дали вашите лозинки се компромитирани</translation>
 <translation id="113959764510199339">Brave се обидува да покаже лозинки.</translation>
+<translation id="96347285368592620">Brave се обидува да копира лозинки.</translation>
+<translation id="2953892977076487219">Brave се обидува да измени лозинки.</translation>
 <translation id="7503098128120083822">Brave сака да ги извезе вашите лозинки.</translation>
 <translation id="8285294305439559616">Brave се обидува да прикаже лозинки. Внесете ја својата лозинка за Windows за да го овозможите тоа.</translation>
+<translation id="8090497651549769448">Brave се обидува да копира лозинки. Внесете ја својата лозинка за Windows за да го овозможите тоа.</translation>
+<translation id="3861679447659630159">Brave се обидува да измени лозинки. Внесете ја својата лозинка за Windows за да го дозволите ова.</translation>
 <translation id="5918095577778020936">Brave сака да ги извезе вашите лозинки. Внесете ја лозинката за Windows за да го дозволите ова.</translation>
 <translation id="8320964054148936490">Овој компјутер веќе има најнова верзија на Brave. Доколку софтверот не работи, деинсталирајте го Brave и обидете се повторно.</translation>
 <translation id="7691786510374174420">Инсталирањето не успеа поради неназначена грешка. Ако Brave моментално работи, затворете го и обидете се повторно.</translation>
@@ -192,7 +199,7 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="3262506503470845422">Добијте помош за Brave</translation>
 <translation id="1864557848095568223">Се ажурира Brave</translation>
 <translation id="1786715389543715322">Brave се ажурира (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Речиси ажурирано! Рестартирајте го Brave за да се заврши ажурирањето.</translation>
+<translation id="7914115000169617076">Речиси сте готови! Рестартирајте го Brave за да заврши ажурирањето. Прозорците „Инкогнито“ нема да се отворат повторно.</translation>
 <translation id="8208853227947884571">Brave е ажуриран</translation>
 <translation id="573759479754913123">За Brave OS</translation>
 <translation id="7573289029918943991">За да видите дали уредот ви е ажуриран, одете на <ph name="LINK_BEGIN"/>Поставки за Brave OS<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="8586264863973514035">За да се применат измените, рестартирајте го Brave</translation>
 <translation id="7021823858304886493">Дозволете најавување на Brave</translation>
 <translation id="1649714546770135458">Ако го исклучите ова, може да се најавувате на сајтови на Brave Software, како што е Gmail, без да се најавите на Brave</translation>
+<translation id="2796517443093885402">Brave може да ве штити од упад во податоците, злонамерни екстензии и друго</translation>
+<translation id="428541510811554120">Brave не може да провери дали се достапни ажурирања. Проверете ја интернет-врската.</translation>
+<translation id="2633397153656205379">Brave не се ажурираше, нешто тргна наопаку. <ph name="BEGIN_LINK"/>Поправете ги проблемите со ажурирањето на Brave и со неуспешните ажурирања.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave не може да ги провери вашите лозинки бидејќи не сте најавени</translation>
+<translation id="7006260220514217183">„Безбедното прелистување“ е исклучено. Brave препорачува да го вклучите.</translation>
+<translation id="1785833016412082453">Brave не може да ги провери вашите екстензии. Обидете се пак подоцна.</translation>
 <translation id="9220324636239049437">Ова ќе избрише една ставка од уредов. За да ги вратите вашите податоци подоцна, најавете се на Brave како <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Ова ќе избрише <ph name="ITEMS_COUNT"/> ставки од уредов. За да ги вратите вашите податоци подоцна, најавете се на Brave како <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Ова ќе ги избрише податоците од прелистувањето од уредов. За да ги вратите вашите податоци подоцна, најавете се на Brave како <ph name="USER_EMAIL"/>.</translation>

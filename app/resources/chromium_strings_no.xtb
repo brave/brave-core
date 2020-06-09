@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">Bidra til å gjøre Brave bedre ved å sende programstopprapporter og <ph name="UMA_LINK"/> til Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – nettverkspålogging – Brave</translation>
+<translation id="8745514854244955877">Brave – nettverkspålogging – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – nettverkspålogging</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – betaversjon av Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave for utviklere</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -45,8 +48,12 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="5785919770853225148">Brave lagrer dette passordet i Brave Software-kontoen din, så du trenger ikke å huske det.</translation>
 <translation id="8211837073776713955">Med Brave får du beskjed hvis passordene dine noensinne utsettes for sikkerhetsbrudd</translation>
 <translation id="113959764510199339">Brave prøver å vise passord.</translation>
+<translation id="96347285368592620">Brave prøver å kopiere passord.</translation>
+<translation id="2953892977076487219">Brave prøver å redigere passord.</translation>
 <translation id="7503098128120083822">Brave forsøker å eksportere passordene dine.</translation>
 <translation id="8285294305439559616">Brave forsøker å vise passord. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
+<translation id="8090497651549769448">Brave prøver å kopiere passord. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
+<translation id="3861679447659630159">Brave prøver å redigere passord. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
 <translation id="5918095577778020936">Brave forsøker å eksportere passordene dine. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
 <translation id="8320964054148936490">Denne datamaskinen har allerede en nyere versjon av Brave. Hvis programvaren ikke fungerer, må du avinstallere Brave og prøve på nytt.</translation>
 <translation id="7691786510374174420">Installeringen mislyktes på grunn av en uspesifisert feil. Lukk Brave hvis nettleseren kjører, og prøv på nytt.</translation>
@@ -193,7 +200,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="3262506503470845422">Få hjelp med Brave</translation>
 <translation id="1864557848095568223">Oppdaterer Brave</translation>
 <translation id="1786715389543715322">Oppdaterer Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Nå er oppdateringen snart ferdig! Start Brave på nytt for å fullføre oppdateringen.</translation>
+<translation id="7914115000169617076">Nesten ferdig oppdatert! Start Brave på nytt for å fullføre oppdateringen. Inkognitovinduer blir ikke gjenåpnet.</translation>
 <translation id="8208853227947884571">Brave er oppdatert</translation>
 <translation id="573759479754913123">Om Brave OS</translation>
 <translation id="7573289029918943991">For å se om enheten er oppdatert, gå til <ph name="LINK_BEGIN"/>Innstillinger for Brave OS<ph name="LINK_END"/></translation>
@@ -211,6 +218,12 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8586264863973514035">For å bruke endringene dine må du starte Brave på nytt</translation>
 <translation id="7021823858304886493">Tillat Brave-pålogging</translation>
 <translation id="1649714546770135458">Ved å slå dette av kan du logge på Brave Software-sider, som Gmail, uten å logge på Brave</translation>
+<translation id="2796517443093885402">Brave kan beskytte deg mot databrudd, ondsinnede utvidelser med mer</translation>
+<translation id="428541510811554120">Brave kan ikke se etter oppdateringer. Prøv å kontrollere internettilkoblingen.</translation>
+<translation id="2633397153656205379">Brave ble ikke oppdatert. Noe gikk galt. <ph name="BEGIN_LINK"/>Løs problemer med Brave-oppdateringer og mislykkede oppdateringer.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave kan ikke sjekke passordene dine, siden du ikke er logget på</translation>
+<translation id="7006260220514217183">Safe Browsing er slått av. Brave anbefaler at du slår det på.</translation>
+<translation id="1785833016412082453">Brave kan ikke sjekke utvidelsene dine. Prøv igjen senere.</translation>
 <translation id="9220324636239049437">Dette sletter 1 element fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Dette sletter nettlesingsdataene dine fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>

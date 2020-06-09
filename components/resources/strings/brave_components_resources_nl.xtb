@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="4339730410920731698">Advertenties en trackers geblokkeerd</translation>
+<translation id="5288293905681750318">Trackers &amp; advertenties geblokkeerd</translation>
 <translation id="2313532038420432247">HTTPS Opwaarderingen</translation>
-<translation id="7679428712334662192">Geschatte tijd bespaard</translation>
-<translation id="8411095021655121794">Geschatte bespaarde bandbreedte</translation>
+<translation id="788493840831967104">Bespaarde tijd</translation>
+<translation id="2318592590318590295">Bespaarde bandbreedte</translation>
 <translation id="5206618227023752085">Bovenste site verwijderd.</translation>
 <translation id="2079545284768500474">Ongedaan maken</translation>
 <translation id="6040143037577758943">Sluiten</translation>
@@ -34,6 +34,8 @@
 <translation id="8643377320501056697">Topsites Weergeven</translation>
 <translation id="3446024864193919737">Brave Rewards tonen</translation>
 <translation id="6274899614137380422">Binance weergeven</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="4799744519698299121">Meer kaarten</translation>
 <translation id="3870475560794762985">Laat gesponsorde afbeeldingen zien</translation>
 <translation id="2875302873837723333">Top websites</translation>
 <translation id="8173998484743827990">Brave-statistieken</translation>
@@ -177,30 +179,35 @@
 <translation id="2852258589816753010">BAT wordt momenteel niet in uw regio ondersteund. Kijk <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>hier<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> voor updates.</translation>
 <translation id="2564425876266960486">Fout tijdens het aanmaken van de Brave Browser BAT-kaart</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
-<translation id="5923611424721173182">Huidige Verzoening</translation>
+<translation id="5025866799968038247">Saldo info</translation>
+<translation id="1642443162274867084">Wallet aangemaakt</translation>
 <translation id="5457113250005438886">Ongeldig</translation>
 <translation id="7687511348932340294">Sleutel Info Seed:</translation>
-<translation id="7180611975245234373">Vernieuwen</translation>
-<translation id="3292669871848742742">Level opnieuw proberen:</translation>
-<translation id="2026565607270413420">Stap opnieuw proberen:</translation>
-<translation id="2461822463642141190">Huidige</translation>
-<translation id="4516620156082016131">Laatste</translation>
-<translation id="68932200202726709">Payload</translation>
-<translation id="8654112359048700618">Voorbereiden</translation>
-<translation id="419610644429723755">Bewijs</translation>
-<translation id="8851921643210663606">Verzoenen</translation>
-<translation id="839736845446313156">Registreren</translation>
-<translation id="583281660410589416">Onbekend</translation>
-<translation id="1822318934917272490">Bekijken</translation>
-<translation id="9165277745676544288">Stemmen</translation>
-<translation id="7311077304864384837">Winnaars</translation>
-<translation id="5771119664738037159">Brave Rewards is niet ingeschakeld. Schakel het in door het bezoeken</translation>
-<translation id="4235360514405112390">Geldig</translation>
-<translation id="2700943637868737038">Weergave van ID:</translation>
-<translation id="3576689061489548788">Wallet Betalings-ID:</translation>
 <translation id="758790787422117549">Persoonlijk ID</translation>
+<translation id="3671566813999349838">Bedrag</translation>
+<translation id="751223241692981112">Geclaimd op</translation>
+<translation id="3913089081619091801">Claim ID</translation>
+<translation id="972516647724462985">Vervalt op</translation>
+<translation id="3970114302595058915">ID</translation>
+<translation id="8511126279042126492">Legacy-actie</translation>
+<translation id="4250680216510889253">Nee</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="8102423594645796250">Aanbiedingen</translation>
+<translation id="7805768142964895445">staat</translation>
+<translation id="5565735124758917034">Actief</translation>
+<translation id="2196753816869469810">Bevestigd</translation>
+<translation id="1098052486217676340">Voltooid</translation>
+<translation id="8000774832235490222">Meer dan</translation>
+<translation id="2448312741937722512">Type</translation>
+<translation id="5334568292977026472">UGP</translation>
+<translation id="3798449238516105146">Versie</translation>
+<translation id="7180611975245234373">Vernieuwen</translation>
+<translation id="5771119664738037159">Brave Rewards is niet ingeschakeld. Schakel het in door het bezoeken</translation>
+<translation id="6672180611914406778">Totaalsaldo</translation>
 <translation id="2223892939866251845">Gebruikers-ID</translation>
-<translation id="1642443162274867084">Wallet aangemaakt</translation>
+<translation id="4235360514405112390">Geldig</translation>
+<translation id="2326487656644542536">Portemonnee-info</translation>
+<translation id="3576689061489548788">Wallet Betalings-ID:</translation>
 <translation id="5094577350232361255">over</translation>
 <translation id="4918086044614829423">Accepteren</translation>
 <translation id="5916290544882167205">Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Sitenamen kunnen handelsmerken of geregistreerde handelsmerken zijn van de site-eigenaar.</translation>
@@ -220,7 +227,6 @@
 <translation id="5317780077021120954">Opslaan</translation>
 <translation id="5441565662498481293">Je stuurt automatisch een fooi naar:</translation>
 <translation id="2827387977307390755">Sta fooi toe op</translation>
-<translation id="3671566813999349838">Bedrag</translation>
 <translation id="3819257035322786455">Back-up maken</translation>
 <translation id="1312977698678162065">Word betaald door het kijken van relevante advertenties die je privacy respecteren</translation>
 <translation id="4396256076373444156">Verzamel punten wanneer u relevante advertenties bekijkt die uw privacy respecteren.</translation>
@@ -281,6 +287,7 @@
 <translation id="7513117072433487074">{{currency}} die niet gebruikt zijn op de verloopdatum worden automatisch aan de Brave User Growth Pool teruggekeerd.</translation>
 <translation id="279567716178902927">Vervaldatum gift</translation>
 <translation id="2104073734684466851">Donaties</translation>
+<translation id="2291686779354188838">Hallo, {{name}}!</translation>
 <translation id="1389143276807887637">importeer</translation>
 <translation id="7335371657242627509">Deelname aan Auto-Contribute</translation>
 <translation id="8446884382197647889">Meer informatie</translation>
@@ -323,7 +330,6 @@
 <translation id="6381574025952123568">Initieel tegoed</translation>
 <translation id="532275381857891532">7-daagse advertentiegeschiedenis</translation>
 <translation id="4923459931733593730">Betaling</translation>
-<translation id="5693657857413982604">Betaling geschiedt elke {{day}} van de maand.</translation>
 <translation id="6104680658798556671">Betaling niet uitgevoerd</translation>
 <translation id="3138528956349114724">Vastgepinde sites zijn nu</translation>
 <translation id="2337632028350283479">Dit is hoe maandelijkse bijdragen werken:</translation>
@@ -371,6 +377,8 @@
 <translation id="8014425282125849700">Af en toe krijg je gratis tokens aangeboden door Brave. Houd de meldingen in de gaten!</translation>
 <translation id="2185598236335233939">Zoek naar advertentiemeldingen terwijl u Brave gebruikt. Uw BAT-puntensaldo neemt toe met elke advertentie die u bekijkt.</translation>
 <translation id="1370034647041840967">Verdien tokens met je aandacht voor advertenties en betaal het aan content creators die jij waardeert om hen te ondersteunen!</translation>
+<translation id="1701701253000051237">Stort, neem op en beheer kapitaal op <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Je Brave portemonnee wordt mede mogelijk gemaakt door <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
 <translation id="6401272292123354754">Brave Rewards is gebaseerd op Basic Attention Token. Meer informatie over BAT</translation>
 <translation id="7823359893981882407">hier</translation>
 <translation id="4483635855837696643">Herstel je Wallet</translation>
@@ -413,7 +421,6 @@
 <translation id="3983104749597726322">Tweet</translation>
 <translation id="5636843789453098076">Geef @{{ user }} een fooi voor hun tweet:</translation>
 <translation id="4242384385082203046">Geef @{{ user }} een fooi voor hun tweet!</translation>
-<translation id="2448312741937722512">Type</translation>
 <translation id="8772672608371898774">Uitgever geverifieerd door Brave</translation>
 <translation id="5050370287908180130">Bekijk Maandelijks Afschrift voor Details</translation>
 <translation id="8615803647903750175">Wallet-activiteit</translation>
@@ -464,6 +471,7 @@
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="46988480989545156">Verifieer wallet</translation>
+<translation id="4986087720311945758">Onze portemonneeservice wordt geleverd door <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
 <translation id="6771734945114850124">Houd je door de overheid uitgegeven ID bij de hand.</translation>
 <translation id="8697510149346635496">Neem BAT op die je verdient door het bekijken van advertenties die privacy respecteren</translation>
 <translation id="1481480653609649134">Koop extra BAT met creditcards en andere bronnen</translation>
@@ -497,6 +505,9 @@
 <translation id="6759185676704303656">Je wordt betaald om deze achtergrondafbeelding te bekijken.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over gesponsorde afbeeldingen in Brave Rewards.</translation>
 <translation id="6113004497629356998">Verberg gesponsorde afbeeldingen</translation>
+<translation id="5977237145327845546">Start een privé-videogesprek met je vrienden en collega's.</translation>
+<translation id="5850325887346946383">Start videogesprek</translation>
+<translation id="3651550649176056334">Over jouw gegevens</translation>
 <translation id="223536150967420869">Kopen</translation>
 <translation id="5110244215256675209">Koop Crypto</translation>
 <translation id="5749014321384313843">Ik wil spenderen...</translation>
@@ -523,8 +534,9 @@
 <translation id="3909193058140362331">De conversie kan niet worden verwerkt. Probeer het alstublieft opnieuw.</translation>
 <translation id="5721542149042740780">Het bedrag dat je hebt ingevoerd, overschrijdt het bedrag dat je momenteel beschikbaar hebt.</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
-<translation id="92653931566014756">Adres is niet beschikbaar</translation>
+<translation id="7431764818502638140">Info niet beschikbaar</translation>
 <translation id="6409345078064530735">Stortingsadres</translation>
+<translation id="7153116947319792513">Stortingsnota</translation>
 <translation id="1383876407941801731">Zoeken</translation>
 <translation id="6432284126416751397">Bevestig de conversie</translation>
 <translation id="1301340234286078471">Converteren</translation>
@@ -599,6 +611,13 @@
 <translation id="5286379413446391050">Kon geen verbinding maken met de Sync-servers</translation>
 <translation id="2410472020237369473">Het kan zijn dat de klok van uw computer op de verkeerde tijd of tijdzone staat ingesteld. Controleer de instellingen van uw klok.</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="616639131065447379">Welkom bij Brave Crypto Wallets</translation>
+<translation id="1740464057879304704">Met Crypto Wallets kun je werken met cryptocurrency en aanverwante middelen in Brave. Crypto Wallets ondersteunt Ethereum tokens zoals ETH en BAT, evenals collectibles, en staat je toe om te werken met Ðapps en andere slimme contracten. Dit alles is bedoeld voor mensen die bekend zijn met Ethereum en andere blockchain-systemen — of die het graag willen leren.</translation>
+<translation id="4855440621031541830">Gebruik Crypto Wallets alleen als je accepteert dat jij persoonlijk verantwoordelijk bent voor alle risico's die verbonden zijn aan dit gebruik, en dat Brave Software geen verantwoordelijkheid of aansprakelijkheid draagt voor eventuele verliezen, inclusief incidentele of indirecte schade die je zou kunnen lijden als gevolg van dit gebruik.</translation>
+<translation id="3187473319809074178">Dit alles staat volledig los van</translation>
+<translation id="8327818101454798856">Dus als je je favoriete sites wilt ondersteunen, ga dan daarheen.</translation>
+<translation id="4894106830958548828">Ik begrijp het</translation>
+<translation id="453977518730680921">Speel media automatisch af</translation>
 <translation id="7701466644604753106">Schakel Speedreader in</translation>
 <translation id="763042262431778831">Schakel Speedreader UIT</translation>
 </translationbundle>

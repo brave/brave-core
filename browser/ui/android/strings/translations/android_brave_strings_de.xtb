@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Schutz</translation>
 <translation id="6132506775968708399">Cookies von Drittanbietern blockieren</translation>
 <translation id="7835726359440951858">Werbung und Tracking blockieren</translation>
-<translation id="520895744850022668">HTTPS erzwingen</translation>
+<translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="94154759592465111">Skripte blockieren</translation>
 <translation id="7458422973722236530">Fingerabdruckschutz</translation>
-<translation id="252011129655042182">Werbung und Tracker</translation>
+<translation id="5709627087332022422">Seitenübergreifende Tracker blockieren</translation>
 <translation id="6754976710186182237">Fingerabdruck-Methoden</translation>
 <translation id="2313532038420432247">HTTPS Aufwertungen</translation>
 <translation id="7461425058443653485">Script blockiert</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Standard-Registerkarte</translation>
 <translation id="3377025655491224618">Privater Tab</translation>
 <translation id="9148058034647219655">Beenden</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Öffnet, wenn möglich, unterstütze Websites mit HTTPS anstatt HTTP</translation>
 <translation id="8387201461264842096">Werbeblocker</translation>
 <translation id="1934885595886623674">Verhindert das Laden von Werbung</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Registerkarten beim Beenden schließen</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
 <translation id="4339730410920731698">Anzeigen und Tracker blockiert</translation>
+<translation id="6761596877474675418">Daten gespeichert</translation>
 <translation id="3034562645284925177">In etwa gesparte Zeit</translation>
 <translation id="6572660632052512096">Desktop-Modus</translation>
 <translation id="1340503115760585811">Desktop-Ansicht für neue Registerkarten aktivieren</translation>
@@ -160,7 +162,7 @@ um das nächste Internet zu erleben.</translation>
 <translation id="1713542052890184975">Bitte erstellen Sie ein Backup Ihrer Brave-Wallet.</translation>
 <translation id="2323069945529668668">Hoppla!</translation>
 <translation id="7510166204621526816">Der Brave-Rewards-Server antwortet nicht. Wir werden dieses Problem schnellstmöglich beheben.</translation>
-<translation id="2626799779920242286">Bitte versuchen Sie es später erneut.</translation>
+<translation id="7117228822971127758">Bitte versuchen Sie es später noch einmal</translation>
 <translation id="3068742524072211213">läuft ab am <ph name="DATE"/></translation>
 <translation id="4292832015778676417">durch Werbung verdient</translation>
 <translation id="683765328936486920">auf YouTube</translation>
@@ -231,7 +233,6 @@ um das nächste Internet zu erleben.</translation>
 <translation id="6199596294742117349">Dies ist ein privater Tab</translation>
 <translation id="5858455511731621847">Obwohl Websites, die Sie in privaten Tabs besuchen, nicht lokal gespeichert werden, machen sie Sie nicht für Ihren Internetanbieter, Ihren Arbeitgeber oder die von Ihnen besuchten Websites anonym oder unsichtbar.</translation>
 <translation id="5789441016350810005">Es werden Brave Ads gesendet, wenn der Browser im Hintergrund ist</translation>
-<translation id="7127980134843952133">Download-Verlauf</translation>
 <translation id="3690140184638701871">Beiträge und Trinkgelder</translation>
 <translation id="844921671123185605">Ihre monatlichen Trinkgelder wurden abgerechnet!</translation>
 <translation id="3124090095880236567">Werbung aktivieren</translation>
@@ -254,15 +255,82 @@ um das nächste Internet zu erleben.</translation>
 <translation id="8522669544471808198">Hintergrundbilder anzeigen</translation>
 <translation id="3870475560794762985">Gesponserte Bilder anzeigen</translation>
 <translation id="8297488609722895137">Foto von <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Lassen Sie sich für das Ansehen dieses Hintergrundbilds bezahlen.</translation>
-<translation id="4836823081419522426">Sie erhalten 70 % der Werbeeinnahmen für dieses private Förderung, womit Sie Ersteller von Web-Inhalten unterstützen können. Aktivieren Sie Brave Rewards, um Ihren Anteil zu beanspruchen.</translation>
-<translation id="7307847920988946894">Rewards aktivieren</translation>
 <translation id="1605521356929094020">Brave Ads aktivieren</translation>
-<translation id="1647482814782886825">Indem Sie Rewards aktivieren, stimmen Sie den <ph name="TERMS_OF_SERVICE"/> zu. Alternativ können Sie <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Indem Sie auf Verdienen &amp; geben tippen, stimmen Sie den <ph name="TERMS_OF_SERVICE"/> zu.</translation>
+<translation id="3794079107601824147">Lassen Sie sich für das Ansehen dieses Hintergrundbilds bezahlen.</translation>
 <translation id="7136586167396205364">Gesponserte Bilder ausblenden</translation>
 <translation id="2927095357213611519">Sie können Ersteller von Web-Inhalten mit Token unterstützen.\nVerdienen Sie Token, indem Sie sich Werbung ansehen, die Ihre Privatsphäre respektiert.</translation>
-<translation id="4016415345213871193">Sie werden für das Ansehen dieses Hintergrundbilds bezahlt.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> über gesponserte Bilder im Rahmen von Brave Rewards. Alternativ können Sie <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Alternativ können Sie <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Lassen Sie sich für das Ansehen dieses Hintergrundbilds bezahlen. Aktivieren Sie Brave Ads, um Ihren Anteil zu beanspruchen.</translation>
+<translation id="213787746370741250">Tabs in Benutzerdefinierte Tabs öffnen</translation>
+<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="8267327690882073581">Wallet verifizieren</translation>
+<translation id="543510923939676996">Wallet verifiziert</translation>
+<translation id="8673913984316081937">Die Verifizierung Ihres Wallets ist optional</translation>
+<translation id="8558636200953226885">Aber wenn Sie sich verifizieren, können Sie …</translation>
+<translation id="8697510149346635496">BAT abheben, die Sie mit dem Ansehen von Werbung verdienen, die Ihre Privatsphäre respektiert.</translation>
+<translation id="1481480653609649134">Kaufen Sie zusätzlich BAT mit Kreditkarten und anderen Quellen</translation>
+<translation id="9096003370755878766">Heben Sie die BAT ab, die Sie unter Umständen zu Ihrer Brave Rewards-Wallet hinzugefügt haben.</translation>
+<translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>
+<translation id="6569877533335686968">Aufrechterhalten</translation>
+<translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
+<translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
+<translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
+<translation id="2193391216824305230">Benutzer-Wallet</translation>
+<translation id="7591798679868259510">Zu meinem Uphold-Account gehen</translation>
+<translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
+<translation id="6239274080752256452">Geld abheben</translation>
+<translation id="8874184842967597500">Nicht verbunden</translation>
+<translation id="3368922792935385530">Verbunden</translation>
+<translation id="4569155249847375786">Verifiziert</translation>
+<translation id="5358719431303818601">Trennung nicht verifiziert</translation>
+<translation id="4241449868720191203">Trennung verifiziert</translation>
+<translation id="3248185426436836442">Ausstehend</translation>
+<translation id="8108013093558639183">BAT wird in Ihrer Region, basierend auf dem Standort, an dem Ihr Konto eröffnet wird, momentan nicht unterstützt. Prüfen Sie die Verfügbarkeit später.</translation>
+<translation id="4190454391025419535">Region nicht unterstützt</translation>
+<translation id="6830703472632069884">Es gab ein Problem bei der Verifizierung Ihres Wallets, bitte versuchen Sie es später erneut.</translation>
+<translation id="3512533646933434345">Walletverifizierungsfehler</translation>
+<translation id="2260513517001048012">HINWEIS: Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Ihr Browser wird versuchen, bis zur Verifizierung beizutragen oder bis 90 Tage vergangen sind.</translation>
+<translation id="4488355059795908907">Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Alles Geld, das sie senden, bleibt in Ihrem Wallet, bis er diesen Prozess abschließt.</translation>
+<translation id="2495032782748793764">Brave Default</translation>
+<translation id="9132378787893584761">Teilen Sie Brave mit Ihren Freunden!</translation>
+<translation id="717952606991220586">Hoppla, etwas stimmt nicht. Bitte versuchen Sie es später erneut.</translation>
+<translation id="2524310205387880526">Brave bewerten</translation>
+<translation id="6680650203439190394">Kurs</translation>
+<translation id="2635089463885398597">Wie würden Sie Ihre Erfahrung mit Brave bewerten?</translation>
+<translation id="141901961143729572">Teilen Sie Ihre Gedanken</translation>
+<translation id="7961015016161918242">Nie</translation>
+<translation id="1275213816424141989">Vielleicht später</translation>
+<translation id="6991128190741664836">Später</translation>
+<translation id="8851456134224363571">Großartig! Würde es Ihnen etwas ausmachen, uns eine Bewertung im Play Store zu hinterlassen?</translation>
+<translation id="8668962040900592974">Lassen Sie uns wissen, wie wir uns verbessern können</translation>
+<translation id="4406937629441301400">Verdienen Sie Tokens für das Ansehen dieses Bildes und zahlen Sie sie an die Ersteller weiter. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Verdienen Sie Tokens für das Ansehen dieses Bildes. Aktivieren Sie Verdienen &amp; geben, um ihren Anteil einzufordern.</translation>
+<translation id="6632345639591919543">Sie verdienen Tokens für das Ansehen dieses Bildes.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Sie verdienen Tokens für das Ansehen dieses Bildes.</translation>
+<translation id="7952665812649667034">Ich bin bereit, zu verdienen &amp; zu geben</translation>
+<translation id="7877201489035217175">Mehr über gesponserte Bilder erfahren</translation>
+<translation id="828092975561478703">Für jedes gesponserte Bild, das Sie sich ansehen, erhalten Sie 70 % der Einnahmen in Tokens. Mit Brave Ads haben Sie die Werbung, die Sie sehen, immer unter Kontrolle.</translation>
+<translation id="4941539331405513605">Cross-Site-Cookies blockieren</translation>
+<translation id="3763681089644577874">Cookies blockieren</translation>
+<translation id="614747795780742163">Hindert Websites, Informationen über Ihre früheren Besuche zu speichern</translation>
+<translation id="6883611015375728278">Alle Cookies blockieren</translation>
+<translation id="5657156137487675418">Alle Cookies erlauben</translation>
+<translation id="5963670684159057574">Seitenübergreifendes Fingerprinting blockieren</translation>
+<translation id="3895527457258986253">Fingerprinting blockieren</translation>
+<translation id="184568144098869637">Hindert den Browser, Ihr Gerät zu erkennen</translation>
+<translation id="4540198958192073185">Alle Fingerabdrucknahmen sperren</translation>
+<translation id="769702552748212954">Sämtliches Fingerprinting zulassen</translation>
+<translation id="2888409909650566510">Werbung und andere unheimliche\nDinge blockiert</translation>
+<translation id="6930134873084561197">Sites beinhalten oft Cookies und Scripts, die versuchen, Sie und Ihr Gerät zu identifizieren. Sie wollen herausfinden, wer Sie sind und folgen Ihnen durch das Web-Tracking von dem, was Sie auf jeder Site machen.\n\nBrave blockiert diese Dinge, damit Sie browsen können, ohne verfolgt zu werden.</translation>
+<translation id="8553998445606452168">Über Brave Shields</translation>
+<translation id="8912304686498704084">HOCH</translation>
+<translation id="4963218453264888510">RUNTER</translation>
+<translation id="7474113515179313724">Sie browsen diese Seite ohne die Datenschutzvorkehrungen von Brave. Funktioniert sie nicht richtig, wenn Shields an ist?</translation>
+<translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Shields aus ist.</translation>
+<translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
+<translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Shields nicht richtig funktioniert:</translation>
+<translation id="5429200298326665264">Hinweis: Die Adresse dieser Site wird mit Ihrer Brave-Versionsnummer und Ihrer IP-Adresse (die nicht gespeichert wird) übermittelt.</translation>
+<translation id="5299848999918506028">Vielen Dank!</translation>
+<translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
+<translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
+<translation id="7182293319417450928">Ein Minimumguthaben von 25 BAT ist für die Verifizierung erforderlich.</translation>
 </translationbundle>
