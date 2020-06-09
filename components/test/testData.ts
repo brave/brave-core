@@ -6,7 +6,6 @@
 import { defaultState as welcomeData } from '../../components/brave_welcome_ui/storage'
 import { defaultState as rewardsData } from '../../components/brave_rewards/resources/page/storage'
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
-import { defaultState as syncData } from '../../components/brave_sync/ui/storage'
 
 // Types
 import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
@@ -36,8 +35,6 @@ export const welcomeInitialState: Welcome.ApplicationState = { welcomeData }
 export const rewardsInitialState: Rewards.ApplicationState = { rewardsData }
 
 export const adblockInitialState: AdBlock.ApplicationState = { adblockData }
-
-export const syncInitialState: Sync.ApplicationState = { syncData }
 
 export const newTabInitialState: NewTab.ApplicationState = {
   newTabData: {

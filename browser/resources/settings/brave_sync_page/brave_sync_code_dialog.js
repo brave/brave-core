@@ -101,7 +101,6 @@
         return
       }
       const data = await this.syncBrowserProxy_.getQRCode(this.syncCode)
-      console.log('qr code', data)
       this.$$('#qrCode').innerText = data
       // TODO(petemill): generate a canvas / image
     },

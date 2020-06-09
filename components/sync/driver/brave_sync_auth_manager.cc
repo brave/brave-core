@@ -23,7 +23,7 @@ BraveSyncAuthManager::BraveSyncAuthManager(
 BraveSyncAuthManager::~BraveSyncAuthManager() {}
 
 void BraveSyncAuthManager::DeriveSigningKeys(const std::string& seed) {
-  VLOG(1) << __func__ << " seed=" << seed;
+  VLOG(1) << __func__;
   if (seed.empty())
     return;
   const std::vector<uint8_t> HKDF_SALT = {

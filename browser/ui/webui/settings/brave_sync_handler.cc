@@ -120,7 +120,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue* args) {
 
   std::vector<uint8_t> seed;
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
-    LOG(ERROR) << "invalid sync code:" << sync_code->GetString();
+    LOG(ERROR) << "invalid sync code";
     ResolveJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
@@ -157,7 +157,7 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
 
   std::vector<uint8_t> seed;
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
-    LOG(ERROR) << "invalid sync code:" << sync_code->GetString();
+    LOG(ERROR) << "invalid sync code";
     RejectJavascriptCallback(*callback_id, base::Value(false));
     return;
   }

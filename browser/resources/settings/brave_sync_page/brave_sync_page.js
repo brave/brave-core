@@ -84,13 +84,11 @@ Polymer({
         syncPrefs.encryptAllData = true;
         syncPrefs.setNewPassphrase = true;
         syncPrefs.passphrase = syncCode;
-        console.debug('sync set encryption', syncPrefs)
         await this.browserProxy_.setSyncEncryption(syncPrefs)
       } else if (syncPrefs.passphraseRequired) {
         const syncCode = await this.braveBrowserProxy_.getSyncCode()
         syncPrefs.setNewPassphrase = false;
         syncPrefs.passphrase = syncCode;
-        console.debug('sync set encryption', syncPrefs)
         await this.browserProxy_.setSyncEncryption(syncPrefs)
       }
     }
