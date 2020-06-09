@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { formatDate } from '../utils'
 
 interface Props {
   promotion: RewardsInternals.Promotion
@@ -49,7 +50,7 @@ const getClaimData = (claimedAt: number, claimId: string) => {
 
   return (
     <>
-      {getLocale('promotionClaimedAt')}: {new Date(claimedAt * 1000).toLocaleDateString()}
+      {getLocale('promotionClaimedAt')}: {formatDate(claimedAt * 1000)}
       <br/>
       {getLocale('promotionClaimId')}: {claimId}
     </>
@@ -61,7 +62,7 @@ const getExpirationDate = (expiresAt: number) => {
     return 0
   }
 
-  return new Date(expiresAt * 1000).toLocaleDateString()
+  return formatDate(expiresAt * 1000)
 }
 
 export const Promotion = (props: Props) => (

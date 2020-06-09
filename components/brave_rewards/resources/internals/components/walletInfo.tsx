@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { formatDate } from '../utils'
 
 interface Props {
   state: RewardsInternals.State
@@ -32,7 +33,7 @@ export const WalletInfo = (props: Props) => {
         {getLocale('walletPaymentId')} {info.walletPaymentId || ''}
       </div>
       <div>
-        {getLocale('bootStamp')}: {new Date(info.bootStamp * 1000).toLocaleDateString()}
+        {getLocale('bootStamp')}: {formatDate(info.bootStamp * 1000)}
       </div>
     </>
   )

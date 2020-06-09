@@ -4,7 +4,9 @@
 
 import * as React from 'react'
 
-import { ContributionPublishers } from './contributionPublishers'
+import { ContributionPublisher } from './contributionPublisher'
+import { formatDate } from '../utils'
+import { ContributionPublishersWrapper } from '../style'
 
 interface Props {
   contribution: RewardsInternals.ContributionInfo
@@ -70,6 +72,9 @@ export const Contribution = (props: Props) => (
   <div>
     <h3>{props.contribution.id}</h3>
     <div>
+      {getLocale('contributionCreatedAt')} {formatDate(props.contribution.createdAt * 1000)}
+    </div>
+    <div>
       {getLocale('contributionType')} {getContributionTypeString(props.contribution.type)}
     </div>
     <div>
@@ -84,8 +89,10 @@ export const Contribution = (props: Props) => (
     <div>
       {getLocale('contributionProcessor')} {getProcessorString(props.contribution.processor)}
     </div>
-    <blockquote>
-      <ContributionPublishers items={props.contribution.publishers} />
-    </blockquote>
+    <ContributionPublishersWrapper>
+      {props.contribution.publishers.map((item: RewardsInternals.ContributionPublisher) => (
+        <ContributionPublisher publisher={item} key={`publisher-${item.publisherKey}`} />
+      ))}
+    </ContributionPublishersWrapper>
   </div>
 )

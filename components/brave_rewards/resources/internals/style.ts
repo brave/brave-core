@@ -53,3 +53,17 @@ export const Notice = styled<{}, 'div'>('div')`
   font-size: 12px;
   margin-top: 5px;
 `
+
+export const ContributionPublishersWrapper = styled<{}, 'div'>('div')`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 10px -20px;
+`
+
+export const Publisher = styled<{}, 'div'>('div')`
+  margin: 0 20px 10px;
+`
+
+export const PublisherKey = styled<{}, 'h4'>('h4')`
+  margin: 15px 0 5px;
+`
