@@ -7,7 +7,8 @@ from lib.transifex import (check_for_chromium_upgrade,
                            upload_source_strings_desc,
                            check_missing_source_grd_strings_to_transifex,
                            upload_missing_json_translations_to_transifex,
-                           upload_source_files_to_transifex)
+                           upload_source_files_to_transifex,
+                           should_use_transifex)
 
 
 BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -37,6 +38,11 @@ def main():
     source_string_path = os.path.join(BRAVE_SOURCE_ROOT,
                                       args.source_string_path[0])
     filename = os.path.basename(source_string_path).split('.')[0]
+    if not should_use_transifex(source_string_path, filename):
+        print'Handled locally, not sending to Transifex: ', source_string_path
+        return
+
+    print '[transifex]: ', source_string_path
     upload_source_files_to_transifex(source_string_path, filename)
     ext = os.path.splitext(source_string_path)[1]
     if ext == '.grd':

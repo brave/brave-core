@@ -7,7 +7,6 @@ import io
 import json
 import os
 import requests
-import sys
 import tempfile
 import lxml.etree
 import FP
@@ -15,6 +14,13 @@ import FP
 
 transifex_project_name = 'brave'
 base_url = 'https://www.transifex.com/api/2/'
+transifex_handled_slugs = [
+    'android_brave_strings',
+    'brave_generated_resources',
+    'brave_components_resources',
+    'brave_extension',
+    'rewards_extension'
+]
 
 
 def transifex_name_from_filename(source_file_path, filename):
@@ -460,7 +466,12 @@ def braveify(string_value):
     """Replace Chromium branded strings with Brave beranded strings."""
     return (string_value.replace('Chrome', 'Brave')
             .replace('Chromium', 'Brave')
-            .replace('Google', 'Brave Software'))
+            .replace('Google', 'Brave')
+            .replace('Brave Docs', 'Google Docs')
+            .replace('Brave Drive', 'Google Drive')
+            .replace('Brave Play', 'Google Play')
+            .replace('Brave Safe', 'Google Safe')
+            .replace('Sends URLs of some pages you visit to Brave', 'Sends URLs of some pages you visit to Google'))
 
 
 def upload_missing_translation_to_transifex(source_string_path, lang_code,
@@ -745,3 +756,53 @@ def upload_source_strings_desc(source_file_path, filename):
             if len(string_desc) > 0:
                 upload_string_desc(source_file_path, filename, string_name,
                                    string_desc)
+
+
+def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
+    source_root = os.path.dirname(brave_source_root)
+    chromium_grd_file_path = get_original_grd(source_root, grd_file_path)
+    if not chromium_grd_file_path:
+        filename = os.path.basename(grd_file_path)
+        rel_path = os.path.relpath(grd_file_path, brave_source_root)
+        chromium_grd_file_path = os.path.join(source_root, rel_path)
+    return chromium_grd_file_path
+
+
+def should_use_transifex(source_string_path, filename):
+    slug = transifex_name_from_filename(source_string_path, filename)
+    return slug in transifex_handled_slugs
+
+
+def pull_xtb_without_transifex(grd_file_path, brave_source_root):
+    xtb_files = get_xtb_files(grd_file_path)
+    chromium_grd_file_path = get_chromium_grd_src_with_fallback(grd_file_path,
+                                                                brave_source_root)
+    chromium_xtb_files = get_xtb_files(grd_file_path)
+    if len(xtb_files) != len(chromium_xtb_files):
+        assert false, 'XTB files and Chromium XTB file length mismatch.'
+
+    grd_base_path = os.path.dirname(grd_file_path)
+    chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
+
+    xtb_file_paths = [os.path.join(
+        grd_base_path, path) for (lang, path) in xtb_files]
+    chromium_xtb_file_paths = [
+        os.path.join(chromium_grd_base_path, path) for
+        (lang, path) in chromium_xtb_files]
+    for idx, xtb_file in enumerate(xtb_file_paths):
+        chromium_xtb_file = chromium_xtb_file_paths[idx]
+        if not os.path.exists(chromium_xtb_file):
+            print 'Warning: Skipping because Chromium path does not exist: ', chromium_xtb_file
+            continue
+        xml_tree = lxml.etree.parse(chromium_xtb_file)
+
+        for node in xml_tree.xpath('//translation'):
+            if node.text:
+                node.text = braveify(node.text)
+
+        transformed_content = ('<?xml version="1.0" ?>\n' +
+                               lxml.etree.tostring(xml_tree, pretty_print=True,
+                                                   xml_declaration=False,
+                                                   encoding='UTF-8').strip())
+        with open(xtb_file, mode='w') as f:
+            f.write(transformed_content)
