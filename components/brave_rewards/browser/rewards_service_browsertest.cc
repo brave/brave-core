@@ -2892,11 +2892,11 @@ IN_PROC_BROWSER_TEST_F(
       contents(),
       "[data-test-id='activity-table-body'] tr:nth-of-type(1) "
       "td:nth-of-type(3)",
-      "20.000BAT28.60 USD");
+      "20.0BAT4.28 USD");
 
   rewards_service_browsertest_utils::WaitForElementToEqual(
       contents(),
       "[data-test-id='activity-table-body'] tr:nth-of-type(2) "
       "td:nth-of-type(3)",
-      "30.000BAT42.90 USD");
+      "30.0BAT6.42 USD");
 }
