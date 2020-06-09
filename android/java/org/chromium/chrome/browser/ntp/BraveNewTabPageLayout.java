@@ -108,6 +108,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private DatabaseHelper mDatabaseHelper;
     private BraveActivity mBraveActivity;
 
+    private ViewGroup mSiteSectionView;
+
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         Profile mProfile = Profile.getLastUsedRegularProfile();
@@ -140,7 +142,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time);
     }
 
-    @Override
     protected void insertSiteSectionView() {
         mainLayout = findViewById(R.id.ntp_main_layout);
 
@@ -164,7 +165,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
-    @Override
     protected int getMaxRowsForMostVisitedTiles() {
         if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
                 && NTPUtil.shouldEnableNTPFeature()) {
