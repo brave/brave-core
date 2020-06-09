@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
@@ -256,6 +257,7 @@ void Recover::RecoverWalletCallback(
   braveledger_state::SetPaymentId(ledger_, recovery_id);
   braveledger_state::SetAnonymousCardId(ledger_, card_id);
   braveledger_state::SetFetchOldBalanceEnabled(ledger_, true);
+  ledger_->SetUint64State(ledger::kStatePromotionLastFetchStamp, 0);
   ledger_->SetConfirmationsWalletInfo();
 
   callback(ledger::Result::LEDGER_OK, balance);
