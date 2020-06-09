@@ -466,6 +466,8 @@ bool MaybeChangeReferrer(bool allow_referrers,
     return false;
   }
 
+  // Cap referrer to "strict-origin-when-cross-origin" or anything more
+  // restrictive according do given policy.
   *output_referrer = Referrer::SanitizeForRequest(
       target_url, Referrer(current_referrer.GetOrigin(), policy));
 

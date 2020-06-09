@@ -462,6 +462,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                        DefaultBehaviour) {
   const GURL kRequestUrl("http://request.com/path?query");
   const GURL kDocumentUrl("http://document.com/path?query");
+  const GURL kSameSiteRequestUrl("http://sub.document.com/sub/path");
   const GURL kSameOriginRequestUrl("http://document.com/different/path");
 
   blink::mojom::ReferrerPtr kReferrer = blink::mojom::Referrer::New(
@@ -474,12 +475,27 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                               &referrer);
   EXPECT_EQ(referrer->url, GURL());
 
+  // Cross-origin navigations get a truncated referrer if method is not "GET" or
+  // "HEAD".
+  referrer = kReferrer.Clone();
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kRequestUrl, kDocumentUrl, true, "POST",
+                              &referrer);
+  EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin());
+
   // Same-origin navigations get full referrers.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(),
                               kSameOriginRequestUrl, kDocumentUrl, true,  "GET",
                               &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
+
+  // Same-site navigations get truncated referrers.
+  referrer = kReferrer.Clone();
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kSameSiteRequestUrl, kDocumentUrl, true,  "GET",
+                              &referrer);
+  EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin());
 
   // Cross-origin iframe navigations get origins.
   referrer = kReferrer.Clone();
