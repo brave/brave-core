@@ -31,6 +31,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
         Assert.assertTrue(classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
     }
 
     @Test
@@ -48,6 +49,8 @@ public class BytecodeTest {
                 "clobberCurrentTabWithFallbackUrl"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/LaunchIntentDispatcher", "isCustomTabIntent"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/homepage/HomepageManager", "shouldCloseAppWithZeroTabs"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "insertSiteSectionView"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "getMaxRowsForMostVisitedTiles"));
     }
 
     @Test
@@ -56,6 +59,7 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mIsSyncable"));
         Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mChromeSyncEnabled"));
         Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mMasterSyncEnabled"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
     }
 
     private boolean classExists(String className) {
