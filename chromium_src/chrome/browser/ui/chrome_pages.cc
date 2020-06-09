@@ -6,7 +6,10 @@
 // It has caller in the same file
 #define BRAVE_GET_SETTINGS_URL \
 GURL GetSettingsUrl_ChromiumImpl(const std::string& sub_page) {
+// BRAVE_GET_SETTINGS_URL
+
 #include "../../../../../chrome/browser/ui/chrome_pages.cc"
+
 #undef BRAVE_GET_SETTINGS_URL
 
 #include "brave/common/webui_url_constants.h"

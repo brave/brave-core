@@ -50,15 +50,16 @@
 #endif
 
 namespace {
-// staging "https://sync-v2.bravesoftware.com/v2" can be overrided by
+// staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
 // switches::kSyncServiceURL manually
 #if defined(OFFICIAL_BUILD)
 // production
 const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
 #else
+// For local server development "http://localhost:8295/v2 can also be overriden
+// by switches::kSyncServiceURL
 // dev
-const char kBraveSyncServiceURL[] = "http://localhost:8295/v2";
-// const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
+const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
 #endif
 }  // namespace
 
