@@ -4,14 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
-#define ContentSettingsTypeFromGroupName \
-  ContentSettingsTypeFromGroupName_ChromiumImpl
 #define ContentSettingsTypeToGroupName \
   ContentSettingsTypeToGroupName_ChromiumImpl
+#define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
+  if (name == "autoplay")                                                \
+    return ContentSettingsType::AUTOPLAY;
 
 #include "../../../../../../chrome/browser/ui/webui/site_settings_helper.cc"
+#undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
 #undef ContentSettingsTypeToGroupName
-#undef ContentSettingsTypeFromGroupName
 #undef HasRegisteredGroupName
 
 namespace site_settings {
@@ -20,12 +21,6 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::AUTOPLAY)
     return true;
   return HasRegisteredGroupName_ChromiumImpl(type);
-}
-
-ContentSettingsType ContentSettingsTypeFromGroupName(const std::string& name) {
-  if (name == "autoplay")
-    return ContentSettingsType::AUTOPLAY;
-  return ContentSettingsTypeFromGroupName_ChromiumImpl(name);
 }
 
 std::string ContentSettingsTypeToGroupName(ContentSettingsType type) {
