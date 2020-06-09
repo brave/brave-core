@@ -1,5 +1,5 @@
 diff --git a/components/crash/core/browser/resources/crashes.js b/components/crash/core/browser/resources/crashes.js
-index 287eed28ae76ef4655441f376937ea395a405c57..d68f3bc8ac25c5a5e39675e9741513fb66bb7b6f 100644
+index 287eed28ae76ef4655441f376937ea395a405c57..d83e733830f46406c7a8d9af8e3e54bf1b91e81e 100644
 --- a/components/crash/core/browser/resources/crashes.js
 +++ b/components/crash/core/browser/resources/crashes.js
 @@ -91,7 +91,7 @@ function updateCrashList(
@@ -11,3 +11,11 @@ index 287eed28ae76ef4655441f376937ea395a405c57..d68f3bc8ac25c5a5e39675e9741513fb
        } else {
          uploadIdValue.textContent = crash.id;
        }
+@@ -100,6 +100,7 @@ function updateCrashList(
+ 
+       sendNowButton.remove();
+       fileBugButton.onclick = () => fileBug(crash.id, os, version);
++      fileBugButton.remove();
+     } else {
+       uploadId.remove();
+       uploadTime.remove();
