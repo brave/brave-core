@@ -303,9 +303,6 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
       } else if (rule.GetContentSetting() == CONTENT_SETTING_ASK) {
         VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
         ask = true;
-      } else if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
-        VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
-        return true;
       }
     }
   }
