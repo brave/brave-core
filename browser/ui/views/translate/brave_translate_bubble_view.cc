@@ -45,17 +45,20 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   constexpr int kButtonColumnSetId = 0;
   views::ColumnSet* cs = layout->AddColumnSet(kButtonColumnSetId);
   cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
-                views::GridLayout::kFixedSize, views::GridLayout::USE_PREF, 0,
+                views::GridLayout::kFixedSize,
+                views::GridLayout::ColumnSize::kUsePreferred, 0,
                 0);
   cs->AddPaddingColumn(1.0, 0);
   cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
-                views::GridLayout::kFixedSize, views::GridLayout::USE_PREF, 0,
+                views::GridLayout::kFixedSize,
+                views::GridLayout::ColumnSize::kUsePreferred, 0,
                 0);
   cs->AddPaddingColumn(
       views::GridLayout::kFixedSize,
       provider->GetDistanceMetric(views::DISTANCE_RELATED_BUTTON_HORIZONTAL));
   cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
-                views::GridLayout::kFixedSize, views::GridLayout::USE_PREF, 0,
+                views::GridLayout::kFixedSize,
+                views::GridLayout::ColumnSize::kUsePreferred, 0,
                 0);
 
   auto dont_ask_button = std::make_unique<views::LabelButton>(
