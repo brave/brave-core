@@ -78,7 +78,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
 
   sources = [
     "BATBraveRewards.h",
-    "BATBraveRewards.m",
+    "BATBraveRewards.mm",
     "Ledger/BATBraveLedger.h",
     "Ledger/BATBraveLedger.mm",
     "Ledger/BATBraveLedgerObserver.h",
@@ -102,12 +102,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Shared/BATCommonOperations.mm",
     "Shared/NSURL+Extensions.h",
     "Shared/NSURL+Extensions.mm",
-    "Shared/RewardsLogStream.h",
-    "Shared/RewardsLogStream.mm",
-    "Shared/Logger.h",
-    "Shared/Logger.mm",
-    "Shared/RewardsLogger.h",
-    "Shared/RewardsLogger.mm",
+    "Shared/RewardsLogging.h",
+    "Shared/RewardsLogging.mm",
     "objc-gen/CppTransformations.h",
     "Ads/BATAdNotification.h",
     "Ads/BATAdNotification.mm",
@@ -163,7 +159,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Models/BATPromotionSolution.h",
     "Ads/BATBraveAds.h",
     "Ads/BATAdNotification.h",
-    "Shared/RewardsLogger.h",
     "$target_gen_dir/ledger.mojom.objc.h",
   ]
 

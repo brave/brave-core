@@ -14,7 +14,6 @@
 #import "NativeAdsClientBridge.h"
 #import "CppTransformations.h"
 #import "BATCommonOperations.h"
-#import "RewardsLogStream.h"
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
@@ -23,6 +22,8 @@
 
 #include "base/message_loop/message_loop_current.h"
 #include "base/task/single_thread_task_executor.h"
+
+#import "RewardsLogging.h"
 
 base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 
@@ -548,7 +549,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message
 {
-  std::make_unique<RewardsLogStream>(file, line, verbose_level)->stream() << message << std::endl;
+  rewards::LogMessage(file, line, verbose_level, [NSString stringWithUTF8String:message.c_str()]);
 }
 
 #pragma mark - Notifications

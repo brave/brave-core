@@ -5,8 +5,6 @@
 #import "DataController.h"
 
 #import "ledger.mojom.objc.h"
-#import "RewardsLogStream.h"
-#define BLOG(__verbose_level) RewardsLogStream(__FILE__, __LINE__, __verbose_level).stream()
 
 @interface DataController ()
 @property (nonatomic) NSOperationQueue *operationQueue;

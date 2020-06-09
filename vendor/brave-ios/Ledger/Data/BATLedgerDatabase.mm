@@ -7,9 +7,7 @@
 
 #import "DataController.h"
 #import "bat/ledger/global_constants.h"
-#import "RewardsLogStream.h"
-
-#define BLOG(__verbose_level) RewardsLogStream(__FILE__, __LINE__, __verbose_level).stream()
+#import "RewardsLogging.h"
 
 @implementation BATLedgerDatabase
 
@@ -19,7 +17,7 @@
   NSError *error = nil;
   const auto migrationScript = [NSString stringWithContentsOfFile:bundlePath encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    BLOG(0) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
+    BLOG(0, @"Failed to load migration script from path: %@", bundlePath);
     return nil;
   }
   
@@ -114,7 +112,7 @@
   NSError *error = nil;
   const auto migrationScript = [NSString stringWithContentsOfFile:bundlePath encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    BLOG(0) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
+    BLOG(0, @"Failed to load migration script from path: %@", bundlePath);
     return nil;
   }
   
@@ -332,7 +330,7 @@
 {
   const auto context = [DataController newBackgroundContext];
   
-  BLOG(1) << "CoreData: Deleting publisher list" << std::endl;
+  BLOG(1, @"CoreData: Deleting publisher list");
   [context performBlock:^{
     const auto fetchRequest = ServerPublisherInfo.fetchRequest;
     fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
