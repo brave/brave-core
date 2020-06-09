@@ -72,8 +72,9 @@ class BraveActionsContainer::EmptyExtensionsContainer
                     bool is_sticky,
                     const base::Closure& closure) override {}
 
-  bool ShowToolbarActionPopup(const std::string& action_id,
-                              bool grant_active_tab) override { return false; }
+  bool ShowToolbarActionPopupForAPICall(const std::string& action_id) override {
+    return false;
+  }
 
   void ShowToolbarActionBubble(
       std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
