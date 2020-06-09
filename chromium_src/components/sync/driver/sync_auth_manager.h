@@ -10,14 +10,18 @@ namespace syncer {
 class BraveSyncAuthManager;
 }  // namespace syncer
 
-#define BRAVE_SYNC_AUTH_MANAGER_H_ \
-  friend BraveSyncAuthManager; \
-  virtual
+// Header guard to prevent DetermineAccountToUse from getting overriden in it
+#include "components/sync/driver/sync_auth_util.h"
 
 #define RequestAccessToken virtual RequestAccessToken
+#define DetermineAccountToUse                                  \
+  DetermineAccountToUse_Unused() { return SyncAccountInfo(); } \
+  friend BraveSyncAuthManager;                                 \
+  virtual SyncAccountInfo DetermineAccountToUse
 
 #include "../../../../../components/sync/driver/sync_auth_manager.h"
 
 #undef BRAVE_SYNC_AUTH_MANAGER_H_
 #undef RequestAccessToken
+#undef DetermineAccountToUse
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_AUTH_MANAGER_H_

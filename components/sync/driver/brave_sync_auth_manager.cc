@@ -62,6 +62,7 @@ SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse() const {
     account_info.account_id = CoreAccountId::FromString(client_id);
     account_info.gaia = client_id;
     account_info.email = "sync@brave.com";
+    VLOG(1) << "brave client id=" << client_id;
     return SyncAccountInfo(account_info, true);
   } else {
     return SyncAccountInfo();

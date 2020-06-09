@@ -25,6 +25,7 @@ NetworkTimeHelper::~NetworkTimeHelper() {}
 
 void NetworkTimeHelper::SetNetworkTimeTracker(
     network_time::NetworkTimeTracker* tracker) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   network_time_tracker_ = tracker;
 }
 
@@ -49,7 +50,7 @@ void NetworkTimeHelper::GetNetworkTimeOnUIThread(
   base::Time time;
   if (network_time_tracker_->GetNetworkTime(&time, nullptr) !=
       network_time::NetworkTimeTracker::NETWORK_TIME_AVAILABLE) {
-    LOG(WARNING) << "Network time not available, using local time";
+    VLOG(1) << "Network time not available, using local time";
     time = base::Time::Now();
   }
   std::move(cb).Run(time);
