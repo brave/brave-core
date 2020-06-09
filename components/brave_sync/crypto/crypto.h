@@ -26,6 +26,7 @@ std::vector<uint8_t> HKDFSha512(const std::vector<uint8_t>& ikm,
 // Derives an Ed25519 keypair given a random seed and an optional HKDF salt
 void DeriveSigningKeysFromSeed(const std::vector<uint8_t>& seed,
                                const std::vector<uint8_t>* salt,
+                               const std::vector<uint8_t>* info,
                                std::vector<uint8_t>* public_key,
                                std::vector<uint8_t>* private_key);
 

@@ -39,13 +39,14 @@ std::vector<uint8_t> HKDFSha512(const std::vector<uint8_t>& ikm,
 
 void DeriveSigningKeysFromSeed(const std::vector<uint8_t>& seed,
                                const std::vector<uint8_t>* salt,
+                               const std::vector<uint8_t>* info,
                                std::vector<uint8_t>* public_key,
                                std::vector<uint8_t>* private_key) {
   DCHECK(public_key);
   DCHECK(private_key);
-  const std::vector<uint8_t> info = {0};
+  DCHECK(info);
   std::vector<uint8_t> output =
-      HKDFSha512(seed, salt, &info, DEFAULT_SEED_SIZE);
+      HKDFSha512(seed, salt, info, DEFAULT_SEED_SIZE);
   public_key->resize(ED25519_PUBLIC_KEY_LEN);
   private_key->resize(ED25519_PRIVATE_KEY_LEN);
   ED25519_keypair_from_seed(public_key->data(), private_key->data(),

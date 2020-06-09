@@ -134,7 +134,8 @@ TEST(CryptoTest, Ed25519KeyDerivation) {
       &seed);
   std::vector<uint8_t> public_key = {};
   std::vector<uint8_t> private_key = {};
-  DeriveSigningKeysFromSeed(seed, &HKDF_SALT, &public_key, &private_key);
+  std::vector<uint8_t> info = {0};
+  DeriveSigningKeysFromSeed(seed, &HKDF_SALT, &info, &public_key, &private_key);
   EXPECT_EQ("f58ca446f0c33ee7e8e9874466da442b2e764afd77ad46034bdff9e01f9b87d4",
             base::ToLowerASCII(
                 base::HexEncode(public_key.data(), public_key.size())));
