@@ -316,8 +316,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::PublisherInfoList* list,
       uint32_t /* next_record */);
 
-  void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
-
   void HasSufficientBalanceToReconcile(
       ledger::HasSufficientBalanceToReconcileCallback callback) override;
 
@@ -787,8 +785,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& post_data,
       ledger::VisitDataPtr visit_data) override;
 
-  void OnTimer(uint32_t timer_id) override;
-
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
 
@@ -844,7 +840,6 @@ class LedgerImpl : public ledger::Ledger {
   std::map<uint32_t, ledger::VisitData> current_pages_;
   uint64_t last_tab_active_time_;
   uint32_t last_shown_tab_id_;
-  uint32_t last_pub_load_timer_id_;
 };
 
 }  // namespace bat_ledger

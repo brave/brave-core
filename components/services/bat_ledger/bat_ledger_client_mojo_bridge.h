@@ -36,8 +36,6 @@ class BatLedgerClientMojoBridge :
       ledger::ContributionInfoPtr contribution) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
-  void KillTimer(const uint32_t timer_id) override;
 
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

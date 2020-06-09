@@ -631,9 +631,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   const auto feeID = [NSString stringWithUTF8String:transfer_fee->id.c_str()];
   const auto feeDict = @{
     @"id": feeID,
-    @"amount": @(transfer_fee->amount),
-    @"execution_timestamp": @(transfer_fee->execution_timestamp),
-    @"execution_id": @(transfer_fee->execution_id)
+    @"amount": @(transfer_fee->amount)
   };
 
   NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
@@ -658,8 +656,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     auto fee = ledger::TransferFee::New();
     fee->id = feeID.UTF8String;
     fee->amount = [feeDict[@"amount"] doubleValue];
-    fee->execution_id = [feeDict[@"execution_id"] longValue];
-    fee->execution_timestamp = [feeDict[@"execution_timestamp"] longLongValue];
     list.insert(std::make_pair(feeID.UTF8String, std::move(fee)));
   }
   return list;
@@ -1769,25 +1765,6 @@ BATLedgerBridge(BOOL,
   dispatch_async(self.fileWriteThread, ^{
     [state writeToFile:path atomically:YES];
   });
-}
-
-#pragma mark - Timers
-
-- (void)setTimer:(uint64_t)time_offset timerId:(uint32_t *)timer_id
-{
-  const auto __weak weakSelf = self;
-  const auto createdTimerID = [self.commonOps createTimerWithOffset:time_offset timerFired:^(uint32_t firedTimerID) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf.commonOps) { return; }
-    strongSelf->ledger->OnTimer(firedTimerID);
-    [strongSelf.commonOps removeTimerWithID:firedTimerID];
-  }];
-  *timer_id = createdTimerID;
-}
-
-- (void)killTimer:(const uint32_t)timer_id
-{
-  [self.commonOps removeTimerWithID:timer_id];
 }
 
 #pragma mark - Network

@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -23,10 +24,6 @@ class APIParameters {
 
   void Initialize();
 
-  void OnTimer(const uint32_t timer_id);
-
-  void Fetch();
-
   void Fetch(ledger::GetRewardsParametersCallback callback);
 
  private:
@@ -34,10 +31,12 @@ class APIParameters {
 
   void RunCallbacks();
 
-  void SetRefreshTimer(const int delay = 0);
+  void SetRefreshTimer(
+      base::TimeDelta delay,
+      base::TimeDelta base_delay = base::TimeDelta());
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  uint32_t refresh_timer_id_;
+  base::OneShotTimer refresh_timer_;
   std::vector<ledger::GetRewardsParametersCallback> callbacks_;
 };
 

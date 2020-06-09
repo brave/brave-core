@@ -44,13 +44,6 @@ class MockLedgerClient : public LedgerClient {
       const std::string& favicon_key,
       ledger::FetchIconCallback callback));
 
-  MOCK_METHOD2(SetTimer, void(
-      uint64_t time_offset,
-      uint32_t* timer_id));
-
-  MOCK_METHOD1(KillTimer, void(
-      const uint32_t timer_id));
-
   MOCK_METHOD1(URIEncode, std::string(
       const std::string& value));
 

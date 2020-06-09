@@ -26,15 +26,6 @@ typedef void (^BATNetworkCompletionBlock)(const std::string& errorDescription,
 /// Generates a UUID using NSUUID
 - (const std::string)generateUUID;
 
-#pragma mark - Timers
-
-/// Creates a timer that will fire after `offset`. When the timer fires `timerFired` is executed with the timer ID
-/// returned
-- (uint32_t)createTimerWithOffset:(uint64_t)offset timerFired:(void (^)(uint32_t))timerFired;
-
-/// Invalidates and removes the timer with the given timer ID
-- (void)removeTimerWithID:(uint32_t)timerID;
-
 #pragma mark - Network
 
 @property (nonatomic, copy, nullable) NSString *customUserAgent;

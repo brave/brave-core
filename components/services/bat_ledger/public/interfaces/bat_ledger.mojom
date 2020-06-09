@@ -73,8 +73,6 @@ interface BatLedger {
   SetAutoContributeEnabled(bool enabled);
   UpdateAdsRewards();
 
-  OnTimer(uint32 timer_id);
-
   GetBalanceReport(ledger.mojom.ActivityMonth month, int32 year) =>
       (ledger.mojom.Result result, ledger.mojom.BalanceReportInfo report);
 
@@ -175,9 +173,6 @@ interface BatLedgerClient {
   LoadURL(string url, array<string> headers, string content,
       string content_type, ledger.mojom.UrlMethod method) => (ledger.mojom.UrlResponse response);
 
-  [Sync]
-  SetTimer(uint64 time_offset) => (uint32 timer_id);
-  KillTimer(uint32 timer_id);
   [Sync]
   URIEncode(string value) => (string encoded_value);
 

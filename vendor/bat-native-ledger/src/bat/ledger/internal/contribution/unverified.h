@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 
@@ -31,8 +32,6 @@ class Unverified {
   ~Unverified();
 
   void Contribute();
-
-  void OnTimer(uint32_t timer_id);
 
  private:
   void WasPublisherProcessed(
@@ -61,7 +60,7 @@ class Unverified {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED
-  uint32_t unverified_publishers_timer_id_;
+  base::OneShotTimer unverified_publishers_timer_;
 };
 
 }  // namespace braveledger_contribution

@@ -361,7 +361,6 @@ class RewardsServiceImpl : public RewardsService,
                                  uint32_t limit,
                                  ledger::PublisherInfoListCallback callback,
                                  ledger::PublisherInfoList list);
-  void OnTimer(uint32_t timer_id);
   void OnSavedState(ledger::ResultCallback callback, bool success);
   void OnLoadedState(ledger::OnLoadCallback callback,
                      const std::string& value);
@@ -485,7 +484,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PromotionPtr promotion);
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
@@ -602,9 +600,6 @@ class RewardsServiceImpl : public RewardsService,
   std::string GetStringOption(const std::string& name) const override;
   int64_t GetInt64Option(const std::string& name) const override;
   uint64_t GetUint64Option(const std::string& name) const override;
-
-
-  void KillTimer(uint32_t timer_id) override;
 
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
@@ -755,7 +750,6 @@ class RewardsServiceImpl : public RewardsService,
 
   std::unique_ptr<base::OneShotEvent> ready_;
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
-  std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   std::map<std::string, BitmapFetcherService::RequestId>
       current_media_fetchers_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;

@@ -72,8 +72,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
-    last_shown_tab_id_(-1),
-    last_pub_load_timer_id_(0u) {
+    last_shown_tab_id_(-1) {
   // Ensure ThreadPoolInstance is initialized before creating the task runner
   // for ios.
   set_ledger_client_for_logging(ledger_client_);
@@ -799,12 +798,6 @@ void LedgerImpl::OneTimeTip(
   bat_contribution_->OneTimeTip(publisher_key, amount, callback);
 }
 
-void LedgerImpl::OnTimer(uint32_t timer_id) {
-  bat_contribution_->OnTimer(timer_id);
-  bat_promotion_->OnTimer(timer_id);
-  bat_api_->OnTimer(timer_id);
-}
-
 void LedgerImpl::SaveRecurringTip(
     ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
@@ -971,10 +964,6 @@ void LedgerImpl::NormalizeContributeWinners(
     const ledger::PublisherInfoList* list,
     uint32_t record) {
   bat_publisher_->NormalizeContributeWinners(newList, list, record);
-}
-
-void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
-  ledger_client_->SetTimer(time_offset, timer_id);
 }
 
 void LedgerImpl::HasSufficientBalanceToReconcile(

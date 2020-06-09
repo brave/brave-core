@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/internal/attestation/attestation_impl.h"
@@ -44,8 +45,6 @@ class Promotion {
       ledger::AttestPromotionCallback callback);
 
   void Refresh(const bool retry_after_error);
-
-  void OnTimer(const uint32_t timer_id);
 
   void TransferTokens(ledger::ResultCallback callback);
 
@@ -137,12 +136,16 @@ class Promotion {
 
   void ErrorCredsStatusSaved(const ledger::Result result);
 
+  void OnRetryTimerElapsed();
+
+  void OnLastCheckTimerElapsed();
+
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
   std::unique_ptr<braveledger_credentials::Credentials> credentials_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  uint32_t last_check_timer_id_;
-  uint32_t retry_timer_id_;
+  base::OneShotTimer last_check_timer_;
+  base::OneShotTimer retry_timer_;
 };
 
 }  // namespace braveledger_promotion

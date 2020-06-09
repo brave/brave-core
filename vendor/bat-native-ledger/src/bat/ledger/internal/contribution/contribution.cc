@@ -30,11 +30,12 @@
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "brave_base/random.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+
+using braveledger_time_util::GetRandomizedDelay;
 
 namespace {
 ledger::ContributionStep ConvertResultIntoContributionStep(
@@ -77,9 +78,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     monthly_(std::make_unique<ContributionMonthly>(ledger, this)),
     ac_(std::make_unique<ContributionAC>(ledger, this)),
     tip_(std::make_unique<ContributionTip>(ledger, this)),
-    anon_card_(std::make_unique<ContributionAnonCard>(ledger, this)),
-    last_reconcile_timer_id_(0u),
-    queue_timer_id_(0u) {
+    anon_card_(std::make_unique<ContributionAnonCard>(ledger, this)) {
   DCHECK(ledger_ && uphold_);
   external_wallet_ = std::make_unique<ContributionExternalWallet>(
       ledger,
@@ -97,11 +96,15 @@ void Contribution::Initialize() {
 }
 
 void Contribution::CheckContributionQueue() {
-  const auto start_timer_in = ledger::is_testing
-      ? 1
-      : brave_base::random::Geometric(15);
+  base::TimeDelta delay = ledger::is_testing
+      ? base::TimeDelta::FromSeconds(1)
+      : GetRandomizedDelay(base::TimeDelta::FromSeconds(15));
 
-  SetTimer(&queue_timer_id_, start_timer_in);
+  BLOG(1, "Queue timer set for " << delay);
+
+  queue_timer_.Start(FROM_HERE, delay,
+      base::BindOnce(&Contribution::ProcessContributionQueue,
+          base::Unretained(this)));
 }
 
 void Contribution::ProcessContributionQueue() {
@@ -214,60 +217,24 @@ void Contribution::Start(ledger::ContributionQueuePtr info) {
                 _2));
 }
 
-void Contribution::OnTimer(uint32_t timer_id) {
-  unverified_->OnTimer(timer_id);
-  uphold_->OnTimer(timer_id);
-
-  for (const auto& value : retry_timers_) {
-    if (value.second != timer_id) {
-      continue;
-    }
-
-    std::string contribution_id = value.first;
-    retry_timers_[contribution_id] = 0u;
-
-    auto callback = std::bind(&Contribution::SetRetryCounter,
-        this,
-        _1);
-
-    ledger_->GetContributionInfo(contribution_id, callback);
-    return;
-  }
-
-  if (timer_id == last_reconcile_timer_id_) {
-    last_reconcile_timer_id_ = 0;
-    StartMonthlyContribution();
-    return;
-  }
-
-  if (timer_id == queue_timer_id_) {
-    ProcessContributionQueue();
-  }
-}
-
 void Contribution::SetReconcileTimer() {
-  if (last_reconcile_timer_id_ != 0) {
+  if (last_reconcile_timer_.IsRunning()) {
     return;
   }
 
   uint64_t now = std::time(nullptr);
   uint64_t next_reconcile_stamp = ledger_->GetReconcileStamp();
 
-  uint64_t time_to_next_reconcile =
-      (next_reconcile_stamp == 0 || next_reconcile_stamp < now) ?
-        0 : next_reconcile_stamp - now;
-
-  SetTimer(&last_reconcile_timer_id_, time_to_next_reconcile);
-}
-
-void Contribution::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
-  if (start_timer_in == 0) {
-    start_timer_in = brave_base::random::Geometric(45);
+  base::TimeDelta delay;
+  if (next_reconcile_stamp > now) {
+    delay = base::TimeDelta::FromSeconds(next_reconcile_stamp - now);
   }
 
-  BLOG(1, "Timer will start in " << start_timer_in);
+  BLOG(1, "Last reconcile timer set for " << delay);
 
-  ledger_->SetTimer(start_timer_in, timer_id);
+  last_reconcile_timer_.Start(FROM_HERE, delay,
+      base::BindOnce(&Contribution::StartMonthlyContribution,
+          base::Unretained(this)));
 }
 
 void Contribution::ContributionCompleted(
@@ -629,12 +596,14 @@ void Contribution::Result(
     const ledger::Result result,
     const std::string& contribution_id) {
   if (result == ledger::Result::RETRY_SHORT) {
-    SetRetryTimer(contribution_id, 5);
+    SetRetryTimer(contribution_id, base::TimeDelta::FromSeconds(5));
     return;
   }
 
   if (result == ledger::Result::RETRY) {
-    SetRetryTimer(contribution_id);
+    SetRetryTimer(
+        contribution_id,
+        GetRandomizedDelay(base::TimeDelta::FromSeconds(45)));
     return;
   }
 
@@ -655,18 +624,15 @@ void Contribution::OnResult(
   }
 
   if (result == ledger::Result::RETRY_LONG) {
-    if (ledger::short_retries) {
-      SetRetryTimer(contribution->contribution_id, 1);
-      return;
-    }
-
     if (contribution->processor ==
         ledger::ContributionProcessor::BRAVE_TOKENS) {
-      SetRetryTimer(contribution->contribution_id);
+      SetRetryTimer(
+          contribution->contribution_id,
+          GetRandomizedDelay(base::TimeDelta::FromSeconds(45)));
     } else {
       SetRetryTimer(
           contribution->contribution_id,
-          brave_base::random::Geometric(450));
+          GetRandomizedDelay(base::TimeDelta::FromSeconds(450)));
     }
 
     return;
@@ -679,27 +645,33 @@ void Contribution::OnResult(
 
 void Contribution::SetRetryTimer(
     const std::string& contribution_id,
-    const uint64_t start_timer_in) {
+    base::TimeDelta delay) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
     return;
   }
 
-  if (!retry_timers_[contribution_id]) {
-    retry_timers_[contribution_id] = 0u;
-  }
-
-  uint64_t timer_seconds = start_timer_in;
   if (ledger::short_retries) {
-    timer_seconds = 1;
-  } else if (start_timer_in == 0) {
-    timer_seconds = brave_base::random::Geometric(45);
+    delay = base::TimeDelta::FromSeconds(1);
   }
 
-  BLOG(1, "Timer for contribution retry (" << contribution_id << ") will "
-      "start in " << timer_seconds);
+  BLOG(1, "Timer for contribution retry (" << contribution_id << ") "
+      "set for " << delay);
 
-  ledger_->SetTimer(timer_seconds, &retry_timers_[contribution_id]);
+  retry_timers_[contribution_id].Start(FROM_HERE, delay,
+      base::BindOnce(&Contribution::OnRetryTimerElapsed,
+          base::Unretained(this),
+          contribution_id));
+}
+
+void Contribution::OnRetryTimerElapsed(const std::string& contribution_id) {
+  retry_timers_.erase(contribution_id);
+
+  auto callback = std::bind(&Contribution::SetRetryCounter,
+      this,
+      _1);
+
+  ledger_->GetContributionInfo(contribution_id, callback);
 }
 
 void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
