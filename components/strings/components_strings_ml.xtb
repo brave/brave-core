@@ -32,9 +32,6 @@
 <translation id="5040262127954254034">സ്വകാര്യത</translation>
 <translation id="3061707000357573562">പാച്ച് സേവനം</translation>
 <translation id="1914326953223720820">അൺസിപ്പ് സേവനം</translation>
-<translation id="1623104350909869708">കൂടുതൽ ഡയലോഗുകൾ സൃഷ്‌ടിക്കുന്നതിൽ നിന്നും ഈ പേജിനെ തടയുക</translation>
-<translation id="2677748264148917807">ഉപേക്ഷിക്കുക</translation>
-<translation id="5556459405103347317">വീണ്ടും ലോഡുചെയ്യുക</translation>
 <translation id="2359808026110333948">തുടരുക</translation>
 <translation id="4378154925671717803">ഫോൺ</translation>
 <translation id="8131740175452115882">സ്ഥിരീകരിക്കുക</translation>
@@ -67,12 +64,13 @@
 <translation id="7701040980221191251">ഒന്നുമില്ല</translation>
 <translation id="8428213095426709021">ക്രമീകരണങ്ങള്‍</translation>
 <translation id="9038649477754266430">പേജുകൾ കൂടുതൽ വേഗത്തിൽ ലോഡുചെയ്യാൻ ഒരു പ്രവചന സേവനം ഉപയോഗിക്കുക</translation>
+<translation id="2344028582131185878">യാന്ത്രിക ഡൗൺലോഡുകൾ</translation>
+<translation id="3414952576877147120">വലുപ്പം:</translation>
 <translation id="4850886885716139402">കാണുക</translation>
 <translation id="7180611975245234373">പുതുക്കുക</translation>
-<translation id="1426410128494586442">അതെ</translation>
-<translation id="4250680216510889253">ഇല്ല</translation>
 <translation id="4522570452068850558">വിശദാംശങ്ങൾ‌</translation>
 <translation id="3586931643579894722">വിശദാംശങ്ങൾ മറയ്‌ക്കുക‍‌</translation>
+<translation id="5556459405103347317">വീണ്ടും ലോഡുചെയ്യുക</translation>
 <translation id="614940544461990577">പരീക്ഷിച്ചുനോക്കൂ:</translation>
 <translation id="4943872375798546930">ഫലങ്ങളൊന്നുമില്ല</translation>
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
@@ -90,6 +88,8 @@
 <translation id="4880827082731008257">തിരയൽ ചരിത്രം</translation>
 <translation id="4756388243121344051">&amp;ചരിത്രം</translation>
 <translation id="1644574205037202324">ചരിത്രം</translation>
+<translation id="1623104350909869708">കൂടുതൽ ഡയലോഗുകൾ സൃഷ്‌ടിക്കുന്നതിൽ നിന്നും ഈ പേജിനെ തടയുക</translation>
+<translation id="2677748264148917807">ഉപേക്ഷിക്കുക</translation>
 <translation id="3950820424414687140">സൈൻ ഇൻ</translation>
 <translation id="8286036467436129157">സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="8503813439785031346">ഉപയോക്തൃനാമം</translation>
@@ -132,11 +132,12 @@
 <translation id="2586657967955657006">ക്ലിപ്പ്ബോർഡ്</translation>
 <translation id="6059925163896151826">USB ഉപകരണങ്ങൾ</translation>
 <translation id="7638605456503525968">സീരിയൽ പോർട്ടുകൾ</translation>
+<translation id="3784372983762739446">Bluetooth ഉപകരണങ്ങൾ</translation>
 <translation id="2215727959747642672">ഫയൽ എഡിറ്റ് ചെയ്യൽ</translation>
 <translation id="6545864417968258051">Bluetooth സ്‌കാനിംഗ്</translation>
 <translation id="534295439873310000">NFC ഉപകരണങ്ങൾ</translation>
-<translation id="4943703118917034429">വെർച്വൽ റിയാലിറ്റി</translation>
-<translation id="3513704683820682405">അനുബന്ധയാഥാർത്ഥ്യം</translation>
+<translation id="4670064810192446073">വെർച്വൽ റിയാലിറ്റി</translation>
+<translation id="2025115093177348061">അനുബന്ധയാഥാർത്ഥ്യം</translation>
 <translation id="5039804452771397117">അനുവദിക്കൂ</translation>
 <translation id="7053983685419859001">തടയുക</translation>
 <translation id="57838592816432529">മ്യൂട്ടുചെയ്യുക</translation>
@@ -152,9 +153,24 @@
 <translation id="5932224571077948991">അനാവശ്യമോ തെറ്റിദ്ധരിപ്പിക്കുന്നതോ ആയ പരസ്യങ്ങള്‍ കാണിക്കുന്ന സൈറ്റ്</translation>
 <translation id="7878562273885520351">നിങ്ങളുടെ പാസ്‍വേഡ് അപഹരിക്കപ്പെട്ടേക്കാം</translation>
 <translation id="1089439967362294234">പാസ്‌വേഡ് മാറ്റുക</translation>
-<translation id="9008201768610948239">അവഗണിക്കുക</translation>
 <translation id="1186201132766001848">പാസ്‌വേഡുകൾ പരിശോധിക്കുക</translation>
+<translation id="9008201768610948239">അവഗണിക്കുക</translation>
+<translation id="808894953321890993">പാസ്‌വേഡ് മാറ്റുക</translation>
 <translation id="5979084224081478209">പാസ്‌വേഡുകൾ പരിശോധിക്കുക</translation>
+<translation id="6107012941649240045">ഇതിന് നല്‍‌കി</translation>
+<translation id="5030338702439866405">ഇനിപ്പറയുന്നത് നല്‍‌കിയത്</translation>
+<translation id="5826507051599432481">പൊതുവായ പേര് (CN)</translation>
+<translation id="6898699227549475383">ഓര്‍‌ഗനൈസേഷന്‍‌ (O)</translation>
+<translation id="3308006649705061278">ഓര്‍‌ഗനൈസേഷണല്‍‌ യൂണിറ്റ് (OU)</translation>
+<translation id="8705331520020532516">സീരിയല്‍‌ നമ്പര്‍‌</translation>
+<translation id="1902576642799138955">സാധുതാ കാലാവധി</translation>
+<translation id="5895187275912066135">ഇനിപ്പറയുന്നദിവസം നല്‍‌കി</translation>
+<translation id="4121428309786185360">ഇനിപ്പറയുന്നയന്ന് കാലഹരണപ്പെടുന്നു</translation>
+<translation id="4154664944169082762">ഫിംഗര്‍‌പ്രിന്‍റുകള്‍‌</translation>
+<translation id="7238585580608191973">SHA-256 ഫിംഗര്‍പ്രിന്‍റ്</translation>
+<translation id="5209518306177824490">SHA-1 ഫിംഗര്‍‌പ്രിന്‍റ്</translation>
+<translation id="6786747875388722282">വിപുലീകരണങ്ങള്‍</translation>
+<translation id="7240120331469437312">സര്‍‌ട്ടിഫിക്കറ്റ് വിഷയേതര നാമം</translation>
 <translation id="10614374240317010">ഒരിക്കലും സംരക്ഷിച്ചില്ല</translation>
 <translation id="5869522115854928033">സംരക്ഷിച്ച പാസ്‌വേഡുകള്‍</translation>
 <translation id="230699814587342492">Brave പാസ്‌വേഡുകൾ</translation>
@@ -182,6 +198,36 @@
 <translation id="2713444072780614174">വെള്ള</translation>
 <translation id="1197088940767939838">ഓറഞ്ച്</translation>
 <translation id="1555130319947370107">നീല</translation>
+<translation id="5612720917913232150">നിങ്ങളുടെ കമ്പ്യൂട്ടറിന്‍റെ ലൊക്കേഷൻ ഉപയോഗിക്കാൻ <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="4733082559415072992">നിങ്ങളുടെ ഉപകരണത്തിന്‍റെ ലൊക്കേഷൻ ഉപയോഗിക്കാൻ  <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="4677585247300749148">പ്രവേശനക്ഷമതാ ഇവന്‍റുകളോട് പ്രതികരിക്കാൻ <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="3461266716147554923">ക്ലിപ്പ്‌ബോർഡിലേക്ക് പകർത്തിയിട്ടുള്ള ടെക്‌സ്റ്റും ചിത്രങ്ങളും കാണാൻ <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="131405271941274527">ഒരു NFC ഉപകരണത്തിൽ നിങ്ങളുടെ ഫോൺ ടാപ്പ് ചെയ്യുമ്പോൾ വിവരങ്ങൾ അയയ്ക്കാനും സ്വീകരിക്കാനും <ph name="URL"/> താൽപ്പര്യപ്പെടുന്നു</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> എന്നതിന്റെ അറിയിപ്പുകൾ ബ്ലോക്ക് ചെയ്‌തിരിക്കുന്നു</translation>
+<translation id="1195558154361252544">നിങ്ങൾ അനുവദിക്കുന്ന സൈറ്റുകൾക്ക് ഒഴികെ മറ്റ് എല്ലാ സൈറ്റുകൾക്കും അറിയിപ്പുകൾ സ്വയമേവ ബ്ലോക്ക് ചെയ്‌തിരിക്കുന്നു</translation>
+<translation id="3532844647053365774">നിങ്ങളുടെ മൈക്രോഫോൺ ഉപയോഗിക്കാൻ <ph name="HOST"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="7108634116785509031">നിങ്ങളുടെ ക്യാമറ ഉപയോഗിക്കാൻ <ph name="HOST"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> നിങ്ങൾക്ക് അറിയിപ്പുകൾ അയയ്‌ക്കാൻ ആഗ്രഹിക്കുന്നു</translation>
+<translation id="6910240653697687763">നിങ്ങളുടെ MIDI ഉപകരണങ്ങളുടെ പൂർണ്ണമായ നിയന്ത്രണം ഏറ്റെടുക്കാൻ <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="503498442187459473">നിങ്ങളുടെ ക്യാമറയും മൈക്രോഫോണും ഉപയോഗിക്കാൻ <ph name="HOST"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="8282947398454257691">നിങ്ങളുടെ അദ്വിതീയ ഉപകരണ ഐഡന്റിഫയർ അറിയുക</translation>
+<translation id="8329449853370113380">പരിരക്ഷിത ഉള്ളടക്കം പ്ലേ ചെയ്യാൻ <ph name="URL"/> ആഗ്രഹിക്കുന്നു. നിങ്ങളുടെ ഉപകരണത്തിന്റെ ഐഡന്റിറ്റി, Brave Software പരിശോധിച്ചുറപ്പിക്കും</translation>
+<translation id="2650609753175229582">പരിരക്ഷിത ഉള്ളടക്കം പ്ലേ ചെയ്യാൻ <ph name="URL"/> താൽപ്പര്യപ്പെടുന്നു. നിങ്ങളുടെ ഉപകരണത്തിന്‍റെ ഐഡന്‍റിറ്റി Brave Software പരിശോധിച്ചുറപ്പിക്കും, ഈ സൈറ്റ് ആക്‌സസ് ചെയ്യാനായേക്കാം.</translation>
+<translation id="3016780570757425217">നിങ്ങളുടെ ലൊക്കേഷൻ അറിയുക</translation>
+<translation id="7221855153210829124">അറിയിപ്പുകൾ കാണിക്കുക</translation>
+<translation id="8606726445206553943">നിങ്ങളുടെ MIDI ഉപകരണങ്ങൾ ഉപയോഗിക്കുക</translation>
+<translation id="7409836189476010449">Flash റൺ ചെയ്യുക</translation>
+<translation id="7438976808740265764">2020 ഡിസംബറിന് ശേഷം Flash Player പിന്തുണയ്‌ക്കില്ല.</translation>
+<translation id="4761104368405085019">നിങ്ങളുടെ മൈക്രോഫോൺ ഉപയോഗിക്കുക</translation>
+<translation id="9150045010208374699">നിങ്ങളുടെ ക്യാമറ ഉപയോഗിക്കുക</translation>
+<translation id="4953689047182316270">ഉപയോഗസഹായി ഇവന്‍റുകളോട് പ്രതികരിക്കുക</translation>
+<translation id="6116338172782435947">ക്ലിപ്പ്‌ബോർഡിലേക്ക് പകർത്തിയിട്ടുള്ള ടെക്‌സ്റ്റും ചിത്രങ്ങളും കാണുക</translation>
+<translation id="5804427196348435412">NFC ഉപകരണങ്ങൾ ഉപയോഗിക്കുക</translation>
+<translation id="3194737229810486521">നിങ്ങളുടെ ഉപകരണത്തിൽ ശാശ്വതമായി ഡാറ്റ സംഭരിക്കാന്‍ <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="1030706264415084469">നിങ്ങളുടെ ഉപകരണത്തിൽ ശാശ്വതമായി വലിയ അളവിൽ ഡാറ്റ സംഭരിക്കാന്‍ <ph name="URL"/>ആഗ്രഹിക്കുന്നു</translation>
+<translation id="1712552549805331520">നിങ്ങളുടെ ലോക്കൽ കമ്പ്യൂട്ടറില്‍ ശാശ്വതമായി ഡാറ്റ സംഭരിക്കാന്‍ <ph name="URL"/> ആഗ്രഹിക്കുന്നു</translation>
+<translation id="1997484222658892567">നിങ്ങളുടെ ലോക്കൽ കമ്പ്യൂട്ടറിൽ ശാശ്വതമായി വലിയ ഡാറ്റ സംഭരിക്കാൻ <ph name="URL"/>ആഗ്രഹിക്കുന്നു</translation>
+<translation id="7648992873808071793">ഈ ഉപകരണത്തിൽ ഫയലുകൾ സംഭരിക്കുക</translation>
 <translation id="4813512666221746211">നെറ്റ്‌വര്‍ക്ക് പിശക്</translation>
 <translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>
 <translation id="5565735124758917034">സജീവമാണ്</translation>
@@ -197,6 +243,8 @@
 <translation id="5720705177508910913">നിലവിലെ ഉപയോക്താവ്</translation>
 <translation id="6965978654500191972">ഉപാധി</translation>
 <translation id="4728558894243024398">പ്ലാറ്റ്ഫോം</translation>
+<translation id="1426410128494586442">അതെ</translation>
+<translation id="4250680216510889253">ഇല്ല</translation>
 <translation id="1588438908519853928">സാധാരണം</translation>
 <translation id="1974060860693918893">നൂതനം</translation>
 <translation id="5308380583665731573">കണക്‌റ്റുചെയ്യുക</translation>
@@ -217,7 +265,6 @@
 <translation id="583281660410589416">അറിഞ്ഞുകൂടാത്തത്</translation>
 <translation id="9170848237812810038">‍&amp;പൂര്‍വാവസ്ഥയിലാക്കുക</translation>
 <translation id="2972581237482394796">&amp;വീണ്ടും ചെയ്യുക</translation>
-<translation id="6786747875388722282">വിപുലീകരണങ്ങള്‍</translation>
 <translation id="5804241973901381774">അനുമതികൾ</translation>
 <translation id="8004582292198964060">ബ്രൗസര്‍</translation>
 </translationbundle>

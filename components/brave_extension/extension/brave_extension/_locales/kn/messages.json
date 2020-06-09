@@ -55,6 +55,18 @@
     "message": "ಕ್ರಾಸ್‌-ಸೈಟ್ ಟ್ರ್ಯಾಕರ್‌‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ಟ್ರ್ಯಾಕರ್‌ಗಳು & ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಪ್ರತಿಕೂಲ)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ಟ್ರ್ಯಾಕರ್‌ಗಳು & ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಪ್ರಮಾಣಿತ)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "ಎಲ್ಲಾ ಟ್ರ್ಯಾಕರ್‌ಗಳು & ಜಾಹೀರಾತುಗಳನ್ನು ಅನುಮತಿಸಿ",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "ಎಚ್‌ಟಿಟಿಪಿಎಸ್‌ಗೆ ಸಂಪರ್ಕ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲಾಗಿದೆ",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

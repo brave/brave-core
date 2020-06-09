@@ -39,18 +39,6 @@
 <translation id="5040262127954254034">隐私设置</translation>
 <translation id="3061707000357573562">修补服务</translation>
 <translation id="1914326953223720820">解压缩服务</translation>
-<translation id="4926159001844873046"><ph name="SITE"/> 显示</translation>
-<translation id="3576616784287504635"><ph name="SITE"/> 上的嵌入式页面显示</translation>
-<translation id="1532118530259321453">此网页显示</translation>
-<translation id="5201306358585911203">此网页上的嵌入式页面显示</translation>
-<translation id="1623104350909869708">阻止此页创建其他对话框</translation>
-<translation id="7862185352068345852">离开此网站？</translation>
-<translation id="9171296965991013597">要退出应用吗？</translation>
-<translation id="2677748264148917807">离开</translation>
-<translation id="425582637250725228">系统可能不会保存您所做的更改。</translation>
-<translation id="8079031581361219619">重新加载此网站？</translation>
-<translation id="6852204201400771460">要重新加载应用吗？</translation>
-<translation id="5556459405103347317">重新加载</translation>
 <translation id="2359808026110333948">继续</translation>
 <translation id="8066955247577885446">抱歉，出了点问题。</translation>
 <translation id="5946937721014915347">正在打开 <ph name="SITE_NAME"/>…</translation>
@@ -281,21 +269,16 @@
 <translation id="6989763994942163495">显示高级设置...</translation>
 <translation id="9038649477754266430">使用联想查询服务更快速地加载网页</translation>
 <translation id="3355823806454867987">更改代理服务器设置...</translation>
+<translation id="2344028582131185878">自动下载</translation>
 <translation id="4220128509585149162">崩溃</translation>
 <translation id="8412145213513410671">崩溃次数（<ph name="CRASH_COUNT"/> 次）</translation>
-<translation id="2068663545051464999">已上传的崩溃报告的 ID：<ph name="CRASH_ID"/>（本地上下文：<ph name="CRASH_LOCAL_ID"/>）</translation>
-<translation id="5034369478845443529">本地上下文：<ph name="CRASH_LOCAL_ID"/></translation>
-<translation id="8398259832188219207">崩溃报告的上传时间：<ph name="UPLOAD_TIME"/></translation>
-<translation id="3679803492151881375">崩溃报告的获取时间：<ph name="CRASH_TIME"/>；上传时间：<ph name="UPLOAD_TIME"/></translation>
-<translation id="2365563543831475020">于 <ph name="CRASH_TIME"/> 获取的崩溃报告未上传</translation>
-<translation id="1264126396475825575">崩溃报告获取时间：<ph name="CRASH_TIME"/>（该报告尚未上传或已被忽略）</translation>
-<translation id="7309308571273880165">崩溃报告获取时间：<ph name="CRASH_TIME"/>（用户已请求上传，但尚未上传）</translation>
+<translation id="2639739919103226564">状态：</translation>
+<translation id="3414952576877147120">大小：</translation>
 <translation id="1015730422737071372">提供其他详细信息</translation>
 <translation id="3759461132968374835">您最近未收到崩溃报告。崩溃报告停用时发生的崩溃不会在此处显示。</translation>
 <translation id="5308689395849655368">已停用崩溃报告。</translation>
 <translation id="6489534406876378309">开始上传崩溃数据</translation>
 <translation id="2239100178324503013">立即发送</translation>
-<translation id="1126551341858583091">占用的本地存储空间为 <ph name="CRASH_SIZE"/>。</translation>
 <translation id="6451458296329894277">确认重新提交表单</translation>
 <translation id="8241707690549784388">您所查找的网页要使用已输入的信息。返回此页可能需要重复已进行的所有操作。是否要继续操作？</translation>
 <translation id="1549470594296187301">必须启用 JavaScript 才能使用此功能。</translation>
@@ -308,12 +291,10 @@
 <translation id="5540224163453853">找不到请求的文章。</translation>
 <translation id="4876188919622883022">简化版视图</translation>
 <translation id="7485870689360869515">找不到数据。</translation>
-<translation id="552553974213252141">提取的内容是否正确？</translation>
-<translation id="1426410128494586442">是</translation>
-<translation id="4250680216510889253">否</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
 <translation id="4522570452068850558">详细信息</translation>
 <translation id="3586931643579894722">隐藏详细信息</translation>
+<translation id="5556459405103347317">重新加载</translation>
 <translation id="3005723025932146533">显示已保存的版本</translation>
 <translation id="3447661539832366887">此设备的所有者已关闭恐龙游戏。</translation>
 <translation id="3287510313208355388">联网时下载</translation>
@@ -423,7 +404,6 @@
 <translation id="2734544361860335147">启用这些功能可能会致使您丢失浏览数据，或者致使您的安全或隐私受到威胁。此操作会为该浏览器的所有用户启用这些功能。</translation>
 <translation id="6377268785556383139">1 个与“<ph name="SEARCH_TEXT"/>”相符的搜索结果</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> 个与“<ph name="SEARCH_TEXT"/>”相符的搜索结果</translation>
-<translation id="8647750283161643317">全部重置为默认值</translation>
 <translation id="5269999699920406580">在整个系统范围内应用的功能只能由所有者 <ph name="OWNER_EMAIL"/> 设定</translation>
 <translation id="8688672835843460752">可用</translation>
 <translation id="4989542687859782284">不受支持的实验</translation>
@@ -468,6 +448,17 @@
 <translation id="362276910939193118">显示全部历史记录</translation>
 <translation id="1644574205037202324">历史记录</translation>
 <translation id="7668654391829183341">未知设备</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> 显示</translation>
+<translation id="3576616784287504635"><ph name="SITE"/> 上的嵌入式页面显示</translation>
+<translation id="1532118530259321453">此网页显示</translation>
+<translation id="5201306358585911203">此网页上的嵌入式页面显示</translation>
+<translation id="1623104350909869708">阻止此页创建其他对话框</translation>
+<translation id="7862185352068345852">离开此网站？</translation>
+<translation id="9171296965991013597">要退出应用吗？</translation>
+<translation id="2677748264148917807">离开</translation>
+<translation id="425582637250725228">系统可能不会保存您所做的更改。</translation>
+<translation id="8079031581361219619">重新加载此网站？</translation>
+<translation id="6852204201400771460">要重新加载应用吗？</translation>
 <translation id="3950820424414687140">登录</translation>
 <translation id="8286036467436129157">登录</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> 要求提供用户名和密码。</translation>
@@ -524,7 +515,6 @@
           <ph name="LIST_ITEM"/>您的雇主或您所在的学校
           <ph name="LIST_ITEM"/>您的互联网服务提供商
         <ph name="END_LIST"/></translation>
-<translation id="8616822740383114808">此设置是由“<ph name="SETTINGS_PAGE"/>”中的“<ph name="ENFORCING_SETTING"/>”强制执行的</translation>
 <translation id="153384715582417236">暂无新内容</translation>
 <translation id="7699293099605015246">目前没有文章可显示</translation>
 <translation id="5545756402275714221">为您推荐的文章</translation>
@@ -672,11 +662,12 @@
 <translation id="2129079103035905234">动态传感器</translation>
 <translation id="6059925163896151826">USB 设备</translation>
 <translation id="7638605456503525968">串行端口</translation>
+<translation id="3784372983762739446">蓝牙设备</translation>
 <translation id="2215727959747642672">文件修改</translation>
 <translation id="6545864417968258051">蓝牙扫描</translation>
 <translation id="534295439873310000">NFC 设备</translation>
-<translation id="4943703118917034429">虚拟实境</translation>
-<translation id="3513704683820682405">增强现实</translation>
+<translation id="4670064810192446073">虚拟实境</translation>
+<translation id="2025115093177348061">增强现实</translation>
 <translation id="5039804452771397117">允许</translation>
 <translation id="7053983685419859001">禁止</translation>
 <translation id="57838592816432529">静音</translation>
@@ -723,18 +714,32 @@
 <translation id="8515152881111950319">您可能会无法再访问所属组织的帐号，或被他人盗用身份信息。Brave 建议您立即更改密码。</translation>
 <translation id="5304100303568917877">您可能会无法再访问自己的 <ph name="ORG_NAME"/> 帐号，或者身份信息遭到盗用。Brave 建议您立即更改密码。</translation>
 <translation id="1089439967362294234">更改密码</translation>
+<translation id="1186201132766001848">检查密码</translation>
 <translation id="2505268675989099013">保护帐号</translation>
 <translation id="9008201768610948239">忽略</translation>
 <translation id="808894953321890993">更改密码</translation>
+<translation id="5979084224081478209">检查密码</translation>
 <translation id="5570825185877910964">保护帐号</translation>
 <translation id="7802523362929240268">网站是合规的</translation>
 <translation id="5344579389779391559">此页面可能会向您收取费用</translation>
 <translation id="7016992613359344582">这些费用可能只收取一次，也可能会周期性收取，而且可能不易察觉。</translation>
 <translation id="9004367719664099443">VR 会话正在进行中</translation>
 <translation id="528468243742722775">结束</translation>
+<translation id="6107012941649240045">颁发对象</translation>
+<translation id="5030338702439866405">颁发者</translation>
+<translation id="5826507051599432481">公用名 (CN)</translation>
+<translation id="6898699227549475383">组织 (O)</translation>
+<translation id="3308006649705061278">组织单位 (OU)</translation>
+<translation id="8705331520020532516">序列号</translation>
+<translation id="1902576642799138955">有效期</translation>
+<translation id="5895187275912066135">颁发日期</translation>
+<translation id="4121428309786185360">截止日期</translation>
+<translation id="4154664944169082762">指纹</translation>
+<translation id="7238585580608191973">SHA-256 指纹</translation>
+<translation id="5209518306177824490">SHA-1 指纹</translation>
+<translation id="6786747875388722282">扩展程序</translation>
+<translation id="7240120331469437312">证书主题背景的备用名称</translation>
 <translation id="4318312030194671742">绘图预览合成器服务</translation>
-<translation id="1186201132766001848">检查密码</translation>
-<translation id="5979084224081478209">检查密码</translation>
 <translation id="1476595624592550506">更改您的密码</translation>
 <translation id="6014801569448771146">检查您的密码</translation>
 <translation id="3764885446986388155">某个网站或应用发生了数据泄露，导致您的密码外泄。Brave 建议您立即检查您保存的密码。</translation>
@@ -905,8 +910,6 @@
 <translation id="8903921497873541725">放大</translation>
 <translation id="5975083100439434680">缩小</translation>
 <translation id="1753706481035618306">页码</translation>
-<translation id="6016158022840135739">{COUNT,plural, =1{第 1 页}other{第 # 页}}</translation>
-<translation id="644931407731409778">包含 {COUNT,plural, =1{1 页}other{# 页}}内容的 PDF 文档</translation>
 <translation id="5798290721819630480">舍弃更改？</translation>
 <translation id="4466881336512663640">对表单所做的更改将会丢失。确定要继续吗？</translation>
 <translation id="7498234416455752244">继续修改</translation>
@@ -958,6 +961,36 @@
 <translation id="3789155188480882154">大小：16</translation>
 <translation id="8090403583893450254">大小：20</translation>
 <translation id="833262891116910667">突出显示</translation>
+<translation id="5612720917913232150"><ph name="URL"/> 想使用您计算机的位置信息</translation>
+<translation id="4733082559415072992"><ph name="URL"/> 想使用您设备的位置信息</translation>
+<translation id="4677585247300749148"><ph name="URL"/> 想对无障碍事件做出响应</translation>
+<translation id="3461266716147554923"><ph name="URL"/> 想查看复制到剪贴板的文字和图片</translation>
+<translation id="131405271941274527"><ph name="URL"/> 想在您的手机与 NFC 设备触碰时发送和接收信息</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> 网站上的通知已被屏蔽</translation>
+<translation id="1195558154361252544">除您允许的网站外，已自动阻止所有其他网站显示通知</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> 想使用您的麦克风</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> 想使用您的摄像头</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> 想向您发送通知</translation>
+<translation id="6910240653697687763"><ph name="URL"/> 想完全控制您的 MIDI 设备</translation>
+<translation id="503498442187459473"><ph name="HOST"/> 想使用您的摄像头和麦克风</translation>
+<translation id="8282947398454257691">获取您的唯一设备标识符</translation>
+<translation id="8329449853370113380"><ph name="URL"/> 想播放受保护的内容。Brave Software 将对您的设备进行身份验证。</translation>
+<translation id="2650609753175229582"><ph name="URL"/> 想播放受保护内容。Brave Software 将会验证您的设备身份，而且此网站可能会查看您的设备身份。</translation>
+<translation id="3016780570757425217">获取您的位置</translation>
+<translation id="7221855153210829124">显示通知</translation>
+<translation id="8606726445206553943">使用您的 MIDI 设备</translation>
+<translation id="7409836189476010449">运行 Flash</translation>
+<translation id="7438976808740265764">自 2020 年 12 月开始，Flash Player 将不再受支持。</translation>
+<translation id="4761104368405085019">使用您的麦克风</translation>
+<translation id="9150045010208374699">使用您的摄像头</translation>
+<translation id="4953689047182316270">对无障碍事件做出响应</translation>
+<translation id="6116338172782435947">查看复制到剪贴板的文字和图片</translation>
+<translation id="5804427196348435412">使用 NFC 设备</translation>
+<translation id="3194737229810486521"><ph name="URL"/> 想在您的设备上永久存储数据</translation>
+<translation id="1030706264415084469"><ph name="URL"/> 想在您的设备上永久存储大量数据</translation>
+<translation id="1712552549805331520"><ph name="URL"/> 想在您的本地计算机上永久存储数据</translation>
+<translation id="1997484222658892567"><ph name="URL"/> 想在您的本地计算机上永久存储大量数据</translation>
+<translation id="7648992873808071793">在此设备上存储文件</translation>
 <translation id="2721148159707890343">请求成功</translation>
 <translation id="1821930232296380041">请求或请求参数无效</translation>
 <translation id="4813512666221746211">网络错误</translation>
@@ -1014,7 +1047,6 @@
 <translation id="6950684638814147129">解析 JSON 值时出错：<ph name="ERROR"/></translation>
 <translation id="2479410451996844060">搜索网址无效。</translation>
 <translation id="6060009363608157444">DnsOverHttps 模式无效。</translation>
-<translation id="3057676462092457419">尚不支持 DnsOverHttps 模式“<ph name="SECURE_DNS_MODE_SECURE"/>”，该模式现已设为“<ph name="SECURE_DNS_MODE_OFF"/>”。</translation>
 <translation id="3428151540071562330">一个或多个 DnsOverHttpsTemplates 服务器模板 URI 无效，因此不会被使用。</translation>
 <translation id="569000877158168851">DnsOverHttpsTemplates 值不相关，因此不会被使用，除非 DnsOverHttpsMode 政策设为“<ph name="SECURE_DNS_MODE_AUTOMATIC"/>”或“<ph name="SECURE_DNS_MODE_SECURE"/>”。</translation>
 <translation id="4358059973562876591">您指定的模板未必会被应用，因为 DnsOverHttpsMode 政策出错了。</translation>
@@ -1074,7 +1106,6 @@
 <translation id="8202370299023114387">冲突</translation>
 <translation id="6440503408713884761">已忽略</translation>
 <translation id="7535087603100972091">值</translation>
-<translation id="2639739919103226564">状态：</translation>
 <translation id="2392959068659972793">显示未设定值的政策</translation>
 <translation id="7182878459783632708">未设置任何政策</translation>
 <translation id="8488350697529856933">适用对象</translation>
@@ -1119,6 +1150,8 @@
 <translation id="361438452008624280">列表条目“<ph name="LANGUAGE_ID"/>”：语言未知或不受支持。</translation>
 <translation id="8805819170075074995">列表条目“<ph name="LANGUAGE_ID"/>”：该条目因同时存在于 SpellcheckLanguage 政策中而被忽略。</translation>
 <translation id="7346048084945669753">有无关联：</translation>
+<translation id="1426410128494586442">是</translation>
+<translation id="4250680216510889253">否</translation>
 <translation id="9089260154716455634">“非工作时间”政策：</translation>
 <translation id="6521745193039995384">无效</translation>
 <translation id="4214357935346142455">登录屏幕个人资料</translation>
@@ -1470,8 +1503,6 @@
 <translation id="4635654612248442824">网站 <ph name="ORIGIN"/> 已要求其所有请求都应用一项来源政策，但此政策目前无法应用。</translation>
 <translation id="6670613747977017428">返回到安全网页。</translation>
 <translation id="2660650542324841986">您要访问的服务器 <ph name="ORIGIN"/> 已要求收到的所有请求都应用一项来源政策。但该服务器现在未能提供任何政策，导致浏览器无法实现您对 <ph name="SITE"/> 的访问请求。网站运营商可以使用来源政策为网站配置安全及其他属性。</translation>
-<translation id="3688109723158850780">您要访问的服务器 <ph name="ORIGIN"/> 已要求收到的所有请求都应用一项来源政策。但该服务器并未提供任何政策，而是将浏览器重定向到了别处，导致浏览器无法实现您对 <ph name="SITE"/> 的访问请求。网站运营商可以使用来源政策为网站配置安全及其他属性。</translation>
-<translation id="2638745661847473633">您要访问的服务器 <ph name="ORIGIN"/> 已要求收到的所有请求都应用一项来源政策。但该服务器现在提供了一项无效的政策，这意味着，浏览器无法实现您对 <ph name="SITE"/> 的访问请求。网站运营商可以使用来源政策为网站配置安全及其他属性。</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>继续前往 <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="6704582573942289642">确定是这个网站吗？</translation>
 <translation id="3262069459091978471"><ph name="LOOKALIKE_DOMAIN"/> 看起来和 <ph name="SUGGESTED_DOMAIN"/> 很相似。攻击者有时会使用类似的网址来仿冒网站。</translation>
@@ -1629,7 +1660,6 @@
 <translation id="5284909709419567258">网络地址</translation>
 <translation id="8975263830901772334">已打印的文件的名称</translation>
 <translation id="4791134497475588553">已安装的 Linux 应用及其上次使用时间</translation>
-<translation id="6786747875388722282">扩展程序</translation>
 <translation id="5663955426505430495">此设备的管理员已安装了一些扩展程序来提供更多功能。这些扩展程序有权访问您的部分数据。</translation>
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> 已安装了一些扩展程序来提供更多功能。这些扩展程序有权访问您的部分数据。</translation>
 <translation id="5804241973901381774">权限</translation>
@@ -1642,7 +1672,6 @@
 <translation id="1822540298136254167">您访问过的网站和您在这些网站上花费的时间</translation>
 <translation id="7633909222644580952">性能数据和崩溃报告</translation>
 <translation id="6826370046007623921">数据泄露防护</translation>
-<translation id="1612819149504950095">扫描您在 Brave 中下载或上传的文件的内容。</translation>
 <translation id="1298536327547837046">恶意软件扫描</translation>
 <translation id="6312541937207395104">扫描您在 Brave 中下载或上传的文件。</translation>
 <translation id="8220639454292072926">企业版报告</translation>

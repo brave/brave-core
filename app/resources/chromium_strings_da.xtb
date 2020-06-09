@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Hjælp med at gøre Brave bedre ved at sende fejlrapporter og <ph name="UMA_LINK"/> til Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Login på netværk – Brave</translation>
+<translation id="8745514854244955877">Brave – Login på netværk – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Login på netværk</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave for udviklere</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -42,8 +45,12 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="5785919770853225148">Brave gemmer denne adgangskode på din Brave Software-konto. Du behøver ikke at huske den.</translation>
 <translation id="8211837073776713955">Brave giver dig besked, hvis dine adgangskoder kompromitteres</translation>
 <translation id="113959764510199339">Brave forsøger at vise adgangskoder.</translation>
+<translation id="96347285368592620">Brave forsøger at kopiere adgangskoder.</translation>
+<translation id="2953892977076487219">Brave forsøger at redigere adgangskoder.</translation>
 <translation id="7503098128120083822">Brave anmoder om at eksportere dine adgangskoder.</translation>
 <translation id="8285294305439559616">Brave forsøger at vise adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
+<translation id="8090497651549769448">Brave forsøger at kopiere adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
+<translation id="3861679447659630159">Brave forsøger at redigere adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="5918095577778020936">Brave anmoder om at eksportere dine adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="8320964054148936490">Computeren har allerede en nyere version af Brave. Hvis softwaren ikke virker, skal du afinstallere Brave og prøve igen.</translation>
 <translation id="7691786510374174420">Installationen mislykkedes på grund af en ikke-specificeret fejl. Hvis Brave kører, skal du lukke programmet og prøve igen.</translation>
@@ -190,7 +197,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="3262506503470845422">Få hjælp til Brave</translation>
 <translation id="1864557848095568223">Brave opdateres</translation>
 <translation id="1786715389543715322">Opdaterer Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Næsten opdateret. Genstart Brave for at afslutte opdateringen.</translation>
+<translation id="7914115000169617076">Næsten opdateret! Genstart Brave for at fuldføre opdateringen. Inkognitovinduer åbnes ikke igen.</translation>
 <translation id="8208853227947884571">Brave er opdateret</translation>
 <translation id="573759479754913123">Om Brave OS</translation>
 <translation id="7573289029918943991">Du kan se, om en enhed er opdateret, ved at gå til <ph name="LINK_BEGIN"/>indstillingerne for Brave OS<ph name="LINK_END"/></translation>
@@ -208,6 +215,12 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8586264863973514035">Åbn Brave igen for at anvende ændringerne</translation>
 <translation id="7021823858304886493">Tillad login via Brave</translation>
 <translation id="1649714546770135458">Når du deaktiverer denne indstilling, kan du logge ind på Brave Software-websites som f.eks. Gmail uden at logge ind i Brave</translation>
+<translation id="2796517443093885402">Brave kan hjælpe med at beskytte dig mod brud på datasikkerheden, farlige udvidelser og meget mere</translation>
+<translation id="428541510811554120">Brave kan ikke søge efter opdateringer. Prøv at tjekke din internetforbindelse.</translation>
+<translation id="2633397153656205379">Brave kunne ikke opdateres, da der opstod en fejl. <ph name="BEGIN_LINK"/>Løs problemer med opdatering af Brave og mislykkede opdateringer.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave kan ikke tjekke dine adgangskoder, da du ikke er logget ind</translation>
+<translation id="7006260220514217183">Beskyttet browsing er deaktiveret. Brave anbefaler, at du aktiverer funktionen.</translation>
+<translation id="1785833016412082453">Brave kan ikke tjekke dine udvidelser. Prøv igen senere.</translation>
 <translation id="9220324636239049437">Denne handling sletter ét element på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Denne handling sletter <ph name="ITEMS_COUNT"/> elementer på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Denne handling sletter dine browserdata på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>

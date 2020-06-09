@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Помогнете ни да подобрим Brave, като ни изпращате <ph name="UMA_LINK"/> му и сигнали за сривове</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Вход в мрежата – Brave</translation>
+<translation id="8745514854244955877">Brave – Вход в мрежата – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Вход в мрежата</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave бета</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -36,8 +39,12 @@
 <translation id="5785919770853225148">Brave ще запази тази парола в профила ви в Brave Software. Няма да се налага да я помните.</translation>
 <translation id="8211837073776713955">Brave ви уведомява, ако паролите ви бъдат компрометирани</translation>
 <translation id="113959764510199339">Brave опитва да покаже паролите.</translation>
+<translation id="96347285368592620">Brave се опитва да копира паролите.</translation>
+<translation id="2953892977076487219">Brave се опитва да редактира паролите.</translation>
 <translation id="7503098128120083822">Brave иска да експортира паролите ви.</translation>
 <translation id="8285294305439559616">Brave опитва да покаже паролите. За да разрешите това, въведете паролата си за Windows.</translation>
+<translation id="8090497651549769448">Brave опитва да копира паролите. За да разрешите това, въведете паролата си за Windows.</translation>
+<translation id="3861679447659630159">Brave опитва да редактира паролите. За да разрешите това, въведете паролата си за Windows.</translation>
 <translation id="5918095577778020936">Brave иска да експортира паролите ви. За да разрешите това, въведете паролата си за Windows.</translation>
 <translation id="8320964054148936490">На този компютър вече има по-скорошна версия на Brave. Ако софтуерът не работи, моля, деинсталирайте Brave и опитайте отново.</translation>
 <translation id="7691786510374174420">Инсталирането не бе успешно поради неизвестна грешка. Ако Brave понастоящем се изпълнява, моля, затворете го и опитайте отново.</translation>
@@ -184,7 +191,7 @@
 <translation id="3262506503470845422">Получаване на помощ за Brave</translation>
 <translation id="1864557848095568223">Brave се актуализира</translation>
 <translation id="1786715389543715322">Brave се актуализира (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Актуализирането почти завърши! Остава само да стартирате отново Brave.</translation>
+<translation id="7914115000169617076">Почти приключихме! Стартирайте отново Brave, за да завършите актуализирането. Прозорците в режим „инкогнито“ няма да бъдат отворени отново.</translation>
 <translation id="8208853227947884571">Brave е актуален</translation>
 <translation id="573759479754913123">Всичко за Brave OS</translation>
 <translation id="7573289029918943991">За да разберете дали устройството ви е актуално, отворете <ph name="LINK_BEGIN"/>настройките на Brave OS<ph name="LINK_END"/></translation>
@@ -200,6 +207,12 @@
 <translation id="8586264863973514035">За да приложите промените си, рестартирайте Brave</translation>
 <translation id="7021823858304886493">Разрешаване на влизането в Brave</translation>
 <translation id="1649714546770135458">С изключването на тази функция можете да влизате в сайтовете на Brave Software, като например Gmail, без да влизате в Brave</translation>
+<translation id="2796517443093885402">Brave може да ви защити от нарушения на сигурността на данните, злонамерени разширения и др.</translation>
+<translation id="428541510811554120">Brave не може да провери за актуализации. Проверете връзката си с интернет.</translation>
+<translation id="2633397153656205379">Brave не се актуализира, защото нещо се обърка. <ph name="BEGIN_LINK"/>Отстранете проблеми с актуализирането на Brave и неуспешни актуализации<ph name="END_LINK"/>.</translation>
+<translation id="8622246347342688645">Brave не може да провери паролите ви, защото не сте влезли в профила си</translation>
+<translation id="7006260220514217183">Функцията „Безопасно сърфиране“ е изключена. Brave препоръчва да я включите.</translation>
+<translation id="1785833016412082453">Brave не може да провери разширенията ви. Опитайте пак по-късно.</translation>
 <translation id="9220324636239049437">1 елемент ще се изтрие от това устройство. За да извлечете данните си по-късно, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> елемента ще се изтрият от това устройство. За да извлечете данните си по-късно, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Данните за сърфирането ви ще се изтрият от това устройство. За да ги извлечете по-късно, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>

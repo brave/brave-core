@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
 <translation id="7835726359440951858">حجب الإعلانات والتتبع</translation>
-<translation id="520895744850022668">HTTPS في كل مكان</translation>
+<translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="94154759592465111">حظر النصوص</translation>
 <translation id="7458422973722236530">حماية البصمات</translation>
-<translation id="252011129655042182">الإعلانات والمتتبعون</translation>
+<translation id="5709627087332022422">حظر برامج التتبع عبر المواقع</translation>
 <translation id="6754976710186182237">طرق تسجيل البصمة</translation>
 <translation id="2313532038420432247">ترقيات HTTPS</translation>
 <translation id="7461425058443653485">تم حظر النصوص</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">علامة تبويب قياسية</translation>
 <translation id="3377025655491224618">علامة تبويب للتصفح المتخفي</translation>
 <translation id="9148058034647219655">إنهاء</translation>
+<translation id="520895744850022668">HTTPS في كل مكان</translation>
 <translation id="8710614491157212477">يفتح المواقع المدعومة باستخدام HTTPS بدلاً من HTTP عندما يكون ذلك ممكناً</translation>
 <translation id="8387201461264842096">حظر الإعلان</translation>
 <translation id="1934885595886623674">يمنع الإعلانات من التحميل</translation>
@@ -163,7 +164,7 @@
 <translation id="1713542052890184975">يرجى عمل نسخة احتياطية عن محفظة Brave الخاصة بك.</translation>
 <translation id="2323069945529668668">آه!</translation>
 <translation id="7510166204621526816">خادم مكافآت Brave لا يستجيب. سوف نصلح هذا في أقرب وقت ممكن.</translation>
-<translation id="2626799779920242286">يرجى إعادة المحاولة مرة أخرى لاحقاً.</translation>
+<translation id="7117228822971127758">يُرجى إعادة المحاولة لاحقًا</translation>
 <translation id="3068742524072211213">تنتهي في <ph name="DATE"/></translation>
 <translation id="4292832015778676417">المكتسب من الإعلانات</translation>
 <translation id="683765328936486920">على يوتيوب</translation>
@@ -236,7 +237,6 @@
 <translation id="6199596294742117349">هذه علامة تبويب خاصة</translation>
 <translation id="5858455511731621847">على الرغم من أن المواقع التي تزورها في علامات التبويب الخاصة لا يتم حفظها محلياً، إلا أنها لا تجعلك مجهول الهوية أو غير مرئي لمزود خدمة الإنترنت أو للشركة التي تعمل بها أو للمواقع التي تزورها.</translation>
 <translation id="5789441016350810005">إعلانات Brave المرسلة عندما يكون المتصفح في الخلفية</translation>
-<translation id="7127980134843952133">سجل التنزيل</translation>
 <translation id="3690140184638701871">المساهمات والإكراميات</translation>
 <translation id="844921671123185605">تمت معالجة إكرامياتك الشهرية!</translation>
 <translation id="3124090095880236567">تشغيل الإعلانات</translation>
@@ -259,16 +259,82 @@
 <translation id="8522669544471808198">إظهار صور الخلفية</translation>
 <translation id="3870475560794762985">إظهار صور الرعاة الدعائية</translation>
 <translation id="8297488609722895137">الصورة بعدسة <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">تقاضَ مالاً مقابل رؤية صورة الخلفية هذه.</translation>
-<translation id="4836823081419522426">ستتلقى 70% من عائدات الإعلانات لهذه الرعاية الخاصة والتي يمكن استخدامها لدعم منشئي محتوى الويب. قم بتشغيل مكافآت Brave لتقاضي نصيبك.</translation>
-<translation id="7307847920988946894">تشغيل المكافآت</translation>
 <translation id="1605521356929094020">قم بتشغيل إعلانات Brave</translation>
-<translation id="1647482814782886825">بتشغيلك المكافآت فإنك توافق على <ph name="TERMS_OF_SERVICE"/>. يمكنك كذلك اختيار <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">بنقرك على Earn &amp; Give فإنك توافق على <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">تقاضَ أجراً لرؤية صورة الخلفية هذه.</translation>
 <translation id="7136586167396205364">إخفاء صور الرعاة الدعائية</translation>
 <translation id="2927095357213611519">يمكنك دعم منشئي الويب باستخدام الرموز المميزة.\nاكسب رموزاً مميزة من خلال مشاهدة إعلانات مراعية للخصوصية.</translation>
-<translation id="4016415345213871193">إنك تتقاضى مالاً مقابل رؤية صورة الخلفية هذه.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> حول صور الرعاة الدعائية في مكافآت Brave. يمكنك كذلك اختيار <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">يمكنك كذلك اختيار <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">تقاضَ مالاً لرؤية صورة الخلفية هذه. قم بتشغيل إعلانات Brave لتقاضي نصيبك.</translation>
 <translation id="213787746370741250">فتح نوافذ التبويب في نوافذ مخصصة</translation>
+<translation id="8030169304546394654">قُطع الاتصال</translation>
+<translation id="8267327690882073581">التحقق من المحفظة</translation>
+<translation id="543510923939676996">تمَّ التحقق من المحفظة</translation>
+<translation id="8673913984316081937">التحقق من محفظتك أمر اختياري</translation>
+<translation id="8558636200953226885">لكن إذا قمت بالتحقق فسيمكنك...</translation>
+<translation id="8697510149346635496">اسحب رموز BAT التي تكسبها من عرض الإعلانات التي تحترم الخصوصية</translation>
+<translation id="1481480653609649134">قم بشراء رموز BAT إضافية بواسطة بطاقات الائتمان وغيرها من المصادر</translation>
+<translation id="9096003370755878766">اسحب رموز BAT التي قد تكون أضفتها سابقاً في محفظة مكافآت Brave الخاصة بك</translation>
+<translation id="1554282356558968486">تتوفر خدمتنا للمحافظ من قبل</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
+<translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
+<translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
+<translation id="2193391216824305230">محفظة المستخدم</translation>
+<translation id="7591798679868259510">الانتقال إلى حساب Uphold الخاص بي</translation>
+<translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
+<translation id="6239274080752256452">سحب رصيد</translation>
+<translation id="8874184842967597500">غير متصل</translation>
+<translation id="3368922792935385530">متصل</translation>
+<translation id="4569155249847375786">محقَّق</translation>
+<translation id="5358719431303818601">لم يتم التحقق من قطع الاتصال</translation>
+<translation id="4241449868720191203">تم التحقق من قطع الاتصال</translation>
+<translation id="3248185426436836442">معلَّق</translation>
+<translation id="8108013093558639183">BAT غير مدعوم في منطقتك حالياً وذلك بناءً على الموقع الذي تم فتح حسابك فيه. يرجى إعادة التحقق من توفره لاحقاً.</translation>
+<translation id="4190454391025419535">المنطقة غير مدعومة</translation>
+<translation id="6830703472632069884">طرأت مشكلة أثناء التحقق من محفظتك. يرجى إعادة المحاولة في وقتٍ لاحق.</translation>
+<translation id="3512533646933434345">خطأ في التحقق من المحفظة</translation>
+<translation id="2260513517001048012">ملاحظة: لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. سيستمر متصفحك في محاولة المساهمة حتى يجري التحقق أو حتى مرور 90 يوم.</translation>
+<translation id="4488355059795908907">لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. ستظل أي مساهمات ترسلها في محفظتك حتى يستكمل هذه العملية.</translation>
+<translation id="2495032782748793764">Brave Default</translation>
+<translation id="9132378787893584761">شارك Brave مع أصدقائك!</translation>
+<translation id="717952606991220586">عذرًا، حدث خطأ ما. الرجاء المحاولة مرة أخرى لاحقًا.</translation>
+<translation id="2524310205387880526">تقييم Brave</translation>
+<translation id="6680650203439190394">المعدل</translation>
+<translation id="2635089463885398597">كيف تقيّم تجربتك مع Brave؟</translation>
+<translation id="141901961143729572">شاركنا آراءك</translation>
+<translation id="7961015016161918242">مطلقًا</translation>
+<translation id="1275213816424141989">ربما لاحقاً</translation>
+<translation id="6991128190741664836">لاحقاً</translation>
+<translation id="8851456134224363571">رائع! هلّا تركت لنا تقييماً في متجر Play؟</translation>
+<translation id="8668962040900592974">أعلمنا كيف يمكننا التحسن</translation>
+<translation id="4406937629441301400">اكسب رموزاً مقابل عرض هذه الصورة وردّ الصنيع إلى منشئي المحتوى. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">اكسب رموزاً مقابل عرض هذه الصورة. قم بتشغيل Earn &amp; Give لاستلام حصتك.</translation>
+<translation id="6632345639591919543">أنت تكسب رموزاً مقابل عرض هذه الصورة.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">أنت تكسب رموزاً مقابل عرض هذه الصورة.</translation>
+<translation id="7952665812649667034">أنا مستعد لـ Earn &amp; Give</translation>
+<translation id="7877201489035217175">تعرف على المزيد حول الصور الدعائية</translation>
+<translation id="828092975561478703">مقابل كل صورة دعائية تشاهدها تتلقى 70% من العائد بصيغة رموز. مع Brave Ads فإنك دائماً تتحكم في الإعلانات التي تراها.</translation>
+<translation id="4941539331405513605">حجب ملفات تعريف الارتباط عبر المواقع</translation>
+<translation id="3763681089644577874">حجب ملفات تعريف الارتباط</translation>
+<translation id="614747795780742163">يمنع مواقع الويب من تخزين معلومات حول زياراتك السابقة</translation>
+<translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
+<translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
+<translation id="5963670684159057574">حظر أخذ البصمة عبر المواقع</translation>
+<translation id="3895527457258986253">حجب مسح البصمة</translation>
+<translation id="184568144098869637">يمنع المتصفح من التعرف على جهازك</translation>
+<translation id="4540198958192073185">حظر كل البصمات</translation>
+<translation id="769702552748212954">السماح بجميع عمليات أخذ البصمات</translation>
+<translation id="2888409909650566510">الإعلانات وغيرها\nمن الأشياء المريبة محجوبة</translation>
+<translation id="6930134873084561197">غالبًا ما تتضمن المواقع ملفات تعريف ارتباط ونصوص برمجية تحاول التعرف على هويتك وجهازك. إنهم يريدون معرفة هويتك ومتابعتك عبر الويب لتتبع ما تفعله في كل موقع.\n\nيحجب Brave هذه الأشياء عنك لكي تتمكن من التصفح دون أن يتم تتبعك.</translation>
+<translation id="8553998445606452168">حول Brave Shields</translation>
+<translation id="8912304686498704084">قيد التشغيل</translation>
+<translation id="4963218453264888510">معطل</translation>
+<translation id="7474113515179313724">إنك تتصفح هذا الموقع دون حماية الخصوصية من Brave. ألا يعمل بشكل صحيح أثناء تشغيل Shields؟</translation>
+<translation id="9055546041146396417">إذا كان هذا الموقع يبدو معطلاً فجرّب إيقاف تشغيل Shields.</translation>
+<translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
+<translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
+<translation id="5429200298326665264">ملاحظة: سيتم إرسال عنوان هذا الموقع مع رقم إصدار Brave الخاص بك وعنوان IP الخاص بك (والذي لن يتم تخزينه).</translation>
+<translation id="5299848999918506028">شكراً لك!</translation>
+<translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
+<translation id="650318023204990401">الضوابط المتقدمة</translation>
+<translation id="7182293319417450928">مطلوب 25 BAT كحد أدنى للتحقق.</translation>
 </translationbundle>

@@ -55,6 +55,18 @@
     "message": "ตัวติดตามข้ามไซต์ถูกบล็อก",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "บล็อกโฆษณาและแอปติดตามแล้ว (แบบรุนแรง)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "บล็อกโฆษณาและแอปติดตาม (แบบมาตรฐาน)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "อนุญาตโฆษณาและแอปติดตามทั้งหมด",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "อัปเกรดการเชื่อมต่อไปยัง HTTPS แล้ว",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

@@ -29,9 +29,6 @@
 <translation id="5713644099811900409">Compte Brave Software</translation>
 <translation id="3157931365184549694">Restaurer\n</translation>
 <translation id="5040262127954254034">Confidentialité</translation>
-<translation id="1623104350909869708">Empêcher cette page de générer des boîtes de dialogue supplémentaires</translation>
-<translation id="2677748264148917807">Quitter</translation>
-<translation id="5556459405103347317">Actualiser</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="4378154925671717803">Numéro de téléphone</translation>
 <translation id="8131740175452115882">Confirmer</translation>
@@ -60,12 +57,13 @@
 <translation id="397105322502079400">Calcul en cours...</translation>
 <translation id="7701040980221191251">Aucun</translation>
 <translation id="8428213095426709021">Paramètres</translation>
+<translation id="2344028582131185878">Téléchargements automatiques</translation>
+<translation id="3414952576877147120">Taille :</translation>
 <translation id="4850886885716139402">Affichage</translation>
 <translation id="7180611975245234373">Actualiser</translation>
-<translation id="1426410128494586442">Oui</translation>
-<translation id="4250680216510889253">Non</translation>
 <translation id="4522570452068850558">Détails</translation>
 <translation id="3586931643579894722">Masquer les détails</translation>
+<translation id="5556459405103347317">Actualiser</translation>
 <translation id="614940544461990577">Essayez :</translation>
 <translation id="4943872375798546930">Aucun résultat</translation>
 <translation id="8688672835843460752">Accessible</translation>
@@ -83,6 +81,8 @@
 <translation id="4880827082731008257">Rechercher dans l'historique</translation>
 <translation id="4756388243121344051">&amp;Historique</translation>
 <translation id="1644574205037202324">Historique</translation>
+<translation id="1623104350909869708">Empêcher cette page de générer des boîtes de dialogue supplémentaires</translation>
+<translation id="2677748264148917807">Quitter</translation>
 <translation id="3950820424414687140">Connexion</translation>
 <translation id="8286036467436129157">Se connecter</translation>
 <translation id="8503813439785031346">Nom d'utilisateur</translation>
@@ -124,11 +124,12 @@
 <translation id="2586657967955657006">Presse-papiers</translation>
 <translation id="6059925163896151826">Appareils USB</translation>
 <translation id="7638605456503525968">Ports série</translation>
+<translation id="3784372983762739446">Appareils Bluetooth</translation>
 <translation id="2215727959747642672">Modification des fichiers</translation>
 <translation id="6545864417968258051">Recherche d'appareils Bluetooth</translation>
 <translation id="534295439873310000">Appareils NFC</translation>
-<translation id="4943703118917034429">Réalité virtuelle</translation>
-<translation id="3513704683820682405">Réalité augmentée</translation>
+<translation id="4670064810192446073">Réalité virtuelle</translation>
+<translation id="2025115093177348061">Réalité augmentée</translation>
 <translation id="5039804452771397117">Autoriser</translation>
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="57838592816432529">Désactiver le son</translation>
@@ -144,6 +145,22 @@
 <translation id="7878562273885520351">Votre mot de passe a peut-être été compromis</translation>
 <translation id="1089439967362294234">Modifier le mot de passe</translation>
 <translation id="9008201768610948239">OK</translation>
+<translation id="808894953321890993">Changer le mot de passe</translation>
+<translation id="5979084224081478209">Vérifier les mots de passe</translation>
+<translation id="6107012941649240045">Délivré à</translation>
+<translation id="5030338702439866405">Délivré par</translation>
+<translation id="5826507051599432481">Nom commun (CN)</translation>
+<translation id="6898699227549475383">Organisation (O)</translation>
+<translation id="3308006649705061278">Unité organisationnelle (« OU »)</translation>
+<translation id="8705331520020532516">Numéro de série</translation>
+<translation id="1902576642799138955">Période de validité</translation>
+<translation id="5895187275912066135">Émis le :</translation>
+<translation id="4121428309786185360">Expire le</translation>
+<translation id="4154664944169082762">Empreintes</translation>
+<translation id="7238585580608191973">Empreintes digitales SHA-256</translation>
+<translation id="5209518306177824490">Empreinte SHA-1</translation>
+<translation id="6786747875388722282">Extensions</translation>
+<translation id="7240120331469437312">Autre nom de l'objet du certificat</translation>
 <translation id="10614374240317010">Jamais enregistré</translation>
 <translation id="5869522115854928033">Mots de passe enregistrés</translation>
 <translation id="230699814587342492">Mots de passe Brave</translation>
@@ -171,6 +188,36 @@
 <translation id="2713444072780614174">Blanc</translation>
 <translation id="1197088940767939838">Orange</translation>
 <translation id="1555130319947370107">Bleu</translation>
+<translation id="5612720917913232150">L'URL <ph name="URL"/> veut utiliser la position de votre ordinateur</translation>
+<translation id="4733082559415072992">L'URL <ph name="URL"/> veut utiliser la position de votre appareil</translation>
+<translation id="4677585247300749148">L'URL <ph name="URL"/> veut répondre aux événements d'accessibilité</translation>
+<translation id="3461266716147554923"><ph name="URL"/> veut voir le texte et les images copiés dans le presse-papiers</translation>
+<translation id="131405271941274527"><ph name="URL"/> souhaite vous envoyer et recevoir de l'information lorsque vous touchez votre téléphone sur un appareil NFC</translation>
+<translation id="5146995429444047494">Les notifications pour <ph name="ORIGIN"/> sont bloquées</translation>
+<translation id="1195558154361252544">Les notifications sont automatiquement bloquées pour tous les sites, sauf ceux que vous autorisez</translation>
+<translation id="3532844647053365774">L'hôte <ph name="HOST"/> veut utiliser votre microphone</translation>
+<translation id="7108634116785509031">L'hôte <ph name="HOST"/> veut utiliser votre appareil photo</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> veut vous envoyer des notifications.</translation>
+<translation id="6910240653697687763">L'URL <ph name="URL"/> veut obtenir le plein contrôle de vos appareils MIDI</translation>
+<translation id="503498442187459473">L'hôte <ph name="HOST"/> veut utiliser votre appareil photo et votre microphone</translation>
+<translation id="8282947398454257691">Connaître votre identifiant d'appareil unique</translation>
+<translation id="8329449853370113380"><ph name="URL"/> veut lire du contenu protégé. L'identité de votre appareil sera vérifiée par Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> veut lire du contenu protégé. L'identité de votre appareil sera vérifiée par Brave Software et sera accessible par ce site.</translation>
+<translation id="3016780570757425217">Connaître votre emplacement</translation>
+<translation id="7221855153210829124">Afficher les notifications</translation>
+<translation id="8606726445206553943">Utiliser vos appareils MIDI</translation>
+<translation id="7409836189476010449">Exécuter Flash</translation>
+<translation id="7438976808740265764">Après décembre 2020, le lecteur Flash ne sera plus pris en charge.</translation>
+<translation id="4761104368405085019">Utiliser votre microphone</translation>
+<translation id="9150045010208374699">Utiliser votre caméra</translation>
+<translation id="4953689047182316270">Répondre aux événements d'accessibilité</translation>
+<translation id="6116338172782435947">Voir le texte et les images copiés dans le presse-papiers</translation>
+<translation id="5804427196348435412">Utiliser des appareils NFC</translation>
+<translation id="3194737229810486521">L'URL <ph name="URL"/> veut stocker de façon permanente des données sur votre appareil</translation>
+<translation id="1030706264415084469">L'URL <ph name="URL"/> veut stocker de façon permanente de grandes quantités de données sur votre appareil</translation>
+<translation id="1712552549805331520">L'URL <ph name="URL"/> veut stocker des données de façon permanente sur votre ordinateur local</translation>
+<translation id="1997484222658892567">L'URL <ph name="URL"/> veut stocker de façon permanente de grandes quantités de données sur votre ordinateur local</translation>
+<translation id="7648992873808071793">Enregistrer des fichiers sur cet appareil</translation>
 <translation id="4813512666221746211">Erreur réseau</translation>
 <translation id="3380365263193509176">Erreur inconnue</translation>
 <translation id="5565735124758917034">Actif</translation>
@@ -185,6 +232,8 @@
 <translation id="5720705177508910913">Utilisateur actuel</translation>
 <translation id="6965978654500191972">Appareil</translation>
 <translation id="4728558894243024398">Plateforme</translation>
+<translation id="1426410128494586442">Oui</translation>
+<translation id="4250680216510889253">Non</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Options avancées</translation>
 <translation id="5308380583665731573">Connecter</translation>
@@ -202,7 +251,6 @@
 <translation id="583281660410589416">Inconnu</translation>
 <translation id="9170848237812810038">Ann&amp;uler</translation>
 <translation id="2972581237482394796">&amp;Rétablir</translation>
-<translation id="6786747875388722282">Extensions</translation>
 <translation id="5804241973901381774">Autorisations</translation>
 <translation id="8004582292198964060">Navigateur</translation>
 </translationbundle>

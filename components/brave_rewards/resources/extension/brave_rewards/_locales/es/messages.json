@@ -68,7 +68,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Creador Verificado Brave",
+    "message": "Creador verificado por Brave",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -308,7 +308,7 @@
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
-    "message": "Refrescar Estado",
+    "message": "Actualizar estado",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -516,7 +516,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Monedero Verificada",
+    "message": "Monedero verificado",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -554,7 +554,7 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Este Editor Verificado Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. Cualquier propina que envíes permanecerá en tu monedero hasta que complete este proceso.",
+    "message": "Este Editor verificado por Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. Cualquier propina que envíes permanecerá en tu monedero hasta que complete este proceso.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Puntos",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "¡Hola, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">Privatliv</translation>
 <translation id="3061707000357573562">Tjeneste til programrettelse</translation>
 <translation id="1914326953223720820">Udpakningstjeneste</translation>
-<translation id="1623104350909869708">Undgå, at denne side opretter yderligere dialogbokse</translation>
-<translation id="2677748264148917807">Forlad</translation>
-<translation id="5556459405103347317">Genindlæs</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Bekræft</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">Ingen</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
 <translation id="9038649477754266430">Brug en forudsigelsestjeneste til hurtigere sideindlæsning</translation>
+<translation id="2344028582131185878">Automatiske downloads</translation>
+<translation id="3414952576877147120">Størrelse:</translation>
 <translation id="4850886885716139402">Vis</translation>
 <translation id="7180611975245234373">Opdater</translation>
-<translation id="1426410128494586442">Ja</translation>
-<translation id="4250680216510889253">Nej</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3586931643579894722">Skjul oplysninger</translation>
+<translation id="5556459405103347317">Genindlæs</translation>
 <translation id="614940544461990577">Prøv at:</translation>
 <translation id="4943872375798546930">Ingen resultater</translation>
 <translation id="8688672835843460752">Tilgængelig</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">Søg i historikken</translation>
 <translation id="4756388243121344051">&amp;Historik</translation>
 <translation id="1644574205037202324">Historik</translation>
+<translation id="1623104350909869708">Undgå, at denne side opretter yderligere dialogbokse</translation>
+<translation id="2677748264148917807">Forlad</translation>
 <translation id="3950820424414687140">Log ind</translation>
 <translation id="8286036467436129157">Log ind</translation>
 <translation id="8503813439785031346">Brugernavn</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">Udklipsholder</translation>
 <translation id="6059925163896151826">USB-enheder</translation>
 <translation id="7638605456503525968">Serieporte</translation>
+<translation id="3784372983762739446">Bluetooth-enheder</translation>
 <translation id="2215727959747642672">Filredigering</translation>
 <translation id="6545864417968258051">Bluetooth-scanning</translation>
 <translation id="534295439873310000">NFC-enheder</translation>
-<translation id="4943703118917034429">Virtual reality</translation>
-<translation id="3513704683820682405">Augmented reality</translation>
+<translation id="4670064810192446073">Virtual reality</translation>
+<translation id="2025115093177348061">Augmented reality</translation>
 <translation id="5039804452771397117">Tillad</translation>
 <translation id="7053983685419859001">Bloker</translation>
 <translation id="57838592816432529">Slå lyden fra</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">Websitet viser påtrængende eller vildledende annoncer</translation>
 <translation id="7878562273885520351">Din adgangskode kan være kompromitteret</translation>
 <translation id="1089439967362294234">Skift adgangskode</translation>
-<translation id="9008201768610948239">Ignorer</translation>
 <translation id="1186201132766001848">Tjek adgangskoder</translation>
+<translation id="9008201768610948239">Ignorer</translation>
+<translation id="808894953321890993">Skift adgangskode</translation>
 <translation id="5979084224081478209">Tjek adgangskoder</translation>
+<translation id="6107012941649240045">Udstedt til</translation>
+<translation id="5030338702439866405">Udstedt af</translation>
+<translation id="5826507051599432481">Kaldenavn (CN)</translation>
+<translation id="6898699227549475383">Organisation (O)</translation>
+<translation id="3308006649705061278">Organisationsenhed (OU)</translation>
+<translation id="8705331520020532516">Serienummer</translation>
+<translation id="1902576642799138955">Gyldighedsperiode</translation>
+<translation id="5895187275912066135">Udstedt den</translation>
+<translation id="4121428309786185360">Udløber den</translation>
+<translation id="4154664944169082762">Fingeraftryk</translation>
+<translation id="7238585580608191973">SHA-256-fingeraftryk</translation>
+<translation id="5209518306177824490">SHA-1-fingeraftryk</translation>
+<translation id="6786747875388722282">Internetadresser</translation>
+<translation id="7240120331469437312">Alternativt navn på certifikatemne</translation>
 <translation id="10614374240317010">Gemmes aldrig</translation>
 <translation id="5869522115854928033">Gemte adgangskoder</translation>
 <translation id="230699814587342492">Brave-adgangskoder</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">Orange</translation>
 <translation id="1555130319947370107">Blå</translation>
 <translation id="138218114945450791">Lyseblå</translation>
+<translation id="5612720917913232150"><ph name="URL"/> anmoder om at anvende computerens placering</translation>
+<translation id="4733082559415072992"><ph name="URL"/> anmoder om at bruge enhedens placering</translation>
+<translation id="4677585247300749148"><ph name="URL"/> anmoder om at reagere på handlinger foretaget i hjælpetilstand</translation>
+<translation id="3461266716147554923"><ph name="URL"/> vil gerne se tekst og billeder, der er kopieret til udklipsholderen</translation>
+<translation id="131405271941274527"><ph name="URL"/> ønsker at sende og modtage oplysninger, når du parrer din telefon med en NFC-enhed</translation>
+<translation id="5146995429444047494">Notifikationer for <ph name="ORIGIN"/> blokeres</translation>
+<translation id="1195558154361252544">Notifikationer blokeres automatisk for alle website med undtagelse dem, du har givet tilladelse til</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> anmoder om at bruge din mikrofon</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> anmoder om at bruge dit kamera</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> vil sende underretninger til dig</translation>
+<translation id="6910240653697687763"><ph name="URL"/> anmoder om fuld kontrol over dine MIDI-enheder</translation>
+<translation id="503498442187459473"><ph name="HOST"/> anmoder om at bruge dit kamera og din mikrofon</translation>
+<translation id="8282947398454257691">Kende dit unikke enheds-id</translation>
+<translation id="8329449853370113380"><ph name="URL"/> vil afspille beskyttet indhold. Din enheds identitet bekræftes af Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> vil afspille beskyttet indhold. Din enheds identitet bekræftes af Brave Software, og dette website får muligvis adgang til enheden.</translation>
+<translation id="3016780570757425217">Kende din placering</translation>
+<translation id="7221855153210829124">Vise underretninger</translation>
+<translation id="8606726445206553943">Brug dine MIDI-enheder</translation>
+<translation id="7409836189476010449">Kør Flash</translation>
+<translation id="7438976808740265764">Flash Player understøttes ikke længere fra december 2020.</translation>
+<translation id="4761104368405085019">Bruge din mikrofon</translation>
+<translation id="9150045010208374699">Bruge dit kamera</translation>
+<translation id="4953689047182316270">Reagere på hændelser med hjælpefunktioner</translation>
+<translation id="6116338172782435947">Se tekst og billeder, der er kopieret til udklipsholderen</translation>
+<translation id="5804427196348435412">Brug NFC-enheder</translation>
+<translation id="3194737229810486521"><ph name="URL"/> anmoder om at gemme data permanent på din enhed</translation>
+<translation id="1030706264415084469"><ph name="URL"/> anmoder om at gemme store datamængder permanent på din enhed</translation>
+<translation id="1712552549805331520"><ph name="URL"/> anmoder om at gemme data permanent på din lokale computer</translation>
+<translation id="1997484222658892567"><ph name="URL"/> anmoder om at gemme store mængder data permanent på din lokale computer</translation>
+<translation id="7648992873808071793">Gemme filer på denne enhed</translation>
 <translation id="4813512666221746211">Netværksfejl</translation>
 <translation id="3380365263193509176">Ukendt fejl</translation>
 <translation id="5565735124758917034">Aktiv</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">Aktuel bruger</translation>
 <translation id="6965978654500191972">Enhed</translation>
 <translation id="4728558894243024398">Platform</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="4250680216510889253">Nej</translation>
 <translation id="2380886658946992094">Juridisk</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Avanceret</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">ukendt</translation>
 <translation id="9170848237812810038">&amp;Fortryd</translation>
 <translation id="2972581237482394796">&amp;Annuller fortryd</translation>
-<translation id="6786747875388722282">Internetadresser</translation>
 <translation id="5804241973901381774">Tilladelser</translation>
 <translation id="8004582292198964060">Browser</translation>
 </translationbundle>

@@ -3,10 +3,6 @@
 <translationbundle lang="ms">
 <translation id="8428213095426709021">Tetapan</translation>
 <translation id="2498359688066513246">Bantuan &amp; maklum balas</translation>
-<translation id="8378714024927312812">Diurus oleh organisasi anda</translation>
-<translation id="9019902583201351841">Diurus oleh ibu bapa anda</translation>
-<translation id="4645575059429386691">Diurus oleh ibu bapa anda</translation>
-<translation id="4883854917563148705">Tetapan yang diurus tidak dapat ditetapkan semula</translation>
 <translation id="4307992518367153382">Asas</translation>
 <translation id="1974060860693918893">Lanjutan</translation>
 <translation id="1146678959555564648">Masukkan VR</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Apabila anda log masuk ke Akaun Brave Software anda, ciri ini akan dihidupkan</translation>
 <translation id="10614374240317010">Tidak pernah disimpan</translation>
 <translation id="3098842761938485917">Lihat dan urus kata laluan yang disimpan dalam <ph name="BEGIN_LINK"/>Akaun Brave Software<ph name="END_LINK"/> anda</translation>
+<translation id="8988028529677883095">Gunakan telefon sebagai kunci keselamatan</translation>
 <translation id="8562452229998620586">Kata laluan yang disimpan akan kelihatan di sini.</translation>
+<translation id="1303339473099049190">Tidak menemukan kata laluan itu. Semak ejaan anda dan cuba lagi.</translation>
 <translation id="8084114998886531721">Kata laluan disimpan</translation>
 <translation id="2870560284913253234">Tapak</translation>
 <translation id="8503813439785031346">Nama pengguna</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Buka kunci untuk melihat kata laluan anda</translation>
 <translation id="6221633008163990886">Buka kunci untuk mengeksport kata laluan anda</translation>
 <translation id="230699814587342492">Kata Laluan Brave</translation>
-<translation id="6075798973483050474">Edit laman utama</translation>
-<translation id="854522910157234410">Buka halaman ini</translation>
+<translation id="1925021887439448749">Masukkan alamat web tersuai</translation>
 <translation id="8127542551745560481">Edit halaman utama</translation>
+<translation id="854522910157234410">Buka halaman ini</translation>
+<translation id="5063487983358782016">Halaman utama Brave</translation>
 <translation id="2482878487686419369">Pemberitahuan</translation>
 <translation id="6255999984061454636">Cadangan kandungan</translation>
 <translation id="805047784848435650">Berdasarkan sejarah penyemakan imbas anda</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Privasi</translation>
 <translation id="4991384657077828949">Bantu tingkatkan keselamatan Brave</translation>
 <translation id="1943176487615318915">Untuk mengesan apl dan tapak berbahaya, Brave menghantar URL sesetengah halaman yang anda lawati, maklumat sistem yang terhad dan sesetengah kandungan halaman kepada Brave Software</translation>
-<translation id="3181954750937456830">Penyemakan Imbas Selamat (melindungi anda dan peranti anda daripada tapak yang berbahaya)</translation>
-<translation id="7315322926489145388">Menghantar URL sesetengah halaman yang anda lawati kepada Brave Software, apabila keselamatan anda terancam</translation>
+<translation id="3201899458094819285">Penyemakan Imbas Selamat (melindungi anda dan peranti anda daripada tapak yang berbahaya)</translation>
+<translation id="2876369937070532032">Menghantar URL sesetengah halaman yang anda lawati kepada Brave Software, apabila keselamatan anda terancam</translation>
 <translation id="3738139272394829648">Sentuh untuk Cari</translation>
-<translation id="7865281998841143447">Ketahui tentang topik pada tapak web tanpa meninggalkan halaman. Sentuh untuk Cari akan menghantar perkataan dan konteks sekitar perkataan itu kepada Carian Brave Software, mengembalikan takrif, gambar, hasil carian dan butiran lain.
+<translation id="4749189475009528195">Ketahui tentang topik pada tapak web tanpa meninggalkan halaman. Sentuh untuk Cari akan menghantar perkataan dan konteks sekitar perkataan itu kepada Carian Brave Software, mengembalikan takrif, gambar, hasil carian dan butiran lain.
 
-Ketik mana-mana perkataan untuk membuat carian tentang perkataan itu. Untuk melaraskan istilah carian, tekan lama-lama untuk memilih. Untuk memperhalus carian anda, luncurkan panel untuk membuka panel itu, ketik ikon kembangkan untuk membuat tab baharu, kemudian ketik kotak carian.</translation>
-<translation id="3292859206215580147">Ketahui tentang topik pada tapak web tanpa meninggalkan halaman. Sentuh untuk Cari akan menghantar perkataan dan konteks sekitar perkataan itu kepada Carian Brave Software, mengembalikan takrif, gambar, hasil carian dan butiran lain.
+Ketik mana-mana perkataan untuk mencari. Untuk memperhalus carian anda, sentuh &amp; tahan untuk memilih lebih banyak atau lebih sedikit perkataan. Untuk mengedit carian anda, buka panel, ketik ikon untuk membuka dalam tab baharu dan buat perubahan dalam kotak carian.</translation>
+<translation id="934250516944040460">Ketahui tentang topik pada tapak web tanpa meninggalkan halaman. Sentuh untuk Cari akan menghantar perkataan dan konteks sekitar perkataan itu kepada Carian Brave Software, mengembalikan takrif, gambar, hasil carian dan butiran lain.
 
-Tekan lama-lama pada mana-mana perkataan untuk membuat carian tentang perkataan itu. Untuk memperhalus carian anda, laraskan pilihan. Anda juga boleh luncurkan panel untuk membuka panel itu, ketik ikon kembangkan untuk membuat tab baharu, kemudian ketik kotak carian.</translation>
+Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian anda, pilih lebih banyak atau lebih sedikit perkataan. Untuk mengedit carian anda, buka panel, ketik ikon untuk membuka dalam tab baharu dan buat perubahan dalam kotak carian.</translation>
 <translation id="6209156474097347789">Sentuh untuk Cari menghantar perkataan yang dipilih dan halaman semasa sebagai konteks kepada Carian Brave Software. Anda boleh mematikannya di <ph name="BEGIN_LINK"/>Tetapan<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Benarkan</translation>
 <translation id="780301667611848630">Tidak, terima kasih</translation>
@@ -206,7 +205,7 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="6295158916970320988">Semua tapak</translation>
 <translation id="8380167699614421159">Tapak ini menyiarkan iklan yang mengganggu atau mengelirukan</translation>
 <translation id="1919345977826869612">Iklan</translation>
-<translation id="3513704683820682405">Realiti Tambahan</translation>
+<translation id="2025115093177348061">Realiti tambahan</translation>
 <translation id="6447842834002726250">Kuki</translation>
 <translation id="6196640612572343990">Sekat kuki pihak ketiga</translation>
 <translation id="6782111308708962316">Halang tapak web pihak ketiga daripada menyimpan dan membaca data kuki</translation>
@@ -217,6 +216,7 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="1717218214683051432">Penderia gerakan</translation>
 <translation id="2091887806945687916">Bunyi</translation>
 <translation id="2586657967955657006">Papan Keratan</translation>
+<translation id="4670064810192446073">Realiti maya</translation>
 <translation id="6320088164292336938">Getar</translation>
 <translation id="4226663524361240545">Pemberitahuan boleh menggetarkan peranti</translation>
 <translation id="1446450296470737166">Benarkan kawalan penuh peranti MIDI</translation>
@@ -235,6 +235,7 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="2537296579376733324">Semua kuki, pada tapak ini sahaja</translation>
 <translation id="7882806643839505685">Benarkan bunyi untuk tapak tertentu.</translation>
 <translation id="4468959413250150279">Redam bunyi untuk tapak tertentu.</translation>
+<translation id="7828557259026017104">Kuki ialah fail yang dibuat oleh tapak web yang anda lawati. Tapak menggunakan kuki untuk mengingat pilihan anda. Kuki pihak ketiga dibuat oleh tapak lain. Tapak ini memiliki sebahagian daripada kandungan, seperti iklan atau imej, yang anda lihat dalam halaman web yang anda lawati.</translation>
 <translation id="1994173015038366702">URL tapak</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Penggunaan</translation>
@@ -246,10 +247,14 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="8116925261070264013">Diredam</translation>
 <translation id="8300705686683892304">Diurus oleh apl</translation>
 <translation id="6192792657125177640">Pengecualian</translation>
-<translation id="257931822824936280">Dikembangkan - klik untuk meruntuhkan.</translation>
-<translation id="5100237604440890931">Diruntuhkan - klik untuk mengembangkan.</translation>
 <translation id="857943718398505171">Dibenarkan (disyorkan)</translation>
 <translation id="2913331724188855103">Benarkan tapak untuk menyimpan dan membaca data kuki (disyorkan)</translation>
+<translation id="2212565012507486665">Benarkan kuki</translation>
+<translation id="8648684608605749476">Sekat kuki pihak ketiga dalam Inkognito</translation>
+<translation id="2687403674020088961">Sekat semua kuki (tidak disyorkan)</translation>
+<translation id="1044891598689252897">Tapak akan berfungsi seperti biasa</translation>
+<translation id="7993619969781047893">Ciri pada sesetengah tapak mungkin rosak</translation>
+<translation id="1509960214886564027">Ciri pada banyak tapak mungkin rosak</translation>
 <translation id="5335288049665977812">Benarkan tapak menjalankan JavaScript (disyorkan)</translation>
 <translation id="5527111080432883924">Tanya sebelum membenarkan tapak membaca teks dan imej daripada papan keratan (disyorkan)</translation>
 <translation id="6912998170423641340">Sekat tapak daripada membaca teks dan imej daripada papan keratan</translation>
@@ -259,12 +264,12 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="2107397443965016585">Tanya sebelum membenarkan tapak memainkan kandungan yang dilindungi (disyorkan)</translation>
 <translation id="2910701580606108292">Tanya sebelum membenarkan tapak memainkan kandungan yang dilindungi</translation>
 <translation id="757524316907819857">Sekat tapak daripada memainkan kandungan yang dilindungi</translation>
-<translation id="4935305910887312910">Tanya sebelum membenarkan tapak menerima kedudukan kamera atau memetakan bilik anda (disyorkan)</translation>
-<translation id="884828189055900810">Sekat tapak daripada menerima kedudukan kamera atau memetakan bilik anda</translation>
+<translation id="2182457891543959921">Tanya sebelum membenarkan tapak membuat peta 3D bagi persekitaran anda atau menjejaki kedudukan kamera (disyorkan)</translation>
+<translation id="3538390592868664640">Sekat tapak daripada membuat peta 3D bagi persekitaran anda atau menjejaki kedudukan kamera</translation>
 <translation id="5710871682236653961">Tanya sebelum membenarkan tapak menghantar dan menerima maklumat semasa anda mengetik peranti NFC (disyorkan)</translation>
 <translation id="7572498721684305250">Sekat tapak daripada menghantar dan menerima maklumat semasa anda mengetik peranti NFC</translation>
-<translation id="3312292613668865961">Tanya sebelum membenarkan tapak mengakses peranti dan data realiti maya anda (disyorkan)</translation>
-<translation id="8698438463325761328">Sekat tapak daripada mengakses peranti dan data realiti maya anda</translation>
+<translation id="4887024562049524730">Tanya sebelum membenarkan tapak menggunakan peranti dan data realiti maya anda (disyorkan)</translation>
+<translation id="6439114592976064011">Sekat tapak daripada menggunakan peranti dan data realiti maya anda</translation>
 <translation id="3277252321222022663">Benarkan tapak mengakses penderia (disyorkan)</translation>
 <translation id="5048398596102334565">Benarkan tapak mengakses penderia gerakan (disyorkan)</translation>
 <translation id="8816026460808729765">Sekat tapak daripada mengakses penderia</translation>
@@ -414,6 +419,7 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="4062305924942672200">Maklumat undang-undang</translation>
 <translation id="4256782883801055595">Lesen sumber terbuka</translation>
 <translation id="1138681184697033370">Syarat Perkhidmatan Brave</translation>
+<translation id="2368444735104192323">Syarat Perkhidmatan Tambahan Brave &amp; OS Brave</translation>
 <translation id="7392539049993970338">Notis Privasi Brave</translation>
 <translation id="2968755619301702150">Pemapar sijil</translation>
 <translation id="1360432990279830238">Log keluar dan matikan penyegerakan?</translation>
@@ -432,6 +438,8 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="8636825310635137004">Hidupkan penyegerakan untuk mendapatkan tab daripada peranti anda yang lain.</translation>
 <translation id="3269956123044984603">Untuk mendapatkan tab daripada peranti anda yang lain, hidupkan "Auto segerak data" dalam tetapan akaun Android.</translation>
 <translation id="5157964048453367290">Tab yang telah anda buka dalam Brave pada peranti anda yang lain akan dipaparkan di sini.</translation>
+<translation id="5795872532621730126">Cari dan semak imbas</translation>
+<translation id="9086302186042011942">Menyegerak</translation>
 <translation id="4684427112815847243">Segerakkan semua</translation>
 <translation id="2709516037105925701">Autoisi</translation>
 <translation id="8820817407110198400">Penanda buku</translation>
@@ -549,10 +557,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="2532336938189706096">Paparan Web</translation>
 <translation id="6005538289190791541">Kata laluan yang disyorkan</translation>
 <translation id="4634124774493850572">Gunakan kata laluan</translation>
-<translation id="8285489906452138776">Brave memerlukan kebenaran untuk mengakses kamera anda bagi tapak ini.</translation>
-<translation id="320189792589364011">Brave memerlukan kebenaran untuk mengakses mikrofon anda bagi tapak ini.</translation>
-<translation id="7988136689212463100">Brave memerlukan kebenaran untuk mengakses kamera dan mikrofon anda bagi tapak ini.</translation>
-<translation id="4931190655840828017">Brave memerlukan akses kepada lokasi anda untuk berkongsi lokasi dengan tapak ini.</translation>
 <translation id="3088191967551450609">Brave memerlukan akses storan untuk memuat turun fail.</translation>
 <translation id="8942627711005830162">Buka dalam tetingkap lain</translation>
 <translation id="4195643157523330669">Buka dalam tab baharu</translation>
@@ -600,8 +604,9 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="2146738493024040262">Buka Apl Segera</translation>
 <translation id="7016516562562142042">Dibenarkan untuk enjin carian semasa</translation>
 <translation id="6177111841848151710">Disekat untuk enjin carian semasa</translation>
-<translation id="145097072038377568">Dimatikan dalam Tetapan Android</translation>
+<translation id="7000754031042624318">Dimatikan dalam tetapan Android</translation>
 <translation id="8007176423574883786">Dimatikan untuk peranti ini</translation>
+<translation id="6864395892908308021">Peranti ini tidak dapat membaca NFC</translation>
 <translation id="164269334534774161">Anda sedang melihat salinan luar talian halaman ini dari <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Halaman luar talian ini dari <ph name="CREATION_TIME"/> dan mungkin berbeza daripada versi dalam talian.</translation>
 <translation id="8840953339110955557">Halaman ini mungkin berbeza daripada versi dalam talian.</translation>
@@ -706,10 +711,10 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="3244271242291266297">BB</translation>
 <translation id="605721222689873409">TT</translation>
 <translation id="724102042129299115">Pengalaman First Run Brave</translation>
-<translation id="2700285883409956633">Dengan menggunakan aplikasi ini, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Notis Privasi<ph name="END_LINK2"/> Brave.</translation>
-<translation id="1640714894372474981">Apabila menggunakan aplikasi ini, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Notis Privasi<ph name="END_LINK2"/> Brave serta <ph name="BEGIN_LINK3"/>Notis Privasi untuk Akaun Brave Software yang Diurus dengan Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Notis Privasi<ph name="END_LINK2"/> Brave.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Notis Privasi<ph name="END_LINK2"/> Brave serta <ph name="BEGIN_LINK3"/>Notis Privasi untuk Akaun Brave Software yang Diurus menggunakan Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Dengan menggunakan Brave, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave Software<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave Software Brave dan OS Brave<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Dengan menggunakan Brave, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave Software<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave Software Brave dan OS Brave<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Notis Privasi untuk Akaun Brave Software yang Diurus dengan Family Link<ph name="END_LINK3"/> juga terpakai.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave Software<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave Software Brave dan OS Brave<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave Software<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave Software Brave dan OS Brave<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Notis Privasi untuk Akaun Brave Software yang Diurus dengan Family Link<ph name="END_LINK3"/> juga terpakai.</translation>
 <translation id="673197144963363525">Bantu jadikan Brave lebih baik dengan menghantar laporan perangkaan penggunaan dan ranap sistem kepada Brave Software.</translation>
 <translation id="3518985090088779359">Terima &amp; teruskan</translation>
 <translation id="7207456302801184289">Selamat Datang ke Brave</translation>
@@ -814,7 +819,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="6963766334940102469">Padamkan penanda halaman</translation>
 <translation id="4351244548802238354">Tutup dialog</translation>
 <translation id="451872707440238414">Cari penanda halaman anda</translation>
-<translation id="8901170036886848654">Tiada penanda halaman ditemui</translation>
+<translation id="6447558397796644647">Tidak menjumpai penanda halaman itu. Semak ejaan anda atau tambahkan penanda halaman baharu.</translation>
 <translation id="6404511346730675251">Edit penanda halaman</translation>
 <translation id="3894427358181296146">Tambah folder</translation>
 <translation id="5327248766486351172">Nama</translation>
@@ -829,6 +834,8 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="6811034713472274749">Halaman sedia untuk dipaparkan</translation>
 <translation id="4561979708150884304">Tiada sambungan</translation>
 <translation id="8274165955039650276">Lihat muat turun</translation>
+<translation id="4320177379694898372">Tiada sambungan Internet</translation>
+<translation id="6397616442223433927">Kembali dalam talian</translation>
 <translation id="2082238445998314030">Hasil carian <ph name="RESULT_NUMBER"/> daripada <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Tiada hasil carian</translation>
 <translation id="981121421437150478">Luar talian</translation>
@@ -845,9 +852,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="6773423637732432200">Brave tidak dapat dikemas kini. Lagi pilihan</translation>
 <translation id="1383876407941801731">Carian</translation>
 <translation id="3328801116991980348">Maklumat tapak</translation>
-<translation id="5391532827096253100">Sambungan anda ke tapak web ini tidak selamat. Maklumat tapak</translation>
-<translation id="6206551242102657620">Sambungan selamat. Maklumat tapak</translation>
-<translation id="6963642900430330478">Halaman ini berbahaya. Maklumat tapak</translation>
 <translation id="9070377983101773829">Mulakan carian suara</translation>
 <translation id="4968908871398201967">Mod sulit</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> tab terbuka, ketik untuk beralih antara tab}other{<ph name="OPEN_TABS_MANY"/> tab terbuka, ketik untuk beralih antara tab}}</translation>
@@ -944,6 +948,11 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="5197729504361054390">Kenalan yang anda pilih akan dikongsi dengan <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Penyahkod imej</translation>
 <translation id="8067883171444229417">Mainkan video</translation>
+<translation id="5876056640971328065">Jeda video</translation>
+<translation id="3594780231884063836">Redam video</translation>
+<translation id="783819812427904514">Nyahredam video</translation>
+<translation id="3114012059975132928">Pemain video</translation>
+<translation id="5489227211564503167"><ph name="ELAPSED_TIME"/> masa berlalu daripada <ph name="TOTAL_TIME"/></translation>
 <translation id="6560414384669816528">Cari dengan Sogou</translation>
 <translation id="5406914950576900927">Brave boleh menggunakan <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> untuk melakukan carian di China. Anda boleh menukarnya dalam <ph name="BEGIN_LINK"/>Tetapan<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Kekalkan Brave Software</translation>
@@ -987,6 +996,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="1875543012935658554">Buka semula Brave.</translation>
 <translation id="79859296434321399">Untuk melihat kandungan realiti tambahan, pasang ARCore</translation>
 <translation id="8558485628462305855">Untuk melihat kandungan realiti tambahan, kemas kini ARCore</translation>
+<translation id="3513704683820682405">Realiti Tambahan</translation>
 <translation id="6410973561433500075">Masuki AR daripada <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">Semasa anda dalam AR, tapak ini boleh:
 • membuat peta 3D persekitaran anda
@@ -1035,6 +1045,8 @@ Anda sahaja yang boleh melihat perkara yang dilihat oleh kamera anda. Tapak ters
 <translation id="9028914725102941583">Hidupkan penyegerakan untuk berkongsi merentas peranti</translation>
 <translation id="6162454065885854378">Untuk berkongsi sesuatu daripada telefon anda kepada peranti lain, hidupkan penyegerakan dalam tetapan Brave pada kedua-dua peranti</translation>
 <translation id="6084271560289605378">Pergi ke tetapan Brave</translation>
+<translation id="2746024117903470217">Untuk berkongsi halaman ini dengan peranti lain, hidupkan penyegerakan dalam tetapan Brave pada peranti lain itu</translation>
+<translation id="7760665516427405230">Untuk berkongsi halaman ini dengan peranti lain, hidupkan penyegerakan dalam tetapan Brave</translation>
 <translation id="2318045970523081853">Ketik untuk membuat panggilan</translation>
 <translation id="9209888181064652401">Tidak dapat membuat panggilan</translation>
 <translation id="2860954141821109167">Pastikan apl telefon didayakan pada peranti ini</translation>
@@ -1090,11 +1102,17 @@ Anda sahaja yang boleh melihat perkara yang dilihat oleh kamera anda. Tapak ters
 <translation id="6201345951596836663">Pautan Disalin</translation>
 <translation id="6597891566292541626">Pastikan kod QR/kod bar berada dalam bingkai ini.</translation>
 <translation id="3140134512074889489">Sila dayakan kamera anda untuk mengimbas kod QR</translation>
+<translation id="5149323899804758325">Untuk mengimbas kod QR, tukar tetapan supaya Brave boleh menggunakan kamera anda</translation>
 <translation id="2359808026110333948">Teruskan</translation>
+<translation id="8233540874193135768">Untuk mengimbas kod QR, gunakan peranti yang mempunyai kamera.</translation>
+<translation id="6297765934698848803">Organisasi yang mengurus peranti anda telah mematikan kamera anda.</translation>
+<translation id="4321739720395210191">Tidak dapat membuka kamera anda. Mulakan semula peranti anda dan cuba lagi.</translation>
+<translation id="234265804618409743">Tidak dapat membuka kamera anda. Kesilapan telah berlaku.</translation>
+<translation id="7173114856073700355">Buka Tetapan</translation>
+<translation id="1311657260431405215">Kod QR ini bukan URL: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Platform Pemberitahuan Brave Software</translation>
 <translation id="8516012719330875537">Editor Imej</translation>
-<translation id="6092062101542170135">Hidupkan NFC dalam tetapan Android untuk meneruskan</translation>
-<translation id="5860491529813859533">Hidupkan</translation>
 <translation id="8926666909099850184">NFC dimatikan untuk peranti ini. Hidupkan dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Masukkan VR daripada <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Semasa anda dalam VR, tapak ini boleh mendapatkan maklumat tentang:</translation>

@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">ایجاد نمایه جدید</translation>
 <translation id="2666990579225592931">باز کردن پنجره مهمان</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
-<translation id="7450557937477381864">بستن Chrome</translation>
-<translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
 <translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
 
 با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
-<translation id="453977518730680921">پخش خودکار رسانه</translation>
 <translation id="410351446219883937">پخش خودکار</translation>
 <translation id="2240268017737062801">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود</translation>
 <translation id="3371702087847741961">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود (توصیه می‌شود)</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">وقتی «پاداش‌های Brave» فعال نباشد، دکمه «پاداش‌های Brave» را در نوار مکان پنهان می‌کند</translation>
 <translation id="1520361618554057102">نشانک‌ها همیشه در صفحه برگه جدید نمایش داده شود</translation>
 <translation id="5802665280774361839">نشان دادن تکمیل خودکار در نوار نشانی</translation>
+<translation id="597020512043916976">نشان دادن سایت‌های برتر در پیشنهادهای تکمیل خودکار</translation>
+<translation id="264150068416846820">نشان دادن سایت‌های پیشنهادی Brave در پیشنهادهای تکمیل خودکار</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
 <translation id="2467749191278759605">سفارشی کردن داشبورد Brave</translation>
 <translation id="1717331825806276156">تصاویر پس‌زمینه</translation>
 <translation id="1820041496463124489">تصاویر دارای حامی مالی</translation>
 <translation id="8173998484743827990">آمار Brave</translation>
+<translation id="5551238871320268996">Brave در کنار هم</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">سایت‌های برتر</translation>
 <translation id="1776831331757823105">ساعت</translation>
@@ -72,9 +72,9 @@
 <translation id="7390783310074170337">نمای پیش‌فرض</translation>
 <translation id="130615081792797568">نمای ساده</translation>
 <translation id="2360360976480535628">نمای پیشرفته</translation>
-<translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
-<translation id="6447842834002726250">کوکی‌ها</translation>
-<translation id="6522412052085018663">تشخیص اثر انگشت</translation>
+<translation id="2133317862976486547">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
+<translation id="4385707520896576447">کوکی‌ها</translation>
+<translation id="4978786495456601191">تشخیص اثر انگشت</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="519861640102428255">ظاهر و حس</translation>
@@ -83,12 +83,11 @@
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
-<translation id="4699812599455071925">فقط کوکی‌های بین سایتی مسدود شوند</translation>
-<translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
-<translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
-<translation id="5963670684159057574">مسدود کردن انگشت‌نگاری بین سایتی</translation>
-<translation id="769702552748212954">مجاز بودن انواع انگشت‌نگاری</translation>
-<translation id="4540198958192073185">مسدود کردن همه انگشت‌نگاری‌ها</translation>
+<translation id="4078738236287221428">ردیاب‌ها و آگهی‌ها مسدود شده‌اند (تهاجمی)</translation>
+<translation id="7740996059027112821">ردیاب‌ها و آگهی‌ها مسدود شده‌اند (استاندارد)</translation>
+<translation id="4176463684765177261">مجاز بودن همه ردیاب‌ها و آگهی‌ها</translation>
+<translation id="5770288601196774623">فقط کوکی‌های بین سایتی مسدود شوند</translation>
+<translation id="3587482841069643663">مسدود کردن همه کوکی‌ها</translation>
 <translation id="8942080017911802454">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">هیچ کدام</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">ارائه‌دهنده Web3 برای استفاده از Dapps</translation>
+<translation id="5913089932885076110">بارگیری «کیف پول‌های رمزگذاری‌شده» در شروع به کار</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
 <translation id="1765684547504191670">از مؤلفه «رهیاب رسانه» برای فعال کردن Chromecast در مرورگر استفاده می‌کند.</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">‏ارسال خودکار تجزیه‌وتحلیل کاملاً خصوصی محصول به Brave</translation>
 <translation id="7090566321964540749">این اطلاعات ناشناس فقط به Brave اجازه می‌دهد استفاده کلی از بعضی از قابلیت‌ها را تخمین بزند.</translation>
 <translation id="9111960429693394744">مایلید از کیف پول‌های رمزگذاری‌شده Brave یا MetaMask برای Dapps استفاده کنید؟</translation>
+<translation id="8721775358057000783">مایل هستید «کیف پول‌های رمزگذاری‌شده» را برای پشتیبانی از web3 در این صفحه راه‌اندازی کنید؟</translation>
 <translation id="7583735190612229830">برای داشتن تعامل با این برنامه و برنامه‌های دیگر مشابه آن، «کیف پول رمزنگاری‌شده» را تنظیم کنید.</translation>
-<translation id="8337117349965899723">استفاده از «کیف پول‌های رمزنگاری‌شده»</translation>
+<translation id="4823406846571523661">تنظیم کیف پول‌های رمزگذاری‌شده</translation>
 <translation id="5756155765711979898">استفاده از MetaMask</translation>
 <translation id="6754134632841262799">تنظیم</translation>
+<translation id="8199661191594897555">راه‌اندازی «کیف پول‌های رمزگذاری‌شده» و بارگیری مجدد</translation>
+<translation id="8428213095426709021">تنظیمات</translation>
 <translation id="4552520379838695057">متأسفیم، آن صفحه یافت نمی‌شود.</translation>
 <translation id="2609895996619941644">می‌خواهید بررسی کنید که آیا نسخه ذخیره‌شده‌ای در Wayback Machine موجود است؟</translation>
 <translation id="8053093028263274061">متأسفیم، نسخه ذخیره‌شده‌ای موجود نیست.</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="796831669370432378">برای افزودن نشانک، روی دکمه نشانک در کنار نوار نشانی کلیک کنید</translation>
 <translation id="4989337484121655457">دسترسی کامل به دیسک الزامی است</translation>
-<translation id="8025559074845816210">Brave برای وارد کردن «نشانک‌ها» از Safari، به مجوز دسترسی کامل به دیسک نیاز دارد.</translation>
+<translation id="5501596373144334003">Brave به «دسترسی کامل به دیسک» نیاز دارد تا «نشانک‌ها» و «سابقه» را از Safari وارد کند.</translation>
 <translation id="8515328844674404333">از «تنظیمات برگزیده سیستم» خود، با نحوه اعطای مجوز دسترسی کامل به دیسک آشنا شوید.</translation>
 <translation id="6414878884710400018">باز کردن تنظیمات برگزیده سیستم</translation>
 <translation id="5570470519803062774">تنظیمات سایت و سپر ایمنی</translation>
+<translation id="8487693399751278191">اکنون نشانک‌ها را وارد کنید...</translation>
+<translation id="2557899542277210112">برای دسترسی سریع، نشانک‌های خود را در اینجا روی نوار نشانک‌ها قرار دهید.</translation>
 </translationbundle>

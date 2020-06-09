@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">Quyền riêng tư</translation>
 <translation id="3061707000357573562">Dịch vụ vá lỗi</translation>
 <translation id="1914326953223720820">Dịch vụ giải nén</translation>
-<translation id="1623104350909869708">Ngăn trang này tạo hộp thoại bổ sung</translation>
-<translation id="2677748264148917807">Rời khỏi</translation>
-<translation id="5556459405103347317">Tải lại</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="4378154925671717803">Điện thoại</translation>
 <translation id="8131740175452115882">Xác nhận</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">Không</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="9038649477754266430">Sử dụng dịch vụ gợi ý để tải trang nhanh hơn</translation>
+<translation id="2344028582131185878">Tải xuống tự động</translation>
+<translation id="3414952576877147120">Kích thước:</translation>
 <translation id="4850886885716139402">Xem</translation>
 <translation id="7180611975245234373">Làm mới</translation>
-<translation id="1426410128494586442">Có</translation>
-<translation id="4250680216510889253">Không</translation>
 <translation id="4522570452068850558">Chi tiết</translation>
 <translation id="3586931643579894722">Ẩn chi tiết</translation>
+<translation id="5556459405103347317">Tải lại</translation>
 <translation id="614940544461990577">Hãy thử:</translation>
 <translation id="4943872375798546930">Không tìm thấy kết quả nào</translation>
 <translation id="8688672835843460752">Có sẵn</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">Lịch sử tìm kiếm</translation>
 <translation id="4756388243121344051">&amp;Lịch sử</translation>
 <translation id="1644574205037202324">History</translation>
+<translation id="1623104350909869708">Ngăn trang này tạo hộp thoại bổ sung</translation>
+<translation id="2677748264148917807">Rời khỏi</translation>
 <translation id="3950820424414687140">Đăng nhập</translation>
 <translation id="8286036467436129157">Đăng nhập</translation>
 <translation id="8503813439785031346">Username</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">Khay nhớ tạm</translation>
 <translation id="6059925163896151826">Thiết bị USB</translation>
 <translation id="7638605456503525968">Cổng nối tiếp</translation>
+<translation id="3784372983762739446">Thiết bị Bluetooth</translation>
 <translation id="2215727959747642672">Chỉnh sửa tệp</translation>
 <translation id="6545864417968258051">Quét tìm Bluetooth</translation>
 <translation id="534295439873310000">Thiết bị dùng công nghệ NFC</translation>
-<translation id="4943703118917034429">Thực tế ảo</translation>
-<translation id="3513704683820682405">Thực tế tăng cường</translation>
+<translation id="4670064810192446073">Thực tế ảo</translation>
+<translation id="2025115093177348061">Thực tế tăng cường</translation>
 <translation id="5039804452771397117">Cho phép</translation>
 <translation id="7053983685419859001">Chặn</translation>
 <translation id="57838592816432529">Tắt tiếng</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">Trang web hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm</translation>
 <translation id="7878562273885520351">Mật khẩu của bạn có thể bị xâm phạm</translation>
 <translation id="1089439967362294234">Thay đổi mật khẩu</translation>
-<translation id="9008201768610948239">Bỏ qua</translation>
 <translation id="1186201132766001848">Kiểm tra mật khẩu</translation>
+<translation id="9008201768610948239">Bỏ qua</translation>
+<translation id="808894953321890993">Đổi mật khẩu</translation>
 <translation id="5979084224081478209">Kiểm tra mật khẩu</translation>
+<translation id="6107012941649240045">Cấp cho</translation>
+<translation id="5030338702439866405">Cấp bởi</translation>
+<translation id="5826507051599432481">Tên Phổ biến (CN)</translation>
+<translation id="6898699227549475383">Tổ chức (O)</translation>
+<translation id="3308006649705061278">Đơn vị Tổ chức (OU)</translation>
+<translation id="8705331520020532516">Số Sê-ri</translation>
+<translation id="1902576642799138955">Thời gian Có hiệu lực</translation>
+<translation id="5895187275912066135">Cấp vào</translation>
+<translation id="4121428309786185360">Hết hạn Vào</translation>
+<translation id="4154664944169082762">Dấu vân tay</translation>
+<translation id="7238585580608191973">SHA-256 Fingerprint</translation>
+<translation id="5209518306177824490">SHA-1 Fingerprint</translation>
+<translation id="6786747875388722282">Tiện ích mở rộng</translation>
+<translation id="7240120331469437312">Tên Thay thế Đối tượng của Chứng chỉ</translation>
 <translation id="10614374240317010">Không bao giờ lưu</translation>
 <translation id="5869522115854928033">Mật khẩu đã lưu</translation>
 <translation id="230699814587342492">Mật khẩu Brave</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">Màu cam</translation>
 <translation id="1555130319947370107">Xanh lam</translation>
 <translation id="138218114945450791">Màu lam nhạt</translation>
+<translation id="5612720917913232150"><ph name="URL"/> muốn sử dụng thông tin vị trí máy tính của bạn</translation>
+<translation id="4733082559415072992"><ph name="URL"/> muốn sử dụng thông tin vị trí thiết bị của bạn</translation>
+<translation id="4677585247300749148"><ph name="URL"/> muốn phản hồi các sự kiện trợ năng</translation>
+<translation id="3461266716147554923"><ph name="URL"/> muốn xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
+<translation id="131405271941274527"><ph name="URL"/> muốn gửi và nhận thông tin khi bạn chạm điện thoại của bạn vào thiết bị dùng công nghệ giao tiếp tầm gần (NFC)</translation>
+<translation id="5146995429444047494">Đã chặn các thông báo đối với <ph name="ORIGIN"/></translation>
+<translation id="1195558154361252544">Đã tự động chặn thông báo đối với mọi trang web, ngoại trừ những trang web bạn cho phép</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> muốn sử dụng micrô của bạn</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> muốn sử dụng máy ảnh của bạn</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> muốn gửi thông báo cho bạn</translation>
+<translation id="6910240653697687763"><ph name="URL"/> muốn có quyền kiểm soát toàn bộ thiết bị MIDI của bạn</translation>
+<translation id="503498442187459473"><ph name="HOST"/> muốn sử dụng máy ảnh và micrô của bạn</translation>
+<translation id="8282947398454257691">Biết số nhận dạng thiết bị duy nhất của bạn</translation>
+<translation id="8329449853370113380"><ph name="URL"/> muốn phát nội dung được bảo vệ. Thông tin định danh thiết bị của bạn sẽ được Brave Software xác minh.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> muốn phát nội dung được bảo vệ. Thông tin định danh của thiết bị sẽ được Brave Software xác minh và trang web này có thể truy cập vào thông tin đó.</translation>
+<translation id="3016780570757425217">Biết vị trí của bạn</translation>
+<translation id="7221855153210829124">Hiển thị thông báo</translation>
+<translation id="8606726445206553943">Sử dụng các thiết bị MIDI của bạn</translation>
+<translation id="7409836189476010449">Chạy Flash</translation>
+<translation id="7438976808740265764">Sau tháng 12 năm 2020, Flash Player sẽ không còn được hỗ trợ nữa.</translation>
+<translation id="4761104368405085019">Sử dụng micrô của bạn</translation>
+<translation id="9150045010208374699">Sử dụng máy ảnh của bạn</translation>
+<translation id="4953689047182316270">Phản hồi các sự kiện trợ năng</translation>
+<translation id="6116338172782435947">Xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
+<translation id="5804427196348435412">Sử dụng các thiết bị dùng công nghệ NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> muốn lưu trữ vĩnh viễn dữ liệu trên thiết bị của bạn</translation>
+<translation id="1030706264415084469"><ph name="URL"/> muốn lưu trữ vĩnh viễn một lượng lớn dữ liệu trên thiết bị của bạn</translation>
+<translation id="1712552549805331520"><ph name="URL"/> muốn lưu trữ vĩnh viễn dữ liệu trên máy tính cục bộ của bạn</translation>
+<translation id="1997484222658892567"><ph name="URL"/> muốn lưu trữ vĩnh viễn một lượng lớn dữ liệu trên máy tính cục bộ của bạn</translation>
+<translation id="7648992873808071793">Lưu trữ tệp trên thiết bị này</translation>
 <translation id="4813512666221746211">Lỗi mạng</translation>
 <translation id="3380365263193509176">Lỗi không xác định</translation>
 <translation id="5565735124758917034">Đang hoạt động</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">Người dùng hiện tại</translation>
 <translation id="6965978654500191972">Thiết bị</translation>
 <translation id="4728558894243024398">Nền tảng</translation>
+<translation id="1426410128494586442">Có</translation>
+<translation id="4250680216510889253">Không</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="1588438908519853928">Bình thường</translation>
 <translation id="1974060860693918893">Advanced</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">Không xác định</translation>
 <translation id="9170848237812810038">H&amp;oàn tác</translation>
 <translation id="2972581237482394796">&amp;Làm lại</translation>
-<translation id="6786747875388722282">Tiện ích mở rộng</translation>
 <translation id="5804241973901381774">Quyền</translation>
 <translation id="8004582292198964060">Trình duyệt</translation>
 </translationbundle>

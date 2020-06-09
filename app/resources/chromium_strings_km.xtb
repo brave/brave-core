@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">ជួយធ្វើឲ្យ Brave ប្រសើរជាងមុនដោយការផ្ញើរបាយការណ៍គាំង និង <ph name="UMA_LINK"/> ទៅ Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ការចូលបណ្ដាញ - Brave</translation>
+<translation id="8745514854244955877">Brave - ការចូលបណ្ដាញ - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - ការចូល​បណ្ដាញ</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -45,8 +48,12 @@ Brave មិនអាចសង្គ្រោះការកំណត់រប�
 <translation id="5785919770853225148">Brave នឹង​រក្សាទុក​ពាក្យ​សម្ងាត់នេះ​នៅក្នុង​គណនី Brave Software របស់អ្នក ដូច្នេះអ្នកនឹង​មិនចាំបាច់​ចងចាំ​វាទេ។</translation>
 <translation id="8211837073776713955">Brave ប្រាប់អ្នក​ឱ្យដឹងថាតើពាក្យ​សម្ងាត់របស់អ្នក​ធ្លាប់ត្រូវបានវាយលុកឬអត់</translation>
 <translation id="113959764510199339">Brave កំពុងព្យាយាមបង្ហាញពាក្យសម្ងាត់។</translation>
+<translation id="96347285368592620">Brave កំពុង​ព្យាយាម​ចម្លង​ពាក្យសម្ងាត់។</translation>
+<translation id="2953892977076487219">Brave កំពុង​ព្យាយាម​កែ​ពាក្យសម្ងាត់​។</translation>
 <translation id="7503098128120083822">Brave ចង់​នាំ​ចេញពាក្យ​សម្ងាត់​របស់អ្នក។</translation>
 <translation id="8285294305439559616">Brave កំពុងព្យាយាមបង្ហាញពាក្យសម្ងាត់។ វាយបញ្ចូលពាក្យសម្ងាត់ Windows ដើម្បីអនុញ្ញាត។</translation>
+<translation id="8090497651549769448">Brave កំពុង​ព្យាយាម​ចម្លង​ពាក្យសម្ងាត់។ សូម​វាយបញ្ចូល​ពាក្យសម្ងាត់ Windows របស់អ្នក ដើម្បី​អនុញ្ញាត​ការចម្លងនេះ។</translation>
+<translation id="3861679447659630159">Brave កំពុង​ព្យាយាម​កែ​ពាក្យសម្ងាត់​។ សូម​វាយបញ្ចូល​ពាក្យសម្ងាត់ Windows របស់អ្នក ដើម្បី​អនុញ្ញាត​ការកែនេះ​។</translation>
 <translation id="5918095577778020936">Brave ចង់​នាំ​ចេញពាក្យ​សម្ងាត់​របស់អ្នក។ សូមវាយ​បញ្ចូលពាក្យ​សម្ងាត់ Windows របស់អ្នក​ដើម្បីអនុញ្ញាត​ការនាំចេញ​នេះ។</translation>
 <translation id="8320964054148936490">កុំព្យូទ័រនេះមានកំណែ Brave ថ្មីជាងនេះរួចហើយ។ ប្រសិនបើកម្មវិធីនេះមិនដំណើរការ សូមលុបការតំឡើង Brave ហើយព្យាយាមម្តងទៀត។</translation>
 <translation id="7691786510374174420">ការតំឡើងបានបរាជ័យដោយសារកំហុសឆ្គងដែលមិនជាក់លាក់។ ប្រសិនបើ Brave កំពុងដំណើរការនៅពេលបច្ចុប្បន្ន សូមបិទវាហើយព្យាយាមម្តងទៀត។</translation>
@@ -193,7 +200,7 @@ Brave មិនអាចសង្គ្រោះការកំណត់រប�
 <translation id="3262506503470845422">ទទួលយកជំនួយពី Brave</translation>
 <translation id="1864557848095568223">កំពុងអាប់ដេត Brave</translation>
 <translation id="1786715389543715322">កំពុងអាប់ដេត Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">ការអាប់ដេតជិតបញ្ចប់ហើយ! បើកដំណើរការ Brave ឡើងវិញដើម្បីបញ្ចប់ការអាប់ដេត។</translation>
+<translation id="7914115000169617076">ជិតដំឡើង​កំណែរួចរាល់ហើយ! សូមចាប់ផ្ដើម Brave ឡើងវិញ ដើម្បីបញ្ចប់​ការដំឡើង​កំណែ។ ផ្ទាំងឯកជន​នឹង​មិនបើកឡើងវិញទេ។</translation>
 <translation id="8208853227947884571">Brave នេះជា​កំណែថ្មី​ហើយ</translation>
 <translation id="573759479754913123">អំពី Brave OS</translation>
 <translation id="7573289029918943991">ដើម្បី​មើល​ថាតើឧបករណ៍​របស់អ្នក​មានបច្ចុប្បន្នភាពឬអត់ សូម​ចូលទៅកាន់<ph name="LINK_BEGIN"/>ការកំណត់ Brave OS<ph name="LINK_END"/></translation>
@@ -211,6 +218,12 @@ Brave មិនអាចសង្គ្រោះការកំណត់រប�
 <translation id="8586264863973514035">ដើម្បី​អនុវត្ត​ការផ្លាស់ប្ដូររបស់អ្នក សូម​ចាប់ផ្ដើម​ Brave ឡើងវិញ</translation>
 <translation id="7021823858304886493">អនុញ្ញាតការចូល Brave</translation>
 <translation id="1649714546770135458">ប្រសិនបើ​បិទ​មុខងារនេះ មានន័យ​ថាអ្នក​អាចចូល​គេហទំព័រផ្សេងៗ​របស់ Brave Software ដូចជា Gmail ដោយមិន​ចាំបាច់ចូល Brave នោះទេ</translation>
+<translation id="2796517443093885402">Brave អាច​ជួយរក្សាសុវត្ថិភាពរបស់អ្នកពី​ការបែកធ្លាយ​ទិន្នន័យ កម្មវិធីបន្ថែម​ដែលមានបញ្ហា និង​អ្វីៗជាច្រើនទៀត</translation>
+<translation id="428541510811554120">Brave មិនអាចពិនិត្យរក​កំណែថ្មីបានទេ។ សូមសាកល្បងពិនិត្យ​ការតភ្ជាប់អ៊ីនធឺណិត​របស់អ្នក។</translation>
+<translation id="2633397153656205379">Brave មិន​បានដំឡើងកំណែទេ មានអ្វីមួយខុសប្រក្រតី។ <ph name="BEGIN_LINK"/>សូមដោះស្រាយបញ្ហា​នៃការដំឡើងកំណែ Brave និងការដំឡើងកំណែដែលមិនបានសម្រេចផ្សេងៗ។<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave មិន​អាច​ពិនិត្យពាក្យសម្ងាត់របស់អ្នកបានទេ ដោយសារអ្នកមិនបានចូលគណនី</translation>
+<translation id="7006260220514217183">បានបិទមុខងាររុករក​ដោយសុវត្ថិភាព​។ Brave ណែនាំឱ្យ​បើក​មុខងារនេះ។</translation>
+<translation id="1785833016412082453">Brave មិនអាចពិនិត្យ​កម្មវិធី​បន្ថែម​របស់អ្នកបានទេ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</translation>
 <translation id="9220324636239049437">វា​នឹង​លុប​ធាតុ 1 ចេញ​ពី​ឧបករណ៍​នេះ។ ដើម្បី​ទាញ​យក​ទិន្នន័យ​របស់អ្នក​មកវិញ​នៅ​ពេល​ក្រោយ សូម​ចូល​ទៅ​កាន់ Brave ជា <ph name="USER_EMAIL"/> ។</translation>
 <translation id="5853262807109651878">វា​នឹង​លុប​ធាតុ <ph name="ITEMS_COUNT"/> ចេញ​ពី​ឧបករណ៍​នេះ។ ដើម្បី​ទាញ​យក​ទិន្នន័យ​របស់អ្នក​មកវិញ​នៅ​ពេល​ក្រោយ សូម​ចូល​ទៅ​កាន់ Brave ជា <ph name="USER_EMAIL"/> ។</translation>
 <translation id="4784414698887946907">វា​នឹង​លុប​ទិន្នន័យ​រុករក​របស់អ្នក​ចេញ​ពី​ឧបករណ៍​នេះ។ ដើម្បី​ទាញ​យក​ទិន្នន័យ​របស់អ្នក​មកវិញ​នៅ​ពេល​ក្រោយ សូម​ចូល​ទៅ​កាន់ Brave ជា <ph name="USER_EMAIL"/> ។</translation>

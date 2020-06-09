@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Proteções</translation>
 <translation id="6132506775968708399">Bloquear cookies de terceiros</translation>
 <translation id="7835726359440951858">Bloquear Anúncios e Rastreamento</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="94154759592465111">Bloquear Scripts</translation>
 <translation id="7458422973722236530">Proteção de Impressão Digital</translation>
-<translation id="252011129655042182">Anúncios e Rastreadores</translation>
+<translation id="5709627087332022422">Bloquear trackers intersite</translation>
 <translation id="6754976710186182237">Métodos usando Digitais</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="7461425058443653485">Scripts bloqueados</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Aba padrão</translation>
 <translation id="3377025655491224618">Aba anônima</translation>
 <translation id="9148058034647219655">Sair</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Abre sites suportados usando HTTPS em vez de HTTP sempre que possível</translation>
 <translation id="8387201461264842096">Ad Block</translation>
 <translation id="1934885595886623674">Impedir o carregamento de anúncios</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Fechar as guias ao sair</translation>
 <translation id="1680858055899097121">Não mantenha abas entre as sessões de navegação</translation>
 <translation id="4339730410920731698">Anúncios e rastreadores bloqueados</translation>
+<translation id="6761596877474675418">Dados Salvos</translation>
 <translation id="3034562645284925177">Estimativa de Tempo Economizado</translation>
 <translation id="6572660632052512096">Modo Desktop</translation>
 <translation id="1340503115760585811">Habilitar o Modo Desktop para novas guias</translation>
@@ -158,7 +160,7 @@
 <translation id="1713542052890184975">Faça o backup da sua carteira Brave.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">O servidor do Brave Rewards não está respondendo. Iremos corrigir isso o mais rápido possível.</translation>
-<translation id="2626799779920242286">Por favor, tente novamente mais tarde.</translation>
+<translation id="7117228822971127758">Tente novamente mais tarde</translation>
 <translation id="3068742524072211213">expira em <ph name="DATE"/></translation>
 <translation id="4292832015778676417">ganhou de anúncios</translation>
 <translation id="683765328936486920">no YouTube</translation>
@@ -231,7 +233,6 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="6199596294742117349">Esta é uma Guia Privada</translation>
 <translation id="5858455511731621847">Embora os sites que você visita em guias privadas não sejam salvos localmente, eles não o tornam anônimo ou invisível para o seu ISP, seu empregador ou para os sites que você está visitando.</translation>
 <translation id="5789441016350810005">Brave Ads enviados quando o navegador está em segundo plano</translation>
-<translation id="7127980134843952133">Histórico de downloads</translation>
 <translation id="3690140184638701871">Contribuições e gorjetas</translation>
 <translation id="844921671123185605">Suas gorjetas mensais foram processadas!</translation>
 <translation id="3124090095880236567">Ativar o Ads</translation>
@@ -254,15 +255,82 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="8522669544471808198">Mostrar imagens de plano de fundo</translation>
 <translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Seja pago para ver esta imagem de plano de fundo.</translation>
-<translation id="4836823081419522426">Você vai receber 70% da receita do anúncio desse patrocínio privado, que pode ser usada para apoiar os desenvolvedores de conteúdo para a web. Ative o Brave Rewards para reivindicar sua parte.</translation>
-<translation id="7307847920988946894">Ativar o Rewards</translation>
 <translation id="1605521356929094020">Ativar o Brave Ads</translation>
-<translation id="1647482814782886825">Ao ativar o Rewards, você está de acordo com os <ph name="TERMS_OF_SERVICE"/>. Você também pode optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Ao tocar em Ganhar &amp; Dar, você concorda com os <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Seja pago para ver esta imagem de plano de fundo.</translation>
 <translation id="7136586167396205364">Ocultar imagens patrocinadas</translation>
 <translation id="2927095357213611519">Você pode apoiar os desenvolvedores web com tokens.\nGanhe tokens visualizando anúncios que respeitam sua privacidade.</translation>
-<translation id="4016415345213871193">Você está sendo pago para ver esta imagem de plano de fundo.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> sobre imagens patrocinadas no Brave Rewards. Você também pode optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Você também pode optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Seja pago para ver esta imagem de plano de fundo. Ative o Brave Ads para reivindicar sua parte.</translation>
+<translation id="213787746370741250">Abrir abas em Abas Personalizadas</translation>
+<translation id="8030169304546394654">Desconectado</translation>
+<translation id="8267327690882073581">Verificar Carteira</translation>
+<translation id="543510923939676996">Carteira verificada</translation>
+<translation id="8673913984316081937">Confirmar sua carteira é opcional</translation>
+<translation id="8558636200953226885">Mas, se você verificar, poderá...</translation>
+<translation id="8697510149346635496">Saque BAT que você tenha recebido por visualizar anúncios que respeitam a privacidade</translation>
+<translation id="1481480653609649134">Compre BAT adicionais com cartões de crédito e outras fontes</translation>
+<translation id="9096003370755878766">Saque BAT que você tenha adicionado anteriormente à sua carteira Brave Rewards</translation>
+<translation id="1554282356558968486">Nosso serviço de carteira é fornecido por</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">A Uphold pode exigir que você verifique sua identidade com base nos serviços solicitados.</translation>
+<translation id="723054503945711909">A Brave Software Inc. não processa, armazena ou acessa quaisquer informações pessoais que você fornece à Uphold quando estabelece uma conta com eles.</translation>
+<translation id="3699674790322420653">Concluir verificação de carteira</translation>
+<translation id="2193391216824305230">Carteira do Usuário</translation>
+<translation id="7591798679868259510">Ir à minha conta Uphold</translation>
+<translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
+<translation id="6239274080752256452">Retirar Fundos</translation>
+<translation id="8874184842967597500">Não conectado</translation>
+<translation id="3368922792935385530">Conectado</translation>
+<translation id="4569155249847375786">Verificado</translation>
+<translation id="5358719431303818601">Desconectado não verificado</translation>
+<translation id="4241449868720191203">Desconectado verificado</translation>
+<translation id="3248185426436836442">Pendente</translation>
+<translation id="8108013093558639183">O BAT não é suportado atualmente na sua região com ase na localização onde sua conta foi aberta. Verifique a disponibilidade novamente mais tarde.</translation>
+<translation id="4190454391025419535">Região não suportada</translation>
+<translation id="6830703472632069884">Houve um problema ao verificar sua carteira. Tente novamente mais tarde.</translation>
+<translation id="3512533646933434345">Erro de verificação da carteira</translation>
+<translation id="2260513517001048012">OBSERVAÇÃO: este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições dos usuários do Brave. Seu navegador continuará tentando contribuir até que ele seja confirmado ou até 90 dias se passarem.</translation>
+<translation id="4488355059795908907">Este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições dos usuários do Brave. Todas as contribuições que você enviar permanecerão na sua carteira até que ele conclua o processo.</translation>
+<translation id="2495032782748793764">Padrão do Brave</translation>
+<translation id="9132378787893584761">Compartilhe o Brave com seus amigos!</translation>
+<translation id="717952606991220586">Opa, algo está errado. Tente novamente mais tarde.</translation>
+<translation id="2524310205387880526">Avaliar o Brave</translation>
+<translation id="6680650203439190394">Taxa</translation>
+<translation id="2635089463885398597">Como você avaliaria sua experiência com o Brave?</translation>
+<translation id="141901961143729572">Compartilhe seus pensamentos</translation>
+<translation id="7961015016161918242">Nunca</translation>
+<translation id="1275213816424141989">Talvez mais tarde</translation>
+<translation id="6991128190741664836">Mais tarde</translation>
+<translation id="8851456134224363571">Ótimo! Você se importaria de nos avaliar na Play Store?</translation>
+<translation id="8668962040900592974">Diga-nos como podemos melhorar</translation>
+<translation id="4406937629441301400">Ganhe tokens por visualizar esta imagem e passe adiante aos criadores. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Ganhe tokens por visualizar esta imagem. Ative o Ganhar &amp; Dar para pegar sua parte.</translation>
+<translation id="6632345639591919543">Você está ganhando tokens por visualizar esta imagem.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Você está ganhando tokens para visualizar esta imagem.</translation>
+<translation id="7952665812649667034">Estou pronto para Ganhar &amp; Dar</translation>
+<translation id="7877201489035217175">Saiba mais sobre as imagens patrocinadas</translation>
+<translation id="828092975561478703">Para toda imagem patrocinada que você visualizar, você recebe 70% da receita em tokens. Com o Brave Ads, você está sempre no controle dos anúncios que vê.</translation>
+<translation id="4941539331405513605">Bloquear cookies em diferentes sites</translation>
+<translation id="3763681089644577874">Bloquear cookies</translation>
+<translation id="614747795780742163">Impede que os sites armazenem informações sobre seus acessos anteriores</translation>
+<translation id="6883611015375728278">Bloquear todos os cookies</translation>
+<translation id="5657156137487675418">Permitir todos os cookies</translation>
+<translation id="5963670684159057574">Bloquear impressões digitais entre sites</translation>
+<translation id="3895527457258986253">Bloquar impressão digital</translation>
+<translation id="184568144098869637">Impede o navegador de reconhecer seu dispositivo</translation>
+<translation id="4540198958192073185">Bloquear todas as impressões digitais</translation>
+<translation id="769702552748212954">Permitir todas as impressões digitais</translation>
+<translation id="2888409909650566510">Anúncios e outras coisas\nestranhas bloqueadas</translation>
+<translation id="6930134873084561197">Os sites muitas vezes incluem cookies e scripts que tentam identificar você e seu dispositivo. Eles querem descobrir quem você é e querem seguir você, rastreando o que você faz em todos os sites.\n\nBrave bloqueia essas coisas, para que você possa nagear sem ser seguido.</translation>
+<translation id="8553998445606452168">Sobre o Brave Shields</translation>
+<translation id="8912304686498704084">ATIVADO</translation>
+<translation id="4963218453264888510">DESATIVADO</translation>
+<translation id="7474113515179313724">Você está navegando neste site sem as proteções de privacidade do Brave. Não está funcionando direito com o Shields ativado?</translation>
+<translation id="9055546041146396417">Se o site parecer não estar funcionando, tente desativar o Shields.</translation>
+<translation id="1209739344687072997">Relate um site quebrado</translation>
+<translation id="8510478288840333677">Informe aos desenvolvedores do Brave que este site não funciona corretamente com o Shields:</translation>
+<translation id="5429200298326665264">Observação: o endereço deste site será enviado com o número da sua versão do Brave e o seu endereço IP (que não será armazenado).</translation>
+<translation id="5299848999918506028">Obrigado!</translation>
+<translation id="76550953340008122">Agradecemos por informar aos desenvolvedores do Brave que há algo errado com este site. Faremos nosso melhor para corrigir isso!</translation>
+<translation id="650318023204990401">Controles avançados</translation>
+<translation id="7182293319417450928">Um saldo mínimo de 25 BAT é necessário para confirmar.</translation>
 </translationbundle>

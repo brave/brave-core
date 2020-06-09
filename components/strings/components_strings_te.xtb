@@ -32,9 +32,6 @@
 <translation id="5040262127954254034">గోప్యత</translation>
 <translation id="3061707000357573562">ప్యాచ్ సేవ</translation>
 <translation id="1914326953223720820">సేవను అన్‌జిప్ చేయండి</translation>
-<translation id="1623104350909869708">ఈ పేజీని అదనపు డైలాగ్‌లు సృష్టించనీయకుండా నిరోధించు</translation>
-<translation id="2677748264148917807">నిష్క్రమించు</translation>
-<translation id="5556459405103347317">రీలోడ్</translation>
 <translation id="2359808026110333948">కొనసాగించు</translation>
 <translation id="4378154925671717803">ఫోన్</translation>
 <translation id="8131740175452115882">నిర్ధారించు</translation>
@@ -67,12 +64,13 @@
 <translation id="7701040980221191251">ఏదీ కాదు</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
 <translation id="9038649477754266430">పేజీలను మరింత శీఘ్రంగా లోడ్ చేయడానికి సూచన సేవను ఉపయోగించండి</translation>
+<translation id="2344028582131185878">స్వయంచాలక డౌన్‌లోడ్‌లు</translation>
+<translation id="3414952576877147120">పరిమాణం:</translation>
 <translation id="4850886885716139402">వీక్షణ</translation>
 <translation id="7180611975245234373">రీఫ్రెష్ చేయి</translation>
-<translation id="1426410128494586442">అవును</translation>
-<translation id="4250680216510889253">కాదు</translation>
 <translation id="4522570452068850558">వివరాలు</translation>
 <translation id="3586931643579894722">వివరాలను దాచిపెట్టు</translation>
+<translation id="5556459405103347317">రీలోడ్</translation>
 <translation id="614940544461990577">ఇలా చేసి ప్రయత్నించండి:</translation>
 <translation id="4943872375798546930">ఫలితాలు ఏవీ లేవు</translation>
 <translation id="8688672835843460752">అందుబాటులో ఉంది</translation>
@@ -90,6 +88,8 @@
 <translation id="4880827082731008257">శోధన చరిత్ర</translation>
 <translation id="4756388243121344051">&amp;చరిత్ర</translation>
 <translation id="1644574205037202324">చరిత్ర</translation>
+<translation id="1623104350909869708">ఈ పేజీని అదనపు డైలాగ్‌లు సృష్టించనీయకుండా నిరోధించు</translation>
+<translation id="2677748264148917807">నిష్క్రమించు</translation>
 <translation id="3950820424414687140">సైన్ ఇన్</translation>
 <translation id="8286036467436129157">సైన్ ఇన్ చేయండి</translation>
 <translation id="8503813439785031346">యూజర్‌పేరు</translation>
@@ -132,11 +132,12 @@
 <translation id="2586657967955657006">క్లిప్‌బోర్డ్</translation>
 <translation id="6059925163896151826">USB పరికరాలు</translation>
 <translation id="7638605456503525968">సీరియల్ పోర్ట్‌లు</translation>
+<translation id="3784372983762739446">బ్లూటూత్ పరికరాలు</translation>
 <translation id="2215727959747642672">ఫైల్‌ను సవరించడం</translation>
 <translation id="6545864417968258051">బ్లూటూత్ స్కానింగ్</translation>
 <translation id="534295439873310000">NFC పరికరాలు</translation>
-<translation id="4943703118917034429">వర్చువల్ రియాలిటీ</translation>
-<translation id="3513704683820682405">అగ్‌మెంటెడ్ రియాలిటీ</translation>
+<translation id="4670064810192446073">వర్చువల్ రియాలిటీ</translation>
+<translation id="2025115093177348061">అగ్‌మెంటెడ్ రియాలిటీ</translation>
 <translation id="5039804452771397117">అనుమతించు</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
 <translation id="57838592816432529">మ్యూట్ చేయి</translation>
@@ -152,9 +153,24 @@
 <translation id="5932224571077948991">సైట్ అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపుతుంది</translation>
 <translation id="7878562273885520351">మీ పాస్‌వర్డ్ ఎవరికైనా తెలిసిపోయి ఉండవచ్చు</translation>
 <translation id="1089439967362294234">పాస్‌వర్డ్‌ని మార్చు</translation>
-<translation id="9008201768610948239">విస్మరించు</translation>
 <translation id="1186201132766001848">పాస్‌వర్డ్‌లను తనిఖీ చేయి</translation>
+<translation id="9008201768610948239">విస్మరించు</translation>
+<translation id="808894953321890993">పాస్‌వర్డ్‌ను మార్చు</translation>
 <translation id="5979084224081478209">పాస్‌వర్డ్‌లను తనిఖీ చేయి</translation>
+<translation id="6107012941649240045">వీరికి జారీ చేయబడింది</translation>
+<translation id="5030338702439866405">వీరిచే జారీచేయబడింది</translation>
+<translation id="5826507051599432481">సాధారణ పేరు (CN)</translation>
+<translation id="6898699227549475383">సంస్థ (O)</translation>
+<translation id="3308006649705061278">ఆర్గనైజేషనల్ యూనిట్ (OU)</translation>
+<translation id="8705331520020532516">క్రమ సంఖ్య</translation>
+<translation id="1902576642799138955">చెల్లుబాటు కాలం</translation>
+<translation id="5895187275912066135">జారీ చేయబడినది</translation>
+<translation id="4121428309786185360">గడువు ముగిసేది</translation>
+<translation id="4154664944169082762">వేలిముద్రలు</translation>
+<translation id="7238585580608191973">SHA-256 వేలిముద్ర</translation>
+<translation id="5209518306177824490">SHA-1 వేలిముద్ర</translation>
+<translation id="6786747875388722282">ఎక్స్‌టెన్షన్‌లు</translation>
+<translation id="7240120331469437312">సర్టిఫికెట్ విషయ ప్రత్యామ్నాయ పేరు</translation>
 <translation id="10614374240317010">ఎప్పటికి సేవ్ చెయ్యబడవు</translation>
 <translation id="5869522115854928033">సేవ్  చేసిన పాస్‌వర్డ్‌లు</translation>
 <translation id="230699814587342492">Brave పాస్‌వర్డ్‌లు</translation>
@@ -182,6 +198,36 @@
 <translation id="2713444072780614174">తెలుపు</translation>
 <translation id="1197088940767939838">నారింజ రంగు</translation>
 <translation id="1555130319947370107">నీలం</translation>
+<translation id="5612720917913232150"><ph name="URL"/> మీ కంప్యూటర్ స్థానాన్ని ఉపయోగించాలనుకుంటోంది</translation>
+<translation id="4733082559415072992"><ph name="URL"/> మీ పరికర స్థానాన్ని ఉపయోగించాలనుకుంటోంది</translation>
+<translation id="4677585247300749148">యాక్సెసిబిలిటీ ఈవెంట్‌లకు <ph name="URL"/> ప్రతిస్పందించాలనుకుంటోంది</translation>
+<translation id="3461266716147554923"><ph name="URL"/> క్లిప్‌బోర్డ్‌కు కాపీ చేసిన వచనం మరియు చిత్రాలను చూడాలనుకుంటోంది.</translation>
+<translation id="131405271941274527">మీరు NFC పరికరంలో మీ ఫోన్‌పై నొక్కినప్పుడు సమాచారం పంపడానికి, అందుకోవడానికి <ph name="URL"/> అనుమతి కోరుతోంది</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> కోసం నోటిఫికేషన్‌లు బ్లాక్ చేయబడ్డాయి</translation>
+<translation id="1195558154361252544">మీరు అనుమతించినవి మినహా, ఇతర అన్ని సైట్‌లకు నోటిఫికేషన్‌లు ఆటోమేటిక్‌గా బ్లాక్ చేయబడ్డాయి</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> మీ మైక్రోఫోన్‌ను ఉపయోగించాలనుకుంటోంది</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> మీ కెమెరాను ఉపయోగించాలనుకుంటోంది</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> మీకు నోటిఫికేషన్‌లను పంపాలనుకుంటోంది</translation>
+<translation id="6910240653697687763"><ph name="URL"/> మీ MIDI పరికరాలకు పూర్తి నియంత్రణను పొందాలనుకుంటోంది</translation>
+<translation id="503498442187459473"><ph name="HOST"/> మీ కెమెరాను మరియు మైక్రోఫోన్‌ను ఉపయోగించాలనుకుంటోంది</translation>
+<translation id="8282947398454257691">మీ ప్రత్యేక పరికర ఐడెంటిఫైయర్‌ని తెలుసుకోవడానికి అనుమతి</translation>
+<translation id="8329449853370113380"><ph name="URL"/> రక్షిత కంటెంట్‌ని ప్లే చేయాలనుకుంటోంది. మీ పరికర గుర్తింపును Brave Software ధృవీకరిస్తుంది.</translation>
+<translation id="2650609753175229582">రక్షిత కంటెంట్‌ను ప్లే చేయడానికి <ph name="URL"/> అనుమతి కోరుతుంది. మీ పరికరం గుర్తింపు Brave Software ద్వారా ధృవీకరించబడుతుంది, దీనిని ఈ సైట్ ద్వారా యాక్సెస్ చేయవచ్చు</translation>
+<translation id="3016780570757425217">మీ స్థానాన్ని తెలుసుకోవాలనుకుంటోంది</translation>
+<translation id="7221855153210829124">నోటిఫికేషన్‌లను చూపాలనుకుంటోంది</translation>
+<translation id="8606726445206553943">మీ MIDI పరికరాలను ఉపయోగించాలనుకుంటోంది</translation>
+<translation id="7409836189476010449">Flash అమలు చేయాలనుకుంటోంది</translation>
+<translation id="7438976808740265764">డిసెంబర్ 2020 నుండి Flash Playerకు మద్దతు తీసివేయబడుతుంది.</translation>
+<translation id="4761104368405085019">మీ మైక్రోఫోన్‌ను ఉపయోగించండి</translation>
+<translation id="9150045010208374699">మీ కెమెరాను ఉపయోగించండి</translation>
+<translation id="4953689047182316270">యాక్సెస్ సామర్థ్యం ఉన్న ఈవెంట్‌లకు ప్రతిస్పందించండి</translation>
+<translation id="6116338172782435947">క్లిప్‌బోర్డ్‌కు కాపీ చేసిన వచనం మరియు చిత్రాలను చూడండి</translation>
+<translation id="5804427196348435412">NFC పరికరాలను ఉపయోగించండి</translation>
+<translation id="3194737229810486521"><ph name="URL"/> శాశ్వతంగా డేటాను మీ పరికరంలో నిల్వ చేయాలనుకుంటోంది</translation>
+<translation id="1030706264415084469"><ph name="URL"/> శాశ్వతంగా అధిక డేటాను మీ పరికరంలో నిల్వ చేయాలనుకుంటోంది</translation>
+<translation id="1712552549805331520">మీ స్థానిక కంప్యూటర్‌లో <ph name="URL"/> శాశ్వతంగా డేటాను నిల్వ చేయాలనుకుంటోంది</translation>
+<translation id="1997484222658892567"><ph name="URL"/> శాశ్వతంగా అధిక డేటాని మీ స్థానిక కంప్యూటర్‌లో నిల్వ చేయాలనుకుంటోంది</translation>
+<translation id="7648992873808071793">ఈ పరికరంలో ఫైల్‌లను నిల్వ చేయాలనుకుంటోంది</translation>
 <translation id="4813512666221746211">నెట్‌వర్క్ లోపం</translation>
 <translation id="3380365263193509176">తెలియని లోపం</translation>
 <translation id="5565735124758917034">సక్రియం</translation>
@@ -197,6 +243,8 @@
 <translation id="5720705177508910913">ప్రస్తుత వినియోగదారు</translation>
 <translation id="6965978654500191972">పరికరం</translation>
 <translation id="4728558894243024398">ప్లాట్‌ఫారమ్</translation>
+<translation id="1426410128494586442">అవును</translation>
+<translation id="4250680216510889253">కాదు</translation>
 <translation id="1588438908519853928">సాధారణ</translation>
 <translation id="1974060860693918893">ఆధునిక</translation>
 <translation id="5308380583665731573">కనెక్ట్ చేయండి</translation>
@@ -217,7 +265,6 @@
 <translation id="583281660410589416">తెలియదు</translation>
 <translation id="9170848237812810038">&amp;అన్డు</translation>
 <translation id="2972581237482394796">&amp;పునరావృతం</translation>
-<translation id="6786747875388722282">ఎక్స్‌టెన్షన్‌లు</translation>
 <translation id="5804241973901381774">అనుమతులు</translation>
 <translation id="8004582292198964060">బ్రౌజర్</translation>
 </translationbundle>

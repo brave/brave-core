@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Opret en ny profil</translation>
 <translation id="2666990579225592931">Åbn gæstevindue</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tilladt i Brave.</translation>
-<translation id="7450557937477381864">Luk Chrome</translation>
-<translation id="7008934821596358692">Luk alle Chrome-vinduer for at afslutte importeringen.</translation>
 <translation id="6786747875388722282">Internetadresser</translation>
 <translation id="3699882589215410581">Installer og kør Widevine</translation>
 <translation id="8926389886865778422">Spørg ikke igen</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
 
 Ved at installere denne udvidelse accepterer du Google Widevines betingelser for brug. Du accepterer at Brave ikke er ansvarlige for nogen skader eller tab i forbindelse med din brug af Google Widevine.</translation>
-<translation id="453977518730680921">Afspil medier automatisk</translation>
 <translation id="410351446219883937">Automatisk afspilning</translation>
 <translation id="2240268017737062801">Spørg når en side automatisk vil afspille indhold</translation>
 <translation id="3371702087847741961">Spørg, når en side vil afspille indhold automatisk (anbefalet)</translation>
@@ -39,11 +36,14 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
 <translation id="1520361618554057102">Altid vis mine bogmærker på Ny Fane siden</translation>
 <translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
+<translation id="597020512043916976">Vis øverste sider i forslag til automatisk udfyldning</translation>
+<translation id="264150068416846820">Vis Braves foreslåede sider i forslag fra automatisk udfyldning</translation>
 <translation id="7781069478569868053">Side på ny fane</translation>
 <translation id="2467749191278759605">Tilpas dit Brave Dashboard</translation>
 <translation id="1717331825806276156">Baggrundsbilleder</translation>
 <translation id="1820041496463124489">Sponsorerede billeder</translation>
 <translation id="8173998484743827990">Brave Stats</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Topsider</translation>
 <translation id="1776831331757823105">Ur</translation>
@@ -73,23 +73,22 @@ vindue med Tor</translation>
 <translation id="7390783310074170337">Standardvisning</translation>
 <translation id="130615081792797568">Simpel visning</translation>
 <translation id="2360360976480535628">Avanceret visning</translation>
-<translation id="5709627087332022422">Bloker cross-site-trackere</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="6522412052085018663">Fingeraftryk</translation>
+<translation id="2133317862976486547">Blokér trackere &amp; reklamer</translation>
+<translation id="4385707520896576447">Cookies</translation>
+<translation id="4978786495456601191">Fingeraftryk</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
-<translation id="519861640102428255">Se &amp;amp; Føl</translation>
+<translation id="519861640102428255">Se &amp; Føl</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
 <translation id="7498695072878479744">Tillad Google login-knapper på tredjeparts sider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
-<translation id="4699812599455071925">Bloker kun cross-site-cookies</translation>
-<translation id="5657156137487675418">Tillad alle cookies</translation>
-<translation id="6883611015375728278">Blokér alle cookies</translation>
-<translation id="5963670684159057574">Bloker cross-site-fingeraftryk</translation>
-<translation id="769702552748212954">Tillad al fingeraftrykning</translation>
-<translation id="4540198958192073185">Bloker altid for at der kan tages fingeraftryk</translation>
+<translation id="4078738236287221428">Trackere &amp; reklamer blokeret (aggressivt)</translation>
+<translation id="7740996059027112821">Trackere &amp; reklamer blokeret (standard)</translation>
+<translation id="4176463684765177261">Tillad alle trackere &amp; reklamer</translation>
+<translation id="5770288601196774623">Bloker kun cross-site-cookies</translation>
+<translation id="3587482841069643663">Blokér alle cookies</translation>
 <translation id="8942080017911802454">WebRTC IP håndteringspolitik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -111,6 +110,7 @@ vindue med Tor</translation>
 <translation id="7701040980221191251">Ingen</translation>
 <translation id="1085027414516521238">MetaMask\n</translation>
 <translation id="3905324891414560921">Web3 udbyder for brug af Dapps</translation>
+<translation id="5913089932885076110">Hent Krypto-tegnebøger ved opstart</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="1765684547504191670">Bruger Media Router-komponent til at aktivere Chromecast i browseren.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
@@ -172,10 +172,13 @@ vindue med Tor</translation>
 <translation id="6469509880167172749">Send automatisk fuldstændig private produktanalyser til Brave</translation>
 <translation id="7090566321964540749">Disse anonyme informationer giver kun Brave tilladelse til at anslå det generelle forbrug af visse funktioner.</translation>
 <translation id="9111960429693394744">Ønsker du at bruge Braves Krypto-tegnebøger eller MetaMask til Dapps?</translation>
+<translation id="8721775358057000783">Ønsker du at starte Krypto-tegnebøger for web3 understøttelse på denne side?</translation>
 <translation id="7583735190612229830">Sæt dine krypto wallets op til at interagere med denne app og andre som den</translation>
-<translation id="8337117349965899723">Brug Kryptowallet</translation>
+<translation id="4823406846571523661">Opsæt Krypto-tegnebøger</translation>
 <translation id="5756155765711979898">Brug MetaMask</translation>
 <translation id="6754134632841262799">OPSÆTNING</translation>
+<translation id="8199661191594897555">Åbn Krypto-tegnebøger og genindlæs</translation>
+<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="4552520379838695057">Beklager, den side mangler.</translation>
 <translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>
 <translation id="8053093028263274061">Beklager, der er ingen gemt version til rådighed.</translation>
@@ -186,8 +189,10 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href
 <translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
 <translation id="796831669370432378">Klik på bogmærkeknappen for at tilføje et bogmærke ved siden af adresselinjen</translation>
 <translation id="4989337484121655457">Fuld Diskadgang kræves</translation>
-<translation id="8025559074845816210">Brave behøver Fuld Diskadgang for at importere dine bogmærker fra Safari.</translation>
+<translation id="5501596373144334003">Brave har brug for Fuld Disk-adgang for at importere dine bogmærker og historik fra Safari.</translation>
 <translation id="8515328844674404333">Lær hvordan du giver Fuld Diskadgang fra dine Systempræferencer.</translation>
 <translation id="6414878884710400018">Åbn Systempræferencer</translation>
 <translation id="5570470519803062774">Indstillinger for side og skjold</translation>
+<translation id="8487693399751278191">Importér bogmærker nu...</translation>
+<translation id="2557899542277210112">For hurtig adgang skal du placere dine bogmærker her på bogmærkelinien.</translation>
 </translationbundle>

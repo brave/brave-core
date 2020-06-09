@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Aizsargi</translation>
 <translation id="6132506775968708399">Bloķēt trešās puses sīkfailus</translation>
 <translation id="7835726359440951858">Bloķēt reklāmas un izsekošanu</translation>
-<translation id="520895744850022668">HTPPS visur</translation>
+<translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="94154759592465111">Bloķēt skriptus</translation>
 <translation id="7458422973722236530">Pirkstu nospiedumu aizsardzība</translation>
-<translation id="252011129655042182">Reklāmas un izsekotāji</translation>
+<translation id="5709627087332022422">Bloķēt starpvietņu izsekotājus</translation>
 <translation id="6754976710186182237">Identificējošās ciparvirknes iegūšanas metodes</translation>
 <translation id="2313532038420432247">HTTPS jauninājumi</translation>
 <translation id="7461425058443653485">Bloķētie skripti</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Standarta cilne</translation>
 <translation id="3377025655491224618">Inkognito cilne</translation>
 <translation id="9148058034647219655">Iziet</translation>
+<translation id="520895744850022668">HTPPS visur</translation>
 <translation id="8710614491157212477">Kad vien iespējams, atver atbalstītās vietnes, izmantojot nevis HTTP protokolu, bet HTTPS protokolu</translation>
 <translation id="8387201461264842096">Reklāmu bloķētājs</translation>
 <translation id="1934885595886623674">Novērš reklāmu ielādēšanu</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Izejot aizvērt cilnes</translation>
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
 <translation id="4339730410920731698">Bloķētās reklāmas un izsekotāji</translation>
+<translation id="6761596877474675418">Dati saglabāti</translation>
 <translation id="3034562645284925177">Aprēķinātais ietaupītais laiks</translation>
 <translation id="6572660632052512096">Darbvirsmas režīms</translation>
 <translation id="1340503115760585811">Aktivizēt darbvirsmas skatu jaunām cilnēm</translation>
@@ -159,7 +161,7 @@ mēnesī...</translation>
 <translation id="1713542052890184975">Lūdzu, izveidojiet sava Brave maka dublējumkopiju.</translation>
 <translation id="2323069945529668668">Ak vai!</translation>
 <translation id="7510166204621526816">Brave balvu serveris nereaģē. Mēs to salabosim, cik vien drīz iespējams.</translation>
-<translation id="2626799779920242286">Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
+<translation id="7117228822971127758">Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
 <translation id="3068742524072211213">beidzas <ph name="DATE"/></translation>
 <translation id="4292832015778676417">nopelnīts no reklāmām</translation>
 <translation id="683765328936486920">vietnē YouTube</translation>
@@ -227,7 +229,6 @@ mēnesī...</translation>
 <translation id="6199596294742117349">Šī ir inkognito cilne</translation>
 <translation id="5858455511731621847">Lai gan inkognito režīmā apmeklētās vietnes netiek lokāli saglabātas, šis režīms nepadara Jūs anonīmu un Jūsu darbības nav paslēptas no interneta pakalpojumu sniedzēja, darba devēja vai apmeklētajām vietnēm.</translation>
 <translation id="5789441016350810005">Nosūtītās Brave reklāmas, kamēr pārlūkprogramma darbojas fonā</translation>
-<translation id="7127980134843952133">Lejupielāžu vēsture</translation>
 <translation id="3690140184638701871">Ziedojumi un dzeramnaudas</translation>
 <translation id="844921671123185605">Jūsu ikmēneša dzeramnauda ir apstrādāta!</translation>
 <translation id="3124090095880236567">Ieslēdziet reklāmas</translation>
@@ -250,15 +251,82 @@ mēnesī...</translation>
 <translation id="8522669544471808198">Rādīt fona attēlus</translation>
 <translation id="3870475560794762985">Rādīt sponsorētos attēlus</translation>
 <translation id="8297488609722895137">Fotografēja <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Nopelniet, apskatot šo fona attēlu.</translation>
-<translation id="4836823081419522426">Jūs saņemsiet 70 % reklāmas peļņas no šīs privātās sponsorēšanas, ko var izmantot tīmekļa satura radītāju atbalstam. Ieslēdziet Brave balvas, lai pieprasītu savu daļu.</translation>
-<translation id="7307847920988946894">Ieslēgt balvas</translation>
 <translation id="1605521356929094020">Ieslēgt Brave reklāmas</translation>
-<translation id="1647482814782886825">Ieslēdzot balvas, jūs piekrītat <ph name="TERMS_OF_SERVICE"/>. Varat arī izvēlēties <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Pieskaroties opcijai Earn &amp; Give, jūs piekrītat <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Nopelniet, apskatot šo fona attēlu.</translation>
 <translation id="7136586167396205364">Paslēpt sponsorētos attēlus</translation>
 <translation id="2927095357213611519">Jūs varat atbalstīt tīmekļa satura veidotājus ar marķieriem.\nPelniet marķierus, skatoties konfidencialitāti cienošas reklāmas.</translation>
-<translation id="4016415345213871193">Jūs nopelnāt, apskatot šo fona attēlu.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> par sponsorētajiem attēliem pakalpojumā Brave balvas. Varat arī izvēlēties <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Varat izvēlēties arī <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Nopelniet, apskatot šo fona attēlu. Ieslēdziet Brave reklāmas, lai pieprasītu savu daļu.</translation>
+<translation id="213787746370741250">Atvērt cilnes kā pielāgotās cilnes</translation>
+<translation id="8030169304546394654">Atvienots</translation>
+<translation id="8267327690882073581">Verificēt maku</translation>
+<translation id="543510923939676996">Maks verificēts</translation>
+<translation id="8673913984316081937">Maka apstiprināšana ir brīvprātīga</translation>
+<translation id="8558636200953226885">Bet pēc verificēšanas varēsiet...</translation>
+<translation id="8697510149346635496">Izņemt BAT, ko jūs nopelnāt no privātumu ievērojošu reklāmu skatījumiem</translation>
+<translation id="1481480653609649134">Iegādāties papildu BAT ar kredītkarti un citiem avotiem</translation>
+<translation id="9096003370755878766">Izņemt BAT, ko jūs varētu iepriekš būt pievienojis savam Brave atlīdzību makam</translation>
+<translation id="1554282356558968486">Mūsu maka pakalpojumu sniedz</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">Atkarībā no pieprasītajiem pakalpojumiem Uphold var lūgt jums apliecināt savu identitāti.</translation>
+<translation id="723054503945711909">Brave Software Inc. neapstrādā, neuzglabā un nepiekļūst personīgajai informācijai, kuru jūs sniedzat Uphold, izveidojot savu Uphold kontu.</translation>
+<translation id="3699674790322420653">Pabeigt maka verifikāciju</translation>
+<translation id="2193391216824305230">Lietotāja maks</translation>
+<translation id="7591798679868259510">Doties uz manu Uphold kontu</translation>
+<translation id="9200453331904391567">Atspējot Brave balvas</translation>
+<translation id="6239274080752256452">Izņemt līdzekļus</translation>
+<translation id="8874184842967597500">Savienojums nav izveidots</translation>
+<translation id="3368922792935385530">pievienots</translation>
+<translation id="4569155249847375786">Pārbaudīts</translation>
+<translation id="5358719431303818601">Atvienošana nav apstiprināta</translation>
+<translation id="4241449868720191203">Atvienošanās apstiprināta</translation>
+<translation id="3248185426436836442">Gaida</translation>
+<translation id="8108013093558639183">Pamatojoties uz atrašanās vietu, kurā ir atvērts jūsu konts, BAT šajā reģionā šobrīd netiek atbalstīts. Vēlāk atkārtoti pārbaudiet pieejamību.</translation>
+<translation id="4190454391025419535">Šis reģions netiek atbalstīts</translation>
+<translation id="6830703472632069884">Maka apstiprināšanas laikā radās problēma, lūdzu, vēlāk mēģiniet vēlreiz.</translation>
+<translation id="3512533646933434345">Maka apstiprināšanas kļūda</translation>
+<translation id="2260513517001048012">PIEZĪME. Šis Brave apstiprinātais veidotājs vēl nav konfigurējis savu kontu, lai saņemtu ieguldījumus no Brave lietotājiem. Jūsu pārlūkprogramma mēģinās nosūtīt ieguldījumu 90 dienas vai līdz brīdim, kad lietotājs veiks apstiprināšanu.</translation>
+<translation id="4488355059795908907">Šis Brave apstiprinātais veidotājs vēl nav konfigurējis savu kontu, lai saņemtu ieguldījumus no Brave lietotājiem. Jūsu nosūtītā dzeramnauda tiks saglabāta jūsu makā, kamēr lietotājs nebūs pabeidzis šo procesu.</translation>
+<translation id="2495032782748793764">Brave noklusējums</translation>
+<translation id="9132378787893584761">Kopīgojiet Brave ar saviem draugiem!</translation>
+<translation id="717952606991220586">Ak vai, šķiet, radās kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
+<translation id="2524310205387880526">Novērtēt Brave</translation>
+<translation id="6680650203439190394">Likme</translation>
+<translation id="2635089463885398597">Kā jūs novērtējat savu pieredzi ar Brave?</translation>
+<translation id="141901961143729572">Dalieties savās domās</translation>
+<translation id="7961015016161918242">Nekad</translation>
+<translation id="1275213816424141989">Varbūt vēlāk</translation>
+<translation id="6991128190741664836">Vēlāk</translation>
+<translation id="8851456134224363571">Lieliski! Vai vēlaties novērtēt mūs Play Store?</translation>
+<translation id="8668962040900592974">Pastāstiet, kā mēs varam kļūt labāki</translation>
+<translation id="4406937629441301400">Nopelniet marķierus par šī attēla apskatīšanu un pārsūtiet maksājumu satura veidotājiem. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Nopelniet marķierus par šī attēla apskatīšanu. Ieslēdziet pakalpojumu Earn &amp; Give, lai saņemtu savu daļu.</translation>
+<translation id="6632345639591919543">Jūs nopelnāt marķierus par šī attēla apskatīšanu.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Jūs pelnāt marķierus par šī attēla apskatīšanu.</translation>
+<translation id="7952665812649667034">Esmu gatavs Earn &amp; Give</translation>
+<translation id="7877201489035217175">Uzzināt vairāk par sponsorētajiem attēliem</translation>
+<translation id="828092975561478703">Par katru apskatīto sponsorēto attēlu jūs saņemat 70 % peļņas marķieros. Izmantojot Brave reklāmas, jūs vienmēr kontrolējat redzamās reklāmas.</translation>
+<translation id="4941539331405513605">Bloķēt starpvietņu sīkfailus</translation>
+<translation id="3763681089644577874">Bloķēt sīkfailus</translation>
+<translation id="614747795780742163">Neļauj tīmekļa vietnēm saglabāt informāciju par iepriekšējiem apmeklējumiem</translation>
+<translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
+<translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
+<translation id="5963670684159057574">Bloķēt starpvietņu identificējošās dokumenta ciparvirknes veidošanu</translation>
+<translation id="3895527457258986253">Bloķēt pirkstu nospiedumu ņemšanu</translation>
+<translation id="184568144098869637">Neļauj pārlūkprogrammai atpazīt jūsu ierīci</translation>
+<translation id="4540198958192073185">Bloķēt visu pirkstu nospiedumu ņemšanu</translation>
+<translation id="769702552748212954">Atļaut visu identificējošās dokumenta ciparvirknes veidošanu</translation>
+<translation id="2888409909650566510">Reklāmas un citas baisas\nlietas ir bloķētas</translation>
+<translation id="6930134873084561197">Vietnēs bieži ir iekļauti sīkfaili un skripti, kas mēģina identificēt jūs un jūsu ierīci. Tie vēlas noskaidrot, kas jūs esat, un sekot jums visā tīmeklī — sekojot tam, ko jūs darāt katrā vietnē.\n\nBrave tos bloķē, lai jūs varētu veikt pārlūkošanu, netiekot izsekots.</translation>
+<translation id="8553998445606452168">Par Brave aizsargiem</translation>
+<translation id="8912304686498704084">IESLĒGT</translation>
+<translation id="4963218453264888510">IZSLĒGT</translation>
+<translation id="7474113515179313724">Jūs pārlūkojat šo vietni bez Brave privātuma aizsardzības. Vai ar ieslēgtu aizsardzību tā nedarbojas pareizi?</translation>
+<translation id="9055546041146396417">Ja šķiet, ka vietne nedarbojas, pamēģiniet izslēgt aizsargus.</translation>
+<translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
+<translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
+<translation id="5429200298326665264">Piezīme. Šīs vietnes adrese tiks iesniegta kopā ar jūsu Brave versijas numuru un IP adresi (kas netiks saglabāta).</translation>
+<translation id="5299848999918506028">Paldies!</translation>
+<translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
+<translation id="650318023204990401">Papildu vadīklas</translation>
+<translation id="7182293319417450928">Lai apstiprinātu, nepieciešama vismaz 25 BAT bilance.</translation>
 </translationbundle>

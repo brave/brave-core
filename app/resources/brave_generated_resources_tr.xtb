@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Yeni Profil Oluştur</translation>
 <translation id="2666990579225592931">Misafir Penceresi Aç</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") Brave'de izin verilmiyor.</translation>
-<translation id="7450557937477381864">Chrome'u Kapat</translation>
-<translation id="7008934821596358692">İçe aktarmayı bitirmek için tüm Chrome pencerelerini kapatın.</translation>
 <translation id="6786747875388722282">Uzantılar</translation>
 <translation id="3699882589215410581">Widevine'ı yükle ve çalıştır</translation>
 <translation id="8926389886865778422">Bir daha sorma</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine, Brave Yazılım'da sahibi olmadığımız ve denetlemediğimiz bir Digital Rights Management (DRM) kodu parçasıdır. Google Widevine kodu bizim sunucularımızdan değil Google sunucularından yüklenir. Sadece bu seçeneği etkinleştirdiğinizde yüklenir. DRM kullanımını teşvik etmiyoruz, fakat kullanıcı tercihlerine saygı duyuyor ve bazı Brave kullanıcılarının bunu gerektiren hizmetleri kullanmak isteyebileceğini biliyoruz.
 
 Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş sayılırsınız. Brave'in, Google Widevine kullanımı ile oluşabilecek herhangi bir hasar ya da bağlantı kayıplarından sorumlu olmayacağını kabul etmiş sayılırsınız.</translation>
-<translation id="453977518730680921">Medyaları otomatik oynat</translation>
 <translation id="410351446219883937">Otomatik oynat</translation>
 <translation id="2240268017737062801">Bir site medyayı otomatik oynatmak istediğinde sor</translation>
 <translation id="3371702087847741961">Bir site medyayı otomatik oynatmak istediğinde sor (tavsiye edilir)</translation>
@@ -39,11 +36,14 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
 <translation id="1520361618554057102">Yeni Sekme sayfasında her zaman yer imlerini göster</translation>
 <translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
+<translation id="597020512043916976">Otomatik tamamlamalı önerilerde en popüler siteleri göster</translation>
+<translation id="264150068416846820">Otomatik tamamlamalı önerilerde Brave'in önerdiği siteleri göster</translation>
 <translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
 <translation id="2467749191278759605">Brave Panelinizi Özelleştirin</translation>
 <translation id="1717331825806276156">Arka plan görselleri</translation>
 <translation id="1820041496463124489">Sponsorlu görseller</translation>
 <translation id="8173998484743827990">Brave İstatistikleri</translation>
+<translation id="5551238871320268996">Birlikte Brave</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">En İyi Siteler</translation>
 <translation id="1776831331757823105">Saat</translation>
@@ -72,23 +72,22 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7390783310074170337">Varsayılan görünün</translation>
 <translation id="130615081792797568">Basit görünüm</translation>
 <translation id="2360360976480535628">Gelişmiş görünüm</translation>
-<translation id="5709627087332022422">Siteler arası iz sürücüleri engelle</translation>
-<translation id="6447842834002726250">Çerezler</translation>
-<translation id="6522412052085018663">Parmak İzi</translation>
+<translation id="2133317862976486547">İzleyicileri &amp; reklamları engelle</translation>
+<translation id="4385707520896576447">Çerezler</translation>
+<translation id="4978786495456601191">Parmak İzi</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="4824468494729001999">Script'leri engelle</translation>
-<translation id="519861640102428255">Bak &amp;amp; Hisset</translation>
+<translation id="519861640102428255">Bak &amp; Hisset</translation>
 <translation id="4800195524776354947">Engellenen öğelerin sayısını Kalkanlar ikonunda göster</translation>
 <translation id="7498695072878479744">Üçüncü parti sitelerde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
-<translation id="4699812599455071925">Yalnızca siteler arası çerezleri engelle</translation>
-<translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
-<translation id="6883611015375728278">Tüm çerezleri engelle</translation>
-<translation id="5963670684159057574">Siteler arası parmak izini engelle</translation>
-<translation id="769702552748212954">Tüm parmak izlerine izin ver</translation>
-<translation id="4540198958192073185">Tüm parmak izlerini engelle</translation>
+<translation id="4078738236287221428">İzleyiciler &amp; reklamlar engellendi (agresif)</translation>
+<translation id="7740996059027112821">İzleyiciler &amp; reklamlar engellendi (standart)</translation>
+<translation id="4176463684765177261">Tüm izleyicilere &amp; reklamlara izin ver</translation>
+<translation id="5770288601196774623">Yalnızca siteler arası çerezleri engelle</translation>
+<translation id="3587482841069643663">Tüm çerezleri engelle</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
@@ -110,6 +109,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7701040980221191251">Yok</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Dapps kullanmak için Web3 sağlayıcı</translation>
+<translation id="5913089932885076110">Başlangıçta Kripto Cüzdanı Yükle</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
 <translation id="1765684547504191670">Tarayıcıda Chromecast'i etkinleştirmek için Medya Yönlendiricisi bileşenini kullanır.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
@@ -171,10 +171,13 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6469509880167172749">Brave'e otomatik olarak tamamıyla gizli ürün analizi gönder</translation>
 <translation id="7090566321964540749">Bu anonim bilgi, yalnızca Brave'in belirli özelliklerin genel kullanımını tahmin etmesine olanak tanır.</translation>
 <translation id="9111960429693394744">Brave'in Crypto Wallets ya da MetaMask for Dapps'ini kullanmak ister misiniz?</translation>
+<translation id="8721775358057000783">Bu sayfada web3 desteği için Kripto Cüzdan başlatmak ister misiniz?</translation>
 <translation id="7583735190612229830">Bu ve bunun gibi uygulamalarla etkileşime geçebilmesi için Kripto Cüzdanları ayarla.</translation>
-<translation id="8337117349965899723">Kripto Cüzdanları Kullan</translation>
+<translation id="4823406846571523661">Kripto Cüzdan Kurun</translation>
 <translation id="5756155765711979898">MetaMask Kullan</translation>
 <translation id="6754134632841262799">KURULUM</translation>
+<translation id="8199661191594897555">Kripto Cüzdanı başlat ve yeniden yükle</translation>
+<translation id="8428213095426709021">Ayarlar</translation>
 <translation id="4552520379838695057">Üzgünüz, bu sayfa mevcut değil.</translation>
 <translation id="2609895996619941644">Kayıtlı bir versiyonun Wayback Machine'de olup olmadığını kontrol etmek ister misiniz?</translation>
 <translation id="8053093028263274061">Üzgünüz, kaydedilmiş bir versiyon mevcut değil.</translation>
@@ -185,8 +188,10 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="2336228925368920074">Tüm Sekmelere Yer İşareti Koy...</translation>
 <translation id="796831669370432378">Bir yer işareti eklemek için, adres satırının yanında yer alan yer işareti butonuna tıklayın</translation>
 <translation id="4989337484121655457">Tam Disk Erişimi gereklidir</translation>
-<translation id="8025559074845816210">Safari'den Yer İmlerinizi aktarmak için Brave'in Tam Disk Erişimine ihtiyacı var.</translation>
+<translation id="5501596373144334003">Yer imlerinizi ve Safari Geçmişinizi içe aktarmak için Brave Tam Disk Erişimini gerektiriyor.</translation>
 <translation id="8515328844674404333">Sistem Ayarlarınızdan nasıl Tam Disk Erişimi vereceğinizi öğrenin.</translation>
 <translation id="6414878884710400018">Sitem Tercihlerini Aç</translation>
 <translation id="5570470519803062774">Site ve Kalkan Ayarları</translation>
+<translation id="8487693399751278191">Yer imlerini şimdi içe aktar...</translation>
+<translation id="2557899542277210112">Hızlı erişim için, yer imlerinizi buradaki yer imi çubuğuna yerleştirin.</translation>
 </translationbundle>

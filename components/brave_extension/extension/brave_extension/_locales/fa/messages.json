@@ -55,6 +55,18 @@
     "message": "ردیاب‌های بین سایتی مسدود شدند",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ردیاب‌ها و آگهی‌ها مسدود شده‌اند (تهاجمی)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ردیاب‌ها و آگهی‌ها مسدود شده‌اند (استاندارد)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "مجاز بودن همه ردیاب‌ها و آگهی‌ها",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "اتصال‌ها به HTTPS ارتقا داده شدند",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

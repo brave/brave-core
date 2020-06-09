@@ -39,18 +39,6 @@
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="3061707000357573562">Patchservice</translation>
 <translation id="1914326953223720820">Uitpakservice</translation>
-<translation id="4926159001844873046"><ph name="SITE"/> zegt</translation>
-<translation id="3576616784287504635">een ingebedde pagina <ph name="SITE"/> zegt</translation>
-<translation id="1532118530259321453">Deze pagina vermeld</translation>
-<translation id="5201306358585911203">Een ingebedde pagina vermeld</translation>
-<translation id="1623104350909869708">Voorkomen dat deze pagina extra dialoogvensters weergeeft</translation>
-<translation id="7862185352068345852">Verlaat webpagina?</translation>
-<translation id="9171296965991013597">Verlaat toepassing?</translation>
-<translation id="2677748264148917807">Verlaten</translation>
-<translation id="425582637250725228">De veranderingen die je gemaakt hebt worden misschien niet opgeslagen.</translation>
-<translation id="8079031581361219619">Herlaad de webpagina?</translation>
-<translation id="6852204201400771460">Herlaad de toepassing?</translation>
-<translation id="5556459405103347317">Opnieuw laden</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="8066955247577885446">Helaas ging er iets mis.</translation>
 <translation id="5946937721014915347">Bezig met openen <ph name="SITE_NAME"/>…</translation>
@@ -337,21 +325,16 @@
 <translation id="6989763994942163495">Toon geavanceerde instellingen...</translation>
 <translation id="9038649477754266430">Een voorspellingsservice gebruiken om pagina's sneller te laden</translation>
 <translation id="3355823806454867987">Proxyinstellingen wijzigen</translation>
+<translation id="2344028582131185878">Automatische downloads</translation>
 <translation id="4220128509585149162">Vastlopers</translation>
 <translation id="8412145213513410671">Vastlopers (<ph name="CRASH_COUNT"/>)</translation>
-<translation id="2068663545051464999">Opgeladen Crash Report ID <ph name="CRASH_ID"/> (Local Context: <ph name="CRASH_LOCAL_ID"/>)</translation>
-<translation id="5034369478845443529">Lokale Context <ph name="CRASH_LOCAL_ID"/></translation>
-<translation id="8398259832188219207">Crash report werd opgeladen om <ph name="UPLOAD_TIME"/></translation>
-<translation id="3679803492151881375">Crash report vastgelegd om <ph name="CRASH_TIME"/>, opgeladen om <ph name="UPLOAD_TIME"/></translation>
-<translation id="2365563543831475020">Crash report vastgelegd om <ph name="CRASH_TIME"/> werd niet opgeladen</translation>
-<translation id="1264126396475825575">Crash report vastgelegd om <ph name="CRASH_TIME"/> (nog niet opgeladen of genegeerd)</translation>
-<translation id="7309308571273880165">Crash report vastgelegd op <ph name="CRASH_TIME"/> (verzoek tot opladen door de gebruikern, nog niet opgeladen)</translation>
+<translation id="2639739919103226564">Status:</translation>
+<translation id="3414952576877147120">Grootte:</translation>
 <translation id="1015730422737071372">Vermeld aanvullende details</translation>
 <translation id="3759461132968374835">U heeft geen recente vastlopers. Vastlopers die plaatsvonden terwijl de vastlopers reportage was uitgeschakeld zullen hier niet verschijnen.</translation>
 <translation id="5308689395849655368">Reportage voor vastlopers is uitgeschakeld</translation>
 <translation id="6489534406876378309">Start met het opladen van vastlopers</translation>
 <translation id="2239100178324503013">Verzend nu</translation>
-<translation id="1126551341858583091">Het gebruik van de locale opslag is <ph name="CRASH_SIZE"/>.</translation>
 <translation id="6451458296329894277">Bevestig Formulier Inzending Opnieuw</translation>
 <translation id="8241707690549784388">De pagina waar je naar zoekt gebruikte informatie die je ingevuld hebt. Terugkeren naar deze pagina kan er toe leiden dat elke ondernomen actie wordt herhaald. Wil je doorgaan?</translation>
 <translation id="1549470594296187301">JavaScript moet worden ingeschakeld voor deze optie.</translation>
@@ -364,12 +347,10 @@
 <translation id="5540224163453853">Kon het gevraagde artikel niet vinden.</translation>
 <translation id="4876188919622883022">Vereenvoudigde weergave</translation>
 <translation id="7485870689360869515">Geen gegevens gevonden.</translation>
-<translation id="552553974213252141">Was de tekst juist verkregen?</translation>
-<translation id="1426410128494586442">Ja</translation>
-<translation id="4250680216510889253">Nee</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3586931643579894722">Details verbergen</translation>
+<translation id="5556459405103347317">Opnieuw laden</translation>
 <translation id="3005723025932146533">Toon bewaarde kopie</translation>
 <translation id="3447661539832366887">De eigenaar van dit apparaat heeft het dinosaurus spel uitgeschakeld.</translation>
 <translation id="3287510313208355388">Downloaden als je online bent</translation>
@@ -494,7 +475,6 @@ $1
 </ph> resultaten voor '<ph name="SEARCH_TEXT">
 $2
 </ph>'</translation>
-<translation id="8647750283161643317">Zet alles terug naar standaardinstellingen</translation>
 <translation id="5269999699920406580">Opties die voor het hele systeem van toepassing zijn kunnen alleen worden ingeschakeld door de eigenaar: <ph name="OWNER_EMAIL"/></translation>
 <translation id="8688672835843460752">Beschikbaar</translation>
 <translation id="4989542687859782284">Niet beschikbaar</translation>
@@ -539,6 +519,17 @@ $2
 <translation id="362276910939193118">Toon volledige geschiedenis</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="7668654391829183341">Onbekend apparaat</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> zegt</translation>
+<translation id="3576616784287504635">een ingebedde pagina <ph name="SITE"/> zegt</translation>
+<translation id="1532118530259321453">Deze pagina vermeld</translation>
+<translation id="5201306358585911203">Een ingebedde pagina vermeld</translation>
+<translation id="1623104350909869708">Voorkomen dat deze pagina extra dialoogvensters weergeeft</translation>
+<translation id="7862185352068345852">Verlaat webpagina?</translation>
+<translation id="9171296965991013597">Verlaat toepassing?</translation>
+<translation id="2677748264148917807">Verlaten</translation>
+<translation id="425582637250725228">De veranderingen die je gemaakt hebt worden misschien niet opgeslagen.</translation>
+<translation id="8079031581361219619">Herlaad de webpagina?</translation>
+<translation id="6852204201400771460">Herlaad de toepassing?</translation>
 <translation id="3950820424414687140">Inloggen</translation>
 <translation id="8286036467436129157">Inloggen</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> vereist een gebruikersnaam en wachtwoord.</translation>
@@ -595,7 +586,6 @@ $2
           <ph name="LIST_ITEM">&lt;li&amp;gt;</ph>Jouw werkgever of school
           <ph name="LIST_ITEM">&lt;li&amp;gt;</ph>Jouw internet service provider
         <ph name="END_LIST">&lt;/ul&amp;gt;</ph></translation>
-<translation id="8616822740383114808">Deze instelling wordt afgedwongen door "<ph name="ENFORCING_SETTING"/>" in "<ph name="SETTINGS_PAGE"/>"</translation>
 <translation id="153384715582417236">Dat’is het voor nu</translation>
 <translation id="7699293099605015246">Artikelen zijn nu niet beschikbaar</translation>
 <translation id="5545756402275714221">Artikelen voor Jou</translation>
@@ -743,11 +733,12 @@ $2
 <translation id="2129079103035905234">Bewegingssensoren</translation>
 <translation id="6059925163896151826">USB-apparaten</translation>
 <translation id="7638605456503525968">Seriële poorten</translation>
+<translation id="3784372983762739446">Bluetooth-apparaten</translation>
 <translation id="2215727959747642672">Bestanden bewerken</translation>
 <translation id="6545864417968258051">Bluetooth-scannen</translation>
 <translation id="534295439873310000">NFC-apparaten</translation>
-<translation id="4943703118917034429">Virtual reality</translation>
-<translation id="3513704683820682405">Augmented reality</translation>
+<translation id="4670064810192446073">Virtual reality</translation>
+<translation id="2025115093177348061">Augmented reality</translation>
 <translation id="5039804452771397117">Toestaan</translation>
 <translation id="7053983685419859001">Blokkeren</translation>
 <translation id="57838592816432529">Dempen</translation>
@@ -794,18 +785,32 @@ $2
 <translation id="8515152881111950319">Je kunt toegang verliezen naar het account van je organisatie of identiteit diefstal ondervinden. Brave beveelt aan om nu je wachtwoord te veranderen.</translation>
 <translation id="5304100303568917877">Je kan je toegang verliezen tot je <ph name="ORG_NAME"/> account of je ondervind identiteitsdiefstal. Brave beveelt aan om je wachtwoord nu te wijzigen.</translation>
 <translation id="1089439967362294234">Wachtwoord wijzigen</translation>
+<translation id="1186201132766001848">Wachtwoorden controleren</translation>
 <translation id="2505268675989099013">Bescherm Account</translation>
 <translation id="9008201768610948239">Negeren</translation>
 <translation id="808894953321890993">Wijzig wachtwoord</translation>
+<translation id="5979084224081478209">Wachtwoorden controleren</translation>
 <translation id="5570825185877910964">Bescherm account</translation>
 <translation id="7802523362929240268">Site is legitiem</translation>
 <translation id="5344579389779391559">Deze pagina zou om betaling kunnen vragen</translation>
 <translation id="7016992613359344582">Deze kosten kunnen eenmalig of herhaaldelijk zijn en mogelijk niet duidelijk.</translation>
 <translation id="9004367719664099443">VR sessie in uitvoering</translation>
 <translation id="528468243742722775">Einde</translation>
+<translation id="6107012941649240045">Verleend aan</translation>
+<translation id="5030338702439866405">Verleend door</translation>
+<translation id="5826507051599432481">Algemene naam (CN)</translation>
+<translation id="6898699227549475383">Organisatie (O)</translation>
+<translation id="3308006649705061278">Organisatie-eenheid (OU)</translation>
+<translation id="8705331520020532516">Serienummer</translation>
+<translation id="1902576642799138955">Geldigheidsduur</translation>
+<translation id="5895187275912066135">Verleend op</translation>
+<translation id="4121428309786185360">Verloopt op</translation>
+<translation id="4154664944169082762">Vingerafdrukken</translation>
+<translation id="7238585580608191973">SHA-256-vingerafdruk</translation>
+<translation id="5209518306177824490">SHA-1-vingerafdruk</translation>
+<translation id="6786747875388722282">Extensies</translation>
+<translation id="7240120331469437312">Alternatieve naam voor entiteit van certificaat</translation>
 <translation id="4318312030194671742">Paint Preview Compositor Service</translation>
-<translation id="1186201132766001848">Wachtwoorden controleren</translation>
-<translation id="5979084224081478209">Wachtwoorden controleren</translation>
 <translation id="1476595624592550506">Wijzig wachtwoord</translation>
 <translation id="6014801569448771146">Controleer je wachtwoorden</translation>
 <translation id="3764885446986388155">Een datalek op een site of van een applicatie heeft je wachtwoord blootgegeven. Brave beveelt aan om je opgeslagen wachtwoorden nu te checken.</translation>
@@ -990,12 +995,6 @@ $2
 <translation id="8903921497873541725">Inzoomen</translation>
 <translation id="5975083100439434680">Uitzoomen</translation>
 <translation id="1753706481035618306">Pagina nummer</translation>
-<translation id="6016158022840135739">{COUNT, plural,
-         =1 {Pagina 1}
-         other {Pagina #}}</translation>
-<translation id="644931407731409778">PDF document bevat {COUNT, plural,
-      =1 {1 pagina}
-      other {# pagina's}}</translation>
 <translation id="5798290721819630480">Verwerp wijzigingen?</translation>
 <translation id="4466881336512663640">Formulier wijzigingen gaan verloren. Ben je er zeker van om door te gaan?</translation>
 <translation id="7498234416455752244">Ga door met wijzigen</translation>
@@ -1047,6 +1046,36 @@ $2
 <translation id="3789155188480882154">Size 16</translation>
 <translation id="8090403583893450254">Size 20</translation>
 <translation id="833262891116910667">Markeren</translation>
+<translation id="5612720917913232150"><ph name="URL"/> wil de locatie van je computer gebruiken</translation>
+<translation id="4733082559415072992"><ph name="URL"/> wil de locatie van je apparaat gebruiken</translation>
+<translation id="4677585247300749148"><ph name="URL"/> wil reageren op toegankelijkheidsfunctionaliteit</translation>
+<translation id="3461266716147554923"><ph name="URL"/> wil tekst en afbeeldingen bekijken die naar het klembord zijn gekopieerd</translation>
+<translation id="131405271941274527"><ph name="URL"/> wil informatie sturen en ontvangen als je je telefoon tegen een NFC-apparaat houdt</translation>
+<translation id="5146995429444047494">Meldingen voor <ph name="ORIGIN"/> zijn geblokkeerd</translation>
+<translation id="1195558154361252544">Meldingen zijn automatisch geblokkeerd voor alle sites, behalve de meldingen die je toestaat</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> wil gebruikmaken van je microfoon</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> wil gebruikmaken van je camera</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> wil meldingen sturen</translation>
+<translation id="6910240653697687763"><ph name="URL"/> wil volledig beheer van je MIDI-apparaten hebben</translation>
+<translation id="503498442187459473"><ph name="HOST"/> wil gebruikmaken van je camera en microfoon</translation>
+<translation id="8282947398454257691">Je unieke apparaat-ID weten</translation>
+<translation id="8329449853370113380"><ph name="URL"/> wil beveiligde content afspelen. De identiteit van je apparaat wordt geverifieerd door Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> wil beveiligde content afspelen. De identiteit van je apparaat wordt geverifieerd door Brave Software en is mogelijk toegankelijk voor deze site.</translation>
+<translation id="3016780570757425217">Je locatie weten</translation>
+<translation id="7221855153210829124">Meldingen weergeven</translation>
+<translation id="8606726445206553943">Je MIDI-apparaten gebruiken</translation>
+<translation id="7409836189476010449">Flash uitvoeren</translation>
+<translation id="7438976808740265764">Flash Player wordt na december 2020 niet meer ondersteund.</translation>
+<translation id="4761104368405085019">Je microfoon gebruiken</translation>
+<translation id="9150045010208374699">Je camera gebruiken</translation>
+<translation id="4953689047182316270">Reageren op toegankelijkheidsgebeurtenissen</translation>
+<translation id="6116338172782435947">Tekst en afbeeldingen bekijken die naar het klembord zijn gekopieerd</translation>
+<translation id="5804427196348435412">NFC-apparaten gebruiken</translation>
+<translation id="3194737229810486521"><ph name="URL"/> vraagt toestemming om gegevens permanent op je apparaat op te slaan</translation>
+<translation id="1030706264415084469"><ph name="URL"/> wil grote gegevens permanent op je apparaat opslaan</translation>
+<translation id="1712552549805331520"><ph name="URL"/> vraagt toestemming om permanent gegevens op je lokale computer op te slaan</translation>
+<translation id="1997484222658892567"><ph name="URL"/> vraagt toestemming om permanent grote gegevens op je lokale computer op te slaan</translation>
+<translation id="7648992873808071793">Bestanden op dit apparaat bewaren</translation>
 <translation id="2721148159707890343">Verzoek succesvol</translation>
 <translation id="1821930232296380041">Ongeldig verzoek of verzoek parameters</translation>
 <translation id="4813512666221746211">Netwerkfout</translation>
@@ -1103,7 +1132,6 @@ $2
 <translation id="6950684638814147129">Fout tijdens het parsen van een JSON waarde: <ph name="ERROR"/></translation>
 <translation id="2479410451996844060">Ongeldige zoek URL</translation>
 <translation id="6060009363608157444">Ongeldige DnsOverHttps mode.</translation>
-<translation id="3057676462092457419">De DnsOverHttps modus <ph name="SECURE_DNS_MODE_SECURE">'secure'</ph> wordt nog niet ondersteunt, de modus werd verandert naar <ph name="SECURE_DNS_MODE_OFF">'off'</ph>.</translation>
 <translation id="3428151540071562330">Een of meer van de DnsOverHttpsTemplates server template URIs is ongeldig en zal niet worden gebruikt.</translation>
 <translation id="569000877158168851">De DnsOverHttpsTemplates waarde is niet relevant, en zal niet worden gebuikt, tenzij de DnsOverHttpsMode policy is verandert naar of <ph name="SECURE_DNS_MODE_AUTOMATIC">'automatisch'</ph> of <ph name="SECURE_DNS_MODE_SECURE">'beveiligd'</ph>.</translation>
 <translation id="4358059973562876591">De sjablonen die je hebt gespecificeerd worden mogelijk niet toegepast wegens een fout met de DnsOverHttpsMode policy.</translation>
@@ -1163,7 +1191,6 @@ Extra details:
 <translation id="8202370299023114387">Conflict</translation>
 <translation id="6440503408713884761">Genegeerd</translation>
 <translation id="7535087603100972091">Waarde</translation>
-<translation id="2639739919103226564">Status:</translation>
 <translation id="2392959068659972793">Toon policies zonder waardes</translation>
 <translation id="7182878459783632708">Policies zijn niet ingesteld</translation>
 <translation id="8488350697529856933">Is van toepassing op</translation>
@@ -1208,6 +1235,8 @@ Extra details:
 <translation id="361438452008624280">Lijst invoer "<ph name="LANGUAGE_ID"/>": Onbekend of een niet ondersteunde taal.</translation>
 <translation id="8805819170075074995">Lijst invoer "<ph name="LANGUAGE_ID"/>": Invoer genegeerd omdat het al onderdeel is van de SpellcheckLanguage policy.</translation>
 <translation id="7346048084945669753">Is aangesloten bij:</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="4250680216510889253">Nee</translation>
 <translation id="9089260154716455634">Buiten kantoor uren policy</translation>
 <translation id="6521745193039995384">Niet actief</translation>
 <translation id="4214357935346142455">Aanmeldingsscherm profiel:</translation>
@@ -1564,17 +1593,6 @@ Extra details:
     gefaald om deze policy te leveren, waardoor de browser verhindert wordt te voldoen aan
     jouw verzoek voor <ph name="SITE"/>. Originele policies kunnen worden gebruikt door
     sitebeheerders om de beveiliging en ander zaken the configureren voor een site.</translation>
-<translation id="3688109723158850780">De server waar je naar toe gaat, <ph name="ORIGIN"/>, heeft verzocht dat
-    een originele policy wordt toegepast voor alle ontvangen verzoeken. Maar in plaats van
-    een policy te leveren heeft het de browser omgeleid naar ergens anders, waardoor de browser verhindert wordt te voldoen aan
-    jouw verzoek voor <ph name="SITE"/>. Originele
-    policies kunnen worden gebruikt door site beheerders om de beveiliging en andere
-    zaken te configureren voor een site.</translation>
-<translation id="2638745661847473633">De server waar je naar toe gaat, <ph name="ORIGIN"/>, heeft verzocht dat
-    een originele policy wordt toegepast voor alle ontvangen verzoeken. Maar nu heeft het
-    een ongeldige policy geleverd, wat betekend dat de browser jouw verzoek niet kan vervullen 
-   voor <ph name="SITE"/>. Originele policies kunnen worden gebruikt door
-    site beheerders om de beveiliging en ander zaken the configureren voor een site.</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK">&lt;a href="#" id="proceed-link"&amp;gt;</ph>Ga verder naar <ph name="SITE"/><ph name="END_LINK">&lt;/a&amp;gt;</ph></translation>
 <translation id="6704582573942289642">Is dit de juiste site?</translation>
 <translation id="3262069459091978471"><ph name="LOOKALIKE_DOMAIN"/> gelijkt op <ph name="SUGGESTED_DOMAIN"/>. Aanvallers imiteren soms sites door het gebruik van gelijkende URLs.</translation>
@@ -1675,26 +1693,26 @@ Extra details:
 <translation id="583281660410589416">Onbekend</translation>
 <translation id="9170848237812810038">&amp;Ongedaan maken</translation>
 <translation id="2972581237482394796">&amp;Opnieuw</translation>
-<translation id="4030383055268325496">&amp;amp;Maak toevoeging ongedaan</translation>
-<translation id="6874604403660855544">&amp;amp;Voeg opnieuw toe</translation>
-<translation id="2396249848217231973">&amp;amp;Maak verwijdering ongedaan</translation>
-<translation id="8790007591277257123">&amp;amp;Verwijder opnieuw</translation>
-<translation id="9148507642005240123">&amp;amp;Maak wijziging ongedaan</translation>
-<translation id="5470861586879999274">&amp;amp;Wijzig opnieuw</translation>
-<translation id="8437238597147034694">&amp;amp;Maak Verplaatsing ongedaan</translation>
-<translation id="4196861286325780578">&amp;amp;Maak verplaatsing ongedaan</translation>
-<translation id="1113869188872983271">&amp;amp;Maak Herordening Ongedaan</translation>
-<translation id="7334320624316649418">&amp;amp;Herorden Opnieuw</translation>
-<translation id="1055184225775184556">&amp;amp;Maak Toevoeging ongedaan</translation>
-<translation id="5813119285467412249">&amp;amp;Voeg opnieuw Toe</translation>
-<translation id="4594403342090139922">&amp;amp;Maak Verwijdering ongedaan</translation>
-<translation id="6529602333819889595">&amp;amp;Verwijder Opnieuw</translation>
-<translation id="2556876185419854533">&amp;amp;Maak Wijziging ongedaan</translation>
-<translation id="3427342743765426898">&amp;amp;Wijzig Opnieuw</translation>
-<translation id="8194797478851900357">&amp;amp;Maak Verplaatsing ongedaan</translation>
-<translation id="3583757800736429874">&amp;amp;Herhaal Verplaatsing</translation>
-<translation id="3270847123878663523">&amp;amp;Maak Herordening ongedaan</translation>
-<translation id="6259156558325130047">&amp;amp;Herorden Opnieuw</translation>
+<translation id="4030383055268325496">&amp;Maak toevoeging ongedaan</translation>
+<translation id="6874604403660855544">&amp;Voeg opnieuw toe</translation>
+<translation id="2396249848217231973">&amp;Maak verwijdering ongedaan</translation>
+<translation id="8790007591277257123">&amp;Verwijder opnieuw</translation>
+<translation id="9148507642005240123">&amp;Maak wijziging ongedaan</translation>
+<translation id="5470861586879999274">&amp;Wijzig opnieuw</translation>
+<translation id="8437238597147034694">&amp;Maak Verplaatsing ongedaan</translation>
+<translation id="4196861286325780578">&amp;Maak verplaatsing ongedaan</translation>
+<translation id="1113869188872983271">&amp;Maak Herordening Ongedaan</translation>
+<translation id="7334320624316649418">&amp;Herorden Opnieuw</translation>
+<translation id="1055184225775184556">&amp;Maak Toevoeging ongedaan</translation>
+<translation id="5813119285467412249">&amp;Voeg opnieuw Toe</translation>
+<translation id="4594403342090139922">&amp;Maak Verwijdering ongedaan</translation>
+<translation id="6529602333819889595">&amp;Verwijder Opnieuw</translation>
+<translation id="2556876185419854533">&amp;Maak Wijziging ongedaan</translation>
+<translation id="3427342743765426898">&amp;Wijzig Opnieuw</translation>
+<translation id="8194797478851900357">&amp;Maak Verplaatsing ongedaan</translation>
+<translation id="3583757800736429874">&amp;Herhaal Verplaatsing</translation>
+<translation id="3270847123878663523">&amp;Maak Herordening ongedaan</translation>
+<translation id="6259156558325130047">&amp;Herorden Opnieuw</translation>
 <translation id="1375198122581997741">Over deze Versie</translation>
 <translation id="969892804517981540">Officiële Versie</translation>
 <translation id="988159990683914416">Ontwikkelaars Versie</translation>
@@ -1736,7 +1754,6 @@ Extra details:
 <translation id="5284909709419567258">Netwerk adressen</translation>
 <translation id="8975263830901772334">Namen van de bestanden die je uitprint</translation>
 <translation id="4791134497475588553">Linux applicaties die zijn geïnstalleerd en wanneer ze voor het laatst zijn gebruikt</translation>
-<translation id="6786747875388722282">Extensies</translation>
 <translation id="5663955426505430495">De beheerder van dit apparaat heeft extensies geïnstalleerd voor toegevoegde functies. Extensies kunnen toegang hebben tot een deel van je gegevens.</translation>
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> heeft extensies geïnstalleerd voor toegevoegde functionaliteit. Extensies hebben toegang tot een deel van jouw gegevens</translation>
 <translation id="5804241973901381774">Rechten</translation>
@@ -1749,7 +1766,6 @@ Extra details:
 <translation id="1822540298136254167">Websites die je hebt bezocht en waar je tijd hebt doorgebracht</translation>
 <translation id="7633909222644580952">Prestatie data en crash rapportage</translation>
 <translation id="6826370046007623921">Data Verlies Preventie</translation>
-<translation id="1612819149504950095">Scan de inhoud van de bestanden die je download of upload in Brave.</translation>
 <translation id="1298536327547837046">Malware Scanning</translation>
 <translation id="6312541937207395104">Scan de bestanden die je download of upload in Brave.</translation>
 <translation id="8220639454292072926">Zakelijke Rapportage</translation>

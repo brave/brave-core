@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Adicionar</translation>
 <translation id="1181037720776840403">Remover</translation>
 <translation id="5317780077021120954">Guardar</translation>
+<translation id="3897092660631435901">Menu</translation>
 <translation id="5300589172476337783">Mostrar</translation>
 <translation id="7108338896283013870">Ocultar</translation>
 <translation id="780301667611848630">Não, obrigado</translation>
@@ -18,30 +19,98 @@
 <translation id="1008557486741366299">Agora não</translation>
 <translation id="1036348656032585052">Desativar</translation>
 <translation id="8105368624971345109">Desativar</translation>
+<translation id="4989809363548539747">Esse plugin não é suportado</translation>
 <translation id="1175364870820465910">Im&amp;primir...</translation>
 <translation id="129553762522093515">Fechados recentemente</translation>
 <translation id="8870413625673593573">Fechadas recentemente</translation>
+<translation id="1594030484168838125">Escolher</translation>
 <translation id="385051799172605136">Anterior</translation>
 <translation id="7481312909269577407">Avançar</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="4881695831933465202">Abrir</translation>
 <translation id="6710213216561001401">Anterior</translation>
 <translation id="1201402288615127009">Seguinte</translation>
+<translation id="2824775600643448204">Endereço e barra de pesquisa</translation>
 <translation id="5713644099811900409">Conta Brave Software</translation>
+<translation id="5851548754964597211">Lista de Separadores</translation>
+<translation id="2495083838625180221">Interpretador JSON</translation>
 <translation id="3157931365184549694">Restaurar</translation>
+<translation id="187918866476621466">Abrir páginas de arranque</translation>
 <translation id="5040262127954254034">Privacidade</translation>
 <translation id="3061707000357573562">Serviço de patch</translation>
 <translation id="1914326953223720820">Serviço de descompressão de ficheiros</translation>
-<translation id="1623104350909869708">Evitar que esta página crie caixas de diálogo adicionais</translation>
-<translation id="2677748264148917807">Sair</translation>
-<translation id="5556459405103347317">Recarregar</translation>
 <translation id="2359808026110333948">Continuar</translation>
+<translation id="8066955247577885446">Desculpe, algo correu mal.</translation>
+<translation id="5946937721014915347">A abrir <ph name="SITE_NAME"/>…</translation>
+<translation id="6973932557599545801">Desculpe não puder ajudar, por favor continue por sua conta.</translation>
+<translation id="3963837677003247395">Continuar manualmente?</translation>
+<translation id="7460618730930299168">O que está a ser exibido é diferente daquilo que selecionou. Continuar?</translation>
+<translation id="5880900081429361525">A parar a Assistente Brave no Brave.</translation>
+<translation id="2360873523816792727">Para usar os seus cartões em todos os seus dispositivos, ative a Sincronização.</translation>
+<translation id="5786044859038896871">Deseja preencher com os detalhes do seu cartão?</translation>
+<translation id="5803412860119678065">Deseja preencher o seu <ph name="CARD_DETAIL"/>?</translation>
+<translation id="2463739503403862330">Preencher</translation>
 <translation id="4378154925671717803">Telemóvel</translation>
+<translation id="2928905813689894207">Endereço de Faturação</translation>
 <translation id="8131740175452115882">Confirmar</translation>
+<translation id="4901778704868714008">Guardar...</translation>
+<translation id="2881276955470682203">Guardar cartão?</translation>
 <translation id="8968766641738584599">Guardar cartão</translation>
+<translation id="3385003879165845790">Quer guardar este cartão na sua conta Brave?</translation>
+<translation id="4485557118067663303">Quer salvar este cartão na sua conta Brave e neste dispositivo?</translation>
+<translation id="5624611466880082169">Guardar cartão na Conta Brave?</translation>
+<translation id="5887400589839399685">Cartão guardado</translation>
+<translation id="4524805452350978254">Gerir cartões</translation>
+<translation id="1638780421120290329">Não foi possível guardar o cartão</translation>
+<translation id="4194250254487269611">O seu cartão não pode ser guardado no momento</translation>
+<translation id="405970181812690156">Pague rapidamente em sites e aplicações em vários dispositivos utilizando cartões que guardou no Brave.</translation>
+<translation id="4491702030396251550">Para pagar mais rapidamente da próxima vez, guarde o seu cartão e endereço de faturação na sua Conta Brave.</translation>
+<translation id="2374115610089464099">Para pagar mais rapidamente da próxima vez, guarde o seu cartão e endereço de faturação na sua Conta Brave e neste dispositivo.</translation>
+<translation id="7638036884242711636">Para pagar mais rapidamente da próxima vez, guarde o seu cartão, nome e endereço de faturação na sua Conta Brave.</translation>
+<translation id="8425351843056705489">Para pagar mais rapidamente da próxima vez, guarde o seu cartão, nome e endereço de faturação na sua Conta Brave e neste dispositivo.</translation>
+<translation id="6389470377220713856">Nome no Cartão</translation>
 <translation id="860043288473659153">Nome do titular do cartão</translation>
+<translation id="3906528077526222959">Este nome é o da sua Contra Brave</translation>
+<translation id="1348779747280417563">Confirmar nome</translation>
+<translation id="1569487616857761740">Insira a data de expiração</translation>
 <translation id="869891660844655955">Data de expiração</translation>
+<translation id="2258928405015593961">Insira uma data de expiração no futuro e tente novamente</translation>
+<translation id="817611410946168916">O Brave está a oferecer-lhe que guarde os seus cartões na sua Conta Brave porque está conectado. Você pode alterar este comportamento nas definições.</translation>
+<translation id="4345467815611041168">O Brave está a oferecer-lhe que guarde os seus cartões na sua Conta Brave porque está conectado. Você pode alterar este comportamento nas definições. O nome do titular do cartão vem da sua conta.</translation>
+<translation id="4765229189146046954">Logo do Brave Pay</translation>
+<translation id="1058479211578257048">A guardar os cartões...</translation>
+<translation id="6058977677006700226">Usar os seus cartões em todos os seus dispositivos?</translation>
+<translation id="769721561045429135">Neste momento, os seus cartões só podem ser usados neste dispositivo. Clique em Continuar para rever os cartões.</translation>
+<translation id="8514108354025239538">{NUM_CARDS, plural,
+=1 {Guardar cartão na sua Conta Brave}
+other {Guardar cartões na sua Conta Brave}}</translation>
+<translation id="1697532407822776718">Está tudo pronto!</translation>
+<translation id="5922853866070715753">Quase lá</translation>
+<translation id="2523886232349826891">Guardado apenas neste dispositivo</translation>
+<translation id="8012116502927253373">{NUM_CARDS, plural,
+=1 {Este cartão e o seu endereço de faturação serão guardados. Poderá usá-lo quando conectado a <ph name="USER_EMAIL"/>.}
+other {Estes cartões e os seus endereços de faturação serão guardados. Poderá usá-los quando conectado a <ph name="USER_EMAIL"/>.}}</translation>
+<translation id="5076423305821066906">{NUM_CARDS, plural,
+=1 {Este cartão foi guardado na sua Conta Brave}
+other {Estes cartões foram guardados na sua Conta Brave}}</translation>
+<translation id="705310974202322020">{NUM_CARDS, plural,
+      =1 {Não foi possível guardar o cartão}
+      other {Não foi possível guardar os cartões}}</translation>
+<translation id="945855313015696284">Verifique a informação abaixo e remova quaisquer cartões inválidos</translation>
+<translation id="8100588592594801589">Os cartões inválidos foram removidos</translation>
+<translation id="3366477098757335611">Ver cartões</translation>
 <translation id="5457113250005438886">Inválido</translation>
+<translation id="4582204425268416675">Remover cartão</translation>
+<translation id="7887683347370398519">Verifique o seu CCV e tente novamente</translation>
+<translation id="115926840831309955">Verifique o seu CCV e tente novamente ou atualize a data de expiração</translation>
+<translation id="4326324639298822553">Verifique a data de expiração e tente novamente</translation>
+<translation id="4800132727771399293">Verifique a data de expiração e o CCV e tente novamente</translation>
+<translation id="5580958916614886209">Verifique o mês de expiração e tente novamente</translation>
+<translation id="7947285636476623132">Verifique o ano de expiração e tente novamente</translation>
+<translation id="6865412394715372076">Não foi possível verificar este cartão</translation>
+<translation id="5784606427469807560">Ocorreu um problema ao confirmar o seu cartão. Verifique a sua conexão de internet e tente novamente.</translation>
+<translation id="323107829343500871">Insira o CCV para <ph name="CREDIT_CARD"/></translation>
+<translation id="5126510351761255129">Verificar o seu cartão</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="8987927404178983737">Mês</translation>
 <translation id="6015796118275082299">Ano</translation>
@@ -68,12 +137,13 @@
 <translation id="7701040980221191251">Nenhum</translation>
 <translation id="8428213095426709021">Definições</translation>
 <translation id="9038649477754266430">Utilizar um serviço de previsão para carregar páginas mais rapidamente</translation>
+<translation id="2344028582131185878">Transferências automáticas</translation>
+<translation id="3414952576877147120">Tamanho:</translation>
 <translation id="4850886885716139402">Ver</translation>
 <translation id="7180611975245234373">Atualizar</translation>
-<translation id="1426410128494586442">Sim</translation>
-<translation id="4250680216510889253">Não</translation>
 <translation id="4522570452068850558">Detalhes</translation>
 <translation id="3586931643579894722">Ocultar detalhes</translation>
+<translation id="5556459405103347317">Recarregar</translation>
 <translation id="614940544461990577">Experimente:</translation>
 <translation id="4943872375798546930">Nenhum resultado</translation>
 <translation id="8688672835843460752">Disponível</translation>
@@ -92,6 +162,17 @@
 <translation id="4880827082731008257">Pesquisar histórico</translation>
 <translation id="4756388243121344051">&amp;Histórico</translation>
 <translation id="1644574205037202324">Histórico</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> diz</translation>
+<translation id="3576616784287504635">Uma página incorporada em An embedded page at <ph name="SITE"/> diz</translation>
+<translation id="1532118530259321453">Esta página diz</translation>
+<translation id="5201306358585911203">Uma página incorporada neste site diz</translation>
+<translation id="1623104350909869708">Evitar que esta página crie caixas de diálogo adicionais</translation>
+<translation id="7862185352068345852">Sair do site?</translation>
+<translation id="9171296965991013597">Sair da aplicação?</translation>
+<translation id="2677748264148917807">Sair</translation>
+<translation id="425582637250725228">As alterações que fez podem não ser guardadas.</translation>
+<translation id="8079031581361219619">Recarregar site?</translation>
+<translation id="6852204201400771460">Recarregar aplicação?</translation>
 <translation id="3950820424414687140">Iniciar sessão</translation>
 <translation id="8286036467436129157">Iniciar Sessão</translation>
 <translation id="8503813439785031346">Nome de utilizador</translation>
@@ -136,11 +217,12 @@
 <translation id="2586657967955657006">Área de transferência</translation>
 <translation id="6059925163896151826">Dispositivos USB</translation>
 <translation id="7638605456503525968">Portas de série</translation>
+<translation id="3784372983762739446">Dispositivos Bluetooth</translation>
 <translation id="2215727959747642672">Edição de ficheiros</translation>
 <translation id="6545864417968258051">Procura de Bluetooth</translation>
 <translation id="534295439873310000">Dispositivos NFC</translation>
-<translation id="4943703118917034429">Realidade virtual</translation>
-<translation id="3513704683820682405">Realidade aumentada</translation>
+<translation id="4670064810192446073">Realidade virtual</translation>
+<translation id="2025115093177348061">Realidade aumentada</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="57838592816432529">Desativar som</translation>
@@ -156,9 +238,24 @@
 <translation id="5932224571077948991">O site apresenta anúncios intrusivos ou enganadores.</translation>
 <translation id="7878562273885520351">A palavra-passe pode estar comprometida</translation>
 <translation id="1089439967362294234">Alterar palavra-passe</translation>
-<translation id="9008201768610948239">Ignorar</translation>
 <translation id="1186201132766001848">Verificar palavras-passe</translation>
+<translation id="9008201768610948239">Ignorar</translation>
+<translation id="808894953321890993">Alterar palavra-passe</translation>
 <translation id="5979084224081478209">Verificar palavras-passe</translation>
+<translation id="6107012941649240045">Emitido para</translation>
+<translation id="5030338702439866405">Emitido por</translation>
+<translation id="5826507051599432481">Nome comum (CN)</translation>
+<translation id="6898699227549475383">Organização (O)</translation>
+<translation id="3308006649705061278">Unidade organizacional (OU)</translation>
+<translation id="8705331520020532516">Número de série</translation>
+<translation id="1902576642799138955">Período de validade</translation>
+<translation id="5895187275912066135">Emitido em</translation>
+<translation id="4121428309786185360">Expira em</translation>
+<translation id="4154664944169082762">Impressões digitais</translation>
+<translation id="7238585580608191973">Impressão digital SHA-256</translation>
+<translation id="5209518306177824490">Impressão digital SHA-1</translation>
+<translation id="6786747875388722282">Extensões</translation>
+<translation id="7240120331469437312">Nome alternativo do requerente do certificado</translation>
 <translation id="10614374240317010">Nunca guardada</translation>
 <translation id="5869522115854928033">Palavras-passe guardadas</translation>
 <translation id="230699814587342492">Brave - Palavras-passe</translation>
@@ -189,6 +286,36 @@
 <translation id="1197088940767939838">Laranja</translation>
 <translation id="1555130319947370107">Azul</translation>
 <translation id="138218114945450791">Azul-claro</translation>
+<translation id="5612720917913232150"><ph name="URL"/> pretende utilizar a localização do seu computador.</translation>
+<translation id="4733082559415072992"><ph name="URL"/> pretende utilizar a localização do seu dispositivo.</translation>
+<translation id="4677585247300749148"><ph name="URL"/> pretende responder a eventos de acessibilidade.</translation>
+<translation id="3461266716147554923"><ph name="URL"/> pretende ver o texto e as imagens copiados para a área de transferência.</translation>
+<translation id="131405271941274527"><ph name="URL"/> pretende enviar e receber informações quando toca no telemóvel num dispositivo NFC</translation>
+<translation id="5146995429444047494">As notificações de <ph name="ORIGIN"/> estão bloqueadas</translation>
+<translation id="1195558154361252544">As notificações são bloqueadas automaticamente para todos os sites, exceto os que autorizar</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> pretende utilizar o seu microfone.</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> pretende utilizar a câmara.</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> pretende enviar-lhe notificações.</translation>
+<translation id="6910240653697687763"><ph name="URL"/> pretende obter o controlo total sobre os seus dispositivos MIDI.</translation>
+<translation id="503498442187459473"><ph name="HOST"/> pretende utilizar a câmara e o microfone.</translation>
+<translation id="8282947398454257691">Saber o identificador único do seu dispositivo</translation>
+<translation id="8329449853370113380"><ph name="URL"/> pretende reproduzir conteúdo protegido. A Brave Software irá validar a identidade do seu dispositivo.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> pretende reproduzir conteúdo protegido. A identidade do seu dispositivo será validada pela Brave Software e este site poderá aceder à mesma.</translation>
+<translation id="3016780570757425217">Conhecer a sua localização</translation>
+<translation id="7221855153210829124">Mostrar notificações</translation>
+<translation id="8606726445206553943">Utilizar os seus dispositivos MIDI</translation>
+<translation id="7409836189476010449">Executar o Flash</translation>
+<translation id="7438976808740265764">O leitor de Flash deixará de ser suportado depois de dezembro de 2020.</translation>
+<translation id="4761104368405085019">Utilizar o seu microfone</translation>
+<translation id="9150045010208374699">Utilizar a sua câmara</translation>
+<translation id="4953689047182316270">Responder a eventos de acessibilidade</translation>
+<translation id="6116338172782435947">Ver o texto e as imagens copiados para a área de transferência</translation>
+<translation id="5804427196348435412">Utilizar dispositivos NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> pretende armazenar permanentemente dados no seu dispositivo.</translation>
+<translation id="1030706264415084469"><ph name="URL"/> pretende armazenar permanentemente dados de grandes dimensões no seu dispositivo.</translation>
+<translation id="1712552549805331520"><ph name="URL"/> pretende armazenar permanentemente os dados no seu computador local.</translation>
+<translation id="1997484222658892567"><ph name="URL"/> pretende armazenar permanentemente dados de grandes dimensões no seu computador local.</translation>
+<translation id="7648992873808071793">Armazenar ficheiros neste dispositivo</translation>
 <translation id="4813512666221746211">Erro de rede</translation>
 <translation id="3380365263193509176">Erro desconhecido</translation>
 <translation id="5565735124758917034">Ativo</translation>
@@ -204,6 +331,8 @@
 <translation id="5720705177508910913">Utilizador atual</translation>
 <translation id="6965978654500191972">Dispositivo</translation>
 <translation id="4728558894243024398">Plataforma</translation>
+<translation id="1426410128494586442">Sim</translation>
+<translation id="4250680216510889253">Não</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Avançadas</translation>
 <translation id="5308380583665731573">Ligar</translation>
@@ -224,7 +353,6 @@
 <translation id="583281660410589416">Desconhecido</translation>
 <translation id="9170848237812810038">An&amp;ular</translation>
 <translation id="2972581237482394796">&amp;Repetir</translation>
-<translation id="6786747875388722282">Extensões</translation>
 <translation id="5804241973901381774">Permissões</translation>
 <translation id="8004582292198964060">Navegador</translation>
 </translationbundle>

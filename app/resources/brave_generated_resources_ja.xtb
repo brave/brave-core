@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
 <translation id="2666990579225592931">ゲスト ウィンドウを開く</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
-<translation id="7450557937477381864">Chromeを閉じる</translation>
-<translation id="7008934821596358692">インポートを終了するには、すべてのChromeウィンドウを閉じてください。</translation>
 <translation id="6786747875388722282">拡張機能</translation>
 <translation id="3699882589215410581">Widevineをインストールして起動する</translation>
 <translation id="8926389886865778422">再表示させない</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google WidevineはBrave Softwareが所有しておらず、検査できないデジタル著作権管理（DRM）コードの1つです。Google Widevineのコードは弊社のサーバーではなくGoogleのサーバーから割り当てられます。このコードはこのオプションを有効にしている際にのみ読み込まれます。弊社はDRMの使用は推奨しませんがユーザーの選択を尊重しており、一部のBraveユーザーがGoogle Widevineを要求するサービスの利用を望んでいることは承知しております。
 
 この拡張をインストールすると、Google Widevineの使用条件に同意したことになります。Google Widevineの使用に関するいかなる損害や損失にもBraveは責任を負わないことをご了承ください。</translation>
-<translation id="453977518730680921">メディアの自動再生</translation>
 <translation id="410351446219883937">自動再生</translation>
 <translation id="2240268017737062801">サイトが自動再生する場合は確認する</translation>
 <translation id="3371702087847741961">サイトがメディアの自動再生を希望している場合に許可を求める（推奨）</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">Brave Rewardsが有効になっていない場合は、ロケーションバーのBrave Rewardsボタンを非表示にします</translation>
 <translation id="1520361618554057102">常に新しいタブページにブックマークを表示します</translation>
 <translation id="5802665280774361839">アドレスバーにオートコンプリートを表示</translation>
+<translation id="597020512043916976">トップサイトをオートコンプリート推奨で表示</translation>
+<translation id="264150068416846820">Braveの推奨サイトを、オートコンプリート機能で表示</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="2467749191278759605">Braveダッシュボードをカスタマイズする</translation>
 <translation id="1717331825806276156">背景画像</translation>
 <translation id="1820041496463124489">スポンサー画像</translation>
 <translation id="8173998484743827990">Brave統計データ</translation>
+<translation id="5551238871320268996">ブレイブ・トゥギャザー</translation>
 <translation id="6966052266404721769">バイナンス</translation>
 <translation id="4643117005422448078">トップサイト</translation>
 <translation id="1776831331757823105">クロック</translation>
@@ -72,9 +72,9 @@
 <translation id="7390783310074170337">デフォルト表示</translation>
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
-<translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
-<translation id="6447842834002726250">Cookie</translation>
-<translation id="6522412052085018663">フィンガープリント</translation>
+<translation id="2133317862976486547">トラッカーと広告をブロック</translation>
+<translation id="4385707520896576447">Cookie</translation>
+<translation id="4978786495456601191">フィンガープリント</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="519861640102428255">ルック＆フィール</translation>
@@ -83,12 +83,11 @@
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
-<translation id="4699812599455071925">クロスサイトCookieだけをブロックする</translation>
-<translation id="5657156137487675418">すべてのクッキーを許可する</translation>
-<translation id="6883611015375728278">全てのクッキーをブロック</translation>
-<translation id="5963670684159057574">クロスサイト・フィンガープリンティングをブロックする</translation>
-<translation id="769702552748212954">全てのフィンガープリンティングを許可する</translation>
-<translation id="4540198958192073185">すべての指紋をブロック</translation>
+<translation id="4078738236287221428">トラッカー広告をブロックしました（強力モード）</translation>
+<translation id="7740996059027112821">トラッカーと広告がブロックされました（スタンダード）</translation>
+<translation id="4176463684765177261">すべてのトラッカー &amp; 広告を許可</translation>
+<translation id="5770288601196774623">クロスサイトCookieだけをブロックする</translation>
+<translation id="3587482841069643663">全てのクッキーをブロック</translation>
 <translation id="8942080017911802454">WebRTC IPのハンドリングポリシー</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8798099450830957504">既定</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">なし</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Dappsを使用するためのWeb3プロバイダー</translation>
+<translation id="5913089932885076110">開始時にクリプトウォレットをロードする</translation>
 <translation id="6554397389149987360">ハングアウトコンポーネントでスクリーン共有やその他の機能を有効にします</translation>
 <translation id="1765684547504191670">Media Router componentを用いてChromecastを有効にする</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">Braveに完全に匿名の製品分析を自動的に送る</translation>
 <translation id="7090566321964540749">この匿名の情報は、Braveの特定の機能が全体でどの程度使われるか、予測するためにのみ使われます。</translation>
 <translation id="9111960429693394744">Dapps用にBraveの「Cryptoウォレット」と「MetaMask」のどちらを使用しますか？</translation>
+<translation id="8721775358057000783">このページで、web3サポート用の暗号ウォレットを開始しますか？</translation>
 <translation id="7583735190612229830">仮想通貨ウォレットを設定して、このアプリやそれと類似の他のアプリとやり取りをします。</translation>
-<translation id="8337117349965899723">仮想通貨ウォレットを使う</translation>
+<translation id="4823406846571523661">クリプトウォレットのセットアップ</translation>
 <translation id="5756155765711979898">メタマスクを使う</translation>
 <translation id="6754134632841262799">セットアップ</translation>
+<translation id="8199661191594897555">クリプトウォレットを開始してリロード</translation>
+<translation id="8428213095426709021">設定</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認したいですか？</translation>
 <translation id="8053093028263274061">申し訳ございません、利用可能な保存されたバージョンはありません。</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
 <translation id="4989337484121655457">フルディスクアクセスが必要です</translation>
-<translation id="8025559074845816210">Safariからあなたのブックマークをインポートするために、Braveは「フルディスクアクセス」が必要です。</translation>
+<translation id="5501596373144334003">Braveは、Safariからブックマークや履歴をインポートするために、フルディスクアクセスが必要です。</translation>
 <translation id="8515328844674404333">システム環境設定からフルディスクアクセスを許可する方法を説明します。</translation>
 <translation id="6414878884710400018">システム環境設定を開く</translation>
 <translation id="5570470519803062774">サイトとシールドの設定</translation>
+<translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
+<translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
 </translationbundle>

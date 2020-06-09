@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Mga Shield</translation>
 <translation id="6132506775968708399">Mag-block ng ng mga 3rd party na cookie</translation>
 <translation id="7835726359440951858">I-block ang Mga Ad at Pagsubaybay</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
 <translation id="94154759592465111">Mag-block ng Mga Script</translation>
 <translation id="7458422973722236530">Proteksyon Gamit ang Fingerprint</translation>
-<translation id="252011129655042182">Mga Ad at Tracker</translation>
+<translation id="5709627087332022422">I-block ang mga cross-site tracker</translation>
 <translation id="6754976710186182237">Mga Paraang Gumagamit ng Fingerprint</translation>
 <translation id="2313532038420432247">Mga Pag-upgrade sa HTTPS</translation>
 <translation id="7461425058443653485">Mga Script na Na-block</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Karaniwang Tab</translation>
 <translation id="3377025655491224618">Tab na Incognito</translation>
 <translation id="9148058034647219655">Lumabas</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Nagbubukas ng mga sinusuportahang site gamit ang HTTPS sa halip na HTTP kapag posible</translation>
 <translation id="8387201461264842096">Pag-block ng Ad</translation>
 <translation id="1934885595886623674">Pinagbabawalang mag-load ang mga ad</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Isara ang mga tab sa paglabas</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
 <translation id="4339730410920731698">Mga Ad at Tracker na Na-block</translation>
+<translation id="6761596877474675418">Data na Natipid</translation>
 <translation id="3034562645284925177">Tinatantyang Oras na Natipid</translation>
 <translation id="6572660632052512096">Desktop Mode</translation>
 <translation id="1340503115760585811">I-enable ang View sa Desktop para sa mga bagong tab</translation>
@@ -159,7 +161,7 @@ buwang ito...</translation>
 <translation id="1713542052890184975">Paki-back up ang iyong wallet sa Brave.</translation>
 <translation id="2323069945529668668">Naku!</translation>
 <translation id="7510166204621526816">Hindi tumutugon ang server ng Brave Rewards. Aayusin namin ito sa lalong madaling panahon.</translation>
-<translation id="2626799779920242286">Pakisubukang muli sa ibang pagkakataon.</translation>
+<translation id="7117228822971127758">Pakisubukang muli sa ibang pagkakataon</translation>
 <translation id="3068742524072211213">mag-e-expire sa <ph name="DATE"/></translation>
 <translation id="4292832015778676417">kinita sa ads</translation>
 <translation id="683765328936486920">sa YouTube</translation>
@@ -227,7 +229,6 @@ buwang ito...</translation>
 <translation id="6199596294742117349">Pribadong Tab ito.</translation>
 <translation id="5858455511731621847">Kahit na hindi lokal na naka-save ang mga site na iyong binibisita sa mga pribadong tab, hindi ka ginagawa ng mga ito na hindi kilala o hindi nakikita ng ISP, empleyo, at mga site na binibisita mo.</translation>
 <translation id="5789441016350810005">Ipinapadala ang Mga Ad ng Brave kapag nasa background ang browser</translation>
-<translation id="7127980134843952133">Kasaysayan ng pag-download</translation>
 <translation id="3690140184638701871">Mga Kontribusyon at Tip</translation>
 <translation id="844921671123185605">Naiproseso na ang iyong mga buwanang tip!</translation>
 <translation id="3124090095880236567">I-on ang Mga Ad</translation>
@@ -250,15 +251,82 @@ buwang ito...</translation>
 <translation id="8522669544471808198">Ipakita ang Mga Larawan sa Background</translation>
 <translation id="3870475560794762985">Ipakita ang Mga Naka-sponsor na Larawan</translation>
 <translation id="8297488609722895137">Larawan ni <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Mabayaran para tingnan ang larawan sa background na ito.</translation>
-<translation id="4836823081419522426">Matatanggap mo ang 70% ng kita sa ad para sa pribadong sponsorship na ito na magagamit para suportahan ang mga creator ng content sa web. I-on ang Mga Reward sa Brave para i-claim ang iyong share.</translation>
-<translation id="7307847920988946894">I-on ang Mga Reward</translation>
 <translation id="1605521356929094020">I-on ang Mga Ad sa Brave</translation>
-<translation id="1647482814782886825">Sa pamamagitan ng pag-on sa Mga Reward, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>. Maaari mo ring piliing <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Sa pamamagitan ng pag-tap sa Kumita at Magbigay, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Mabayaran para tingnan ang larawan sa background na ito.</translation>
 <translation id="7136586167396205364">Itago ang Mga Naka-sponsor na Larawan</translation>
 <translation id="2927095357213611519">Maaari mong suportahan ang mga creator sa web gamit ang mga token.\nMakakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy.</translation>
-<translation id="4016415345213871193">Binabayaran ka para tingnan ang larawan sa background na ito.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/>tungkol sa mga naka-sponsor na larawan sa Mga Reward sa Brave. Maaari mo ring piliing <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Maaari mo ring piliing <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Mabayaran para tingnan ang larawan sa background na ito. I-on ang Mga Ad sa Brave para i-claim ang iyong share.</translation>
+<translation id="213787746370741250">Buksan ang mga tab sa Mga Custom na Tab</translation>
+<translation id="8030169304546394654">Nadiskonekta</translation>
+<translation id="8267327690882073581">I-verify ang Wallet</translation>
+<translation id="543510923939676996">Na-verify ang Wallet</translation>
+<translation id="8673913984316081937">Opsyonal ang pag-verify sa iyong wallet</translation>
+<translation id="8558636200953226885">Gayunpaman, kung magve-verify ka, maaari mong gawin ang mga sumusunod...</translation>
+<translation id="8697510149346635496">Mag-withdraw ng BAT na naipon mo mula sa pagtingin sa mga ad na may pagsasaalang-alang sa privacy</translation>
+<translation id="1481480653609649134">Bumili ng karagdagang BAT gamit ang mga credit card at iba pang source</translation>
+<translation id="9096003370755878766">Mag-withdraw ng BAT na puwedeng dati mong naidagdag sa iyong Brave Rewards wallet</translation>
+<translation id="1554282356558968486">Ang aming serbisyo ng wallet ay mula sa</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
+<translation id="723054503945711909">Hindi pinoproseso, sino-store, o ina-access ng Brave Software Inc. ang anuman sa personal na impormasyon na ibinigay mo sa Uphold noong gumawa ka ng account sa kanila.</translation>
+<translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
+<translation id="2193391216824305230">Wallet ng User</translation>
+<translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
+<translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
+<translation id="6239274080752256452">Mag-withdraw ng Mga Pondo</translation>
+<translation id="8874184842967597500">Hindi nakakonekta</translation>
+<translation id="3368922792935385530">Nakakonekta</translation>
+<translation id="4569155249847375786">Na-verify</translation>
+<translation id="5358719431303818601">Nadiskonektang hindi na-verify</translation>
+<translation id="4241449868720191203">Nadiskonektang na-verify</translation>
+<translation id="3248185426436836442">Nakabinbin</translation>
+<translation id="8108013093558639183">Hindi sinusuportahan sa kasalukuyan sa iyong rehiyon ang BAT batay sa lokasyon kung saan binuksan ang iyong account. Bumalik sa ibang pagkakataon para sa availability.</translation>
+<translation id="4190454391025419535">Hindi sinusuportahan ang rehiyon</translation>
+<translation id="6830703472632069884">Nagkaproblema sa pag-verify sa iyong wallet, pakisubukang muli sa ibang pagkakataon.</translation>
+<translation id="3512533646933434345">Error sa pag-verify ng wallet</translation>
+<translation id="2260513517001048012">PAALALA: Hindi pa nako-configure ng Creator na ito na Na-verify ng Brave ang kanyang account upang makatanggap ng mga kontribusyon mula sa mga user ng Brave. Patuloy na susubukan ng browser mo na mag-ambag hanggang sa mag-verify sila, o hanggang lumipas ang 90 araw.</translation>
+<translation id="4488355059795908907">Hindi pa nako-configure ng Creator na ito na Na-verify ng Brave ang kanyang account upang makatanggap ng mga kontribusyon mula sa mga user ng Brave. Mananatili sa iyong wallet ang anumang tip na ipapadala mo hanggang makumpleto nila ang prosesong ito.</translation>
+<translation id="2495032782748793764">Default ng Brave</translation>
+<translation id="9132378787893584761">I-share ang Brave sa iyong mga kaibigan!</translation>
+<translation id="717952606991220586">Naku, may mali. Pakisubukang muli sa ibang pagkakataon.</translation>
+<translation id="2524310205387880526">Bigyan ng rating ang Brave</translation>
+<translation id="6680650203439190394">Rate</translation>
+<translation id="2635089463885398597">Ano ang ibibigay mong rating sa iyong karanasan sa Brave?</translation>
+<translation id="141901961143729572">Ibahagi ang iyong mga opinyon</translation>
+<translation id="7961015016161918242">Hindi Kailanman</translation>
+<translation id="1275213816424141989">Sa Ibang Pagkakataon Siguro</translation>
+<translation id="6991128190741664836">Sa Ibang Pagkakataon</translation>
+<translation id="8851456134224363571">Magaling! Ayos lang bang bigyan mo kami ng rating sa Play Store?</translation>
+<translation id="8668962040900592974">Ipaalam sa amin kung paano kami puwedeng humusay pa</translation>
+<translation id="4406937629441301400">Kumita ng mga token para sa pagtingin sa larawang ito at ipasa ito sa mga creator. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Kumita ng mga token para sa pagtingin sa larawang ito. I-on ang Kumita at Magbigay para i-claim ang iyong porsyento.</translation>
+<translation id="6632345639591919543">Kumikita ka ng mga token para sa pagtingin sa larawang ito.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Kumikita ka ng mga token para sa pagtingin sa larawang ito.</translation>
+<translation id="7952665812649667034">Handa na akong Kumita at Magbigay</translation>
+<translation id="7877201489035217175">Matuto pa tungkol sa mga sponsored na larawan</translation>
+<translation id="828092975561478703">Para sa bawat sponsored na larawang titingnan mo, tatanggap ka ng 70% ng kita sa mga token. Sa Brave Ads, ikaw ang palaging may kontrol sa mga ad na nakikita mo.</translation>
+<translation id="4941539331405513605">I-block ang cross-site cookies</translation>
+<translation id="3763681089644577874">I-block ang Cookies</translation>
+<translation id="614747795780742163">Pinipigilan ang mga website sa pag-store ng impormasyon tungkol sa iyong mga nakaraang pagbisita</translation>
+<translation id="6883611015375728278">I-block ang lahat ng cookie</translation>
+<translation id="5657156137487675418">Payagan ang lahat ng cookie</translation>
+<translation id="5963670684159057574">I-block ang cross-site fingerprinting</translation>
+<translation id="3895527457258986253">I-block ang Pag-fingerprint</translation>
+<translation id="184568144098869637">Pinipigilan ang browser sa pagkilala sa iyong device</translation>
+<translation id="4540198958192073185">I-block ang lahat ng fingerprinting</translation>
+<translation id="769702552748212954">Payagan ang lahat ng fingerprinting</translation>
+<translation id="2888409909650566510">Mga ad at iba pang hindi kanais-nais\nna bagay na na-block</translation>
+<translation id="6930134873084561197">Madalas na nagsasama ang mga site ng cookies at mga script na sumusubok na kumilala sa iyo at sa iyong device. Gusto nilang malaman kung sino ka at susundan ka sa buong web-susubaybayan kung ano ang ginagawa mo sa bawat site.\n\nBina-block ng Brave ang mga bagay na ito para makapag-browse ka nang hindi nasusundan.</translation>
+<translation id="8553998445606452168">Tungkol sa Brave Shields</translation>
+<translation id="8912304686498704084">PATAAS</translation>
+<translation id="4963218453264888510">PABABA</translation>
+<translation id="7474113515179313724">Bina-browse mo ang site na ito nang wala ng mga proteksyon sa privacy ng Brave. Hindi ba ito gumagana nang maayos nang naka-on ang Shields?</translation>
+<translation id="9055546041146396417">Kung mukhang sira ang site na ito, subukan nang hindi naka-on ang Shields.</translation>
+<translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
+<translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
+<translation id="5429200298326665264">Paalala: Isusumite ang address ng site na ito kasama ng numero ng bersyon ng iyong Brave at ng IP address (na hindi iso-store).</translation>
+<translation id="5299848999918506028">Salamat!</translation>
+<translation id="76550953340008122">Salamat sa pagbibigay-alam sa mga developer ng Brave na may problema sa site na ito. Gagawin namin ang buong makakaya namin para ayusin ito!</translation>
+<translation id="650318023204990401">Mga advanced na kontrol</translation>
+<translation id="7182293319417450928">Kailangan ng minimum na balanse na 25 BAT para mag-verify.</translation>
 </translationbundle>

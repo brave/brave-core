@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="6132506775968708399">Chặn cookie của bên thứ 3</translation>
 <translation id="7835726359440951858">Chặn quảng cáo và theo dõi</translation>
-<translation id="520895744850022668">HTTPS Everywhere (HTTPS Khắp mọi nơi)</translation>
+<translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="94154759592465111">Chặn Kịch bản</translation>
 <translation id="7458422973722236530">Bảo vệ bằng dấu vân tay</translation>
-<translation id="252011129655042182">Quảng cáo và trình theo dõi</translation>
+<translation id="5709627087332022422">Chặn các bộ theo dõi trên mọi website</translation>
 <translation id="6754976710186182237">Phương pháp dấu vân tay</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="7461425058443653485">Đã chặn Tập lệnh</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Tab tiêu chuẩn</translation>
 <translation id="3377025655491224618">Tab ẩn danh</translation>
 <translation id="9148058034647219655">Thoát</translation>
+<translation id="520895744850022668">HTTPS Everywhere (HTTPS Khắp mọi nơi)</translation>
 <translation id="8710614491157212477">Mở các trang web được hỗ trợ bằng HTTPS thay vì HTTP khi có thể</translation>
 <translation id="8387201461264842096">Chặn quảng cáo</translation>
 <translation id="1934885595886623674">Ngăn quảng cáo tải</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Đóng tab khi thoát</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
 <translation id="4339730410920731698">Đã chặn Quảng cáo và Chương trình theo dõi</translation>
+<translation id="6761596877474675418">Dữ liệu Đã tiết kiệm</translation>
 <translation id="3034562645284925177">Thời gian đã lưu ước tính</translation>
 <translation id="6572660632052512096">Chế độ cho máy tính để bàn</translation>
 <translation id="1340503115760585811">Bật Chế độ xem cho máy tính để bàn cho các tab mới</translation>
@@ -161,7 +163,7 @@ tháng này...</translation>
 <translation id="1713542052890184975">Vui lòng sao lưu ví Brave của bạn.</translation>
 <translation id="2323069945529668668">Ối trời!</translation>
 <translation id="7510166204621526816">Máy chủ Phần Thưởng Brave không phản hồi. Chúng tôi sẽ khắc phục vấn đề này càng sớm càng tốt.</translation>
-<translation id="2626799779920242286">Vui lòng thử lại sau.</translation>
+<translation id="7117228822971127758">Vui lòng thử lại sau</translation>
 <translation id="3068742524072211213">hết hạn vào <ph name="DATE"/></translation>
 <translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="683765328936486920">trên YouTube</translation>
@@ -232,8 +234,7 @@ tháng này...</translation>
 <translation id="6199596294742117349">Đây là Tab riêng tư</translation>
 <translation id="5858455511731621847">Mặc dù các trang web bạn truy cập trong những tab riêng tư không được lưu cục bộ, những trang web này không giúp bạn ẩn danh hoặc ẩn đối với ISP, chủ lao động hoặc những trang web bạn đang truy cập.</translation>
 <translation id="5789441016350810005">Brave Ads được gửi khi trình duyệt đang chạy nền</translation>
-<translation id="7127980134843952133">Lịch sử tải xuống</translation>
-<translation id="3690140184638701871">Đóng góp &amp;amp; Tiền thưởng</translation>
+<translation id="3690140184638701871">Đóng góp &amp; Tiền thưởng</translation>
 <translation id="844921671123185605">Các khoản tiền thưởng hàng tháng của bạn đã được xử lý!</translation>
 <translation id="3124090095880236567">Bật Ads</translation>
 <translation id="2975780980638932742">Brave Ads đã xuất hiện!</translation>
@@ -255,15 +256,82 @@ tháng này...</translation>
 <translation id="8522669544471808198">Hiển thị Hình Nền</translation>
 <translation id="3870475560794762985">Hiển thị Hình được Tài trợ</translation>
 <translation id="8297488609722895137">Ảnh chụp bởi <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Nhận tiền thưởng để xem hình nền này.</translation>
-<translation id="4836823081419522426">Bạn sẽ nhận được 70% doanh thu quảng cáo đối với mục tài trợ riêng tư này, số tiền đó có thể được dùng để hỗ trợ các nhà sáng tạo nội dung web. Hãy bật Brave Rewards để nhận phần của bạn.</translation>
-<translation id="7307847920988946894">Bật Rewards</translation>
 <translation id="1605521356929094020">Bật Brave Ads</translation>
-<translation id="1647482814782886825">Bằng cách bật Rewards, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/>. Bạn cũng có thể chọn cách <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Bằng cách nhấn vào Kiếm và Cho, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Nhận tiền thưởng để xem hình nền này.</translation>
 <translation id="7136586167396205364">Ẩn các Hình được Tài trợ</translation>
 <translation id="2927095357213611519">Bạn có thể hỗ trợ các nhà sáng tạo nội dung web bằng token.\nKiếm token bằng cách xem các quảng cáo tôn trọng quyền riêng tư.</translation>
-<translation id="4016415345213871193">Bạn sẽ nhận được tiền thưởng khi xem hình nền này.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> về các hình được tài trợ trong Brave Rewards. Bạn cũng có thể chọn cách <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Bạn cũng có thể chọn cách <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Nhận tiền thưởng để xem hình nền này. Hãy bật Brave Ads để nhận phần của bạn.</translation>
+<translation id="213787746370741250">Mở tab trong Tab Tùy chỉnh</translation>
+<translation id="8030169304546394654">Đã ngắt kết nối</translation>
+<translation id="8267327690882073581">Xác thực Ví</translation>
+<translation id="543510923939676996">Ví đã được xác thực.</translation>
+<translation id="8673913984316081937">Xác minh ví của bạn là không bắt buộc</translation>
+<translation id="8558636200953226885">Nhưng nếu xác minh, bạn có thể...</translation>
+<translation id="8697510149346635496">Rút BAT mà bạn kiếm được nhờ xem các quảng cáo tôn trọng quyền riêng tư</translation>
+<translation id="1481480653609649134">Mua thêm BAT bằng thẻ tín dụng và các nguồn tiền khác</translation>
+<translation id="9096003370755878766">Rút BAT mà trước đó có thể bạn đã thêm vào ví Phần thưởng Brave của mình</translation>
+<translation id="1554282356558968486">Dịch vụ ví của chúng tôi được cung cấp bởi</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
+<translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
+<translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
+<translation id="2193391216824305230">Ví Người dùng</translation>
+<translation id="7591798679868259510">Truy cập tài khoản Uphold của tôi</translation>
+<translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
+<translation id="6239274080752256452">Rút Tiền</translation>
+<translation id="8874184842967597500">Chưa kết nối</translation>
+<translation id="3368922792935385530">Đã kết nối</translation>
+<translation id="4569155249847375786">Đã xác thực</translation>
+<translation id="5358719431303818601">Đã ngắt kết nối chưa được xác minh</translation>
+<translation id="4241449868720191203">Đã ngắt kết nối đã xác minh</translation>
+<translation id="3248185426436836442">Đang chờ xử lý</translation>
+<translation id="8108013093558639183">BAT hiện không được hỗ trợ trong khu vực của bạn dựa trên vị trí mà tài khoản của bạn được mở. Hãy kiểm tra lại sau.</translation>
+<translation id="4190454391025419535">Khu vực không được hỗ trợ</translation>
+<translation id="6830703472632069884">Đã xảy ra vấn đề khi xác minh ví của bạn, xin vui lòng thử lại sau.</translation>
+<translation id="3512533646933434345">Lỗi xác thực ví</translation>
+<translation id="2260513517001048012">LƯU Ý: Người sáng tạo Đã xác minh của Brave này chưa định cấu hình tài khoản của họ để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
+<translation id="4488355059795908907">Người sáng tạo Đã xác minh của Brave này chưa định cấu hình tài khoản của họ để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ hoàn thành quá trình này.</translation>
+<translation id="2495032782748793764">Mặc định của Brave</translation>
+<translation id="9132378787893584761">Chia sẻ Brave với bạn bè của bạn!</translation>
+<translation id="717952606991220586">Rất tiếc, đã xảy ra lỗi. Vui lòng thử lại sau.</translation>
+<translation id="2524310205387880526">Xếp hạng Brave</translation>
+<translation id="6680650203439190394">Tỷ giá</translation>
+<translation id="2635089463885398597">Bạn đánh giá trải nghiệm của bạn với Brave như thế nào?</translation>
+<translation id="141901961143729572">Chia sẻ suy nghĩ của bạn</translation>
+<translation id="7961015016161918242">Không bao giờ</translation>
+<translation id="1275213816424141989">Có lẽ Để sau</translation>
+<translation id="6991128190741664836">Để sau</translation>
+<translation id="8851456134224363571">Tuyệt vời! Bạn có thể đánh giá chúng tôi trên Play Store không?</translation>
+<translation id="8668962040900592974">Hãy cho chúng tôi biết cách chúng tôi có thể cải thiện</translation>
+<translation id="4406937629441301400">Kiếm token khi xem hình ảnh này và gửi đến người sáng tạo. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Kiếm token khi xem hình ảnh này. Bật Kiếm và Cho để nhận phần token của bạn.</translation>
+<translation id="6632345639591919543">Bạn đang kiếm được token khi xem hình ảnh này.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Bạn đang kiếm được token khi xem hình ảnh này.</translation>
+<translation id="7952665812649667034">Tôi đã sẵn sàng để Kiếm và Cho</translation>
+<translation id="7877201489035217175">Tìm hiểu thêm về hình ảnh được tài trợ</translation>
+<translation id="828092975561478703">Với mỗi hình ảnh được tài trợ mà bạn xem, bạn nhận được 70% doanh thu bằng token. Với Quảng cáo của Brave, bạn luôn kiểm soát các quảng cáo bạn nhìn thấy.</translation>
+<translation id="4941539331405513605">Chặn cookie liên trang</translation>
+<translation id="3763681089644577874">Chặn Cookie</translation>
+<translation id="614747795780742163">Ngăn chặn các trang web lưu trữ thông tin về các lần truy cập trước của bạn</translation>
+<translation id="6883611015375728278">Chặn tất cả cookie</translation>
+<translation id="5657156137487675418">Cho phép mọi cookie.</translation>
+<translation id="5963670684159057574">Chặn dấu vân tay chéo trang</translation>
+<translation id="3895527457258986253">Chặn Vân tay</translation>
+<translation id="184568144098869637">Ngăn trình duyệt nhận ra thiết bị của bạn</translation>
+<translation id="4540198958192073185">Chặn tất cả dấu vân tay</translation>
+<translation id="769702552748212954">Cho phép tất cả vân tay</translation>
+<translation id="2888409909650566510">Quảng cáo và những thứ đáng sợ\nkhác đã bị chặn</translation>
+<translation id="6930134873084561197">Các trang web thường có các cookie và tập lệnh cố gắng xác định bạn và thiết bị của bạn. Họ muốn tìm ra bạn là ai và theo dõi bạn trên web - theo dõi những gì bạn làm trên mọi trang web.\n\nBrave chặn những thứ này để bạn có thể duyệt web mà không bị theo dõi.</translation>
+<translation id="8553998445606452168">Về Khiên của Brave</translation>
+<translation id="8912304686498704084">LÊN</translation>
+<translation id="4963218453264888510">XUỐNG</translation>
+<translation id="7474113515179313724">Bạn đang duyệt trang web này mà không được Brave bảo vệ quyền riêng tư. Mọi thứ không hoạt động đúng khi bật Khiên sao?</translation>
+<translation id="9055546041146396417">Nếu trang web này bị hỏng, hãy thử tắt Khiên.</translation>
+<translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
+<translation id="8510478288840333677">Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Shields:</translation>
+<translation id="5429200298326665264">Lưu ý: Địa chỉ trang web này sẽ được gửi cùng với số phiên bản Brave và địa chỉ IP của bạn (sẽ không được lưu trữ).</translation>
+<translation id="5299848999918506028">Cảm ơn bạn!</translation>
+<translation id="76550953340008122">Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!</translation>
+<translation id="650318023204990401">Kiểm soát nâng cao</translation>
+<translation id="7182293319417450928">Cần có số dư tối thiểu 25 BAT để xác minh.</translation>
 </translationbundle>

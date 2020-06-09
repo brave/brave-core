@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Kurti naują profilį</translation>
 <translation id="2666990579225592931">Atidaryti svečio langą</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (plėtinio ID "<ph name="EXTENSION_ID"/>") nėra leidžiamas naršyklėje „Brave“.</translation>
-<translation id="7450557937477381864">Užverti „Chrome“</translation>
-<translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
 <translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
 
 Įdiegdami šį plėtinį sutinkate su „Google Widevine“ naudojimo sąlygomis. Sutinkate, kad „Brave“ nebus atsakinga už jokią žalą ar nuostolius, patirtus dėl naudojimosi „Google Widevine“.</translation>
-<translation id="453977518730680921">Automatiškai leisti mediją</translation>
 <translation id="410351446219883937">Leisti automatiškai</translation>
 <translation id="2240268017737062801">Paklausti, kai svetainė nori automatiškai leisti mediją</translation>
 <translation id="3371702087847741961">Paklausti, kai svetainė nori automatiškai leisti mediją (rekomenduojama)</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">Jei funkcija „Brave Rewards“ neįjungta, buvimo vietos juostoje esantį mygtuką „Brave Rewards“ paslėpti</translation>
 <translation id="1520361618554057102">Visada rodyti žymes naujos kortelės puslapyje</translation>
 <translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
+<translation id="597020512043916976">Rodyti populiariausias svetaines automatinio užbaigimo pasiūlymuose</translation>
+<translation id="264150068416846820">Rodyti „Brave“ siūlomas svetaines automatinio užbaigimo pasiūlymuose</translation>
 <translation id="7781069478569868053">Naujo skirtuko puslapis</translation>
 <translation id="2467749191278759605">Tinkinti „Brave“ ataskaitų sritį</translation>
 <translation id="1717331825806276156">Foniniai vaizdai</translation>
 <translation id="1820041496463124489">Remiami vaizdai</translation>
 <translation id="8173998484743827990">„Brave“ statistiniai duomenys</translation>
+<translation id="5551238871320268996">„Brave Together“</translation>
 <translation id="6966052266404721769">„Binance“</translation>
 <translation id="4643117005422448078">Populiariausios svetainės</translation>
 <translation id="1776831331757823105">Laikrodis</translation>
@@ -72,9 +72,9 @@
 <translation id="7390783310074170337">Numatytasis rodinys</translation>
 <translation id="130615081792797568">Paprastas rodinys</translation>
 <translation id="2360360976480535628">Išplėstinis rodinys</translation>
-<translation id="5709627087332022422">Blokuoti kelių svetainių sekiklius</translation>
-<translation id="6447842834002726250">Slapukai</translation>
-<translation id="6522412052085018663">Kontrolinių kodų kūrimas</translation>
+<translation id="2133317862976486547">Blokuoti sekiklius ir reklamas</translation>
+<translation id="4385707520896576447">Slapukai</translation>
+<translation id="4978786495456601191">Kontrolinių kodų kūrimas</translation>
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 <translation id="4824468494729001999">Blokuoti scenarijus</translation>
 <translation id="519861640102428255">Išvaizda ir turinys</translation>
@@ -83,12 +83,11 @@
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
-<translation id="4699812599455071925">Blokuoti tik kelių svetainių slapukus</translation>
-<translation id="5657156137487675418">Leisti visus slapukus</translation>
-<translation id="6883611015375728278">Blokuoti visus slapukus</translation>
-<translation id="5963670684159057574">Blokuoti kontrolinių kodų tarp kelių svetainių kūrimo funkciją</translation>
-<translation id="769702552748212954">Leisti visus kontrolinius kodus</translation>
-<translation id="4540198958192073185">Blokuoti visus kontrolinius kodus</translation>
+<translation id="4078738236287221428">Sekikliai ir reklamos blokuojami (agresyvus)</translation>
+<translation id="7740996059027112821">Sekikliai ir reklamos blokuojami (standartinis)</translation>
+<translation id="4176463684765177261">Leisti visus sekiklius ir reklamas</translation>
+<translation id="5770288601196774623">Blokuoti tik kelių svetainių slapukus</translation>
+<translation id="3587482841069643663">Blokuoti visus slapukus</translation>
 <translation id="8942080017911802454">„WebRTC“ IP tvarkymo politika</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">Nieko</translation>
 <translation id="1085027414516521238">„MetaMask“</translation>
 <translation id="3905324891414560921">Decentralizuotų programėlių „Web3“ teikėjas</translation>
+<translation id="5913089932885076110">Užkrauti kriptovaliutų pinigines paleidus kompiuterį</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="1765684547504191670">Naudojamas medijos maršruto parinktuvo komponentas, kad naršyklėje būtų įgalintas „Chromecast“</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
 <translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
 <translation id="9111960429693394744">Ar decentralizuotoms programėlėms norėtumėte naudoti „Brave“ kriptovaliutų pinigines ar „MetaMask“?</translation>
+<translation id="8721775358057000783">Ar norėtumėte paleisti kriptovaliutų pinigines „web3“ palaikyti šiame puslapyje?</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
-<translation id="8337117349965899723">Naudoti kriptovaliutų pinigines</translation>
+<translation id="4823406846571523661">Nustatyti kriptovaliutų pinigines</translation>
 <translation id="5756155765711979898">Naudoti „MetaMask“</translation>
 <translation id="6754134632841262799">SĄRANKA</translation>
+<translation id="8199661191594897555">Paleisti kriptovaliutų pinigines ir užkrauti iš naujo</translation>
+<translation id="8428213095426709021">Nustatymai</translation>
 <translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
 <translation id="2609895996619941644">Gal norite patikrinti, ar per „Wayback Machine“ pasiekiama įrašyta versija?</translation>
 <translation id="8053093028263274061">Deja, nėra įrašytos versijos.</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">Žymėti visus skirtukus...</translation>
 <translation id="796831669370432378">Jei norite pridėti žymę, spustelėkite žymių mygtuką greta adreso juostos</translation>
 <translation id="4989337484121655457">Reikia neribotos prieigos prie disko</translation>
-<translation id="8025559074845816210">Jūsų žymėms iš „Safari“ importuoti reikia, kad „Brave“ turėtų neribotą prieigą prie disko.</translation>
+<translation id="5501596373144334003">„Brave“ naršyklei reikalinga neribota prieiga prie disko, kad galėtų importuoti jūsų žymes ir istoriją iš „Safari“.</translation>
 <translation id="8515328844674404333">Sužinokite, kaip sistemos nuostatų skiltyje suteikti neribotą prieigą prie disko.</translation>
 <translation id="6414878884710400018">Atverti sistemos nuostatų skiltį</translation>
 <translation id="5570470519803062774">Svetainės ir skydų nuostatos</translation>
+<translation id="8487693399751278191">Importuoti žymes dabar...</translation>
+<translation id="2557899542277210112">Savo žymes pasieksite greičiau, jei įkelsite į žymių juostą.</translation>
 </translationbundle>

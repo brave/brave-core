@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Shields</translation>
 <translation id="6132506775968708399">第三者によるクッキーをブロックする</translation>
 <translation id="7835726359440951858">広告とトラッキングをブロックします</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
 <translation id="7458422973722236530">フィンガープリンティング対策</translation>
-<translation id="252011129655042182">広告とトラッカー</translation>
+<translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
 <translation id="6754976710186182237">ブロック済みのフィンガープリンティング手法</translation>
 <translation id="2313532038420432247">HTTPSアップグレード</translation>
 <translation id="7461425058443653485">ブロック済みのスクリプト</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">標準タブ</translation>
 <translation id="3377025655491224618">プライベートタブ</translation>
 <translation id="9148058034647219655">終了</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">利用可能な場合、HTTPではなくHTTPSを使用してサイトを開きます</translation>
 <translation id="8387201461264842096">広告ブロック</translation>
 <translation id="1934885595886623674">広告が読み込みを抑制する</translation>
@@ -163,7 +164,7 @@
 <translation id="1713542052890184975">ウォレットをバックアップしてください。</translation>
 <translation id="2323069945529668668">おっと！</translation>
 <translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
-<translation id="2626799779920242286">少し時間を置いてもう一度試して見てください。</translation>
+<translation id="7117228822971127758">しばらくしてからもう一度お試しください</translation>
 <translation id="3068742524072211213"><ph name="DATE"/>に期限が切れます</translation>
 <translation id="4292832015778676417">広告からの収入</translation>
 <translation id="683765328936486920">YouTubeで</translation>
@@ -234,7 +235,6 @@
 <translation id="6199596294742117349">これはプライベートタブです</translation>
 <translation id="5858455511731621847">プライベートタブで訪問したサイトがローカルに保存されないとしても、プライベートタブは匿名化したり、ISPや雇用主や訪問サイトにあなたの閲覧内容が見られないようにしたりするわけではありません。</translation>
 <translation id="5789441016350810005">ブラウザがバックグラウンドにあるときに送信されるBrave広告</translation>
-<translation id="7127980134843952133">ダウンロード履歴</translation>
 <translation id="3690140184638701871">支援＆チップ</translation>
 <translation id="844921671123185605">毎月定期支払いチップが実行されました！</translation>
 <translation id="3124090095880236567">広告をオンにする</translation>
@@ -257,16 +257,82 @@
 <translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="3870475560794762985">スポンサー付き画像を表示</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">この背景画像を表示すると報酬が支払われます。</translation>
-<translation id="4836823081419522426">このプライベートスポンサーシップの広告収入のうち70％が報酬としてあなたに支払われます。受け取った報酬でコンテンツクリエイターを支援することができます。早速Brave Rewards をオンにして報酬を獲得しましょう！</translation>
-<translation id="7307847920988946894">「Rewards」をオンにする</translation>
 <translation id="1605521356929094020">Brave広告をオンにする</translation>
-<translation id="1647482814782886825">「Rewards」をオンにすると<ph name="TERMS_OF_SERVICE"/>に同意したものと見做されます。<ph name="HIDE_SPONSORED_IMAGES"/>を選択することもできます。</translation>
+<translation id="5878330112719288629">稼ぐ &amp; あげるをタップすると、<ph name="TERMS_OF_SERVICE"/>に同意したことになります。</translation>
+<translation id="3794079107601824147">この背景画像を表示すると報酬が支払われます。</translation>
 <translation id="7136586167396205364">スポンサー付き画像を非表示にする</translation>
 <translation id="2927095357213611519">ポイントを使用してコンテンツクリエイターを応援できます。\nポイントはプライバシーを重視する広告を表示することで貯めることができます。</translation>
-<translation id="4016415345213871193">この背景画像を表示することで報酬が支払われます</translation>
-<translation id="5895280237921845725">Brave Rewards のスポンサー付き画像について<ph name="LEARN_MORE"/>。<ph name="HIDE_SPONSORED_IMAGES"/>を選択することもできます。</translation>
-<translation id="1908278071064820219"><ph name="HIDE_SPONSORED_IMAGES"/>を選択することもできます。</translation>
-<translation id="7931660128190969207">この背景画像を表示すると報酬が支払われます。Brave広告をオンにして報酬を受け取りましょう！</translation>
 <translation id="213787746370741250">カスタムタブでタブを開く</translation>
+<translation id="8030169304546394654">切断されました</translation>
+<translation id="8267327690882073581">ウォレットを確認</translation>
+<translation id="543510923939676996">ウォレットが検証済み</translation>
+<translation id="8673913984316081937">ウォレットの確認はオプションです</translation>
+<translation id="8558636200953226885">しかし、確認を行うと、次のことが可能です...</translation>
+<translation id="8697510149346635496">プライバシーを尊重する広告表示で獲得したBAPを引き出す</translation>
+<translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBAPを購入する</translation>
+<translation id="9096003370755878766">過去に追加したBrave Rewardsウォレットに追加した可能性のあるBAPを引き出す</translation>
+<translation id="1554282356558968486">Braveのウォレットサービスは以下の企業のご協力を得てご提供しています</translation>
+<translation id="6569877533335686968">アップホールド</translation>
+<translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
+<translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
+<translation id="3699674790322420653">ウォレットの検証を完了</translation>
+<translation id="2193391216824305230">ユーザーウォレット</translation>
+<translation id="7591798679868259510">Upholdのアカウントに移動</translation>
+<translation id="9200453331904391567">Braveの報酬から切断</translation>
+<translation id="6239274080752256452">資金を引き出す</translation>
+<translation id="8874184842967597500">未接続</translation>
+<translation id="3368922792935385530">接続済み</translation>
+<translation id="4569155249847375786">確認済み</translation>
+<translation id="5358719431303818601">接続の解除が確認されていません</translation>
+<translation id="4241449868720191203">接続の解除が確認されました</translation>
+<translation id="3248185426436836442">保留中</translation>
+<translation id="8108013093558639183">アカウントが開かれている場所に基づくと、現在BATはお住まいの地域でサポートされていません。 しばらくしてから利用状況を確認してください。</translation>
+<translation id="4190454391025419535">サポートされていない地域です</translation>
+<translation id="6830703472632069884">お客様のウォレットの確認中に問題が発生しました。あとで再度実行してください。</translation>
+<translation id="3512533646933434345">ウォレットの認証エラー</translation>
+<translation id="2260513517001048012">注意：このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの貢献を受け取る設定がされていません。お使いのブラウザはクリエイターが確認するまで、または90日経過するまで試行を続けます。</translation>
+<translation id="4488355059795908907">このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの貢献を受け取る設定がされていません。クリエイター側でプロセスが完了するまであなたが送ったチップは、ウォレットに残ります。</translation>
+<translation id="2495032782748793764">Braveのデフォルト</translation>
+<translation id="9132378787893584761">友だちとBraveを共有しましょう！</translation>
+<translation id="717952606991220586">おや、問題が発生しました。後でもう一度試してみて下さい。</translation>
+<translation id="2524310205387880526">Braveを評価する</translation>
+<translation id="6680650203439190394">レート</translation>
+<translation id="2635089463885398597">Braveの体験をどう評価されますか？</translation>
+<translation id="141901961143729572">ご意見を聞かせてください</translation>
+<translation id="7961015016161918242">使用しない</translation>
+<translation id="1275213816424141989">あとで</translation>
+<translation id="6991128190741664836">後で</translation>
+<translation id="8851456134224363571">素晴らしい！Play Storeで評価を残していただけませんか？</translation>
+<translation id="8668962040900592974">どのようにしたら改善できるかを教えてください</translation>
+<translation id="4406937629441301400">この画像を表示するためのトークンを獲得し、それをクリエイターに支払います。<ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">この画像を見るとトークンを稼ぐことができます。稼いであげるをオンにして、自分の取り分をもらいましょう。</translation>
+<translation id="6632345639591919543">この画像を見るとトークンを稼ぐことができます。\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">この画像を表示するためのトークンを獲得しています。</translation>
+<translation id="7952665812649667034">稼いであげる準備ができています</translation>
+<translation id="7877201489035217175">スポンサー画像の詳細について</translation>
+<translation id="828092975561478703">スポンサーの画像を見ると、毎回売上の70％をトークンで受け取ることができます。Brave Adsにより、閲覧する広告を常にコントロールできます。</translation>
+<translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
+<translation id="3763681089644577874">クッキーをブロック</translation>
+<translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
+<translation id="6883611015375728278">全てのクッキーをブロック</translation>
+<translation id="5657156137487675418">すべてのクッキーを許可する</translation>
+<translation id="5963670684159057574">クロスサイト・フィンガープリンティングをブロックする</translation>
+<translation id="3895527457258986253">フィンガープリンティングをブロック</translation>
+<translation id="184568144098869637">ブラウザがお使いのデバイスを認識しないようにする</translation>
+<translation id="4540198958192073185">すべての指紋をブロック</translation>
+<translation id="769702552748212954">全てのフィンガープリンティングを許可する</translation>
+<translation id="2888409909650566510">広告とその他のトラッカーなどをブロックしました</translation>
+<translation id="6930134873084561197">サイトには多くの場合、あなたとあなたのデバイスを識別しようとするクッキーとスクリプトが含まれています。これらはあなたが誰であるかを判別し、ウェブ追跡であなたが他のサイトで何をしているかを追跡する物です。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
+<translation id="8553998445606452168">Brave Shieldsについて</translation>
+<translation id="8912304686498704084">アップ</translation>
+<translation id="4963218453264888510">ダウン</translation>
+<translation id="7474113515179313724">あなたはBraveのプライバシー保護なしでこのサイトを閲覧しています。Shieldsを起動しても正しく機能しませんか？</translation>
+<translation id="9055546041146396417">もしこのサイトが壊れているように見える場合は、シールドの無効化をお試し下さい</translation>
+<translation id="1209739344687072997">サイト表示の不具合を報告</translation>
+<translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
+<translation id="5429200298326665264">ご注意：このサイトのアドレスは、Braveのバージョン番号とIPアドレス（保存されません）と共に送信されます。</translation>
+<translation id="5299848999918506028">ありがとうございます！</translation>
+<translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
+<translation id="650318023204990401">高度なコントロール</translation>
+<translation id="7182293319417450928">照会するには最低25BATの残高が必要です。</translation>
 </translationbundle>

@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Granturi de puncte",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Bună ziua, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "คะแนนแจกฟรี",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "สวัสดี $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }
