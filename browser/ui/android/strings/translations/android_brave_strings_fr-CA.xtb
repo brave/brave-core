@@ -26,7 +26,6 @@
 <translation id="5787084571334399599">Empêche le navigateur de transmettre son empreinte</translation>
 <translation id="7459000603787995422">Fermer les onglets à la sortie</translation>
 <translation id="1680858055899097121">Ne persistez pas dans les onglets entre les sessions de navigation</translation>
-<translation id="4339730410920731698">Publicités et traqueurs bloqués</translation>
 <translation id="6761596877474675418">Données sauvegardées</translation>
 <translation id="3034562645284925177">Gain de temps estimé</translation>
 <translation id="6572660632052512096">Mode bureau</translation>
@@ -55,26 +54,21 @@
 <translation id="8281886186245836920">Passer</translation>
 <translation id="316832010181763471">Intégration du moteur de recherche</translation>
 <translation id="986879628471635371">Dépannage intégré</translation>
-<translation id="1078265935778232285">Bienvenue dans le navigateur Brave</translation>
-<translation id="8867511707771147258">Sélectionnez votre moteur de recherche par défaut</translation>
+<translation id="4428458837269935199">Pour une expérience de recherche plus discrète, essayez DuckDuckGo.</translation>
+<translation id="5317780077021120954">Enregistrer</translation>
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="5806601733251372221">Boucliers de Brave</translation>
 <translation id="2880356288762235261">des publicités envahissant la vie privée et des traqueurs pour que vous puissiez naviguer sans être suivi sur le Web.</translation>
 <translation id="8537217141725709400">Gagnez <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Récompenses de Brave</translation>
-<translation id="1789842587755069541">pour voir des annonces respectueuses de la vie privée. Utilisez-les pour soutenir vos sites et créateurs préférés.</translation>
 <translation id="821707262661492716">pour avoir vu des annonces respectueuses de la vie privée.</translation>
-<translation id="7396091471805549630">En activant le programme Rewards, vous acceptez les</translation>
 <translation id="4281844954008187215">Conditions d'utilisation</translation>
 <translation id="6871397658902960384">Démarrer la navigation</translation>
 <translation id="454386012157232640">Je n'ai pas vu d'annonce</translation>
 <translation id="1448877943847791441">Brave va montrer votre première annonce dans</translation>
-<translation id="7414844564462429821">Pour voir les annonces des Récompenses de Brave, assurez-vous que Brave est autorisé à vous montrer les notifications.</translation>
 <translation id="6511854390690723657">Voici votre première annonce Brave. Appuyez ici pour en savoir plus.</translation>
 <translation id="4930714375720679147">Activer</translation>
 <translation id="2453860139492968684">Terminer</translation>
-<translation id="8906569594072556752">Visite guidée</translation>
-<translation id="7808431604191267817">Relancer la tournée de bienvenue n'affectera pas les paramètres existants.</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="7658239707568436148">Annuler</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
@@ -176,21 +170,18 @@ mois-ci...</translation>
 <translation id="3492491948683276944">Fixez un pourboire par mois</translation>
 <translation id="4162066325465825185">Nous sommes désolés qu'il semble que Brave Rewards ne soit pas disponible sur votre appareil</translation>
 <translation id="8038539967102225446">Les publicités de Brave sont là!</translation>
-<translation id="230829157901335313">L'horloge de votre ordinateur pourrait être réglée sur la mauvaise heure ou sur le mauvais fuseau horaire. Vérifiez vos réglages d'horloge</translation>
 <translation id="8985635554450124959">La synchronisation n'a pas pu être mise en place</translation>
 <translation id="222883304157347087">(cet appareil)</translation>
 <translation id="8193724030871339658">AUTRES DISPOSITIFS SUR LA CHAINE</translation>
 <translation id="279635009973773843">CHARGEMENT DES DISPOSITIFS...</translation>
 <translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nombre de mots incorrect</translation>
-<translation id="6779408765480516895">Un problème est survenu, il semble que votre requête est dépassée.</translation>
 <translation id="3149880132460839085">Synchronisation de Brave</translation>
 <translation id="3680755684186855422">La synchronisation de Brave vous permet de synchroniser les données des signets en privé entre vos navigateurs Brave sur vos divers appareils.</translation>
 <translation id="3735228155296883311">Il suffit de scanner le code de votre chaîne de synchronisation que vous avez créé sur un autre dispositif. Ou commencez une nouvelle chaîne de synchronisation.</translation>
 <translation id="4690880825349994619">En utilisant un appareil synchronisé existant, ouvrez les paramètres de Brave et allez vers « Paramètres et synchronisation ». Choisissez « Ajouter un appareil » et scannez le code QR affiché à l'écran.</translation>
 <translation id="5241263629636958324">Copié dans le presse-papiers</translation>
 <translation id="5817918615728894473">Associer</translation>
-<translation id="9154490620151093733">La demande de suppression a été envoyée. L'appareil sera retiré sous peu.</translation>
 <translation id="2004365171440701679">Supprimer ce dispositif</translation>
 <translation id="1178128181015923849">Êtes-vous sûr de vouloir supprimer le dispositif '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Lire ou saisir le code de synchronisation</translation>
@@ -199,10 +190,9 @@ mois-ci...</translation>
 <translation id="2965377893636908578">Ajouter un ordinateur</translation>
 <translation id="6604289897677913048">En utilisant un deuxième téléphone ou une deuxième tablette, allez dans Paramètres Brave &amp;gt ; Synchroniser &amp;gt ; Scanner.</translation>
 <translation id="8508856434435157945">Sur votre appareil mobile, allez vers Brave Sync dans le panneau des paramètres et cliquez sur le bouton « Scanner le code de synchronisation ». Utilisez votre appareil photo pour scanner le code QR ci-dessous.</translation>
-<translation id="2590683710114839102">Sur votre ordinateur, allez dans Paramètres Brave &gt; Synchroniser. Choisissez « Saisir un code de chaîne de synchronisation ».</translation>
+<translation id="2590683710114839102">Sur votre ordinateur, allez dans Paramètres Brave &amp;gt; Synchroniser. Choisissez « Saisir un code de chaîne de synchronisation ».</translation>
 <translation id="65315202420929965">Lire ce code de synchronisation</translation>
 <translation id="6764016175302339802">Traitez ce code comme un mot de passe. Si une personne met la main dessus, elle pourra lire et modifier vos données synchronisées.</translation>
-<translation id="544873101641618162">Chargement des données...</translation>
 <translation id="6707003343517029414">Sur votre ordinateur cible, allez dans Brave Sync, dans les paramètres, puis cliquez sur le bouton « Je dispose d'un code de synchronisation ».\nSaisissez les mots de code de la chaîne de synchronisation indiqués ci-dessous.</translation>
 <translation id="2731921493694251495">Saisir le code de la chaîne de synchronisation</translation>
 <translation id="2175927920773552910">Code QR</translation>
@@ -213,13 +203,10 @@ mois-ci...</translation>
 <translation id="6776430845975754238">La modification des paramètres n'affectera que les données que cet appareil partage avec d'autres.</translation>
 <translation id="6450924769151530465">Ajouter un autre appareil</translation>
 <translation id="7539985410310934287">Saisissez les mots de code</translation>
-<translation id="6270614677029463366">En utilisant un appareil synchronisé existant, ouvrez les paramètres de Brave et naviguez jusqu'aux Paramètres &gt; Synchroniser. Choisissez « Ajouter un appareil », puis « Afficher les mots de code à la place ».</translation>
+<translation id="6270614677029463366">En utilisant un appareil synchronisé existant, ouvrez les paramètres de Brave et naviguez jusqu'aux Paramètres &amp;gt; Synchroniser. Choisissez « Ajouter un appareil », puis « Afficher les mots de code à la place ».</translation>
 <translation id="8131740175452115882">Confirmer</translation>
 <translation id="4973653569293835178">Je vais utiliser mon appareil photo...</translation>
-<translation id="3998827900918661986">Dispositif Android</translation>
 <translation id="326454632686131209">Synchroniser le dispositif</translation>
-<translation id="3082265116777145081">Ajouter le nom de l'appareil</translation>
-<translation id="9024091168371687561">Saisissez un nom facultatif pour cet appareil</translation>
 <translation id="327726072512457161">Sortie des paramètres</translation>
 <translation id="8050847734948770789">Activer les récompenses de Brave</translation>
 <translation id="9187185473011056079">Je suis partant!</translation>

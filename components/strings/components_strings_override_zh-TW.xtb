@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-TW">
+<translation id="8820817407110198400">書籤列</translation>
+<translation id="8362995731815961365">設定這部電腦的使用者選擇封鎖這個網站。</translation>
+<translation id="4075123085690634698">在新的無痕式視窗中開啟網頁 (⇧ + ⌘ + N 鍵)</translation>
+<translation id="2388886110302389394">在新的無痕式視窗中開啟網頁 (Ctrl + Shift + N 鍵)</translation>
+<translation id="6957624206566198865">在新的無痕式分頁中開啟網頁</translation>
+<translation id="2378238891085281592">你已進入無痕模式</translation>
+<translation id="3774752171665127360">當您關閉所有無痕式分頁後，您在其中瀏覽的網頁都不會保留在瀏覽器記錄、Cookie 儲存庫或搜尋記錄中。不過，您下載的檔案或建立的書籤全部都會保留下來。</translation>
+<translation id="9177896974490719854">不過，這並不意味著您可以完全隱形。使用無痕模式時，您的雇主和網際網路服務供應商仍然可以追蹤您的瀏覽記錄，您所造訪的網站也可能會記錄您的瀏覽行為。</translation>
+<translation id="2227116904818538760">你已啟用無痕模式</translation>
+<translation id="2007417459975034427">現在你可以進行私密瀏覽了。共用這部裝置的其他使用者不會看到你的活動，不過，你下載的內容和新增的書籤仍會保留在裝置上。</translation>
+<translation id="2586968635953373425">開啟無痕式視窗</translation>
+<translation id="3489858312836205593">開啟新的 Brave 無痕式視窗</translation>
+<translation id="6984479912851154518">即將離開無痕模式，改為使用外部應用程式付款，要繼續嗎？</translation>
+<translation id="1426112902089905810">&lt;h4&gt;步驟 1：從入口網站登入&lt;/h4&gt;
+    &lt;p&gt;咖啡館或機場等地點的 Wi-Fi 網路必須先登入才能使用。如要查看登入頁面，請造訪使用 &lt;code&gt;http://&lt;/code&gt; 的網頁。&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;前往網址開頭為 &lt;code&gt;http://&lt;/code&gt; 的任何網站，例如 &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;。&lt;/li&gt;
+    &lt;li&gt;在隨即開啟的登入頁面登入後，即可使用網際網路。&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;步驟 2：以無痕模式開啟網頁 (僅適用於電腦)&lt;/h4&gt;
+    &lt;p&gt;使用無痕式視窗開啟您曾造訪的網頁。&lt;/p&gt;
+    &lt;p&gt;如果網頁可以順利開啟，表示有 Brave 擴充功能並未正常運作。如要修正這項錯誤，請關閉該擴充功能。&lt;/p&gt;
+    &lt;h4&gt;步驟 3：更新您的作業系統&lt;/h4&gt;
+    &lt;p&gt;確認您的裝置已更新至最新版本的作業系統。&lt;/p&gt;
+    &lt;h4&gt;步驟 4：暫時關閉防毒軟體&lt;/h4&gt;
+    &lt;p&gt;如果您的電腦使用任何提供「HTTPS 保護」或「HTTPS 掃描」功能的防毒軟體，導致 Brave 無法提供安全支援，系統就會顯示這則錯誤訊息。&lt;/p&gt;
+    &lt;p&gt;如要修正這個問題，請關閉防毒軟體。如果這麼做可以順利解決問題，代表您必須關閉防毒軟體，才能使用安全網站。&lt;/p&gt;
+    &lt;p&gt;事後請記得再次開啟防毒程式。&lt;/p&gt;
+    &lt;h4&gt;步驟 5：尋求更多協助&lt;/h4&gt;
+    &lt;p&gt;如果您仍看見錯誤訊息，請與網站擁有者聯絡。&lt;/p&gt;</translation>
+</translationbundle>

@@ -91,16 +91,16 @@
     "message": "Всички „бисквитки“ са разрешени",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Снемането на пръстови отпечатъци от други сайтове е блокирано",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Опитите за снемане на пръстови отпечатъци са блокирани",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Разрешени са всички опити за снемане на отпечатъци",
+  "allowAllFingerprinting": {
+    "message": "Разрешаване на всички пръстови отпечатъци",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

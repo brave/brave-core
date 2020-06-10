@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="en-GB">
+<translation id="6134859571175647580">Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in incognito mode, unselect this option.</translation>
+<translation id="1448049584457347995">To make Brave safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> and may have been added without your knowledge.</translation>
+<translation id="8848045066928358658">To make Brave safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> and may have been added without your knowledge.</translation>
+<translation id="669092380621816981">This person's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
+<translation id="4624945300945265642">Open link in Brave inco&amp;gnito window</translation>
+<translation id="6554952862405000915">Open Link in Brave Inco&amp;gnito Window</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{A new update for Brave is available and will be applied as soon as you relaunch.}=1{A new update for Brave is available and will be applied as soon as you relaunch. Your Incognito window won't reopen.}other{A new update for Brave is available and will be applied as soon as you relaunch. Your # Incognito windows won't reopen.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Your administrator asks that you relaunch Brave to apply this update}=1{Your administrator asks that you relaunch Brave to apply this update. Your Incognito window won't reopen.}other{Your administrator asks that you relaunch Brave to apply this update. Your # Incognito windows won't reopen.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Your administrator requires that you relaunch Brave to apply an update}=1{Your administrator requires that you relaunch Brave to apply an update. Your Incognito window won't reopen.}other{Your administrator requires that you relaunch Brave to apply an update. Your # Incognito windows won't reopen.}}</translation>
+</translationbundle>

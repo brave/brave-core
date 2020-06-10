@@ -91,16 +91,16 @@
     "message": "Αποδοχή όλων των cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Η διατοποθεσιακή αποτύπωση αποκλείστηκε",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Εμποδίστηκαν προσπάθειες αποτύπωσης",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Επιτρέπονται όλες οι προσπάθειες αποτύπωσης",
+  "allowAllFingerprinting": {
+    "message": "Επιτρέψτε όλα τα δακτυλικά αποτυπώματα",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

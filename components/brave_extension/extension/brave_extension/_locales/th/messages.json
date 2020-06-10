@@ -91,16 +91,16 @@
     "message": "อนุญาตคุ้กกี้ทั้งหมด",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "การพิมพ์ลายนิ้วมือระหว่างเว็บไซต์ถูกบล็อค",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "การพิมพ์ลายนิ้วมือถูกบล็อค",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "การพิมพ์ลายนิ้วมือทั้งหมดได้รับอนุญาตแล้ว",
+  "allowAllFingerprinting": {
+    "message": "อนุญาตการสร้างลายนิ้วมือทั้งหมด",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

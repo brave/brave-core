@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="cs">
+<translation id="8820817407110198400">Lišta záložek</translation>
+<translation id="8362995731815961365">Uživatel, který tento počítač nastavoval, se rozhodl tento web blokovat.</translation>
+<translation id="4075123085690634698">Otevřete stránku v novém anonymním okně (⇧⌘N)</translation>
+<translation id="2388886110302389394">Otevřete stránku v novém anonymním okně (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Otevřete stránku na nové anonymní kartě</translation>
+<translation id="2378238891085281592">Jste v anonymním režimu</translation>
+<translation id="3774752171665127360">Stránky, které otevřete na anonymních kartách, po zavření všech anonymních karet nezanechají žádné stopy v historii prohlížeče, v úložišti souborů cookie ani v historii vyhledávání. Zachovány však zůstanou všechny stažené soubory a vytvořené záložky.</translation>
+<translation id="9177896974490719854">To neznamená, že jste neviditelní. Anonymní režim neskryje vaši aktivitu před vaším zaměstnavatelem, poskytovatelem internetových služeb ani webovými stránkami, které navštívíte.</translation>
+<translation id="2227116904818538760">Jste v anonymním režimu</translation>
+<translation id="2007417459975034427">Nyní můžete procházet internet v soukromí a ostatní uživatelé tohoto zařízení vaši aktivitu neuvidí. Stažené soubory a záložky budou uloženy.</translation>
+<translation id="2586968635953373425">Otevřít anonymní okno</translation>
+<translation id="3489858312836205593">Otevřít nové anonymní okno prohlížeče Brave</translation>
+<translation id="6984479912851154518">Chystáte se opustit anonymní režim, abyste mohli zaplatit v externí aplikaci. Chcete pokračovat?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Krok 1: Přihlaste se do portálu&lt;/h4&gt;
+    &lt;p&gt;Wi-Fi sítě v místech, jako jsou kavárny nebo letiště, vyžadují přihlášení. Chcete-li zobrazit přihlašovací stránku, přejděte na stránku, která používá schéma &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Přejděte na libovolný web začínající schématem &lt;code&gt;http://&lt;/code&gt;, například &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Na přihlašovací stránce, která se otevře, se přihlaste, abyste mohli používat internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Krok 2: Otevřete stránku v anonymním režimu (pouze na počítači)&lt;/h4&gt;
+    &lt;p&gt;V anonymním okně otevřete stránku, na kterou chcete přejít.&lt;/p&gt;
+    &lt;p&gt;Pokud se otevře, znamená to, že chybu způsobuje některé rozšíření Chromu. Odstraníte ji vypnutím příslušného rozšíření.&lt;/p&gt;
+    &lt;h4&gt;Krok 3: Aktualizujte operační systém&lt;/h4&gt;
+    &lt;p&gt;Zkontrolujte, zda je vaše zařízení aktuální.&lt;/p&gt;
+    &lt;h4&gt;Krok 4: Dočasně vypněte antivirus&lt;/h4&gt;
+    &lt;p&gt;Tato chyba se zobrazuje, pokud máte antivirový software s funkcí ochrany HTTPS nebo kontroly HTTPS. Antivirový software v takovém případě Chromu znemožňuje poskytovat zabezpečení.&lt;/p&gt;
+    &lt;p&gt;Problém vyřešíte tím, že antivirový software vypnete. Pokud po vypnutí antiviru bude stránka fungovat, vypněte jej při každé návštěvě zabezpečeného webu.&lt;/p&gt;
+    &lt;p&gt;Až budete hotovi, nezapomeňte antivirový program zase zapnout.&lt;/p&gt;
+    &lt;h4&gt;Krok 5: Požádejte o další pomoc&lt;/h4&gt;
+    &lt;p&gt;Pokud se chyba zobrazuje i nadále, kontaktujte vlastníka webu.&lt;/p&gt;</translation>
+</translationbundle>

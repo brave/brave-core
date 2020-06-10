@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="hy">
+<translation id="6744651634043798597">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open all (#) in &amp;incognito window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
+<translation id="2431625704210501303">Բացել &amp;ինկոգնիտո պատուհանում</translation>
+<translation id="4620367155626060530">&amp;Ցուցադրել էջանիշների գոտին</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open All (#) in &amp;Incognito Window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
+<translation id="1985165269306590797">Բացել &amp;ինկոգնիտո պատուհանում</translation>
+<translation id="4680518314108745448">&amp;Ցուցադրել էջանիշների գոտին</translation>
+<translation id="642436385689435488">Բացել բոլորը ինկոգնիտո պատուհանում</translation>
+<translation id="5463021359602611602">Բացել ինկոգնիտո պատուհանում</translation>
+<translation id="1850357845349976573">{0,plural, =1{Ինկոգնիտո}one{# բաց ինկոգնիտո պատուհան}other{# բաց ինկոգնիտո պատուհան}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Ինկոգնիտո}one{Ինկոգնիտո (#)}other{Ինկոգնիտո (#)}}</translation>
+<translation id="5070556616376997776">Դուք ինկոգնիտո ռեժիմում եք</translation>
+<translation id="5832813618714645810">Մարդիկ</translation>
+<translation id="7171000599584840888">Ավելացնել անձ…</translation>
+<translation id="2005199804247617997">Այլ մարդիկ</translation>
+<translation id="2935225303485967257">Օգտատերերի կառավարում</translation>
+<translation id="8966809848145604011">Այլ մարդիկ</translation>
+<translation id="688280436658139163">Օգտատերերի կառավարում</translation>
+<translation id="4133080584509825342">Խմբագրել պրոֆիլը, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Փոփոխել պրոֆիլը <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Օգտատեր <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Ավելացնել անձ…</translation>
+<translation id="2254158488150713536">Շարունակելու համար սեղմեք «OK» կոճակը, այնուհետև «Ավելացնել օգտատեր»՝ ձեր էլեկտրոնային հասցեով նոր պրոֆիլ ստեղծելու համար:</translation>
+<translation id="1725743343613175327">Շարունակելու համար սեղմեք «OK», այնուհետև «Ավելացնել օգտատեր»՝ <ph name="DOMAIN"/> հասցեով նոր պրոֆիլ ստեղծելու համար:</translation>
+<translation id="6921634551681321094">Ավելացնել անձ</translation>
+<translation id="4904061654709986277">Ավելացնել անձ</translation>
+<translation id="6114945161119872228">Հեռացնել այս անձին</translation>
+<translation id="769308100792069196">Ավելացնել վերահսկվող օգտատեր</translation>
+<translation id="8006143138282906848">Հեռացնել այս պրոֆիլը</translation>
+<translation id="6912187023601892621">Ավելացնել վերահսկվող օգտատեր</translation>
+<translation id="8086119151297127544">Ապակողպեք ձեր պրոֆիլը նախքան որևէ մեկին հեռացնելը:</translation>
+<translation id="7805701378418968629">Ապակողպեք ձեր պրոֆիլը նախքան որևէ մեկին ավելացնելը:</translation>
+<translation id="6315812488257290136">Մարդիկ</translation>
+<translation id="3707212204259470604">Կառավարել այլ օգտատերերի</translation>
+<translation id="5840822070878669614">Բացել Brave Web Store-ը</translation>
+<translation id="383007806262310953">Ցուցադրել էջանիշների գոտին</translation>
+<translation id="2890280714162339872">Ընթացիկ ինկոգնիտո աշխատաշրջանը՝ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Ընթացիկ ինկոգնիտո աշխատաշրջանը՝ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Ընթացիկ ինկոգնիտո աշխատաշրջանը՝ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Ընթացիկ ինկոգնիտո աշխատաշրջանը՝ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> և այլ փոփոխություններ</translation>
+<translation id="8648684608605749476">Արգելափակել կողմնակի կայքերի քուքիները ինկոգնիտո ռեժիմում</translation>
+<translation id="2199515977216775204">Ինկոգնիտո ռեժիմում կայքերը չեն կարող օգտագործել քուքիներ՝ դիտարկիչում ձեր գործողությունները տեսնելու համար, օրինակ, գովազդի անհատականացման նպատակով։ Որոշ կայքերում գործառույթները կարող են չաշխատել։</translation>
+<translation id="6105125042109106861">Երրորդ կողմի քուքիներն արգելափակվում են ինկոգնիտո ռեժիմում</translation>
+<translation id="1281501490173223206">Միայն ընթացիկ ինկոգնիտո աշխատաշրջանում</translation>
+<translation id="5566692924079383101">Երբ դուրս գաք ընթացիկ ինկոգնիտո աշխատաշրջանից, այս բացառությունն ավտոմատ կհեռացվի։</translation>
+<translation id="6906406176003824042">Փոխել օգտատիրոջը</translation>
+<translation id="9063160602596686558">Ավտոմատ Brave-ին է ուղարկում օգտագործման վիճակագրությունը և խափանումների մասին հաշվետվությունները</translation>
+<translation id="3860292630623580294">(Ինկոգնիտո)</translation>
+<translation id="4854477725773269949">Թույլ տալ ինկոգնիտո ռեժիմում</translation>
+<translation id="6436164536244065364">Դիտել Brave Web Store-ում</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Գտեք ընդլայնումներ և թեմաներ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ում</translation>
+<translation id="6336451774241870485">Նոր ինկոգնիտո ներդիր</translation>
+<translation id="6610147964972079463">Փակել ինկոգնիտո ներդիրները</translation>
+<translation id="5186185447130319458">Ինկոգնիտո</translation>
+<translation id="4933782374919065856">Հարցերի դեպքում կապվեք ձեր պրոֆիլը վերահսկող անձի հետ:</translation>
+</translationbundle>

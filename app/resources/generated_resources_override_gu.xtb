@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="gu">
+<translation id="6744651634043798597">{COUNT,plural, =0{તમામ URLને &amp;છુપી વિંડોમાં ખોલો}=1{URLને &amp;છુપી વિંડોમાં ખોલો}one{તમામ (#) URLને છુપી વિંડોમાં ખોલો}other{તમામ (#) URLને છુપી વિંડોમાં ખોલો}}</translation>
+<translation id="2431625704210501303">&amp;છુપી વિંડોમાં ખોલો</translation>
+<translation id="4620367155626060530">બુકમાર્ક્સ બાર &amp;બતાવો</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{તમામ URLને &amp;છુપી વિંડોમાં ખોલો}=1{&amp;છુપી વિંડોમાં ખોલો}one{તમામ (#) URLને &amp;છુપી વિંડોમાં ખોલો}other{તમામ (#) URLને &amp;છુપી વિંડોમાં ખોલો}}</translation>
+<translation id="1985165269306590797">&amp;છુપી વિંડોમાં ખોલો</translation>
+<translation id="4680518314108745448">બુકમાર્ક્સ બાર &amp;બતાવો</translation>
+<translation id="642436385689435488">બધુ છુપી વિંડોમાં ખોલો</translation>
+<translation id="5463021359602611602">છુપી વિંડોમાં ખોલો</translation>
+<translation id="1850357845349976573">{0,plural, =1{છૂપો મોડ}one{# છૂપી વિન્ડો ખોલો}other{# છૂપી વિન્ડો ખોલો}}</translation>
+<translation id="37784332082579802">{0,plural, =1{છૂપો મોડ}one{છૂપો મોડ (#)}other{છૂપો મોડ (#)}}</translation>
+<translation id="5070556616376997776">તમે છૂપા મોડમાં છો</translation>
+<translation id="5832813618714645810">લોકો</translation>
+<translation id="7171000599584840888">વ્યક્તિ ઉમેરો...</translation>
+<translation id="2005199804247617997">અન્ય લોકો</translation>
+<translation id="2935225303485967257">લોકોને સંચાલિત કરો</translation>
+<translation id="8966809848145604011">અન્ય લોકો</translation>
+<translation id="688280436658139163">લોકોને સંચાલિત કરો</translation>
+<translation id="4133080584509825342">વ્યક્તિના <ph name="PROFILE_NAME"/>માં ફેરફાર કરો</translation>
+<translation id="4848862725510532982">વ્યક્તિના <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/>માં ફેરફાર કરો</translation>
+<translation id="4536111748245793305">વ્યક્તિ <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">વ્યક્તિ ઉમેરો...</translation>
+<translation id="2254158488150713536">ચાલુ રાખવા માટે, ઓકે ક્લિક કરો, પછી તમારા ઇમેઇલ ઍડ્રેસ માટે નવી પ્રોફાઇલ બનાવવા માટે વ્યક્તિ ઉમેરો પર ક્લિક કરો.</translation>
+<translation id="1725743343613175327">ચાલુ રાખવા માટે, ઓકે ક્લિક કરો, પછી તમારા <ph name="DOMAIN"/> ઇમેઇલ ઍડ્રેસ માટે નવી પ્રોફાઇલ બનાવવા માટે વ્યક્તિને ઉમેરો પર ક્લિક કરો.</translation>
+<translation id="6921634551681321094">વ્યક્તિ ઉમેરો</translation>
+<translation id="4904061654709986277">વ્યક્તિ ઉમેરો</translation>
+<translation id="6114945161119872228">આ વ્યક્તિને દૂર કરો</translation>
+<translation id="769308100792069196">નિરીક્ષિત વ્યક્તિ ઉમેરો</translation>
+<translation id="8006143138282906848">આ વપરાશકર્તાને દૂર કરો</translation>
+<translation id="6912187023601892621">નિરીક્ષિત વપરાશકર્તા ઉમેરો</translation>
+<translation id="8086119151297127544">કોઇ વ્યક્તિને દૂર કરતા પહેલાં કૃપા કરીને તમારી પ્રોફાઇલ અનલૉક કરો.</translation>
+<translation id="7805701378418968629">કોઇ વ્યક્તિને ઉમેરતા પહેલાં કૃપા કરીને તમારી પ્રોફાઇલ અનલૉક કરો.</translation>
+<translation id="6315812488257290136">લોકો</translation>
+<translation id="3707212204259470604">અન્ય લોકોને સંચાલિત કરો</translation>
+<translation id="5840822070878669614">Brave વેબ દુકાન ખોલો</translation>
+<translation id="383007806262310953">બુકમાર્ક બાર બતાવો</translation>
+<translation id="2890280714162339872">વર્તમાન છૂપું સત્ર: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">વર્તમાન છૂપું સત્ર: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">વર્તમાન છૂપું સત્ર: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">હાલનું છૂપું સત્ર: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> અને અન્ય</translation>
+<translation id="8648684608605749476">ત્રીજા પક્ષની કુકીને છૂપા મોડમાં બ્લૉક કરો</translation>
+<translation id="2199515977216775204">જ્યારે છૂપા મોડમાં હો, ત્યારે અલગ-અલગ સાઇટ પરની તમારી બ્રાઉઝિંગ પ્રવૃત્તિ જોવા માટે સાઇટ તમારી કુકીનો ઉપયોગ કરી શકશે નહીં, ઉદાહરણ તરીકે, જાહેરાતોને વ્યક્તિગત બનાવવા માટે. અમુક સાઇટ પરની સુવિધાઓમાં કદાચ ખલેલ પડી શકે છે.</translation>
+<translation id="6105125042109106861">છૂપા મોડમાં ત્રીજા પક્ષની કુકી બ્લૉક કરવામાં આવી છે</translation>
+<translation id="1281501490173223206">ફક્ત વર્તમાન છૂપું સત્ર</translation>
+<translation id="5566692924079383101">તમે હાલના છૂપા સત્રમાંથી બહાર નીકળો, તે પછી આ અપવાદને ઑટોમૅટિક રીતે કાઢી નાખવામાં આવશે</translation>
+<translation id="6906406176003824042">વ્યક્તિની માહિતીમાં ફેરફાર કરો</translation>
+<translation id="9063160602596686558">Braveને વપરાશના આંકડા અને ક્રૅશ રિપોર્ટ ઑટોમૅટિક રીતે મોકલે છે</translation>
+<translation id="3860292630623580294">(છૂપી)</translation>
+<translation id="4854477725773269949">છૂપા મોડમાં મંજૂરી આપો</translation>
+<translation id="6436164536244065364">Brave વેબ સ્ટોરમાં જુઓ</translation>
+<translation id="8808478386290700967">Brave વેબ બજાર</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave વેબ દુકાન<ph name="END_LINK"/>માં એક્સ્ટેંશન અને થીમ શોધો.</translation>
+<translation id="6336451774241870485">નવી છુપી ટેબ</translation>
+<translation id="6610147964972079463">છુપા ટેબ્સ બંધ કરો</translation>
+<translation id="5186185447130319458">છૂપી</translation>
+<translation id="4933782374919065856">પ્રશ્નો છે? તમારી પ્રોફાઇલનું નિરીક્ષણ કરનાર વ્યક્તિનો સંપર્ક કરો.</translation>
+</translationbundle>

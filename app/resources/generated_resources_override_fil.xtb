@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fil">
+<translation id="6744651634043798597">{COUNT,plural, =0{Buksan lahat sa &amp;incognito window}=1{Buksan lahat sa &amp;incognito window}one{Buksan lahat (#) sa &amp;incognito window}other{Buksan lahat (#) sa &amp;incognito window}}</translation>
+<translation id="2431625704210501303">Buksan sa &amp;incognito window</translation>
+<translation id="4620367155626060530">&amp;Ipakita ang bookmarks bar</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Buksan Lahat sa &amp;Incognito Window}=1{Buksan sa &amp;Incognito Window}one{Buksan Lahat (#) sa &amp;Incognito Window}other{Buksan Lahat (#) sa &amp;Incognito Window}}</translation>
+<translation id="1985165269306590797">Buksan sa &amp;Incognito Window</translation>
+<translation id="4680518314108745448">&amp;Ipakita ang Bookmarks Bar</translation>
+<translation id="642436385689435488">Buksan ang lahat sa incognito window</translation>
+<translation id="5463021359602611602">Buksan sa incognito window</translation>
+<translation id="1850357845349976573">{0,plural, =1{Incognito}one{# nakabukas na incognito window}other{# na nakabukas na incognito window}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Incognito}one{Incognito (#)}other{Incognito (#)}}</translation>
+<translation id="5070556616376997776">Incognito ka</translation>
+<translation id="5832813618714645810">Mga Tao</translation>
+<translation id="7171000599584840888">Magdagdag ng Tao...</translation>
+<translation id="2005199804247617997">Iba pang tao</translation>
+<translation id="2935225303485967257">Pamahalaan ang mga tao</translation>
+<translation id="8966809848145604011">Iba Pang Tao</translation>
+<translation id="688280436658139163">Pamahalaan ang Mga Tao</translation>
+<translation id="4133080584509825342">I-edit ang tao, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">I-edit ang tao, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Tao <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Magdagdag ng tao...</translation>
+<translation id="2254158488150713536">Upang magpatuloy, i-click ang OK, tapos i-click ang Magdagdag ng Tao upang gumawa ng bagong profile para sa iyong email address.</translation>
+<translation id="1725743343613175327">Upang magpatuloy, i-click ang OK, pagkatapos ay i-click ang Magdagdag ng Tao upang gumawa ng bagong profile para sa iyong email address sa <ph name="DOMAIN"/>.</translation>
+<translation id="6921634551681321094">Magdagdag ng tao</translation>
+<translation id="4904061654709986277">Magdagdag ng Tao</translation>
+<translation id="6114945161119872228">Alisin ang Taong Ito</translation>
+<translation id="769308100792069196">Magdagdag ng Pinapangasiwaang Tao</translation>
+<translation id="8006143138282906848">Alisin ang User na Ito</translation>
+<translation id="6912187023601892621">Magdagdag ng Pinapangasiwaang User</translation>
+<translation id="8086119151297127544">Paki-unlock ang iyong profile bago mag-alis ng tao.</translation>
+<translation id="7805701378418968629">Paki-unlock ang iyong profile bago magdagdag ng tao.</translation>
+<translation id="6315812488257290136">Mga Tao</translation>
+<translation id="3707212204259470604">Pamahalaan ang iba pang mga tao</translation>
+<translation id="5840822070878669614">Buksan ang Brave Web Store</translation>
+<translation id="383007806262310953">Ipakita ang bookmarks bar</translation>
+<translation id="2890280714162339872">Kasalukuyang incognito na session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Kasalukuyang incognito na session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Kasalukuyang incognito na session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Kasalukuyang incognito na session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, at higit pa</translation>
+<translation id="8648684608605749476">I-block ang third-party na cookies sa Incognito</translation>
+<translation id="2199515977216775204">Habang nasa incognito, hindi magagamit ng mga site ang cookies mo para makita ang iyong aktibidad sa pag-browse sa iba't ibang site, halimbawa, para mag-personalize ng mga ad. Posibleng masira ang mga feature sa ilang site.</translation>
+<translation id="6105125042109106861">Bina-block ang third-party na cookies sa Incognito mode</translation>
+<translation id="1281501490173223206">Kasalukuyang incognito na session lang</translation>
+<translation id="5566692924079383101">Awtomatikong aalisin ang exception na ito pagkatapos mong lumabas sa kasalukuyang Incognito na session</translation>
+<translation id="6906406176003824042">I-edit ang tao</translation>
+<translation id="9063160602596686558">Awtomatikong nagpapadala sa Brave ng mga istatistika ng paggamit at ulat ng pag-crash</translation>
+<translation id="3860292630623580294">(Incognito)</translation>
+<translation id="4854477725773269949">Payagan sa incognito</translation>
+<translation id="6436164536244065364">Tingnan sa Brave Web Store</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Bagong tab na incognito</translation>
+<translation id="6610147964972079463">Isara ang mga tab na incognito</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="4933782374919065856">May mga tanong? Makipag-ugnayan sa taong nangangasiwa sa iyong profile.</translation>
+</translationbundle>

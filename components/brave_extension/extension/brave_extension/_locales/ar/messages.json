@@ -91,16 +91,16 @@
     "message": "تم السماح بجميع ملفات تعريف الارتباط",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "تم حظر مسح البصمة عبر المواقع",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "يتم حظر محاولات الدخول بالبصمة",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "جميع محاولات الدخول بالبصمة مسموح بها",
+  "allowAllFingerprinting": {
+    "message": "السماح بجميع عمليات أخذ البصمات",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

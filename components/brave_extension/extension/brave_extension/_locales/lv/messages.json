@@ -91,16 +91,16 @@
     "message": "Atļauti visi sīkfaili",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Bloķētie starpvietņu identificējošās ciparvirknes veidošanas mēģinājumi",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Bloķētie identificējošās ciparvirknes veidošanas mēģinājumi",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Visi identificējošās ciparvirknes veidošanas mēģinājumi ir atļauti",
+  "allowAllFingerprinting": {
+    "message": "Atļaut visu identificējošās dokumenta ciparvirknes veidošanu",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

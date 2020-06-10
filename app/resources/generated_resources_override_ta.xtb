@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="ta">
+<translation id="6744651634043798597">{COUNT,plural, =0{எல்லாவற்றையும் &amp;மறைநிலைச் சாளரத்தில் திற}=1{&amp;மறைநிலைச் சாளரத்தில் திற}other{எல்லாவற்றையும் (#) &amp;மறைநிலைச் சாளரத்தில் திற}}</translation>
+<translation id="2431625704210501303">&amp;மறைநிலை சாளரத்தில் திற</translation>
+<translation id="4620367155626060530">புக்மார்க்ஸ் பட்டியைக் &amp;காட்டு</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{எல்லாவற்றையும் &amp;மறைநிலைச் சாளரத்தில் திற}=1{&amp;மறைநிலைச் சாளரத்தில் திற}other{எல்லாவற்றையும் (#) &amp;மறைநிலைச் சாளரத்தில் திற}}</translation>
+<translation id="1985165269306590797">&amp;மறைநிலை சாளரத்தில் திற</translation>
+<translation id="4680518314108745448">புக்மார்க்ஸ் பட்டியைக் &amp;காட்டு</translation>
+<translation id="642436385689435488">அனைத்தையும் மறைநிலைச் சாளரத்தில் திறக்கும்</translation>
+<translation id="5463021359602611602">மறைநிலை சாளரத்தில் திற</translation>
+<translation id="1850357845349976573">{0,plural, =1{மறைநிலை}other{திறந்துள்ள மறைநிலை சாளரங்கள்: #}}</translation>
+<translation id="37784332082579802">{0,plural, =1{மறைநிலை}other{மறைநிலை (#)}}</translation>
+<translation id="5070556616376997776">மறைநிலையில் உள்ளீர்கள்</translation>
+<translation id="5832813618714645810">நபர்கள்</translation>
+<translation id="7171000599584840888">நபரைச் சேர்...</translation>
+<translation id="2005199804247617997">பிறர்</translation>
+<translation id="2935225303485967257">நபர்களை நிர்வகி</translation>
+<translation id="8966809848145604011">பிறர்</translation>
+<translation id="688280436658139163">நபர்களை நிர்வகி</translation>
+<translation id="4133080584509825342">பயனரைத் திருத்தவும், <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">பயனரைத் திருத்தவும், <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">நபர் <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">நபரைச் சேர்...</translation>
+<translation id="2254158488150713536">தொடர, சரி என்பதைக் கிளிக் செய்யவும், உங்கள் மின்னஞ்சல் முகவரிக்குப் புதிய சுயவிவரத்தை உருவாக்க, நபரைச் சேர் என்பதைக் கிளிக் செய்யவும்.</translation>
+<translation id="1725743343613175327">தொடர, சரி என்பதைக் கிளிக் செய்யவும், உங்கள் <ph name="DOMAIN"/> மின்னஞ்சல் முகவரிக்குப் புதிய சுயவிவரத்தை உருவாக்க, நபரைச் சேர் என்பதைக் கிளிக் செய்யவும்.</translation>
+<translation id="6921634551681321094">நபரைச் சேர்</translation>
+<translation id="4904061654709986277">நபரைச் சேர்</translation>
+<translation id="6114945161119872228">இவரை அகற்று</translation>
+<translation id="769308100792069196">மேற்பார்வையிடப்படும் பயனரைச் சேர்</translation>
+<translation id="8006143138282906848">இந்தப் பயனரை அகற்று</translation>
+<translation id="6912187023601892621">மேற்பார்வையிடப்படும் பயனரைச் சேர்</translation>
+<translation id="8086119151297127544">பயனரை அகற்றும் முன், உங்கள் சுயவிவரத்தைத் திறக்கவும்.</translation>
+<translation id="7805701378418968629">பயனரைச் சேர்க்கும் முன், உங்கள் சுயவிவரத்தைத் திறக்கவும்.</translation>
+<translation id="6315812488257290136">நபர்கள்</translation>
+<translation id="3707212204259470604">பிற பயனர்களை நிர்வகி</translation>
+<translation id="5840822070878669614">Brave இணைய அங்காடியைத் திற</translation>
+<translation id="383007806262310953">புக்மார்க்ஸ் பட்டியைக் காட்டு</translation>
+<translation id="2890280714162339872">நடப்பு மறைநிலை அமர்வு: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">நடப்பு மறைநிலை அமர்வு: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">நடப்பு மறைநிலை அமர்வு: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">நடப்பு மறைநிலை அமர்வு: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, மேலும் பல</translation>
+<translation id="8648684608605749476">மறைநிலை அம்சத்தில் மூன்றாம் தரப்பு குக்கீகளைத் தடுக்கும்</translation>
+<translation id="2199515977216775204">மறைநிலையில் உள்ளபோது, விளம்பரங்களைப் பிரத்தியேகமாக்குவது போன்ற செயல்களைச் செய்வதற்காக வெவ்வேறு தளங்களில் உங்களின் உலாவல் செயல்பாட்டைப் பார்க்க தளங்கள் குக்கீகளைப் பயன்படுத்த முடியாது. சில தளங்களிலுள்ள அம்சங்கள் செயல்படாமல் போகக்கூடும்.</translation>
+<translation id="6105125042109106861">மறைநிலைப் பயன்முறையில் மூன்றாம் தரப்புக் குக்கீகள் தடுக்கப்பட்டுள்ளன</translation>
+<translation id="1281501490173223206">தற்போதைய மறைநிலை அமர்விற்கு மட்டும்</translation>
+<translation id="5566692924079383101">நடப்பு மறைநிலை அமர்வைவிட்டு நீங்கள் வெளியேறியவுடன் இந்த விதிவிலக்கு தானாக அகற்றப்படும்</translation>
+<translation id="6906406176003824042">பயனரை மாற்று</translation>
+<translation id="9063160602596686558">பயன்பாட்டுப் புள்ளிவிவரங்களையும் சிதைவு அறிக்கைகளையும் தானாகவே Braveளுக்கு அனுப்பும்</translation>
+<translation id="3860292630623580294">(மறைநிலை)</translation>
+<translation id="4854477725773269949">மறைநிலையில் அனுமதி</translation>
+<translation id="6436164536244065364">Brave இணைய அங்காடியில் காட்டு</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave இணைய அங்காடியில்<ph name="END_LINK"/> நீட்டிப்புகளையும் தீம்களையும் பெறுங்கள்</translation>
+<translation id="6336451774241870485">புதிய மறைநிலை தாவல்</translation>
+<translation id="6610147964972079463">மறைநிலை தாவல்களை மூடு</translation>
+<translation id="5186185447130319458">மறைநிலை</translation>
+<translation id="4933782374919065856">கேள்விகள் உள்ளனவா? உங்கள் சுயவிவரக் கண்காணிப்பாளரைத் தொடர்புகொள்ளவும்.</translation>
+</translationbundle>

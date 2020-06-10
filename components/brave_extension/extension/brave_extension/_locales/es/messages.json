@@ -56,15 +56,15 @@
     "description": "Message for the scripts blocked row label"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Controladores y anuncios bloqueados (intenso)",
+    "message": "Rastreadores y anuncios bloqueados (agresivo)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Controladores y anuncios bloqueados (estándar)",
+    "message": "Rastreadores y anuncios bloqueados (estándar)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Permitir todos los controladores y anuncios",
+    "message": "Permitir todos los rastreadores y anuncios",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -91,16 +91,16 @@
     "message": "Permitir todas las cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Bloquear fingerprinting de terceros",
+  "standardFingerprinting": {
+    "message": "Fingerprinting bloqueado (estándar)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Bloquear los intentos de fingerprinting",
+  "strictFingerprinting": {
+    "message": "Fingerprinting bloqueado (estricto, puede dañar los sitios)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Permitir cualquier intento de fingerprinting",
+  "allowAllFingerprinting": {
+    "message": "Permitir cualquier fingerprinting",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
