@@ -2,14 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- #include "base/path_service.h"
- #include "brave/browser/brave_content_browser_client.h"
- #include "brave/common/brave_paths.h"
- #include "chrome/browser/ui/browser.h"
- #include "chrome/common/chrome_content_client.h"
- #include "chrome/test/base/in_process_browser_test.h"
- #include "chrome/test/base/ui_test_utils.h"
- #include "content/public/test/browser_test_utils.h"
+#include "base/path_service.h"
+#include "brave/browser/brave_content_browser_client.h"
+#include "brave/common/brave_paths.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/common/chrome_content_client.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 
 const char kBluetoothTest[] = "/bluetooth.html";
 

@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "content/public/test/browser_test.h"
 
 using content::WebContents;
 using ImageType = ContentSettingImageModel::ImageType;
