@@ -145,6 +145,5 @@ void BookmarkBarInstructionsView::UpdateColors() {
       GetNativeTheme()->GetSystemColor(ui::NativeTheme::kColorId_LinkEnabled);
   bool link_has_contrast = color_utils::GetContrastRatio(link_color, bg) >=
                            color_utils::kMinimumReadableContrastRatio;
-  import_link_->SetUnderline(!link_has_contrast);
   import_link_->SetEnabledColor(link_has_contrast ? link_color : text_color);
 }
