@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Punkte-Förderbeträge",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Hallo, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

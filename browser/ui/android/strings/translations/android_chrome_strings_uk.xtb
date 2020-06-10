@@ -3,10 +3,6 @@
 <translationbundle lang="uk">
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="2498359688066513246">Довідка й відгуки</translation>
-<translation id="8378714024927312812">Профілем керує ваша організація</translation>
-<translation id="9019902583201351841">Керується батьками</translation>
-<translation id="4645575059429386691">Керується одним із батьків</translation>
-<translation id="4883854917563148705">Налаштування, якими керує адміністратор, не можна скинути</translation>
 <translation id="4307992518367153382">Основні</translation>
 <translation id="1974060860693918893">Розширені</translation>
 <translation id="1146678959555564648">Увійти у VR-режим</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Ця функція вмикається, коли ви входите в обліковий запис Brave Software</translation>
 <translation id="10614374240317010">Ніколи не зберігалося</translation>
 <translation id="3098842761938485917">Переглядайте збережені паролі й керуйте ними в <ph name="BEGIN_LINK"/>обліковому записі Brave Software<ph name="END_LINK"/></translation>
+<translation id="8988028529677883095">Використовувати телефон як ключ безпеки</translation>
 <translation id="8562452229998620586">Тут відображатимуться збережені паролі.</translation>
+<translation id="1303339473099049190">Не вдалося знайти такий пароль. Перевірте правильність написання та повторіть спробу.</translation>
 <translation id="8084114998886531721">Збережений пароль</translation>
 <translation id="2870560284913253234">Сайт</translation>
 <translation id="8503813439785031346">Ім’я користувача</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Розблокуйте, щоб переглянути пароль</translation>
 <translation id="6221633008163990886">Розблокуйте, щоб експортувати паролі</translation>
 <translation id="230699814587342492">Паролі Brave</translation>
-<translation id="6075798973483050474">Змінити домашню сторінку</translation>
-<translation id="854522910157234410">Відкрити цю сторінку</translation>
+<translation id="1925021887439448749">Введіть користувацьку веб-адресу</translation>
 <translation id="8127542551745560481">Змінити головну сторінку</translation>
+<translation id="854522910157234410">Відкрити цю сторінку</translation>
+<translation id="5063487983358782016">Головна сторінка Brave</translation>
 <translation id="2482878487686419369">Сповіщення</translation>
 <translation id="6255999984061454636">Пропозиції вмісту</translation>
 <translation id="805047784848435650">На основі історії веб-перегляду</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Конфіденційність</translation>
 <translation id="4991384657077828949">Допоможіть покращити безпеку Brave</translation>
 <translation id="1943176487615318915">Щоб виявляти небезпечні додатки й сайти, Brave надсилає URL-адреси певних відвіданих сторінок, обмежену системну інформацію та вміст деяких сторінок у Brave Software</translation>
-<translation id="3181954750937456830">Безпечний перегляд (захищає вас і ваш пристрій від небезпечних сайтів)</translation>
-<translation id="7315322926489145388">Надсилає в Brave Software URL-адреси деяких відвіданих сторінок, коли ваша безпека під загрозою</translation>
+<translation id="3201899458094819285">Безпечний перегляд (захищає вас і ваш пристрій від небезпечних сайтів)</translation>
+<translation id="2876369937070532032">Надсилає в Brave Software URL-адреси деяких відвіданих сторінок, коли ваша безпека під загрозою</translation>
 <translation id="3738139272394829648">Пошук дотиком</translation>
-<translation id="7865281998841143447">Дізнавайтеся про теми на веб-сайтах, залишаючись на сторінці. Функція пошуку дотиком надсилає в Пошук Brave Software слово та його контекст і повертає визначення, зображення, результати пошуку й іншу інформацію.
+<translation id="4749189475009528195">Дізнавайтеся про теми на веб-сайтах, залишаючись на сторінці. Функція пошуку дотиком надсилає в Пошук Brave Software слово та його контекст і повертає визначення, зображення, результати пошуку й іншу інформацію.
 
-Щоб створити пошуковий термін, торкніться будь-якого слова. Утримуйте потрібне слово, щоб відредагувати його. Щоб уточнити пошуковий запит, прокрутіть відкриту панель, натисніть значок розгортання (відкриється нова вкладка), а тоді – вікно пошуку.</translation>
-<translation id="3292859206215580147">Дізнавайтеся про теми на веб-сайтах, залишаючись на сторінці. Функція пошуку дотиком надсилає в Пошук Brave Software слово та його контекст і повертає визначення, зображення, результати пошуку й іншу інформацію.
+Натисніть будь-яке слово, щоб почати пошук. Якщо потрібно уточнити пошуковий запит, натисніть і утримуйте його, щоб вибрати більше чи менше слів. Якщо потрібно змінити пошуковий запит, відкрийте панель, натисніть значок, щоб відкрити нову вкладку, і внесіть зміни у вікні пошуку.</translation>
+<translation id="934250516944040460">Дізнавайтеся про теми на веб-сайтах, залишаючись на сторінці. Функція пошуку дотиком надсилає в Пошук Brave Software слово та його контекст і повертає визначення, зображення, результати пошуку й іншу інформацію.
 
-Щоб створити пошуковий термін, утримуйте потрібне слово. Щоб уточнити пошуковий запит, відкоригуйте вибір. Також можна прокрутити відкриту панель, натиснути значок розгортання (відкриється нова вкладка), а тоді – натиснути вікно пошуку.</translation>
+Натисніть і утримуйте слово, щоб почати пошук. Щоб уточнити пошуковий запит, виберіть більше чи менше слів. Якщо потрібно змінити пошуковий запит, відкрийте панель, натисніть значок, щоб відкрити нову вкладку, і внесіть зміни у вікні пошуку.</translation>
 <translation id="6209156474097347789">Функція пошуку дотиком надсилає слово та поточну сторінку як додаткові дані в Пошук Brave Software. Її можна вимкнути в <ph name="BEGIN_LINK"/>налаштуваннях<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="780301667611848630">Ні, дякую</translation>
@@ -206,7 +205,7 @@
 <translation id="6295158916970320988">Усі сайти</translation>
 <translation id="8380167699614421159">Цей сайт показує нав’язливі чи оманливі оголошення</translation>
 <translation id="1919345977826869612">Оголошення</translation>
-<translation id="3513704683820682405">Доповнена реальність</translation>
+<translation id="2025115093177348061">Доповнена реальність</translation>
 <translation id="6447842834002726250">Cookie-файли</translation>
 <translation id="6196640612572343990">Блокувати сторонні файли cookie</translation>
 <translation id="6782111308708962316">Забороняти стороннім веб-сайтам зберігати та переглядати дані файлів cookie</translation>
@@ -217,6 +216,7 @@
 <translation id="1717218214683051432">Датчики руху</translation>
 <translation id="2091887806945687916">Сигнал</translation>
 <translation id="2586657967955657006">Буфер обміну</translation>
+<translation id="4670064810192446073">Віртуальна реальність</translation>
 <translation id="6320088164292336938">Вібросигнал</translation>
 <translation id="4226663524361240545">Коли надходитимуть сповіщення, пристрій може вібрувати</translation>
 <translation id="1446450296470737166">Повний контроль пристроїв MIDI</translation>
@@ -235,6 +235,7 @@
 <translation id="2537296579376733324">Усі файли cookie, лише на цьому сайті</translation>
 <translation id="7882806643839505685">Увімкнути звук для певного сайту.</translation>
 <translation id="4468959413250150279">Вимкнути звук для певного сайту.</translation>
+<translation id="7828557259026017104">Файли cookie – це файли, створені веб-сайтами, які ви відвідали. Сайти використовують їх, щоб запам'ятовувати ваші налаштування. Сторонні файли cookie створюються іншими сайтами. Ці сайти показують власний контент, як-от оголошення чи зображення, на веб-сторінці, яку ви відвідуєте.</translation>
 <translation id="1994173015038366702">URL-адреса сайту</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Використання</translation>
@@ -246,10 +247,14 @@
 <translation id="8116925261070264013">Звук вимкнено</translation>
 <translation id="8300705686683892304">Керуються додатком</translation>
 <translation id="6192792657125177640">Винятки</translation>
-<translation id="257931822824936280">Розгорнуто – натисніть, щоб згорнути.</translation>
-<translation id="5100237604440890931">Згорнуто – натисніть, щоб розгорнути.</translation>
 <translation id="857943718398505171">Дозволено (рекомендується)</translation>
 <translation id="2913331724188855103">Дозволити сайтам зберігати та розпізнавати дані файлів cookie (рекомендується)</translation>
+<translation id="2212565012507486665">Дозволити файли cookie</translation>
+<translation id="8648684608605749476">Блокувати файли cookie третіх сторін в анонімному режимі</translation>
+<translation id="2687403674020088961">Блокувати всі файли cookie (не рекомендовано)</translation>
+<translation id="1044891598689252897">Сайти працюватимуть у звичному режимі</translation>
+<translation id="7993619969781047893">Функції на деяких сайтах можуть не працювати</translation>
+<translation id="1509960214886564027">Функції на багатьох сайтах можуть не працювати</translation>
 <translation id="5335288049665977812">Дозволити сайтам запускати Javascript (рекомендується)</translation>
 <translation id="5527111080432883924">Запитувати, перш ніж дозволяти сайтам переглядати тексти й зображення в буфері обміну (рекомендовано)</translation>
 <translation id="6912998170423641340">Не дозволяти сайтам переглядати тексти й зображення в буфері обміну</translation>
@@ -259,12 +264,12 @@
 <translation id="2107397443965016585">Запитувати, перш ніж дозволяти сайтам відтворювати захищений вміст (рекомендовано)</translation>
 <translation id="2910701580606108292">Запитувати, перш ніж дозволяти сайтам відтворювати захищений вміст</translation>
 <translation id="757524316907819857">Заборонити сайтам відтворювати захищений вміст</translation>
-<translation id="4935305910887312910">Запитувати, перш ніж дозволяти сайтам отримувати доступ до положення камери чи відображати вашу кімнату (рекомендовано)</translation>
-<translation id="884828189055900810">Заборонити сайтам отримувати положення камери чи відображати вашу кімнату</translation>
+<translation id="2182457891543959921">Запитувати, перш ніж дозволяти сайтам створювати 3D-карту вашого оточення або відстежувати положення камери (рекомендовано)</translation>
+<translation id="3538390592868664640">Заборонити сайтам створювати 3D-карту вашого оточення або відстежувати положення камери</translation>
 <translation id="5710871682236653961">Запитувати, перш ніж дозволяти сайтам обмінюватися даними з іншими пристроями через NFC (рекомендовано)</translation>
 <translation id="7572498721684305250">Заборонити сайтам обмінюватися даними з іншими пристроями через NFC</translation>
-<translation id="3312292613668865961">Запитувати, перш ніж дозволяти сайтам отримувати доступ до даних і пристроїв віртуальної реальності (рекомендовано)</translation>
-<translation id="8698438463325761328">Заборонити сайтам доступ до даних і пристроїв віртуальної реальності</translation>
+<translation id="4887024562049524730">Запитувати, перш ніж давати сайтам доступ до даних і пристрою віртуальної реальності (рекомендовано)</translation>
+<translation id="6439114592976064011">Заборонити сайтам доступ до даних і пристрою віртуальної реальності</translation>
 <translation id="3277252321222022663">Надати сайтам доступ до датчиків (рекомендовано)</translation>
 <translation id="5048398596102334565">Надати сайтам доступ до датчиків руху (рекомендовано)</translation>
 <translation id="8816026460808729765">Заборонити сайтам доступ до датчиків</translation>
@@ -414,6 +419,7 @@
 <translation id="4062305924942672200">Правова інформація</translation>
 <translation id="4256782883801055595">Ліцензії ПЗ з відкритим кодом</translation>
 <translation id="1138681184697033370">Умови використання Brave Software Brave</translation>
+<translation id="2368444735104192323">Додаткові умови використання Brave Software Brave і ОС Brave</translation>
 <translation id="7392539049993970338">Примітка про конфіденційність Brave</translation>
 <translation id="2968755619301702150">Перегляд сертифікатів</translation>
 <translation id="1360432990279830238">Вийти й вимкнути синхронізацію?</translation>
@@ -432,6 +438,8 @@
 <translation id="8636825310635137004">Щоб мати доступ до вкладок з інших пристроїв, увімкніть синхронізацію.</translation>
 <translation id="3269956123044984603">Щоб мати доступ до вкладок з інших пристроїв, увімкніть опцію "Автоматично синхронізувати дані" в налаштуваннях облікового запису на Android.</translation>
 <translation id="5157964048453367290">Тут відображатимуться вкладки, відкриті в Brave на інших ваших пристроях.</translation>
+<translation id="5795872532621730126">Пошук і перегляд</translation>
+<translation id="9086302186042011942">Синхронізація</translation>
 <translation id="4684427112815847243">Синхронізувати все</translation>
 <translation id="2709516037105925701">Автозаповнення</translation>
 <translation id="8820817407110198400">Закладки</translation>
@@ -478,7 +486,7 @@
 <translation id="5230560987958996918">Сайт <ph name="SITE"/> хоче шукати пристрої Bluetooth поруч. Виявлено такі пристрої:</translation>
 <translation id="8368027906805972958">Невідомий чи непідтримуваний пристрій (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Синхронізація не працює</translation>
-<translation id="2537178555904266562">Не вдалося синхронізувати паролі</translation>
+<translation id="2537178555904266562">Помилка синхронізації паролів</translation>
 <translation id="1810845389119482123">Початкове налаштування синхронізації не завершено</translation>
 <translation id="3235722914093408050">Щоб почати синхронізацію Brave, відкрийте параметри Android і знову ввімкніть синхронізацію системи</translation>
 <translation id="3367813778245106622">Увійдіть знову, щоб почати синхронізацію</translation>
@@ -549,10 +557,6 @@
 <translation id="2532336938189706096">Веб-версія</translation>
 <translation id="6005538289190791541">Запропонований пароль</translation>
 <translation id="4634124774493850572">Прийняти пароль</translation>
-<translation id="8285489906452138776">Brave потрібні дозволи, щоб використовувати камеру на цьому сайті.</translation>
-<translation id="320189792589364011">Brave потрібні дозволи, щоб використовувати мікрофон на цьому сайті.</translation>
-<translation id="7988136689212463100">Brave потрібні дозволи, щоб використовувати камеру та мікрофон на цьому сайті.</translation>
-<translation id="4931190655840828017">Brave потрібен доступ до місцезнаходження, щоб повідомляти ваші геодані цьому сайту.</translation>
 <translation id="3088191967551450609">Щоб завантажувати файли, Brave потребує доступу до пам’яті.</translation>
 <translation id="8942627711005830162">Відкрити в іншому вікні</translation>
 <translation id="4195643157523330669">Відкрити в новій вкладці</translation>
@@ -600,8 +604,9 @@
 <translation id="2146738493024040262">Відкрити додаток із миттєвим запуском</translation>
 <translation id="7016516562562142042">Дозволено для поточної пошукової системи</translation>
 <translation id="6177111841848151710">Заблоковано для поточної пошукової системи</translation>
-<translation id="145097072038377568">Вимкнено в налаштуваннях Android</translation>
+<translation id="7000754031042624318">Вимкнено в налаштуваннях Android</translation>
 <translation id="8007176423574883786">Вимкнено для цього пристрою</translation>
+<translation id="6864395892908308021">Цей пристрій не підтримує NFC</translation>
 <translation id="164269334534774161">Ви переглядаєте офлайн-копію цієї сторінки, створену <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Цю сторінку створено <ph name="CREATION_TIME"/>. Вона може відрізнятися від онлайн-версії.</translation>
 <translation id="8840953339110955557">Ця сторінка може відрізнятися від онлайн-версії.</translation>
@@ -706,10 +711,10 @@
 <translation id="3244271242291266297">ММ</translation>
 <translation id="605721222689873409">РР</translation>
 <translation id="724102042129299115">Перший запуск Brave</translation>
-<translation id="2700285883409956633">Користуючись цим додатком, ви приймаєте <ph name="BEGIN_LINK1"/>Умови використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Примітку про конфіденційність<ph name="END_LINK2"/> Brave.</translation>
-<translation id="1640714894372474981">Користуючись цим додатком, ви приймаєте <ph name="BEGIN_LINK1"/>Умови використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Примітку про конфіденційність<ph name="END_LINK2"/> Brave, а також <ph name="BEGIN_LINK3"/>Примітку про конфіденційність для облікових записів Brave Software, якими можна керувати у Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727">Додаток <ph name="APP_NAME"/> відкриватиметься в Brave. Продовжуючи, ви приймаєте <ph name="BEGIN_LINK1"/>Умови використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Примітку про конфіденційність<ph name="END_LINK2"/> Brave.</translation>
-<translation id="5071615083211946659">Додаток <ph name="APP_NAME"/> відкриватиметься в Brave. Продовжуючи, ви приймаєте <ph name="BEGIN_LINK1"/>Умови використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Примітку про конфіденційність<ph name="END_LINK2"/> Brave, а також <ph name="BEGIN_LINK3"/>Примітку про конфіденційність для облікових записів Brave Software, якими можна керувати у Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Використовуючи Brave, ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Загальними положеннями та умовами Brave Software<ph name="END_LINK1"/> і <ph name="BEGIN_LINK2"/>Додатковими умовами використання Brave Software Brave і ОС Brave<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Використовуючи Brave, ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Загальними положеннями та умовами Brave Software<ph name="END_LINK1"/> і <ph name="BEGIN_LINK2"/>Додатковими умовами використання Brave Software Brave і ОС Brave<ph name="END_LINK2"/>. Також застосовується <ph name="BEGIN_LINK3"/>Примітка про конфіденційність для облікових записів Brave Software, керованих у Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="4993481112200507346">Додаток <ph name="APP_NAME"/> відкриється в Brave. Продовжуючи, ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Загальними положеннями та умовами Brave Software<ph name="END_LINK1"/> і <ph name="BEGIN_LINK2"/>Додатковими умовами використання Brave Software Brave і ОС Brave<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485">Додаток <ph name="APP_NAME"/> відкриється в Brave. Продовжуючи, ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Загальними положеннями та умовами Brave Software<ph name="END_LINK1"/> і <ph name="BEGIN_LINK2"/>Додатковими умовами використання Brave Software Brave і ОС Brave<ph name="END_LINK2"/>. Також застосовується <ph name="BEGIN_LINK3"/>Примітка про конфіденційність для облікових записів Brave Software, керованих у Family Link<ph name="END_LINK3"/>.</translation>
 <translation id="673197144963363525">Допоможіть покращити Brave, надсилаючи статистику та звіти про збої в Brave Software.</translation>
 <translation id="3518985090088779359">Продовжити</translation>
 <translation id="7207456302801184289">Вітаємо у Brave!</translation>
@@ -814,7 +819,7 @@
 <translation id="6963766334940102469">Видалити закладки</translation>
 <translation id="4351244548802238354">Закрити діалогове вікно</translation>
 <translation id="451872707440238414">Шукати закладки</translation>
-<translation id="8901170036886848654">Немає закладок</translation>
+<translation id="6447558397796644647">Не вдається знайти закладку. Перевірте написання або додайте нову закладку.</translation>
 <translation id="6404511346730675251">Редагувати закладку</translation>
 <translation id="3894427358181296146">Додати папку</translation>
 <translation id="5327248766486351172">Назва</translation>
@@ -829,6 +834,8 @@
 <translation id="6811034713472274749">Сторінка готова для перегляду</translation>
 <translation id="4561979708150884304">Немає з’єднання</translation>
 <translation id="8274165955039650276">Переглянути завантаження</translation>
+<translation id="4320177379694898372">Немає з’єднання з Інтернетом</translation>
+<translation id="6397616442223433927">З'єднання відновлено</translation>
 <translation id="2082238445998314030">Результат <ph name="RESULT_NUMBER"/> з <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Не знайдено жодного результату</translation>
 <translation id="981121421437150478">Офлайн</translation>
@@ -845,9 +852,6 @@
 <translation id="6773423637732432200">Неможливо оновити Brave. Більше опцій</translation>
 <translation id="1383876407941801731">Пошук</translation>
 <translation id="3328801116991980348">Інформація про сайт</translation>
-<translation id="5391532827096253100">Ваше з’єднання з цим сайтом незахищене. Інформація про сайт</translation>
-<translation id="6206551242102657620">З’єднання безпечне. Інформація про сайт</translation>
-<translation id="6963642900430330478">Ця сторінка небезпечна. Інформація про сайт</translation>
 <translation id="9070377983101773829">Почати голосовий пошук</translation>
 <translation id="4968908871398201967">Приватний режим</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> відкрита вкладка: натисніть, щоб перейти на іншу вкладку}one{<ph name="OPEN_TABS_MANY"/> відкрита вкладка: натисніть, щоб перейти на іншу вкладку}few{<ph name="OPEN_TABS_MANY"/> відкриті вкладки: натисніть, щоб перейти на іншу вкладку}many{<ph name="OPEN_TABS_MANY"/> відкритих вкладок: натисніть, щоб перейти на іншу вкладку}other{<ph name="OPEN_TABS_MANY"/> відкритої вкладки: натисніть, щоб перейти на іншу вкладку}}</translation>
@@ -859,7 +863,7 @@
 <translation id="1201402288615127009">Далі</translation>
 <translation id="6710213216561001401">Попереднє</translation>
 <translation id="9080642952018487277">Увійти в приватний режим</translation>
-<translation id="4883379392681899581">Покинути приватний режим</translation>
+<translation id="4883379392681899581">Вийти з приватного режиму</translation>
 <translation id="6659594942844771486">Вкладка</translation>
 <translation id="1933845786846280168">Вибрана вкладка</translation>
 <translation id="3377025655491224618">Приватна вкладка</translation>
@@ -944,6 +948,11 @@
 <translation id="5197729504361054390">Веб-сайт <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> отримає доступ до вибраних контактів.</translation>
 <translation id="1779089405699405702">Декодер зображень</translation>
 <translation id="8067883171444229417">Дивитися відео</translation>
+<translation id="5876056640971328065">Призупинити відео</translation>
+<translation id="3594780231884063836">Вимкнути звук у відео</translation>
+<translation id="783819812427904514">Увімкнути звук у відео</translation>
+<translation id="3114012059975132928">Відеопрогравач</translation>
+<translation id="5489227211564503167">Минуло часу: <ph name="ELAPSED_TIME"/> з <ph name="TOTAL_TIME"/></translation>
 <translation id="6560414384669816528">Шукати за допомогою Sogou</translation>
 <translation id="5406914950576900927">Brave може використовувати <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> для пошуку в Китаї. Це можна змінити в <ph name="BEGIN_LINK"/>Налаштуваннях<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Залишити Brave Software</translation>
@@ -987,6 +996,7 @@
 <translation id="1875543012935658554">Знову відкрийте Brave.</translation>
 <translation id="79859296434321399">Щоб переглядати вміст у режимі доповненої реальності, установіть ARCore</translation>
 <translation id="8558485628462305855">Щоб переглядати вміст у режимі доповненої реальності, оновіть ARCore</translation>
+<translation id="3513704683820682405">Доповнена реальність</translation>
 <translation id="6410973561433500075">Почати сеанс доповненої реальності на сайті <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">Під час сеансу доповненої реальності цей сайт може:
 • створювати 3D-мапу вашого оточення;
@@ -1035,6 +1045,8 @@
 <translation id="9028914725102941583">Увімкніть синхронізацію, щоб файли були доступними на всіх ваших пристроях</translation>
 <translation id="6162454065885854378">Щоб файли з вашого телефона були доступними на іншому вашому пристрої, увімкніть синхронізацію в налаштуваннях Brave на обох пристроях</translation>
 <translation id="6084271560289605378">Перейти в налаштування Brave</translation>
+<translation id="2746024117903470217">Щоб ця сторінка була доступна на іншому пристрої, увімкніть на ньому синхронізацію в налаштуваннях Brave.</translation>
+<translation id="7760665516427405230">Щоб ця сторінка була доступна на іншому пристрої, увімкніть синхронізацію в налаштуваннях Brave</translation>
 <translation id="2318045970523081853">Натисніть, щоб зателефонувати</translation>
 <translation id="9209888181064652401">Неможливо здійснювати виклики</translation>
 <translation id="2860954141821109167">Переконайтеся, що на цьому пристрої ввімкнено додаток Телефон</translation>
@@ -1085,16 +1097,22 @@
 <translation id="246532703174860178">Надіслати</translation>
 <translation id="2517472476991765520">Сканувати</translation>
 <translation id="8628973420740315031">Щоб ділитися даними з людьми поблизу, дозвольте їм зісканувати цей QR-код</translation>
-<translation id="3987993985790029246">Копіювати</translation>
+<translation id="3987993985790029246">Копіювати посилання</translation>
 <translation id="4250229828105606438">Знімок екрана</translation>
 <translation id="6201345951596836663">Посилання скопійовано</translation>
 <translation id="6597891566292541626">Вставте QR-код або штрих-код у цю рамку.</translation>
 <translation id="3140134512074889489">Щоб зісканувати QR-код, відкрийте камеру</translation>
+<translation id="5149323899804758325">Щоб зісканувати QR-код, у налаштуваннях надайте Brave доступ до камери</translation>
 <translation id="2359808026110333948">Продовжити</translation>
+<translation id="8233540874193135768">Щоб зісканувати QR-код, скористайтеся пристроєм із камерою.</translation>
+<translation id="6297765934698848803">Організація, що керує вашим пристроєм, вимкнула камеру.</translation>
+<translation id="4321739720395210191">Не вдається відкрити камеру. Перезапустіть пристрій і повторіть спробу.</translation>
+<translation id="234265804618409743">Не вдається відкрити камеру. Помилка.</translation>
+<translation id="7173114856073700355">Відкрити налаштування</translation>
+<translation id="1311657260431405215">Цей QR-код (<ph name="QRCODEVALUE"/>) не є URL-адресою</translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Brave Software Notifications Platform</translation>
 <translation id="8516012719330875537">Редактор зображень</translation>
-<translation id="6092062101542170135">Щоб продовжити, увімкніть NFC в налаштуваннях Android</translation>
-<translation id="5860491529813859533">Увімкнути</translation>
 <translation id="8926666909099850184">NFC вимкнено на цьому пристрої. Увімкніть цю функцію в <ph name="BEGIN_LINK"/>налаштуваннях Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Увійти у VR-режим на сайті <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Під час сеансу VR цей сайт може розпізнавати:</translation>

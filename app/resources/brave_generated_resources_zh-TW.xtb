@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">建立新的個人資料</translation>
 <translation id="2666990579225592931">開啟訪客視窗</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
-<translation id="7450557937477381864">關閉 Chrome</translation>
-<translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
 
 安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
-<translation id="453977518730680921">自動播放媒體</translation>
 <translation id="410351446219883937">自動播放</translation>
 <translation id="2240268017737062801">當網站想要自動播放媒體時詢問我</translation>
 <translation id="3371702087847741961">當網站想要自動播放媒體時詢問我（建議使用）</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">當 Brave Rewards 未啟用時，在網址列隱藏 Brave Rewards 按鈕</translation>
 <translation id="1520361618554057102">總是在新分頁上顯示書籤</translation>
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
+<translation id="597020512043916976">在自動完成建議中顯示熱門網站</translation>
+<translation id="264150068416846820">在自動完成建議中顯示 Brave 建議的網站</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="2467749191278759605">自訂您的 Brave 儀表板</translation>
 <translation id="1717331825806276156">背景圖片</translation>
 <translation id="1820041496463124489">贊助圖片</translation>
 <translation id="8173998484743827990">Brave 統計</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">幣安</translation>
 <translation id="4643117005422448078">熱門網站</translation>
 <translation id="1776831331757823105">時鐘</translation>
@@ -72,9 +72,9 @@
 <translation id="7390783310074170337">預設瀏覽</translation>
 <translation id="130615081792797568">簡式瀏覽</translation>
 <translation id="2360360976480535628">進階瀏覽</translation>
-<translation id="5709627087332022422">封鎖跨站追蹤器</translation>
-<translation id="6447842834002726250">Cookie</translation>
-<translation id="6522412052085018663">指紋</translation>
+<translation id="2133317862976486547">封鎖追蹤器與廣告</translation>
+<translation id="4385707520896576447">Cookie</translation>
+<translation id="4978786495456601191">指紋</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="519861640102428255">外觀</translation>
@@ -83,12 +83,11 @@
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
-<translation id="4699812599455071925">僅封鎖跨站 cookies</translation>
-<translation id="5657156137487675418">允許所有 cookie</translation>
-<translation id="6883611015375728278">阻擋所有 cookies</translation>
-<translation id="5963670684159057574">封鎖跨站指紋追蹤</translation>
-<translation id="769702552748212954">允許所有指紋追蹤</translation>
-<translation id="4540198958192073185">阻擋所有指紋識別</translation>
+<translation id="4078738236287221428">追蹤器與廣告封鎖（積極）</translation>
+<translation id="7740996059027112821">追蹤器與廣告封鎖（標準）</translation>
+<translation id="4176463684765177261">允許所有追蹤器與廣告</translation>
+<translation id="5770288601196774623">僅封鎖跨站 cookies</translation>
+<translation id="3587482841069643663">阻擋所有 cookies</translation>
 <translation id="8942080017911802454">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8798099450830957504">預設</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">無</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">使用 Dapps 的 Web3 提供者</translation>
+<translation id="5913089932885076110">啟動時載入加密錢包</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="1765684547504191670">使用媒體路由器元件以在瀏覽器中啟用 Chromecast。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">自動傳送完全私密的產品分析給 Brave</translation>
 <translation id="7090566321964540749">此匿名資訊只會讓 Brave 評估特定功能的整題使用量。</translation>
 <translation id="9111960429693394744">您想要為 Dapps 使用 Brave 的加密錢包或 MetaMask 呢？</translation>
+<translation id="8721775358057000783">您想要在此頁面上啟動 web3 支援的加密錢包嗎？</translation>
 <translation id="7583735190612229830">設定 Crypto Wallets 以與此應用程式和其他類似的應用程式互動。</translation>
-<translation id="8337117349965899723">使用 Crypto Wallets</translation>
+<translation id="4823406846571523661">設定加密錢包</translation>
 <translation id="5756155765711979898">使用 MetaMask</translation>
 <translation id="6754134632841262799">設定</translation>
+<translation id="8199661191594897555">啟動加密錢包並重新載入</translation>
+<translation id="8428213095426709021">設定</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
 <translation id="8053093028263274061">抱歉，無可用的已儲存版本。</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="4989337484121655457">需要完整的硬碟存取權限</translation>
-<translation id="8025559074845816210">Brave 需要完整的硬碟存取權限，以從 Safari 匯入您的書籤。</translation>
+<translation id="5501596373144334003">Brave 需要完整磁碟存取以從 Safari 匯入您的書籤與歷史紀錄。</translation>
 <translation id="8515328844674404333">了解如何從您的系統偏好設定中，允許完整的硬碟存取權限。</translation>
 <translation id="6414878884710400018">開啟系統偏好設定</translation>
 <translation id="5570470519803062774">網站與 Shields 設定</translation>
+<translation id="8487693399751278191">正在匯入書籤……</translation>
+<translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
 </translationbundle>

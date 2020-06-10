@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Help om Brave beter te maak deur omvalverslae en <ph name="UMA_LINK"/> na Brave Software te stuur</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Netwerkaanmelding – Brave</translation>
+<translation id="8745514854244955877">Brave – Netwerkaanmelding – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Netwerkaanmelding</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="5785919770853225148">Brave sal hierdie wagwoord in jou Brave Software-rekening stoor. Jy sal dit nie hoef te onthou nie.</translation>
 <translation id="8211837073776713955">Brave sal jou laat weet as jou wagwoorde gekompromitteer is</translation>
 <translation id="113959764510199339">Brave probeer tans om wagwoorde te wys.</translation>
+<translation id="96347285368592620">Brave probeer tans om wagwoorde te kopieer.</translation>
+<translation id="2953892977076487219">Brave probeer tans wagwoorde wysig.</translation>
 <translation id="7503098128120083822">Brave wil jou wagwoorde uitvoer.</translation>
 <translation id="8285294305439559616">Brave probeer tans om wagwoorde te wys. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
+<translation id="8090497651549769448">Brave probeer tans om wagwoorde te kopieer. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
+<translation id="3861679447659630159">Brave probeer tans om wagwoorde te wysig. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
 <translation id="5918095577778020936">Brave wil jou wagwoorde uitvoer. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
 <translation id="8320964054148936490">Hierdie rekenaar het reeds 'n meer onlangse weergawe van Brave. As die sagteware nie werk nie, deïnstalleer Brave en probeer weer.</translation>
 <translation id="7691786510374174420">Kon weens 'n ongespesifiseerde fout nie installeer nie. As Brave tans loop, maak dit asseblief toe en probeer weer.</translation>
@@ -192,7 +199,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="3262506503470845422">Kry hulp met Brave</translation>
 <translation id="1864557848095568223">Dateer tans Brave op</translation>
 <translation id="1786715389543715322">Dateer Brave tans op (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Amper op datum! Herbegin Brave om opdatering te voltooi.</translation>
+<translation id="7914115000169617076">Amper op datum! Herbegin Brave om opdatering te voltooi. Incognitovensters sal nie weer oopgemaak word nie.</translation>
 <translation id="8208853227947884571">Brave is op datum</translation>
 <translation id="573759479754913123">Meer oor Brave-bedrystelsel</translation>
 <translation id="7573289029918943991">Gaan na <ph name="LINK_BEGIN"/>Brave OS-instellings<ph name="LINK_END"/> om te sien of jou toestel op datum is</translation>
@@ -210,6 +217,12 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="8586264863973514035">Herbegin Brave om jou veranderinge toe te pas</translation>
 <translation id="7021823858304886493">Laat Brave-aanmelding toe</translation>
 <translation id="1649714546770135458">Deur dit af te skakel, kan jy by Brave Software-werwe soos Gmail aanmeld sonder om by Brave aan te meld</translation>
+<translation id="2796517443093885402">Brave kan help om jou teen dataskendings, slegte uitbreidings, en meer te beskerm</translation>
+<translation id="428541510811554120">Brave kan nie nagaan of daar opdaterings is nie. Probeer om jou internetverbinding na te gaan.</translation>
+<translation id="2633397153656205379">Brave het nie opgedateer nie; iets het skeefgeloop. <ph name="BEGIN_LINK"/>Stel Brave-opdateringprobleme en mislukte opdaterings reg.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave kan nie jou wagwoorde nagaan nie, want jy is nie aangemeld nie</translation>
+<translation id="7006260220514217183">Veiligblaai is afgeskakel. Brave beveel aan dat jy dit aanskakel.</translation>
+<translation id="1785833016412082453">Brave kan nie jou uitbreidings nagaan nie. Probeer later weer.</translation>
 <translation id="9220324636239049437">Dit sal 1 item op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="5853262807109651878">Dit sal <ph name="ITEMS_COUNT"/> items op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="4784414698887946907">Dit sal jou blaaierdata op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>

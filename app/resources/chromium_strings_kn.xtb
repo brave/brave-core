@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Brave Software ಗೆ ಕ್ರ್ಯಾಶ್ ವರದಿಗಳನ್ನು ಮತ್ತು <ph name="UMA_LINK"/> ಕಳುಹಿಸುವುದರಿಂದ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್ - Brave</translation>
+<translation id="8745514854244955877">Brave - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್ - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave ಬೀಟಾ</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -36,8 +39,12 @@
 <translation id="5785919770853225148">Brave, ನಿಮ್ಮ Brave Software ಖಾತೆಯಲ್ಲಿ ಈ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಉಳಿಸುತ್ತದೆ. ನೀವು ಅದನ್ನು ನೆನಪಿಡುವ ಅಗತ್ಯವಿರುವುದಿಲ್ಲ.</translation>
 <translation id="8211837073776713955">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಎಂದಾದರೂ ಹ್ಯಾಕ್‌ ಆಗಿವೆಯೇ ಎಂಬುದನ್ನು Brave ನಿಮಗೆ ತಿಳಿಸುತ್ತದೆ</translation>
 <translation id="113959764510199339">Brave ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ತೋರಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ.</translation>
+<translation id="96347285368592620">Brave, ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ನಕಲಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ.</translation>
+<translation id="2953892977076487219">Brave, ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ.</translation>
 <translation id="7503098128120083822">Brave ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ರಫ್ತು ಮಾಡಲು ಬಯಸುತ್ತದೆ.</translation>
 <translation id="8285294305439559616">Brave ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ. ಇದನ್ನು ಅನುಮತಿಸಲು ನಿಮ್ಮ Windows ಪಾಸ್‌ವರ್ಡ್‌ ಟೈಪ್ ಮಾಡಿ.</translation>
+<translation id="8090497651549769448">Brave, ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ನಕಲಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ. ಇದನ್ನು ಅನುಮತಿಸಲು ನಿಮ್ಮ Windows ಪಾಸ್‌ವರ್ಡ್‌ ಅನ್ನು ಟೈಪ್ ಮಾಡಿ.</translation>
+<translation id="3861679447659630159">Brave, ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ. ಇದನ್ನು ಅನುಮತಿಸಲು ನಿಮ್ಮ Windows ಪಾಸ್‌ವರ್ಡ್‌ ಅನ್ನು ಟೈಪ್ ಮಾಡಿ.</translation>
 <translation id="5918095577778020936">Brave ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ರಫ್ತು ಮಾಡಲು ಬಯಸುತ್ತದೆ. ಇದನ್ನು ಅನುಮತಿಸಲು ನಿಮ್ಮ Windows ಪಾಸ್‌ವರ್ಡ್‌ ಟೈಪ್ ಮಾಡಿ.</translation>
 <translation id="8320964054148936490">ಈ ಕಂಪ್ಯೂಟರ್ Brave ನ ಇತ್ತೀಚಿನ ಹೆಚ್ಚಿನ ಆವೃತ್ತಿಯನ್ನು ಹೊಂದಿದೆ. ಸಾಫ್ಟ್‌ವೇರ್ ಕಾರ್ಯನಿರ್ವಹಿಸದಿದ್ದರೆ, ದಯವಿಟ್ಟು Brave ಅನ್ನು ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ ಮತ್ತು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="7691786510374174420">ಅನಿರ್ದಿಷ್ಟ ದೋಷದಿಂದಾಗಿ ಸ್ಥಾಪನೆಯು ವಿಫಲಗೊಂಡಿದೆ. Brave ಪ್ರಸ್ತುತ ಚಾಲನೆಯಲ್ಲಿದ್ದರೆ, ದಯವಿಟ್ಟು ಅದನ್ನು ಮುಚ್ಚಿರಿ ಮತ್ತು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -184,7 +191,7 @@
 <translation id="3262506503470845422">Brave ಜೊತೆಗೆ ಸಹಾಯ ಪಡೆಯಿರಿ</translation>
 <translation id="1864557848095568223">Brave ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
 <translation id="1786715389543715322">Brave ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">ಬಹುಪಾಲು ನವೀಕೃತವಾಗಿದೆ! ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದನ್ನು ಮುಗಿಸಲು Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.</translation>
+<translation id="7914115000169617076">ಬಹುತೇಕ ಅಪ್ ಟು ಡೇಟ್ ಆಗಿದೆ! ಅಪ್‌ಡೇಟ್ ಅನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ. ಅಜ್ಞಾತ ವಿಂಡೋಗಳನ್ನು ಮರಳಿ ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="8208853227947884571">Brave ಅಪ್‌ ಟು ಡೇಟ್‌ ಆಗಿದೆ</translation>
 <translation id="573759479754913123">Brave OS ಕುರಿತು</translation>
 <translation id="7573289029918943991">ನಿಮ್ಮ ಸಾಧನ ಅಪ್ ಟು ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂಬುದನ್ನು ನೋಡಲು, <ph name="LINK_BEGIN"/>Brave OS ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ<ph name="LINK_END"/> ಹೋಗಿ</translation>
@@ -200,6 +207,12 @@
 <translation id="8586264863973514035">ನಿಮ್ಮ ಬದಲಾವಣೆಗಳನ್ನು ಅನ್ವಯಿಸಲು, Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="7021823858304886493">Brave ಸೈನ್-ಇನ್ ಅನ್ನು ಅನುಮತಿಸಿ</translation>
 <translation id="1649714546770135458">ಇದನ್ನು ಆಫ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು Brave ಗೆ ಸೈನ್ ಇನ್ ಮಾಡದೆಯೇ Gmail ನಂತಹ Brave Software ಸೈಟ್‌ಗಳಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಬಹುದು</translation>
+<translation id="2796517443093885402">ಡೇಟಾ ಉಲ್ಲಂಘನೆಗಳು, ಕಳಪೆ ವಿಸ್ತರಣೆಗಳು ಮತ್ತು ಇತ್ಯಾದಿಗಳಿಂದ ನಿಮ್ಮನ್ನು ಸುರಕ್ಷಿತವಾಗಿರಿಸಲು Brave ಸಹಾಯ ಮಾಡಬಹುದು</translation>
+<translation id="428541510811554120">ಅಪ್‌ಡೇಟ್‌ಗಳಿವೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಲು Brave ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ನೋಡಿ.</translation>
+<translation id="2633397153656205379">Brave ಅಪ್‌ಡೇಟ್ ಆಗಲಿಲ್ಲ, ಏನೋ ಸಮಸ್ಯೆಯಾಗಿದೆ. <ph name="BEGIN_LINK"/>Brave ಅಪ್‌ಡೇಟ್ ಸಮಸ್ಯೆಗಳು ಹಾಗೂ ವಿಫಲವಾದ ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಸರಿಪಡಿಸಿ.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">ನೀವು ಸೈನ್ ಇನ್ ಮಾಡಿರದ ಕಾರಣ, Brave ಗೆ ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="7006260220514217183">ಸುರಕ್ಷಿತ ಬ್ರೌಸಿಂಗ್‌ ಆಫ್ ಆಗಿದೆ. ಅದನ್ನು ಆನ್ ಮಾಡಲು Brave ಶಿಫಾರಸು ಮಾಡುತ್ತದೆ.</translation>
+<translation id="1785833016412082453">Brave ಗೆ ನಿಮ್ಮ ವಿಸ್ತರಣೆಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ನಂತರ ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="9220324636239049437">ಈ ಸಾಧನದಿಂದ 1 ಐಟಂ ಅನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ಇನ್ ಮಾಡಿ.</translation>
 <translation id="5853262807109651878">ಈ ಸಾಧನದಿಂದ <ph name="ITEMS_COUNT"/> ಐಟಂಗಳನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ಇನ್ ಮಾಡಿ.</translation>
 <translation id="4784414698887946907">ಈ ಸಾಧನದಿಂದ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ ಇನ್ ಮಾಡಿ.</translation>

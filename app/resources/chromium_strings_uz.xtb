@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Brave Software‘ga ishdan chiqishlar hisoboti va <ph name="UMA_LINK"/>‘ni jo‘natib Brave yaxshilanishiga yordam berish.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Tarmoqqa kirish - Brave</translation>
+<translation id="8745514854244955877">Brave - Tarmoqqa kirish - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Tarmoqqa kirish</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -40,8 +43,12 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="5785919770853225148">Brave bu parolni Brave Software hisobingizga saqlaydi. Uni eslab qolishingiz shart emas.</translation>
 <translation id="8211837073776713955">Parollaringiz oshkor etilsa, Brave bu haqida xabar qiladi</translation>
 <translation id="113959764510199339">Kirtilgan parollar Brave brauzerida ko‘rsatiladi.</translation>
+<translation id="96347285368592620">Brave parollarni nusxalashga urinmoqda.</translation>
+<translation id="2953892977076487219">Brave parollarni tahrirlashga urinmoqda.</translation>
 <translation id="7503098128120083822">Brave parollaringizni eksport qilmoqchi.</translation>
 <translation id="8285294305439559616">Brave parollarni ko‘rsatishga urinmoqda. Ruxsat berish uchun Windows platformasidagi parolingizni kiriting.</translation>
+<translation id="8090497651549769448">Brave parollarni nusxalashga urinmoqda. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
+<translation id="3861679447659630159">Brave parollarni tahrirlashga urinmoqda. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
 <translation id="5918095577778020936">Brave parollaringizni eksport qilmoqchi. Ruxsat berish uchun Windows platformasidagi parolingizni kiriting.</translation>
 <translation id="8320964054148936490">Bu kompyuterda allaqachon Brave‘ning so‘nggi versiyasi o‘rnatilgan. Agar dastur ishlamayotgan bo‘lsa, uni o‘chirib qaytadan o‘rnatib ko‘ring.</translation>
 <translation id="7691786510374174420">Noma’lum xatolik tufayli o‘rnatish amalga oshmadi. Agar hozirda Brave ishlab turgan bo‘lsa, iltimos brauzeringizni yoping va qaytadan urinib ko‘ring.</translation>
@@ -188,7 +195,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="3262506503470845422">Brave yordam markazi</translation>
 <translation id="1864557848095568223">Brave yangilanmoqda</translation>
 <translation id="1786715389543715322">Brave yangilanmoqda (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Yangilashni yakunlash uchun Brave brauzerini qayta ishga tushiring.</translation>
+<translation id="7914115000169617076">Deyarli yangilandi! Yangilash tugashi uchun Brave brauzerini qayta ishga tushiring. Inkognito oynalar qayta ochilmaydi.</translation>
 <translation id="8208853227947884571">Siz Brave brauzerining eng oxirgi versiyasidan foydalanyapsiz.</translation>
 <translation id="573759479754913123">Brave OS haqida</translation>
 <translation id="7573289029918943991">Qurilmangiz tizimi yangilanganligini <ph name="LINK_BEGIN"/>Brave OS sozlamalari<ph name="LINK_END"/> orqali bilish mumkin</translation>
@@ -206,6 +213,12 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="8586264863973514035">O‘zgarishlarni tatbi qilish uchun Brave qayta ishga tushirilishi zarur</translation>
 <translation id="7021823858304886493">Brave hisobiga kirishga ruxsat berish</translation>
 <translation id="1649714546770135458">Agar bu faolsizlantirilsa, Gmail kabi Brave Software saytlarida hisobingizga kirganingizda Brave hisobingizga kirilmaydi</translation>
+<translation id="2796517443093885402">Brave maʼlumotlaringizni axborotlar sizib chiqishi va xavfsizlikka oid boshqa muammolardan himoyalaydi</translation>
+<translation id="428541510811554120">Brave yangilanishlar chiqqanini tekshira olmadi. Internet aloqasini tekshiring.</translation>
+<translation id="2633397153656205379">Notanish xatolik tufayli Brave yangilanmadi. <ph name="BEGIN_LINK"/>Bravedagi yangilanish muammolari va xatoliklarni tuzatish.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave parollaringizni faqat hisobingizga kirganingizdan keyin tekshira oladi</translation>
+<translation id="7006260220514217183">Saytlarni xavfsiz kezish yoniq emas. Brave uni yoqishingizni tavsiya qiladi.</translation>
+<translation id="1785833016412082453">Brave kengaytmalaringizni tekshira olmadi. Keyinroq qayta urining.</translation>
 <translation id="9220324636239049437">Bu qurilmadagi 1 elementni tozalaydi. Ma’lumotlaringizni keyinroq olish uchun Brave brauzeriga <ph name="USER_EMAIL"/> sifatida kiring.</translation>
 <translation id="5853262807109651878">Ushbu qurilmadagi <ph name="ITEMS_COUNT"/> ta element butunlay o‘chiriladi. Ma’lumotlaringizni keyinroq olish uchun Brave brauzeriga <ph name="USER_EMAIL"/> sifatida kiring.</translation>
 <translation id="4784414698887946907">Bu qurilmadagi brauzer tarixini tozalaydi. Ma’lumotlaringizni keyinroq olish uchun Brave brauzeriga <ph name="USER_EMAIL"/> sifatida kiring.</translation>

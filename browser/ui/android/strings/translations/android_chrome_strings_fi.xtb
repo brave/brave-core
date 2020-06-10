@@ -3,10 +3,6 @@
 <translationbundle lang="fi">
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="2498359688066513246">Ohjeet ja palaute</translation>
-<translation id="8378714024927312812">Organisaatiosi ylläpitämä</translation>
-<translation id="9019902583201351841">Vanhempiesi hallinnoima</translation>
-<translation id="4645575059429386691">Vanhempasi hallinnoima</translation>
-<translation id="4883854917563148705">Ylläpidettyjä asetuksia ei voi nollata</translation>
 <translation id="4307992518367153382">Perustiedot</translation>
 <translation id="1974060860693918893">Lisäasetukset</translation>
 <translation id="1146678959555564648">Siirry VR-tilaan</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Tämä ominaisuus otetaan käyttöön, kun kirjaudut Brave Software-tilillesi</translation>
 <translation id="10614374240317010">Ei tallenneta</translation>
 <translation id="3098842761938485917">Katso ja ylläpidä <ph name="BEGIN_LINK"/>Brave Software-tilille<ph name="END_LINK"/> tallennettuja salasanoja</translation>
+<translation id="8988028529677883095">Käytä puhelinta suojausavaimena</translation>
 <translation id="8562452229998620586">Tässä näytetään tallennetut salasanasi.</translation>
+<translation id="1303339473099049190">Tätä salasanaa ei löydy. Tarkista oikeinkirjoitus ja yritä uudelleen.</translation>
 <translation id="8084114998886531721">Salasana tallennettu</translation>
 <translation id="2870560284913253234">Sivusto</translation>
 <translation id="8503813439785031346">Käyttäjätunnus</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">Avaa lukitus nähdäksesi salasanan</translation>
 <translation id="6221633008163990886">Avaa lukitus viedäksesi salasanoja.</translation>
 <translation id="230699814587342492">Brave-salasanat</translation>
-<translation id="6075798973483050474">Muokkaa etusivua</translation>
-<translation id="854522910157234410">Avaa tämä sivu</translation>
+<translation id="1925021887439448749">Lisää muokattu verkko-osoite</translation>
 <translation id="8127542551745560481">Muokkaa etusivua</translation>
+<translation id="854522910157234410">Avaa tämä sivu</translation>
+<translation id="5063487983358782016">Braven etusivu</translation>
 <translation id="2482878487686419369">Ilmoitukset</translation>
 <translation id="6255999984061454636">Sisältöehdotukset</translation>
 <translation id="805047784848435650">Selaushistoriasi perusteella</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Tietosuoja</translation>
 <translation id="4991384657077828949">Auta parantamaan Braven suojausta</translation>
 <translation id="1943176487615318915">Vaarallisia sovelluksia ja sivustoja löytääkseen Brave lähettää joidenkin avattujen sivujen URL-osoitteita, rajallisia järjestelmätietoja ja osia sivujen sisällöstä Brave Softwarelle</translation>
-<translation id="3181954750937456830">Selaussuoja (suojaa sinua ja laitettasi vaarallisilta sivustoilta)</translation>
-<translation id="7315322926489145388">Lähettää joidenkin avattujen sivujen URL-osoitteet Brave Softwarelle, kun turvallisuutesi on vaarassa</translation>
+<translation id="3201899458094819285">Selaussuoja (suojaa sinua ja laitettasi vaarallisilta sivustoilta)</translation>
+<translation id="2876369937070532032">Lähettää joidenkin avattujen sivujen URL-osoitteet Brave Softwarelle, kun turvallisuutesi on vaarassa</translation>
 <translation id="3738139272394829648">Koskettamalla hakeminen</translation>
-<translation id="7865281998841143447">Tutustu verkkosivuston aiheisiin poistumatta sivulta. Koskettamalla hakeminen lähettää sanan ja sen asiayhteyden Brave Software Hakuun ja palauttaa määritelmiä, kuvia, hakutuloksia ja muita tietoja.
+<translation id="4749189475009528195">Tutustu verkkosivuston aiheisiin poistumatta sivulta. Koskettamalla hakeminen lähettää sanan ja sen asiayhteyden Brave Software Hakuun ja palauttaa määritelmiä, kuvia, hakutuloksia ja muita tietoja.
 
-Hae mitä tahansa sanaa koskettamalla sitä. Jos haluat muokata hakutermiä, valitse se painamalla pitkään. Jos haluat muokata hakuasi, liu'uta paneeli auki, avaa uusi välilehti koskettamalla laajennuskuvaketta ja kosketa sitten hakukenttää.</translation>
-<translation id="3292859206215580147">Tutustu verkkosivuston aiheisiin poistumatta sivulta. Koskettamalla hakeminen lähettää sanan ja sen asiayhteyden Brave Software Hakuun ja palauttaa määritelmiä, kuvia, hakutuloksia ja muita tietoja.
+Hae napauttamalla sanaa. Jos haluat tarkentaa hakuasi, valitse enemmän tai vähemmän sanoja koskettamalla pitkään. Jos haluat muokata hakua, avaa paneeli, avaa uusi välilehti koskettamalla kuvaketta ja tee muutokset hakukentässä.</translation>
+<translation id="934250516944040460">Tutustu verkkosivuston aiheisiin poistumatta sivulta. Koskettamalla hakeminen lähettää sanan ja sen asiayhteyden Brave Software Hakuun ja palauttaa määritelmiä, kuvia, hakutuloksia ja muita tietoja.
 
-Hae sanaa painamalla sitä pitkään. Jos haluat tarkentaa hakuasi, muuta valintaa. Voit myös liu'uttaa paneelin auki, avata uuden välilehden koskettamalla laajennuskuvaketta ja koskettaa sitten hakukenttää.</translation>
+Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse enemmän tai vähemmän sanoja. Jos haluat muokata hakua, avaa paneeli, avaa uusi välilehti koskettamalla kuvaketta ja tee muutokset hakukentässä.</translation>
 <translation id="6209156474097347789">Koskettamalla hakeminen lähettää valitun sanan ja nykyisen sivun Brave Software-haulle haun kontekstina. Voit poistaa ominaisuuden käytöstä <ph name="BEGIN_LINK"/>asetuksissa<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Salli</translation>
 <translation id="780301667611848630">Ei kiitos</translation>
@@ -206,7 +205,7 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="6295158916970320988">Kaikki sivustot</translation>
 <translation id="8380167699614421159">Tällä sivustolla on häiritseviä tai harhaanjohtavia mainoksia</translation>
 <translation id="1919345977826869612">Mainokset</translation>
-<translation id="3513704683820682405">Lisätty todellisuus</translation>
+<translation id="2025115093177348061">Lisätty todellisuus</translation>
 <translation id="6447842834002726250">Evästeet</translation>
 <translation id="6196640612572343990">Estä kolmannen osapuolen evästeet</translation>
 <translation id="6782111308708962316">Estä kolmannen osapuolen verkkosivustoja tallentamasta ja lukemasta evästetietoja</translation>
@@ -217,6 +216,7 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="1717218214683051432">Liiketunnistimet</translation>
 <translation id="2091887806945687916">Ääni</translation>
 <translation id="2586657967955657006">Leikepöytä</translation>
+<translation id="4670064810192446073">Virtuaalitodellisuus</translation>
 <translation id="6320088164292336938">Värinä</translation>
 <translation id="4226663524361240545">Laite voi väristä ilmoitusten yhteydessä.</translation>
 <translation id="1446450296470737166">Salli MIDI-laitteiden täysi käyttöoik.</translation>
@@ -235,6 +235,7 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="2537296579376733324">Kaikki evästeet, vain tällä sivustolla</translation>
 <translation id="7882806643839505685">Salli tietyn sivuston äänet.</translation>
 <translation id="4468959413250150279">Mykistä tietyn sivuston äänet.</translation>
+<translation id="7828557259026017104">Evästeet ovat avaamiesi verkkosivustojen luomia tiedostoja. Niiden avulla sivustot muistavat valintasi. Kolmannen osapuolen evästeitä luovat muut sivustot. Nämä sivustot omistavat mainoksia, kuvia tai muita sisältöjä, joita käytetään avaamallasi sivulla.</translation>
 <translation id="1994173015038366702">Sivuston URL-osoite</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Käyttö</translation>
@@ -246,10 +247,14 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="8116925261070264013">Mykistetty</translation>
 <translation id="8300705686683892304">Sovelluksen ylläpitämät</translation>
 <translation id="6192792657125177640">Poikkeukset</translation>
-<translation id="257931822824936280">Laajennettu – tiivistä klikkaamalla.</translation>
-<translation id="5100237604440890931">Tiivistetty – laajenna klikkaamalla.</translation>
 <translation id="857943718398505171">Sallittu (suositus)</translation>
 <translation id="2913331724188855103">Salli sivustojen tallentaa ja lukea evästetietoja (suositus).</translation>
+<translation id="2212565012507486665">Salli evästeet</translation>
+<translation id="8648684608605749476">Kolmannen osapuolen evästeiden estäminen incognito-tilassa</translation>
+<translation id="2687403674020088961">Estä kaikki evästeet (ei suositella)</translation>
+<translation id="1044891598689252897">Sivustot toimivat normaalisti</translation>
+<translation id="7993619969781047893">Joidenkin sivustojen ominaisuudet saattavat lakata toimimasta</translation>
+<translation id="1509960214886564027">Useiden sivustojen ominaisuudet saattavat lakata toimimasta</translation>
 <translation id="5335288049665977812">Anna kaikkien sivustojen käyttää JavaScriptiä (suositus).</translation>
 <translation id="5527111080432883924">Pyydä lupaa, kun sivustot yrittävät lukea tekstiä ja kuvia leikepöydältä (suositus)</translation>
 <translation id="6912998170423641340">Estä sivustoja lukemasta tekstiä ja kuvia leikepöydältä</translation>
@@ -259,12 +264,12 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="2107397443965016585">Kysy, saavatko sivustot toistaa suojattua sisältöä (suositus)</translation>
 <translation id="2910701580606108292">Kysy, saavatko sivustot toistaa suojattua sisältöä</translation>
 <translation id="757524316907819857">Estä sivustoja toistamasta suojattua sisältöä</translation>
-<translation id="4935305910887312910">Kysy, saavatko sivustot nähdä kameran sijainnin tai hahmottaa huoneesi (suositus)</translation>
-<translation id="884828189055900810">Estä sivustoja näkemästä kameran sijaintia ja hahmottamasta huonettasi</translation>
+<translation id="2182457891543959921">Kysy, saavatko sivustot luoda 3D-kartan ympäristöstäsi tai seurata kameran asentoa (suositus)</translation>
+<translation id="3538390592868664640">Estä sivustoja luomasta 3D-karttaa ympäristöstäsi tai seuraamasta kameran asentoa</translation>
 <translation id="5710871682236653961">Kysy, saavatko sivustot lähettää ja vastaanottaa tietoja, kun kosketat NFC-laitteita (suositus)</translation>
 <translation id="7572498721684305250">Estä sivustoja lähettämästä ja vastaanottamasta tietoja, kun kosketat NFC-laitteita</translation>
-<translation id="3312292613668865961">Kysy, saavatko sivustot pääsyn virtuaalitodellisuuslaitteisiisi ja ‑dataasi (suositus)</translation>
-<translation id="8698438463325761328">Estä sivustojen pääsy virtuaalitodellisuuslaitteisiisi ja ‑dataasi</translation>
+<translation id="4887024562049524730">Kysy, saavatko sivustot käyttää virtuaalitodellisuuslaitteitasi ja ‑dataasi (suositus)</translation>
+<translation id="6439114592976064011">Estä sivustoja käyttämästä virtuaalitodellisuuslaitteitasi ja ‑dataasi</translation>
 <translation id="3277252321222022663">Anna sivustojen käyttää tunnistimia (suositus)</translation>
 <translation id="5048398596102334565">Anna sivustojen käyttää liiketunnistimien lukemia (suositus)</translation>
 <translation id="8816026460808729765">Estä sivustoja käyttämästä tunnistimia</translation>
@@ -414,6 +419,7 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="4062305924942672200">Oikeudelliset tiedot</translation>
 <translation id="4256782883801055595">Avoimen lähdekoodin käyttöluvat</translation>
 <translation id="1138681184697033370">Braven käyttöehdot</translation>
+<translation id="2368444735104192323">Brave Software Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot</translation>
 <translation id="7392539049993970338">Braven tietosuojailmoitus</translation>
 <translation id="2968755619301702150">Varmennetiedot</translation>
 <translation id="1360432990279830238">Kirjaudu ulos ja lopeta synkronointi?</translation>
@@ -432,6 +438,8 @@ Brave Software-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja 
 <translation id="8636825310635137004">Ota synkronointi käyttöön, niin voit käyttää välilehtiäsi kaikilla laitteilla.</translation>
 <translation id="3269956123044984603">Ota tietojen automaattinen synkronointi käyttöön Androidin tiliasetuksissa, niin voit käyttää välilehtiäsi kaikilla laitteilla.</translation>
 <translation id="5157964048453367290">Muilla laitteilla Bravessa avaamasi välilehdet näytetään täällä.</translation>
+<translation id="5795872532621730126">Hae ja selaa</translation>
+<translation id="9086302186042011942">Synkronoidaan</translation>
 <translation id="4684427112815847243">Synkronoi kaikki</translation>
 <translation id="2709516037105925701">Automaattinen täyttö</translation>
 <translation id="8820817407110198400">Kirjanmerkit</translation>
@@ -549,10 +557,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="2532336938189706096">Verkkonäkymä</translation>
 <translation id="6005538289190791541">Salasanaehdotus</translation>
 <translation id="4634124774493850572">Käytä salasanaa</translation>
-<translation id="8285489906452138776">Brave tarvitsee oikeuden käyttää kameraasi tällä sivustolla.</translation>
-<translation id="320189792589364011">Brave tarvitsee oikeuden käyttää mikrofoniasi tällä sivustolla.</translation>
-<translation id="7988136689212463100">Brave tarvitsee oikeuden käyttää kameraasi ja mikrofoniasi tällä sivustolla.</translation>
-<translation id="4931190655840828017">Brave tarvitsee oikeuden käyttää sijaintiasi, jotta se voidaan jakaa tämän sivuston kanssa.</translation>
 <translation id="3088191967551450609">Brave tarvitsee tallennustilan käyttöoikeuden tiedostojen lataamiseen.</translation>
 <translation id="8942627711005830162">Avaa uudessa ikkunassa</translation>
 <translation id="4195643157523330669">Avaa uudelle välilehdelle</translation>
@@ -600,8 +604,9 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="2146738493024040262">Avaa Instant-sovellus</translation>
 <translation id="7016516562562142042">Sallittu nykyisellä hakukoneella</translation>
 <translation id="6177111841848151710">Estetty nykyiseltä hakukoneelta</translation>
-<translation id="145097072038377568">Poistettu käytöstä Android-asetuksissa</translation>
+<translation id="7000754031042624318">Poistettu käytöstä Android-asetuksissa</translation>
 <translation id="8007176423574883786">Ei käytössä tällä laitteella</translation>
+<translation id="6864395892908308021">Tämä laite ei lue NFC-dataa</translation>
 <translation id="164269334534774161">Katselet sivun offline-kopiota, joka luotiin <ph name="CREATION_TIME"/>.</translation>
 <translation id="4594952190837476234">Offline-sivu vastaa tilannetta <ph name="CREATION_TIME"/> ja saattaa poiketa nykyisestä verkkoversiosta.</translation>
 <translation id="8840953339110955557">Tämä sivu saattaa poiketa verkossa olevasta versiosta.</translation>
@@ -706,10 +711,10 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="3244271242291266297">KK</translation>
 <translation id="605721222689873409">VV</translation>
 <translation id="724102042129299115">Braven ensimmäinen käyttökerta</translation>
-<translation id="2700285883409956633">Käyttämällä sovellusta hyväksyt Braven <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>tietosuojailmoituksen<ph name="END_LINK2"/>.</translation>
-<translation id="1640714894372474981">Käyttämällä tätä sovellusta hyväksyt Braven <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>tietosuojailmoituksen<ph name="END_LINK2"/> sekä <ph name="BEGIN_LINK3"/>Family Linkin kautta hallittavia Brave Software-tilejä koskevan tietosuojailmoituksen<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt Braven <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>tietosuojailmoituksen<ph name="END_LINK2"/>.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt Braven <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>tietosuojailmoituksen<ph name="END_LINK2"/> sekä <ph name="BEGIN_LINK3"/>Family Linkin kautta hallittavia Brave Software-tilejä koskevan tietosuojailmoituksen<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Käyttämällä Bravea hyväksyt <ph name="BEGIN_LINK1"/>Brave Softwaren käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Käyttämällä Bravea hyväksyt <ph name="BEGIN_LINK1"/>Brave Softwaren käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>. Myös <ph name="BEGIN_LINK3"/>Family Linkillä ylläpidettyjen Brave Software-tilien tietosuojailmoitusta<ph name="END_LINK3"/> sovelletaan.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt <ph name="BEGIN_LINK1"/>Brave Softwaren käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt <ph name="BEGIN_LINK1"/>Brave Softwaren käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>. Myös <ph name="BEGIN_LINK3"/>Family Linkillä ylläpidettyjen Brave Software-tilien tietosuojailmoitusta<ph name="END_LINK3"/> sovelletaan.</translation>
 <translation id="673197144963363525">Auta parantamaan Bravea lähettämällä käyttötilastoja ja virheraportteja Brave Softwarelle.</translation>
 <translation id="3518985090088779359">Hyväksy ja jatka</translation>
 <translation id="7207456302801184289">Tervetuloa Braveen</translation>
@@ -814,7 +819,7 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="6963766334940102469">Poista kirjanmerkkejä</translation>
 <translation id="4351244548802238354">Sulje ikkuna</translation>
 <translation id="451872707440238414">Hae kirjanmerkeistä</translation>
-<translation id="8901170036886848654">Kirjanmerkkejä ei löytynyt.</translation>
+<translation id="6447558397796644647">Tätä kirjanmerkkiä ei löydy. Tarkista oikeinkirjoitus tai lisää uusi kirjanmerkki.</translation>
 <translation id="6404511346730675251">Muokkaa kirjanmerkkiä</translation>
 <translation id="3894427358181296146">Lisää kansio</translation>
 <translation id="5327248766486351172">Nimi</translation>
@@ -829,6 +834,8 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="6811034713472274749">Sivu on valmis näytettäväksi</translation>
 <translation id="4561979708150884304">Ei yhteyttä</translation>
 <translation id="8274165955039650276">Näytä lataukset</translation>
+<translation id="4320177379694898372">Ei internetyhteyttä</translation>
+<translation id="6397616442223433927">Verkkoyhteys palautettu</translation>
 <translation id="2082238445998314030">Tulos <ph name="RESULT_NUMBER"/>/<ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Ei tuloksia</translation>
 <translation id="981121421437150478">Offline</translation>
@@ -845,9 +852,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="6773423637732432200">Bravea ei voi päivittää. Lisää vaihtoehtoja</translation>
 <translation id="1383876407941801731">Haku</translation>
 <translation id="3328801116991980348">Tietoja sivustosta</translation>
-<translation id="5391532827096253100">Sivustolle muodostamasi yhteys ei ole turvallinen. Sivuston tiedot</translation>
-<translation id="6206551242102657620">Yhteys on turvallinen. Sivuston tiedot</translation>
-<translation id="6963642900430330478">Tämä sivu on vaarallinen. Sivuston tiedot</translation>
 <translation id="9070377983101773829">Aloita puhehaku</translation>
 <translation id="4968908871398201967">Yksityinen tila</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> avoin välilehti, vaihda välilehteä napauttamalla}other{<ph name="OPEN_TABS_MANY"/> avointa välilehteä, vaihda välilehteä napauttamalla}}</translation>
@@ -944,6 +948,11 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5197729504361054390"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> saa valitsemasi yhteystiedot.</translation>
 <translation id="1779089405699405702">Kuvien dekooderi</translation>
 <translation id="8067883171444229417">Toista video</translation>
+<translation id="5876056640971328065">Keskeytä video</translation>
+<translation id="3594780231884063836">Mykistä video</translation>
+<translation id="783819812427904514">Poista videon mykistys</translation>
+<translation id="3114012059975132928">Videosoitin</translation>
+<translation id="5489227211564503167">Kulunut aika: <ph name="ELAPSED_TIME"/>/<ph name="TOTAL_TIME"/></translation>
 <translation id="6560414384669816528">Käytä Sogouta</translation>
 <translation id="5406914950576900927">Brave voi käyttää <ph name="BEGIN_BOLD"/>Sogouta<ph name="END_BOLD"/> hakujen tekemiseen Kiinassa. Voit muokata tätä <ph name="BEGIN_LINK"/>Asetuksissa<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Käytä Brave Softwarea</translation>
@@ -987,6 +996,7 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="1875543012935658554">Avaa Brave uudelleen.</translation>
 <translation id="79859296434321399">Asenna ARCore, niin voit nähdä AR-sisältöä.</translation>
 <translation id="8558485628462305855">Päivitä ARCore, niin voit nähdä AR-sisältöä.</translation>
+<translation id="3513704683820682405">Lisätty todellisuus</translation>
 <translation id="6410973561433500075">Siirrytäänkö AR-tilaan (<ph name="DOMAIN"/>)?</translation>
 <translation id="3849365399446680203">Kun olet AR-tilassa, sivusto voi
 • luoda 3D-kartan ympäristöstäsi
@@ -1035,6 +1045,8 @@ Vain sinä voit nähdä, mitä kamera kuvaa. Sivusto ei voi nähdä kamerasi kuv
 <translation id="9028914725102941583">Ota synkronointi käyttöön, niin voit jakaa sisältöä laitteiden välillä</translation>
 <translation id="6162454065885854378">Jos haluat jakaa jotakin puhelimelta toiselle laitteelle, ota synkronointi käyttöön molempien laitteiden Brave-asetuksista</translation>
 <translation id="6084271560289605378">Siirry Brave-asetuksiin</translation>
+<translation id="2746024117903470217">Jos haluat jakaa tämän sivun toiselle laitteelle, ota synkronointi käyttöön toisen laitteen Brave-asetuksista</translation>
+<translation id="7760665516427405230">Jos haluat jakaa tämän sivun toiselle laitteelle, ota synkronointi käyttöön Braven asetuksista</translation>
 <translation id="2318045970523081853">Soita napauttamalla</translation>
 <translation id="9209888181064652401">Puheluiden soittaminen ei onnistu</translation>
 <translation id="2860954141821109167">Varmista, että puhelinsovellus on käytössä tällä laitteella</translation>
@@ -1090,11 +1102,17 @@ Vain sinä voit nähdä, mitä kamera kuvaa. Sivusto ei voi nähdä kamerasi kuv
 <translation id="6201345951596836663">Linkki kopioitu</translation>
 <translation id="6597891566292541626">Aseta QR- tai viivakoodi kehykseen.</translation>
 <translation id="3140134512074889489">Ota kamera käyttöön lukeaksesi QR-koodin</translation>
+<translation id="5149323899804758325">Jos haluat lukea QR-koodin, muuta asetuksia niin, että Brave voi käyttää kameraa</translation>
 <translation id="2359808026110333948">Jatka</translation>
+<translation id="8233540874193135768">Jos haluat lukea QR-koodin, käytä laitetta, jossa on kamera.</translation>
+<translation id="6297765934698848803">Laitettasi ylläpitävä organisaatio on poistanut kamerasi käytöstä.</translation>
+<translation id="4321739720395210191">Kameraa ei voi avata. Käynnistä laite uudelleen ja yritä sitten.</translation>
+<translation id="234265804618409743">Kameraa ei voi avata. Jotain meni pieleen.</translation>
+<translation id="7173114856073700355">Avaa asetukset</translation>
+<translation id="1311657260431405215">Tämä QR-koodi ei ole URL-osoite: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Brave Softwaren ilmoitusalusta</translation>
 <translation id="8516012719330875537">Kuvanmuokkausohjelma</translation>
-<translation id="6092062101542170135">Laita NFC päälle Android-laitteella jatkaaksesi</translation>
-<translation id="5860491529813859533">Ota käyttöön</translation>
 <translation id="8926666909099850184">NFC on pois päältä tällä laitteella. Voit laittaa sen päälle <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Siirrytäänkö VR-tilaan (<ph name="DOMAIN"/>)?</translation>
 <translation id="4353114845960720315">Kun olet VR-tilassa, sivusto voi saada tietää</translation>

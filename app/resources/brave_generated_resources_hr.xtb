@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Izradi novi profil</translation>
 <translation id="2666990579225592931">Otvori prozor u načinu rada za goste</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dopušteno u pregledniku Brave.</translation>
-<translation id="7450557937477381864">Zatvori Chrome</translation>
-<translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
 <translation id="8926389886865778422">Više me ne pitaj</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
 
 Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtke Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
-<translation id="453977518730680921">Automatski reproduciraj medije</translation>
 <translation id="410351446219883937">Automatska reprodukcija</translation>
 <translation id="2240268017737062801">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije</translation>
 <translation id="3371702087847741961">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije (preporučeno)</translation>
@@ -39,11 +36,14 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
 <translation id="1520361618554057102">Uvijek prikaži knjižne oznake na stranici Nova kartica</translation>
 <translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
+<translation id="597020512043916976">Prikaži glavna mrežna mjesta u prijedlozima koji se samostalno ispunjavanju</translation>
+<translation id="264150068416846820">Prikaži glavna mrežna mjesta Brave u prijedlozima koji se samostalno ispunjavanju</translation>
 <translation id="7781069478569868053">Stranica Nova kartica</translation>
 <translation id="2467749191278759605">Prilagodite svoju nadzornu ploču Brave</translation>
 <translation id="1717331825806276156">Pozadinske slike</translation>
 <translation id="1820041496463124489">Sponzorirane slike</translation>
 <translation id="8173998484743827990">Stanja Brave</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Najpopularnija mrežna mjesta</translation>
 <translation id="1776831331757823105">Sat</translation>
@@ -72,23 +72,22 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="7390783310074170337">Zadani prikaz</translation>
 <translation id="130615081792797568">Jednostavni prikaz</translation>
 <translation id="2360360976480535628">Napredni prikaz</translation>
-<translation id="5709627087332022422">Blokiraj elemente za praćenje na više mjesta</translation>
-<translation id="6447842834002726250">Kolačići</translation>
-<translation id="6522412052085018663">Pritiskanje prstima</translation>
+<translation id="2133317862976486547">Blokiraj elemente za praćenje i oglase</translation>
+<translation id="4385707520896576447">Kolačići</translation>
+<translation id="4978786495456601191">Pritiskanje prstima</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
-<translation id="519861640102428255">Pogledajte &amp;amp; osjetite</translation>
+<translation id="519861640102428255">Pogledajte &amp; osjetite</translation>
 <translation id="4800195524776354947">Prikaži broj blokiranih stavki na ikoni Štitnici</translation>
 <translation id="7498695072878479744">Dopusti gumbe za prijavu u uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
-<translation id="4699812599455071925">Blokiraj samo kolačiće za praćenje na više mjesta</translation>
-<translation id="5657156137487675418">Dopusti sve kolačiće</translation>
-<translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
-<translation id="5963670684159057574">Blokiraj pokušaje pritiskanja prstima na više mjesta</translation>
-<translation id="769702552748212954">Dopusti sve pokušaje pritiskanja prstima</translation>
-<translation id="4540198958192073185">Blokiraj sve izrade digitalnog otiska</translation>
+<translation id="4078738236287221428">Blokirani elementi za praćenje i oglasi (napadno)</translation>
+<translation id="7740996059027112821">Blokirani elementi za praćenje i oglasi (standardno)</translation>
+<translation id="4176463684765177261">Dopusti sve elemente za praćenje i oglase</translation>
+<translation id="5770288601196774623">Blokiraj samo kolačiće za praćenje na više mjesta</translation>
+<translation id="3587482841069643663">Blokiraj sve kolačiće</translation>
 <translation id="8942080017911802454">Pravila obrade IP-a sučelja WebRTC</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="8798099450830957504">Zadano</translation>
@@ -110,6 +109,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="7701040980221191251">Nema</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Pružatelj Web3 za korištenje stavkom Dapps</translation>
+<translation id="5913089932885076110">Učitaj kriptovalutne novčanike na početku</translation>
 <translation id="6554397389149987360">Rabi komponentu Hangouts za omogućavanje dijeljenja zaslona i drugih značajki u pregledniku.</translation>
 <translation id="1765684547504191670">Upotrebljava se komponenta Medijski usmjerivač kako bi se omogućila značajka Chromecast u pregledniku.</translation>
 <translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete Brave.</translation>
@@ -171,10 +171,13 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="6469509880167172749">Automatsko šalji u potpunosti privatno analiziranje proizvoda poduzeću Brave</translation>
 <translation id="7090566321964540749">Ovim se anonimnim informacijama omogućava poduzeću Brave procjenjivanje ukupnog korištenja određenim značajkama.</translation>
 <translation id="9111960429693394744">Želite li upotrebljavati Braveove novčanike za kriptovalute ili MetaMask za stavku Dapps?</translation>
+<translation id="8721775358057000783">Želite li pokrenuti Braveove kriptovalutne novčanike za podršku web3 na ovoj stranici?</translation>
 <translation id="7583735190612229830">Postavite kriptovalutne novčanike koji ostvaruju interakciju s ovom aplikacijom, a koji se drugima sviđaju.</translation>
-<translation id="8337117349965899723">Upotrijebi kriptovalutne novčanike</translation>
+<translation id="4823406846571523661">Postavi kriptovalutne novčanike</translation>
 <translation id="5756155765711979898">Upotrijebi značajku MetaMask</translation>
 <translation id="6754134632841262799">POSTAVLJANJE</translation>
+<translation id="8199661191594897555">Pokreni kriptovalutne novčanike i ponovno učitaj</translation>
+<translation id="8428213095426709021">Postavke</translation>
 <translation id="4552520379838695057">Ispričavamo se, ali stranica nedostaje.</translation>
 <translation id="2609895996619941644">Želite li provjeriti je li spremljena inačica dostupna na stavci Wayback Machine?</translation>
 <translation id="8053093028263274061">Ispričavamo se, ali nema dostupne sačuvane inačice.</translation>
@@ -185,8 +188,10 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="2336228925368920074">Označi sve kartice...</translation>
 <translation id="796831669370432378">Za dodavanje knjižne oznake kliknite na gumb za knjižnu oznaku pokraj adresne trake</translation>
 <translation id="4989337484121655457">Zahtijeva se puni pristup disku</translation>
-<translation id="8025559074845816210">Brave treba puni pristup disku za uvoženje vaših knjiških oznaka iz preglednika Safari.</translation>
+<translation id="5501596373144334003">Preglednikom Brave zahtijeva se puni pristup disku za uvoženje vaših knjiških oznaka i povijesti iz preglednika Safari.</translation>
 <translation id="8515328844674404333">Saznajte kako ustupiti puni pristup disku u svojim Postavkama sustava.</translation>
 <translation id="6414878884710400018">Otvori postavke sustava</translation>
 <translation id="5570470519803062774">Postavke mjesta i štita</translation>
+<translation id="8487693399751278191">Sada uvezite knjiške oznake...</translation>
+<translation id="2557899542277210112">Za brzo pristupanje postavite svoje knjiške oznake ovdje na traku za knjiške oznake.</translation>
 </translationbundle>

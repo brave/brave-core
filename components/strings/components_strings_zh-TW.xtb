@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">隱私權</translation>
 <translation id="3061707000357573562">修補服務</translation>
 <translation id="1914326953223720820">解壓縮服務</translation>
-<translation id="1623104350909869708">防止這個網頁產生其他對話方塊</translation>
-<translation id="2677748264148917807">離開</translation>
-<translation id="5556459405103347317">重新載入</translation>
 <translation id="2359808026110333948">繼續</translation>
 <translation id="4378154925671717803">電話</translation>
 <translation id="8131740175452115882">確認</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">無</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="9038649477754266430">使用預測查詢字串服務，讓系統更快載入網頁</translation>
+<translation id="2344028582131185878">自動下載</translation>
+<translation id="3414952576877147120">空間大小：</translation>
 <translation id="4850886885716139402">檢視</translation>
 <translation id="7180611975245234373">重新整理</translation>
-<translation id="1426410128494586442">是</translation>
-<translation id="4250680216510889253">否</translation>
 <translation id="4522570452068850558">詳情</translation>
 <translation id="3586931643579894722">隱藏詳細資訊</translation>
+<translation id="5556459405103347317">重新載入</translation>
 <translation id="614940544461990577">建議做法：</translation>
 <translation id="4943872375798546930">沒有結果</translation>
 <translation id="8688672835843460752">可使用</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">搜尋記錄</translation>
 <translation id="4756388243121344051">記錄(&amp;H)</translation>
 <translation id="1644574205037202324">紀錄</translation>
+<translation id="1623104350909869708">防止這個網頁產生其他對話方塊</translation>
+<translation id="2677748264148917807">離開</translation>
 <translation id="3950820424414687140">登入</translation>
 <translation id="8286036467436129157">登入</translation>
 <translation id="8503813439785031346">使用者名稱</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">剪貼簿</translation>
 <translation id="6059925163896151826">USB 裝置</translation>
 <translation id="7638605456503525968">序列埠</translation>
+<translation id="3784372983762739446">藍牙裝置</translation>
 <translation id="2215727959747642672">檔案編輯</translation>
 <translation id="6545864417968258051">藍牙掃描</translation>
 <translation id="534295439873310000">NFC 裝置</translation>
-<translation id="4943703118917034429">虛擬實境</translation>
-<translation id="3513704683820682405">擴增實境</translation>
+<translation id="4670064810192446073">虛擬實境</translation>
+<translation id="2025115093177348061">擴增實境</translation>
 <translation id="5039804452771397117">允許</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="57838592816432529">靜音</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">網站顯示干擾性或誤導性廣告</translation>
 <translation id="7878562273885520351">你的密碼可能已經外洩</translation>
 <translation id="1089439967362294234">變更密碼</translation>
-<translation id="9008201768610948239">略過</translation>
 <translation id="1186201132766001848">檢查密碼</translation>
+<translation id="9008201768610948239">略過</translation>
+<translation id="808894953321890993">變更密碼</translation>
 <translation id="5979084224081478209">檢查密碼</translation>
+<translation id="6107012941649240045">核發對象</translation>
+<translation id="5030338702439866405">發行者</translation>
+<translation id="5826507051599432481">一般名稱 (CN)</translation>
+<translation id="6898699227549475383">組織 (O)</translation>
+<translation id="3308006649705061278">組織單位 (OU)</translation>
+<translation id="8705331520020532516">序號</translation>
+<translation id="1902576642799138955">有效期間</translation>
+<translation id="5895187275912066135">發行日期</translation>
+<translation id="4121428309786185360">到期日</translation>
+<translation id="4154664944169082762">指紋</translation>
+<translation id="7238585580608191973">SHA-256 指紋</translation>
+<translation id="5209518306177824490">SHA-1 指紋</translation>
+<translation id="6786747875388722282">擴充功能</translation>
+<translation id="7240120331469437312">憑證主體替代名稱</translation>
 <translation id="10614374240317010">一律不儲存</translation>
 <translation id="5869522115854928033">已儲存的密碼</translation>
 <translation id="230699814587342492">Brave 密碼</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">橘色</translation>
 <translation id="1555130319947370107">藍色</translation>
 <translation id="138218114945450791">淺藍</translation>
+<translation id="5612720917913232150"><ph name="URL"/> 要求使用電腦的位置資訊</translation>
+<translation id="4733082559415072992"><ph name="URL"/> 要求使用裝置的位置資訊</translation>
+<translation id="4677585247300749148"><ph name="URL"/> 要求回應協助工具事件</translation>
+<translation id="3461266716147554923"><ph name="URL"/> 要求讀取已複製到剪貼簿的文字和圖片</translation>
+<translation id="131405271941274527"><ph name="URL"/> 要求在你將手機貼近 NFC 裝置時傳送及接收資訊</translation>
+<translation id="5146995429444047494">已封鎖 <ph name="ORIGIN"/> 的通知</translation>
+<translation id="1195558154361252544">除了你允許的網站之外，自動封鎖所有網站的通知</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> 要求使用麥克風</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> 要求使用攝影機</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> 要求傳送通知給你</translation>
+<translation id="6910240653697687763"><ph name="URL"/> 要求取得 MIDI 裝置的完整控制權限</translation>
+<translation id="503498442187459473"><ph name="HOST"/> 要求使用攝影機和麥克風</translation>
+<translation id="8282947398454257691">存取您的專屬裝置識別碼</translation>
+<translation id="8329449853370113380"><ph name="URL"/> 要求播放受保護的內容。Brave Software 會驗證你裝置的識別資訊。</translation>
+<translation id="2650609753175229582"><ph name="URL"/> 想要播放受到保護的內容。Brave Software 會驗證你的裝置身分，這個網站可能也會存取你的裝置身分。</translation>
+<translation id="3016780570757425217">存取您的位置資訊</translation>
+<translation id="7221855153210829124">顯示通知</translation>
+<translation id="8606726445206553943">使用您的 MIDI 裝置</translation>
+<translation id="7409836189476010449">執行 Flash</translation>
+<translation id="7438976808740265764">2020 年 12 月之後，系統將停止支援 Flash Player。</translation>
+<translation id="4761104368405085019">使用你的麥克風</translation>
+<translation id="9150045010208374699">使用你的相機</translation>
+<translation id="4953689047182316270">回應協助工具活動</translation>
+<translation id="6116338172782435947">讀取已複製到剪貼簿的文字和圖片</translation>
+<translation id="5804427196348435412">使用 NFC 裝置</translation>
+<translation id="3194737229810486521"><ph name="URL"/> 要求在你的裝置上永久儲存資料</translation>
+<translation id="1030706264415084469"><ph name="URL"/> 要求在你的裝置上永久儲存大量資料</translation>
+<translation id="1712552549805331520"><ph name="URL"/> 要求在你的本機電腦上永久儲存資料</translation>
+<translation id="1997484222658892567"><ph name="URL"/> 要求在你的本機電腦上永久儲存大量資料</translation>
+<translation id="7648992873808071793">在這個裝置上儲存檔案</translation>
 <translation id="4813512666221746211">網路錯誤</translation>
 <translation id="3380365263193509176">未知的錯誤</translation>
 <translation id="5565735124758917034">管理中</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">目前使用者</translation>
 <translation id="6965978654500191972">裝置</translation>
 <translation id="4728558894243024398">平台</translation>
+<translation id="1426410128494586442">是</translation>
+<translation id="4250680216510889253">否</translation>
 <translation id="2380886658946992094">法律條款</translation>
 <translation id="1588438908519853928">一般</translation>
 <translation id="1974060860693918893">進階</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">未知</translation>
 <translation id="9170848237812810038">取消(&amp;U)</translation>
 <translation id="2972581237482394796">重做(&amp;R)</translation>
-<translation id="6786747875388722282">擴充功能</translation>
 <translation id="5804241973901381774">權限</translation>
 <translation id="8004582292198964060">瀏覽器</translation>
 </translationbundle>

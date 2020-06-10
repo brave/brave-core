@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Pomagajte izboljšati Brave – Googlu pošiljajte poročila o zrušitvah in ta dokument: <ph name="UMA_LINK"/>.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Prijava v omrežje – Brave</translation>
+<translation id="8745514854244955877">Brave – Prijava v omrežje – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Prijava v omrežje</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – različica beta Bravea</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – različica Bravea za razvijalce</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – delovna različica Bravea</translation>
@@ -44,8 +47,12 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="5785919770853225148">Brave bo shranil to geslo v Brave Software Računu. Ni si vam ga treba zapomniti.</translation>
 <translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
 <translation id="113959764510199339">Brave poskuša prikazati gesla.</translation>
+<translation id="96347285368592620">Brave poskuša kopirati gesla.</translation>
+<translation id="2953892977076487219">Brave poskuša urejati gesla.</translation>
 <translation id="7503098128120083822">Brave želi izvoziti gesla.</translation>
 <translation id="8285294305439559616">Brave poskuša prikazati gesla. Če želite omogočiti to, vnesite geslo za Windows.</translation>
+<translation id="8090497651549769448">Brave poskuša kopirati gesla. Če želite to omogočiti, vnesite geslo za Windows.</translation>
+<translation id="3861679447659630159">Brave poskuša urejati gesla. Če želite to omogočiti, vnesite geslo za Windows.</translation>
 <translation id="5918095577778020936">Brave želi izvoziti gesla. Če želite omogočiti to, vnesite geslo za Windows.</translation>
 <translation id="8320964054148936490">Ta računalnik že ima novejšo različico Bravea. Če programska oprema ne deluje, odstranite Brave in poskusite znova.</translation>
 <translation id="7691786510374174420">Namestitev ni bila izvedena zaradi nedoločene napake. Če se Brave trenutno izvaja, ga zaprite in poskusite znova.</translation>
@@ -192,7 +199,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="3262506503470845422">Pomoč za Brave</translation>
 <translation id="1864557848095568223">Posodabljanje Bravea</translation>
 <translation id="1786715389543715322">Posodabljanje Bravea (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Samo še malo. Znova zaženite Brave, da dokončate posodobitev.</translation>
+<translation id="7914115000169617076">Skoraj je posodobljen. Znova zaženite Brave, da dokončate posodobitev. Okna brez beleženja dejavnosti se ne bodo znova odprla.</translation>
 <translation id="8208853227947884571">Brave je posodobljen</translation>
 <translation id="573759479754913123">O sistemu Brave OS</translation>
 <translation id="7573289029918943991">Če želite preveriti, ali je naprava posodobljena, odprite <ph name="LINK_BEGIN"/>nastavitve sistema Brave<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8586264863973514035">Če želite uporabiti spremembe, znova zaženite Brave</translation>
 <translation id="7021823858304886493">Omogočanje prijave v Brave</translation>
 <translation id="1649714546770135458">Če to izklopite, se lahko prijavite na Googlovih spletnih mestih, kot je Gmail, ne da bi se morali prijaviti v Brave</translation>
+<translation id="2796517443093885402">Brave vas lahko varuje pred podatkovnimi kršitvami, zlonamernimi razširitvami in drugim</translation>
+<translation id="428541510811554120">Brave ne more preveriti, ali so na voljo posodobitve. Poskusite preveriti internetno povezavo.</translation>
+<translation id="2633397153656205379">Brave se ni posodobil, prišlo je do napake. <ph name="BEGIN_LINK"/>Odpravite težave s posodobitvijo Bravea in neuspelimi posodobitvami Bravea.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave ne more preveriti gesel, ker niste prijavljeni</translation>
+<translation id="7006260220514217183">Varno brskanje je izklopljeno. Brave priporoča, da ga vklopite.</translation>
+<translation id="1785833016412082453">Brave ne more preveriti razširitev. Poskusite pozneje.</translation>
 <translation id="9220324636239049437">S tem bo iz te naprave izbrisan 1 element. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">S tem bodo iz te naprave izbrisani podatki brskanja. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>

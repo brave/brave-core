@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Skapa en ny profil</translation>
 <translation id="2666990579225592931">Öppna ett gästfönster</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
-<translation id="7450557937477381864">Stäng Brave</translation>
-<translation id="7008934821596358692">Stäng alla Brave fönster för att göra klart importen.</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="3699882589215410581">Installera och kör Wildwine</translation>
 <translation id="8926389886865778422">Fråga inte igen.</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
 
 Genom att installera detta tillägg godkänner du användarvillkoren för Google Widevine. Du accepterar att Brave inte kan hållas ansvarig för skada eller förlust till följd av din användning av Google Widevine.</translation>
-<translation id="453977518730680921">Spela upp media automatiskt</translation>
 <translation id="410351446219883937">Autospela</translation>
 <translation id="2240268017737062801">Fråga när en sida vill autospela media</translation>
 <translation id="3371702087847741961">Fråga när en webbplats vill autospela media (rekommenderas)</translation>
@@ -39,11 +36,14 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7635711399568194460">Döljer knappen Brave Rewards i adressfältet när Brave Rewards inte är aktiverat</translation>
 <translation id="1520361618554057102">Visa alltid bokmärken i en Ny flik</translation>
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
+<translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
+<translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="2467749191278759605">Anpassa din översikt i Brave</translation>
 <translation id="1717331825806276156">Bakgrundsbilder</translation>
 <translation id="1820041496463124489">Sponsrade bilder</translation>
 <translation id="8173998484743827990">Brave-statistik</translation>
+<translation id="5551238871320268996">Brave tillsammans</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Toppsajter</translation>
 <translation id="1776831331757823105">Klocka</translation>
@@ -72,23 +72,22 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7390783310074170337">Standardvy</translation>
 <translation id="130615081792797568">Enkel vy</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
-<translation id="5709627087332022422">Blockera cross-site-spårare</translation>
-<translation id="6447842834002726250">Kakor</translation>
-<translation id="6522412052085018663">Ta fingeravtryck</translation>
+<translation id="2133317862976486547">Blocka spårare och annonser</translation>
+<translation id="4385707520896576447">Kakor</translation>
+<translation id="4978786495456601191">Ta fingeravtryck</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="4824468494729001999">Blockera skript</translation>
-<translation id="519861640102428255">Titta och känn</translation>
+<translation id="519861640102428255">Utseende och känsla</translation>
 <translation id="4800195524776354947">Visa antalet saker som blockeras på ikonen med en sköld</translation>
 <translation id="7498695072878479744">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
-<translation id="4699812599455071925">Blockera endast kakor för flera webbplatser</translation>
-<translation id="5657156137487675418">Tillåt alla kakor</translation>
-<translation id="6883611015375728278">Blockera alla kakor</translation>
-<translation id="5963670684159057574">Förhindra fingeravtryck mellan sajter</translation>
-<translation id="769702552748212954">Tillåt att alla fingeravtryck tas</translation>
-<translation id="4540198958192073185">Blockera alla signaturinsamling</translation>
+<translation id="4078738236287221428">Spårare och annonser blockade (aggressivt)</translation>
+<translation id="7740996059027112821">Spårare och annonser blockade (standard)</translation>
+<translation id="4176463684765177261">Tillåt alla spårare och annonser</translation>
+<translation id="5770288601196774623">Blockera endast kakor för flera webbplatser</translation>
+<translation id="3587482841069643663">Blockera alla kakor</translation>
 <translation id="8942080017911802454">WebRTC IP-hanteringspolicy</translation>
 <translation id="6165508094623778733">Läs mer</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -110,6 +109,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7701040980221191251">Inget</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Web3-leverantör för användning av Dapps</translation>
+<translation id="5913089932885076110">Ladda Crypto Wallets vid start</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
 <translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
@@ -171,10 +171,13 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6469509880167172749">Skicka automatiskt helt privat produktanalys till Brave</translation>
 <translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
 <translation id="9111960429693394744">Vill du använda Braves Crypto Wallets eller MetaMask för Dapps?</translation>
+<translation id="8721775358057000783">Vill du starta Crypto Wallets för web3-stöd på denna sida?</translation>
 <translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>
-<translation id="8337117349965899723">Använd Crypto Wallets</translation>
+<translation id="4823406846571523661">Installera kryptoplånböcker</translation>
 <translation id="5756155765711979898">Använd MetaMask</translation>
 <translation id="6754134632841262799">INSTÄLLNINGAR</translation>
+<translation id="8199661191594897555">Starta Crypto Wallets och ladda om</translation>
+<translation id="8428213095426709021">Inställningar</translation>
 <translation id="4552520379838695057">Tyvärr, den sidan saknas.</translation>
 <translation id="2609895996619941644">Vill du kolla om det finns en sparad version tillgänglig på Wayback Machine?</translation>
 <translation id="8053093028263274061">Tyvärr finns det ingen sparad version tillgänglig.</translation>
@@ -185,8 +188,10 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
 <translation id="796831669370432378">För att spara ett bokmärke, klicka på bokmärkesknappen bredvid adressraden</translation>
 <translation id="4989337484121655457">Fullständig diskåtkomst krävs</translation>
-<translation id="8025559074845816210">Brave behöver fullständig diskåtkomst för att importera dina bokmärken från Safari.</translation>
+<translation id="5501596373144334003">Brave behöver full diskåtkomst för att importera dina bokmärken och din historik från Safari.</translation>
 <translation id="8515328844674404333">Ta reda på hur du beviljar fullständig diskåtkomst i dina systempreferenser.</translation>
 <translation id="6414878884710400018">Öppna systempreferenser</translation>
 <translation id="5570470519803062774">Inställningar för sajt och sköld</translation>
+<translation id="8487693399751278191">Importera bokmärken nu ...</translation>
+<translation id="2557899542277210112">För snabb åtkomst kan du lägga dina bokmärken här.</translation>
 </translationbundle>

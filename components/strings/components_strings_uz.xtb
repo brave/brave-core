@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">Brave Software hisobi</translation>
 <translation id="3157931365184549694">Qayta tiklash</translation>
 <translation id="5040262127954254034">Shaxsiy ma’lumotlar</translation>
-<translation id="1623104350909869708">Bu sahifada qo‘shimcha muloqot oynalari yaratishni taqiqlash</translation>
-<translation id="2677748264148917807">Tark etish</translation>
-<translation id="5556459405103347317">Qayta yuklash</translation>
 <translation id="2359808026110333948">Davom etish</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Tasdiqlash</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">Hisoblanmoqda...</translation>
 <translation id="7701040980221191251">Hech qanday</translation>
 <translation id="8428213095426709021">Sozlamalar</translation>
+<translation id="2344028582131185878">Avtomatik yuklanishlar</translation>
+<translation id="3414952576877147120">Hajmi:</translation>
 <translation id="4850886885716139402">Ko‘rish</translation>
 <translation id="7180611975245234373">Yangilash</translation>
-<translation id="1426410128494586442">Ha</translation>
-<translation id="4250680216510889253">Yo‘q</translation>
 <translation id="4522570452068850558">Tafsilotlar</translation>
 <translation id="3586931643579894722">Tafsilotlarni yopish</translation>
+<translation id="5556459405103347317">Qayta yuklash</translation>
 <translation id="614940544461990577">Quyidagilarni bajaring:</translation>
 <translation id="4943872375798546930">Hech narsa topilmadi</translation>
 <translation id="8688672835843460752">Mavjud</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">Qidiruv tarixi</translation>
 <translation id="4756388243121344051">&amp;Tarix</translation>
 <translation id="1644574205037202324">Tarix</translation>
+<translation id="1623104350909869708">Bu sahifada qo‘shimcha muloqot oynalari yaratishni taqiqlash</translation>
+<translation id="2677748264148917807">Tark etish</translation>
 <translation id="3950820424414687140">Kirish</translation>
 <translation id="8286036467436129157">Kirish</translation>
 <translation id="8503813439785031346">Foydalanuvchi nomi</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">Klipbord</translation>
 <translation id="6059925163896151826">USB qurilmalar</translation>
 <translation id="7638605456503525968">Ketma-ket portlar</translation>
+<translation id="3784372983762739446">Bluetooth qurilmalar</translation>
 <translation id="2215727959747642672">Fayllarni tahrirlash</translation>
 <translation id="6545864417968258051">Bluetooth qurilmalarni qidirish</translation>
 <translation id="534295439873310000">NFC qurilmalar</translation>
-<translation id="4943703118917034429">Virtual reallik</translation>
-<translation id="3513704683820682405">Boyitilgan reallik</translation>
+<translation id="4670064810192446073">Virtual reallik</translation>
+<translation id="2025115093177348061">Boyitilgan reallik</translation>
 <translation id="5039804452771397117">Ruxsat berish</translation>
 <translation id="7053983685419859001">Taqiqlash</translation>
 <translation id="57838592816432529">Ovozni o‘chirib qo‘yish</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">Parolingiz o‘g‘irlangan bo‘lishi mumkin</translation>
 <translation id="1089439967362294234">Parolni o‘zgartirish</translation>
 <translation id="9008201768610948239">Tashlab ketish</translation>
+<translation id="808894953321890993">Parolni almashtirish</translation>
+<translation id="5979084224081478209">Parollarni tekshiring</translation>
+<translation id="6107012941649240045">Berilgan:</translation>
+<translation id="5030338702439866405">Berilgan vaqt:</translation>
+<translation id="5826507051599432481">Umumiy Ism (CN)</translation>
+<translation id="6898699227549475383">Tashkilot (O)</translation>
+<translation id="3308006649705061278">Bo‘lim (OU)</translation>
+<translation id="8705331520020532516">Seriya raqami</translation>
+<translation id="1902576642799138955">Amal qilish muddati</translation>
+<translation id="5895187275912066135">Berilgan vaqti</translation>
+<translation id="4121428309786185360">Amal qilish muddati</translation>
+<translation id="4154664944169082762">Barmoq izlari</translation>
+<translation id="7238585580608191973">SHA-256 barmoq izi</translation>
+<translation id="5209518306177824490">SHA-1 Barmoq izi</translation>
+<translation id="6786747875388722282">Kengaytmalar</translation>
+<translation id="7240120331469437312">Subyekt sertifikatining alternativ nomi</translation>
 <translation id="10614374240317010">Parollar saqlanmaydigan saytlar</translation>
 <translation id="5869522115854928033">Saqlab olingan parollar</translation>
 <translation id="230699814587342492">Brave parollari</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">Oq</translation>
 <translation id="1197088940767939838">To‘q sariq</translation>
 <translation id="1555130319947370107">Ko‘k</translation>
+<translation id="5612720917913232150"><ph name="URL"/> sayti kompyuteringiz joylashuvi ma’lumotlaridan foydalanmoqchi</translation>
+<translation id="4733082559415072992"><ph name="URL"/> sayti qurilmangiz joylashuvidan foydalanmoqchi</translation>
+<translation id="4677585247300749148"><ph name="URL"/> maxsus imkoniyatlardan foydalanmoqchi</translation>
+<translation id="3461266716147554923"><ph name="URL"/> klipbordga nusxalangan matn va rasmlarni ko‘rmoqchi</translation>
+<translation id="131405271941274527"><ph name="URL"/> sayti NFC orqali axborot almashinishga ruxsat soʻramoqda</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> bildirishnomalari bloklandi</translation>
+<translation id="1195558154361252544">Bildirishnoamalar siz ruxsat bergan saytlardan tashqari barcha saytlar uchun taqiqlanadi</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> mikrofoningizdan foydalanmoqchi</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> kamerangizdan foydalanmoqchi</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> sayti bildirishnoma yuborishga ruxsat so‘ramoqda.</translation>
+<translation id="6910240653697687763"><ph name="URL"/> sayti MIDI qurilmalaringizni boshqarishga to‘liq ruxsat so‘ramoqda</translation>
+<translation id="503498442187459473"><ph name="HOST"/> kamera va mikrofoningizdan foydalanishni istaydi</translation>
+<translation id="8282947398454257691">Qurilmaning maxsus identifikatorini ko‘rish</translation>
+<translation id="8329449853370113380"><ph name="URL"/> sayti himoyalangan kontentni ijro etmoqchi. Brave Software qurilmangiz identifikatorini tekshiradi</translation>
+<translation id="2650609753175229582"><ph name="URL"/> himoyalangan kontentni ijro etmoqchi. Bu saytdagi himoyalangan kontent ijro etilishi uchun qurilmangizdagi shaxsni tasdiqlash axboroti Brave Software tomonidan tekshiriladi.</translation>
+<translation id="3016780570757425217">Joylashuvingiz haqidagi ma’lumotlar</translation>
+<translation id="7221855153210829124">Bildirishnomalarni ko‘rsatish</translation>
+<translation id="8606726445206553943">MIDI qurilmalaridan foydalanish</translation>
+<translation id="7409836189476010449">Flash ishga tushirilsin</translation>
+<translation id="7438976808740265764">Flash Player 2020-yil dekabrdan boshlab ishlamaydi.</translation>
+<translation id="4761104368405085019">Mikrofoningizni ishlatish</translation>
+<translation id="9150045010208374699">Kameradan foydalanish</translation>
+<translation id="4953689047182316270">Maxsus imkoniyatlar ishlatilishi</translation>
+<translation id="6116338172782435947">Klipbordga nusxalangan matn va rasmlarni ko‘rish</translation>
+<translation id="5804427196348435412">NFC qurilmalarni ishlatish</translation>
+<translation id="3194737229810486521"><ph name="URL"/> saytidan ma’lumotlarni mobil qurilmangizda doimiy saqlashga ruxsat so‘rovi keldi</translation>
+<translation id="1030706264415084469"><ph name="URL"/> saytidan katta hajmdagi ma’lumotlarni mobil qurilmangizda saqlashga ruxsat so‘rovi keldi</translation>
+<translation id="1712552549805331520"><ph name="URL"/> sayti ma’lumotlarni kompyuteringizda doimiy saqlashga ruxsat so‘ramoqda</translation>
+<translation id="1997484222658892567"><ph name="URL"/> sayti katta hajmdagi ma’lumotlarni kompyuteringizda doimiy saqlashga ruxsat so‘ramoqda</translation>
+<translation id="7648992873808071793">Fayllarni bu qurilmada saqlash</translation>
 <translation id="4813512666221746211">Tarmoq xatoligi</translation>
 <translation id="3380365263193509176">Noma’lum xatolik</translation>
 <translation id="5565735124758917034">Faol</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">Joriy foydalanuvchi</translation>
 <translation id="6965978654500191972">Qurilma</translation>
 <translation id="4728558894243024398">Platforma</translation>
+<translation id="1426410128494586442">Ha</translation>
+<translation id="4250680216510889253">Yo‘q</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Qo‘shimcha</translation>
 <translation id="5308380583665731573">Ulanish</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">Noma’lum</translation>
 <translation id="9170848237812810038">&amp;Bekor qilish</translation>
 <translation id="2972581237482394796">&amp;Qaytarish</translation>
-<translation id="6786747875388722282">Kengaytmalar</translation>
 <translation id="5804241973901381774">Ruxsatlar</translation>
 <translation id="8004582292198964060">Brauzer</translation>
 </translationbundle>

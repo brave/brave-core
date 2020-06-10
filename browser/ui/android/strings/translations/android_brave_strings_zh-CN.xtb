@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="6132506775968708399">拦截第三方 cookies</translation>
 <translation id="7835726359440951858">拦截广告和追踪</translation>
-<translation id="520895744850022668">HTTPS 随处可用</translation>
+<translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 <translation id="94154759592465111">拦截脚本</translation>
 <translation id="7458422973722236530">指纹识别保护</translation>
-<translation id="252011129655042182">广告和追踪器</translation>
+<translation id="5709627087332022422">拦截跨站点跟踪器</translation>
 <translation id="6754976710186182237">指纹识别方法</translation>
 <translation id="2313532038420432247">HTTPS 升级</translation>
 <translation id="7461425058443653485">脚本已拦截</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">标准标签页</translation>
 <translation id="3377025655491224618">隐身标签页</translation>
 <translation id="9148058034647219655">退出</translation>
+<translation id="520895744850022668">HTTPS 随处可用</translation>
 <translation id="8710614491157212477">当可用时，使用 HTTPS 代替 HTTP 访问支持的网站</translation>
 <translation id="8387201461264842096">广告区块</translation>
 <translation id="1934885595886623674">防止广告加载</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="4339730410920731698">广告和追踪器已拦截</translation>
+<translation id="6761596877474675418">数据已保存</translation>
 <translation id="3034562645284925177">预计节省时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
 <translation id="1340503115760585811">使用桌面模式打开新标签页</translation>
@@ -159,7 +161,7 @@
 <translation id="1713542052890184975">请备份您的 Brave 钱包。</translation>
 <translation id="2323069945529668668">糟糕！</translation>
 <translation id="7510166204621526816">Brave Rewards 服务器未响应。我们将尽快修复这个问题。</translation>
-<translation id="2626799779920242286">请稍后再试。</translation>
+<translation id="7117228822971127758">请稍后重试</translation>
 <translation id="3068742524072211213">到期日期：<ph name="DATE"/></translation>
 <translation id="4292832015778676417">从广告中赚取</translation>
 <translation id="683765328936486920">在 YouTube 上</translation>
@@ -228,8 +230,7 @@
 <translation id="6199596294742117349">这是一个私人标签页</translation>
 <translation id="5858455511731621847">即使您在私有选项卡上访问的网站没有保存在本地，它们也不会让您匿名或让 ISP、您的雇主或您正在访问的站点看不见您。</translation>
 <translation id="5789441016350810005">浏览器在后台运行时发送 Brave 广告</translation>
-<translation id="7127980134843952133">下载历史</translation>
-<translation id="3690140184638701871">捐款 &amp;amp; 打赏</translation>
+<translation id="3690140184638701871">捐款 &amp; 打赏</translation>
 <translation id="844921671123185605">您的每月打赏已处理！</translation>
 <translation id="3124090095880236567">开启广告</translation>
 <translation id="2975780980638932742">Brave Ads 来啦！</translation>
@@ -251,15 +252,82 @@
 <translation id="8522669544471808198">显示背景图片</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
 <translation id="8297488609722895137">照片提供者：<ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">获得报酬以查看此背景图片。</translation>
-<translation id="4836823081419522426">您将获得此私人赞助的广告收入的 70％，可用于支持网络内容创建者。 启用 Brave Rewards 即可领取奖励。</translation>
-<translation id="7307847920988946894">开启奖励</translation>
 <translation id="1605521356929094020">开启 Brave Ads</translation>
-<translation id="1647482814782886825">启用 Rewards 即表示您同意 <ph name="TERMS_OF_SERVICE"/>. 您也可以选择 <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">启用 Rewards 即表示您同意<ph name="TERMS_OF_SERVICE"/>。</translation>
+<translation id="3794079107601824147">您查看此背景图片将获得报酬。</translation>
 <translation id="7136586167396205364">隐藏赞助图片</translation>
 <translation id="2927095357213611519">您可以使用代币来支持网站创建者。\n您可以通过观看尊重隐私的广告赚取代币。</translation>
-<translation id="4016415345213871193">您’查看此背景图片将获得报酬。</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> 关于 Brave Rewards 中的赞助图片。 您也可以选择 <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">您也可以选择 <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">您查看此背景图片将获得报酬。开启 Brave Ads 以获取报酬。</translation>
+<translation id="213787746370741250">在“自定义”选项卡中打开选项卡</translation>
+<translation id="8030169304546394654">已断开连接</translation>
+<translation id="8267327690882073581">验证钱包</translation>
+<translation id="543510923939676996">钱包已验证</translation>
+<translation id="8673913984316081937">验证您的钱包是一个可选操作</translation>
+<translation id="8558636200953226885">但如果您进行验证，则可以...</translation>
+<translation id="8697510149346635496">提现您查看尊重隐私的广告所赚取的 BAT</translation>
+<translation id="1481480653609649134">使用信用卡和其他资源购买更多 BAT</translation>
+<translation id="9096003370755878766">提现您之前添加到 Brave Rewards 钱包中的 BAT</translation>
+<translation id="1554282356558968486">我们的钱包服务提供商：</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
+<translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
+<translation id="3699674790322420653">完成钱包验证</translation>
+<translation id="2193391216824305230">用户钱包</translation>
+<translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
+<translation id="6239274080752256452">资金提现</translation>
+<translation id="8874184842967597500">未连接</translation>
+<translation id="3368922792935385530">已连接</translation>
+<translation id="4569155249847375786">已验证</translation>
+<translation id="5358719431303818601">未验证断开连接</translation>
+<translation id="4241449868720191203">已验证断开连接</translation>
+<translation id="3248185426436836442">等待审批</translation>
+<translation id="8108013093558639183">根据您帐户的开户位置，您所在的地区当前不支持 BAT。稍后再查看可用性。</translation>
+<translation id="4190454391025419535">不支持的区域</translation>
+<translation id="6830703472632069884">验证您的钱包时出现问题，请稍后再试。</translation>
+<translation id="3512533646933434345">钱包验证错误</translation>
+<translation id="2260513517001048012">注意：Brave 验证的这个创建者还没有配置其帐户来接收来自 Brave 用户的捐赠。您的浏览器将一直尝试捐赠，直到他们验证，或直到 90 天已经过去。</translation>
+<translation id="4488355059795908907">Brave 验证的此创建者尚未将其帐户配置为接收 Brave  用户的捐赠。您发送的任何小费将保留在您的钱包中，直到他们完成此过程。</translation>
+<translation id="2495032782748793764">Brave 默认</translation>
+<translation id="9132378787893584761">与您的朋友分享 Brave！</translation>
+<translation id="717952606991220586">哎呀，有些不对劲。请稍后再试。</translation>
+<translation id="2524310205387880526">对 Brave 作出评价</translation>
+<translation id="6680650203439190394">兑换率</translation>
+<translation id="2635089463885398597">您如何评价您的 Brave 体验？</translation>
+<translation id="141901961143729572">分享您的想法</translation>
+<translation id="7961015016161918242">一律不</translation>
+<translation id="1275213816424141989">可能在稍后</translation>
+<translation id="6991128190741664836">随后</translation>
+<translation id="8851456134224363571">太好了！您是否愿意在游戏商店给我们打分？</translation>
+<translation id="8668962040900592974">让我们知道如何改进</translation>
+<translation id="4406937629441301400">获取观看此图片的代币，并将其支付给创作者。<ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">为观看此图片获取代币。打开“赚”和“给”来索取您的份额。</translation>
+<translation id="6632345639591919543">您在为观看这张图片赚取代币。\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">您在为观看这张图片赚取代币。</translation>
+<translation id="7952665812649667034">我准备好了赚取和提供</translation>
+<translation id="7877201489035217175">了解有关赞助图片的更多信息</translation>
+<translation id="828092975561478703">对于您查看的每一个赞助图片，您将获得 70% 的代币收入。有了 Brave Ads，您总能掌控您看到的广告。</translation>
+<translation id="4941539331405513605">阻止跨站点 cookie</translation>
+<translation id="3763681089644577874">阻止 Cookie</translation>
+<translation id="614747795780742163">阻止网站存储有关您以前访问的信息</translation>
+<translation id="6883611015375728278">拦截所有 cookies</translation>
+<translation id="5657156137487675418">允许所有 cookies</translation>
+<translation id="5963670684159057574">拦截跨站点指纹识别</translation>
+<translation id="3895527457258986253">区块指纹识别</translation>
+<translation id="184568144098869637">阻止浏览器识别您的设备</translation>
+<translation id="4540198958192073185">阻止所有指纹识别</translation>
+<translation id="769702552748212954">允许所有指纹识别</translation>
+<translation id="2888409909650566510">广告和其他爬虫程序\n阻止的程序</translation>
+<translation id="6930134873084561197">网站通常包括 cookie 和脚本，它们试图识别您和您的设备。它们想找出您是谁，然后在网上跟踪您在每个网站上做的事情。\n\nBrave 阻止这些事情，使得您可以在不被跟踪的情况下浏览。</translation>
+<translation id="8553998445606452168">关于 Brave Shields</translation>
+<translation id="8912304686498704084">向上</translation>
+<translation id="4963218453264888510">向下</translation>
+<translation id="7474113515179313724">您在浏览这个网站时没有 Brave 的隐私保护。它是否与 Shields 无法正常配合使用？</translation>
+<translation id="9055546041146396417">如果这个站点出现故障，请尝试关闭 Shields。</translation>
+<translation id="1209739344687072997">报告损坏的网站</translation>
+<translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
+<translation id="5429200298326665264">注意：此网站地址将与您的 Brave 版本号和您的 IP 地址（将不会被存储）一起提交。</translation>
+<translation id="5299848999918506028">谢谢！</translation>
+<translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
+<translation id="650318023204990401">高级控制</translation>
+<translation id="7182293319417450928">至少需要 25 个 BAT 余额来验证。</translation>
 </translationbundle>

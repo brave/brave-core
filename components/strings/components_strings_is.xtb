@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">Brave Software reikningur</translation>
 <translation id="3157931365184549694">Endurheimta</translation>
 <translation id="5040262127954254034">Persónuvernd</translation>
-<translation id="1623104350909869708">Koma í veg fyrir að þessi síða búi til fleiri glugga.</translation>
-<translation id="2677748264148917807">Yfirgefa</translation>
-<translation id="5556459405103347317">Endurhlaða</translation>
 <translation id="2359808026110333948">Halda áfram</translation>
 <translation id="4378154925671717803">Sími</translation>
 <translation id="8131740175452115882">Staðfesta</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">Reiknar...</translation>
 <translation id="7701040980221191251">Ekkert</translation>
 <translation id="8428213095426709021">Stillingar</translation>
+<translation id="2344028582131185878">Sjálfvirkt niðurhal</translation>
+<translation id="3414952576877147120">Stærð:</translation>
 <translation id="4850886885716139402">Yfirlit</translation>
 <translation id="7180611975245234373">Endurnýja</translation>
-<translation id="1426410128494586442">Já</translation>
-<translation id="4250680216510889253">Nei</translation>
 <translation id="4522570452068850558">Upplýsingar</translation>
 <translation id="3586931643579894722">Fela upplýsingar</translation>
+<translation id="5556459405103347317">Endurhlaða</translation>
 <translation id="614940544461990577">Prófaðu að:</translation>
 <translation id="4943872375798546930">Engar niðurstöður</translation>
 <translation id="8688672835843460752">Tiltækt</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">Leitarferill</translation>
 <translation id="4756388243121344051">Ferill</translation>
 <translation id="1644574205037202324">Ferill</translation>
+<translation id="1623104350909869708">Koma í veg fyrir að þessi síða búi til fleiri glugga.</translation>
+<translation id="2677748264148917807">Yfirgefa</translation>
 <translation id="3950820424414687140">Skrá inn</translation>
 <translation id="8286036467436129157">Skrá inn</translation>
 <translation id="8503813439785031346">Notandanafn</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">Klippiborð</translation>
 <translation id="6059925163896151826">USB-tæki</translation>
 <translation id="7638605456503525968">Raðtengi</translation>
+<translation id="3784372983762739446">Bluetooth-tæki</translation>
 <translation id="2215727959747642672">Skráarvinnsla</translation>
 <translation id="6545864417968258051">Bluetooth-leit</translation>
 <translation id="534295439873310000">NFC-tæki</translation>
-<translation id="4943703118917034429">Sýndarveruleiki</translation>
-<translation id="3513704683820682405">Aukinn veruleiki</translation>
+<translation id="4670064810192446073">Sýndarveruleiki</translation>
+<translation id="2025115093177348061">Aukinn veruleiki</translation>
 <translation id="5039804452771397117">Leyfa</translation>
 <translation id="7053983685419859001">Setja á bannlista</translation>
 <translation id="57838592816432529">Þagga</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">Aðgangsorðinu þínu kann að hafa verið stolið</translation>
 <translation id="1089439967362294234">Breyta aðgangsorði</translation>
 <translation id="9008201768610948239">Hunsa</translation>
+<translation id="808894953321890993">Breyta aðgangsorði</translation>
+<translation id="5979084224081478209">Yfirfara aðgangsorð</translation>
+<translation id="6107012941649240045">Úthlutað til</translation>
+<translation id="5030338702439866405">Gefið út af</translation>
+<translation id="5826507051599432481">Almennt heiti (CN)</translation>
+<translation id="6898699227549475383">Notendaskipan (O)</translation>
+<translation id="3308006649705061278">Skipulagseining (OU)</translation>
+<translation id="8705331520020532516">Raðnúmer</translation>
+<translation id="1902576642799138955">Gildistími</translation>
+<translation id="5895187275912066135">Gefið út</translation>
+<translation id="4121428309786185360">Rennur út</translation>
+<translation id="4154664944169082762">Fingraför</translation>
+<translation id="7238585580608191973">SHA-256 fingrafar</translation>
+<translation id="5209518306177824490">SHA-1 fingrafar</translation>
+<translation id="6786747875388722282">Viðbætur</translation>
+<translation id="7240120331469437312">Auknefni viðfangs vottorðsins</translation>
 <translation id="10614374240317010">Aldrei vistað</translation>
 <translation id="5869522115854928033">Vistuð aðgangsorð</translation>
 <translation id="230699814587342492">Aðgangsorð í Brave</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">Hvítur</translation>
 <translation id="1197088940767939838">Appelsínugulur</translation>
 <translation id="1555130319947370107">Blár</translation>
+<translation id="5612720917913232150"><ph name="URL"/> vill fá að nota staðsetningu tölvunnar</translation>
+<translation id="4733082559415072992"><ph name="URL"/> vill nota staðsetningu tækisins</translation>
+<translation id="4677585247300749148"><ph name="URL"/> vill svara aðgengisatburðum</translation>
+<translation id="3461266716147554923"><ph name="URL"/> vill sjá texta og myndir sem þú afritar á klippiborðið.</translation>
+<translation id="131405271941274527"><ph name="URL"/> vill senda og taka við upplýsingum þegar þú ýtir á símann í NTC-tæki</translation>
+<translation id="5146995429444047494">Lokað er fyrir tilkynningar fyrir <ph name="ORIGIN"/></translation>
+<translation id="1195558154361252544">Sjálfkrafa er lokað á tilkynningar fyrir öll vefsvæði nema þau sem þú hefur gefið leyfi</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> vill fá að nota hljóðnemann</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> vill fá að nota myndavélina</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> vill senda þér tilkynningar</translation>
+<translation id="6910240653697687763"><ph name="URL"/> vill fá fulla stjórn á MIDI-tækjunum þínum</translation>
+<translation id="503498442187459473"><ph name="HOST"/> vill fá að nota myndavélina og hljóðnemann</translation>
+<translation id="8282947398454257691">Komast að einkvæmu auðkenni tækisins</translation>
+<translation id="8329449853370113380"><ph name="URL"/> vill spila varið efni. Auðkenni tækisins verður staðfest af Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> vill spila varið efni. Auðkenni tækisins verður staðfest af Brave Software og þetta vefsvæði kann að fá aðgang að því.</translation>
+<translation id="3016780570757425217">Komast að staðsetningunni þinni</translation>
+<translation id="7221855153210829124">Sýna tilkynningar</translation>
+<translation id="8606726445206553943">Nota MIDI-tækin þín</translation>
+<translation id="7409836189476010449">Keyra Flash</translation>
+<translation id="7438976808740265764">Flash Player verður ekki stutt eftir desember 2020.</translation>
+<translation id="4761104368405085019">Nota hljóðnemann</translation>
+<translation id="9150045010208374699">Nota myndavélina þína</translation>
+<translation id="4953689047182316270">Svara aðgengisatburði</translation>
+<translation id="6116338172782435947">Sjá texta og myndir sem þú afritar á klippiborðið</translation>
+<translation id="5804427196348435412">Nota NFC-tæki</translation>
+<translation id="3194737229810486521"><ph name="URL"/> vill fá að geyma gögn varanlega í tækinu þínu</translation>
+<translation id="1030706264415084469"><ph name="URL"/> vill fá að geyma mikið magn gagna varanlega í tækinu þínu</translation>
+<translation id="1712552549805331520"><ph name="URL"/> vill fá að geyma gögn varanlega í tölvunni þinni</translation>
+<translation id="1997484222658892567"><ph name="URL"/> vill fá að geyma mikið magn gagna varanlega í tölvunni þinni</translation>
+<translation id="7648992873808071793">Geyma skrár í þessu tæki</translation>
 <translation id="4813512666221746211">Netvilla</translation>
 <translation id="3380365263193509176">Óþekkt villa</translation>
 <translation id="5565735124758917034">Virkt</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">Núverandi notandi</translation>
 <translation id="6965978654500191972">Tæki</translation>
 <translation id="4728558894243024398">Kerfi</translation>
+<translation id="1426410128494586442">Já</translation>
+<translation id="4250680216510889253">Nei</translation>
 <translation id="1588438908519853928">Venjuleg</translation>
 <translation id="1974060860693918893">Ítarlegt</translation>
 <translation id="5308380583665731573">Tengjast</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">Óþekkt</translation>
 <translation id="9170848237812810038">Aft&amp;urkalla</translation>
 <translation id="2972581237482394796">Endurge&amp;ra</translation>
-<translation id="6786747875388722282">Viðbætur</translation>
 <translation id="5804241973901381774">Heimildir</translation>
 <translation id="8004582292198964060">Vafri</translation>
 </translationbundle>

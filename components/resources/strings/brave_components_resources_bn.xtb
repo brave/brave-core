@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
-<translation id="4339730410920731698">বিজ্ঞাপন এবং ট্র্যাকার অবরুদ্ধ</translation>
+<translation id="5288293905681750318">ট্র্যাকারগুলি &amp; বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে</translation>
 <translation id="2313532038420432247">HTTPS আপগ্রেডসমূহ</translation>
-<translation id="7679428712334662192">যে আনুমানিক সময় বাঁচানো গেছে</translation>
-<translation id="8411095021655121794">আনুমানিক ব্যান্ডউইথ সংরক্ষিত রয়েছে</translation>
+<translation id="788493840831967104">সময় সংরক্ষিত হয়েছে</translation>
+<translation id="2318592590318590295">ব্যান্ডউইথ সংরক্ষিত হয়েছে</translation>
 <translation id="5206618227023752085">শীর্ষস্থানীয় সাইট অপসারিত হয়েছে।</translation>
 <translation id="2079545284768500474">পূর্বাবস্থায় ফেরান</translation>
 <translation id="6040143037577758943">বন্ধ করুন</translation>
@@ -34,6 +34,8 @@
 <translation id="8643377320501056697">শীর্ষ স্থানীয় সাইটগুলি দেখান</translation>
 <translation id="3446024864193919737">Brave Rewards দেখান</translation>
 <translation id="6274899614137380422">Binance দেখান</translation>
+<translation id="5551238871320268996">একসাথে ব্রেভ</translation>
+<translation id="4799744519698299121">আরও কার্ডগুলি</translation>
 <translation id="3870475560794762985">স্পন্সর করা ছবিগুলি দেখান</translation>
 <translation id="2875302873837723333">সেরা সাইটগুলি</translation>
 <translation id="8173998484743827990">Brave পরিসংখ্যান</translation>
@@ -177,30 +179,35 @@
 <translation id="2852258589816753010">বর্তমানে আপনার অঞ্চলে BAT সমর্থিত নয়। আপডেটগুলির জন্য অনুগ্রহ করে <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>এখানে<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> রেফার করুন।</translation>
 <translation id="2564425876266960486">Brave ব্রাউজার BAT কার্ড তৈরি করতে ত্রুটি</translation>
 <translation id="7422678632904904341">অর্থরাশি:</translation>
-<translation id="5923611424721173182">সাম্প্রতিক রিকনসাইল</translation>
+<translation id="5025866799968038247">ব্যালেন্স সম্পর্কিত তথ্য</translation>
+<translation id="1642443162274867084">ওয়ালেট পুনরুদ্ধার করা হয়েছে</translation>
 <translation id="5457113250005438886">অবৈধ</translation>
 <translation id="7687511348932340294">মুখ্য তথ্যের সীড:</translation>
-<translation id="7180611975245234373">রিফ্রেশ করুন</translation>
-<translation id="3292669871848742742">পুনঃপ্রচেষ্টার স্তর:</translation>
-<translation id="2026565607270413420">পুনঃপ্রচেষ্টার পদক্ষেপ:</translation>
-<translation id="2461822463642141190">সাম্প্রতিক</translation>
-<translation id="4516620156082016131">অন্তিম</translation>
-<translation id="68932200202726709">পেলোড</translation>
-<translation id="8654112359048700618">প্রস্তুত করা</translation>
-<translation id="419610644429723755">প্রমাণ</translation>
-<translation id="8851921643210663606">রিকনসাইল করুন</translation>
-<translation id="839736845446313156">নিবন্ধ করুন</translation>
-<translation id="583281660410589416">অজানা</translation>
-<translation id="1822318934917272490">দেখা</translation>
-<translation id="9165277745676544288">ভোট দিন</translation>
-<translation id="7311077304864384837">বিজয়ীগণ</translation>
-<translation id="5771119664738037159">Brave পুরস্কারগুলি সক্রিয় করা নেই। ভিজিট করে এটি সক্রিয় করুন</translation>
-<translation id="4235360514405112390">বৈধ</translation>
-<translation id="2700943637868737038">দেখার ID:</translation>
-<translation id="3576689061489548788">ওয়ালেট পেমেন্ট ID:</translation>
 <translation id="758790787422117549">ব্যক্তিগত ID</translation>
+<translation id="3671566813999349838">পরিমান</translation>
+<translation id="751223241692981112">দাবি করা হয়েছে এতে</translation>
+<translation id="3913089081619091801">দাবিজনিত ID</translation>
+<translation id="972516647724462985">এটা শেষ হয় এতে</translation>
+<translation id="3970114302595058915">আইডি</translation>
+<translation id="8511126279042126492">উত্তরাধিকার সম্পর্কিত প্রচার</translation>
+<translation id="4250680216510889253">না</translation>
+<translation id="1426410128494586442">হ্যাঁ</translation>
+<translation id="8102423594645796250">প্রচারসমূহ</translation>
+<translation id="7805768142964895445">স্থিতি</translation>
+<translation id="5565735124758917034">সক্রিয়</translation>
+<translation id="2196753816869469810">প্রত্যয়িত করা হয়েছে</translation>
+<translation id="1098052486217676340">সমাপ্ত হয়েছে</translation>
+<translation id="8000774832235490222">শেষ হয়েছে</translation>
+<translation id="2448312741937722512">প্রকার</translation>
+<translation id="5334568292977026472">UGP</translation>
+<translation id="3798449238516105146">সংস্করণ</translation>
+<translation id="7180611975245234373">রিফ্রেশ করুন</translation>
+<translation id="5771119664738037159">Brave পুরস্কারগুলি সক্রিয় করা নেই। ভিজিট করে এটি সক্রিয় করুন</translation>
+<translation id="6672180611914406778">মোট ব্যালেন্স</translation>
 <translation id="2223892939866251845">ব্যবহারকারীর ID</translation>
-<translation id="1642443162274867084">ওয়ালেট পুনরুদ্ধার করা হয়েছে</translation>
+<translation id="4235360514405112390">বৈধ</translation>
+<translation id="2326487656644542536">ওয়ালেট সম্পর্কিত তথ্য</translation>
+<translation id="3576689061489548788">ওয়ালেট পেমেন্ট ID:</translation>
 <translation id="5094577350232361255">সম্বন্ধে</translation>
 <translation id="4918086044614829423">স্বীকার</translation>
 <translation id="5916290544882167205">ব্রেভ সফটওয়্যার। ব্রেভ হল ব্রেভ সফটওয়্যার-এর একটি নিবন্ধিত ট্রেডমার্ক। সাইটের নামগুলি ট্রেডমার্ক বা সাইটের মালিকের নিবন্ধিত ট্রেডমার্কও হতে পারে।</translation>
@@ -220,7 +227,6 @@
 <translation id="5317780077021120954">সেভ করুন</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="2827387977307390755">এর উপর পরামর্শের অনুমোদন করুন</translation>
-<translation id="3671566813999349838">পরিমান</translation>
 <translation id="3819257035322786455">ব্যাকআপ</translation>
 <translation id="1312977698678162065">যে সব বিজ্ঞাপন আপনার গোপনীয়তাকে সম্মান করে তা দেখার জন্য অর্থ পান|</translation>
 <translation id="4396256076373444156">আপনি যখন প্রাসঙ্গিক বিজ্ঞাপনগুলি দেখেন যা আপনার গোপনীয়তাকে মান্য করে তখন পয়েন্টগুলি সংগ্রহ করুন৷</translation>
@@ -281,6 +287,7 @@
 <translation id="7513117072433487074">মেয়াদ শেষ হওয়ার তারিখ মধ্যে ব্যবহৃত না হওয়া {{currency}} স্বয়ংক্রিয়ভাবে Brave ব্যবহারকারীর গ্রোথ পোলে ফিরে আসবে।</translation>
 <translation id="279567716178902927">মেয়াদত্তির্ণের তারিখ মঞ্জুর করুন</translation>
 <translation id="2104073734684466851">মঞ্জুরিসমূহ</translation>
+<translation id="2291686779354188838">হ্যালো, {{নাম}}!</translation>
 <translation id="1389143276807887637">আমদানি করুন</translation>
 <translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
 <translation id="8446884382197647889">আরও জানুন</translation>
@@ -323,7 +330,6 @@
 <translation id="6381574025952123568">ওপেনিং ব্যালেন্স</translation>
 <translation id="532275381857891532">7-দিনের বিজ্ঞাপনের ইতিহাস</translation>
 <translation id="4923459931733593730">পেমেন্ট</translation>
-<translation id="5693657857413982604">প্রতি মাসে প্রতিটি {{দিনের সংখ্যা}}তম দিনে অর্থ-প্রদান করা হয়।</translation>
 <translation id="6104680658798556671">পেমেন্ট করা হয়নি|</translation>
 <translation id="3138528956349114724">পিন করা সাইটগুলি এখন</translation>
 <translation id="2337632028350283479">কিভাবে মাসিক অবদান কাজ করে তা এখানে দেখানো হল:</translation>
@@ -371,6 +377,8 @@
 <translation id="8014425282125849700">কখনোসখনো, আপনাকে টোকেন মঞ্জুর করা হবে Brave থেকে| তাই সেই অফারের জন্য চোখ খোলা রাখুন!</translation>
 <translation id="2185598236335233939">Brave এর ব্যবহার চালিয়ে যাওয়ার সাথে সাথে বিজ্ঞাপনের বিজ্ঞপ্তিগুলির সন্ধান করুন। আপনার দেখা প্রতিটি বিজ্ঞাপনের সাথে আপনার BAT পয়েন্ট ব্যালেন্স বৃদ্ধি পাবে৷</translation>
 <translation id="1370034647041840967">বিজ্ঞাপনের প্রতি মনোযোগ দেবার জন্য টোকেন অর্জন করুন এবং যে সকল বিষয়বস্তু প্রস্তুতকারকদের আপনি মূল্যবান মনে করেন তাদের তা প্রদান করুন!</translation>
+<translation id="1701701253000051237">তহবিল যোগ করুন, প্রত্যাহার করুন এবং পরিচালনা করুন <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> এইগুলিতে।</translation>
+<translation id="4208741993667364007">আপনার ব্রেভ ওয়ালেট চালিত হয় <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>  এর দ্বারা।</translation>
 <translation id="6401272292123354754">Brave রিওয়ার্ডস বেসিক অ্যাটেনশন টোকেন উপর নির্মিত| BAT সম্বন্ধে আরো জানুন</translation>
 <translation id="7823359893981882407">এখানে</translation>
 <translation id="4483635855837696643">আপনার ওয়ালেট পুনরুদ্ধার করুন</translation>
@@ -413,7 +421,6 @@
 <translation id="3983104749597726322">টুইট</translation>
 <translation id="5636843789453098076">পরামর্শ @{{ user }} তাদের টুইটের জন্য:</translation>
 <translation id="4242384385082203046">পরামর্শ @{{ user }} তাদের টুইটের জন্য!</translation>
-<translation id="2448312741937722512">প্রকার</translation>
 <translation id="8772672608371898774">Brave দ্বারা যাচাই করা প্রকাশক</translation>
 <translation id="5050370287908180130">বিশদ তথ্যের জন্য মাসিক বিবৃতি দেখুন</translation>
 <translation id="8615803647903750175">ওয়ালেটের ক্রিয়াকলাপ</translation>
@@ -464,6 +471,7 @@
 <translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="46988480989545156">ওয়ালেট যাচাই করুন</translation>
+<translation id="4986087720311945758">আমাদের ওয়ালেট পরিষেবা সরবরাহ করা হয় <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> এর দ্বারা</translation>
 <translation id="6771734945114850124">অনুগ্রহ করে আপনার সরকারের ইস্যু করা IDটি হাতের কাছে রাখুন।</translation>
 <translation id="8697510149346635496">গোপনীয়তাকে সম্মান করা বিজ্ঞাপনগুলি থেকে আপনি যে BAT অর্জন করেছেন তা উইথড্র করুন</translation>
 <translation id="1481480653609649134">ক্রেডিট কার্ড এবং অন্যান্য উত্সগুলি দিয়ে আরও BAT কিনুন</translation>
@@ -497,6 +505,9 @@
 <translation id="6759185676704303656">এই ব্যাকগ্রাউন্ডের ছবিটি দেখার জন্য আপনাকে টাকা দেওয়া হচ্ছে।</translation>
 <translation id="1749232564087138444">Brave Rewards এ স্পন্সর করা ছবিগুলি সম্পর্কে <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/>।</translation>
 <translation id="6113004497629356998">স্পন্সর করা ছবিগুলি লুকান</translation>
+<translation id="5977237145327845546">আপনার বন্ধু এবং সহকর্মীদের সঙ্গে একটি ব্যক্তিগত ভিডিও কল শুরু করুন।</translation>
+<translation id="5850325887346946383">ভিডিও কল শুরু করুন</translation>
+<translation id="3651550649176056334">আপনার ডেটা সম্পর্কে</translation>
 <translation id="223536150967420869">ক্রয় করুন</translation>
 <translation id="5110244215256675209">Crypto ক্রয় করুন</translation>
 <translation id="5749014321384313843">আমি ব্যয় করতে চাই...</translation>
@@ -523,8 +534,9 @@
 <translation id="3909193058140362331">রূপান্তরটি প্রক্রিয়াকরণ করা গেল না৷ দয়া করে আবার চেষ্টা করুন৷</translation>
 <translation id="5721542149042740780">আপনি যে পরিমাণটি লিখেছেন তা আপনার বর্তমানে উপলভ্য পরিমাণের বেশি হয়ে গেছে</translation>
 <translation id="7144878232160441200">আবার চেষ্টা করুন</translation>
-<translation id="92653931566014756">ঠিকানা উপলভ্য নয়</translation>
+<translation id="7431764818502638140">তথ্য উপলভ্য নয়</translation>
 <translation id="6409345078064530735">জমার ঠিকানা</translation>
+<translation id="7153116947319792513">মেমো জমা করুন</translation>
 <translation id="1383876407941801731">সার্চ করুন</translation>
 <translation id="6432284126416751397">রূপান্তর নিশ্চিত করুন</translation>
 <translation id="1301340234286078471">রূপান্তর করুন</translation>
@@ -599,6 +611,13 @@
 <translation id="5286379413446391050">সিঙ্ক সার্ভারগুলির সাথে সংযোগ করা যায়নি</translation>
 <translation id="2410472020237369473">আপনার কম্পিউটারের ঘড়ি ভুল সময় অথবা সময় অঞ্চলে সেট হতে পারে। আপনার ঘড়ির সেটিংস পরীক্ষা করুন।</translation>
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
+<translation id="616639131065447379">ব্রেভ ক্রিপ্টো ওয়ালেটে স্বাগতম</translation>
+<translation id="1740464057879304704">ক্রিপ্টো ওয়ালেটস আপনাকে ক্রিপ্টোকারেন্সি এবং ব্রেভ-এ সম্পর্কিত সম্পদের সাথে কাজ করতে দেয়। ক্রিপ্টো ওয়ালেটস ইথেরিয়াম টোকেনগুলির মতো ETH এবং BAT, আর এর সঙ্গেসঙ্গে সংগ্রহযোগ্যগুলি সমর্থন করে এবং আপনাকে Ðঅ্যাপগুলি এবং অন্যান্য স্মার্ট চুক্তি সহ কাজ করতে দেয়। এই সবগুলি এমন লোকদের জন্য করা হয়েছে যারা ইথেরিয়াম এবং অন্যান্য শৃঙ্খল-বদ্ধ সিস্টেমের সাথে পরিচিত — বা শিখতে উৎসাহিত হয়।</translation>
+<translation id="4855440621031541830">যদি আপনি স্বীকার করেন যে এই ব্যবহারের সাথে যুক্ত সমস্ত ঝুঁকির জন্য আপনি একা দায়বদ্ধ তবেই কেবলমাত্র ক্রিপ্টো ওয়ালেটগুলি ব্যবহার করুন, এবং ওই ব্রেভ সফ্টওয়্যার এই প্রকার ব্যবহারের ফলে আপনি যে প্রাসঙ্গিক বা ফলস্বরূপ ক্ষতির সম্মুখীন হতে পারেন তার কোনও ক্ষতি বা দায়বদ্ধতা বহন করে না।</translation>
+<translation id="3187473319809074178">এই সবগুলি এর থেকে সম্পূর্ণ পৃথক হয়</translation>
+<translation id="8327818101454798856">সুতরাং আপনি যদি আপনার পছন্দের সাইটগুলি সমর্থনের সন্ধান করছেন, তবে তার পরিবর্তে ওই দিকে যান।</translation>
+<translation id="4894106830958548828">আমি বুঝেছি</translation>
+<translation id="453977518730680921">মিডিয়া অটোপ্লে করুন</translation>
 <translation id="7701466644604753106">স্পীডরিডার চালু করুন</translation>
 <translation id="763042262431778831">স্পীডরিডার বন্ধ করুন</translation>
 </translationbundle>

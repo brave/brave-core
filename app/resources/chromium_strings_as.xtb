@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Brave Softwareলৈ ক্ৰেশ্ব ৰিপ‘ৰ্ট আৰু <ph name="UMA_LINK"/> পঠিয়াই Braveক উন্নত কৰাত সহায় কৰক</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - নেটৱর্কত ছাইন ইন - Brave</translation>
+<translation id="8745514854244955877">Brave - নেটৱর্কত ছাইন ইন - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - নেটৱর্কত ছাইন ইন</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave বিটা</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -44,8 +47,12 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="5785919770853225148">Braveএ এই পাছৱৰ্ডটো আপোনাৰ Brave Software একাউণ্টত ছেভ কৰিব৷ আপুনি ইয়াক মনত ৰাখিব নালাগে৷</translation>
 <translation id="8211837073776713955">Braveএ আপোনাৰ পাছৱৰ্ডসমূহ কেতিয়াবা হেক কৰা হৈছিল নেকি আপোনাক জানিবলৈ দিয়ে</translation>
 <translation id="113959764510199339">Braveএ পাছৱর্ডসমূহ দেখুৱাবলৈ চেষ্টা কৰি আছে।</translation>
+<translation id="96347285368592620">Braveএ পাছৱর্ডসমূহ প্ৰতিলিপি কৰিবলৈ চেষ্টা কৰি আছে।</translation>
+<translation id="2953892977076487219">Braveএ পাছৱর্ডসমূহ সম্পাদনা কৰিবলৈ চেষ্টা কৰি আছে।</translation>
 <translation id="7503098128120083822">Braveএ আপোনাৰ পাছৱর্ডসমূহ ৰপ্তানি কৰিব খোজে।</translation>
 <translation id="8285294305439559616">Braveএ পাছৱর্ডসমূহ দেখুৱাবলৈ চেষ্টা কৰি আছে। ইয়াক অনুমতি দিবলৈ আপোনাৰ Windowsৰ পাছৱর্ড টাইপ কৰক।</translation>
+<translation id="8090497651549769448">Braveএ পাছৱর্ডসমূহ প্ৰতিলিপি কৰিবলৈ চেষ্টা কৰি আছে। ইয়াৰ অনুমতি দিবলৈ আপোনাৰ Windowsৰ পাছৱৰ্ডটো টাইপ কৰক।</translation>
+<translation id="3861679447659630159">Braveএ পাছৱর্ডসমূহ সম্পাদনা কৰিবলৈ চেষ্টা কৰি আছে। এই কার্যৰ বাবে অনুমতি দিবলৈ আপোনাৰ Windowsৰ পাছৱৰ্ডটো টাইপ কৰক।</translation>
 <translation id="5918095577778020936">Braveএ আপোনাৰ পাছৱর্ডসমূহ ৰপ্তানি কৰিব খোজে। ইয়াৰ অনুমতি আপোনাৰ দিবলৈ Windows পাছৱৰ্ড টাইপ কৰক।</translation>
 <translation id="8320964054148936490">এই কম্পিউটাৰটোত ইতিমধ্যে Braveৰ অধিক শেহতীয়া সংস্কৰণ আছে। যদি ছফ্টৱেৰটোৱে কাম কৰা নাই তেন্তে Brave আনইনষ্টল কৰি আকৌ চেষ্টা কৰক।</translation>
 <translation id="7691786510374174420">অনির্দিষ্ট আসোঁৱাহৰ বাবে ইনষ্টল কৰিব পৰা নগ’ল। যদি Brave এতিয়া চলি আছে তেন্তে সেইটো বন্ধ কৰি আকৌ চেষ্টা কৰক।</translation>
@@ -192,7 +199,7 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="3262506503470845422">Braveৰ ক্ষেত্ৰত সহায় লাভ কৰক</translation>
 <translation id="1864557848095568223">Brave আপডে’ট কৰি থকা হৈছে</translation>
 <translation id="1786715389543715322">Brave আপডে’ট কৰি থকা হৈছে (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">প্ৰায় আপ-টু-ডে’ট কৰা হৈছে! আপডে’ট সম্পূৰ্ণ কৰিবলৈ Brave পুনৰ লঞ্চ কৰক৷</translation>
+<translation id="7914115000169617076">প্ৰায় আপ টু ডে’ট হৈছে! আপডে’ট হোৱাটো সম্পূৰ্ণ কৰিবলৈ Brave পুনৰ লঞ্চ কৰক। ইনক’গনিট’ ৱিণ্ড’সমূহ পুনৰ খুলিব নোৱাৰিব।</translation>
 <translation id="8208853227947884571">Brave একেবাৰে শেহতীয়া অৱস্থাত আছে</translation>
 <translation id="573759479754913123">Brave OSৰ বিষয়ে</translation>
 <translation id="7573289029918943991">আপোনাৰ ডিভাইচটো আপ-টু-ডে’ট হৈ আছেনে নাই সেয়া চাবলৈ <ph name="LINK_BEGIN"/>Brave OSৰ ছেটিংসমূহ<ph name="LINK_END"/>লৈ যাওক</translation>
@@ -210,6 +217,12 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="8586264863973514035">আপুনি কৰা সলনি কার্যসমূহ প্ৰযোজ্য কৰিবলৈ Brave পুনৰ লঞ্চ কৰক</translation>
 <translation id="7021823858304886493">Braveত ছাইন ইন কৰাৰ অনুমতি দিয়ক</translation>
 <translation id="1649714546770135458">আপুনি এইটো অফ কৰি বিভিন্ন Brave Software ছাইট যেনে Gmailত Braveত ছাইন ইন নকৰাকৈ ছাইন ইন কৰিব পাৰে</translation>
+<translation id="2796517443093885402">Braveএ আপোনাক ডেটা উলংঘন, ক্ষতিকাৰক এক্সটেনশ্বন তথা আন বহুতৰ পৰা সুৰক্ষিত থকাত সহায় কৰিব পাৰে</translation>
+<translation id="428541510811554120">Braveএ আপডে'টসমূহ পৰীক্ষা কৰিব নোৱাৰে। আপোনাৰ ইণ্টাৰনেট সংযোগ পৰীক্ষা কৰি চাওক।</translation>
+<translation id="2633397153656205379">Brave আপডে'ট হোৱা নাই, কিবা ভুল হৈছে। <ph name="BEGIN_LINK"/>Braveৰ আপডে'ট সম্পর্কীয় সমস্যাবোৰ আৰু বিফল হোৱা আপডে'টসমূহ সমাধান কৰক।<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">আপুনি ছাইন ইন হৈ নথকাৰ বাবে Braveএ আপোনাৰ পাছৱর্ডসমূহ পৰীক্ষা কৰিব নোৱাৰে</translation>
+<translation id="7006260220514217183">সুৰক্ষিত ব্ৰাউজিং অফ আছে। Braveএ ইয়াক অন কৰাটো চুপাৰিছ কৰে।</translation>
+<translation id="1785833016412082453">Braveএ আপোনাৰ এক্সটেনশ্বনসমূহ পৰীক্ষা কৰিব নোৱাৰে। পাছত আকৌ চেষ্টা কৰক।</translation>
 <translation id="9220324636239049437">এইটোৱে এই ডিভাইচটোৰ পৰা ১টা বস্তু মচিব। আপোনাৰ ডেটা পাছত পুনৰুদ্ধাৰ কৰিবলৈ Braveত <ph name="USER_EMAIL"/> হিচাপে ছাইন ইন কৰক।</translation>
 <translation id="5853262807109651878">ইয়ে এই ডিভাইচটোৰ পৰা <ph name="ITEMS_COUNT"/>টা বস্তু মচিব। আপোনাৰ ডেটা পাছত পুনৰুদ্ধাৰ কৰিবলৈ Braveত <ph name="USER_EMAIL"/> হিচাপে ছাইন ইন কৰক।</translation>
 <translation id="4784414698887946907">এই কাৰ্যই এই ডিভাইচটোৰ পৰা আপোনাৰ ব্ৰাউজিং ডেটা মচি পেলাব। আপোনাৰ ডেটা পাছত পুনৰুদ্ধাৰ কৰিবলৈ Braveত <ph name="USER_EMAIL"/> হিচাপে ছাইন ইন কৰক।</translation>

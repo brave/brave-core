@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Új profil létrehozása</translation>
 <translation id="2666990579225592931">Vendég módú ablak megnyitása</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (kiterjesztésazonosító "<ph name="EXTENSION_ID"/>") nem engedélyezett a Brave-ben.</translation>
-<translation id="7450557937477381864">Chrome bezárása</translation>
-<translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
 
 Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
-<translation id="453977518730680921">Média automatikus lejátszása</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>
 <translation id="2240268017737062801">Kérdezze meg, amikor egy honlap automatikusan le akar játszani egy médiát</translation>
 <translation id="3371702087847741961">Kérdezze meg, amikor egy honlap automatikusan le akar játszani valamilyen médiát (javasolt)</translation>
@@ -39,11 +36,14 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
 <translation id="1520361618554057102">Mindig mutassa a könyvjelzőket az új fül oldalon</translation>
 <translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
+<translation id="597020512043916976">A legjobb oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
+<translation id="264150068416846820">Brave által javasolt oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
 <translation id="7781069478569868053">Új lap</translation>
 <translation id="2467749191278759605">Brave irányítópult testreszabása</translation>
 <translation id="1717331825806276156">Háttérképek</translation>
 <translation id="1820041496463124489">Szponzorált képek</translation>
 <translation id="8173998484743827990">Brave statisztikák</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Népszerű oldalak</translation>
 <translation id="1776831331757823105">Óra</translation>
@@ -72,9 +72,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7390783310074170337">Alapértelmezett nézet</translation>
 <translation id="130615081792797568">Egyszerű nézet</translation>
 <translation id="2360360976480535628">Speciális nézet</translation>
-<translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
-<translation id="6447842834002726250">Cookie-k</translation>
-<translation id="6522412052085018663">Ujjlenyomatos azonosítás</translation>
+<translation id="2133317862976486547">Követők és reklámok letiltása</translation>
+<translation id="4385707520896576447">Cookie-k</translation>
+<translation id="4978786495456601191">Ujjlenyomatos azonosítás</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="4824468494729001999">Parancsfájlok letiltása</translation>
 <translation id="519861640102428255">Megjelenés és kezelés</translation>
@@ -83,12 +83,11 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
-<translation id="4699812599455071925">Csak a webhelyközi cookie-k letiltása</translation>
-<translation id="5657156137487675418">Összes süti engedélyezése</translation>
-<translation id="6883611015375728278">Összes süti blokkolása</translation>
-<translation id="5963670684159057574">Webhelyközi ujjlenyomat-beállítás tiltása</translation>
-<translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
-<translation id="4540198958192073185">Minden ujjlenyomat-leolvasás blokkolása</translation>
+<translation id="4078738236287221428">Követők és reklámok letiltva (agresszív)</translation>
+<translation id="7740996059027112821">Követők és reklámok letiltva (standard)</translation>
+<translation id="4176463684765177261">Összes követő és reklám engedélyezve</translation>
+<translation id="5770288601196774623">Csak a webhelyközi cookie-k letiltása</translation>
+<translation id="3587482841069643663">Összes süti blokkolása</translation>
 <translation id="8942080017911802454">WebRTC IP kezelési irányelvek</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
@@ -110,6 +109,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7701040980221191251">Nincs</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Web3-szolgáltató a Dappok használatához</translation>
+<translation id="5913089932885076110">Crypto Wallets betöltése indításkor</translation>
 <translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
 <translation id="1765684547504191670">Média-útválasztó komponens használatával engedélyezi a Chromecastot a böngészőben.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
@@ -171,10 +171,13 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="6469509880167172749">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
 <translation id="7090566321964540749">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
 <translation id="9111960429693394744">A Brave kriptotárcáit vagy a MetaMaskot szeretné használni a Dappokhoz?</translation>
+<translation id="8721775358057000783">Szeretnéd a Crypto Wallets indítását web3 támogatáshoz ezen az oldalon?</translation>
 <translation id="7583735190612229830">Állítsa be, hogy a Crypto Wallets együttműködjön ezzel és más hasonló alkalmazásokkal.</translation>
-<translation id="8337117349965899723">Használja a Crypto Walletset</translation>
+<translation id="4823406846571523661">Crypto Wallets beállítása</translation>
 <translation id="5756155765711979898">Használja a MetaMaskot</translation>
 <translation id="6754134632841262799">BEÁLLÍTÁS</translation>
+<translation id="8199661191594897555">Crypto Wallet indítása és újratöltés</translation>
+<translation id="8428213095426709021">Beállítások</translation>
 <translation id="4552520379838695057">Elnézést, ez az oldal hiányzik.</translation>
 <translation id="2609895996619941644">Meg szeretné tekinteni, hogy van-e mentett verziója a Wayback Machine-nek?</translation>
 <translation id="8053093028263274061">Elnézést, de nincs mentett verzió</translation>
@@ -185,8 +188,10 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="2336228925368920074">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
 <translation id="796831669370432378">Könyvjelző hozzáadásához kattintson a címsorban szereplő könyvjelző gombra</translation>
 <translation id="4989337484121655457">Teljes körű lemezhozzáférés szükséges</translation>
-<translation id="8025559074845816210">A Brave-nek teljes lemezhozzáférésre van szüksége a Safari-könyvjelzők importálásához.</translation>
+<translation id="5501596373144334003">A könyvjelzők és előzmények importálásához Safariból a Brave-nek teljes lemezhozzáférésre van szüksége.</translation>
 <translation id="8515328844674404333">Olvassa el, hogyan engedélyezheti a teljes lemezhozzáférést a Rendszerbeállításokban.</translation>
 <translation id="6414878884710400018">Rendszerbeállítások megnyitása</translation>
 <translation id="5570470519803062774">Webhely és pajzsok beállításai</translation>
+<translation id="8487693399751278191">Importáld a könyvjelzőket...</translation>
+<translation id="2557899542277210112">A gyors eléréshez, tedd könyvjelzőidet ide, a könyvjelzősávba.</translation>
 </translationbundle>

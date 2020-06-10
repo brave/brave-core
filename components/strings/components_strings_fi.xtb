@@ -39,10 +39,6 @@
 <translation id="5040262127954254034">Tietosuoja</translation>
 <translation id="3061707000357573562">Virheenkorjauspalvelu</translation>
 <translation id="1914326953223720820">Purkupalvelu</translation>
-<translation id="4926159001844873046"><ph name="SITE"/> sanoo</translation>
-<translation id="1623104350909869708">Estä tätä sivua luomasta muita viestejä</translation>
-<translation id="2677748264148917807">Poistu</translation>
-<translation id="5556459405103347317">Lataa uudelleen</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="4378154925671717803">Puhelin</translation>
 <translation id="8131740175452115882">Vahvista</translation>
@@ -77,12 +73,13 @@
 <translation id="7701040980221191251">Ei mitään</translation>
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="9038649477754266430">Ennakointipalvelun avulla voit ladata sivuja nopeammin</translation>
+<translation id="2344028582131185878">Automaattiset lataukset</translation>
+<translation id="3414952576877147120">Koko:</translation>
 <translation id="4850886885716139402">Näytä</translation>
 <translation id="7180611975245234373">Päivitä</translation>
-<translation id="1426410128494586442">Kyllä</translation>
-<translation id="4250680216510889253">Ei</translation>
 <translation id="4522570452068850558">Tiedot</translation>
 <translation id="3586931643579894722">Piilota lisätiedot</translation>
+<translation id="5556459405103347317">Lataa uudelleen</translation>
 <translation id="3226128629678568754">Paina uudelleenlatauspainiketta lähettääksesi uudelleen sivuun lataamiseen vaadittavat tiedot.</translation>
 <translation id="7549584377607005141">Tämän verkkosivun näyttäminen oikein vaatii tietoja, jotka olet syöttänyt aiemmin. Voit lähettää nämä tiedot uudelleen, mutta niin tehdessäsi toistat toiminnot, jotka tämä sivu aiemmin suoritti.</translation>
 <translation id="614940544461990577">Kokeile seuraavia toimenpiteitä:</translation>
@@ -103,6 +100,9 @@
 <translation id="4880827082731008257">Haku historiasta</translation>
 <translation id="4756388243121344051">&amp;Historia</translation>
 <translation id="1644574205037202324">Historia</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> sanoo</translation>
+<translation id="1623104350909869708">Estä tätä sivua luomasta muita viestejä</translation>
+<translation id="2677748264148917807">Poistu</translation>
 <translation id="3950820424414687140">Kirjaudu sisään</translation>
 <translation id="8286036467436129157">Kirjaudu sisään</translation>
 <translation id="8503813439785031346">Käyttäjätunnus</translation>
@@ -148,11 +148,12 @@
 <translation id="2586657967955657006">Leikepöytä</translation>
 <translation id="6059925163896151826">USB-laitteet</translation>
 <translation id="7638605456503525968">Sarjaportit</translation>
+<translation id="3784372983762739446">Bluetooth-laitteet</translation>
 <translation id="2215727959747642672">Tiedostojen muokkaus</translation>
 <translation id="6545864417968258051">Bluetooth-haku</translation>
 <translation id="534295439873310000">NFC-laitteet</translation>
-<translation id="4943703118917034429">Virtuaalitodellisuus</translation>
-<translation id="3513704683820682405">Lisätty todellisuus</translation>
+<translation id="4670064810192446073">Virtuaalitodellisuus</translation>
+<translation id="2025115093177348061">Lisätty todellisuus</translation>
 <translation id="5039804452771397117">Salli</translation>
 <translation id="7053983685419859001">Estä</translation>
 <translation id="57838592816432529">Mykistä</translation>
@@ -168,10 +169,25 @@
 <translation id="5932224571077948991">Sivustolla on häiritseviä tai harhaanjohtavia mainoksia</translation>
 <translation id="7878562273885520351">Salasanasi on saattanut vaarantua.</translation>
 <translation id="1089439967362294234">Vaihda salasana</translation>
-<translation id="9008201768610948239">Ohita</translation>
-<translation id="5344579389779391559">Tämä sivu saattaa yrittää veloittaa sinulta rahaa.</translation>
 <translation id="1186201132766001848">Tarkista salasanat</translation>
+<translation id="9008201768610948239">Ohita</translation>
+<translation id="808894953321890993">Vaihda salasana</translation>
 <translation id="5979084224081478209">Tarkista salasanat</translation>
+<translation id="5344579389779391559">Tämä sivu saattaa yrittää veloittaa sinulta rahaa.</translation>
+<translation id="6107012941649240045">Myönnetty kohteelle</translation>
+<translation id="5030338702439866405">Myöntänyt</translation>
+<translation id="5826507051599432481">Yleinen nimi (CN)</translation>
+<translation id="6898699227549475383">Organisaatio (O)</translation>
+<translation id="3308006649705061278">Organisaatioyksikkö (OU)</translation>
+<translation id="8705331520020532516">Sarjanumero</translation>
+<translation id="1902576642799138955">Voimassaoloaika</translation>
+<translation id="5895187275912066135">Myöntämispäivämäärä</translation>
+<translation id="4121428309786185360">Vanhenee</translation>
+<translation id="4154664944169082762">Tunnistetiedostot</translation>
+<translation id="7238585580608191973">SHA-256-tunnistetiedosto</translation>
+<translation id="5209518306177824490">SHA-1-tunnistetiedosto</translation>
+<translation id="6786747875388722282">Laajennukset</translation>
+<translation id="7240120331469437312">Varmenteen kohteen vaihtoehtoinen nimi</translation>
 <translation id="10614374240317010">Ei tallenneta</translation>
 <translation id="5869522115854928033">Tallennetut salasanat</translation>
 <translation id="230699814587342492">Brave-salasanat</translation>
@@ -203,6 +219,36 @@
 <translation id="1197088940767939838">Oranssi</translation>
 <translation id="1555130319947370107">Sininen</translation>
 <translation id="138218114945450791">Vaaleansininen</translation>
+<translation id="5612720917913232150"><ph name="URL"/> haluaa käyttää tietokoneesi sijaintia.</translation>
+<translation id="4733082559415072992"><ph name="URL"/> haluaa käyttää laitteesi sijaintia.</translation>
+<translation id="4677585247300749148"><ph name="URL"/> haluaa vastata esteettömyystapahtumiin.</translation>
+<translation id="3461266716147554923"><ph name="URL"/> haluaa nähdä leikepöydälle kopioidun tekstin ja kuvat.</translation>
+<translation id="131405271941274527"><ph name="URL"/> haluaa lähettää ja vastaanottaa tietoja, kun kosketat puhelimella NFC-laitetta</translation>
+<translation id="5146995429444047494">Ilmoitukset on estetty: <ph name="ORIGIN"/></translation>
+<translation id="1195558154361252544">Ilmoitukset estetään automaattisesti kaikilla muilla paitsi sallituilla sivustoilla</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> haluaa käyttää mikrofoniasi.</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> haluaa käyttää kameraasi.</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> haluaa lähettää sinulle ilmoituksia</translation>
+<translation id="6910240653697687763"><ph name="URL"/> haluaa MIDI-laitteidesi täyden hallintaoikeuden.</translation>
+<translation id="503498442187459473"><ph name="HOST"/> haluaa käyttää kameraasi ja mikrofoniasi.</translation>
+<translation id="8282947398454257691">Saada selville laitetunnuksesi.</translation>
+<translation id="8329449853370113380"><ph name="URL"/> yrittää toistaa suojattua sisältöä. Brave Software vahvistaa laitteesi tunnistetiedot.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> haluaa toistaa suojattua sisältöä. Brave Software vahvistaa laitteesi identiteetin, ja myös sivusto voi saada pääsyn laitteesi identiteettitietoihin.</translation>
+<translation id="3016780570757425217">Saada sijaintisi selville.</translation>
+<translation id="7221855153210829124">Näytä ilmoitukset</translation>
+<translation id="8606726445206553943">Käyttää MIDI-laitteitasi.</translation>
+<translation id="7409836189476010449">suorittaa Flashin</translation>
+<translation id="7438976808740265764">Flash Playeria ei enää tueta joulukuun 2020 jälkeen.</translation>
+<translation id="4761104368405085019">Käyttää mikrofonia</translation>
+<translation id="9150045010208374699">Käyttää kameraa</translation>
+<translation id="4953689047182316270">Vastata esteettömyystapahtumiin</translation>
+<translation id="6116338172782435947">nähdä leikepöydälle kopioidun tekstin ja kuvat</translation>
+<translation id="5804427196348435412">Käytä NFC-laitteita</translation>
+<translation id="3194737229810486521"><ph name="URL"/> haluaa tallentaa tietoja pysyvästi laitteellesi.</translation>
+<translation id="1030706264415084469"><ph name="URL"/> haluaa tallentaa suuria tietomääriä pysyvästi laitteellesi.</translation>
+<translation id="1712552549805331520"><ph name="URL"/> haluaa tallentaa tietoja pysyvästi paikalliselle tietokoneellesi.</translation>
+<translation id="1997484222658892567"><ph name="URL"/> haluaa tallentaa suuria tietomääriä pysyvästi paikalliselle tietokoneellesi.</translation>
+<translation id="7648992873808071793">Tallentaa tiedostoja tälle laitteelle.</translation>
 <translation id="4813512666221746211">Verkkovirhe</translation>
 <translation id="3380365263193509176">Tuntematon virhe</translation>
 <translation id="5565735124758917034">Aktiivinen</translation>
@@ -218,6 +264,8 @@
 <translation id="5720705177508910913">Nykyinen käyttäjä</translation>
 <translation id="6965978654500191972">Laite</translation>
 <translation id="4728558894243024398">Käyttöympäristö</translation>
+<translation id="1426410128494586442">Kyllä</translation>
+<translation id="4250680216510889253">Ei</translation>
 <translation id="2380886658946992094">Juridiikka</translation>
 <translation id="1588438908519853928">Normaali</translation>
 <translation id="1974060860693918893">Lisäasetukset</translation>
@@ -242,7 +290,6 @@
 <translation id="9170848237812810038">K&amp;umoa</translation>
 <translation id="2972581237482394796">&amp;Tee uudelleen</translation>
 <translation id="5329858041417644019">Selaimesi ei ole hallinnoitu</translation>
-<translation id="6786747875388722282">Laajennukset</translation>
 <translation id="5804241973901381774">Käyttöluvat</translation>
 <translation id="8004582292198964060">Selain</translation>
 <translation id="1240347957665416060">Laitteesi nimi</translation>

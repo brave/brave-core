@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="6132506775968708399">Blokuj pliki cookie stron trzecich</translation>
 <translation id="7835726359440951858">Blokuj reklamy i skrypty śledzące</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="94154759592465111">Blokuj skrypty</translation>
 <translation id="7458422973722236530">Ochrona przed rozpoznawaniem urządzenia</translation>
-<translation id="252011129655042182">Reklamy i skrypty śledzące</translation>
+<translation id="5709627087332022422">Zablokuj skrypty śledzące</translation>
 <translation id="6754976710186182237">Metody rozpoznawania urządzenia</translation>
 <translation id="2313532038420432247">Aktualizacje HTTPS</translation>
 <translation id="7461425058443653485">Zablokowane skrypty</translation>
@@ -19,10 +19,11 @@
 <translation id="1468415711258933398">Karta standardowa</translation>
 <translation id="3377025655491224618">Karta prywatna</translation>
 <translation id="9148058034647219655">Wyjście</translation>
+<translation id="520895744850022668">Aktualizacje HTTPS</translation>
 <translation id="8710614491157212477">Otwiera obsługiwane witryny za pomocą HTTPS zamiast HTTP, kiedy to możliwe</translation>
 <translation id="8387201461264842096">Blokada reklam</translation>
 <translation id="1934885595886623674">Zapobiega wczytywaniu reklam</translation>
-<translation id="5787084571334399599">Uniemożliwiaj rozpoznawanie urządzenia</translation>
+<translation id="5787084571334399599">Uniemożliwia rozpoznawanie urządzenia</translation>
 <translation id="7459000603787995422">Zamknij karty przy wyjściu</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="4339730410920731698">Zablokowane reklamy i skrypty śledzące</translation>
@@ -165,7 +166,7 @@ miesiącu...</translation>
 <translation id="1713542052890184975">Utwórz kopię zapasową portfela.</translation>
 <translation id="2323069945529668668">O nie!</translation>
 <translation id="7510166204621526816">Serwer Nagród Brave nie odpowiada. Naprawimy to tak szybko, jak to możliwe.</translation>
-<translation id="2626799779920242286">Spróbuj ponownie później.</translation>
+<translation id="7117228822971127758">Spróbuj ponownie później</translation>
 <translation id="3068742524072211213">wygasa dnia <ph name="DATE"/></translation>
 <translation id="4292832015778676417">zarobione z reklam</translation>
 <translation id="683765328936486920">na YouTube</translation>
@@ -216,7 +217,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="6776430845975754238">Zmiana ustawień będzie miała wpływ tylko na dane, które to urządzenie udostępnia innym.</translation>
 <translation id="6450924769151530465">Dodaj inne urządzenie</translation>
 <translation id="7539985410310934287">Wprowadź słowa kodu</translation>
-<translation id="6270614677029463366">Korzystając z istniejącego zsynchronizowanego urządzenia, otwórz ustawienia Brave i wejdź w Ustawienia &amp;gt; Synchronizacja. Wybierz Dodaj urządzenie, a następnie Zamiast tego wyświetlaj słowa kodu.</translation>
+<translation id="6270614677029463366">Korzystając z istniejącego zsynchronizowanego urządzenia, otwórz ustawienia Brave i wejdź w Ustawienia &amp;gt; Synchronizacja. Wybierz Dodaj urządzenie, a następnie Zamiast tego wyświetl słowa kodu.</translation>
 <translation id="8131740175452115882">Potwierdź</translation>
 <translation id="4973653569293835178">Użyję mojego aparatu...</translation>
 <translation id="3998827900918661986">Urządzenie z systemem Android</translation>
@@ -230,19 +231,18 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="5321518976657560663">Błąd resetowania</translation>
 <translation id="4114170343590425996">Podczas resetowania nagród Brave wystąpił błąd. Zrestartuj Brave i spróbuj ponownie.</translation>
 <translation id="6393502589311632553">Pokazuj reklamy, kiedy Brave nie jest używana</translation>
-<translation id="3349204812119681938">Zresetuj nagrody Brave</translation>
+<translation id="3349204812119681938">Zresetuj Nagrody Brave</translation>
 <translation id="8782039523249932839">Spowoduje to usunięcie Twojego portfela Brave i zresetuje wszystkie Twoje dane nagród Brave</translation>
 <translation id="6810078320346589989">Utwórz zakładkę</translation>
 <translation id="597993392929850353">Licencja Brave</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6199596294742117349">To jest karta prywatna</translation>
 <translation id="5858455511731621847">Mimo że strony otwierane w prywatnych kartach nie są zapisywane lokalnie. Taki sposób przeglądania treści nie zapewnia użytkownikowi anonimowości, ani nie czyni go niewidocznym dla dostawcy Internetu, pracodawcy bądź dla odwiedzanych przez niego stron.</translation>
-<translation id="5789441016350810005">Reklamy Brave Ads przesyłane, gdy przeglądarka znajduje się w tle</translation>
-<translation id="7127980134843952133">Historia pobierania</translation>
-<translation id="3690140184638701871">Datki &amp;amp; Napiwki</translation>
+<translation id="5789441016350810005">Reklamy Brave przesyłane, gdy przeglądarka znajduje się w tle</translation>
+<translation id="3690140184638701871">Datki &amp; Napiwki</translation>
 <translation id="844921671123185605">Twoje miesięczne datki zostały przekazane!</translation>
 <translation id="3124090095880236567">Włącz reklamy</translation>
-<translation id="2975780980638932742">Powitaj Brave Ads!</translation>
+<translation id="2975780980638932742">Reklamy Brave są już dostępne!</translation>
 <translation id="7655723274266132226">Teraz możesz zarabiać, oglądając reklamy.</translation>
 <translation id="7541582550122501404">Datek oczekujący</translation>
 <translation id="8520059774736886747">Twórca <ph name="PUBLISHER_NAME"/> został niedawno zweryfikowany.</translation>
@@ -258,18 +258,85 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="4065726515175370979">5 <ph name="TIP"/></translation>
 <translation id="8171148564903208264">10 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Strona nowej karty</translation>
-<translation id="8522669544471808198">Wyświetlaj obrazy w tle</translation>
-<translation id="3870475560794762985">Wyświetlaj obrazy sponsorowane</translation>
+<translation id="8522669544471808198">Wyświetl obrazy w tle</translation>
+<translation id="3870475560794762985">Wyświetl obrazy sponsorowane</translation>
 <translation id="8297488609722895137">Zdjęcie autorstwa <ph name="PHOTO_BY"/></translation>
+<translation id="1605521356929094020">Włącz reklamy Brave</translation>
+<translation id="5878330112719288629">Stukając Zarabiaj i dawaj, akceptujesz <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Pobierz zapłatę, aby wyświetlić obraz w tle.</translation>
-<translation id="4836823081419522426">Otrzymasz 70% przychodów z reklam dzięki prywatnemu sponsoringowi, który możesz wykorzystać do wsparcia twórców treści internetowych. Włącz opcję nagród Brave, aby odebrać swój przydział.</translation>
-<translation id="7307847920988946894">Włącz nagrody</translation>
-<translation id="1605521356929094020">Włącz reklamy Brave Ads</translation>
-<translation id="1647482814782886825">Włączając system nagród Brave, akceptujesz <ph name="TERMS_OF_SERVICE"/>. Możesz również <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="7136586167396205364">Ukryj obrazy sponsorowane</translation>
 <translation id="2927095357213611519">Możesz wspierać twórców stron internetowych za pomocą tokenów.\nZdobywaj tokeny za oglądanie reklam szanujących Twoją prywatność.</translation>
-<translation id="4016415345213871193">Otrzymasz’ zapłatę za wyświetlanie obrazu w tle.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> o sponsorowanych obrazach w programie nagród Brave. Możesz również <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Możesz również <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Zarabiaj za wyświetlanie obrazu w tle. Włącz reklamy Brave, aby otrzymać za to wynagrodzenie.</translation>
+<translation id="213787746370741250">Otwieraj niestandardowe karty</translation>
+<translation id="8030169304546394654">Rozłączony</translation>
+<translation id="8267327690882073581">Weryfikuj portfel</translation>
+<translation id="543510923939676996">Portfel zweryfikowany</translation>
+<translation id="8673913984316081937">Weryfikacja portfela jest opcjonalna</translation>
+<translation id="8558636200953226885">Jednak jeżeli zdecydujesz się na weryfikację, możesz...</translation>
+<translation id="8697510149346635496">Wypłać tokeny BAT, które otrzymujesz za wyświetlanie reklam szanujących prywatność</translation>
+<translation id="1481480653609649134">Kup dodatkowe tokeny BAT za pomocą kart płatniczych i innych źródeł</translation>
+<translation id="9096003370755878766">Wypłać tokeny BAT, które zostały wcześniej dodane do Twojego portfela nagród Brave</translation>
+<translation id="1554282356558968486">Nasza usługa portfela jest świadczona przez</translation>
+<translation id="6569877533335686968">Wesprzyj</translation>
+<translation id="8465442795593991224">Uphold może wymagać weryfikacji Twojej tożsamości w zależności od żądanych usług.</translation>
+<translation id="723054503945711909">Brave Software Inc. nie przetwarza, nie przechowuje ani nie uzyskuje dostępu do żadnych danych osobowych, które podajesz Uphold, zakładając konto w tym serwisie.</translation>
+<translation id="3699674790322420653">Zakończ weryfikację portfela</translation>
+<translation id="2193391216824305230">Portfel użytkownika</translation>
+<translation id="7591798679868259510">Przejdź do mojego konta Uphold</translation>
+<translation id="9200453331904391567">Rozłącz Nagrody Brave</translation>
+<translation id="6239274080752256452">Wypłata środków</translation>
+<translation id="8874184842967597500">Brak połączenia</translation>
+<translation id="3368922792935385530">Połączone</translation>
+<translation id="4569155249847375786">Zweryfikowany</translation>
+<translation id="5358719431303818601">Rozłączono niezweryfikowane</translation>
+<translation id="4241449868720191203">Rozłączono zweryfikowane</translation>
+<translation id="3248185426436836442">Oczekuje</translation>
+<translation id="8108013093558639183">W regionie określonym na podstawie lokalizacji, w której założone jest Twoje konto, aktualnie nie obsługuje się BAT. Sprawdź dostępność w późniejszym terminie.</translation>
+<translation id="4190454391025419535">Nieobsługiwany region</translation>
+<translation id="6830703472632069884">Wystąpił problem podczas weryfikacji Twojego portfela, spróbuj ponownie później.</translation>
+<translation id="3512533646933434345">Błąd weryfikacji portfela</translation>
+<translation id="2260513517001048012">UWAGA: Ten zweryfikowany twórca Brave nie skonfigurował jeszcze konta, aby móc otrzymywać wpłaty od użytkowników Brave. Twoja przeglądarka będzie próbować ponawiać wpłaty do czasu weryfikacji konta lub przez 90 dni.</translation>
+<translation id="4488355059795908907">Ten zweryfikowany twórca Brave nie skonfigurował jeszcze konta, aby móc otrzymywać wpłaty od użytkowników Brave. Wszystkie napiwki, które wysyłasz, pozostaną w Twoim portfelu do momentu zakończenia tej procedury.</translation>
+<translation id="2495032782748793764">Domyślne ustawienia Brave</translation>
+<translation id="9132378787893584761">Udostępnij Brave znajomym!</translation>
+<translation id="717952606991220586">Ups, coś poszło nie tak. Spróbuj ponownie później.</translation>
+<translation id="2524310205387880526">Oceń Brave</translation>
+<translation id="6680650203439190394">Kurs</translation>
+<translation id="2635089463885398597">Jak oceniasz swoje doświadczenia z Brave?</translation>
+<translation id="141901961143729572">Podziel się swoją opinią</translation>
+<translation id="7961015016161918242">Nigdy</translation>
+<translation id="1275213816424141989">Może później</translation>
+<translation id="6991128190741664836">Później</translation>
+<translation id="8851456134224363571">Świetnie! Czy możesz ocenić nas w Play Store?</translation>
+<translation id="8668962040900592974">Daj nam znać, co możemy poprawić</translation>
+<translation id="4406937629441301400">Zyskaj tokeny za obejrzenie tego obrazu i przekaż dalej twórcom. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Zyskaj tokeny za obejrzenie tego obrazu. Włącz Zarabiaj i dawaj, aby odebrać swój udział.</translation>
+<translation id="6632345639591919543">Zyskujesz tokeny za oglądanie tego obrazu.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">Zyskujesz tokeny za oglądanie tego obrazu.</translation>
+<translation id="7952665812649667034">Mogę już Zarabiać i dawać</translation>
+<translation id="7877201489035217175">Dowiedz się więcej o sponsorowanych obrazach</translation>
+<translation id="828092975561478703">Za każdy sponsorowany obraz, który oglądasz, otrzymujesz 70% przychodu w tokenach. Dzięki Brave Ads zawsze masz kontrolę nad reklamami, które widzisz.</translation>
+<translation id="4941539331405513605">Blokuj pliki cookies między witrynami</translation>
+<translation id="3763681089644577874">Zablokuj pliki cookies</translation>
+<translation id="614747795780742163">Uniemożliwia stronom internetowym przechowywanie danych o wcześniejszych wizytach</translation>
+<translation id="6883611015375728278">Blokuj wszystkie pliki cookie</translation>
+<translation id="5657156137487675418">Zezwól na wszystkie pliki cookie</translation>
+<translation id="5963670684159057574">Zablokuj rozpoznawanie urządzenia przez strony trzecie</translation>
+<translation id="3895527457258986253">Blokuj zdejmowanie odcisków palca</translation>
+<translation id="184568144098869637">Uniemożliwia przeglądarce rozpoznanie Twojego urządzenia</translation>
+<translation id="4540198958192073185">Zablokuj rozpoznawanie urządzenia</translation>
+<translation id="769702552748212954">Zezwalaj na rozpoznawanie urządzenia</translation>
+<translation id="2888409909650566510">Zablokowane reklamy i inne straszne\nrzeczy</translation>
+<translation id="6930134873084561197">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nBrave blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
+<translation id="8553998445606452168">O osłonach Brave</translation>
+<translation id="8912304686498704084">PODNIEŚ</translation>
+<translation id="4963218453264888510">OPUŚĆ</translation>
+<translation id="7474113515179313724">Przeglądasz tę witrynę bez zabezpieczeń prywatności Brave. Nie działa prawidłowo z podniesionymi osłonami?</translation>
+<translation id="9055546041146396417">Jeśli ta witryna wydaje się zepsuta, spróbuj opuścić osłony.</translation>
+<translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
+<translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
+<translation id="5429200298326665264">Uwaga: Adres tej witryny zostanie wysłany wraz z numerem Twojej wersji Brave i adresem IP (który nie będzie przechowywany).</translation>
+<translation id="5299848999918506028">Dziękujemy!</translation>
+<translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
+<translation id="650318023204990401">Zaawansowane sterowanie</translation>
+<translation id="7182293319417450928">Do weryfikacji wymagane jest minimalne saldo w wysokości 25 BAT.</translation>
 </translationbundle>

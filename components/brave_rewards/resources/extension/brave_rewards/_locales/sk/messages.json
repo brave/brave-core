@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Bodové granty",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Dobrý deň, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

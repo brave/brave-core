@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Brave Softwareకు వినియోగ గణాంకాలు మరియు <ph name="UMA_LINK"/>ను పంపడం ద్వారా Braveను మెరుగుపరచడంలో సహాయపడండి</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - నెట్‌వర్క్ సైన్ ఇన్ - Brave</translation>
+<translation id="8745514854244955877">Brave - నెట్‌వర్క్ సైన్ ఇన్ - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - నెట్‌వర్క్ సైన్ ఇన్</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave బీటా</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -38,8 +41,12 @@
 <translation id="5785919770853225148">Brave ఈ పాస్‌వర్డ్‌ను మీ Brave Software ఖాతాలో సేవ్ చేస్తుంది. మీరు దీనిని గుర్తుంచుకోవాల్సిన అవసరం లేదు.</translation>
 <translation id="8211837073776713955">మీ పాస్‌వర్డ్‌లు ఎప్పుడైనా హ్యాక్ అయితే, Brave మీకు తెలియచేస్తుంది</translation>
 <translation id="113959764510199339">Brave పాస్‌వర్డ్‌లను చూపడానికి ప్రయత్నిస్తోంది.</translation>
+<translation id="96347285368592620">పాస్‌వర్డ్‌లను కాపీ చేయడానికి Brave ప్రయత్నిస్తోంది.</translation>
+<translation id="2953892977076487219">Brave పాస్‌వర్డ్‌లను ఎడిట్ చేయడానికి ప్రయత్నిస్తోంది.</translation>
 <translation id="7503098128120083822">Brave మీ పాస్‌వర్డ్‌లను ఎగుమతి చేయాలనుకుంటోంది.</translation>
 <translation id="8285294305439559616">Brave పాస్‌వర్డ్‌లను చూపడానికి ప్రయత్నిస్తోంది. దీన్ని అనుమతించడానికి మీ Windows పాస్‌వర్డ్‌ను టైప్ చేయండి.</translation>
+<translation id="8090497651549769448">పాస్‌వర్డ్‌లను కాపీ చేయడానికి Brave ప్రయత్నిస్తోంది. దీన్ని అనుమతించడానికి మీ Windows పాస్‌వర్డ్‌ను టైప్ చేయండి.</translation>
+<translation id="3861679447659630159">పాస్‌వర్డ్‌లను ఎడిట్ చేయడానికి Brave ప్రయత్నిస్తోంది. దీన్ని అనుమతించడానికి మీ Windows పాస్‌వర్డ్‌ను టైప్ చేయండి.</translation>
 <translation id="5918095577778020936">Brave మీ పాస్‌వర్డ్‌లను ఎగుమతి చేయాలనుకుంటోంది. దీనిని అనుమతించడం కోసం మీ Windows పాస్‌వర్డ్‌ని టైప్ చేయండి.</translation>
 <translation id="8320964054148936490">ఈ కంప్యూటర్ ఇప్పటికే మరింత తాజా Brave వెర్షన్‌ని కలిగి ఉంది. సాఫ్ట్‌వేర్ పని చేయకుంటే, దయచేసి Braveని అన్ఇన్‌స్టాల్ చేసి, మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="7691786510374174420">పేర్కొనబడని లోపం కారణంగా ఇన్‌స్టాలేషన్ విఫలమైంది. ప్రస్తుతం Brave అమలు చేయబడుతుంటే, దయచేసి దీన్ని మూసివేసి, మళ్లీ ప్రయత్నించండి.</translation>
@@ -186,7 +193,7 @@
 <translation id="3262506503470845422">Braveతో సహాయాన్ని పొందండి</translation>
 <translation id="1864557848095568223">Braveని నవీకరిస్తోంది</translation>
 <translation id="1786715389543715322">Brave నవీకరించబడుతోంది (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">దాదాపుగా నవీకృతంగా ఉంది! నవీకరణను పూర్తి చేయడానికి Braveని పునఃప్రారంభించండి.</translation>
+<translation id="7914115000169617076">దాదాపుగా తాజాగా ఉంది! అప్‌డేట్ చేయడాన్ని పూర్తి చేయడానికి Braveను మళ్లీ ప్రారంభించండి. అజ్ఞాత విండోలు మళ్లీ తెరవబడవు.</translation>
 <translation id="8208853227947884571">Brave తాజాగా ఉంది</translation>
 <translation id="573759479754913123">Brave OS గురించి</translation>
 <translation id="7573289029918943991">మీ పరికరం అప్‌డేట్ చేయబడి ఉందని చూడటానికి <ph name="LINK_BEGIN"/>Brave OS సెట్టింగ్‌లు<ph name="LINK_END"/>కు వెళ్లండి</translation>
@@ -204,6 +211,12 @@
 <translation id="8586264863973514035">మీ మార్పులను వర్తింపజేయడానికి, Braveని పునఃప్రారంభించండి</translation>
 <translation id="7021823858304886493">Brave సైన్-ఇన్‌ని అనుమతించండి</translation>
 <translation id="1649714546770135458">దీనిని ఆఫ్ చేయడం ద్వారా, మీరు Braveకి సైన్ ఇన్ చేయకుండానే Gmail లాంటి Brave Software సైట్‌లలో సైన్ ఇన్ చేయగలరు</translation>
+<translation id="2796517443093885402">డేటా ఉల్లంఘనలు, చెడు ఎక్స్‌టెన్షన్‌లు మొదలైన వాటి నుండి మిమ్మల్ని సురక్షితంగా ఉంచడంలో Brave సహాయపడగలదు</translation>
+<translation id="428541510811554120">అప్‌డేట్‌లను Brave చెక్ చేయలేకపోయింది. మీ ఇంటర్నెట్ కనెక్షన్ సరిచూసుకుని, తర్వాత ట్రై చేయండి.</translation>
+<translation id="2633397153656205379">Brave అప్‌డేట్ అవ్వలేదు, ఏదో తప్పు జరిగింది. <ph name="BEGIN_LINK"/>Brave అప్‌డేట్ సమస్యలు, విఫలమైన అప్‌డేట్‌లను పరిష్కరించండి.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">మీరు సైన్ ఇన్ చేయనందున Brave మీ పాస్‌వర్డ్‌లను తనిఖీ చేయలేదు</translation>
+<translation id="7006260220514217183">సురక్షిత బ్రౌజింగ్ ఆఫ్ చేయబడింది. దాన్ని ఆన్ చేయమని Brave సిఫార్సు చేస్తోంది.</translation>
+<translation id="1785833016412082453">Brave మీ ఎక్స్‌టెన్షన్‌లను తనిఖీ చేయలేకపోయింది. తర్వాత మళ్లీ ట్రై చేయండి.</translation>
 <translation id="9220324636239049437">ఇది ఈ పరికరం నుండి 1 అంశాన్ని తొలగిస్తుంది. మీ డేటాను తర్వాత తిరిగి పొందడానికి, Braveకి <ph name="USER_EMAIL"/> వలె సైన్ ఇన్ చేయండి.</translation>
 <translation id="5853262807109651878">ఇది ఈ పరికరం నుండి <ph name="ITEMS_COUNT"/> అంశాలను తొలగిస్తుంది. మీ డేటాను తర్వాత తిరిగి పొందడానికి, Braveకి <ph name="USER_EMAIL"/> వలె సైన్ ఇన్ చేయండి.</translation>
 <translation id="4784414698887946907">ఇది ఈ పరికరం నుండి మీ బ్రౌజింగ్ డేటాను తొలగిస్తుంది. మీ డేటాను తర్వాత తిరిగి పొందడానికి, Braveకి <ph name="USER_EMAIL"/> వలె సైన్ ఇన్ చేయండి.</translation>
