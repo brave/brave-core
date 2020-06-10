@@ -28,6 +28,13 @@ export const onBalance = (balance: RewardsInternals.Balance) =>
     balance
   })
 
+export const getContributions = () => action(types.GET_CONTRIBUTIONS)
+
+export const onContributions = (contributions: RewardsInternals.ContributionInfo[]) =>
+  action(types.ON_CONTRIBUTIONS, {
+    contributions
+  })
+
 export const getPromotions = () => action(types.GET_PROMOTIONS)
 
 export const onPromotions = (promotions: RewardsInternals.Promotion[]) =>

@@ -9,19 +9,30 @@ declare namespace RewardsInternals {
     info: {
       isKeyInfoSeedValid: boolean
       walletPaymentId: string
-      currentReconciles: CurrentReconcile[]
       bootStamp: number
     }
+    contributions: ContributionInfo[]
     promotions: Promotion[]
     log: string
     fullLog: string
   }
 
-  export interface CurrentReconcile {
-    viewingId: string
-    amount: string
-    retryStep: number
-    retryLevel: number
+  export interface ContributionInfo {
+    id: string
+    amount: number
+    type: number
+    step: number
+    retryCount: number
+    createdAt: number
+    processor: number
+    publishers: ContributionPublisher[]
+  }
+
+  export interface ContributionPublisher {
+    contributionId: string
+    publisherKey: string
+    totalAmount: number
+    contributedAmount: number
   }
 
   export interface Balance {

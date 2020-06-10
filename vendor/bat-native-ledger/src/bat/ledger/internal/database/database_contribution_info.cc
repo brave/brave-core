@@ -853,6 +853,7 @@ void DatabaseContributionInfo::OnGetList(
         GetIntColumn(record_pointer, 5));
 
     contribution_ids.push_back(info->contribution_id);
+    list.push_back(std::move(info));
   }
 
   auto publisher_callback =
@@ -882,7 +883,7 @@ void DatabaseContributionInfo::OnGetListPublishers(
         continue;
       }
 
-      contribution->publishers.push_back(std::move(item));
+      contribution->publishers.push_back(item->Clone());
     }
   }
 

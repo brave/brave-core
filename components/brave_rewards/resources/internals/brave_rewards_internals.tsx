@@ -43,6 +43,10 @@ window.cr.define('brave_rewards_internals', function () {
     getActions().onBalance(balance)
   }
 
+  function contributions (contributions: RewardsInternals.ContributionInfo[]) {
+    getActions().onContributions(contributions)
+  }
+
   function promotions (promotions: RewardsInternals.Promotion[]) {
     getActions().onPromotions(promotions)
   }
@@ -72,6 +76,7 @@ window.cr.define('brave_rewards_internals', function () {
     onGetRewardsEnabled,
     onGetRewardsInternalsInfo,
     balance,
+    contributions,
     promotions,
     partialLog,
     fullLog

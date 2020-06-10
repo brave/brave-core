@@ -122,9 +122,6 @@ using PublisherStatus = mojom::PublisherStatus;
 
 using PublisherExclude = mojom::PublisherExclude;
 
-using ReconcileInfo = mojom::ReconcileInfo;
-using ReconcileInfoPtr = mojom::ReconcileInfoPtr;
-
 using RecurringTip = mojom::RecurringTip;
 using RecurringTipPtr = mojom::RecurringTipPtr;
 

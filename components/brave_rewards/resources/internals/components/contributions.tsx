@@ -9,7 +9,7 @@ import { ButtonWrapper } from '../style'
 import { Button } from 'brave-ui/components'
 
 interface Props {
-  items: RewardsInternals.CurrentReconcile[]
+  items: RewardsInternals.ContributionInfo[]
   onGet: () => void
 }
 
@@ -32,13 +32,10 @@ export const Contributions = (props: Props) => {
         />
       </ButtonWrapper>
       {props.items.map((item, index) => (
-        <>
-          <div>
-            {getLocale('currentReconcile')} {index + 1}
-            <Contribution reconcile={item || ''} />
-          </div>
-          <hr/>
-        </>
+        <div key={item.id}>
+          <Contribution contribution={item || ''} />
+          {(index !== props.items.length - 1) ? <hr/> : null}
+        </div>
       ))}
     </>
   )

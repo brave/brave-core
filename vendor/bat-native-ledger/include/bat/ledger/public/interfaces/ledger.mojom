@@ -197,19 +197,10 @@ enum ContributionRetry {
   STEP_FINAL = 10      // Phase 2
 };
 
-struct ReconcileInfo {
-  string viewing_id;
-  string amount;
-  ContributionRetry retry_step;
-  int32 retry_level;
-};
-
 struct RewardsInternalsInfo {
   string payment_id;
   bool is_key_info_seed_valid;
   uint64 boot_stamp;
-
-  map<string, ReconcileInfo> current_reconciles;
 };
 
 enum Result {

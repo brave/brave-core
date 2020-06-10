@@ -11,8 +11,7 @@ RewardsInternalsInfo::RewardsInternalsInfo() {}
 
 RewardsInternalsInfo::RewardsInternalsInfo(const RewardsInternalsInfo& info)
     : payment_id(info.payment_id),
-      is_key_info_seed_valid(info.is_key_info_seed_valid),
-      current_reconciles(info.current_reconciles) {
+      is_key_info_seed_valid(info.is_key_info_seed_valid) {
 }
 
 RewardsInternalsInfo::~RewardsInternalsInfo() {}
