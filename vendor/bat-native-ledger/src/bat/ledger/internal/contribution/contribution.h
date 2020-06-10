@@ -104,14 +104,14 @@ class Contribution {
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
+  void ProcessContributionQueue();
+
  private:
   void StartAutoContribute(
       const ledger::Result result,
       const uint64_t reconcile_stamp);
 
   void ContributionCompletedSaved(const ledger::Result result);
-
-  void ProcessContributionQueue();
 
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
 
