@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">Faragha</translation>
 <translation id="3061707000357573562">Huduma ya Kurekebisha</translation>
 <translation id="1914326953223720820">Huduma ya Kufungua Faili za Zip</translation>
-<translation id="1623104350909869708">Zuia ukurasa huu usiunde vidadisi zaidi</translation>
-<translation id="2677748264148917807">Ondoka</translation>
-<translation id="5556459405103347317">Pakia upya</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="4378154925671717803">Simu</translation>
 <translation id="8131740175452115882">Thibitisha</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">Hamna</translation>
 <translation id="8428213095426709021">Mipangilio</translation>
 <translation id="9038649477754266430">Tumia huduma ya kutabiri ili upakie kurasa kwa haraka zaidi</translation>
+<translation id="2344028582131185878">Upakuaji wa Kiotomatiki</translation>
+<translation id="3414952576877147120">Ukubwa:</translation>
 <translation id="4850886885716139402">Mwonekano</translation>
 <translation id="7180611975245234373">Onyesha upya</translation>
-<translation id="1426410128494586442">Ndio</translation>
-<translation id="4250680216510889253">La</translation>
 <translation id="4522570452068850558">Maelezo</translation>
 <translation id="3586931643579894722">Ficha maelezo</translation>
+<translation id="5556459405103347317">Pakia upya</translation>
 <translation id="614940544461990577">Jaribu:</translation>
 <translation id="4943872375798546930">Hakuna matokeo yoyote yaliyopatikana</translation>
 <translation id="8688672835843460752">Inapatikana</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">Tafuta katika historia</translation>
 <translation id="4756388243121344051">&amp;Historia</translation>
 <translation id="1644574205037202324">Historia</translation>
+<translation id="1623104350909869708">Zuia ukurasa huu usiunde vidadisi zaidi</translation>
+<translation id="2677748264148917807">Ondoka</translation>
 <translation id="3950820424414687140">Ingia</translation>
 <translation id="8286036467436129157">Ingia</translation>
 <translation id="8503813439785031346">Jina la mtumiaji</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">Ubao wa kunakili</translation>
 <translation id="6059925163896151826">Vifaa vya USB</translation>
 <translation id="7638605456503525968">Milango ya kuingiza</translation>
+<translation id="3784372983762739446">Vifaa vya Bluetooth</translation>
 <translation id="2215727959747642672">Kubadilisha faili</translation>
 <translation id="6545864417968258051">Kutafuta Bluetooth</translation>
 <translation id="534295439873310000">Vifaa vya NFC</translation>
-<translation id="4943703118917034429">Uhalisia Pepe</translation>
-<translation id="3513704683820682405">Uhalisia Ulioboreshwa</translation>
+<translation id="4670064810192446073">Uhalisia pepe</translation>
+<translation id="2025115093177348061">Uhalisia ulioboreshwa</translation>
 <translation id="5039804452771397117">Ruhusu</translation>
 <translation id="7053983685419859001">Zuia</translation>
 <translation id="57838592816432529">Zima sauti</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">Tovuti inaonyesha matangazo yanayopotosha au yanayokatiza huduma</translation>
 <translation id="7878562273885520351">Huenda nenosiri lako limetambulika</translation>
 <translation id="1089439967362294234">Badilisha Nenosiri</translation>
-<translation id="9008201768610948239">Puuza</translation>
 <translation id="1186201132766001848">Kagua Manenosiri</translation>
+<translation id="9008201768610948239">Puuza</translation>
+<translation id="808894953321890993">Badilisha nenosiri</translation>
 <translation id="5979084224081478209">Kagua manenosiri</translation>
+<translation id="6107012941649240045">Kimetolewa Kwa</translation>
+<translation id="5030338702439866405">Kimetolewa Na</translation>
+<translation id="5826507051599432481">Jina la Kawaida (CN)</translation>
+<translation id="6898699227549475383">Shirika (O)</translation>
+<translation id="3308006649705061278">Sehemu ya Shirika (OU)</translation>
+<translation id="8705331520020532516">Nambari ya Ufuatiliaji</translation>
+<translation id="1902576642799138955">Kipindi cha Uhalali</translation>
+<translation id="5895187275912066135">Kilitolewa</translation>
+<translation id="4121428309786185360">Muda Wake Unakwisha</translation>
+<translation id="4154664944169082762">Alazama za Vidole</translation>
+<translation id="7238585580608191973">Alama ya kidole ya SHA-256</translation>
+<translation id="5209518306177824490">Alama ya SHA-1</translation>
+<translation id="6786747875388722282">Viendelezi</translation>
+<translation id="7240120331469437312">Jina Mbadala la Kichwa cha Cheti</translation>
 <translation id="10614374240317010">Haijahifadhiwa kamwe</translation>
 <translation id="5869522115854928033">Manenosiri yaliyohifadhiwa</translation>
 <translation id="230699814587342492">Manenosiri ya Brave</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">Rangi ya machungwa</translation>
 <translation id="1555130319947370107">Samawati</translation>
 <translation id="138218114945450791">Bluu Nyepesi</translation>
+<translation id="5612720917913232150"><ph name="URL"/> inataka kutumia maelezo ya mahali kompyuta yako ilipo</translation>
+<translation id="4733082559415072992"><ph name="URL"/> inataka kutumia maelezo kuhusu mahali kifaa chako kilipo</translation>
+<translation id="4677585247300749148"><ph name="URL"/> inataka kushughulikia matukio ya zana za walio na matatizo ya kuona au kusikia</translation>
+<translation id="3461266716147554923"><ph name="URL"/> ingependa kuona maandishi na pacha zilizonakiliwa kwenye ubao wa kunakili</translation>
+<translation id="131405271941274527"><ph name="URL"/> inataka kutuma na kupokea maelezo unapogusisha simu yako kwenye kifaa cha NFC</translation>
+<translation id="5146995429444047494">Arifa za <ph name="ORIGIN"/> zimezuiwa</translation>
+<translation id="1195558154361252544">Arifa zinazuiwa kiotomatiki kwenye tovuti zote isipokuwa zile unazoruhusu</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> inataka kutumia maikrofoni yako</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> inataka kutumia kamera yako</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> inataka kukutumia arifa</translation>
+<translation id="6910240653697687763"><ph name="URL"/> inataka kupata udhibiti kamili wa vifaa vyako vya MIDI</translation>
+<translation id="503498442187459473"><ph name="HOST"/> inataka kutumia kamera na maikrofoni yako</translation>
+<translation id="8282947398454257691">Jua kitambulisho chako cha kipekee cha kifaa</translation>
+<translation id="8329449853370113380"><ph name="URL"/> inataka kucheza maudhui yanayolindwa. Kitambulisho cha kifaa chako kitathibitishwa na Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> inataka kucheza maudhui yanayolindwa. Utambulisho wa kifaa chako utathibitishwa na Brave Software na kinaweza kufikiwa na tovuti hii.</translation>
+<translation id="3016780570757425217">kujua mahali ulipo</translation>
+<translation id="7221855153210829124">Kuonyesha arifa</translation>
+<translation id="8606726445206553943">Tumia vifaa vyako vya MIDI</translation>
+<translation id="7409836189476010449">Tumia Flash</translation>
+<translation id="7438976808740265764">Tutaacha kutumia Flash Player baada ya Desemba 2020.</translation>
+<translation id="4761104368405085019">Tumia kipazasauti chako</translation>
+<translation id="9150045010208374699">Tumia kamera yako</translation>
+<translation id="4953689047182316270">Kushughulikia Matukio ya Zana za Walio na Matatizo ya Kuona au Kusikia</translation>
+<translation id="6116338172782435947">Kuona maandishi na picha zilizonakiliwa kwenye ubao wa kunakili</translation>
+<translation id="5804427196348435412">Kutumia vifaa vya NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> inataka kuhifadhi data kwenye kifaa chako kwa muda mrefu</translation>
+<translation id="1030706264415084469"><ph name="URL"/> inataka kuhifadhi data nyingi kwenye kifaa chako kwa muda mrefu</translation>
+<translation id="1712552549805331520"><ph name="URL"/> inataka kuhifadhi kabisa data kwenye kompyuta yako ya karibu</translation>
+<translation id="1997484222658892567"><ph name="URL"/> inataka kuhifadhi data nyingi kwenye kompyuta yako ya ndani kwa muda mrefu</translation>
+<translation id="7648992873808071793">Hifadhi faili kwenye kifaa hiki</translation>
 <translation id="4813512666221746211">Hitilafu ya mtandao</translation>
 <translation id="3380365263193509176">Hitilafu isiyojulikana</translation>
 <translation id="5565735124758917034">Inatumika</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">Mtumiaji wa sasa</translation>
 <translation id="6965978654500191972">Kifaa</translation>
 <translation id="4728558894243024398">Mfumo wa uendeshaji</translation>
+<translation id="1426410128494586442">Ndio</translation>
+<translation id="4250680216510889253">La</translation>
 <translation id="2380886658946992094">Kisheria</translation>
 <translation id="1588438908519853928">Ya kawaida</translation>
 <translation id="1974060860693918893">Mipangilio ya kina</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">Haijulikani</translation>
 <translation id="9170848237812810038">&amp;Tendua</translation>
 <translation id="2972581237482394796">&amp;Rudia</translation>
-<translation id="6786747875388722282">Viendelezi</translation>
 <translation id="5804241973901381774">Idhini</translation>
 <translation id="8004582292198964060">Kivinjari</translation>
 </translationbundle>

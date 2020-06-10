@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Помозите нам да побољшамо Brave тако што ћете Brave Software-у слати извештаје о отказивању и <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – пријављивање на мрежу – Brave</translation>
+<translation id="8745514854244955877">Brave – пријављивање на мрежу – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – пријављивање на мрежу</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave бета</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Програмерска верзија Brave-а</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave не може да врати подешавања.</translation>
 <translation id="5785919770853225148">Brave ће сачувати ову лозинку на Brave Software налогу. Нећете морати да је памтите.</translation>
 <translation id="8211837073776713955">Brave вас обавештава ако су лозинке угрожене</translation>
 <translation id="113959764510199339">Brave покушава да прикаже лозинке.</translation>
+<translation id="96347285368592620">Brave покушава да копира лозинке.</translation>
+<translation id="2953892977076487219">Brave покушава да измени лозинке.</translation>
 <translation id="7503098128120083822">Brave жели да извезе лозинке.</translation>
 <translation id="8285294305439559616">Brave покушава да прикаже лозинке. Унесите лозинку за Windows да бисте то омогућили.</translation>
+<translation id="8090497651549769448">Brave покушава да копира лозинке. Унесите лозинку за Windows да бисте то омогућили.</translation>
+<translation id="3861679447659630159">Brave покушава да измени лозинке. Унесите лозинку за Windows да бисте то омогућили.</translation>
 <translation id="5918095577778020936">Brave жели да извезе лозинке. Унесите лозинку за Windows да бисте то омогућили.</translation>
 <translation id="8320964054148936490">Овај рачунар већ има новију верзију Brave-а. Ако софтвер не функционише, деинсталирајте Brave и покушајте поново.</translation>
 <translation id="7691786510374174420">Инсталација није успела због неодређене грешке. Ако је Brave тренутно отворен, затворите га и покушајте поново.</translation>
@@ -192,7 +199,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="3262506503470845422">Пронађите помоћ за Brave</translation>
 <translation id="1864557848095568223">Ажурирање Brave-а</translation>
 <translation id="1786715389543715322">Ажурирање Brave-а (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Ажурирање је скоро готово! Поново покрените Brave да бисте довршили ажурирање.</translation>
+<translation id="7914115000169617076">Скоро је ажуриран! Поново покрените Brave да бисте довршили ажурирање. Прозори без архивирања се неће поново отворити.</translation>
 <translation id="8208853227947884571">Brave је ажуриран</translation>
 <translation id="573759479754913123">О Brave ОС-у</translation>
 <translation id="7573289029918943991">Да бисте проверили да ли је уређај ажуриран, идите у <ph name="LINK_BEGIN"/>Подешавања Brave ОС-а<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Brave не може да врати подешавања.</translation>
 <translation id="8586264863973514035">Да бисте применили промене, поново покрените Brave</translation>
 <translation id="7021823858304886493">Дозволи пријављивање у Brave</translation>
 <translation id="1649714546770135458">Када то укључите, можете да се пријављујете на Brave Software сајтове, као што је Gmail, али се не пријављујете у Brave</translation>
+<translation id="2796517443093885402">Brave може да вас штити од упада у податке, неисправних додатака и других проблема</translation>
+<translation id="428541510811554120">Brave не може да тражи ажурирања. Проверите интернет везу.</translation>
+<translation id="2633397153656205379">Brave се није ажурирао. Дошло је до грешке. <ph name="BEGIN_LINK"/>Отклоните проблеме са ажурирањем Brave-а и неуспела ажурирања.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave не може да вам проверава лозинке зато што нисте пријављени</translation>
+<translation id="7006260220514217183">Безбедно прегледање је искључено. Brave препоручује да га укључите.</translation>
+<translation id="1785833016412082453">Brave не може да вам проверава додатке. Пробајте поново касније.</translation>
 <translation id="9220324636239049437">Овим ћете избрисати 1 ставку са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Овим ћете избрисати <ph name="ITEMS_COUNT"/> ставке(и) са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Овим ћете избрисати податке прегледања са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>

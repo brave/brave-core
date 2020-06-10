@@ -27,9 +27,6 @@
 <translation id="5713644099811900409">Brave Software একাউণ্ট</translation>
 <translation id="3157931365184549694">পুনঃস্থাপন কৰক</translation>
 <translation id="5040262127954254034">গোপনীয়তা</translation>
-<translation id="1623104350909869708">এই পৃষ্ঠাটোক অতিৰিক্ত ডায়ল’গ সৃষ্টি কৰিব নিদিব</translation>
-<translation id="2677748264148917807">ত্যাগ কৰক</translation>
-<translation id="5556459405103347317">পুনৰ ল’ড কৰক</translation>
 <translation id="2359808026110333948">অব্যাহত ৰাখক</translation>
 <translation id="4378154925671717803">ফ'ন</translation>
 <translation id="8131740175452115882">নিশ্চিত কৰক</translation>
@@ -58,12 +55,13 @@
 <translation id="397105322502079400">গণনা কৰি থকা হৈছে…</translation>
 <translation id="7701040980221191251">নাই</translation>
 <translation id="8428213095426709021">ছেটিংসমূহ</translation>
+<translation id="2344028582131185878">স্বয়ংক্ৰিয়ভাৱে হোৱা ডাউনল’ড</translation>
+<translation id="3414952576877147120">আকাৰ:</translation>
 <translation id="4850886885716139402">চাওক</translation>
 <translation id="7180611975245234373">ৰিফ্ৰেশ্ব কৰক</translation>
-<translation id="1426410128494586442">হয়</translation>
-<translation id="4250680216510889253">নহয়</translation>
 <translation id="4522570452068850558">সবিশেষ</translation>
 <translation id="3586931643579894722">সবিশেষ লুকুৱাওক</translation>
+<translation id="5556459405103347317">পুনৰ ল’ড কৰক</translation>
 <translation id="614940544461990577">এইখিনি কৰি চাওক:</translation>
 <translation id="4943872375798546930">কোনো ফলাফল নাই</translation>
 <translation id="8688672835843460752">উপলব্ধ</translation>
@@ -81,6 +79,8 @@
 <translation id="4880827082731008257">সন্ধানৰ ইতিহাস</translation>
 <translation id="4756388243121344051">&amp;ইতিহাস</translation>
 <translation id="1644574205037202324">ইতিহাস</translation>
+<translation id="1623104350909869708">এই পৃষ্ঠাটোক অতিৰিক্ত ডায়ল’গ সৃষ্টি কৰিব নিদিব</translation>
+<translation id="2677748264148917807">ত্যাগ কৰক</translation>
 <translation id="3950820424414687140">ছাইন ইন কৰক</translation>
 <translation id="8286036467436129157">ছাইন ইন কৰক</translation>
 <translation id="8503813439785031346">ব্যৱহাৰকাৰীৰ নাম</translation>
@@ -121,11 +121,12 @@
 <translation id="2586657967955657006">ক্লিপব'ৰ্ড</translation>
 <translation id="6059925163896151826">ইউএছবি ডিভাইচসমূহ</translation>
 <translation id="7638605456503525968">ছিৰিয়েল প’ৰ্টসমূহ</translation>
+<translation id="3784372983762739446">ব্লুটুথ ডিভাইচসমূহ</translation>
 <translation id="2215727959747642672">ফাইল সম্পাদনা</translation>
 <translation id="6545864417968258051">ব্লুটুথ স্কেনিং</translation>
 <translation id="534295439873310000">NFC ডিভাইচসমূহ</translation>
-<translation id="4943703118917034429">ভাৰ্ছুৱেল ৰিয়েলিটি</translation>
-<translation id="3513704683820682405">পৰিৱৰ্ধিত বাস্তৱিকতা</translation>
+<translation id="4670064810192446073">ভাৰ্চুৱেল ৰিয়েলিটি</translation>
+<translation id="2025115093177348061">পৰিৱৰ্ধিত বাস্তৱিকতা</translation>
 <translation id="5039804452771397117">অনুমতি দিয়ক</translation>
 <translation id="7053983685419859001">অৱৰোধ কৰক</translation>
 <translation id="57838592816432529">মিউট কৰক</translation>
@@ -140,6 +141,22 @@
 <translation id="7878562273885520351">আপোনাৰ পাছৱৰ্ডটো হয়তো হেক হৈছে</translation>
 <translation id="1089439967362294234">পাছৱৰ্ড সলনি কৰক</translation>
 <translation id="9008201768610948239">উপেক্ষা কৰক</translation>
+<translation id="808894953321890993">পাছৱৰ্ড সলনি কৰক</translation>
+<translation id="5979084224081478209">পাছৱৰ্ডবোৰ পৰীক্ষা কৰক</translation>
+<translation id="6107012941649240045">ইয়াত প্ৰদান কৰা হৈছে</translation>
+<translation id="5030338702439866405">প্ৰদান কৰোঁতা:</translation>
+<translation id="5826507051599432481">কামাণ্ডৰ নাম (CN)</translation>
+<translation id="6898699227549475383">প্ৰতিষ্ঠান (O)</translation>
+<translation id="3308006649705061278">প্ৰতিষ্ঠানৰ ইউনিট (অ’ইউ)</translation>
+<translation id="8705331520020532516">ক্ৰমিক নম্বৰ</translation>
+<translation id="1902576642799138955">ব্যৱহাৰৰ সময়সীমা</translation>
+<translation id="5895187275912066135">জাৰি কৰা তাৰিখ</translation>
+<translation id="4121428309786185360">ম্যাদ উকলাৰ সময়</translation>
+<translation id="4154664944169082762">ফিংগাৰপ্ৰিণ্ট</translation>
+<translation id="7238585580608191973">SHA-256 ফিংগাৰপ্ৰিণ্ট</translation>
+<translation id="5209518306177824490">SHA-1 ফিংগাৰপ্ৰিণ্ট</translation>
+<translation id="6786747875388722282">এক্সটেনশ্বনসমূহ</translation>
+<translation id="7240120331469437312">প্ৰমাণপত্ৰৰ বিষয় বিকল্প নাম</translation>
 <translation id="10614374240317010">কেতিয়াও ছেভ কৰা নহয়</translation>
 <translation id="5869522115854928033">ছেভ কৰা পাছৱৰ্ডসমূহ</translation>
 <translation id="230699814587342492">Braveৰ পাছৱৰ্ড</translation>
@@ -166,6 +183,36 @@
 <translation id="2713444072780614174">বগা</translation>
 <translation id="1197088940767939838">কমলা</translation>
 <translation id="1555130319947370107">নীলা</translation>
+<translation id="5612720917913232150"><ph name="URL"/>এ আপোনাৰ কম্পিউটাৰৰ অৱস্থান জানিব খোজে</translation>
+<translation id="4733082559415072992"><ph name="URL"/>এ আপোনাৰ ডিভাইচৰ অৱস্থান জানিব বিচাৰে</translation>
+<translation id="4677585247300749148">সাধ্য সুবিধাৰ অনুষ্ঠানসমূ্হলৈ <ph name="URL"/>এ সঁহাৰি জনাব খোজে</translation>
+<translation id="3461266716147554923"><ph name="URL"/>এ ক্লিপব'ৰ্ডলৈ কপি কৰা পাঠ আৰু প্ৰতিচ্ছবি চাব বিচাৰে</translation>
+<translation id="131405271941274527">আপুনি নিজৰ ফ’নটো কোনো NFC ডিভাইচত লগালে <ph name="URL"/>এ তথ্য পঠিয়াব আৰু গ্ৰহণ কৰিবলৈ বিচাৰে</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/>ৰ জাননীসমূহ অৱৰোধ কৰা আছে</translation>
+<translation id="1195558154361252544">আপুনি অনুমতি দিয়াটোৰ বাদে আন সকলো ছাইটৰ বাবে জাননীসমূহ স্বয়ংক্ৰিয়ভাৱে অৱৰোধ কৰা হয়</translation>
+<translation id="3532844647053365774"><ph name="HOST"/>এ আপোনাৰ মাইক্ৰ'ফ'ন ব্যৱহাৰ কৰিব খোজে</translation>
+<translation id="7108634116785509031"><ph name="HOST"/>এ আপোনাৰ কেমেৰা ব্যৱহাৰ কৰিব বিচাৰিছে</translation>
+<translation id="5426179911063097041"><ph name="SITE"/>এ আপোনালৈ জাননী পঠিয়াব বিচাৰে</translation>
+<translation id="6910240653697687763"><ph name="URL"/>এ আপোনাৰ MIDI ডিভাইচসমূহৰ সম্পূর্ণ নিয়ন্ত্ৰণ পাব খোজে</translation>
+<translation id="503498442187459473"><ph name="HOST"/>এ আপোনাৰ কেমেৰা আৰু মাইক্ৰ’ফ’ন ব্যৱহাৰ কৰিব বিচাৰে</translation>
+<translation id="8282947398454257691">আপোনাৰ অনন্য ডিভাইচ চিনাক্তকৰণকাৰীৰ বিষয়ে জানক</translation>
+<translation id="8329449853370113380"><ph name="URL"/>এ সুৰক্ষিত সমল প্লে' কৰিব খোজে। আপোনাৰ ডিভাইচৰ পৰিচয় Brave Softwareএ সত্যাপন কৰিব।</translation>
+<translation id="2650609753175229582"><ph name="URL"/>এ সুৰক্ষিত সমল প্লে’ কৰিব বিচাৰে। Brave Softwareএ আপোনাৰ ডিভাইচৰ পৰিচয় সত্যাপন কৰিব আৰু এই ছাইটটোৱে এক্সেছ কৰিব পাৰে।</translation>
+<translation id="3016780570757425217">আপোনাৰ অৱস্থান জানক</translation>
+<translation id="7221855153210829124">জাননী দেখুৱাওক</translation>
+<translation id="8606726445206553943">আপোনাৰ MIDI ডিভাইচসমূহ ব্যৱহাৰ কৰক</translation>
+<translation id="7409836189476010449">Flash চলাব</translation>
+<translation id="7438976808740265764">ডিচেম্বৰ, ২০২০ৰ পাছত Flash Player আৰু সমৰ্থিত নহ’ব।</translation>
+<translation id="4761104368405085019">আপোনাৰ মাইক্ৰ’ফ’ন ব্যৱহাৰ কৰক</translation>
+<translation id="9150045010208374699">আপোনাৰ কেমেৰা ব্যৱহাৰ কৰক</translation>
+<translation id="4953689047182316270">সাধ্যসুবিধাৰ অনুষ্ঠানলৈ সঁহাৰি জনাওক</translation>
+<translation id="6116338172782435947">ক্লিপব’ৰ্ডলৈ প্ৰতিলিপি কৰা পাঠ আৰু প্ৰতিচ্ছবি চাওক</translation>
+<translation id="5804427196348435412">NFC ডিভাইচসমূহ ব্যৱহাৰ কৰক</translation>
+<translation id="3194737229810486521">আপোনাৰ ডিভাইচত <ph name="URL"/>এ স্থায়ীভাৱে ডেটা সঞ্চয় কৰিব খোজে</translation>
+<translation id="1030706264415084469"><ph name="URL"/>এ আপোনাৰ ডিভাইচত চিৰদিনৰ বাবে ডাঙৰ ডেটা সঞ্চয় কৰিব বিচাৰে</translation>
+<translation id="1712552549805331520"><ph name="URL"/>এ আপোনাৰ ল’কেল কম্পিউটাৰত স্থায়ীভাৱে ডেটা ষ্ট’ৰ কৰিব বিচাৰে</translation>
+<translation id="1997484222658892567">আপোনাৰ স্থানীয় কম্পিউটাৰত <ph name="URL"/>এ স্থায়ীভাৱে বেছিকৈ ডেটা সঞ্চয় কৰিব বিচাৰে</translation>
+<translation id="7648992873808071793">এই ডিভাইচত ফাইলসমূহ ষ্ট’ৰ কৰক</translation>
 <translation id="4813512666221746211">নেটৱৰ্কৰ আসোঁৱাহ</translation>
 <translation id="3380365263193509176">অজ্ঞাত আসোঁৱাহ</translation>
 <translation id="5565735124758917034">সক্ৰিয়</translation>
@@ -180,6 +227,8 @@
 <translation id="5720705177508910913">বর্তমানৰ ব্যৱহাৰকাৰী</translation>
 <translation id="6965978654500191972">ডিভাইচ</translation>
 <translation id="4728558894243024398">প্লেটফ’ৰ্ম</translation>
+<translation id="1426410128494586442">হয়</translation>
+<translation id="4250680216510889253">নহয়</translation>
 <translation id="1588438908519853928">সাধাৰণ</translation>
 <translation id="1974060860693918893">উন্নত</translation>
 <translation id="5308380583665731573">সংযোগ কৰক</translation>
@@ -196,7 +245,6 @@
 <translation id="583281660410589416">অজ্ঞাত</translation>
 <translation id="9170848237812810038">&amp;আনডু কৰক</translation>
 <translation id="2972581237482394796">&amp;ৰিডু কৰক</translation>
-<translation id="6786747875388722282">এক্সটেনশ্বনসমূহ</translation>
 <translation id="5804241973901381774">অনুমতি</translation>
 <translation id="8004582292198964060">ব্ৰাউজাৰ</translation>
 </translationbundle>

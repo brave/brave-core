@@ -12,6 +12,9 @@
 <translation id="7918740962659365265">Pomognite nam poboljšati Brave šaljući izvješća o rušenju programa i <ph name="UMA_LINK"/> Brave Softwareu</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Prijava na mrežu – Brave</translation>
+<translation id="8745514854244955877">Brave – Prijava na mrežu – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Prijava na mrežu</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="5785919770853225148">Brave će spremiti tu zaporku na vaš Brave Software račun. Ne morate je pamtiti.</translation>
 <translation id="8211837073776713955">Brave će vas obavijestiti ako vaše zaporke budu ugrožene</translation>
 <translation id="113959764510199339">Brave pokušava prikazati zaporke.</translation>
+<translation id="96347285368592620">Brave pokušava kopirati zaporke.</translation>
+<translation id="2953892977076487219">Brave pokušava urediti zaporke.</translation>
 <translation id="7503098128120083822">Brave želi izvesti vaše zaporke.</translation>
 <translation id="8285294305439559616">Brave pokušava prikazati zaporke. Upišite svoju zaporku za Windows da biste to dopustili.</translation>
+<translation id="8090497651549769448">Brave pokušava kopirati zaporke. Upišite svoju zaporku za Windows da biste to dopustili.</translation>
+<translation id="3861679447659630159">Brave pokušava urediti zaporke. Upišite svoju zaporku za Windows da biste to dopustili.</translation>
 <translation id="5918095577778020936">Brave želi izvesti vaše zaporke. Upišite svoju zaporku za Windows da biste to dopustili.</translation>
 <translation id="8320964054148936490">Ovo računalo već ima noviju verziju Bravea. Ako softver ne funkcionira, deinstalirajte Brave i pokušajte ponovo.</translation>
 <translation id="7691786510374174420">Instalacija nije uspjela zbog nepoznate pogreške. Ako je Brave trenutačno otvoren, zatvorite ga i pokušajte ponovo.</translation>
@@ -192,7 +199,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="3262506503470845422">Potraži pomoć za upotrebu Bravea</translation>
 <translation id="1864557848095568223">Ažuriranje Bravea</translation>
 <translation id="1786715389543715322">Ažuriranje Bravea (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Ažuriranje će uskoro biti gotovo. Za dovršetak ponovo pokrenite Brave.</translation>
+<translation id="7914115000169617076">Ažuriranje je skoro gotovo! Ponovo pokrenite Brave da biste završili ažuriranje. Anonimni prozori neće se ponovno otvoriti.</translation>
 <translation id="8208853227947884571">Brave je ažuran</translation>
 <translation id="573759479754913123">O OS-u Brave</translation>
 <translation id="7573289029918943991">Ažurnost uređaja možete provjeriti u <ph name="LINK_BEGIN"/>postavkama OS-a Brave<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8586264863973514035">Da bi se vaše promjene primijenile, ponovo pokrenite Brave</translation>
 <translation id="7021823858304886493">Dopusti prijavu u Brave</translation>
 <translation id="1649714546770135458">Ako isključite tu opciju, možete se prijaviti na Brave Softwareove web-lokacije kao što je Gmail bez prijavljivanja u Brave</translation>
+<translation id="2796517443093885402">Brave vam može pomoći da se bolje zaštitite od povrede podataka, zlonamjernih proširenja i još mnogo toga</translation>
+<translation id="428541510811554120">Brave ne može provjeriti ažuriranja. Provjerite internetsku vezu.</translation>
+<translation id="2633397153656205379">Brave se nije ažurirao zbog pogreške. <ph name="BEGIN_LINK"/>Riješite probleme s ažuriranjem i neuspjela ažuriranja Bravea.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave ne može provjeriti vaše zaporke jer niste prijavljeni</translation>
+<translation id="7006260220514217183">Sigurno je pregledavanje isključeno. Brave preporučuje da ga uključite.</translation>
+<translation id="1785833016412082453">Brave ne može provjeriti vaša proširenja. Pokušajte ponovno kasnije.</translation>
 <translation id="9220324636239049437">Time će se izbrisati jedna stavka s uređaja. Da biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Time će se izbrisati sljedeći broj stavki s uređaja: <ph name="ITEMS_COUNT"/>. TDa biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Time će se izbrisati podaci o pregledavanju s uređaja. Da biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>

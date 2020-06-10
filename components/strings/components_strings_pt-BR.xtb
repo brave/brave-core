@@ -37,15 +37,6 @@
 <translation id="5040262127954254034">Privacidade</translation>
 <translation id="3061707000357573562">Aplicar patch ao serviço</translation>
 <translation id="1914326953223720820">Serviço Descompactar</translation>
-<translation id="1532118530259321453">Esta página diz</translation>
-<translation id="1623104350909869708">Impedir que esta página crie caixas de diálogo adicionais</translation>
-<translation id="7862185352068345852">Deseja sair do site?</translation>
-<translation id="9171296965991013597">Deseja sair do app?</translation>
-<translation id="2677748264148917807">Sair</translation>
-<translation id="425582637250725228">Alterações feitas poderão não ser salvas.</translation>
-<translation id="8079031581361219619">Recarregar o site?</translation>
-<translation id="6852204201400771460">Recarregar o app?</translation>
-<translation id="5556459405103347317">Recarregar</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="8066955247577885446">Desculpe, algo deu errado</translation>
 <translation id="6973932557599545801">Desulpe, não posso ajudar, por favor continue por conta própria.</translation>
@@ -150,15 +141,16 @@
 <translation id="7701040980221191251">Nenhum</translation>
 <translation id="8428213095426709021">Configurações</translation>
 <translation id="9038649477754266430">Usar um serviço de previsão para carregar páginas mais rapidamente</translation>
+<translation id="2344028582131185878">Downloads automáticos</translation>
+<translation id="3414952576877147120">Tamanho:</translation>
 <translation id="2239100178324503013">Enviar agora</translation>
 <translation id="6451458296329894277">Confirmar reenvio</translation>
 <translation id="1549470594296187301">Javascript deve estar habilitado para esta funcionalidade.</translation>
 <translation id="4850886885716139402">Visualizar</translation>
 <translation id="7180611975245234373">Atualizar</translation>
-<translation id="1426410128494586442">Sim</translation>
-<translation id="4250680216510889253">Não</translation>
 <translation id="4522570452068850558">Detalhes</translation>
 <translation id="3586931643579894722">Ocultar detalhes</translation>
+<translation id="5556459405103347317">Recarregar</translation>
 <translation id="3005723025932146533">Mostrar cópia salva</translation>
 <translation id="3447661539832366887">O proprietário deste dispositivo desligo o jogo do dinossauro.</translation>
 <translation id="7440140511386898319">Explora enquanto estiver desconectado</translation>
@@ -184,6 +176,14 @@
 <translation id="4880827082731008257">Histórico de pesquisa</translation>
 <translation id="4756388243121344051">&amp;Histórico</translation>
 <translation id="1644574205037202324">Histórico</translation>
+<translation id="1532118530259321453">Esta página diz</translation>
+<translation id="1623104350909869708">Impedir que esta página crie caixas de diálogo adicionais</translation>
+<translation id="7862185352068345852">Deseja sair do site?</translation>
+<translation id="9171296965991013597">Deseja sair do app?</translation>
+<translation id="2677748264148917807">Sair</translation>
+<translation id="425582637250725228">Alterações feitas poderão não ser salvas.</translation>
+<translation id="8079031581361219619">Recarregar o site?</translation>
+<translation id="6852204201400771460">Recarregar o app?</translation>
 <translation id="3950820424414687140">Fazer login</translation>
 <translation id="8286036467436129157">Fazer login</translation>
 <translation id="8503813439785031346">Nome de usuário</translation>
@@ -228,11 +228,12 @@
 <translation id="2586657967955657006">Área de transferência</translation>
 <translation id="6059925163896151826">Dispositivos USB</translation>
 <translation id="7638605456503525968">Portas seriais</translation>
+<translation id="3784372983762739446">Dispositivos Bluetooth</translation>
 <translation id="2215727959747642672">Edição de arquivo</translation>
 <translation id="6545864417968258051">Verificação de Bluetooth</translation>
 <translation id="534295439873310000">Dispositivos NFC</translation>
-<translation id="4943703118917034429">Realidade virtual</translation>
-<translation id="3513704683820682405">Realidade aumentada</translation>
+<translation id="4670064810192446073">Realidade virtual</translation>
+<translation id="2025115093177348061">Realidade aumentada</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="57838592816432529">Desativar som</translation>
@@ -248,9 +249,24 @@
 <translation id="5932224571077948991">No site, há exibição de anúncios invasivos ou enganosos</translation>
 <translation id="7878562273885520351">Sua senha pode estar comprometida</translation>
 <translation id="1089439967362294234">Alterar senha</translation>
-<translation id="9008201768610948239">Ignorar</translation>
 <translation id="1186201132766001848">Verificar senhas</translation>
+<translation id="9008201768610948239">Ignorar</translation>
+<translation id="808894953321890993">Alterar senha</translation>
 <translation id="5979084224081478209">Verificar senhas</translation>
+<translation id="6107012941649240045">Emitido para</translation>
+<translation id="5030338702439866405">Emitido por</translation>
+<translation id="5826507051599432481">Nome comum (CN)</translation>
+<translation id="6898699227549475383">O (Organização)</translation>
+<translation id="3308006649705061278">Unidade organizacional (OU)</translation>
+<translation id="8705331520020532516">Número de série</translation>
+<translation id="1902576642799138955">Período de validade</translation>
+<translation id="5895187275912066135">Emitido em</translation>
+<translation id="4121428309786185360">Expira em</translation>
+<translation id="4154664944169082762">Assinaturas digitais</translation>
+<translation id="7238585580608191973">Assinatura digital SHA-256</translation>
+<translation id="5209518306177824490">Assinatura digital SHA-1</translation>
+<translation id="6786747875388722282">Extensões</translation>
+<translation id="7240120331469437312">Nome alternativo do requerente do certificado</translation>
 <translation id="10614374240317010">Nunca salvas</translation>
 <translation id="5869522115854928033">Senhas salvas</translation>
 <translation id="230699814587342492">Senhas do Brave</translation>
@@ -281,6 +297,36 @@
 <translation id="1197088940767939838">Laranja</translation>
 <translation id="1555130319947370107">Azul</translation>
 <translation id="138218114945450791">Azul-claro</translation>
+<translation id="5612720917913232150">O URL <ph name="URL"/> quer usar o local do seu computador</translation>
+<translation id="4733082559415072992">O URL <ph name="URL"/> quer usar o local do seu dispositivo</translation>
+<translation id="4677585247300749148">O URL <ph name="URL"/> quer responder a eventos de acessibilidade</translation>
+<translation id="3461266716147554923"><ph name="URL"/> quer ver os textos e imagens copiados para a área de transferência</translation>
+<translation id="131405271941274527"><ph name="URL"/> quer enviar e receber informações quando você encostar seu smartphone em um dispositivo NFC</translation>
+<translation id="5146995429444047494">As notificações de <ph name="ORIGIN"/> estão bloqueadas</translation>
+<translation id="1195558154361252544">As notificações são bloqueadas automaticamente para todos os sites, exceto aqueles que têm permissão</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> quer usar seu microfone</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> quer usar sua câmera</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> quer enviar notificações a você</translation>
+<translation id="6910240653697687763">O URL <ph name="URL"/> quer ter controle total sobre seus dispositivos MIDI</translation>
+<translation id="503498442187459473"><ph name="HOST"/> quer usar sua câmera e seu microfone</translation>
+<translation id="8282947398454257691">Saber seu identificador de dispositivo exclusivo</translation>
+<translation id="8329449853370113380"><ph name="URL"/> quer reproduzir conteúdo protegido. A identidade do seu dispositivo será verificada pelo Brave Software.</translation>
+<translation id="2650609753175229582">Solicitação para reproduzir conteúdo protegido feita por <ph name="URL"/>. A identidade do seu dispositivo será verificada pelo Brave Software e poderá ser acessada por esse site.</translation>
+<translation id="3016780570757425217">Saber sua localização</translation>
+<translation id="7221855153210829124">Mostrar notificações</translation>
+<translation id="8606726445206553943">Usar seus dispositivos MIDI</translation>
+<translation id="7409836189476010449">Executar Flash</translation>
+<translation id="7438976808740265764">Não haverá mais compatibilidade com Flash Player a partir de dezembro de 2020.</translation>
+<translation id="4761104368405085019">Usar microfone</translation>
+<translation id="9150045010208374699">Usar câmera</translation>
+<translation id="4953689047182316270">Responder a eventos de acessibilidade</translation>
+<translation id="6116338172782435947">Ver os textos e imagens copiados para a área de transferência</translation>
+<translation id="5804427196348435412">Usar dispositivos NFC</translation>
+<translation id="3194737229810486521">O URL <ph name="URL"/> quer armazenar permanentemente os dados no seu dispositivo</translation>
+<translation id="1030706264415084469">O URL <ph name="URL"/> quer armazenar permanentemente um grande volume de dados no seu dispositivo</translation>
+<translation id="1712552549805331520">O URL <ph name="URL"/> quer armazenar permanentemente os dados no computador local</translation>
+<translation id="1997484222658892567">O URL <ph name="URL"/> quer armazenar permanentemente dados grandes no computador local</translation>
+<translation id="7648992873808071793">Armazenar arquivos neste dispositivo</translation>
 <translation id="4813512666221746211">Erro na rede</translation>
 <translation id="3380365263193509176">Erro desconhecido</translation>
 <translation id="5565735124758917034">Ativo</translation>
@@ -296,6 +342,8 @@
 <translation id="5720705177508910913">Usuário atual</translation>
 <translation id="6965978654500191972">Dispositivo</translation>
 <translation id="4728558894243024398">Plataforma</translation>
+<translation id="1426410128494586442">Sim</translation>
+<translation id="4250680216510889253">Não</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Avançado</translation>
@@ -317,7 +365,6 @@
 <translation id="583281660410589416">Desconhecido</translation>
 <translation id="9170848237812810038">&amp;Desfazer</translation>
 <translation id="2972581237482394796">&amp;Refazer</translation>
-<translation id="6786747875388722282">Extensões</translation>
 <translation id="5804241973901381774">Permissões</translation>
 <translation id="8004582292198964060">Navegador</translation>
 </translationbundle>

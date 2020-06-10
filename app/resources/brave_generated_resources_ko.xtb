@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">새 프로필 만들기</translation>
 <translation id="2666990579225592931">게스트 창 열기</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
-<translation id="7450557937477381864">Chrome 닫기</translation>
-<translation id="7008934821596358692">가져오기를 완료하려면 모든 Chrome 창을 닫아야 합니다.</translation>
 <translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
 
  이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
-<translation id="453977518730680921">미디어 자동 재생</translation>
 <translation id="410351446219883937">자동 재생</translation>
 <translation id="2240268017737062801">사이트가 언제 미디어를  자동재생하기를 원하는지 묻기</translation>
 <translation id="3371702087847741961">사이트가 언제 미디어를 자동재생하기를 원하는지 묻기(권장함)</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
 <translation id="1520361618554057102">항상 새 탭 페이지에 책갈피 표시</translation>
 <translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
+<translation id="597020512043916976">자동 완성 제안에 인기 사이트 표시</translation>
+<translation id="264150068416846820">자동 완성 제안에 Brave 추천 사이트 표시</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
 <translation id="2467749191278759605">Brave 대시보드 사용자 정의</translation>
 <translation id="1717331825806276156">배경 이미지</translation>
 <translation id="1820041496463124489">후원된 이미지</translation>
 <translation id="8173998484743827990">Brave Stats</translation>
+<translation id="5551238871320268996">Brave 함께</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">최고의 사이트</translation>
 <translation id="1776831331757823105">시계</translation>
@@ -72,23 +72,22 @@
 <translation id="7390783310074170337">기본 보기</translation>
 <translation id="130615081792797568">간단한 보기</translation>
 <translation id="2360360976480535628">고급 보기</translation>
-<translation id="5709627087332022422">사이트 간 추적기 차단</translation>
-<translation id="6447842834002726250">쿠키</translation>
-<translation id="6522412052085018663">핑거프린팅</translation>
+<translation id="2133317862976486547">트래커 &amp; 광고 차단</translation>
+<translation id="4385707520896576447">쿠키</translation>
+<translation id="4978786495456601191">핑거프린팅</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
-<translation id="519861640102428255">룩 &amp;amp; 필</translation>
+<translation id="519861640102428255">룩 &amp; 필</translation>
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
 <translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
-<translation id="4699812599455071925">사이트 간 쿠키만 차단</translation>
-<translation id="5657156137487675418">모든 쿠키 허용</translation>
-<translation id="6883611015375728278">모든 쿠키 차단</translation>
-<translation id="5963670684159057574">사이트 간 지문 인식 차단</translation>
-<translation id="769702552748212954">모든 지문 인식 허용</translation>
-<translation id="4540198958192073185">모든 지문 정보 차단하기</translation>
+<translation id="4078738236287221428">트래커 &amp; 광고가 차단됨(공격적)</translation>
+<translation id="7740996059027112821">트래커 &amp; 광고 차단(표준)</translation>
+<translation id="4176463684765177261">모든 트래커 &amp; 광고 허용</translation>
+<translation id="5770288601196774623">사이트 간 쿠키만 차단</translation>
+<translation id="3587482841069643663">모든 쿠키 차단</translation>
 <translation id="8942080017911802454">WebRTC IP 취급 정책</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8798099450830957504">기본값</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">없음</translation>
 <translation id="1085027414516521238">메타마스크</translation>
 <translation id="3905324891414560921">Dapps 사용을 위한 Web3 제공자</translation>
+<translation id="5913089932885076110">시작 시 암호 지갑 로드</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="1765684547504191670">브라우저에서 Chromecast를 활성화하기 위해 Media Router 콤포넌트를 사용합니다.</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
 <translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
 <translation id="9111960429693394744">Dapps에 Brave의 Crypto Wallets 또는 MetaMask를 사용하시겠습니까?</translation>
+<translation id="8721775358057000783">이 페이지에서 web3 지원을 위한 암호 지갑을 시작하시겠습니까?</translation>
 <translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
-<translation id="8337117349965899723">크립토 월렛 사용</translation>
+<translation id="4823406846571523661">암호 지갑 설정</translation>
 <translation id="5756155765711979898">메타마스크 사용</translation>
 <translation id="6754134632841262799">설정</translation>
+<translation id="8199661191594897555">암호 지갑을 시작하고 새로고침</translation>
+<translation id="8428213095426709021">설정</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
 <translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
 <translation id="8053093028263274061">죄송합니다. 저장된 버전이 존재하지 않습니다.</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
 <translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
 <translation id="4989337484121655457">전체 디스크 액세스 권한(Full Disk Access) 필요</translation>
-<translation id="8025559074845816210">Safari에서 책갈피를 가져오려면 Brave에 전체 디스크 액세스 권한(Full Disk Access)이 필요합니다.</translation>
+<translation id="5501596373144334003">Safari에서 북마크와 기록을 가져오려면 Brave에 전체 디스크 액세스가 필요합니다.</translation>
 <translation id="8515328844674404333">시스템 환경 설정(System Preferences)에서 전체 디스크 액세스 권한(Full Disk Access)을 부여하는 방법을 배웁니다.</translation>
 <translation id="6414878884710400018">시스템 환경 설정(System Preferences) 열기</translation>
 <translation id="5570470519803062774">사이트 및 방패 설정</translation>
+<translation id="8487693399751278191">지금 북마크 가져오기...</translation>
+<translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
 </translationbundle>

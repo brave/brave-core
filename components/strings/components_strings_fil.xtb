@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="3061707000357573562">Serbisyo sa Pag-patch</translation>
 <translation id="1914326953223720820">I-unzip ang Serbisyo</translation>
-<translation id="1623104350909869708">Pigilan ang pahinang ito sa paggawa ng mga karagdagang dialog</translation>
-<translation id="2677748264148917807">Umalis</translation>
-<translation id="5556459405103347317">I-reload</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>
 <translation id="4378154925671717803">Telepono</translation>
 <translation id="8131740175452115882">Kumpirmahin</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">Wala</translation>
 <translation id="8428213095426709021">Mga Setting</translation>
 <translation id="9038649477754266430">Gumamit ng serbisyo sa paghula upang ma-load ang mga page nang mas mabilis</translation>
+<translation id="2344028582131185878">Mga Awtomatikong Pagda-download</translation>
+<translation id="3414952576877147120">Laki:</translation>
 <translation id="4850886885716139402">View</translation>
 <translation id="7180611975245234373">I-refresh</translation>
-<translation id="1426410128494586442">Oo</translation>
-<translation id="4250680216510889253">Hindi</translation>
 <translation id="4522570452068850558">Mga Detalye</translation>
 <translation id="3586931643579894722">Magtago ng mga detalye</translation>
+<translation id="5556459405103347317">I-reload</translation>
 <translation id="614940544461990577">Subukang:</translation>
 <translation id="4943872375798546930">Walang mga resulta</translation>
 <translation id="8688672835843460752">Available</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">History ng paghahanap</translation>
 <translation id="4756388243121344051">&amp;History</translation>
 <translation id="1644574205037202324">History</translation>
+<translation id="1623104350909869708">Pigilan ang pahinang ito sa paggawa ng mga karagdagang dialog</translation>
+<translation id="2677748264148917807">Umalis</translation>
 <translation id="3950820424414687140">Mag-sign in</translation>
 <translation id="8286036467436129157">Mag-sign In</translation>
 <translation id="8503813439785031346">Username</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">Clipboard</translation>
 <translation id="6059925163896151826">Mga USB device</translation>
 <translation id="7638605456503525968">Mga serial port</translation>
+<translation id="3784372983762739446">Mga device ng bluetooth</translation>
 <translation id="2215727959747642672">Pag-edit ng file</translation>
 <translation id="6545864417968258051">Pag-scan ng Bluetooth</translation>
 <translation id="534295439873310000">Mga NFC device</translation>
-<translation id="4943703118917034429">Virtual Reality</translation>
-<translation id="3513704683820682405">Augmented Reality</translation>
+<translation id="4670064810192446073">Virtual reality</translation>
+<translation id="2025115093177348061">Augmented reality</translation>
 <translation id="5039804452771397117">Payagan</translation>
 <translation id="7053983685419859001">I-block</translation>
 <translation id="57838592816432529">I-mute</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">Nagpapakita ang site ng mga nakakasagabal o nakakapanlinlang na ad</translation>
 <translation id="7878562273885520351">Maaaring makompromismo ang iyong password</translation>
 <translation id="1089439967362294234">Palitan ang Password</translation>
-<translation id="9008201768610948239">Balewalain</translation>
 <translation id="1186201132766001848">Suriin ang mga Password</translation>
+<translation id="9008201768610948239">Balewalain</translation>
+<translation id="808894953321890993">Palitan ang password</translation>
 <translation id="5979084224081478209">Suriin ang mga password</translation>
+<translation id="6107012941649240045">Ibinigay Kay</translation>
+<translation id="5030338702439866405">Ibinigay Ni</translation>
+<translation id="5826507051599432481">Common Name (CN)</translation>
+<translation id="6898699227549475383">Samahan (O)</translation>
+<translation id="3308006649705061278">Organizational Unit (OU)</translation>
+<translation id="8705331520020532516">Serial Number</translation>
+<translation id="1902576642799138955">Takdang Petsa ng Pagkakabisa</translation>
+<translation id="5895187275912066135">Ibinigay Noong</translation>
+<translation id="4121428309786185360">Mag-e-expire Sa</translation>
+<translation id="4154664944169082762">Mga fingerprint</translation>
+<translation id="7238585580608191973">SHA-256 Fingerprint</translation>
+<translation id="5209518306177824490">SHA-1 Fingerprint</translation>
+<translation id="6786747875388722282">Mga Extension</translation>
+<translation id="7240120331469437312">Kahaliling Pangalan ng Paksa ng Certificate</translation>
 <translation id="10614374240317010">Hindi kailanman nag-save</translation>
 <translation id="5869522115854928033">Mga naka-save na password</translation>
 <translation id="230699814587342492">Mga Password sa Brave</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">Orange</translation>
 <translation id="1555130319947370107">Asul</translation>
 <translation id="138218114945450791">Light Blue</translation>
+<translation id="5612720917913232150">Gustong gamitin ng <ph name="URL"/> ang lokasyon ng iyong computer</translation>
+<translation id="4733082559415072992">Gustong gamitin ng <ph name="URL"/> ang lokasyon ng iyong device</translation>
+<translation id="4677585247300749148">Gustong tumugon ng <ph name="URL"/> sa mga kaganapan ng pagiging accessible</translation>
+<translation id="3461266716147554923">Gustong makita ng <ph name="URL"/> ang text at mga larawang kinopya sa clipboard</translation>
+<translation id="131405271941274527">Gusto ng <ph name="URL"/> na magpadala at makatanggap ng impormasyon kapag na-tap mo ang iyong telepono sa isang NFC device</translation>
+<translation id="5146995429444047494">Naka-block ang mga notification para sa <ph name="ORIGIN"/></translation>
+<translation id="1195558154361252544">Awtomatikong naka-block ang mga notification para sa lahat ng site maliban sa mga pinapayagan mo</translation>
+<translation id="3532844647053365774">Gustong gamitin ng <ph name="HOST"/> ang iyong mikropono</translation>
+<translation id="7108634116785509031">Gustong gamitin ng <ph name="HOST"/> ang iyong camera</translation>
+<translation id="5426179911063097041">Gusto ng <ph name="SITE"/> na padalhan ka ng mga notification</translation>
+<translation id="6910240653697687763">Gusto ng <ph name="URL"/> na magkaroon ng buong kontrol sa iyong mga MIDI device</translation>
+<translation id="503498442187459473">Gustong gamitin ng <ph name="HOST"/> ang iyong camera at mikropono</translation>
+<translation id="8282947398454257691">Alamin ang natatanging identifier ng iyong device</translation>
+<translation id="8329449853370113380">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-veify ng Brave Software ang pagkakakilanlan ng iyong device.</translation>
+<translation id="2650609753175229582">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-verify ng Brave Software ang pagkakakilanlan ng iyong device, at maaari itong i-access ng site na ito.</translation>
+<translation id="3016780570757425217">Alamin ang iyong lokasyon</translation>
+<translation id="7221855153210829124">Ipakita ang mga notification</translation>
+<translation id="8606726445206553943">Gamitin ang iyong mga MIDI device</translation>
+<translation id="7409836189476010449">Patakbuhin ang Flash</translation>
+<translation id="7438976808740265764">Hindi na susuportahan ang Flash Player pagkatapos ng Disyembre 2020.</translation>
+<translation id="4761104368405085019">Gamitin ang iyong mikropono</translation>
+<translation id="9150045010208374699">Gamitin ang iyong camera</translation>
+<translation id="4953689047182316270">Tumugon sa Mga Kaganapan ng Pagiging Naa-access</translation>
+<translation id="6116338172782435947">Tingnan ang text at mga larawang kinopya sa clipboard</translation>
+<translation id="5804427196348435412">Gumamit ng mga NFC device</translation>
+<translation id="3194737229810486521">Gusto ng <ph name="URL"/> na permanenteng mag-store ng data sa iyong device</translation>
+<translation id="1030706264415084469">Gusto ng <ph name="URL"/> na permanenteng mag-store ng malaking data sa iyong device</translation>
+<translation id="1712552549805331520">Gusto ng <ph name="URL"/> na permanenteng mag-store ng data sa iyong lokal na computer</translation>
+<translation id="1997484222658892567">Gusto ng <ph name="URL"/> na permanenteng mag-store ng malaking data sa iyong lokal na computer</translation>
+<translation id="7648992873808071793">Mag-store ng mga file sa device na ito</translation>
 <translation id="4813512666221746211">Error sa network</translation>
 <translation id="3380365263193509176">Hindi kilalang error</translation>
 <translation id="5565735124758917034">Aktibo</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">Kasalukuyang user</translation>
 <translation id="6965978654500191972">Device</translation>
 <translation id="4728558894243024398">Platform</translation>
+<translation id="1426410128494586442">Oo</translation>
+<translation id="4250680216510889253">Hindi</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Advanced</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">Hindi Alam</translation>
 <translation id="9170848237812810038">&amp;I-undo</translation>
 <translation id="2972581237482394796">&amp;I-redo</translation>
-<translation id="6786747875388722282">Mga Extension</translation>
 <translation id="5804241973901381774">Mga Pahintulot</translation>
 <translation id="8004582292198964060">Browser</translation>
 </translationbundle>

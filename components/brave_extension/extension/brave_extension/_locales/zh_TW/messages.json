@@ -55,6 +55,18 @@
     "message": "已封鎖跨站追蹤器",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "追蹤器與廣告封鎖（積極）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "追蹤器與廣告封鎖（標準）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "允許所有追蹤器與廣告",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "條已升級到 HTTPS 的連線",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

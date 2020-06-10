@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Pajzsok</translation>
 <translation id="6132506775968708399">Harmadik fél sütijeinek blokkolása</translation>
 <translation id="7835726359440951858">Hirdetések és követők letiltása</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="94154759592465111">Scriptek blokkolása</translation>
 <translation id="7458422973722236530">Ujlenyomat-leolvasásos védelem</translation>
-<translation id="252011129655042182">Hirdetések és követők</translation>
+<translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
 <translation id="6754976710186182237">Ujjlenyomatmódszerek</translation>
 <translation id="2313532038420432247">HTTPS frissítések</translation>
 <translation id="7461425058443653485">Scriptek blokkolva</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Szabványos fül</translation>
 <translation id="3377025655491224618">Inkognitólap</translation>
 <translation id="9148058034647219655">Kilépés</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">A támogatott oldalakat HTTPS-el nyitja meg HTTP helyett, amikor ez lehetséges.</translation>
 <translation id="8387201461264842096">Hirdetések tiltása</translation>
 <translation id="1934885595886623674">Megelőzi a hirdetések betöltését</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Fülek bezárása kilépéskor</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
 <translation id="4339730410920731698">Hirdetések és nyomkövetők blokkolva</translation>
+<translation id="6761596877474675418">Adatok mentve</translation>
 <translation id="3034562645284925177">Becsült megspórolt idő</translation>
 <translation id="6572660632052512096">Asztali mód</translation>
 <translation id="1340503115760585811">Asztali nézet engedélyezése új fülekben</translation>
@@ -161,7 +163,7 @@ hónapban...</translation>
 <translation id="1713542052890184975">Készíts biztonsági másolatot Brave pénztárcádról.</translation>
 <translation id="2323069945529668668">Ó jaj!</translation>
 <translation id="7510166204621526816">A Brave Jutalmak szerver nem válaszol. A lehető leghamarabb megoldjuk.</translation>
-<translation id="2626799779920242286">Kérjük próbálja újra később.</translation>
+<translation id="7117228822971127758">Próbálja újra később</translation>
 <translation id="3068742524072211213"><ph name="DATE"/> dátumon lejár</translation>
 <translation id="4292832015778676417">reklámokból begyűjtve:</translation>
 <translation id="683765328936486920">YouTube-on</translation>
@@ -232,7 +234,6 @@ hónapban...</translation>
 <translation id="6199596294742117349">Ez egy bizalmas ablak</translation>
 <translation id="5858455511731621847">Habár a privát füleken megnyitott ablakok nem kerülnek helyi mentésre, még nem tesznek névtelenné vagy láthatatlanná a szolgáltatód, a főnököd, vagy a felkeresett oldalak elől.</translation>
 <translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Brave Ads-hirdetések</translation>
-<translation id="7127980134843952133">Letöltési előzmények</translation>
 <translation id="3690140184638701871">Hozzájárulások és borravalók</translation>
 <translation id="844921671123185605">A havi borravalóit feldolgoztuk!</translation>
 <translation id="3124090095880236567">Hirdetések bekapcsolása</translation>
@@ -255,15 +256,82 @@ hónapban...</translation>
 <translation id="8522669544471808198">Háttérképek megjelenítése</translation>
 <translation id="3870475560794762985">Szponzorált képek megjelenítése</translation>
 <translation id="8297488609722895137">A fénykép készítője: <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Pénzt kaphat a háttérkép megtekintéséért.</translation>
-<translation id="4836823081419522426">A hirdetési bevétel 70%-át fogja megkapni ezért a privát szponzorálásért, amely a webes tartalomkészítők támogatására használható. Ha szeretné megkapni a részesedését, kapcsolja be a Brave Rewards funkciót.</translation>
-<translation id="7307847920988946894">Rewards bekapcsolása</translation>
 <translation id="1605521356929094020">Brave Ads bekapcsolása</translation>
-<translation id="1647482814782886825">A Rewards funkció bekapcsolásával Ön elfogadja a <ph name="TERMS_OF_SERVICE"/> előírásait. Ha szeretné, <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">A Szerzés és Adás-ra koppintva elfogadod a <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Pénzt kaphat a háttérkép megtekintéséért.</translation>
 <translation id="7136586167396205364">Szponzorált képek elrejtése</translation>
 <translation id="2927095357213611519">A webes tartalomkészítőket tokenekkel támogathatja. \nTokeneket magánszférát tiszteletben tartó hirdetések megtekintésével szerezhet.</translation>
-<translation id="4016415345213871193">Fizetséget kap azért, hogy megnézi ezt a háttérképet.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> a Brave Rewards szponzorált képeiről. Ha szeretné, <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Ha szeretné, <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Keressen pénzt a háttérkép megtekintésével! Kapcsolja be a Brave Ads-hirdetéseket, és részesedést kaphat.</translation>
+<translation id="213787746370741250">Lapok nyitása az egyéni lapokban</translation>
+<translation id="8030169304546394654">Nincs kapcsolat</translation>
+<translation id="8267327690882073581">Ellenőrizd a pénztárcát</translation>
+<translation id="543510923939676996">Pénztárca ellenőrizve</translation>
+<translation id="8673913984316081937">Pénztárcád ellenőrzése opcionális</translation>
+<translation id="8558636200953226885">De ha ellenőrzi, tud...</translation>
+<translation id="8697510149346635496">Vegye fel az adatvédelmet tiszteletben tartó hirdetések megtekintésével keresett BAT-ot</translation>
+<translation id="1481480653609649134">Vásároljon további BAT-ot hitelkártyával vagy más forrásból</translation>
+<translation id="9096003370755878766">Vegye fel a Brave Rewards pénztárcájához korábban esetleg már hozzáadott BAT-ot</translation>
+<translation id="1554282356558968486">Pénztárca-szolgáltatásunk biztosítója a(z)</translation>
+<translation id="6569877533335686968">Megerősítés</translation>
+<translation id="8465442795593991224">A kért szolgáltatások alapján szükség lehet rá, hogy az Uphold felé igazolja személyazonosságát .</translation>
+<translation id="723054503945711909">A Brave Software Inc. nem kezeli, nem  tárolja, valamint nem nem fér hozzá az Uphold számára a fiók létesítésekor megadott személyes adatai egyikéhez sem.</translation>
+<translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
+<translation id="2193391216824305230">Felhasználói pénztárca</translation>
+<translation id="7591798679868259510">Lépj be Uphold fiókodba</translation>
+<translation id="9200453331904391567">Brave Jutalmak kapcsolat bontása</translation>
+<translation id="6239274080752256452">Pénzkivevés</translation>
+<translation id="8874184842967597500">Nincs csatlakozva</translation>
+<translation id="3368922792935385530">Kapcsolódva</translation>
+<translation id="4569155249847375786">Ellenőrzött</translation>
+<translation id="5358719431303818601">Nem ellenőrzött szétkapcsolva</translation>
+<translation id="4241449868720191203">Ellenőrzött szétkepcsolva</translation>
+<translation id="3248185426436836442">Várakozó</translation>
+<translation id="8108013093558639183">A fiókod nyitási helye alapján területeden a BAT jelenleg nem támogatott. Ellenőrizd később az elérhetőséget</translation>
+<translation id="4190454391025419535">Terület nem támogatott</translation>
+<translation id="6830703472632069884">Hiba történt a pénztárcád ellenőrzése közben. Próbáld újra később.</translation>
+<translation id="3512533646933434345">Hiba a pénztárca ellenőrzésével</translation>
+<translation id="2260513517001048012">Megjegyzés: Ez az ellenőrzött Brave alkotó még nem állította be fiókját a hozzájárulások fogadására a Brave felhasználóktól. Böngésződ 90 napig próbálkozik a hozzájárulás elvégzésével, vagy amíg elvégzik az ellenőrzést.</translation>
+<translation id="4488355059795908907">Ez az ellenőrzött Brave alkotó még nem állította be fiókját a hozzájárulások fogadására a Brave felhasználóktól. Minden küldött borravaló a pénztárcádban marad, amíg elvégzik ezt a műveletet.</translation>
+<translation id="2495032782748793764">Brave alapértelmezett</translation>
+<translation id="9132378787893584761">Oszd meg a Brave-et barátaiddal!</translation>
+<translation id="717952606991220586">Hoppá, valami hiba történt. Próbáld újra később.</translation>
+<translation id="2524310205387880526">Osztályozd a Brave-et</translation>
+<translation id="6680650203439190394">Árfolyam</translation>
+<translation id="2635089463885398597">Hogyan értékelnéd tapasztalataidat a Brave-vel?</translation>
+<translation id="141901961143729572">Oszd meg véleményedet</translation>
+<translation id="7961015016161918242">Soha</translation>
+<translation id="1275213816424141989">Talán később</translation>
+<translation id="6991128190741664836">Később</translation>
+<translation id="8851456134224363571">Remek! Van kedved értékelni minket a Play Store-on?</translation>
+<translation id="8668962040900592974">Mondd el, miben tudnánk még fejlődni</translation>
+<translation id="4406937629441301400">Nézd meg ezt a képet, és szerezz tokeneket, majd küldd tovább az alkotóknak. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Szerezz tokeneket a kép megnézésével. Kapcsold be a szerzést &amp; Adj, hogy igényelhesd részedet.</translation>
+<translation id="6632345639591919543">A kép megnézésével tokeneket szerzel.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">A kép megnézésével tokeneket szerzel.</translation>
+<translation id="7952665812649667034">Készen állok szerezni és adni</translation>
+<translation id="7877201489035217175">Tudj meg többet a szponzorált képekről</translation>
+<translation id="828092975561478703">Minden megnézett szponzorált képért a bevétel 70%-át kapod tokenben. A Brave Ads-szel mindig te irányítod, hogy milyen reklámot nézel.</translation>
+<translation id="4941539331405513605">Webhelyközi sütik blokkolása</translation>
+<translation id="3763681089644577874">Sütik tiltása</translation>
+<translation id="614747795780742163">Nem engedi, hogy a weboldalak információkat tároljanak korábbi látogatásaidról</translation>
+<translation id="6883611015375728278">Összes süti blokkolása</translation>
+<translation id="5657156137487675418">Összes süti engedélyezése</translation>
+<translation id="5963670684159057574">Webhelyközi ujjlenyomat-beállítás tiltása</translation>
+<translation id="3895527457258986253">Lenyomatkészítés blokkolása</translation>
+<translation id="184568144098869637">Nem engedi, hogy a böngésző felismerje készülékedet</translation>
+<translation id="4540198958192073185">Minden ujjlenyomat-leolvasás blokkolása</translation>
+<translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
+<translation id="2888409909650566510">Reklámok és más ijesztő\ndolgok blokkolva</translation>
+<translation id="6930134873084561197">A weboldalak gyakran olyan sütiket és parancsfájlokat tartalmaznak, amelyek azonosítani akarnak téged vagy a készülékedet. Megpróbálják kideríteni, hogy ki vagy, és követik webes tevékenységedet minden oldalon\n\nA Brave letiltja ezeket a dolgokat, így követés nélkül böngészhetsz.</translation>
+<translation id="8553998445606452168">Bővebben a Brave Shieldsről</translation>
+<translation id="8912304686498704084">FEL</translation>
+<translation id="4963218453264888510">LE</translation>
+<translation id="7474113515179313724">A Brave adatvédelmi rendszere nélkül böngészel. Nem működik megfelelően ha be van kapcsolva Shields?</translation>
+<translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
+<translation id="1209739344687072997">Nem működő oldal jelentése</translation>
+<translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
+<translation id="5429200298326665264">Megjegyzés: Ez a weboldalcím a Brave verziód számával és IP-címeddel együtt be lesz küldve (és nem kerül tárolásra).</translation>
+<translation id="5299848999918506028">Köszönjük!</translation>
+<translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
+<translation id="650318023204990401">Speciális vezérlők</translation>
+<translation id="7182293319417450928">Az ellenőrzéshez egy minimális 25 BAT-os egyenleg szükséges.</translation>
 </translationbundle>

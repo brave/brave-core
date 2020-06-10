@@ -3,10 +3,6 @@
 <translationbundle lang="ko">
 <translation id="8428213095426709021">설정</translation>
 <translation id="2498359688066513246">고객센터</translation>
-<translation id="8378714024927312812">조직에서 관리</translation>
-<translation id="9019902583201351841">부모님이 관리합니다.</translation>
-<translation id="4645575059429386691">부모님이 관리합니다.</translation>
-<translation id="4883854917563148705">관리 설정은 재설정할 수 없습니다.</translation>
 <translation id="4307992518367153382">기본설정</translation>
 <translation id="1974060860693918893">고급</translation>
 <translation id="1146678959555564648">VR 시작</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Brave Software 계정에 로그인하면 이 기능이 사용 설정됩니다.</translation>
 <translation id="10614374240317010">저장되지 않음</translation>
 <translation id="3098842761938485917"><ph name="BEGIN_LINK"/>Brave Software 계정<ph name="END_LINK"/>에서 저장된 비밀번호 보기 및 관리</translation>
+<translation id="8988028529677883095">휴대전화를 보안 키로 사용</translation>
 <translation id="8562452229998620586">저장한 비밀번호가 여기에 표시됩니다.</translation>
+<translation id="1303339473099049190">비밀번호를 찾을 수 없습니다. 철자를 확인하고 다시 시도해 주세요.</translation>
 <translation id="8084114998886531721">저장된 비밀번호</translation>
 <translation id="2870560284913253234">사이트</translation>
 <translation id="8503813439785031346">사용자이름</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">비밀번호를 보려면 잠금 해제하세요</translation>
 <translation id="6221633008163990886">비밀번호를 내보내려면 잠금 해제하세요</translation>
 <translation id="230699814587342492">Brave 비밀번호</translation>
-<translation id="6075798973483050474">홈 페이지 수정</translation>
-<translation id="854522910157234410">페이지 열기</translation>
+<translation id="1925021887439448749">맞춤 웹 주소 입력</translation>
 <translation id="8127542551745560481">홈페이지 수정</translation>
+<translation id="854522910157234410">페이지 열기</translation>
+<translation id="5063487983358782016">Brave 홈페이지</translation>
 <translation id="2482878487686419369">알림</translation>
 <translation id="6255999984061454636">콘텐츠 추천</translation>
 <translation id="805047784848435650">인터넷 사용 기록에 기반해 추천됨</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">개인정보 보호</translation>
 <translation id="4991384657077828949">Brave 보안 강화 개선에 참여하기</translation>
 <translation id="1943176487615318915">Brave은 위험한 앱 및 사이트를 감지하기 위해 일부 방문 페이지의 URL, 제한적인 시스템 정보, 페이지 콘텐츠 일부를 Brave Software로 전송합니다.</translation>
-<translation id="3181954750937456830">세이프 브라우징(사용자와 사용자의 기기를 위험한 사이트로부터 보호)</translation>
-<translation id="7315322926489145388">보안상의 위험이 있을 때 일부 방문 페이지의 URL을 Brave Software로 전송함</translation>
+<translation id="3201899458094819285">세이프 브라우징(사용자와 사용자의 기기를 위험한 사이트로부터 보호)</translation>
+<translation id="2876369937070532032">보안상의 위험이 있을 때 일부 방문 페이지의 URL을 Brave Software로 전송합니다.</translation>
 <translation id="3738139272394829648">터치하여 검색</translation>
-<translation id="7865281998841143447">페이지에서 나가지 않고도 웹사이트에서 주제에 관해 알아봅니다. 터치하여 검색 기능은 단어와 관련 맥락을 Brave Software 검색으로 전송하여 정의, 사진, 검색결과 및 기타 세부정보를 제공합니다.
+<translation id="4749189475009528195">페이지에서 나가지 않고도 웹사이트의 주제에 관해 알아봅니다. 터치하여 검색 기능은 단어와 관련 맥락을 Brave Software 검색으로 전송하여 정의, 사진, 검색결과 등의 세부정보를 제공합니다.
 
-원하는 단어를 탭하여 검색하세요. 검색어를 조정하려면 길게 눌러 선택합니다. 더욱 상세히 검색하려면 패널을 슬라이드하여 열고 펼치기 아이콘을 탭하여 새 탭을 연 다음 검색창을 탭하세요.</translation>
-<translation id="3292859206215580147">페이지에서 나가지 않고도 웹사이트에서 주제에 관해 알아봅니다. 터치하여 검색 기능은 단어와 관련 맥락을 Brave Software 검색으로 전송하여 정의, 사진, 검색결과 및 기타 세부정보를 제공합니다.
+아무 단어나 탭하여 검색해 보세요. 더욱 상세히 검색하려면 길게 터치하여 단어를 더 많이 선택하거나 적게 선택합니다. 검색어를 수정하려면 패널을 열고 아이콘을 탭하여 새 탭에서 연 다음, 검색창 내용을 변경하세요.</translation>
+<translation id="934250516944040460">페이지에서 나가지 않고도 웹사이트의 주제에 관해 알아봅니다. 터치하여 검색 기능은 단어와 관련 맥락을 Brave Software 검색으로 전송하여 정의, 사진, 검색결과 등의 세부정보를 제공합니다.
 
-원하는 단어를 길게 눌러 검색하세요. 더욱 상세히 검색하려면 선택 영역을 조정합니다. 패널을 슬라이드하여 열고 펼치기 아이콘을 탭하여 새 탭을 연 다음 검색창을 탭해도 됩니다.</translation>
+아무 단어나 길게 터치하여 검색하세요. 더욱 상세히 검색하려면 단어를 더 많이 선택하거나 적게 선택합니다. 검색어를 수정하려면 패널을 열고 아이콘을 탭하여 새 탭에서 연 다음, 검색창 내용을 변경하세요.</translation>
 <translation id="6209156474097347789">터치하여 검색에서 선택한 단어와 현재 페이지를 Brave Software 검색에 컨텍스트로 발송하세요. <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 이 기능을 사용 중지할 수 있습니다.</translation>
 <translation id="5039804452771397117">허용</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
@@ -206,7 +205,7 @@
 <translation id="6295158916970320988">모든 사이트</translation>
 <translation id="8380167699614421159">이 사이트에서는 방해가 되거나 사용자를 현혹하는 광고를 표시합니다.</translation>
 <translation id="1919345977826869612">광고</translation>
-<translation id="3513704683820682405">증강 현실</translation>
+<translation id="2025115093177348061">증강 현실</translation>
 <translation id="6447842834002726250">쿠키</translation>
 <translation id="6196640612572343990">타사 쿠키 차단</translation>
 <translation id="6782111308708962316">타사 웹사이트에서 쿠키 데이터를 저장하거나 읽을 수 없도록 방지</translation>
@@ -217,6 +216,7 @@
 <translation id="1717218214683051432">움직임 감지 센서</translation>
 <translation id="2091887806945687916">소리</translation>
 <translation id="2586657967955657006">클립보드</translation>
+<translation id="4670064810192446073">가상 현실</translation>
 <translation id="6320088164292336938">진동</translation>
 <translation id="4226663524361240545">알림이 있으면 진동이 울릴 수도 있습니다.</translation>
 <translation id="1446450296470737166">MIDI 기기의 전체 제어 허용</translation>
@@ -235,6 +235,7 @@
 <translation id="2537296579376733324">모든 쿠키, 이 사이트에서만</translation>
 <translation id="7882806643839505685">특정 사이트에서 소리를 재생하도록 허용합니다.</translation>
 <translation id="4468959413250150279">특정 사이트를 음소거합니다.</translation>
+<translation id="7828557259026017104">쿠키는 방문한 웹사이트에서 생성된 파일로, 사이트에서 사용자의 설정을 기억하기 위해 사용합니다. 타사 쿠키는 다른 사이트, 즉 광고나 이미지 등 방문하는 웹페이지에 표시되는 일부 콘텐츠를 소유하는 사이트에 의해 생성됩니다.</translation>
 <translation id="1994173015038366702">사이트 URL</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">사용</translation>
@@ -246,10 +247,14 @@
 <translation id="8116925261070264013">음소거됨</translation>
 <translation id="8300705686683892304">앱에서 관리함</translation>
 <translation id="6192792657125177640">예외</translation>
-<translation id="257931822824936280">펼쳐짐 - 접으려면 클릭</translation>
-<translation id="5100237604440890931">접힘 - 펼치려면 클릭</translation>
 <translation id="857943718398505171">허용(권장)</translation>
 <translation id="2913331724188855103">사이트에서 쿠키 데이터를 저장하고 읽도록 허용(권장)</translation>
+<translation id="2212565012507486665">쿠키 허용</translation>
+<translation id="8648684608605749476">시크릿 모드에서 타사 쿠키 차단</translation>
+<translation id="2687403674020088961">모든 쿠키 차단(권장되지 않음)</translation>
+<translation id="1044891598689252897">사이트가 정상적으로 작동합니다.</translation>
+<translation id="7993619969781047893">일부 사이트에서는 기능이 작동하지 않을 수 있음</translation>
+<translation id="1509960214886564027">다수의 사이트에서 기능이 작동하지 않을 수 있음</translation>
 <translation id="5335288049665977812">사이트에서 자바스크립트를 실행하도록 허용(권장)</translation>
 <translation id="5527111080432883924">사이트에서 클립보드의 텍스트 및 이미지에 액세스하도록 허용하기 전에 확인(권장)</translation>
 <translation id="6912998170423641340">사이트에서 클립보드의 텍스트 및 이미지에 액세스하지 못하도록 차단</translation>
@@ -259,12 +264,12 @@
 <translation id="2107397443965016585">사이트에서 보호된 콘텐츠를 재생하도록 허용하기 전에 확인(권장)</translation>
 <translation id="2910701580606108292">사이트에서 보호된 콘텐츠를 재생하도록 허용하기 전에 확인</translation>
 <translation id="757524316907819857">사이트에서 보호된 콘텐츠를 재생하지 못하도록 차단</translation>
-<translation id="4935305910887312910">사이트에서 카메라 위치를 확인하거나 실내를 매핑하도록 허용하기 전에 확인(권장)</translation>
-<translation id="884828189055900810">사이트에서 카메라 위치를 확인하거나 실내를 매핑하지 못하도록 차단</translation>
+<translation id="2182457891543959921">사이트에서 주변 환경의 3D 지도를 생성하거나 카메라 위치를 추적하도록 허용하기 전에 확인(권장)</translation>
+<translation id="3538390592868664640">사이트에서 주변 환경의 3D 지도를 생성하거나 카메라 위치를 추적하지 못하도록 차단</translation>
 <translation id="5710871682236653961">NFC 기기를 탭하면 사이트가 정보를 주고받도록 허용할지 확인(권장)</translation>
 <translation id="7572498721684305250">NFC 기기를 탭할 때 사이트가 정보를 주고받지 못하도록 차단</translation>
-<translation id="3312292613668865961">사이트에서 가상 현실 기기/데이터에 액세스하도록 허용하기 전에 확인(권장)</translation>
-<translation id="8698438463325761328">사이트에서 가상 현실 기기 및 데이터에 액세스하지 못하도록 차단</translation>
+<translation id="4887024562049524730">사이트에서 내 가상 현실 기기 및 데이터를 사용하도록 허용하기 전에 확인(권장)</translation>
+<translation id="6439114592976064011">사이트에서 내 가상 현실 기기 및 데이터를 사용하지 못하도록 차단</translation>
 <translation id="3277252321222022663">사이트의 센서 액세스 허용(권장)</translation>
 <translation id="5048398596102334565">사이트의 움직임 감지 센서 액세스 허용(권장)</translation>
 <translation id="8816026460808729765">사이트에서 센서에 액세스하지 못하도록 차단</translation>
@@ -414,6 +419,7 @@
 <translation id="4062305924942672200">법적 정보</translation>
 <translation id="4256782883801055595">오픈소스 라이선스</translation>
 <translation id="1138681184697033370">Brave 서비스 약관</translation>
+<translation id="2368444735104192323">Brave 및 Brave OS 추가 서비스 약관</translation>
 <translation id="7392539049993970338">Brave 개인정보처리방침</translation>
 <translation id="2968755619301702150">인증서 뷰어</translation>
 <translation id="1360432990279830238">로그아웃하고 동기화를 사용 중지하시겠습니까?</translation>
@@ -432,6 +438,8 @@
 <translation id="8636825310635137004">다른 기기에서 탭을 가져오려면 동기화를 사용 설정하세요.</translation>
 <translation id="3269956123044984603">다른 기기에서 탭을 가져오려면 Android 계정 설정에서 '데이터 자동 동기화'를 사용 설정하세요.</translation>
 <translation id="5157964048453367290">다른 기기의 Brave에서 연 탭이 여기에 표시됩니다.</translation>
+<translation id="5795872532621730126">검색 및 탐색</translation>
+<translation id="9086302186042011942">동기화 중</translation>
 <translation id="4684427112815847243">모두 동기화</translation>
 <translation id="2709516037105925701">자동 완성</translation>
 <translation id="8820817407110198400">북마크</translation>
@@ -549,10 +557,6 @@
 <translation id="2532336938189706096">웹 보기</translation>
 <translation id="6005538289190791541">추천 비밀번호</translation>
 <translation id="4634124774493850572">비밀번호 사용</translation>
-<translation id="8285489906452138776">Brave이 이 사이트에서 카메라에 액세스하려면 권한이 필요합니다.</translation>
-<translation id="320189792589364011">Brave이 이 사이트에서 마이크에 액세스하려면 권한이 필요합니다.</translation>
-<translation id="7988136689212463100">Brave이 이 사이트에서 카메라와 마이크에 액세스하려면 권한이 필요합니다.</translation>
-<translation id="4931190655840828017">Brave이 이 사이트와 위치를 공유하려면 내 위치에 액세스하도록 허용해야 합니다.</translation>
 <translation id="3088191967551450609">Brave에서 파일을 다운로드하려면 저장소 액세스 권한이 있어야 합니다.</translation>
 <translation id="8942627711005830162">다른 창에서 열기</translation>
 <translation id="4195643157523330669">새 탭에서 열기</translation>
@@ -600,8 +604,9 @@
 <translation id="2146738493024040262">인스턴트 앱 열기</translation>
 <translation id="7016516562562142042">현재 검색엔진에 허용됨</translation>
 <translation id="6177111841848151710">현재 검색엔진에는 허용되지 않음</translation>
-<translation id="145097072038377568">Android 설정에서 사용이 중지됨</translation>
+<translation id="7000754031042624318">Android 설정에서 사용 중지됨</translation>
 <translation id="8007176423574883786">기기에 대해 사용 중지됨</translation>
+<translation id="6864395892908308021">기기에서 NFC를 읽을 수 없음</translation>
 <translation id="164269334534774161"><ph name="CREATION_TIME"/>에 작성된 이 페이지의 오프라인 사본을 보는 중입니다.</translation>
 <translation id="4594952190837476234">이 오프라인 페이지는 <ph name="CREATION_TIME"/>에 생성되었으며 온라인 버전과 다를 수 있습니다.</translation>
 <translation id="8840953339110955557">이 페이지는 온라인 버전과 다를 수 있습니다.</translation>
@@ -706,10 +711,10 @@
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
 <translation id="724102042129299115">Brave 첫 실행</translation>
-<translation id="2700285883409956633">이 애플리케이션을 사용하면 Brave의 <ph name="BEGIN_LINK1"/>서비스 약관<ph name="END_LINK1"/>과 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
-<translation id="1640714894372474981">이 애플리케이션을 사용하면 Brave의 <ph name="BEGIN_LINK1"/>서비스 약관<ph name="END_LINK1"/>, <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>, <ph name="BEGIN_LINK3"/>Family Link로 관리되는 Brave Software 계정용 개인정보처리방침<ph name="END_LINK3"/>에 동의하게 됩니다.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/>이(가) Brave에서 열립니다. 계속하면 Brave의 <ph name="BEGIN_LINK1"/>서비스 약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하는 것으로 간주됩니다.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/>이(가) Brave에서 열립니다. 계속하면 Brave의 <ph name="BEGIN_LINK1"/>서비스 약관<ph name="END_LINK1"/>, <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/> 및 <ph name="BEGIN_LINK3"/>Family Link로 관리되는 Brave Software 계정용 개인정보처리방침<ph name="END_LINK3"/>에 동의하는 것으로 간주됩니다.</translation>
+<translation id="7766792282581704663">Brave을 사용하면 <ph name="BEGIN_LINK1"/>Brave Software 서비스 약관<ph name="END_LINK1"/>과 <ph name="BEGIN_LINK2"/>Brave 및 Brave OS 추가 서비스 약관<ph name="END_LINK2"/>에 동의하는 것으로 간주됩니다.</translation>
+<translation id="4301045550182524767">Brave을 사용하면 <ph name="BEGIN_LINK1"/>Brave Software 서비스 약관<ph name="END_LINK1"/>과 <ph name="BEGIN_LINK2"/>Brave 및 Brave OS 추가 서비스 약관<ph name="END_LINK2"/>에 동의하는 것으로 간주됩니다. <ph name="BEGIN_LINK3"/>Family Link로 관리되는 Brave Software 계정에 관한 개인정보처리방침<ph name="END_LINK3"/>도 적용됩니다.</translation>
+<translation id="4993481112200507346"><ph name="APP_NAME"/> 앱이 Brave에서 열립니다. 계속하면 <ph name="BEGIN_LINK1"/>Brave Software 서비스 약관<ph name="END_LINK1"/>과 <ph name="BEGIN_LINK2"/>Brave 및 Brave OS 추가 서비스 약관<ph name="END_LINK2"/>에 동의하는 것으로 간주됩니다.</translation>
+<translation id="8725391159384120485"><ph name="APP_NAME"/> 앱이 Brave에서 열립니다. 계속하면 <ph name="BEGIN_LINK1"/>Brave Software 서비스 약관<ph name="END_LINK1"/>과 <ph name="BEGIN_LINK2"/>Brave 및 Brave OS 추가 서비스 약관<ph name="END_LINK2"/>에 동의하는 것으로 간주됩니다. <ph name="BEGIN_LINK3"/>Family Link로 관리되는 Brave Software 계정에 관한 개인정보처리방침<ph name="END_LINK3"/>도 적용됩니다.</translation>
 <translation id="673197144963363525">사용 통계와 비정상 종료 보고서를 Brave Software로 전송하여 Brave을 개선하는 데 동참하세요.</translation>
 <translation id="3518985090088779359">동의하고 계속</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다</translation>
@@ -814,7 +819,7 @@
 <translation id="6963766334940102469">북마크 삭제</translation>
 <translation id="4351244548802238354">대화상자 닫기</translation>
 <translation id="451872707440238414">북마크 검색</translation>
-<translation id="8901170036886848654">북마크가 없습니다.</translation>
+<translation id="6447558397796644647">북마크를 찾을 수 없습니다. 철자를 확인하거나 새로운 북마크를 추가하세요.</translation>
 <translation id="6404511346730675251">북마크 수정</translation>
 <translation id="3894427358181296146">폴더 추가</translation>
 <translation id="5327248766486351172">이름</translation>
@@ -829,6 +834,8 @@
 <translation id="6811034713472274749">페이지를 볼 수 있음</translation>
 <translation id="4561979708150884304">연결되지 않음</translation>
 <translation id="8274165955039650276">다운로드 항목 보기</translation>
+<translation id="4320177379694898372">인터넷에 연결되지 않음</translation>
+<translation id="6397616442223433927">인터넷에 다시 연결됨</translation>
 <translation id="2082238445998314030">전체 결과 <ph name="TOTAL_RESULTS"/>개 중 <ph name="RESULT_NUMBER"/>개</translation>
 <translation id="4943872375798546930">검색결과가 없습니다.</translation>
 <translation id="981121421437150478">오프라인</translation>
@@ -845,9 +852,6 @@
 <translation id="6773423637732432200">Brave을 업데이트할 수 없습니다. 옵션 더보기</translation>
 <translation id="1383876407941801731">검색</translation>
 <translation id="3328801116991980348">사이트 정보</translation>
-<translation id="5391532827096253100">이 사이트와의 연결은 안전하지 않습니다. 사이트 정보</translation>
-<translation id="6206551242102657620">이 사이트와의 연결은 안전합니다. 사이트 정보</translation>
-<translation id="6963642900430330478">이 페이지는 위험합니다. 사이트 정보</translation>
 <translation id="9070377983101773829">음성 검색 시작</translation>
 <translation id="4968908871398201967">비공개 모드</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{열려 있는 탭 <ph name="OPEN_TABS_ONE"/>개, 탭 간에 전환하려면 탭하세요.}other{열려 있는 탭 <ph name="OPEN_TABS_MANY"/>개, 탭 간에 전환하려면 탭하세요.}}</translation>
@@ -944,6 +948,11 @@
 <translation id="5197729504361054390">선택한 연락처가 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>과(와) 공유됩니다.</translation>
 <translation id="1779089405699405702">이미지 디코더</translation>
 <translation id="8067883171444229417">동영상 재생</translation>
+<translation id="5876056640971328065">동영상 일시중지</translation>
+<translation id="3594780231884063836">동영상 음소거</translation>
+<translation id="783819812427904514">동영상 음소거 해제</translation>
+<translation id="3114012059975132928">동영상 플레이어</translation>
+<translation id="5489227211564503167"><ph name="TOTAL_TIME"/> 중 <ph name="ELAPSED_TIME"/> 경과</translation>
 <translation id="6560414384669816528">Sogou로 검색</translation>
 <translation id="5406914950576900927">중국에서 검색할 때 Brave에서 <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/>를 사용할 수 있습니다. <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 변경할 수 있습니다.</translation>
 <translation id="6456271171669383967">계속 Brave Software 사용</translation>
@@ -987,6 +996,7 @@
 <translation id="1875543012935658554">Brave을 다시 여세요.</translation>
 <translation id="79859296434321399">증강 현실 콘텐츠를 보려면 ARCore를 설치하세요.</translation>
 <translation id="8558485628462305855">증강 현실 콘텐츠를 보려면 ARCore를 업데이트하세요.</translation>
+<translation id="3513704683820682405">증강 현실</translation>
 <translation id="6410973561433500075"><ph name="DOMAIN"/>에서 AR을 시작하시겠습니까?</translation>
 <translation id="3849365399446680203">AR을 사용 중일 때 사이트에서 다음을 할 수 있습니다.
 • 사용자 환경을 3D 지도로 작성
@@ -1035,6 +1045,8 @@
 <translation id="9028914725102941583">동기화를 사용 설정하여 기기간 공유하기</translation>
 <translation id="6162454065885854378">스마트폰에서 다른 기기로 콘텐츠를 공유하려면 두 기기의 Brave 설정에서 동기화를 사용 설정하세요.</translation>
 <translation id="6084271560289605378">Brave 설정으로 이동</translation>
+<translation id="2746024117903470217">이 페이지를 다른 기기로 공유하려면 다른 기기의 Brave 설정에서 동기화를 사용 설정하세요.</translation>
+<translation id="7760665516427405230">이 페이지를 다른 기기로 공유하려면 Brave 설정에서 동기화를 사용 설정하세요.</translation>
 <translation id="2318045970523081853">탭하여 전화 걸기</translation>
 <translation id="9209888181064652401">전화를 걸 수 없음</translation>
 <translation id="2860954141821109167">이 기기에서 전화 앱이 사용 설정되어 있는지 확인하세요.</translation>
@@ -1090,11 +1102,17 @@
 <translation id="6201345951596836663">링크 복사됨</translation>
 <translation id="6597891566292541626">프레임 안에 QR/바코드를 위치시키세요.</translation>
 <translation id="3140134512074889489">카메라에서 QR 코드를 스캔하도록 허용하세요.</translation>
+<translation id="5149323899804758325">QR 코드를 스캔하려면 Brave에서 카메라를 사용할 수 있도록 설정을 변경하세요.</translation>
 <translation id="2359808026110333948">계속</translation>
+<translation id="8233540874193135768">QR 코드를 스캔하려면 카메라가 있는 기기를 사용하세요.</translation>
+<translation id="6297765934698848803">내 기기를 관리하는 조직에서 카메라를 사용 중지했습니다.</translation>
+<translation id="4321739720395210191">카메라를 열 수 없습니다. 기기를 다시 시작한 후 시도해 보세요.</translation>
+<translation id="234265804618409743">카메라를 열 수 없습니다. 문제가 발생했습니다.</translation>
+<translation id="7173114856073700355">설정 열기</translation>
+<translation id="1311657260431405215">이 QR 코드(<ph name="QRCODEVALUE"/>)는 URL이 아닙니다.</translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Brave Software 알림 플랫폼</translation>
 <translation id="8516012719330875537">이미지 편집기</translation>
-<translation id="6092062101542170135">계속하려면 Android 설정에서 NFC를 사용 설정하세요.</translation>
-<translation id="5860491529813859533">사용</translation>
 <translation id="8926666909099850184">기기에서 NFC가 사용 중지되어 있습니다. <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 NFC를 사용 설정하세요.</translation>
 <translation id="4808319664292298116"><ph name="DOMAIN"/>에서 VR을 시작하시겠습니까?</translation>
 <translation id="4353114845960720315">VR 사용 중 이 사이트가 다음 정보를 학습할 수 있습니다.</translation>

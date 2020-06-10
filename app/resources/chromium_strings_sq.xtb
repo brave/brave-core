@@ -13,6 +13,9 @@
 <translation id="7918740962659365265">Ndihmo në përmirësimin e Brave duke dërguar te Brave Software raportet e ndërprerjeve aksidentale dhe <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - identifikimi në rrjet - Brave</translation>
+<translation id="8745514854244955877">Brave - identifikimi në rrjet - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - identifikimi në rrjet</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -47,8 +50,12 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="5785919770853225148">Brave do ta ruajë këtë fjalëkalim në llogarinë tënde të Brave Software. Nuk është nevoja ta mbash mend.</translation>
 <translation id="8211837073776713955">Brave të informon nëse fjalëkalimet e tua komprometohen ndonjëherë</translation>
 <translation id="113959764510199339">Brave-i po përpiqet të shfaqë fjalëkalime.</translation>
+<translation id="96347285368592620">Brave po përpiqet të kopjojë fjalëkalimet.</translation>
+<translation id="2953892977076487219">Brave po përpiqet t'i modifikojë fjalëkalimet.</translation>
 <translation id="7503098128120083822">Brave dëshiron të eksportojë fjalëkalimet e tua.</translation>
 <translation id="8285294305439559616">Brave po përpiqet të shfaqë fjalëkalime. Shkruaj fjalëkalimin tënd të Windows për ta lejuar këtë.</translation>
+<translation id="8090497651549769448">Brave po përpiqet të kopjojë fjalëkalimet. Shkruaj fjalëkalimin tënd të Windows për ta lejuar këtë.</translation>
+<translation id="3861679447659630159">Brave po përpiqet t'i modifikojë fjalëkalimet. Shkruaj fjalëkalimin tënd të Windows për ta lejuar këtë.</translation>
 <translation id="5918095577778020936">Brave dëshiron të eksportojë fjalëkalimet e tua. Shkruaj fjalëkalimin tënd të Windows për ta lejuar këtë.</translation>
 <translation id="8320964054148936490">Ky kompjuter e ka tashmë një version më të ri të Brave. Nëse softueri nuk punon, çinstaloje Brave dhe provo përsëri.</translation>
 <translation id="7691786510374174420">Instalimi dështoi për shkak të një gabimi të paspecifikuar. Nëse Brave është aktualisht në ekzekutim, mbylle dhe provo përsëri.</translation>
@@ -201,7 +208,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="3262506503470845422">Merr ndihmë me Brave</translation>
 <translation id="1864557848095568223">Po përditëson Brave</translation>
 <translation id="1786715389543715322">Po përditëson Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Pothuajse i përditësuar! Hape përsëri Brave për të përfunduar përditësimin.</translation>
+<translation id="7914115000169617076">Pothuajse u përditësua! Hap përsëri Brave për të përfunduar përditësimin. Dritaret "e fshehta" nuk do të hapen.</translation>
 <translation id="8208853227947884571">Brave-i është i përditësuar</translation>
 <translation id="573759479754913123">Rreth sistemit operativ Brave</translation>
 <translation id="7573289029918943991">Për të parë nëse pajisja jote është e përditësuar, shko te <ph name="LINK_BEGIN"/>Cilësimet e sistemit operativ Brave<ph name="LINK_END"/></translation>
@@ -219,6 +226,12 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="8586264863973514035">Për të zbatuar ndryshimet, rinis Brave</translation>
 <translation id="7021823858304886493">Lejo identifikimin në Brave</translation>
 <translation id="1649714546770135458">Duke çaktivizuar këtë, mund të identifikohesh në sajtet e Brave Software si Gmail pa u identifikuar në Brave</translation>
+<translation id="2796517443093885402">Brave mund të të ndihmojë të qëndrosh i sigurt nga nxjerrjet e paautorizuara të të dhënave, shtesat e papërshtatshme etj.</translation>
+<translation id="428541510811554120">Brave nuk mund të kontrollojë për përditësime. Provo të kontrollosh lidhjen e internetit.</translation>
+<translation id="2633397153656205379">Brave nuk u përditësua. Ndodhi një gabim. <ph name="BEGIN_LINK"/>Rregullo problemet e përditësimit të Brave dhe përditësimet e dështuara.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave nuk mund t'i kontrollojë fjalëkalimet e tua sepse nuk je identifikuar</translation>
+<translation id="7006260220514217183">"Shfletimi i sigurt" është joaktiv. Brave rekomandon aktivizimin e tij.</translation>
+<translation id="1785833016412082453">Brave nuk mund t'i kontrollojë shtesat e tua. Provo përsëri më vonë.</translation>
 <translation id="9220324636239049437">Kjo do të fshijë 1 artikull nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Kjo do të fshijë <ph name="ITEMS_COUNT"/> artikuj nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Kjo do të fshijë të dhënat e shfletimit nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>

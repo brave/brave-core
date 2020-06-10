@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Brave Softwareକୁ କ୍ରାସ୍ ରିପୋର୍ଟ ଏବଂ <ph name="UMA_LINK"/> ପଠାଇ Braveତ କରିବାରେ ସାହାଯ୍ୟ କରନ୍ତୁ</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍ - Brave</translation>
+<translation id="8745514854244955877">Brave - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍ - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave ବିଟା</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave ଡେଭ୍‌ଲପର୍‌</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave କେନେରୀ</translation>
@@ -44,8 +47,12 @@ Brave ଆପଣଙ୍କ ସେଟିଂସ୍‌କୁ ପୁନରୁଦ୍ଧ
 <translation id="5785919770853225148">ଆପଣଙ୍କର Brave Software ଆକାଉଣ୍ଟରେ Brave ଏହି ପାସ୍‌ୱର୍ଡ ସେଭ୍ କରିବ। ଆପଣଙ୍କୁ ଏହା ମନେରଖିବାକୁ ପଡ଼ିବ ନାହିଁ।</translation>
 <translation id="8211837073776713955">ଆପଣଙ୍କର ପାସ୍‍ୱାର୍ଡଗୁଡ଼ିକ କେବେ ବି ଚୋରି ହୋଇଛି କି ନାହିଁ ତାହା Brave ଆପଣଙ୍କୁ ଜାଣିବାକୁ ଦିଏ</translation>
 <translation id="113959764510199339">ପାସ୍‌ୱର୍ଡଗୁଡ଼ିକ ଦେଖାଇବାକୁ Brave ଚେଷ୍ଟା କରୁଛି।</translation>
+<translation id="96347285368592620">Brave ପାସୱାର୍ଡଗୁଡ଼ିକ କପି କରିବାକୁ ଚେଷ୍ଟା କରୁଛି।</translation>
+<translation id="2953892977076487219">Brave ପାସୱାର୍ଡଗୁଡ଼ିକୁ ଏଡିଟ୍ କରିବାକୁ ଚେଷ୍ଟା କରୁଛି।</translation>
 <translation id="7503098128120083822">ଆପଣଙ୍କର ପାସ୍‌ୱାର୍ଡଗୁଡିକୁ Brave ଏକ୍ସପୋର୍ଟ କରିବାକୁ ଚାହେଁ।</translation>
 <translation id="8285294305439559616">Brave, ପାସ୍‌ୱର୍ଡ ଦେଖାଇବାକୁ ଚେଷ୍ଟା କରୁଛି। ଏହାକୁ ଅନୁମତି ଦେବାପାଇଁ ନିଜର Windows ପାସ୍‌ୱର୍ଡ ଟାଇପ୍ କରନ୍ତୁ।</translation>
+<translation id="8090497651549769448">Brave ପାସୱାର୍ଡଗୁଡ଼ିକ କପି କରିବାକୁ ଚେଷ୍ଟା କରୁଛି। ଏହାକୁ ଅନୁମତି ଦେବା ପାଇଁ ଆପଣଙ୍କର Windows ପାସୱାର୍ଡ ଟାଇପ୍ କରନ୍ତୁ।</translation>
+<translation id="3861679447659630159">Brave ପାସୱାର୍ଡଗୁଡ଼ିକୁ ଏଡିଟ୍ କରିବାକୁ ଚେଷ୍ଟା କରୁଛି। ଏହାକୁ ଅନୁମତି ଦେବା ପାଇଁ ଆପଣଙ୍କ Windows ପାସୱାର୍ଡ ଟାଇପ୍ କରନ୍ତୁ।</translation>
 <translation id="5918095577778020936">ଆପଣଙ୍କର ପାସ୍‌ୱାର୍ଡଗୁଡିକୁ Brave ଏକ୍ସପୋର୍ଟ କରିବାକୁ ଚାହେଁ। ଏହାକୁ ଅନୁମତି ଦେବାପାଇଁ ଆପଣଙ୍କର Windows ପାସ୍‌ୱର୍ଡ ଟାଇପ୍ କରନ୍ତୁ।</translation>
 <translation id="8320964054148936490">ଏହି କମ୍ପ୍ୟୁଟର୍‌ରେ ପୂର୍ବରୁ Braveର ସବୁଠାରୁ ନିକଟତମ ସଂସ୍କରଣ ଅଛି। ଯଦି ସଫ୍ଟୱେର୍‌ଟି କାମ କରୁନାହିଁ, ତେବେ Braveକୁ ଅନ୍‌ଇନ୍‌ଷ୍ଟଲ୍ କରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="7691786510374174420">ଅନିର୍ଦ୍ଧିଷ୍ଟ ତ୍ରୁଟି ହେତୁ ଇନ୍‍ଷ୍ଟଲେସନ୍‍ ବିଫଳ ହୋ‍ଇଛି। ଯଦି ଏବେ Brave ଚାଲୁଛି, ତେବେ ଦୟାକରି ଏହାକୁ ବନ୍ଦ କରନ୍ତୁ ଏବଂ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
@@ -192,7 +199,7 @@ Brave ଆପଣଙ୍କ ସେଟିଂସ୍‌କୁ ପୁନରୁଦ୍ଧ
 <translation id="3262506503470845422">Brave ପାଇଁ ସାହାଯ୍ୟ ପ୍ରାପ୍ତ କରନ୍ତୁ</translation>
 <translation id="1864557848095568223">Brave ଅପ୍‌ଡେଟ୍ ହେଉଛି</translation>
 <translation id="1786715389543715322">Brave ଅପ୍‌ଡେଟ୍ ହେଉଛି (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">ପ୍ରାୟତଃ ଅପ୍-ଟୁ-ଡେଟ୍! ଅପ୍‌ଡେଟ୍ ସମାପ୍ତ କରିବାକୁ Brave ପୁଣି ଲଞ୍ଚ କରନ୍ତୁ।</translation>
+<translation id="7914115000169617076">ପ୍ରାୟ ଅପ୍ ଟୁ ଡେଟ୍! ଅପଡେଟ୍ ସମାପ୍ତ କରିବାକୁ Brave ପୁଣି ଲଞ୍ଚ କରନ୍ତୁ। ଇନକଗ୍ନିଟୋ ୱିଣ୍ଡୋଗୁଡ଼ିକ ପୁଣି ଖୋଲିବ ନାହିଁ।</translation>
 <translation id="8208853227947884571">Brave ଅପ୍‍-ଟୁ-ଡେଟ୍‍ ଅଛି</translation>
 <translation id="573759479754913123">Brave OS ବିଷୟରେ</translation>
 <translation id="7573289029918943991">ଆପଣଙ୍କ ଡିଭାଇସ୍ ଅପ୍ ଟୁ ଡେଟ୍ ଅଛି କି ନାହିଁ, ତାହା ଦେଖିବାକୁ <ph name="LINK_BEGIN"/>Brave OS ସେଟିଂସ୍‌<ph name="LINK_END"/>କୁ ଯାଆନ୍ତୁ</translation>
@@ -208,6 +215,12 @@ Brave ଆପଣଙ୍କ ସେଟିଂସ୍‌କୁ ପୁନରୁଦ୍ଧ
 <translation id="8586264863973514035">ଆପଣ କରିଥିବା ପରିବର୍ତ୍ତନଗୁଡ଼ିକୁ ଲାଗୁ କରିବା ପାଇଁ Braveକୁ ପୁଣି ଲଞ୍ଚ କରନ୍ତୁ</translation>
 <translation id="7021823858304886493">Braveରେ ସାଇନ୍-ଇନ୍‌ କରିବାକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="1649714546770135458">ଏହାକୁ ବନ୍ଦ କରିବା ଦ୍ଵାରା ଆପଣ Braveରେ ସାଇନ୍-ଇନ୍ ନକରି Gmail ଭଳି Brave Software ସାଇଟ୍‍ଗୁଡ଼ିକରେ ସାଇନ୍ ଇନ୍ କରିପାରିବେ</translation>
+<translation id="2796517443093885402">ଡାଟା ଚୋରି, କ୍ଷତିକାରକ ଏକ୍ସଟେନସନ୍ ଏବଂ ଆହୁରି ଅନେକ କିଛିରୁ Brave ଆପଣଙ୍କୁ ସୁରକ୍ଷିତ ରଖିବାରେ ସାହାଯ୍ୟ କରିପାରିବ</translation>
+<translation id="428541510811554120">Brave ଅପଡେଟଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରିପାରିବ ନାହିଁ। ଆପଣଙ୍କର ଇଣ୍ଟର୍ନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରି ଦେଖନ୍ତୁ।</translation>
+<translation id="2633397153656205379">Brave ଅପଡେଟ୍ ହେଲା ନାହିଁ, କିଛି ତ୍ରୁଟି ହୋଇଗଲା। <ph name="BEGIN_LINK"/>Brave ଅପଡେଟ୍ ସମସ୍ୟା ଏବଂ ବିଫଳ ଅପଡେଟଗୁଡ଼ିକର ସମାଧାନ କରନ୍ତୁ।<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">ଆପଣ ସାଇନ୍ ଇନ୍ କରିନଥିବା ଯୋଗୁଁ Brave ଆପଣଙ୍କ ପାସୱାର୍ଡ ଯାଞ୍ଚ କରିପାରିବ ନାହିଁ</translation>
+<translation id="7006260220514217183">ସେଫ୍ ବ୍ରାଉଜିଂ ବନ୍ଦ ଅଛି। Brave ଏହାକୁ ଚାଲୁ କରିବାକୁ ସୁପାରିଶ କରେ।</translation>
+<translation id="1785833016412082453">Brave ଆପଣଙ୍କ ଏକ୍ସଟେନସନଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରିପାରିବ ନାହିଁ। ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="9220324636239049437">ଏହାଦ୍ବାରା ଏହି ଡିଭାଇସ୍‌ରୁ 1ଟି ଆଇଟମ୍ ଡିଲିଟ୍ ହୋଇଯିବ। ପରେ ଆପଣଙ୍କ ଡାଟାକୁ ପୁନଃପ୍ରାପ୍ତ କରିବାକୁ, Braveକୁ <ph name="USER_EMAIL"/>ରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।</translation>
 <translation id="5853262807109651878">ଏହା, ଏହି ଡିଭାଇସ୍‍ରୁ <ph name="ITEMS_COUNT"/>ଟି ଆଇଟମ୍‍କୁ ଡିଲିଟ୍ କରିଦେବ। ପରବର୍ତ୍ତୀ ସମୟରେ ଆପଣଙ୍କର ଡାଟାକୁ ପୁନରୁଦ୍ଧାର କରିବା ପାଇଁ <ph name="USER_EMAIL"/> ଭାବେ Brave‍ରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।</translation>
 <translation id="4784414698887946907">ଏହା, ଏହି ଡିଭାଇସ୍‍ରୁ ଆପଣଙ୍କର ବ୍ରାଉଜିଂ ଡାଟା ଖାଲି କରିଦେବେ। ପରେ ଆପଣଙ୍କ ଡାଟାକୁ ପୁନଃପ୍ରାପ୍ତ କରିବା ନିମନ୍ତେ, Braveକୁ <ph name="USER_EMAIL"/>ରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।</translation>

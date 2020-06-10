@@ -3,10 +3,6 @@
 <translationbundle lang="iw">
 <translation id="8428213095426709021">הגדרות</translation>
 <translation id="2498359688066513246">עזרה ומשוב</translation>
-<translation id="8378714024927312812">מנוהל על-ידי הארגון</translation>
-<translation id="9019902583201351841">מנוהל על-ידי ההורים שלך</translation>
-<translation id="4645575059429386691">מנוהל על-ידי ההורה שלך</translation>
-<translation id="4883854917563148705">לא ניתן לאפס הגדרות מנוהלות</translation>
 <translation id="4307992518367153382">היסודות</translation>
 <translation id="1974060860693918893">מתקדם</translation>
 <translation id="1146678959555564648">‏כניסה למצב VR</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">‏התכונה הזו מופעלת בעת הכניסה לחשבון Brave Software</translation>
 <translation id="10614374240317010">פריטים שאף פעם לא נשמרו</translation>
 <translation id="3098842761938485917">‏הצגה וניהול של סיסמאות שמורות ב<ph name="BEGIN_LINK"/>חשבון Brave Software<ph name="END_LINK"/></translation>
+<translation id="8988028529677883095">שימוש בטלפון כמפתח אבטחה</translation>
 <translation id="8562452229998620586">הסיסמאות השמורות יופיעו כאן.</translation>
+<translation id="1303339473099049190">לא ניתן למצוא את הסיסמה. יש לבדוק את האיות ולנסות שוב.</translation>
 <translation id="8084114998886531721">סיסמה שמורה</translation>
 <translation id="2870560284913253234">אתר</translation>
 <translation id="8503813439785031346">שם משתמש</translation>
@@ -126,9 +124,10 @@
 <translation id="5515439363601853141">ביטול הנעילה יציג את הסיסמה</translation>
 <translation id="6221633008163990886">יש לבטל את הנעילה כדי לייצא סיסמאות</translation>
 <translation id="230699814587342492">‏סיסמאות Brave</translation>
-<translation id="6075798973483050474">עריכת דף הבית</translation>
-<translation id="854522910157234410">פתח דף זה</translation>
+<translation id="1925021887439448749">הזן כתובת אינטרנט מותאמת אישית</translation>
 <translation id="8127542551745560481">עריכת דף הבית</translation>
+<translation id="854522910157234410">פתח דף זה</translation>
+<translation id="5063487983358782016">‏דף הבית של Brave</translation>
 <translation id="2482878487686419369">התראות</translation>
 <translation id="6255999984061454636">הצעות לתוכן</translation>
 <translation id="805047784848435650">על סמך היסטוריית הגלישה שלך</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">פרטיות</translation>
 <translation id="4991384657077828949">‏עזרה בשיפור האבטחה של Brave</translation>
 <translation id="1943176487615318915">‏כדי לזהות אפליקציות ואתרים מסוכנים, Brave שולח אל Brave Software כתובות URL של חלק מהדפים שאליהם נכנסת, מידע מוגבל לגבי המערכת וחלק מתוכן הדפים</translation>
-<translation id="3181954750937456830">גלישה בטוחה (מגנה עליך ועל המכשיר מפני אתרים מסוכנים)</translation>
-<translation id="7315322926489145388">‏שולחת ל-Brave Software כתובות URL של חלק מהדפים שאליהם נכנסת, אם מתגלה סיכון אבטחה</translation>
+<translation id="3201899458094819285">גלישה בטוחה (מגנה עליך ועל המכשיר מפני אתרים מסוכנים)</translation>
+<translation id="2876369937070532032">‏שולחת ל-Brave Software כתובות URL של חלק מהדפים שאליהם נכנסת, אם מתגלה סיכון אבטחה</translation>
 <translation id="3738139272394829648">חיפוש בנגיעה</translation>
-<translation id="7865281998841143447">‏ניתן לקבל מידע על נושאים באתרים מבלי לצאת מהדף. התכונה 'נגיעה כדי לחפש' מאפשרת לשלוח מילה ביחד עם ההקשר שלה אל חיפוש Brave Software, כדי לקבל הגדרות, תמונות, תוצאות חיפוש ופרטים אחרים.
+<translation id="4749189475009528195">‏ניתן לקבל מידע על נושאים שמוזכרים באתרים מבלי לצאת מהדף. התכונה 'חיפוש בנגיעה' מאפשרת לשלוח מילה ביחד עם ההקשר שלה אל חיפוש Brave Software, כדי לקבל הגדרות, תמונות, תוצאות חיפוש ופרטים אחרים.
 
-כדי לחפש מילה כלשהי, מקישים עליה. כדי לשנות את מונח החיפוש, יש ללחוץ לחיצה ארוכה כדי לבחור אותו. כדי לצמצם את החיפוש פותחים את החלונית בהסטת אצבע, מקישים על סמל ההרחבה כדי ליצור כרטיסייה חדשה ואז מקישים על תיבת החיפוש.</translation>
-<translation id="3292859206215580147">‏ניתן לקבל מידע על נושאים באתרים מבלי לצאת מהדף. התכונה 'נגיעה כדי לחפש' מאפשרת לשלוח מילה ביחד עם ההקשר שלה אל חיפוש Brave Software, כדי לקבל הגדרות, תמונות, תוצאות חיפוש ופרטים אחרים.
+כדי לחפש מילה, מקישים עליה. אם רוצים לדייק את תוצאות החיפוש, אפשר ללחוץ לחיצה ארוכה ולבחור יותר מילים או פחות מילים. כדי לערוך את החיפוש, פותחים את החלונית, מקישים על הסמל כדי לפתוח את האפליקציה בכרטיסייה חדשה ומבצעים את השינויים בתיבת החיפוש.</translation>
+<translation id="934250516944040460">‏ניתן לקבל מידע על נושאים שמוזכרים באתרים מבלי לצאת מהדף. התכונה 'חיפוש בנגיעה' מאפשרת לשלוח מילה ביחד עם ההקשר שלה אל חיפוש Brave Software, כדי לקבל הגדרות, תמונות, תוצאות חיפוש ופרטים אחרים.
 
-כדי לחפש מילה כלשהי, לוחצים עליה לחיצה ארוכה. אפשר להתאים את הבחירה כדי לצמצם את החיפוש. ניתן גם לפתוח את החלונית בהסטת אצבע, להקיש על סמל ההרחבה כדי ליצור כרטיסייה חדשה ואז להקיש על תיבת החיפוש.</translation>
+כדי לחפש מילה, לוחצים עליה לחיצה ארוכה. כדי להתאים את החיפוש, אפשר לבחור יותר מילים או פחות מילים. כדי לערוך את החיפוש, פותחים את החלונית, מקישים על הסמל כדי לפתוח את האפליקציה בכרטיסייה חדשה ומבצעים את השינויים בתיבת החיפוש.</translation>
 <translation id="6209156474097347789">‏'גע כדי לחפש' שולח אל חיפוש Brave Software את המילה הנבחרת, יחד עם הדף הנוכחי בתור הקשר. תוכל לכבות זאת ב<ph name="BEGIN_LINK"/>הגדרות<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">זה בסדר</translation>
 <translation id="780301667611848630">לא תודה</translation>
@@ -206,7 +205,7 @@
 <translation id="6295158916970320988">כל האתרים</translation>
 <translation id="8380167699614421159">באתר הזה מוצגות מודעות מפריעות או מטעות</translation>
 <translation id="1919345977826869612">מודעות</translation>
-<translation id="3513704683820682405">מציאות רבודה</translation>
+<translation id="2025115093177348061">מציאות רבודה</translation>
 <translation id="6447842834002726250">‏קובצי Cookie</translation>
 <translation id="6196640612572343990">‏חסום קובצי Cookie של צד שלישי</translation>
 <translation id="6782111308708962316">‏אתרים של צד שלישי לא יוכלו לשמור ולקרוא נתונים של קובצי cookie</translation>
@@ -217,6 +216,7 @@
 <translation id="1717218214683051432">חיישני תנועה</translation>
 <translation id="2091887806945687916">צליל</translation>
 <translation id="2586657967955657006">לוח</translation>
+<translation id="4670064810192446073">מציאות מדומה</translation>
 <translation id="6320088164292336938">רטט</translation>
 <translation id="4226663524361240545">רטט של המכשיר אפשרי כשמתקבלת הודעה</translation>
 <translation id="1446450296470737166">‏התר שליטה מלאה על מכשירי MIDI</translation>
@@ -235,6 +235,7 @@
 <translation id="2537296579376733324">‏כל קובצי ה-cookie, באתר זה בלבד</translation>
 <translation id="7882806643839505685">מתן הרשאה להשמעת צלילים באתר ספציפי.</translation>
 <translation id="4468959413250150279">השתקת צלילים באתר ספציפי.</translation>
+<translation id="7828557259026017104">‏קובצי cookie נוצרים על ידי האתרים שביקרת בהם. האתרים משתמשים בהם כדי לזכור את ההעדפות שלך. קובצי cookie של צד שלישי נוצרים על-ידי אתרים אחרים. האתרים האלה הם הבעלים של חלק מהתוכן בדף האינטרנט שביקרת בו, למשל מודעות או תמונות.</translation>
 <translation id="1994173015038366702">כתובת אתר</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">שימוש</translation>
@@ -246,10 +247,14 @@
 <translation id="8116925261070264013">מושתקים</translation>
 <translation id="8300705686683892304">מנוהלים על-ידי אפליקציה</translation>
 <translation id="6192792657125177640">יוצאי דופן</translation>
-<translation id="257931822824936280">מורחב - לחץ כדי לכווץ.</translation>
-<translation id="5100237604440890931">מכווץ - לחץ כדי להרחיב.</translation>
 <translation id="857943718398505171">מותרת (מומלץ)</translation>
 <translation id="2913331724188855103">‏אתרים יוכלו לשמור ולקרוא נתונים של קובצי Cookie (מומלץ)</translation>
+<translation id="2212565012507486665">‏אישור קובצי cookie</translation>
+<translation id="8648684608605749476">‏חסימת קובצי cookie של צד שלישי במצב אנונימי</translation>
+<translation id="2687403674020088961">‏חסימה של כל קובצי ה-cookie (לא מומלץ)</translation>
+<translation id="1044891598689252897">אתרים יפעלו כרגיל</translation>
+<translation id="7993619969781047893">ייתכן שהתכונות של חלק מהאתרים לא יפעלו כראוי</translation>
+<translation id="1509960214886564027">ייתכן שהתכונות של חלק גדול מהאתרים לא יפעלו כראוי</translation>
 <translation id="5335288049665977812">‏אפשר לאתרים להריץ JavaScript (מומלץ)</translation>
 <translation id="5527111080432883924">יש לבקש הרשאה לפני מתן גישה לאתרים אל טקסט ותמונות מלוח העריכה (מומלץ)</translation>
 <translation id="6912998170423641340">חסימת היכולת של אתרים לקרוא טקסט ותמונות מלוח העריכה</translation>
@@ -259,12 +264,12 @@
 <translation id="2107397443965016585">יש לבקש ממני אישור לפני מתן הרשאה לאתרים להציג תוכן מוגן (מומלץ)</translation>
 <translation id="2910701580606108292">הצגת שאלה לפני מתן הרשאה לאתרים להפעיל תוכן מוגן</translation>
 <translation id="757524316907819857">חסימה של הפעלת תוכן מוגן על-ידי אתרים</translation>
-<translation id="4935305910887312910">תוצג שאלה לפני מתן הרשאה לאתרים לקבל את מיקום המצלמה או למפות את החדר (מומלץ)</translation>
-<translation id="884828189055900810">תיחסם האפשרות של אתרים לקבל את מיקום המצלמה ולמפות את החדר</translation>
+<translation id="2182457891543959921">תוצג שאלה לפני מתן הרשאה לאתרים ליצור מפה בתלת ממד של הסביבה שלך או לעקוב אחר מיקום המצלמה (מומלץ)</translation>
+<translation id="3538390592868664640">חסימה של יצירת מפה בתלת ממד של הסביבה שלך או של מעקב אחר מיקום המצלמה על ידי אתרים.</translation>
 <translation id="5710871682236653961">‏הצגת שאלה לפני מתן הרשאה לאתרים לשלוח ולקבל מידע כשמקישים על מכשירי NFC (מומלץ)</translation>
 <translation id="7572498721684305250">‏חסימת האפשרות של אתרים לשלוח ולקבל מידע כשמקישים על מכשירי NFC</translation>
-<translation id="3312292613668865961">תוצג שאלה לפני מתן הרשאה לאתרים לגשת לנתונים ולמכשיר המציאות המדומה (מומלץ)</translation>
-<translation id="8698438463325761328">תיחסם האפשרות של אתרים לגשת אל נתונים ומכשירי מציאות מדומה</translation>
+<translation id="4887024562049524730">תוצג שאלה לפני מתן הרשאה לאתרים להשתמש במכשיר המציאות המדומה ובנתוני המציאות המדומה שלך (מומלץ)</translation>
+<translation id="6439114592976064011">תיחסם האפשרות של אתרים להשתמש במכשיר המציאות המדומה ובנתוני המציאות המדומה</translation>
 <translation id="3277252321222022663">התרת גישה של אתרים אל החיישנים (מומלץ)</translation>
 <translation id="5048398596102334565">התרת גישה של אתרים אל חיישני התנועה (מומלץ)</translation>
 <translation id="8816026460808729765">חסימת הגישה של אתרים אל חיישנים</translation>
@@ -414,6 +419,7 @@
 <translation id="4062305924942672200">מידע משפטי</translation>
 <translation id="4256782883801055595">רישיונות קוד פתוח</translation>
 <translation id="1138681184697033370">‏התנאים וההגבלות של Brave</translation>
+<translation id="2368444735104192323">‏תנאים והגבלות נוספים של Brave ושל Brave OS</translation>
 <translation id="7392539049993970338">‏הודעת הפרטיות של Brave</translation>
 <translation id="2968755619301702150">מציג האישורים</translation>
 <translation id="1360432990279830238">לצאת ולהשבית את הסנכרון?</translation>
@@ -432,6 +438,8 @@
 <translation id="8636825310635137004">כדי לקבל את הכרטיסיות מהמכשירים האחרים שלך, הפעל את הסנכרון.</translation>
 <translation id="3269956123044984603">‏כדי לקבל את הכרטיסיות מהמכשירים האחרים שלך, הפעל את האפשרות 'סנכרון אוטומטי של נתונים' בהגדרות של חשבון Android.</translation>
 <translation id="5157964048453367290">‏כרטיסיות שפתחת ב-Brave במכשירים האחרים שלך יופיעו כאן.</translation>
+<translation id="5795872532621730126">חיפוש וגלישה</translation>
+<translation id="9086302186042011942">מסנכרן</translation>
 <translation id="4684427112815847243">סנכרון הכל</translation>
 <translation id="2709516037105925701">מילוי אוטומטי</translation>
 <translation id="8820817407110198400">סימניות</translation>
@@ -549,10 +557,6 @@
 <translation id="2532336938189706096">תצוגת אינטרנט</translation>
 <translation id="6005538289190791541">הצעה לסיסמה</translation>
 <translation id="4634124774493850572">שימוש בסיסמה</translation>
-<translation id="8285489906452138776">‏Brave זקוק להרשאה גישה אל המצלמה בשביל האתר הזה.</translation>
-<translation id="320189792589364011">‏Brave זקוק להרשאת גישה אל המיקרופון בשביל האתר הזה.</translation>
-<translation id="7988136689212463100">‏Brave זקוק להרשאת גישה אל המצלמה והמיקרופון בשביל האתר הזה.</translation>
-<translation id="4931190655840828017">‏Brave זקוק לגישה אל המיקום שלך כדי לשתף אותו עם האתר הזה.</translation>
 <translation id="3088191967551450609">‏לצורך הורדת קבצים, Brave זקוק לגישה לאחסון.</translation>
 <translation id="8942627711005830162">פתיחה בחלון האחר</translation>
 <translation id="4195643157523330669">פתיחה בכרטיסייה חדשה</translation>
@@ -600,8 +604,9 @@
 <translation id="2146738493024040262">פתח אפליקציית אינסטנט</translation>
 <translation id="7016516562562142042">מופעל למנוע החיפוש הנוכחי</translation>
 <translation id="6177111841848151710">חסוּם למנוע החיפוש הנוכחי</translation>
-<translation id="145097072038377568">‏כבוי בהגדרות Android</translation>
+<translation id="7000754031042624318">‏ההרשאה מושבתת בהגדרות Android</translation>
 <translation id="8007176423574883786">כבוי בשביל המכשיר הזה</translation>
+<translation id="6864395892908308021">‏NFC לא נתמך במכשיר הזה</translation>
 <translation id="164269334534774161">אתה מציג עותק לא מקוון של הדף הזה מ-<ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">הדף הלא מקוון הזה נוצר ב-<ph name="CREATION_TIME"/> ויכול להיות שהגירסה המקוונת שלו שונה.</translation>
 <translation id="8840953339110955557">ייתכן שהדף הזה שונה מהגירסה המקוונת.</translation>
@@ -706,10 +711,10 @@
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
 <translation id="724102042129299115">‏חוויית ההפעלה הראשונה של Brave</translation>
-<translation id="2700285883409956633">‏השימוש באפליקציה זו מהוות את הסכמתך ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>הודעת הפרטיות<ph name="END_LINK2"/> של Brave.</translation>
-<translation id="1640714894372474981">‏השימוש שלך באפליקציה הזו מבטא את הסכמתך ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>מדיניות הפרטיות<ph name="END_LINK2"/> של Brave, וכן ל<ph name="BEGIN_LINK3"/>הודעת הפרטיות לחשבונות Brave Software שמנוהלים ב-Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727">‏האפליקציה <ph name="APP_NAME"/> תיפתח ב-Brave. המשך השימוש מבטא את הסכמתך ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>הודעת הפרטיות<ph name="END_LINK2"/> של Brave.</translation>
-<translation id="5071615083211946659">‏האפליקציה <ph name="APP_NAME"/> תיפתח ב-Brave. המשך השימוש מבטא את הסכמתך ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>הודעת הפרטיות<ph name="END_LINK2"/> של Brave, וכן ל<ph name="BEGIN_LINK3"/>הודעת הפרטיות לחשבונות Brave Software שמנוהלים ב-Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">‏השימוש ב-Brave מבטא הסכמה ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות של Brave Software<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>תנאים ולהגבלות הנוספים של Brave Software Brave ו-Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">‏השימוש ב-Brave מבטא הסכמה ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות של Brave Software<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>תנאים ולהגבלות הנוספים של Brave Software Brave ו-Brave OS<ph name="END_LINK2"/>. על השימוש חלה גם <ph name="BEGIN_LINK3"/>הודעת הפרטיות לגבי חשבונות Brave Software המנוהלים באמצעות Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="4993481112200507346">‏האפליקציה <ph name="APP_NAME"/> תיפתח ב-Brave. המשך הפעולה מבטא הסכמה ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות של Brave Software<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>תנאים ולהגבלות הנוספים של Brave Software Brave ו-Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485">‏האפליקציה <ph name="APP_NAME"/> תיפתח ב-Brave. המשך הפעולה מבטא הסכמה ל<ph name="BEGIN_LINK1"/>תנאים ולהגבלות של Brave Software<ph name="END_LINK1"/> ול<ph name="BEGIN_LINK2"/>תנאים ולהגבלות הנוספים של Brave Software Brave ו-Brave OS<ph name="END_LINK2"/>. על פעולה זו חלה גם <ph name="BEGIN_LINK3"/>הודעת הפרטיות לגבי חשבונות Brave Software המנוהלים באמצעות Family Link<ph name="END_LINK3"/>.</translation>
 <translation id="673197144963363525">‏אם שולחים אלינו נתוני שימוש ודוחות קריסה, עוזרים לשפר את Brave.</translation>
 <translation id="3518985090088779359">בסדר, מקובל עליי</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave</translation>
@@ -814,7 +819,7 @@
 <translation id="6963766334940102469">מחק סימניות</translation>
 <translation id="4351244548802238354">סגור את תיבת הדו-שיח</translation>
 <translation id="451872707440238414">חיפוש בסימניות</translation>
-<translation id="8901170036886848654">לא נמצאו סימניות</translation>
+<translation id="6447558397796644647">לא ניתן למצוא את הסימניה הזו. יש לוודא שהאיות נכון או להוסיף סימניה חדשה.</translation>
 <translation id="6404511346730675251">ערוך סימניה</translation>
 <translation id="3894427358181296146">הוספת תיקייה</translation>
 <translation id="5327248766486351172">שם</translation>
@@ -829,6 +834,8 @@
 <translation id="6811034713472274749">הדף מוכן להצגה</translation>
 <translation id="4561979708150884304">אין חיבור</translation>
 <translation id="8274165955039650276">הצגת הורדות</translation>
+<translation id="4320177379694898372">אין חיבור לאינטרנט</translation>
+<translation id="6397616442223433927">חזרה למצב אונליין</translation>
 <translation id="2082238445998314030">תוצאה <ph name="RESULT_NUMBER"/> מתוך <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">אין תוצאות</translation>
 <translation id="981121421437150478">לא מקוון</translation>
@@ -845,9 +852,6 @@
 <translation id="6773423637732432200">‏לא ניתן לעדכן את Brave. אפשרויות נוספות</translation>
 <translation id="1383876407941801731">חפש</translation>
 <translation id="3328801116991980348">פרטי אתר</translation>
-<translation id="5391532827096253100">החיבור שלך לאתר הזה לא מאובטח. פרטי האתר</translation>
-<translation id="6206551242102657620">החיבור מאובטח. פרטי האתר</translation>
-<translation id="6963642900430330478">הדף הזה מסוכן. פרטי האתר</translation>
 <translation id="9070377983101773829">התחל חיפוש קולי</translation>
 <translation id="4968908871398201967">מצב פרטי</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{כרטיסייה פתוחה אחת (<ph name="OPEN_TABS_ONE"/>), יש להקיש כדי להחליף כרטיסיות}two{<ph name="OPEN_TABS_MANY"/> כרטיסיות פתוחות, יש להקיש כדי להחליף כרטיסיות}many{<ph name="OPEN_TABS_MANY"/> כרטיסיות פתוחות, יש להקיש כדי להחליף כרטיסיות}other{<ph name="OPEN_TABS_MANY"/> כרטיסיות פתוחות, יש להקיש כדי להחליף כרטיסיות}}</translation>
@@ -944,6 +948,11 @@
 <translation id="5197729504361054390">אנשי הקשר שייבחרו ישותפו עם <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">מפענח התמונות</translation>
 <translation id="8067883171444229417">הפעלת הסרטון</translation>
+<translation id="5876056640971328065">השהיית הסרטון</translation>
+<translation id="3594780231884063836">השתקת הסרטון</translation>
+<translation id="783819812427904514">ביטול ההשתקה של הסרטון</translation>
+<translation id="3114012059975132928">נגן וידאו</translation>
+<translation id="5489227211564503167">צפית ב-<ph name="ELAPSED_TIME"/> מתוך <ph name="TOTAL_TIME"/>.</translation>
 <translation id="6560414384669816528">‏השתמש ב-Sogou לחיפוש</translation>
 <translation id="5406914950576900927">‏דפדפן Brave יכול להשתמש ב-<ph name="BEGIN_BOLD"/>Sogou‏<ph name="END_BOLD"/> כדי לחפש בסין. אפשר לשנות את ההעדפה הזאת ב<ph name="BEGIN_LINK"/>הגדרות<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">‏המשך להשתמש ב-Brave Software</translation>
@@ -987,6 +996,7 @@
 <translation id="1875543012935658554">‏יש לפתוח מחדש את Brave.</translation>
 <translation id="79859296434321399">‏כדי להציג תוכן של מציאות רבודה, צריך להתקין את ARCore</translation>
 <translation id="8558485628462305855">‏כדי להציג תוכן של מציאות רבודה, צריך לעדכן את ARCore</translation>
+<translation id="3513704683820682405">מציאות רבודה</translation>
 <translation id="6410973561433500075">‏האם לעבור ל-AR מהדומיין <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">‏בזמן השימוש ב-AR, ייתכן שהאתר הזה יוכל:
 • ליצור מפת תלת-ממד של הסביבה שלך
@@ -1035,6 +1045,8 @@
 <translation id="9028914725102941583">כדי לבצע שיתוף בין מכשירים יש להפעיל את הסנכרון</translation>
 <translation id="6162454065885854378">‏כדי לשתף משהו מהטלפון שלך עם מכשיר אחר, יש להפעיל את הסנכרון בהגדרות Brave בשני המכשירים</translation>
 <translation id="6084271560289605378">‏כניסה להגדרות Brave</translation>
+<translation id="2746024117903470217">‏כדי לשתף את הדף הזה עם מכשיר אחר, יש להפעיל את הסנכרון בהגדרות של Brave במכשיר האחר</translation>
+<translation id="7760665516427405230">‏כדי לשתף את הדף הזה עם מכשיר אחר, יש להפעיל את הסנכרון בהגדרות של Brave</translation>
 <translation id="2318045970523081853">יש להקיש כדי להתקשר</translation>
 <translation id="9209888181064652401">לא ניתן לבצע שיחות</translation>
 <translation id="2860954141821109167">יש לוודא שמופעלת במכשיר הזה אפליקציית טלפון</translation>
@@ -1090,11 +1102,17 @@
 <translation id="6201345951596836663">הקישור הועתק</translation>
 <translation id="6597891566292541626">‏עליך למקם את קוד ה-QR או הברקוד בתוך המסגרת זו.</translation>
 <translation id="3140134512074889489">‏יש להפעיל את המצלמה כדי לסרוק קוד QR</translation>
+<translation id="5149323899804758325">‏כדי לסרוק קוד QR, צריך לשנות את ההגדרות כך שמערכת Brave תוכל להשתמש במצלמה</translation>
 <translation id="2359808026110333948">המשך</translation>
+<translation id="8233540874193135768">‏כדי לסרוק קוד QR, יש להשתמש במכשיר עם מצלמה.</translation>
+<translation id="6297765934698848803">המצלמה הושבתה במכשיר, בהתאם להגדרות שנקבעו על ידי הארגון שמנהל את המכשיר.</translation>
+<translation id="4321739720395210191">לא ניתן לפתוח את המצלמה. כדאי להפעיל מחדש את המכשיר ולנסות שוב.</translation>
+<translation id="234265804618409743">לא ניתן לפתוח את המצלמה. משהו השתבש.</translation>
+<translation id="7173114856073700355">פתיחת ההגדרות</translation>
+<translation id="1311657260431405215">‏קוד ה-QR הזה אינו כתובת URL‏: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">‏פלטפורמת ההתראות של Brave Software</translation>
 <translation id="8516012719330875537">עורך תמונות</translation>
-<translation id="6092062101542170135">‏כדי להמשיך יש להפעיל NFC בהגדרות של Android</translation>
-<translation id="5860491529813859533">הפעל</translation>
 <translation id="8926666909099850184">‏קישוריות ה-NFC מושבתת במכשיר הזה. ניתן להפעיל אותה דרך <ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">‏לעבור למצב VR מ-<ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">‏במצב VR, האתר הזה עשוי לקבל מידע על:</translation>

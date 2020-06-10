@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave Software로 전송하여 Brave 개선에 참여합니다.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 네트워크 로그인 - Brave</translation>
+<translation id="8745514854244955877">Brave - 네트워크 로그인 - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - 네트워크 로그인</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 베타</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - 개발자용 Brave</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5785919770853225148">Brave에서 내 Brave Software 계정에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
 <translation id="8211837073776713955">비밀번호가 유출되면 Brave에서 알려줍니다.</translation>
 <translation id="113959764510199339">Brave이 비밀번호를 표시하려고 합니다.</translation>
+<translation id="96347285368592620">Brave에서 비밀번호를 복사하려고 합니다.</translation>
+<translation id="2953892977076487219">Brave에서 비밀번호를 수정하려고 합니다.</translation>
 <translation id="7503098128120083822">Brave에서 비밀번호를 내보내려고 합니다.</translation>
 <translation id="8285294305439559616">Brave에서 비밀번호를 표시하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
+<translation id="8090497651549769448">Brave에서 비밀번호를 복사하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
+<translation id="3861679447659630159">Brave에서 비밀번호를 수정하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="5918095577778020936">Brave에서 비밀번호를 내보내려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="8320964054148936490">컴퓨터에 이미 최신 버전의 Brave이 있습니다. 소프트웨어가 작동하지 않으면 Brave의 설치를 제거한 뒤 다시 시도하세요.</translation>
 <translation id="7691786510374174420">확인되지 않은 오류로 설치에 실패했습니다. Brave이 실행 중인 경우 종료한 후 다시 실행하세요.</translation>
@@ -192,7 +199,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3262506503470845422">Brave 도움말 보기</translation>
 <translation id="1864557848095568223">Brave 업데이트 중</translation>
 <translation id="1786715389543715322">Brave 업데이트 중(<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">업데이트가 거의 완료되었습니다. 업데이트를 완료하려면 Brave을 다시 시작하세요.</translation>
+<translation id="7914115000169617076">업데이트가 거의 완료되었습니다. 업데이트를 마치려면 Brave을 다시 실행하세요. 시크릿 창은 다시 열리지 않습니다.</translation>
 <translation id="8208853227947884571">Brave이 최신 버전임</translation>
 <translation id="573759479754913123">Brave OS 정보</translation>
 <translation id="7573289029918943991">기기가 최신 버전인지 확인하려면 <ph name="LINK_BEGIN"/>Brave OS 설정<ph name="LINK_END"/>으로 이동하세요.</translation>
@@ -210,6 +217,12 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="7021823858304886493">Brave 로그인 허용</translation>
 <translation id="1649714546770135458">이 기능을 사용 중지하면 Brave에 로그인하지 않고도 Gmail 등의 Brave Software 사이트에 로그인할 수 있습니다.</translation>
+<translation id="2796517443093885402">Brave이 정보 유출, 유해한 확장 프로그램 등으로부터 사용자를 보호해 줍니다.</translation>
+<translation id="428541510811554120">Brave에서 업데이트를 확인할 수 없습니다. 인터넷 연결 상태를 확인하세요.</translation>
+<translation id="2633397153656205379">문제가 발생하여 Brave을 업데이트할 수 없습니다. <ph name="BEGIN_LINK"/>Brave 업데이트 문제 및 업데이트 실패 문제 해결하기<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">로그인되어 있지 않으므로 Brave에서 비밀번호를 확인할 수 없습니다.</translation>
+<translation id="7006260220514217183">세이프 브라우징이 사용 중지되어 있습니다. 사용 설정하는 것이 좋습니다.</translation>
+<translation id="1785833016412082453">Brave에서 확장 프로그램을 확인할 수 없습니다. 나중에 다시 시도하세요.</translation>
 <translation id="9220324636239049437">항목 1개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="5853262807109651878">항목 <ph name="ITEMS_COUNT"/>개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="4784414698887946907">인터넷 사용 기록이 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>

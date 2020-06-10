@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Help make Brave better by sending crash reports and <ph name="UMA_LINK"/> to Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Network sign-in – Brave</translation>
+<translation id="8745514854244955877">Brave – Network sign-in – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Network sign-in</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="5785919770853225148">Brave will save this password in your Brave Software account. You won’t have to remember it.</translation>
 <translation id="8211837073776713955">Brave lets you know if your passwords are ever compromised</translation>
 <translation id="113959764510199339">Brave is trying to show passwords.</translation>
+<translation id="96347285368592620">Brave is trying to copy passwords.</translation>
+<translation id="2953892977076487219">Brave is trying to edit passwords.</translation>
 <translation id="7503098128120083822">Brave wants to export your passwords.</translation>
 <translation id="8285294305439559616">Brave is trying to show passwords. Type your Windows password to allow this.</translation>
+<translation id="8090497651549769448">Brave is trying to copy passwords. Type your Windows password to allow this.</translation>
+<translation id="3861679447659630159">Brave is trying to edit passwords. Type your Windows password to allow this.</translation>
 <translation id="5918095577778020936">Brave wants to export your passwords. Type your Windows password to allow this.</translation>
 <translation id="8320964054148936490">This computer already has a more recent version of Brave. If the software is not working, please uninstall Brave and try again.</translation>
 <translation id="7691786510374174420">Installation failed due to unspecified error. If Brave Software Brave is currently running, please close it and try again.</translation>
@@ -192,7 +199,7 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="3262506503470845422">Get help with Brave</translation>
 <translation id="1864557848095568223">Updating Brave</translation>
 <translation id="1786715389543715322">Updating Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Nearly up to date! Relaunch Brave to finish updating.</translation>
+<translation id="7914115000169617076">Nearly up to date! Relaunch Brave to finish updating. Incognito windows won't reopen.</translation>
 <translation id="8208853227947884571">Brave is up to date</translation>
 <translation id="573759479754913123">About Brave OS</translation>
 <translation id="7573289029918943991">To see if your device is up to date, go to <ph name="LINK_BEGIN"/>Brave OS Settings<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
 <translation id="7021823858304886493">Allow Brave sign-in</translation>
 <translation id="1649714546770135458">By turning this off, you can sign in to Brave Software sites such as Gmail, without signing in to Brave</translation>
+<translation id="2796517443093885402">Brave can help keep you safe from data breaches, bad extensions and more</translation>
+<translation id="428541510811554120">Brave can't check for updates. Try checking your Internet connection.</translation>
+<translation id="2633397153656205379">Brave didn't update. Something went wrong. <ph name="BEGIN_LINK"/>Fix Brave update problems and failed updates.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave can't check your passwords because you're not signed in</translation>
+<translation id="7006260220514217183">Safe Browsing is off. Brave recommends turning it on.</translation>
+<translation id="1785833016412082453">Brave can't check your extensions. Try again later.</translation>
 <translation id="9220324636239049437">This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">This will delete <ph name="ITEMS_COUNT"/> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>

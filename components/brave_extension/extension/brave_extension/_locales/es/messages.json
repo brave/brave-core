@@ -55,6 +55,18 @@
     "message": "Bloquear rastreadores",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Controladores y anuncios bloqueados (intenso)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Controladores y anuncios bloqueados (estándar)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Permitir todos los controladores y anuncios",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "Conexiones mejoradas a HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
@@ -80,7 +92,7 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Bloquear los intentos de fingerprinting a terceros",
+    "message": "Bloquear fingerprinting de terceros",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
@@ -88,7 +100,7 @@
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Permitir todos los intentos de fingerprinting",
+    "message": "Permitir cualquier intento de fingerprinting",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -164,11 +176,11 @@
     "description": "Message for context menu that resets all cosmetic filters"
   },
   "advancedView": {
-    "message": "Vista Avanzada",
+    "message": "Vista avanzada",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Vista Simple",
+    "message": "Vista básica",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {

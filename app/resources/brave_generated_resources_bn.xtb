@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
 <translation id="2666990579225592931">গেস্ট উইন্ডো খুলুন</translation>
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
-<translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
-<translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
 
 এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
-<translation id="453977518730680921">মিডিয়া অটোপ্লে করুন</translation>
 <translation id="410351446219883937">স্বয়ংক্রিয়ভাবে চালান</translation>
 <translation id="2240268017737062801">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন</translation>
 <translation id="3371702087847741961">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন (সুপারিশকৃত)</translation>
@@ -39,11 +36,14 @@
 <translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
 <translation id="1520361618554057102">নতুন ট্যাব পৃষ্ঠাতে সবর্দা বুকমার্কগুলি দেখান</translation>
 <translation id="5802665280774361839">ঠিকানা বারে স্বতঃসম্পূর্ণ দেখান</translation>
+<translation id="597020512043916976">স্বয়ংক্রিয়ভাবে সম্পূর্ণ পরামর্শগুলিতে শীর্ষ সাইটগুলি দেখান</translation>
+<translation id="264150068416846820">স্বয়ংক্রিয়ভাবে সম্পূর্ণ পরামর্শগুলিতে ব্রেভ কর্তৃক প্রস্তাবিত সাইটগুলি দেখান</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="2467749191278759605">আপনার Brave ড্যাশবোর্ড কাস্টমাইজ করুন</translation>
 <translation id="1717331825806276156">ব্যাকগ্রাউন্ডের ছবিসমূহ</translation>
 <translation id="1820041496463124489">স্পন্সর করা ছবিগুলি</translation>
 <translation id="8173998484743827990">Brave পরিসংখ্যান</translation>
+<translation id="5551238871320268996">একসাথে ব্রেভ</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">সেরা সাইটগুলি</translation>
 <translation id="1776831331757823105">ঘড়ি</translation>
@@ -72,23 +72,22 @@
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
 <translation id="2360360976480535628">উন্নত ভিউ</translation>
-<translation id="5709627087332022422">ক্রশ-সাইট ট্র্যাকারগুলিকে ব্লক করুন</translation>
-<translation id="6447842834002726250">কুকিজ</translation>
-<translation id="6522412052085018663">আঙুলের ছাপ দেওয়া হচ্ছে</translation>
+<translation id="2133317862976486547">ট্র্যাকারদের অবরুদ্ধ করুন &amp; বিজ্ঞাপনগুলি</translation>
+<translation id="4385707520896576447">কুকিজ</translation>
+<translation id="4978786495456601191">আঙুলের ছাপ দেওয়া হচ্ছে</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
-<translation id="519861640102428255">দেখুন &amp;amp; অনুভব করুন</translation>
+<translation id="519861640102428255">দেখুন &amp; অনুভব করুন</translation>
 <translation id="4800195524776354947">শিল্ডস আইকনে অবরুদ্ধ উপকরণগুলির সংখ্যা দেখান</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
-<translation id="4699812599455071925">শুধুমাত্র ক্রশ-সাইট কুকিজগুলি ব্লক করুন</translation>
-<translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
-<translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
-<translation id="5963670684159057574">ক্রশ-সাইট ফিঙ্গারপ্রিন্টিং ব্লক করুন</translation>
-<translation id="769702552748212954">সমস্ত ফিঙ্গারপ্রিন্টিং এর অনুমতি দিন</translation>
-<translation id="4540198958192073185">সমস্ত আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
+<translation id="4078738236287221428">ট্র্যাকার-গুলি &amp; বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে (আক্রমণাত্মক)</translation>
+<translation id="7740996059027112821">ট্র্যাকার-গুলি &amp; বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে (মানক)</translation>
+<translation id="4176463684765177261">সমস্ত ট্র্যাকারকে অনুমোদন করুন &amp; বিজ্ঞাপনগুলি</translation>
+<translation id="5770288601196774623">শুধুমাত্র ক্রশ-সাইট কুকিজগুলি ব্লক করুন</translation>
+<translation id="3587482841069643663">সমস্ত কুকি অবরুদ্ধ করুন</translation>
 <translation id="8942080017911802454">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
@@ -110,6 +109,7 @@
 <translation id="7701040980221191251">কিছুই নয়</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">ড্যাপস ব্যবহারের জন্য ওয়েব3 সরবরাহকারী</translation>
+<translation id="5913089932885076110">শুরু করার সময়ে ক্রিপ্টো ওয়ালেটগুলি লোড করুন</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
 <translation id="1765684547504191670">ব্রাউজারে Chromecast সক্ষম করতে মিডিয়া রাউটার উপাদান ব্যবহার করে।</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
@@ -171,10 +171,13 @@
 <translation id="6469509880167172749">সম্পূর্ণভাবে ব্যক্তিগত পণ্যের বিশ্লেষকগুলি স্বয়ংক্রিয়ভাবে Brave এ পাঠান</translation>
 <translation id="7090566321964540749">এই নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে দেয়।</translation>
 <translation id="9111960429693394744">আপনি কি ড্যাপসের জন্য ব্রেভ-এর ক্রিপ্টো ওয়ালেট-গুলি বা মেটামাস্ক ব্যবহার করতে চান?</translation>
+<translation id="8721775358057000783">এই পৃষ্ঠায় ওয়েব3 সমর্থনের জন্য আপনি কি ক্রিপ্টো ওয়ালেটগুলি শুরু করতে চাইছেন?</translation>
 <translation id="7583735190612229830">এই অ্যাপটি এবং এটির মতন অন্যান্য অ্যাপের সাথে ইন্টারঅ্যাক্ট করতে Crypto Wallets সেট আপ করুন৷</translation>
-<translation id="8337117349965899723">Crypto Wallets ব্যবহার করুন</translation>
+<translation id="4823406846571523661">ক্রিপ্টো ওয়ালেট-গুলি সেটআপ করুন</translation>
 <translation id="5756155765711979898">MetaMask ব্যবহার করুন</translation>
 <translation id="6754134632841262799">সেট আপ করুন</translation>
+<translation id="8199661191594897555">ক্রিপ্টো ওয়ালেটগুলি শুরু করুন এবং আবার লোড করুন</translation>
+<translation id="8428213095426709021">সেটিংস</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
 <translation id="8053093028263274061">দুঃখিত, কোনও সংরক্ষিত সংস্করণ উপলভ্য নেই।</translation>
@@ -185,8 +188,10 @@
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 <translation id="4989337484121655457">সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা প্রয়োজন</translation>
-<translation id="8025559074845816210">Safari থেকে আপনার বুকমার্কগুলি আমদানি করতে ব্রেভ-এর সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা প্রয়োজন।</translation>
+<translation id="5501596373144334003">Safari থেকে আপনার বুকমার্কস এবং হিস্ট্রি আমদানি করার জন্য ব্রেভ-এর সম্পূর্ণ ডিস্ক-এ ব্যবহার-যোগ্যতা দরকার হয়।</translation>
 <translation id="8515328844674404333">আপনার সিস্টেম প্রেফারেন্স-গুলি থেকে কীভাবে সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা দেওয়া যায় তা শিখুন।</translation>
 <translation id="6414878884710400018">সিস্টেমের প্রেফারেন্স-গুলি খুলুন</translation>
 <translation id="5570470519803062774">সাইট এবং শিল্ডগুলির সেটিং-গুলি</translation>
+<translation id="8487693399751278191">বুকমার্কগুলি এখনই আমদানি করুন...</translation>
+<translation id="2557899542277210112">দ্রুত ব্যবহারের জন্য, আপনার বুকমার্কগুলি এখানে বুকমার্ক বারে রাখুন।</translation>
 </translationbundle>

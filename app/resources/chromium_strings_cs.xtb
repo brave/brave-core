@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Pomozte aplikaci Brave zlepšovat tím, že budete společnosti Brave Software zasílat zprávy o selhání a <ph name="UMA_LINK"/>.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – přihlášení k síti – Brave</translation>
+<translation id="8745514854244955877">Brave – přihlášení k síti – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – přihlášení k síti</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="5785919770853225148">Brave vám toto heslo uloží do účtu Brave Software. Nebudete si ho muset pamatovat.</translation>
 <translation id="8211837073776713955">Pokud vaše hesla někdo prolomí, Brave vás o tom bude informovat</translation>
 <translation id="113959764510199339">Brave se pokouší zobrazit hesla.</translation>
+<translation id="96347285368592620">Brave se pokouší zkopírovat hesla.</translation>
+<translation id="2953892977076487219">Brave se pokouší upravit hesla.</translation>
 <translation id="7503098128120083822">Brave chce exportovat vaše hesla.</translation>
 <translation id="8285294305439559616">Aplikace Brave se pokouší zobrazit hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
+<translation id="8090497651549769448">Brave se pokouší zkopírovat hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
+<translation id="3861679447659630159">Brave se pokouší upravit hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="5918095577778020936">Brave chce exportovat vaše hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="8320964054148936490">V tomto počítači je již nainstalována novější verze prohlížeče Brave. Jestliže tento software nefunguje, odinstalujte Brave a zkuste to znovu.</translation>
 <translation id="7691786510374174420">Došlo k nespecifikované chybě, instalace se nezdařila. Pokud je prohlížeč Brave právě spuštěný, zavřete jej prosím a zkuste to znovu.</translation>
@@ -192,7 +199,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="3262506503470845422">Pomoc s prohlížečem Brave</translation>
 <translation id="1864557848095568223">Aktualizace prohlížeče Brave</translation>
 <translation id="1786715389543715322">Aktualizace prohlížeče Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Aktualizace je téměř hotova. Dokončíte ji restartováním prohlížeče Brave.</translation>
+<translation id="7914115000169617076">Aktualizace je téměř dokončena. Aktualizaci dokončíte restartováním prohlížeče Brave. Anonymní okna se neobnoví.</translation>
 <translation id="8208853227947884571">Brave je aktuální</translation>
 <translation id="573759479754913123">O systému Brave OS</translation>
 <translation id="7573289029918943991">Chcete-li se podívat, zda je zařízení aktualizované, přejděte do <ph name="LINK_BEGIN"/>Nastavení operačního systému Brave<ph name="LINK_END"/></translation>
@@ -208,6 +215,12 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="8586264863973514035">Chcete-li změny použít, restartujte Brave</translation>
 <translation id="7021823858304886493">Povolit přihlášení do prohlížeče Brave</translation>
 <translation id="1649714546770135458">Pokud tuto možnost vypnete, budete se moci přihlásit k většině webů Brave Software, jako je Gmail, aniž byste se přihlásili do prohlížeče Brave</translation>
+<translation id="2796517443093885402">Brave vás pomáhá chránit před porušeními zabezpečení údajů, škodlivými rozšířeními a dalšími hrozbami</translation>
+<translation id="428541510811554120">Brave nemůže vyhledat dostupné aktualizace. Zkuste zkontrolovat připojení k internetu.</translation>
+<translation id="2633397153656205379">Prohlížeč Brave se neaktualizoval, něco se pokazilo. <ph name="BEGIN_LINK"/>Vyřešte problémy se stahováním aktualizací prohlížeče Brave a neúspěšnými aktualizacemi.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave nemůže zkontrolovat vaše hesla, protože nejste přihlášeni</translation>
+<translation id="7006260220514217183">Bezpečné prohlížení je vypnuté. Brave ho doporučuje zapnout.</translation>
+<translation id="1785833016412082453">Brave nemůže zkontrolovat vaše rozšíření. Zkuste to později.</translation>
 <translation id="9220324636239049437">Z tohoto zařízení bude smazána 1 položka. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Z tohoto zařízení bude smazán následující počet položek: <ph name="ITEMS_COUNT"/>. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Ze zařízení budou smazány vaše údaje o prohlížení. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>

@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
-<translation id="4339730410920731698">광고 및 추적기 차단됨</translation>
+<translation id="5288293905681750318">트래커 &amp; 광고 차단됨</translation>
 <translation id="2313532038420432247">HTTPS 업그레이드</translation>
-<translation id="7679428712334662192">절약된 시간 예상</translation>
-<translation id="8411095021655121794">절약된 예상 대역폭</translation>
+<translation id="788493840831967104">시간 저장됨</translation>
+<translation id="2318592590318590295">대역폭 저장됨</translation>
 <translation id="5206618227023752085">맨 위 사이트 제거됨.</translation>
 <translation id="2079545284768500474">원상태로 돌리기</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -34,6 +34,8 @@
 <translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="6274899614137380422">Binance 표시</translation>
+<translation id="5551238871320268996">Brave 함께</translation>
+<translation id="4799744519698299121">더 많은 카드</translation>
 <translation id="3870475560794762985">스폰 이미지 표시</translation>
 <translation id="2875302873837723333">최고의 사이트</translation>
 <translation id="8173998484743827990">Brave Stats</translation>
@@ -177,30 +179,35 @@
 <translation id="2852258589816753010">BAT은 현재 귀하의 지역에서 지원되지 않습니다. 다음을 참고하여 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 새로운 정보를 확인하십시오.</translation>
 <translation id="2564425876266960486">Brave Browser BAT 카드 생성 오류</translation>
 <translation id="7422678632904904341">금액:</translation>
-<translation id="5923611424721173182">현재 조정</translation>
+<translation id="5025866799968038247">잔액 정보</translation>
+<translation id="1642443162274867084">월렛 생성됨</translation>
 <translation id="5457113250005438886">유효하지 않음</translation>
 <translation id="7687511348932340294">키 정보 시드:</translation>
-<translation id="7180611975245234373">새로고침</translation>
-<translation id="3292669871848742742">재시도 레벨:</translation>
-<translation id="2026565607270413420">재시도 절차:</translation>
-<translation id="2461822463642141190">현재</translation>
-<translation id="4516620156082016131">최종</translation>
-<translation id="68932200202726709">페이로드</translation>
-<translation id="8654112359048700618">준비</translation>
-<translation id="419610644429723755">증명</translation>
-<translation id="8851921643210663606">조정</translation>
-<translation id="839736845446313156">등록</translation>
-<translation id="583281660410589416">알 수 없음</translation>
-<translation id="1822318934917272490">시청</translation>
-<translation id="9165277745676544288">투표</translation>
-<translation id="7311077304864384837">당청자</translation>
-<translation id="5771119664738037159">Brave Rewards가 활성화되지 않았습니다. 방문해서 활성화해 주세요</translation>
-<translation id="4235360514405112390">유효함</translation>
-<translation id="2700943637868737038">시청 ID:</translation>
-<translation id="3576689061489548788">월렛 결제 ID:</translation>
 <translation id="758790787422117549">페르소나 ID</translation>
+<translation id="3671566813999349838">총액</translation>
+<translation id="751223241692981112">클레임됨</translation>
+<translation id="3913089081619091801">클레임 ID</translation>
+<translation id="972516647724462985">만료</translation>
+<translation id="3970114302595058915">아이디</translation>
+<translation id="8511126279042126492">레거시 프로모션</translation>
+<translation id="4250680216510889253">아니요</translation>
+<translation id="1426410128494586442">예</translation>
+<translation id="8102423594645796250">프로모션</translation>
+<translation id="7805768142964895445">상태</translation>
+<translation id="5565735124758917034">활성</translation>
+<translation id="2196753816869469810">증명됨</translation>
+<translation id="1098052486217676340">완료</translation>
+<translation id="8000774832235490222">위</translation>
+<translation id="2448312741937722512">유형</translation>
+<translation id="5334568292977026472">UGP</translation>
+<translation id="3798449238516105146">버전</translation>
+<translation id="7180611975245234373">새로고침</translation>
+<translation id="5771119664738037159">Brave Rewards가 활성화되지 않았습니다. 방문해서 활성화해 주세요</translation>
+<translation id="6672180611914406778">총 잔액</translation>
 <translation id="2223892939866251845">사용자 ID</translation>
-<translation id="1642443162274867084">월렛 생성됨</translation>
+<translation id="4235360514405112390">유효함</translation>
+<translation id="2326487656644542536">지갑 정보</translation>
+<translation id="3576689061489548788">월렛 결제 ID:</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락</translation>
 <translation id="5916290544882167205">Brave Software. Brave는 Brave Software의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 또는 등록 상표일 수 있습니다.</translation>
@@ -220,7 +227,6 @@
 <translation id="5317780077021120954">저장</translation>
 <translation id="5441565662498481293">귀하께서는 다음 사용자에게 자동으로 팁을 보내고 있습니다:</translation>
 <translation id="2827387977307390755">팁 허용</translation>
-<translation id="3671566813999349838">금액</translation>
 <translation id="3819257035322786455">백업</translation>
 <translation id="1312977698678162065">귀하의 개인 정보를 존중하는 관련 광고를 보고 보상을 받으세요.</translation>
 <translation id="4396256076373444156">개인 정보를 존중하는 관련 광고를 보시고 포인트를 적립하세요.</translation>
@@ -281,6 +287,7 @@
 <translation id="7513117072433487074">만료일까지 사용되지 않는 {{currency}}는 Brave User Growth Pool (브레이브 사용자 성장 풀)로 자동 반환됩니다.</translation>
 <translation id="279567716178902927">만료 일자 승인</translation>
 <translation id="2104073734684466851">보조금</translation>
+<translation id="2291686779354188838">안녕하세요, {{name}} 님!</translation>
 <translation id="1389143276807887637">불러오기</translation>
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="8446884382197647889">자세히 알아보기</translation>
@@ -323,7 +330,6 @@
 <translation id="6381574025952123568">개시잔액</translation>
 <translation id="532275381857891532">7일 광고 기록</translation>
 <translation id="4923459931733593730">결제</translation>
-<translation id="5693657857413982604">매월 {{day}}일에 지불합니다.</translation>
 <translation id="6104680658798556671">결제가 되지 않았습니다.</translation>
 <translation id="3138528956349114724">현재 고정된 사이트:</translation>
 <translation id="2337632028350283479">월 기부금의 작동 방식:</translation>
@@ -371,6 +377,8 @@
 <translation id="8014425282125849700">가끔 Brave에서 무료 토큰 보조금이 제공됩니다. 그 알림을 눈여겨보세요!</translation>
 <translation id="2185598236335233939">Brave (브레이브)를 계속 사용할 때 광고 알림을 찾으십시오. 귀하의 BAT 포인트 잔액은 귀하가 보는 각 광고와 함께  증가할 것입니다.</translation>
 <translation id="1370034647041840967">광고에 관심을 보이고 토큰을 벌어 가치 있게 여기는 콘텐츠 제작자에게 보내 지원하세요.</translation>
+<translation id="1701701253000051237">자금 추가, 인출 및 관리 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Brave 지갑은 다음에 의해 작동됩니다 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
 <translation id="6401272292123354754">Brave Rewards는 Basic Attention Token을 바탕으로 설계되었습니다. BAT에 관해 자세히 알아보세요</translation>
 <translation id="7823359893981882407">여기</translation>
 <translation id="4483635855837696643">지갑 복구</translation>
@@ -413,7 +421,6 @@
 <translation id="3983104749597726322">트윗</translation>
 <translation id="5636843789453098076">트윗에 대해 @{{ user }}에게 팁 주기:</translation>
 <translation id="4242384385082203046">트윗에 대해 @{{ user }}에게 팁을 주세요!</translation>
-<translation id="2448312741937722512">유형</translation>
 <translation id="8772672608371898774">Brave가 인증한 출판자</translation>
 <translation id="5050370287908180130">상세한 월간 내역 보기</translation>
 <translation id="8615803647903750175">지갑 활동</translation>
@@ -464,6 +471,7 @@
 <translation id="3699674790322420653">지갑 인증 완료</translation>
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="46988480989545156">월렛 검증하기</translation>
+<translation id="4986087720311945758">우리 지갑 서비스는 다음에 의해 제공됩니다 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
 <translation id="6771734945114850124">정부에서 발급한 유효한 신분증을 준비해 주세요.</translation>
 <translation id="8697510149346635496">개인 정보를 존중하는 광고를 본 것으로 획득하는 BAT 중단</translation>
 <translation id="1481480653609649134">신용 카드 및 기타 자원으로 추가 BAT 구매</translation>
@@ -497,6 +505,9 @@
 <translation id="6759185676704303656">이 배경 이미지를 보고 있는 동안 상금이 지급됩니다.</translation>
 <translation id="1749232564087138444">Brave 상금의 스폰서 이미지에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
 <translation id="6113004497629356998">스폰서 이미지 숨기기</translation>
+<translation id="5977237145327845546">친구 및 동료와 비공개 화상 통화를 시작하세요.</translation>
+<translation id="5850325887346946383">화상 통화 시작</translation>
+<translation id="3651550649176056334">귀하의 데이터 정보</translation>
 <translation id="223536150967420869">구매</translation>
 <translation id="5110244215256675209">암호 화폐 구매</translation>
 <translation id="5749014321384313843">쓰고 싶습니다...</translation>
@@ -523,8 +534,9 @@
 <translation id="3909193058140362331">전환을 처리할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="5721542149042740780">입력하신 금액은 현재 보유하신 유효 금액을 초과합니다.</translation>
 <translation id="7144878232160441200">재시도</translation>
-<translation id="92653931566014756">유효하지 않은 주소</translation>
+<translation id="7431764818502638140">사용할 수 없는 정보</translation>
 <translation id="6409345078064530735">입금 주소</translation>
+<translation id="7153116947319792513">입금 메모</translation>
 <translation id="1383876407941801731">검색</translation>
 <translation id="6432284126416751397">전환 확인</translation>
 <translation id="1301340234286078471">전환</translation>
@@ -599,6 +611,13 @@
 <translation id="5286379413446391050">동기화 서버에 연결할 수 없었습니다</translation>
 <translation id="2410472020237369473">컴퓨터 시계의 시간 혹은 시간대가 잘못 설정된 거 같습니다. 시간 설정을 확인하세요.</translation>
 <translation id="5655621391922317800">암호화폐 월렛</translation>
+<translation id="616639131065447379">Brave 암호 지갑에 오신 것을 환영합니다</translation>
+<translation id="1740464057879304704">암호 지갑을 사용하면 Brave의 암호 화폐 및 관련 자산으로 작업할 수 있습니다. 암호 지갑은 수집품뿐만 아니라 ETH 및 BAT와 같은 이더리움 토큰을 지원하며 Ð앱 및 기타 스마트 계약을 처리할 수 있습니다. 이 모든 것은 이더리움 및 기타 블록 체인 시스템에 익숙하거나 — 배우기를 기대하는 사람들을 위한 것입니다.</translation>
+<translation id="4855440621031541830">이 사용과 관련된 모든 위험에 대한 책임은 귀하에게 있으며 Brave 소프트웨어가 이 사용으로 인해 발생할 수 있는 우발적 또는 결과적 손실을 포함한 모든 손실에 대해 책임을지지 않음을 인정하는 경우에만 암호 지갑을 사용하세요.</translation>
+<translation id="3187473319809074178">이 모든 것은 완전히 분리되어 있습니다</translation>
+<translation id="8327818101454798856">가장 좋아하는 사이트를 지원하고자 한다면, 대신 그쪽으로 가세요.</translation>
+<translation id="4894106830958548828">이해했습니다</translation>
+<translation id="453977518730680921">미디어 자동 재생</translation>
 <translation id="7701466644604753106">스피드리더 켜기</translation>
 <translation id="763042262431778831">스피드리더 끄기</translation>
 </translationbundle>

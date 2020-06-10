@@ -55,6 +55,18 @@
     "message": "跨站点跟踪器已拦截",
     "description": "Message for the scripts blocked row label"
   },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "跟踪器和广告被屏蔽（攻击性）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "跟踪器和广告被屏蔽（标准）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "允许所有跟踪器和广告",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
   "connectionsUpgradedHTTPS": {
     "message": "连接已升级至 HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"

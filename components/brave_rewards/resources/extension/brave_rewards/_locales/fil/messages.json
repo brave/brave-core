@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Mga Grant para sa Puntos",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Kumusta, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }

@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">‏Brave Software کو کریش کی رپورٹیں اور <ph name="UMA_LINK"/> بھیج کر Brave کو بہتر بنانے میں مدد کریں</translation>
 <translation id="5381622442243174305">‎<ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/>‎</translation>
+<translation id="4658486203392098459">‏<ph name="PAGE_TITLE"/> - نیٹ ورک سائن ان - Brave</translation>
+<translation id="8745514854244955877">‏Brave - نیٹ ورک سائن ان - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - نیٹ ورک سائن ان</translation>
 <translation id="1403270718080126244">‏<ph name="PAGE_TITLE"/> - Brave بی ٹا</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
@@ -44,8 +47,12 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="5785919770853225148">‏Brave آپ کے Brave Software اکاؤنٹ میں اس پاس ورڈ کو محفوظ کرے گا۔ آپ کو اسے یاد کرنے کی ضرورت نہیں ہے۔</translation>
 <translation id="8211837073776713955">‏Brave آپ کو بتاتا ہے کہ آیا آپ کے پاس ورڈز کے ساتھ کبھی چھیڑ چھاڑ کی گئی ہے</translation>
 <translation id="113959764510199339">‏Brave پاس ورڈز دکھانے کی کوشش کر رہا ہے۔</translation>
+<translation id="96347285368592620">‏Brave پاس ورڈز کاپی کرنے کی کوشش کر رہا ہے۔</translation>
+<translation id="2953892977076487219">‏Brave پاس ورڈز میں ترمیم کرنے کی کوشش کر رہا ہے۔</translation>
 <translation id="7503098128120083822">‏Brave آپ کے پاس ورڈز برآمد کرنا چاہتا ہے۔</translation>
 <translation id="8285294305439559616">‏Brave پاس ورڈز دکھانے کی کوشش کر رہا ہے۔ اس کی اجازت دینے کیلئے اپنا Windows کا پاس ورڈ ٹائپ کریں۔</translation>
+<translation id="8090497651549769448">‏Brave پاس ورڈز کاپی کرنے کی کوشش کر رہا ہے۔ اس کی اجازت دینے کے لیے اپنا Windows پاس ورڈ ٹائپ کریں۔</translation>
+<translation id="3861679447659630159">‏Brave پاس ورڈز میں ترمیم کرنے کی کوشش کر رہا ہے۔ اس کی اجازت دینے کے لیے اپنا Windows پاس ورڈ ٹائپ کریں۔</translation>
 <translation id="5918095577778020936">‏Brave آپ کے پاس ورڈز برآمد کرنا چاہتا ہے۔ اس کی اجازت دینے کیلئے، اپنا Windows پاس ورڈ ٹائپ کریں۔</translation>
 <translation id="8320964054148936490">‏اس کمپیوٹر پر Brave کا ایک مزید حالیہ ورژن پہلے سے ہے۔ اگر سافٹ ویئر کام نہیں کر رہا ہے تو براہ کرم Brave کو ان انسٹال کریں اور دوبارہ کوشش کریں۔</translation>
 <translation id="7691786510374174420">‏غیر متعینہ خرابی کی وجہ سے انسٹالیشن ناکام ہو گیا۔ اگر فی الحال Brave چل رہا ہے تو براہ کرم اسے بند کر دیں اور دوبارہ کوشش کریں۔</translation>
@@ -192,7 +199,7 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="3262506503470845422">‏Brave کے بارے میں مدد حاصل کریں</translation>
 <translation id="1864557848095568223">‏Brave کو اپ ڈیٹ کیا جا رہا ہے</translation>
 <translation id="1786715389543715322">‏Brave کو اپ ڈیٹ کیا جا رہا ہے (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">‏تقریباً اپ ٹو ڈیٹ! اپ ڈیٹ کرنے کو مکمل کرنے کیلئے Brave کو دوبارہ شروع کریں۔</translation>
+<translation id="7914115000169617076">‏تقریباً اپ ٹو ڈیٹ! اپ ڈیٹ مکمل کرنے کے لیے Brave کو بند کر کے دوبارہ چلائیں۔ پوشیدگی ونڈوز دوبارہ نہیں کھلیں گی۔</translation>
 <translation id="8208853227947884571">‏Brave اپ ٹو ڈیٹ ہے</translation>
 <translation id="573759479754913123">‏Brave OS کے بارے میں</translation>
 <translation id="7573289029918943991">‏یہ دیکھنے کی لیے کہ کیا آپ کا آلہ اپ ٹو ڈیٹ ہے، <ph name="LINK_BEGIN"/>Brave OS کی ترتیبات<ph name="LINK_END"/> پر جائیں</translation>
@@ -210,6 +217,12 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="8586264863973514035">‏اپنی تبدیلیوں کو لاگو کرنے کیلئے، Brave کو دوبارہ شروع کریں</translation>
 <translation id="7021823858304886493">‏Brave میں سائن ان کی اجازت دیں</translation>
 <translation id="1649714546770135458">‏اسے آف کر کے، آپ Brave میں سائن ان کیے بغیر Gmail جیسی Brave Software سائٹس میں سائن ان کر سکتے ہیں</translation>
+<translation id="2796517443093885402">‏Brave آپ کو ڈیٹا کی خلاف ورزیوں، غلط ایکسٹینشنز اور بہت کچھ سے محفوظ رکھنے میں مدد کر سکتا ہے</translation>
+<translation id="428541510811554120">‏Brave اپ ڈیٹس چیک نہیں کرسکتا ہے۔ اپنا انٹرنیٹ کنکشن چیک کرنے کی کوشش کریں۔</translation>
+<translation id="2633397153656205379">‏Brave اپ ڈیٹ نہیں ہوا، کچھ غلط ہو گیا۔ <ph name="BEGIN_LINK"/>Brave اپ ڈیٹ کی دشواریوں اور ناکام اپ ڈیٹس کو درست کریں۔<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">‏Brave آپ کے پاس ورڈز چیک نہیں کر سکتا کیونکہ آپ سائن ان نہیں ہیں</translation>
+<translation id="7006260220514217183">‏محفوظ براؤزنگ آف ہے۔ Brave اسے آن کرنے کی تجویز کرتا ہے۔</translation>
+<translation id="1785833016412082453">‏Brave آپ کی ایکسٹینشنز چیک نہیں کر سکتا ہے۔ بعد میں دوبارہ کوشش کریں۔</translation>
 <translation id="9220324636239049437">‏یہ اس آلہ سے 1 آئٹم کو حذف کر دے گا۔ بعد میں اپنا ڈیٹا بازیافت کرنے کیلئے، Brave میں <ph name="USER_EMAIL"/> کے بطور سائن ان کریں۔</translation>
 <translation id="5853262807109651878">‏یہ اس آلہ سے <ph name="ITEMS_COUNT"/> آئٹمز کو حذف کر دے گا۔ بعد میں اپنے ڈیٹا کی بازیافت کرنے کیلئے، Brave میں <ph name="USER_EMAIL"/> کے بطور سائن ان کریں۔</translation>
 <translation id="4784414698887946907">‏یہ اس آلہ سے آپ کے براؤزنگ ڈیٹا کو حذف کر دے گا۔ بعد میں اپنے ڈیٹا کی بازیافت کرنے کیلئے، Brave میں <ph name="USER_EMAIL"/> کے بطور سائن ان کریں۔</translation>

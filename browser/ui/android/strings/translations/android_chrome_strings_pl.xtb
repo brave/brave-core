@@ -3,10 +3,6 @@
 <translationbundle lang="pl">
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="2498359688066513246">Pomoc i opinie</translation>
-<translation id="8378714024927312812">Zarządzane przez Twoją organizację</translation>
-<translation id="9019902583201351841">Zarządzany przez Twoich rodziców</translation>
-<translation id="4645575059429386691">Zarządzany przez Twojego rodzica</translation>
-<translation id="4883854917563148705">Ustawień zarządzanych nie można zresetować</translation>
 <translation id="4307992518367153382">Podstawowe</translation>
 <translation id="1974060860693918893">Zaawansowane</translation>
 <translation id="1146678959555564648">Włącz tryb VR</translation>
@@ -93,7 +89,9 @@
 <translation id="1534287762301776620">Ta funkcja zostanie włączona, gdy zalogujesz się na swoje konto Brave Software</translation>
 <translation id="10614374240317010">Nigdy nie zapisane</translation>
 <translation id="3098842761938485917">Zapisane hasła znajdziesz na swoim <ph name="BEGIN_LINK"/>koncie Brave Software<ph name="END_LINK"/></translation>
+<translation id="8988028529677883095">Używaj telefonu jako klucza bezpieczeństwa</translation>
 <translation id="8562452229998620586">Tutaj pojawią się zapisane hasła.</translation>
+<translation id="1303339473099049190">Nie udało się znaleźć tego hasła. Sprawdź pisownię i spróbuj jeszcze raz.</translation>
 <translation id="8084114998886531721">Zapisane hasło</translation>
 <translation id="2870560284913253234">Witryna</translation>
 <translation id="8503813439785031346">Nazwa użytkownika</translation>
@@ -119,16 +117,17 @@
 <translation id="2321086116217818302">Przygotowuję hasła…</translation>
 <translation id="8445448999790540984">Nie można wyeksportować haseł</translation>
 <translation id="5139940364318403933">Dowiedz się, jak używać Dysku Brave Software</translation>
-<translation id="729975465115245577">Na urządzeniu nie ma aplikacji umożliwiającej zapisanie pliku z hasłami.</translation>
-<translation id="7682724950699840886">Skorzystaj z tych wskazówek: upewnij się, że masz wystarczająco dużo miejsca na urządzeniu, i ponownie spróbuj wyeksportować hasła.</translation>
+<translation id="729975465115245577">Na urządzeniu nie ma aplikacji umożliwiającej zapisanie pliku z hasłami.</translation>
+<translation id="7682724950699840886">Skorzystaj z tych wskazówek: upewnij się, że masz wystarczająco dużo miejsca na urządzeniu i spróbuj ponownie wyeksportować hasła.</translation>
 <translation id="1129510026454351943">Szczegóły: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="6891726759199484455">Odblokuj, by skopiować hasło</translation>
 <translation id="5515439363601853141">Odblokuj, by wyświetlić hasło</translation>
 <translation id="6221633008163990886">Odblokuj, by wyeksportować hasła</translation>
 <translation id="230699814587342492">Hasła w Brave</translation>
-<translation id="6075798973483050474">Edytuj stronę główną</translation>
-<translation id="854522910157234410">Otwórz tę stronę</translation>
+<translation id="1925021887439448749">Wpisz niestandardowy adres internetowy</translation>
 <translation id="8127542551745560481">Edytuj stronę główną</translation>
+<translation id="854522910157234410">Otwórz tę stronę</translation>
+<translation id="5063487983358782016">Strona główna Brave</translation>
 <translation id="2482878487686419369">Powiadomienia</translation>
 <translation id="6255999984061454636">Polecane treści</translation>
 <translation id="805047784848435650">Na podstawie Twojej historii przeglądania</translation>
@@ -142,15 +141,15 @@
 <translation id="5040262127954254034">Prywatność</translation>
 <translation id="4991384657077828949">Pomóż zwiększyć bezpieczeństwo Brave</translation>
 <translation id="1943176487615318915">Aby wykrywać niebezpieczne aplikacje i witryny, Brave wysyła do Brave Software adresy URL i część zawartości niektórych odwiedzanych przez Ciebie stron, a także niektóre informacje o systemie</translation>
-<translation id="3181954750937456830">Bezpieczne przeglądanie (chroni Ciebie i Twoje urządzenie przed niebezpiecznymi witrynami)</translation>
-<translation id="7315322926489145388">Gdy Twoje bezpieczeństwo jest zagrożone, wysyła do Brave Software adresy URL odwiedzanych stron</translation>
+<translation id="3201899458094819285">Bezpieczne przeglądanie (chroni Ciebie i Twoje urządzenie przed niebezpiecznymi witrynami)</translation>
+<translation id="2876369937070532032">Gdy Twoje bezpieczeństwo jest zagrożone, wysyła do Brave Software adresy URL odwiedzanych stron</translation>
 <translation id="3738139272394829648">Dotknij, by wyszukać</translation>
-<translation id="7865281998841143447">Poznaj tematy omawiane w witrynach, nie opuszczając strony. Funkcja „Dotknij, by wyszukać” wysyła słowo i najbliższy kontekst do wyszukiwarki Brave Software, a następnie zwraca definicje, zdjęcia, wyniki wyszukiwania i inne informacje.
+<translation id="4749189475009528195">Poznaj tematy omawiane w witrynach, nie opuszczając strony. Funkcja „Dotknij, by wyszukać” wysyła słowo i najbliższy kontekst do wyszukiwarki Brave Software, a następnie zwraca definicje, zdjęcia, wyniki wyszukiwania i inne informacje.
 
-Kliknij dowolne słowo, by rozpocząć wyszukiwanie. Aby dostosować wyszukiwane słowo, przytrzymaj je. Aby doprecyzować wyszukiwanie, wysuń panel, kliknij ikonę rozwijania, by utworzyć nową kartę, a potem kliknij pole wyszukiwania.</translation>
-<translation id="3292859206215580147">Poznaj tematy omawiane w witrynach, nie opuszczając strony. Funkcja „Dotknij, by wyszukać” wysyła słowo i najbliższy kontekst do wyszukiwarki Brave Software, a następnie zwraca definicje, zdjęcia, wyniki wyszukiwania i inne informacje.
+Aby coś wyszukać, dotknij dowolnego słowa. Aby doprecyzować wyszukiwanie, naciśnij i przytrzymaj, by wybrać więcej lub mniej słów. Aby edytować wyszukiwanie, otwórz panel i kliknij ikonę, by przejść do nowej karty, i wprowadź zmiany w polu wyszukiwania.</translation>
+<translation id="934250516944040460">Poznaj tematy omawiane w witrynach, nie opuszczając strony. Funkcja „Dotknij, by wyszukać” wysyła słowo i najbliższy kontekst do wyszukiwarki Brave Software, a następnie zwraca definicje, zdjęcia, wyniki wyszukiwania i inne informacje.
 
-Przytrzymaj dowolne słowo, by rozpocząć wyszukiwanie. Jeśli chcesz je doprecyzować, dostosuj zakres zaznaczenia. Możesz też wysunąć panel, kliknąć ikonę rozwijania, by utworzyć nową kartę, a potem kliknąć pole wyszukiwania.</translation>
+Aby coś wyszukać, naciśnij i przytrzymaj dowolne słowo. Aby doprecyzować wyszukiwanie, wybierz więcej lub mniej słów. Aby edytować wyszukiwanie, otwórz panel i kliknij ikonę, by przejść do nowej karty, i wprowadź zmiany w polu wyszukiwania.</translation>
 <translation id="6209156474097347789">Funkcja „Dotknij, by wyszukać” wysyła zaznaczone słowo i bieżącą stronę jako kontekst do wyszukiwarki Brave Software. Możesz ją wyłączyć w <ph name="BEGIN_LINK"/>ustawieniach<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="780301667611848630">Nie, dziękuję</translation>
@@ -206,7 +205,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="6295158916970320988">Wszystkie witryny</translation>
 <translation id="8380167699614421159">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
 <translation id="1919345977826869612">Reklamy</translation>
-<translation id="3513704683820682405">Rzeczywistość rozszerzona</translation>
+<translation id="2025115093177348061">Rzeczywistość rozszerzona</translation>
 <translation id="6447842834002726250">Pliki cookie</translation>
 <translation id="6196640612572343990">Blokuj pliki cookie innych firm</translation>
 <translation id="6782111308708962316">Nie pozwalaj witrynom innych firm zapisywać ani odczytywać danych z plików cookie</translation>
@@ -217,6 +216,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="1717218214683051432">Czujniki ruchu</translation>
 <translation id="2091887806945687916">Dźwięk</translation>
 <translation id="2586657967955657006">Schowek</translation>
+<translation id="4670064810192446073">Rzeczywistość wirtualna</translation>
 <translation id="6320088164292336938">Wibracje</translation>
 <translation id="4226663524361240545">Powiadomienia będą sygnalizowane wibracjami</translation>
 <translation id="1446450296470737166">Pełne sterowanie urządzeniami MIDI</translation>
@@ -235,6 +235,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="2537296579376733324">Wszystkie pliki cookie, tylko w tej witrynie</translation>
 <translation id="7882806643839505685">Zezwalaj na dźwięk na określonej stronie.</translation>
 <translation id="4468959413250150279">Wycisz dźwięk na konkretnej stronie.</translation>
+<translation id="7828557259026017104">Pliki cookie są tworzone przez odwiedzane witryny. Witryny zapisują w nich Twoje ustawienia. Pliki cookie innych firm są tworzone przez inne witryny. W tych witrynach znajdują się niektóre treści, np. reklamy i obrazy, które wyświetlają się na odwiedzanej stronie.</translation>
 <translation id="1994173015038366702">URL strony</translation>
 <translation id="8941729603749328384">www.example.com</translation>
 <translation id="5063480226653192405">Wykorzystanie</translation>
@@ -246,10 +247,14 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="8116925261070264013">Wyciszone</translation>
 <translation id="8300705686683892304">Zarządzane przez aplikację</translation>
 <translation id="6192792657125177640">Wyjątki</translation>
-<translation id="257931822824936280">Rozwinięty – kliknij, by zwinąć.</translation>
-<translation id="5100237604440890931">Zwinięty – kliknij, by rozwinąć.</translation>
 <translation id="857943718398505171">Dozwolone (zalecane)</translation>
 <translation id="2913331724188855103">Zezwalaj witrynom na zapisywanie danych w plikach cookie i ich odczytywanie (zalecane)</translation>
+<translation id="2212565012507486665">Zezwalaj na pliki cookie</translation>
+<translation id="8648684608605749476">Blokuj pliki cookie innych firm w trybie prywatnym</translation>
+<translation id="2687403674020088961">Blokuj wszystkie pliki cookie (niezalecane)</translation>
+<translation id="1044891598689252897">Strony będą działać normalnie</translation>
+<translation id="7993619969781047893">Funkcje niektórych stron mogą nie działać prawidłowo</translation>
+<translation id="1509960214886564027">Funkcje wielu stron mogą nie działać prawidłowo</translation>
 <translation id="5335288049665977812">Zezwalaj na wykonywanie kodu JavaScript w witrynach (zalecane)</translation>
 <translation id="5527111080432883924">Pytaj, czy zezwolić stronom na odczytywanie tekstu i obrazów ze schowka (zalecane)</translation>
 <translation id="6912998170423641340">Zablokuj stronom możliwość odczytywania tekstu i obrazów ze schowka</translation>
@@ -259,12 +264,12 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="2107397443965016585">Pytaj, zanim pozwolisz stronom na odtwarzanie treści chronionej (zalecane)</translation>
 <translation id="2910701580606108292">Pytaj, zanim zezwolisz stronom na odtwarzanie treści chronionej</translation>
 <translation id="757524316907819857">Blokuj odtwarzanie treści chronionej na stronach</translation>
-<translation id="4935305910887312910">Pytaj, zanim zezwolisz stronom na śledzenie pozycji kamery lub mapowanie pomieszczenia (zalecane)</translation>
-<translation id="884828189055900810">Nie zezwalaj stronom na śledzenie pozycji kamery ani mapowanie pomieszczenia</translation>
+<translation id="2182457891543959921">Pytaj, zanim zezwolisz stronom na tworzenie mapy 3D Twojego otoczenia lub śledzenie pozycji kamery (zalecane)</translation>
+<translation id="3538390592868664640">Nie zezwalaj stronom na tworzenie mapy 3D Twojego otoczenia ani na śledzenie pozycji kamery</translation>
 <translation id="5710871682236653961">Pytaj, zanim zezwolisz stronom na wysyłanie i odbieranie informacji po dotknięciu urządzeń z funkcją NFC (zalecane)</translation>
 <translation id="7572498721684305250">Nie zezwalaj stronom na wysyłanie i odbieranie informacji po dotknięciu urządzeń z funkcją NFC</translation>
-<translation id="3312292613668865961">Pytaj, zanim zezwolisz stronom na dostęp do urządzenia i danych rzeczywistości wirtualnej (zalecane)</translation>
-<translation id="8698438463325761328">Zablokuj wszystkim stronom dostęp do urządzenia i danych rzeczywistości wirtualnej</translation>
+<translation id="4887024562049524730">Pytaj, zanim zezwolisz stronom na korzystanie z urządzenia i danych rzeczywistości wirtualnej (zalecane)</translation>
+<translation id="6439114592976064011">Nie zezwalaj stronom na korzystanie z urządzenia ani danych rzeczywistości wirtualnej</translation>
 <translation id="3277252321222022663">Zezwalaj stronom na dostęp do czujników (zalecane)</translation>
 <translation id="5048398596102334565">Zezwalaj stronom na dostęp do czujników ruchu (zalecane)</translation>
 <translation id="8816026460808729765">Blokuj stronom dostęp do czujników</translation>
@@ -278,8 +283,8 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="3123473560110926937">Blokowane na niektórych stronach</translation>
 <translation id="965817943346481315">Zablokuj, jeśli na stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy (zalecane)</translation>
 <translation id="3386292677130313581">Pytaj, zanim udostępnisz stronom swoją lokalizację (zalecane)</translation>
-<translation id="6270391203985052864">Strony mogą prosić o zgodę na wysyłanie powiadomień</translation>
-<translation id="5505264765875738116">Strony nie mogą prosić o zgodę na wysyłanie powiadomień</translation>
+<translation id="6270391203985052864">Strony mogą prosić o zgodę na wysyłanie powiadomień</translation>
+<translation id="5505264765875738116">Strony nie mogą prosić o zgodę na wysyłanie powiadomień</translation>
 <translation id="6561560012278703671">Pokazuj wiadomości dyskretnie (blokuje powiadomienia, by Ci nie przeszkadzały)</translation>
 <translation id="7302486331832100261">Zazwyczaj blokujesz powiadomienia. Aby na nie zezwolić, kliknij Szczegóły.</translation>
 <translation id="4479647676395637221">Pytaj, zanim zezwolisz stronom na korzystanie z kamery (zalecane)</translation>
@@ -414,6 +419,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="4062305924942672200">Informacje prawne</translation>
 <translation id="4256782883801055595">Licencje open source</translation>
 <translation id="1138681184697033370">Warunki korzystania z Brave</translation>
+<translation id="2368444735104192323">Dodatkowe warunki korzystania z Brave i Brave OS</translation>
 <translation id="7392539049993970338">Informacje na temat ochrony prywatności w Brave</translation>
 <translation id="2968755619301702150">Przeglądarka certyfikatów</translation>
 <translation id="1360432990279830238">Wylogować i wyłączyć synchronizację?</translation>
@@ -432,6 +438,8 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="8636825310635137004">Aby korzystać z kart ze swoich innych urządzeń, włącz synchronizację</translation>
 <translation id="3269956123044984603">Aby korzystać z kart ze swoich pozostałych urządzeń, włącz opcję „Autosynchronizacja danych” w ustawieniach konta na urządzeniu z Androidem.</translation>
 <translation id="5157964048453367290">Tutaj wyświetlą się karty otwarte w Brave na innych urządzeniach.</translation>
+<translation id="5795872532621730126">Wyszukiwanie i przeglądanie</translation>
+<translation id="9086302186042011942">Synchronizuję</translation>
 <translation id="4684427112815847243">Synchronizuj wszystko</translation>
 <translation id="2709516037105925701">Autouzupełnianie</translation>
 <translation id="8820817407110198400">Zakładki</translation>
@@ -549,10 +557,6 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="2532336938189706096">Widok sieci</translation>
 <translation id="6005538289190791541">Proponowane hasło</translation>
 <translation id="4634124774493850572">Użyj hasła</translation>
-<translation id="8285489906452138776">Brave potrzebuje uprawnień dostępu do aparatu na tej stronie.</translation>
-<translation id="320189792589364011">Brave potrzebuje uprawnień dostępu do mikrofonu na tej stronie.</translation>
-<translation id="7988136689212463100">Brave potrzebuje uprawnień dostępu do aparatu i mikrofonu na tej stronie.</translation>
-<translation id="4931190655840828017">Brave musi mieć dostęp do Twojej lokalizacji, by udostępnić ją tej stronie.</translation>
 <translation id="3088191967551450609">Brave musi mieć dostęp do pamięci, by pobierać pliki.</translation>
 <translation id="8942627711005830162">Otwórz w innym oknie</translation>
 <translation id="4195643157523330669">Otwórz w nowej karcie</translation>
@@ -600,8 +604,9 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="2146738493024040262">Otwórz aplikację błyskawiczną</translation>
 <translation id="7016516562562142042">Zezwolono na dostęp obecnej wyszukiwarce</translation>
 <translation id="6177111841848151710">Zablokowano dostęp obecnej wyszukiwarce</translation>
-<translation id="145097072038377568">Wyłączone w ustawieniach Androida</translation>
+<translation id="7000754031042624318">Wyłączone w ustawieniach Androida</translation>
 <translation id="8007176423574883786">Wyłączona na tym urządzeniu</translation>
+<translation id="6864395892908308021">To urządzenie nie obsługuje NFC</translation>
 <translation id="164269334534774161">Oglądasz kopię offline tej strony z <ph name="CREATION_TIME"/></translation>
 <translation id="4594952190837476234">Ta strona offline jest z <ph name="CREATION_TIME"/> i może różnić się od wersji online.</translation>
 <translation id="8840953339110955557">Ta strona może różnić się od wersji online.</translation>
@@ -706,10 +711,10 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">RR</translation>
 <translation id="724102042129299115">Pierwsze uruchomienie Brave</translation>
-<translation id="2700285883409956633">Korzystając z tej aplikacji, akceptujesz <ph name="BEGIN_LINK1"/>Warunki korzystania z Brave<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>Informacje na temat ochrony prywatności w Brave<ph name="END_LINK2"/>.</translation>
-<translation id="1640714894372474981">Używając tej aplikacji, akceptujesz <ph name="BEGIN_LINK1"/>Warunki korzystania z usługi<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/> Brave oraz <ph name="BEGIN_LINK3"/>Informacje na temat ochrony prywatności dotyczące kont Brave Software zarządzanych przez Family Link<ph name="END_LINK3"/>.</translation>
-<translation id="4218324479468769727"><ph name="APP_NAME"/> otworzy się w Brave. Przechodząc dalej, akceptujesz <ph name="BEGIN_LINK1"/>Warunki korzystania z usługi<ph name="END_LINK1"/> Brave i <ph name="BEGIN_LINK2"/>Informacje na temat ochrony prywatności<ph name="END_LINK2"/>.</translation>
-<translation id="5071615083211946659"><ph name="APP_NAME"/> otworzy się w Brave. Przechodząc dalej, akceptujesz <ph name="BEGIN_LINK1"/>Warunki korzystania z usługi<ph name="END_LINK1"/> Brave, <ph name="BEGIN_LINK2"/>Informacje na temat ochrony prywatności<ph name="END_LINK2"/> i <ph name="BEGIN_LINK3"/>Informacje na temat ochrony prywatności dotyczące kont Brave Software zarządzanych przez Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="7766792282581704663">Korzystając z Brave, wyrażasz zgodę na <ph name="BEGIN_LINK1"/>Warunki korzystania z usług Brave Software<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>Dodatkowe warunki korzystania z Brave Software Brave i Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="4301045550182524767">Korzystając z Brave, wyrażasz zgodę na <ph name="BEGIN_LINK1"/>Warunki korzystania z usług Brave Software<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>Dodatkowe warunki korzystania z Brave Software Brave i Brave OS<ph name="END_LINK2"/>. Obowiązują też <ph name="BEGIN_LINK3"/>Informacje na temat ochrony prywatności na kontach Brave Software zarządzanych przez Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="4993481112200507346">Aplikacja <ph name="APP_NAME"/> zostanie otwarta w Brave. Przechodząc dalej, wyrażasz zgodę na <ph name="BEGIN_LINK1"/>Warunki korzystania z usług Brave Software<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>Dodatkowe warunki korzystania z Brave Software Brave i Brave OS<ph name="END_LINK2"/>.</translation>
+<translation id="8725391159384120485">Aplikacja <ph name="APP_NAME"/> zostanie otwarta w Brave. Przechodząc dalej, wyrażasz zgodę na <ph name="BEGIN_LINK1"/>Warunki korzystania z usług Brave Software<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>Dodatkowe warunki korzystania z Brave Software Brave i Brave OS<ph name="END_LINK2"/>. Obowiązują też <ph name="BEGIN_LINK3"/>Informacje na temat ochrony prywatności na kontach Brave Software zarządzanych przez Family Link<ph name="END_LINK3"/>.</translation>
 <translation id="673197144963363525">Pomóż ulepszyć Brave, wysyłając do Brave Software statystyki użytkowania i raporty o awariach.</translation>
 <translation id="3518985090088779359">Akceptuj i kontynuuj</translation>
 <translation id="7207456302801184289">Witamy w Brave</translation>
@@ -814,7 +819,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6963766334940102469">Usuń zakładki</translation>
 <translation id="4351244548802238354">Zamknij okno</translation>
 <translation id="451872707440238414">Szukaj zakładek</translation>
-<translation id="8901170036886848654">Nie znaleziono zakładek</translation>
+<translation id="6447558397796644647">Nie udało się znaleźć tej zakładki. Sprawdź pisownię lub dodaj nową zakładkę.</translation>
 <translation id="6404511346730675251">Edytuj zakładkę</translation>
 <translation id="3894427358181296146">Dodaj folder</translation>
 <translation id="5327248766486351172">Nazwa</translation>
@@ -829,6 +834,8 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6811034713472274749">Strona jest gotowa do wyświetlenia</translation>
 <translation id="4561979708150884304">Brak połączenia</translation>
 <translation id="8274165955039650276">Zobacz pobrane</translation>
+<translation id="4320177379694898372">Brak połączenia z internetem</translation>
+<translation id="6397616442223433927">Jesteś znowu online</translation>
 <translation id="2082238445998314030">Wynik <ph name="RESULT_NUMBER"/> z <ph name="TOTAL_RESULTS"/></translation>
 <translation id="4943872375798546930">Brak wyników</translation>
 <translation id="981121421437150478">Offline</translation>
@@ -845,9 +852,6 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6773423637732432200">Nie udało się zaktualizować Brave. Więcej opcji</translation>
 <translation id="1383876407941801731">Szukaj</translation>
 <translation id="3328801116991980348">Informacje o witrynie</translation>
-<translation id="5391532827096253100">Połączenie z tą stroną nie jest bezpieczne. Informacje o witrynie</translation>
-<translation id="6206551242102657620">Połączenie jest bezpieczne. Informacje o witrynie</translation>
-<translation id="6963642900430330478">Ta strona jest niebezpieczna. Informacje o witrynie</translation>
 <translation id="9070377983101773829">Rozpocznij wyszukiwanie głosowe</translation>
 <translation id="4968908871398201967">Tryb prywatny</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> otwarta karta. Kliknij, by przełączyć się między kartami}few{<ph name="OPEN_TABS_MANY"/> otwarte karty. Kliknij, by przełączyć się między kartami}many{<ph name="OPEN_TABS_MANY"/> otwartych kart. Kliknij, by przełączyć się między kartami}other{<ph name="OPEN_TABS_MANY"/> otwartej karty. Kliknij, by przełączyć się między kartami}}</translation>
@@ -944,6 +948,11 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="5197729504361054390">Wybrane kontakty zostaną udostępnione witrynie <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Dekoder obrazów</translation>
 <translation id="8067883171444229417">Odtwórz film</translation>
+<translation id="5876056640971328065">Wstrzymaj film</translation>
+<translation id="3594780231884063836">Wycisz film</translation>
+<translation id="783819812427904514">Wyłącz wyciszenie filmu</translation>
+<translation id="3114012059975132928">Odtwarzacz</translation>
+<translation id="5489227211564503167">Upłynęło: <ph name="ELAPSED_TIME"/> z <ph name="TOTAL_TIME"/></translation>
 <translation id="6560414384669816528">Szukaj w Sogou</translation>
 <translation id="5406914950576900927">Brave może używać <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> do wyszukiwania w Chinach. Możesz to zmienić w <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/>.</translation>
 <translation id="6456271171669383967">Zachowaj Brave Software</translation>
@@ -987,6 +996,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="1875543012935658554">Uruchom ponownie Brave.</translation>
 <translation id="79859296434321399">Aby oglądać treści rzeczywistości rozszerzonej, zainstaluj ARCore</translation>
 <translation id="8558485628462305855">Aby oglądać treści rzeczywistości rozszerzonej, zaktualizuj ARCore</translation>
+<translation id="3513704683820682405">Rzeczywistość rozszerzona</translation>
 <translation id="6410973561433500075">Włączyć tryb AR z domeny <ph name="DOMAIN"/>?</translation>
 <translation id="3849365399446680203">Gdy włączysz tryb AR, ta strona będzie mogła:
 • tworzyć mapę 3D Twojego otoczenia,
@@ -1035,6 +1045,8 @@ Obraz z kamery będziesz widzieć tylko Ty. Strona nie będzie mieć do niego d
 <translation id="9028914725102941583">Aby udostępniać treści między urządzeniami, włącz synchronizację</translation>
 <translation id="6162454065885854378">Jeśli chcesz udostępnić coś z telefonu na innym urządzeniu, w ustawieniach Brave na obu urządzeniach włącz synchronizację</translation>
 <translation id="6084271560289605378">Otwórz ustawienia Brave</translation>
+<translation id="2746024117903470217">Aby udostępnić tę stronę na innym urządzeniu, włącz synchronizację w ustawieniach Brave na obu urządzeniach</translation>
+<translation id="7760665516427405230">Aby udostępnić tę stronę na innym urządzeniu, włącz synchronizację w ustawieniach Brave</translation>
 <translation id="2318045970523081853">Kliknij, by zadzwonić</translation>
 <translation id="9209888181064652401">Nie można wykonywać połączeń</translation>
 <translation id="2860954141821109167">Sprawdź, czy na urządzeniu jest włączona aplikacja telefonu</translation>
@@ -1054,7 +1066,7 @@ Obraz z kamery będziesz widzieć tylko Ty. Strona nie będzie mieć do niego d
 <translation id="5694049548840660018">Łatwy powrót na stronę główną</translation>
 <translation id="1122278879166832009">Kliknij tutaj, by szybko otworzyć stronę główną</translation>
 <translation id="1260236875608242557">Szukaj i przeglądaj</translation>
-<translation id="6369229450655021117">Tutaj możesz wyszukiwać informacje w internecie, udostępniać treści znajomym i przeglądać otwarte strony</translation>
+<translation id="6369229450655021117">Tutaj możesz wyszukiwać informacje w Internecie, udostępniać treści znajomym i przeglądać otwarte strony</translation>
 <translation id="8758557275681689734">Zobacz wszystkie otwarte karty</translation>
 <translation id="8655599981421006542">Kliknij tu, by utworzyć nowe karty lub wrócić do poprzednich</translation>
 <translation id="723171743924126238">Wybierz zdjęcia</translation>
@@ -1090,11 +1102,17 @@ Obraz z kamery będziesz widzieć tylko Ty. Strona nie będzie mieć do niego d
 <translation id="6201345951596836663">Link został skopiowany</translation>
 <translation id="6597891566292541626">Umieść kod QR lub kod kreskowy w tej ramce.</translation>
 <translation id="3140134512074889489">Włącz kamerę, by zeskanować kod QR</translation>
-<translation id="2359808026110333948">Dalej</translation>
+<translation id="5149323899804758325">Aby zeskanować kod QR, otwórz ustawienia i zezwól Brave na używanie aparatu</translation>
+<translation id="2359808026110333948">Kontynuuj</translation>
+<translation id="8233540874193135768">Aby zeskanować kod QR, użyj urządzenia z aparatem.</translation>
+<translation id="6297765934698848803">Organizacja, która zarządza Twoim urządzeniem, wyłączyła aparat.</translation>
+<translation id="4321739720395210191">Nie udało się otworzyć aparatu. Ponownie uruchom urządzenie i spróbuj jeszcze raz.</translation>
+<translation id="234265804618409743">Nie udało się otworzyć aparatu. Coś poszło nie tak.</translation>
+<translation id="7173114856073700355">Otwórz Ustawienia</translation>
+<translation id="1311657260431405215">Ten kod QR nie jest adresem URL: <ph name="QRCODEVALUE"/></translation>
+<translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7339921667754113786">Platforma powiadomień Brave Software</translation>
 <translation id="8516012719330875537">Edytor obrazów</translation>
-<translation id="6092062101542170135">Aby kontynuować, włącz NFC w ustawieniach Androida</translation>
-<translation id="5860491529813859533">Włącz</translation>
 <translation id="8926666909099850184">Funkcja NFC na tym urządzeniu jest wyłączona. Włącz ją w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Włączyć tryb VR z domeny <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Gdy używasz VR, strona może poznać te informacje:</translation>

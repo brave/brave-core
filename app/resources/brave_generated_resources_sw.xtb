@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Unda Wasifu Mpya</translation>
 <translation id="2666990579225592931">Fungua Dirisha la Mgeni</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
-<translation id="7450557937477381864">Funga Chrome</translation>
-<translation id="7008934821596358692">Ili kukamilisha kuingiza, funga madirisha yote ya Chrome.</translation>
 <translation id="6786747875388722282">Viendelezi</translation>
 <translation id="3699882589215410581">Sanidi na fungua Widevine</translation>
 <translation id="8926389886865778422">Nisiulizwe tena</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine ni kipande cha msimbo wa Usimamizi wa Haki za Kidijiti (DRM) ambao sisi hapa Brave Software hatuumiliki na hatuwezi kuukagua. Msimbo wa Google Widevine inapakiwa kutoka katika seva za Google, si kutoka katika seva zetu. Hupakiwa pale tu ambapo unawezesha chaguo hili. Hatupendekezi matumizi ya DRM, lakini tunaheshimu uchaguzi wa mtumiaji na tunakiri kwamba baadhi ya watumiaji wa Brave wangependa kutumia huduma ambazo zinaitaka.
 
 Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Unakubali kwamba Brave haiwajibiki kwa madhara yoyote au upotevu unaohusiana na matumizi yako ya Google Widevine.</translation>
-<translation id="453977518730680921">Fungua video/picha kiotomati</translation>
 <translation id="410351446219883937">Kucheza kiotomati</translation>
 <translation id="2240268017737062801">Uliza tovuti inapotaka kufungua video/picha kiotomati</translation>
 <translation id="3371702087847741961">Uliza tovuti inapotaka kufungua video/picha kiotomati (inapendekezwa)</translation>
@@ -39,11 +36,14 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7635711399568194460">Huficha kitufe cha Brave Rewards kwenye kiwambo cha mahali wakati ambapo Brave Rewards haijawezeshwa</translation>
 <translation id="1520361618554057102">Onyesha maalamisho kila wakati kwenye ukurasa wa Kichupo Kipya</translation>
 <translation id="5802665280774361839">Onyesha ukamilishaji kiotomatiki kwenye upau wa anwani</translation>
+<translation id="597020512043916976">Onyesha tovuti maarufu katika mapendekezo ya kukamilika kiotomatiki</translation>
+<translation id="264150068416846820">Onyesha tovuti za Brave zilizopendekezwa katika mapendekezo ya kukamilika kiotomatiki</translation>
 <translation id="7781069478569868053">Ukurasa Mpya wa Kichupo</translation>
 <translation id="2467749191278759605">Badilisha Dashibodi ya Brave Ikufae</translation>
 <translation id="1717331825806276156">Picha za mandharinyuma</translation>
 <translation id="1820041496463124489">Picha zilizolipiwa na wafadhili</translation>
 <translation id="8173998484743827990">Takwimu za Brave</translation>
+<translation id="5551238871320268996">Brave Pamoja</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Tovuti Maarufu</translation>
 <translation id="1776831331757823105">Saa</translation>
@@ -72,23 +72,22 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7390783310074170337">Mwonekano chaguomsingi</translation>
 <translation id="130615081792797568">Mwonekano rahisi</translation>
 <translation id="2360360976480535628">Mwonekano mahiri</translation>
-<translation id="5709627087332022422">Zuia vifuatiliaji vya kwenye tovuti</translation>
-<translation id="6447842834002726250">Vidakuzi</translation>
-<translation id="6522412052085018663">Kuchukua alama za vidole</translation>
+<translation id="2133317862976486547">Zuia vifuatiliaji na matangazo</translation>
+<translation id="4385707520896576447">Vidakuzi</translation>
+<translation id="4978786495456601191">Kuchukua alama za vidole</translation>
 <translation id="3570081523466826008">Pandisha miunganisho kuwa HTTPS</translation>
 <translation id="4824468494729001999">Zuia maandishi</translation>
-<translation id="519861640102428255">Tazama &amp;amp; Hisi</translation>
+<translation id="519861640102428255">Tazama &amp; Hisi</translation>
 <translation id="4800195524776354947">Onyesha idadi ya vitu vilivyozuiwa kwenye alama ya Kinga</translation>
 <translation id="7498695072878479744">Ruhusu vitufe vya kuingia kwenye Google kwenye tovuti za washirika wengine</translation>
 <translation id="863171915776379000">Ruhusu kuingia kwenye akaunti kupitia Facebook na makala zilizoshikizwa</translation>
 <translation id="5165042248369837294">Ruhusa makala za Twitter zilizoshikizwa</translation>
 <translation id="958971637207126733">Ruhusu makala za LinkedIn zilizoshikizwa</translation>
-<translation id="4699812599455071925">Zuia tu vidakuzi vya kwenye tovuti</translation>
-<translation id="5657156137487675418">Ruhusu vidakuzi vyote</translation>
-<translation id="6883611015375728278">Zuia vidakuzi vyote</translation>
-<translation id="5963670684159057574">Zuia uchapishaji alama za vidole kwenye tovuto mbalimbali</translation>
-<translation id="769702552748212954">Ruhusu uchapishaji wote wa alama za vidole</translation>
-<translation id="4540198958192073185">Zuia alama zote za vidole</translation>
+<translation id="4078738236287221428">Vifuatiliaji na matangazo yamezuiwa (hima)</translation>
+<translation id="7740996059027112821">Vifuatiliaji na matangazo yamezuiwa (wastani)</translation>
+<translation id="4176463684765177261">Zuia vifuatiliaji na matangazo yote</translation>
+<translation id="5770288601196774623">Zuia tu vidakuzi vya kwenye tovuti</translation>
+<translation id="3587482841069643663">Zuia vidakuzi vyote</translation>
 <translation id="8942080017911802454">Sera ya Kushughulika na WebRTC IP</translation>
 <translation id="6165508094623778733">Jifunze zaidi</translation>
 <translation id="8798099450830957504">Chaguomsingi</translation>
@@ -110,6 +109,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7701040980221191251">Hamna</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Mmtoaji wa wavuti wa3 kwa kutumia Dapps</translation>
+<translation id="5913089932885076110">Pakia Crypto Wallets mwanzoni</translation>
 <translation id="6554397389149987360">Hutumia vipengele vya Hangouts ili kuwezesha kushiriki skrini na vipengele vingine kwenye kisakuzi.</translation>
 <translation id="1765684547504191670">Hutumia kijenzi cha Media Router kuwasha Chromecast katika kivinjari</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
@@ -172,10 +172,13 @@ Zawadi za Avatar Paladin</translation>
 <translation id="6469509880167172749">Tuma kiotomatiki uchanganuzi wa bidhaa wa faragha kabisa kwa Brave</translation>
 <translation id="7090566321964540749">Taarifa hii isiyombainisha mtu huiruhusu Brave kukadiria matumizi ya jumla ya vipengele fulani.</translation>
 <translation id="9111960429693394744">Ungependa kutumia Mikoba ya Brave Crypto au MetaMask kwa Dapps?</translation>
+<translation id="8721775358057000783">Ungependa kutumia Crypto Wallets kwa usaidizi wa web3 kwenye ukurasa huu?</translation>
 <translation id="7583735190612229830">Weka Crypto Wallets ili kutumia programu hii na nyingine kama hiyo.</translation>
-<translation id="8337117349965899723">Tumia Crypto Wallets</translation>
+<translation id="4823406846571523661">Weka Mipangilio ya Crypto Wallets</translation>
 <translation id="5756155765711979898">Tumia MetaMask</translation>
 <translation id="6754134632841262799">USANIDI</translation>
+<translation id="8199661191594897555">Anzisha Crypto Wallets na upakie</translation>
+<translation id="8428213095426709021">Mipangilio</translation>
 <translation id="4552520379838695057">Samahani, ukurasa huo haupo.</translation>
 <translation id="2609895996619941644">Je, unataka kuangalia ikiwa toleo lililohifadhiwa linapatikana kwenye Wayback Machine?</translation>
 <translation id="8053093028263274061">Samahani, hakuna toleo lililohifadhiwa.</translation>
@@ -186,8 +189,10 @@ Zawadi za Avatar Paladin</translation>
 <translation id="2336228925368920074">Alamisha Vichupo Vyote...</translation>
 <translation id="796831669370432378">Ili kuongeza alamisho, bofya kitufe cha alamisho karibu na sehemu ya anwani</translation>
 <translation id="4989337484121655457">Ufikiaji Kamili wa Diski unahitajika</translation>
-<translation id="8025559074845816210">Brave inahitaji Ufikiaji Kamili wa Diski ili kuingiza Alamisho zako kutoka Safari</translation>
+<translation id="5501596373144334003">Brave inahitaji Ufikiaji Kamili wa Diski ili kuleta Vialamisho na Historia yako kutoka Safari.</translation>
 <translation id="8515328844674404333">Pata maelezo kuhusu jinsi ya kutoa Ufikiaji Kamili wa Diski kwenye Mapendeleo yako ya Mfumo.</translation>
 <translation id="6414878884710400018">Fungua Mapendeleo ya Mfumo</translation>
 <translation id="5570470519803062774">Mipangilio ya Tovuti na Kinga</translation>
+<translation id="8487693399751278191">Leta vialamisho sasa...</translation>
+<translation id="2557899542277210112">Kwa ufikiaji wa haraka, weka vialmaisho vyako hapa kwenye upau wa vialamisho.</translation>
 </translationbundle>

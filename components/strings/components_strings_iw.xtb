@@ -33,9 +33,6 @@
 <translation id="5040262127954254034">פרטיות</translation>
 <translation id="3061707000357573562">שירות תיקון</translation>
 <translation id="1914326953223720820">שירות לפתיחת קבצים דחוסים</translation>
-<translation id="1623104350909869708">מנע מהדף זה ליצור תיבות דו-שיח נוספות</translation>
-<translation id="2677748264148917807">יציאה</translation>
-<translation id="5556459405103347317">ניסיון טעינה נוסף</translation>
 <translation id="2359808026110333948">המשך</translation>
 <translation id="4378154925671717803">טלפון</translation>
 <translation id="8131740175452115882">אישור</translation>
@@ -69,12 +66,13 @@
 <translation id="7701040980221191251">ללא</translation>
 <translation id="8428213095426709021">הגדרות</translation>
 <translation id="9038649477754266430">השתמש בשירות חיזוי כדי לטעון דפים מהר יותר</translation>
+<translation id="2344028582131185878">הורדות אוטומטיות</translation>
+<translation id="3414952576877147120">גודל:</translation>
 <translation id="4850886885716139402">הצג</translation>
 <translation id="7180611975245234373">רענן</translation>
-<translation id="1426410128494586442">כן</translation>
-<translation id="4250680216510889253">לא</translation>
 <translation id="4522570452068850558">פרטים</translation>
 <translation id="3586931643579894722">הסתר פרטים</translation>
+<translation id="5556459405103347317">ניסיון טעינה נוסף</translation>
 <translation id="614940544461990577">נסה:</translation>
 <translation id="4943872375798546930">אין תוצאות</translation>
 <translation id="8688672835843460752">פנוי</translation>
@@ -93,6 +91,8 @@
 <translation id="4880827082731008257">חפש בהיסטוריה</translation>
 <translation id="4756388243121344051">&amp;היסטוריה</translation>
 <translation id="1644574205037202324">היסטוריה</translation>
+<translation id="1623104350909869708">מנע מהדף זה ליצור תיבות דו-שיח נוספות</translation>
+<translation id="2677748264148917807">יציאה</translation>
 <translation id="3950820424414687140">כניסה</translation>
 <translation id="8286036467436129157">כניסה</translation>
 <translation id="8503813439785031346">שם משתמש</translation>
@@ -137,11 +137,12 @@
 <translation id="2586657967955657006">לוח</translation>
 <translation id="6059925163896151826">‏מכשירי USB</translation>
 <translation id="7638605456503525968">יציאות טוריות</translation>
+<translation id="3784372983762739446">‏מכשירי Bluetooth</translation>
 <translation id="2215727959747642672">עריכת קובץ</translation>
 <translation id="6545864417968258051">‏סריקת Bluetooth</translation>
 <translation id="534295439873310000">‏מכשירי NFC</translation>
-<translation id="4943703118917034429">מציאות מדומה</translation>
-<translation id="3513704683820682405">מציאות רבודה</translation>
+<translation id="4670064810192446073">מציאות מדומה</translation>
+<translation id="2025115093177348061">מציאות רבודה</translation>
 <translation id="5039804452771397117">אפשר</translation>
 <translation id="7053983685419859001">חסום</translation>
 <translation id="57838592816432529">השתק</translation>
@@ -157,9 +158,24 @@
 <translation id="5932224571077948991">באתר מוצגות מודעות מפריעות או מטעות</translation>
 <translation id="7878562273885520351">ייתכן שאבטחת הסיסמה שלך נפגעה</translation>
 <translation id="1089439967362294234">שינוי סיסמה</translation>
-<translation id="9008201768610948239">התעלם</translation>
 <translation id="1186201132766001848">בדיקת הסיסמאות</translation>
+<translation id="9008201768610948239">התעלם</translation>
+<translation id="808894953321890993">שינוי הסיסמה</translation>
 <translation id="5979084224081478209">בדיקת הסיסמאות</translation>
+<translation id="6107012941649240045">מונפק ל</translation>
+<translation id="5030338702439866405">הונפק על ידי</translation>
+<translation id="5826507051599432481">‏שם נפוץ (CN)</translation>
+<translation id="6898699227549475383">‏ארגון (O)</translation>
+<translation id="3308006649705061278">‏יחידה ארגונית (OU)</translation>
+<translation id="8705331520020532516">מספר סידורי</translation>
+<translation id="1902576642799138955">תקופת תוקף</translation>
+<translation id="5895187275912066135">הונפק בתאריך</translation>
+<translation id="4121428309786185360">בתוקף עד</translation>
+<translation id="4154664944169082762">טביעות אצבע</translation>
+<translation id="7238585580608191973">‏טביעת אצבע SHA-256</translation>
+<translation id="5209518306177824490">‏טביעת אצבע SHA-1</translation>
+<translation id="6786747875388722282">תוספים</translation>
+<translation id="7240120331469437312">שם חלופי של נושא האישור</translation>
 <translation id="10614374240317010">פריטים שאף פעם לא נשמרו</translation>
 <translation id="5869522115854928033">סיסמאות שמורות</translation>
 <translation id="230699814587342492">‏סיסמאות Brave</translation>
@@ -190,6 +206,36 @@
 <translation id="1197088940767939838">כתום</translation>
 <translation id="1555130319947370107">כחול</translation>
 <translation id="138218114945450791">כחול בהיר</translation>
+<translation id="5612720917913232150"><ph name="URL"/> רוצה להשתמש במיקום המחשב שלך</translation>
+<translation id="4733082559415072992"><ph name="URL"/>‏ רוצה להשתמש במיקום המכשיר שלך</translation>
+<translation id="4677585247300749148"><ph name="URL"/> רוצה להגיב לאירועי נגישות</translation>
+<translation id="3461266716147554923"><ph name="URL"/> רוצה גישה אל טקסט ותמונות שהועתקו אל לוח העריכה.</translation>
+<translation id="131405271941274527">‏<ph name="URL"/> רוצה לשלוח ולקבל מידע אחרי כל הקשה של מספר הטלפון שלך במכשיר NFC</translation>
+<translation id="5146995429444047494">התראות של <ph name="ORIGIN"/> נחסמו</translation>
+<translation id="1195558154361252544">הצגת ההודעות חסומה באופן אוטומטי בכל האתרים, מלבד האתרים שבהם היא אושרה</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> רוצה להשתמש במיקרופון שלך</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> רוצה להשתמש במצלמה שלך</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> רוצה לשלוח לך הודעות</translation>
+<translation id="6910240653697687763">‏<ph name="URL"/> רוצה לקבל שליטה מלאה על מכשירי ה-MIDI שלך</translation>
+<translation id="503498442187459473"><ph name="HOST"/> רוצה להשתמש במצלמה ובמיקרופון שלך</translation>
+<translation id="8282947398454257691">ידיעת המזהה הייחודי של המכשיר</translation>
+<translation id="8329449853370113380">‏<ph name="URL"/> רוצה להפעיל תוכן מוגן. זהות המכשיר שלך תאומת על-ידי Brave Software.</translation>
+<translation id="2650609753175229582">‏<ph name="URL"/> רוצה להציג תוכן מוגן. הזהות של המכשיר שלך תאומת על ידי Brave Software ולאתר תהיה גישה אליה.</translation>
+<translation id="3016780570757425217">לדעת מה המיקום שלך</translation>
+<translation id="7221855153210829124">להציג הודעות</translation>
+<translation id="8606726445206553943">‏להשתמש במכשירי ה-MIDI שלך</translation>
+<translation id="7409836189476010449">‏להפעיל Flash</translation>
+<translation id="7438976808740265764">‏התמיכה ב-Flash Player תופסק אחרי דצמבר 2020.</translation>
+<translation id="4761104368405085019">להשתמש במיקרופון</translation>
+<translation id="9150045010208374699">להשתמש במצלמה</translation>
+<translation id="4953689047182316270">להגיב לאירועי נגישות</translation>
+<translation id="6116338172782435947">גישה אל טקסט ותמונות שהועתקו ללוח</translation>
+<translation id="5804427196348435412">‏שימוש בהתקני NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> רוצה לאחסן נתונים במכשיר שלך באופן קבוע</translation>
+<translation id="1030706264415084469"><ph name="URL"/> רוצה לאחסן באופן קבוע כמות גדולה של נתונים במכשיר שלך</translation>
+<translation id="1712552549805331520"><ph name="URL"/> רוצה לאחסן נתונים במחשב המקומי שלך באופן קבוע</translation>
+<translation id="1997484222658892567"><ph name="URL"/> רוצה לאחסן כמות גדולה של נתונים במחשב המקומי שלך באופן קבוע</translation>
+<translation id="7648992873808071793">לאחסן קבצים במכשיר הזה</translation>
 <translation id="4813512666221746211">שגיאת רשת</translation>
 <translation id="3380365263193509176">שגיאה לא ידועה</translation>
 <translation id="5565735124758917034">פעיל</translation>
@@ -205,6 +251,8 @@
 <translation id="5720705177508910913">משתמש נוכחי:</translation>
 <translation id="6965978654500191972">התקן</translation>
 <translation id="4728558894243024398">פלטפורמה</translation>
+<translation id="1426410128494586442">כן</translation>
+<translation id="4250680216510889253">לא</translation>
 <translation id="2380886658946992094">משפטי</translation>
 <translation id="1588438908519853928">רגיל</translation>
 <translation id="1974060860693918893">מתקדם</translation>
@@ -226,7 +274,6 @@
 <translation id="583281660410589416">לא ידוע</translation>
 <translation id="9170848237812810038">&amp;ביטול</translation>
 <translation id="2972581237482394796">&amp;בצע שנית</translation>
-<translation id="6786747875388722282">תוספים</translation>
 <translation id="5804241973901381774">הרשאות</translation>
 <translation id="8004582292198964060">דפדפן</translation>
 </translationbundle>

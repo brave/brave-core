@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">Scuturi</translation>
 <translation id="6132506775968708399">Blochează cookie-uri de la terți</translation>
 <translation id="7835726359440951858">Blochează reclamele și urmărirea</translation>
-<translation id="520895744850022668">HTTPS peste tot</translation>
+<translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="94154759592465111">Blocare script</translation>
 <translation id="7458422973722236530">Protecție amprentare</translation>
-<translation id="252011129655042182">Reclame și Urmăritori</translation>
+<translation id="5709627087332022422">Blocați trackerele inter-site-uri</translation>
 <translation id="6754976710186182237">Metode de amprentare</translation>
 <translation id="2313532038420432247">Actualizări HTTPS</translation>
 <translation id="7461425058443653485">Scripturi blocate</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">Pagină standard</translation>
 <translation id="3377025655491224618">Filă incognito</translation>
 <translation id="9148058034647219655">Ieși</translation>
+<translation id="520895744850022668">HTTPS peste tot</translation>
 <translation id="8710614491157212477">Deschide site-urile acceptate folosind HTTPS în loc de HTTP, atunci când este posibil</translation>
 <translation id="8387201461264842096">Adăugați bloc</translation>
 <translation id="1934885595886623674">Împiedică încărcarea reclamelor</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">Închideți paginile la ieșire</translation>
 <translation id="1680858055899097121">Nu păstra paginile între sesiunile de navigare</translation>
 <translation id="4339730410920731698">Reclame și trackere blocate</translation>
+<translation id="6761596877474675418">Date salvate</translation>
 <translation id="3034562645284925177">Timp estimativ salvat</translation>
 <translation id="6572660632052512096">Mod desktop</translation>
 <translation id="1340503115760585811">Activați vizualizarea desktop pentru paginile noi</translation>
@@ -162,7 +164,7 @@ lună...</translation>
 <translation id="1713542052890184975">Vă rugăm efectuați o copie de rezervă pentru portofelul Brave.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">Serverul Brave Rewards nu răspunde. Vom remedia aceasta cât mai curând posibil.</translation>
-<translation id="2626799779920242286">Vă rugăm să încercați din nou mai târziu.</translation>
+<translation id="7117228822971127758">Încearcă din nou mai târziu</translation>
 <translation id="3068742524072211213">expiră la <ph name="DATE"/></translation>
 <translation id="4292832015778676417">câștigați din reclame</translation>
 <translation id="683765328936486920">pe YouTube</translation>
@@ -233,7 +235,6 @@ lună...</translation>
 <translation id="6199596294742117349">Aceasta este o Filă privată</translation>
 <translation id="5858455511731621847">Chiar dacă site-urile pe care le vizitați în filele private nu sunt salvate local, acestea nu vă fac anonim sau invizibil pentru furnizorul dvs. de internet sau pentru site-urile pe care le vizitați.</translation>
 <translation id="5789441016350810005">Brave Ads trimise atunci când browser-ul este în fundal</translation>
-<translation id="7127980134843952133">Descărcare istoric</translation>
 <translation id="3690140184638701871">Contribuții și bacșișuri</translation>
 <translation id="844921671123185605">Bacșișurile dvs. lunare au fost procesate!</translation>
 <translation id="3124090095880236567">Activare Ads</translation>
@@ -256,15 +257,82 @@ lună...</translation>
 <translation id="8522669544471808198">Afișare imagini de fundal</translation>
 <translation id="3870475560794762985">Afișare imagini sponsorizate</translation>
 <translation id="8297488609722895137">Fotografie de <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">Fiți plătit pentru a vedea această imagine de fundal.</translation>
-<translation id="4836823081419522426">Veți primi 70% din veniturile de pe reclame pentru această sponsorizare privată, care poate fi folosită pentru a susține creatorii de conținut pentru internet. Activați Brave Rewards pentru a revendica partea dumneavoastră.</translation>
-<translation id="7307847920988946894">Activare Rewards</translation>
 <translation id="1605521356929094020">Activați Brave Ads</translation>
-<translation id="1647482814782886825">Activând Rewards, vă exprimați acordul cu <ph name="TERMS_OF_SERVICE"/>. Puteți alege și să <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="5878330112719288629">Atingând Câștig &amp; Ofer, sunteți de acord cu <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="3794079107601824147">Fiți plătit pentru a vedea această imagine de fundal.</translation>
 <translation id="7136586167396205364">Ascunde imaginile sponsorizate</translation>
 <translation id="2927095357213611519">Puteți folosi token-uri pentru a sprijini creatorii de materiale de pe internet.\nCâștigați token-uri vizualizând reclame care respectă confidențialitatea.</translation>
-<translation id="4016415345213871193">Sunteți plătit pentru a vedea această imagine de fundal.</translation>
-<translation id="5895280237921845725"><ph name="LEARN_MORE"/> despre imaginile sponsorizate în Brave Rewards. Puteți alege și să <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">Puteți alege și să <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">Fiți plătit pentru a vedea această imagine de fundal. Activați Brave Rewards pentru a revendica partea dumneavoastră.</translation>
+<translation id="213787746370741250">Deschidere file în File particularizate</translation>
+<translation id="8030169304546394654">Deconectat</translation>
+<translation id="8267327690882073581">Verificare portofel</translation>
+<translation id="543510923939676996">Portofelul a fost verificat</translation>
+<translation id="8673913984316081937">Verificarea portofelului dvs. este opțională</translation>
+<translation id="8558636200953226885">Dar dacă verificați, veți putea...</translation>
+<translation id="8697510149346635496">Retrageți BAT câștigat din vizualizarea reclamelor care țin de respectarea confidențialității</translation>
+<translation id="1481480653609649134">Achiziționați BAT suplimentar cu carduri de credit și alte surse</translation>
+<translation id="9096003370755878766">Retrageți BAT pe care poate l-ați adăugat anterior în portofelul Recompense Brave</translation>
+<translation id="1554282356558968486">Serviciul nostru de portofel este furnizat de</translation>
+<translation id="6569877533335686968">Susținere</translation>
+<translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
+<translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
+<translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
+<translation id="2193391216824305230">Portofel utilizator</translation>
+<translation id="7591798679868259510">Mergi la contul meu Uphold</translation>
+<translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
+<translation id="6239274080752256452">Retragere fonduri</translation>
+<translation id="8874184842967597500">Neconectat</translation>
+<translation id="3368922792935385530">Conectată</translation>
+<translation id="4569155249847375786">Verificat</translation>
+<translation id="5358719431303818601">Deconectare neverificată</translation>
+<translation id="4241449868720191203">Deconectat verificat</translation>
+<translation id="3248185426436836442">În așteptare</translation>
+<translation id="8108013093558639183">BAT nu este acceptat în prezent în regiunea dvs. conform locației cu care a fost deschis contul dvs. Verificați din nou mai târziu disponibilitatea.</translation>
+<translation id="4190454391025419535">Regiune neacceptată</translation>
+<translation id="6830703472632069884">A apărut o problemă la verificarea portofelului dvs., încercați mai târziu.</translation>
+<translation id="3512533646933434345">Eroare de verificare portofel</translation>
+<translation id="2260513517001048012">NOTĂ: Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Browserul dvs. va continua să încerce să contribuie până când va avea loc o verificare sau până când vor trece 90 de zile.</translation>
+<translation id="4488355059795908907">Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Orice fonduri pe care doriți să i le trimiteți vor rămâne în portofelul dvs. până când utilizatorul va finaliza acest proces.</translation>
+<translation id="2495032782748793764">Brave implicit</translation>
+<translation id="9132378787893584761">Partajații Brave cu prietenii dvs.!</translation>
+<translation id="717952606991220586">Hopa, ceva nu funcționează. Vă rugăm încercați din nou mai târziu.</translation>
+<translation id="2524310205387880526">Evaluați Brave</translation>
+<translation id="6680650203439190394">Evaluează</translation>
+<translation id="2635089463885398597">Cum evaluați experiența dvs. cu Brave?</translation>
+<translation id="141901961143729572">Împărtășiți-vă gândurile</translation>
+<translation id="7961015016161918242">Niciodată</translation>
+<translation id="1275213816424141989">Poate mai târziu</translation>
+<translation id="6991128190741664836">Mai târziu</translation>
+<translation id="8851456134224363571">Minunat! Ați dori să ne faceți o evaluare pe Play Store?</translation>
+<translation id="8668962040900592974">Spuneți-ne cum putem să ne îmbunătățim</translation>
+<translation id="4406937629441301400">Câștigați tokenuri pentru vizualizarea acestei imagini și răsplătiți creatorii ei. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">Câștigați tokenuri pentru vizualizarea acestei imagini. Activați Câștig &amp; Ofer pentru a vă revendica partea.</translation>
+<translation id="6632345639591919543">În acest moment câștigați tokenuri pentru vizualizarea acestei imagini.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">În acest moment câștigați tokenuri pentru vizualizarea acestei imagini.</translation>
+<translation id="7952665812649667034">Sunt gata să Câștig &amp; Ofer</translation>
+<translation id="7877201489035217175">Aflați mai multe despre imaginile sponsorizate</translation>
+<translation id="828092975561478703">Pentru fiecare imagine sponsorizată pe care o vedeți, primiți 70% din venit în tokenuri. Cu Brave Ads, puteți întotdeauna să controlați reclamele pe care le vedeți.</translation>
+<translation id="4941539331405513605">Blocare module cookie între site-uri</translation>
+<translation id="3763681089644577874">Blocare module cookie</translation>
+<translation id="614747795780742163">Împiedică site-urile web să stocheze informații despre vizitele dvs. anterioare</translation>
+<translation id="6883611015375728278">Blochează toate cookie-urile</translation>
+<translation id="5657156137487675418">Permite toate cookie-urile</translation>
+<translation id="5963670684159057574">Blochează amprentarea încrucișată</translation>
+<translation id="3895527457258986253">Blocare amprentare</translation>
+<translation id="184568144098869637">Împiedică browserul să vă recunoască dispozitivul</translation>
+<translation id="4540198958192073185">Blochează toate amprentările</translation>
+<translation id="769702552748212954">Permite toată amprentarea</translation>
+<translation id="2888409909650566510">Reclame și alte lucruri\nciudate blocate</translation>
+<translation id="6930134873084561197">Site-urile adesea includ module cookie și scripturi care încearcă să vă identifice pe dvs. și dispozitivul dvs. Vor să afle cine sunteți și vă urmăresc pe internet, monitorizându-vă activitatea pe fiecare site.\n\nBrave le blochează astfel încât să puteți naviga pe internet fără să fiți urmărit.</translation>
+<translation id="8553998445606452168">Despre scuturile Brave</translation>
+<translation id="8912304686498704084">SUS</translation>
+<translation id="4963218453264888510">JOS</translation>
+<translation id="7474113515179313724">Navigați pe acest site fără protecția de confidențialitate oferită de Brave. Nu funcționează bine cu scuturile activate?</translation>
+<translation id="9055546041146396417">Dacă site-ul pare nefuncțional, încercați să dezactivați Shields.</translation>
+<translation id="1209739344687072997">Raportați un site nefuncțional</translation>
+<translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
+<translation id="5429200298326665264">Notă: Această adresă de site va fi remisă împreună cu numărul dvs. de versiune Brave și adresa IP (care nu vor fi stocate).</translation>
+<translation id="5299848999918506028">Mulțumim!</translation>
+<translation id="76550953340008122">Vă mulțumim că i-ați anunțat pe dezvoltatorii Brave că ceva nu este în regulă cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm problema!</translation>
+<translation id="650318023204990401">Controale avansate</translation>
+<translation id="7182293319417450928">Un sold minim de 25 BAT este necesar pentru verificare.</translation>
 </translationbundle>

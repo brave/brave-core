@@ -2,6 +2,8 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="hy">
 <translation id="939305735877869636">Brave</translation>
+<translation id="4947625801334180582">Brave բետա</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Brave-ը վեբ դիտարկիչ է, որը կայծակի արագությամբ է բացում վեբէջերն ու հավելվածները: Այն արագ է, կայուն և պարզ՝ օգտագործման մեջ: Ավելի ապահով աշխատեք համացանցում՝ վնասագրերի և խաբկայքերի դեմ ներկառուցված պաշտպանության շնորհիվ:</translation>
 <translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Brave-ի պատկերանշանը</translation>
@@ -10,6 +12,9 @@
 <translation id="7918740962659365265">Օգնեք բարելավել Brave-ը՝ Brave Software-ին ուղարկելով խափանման մասին հաշվետվությունները և <ph name="UMA_LINK"/>ը</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Ցանցի մուտքի էջ – Brave</translation>
+<translation id="8745514854244955877">Brave – Ցանցի մուտք – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Ցանցի մուտք</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave բետա</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -44,8 +49,12 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="5785919770853225148">Brave-ը կպահի այս գաղտնաբառը ձեր Brave Software հաշվում: Գաղտնաբառը հիշելու կարիք չի լինի:</translation>
 <translation id="8211837073776713955">Brave-ը ձեզ տեղյակ կպահի, եթե ձեր գաղտնաբառերի անվտագությանը սպառնալիք լինի</translation>
 <translation id="113959764510199339">Brave-ը փորձում է ցուցադրել գաղտնաբառերը:</translation>
+<translation id="96347285368592620">Brave-ը փորձում է պատճենել գաղտնաբառերը։</translation>
+<translation id="2953892977076487219">Brave-ը փորձում է փոխել գաղտնաբառերը:</translation>
 <translation id="7503098128120083822">Brave-ն ուզում է արտահանել ձեր գաղտնաբառերը:</translation>
 <translation id="8285294305439559616">Brave-ը փորձում է ցուցադրել գաղտնաբառերը: Մուտքագրեք ձեր Windows-ի գաղտնաբառը՝ այս գործողությունը թույլ տալու համար:</translation>
+<translation id="8090497651549769448">Brave-ը փորձում է պատճենել գաղտնաբառերը: Թույլատրելու համար մուտքագրեք Windows-ի ձեր գաղտնաբառը:</translation>
+<translation id="3861679447659630159">Brave-ը փորձում է փոխել գաղտնաբառերը: Թույլատրելու համար մուտքագրեք Windows-ի ձեր գաղտնաբառը:</translation>
 <translation id="5918095577778020936">Brave-ն ուզում է արտահանել ձեր գաղտնաբառերը: Թույլատրելու համար մուտքագրեք Windows-ի ձեր գաղտնաբառը:</translation>
 <translation id="8320964054148936490">Այս համակարգչում արդեն տեղադրված է Brave-ի ավելի նոր տարբերակը: Եթե ծրագրակազմը չի աշխատում, ապատեղադրեք Brave-ը և նորից փորձեք:</translation>
 <translation id="7691786510374174420">Անհայտ սխալի պատճառով տեղադրումը չհաջողվեց: Եթե Brave-ը բաց է, փակեք այն և կրկին փորձեք:</translation>
@@ -141,6 +150,8 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="2433912322225810055">Այն նաև վերահսկում է Brave-ի մեկնարկի կամ Omnibox-ից որոնում կատարելու ժամանակ ցուցադրվող էջը:</translation>
 <translation id="2871190378186459992">Հավելվածների, խաղերի, ընդլայնումների և թեմաների լայն ընտրանի Brave-ի համար:</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave բետա (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Թույլատրել Brave-ում տվյալների մուտքային հոսքի փոխանցումը mDNS հաղորդակարգով:</translation>
 <translation id="8207657266087451193">Եթե պատկերն օգտակար նկարագրություն չունի, Brave-ը կփորձի նոր նկարագրություն տրամադրել: Պատկերներն ուղարկվում են Brave Software-ին՝ նկարագրություններ ստեղծելու համար։ Ցանկացած պահի կարգավորումներում կարող եք անջատել սա:</translation>
 <translation id="5499063270485366718">Եթե պատկերն օգտակար նկարագրություն չունի, Brave-ը կփորձի նոր նկարագրություն տրամադրել: Պատկերներն ուղարկվում են Brave Software-ին՝ նկարագրություններ ստեղծելու համար։</translation>
@@ -192,7 +203,7 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="3262506503470845422">Brave-ի օգնության էջ</translation>
 <translation id="1864557848095568223">Brave-ը թարմացվում է</translation>
 <translation id="1786715389543715322">Brave-ի թարմացում (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Գրեթե պատրաստ է: Վերագործարկեք Brave-ը՝ թարմացումն ավարտելու համար:</translation>
+<translation id="7914115000169617076">Գրեթե պատրաստ է։ Թարմացումն ավարտելու համար վերագործարկեք Brave-ը։ Ինկոգնիտո պատուհանները նորից չեն բացվի։</translation>
 <translation id="8208853227947884571">Brave-ը թարմացված է</translation>
 <translation id="573759479754913123">Brave OS-ի մասին</translation>
 <translation id="7573289029918943991">Սարքի ծրագրակազմի տարբերակը տեսնելու համար անցեք <ph name="LINK_BEGIN"/>Brave OS-ի կարգավորումներ<ph name="LINK_END"/></translation>
@@ -210,6 +221,12 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="8586264863973514035">Փոփոխությունները կիրառելու համար վերագործարկեք Brave-ը</translation>
 <translation id="7021823858304886493">Թույլատրել մուտքը Brave-ում</translation>
 <translation id="1649714546770135458">Անջատելով այս գործառույթը՝ դուք կարող եք մտնել հաշիվ Brave Software-ի կայքերում, օրինակ՝ Gmail, առանց մուտք գործելու Brave:</translation>
+<translation id="2796517443093885402">Brave-ը կարող է պաշտպանել տվյալների արտահոսքից, վնասաբեր ընդլայնումներից և այլ խնդիրներից</translation>
+<translation id="428541510811554120">Brave-ը չի կարող ստուգել թարմացումների առկայությունը։ Ստուգեք ինտերնետ կապը։</translation>
+<translation id="2633397153656205379">Անհայտ սխալի պատճառով չհաջողվեց թարմացնել Brave-ը։ <ph name="BEGIN_LINK"/>Շտկել Brave-ի թարմացման հետ կապված խնդիրները<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave-ը չի կարող ստուգել ձեր գաղտնաբառերը, քանի որ դուք հաշիվ չեք մտել։</translation>
+<translation id="7006260220514217183">Անվտանգ դիտարկումն անջատված է։ Brave-ը խորհուրդ է տալիս միացնել այն։</translation>
+<translation id="1785833016412082453">Brave-ը չի կարող ստուգել ձեր ընդլայնումները։ Փորձեք ավելի ուշ։</translation>
 <translation id="9220324636239049437">1 տարր կջնջվի այս սարքից: Հետագայում ձեր տվյալներն առբերելու համար մուտք գործեք Brave <ph name="USER_EMAIL"/> հաշվով:</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> տարր կջնջվի այս սարքից: Հետագայում ձեր տվյալներն առբերելու համար մուտք գործեք Brave <ph name="USER_EMAIL"/> հաշվով:</translation>
 <translation id="4784414698887946907">Ձեր այցելությունների պատմությունը կջնջվի այս սարքից: Հետագայում ձեր տվյալներն առբերելու համար մուտք գործեք Brave <ph name="USER_EMAIL"/> հաշվով:</translation>
