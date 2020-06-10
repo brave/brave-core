@@ -14,14 +14,11 @@ import sys
 from lib.config import SOURCE_ROOT
 
 
-SIMPLE_PATHS = [
-    os.path.dirname(os.path.dirname(SOURCE_ROOT)),
-    SOURCE_ROOT,
-    os.path.join(SOURCE_ROOT, 'components', 'brave_sync', 'extension', 'brave-sync'),
-]
-
-RECURSIVE_PATHS = [
-    os.path.join(SOURCE_ROOT, 'vendor'),
+EXCLUDE_PATHS = [
+    os.path.join(SOURCE_ROOT, 'build'),
+    os.path.join(SOURCE_ROOT, 'components', 'brave_sync', 'extension', 'brave-sync', 'node_modules'),
+    os.path.join(SOURCE_ROOT, 'node_modules'),
+    os.path.join(SOURCE_ROOT, 'vendor', 'brave-extension', 'node_modules'),
 ]
 
 whitelisted_advisories = [
@@ -35,14 +32,20 @@ def main():
     if args.input_dir:
         return npm_audit(os.path.abspath(args.input_dir), args)
 
-    for path in SIMPLE_PATHS:
+    for path in [os.path.dirname(os.path.dirname(SOURCE_ROOT)), SOURCE_ROOT]:
         errors += npm_audit(path, args)
 
-    for base_dir in RECURSIVE_PATHS:
-        with os.scandir(base_dir) as it:
-            for entry in it:
-                if not entry.name.startswith('.') and entry.is_dir():
-                    errors += npm_audit(os.path.join(base_dir, entry.name), args)
+    for dir_path, dirs, dummy in os.walk(SOURCE_ROOT):
+        for dir_name in dirs:
+            full_path = os.path.join(dir_path, dir_name)
+            skip_dir = False
+            for exclusion in EXCLUDE_PATHS:
+                if full_path.startswith(exclusion):
+                    skip_dir = True
+                    break
+
+            if not skip_dir:
+                errors += npm_audit(full_path, args)
 
     return errors > 0
 
