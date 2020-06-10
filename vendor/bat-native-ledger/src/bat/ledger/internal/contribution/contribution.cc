@@ -374,30 +374,15 @@ void Contribution::CreateNewEntry(
     queue_publishers.push_back(item->Clone());
   }
 
-  ledger::ContributionQueuePublisherList publishers_new;
-  ledger::ContributionQueuePublisherList publishers_left;
   if (wallet_balance < queue->amount) {
     contribution->amount = wallet_balance;
     queue->amount = queue->amount - wallet_balance;
-
-    if (queue->type == ledger::RewardsType::RECURRING_TIP ||
-        queue->type == ledger::RewardsType::ONE_TIME_TIP) {
-      AdjustPublisherListAmounts(
-          std::move(queue_publishers),
-          &publishers_new,
-          &publishers_left,
-          wallet_balance);
-      queue->publishers = std::move(publishers_left);
-    } else {
-      publishers_new = std::move(queue_publishers);
-    }
   } else {
-    publishers_new = std::move(queue_publishers);
     queue->amount = 0;
   }
 
   ledger::ContributionPublisherList publisher_list;
-  for (const auto& item : publishers_new) {
+  for (const auto& item : queue_publishers) {
     auto publisher = ledger::ContributionPublisher::New();
     publisher->contribution_id = contribution_id;
     publisher->publisher_key = item->publisher_key;
@@ -479,7 +464,7 @@ void Contribution::OnEntrySaved(
       braveledger_bind_util::FromContributionQueueToString(queue->Clone()));
 
     ledger_->SaveContributionQueue(queue->Clone(), save_callback);
-  } else if (queue->type != ledger::RewardsType::ONE_TIME_TIP) {
+  } else {
     MarkContributionQueueAsComplete(queue->id);
   }
 }

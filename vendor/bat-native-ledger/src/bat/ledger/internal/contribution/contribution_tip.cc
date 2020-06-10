@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "bat/ledger/internal/contribution/contribution_tip.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -74,6 +75,7 @@ void ContributionTip::ServerPublisher(
   queue_list.push_back(std::move(publisher));
 
   auto queue = ledger::ContributionQueue::New();
+  queue->id = base::GenerateGUID();
   queue->type = ledger::RewardsType::ONE_TIME_TIP;
   queue->amount = amount;
   queue->partial = false;

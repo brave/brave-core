@@ -88,44 +88,6 @@ bool HaveEnoughFundsToContribute(
   return true;
 }
 
-void AdjustPublisherListAmounts(
-    ledger::ContributionQueuePublisherList publishers,
-    ledger::ContributionQueuePublisherList* publishers_new,
-    ledger::ContributionQueuePublisherList* publishers_left,
-    double reduce_fee_for) {
-  DCHECK(publishers_new && publishers_left);
-
-  for (auto& item : publishers) {
-    if (!item) {
-      continue;
-    }
-
-    if (reduce_fee_for == 0) {
-      publishers_left->push_back(std::move(item));
-      continue;
-    }
-
-    if (item->amount_percent <= reduce_fee_for) {
-      publishers_new->push_back(item->Clone());
-      reduce_fee_for -= item->amount_percent;
-      continue;
-    }
-
-    if (item->amount_percent > reduce_fee_for) {
-      // current list
-      const auto original_weight = item->amount_percent;
-      item->amount_percent = reduce_fee_for;
-      publishers_new->push_back(item->Clone());
-
-      // next list
-      item->amount_percent = original_weight - reduce_fee_for;
-      publishers_left->push_back(item->Clone());
-
-      reduce_fee_for = 0;
-    }
-  }
-}
-
 int32_t GetVotesFromAmount(const double amount) {
   DCHECK_GT(braveledger_ledger::_vote_price, 0);
   return std::floor(amount / braveledger_ledger::_vote_price);
