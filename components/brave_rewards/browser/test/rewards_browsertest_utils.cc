@@ -77,19 +77,22 @@ void WaitForElementToEqual(
             const TIMEOUT_SECONDS = 5;
             const selector = $1;
             const expectedValue = $2;
+            let currentValue = "";
 
             try {
               let element = await waitForElementToAppear(selector);
-
-              if (element.innerText === expectedValue) {
+              currentValue = element.innerText;
+              if (currentValue === expectedValue) {
                 resolve(true);
                 return;
               }
 
               const timerID = window.setTimeout(() => {
                 observer.disconnect();
-                reject(new Error("Timed out waiting for '" + selector + "' " +
-                    "to equal '" + expectedValue + "'"));
+                reject(new Error(
+                  "Value not matched for '" + selector + "'.\n" +
+                  "Current: " + currentValue + "\n" +
+                  "Expected: " + expectedValue + ""));
               }, TIMEOUT_SECONDS * 1000);
 
               const observer = new MutationObserver(({}, observer) => {
@@ -98,7 +101,8 @@ void WaitForElementToEqual(
                   return;
                 }
 
-                if (element.innerText === expectedValue) {
+                currentValue = element.innerText;
+                if (currentValue === expectedValue) {
                   clearTimeout(timerID);
                   observer.disconnect();
                   resolve(true);
@@ -133,19 +137,23 @@ void WaitForElementToContain(
             const TIMEOUT_SECONDS = 5;
             const selector = $1;
             const substring = $2;
+            let currentText;
 
             try {
               let element = await waitForElementToAppear(selector);
 
-              if (element.innerText.indexOf(substring) !== -1) {
+              currentText = element.innerText;
+              if (currentText.indexOf(substring) !== -1) {
                 resolve(true);
                 return;
               }
 
               const timerID = window.setTimeout(() => {
                 observer.disconnect();
-                reject(new Error("Timed out waiting for '" + selector + "' " +
-                    "to contain '" + substring + "'"));
+                reject(new Error(
+                  "Substring not found in '" + selector + "'.\n" +
+                  "Current text: " + currentText + "\n" +
+                  "Expected substring: " + substring + ""));
               }, TIMEOUT_SECONDS * 1000);
 
               const observer = new MutationObserver(({}, observer) => {
@@ -154,7 +162,8 @@ void WaitForElementToContain(
                   return;
                 }
 
-                if (element.innerText.indexOf(substring) !== -1) {
+                currentText = element.innerText;
+                if (currentText.indexOf(substring) !== -1) {
                   clearTimeout(timerID);
                   observer.disconnect();
                   resolve(true);
@@ -188,20 +197,24 @@ void WaitForElementToContainHTML(
           new Promise(async (resolve, reject) => {
             const TIMEOUT_SECONDS = 5;
             const selector = $1;
-            const html = $2;
+            const expectedHTML = $2;
+            let currentHTML;
 
             try {
               let element = await waitForElementToAppear(selector);
 
-              if (element.innerHTML.indexOf(html) !== -1) {
+              currentHTML = element.innerHTML;
+              if (currentHTML.indexOf(expectedHTML) !== -1) {
                 resolve(true);
                 return;
               }
 
               const timerID = window.setTimeout(() => {
                 observer.disconnect();
-                reject(new Error("Timed out waiting for '" + selector + "' " +
-                    "to contain '" + html + "'"));
+                reject(new Error(
+                  "HTML not found in '" + selector + "'.\n" +
+                  "Current: " + currentHTML + "\n" +
+                  "Expected: " + expectedHTML + ""));
               }, TIMEOUT_SECONDS * 1000);
 
               const observer = new MutationObserver(({}, observer) => {
@@ -210,7 +223,8 @@ void WaitForElementToContainHTML(
                   return;
                 }
 
-                if (element.innerHTML.indexOf(html) !== -1) {
+                currentHTML = element.innerHTML;
+                if (currentHTML.indexOf(expectedHTML) !== -1) {
                   clearTimeout(timerID);
                   observer.disconnect();
                   resolve(true);
