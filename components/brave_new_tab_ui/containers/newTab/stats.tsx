@@ -50,7 +50,11 @@ class Stats extends React.Component<Props, {}> {
         args: JSON.stringify({ value: counter })
       }
     } else {
-      return false
+      return {
+        id: 'B',
+        value: 0,
+        args: JSON.stringify({ value: 0 })
+      }
     }
   }
 
