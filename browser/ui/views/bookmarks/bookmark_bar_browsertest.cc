@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "content/public/test/browser_test.h"
 
 class BookmarkBarTest : public InProcessBrowserTest {
  public:

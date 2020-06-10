@@ -23,6 +23,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsBrowserTest.*

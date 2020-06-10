@@ -17,6 +17,7 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/web_preferences.h"
+#include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"

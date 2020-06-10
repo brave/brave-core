@@ -11,6 +11,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/test/browser_test.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/widget/widget.h"

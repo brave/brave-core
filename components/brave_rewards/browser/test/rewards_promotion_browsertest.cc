@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
+#include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsPromotionBrowserTest.*

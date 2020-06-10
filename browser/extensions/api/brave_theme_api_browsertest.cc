@@ -9,6 +9,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/extensions/extension_function_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/test/browser_test.h"
 #include "extensions/common/extension_builder.h"
 
 using extensions::api::BraveThemeGetBraveThemeTypeFunction;
