@@ -12,6 +12,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/embedder_support/switches.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
@@ -45,12 +46,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
-  EXPECT_TRUE(
-      base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kOriginTrialPublicKey));
+  EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
+      embedder_support::kOriginTrialPublicKey));
   EXPECT_EQ(kBraveOriginTrialsPublicKey,
-      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kOriginTrialPublicKey));
+            base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+                embedder_support::kOriginTrialPublicKey));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
