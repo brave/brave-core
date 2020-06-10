@@ -50,9 +50,10 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
                        AdsNotBlockedByDefaultBlockerInExtension) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  const extensions::Extension* extension = InstallExtensionSilently(
-      extension_service(),
-      test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
+  scoped_refptr<const extensions::Extension> extension =
+      InstallExtensionSilently(
+          extension_service(),
+          test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
   GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
@@ -75,7 +76,8 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  const extensions::Extension* extension = InstallExtensionSilently(
+  scoped_refptr<const extensions::Extension> extension =
+      InstallExtensionSilently(
       extension_service(),
       test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
   GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
@@ -98,7 +100,8 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  const extensions::Extension* extension = InstallExtensionSilently(
+  scoped_refptr<const extensions::Extension> extension =
+      InstallExtensionSilently(
       extension_service(),
       test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
   GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
