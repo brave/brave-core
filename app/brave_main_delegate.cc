@@ -28,6 +28,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/embedder_support/switches.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/password_manager/core/common/password_manager_features.h"
@@ -165,8 +166,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       "enforce");
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kOriginTrialPublicKey)) {
-    command_line.AppendSwitchASCII(switches::kOriginTrialPublicKey,
+          embedder_support::kOriginTrialPublicKey)) {
+    command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
                                    kBraveOriginTrialsPublicKey);
   }
 
