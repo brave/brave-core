@@ -31,8 +31,8 @@ class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
     const std::string proxy_uri("socks5://127.0.0.1:5566");
     service_ = std::make_unique<ConfiguredProxyResolutionService>(
         std::make_unique<ProxyConfigServiceTor>(proxy_uri),
-        std::make_unique<MockAsyncProxyResolverFactory>(false),
-        nullptr);
+        std::make_unique<MockAsyncProxyResolverFactory>(false), nullptr,
+        /*quick_check_enabled=*/true);
   }
 
   ConfiguredProxyResolutionService* GetProxyResolutionService() {
