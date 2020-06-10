@@ -30,6 +30,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)

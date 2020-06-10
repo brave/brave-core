@@ -10,6 +10,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "content/public/test/browser_test.h"
 
 const GURL& GetBraveURL() {
   static const GURL kBraveURL("https://www.brave.com");

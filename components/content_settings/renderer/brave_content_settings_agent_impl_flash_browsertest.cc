@@ -21,6 +21,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
+#include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 
 const char kFlashPluginExists[] =
