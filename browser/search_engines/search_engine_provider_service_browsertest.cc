@@ -23,6 +23,7 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
+#include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)

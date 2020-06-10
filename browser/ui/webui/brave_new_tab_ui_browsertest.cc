@@ -15,6 +15,7 @@
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_process_host_observer.h"
+#include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
 using namespace content;

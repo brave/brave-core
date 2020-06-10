@@ -6,6 +6,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
+#include "content/public/test/browser_test.h"
 
 const char kTestDataDirectory[] = "referrer-whitelist-data";
 

@@ -11,6 +11,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/test/browser_test.h"
 
 // This test to mainly testing whether migration only runs once,
 // granular testing for is in BookmarkModelTest
