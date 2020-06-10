@@ -12,6 +12,8 @@ namespace extensions {
 
 std::string GetInfuraProjectID();
 
+std::string GetBraveKey();
+
 bool HasInfuraProjectID();
 
 }  // namespace extensions

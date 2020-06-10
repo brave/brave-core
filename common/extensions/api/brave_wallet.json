@@ -117,6 +117,23 @@
           }
         ]
       }, {
+        "name": "getBraveKey",
+        "type": "function",
+        "description": "Called to get the Brave service key",
+        "parameters": [
+          {
+            "name": "cb",
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "key",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }, {
         "name": "resetWallet",
         "type": "function",
         "description": "Called to restore Crypto Wallets to its original state",
