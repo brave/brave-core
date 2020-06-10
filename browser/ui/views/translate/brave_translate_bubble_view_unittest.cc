@@ -68,9 +68,15 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
 
   void DeclineTranslation() override { translation_declined_ = true; }
 
+  bool ShouldNeverTranslateLanguage() override {
+    return never_translate_language_;
+  }
+
   void SetNeverTranslateLanguage(bool value) override {
     never_translate_language_ = value;
   }
+
+  bool ShouldNeverTranslateSite() override { return never_translate_site_; }
 
   void SetNeverTranslateSite(bool value) override {
     never_translate_site_ = value;
