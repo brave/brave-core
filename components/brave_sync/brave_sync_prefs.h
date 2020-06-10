@@ -46,6 +46,9 @@ class Prefs {
   // It is only used to read whether sync v1 was enabled before upgrading
   bool IsSyncV1Enabled() const;
 
+  bool IsSyncMigrateNoticeDismissed() const;
+  void SetDismissSyncMigrateNotice(bool is_dismissed);
+
   void Clear();
 
  private:

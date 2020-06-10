@@ -8,7 +8,9 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
 
 namespace brave {
@@ -23,6 +25,13 @@ void ShowBraveAdblock(Browser* browser) {
   ShowSingletonTabOverwritingNTP(
       browser,
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIAdblockURL)));
+}
+
+void ShowSync(Browser* browser) {
+  auto url = chrome::GetSettingsUrl(chrome::kSyncSetupSubPage);
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GetSingletonTabNavigateParams(browser, url));
 }
 
 void ShowWebcompatReporter(Browser* browser) {
