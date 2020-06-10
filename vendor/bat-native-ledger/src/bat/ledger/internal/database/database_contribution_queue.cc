@@ -6,7 +6,6 @@
 #include <map>
 #include <utility>
 
-#include "base/guid.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
@@ -199,7 +198,13 @@ void DatabaseContributionQueue::InsertOrUpdate(
     ledger::ContributionQueuePtr info,
     ledger::ResultCallback callback) {
   if (!info) {
-    BLOG(1, "Queue is null");
+    BLOG(0, "Queue is null");
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  if (info->id.empty()) {
+    BLOG(0, "Queue id is empty");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -214,10 +219,6 @@ void DatabaseContributionQueue::InsertOrUpdate(
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
-
-  if (info->id.empty()) {
-    info->id = base::GenerateGUID();
-  }
 
   BindString(command.get(), 0, info->id);
   BindInt(command.get(), 1, static_cast<int>(info->type));

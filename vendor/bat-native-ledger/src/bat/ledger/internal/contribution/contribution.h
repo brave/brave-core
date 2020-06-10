@@ -43,9 +43,7 @@ class Contribution {
 
   void Initialize();
 
-  // Start point for contribution
-  // In this step we get balance from the server
-  void Start(ledger::ContributionQueuePtr info);
+  void ProcessContributionQueue();
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -105,13 +103,15 @@ class Contribution {
       ledger::ResultCallback callback);
 
  private:
+  // Start point for contribution
+  // In this step we get balance from the server
+  void Start(ledger::ContributionQueuePtr info);
+
   void StartAutoContribute(
       const ledger::Result result,
       const uint64_t reconcile_stamp);
 
   void ContributionCompletedSaved(const ledger::Result result);
-
-  void ProcessContributionQueue();
 
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
 

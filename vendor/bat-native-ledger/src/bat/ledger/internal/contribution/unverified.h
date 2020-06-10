@@ -29,6 +29,7 @@ class Unverified {
       Contribution* contribution);
 
   ~Unverified();
+
   void Contribute();
 
   void OnTimer(uint32_t timer_id);
@@ -47,12 +48,16 @@ class Unverified {
   void OnRemovePendingContribution(ledger::Result result);
 
   void OnContributeUnverifiedBalance(
-    ledger::Result result,
-    ledger::BalancePtr properties);
+      ledger::Result result,
+      ledger::BalancePtr properties);
 
   void OnContributeUnverifiedPublishers(
-    double balance,
-    const ledger::PendingContributionInfoList& list);
+      double balance,
+      const ledger::PendingContributionInfoList& list);
+
+  void QueueSaved(
+      const ledger::Result result,
+      const uint64_t pending_contribution_id);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED

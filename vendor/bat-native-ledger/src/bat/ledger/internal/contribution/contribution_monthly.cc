@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/contribution/contribution_monthly_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -48,6 +49,7 @@ void ContributionMonthly::PrepareTipList(
     queue_list.push_back(std::move(publisher));
 
     queue = ledger::ContributionQueue::New();
+    queue->id = base::GenerateGUID();
     queue->type = ledger::RewardsType::RECURRING_TIP;
     queue->amount = item->weight;
     queue->partial = false;

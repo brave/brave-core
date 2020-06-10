@@ -2341,22 +2341,22 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ProcessPendingContributions) {
   content::WebContents* popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
-  // Check if insufficient funds notification is shown
+  // Check if verified notification is shown
   rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "#root",
-      "Insufficient Funds");
+      "3zsistemi.si");
 
   // Close notification
   rewards_browsertest_utils::WaitForElementThenClick(
       popup_contents,
       "[data-test-id=notification-close]");
 
-  // Check if verified notification is shown
+  // Check if insufficient funds notification is shown
   rewards_browsertest_utils::WaitForElementToContain(
       popup_contents,
       "#root",
-      "3zsistemi.si");
+      "Insufficient Funds");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PanelDefaultMonthlyTipChoices) {

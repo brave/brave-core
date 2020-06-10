@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "bat/ledger/internal/contribution/contribution_ac.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -75,6 +76,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   }
 
   auto queue = ledger::ContributionQueue::New();
+  queue->id = base::GenerateGUID();
   queue->type = ledger::RewardsType::AUTO_CONTRIBUTE;
   queue->amount = ledger_->GetAutoContributionAmount();
   queue->partial = true;

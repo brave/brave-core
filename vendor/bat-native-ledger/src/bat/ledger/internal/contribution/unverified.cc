@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -100,38 +101,54 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   ledger_->WasPublisherProcessed(current->publisher_key, get_callback);
 
-  // Trigger contribution
-  if (balance >= current->amount) {
-    ledger::ContributionQueuePublisherList queue_list;
-    auto publisher = ledger::ContributionQueuePublisher::New();
-    publisher->publisher_key = current->publisher_key;
-    publisher->amount_percent = 100.0;
-    queue_list.push_back(std::move(publisher));
-
-    auto queue = ledger::ContributionQueue::New();
-    queue->type = ledger::RewardsType::ONE_TIME_TIP;
-    queue->amount = current->amount;
-    queue->partial = false;
-    queue->publishers = std::move(queue_list);
-
-    contribution_->Start(std::move(queue));
-
-    ledger_->RemovePendingContribution(
-        current->id,
-        std::bind(&Unverified::OnRemovePendingContribution,
-                  this,
-                  _1));
-
-    if (ledger::is_testing) {
-      contribution_->SetTimer(&unverified_publishers_timer_id_, 1);
-    } else {
-      contribution_->SetTimer(&unverified_publishers_timer_id_);
-    }
+  if (balance < current->amount) {
+    BLOG(0, "Not enough funds");
+    ledger_->OnContributeUnverifiedPublishers(
+        ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
+    return;
   }
 
-  BLOG(0, "Not enough funds");
-  ledger_->OnContributeUnverifiedPublishers(
-      ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
+  ledger::ContributionQueuePublisherList queue_list;
+  auto publisher = ledger::ContributionQueuePublisher::New();
+  publisher->publisher_key = current->publisher_key;
+  publisher->amount_percent = 100.0;
+  queue_list.push_back(std::move(publisher));
+
+  auto queue = ledger::ContributionQueue::New();
+  queue->id = base::GenerateGUID();
+  queue->type = ledger::RewardsType::ONE_TIME_TIP;
+  queue->amount = current->amount;
+  queue->partial = false;
+  queue->publishers = std::move(queue_list);
+
+  auto save_callback = std::bind(&Unverified::QueueSaved,
+      this,
+      _1,
+      current->id);
+
+  ledger_->SaveContributionQueue(std::move(queue), save_callback);
+}
+
+void Unverified::QueueSaved(
+    const ledger::Result result,
+    const uint64_t pending_contribution_id) {
+  if (result == ledger::Result::LEDGER_OK) {
+    ledger_->RemovePendingContribution(
+      pending_contribution_id,
+      std::bind(&Unverified::OnRemovePendingContribution,
+                this,
+                _1));
+
+    contribution_->ProcessContributionQueue();
+  } else {
+    BLOG(1, "Queue was not saved");
+  }
+
+  if (ledger::is_testing) {
+    contribution_->SetTimer(&unverified_publishers_timer_id_, 2);
+  } else {
+    contribution_->SetTimer(&unverified_publishers_timer_id_);
+  }
 }
 
 void Unverified::WasPublisherProcessed(
