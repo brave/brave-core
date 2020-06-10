@@ -479,7 +479,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.
       </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
-        Manage your sync'd devices
+        Manage your synced devices
       </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
         Sync Manager
@@ -488,7 +488,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Sync Settings
       </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_SUBTITLE" desc="Brave Sync settings subtitle">
-        Manage what information you would like to sync between devices. These settings only effect this device.
+        Manage what information you would like to sync between devices. These settings only affect this device.
       </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_TITLE" desc="Brave Sync device list title">
         Device List

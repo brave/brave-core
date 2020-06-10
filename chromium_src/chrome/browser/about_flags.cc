@@ -38,7 +38,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #include "brave/components/brave_sync/features.h"
 
 #define BRAVE_SYNC_FEATURE_ENTRIES                                         \
-    {"brave-sync",                                                         \
+    {"brave-sync-v2",                                                      \
      flag_descriptions::kBraveSyncName,                                    \
      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
      FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync)},
