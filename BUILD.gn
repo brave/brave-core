@@ -501,6 +501,7 @@ action("audit_deps") {
   outputs = [ "$root_gen_dir/non-existent-audit_deps" ]
 
   args = [
+    "--source_root=" + rebase_path("//brave"),
     "--rustup_path=" + rustup_path,
     "--cargo_path=" + rustup_path,
   ]

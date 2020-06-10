@@ -11,15 +11,14 @@ import os
 import subprocess
 import sys
 
-from lib.config import SOURCE_ROOT
 from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
 EXCLUDE_PATHS = [
-    os.path.join(SOURCE_ROOT, 'build'),
-    os.path.join(SOURCE_ROOT, 'components', 'brave_sync', 'extension', 'brave-sync', 'node_modules'),
-    os.path.join(SOURCE_ROOT, 'node_modules'),
-    os.path.join(SOURCE_ROOT, 'vendor', 'brave-extension', 'node_modules'),
+    'build',
+    os.path.join('components', 'brave_sync', 'extension', 'brave-sync', 'node_modules'),
+    os.path.join('node_modules'),
+    os.path.join('vendor', 'brave-extension', 'node_modules'),
 ]
 
 whitelisted_advisories = [
@@ -33,15 +32,15 @@ def main():
     if args.input_dir:
         return audit_path(os.path.abspath(args.input_dir), args)
 
-    for path in [os.path.dirname(os.path.dirname(SOURCE_ROOT)), SOURCE_ROOT]:
+    for path in [os.path.dirname(os.path.dirname(args.source_root)), args.source_root]:
         errors += audit_path(path, args)
 
-    for dir_path, dirs, dummy in os.walk(SOURCE_ROOT):
+    for dir_path, dirs, dummy in os.walk(args.source_root):
         for dir_name in dirs:
             full_path = os.path.join(dir_path, dir_name)
             skip_dir = False
             for exclusion in EXCLUDE_PATHS:
-                if full_path.startswith(exclusion):
+                if full_path.startswith(os.path.join(args.source_root, exclusion)):
                     skip_dir = True
                     break
 
@@ -157,6 +156,8 @@ def extract_resolutions(result):
 def parse_args():
     parser = argparse.ArgumentParser(description='Audit brave-core npm deps')
     parser.add_argument('input_dir', nargs='?', help='Directory to check')
+    parser.add_argument('--source_root', required=True,
+                        help='Full path of the src/brave directory')
     parser.add_argument('--rustup_path', required=True)
     parser.add_argument('--cargo_path', required=True)
     parser.add_argument('--toolchain')
