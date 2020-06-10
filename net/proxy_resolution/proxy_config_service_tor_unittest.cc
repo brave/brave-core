@@ -138,9 +138,9 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
           base::ThreadTaskRunnerHandle::Get());
 
   auto* service = new ConfiguredProxyResolutionService(
-        std::move(config_service),
-        std::make_unique<MockAsyncProxyResolverFactory>(false),
-        nullptr);
+      std::move(config_service),
+      std::make_unique<MockAsyncProxyResolverFactory>(false), nullptr,
+      /*quick_check_enabled=*/true);
 
   ProxyConfigServiceTor proxy_config_service(proxy_uri);
   ProxyConfigWithAnnotation config;
