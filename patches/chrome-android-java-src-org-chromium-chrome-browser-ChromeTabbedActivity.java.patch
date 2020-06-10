@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index a49d2021d8cd1ff5c2c44214f0e18bd43e9ccc92..5153c5e0cc917cf6af4d4c2feecce7cacb61bcc6 100644
+index 7f959ac34c2f9e57fc4645542f10d7cf7c3d2485..03895eb625787ab7d7ebc5ec1f0d1ddaff1d70a3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -180,7 +180,7 @@ import java.util.Locale;
+@@ -181,7 +181,7 @@ import java.util.Locale;
   * are accessible via a chrome specific tab switching UI.
   */
  public class ChromeTabbedActivity
@@ -11,7 +11,7 @@ index a49d2021d8cd1ff5c2c44214f0e18bd43e9ccc92..5153c5e0cc917cf6af4d4c2feecce7ca
      private static final String TAG = "ChromeTabbedActivity";
  
      private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
-@@ -1658,7 +1658,7 @@ public class ChromeTabbedActivity
+@@ -1659,7 +1659,7 @@ public class ChromeTabbedActivity
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,7 +20,7 @@ index a49d2021d8cd1ff5c2c44214f0e18bd43e9ccc92..5153c5e0cc917cf6af4d4c2feecce7ca
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1681,9 +1681,9 @@ public class ChromeTabbedActivity
+@@ -1682,9 +1682,9 @@ public class ChromeTabbedActivity
                  }
              };
          }
@@ -32,7 +32,7 @@ index a49d2021d8cd1ff5c2c44214f0e18bd43e9ccc92..5153c5e0cc917cf6af4d4c2feecce7ca
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2058,7 +2058,7 @@ public class ChromeTabbedActivity
+@@ -2061,7 +2061,7 @@ public class ChromeTabbedActivity
          }
      }
  
