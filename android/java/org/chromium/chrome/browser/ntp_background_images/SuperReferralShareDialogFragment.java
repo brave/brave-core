@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder
 public class SuperReferralShareDialogFragment extends DialogFragment implements View.OnClickListener{
 	private static final String TAG = "SUPER-REFERRAL";
 
-    private static final String BRAVE_REF_URL = "https://brave.com/?ref=";
+    private static final String BRAVE_REF_URL = "https://brave.com/r/";
 
 	// For QR code generation
 	private static final int WHITE = 0xFFFFFFFF;
