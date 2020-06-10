@@ -10,6 +10,7 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -24,6 +25,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "components/sync/driver/sync_driver_switches.h"
 #endif
 
 using BraveBrowserCommandControllerTest = InProcessBrowserTest;
@@ -52,6 +57,15 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+#else
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+#endif
+
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 #else
@@ -77,6 +91,15 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+#else
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -119,6 +142,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+#endif
+
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 #endif
@@ -154,6 +181,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
