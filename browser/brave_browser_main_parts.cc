@@ -30,6 +30,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
+#include "brave/browser/infobars/sync_v1_deprecation_infobar_delegate.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "content/public/browser/web_contents.h"
@@ -83,6 +84,8 @@ void BraveBrowserMainParts::PostBrowserStart() {
       if (infobar_service) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_service, g_browser_process->local_state());
+        SyncV1DeprecationInfoBarDelegate::Create(
+            infobar_service, profile()->GetPrefs());
       }
     }
   }

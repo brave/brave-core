@@ -17,3 +17,4 @@ const char kP3ALearnMoreURL[] = "https://brave.com/P3A";
 const char kP3ASettingsLink[] = "chrome://settings/privacy";
 const char kImportDataHelpURL[] =
     "https://support.brave.com/hc/en-us/articles/360019782291#safari";
+const char kSyncV1DeprecatedURL[] = "https://brave.com/sync-v2-is-coming";

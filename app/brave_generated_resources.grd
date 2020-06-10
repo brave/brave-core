@@ -479,6 +479,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
         Show Wayback Machine prompt on 404 pages
       </message>
+      <!-- Sync Infobar -->
+      <message name="IDS_BRAVE_SYNC_V1_DEPRECATED_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to learn about a new version coming soon.">
+        A new Brave Sync is coming and will affect your setup. Get ready for the upgrade.
+      </message>
       <!-- Brave Theme -->
       <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
         Light

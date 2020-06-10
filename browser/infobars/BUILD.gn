@@ -6,6 +6,8 @@ source_set("infobars") {
   sources = [
     "brave_confirm_p3a_infobar_delegate.cc",
     "brave_confirm_p3a_infobar_delegate.h",
+    "sync_v1_deprecation_infobar_delegate.cc",
+    "sync_v1_deprecation_infobar_delegate.h",
   ]
 
   if (brave_wallet_enabled) {
@@ -18,6 +20,7 @@ source_set("infobars") {
   deps = [
     "//base",
     "//brave/common",
+    "//brave/components/brave_sync",
     "//brave/components/p3a",
     "//brave/app:brave_generated_resources_grit",
     "//chrome/app:chromium_strings",
@@ -25,6 +28,7 @@ source_set("infobars") {
     "//components/infobars/core",
     "//components/prefs",
     "//components/strings",
+    "//components/vector_icons",
     "//ui/base",
     "//ui/views",
     "//url",
