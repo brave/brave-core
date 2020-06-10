@@ -43,11 +43,25 @@ export default {
   usCurrencies: [
     'BTC',
     'ETH',
-    'BAT',
-    'XRP',
     'BNB',
     'BCH',
-    'BUSD'
+    'XRP',
+    'BUSD',
+    'BAT',
+    'XTZ',
+    'ALGO',
+    'ATOM',
+    'LINK',
+    'VET',
+    'ZRX',
+    'ADA',
+    'XLM',
+    'ENJ',
+    'ZIL',
+    'RVN',
+    'ONT',
+    'HBAR',
+    'MATIC'
   ],
   comCurrencies: [
     'BTC',
