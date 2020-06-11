@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/sync_stopped_reporter.cc b/components/sync/driver/sync_stopped_reporter.cc
-index 2e22c0dbb7bbac44cf5aa1c3f80060bcce83dd4e..0868ed35981833a9a8a46c5b81fa618a29ee639f 100644
+index 53b919d9703a5f06134c85e6bb795891ef54c47f..def6671dea043a24aafd89a51ada55fb9a68a10c 100644
 --- a/components/sync/driver/sync_stopped_reporter.cc
 +++ b/components/sync/driver/sync_stopped_reporter.cc
 @@ -94,9 +94,10 @@ void SyncStoppedReporter::ReportSyncStopped(const std::string& access_token,

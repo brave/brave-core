@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 44a6eb15256323c76a10dcd6c412e228ae822e60..b3b144ce3d6139c7161034fb27934e25db7a6692 100644
+index 1b03c062de472bf55aad26d7b840fd72104c23d1..f0cb5493c18e024b1ef97d500fa879b66d38cd45 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
 @@ -259,6 +259,7 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
