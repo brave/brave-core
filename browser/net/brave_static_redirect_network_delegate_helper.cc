@@ -6,7 +6,6 @@
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "brave/browser/translate/buildflags/buildflags.h"
@@ -66,8 +65,7 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (!std::string(SAFEBROWSING_ENDPOINT).empty() &&
-      safeBrowsing_pattern.MatchesHost(request_url)) {
+  if (safeBrowsing_pattern.MatchesHost(request_url)) {
     replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
