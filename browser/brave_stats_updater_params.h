@@ -52,8 +52,6 @@ class BraveStatsUpdaterParams {
   std::string referral_promo_code_;
   static base::Time g_current_time;
   static bool g_force_first_run;
-  static constexpr base::TimeDelta g_dtoi_delete_delta =
-      base::TimeDelta::FromSeconds(14 * 24 * 60 * 60);
 
   void LoadPrefs();
 
