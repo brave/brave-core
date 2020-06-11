@@ -1380,5 +1380,12 @@
     "image_url": "zillow-com.png",
     "background_color": "#98c554",
     "domain": "zillow.com"
+  },
+  {
+    "title": "coinmarketcap",
+    "url": "https://coinmarketcap.com/",
+    "image_url": "coinmarketcap.png",
+    "background_color": "#F7F8F9",
+    "domain": "coinmarketcap.com"
   }
 ]
