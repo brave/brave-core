@@ -60,6 +60,8 @@ GURL GetUpdateURL(const GURL& base_update_url,
       update_url, "dtoi", stats_updater_params.GetDateOfInstallationParam());
   update_url = net::AppendQueryParameter(
       update_url, "ref", stats_updater_params.GetReferralCodeParam());
+  update_url = net::AppendQueryParameter(
+      update_url, "api_key", brave::GetAPIKey());
   return update_url;
 }
 
