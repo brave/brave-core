@@ -3,15 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.site_settings;
+package org.chromium.components.browser_ui.site_settings;
 
 import android.os.Bundle;
 import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 
 import java.util.HashMap;
 
@@ -20,6 +18,8 @@ public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFrag
     private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY = "play_yt_video_in_browser_category";
     private static final String ADS_KEY = "ads";
     private static final String BACKGROUND_SYNC_KEY = "background_sync";
+    private static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
+    private static final String DESKTOP_MODE_KEY = "desktop_mode";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -73,13 +73,13 @@ public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFrag
         {
             Preference p = findPreference(PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY);
             boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
-                PlayYTVideoInBrowserPreferences.PLAY_YT_VIDEO_IN_BROWSER_KEY, true);
+                PLAY_YT_VIDEO_IN_BROWSER_KEY, true);
             p.setSummary(enabled ? R.string.text_enabled : R.string.text_disabled);
         }
         {
             Preference p = findPreference(DESKTOP_MODE_CATEGORY_KEY);
             boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
-                 DesktopModePreferences.DESKTOP_MODE_KEY, false);
+                DESKTOP_MODE_KEY, false);
             p.setSummary(enabled ? R.string.settings_desktop_mode_enabled_summary
                                  : R.string.settings_desktop_mode_disabled_summary);
         }
