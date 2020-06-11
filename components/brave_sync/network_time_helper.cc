@@ -43,13 +43,12 @@ void NetworkTimeHelper::SetNetworkTimeForTest(const base::Time& time) {
   network_time_for_test_ = time;
 }
 
-void NetworkTimeHelper::GetNetworkTimeOnUIThread(
-    GetNetworkTimeCallback cb) {
+void NetworkTimeHelper::GetNetworkTimeOnUIThread(GetNetworkTimeCallback cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(network_time_tracker_);
   base::Time time;
-  if (network_time_tracker_->GetNetworkTime(&time, nullptr) !=
-      network_time::NetworkTimeTracker::NETWORK_TIME_AVAILABLE) {
+  if (!network_time_tracker_ ||
+      network_time_tracker_->GetNetworkTime(&time, nullptr) !=
+          network_time::NetworkTimeTracker::NETWORK_TIME_AVAILABLE) {
     VLOG(1) << "Network time not available, using local time";
     time = base::Time::Now();
   }
