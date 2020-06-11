@@ -84,28 +84,28 @@
     <!-- Device list goes here -->
     <section class="devices">
       <h1>$i18n{braveSyncDeviceListTitle}</h1>
-      <p class="subtitle">$i18n{braveSyncDeviceListSubtitle}</p>
+      <p class="subtitle" id="DeviceListCaption">$i18n{braveSyncDeviceListSubtitle}</p>
 
-      <table class="device-list">
+      <table class="device-list" aria-describedby="DeviceListCaption">
         <thead>
           <tr>
-            <th>
+            <th scope="col">
               <span class="device-name">$i18n{braveSyncDeviceListNameColumn}</span>
             </th>
-            <th>$i18n{braveSyncDeviceListLastActiveColumn}</th>
+            <th scope="col">$i18n{braveSyncDeviceListLastActiveColumn}</th>
           </tr>
         </thead>
         <tbody>
           <template is="dom-repeat" items="[[deviceList_]]">
             <tr>
-              <td>
+              <th scope="row">
                 <template is="dom-if" if="[[item.isCurrentDevice]]">
                   <span class="device-name">[[i18n('braveSyncDeviceListNameThisDevice', item.name)]]</span>
                 </template>
                 <template is="dom-if" if="[[!item.isCurrentDevice]]">
                   <span class="device-name">[[item.name]]</span>
                 </template>
-              </td>
+              </th>
               <td>[[getDeviceDisplayDate(item)]]</td>
             </tr>
           </template>
