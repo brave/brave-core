@@ -106,7 +106,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveRadioButtonGroupCustomHomepageThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
-  "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveSiteSettingsPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
@@ -148,3 +147,7 @@ if (brave_rewards_enabled || enable_brave_referrals) {
 if (brave_ads_enabled) {
   brave_java_sources += brave_ads_java_sources
 }
+
+brave_components_browser_ui_site_settings_android_java = [
+  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java",
+]
