@@ -439,12 +439,12 @@ class NewTabPageViewController: UIViewController, Themeable {
     }
     
     private func tappedQRCode(_ code: String) {
-        let referralQueryParam = [URLQueryItem(name: "ref", value: code)]
+        // Super referrer websites come in format https://brave.com/r/REF_CODE
+        let refUrl = URL(string: "https://brave.com/")?
+            .appendingPathComponent("r")
+            .appendingPathComponent(code)
         
-        var baseUrl = URLComponents(string: "https://brave.com/")
-        baseUrl?.queryItems = referralQueryParam
-        
-        guard let url = baseUrl?.url else { return }
+        guard let url = refUrl else { return }
         delegate?.tappedQRCodeButton(url: url)
     }
     
