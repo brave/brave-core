@@ -7,10 +7,18 @@
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 
 namespace syncer {
+
+namespace {
+std::string AppendBraveServiceKeyHeaderString() {
+  return std::string("\r\n") + kBraveServicesKeyHeader + ": " +
+         BRAVE_SERVICES_KEY;
+}
+}  // namespace
 
 BraveSyncAuthManager::BraveSyncAuthManager(
     signin::IdentityManager* identity_manager,
@@ -53,7 +61,7 @@ void BraveSyncAuthManager::ResetKeys() {
 void BraveSyncAuthManager::RequestAccessToken() {
   brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
       base::BindOnce(&BraveSyncAuthManager::OnNetworkTimeFetched,
-                      weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse() const {
@@ -98,8 +106,7 @@ std::string BraveSyncAuthManager::GenerateAccessToken(
   base::Base64Encode(access_token, &encoded_access_token);
   DCHECK(!encoded_access_token.empty());
 
-  VLOG(1) << "access_token= " << encoded_access_token;
-  return encoded_access_token;
+  return encoded_access_token + AppendBraveServiceKeyHeaderString();
 }
 
 void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {

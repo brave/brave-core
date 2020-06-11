@@ -144,6 +144,8 @@ test("brave_unit_tests") {
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.h",
   ]
 
+  defines = brave_service_key_defines
+
   deps = [
     ":other_unit_tests",
     "//brave/browser/safebrowsing",
