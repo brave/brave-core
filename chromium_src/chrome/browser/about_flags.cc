@@ -9,7 +9,7 @@
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -17,7 +17,6 @@
 #include "components/prefs/pref_service.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using brave_sync::features::kBraveSync;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -33,6 +32,18 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},
 #else
 #define SPEEDREADER_FEATURE_ENTRIES
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "brave/components/brave_sync/features.h"
+
+#define BRAVE_SYNC_FEATURE_ENTRIES                                         \
+    {"brave-sync-v2",                                                      \
+     flag_descriptions::kBraveSyncName,                                    \
+     flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
+     FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync)},
+#else
+#define BRAVE_SYNC_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_FEATURE_ENTRIES \
@@ -53,10 +64,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll, \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                  \
     SPEEDREADER_FEATURE_ENTRIES                                            \
-    {"brave-sync",                                                         \
-     flag_descriptions::kBraveSyncName,                                    \
-     flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
-     FEATURE_VALUE_TYPE(kBraveSync)},                                      \
+    BRAVE_SYNC_FEATURE_ENTRIES                                             \
     {"brave-super-referral",                                               \
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \

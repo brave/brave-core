@@ -27,8 +27,10 @@ const char kBraveAdblockCosmeticFilteringDescription[] =
 const char kBraveSpeedreaderName[] = "Enable SpeedReader";
 const char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
-const char kBraveSyncName[] = "Enable Brave Sync";
-const char kBraveSyncDescription[] = "Brave Sync is disabled by default";
+const char kBraveSyncName[] = "Enable Brave Sync v2";
+const char kBraveSyncDescription[] =
+    "Brave Sync v2 integrates with chromium sync engine with Brave specific "
+    "authentication flow and enforce client side encryption";
 const char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 const char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";

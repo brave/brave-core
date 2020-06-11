@@ -84,26 +84,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getDataSaved(profile);
     }
 
-    public String getSyncDeviceId() {
-        return BravePrefServiceBridgeJni.get().getSyncDeviceId();
-    }
-
-    public void setSyncDeviceName(String deviceName) {
-        BravePrefServiceBridgeJni.get().setSyncDeviceName(deviceName);
-    }
-
-    public String getSyncDeviceName() {
-        return BravePrefServiceBridgeJni.get().getSyncDeviceName();
-    }
-
-    public void setSyncSeed(String seed) {
-        BravePrefServiceBridgeJni.get().setSyncSeed(seed);
-    }
-
-    public String getSyncSeed() {
-        return BravePrefServiceBridgeJni.get().getSyncSeed();
-    }
-
     /**
      * @param whether SafetyNet check failed.
      */
@@ -232,14 +212,6 @@ public class BravePrefServiceBridge {
         void setOldTrackersBlockedCount(Profile profile, long count);
         void setOldAdsBlockedCount(Profile profile, long count);
         void setOldHttpsUpgradesCount(Profile profile, long count);
-
-        String getSyncDeviceId();
-
-        void setSyncDeviceName(String deviceName);
-        String getSyncDeviceName();
-
-        void setSyncSeed(String seed);
-        String getSyncSeed();
 
         void setSafetynetCheckFailed(boolean value);
         boolean getSafetynetCheckFailed();

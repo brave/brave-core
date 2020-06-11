@@ -9,6 +9,7 @@
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
@@ -30,6 +31,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "content/public/browser/web_contents.h"
@@ -37,6 +39,13 @@
 
 #if BUILDFLAG(ENABLE_TOR) || !defined(OS_ANDROID)
 #include "chrome/browser/browser_process.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC) && !defined(OS_ANDROID)
+#include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_user_settings.h"
+#include "chrome/browser/sync/profile_sync_service_factory.h"
 #endif
 
 void BraveBrowserMainParts::PostBrowserStart() {
@@ -83,6 +92,15 @@ void BraveBrowserMainParts::PostBrowserStart() {
       if (infobar_service) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_service, g_browser_process->local_state());
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+      auto* sync_service = ProfileSyncServiceFactory::IsSyncAllowed(profile())
+             ? ProfileSyncServiceFactory::GetForProfile(profile())
+             : nullptr;
+      const bool is_v2_user = sync_service &&
+          sync_service->GetUserSettings()->IsFirstSetupComplete();
+      SyncV2MigrateInfoBarDelegate::Create(infobar_service, is_v2_user,
+          profile(), browser);
+#endif  // BUILDFLAG(ENABLE_BRAVE_SYNC)
       }
     }
   }

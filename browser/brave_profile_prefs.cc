@@ -101,7 +101,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       brave_rewards::prefs::kHideBraveRewardsButton,
       false);
 
-  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
+  brave_sync::Prefs::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
@@ -185,9 +185,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       prefs::kNetworkPredictionOptions,
       base::Value(chrome_browser_net::NETWORK_PREDICTION_NEVER));
-
-  // Make sync managed to dsiable some UI after password saving.
-  registry->SetDefaultPrefValue(syncer::prefs::kSyncManaged, base::Value(true));
 
   // Disable cloud print
   // Cloud Print: Don't allow this browser to act as Cloud Print server

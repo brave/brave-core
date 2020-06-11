@@ -13,7 +13,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -27,7 +26,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
-#include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -163,10 +161,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
         "rewards",
 #endif
   };
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  if (switches::IsSyncAllowedByFlag())
-    pages.push_back(chrome::kChromeUISyncHost);
-#endif
 
   std::vector<std::string> schemes {
     "brave://",
@@ -216,10 +210,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
                    "chrome://chrome-urls/");
   }
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    RewriteChromeSyncInternals) {
+                           RewriteChromeSync) {
   std::vector<std::string> schemes {
     "brave://",
     "chrome://",
@@ -227,26 +219,22 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(
-        browser(), GURL(scheme + chrome::kChromeUISyncInternalsHost));
-    if (switches::IsSyncAllowedByFlag())
-      ASSERT_TRUE(WaitForLoadStop(contents));
-    else
-      ASSERT_FALSE(WaitForLoadStop(contents));
+      browser()->tab_strip_model()->GetActiveWebContents();
+    ui_test_utils::NavigateToURL(browser(),
+                                 GURL(scheme + chrome::kChromeUISyncHost));
+    ASSERT_TRUE(WaitForLoadStop(contents));
 
     EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
-                    ->GetFormattedFullURL()).c_str(),
+                                   ->GetFormattedFullURL()).c_str(),
                  "brave://sync");
     EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetVirtualURL().spec().c_str(),
+                 ->GetVirtualURL().spec().c_str(),
                  "chrome://sync/");
     EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetURL().spec().c_str(),
-                 "chrome://sync/");
+                 ->GetURL().spec().c_str(),
+                 "chrome://settings/braveSync");
   }
 }
-#endif
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
   content::WebContents* contents =

@@ -1,0 +1,83 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/util.html">
+
+<link rel="import" href="chrome://resources/cr_elements/cr_button/cr_button.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_icon_button/cr_icon_button.html">
+<link rel="import" href="chrome://resources/cr_elements/icons.html">
+<link rel="import" href="chrome://resources/cr_elements/shared_style_css.html">
+<link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
+<link rel="import" href="../people_page/sync_browser_proxy.html">
+<link rel="import" href="../people_page/sync_controls.html">
+<link rel="import" href="../route.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+<link rel="import" href="brave_sync_configure.html">
+<link rel="import" href="brave_sync_setup.html">
+
+<dom-module id="settings-brave-sync-subpage">
+  <template>
+    <style include="cr-shared-style settings-shared iron-flex">
+      #sync-separator
+      {
+        border-bottom: var(--cr-separator-line);
+      }
+
+      #disabled-by-admin-icon
+      {
+        text-align: center;
+        width: 40px;
+      }
+      #sync-page-loading
+      {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      #sync-section
+      {
+        display: block;
+        padding-block-end: 0;
+        padding-block-start: 0;
+        padding-inline-end: var(--cr-section-padding);
+        padding-inline-start: var(--cr-section-indent-padding);
+      }
+    </style>
+
+    <!-- Disabled content -->
+    <div class="cr-row first" hidden="[[!syncDisabledByAdmin_]]">
+      <iron-icon id="disabled-by-admin-icon" icon="cr20:domain"></iron-icon>
+      <div class="flex cr-padded-text">
+        $i18n{syncDisabledByAdministrator}
+      </div>
+    </div>
+
+    <!-- Page ends here if sync is disabled -->
+    <div id="sync-separator" hidden="[[!syncSectionDisabled_]]"></div>
+
+    <!-- Non-disabled content (setup or configure) -->
+    <template is="dom-if" if="[[!syncSectionDisabled_]]">
+      <div id="sync-section">
+        <div id="sync-page-loading"
+            hidden$="[[!isStatus_('spinner', pageStatus_)]]">
+          $i18n{syncLoading}
+        </div>
+
+        <template is="dom-if" if="[[isStatus_('configure', pageStatus_)]]">
+          <settings-brave-sync-configure syncStatus="[[syncStatus]]">
+          </settings-brave-sync-configure>
+        </template>
+
+        <template is="dom-if" if="[[isStatus_('setup', pageStatus_)]]">
+          <settings-brave-sync-setup on-setup-success="onSetupSuccess_">
+          </settings-brave-sync-setup>
+        </template>
+      </div>
+    </template>
+
+  </template>
+  <script src="brave_sync_subpage.js"></script>
+</dom-module>

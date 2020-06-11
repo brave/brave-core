@@ -415,11 +415,11 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 // [static]
 bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
     content::BrowserContext* browser_context) {
-  // redirect sync-internals
-  if (url->host() == chrome::kChromeUISyncInternalsHost ||
-      url->host() == chrome::kChromeUISyncHost) {
+
+  if (url->host() == chrome::kChromeUISyncHost) {
     GURL::Replacements replacements;
-    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    replacements.SetHostStr(chrome::kChromeUISettingsHost);
+    replacements.SetPathStr(kBraveSyncPath);
     *url = url->ReplaceComponents(replacements);
     return true;
   }

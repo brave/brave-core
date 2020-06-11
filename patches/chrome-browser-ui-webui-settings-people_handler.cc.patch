@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
+index 57cd1e34ebbc19681692a7e4100677ab0510daea..02cfb23fb58c4e6a3a33206f8e7608d86b9b40e3 100644
+--- a/chrome/browser/ui/webui/settings/people_handler.cc
++++ b/chrome/browser/ui/webui/settings/people_handler.cc
+@@ -861,7 +861,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
+ 
+ void PeopleHandler::BeforeUnloadDialogCancelled() {
+   // The before unload dialog is only shown during the first sync setup.
+-  DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount());
++  // DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount());
+   syncer::SyncService* service = GetSyncService();
+   DCHECK(service && service->IsSetupInProgress() &&
+          !service->GetUserSettings()->IsFirstSetupComplete());
+@@ -909,6 +909,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
+       service && !disallowed_by_policy && service->IsSetupInProgress() &&
+           !service->GetUserSettings()->IsFirstSetupComplete() &&
+           identity_manager->HasPrimaryAccount());
++  BRAVE_GET_SYNC_STATUS_DICTIONARY
+ 
+   const sync_ui_util::StatusLabels status_labels =
+       sync_ui_util::GetStatusLabels(profile_);
+@@ -1056,6 +1057,7 @@ void PeopleHandler::MarkFirstSetupComplete() {
+ }
+ 
+ bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {
++  return false;
+   return !IdentityManagerFactory::GetForProfile(profile_)
+               ->HasPrimaryAccount() ||
+          SigninErrorControllerFactory::GetForProfile(profile_)->HasError();

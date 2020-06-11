@@ -1,12 +1,12 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index b71429377b2068f103656834068a079fded3822d..2072bb06f5cf782664d31a610b901c5ee57a6156 100644
+index b71429377b2068f103656834068a079fded3822d..289dfe27cadd74d9889cfa92f5eba4d6c4aab395 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -521,6 +521,7 @@ class ProfileSyncService : public SyncService,
+@@ -273,6 +273,7 @@ class ProfileSyncService : public SyncService,
  
-   base::WeakPtrFactory<ProfileSyncService> weak_factory_{this};
+   static std::string GenerateCacheGUIDForTest();
  
-+  BRAVE_PROFILE_SYNC_SERVICE_H
-   DISALLOW_COPY_AND_ASSIGN(ProfileSyncService);
- };
- 
++ BRAVE_PROFILE_SYNC_SERVICE_H_
+  private:
+   // Passed as an argument to StopImpl to control whether or not the sync
+   // engine should clear its data directory when it shuts down. See StopImpl

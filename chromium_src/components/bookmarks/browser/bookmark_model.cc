@@ -5,6 +5,8 @@
 
 #include "../../../../../components/bookmarks/browser/bookmark_model.cc"
 
+#include "ui/base/models/tree_node_iterator.h"
+
 namespace bookmarks {
 
 // Move bookmarks under "Other Bookmarks" folder from
@@ -15,11 +17,11 @@ void BraveMigrateOtherNodeFolder(BookmarkModel* model) {
   // Model must be loaded at this point
   if (!model->bookmark_bar_node()->children().size())
     return;
-  const bookmarks::BookmarkNode* possible_other_node_folder =
-    model->bookmark_bar_node()->children().back().get();
+  const BookmarkNode* possible_other_node_folder =
+      model->bookmark_bar_node()->children().back().get();
   if (possible_other_node_folder->is_folder() &&
       (possible_other_node_folder->GetTitledUrlNodeTitle() ==
-      model->other_node()->GetTitledUrlNodeTitle())) {
+       model->other_node()->GetTitledUrlNodeTitle())) {
     size_t children_size = possible_other_node_folder->children().size();
     for (size_t i = 0; i < children_size; ++i) {
       model->Move(possible_other_node_folder->children().front().get(),
@@ -27,6 +29,37 @@ void BraveMigrateOtherNodeFolder(BookmarkModel* model) {
     }
     model->Remove(possible_other_node_folder);
   }
+}
+
+void BraveClearSyncV1MetaInfo(BookmarkModel* model) {
+  CHECK(model);
+  CHECK(model->loaded());
+  model->BeginExtensiveChanges();
+  ui::TreeNodeIterator<const BookmarkNode> iterator(model->root_node());
+  while (iterator.has_next()) {
+    const BookmarkNode* node = iterator.Next();
+    // Permanent node cannot trigger BookmarkModelObserver and we stored meta
+    // info in it
+    if (model->is_permanent_node(node)) {
+      const_cast<BookmarkNode*>(node)->SetMetaInfoMap(
+          BookmarkNode::MetaInfoMap());
+    }
+
+    model->DeleteNodeMetaInfo(node, "object_id");
+    model->DeleteNodeMetaInfo(node, "order");
+    model->DeleteNodeMetaInfo(node, "parent_object_id");
+    model->DeleteNodeMetaInfo(node, "position_in_parent");
+    model->DeleteNodeMetaInfo(node, "sync_timestamp");
+    model->DeleteNodeMetaInfo(node, "version");
+
+    // These might exist if user uses v1 since the very beginning when we
+    // integrates with chromium sync
+    model->DeleteNodeMetaInfo(node, "originator_cache_guid");
+    model->DeleteNodeMetaInfo(node, "originator_client_item_id");
+    model->DeleteNodeMetaInfo(node, "mtime");
+    model->DeleteNodeMetaInfo(node, "ctime");
+  }
+  model->EndExtensiveChanges();
 }
 
 }  // namespace bookmarks

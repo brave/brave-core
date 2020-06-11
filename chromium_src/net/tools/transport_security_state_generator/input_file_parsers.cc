@@ -311,8 +311,12 @@ bool ParseJSON(base::StringPiece json,
       // Brave
       { "name": "download.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "laptop-updates.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      // TODO(darkdh): remove sync v1 endpoints when Android migrates to v2
       { "name": "sync.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "sync-staging.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "sync-v2.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "sync-v2.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "sync-v2.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "p3a.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "p3a.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "p3a-dev.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},

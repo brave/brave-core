@@ -1,0 +1,151 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" src="chrome://resources/html/cr.html">
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="../router.html">
+<link rel="import" href="brave_sync_browser_proxy.html">
+<link rel="import" href="brave_sync_code_dialog.html">
+
+<dom-module id="settings-brave-sync-configure">
+  <template>
+    <style include="settings-shared">
+      h1
+      {
+        font-weight: 600;
+        margin-top: 0;
+      }
+
+      .device-list
+      {
+        margin: 24px 0;
+        min-width: 100%;
+        border-collapse: collapse;
+        font-family: Muli, sans-serif;
+        font-weight: 500;
+        text-align: left;
+      }
+
+      thead
+      {
+        border-bottom: 1px solid rgb(228, 232, 236);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      tbody
+      {
+        font-size: 14px;
+      }
+
+      th, td
+      {
+        padding: 12px 0;
+      }
+
+      th:first-child,
+      td:first-child
+      {
+        padding-left: 12px;
+      }
+
+      th:last-child,
+      td:last-child
+      {
+        padding-right: 12px;
+      }
+
+
+      .device-name
+      {
+        max-width: 30ch;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+      }
+
+      .device-actions
+      {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        column-gap: 8px;
+        justify-content: end;
+      }
+
+      section
+      {
+        margin-top: 20px;
+      }
+
+    </style>
+
+    <!-- Device list goes here -->
+    <section class="devices">
+      <h1>$i18n{braveSyncDeviceListTitle}</h1>
+      <p class="subtitle" id="DeviceListCaption">$i18n{braveSyncDeviceListSubtitle}</p>
+
+      <table class="device-list" aria-describedby="DeviceListCaption">
+        <thead>
+          <tr>
+            <th scope="col">
+              <span class="device-name">$i18n{braveSyncDeviceListNameColumn}</span>
+            </th>
+            <th scope="col">$i18n{braveSyncDeviceListLastActiveColumn}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template is="dom-repeat" items="[[deviceList_]]">
+            <tr>
+              <th scope="row">
+                <template is="dom-if" if="[[item.isCurrentDevice]]">
+                  <span class="device-name">[[i18n('braveSyncDeviceListNameThisDevice', item.name)]]</span>
+                </template>
+                <template is="dom-if" if="[[!item.isCurrentDevice]]">
+                  <span class="device-name">[[item.name]]</span>
+                </template>
+              </th>
+              <td>[[getDeviceDisplayDate(item)]]</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+
+      <div class="device-actions">
+        <cr-button on-click="onViewSyncCode_">
+          $i18n{braveSyncViewCodeButton}
+        </cr-button>
+        <cr-button class="action-button"
+                  on-click="onAddDevice_">
+          $i18n{braveSyncAddDevice}
+        </cr-button>
+      </div>
+    </section>
+
+    <!-- Sync Settings -->
+    <section class="settings">
+      <h1>$i18n{braveSyncSettingsTitle}</h1>
+      <p>$i18n{braveSyncSettingsSubtitle}</p>
+      <settings-sync-controls sync-status="[[syncStatus]]">
+      </settings-sync-controls>
+    </section>
+
+    <section class="cancel">
+      <cr-button class="action-button"
+        on-click="onResetSyncChain_">
+        $i18n{braveSyncResetButton}
+      </cr-button>
+    </section>
+
+    <template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
+      <settings-brave-sync-code-dialog
+        sync-code="[[syncCode]]"
+        code-type="{{syncCodeDialogType_}}"
+        on-done="onSyncCodeDialogDone_">
+      </settings-brave-sync-code-dialog>
+    </template>
+
+  </template>
+  <script src="brave_sync_configure.js"></script>
+</dom-module>

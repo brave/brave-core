@@ -1,20 +1,36 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
- cr.define('settings', function() {
-  /** @interface */
-  class DefaultBraveSyncBrowserProxy {}
+// clang-format off
+// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+// clang-format on
 
-  /**
-   * @implements {settings.DefaultBraveSyncBrowserProxy}
-   */
-  class DefaultBraveSyncBrowserProxyImpl {}
+cr.define('settings', function() {
 
-  cr.addSingletonGetter(DefaultBraveSyncBrowserProxyImpl);
+  class BraveSyncBrowserProxy {
+    getSyncCode() {
+      return cr.sendWithPromise('SyncSetupGetSyncCode');
+    }
+    getQRCode(syncCode) {
+      return cr.sendWithPromise('SyncGetQRCode', syncCode);
+    }
+    getDeviceList() {
+      return cr.sendWithPromise('SyncGetDeviceList');
+    }
+    setSyncCode(syncCode) {
+      return cr.sendWithPromise('SyncSetupSetSyncCode', syncCode);
+    }
+    resetSyncChain() {
+      return cr.sendWithPromise('SyncSetupReset');
+    }
+  }
 
+  cr.addSingletonGetter(BraveSyncBrowserProxy);
+
+  // #cr_define_end
   return {
-    DefaultBraveSyncBrowserProxy,
-    DefaultBraveSyncBrowserProxyImpl
+    BraveSyncBrowserProxy,
   };
 });

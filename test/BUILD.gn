@@ -144,6 +144,8 @@ test("brave_unit_tests") {
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.h",
   ]
 
+  defines = brave_service_key_defines
+
   deps = [
     ":other_unit_tests",
     "//brave/browser/safebrowsing",
@@ -213,7 +215,6 @@ test("brave_unit_tests") {
       "../utility/importer/chrome_importer_unittest.cc",
 
       # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-      "//brave/browser/autocomplete/brave_autocomplete_provider_client_unittest.cc",
       "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
       "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.cc",
@@ -328,14 +329,9 @@ test("brave_unit_tests") {
 
   if (enable_brave_sync) {
     sources += [
-      "//brave/components/brave_sync/bookmark_order_util_unittest.cc",
-      "//brave/components/brave_sync/brave_sync_service_unittest.cc",
       "//brave/components/brave_sync/crypto/crypto_unittest.cc",
-      "//brave/components/brave_sync/syncer_helper_unittest.cc",
-    ]
-
-    deps += [
-      "//brave/components/brave_sync:testutil",
+      "//brave/components/sync/driver/brave_sync_auth_manager_unittest.cc",
+      "//components/sync/driver/sync_auth_manager_unittest.cc",
     ]
   }
 

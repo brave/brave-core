@@ -13,13 +13,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
-#if !defined(BRAVE_SERVICES_KEY)
-// Refer to the keyed API spec for more details about the Brave Services Key
-#define BRAVE_SERVICES_KEY "dummytoken"
-#endif
-
-const char kBraveServicesKeyHeader[] = "BraveServiceKey";
-
 namespace brave {
 
 std::string BraveServicesKeyForTesting() {

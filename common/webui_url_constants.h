@@ -15,17 +15,16 @@ extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kTipHost[];
 extern const char kBraveNewTabJS[];
-extern const char kBraveUISyncHost[];
-extern const char kBraveSyncJS[];
 extern const char kBraveUIRewardsURL[];
 extern const char kBraveUIAdblockURL[];
 extern const char kBraveUIWebcompatReporterURL[];
 extern const char kBraveUITipHost[];
 extern const char kBraveUITipURL[];
-extern const char kBraveUISyncURL[];
 extern const char kBraveUIWalletURL[];
 extern const char kBraveUIWalletURL[];
 extern const char kExtensionSettingsURL[];
 extern const char kWalletHost[];
+extern const char kBraveSyncPath[];
+extern const char kBraveSyncSetupPath[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_

@@ -282,6 +282,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+    r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
     r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
     r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
     if (!r.SITE_SETTINGS) {
@@ -337,7 +338,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       sectionSync.setAttribute('if', '[[showPage_(pageVisibility.braveSync)]]')
       sectionSync.innerHTML = `
         <settings-section page-title="${loadTimeData.getString('braveSync')}" section="braveSync">
-          <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
+          <settings-brave-sync-page></settings-brave-sync-page>
         </settings-section>
       `
       const sectionShields = document.createElement('template')

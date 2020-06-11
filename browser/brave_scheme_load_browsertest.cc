@@ -251,11 +251,6 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
-                       SyncPageIsNotAllowedInPrivateWindow) {
-  TestURLIsNotLoadedInPrivateWindow("brave://sync");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        RewardsPageIsNotAllowedInPrivateWindow) {
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
 }
