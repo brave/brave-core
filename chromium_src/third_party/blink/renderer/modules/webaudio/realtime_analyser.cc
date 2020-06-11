@@ -4,16 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB \
-  destination[i] = destination[i] * fudge_factor_;
+  destination[i] = audio_farbling_callback_.Run(destination[i], i);
 
 #define BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA \
-  scaled_value = scaled_value * fudge_factor_;
+  scaled_value = audio_farbling_callback_.Run(scaled_value, i);
 
 #define BRAVE_REALTIMEANALYSER_GETFLOATTIMEDOMAINDATA \
-  destination[i] = value * fudge_factor_;
+  destination[i] = audio_farbling_callback_.Run(value, i);
 
 #define BRAVE_REALTIMEANALYSER_GETBYTETIMEDOMAINDATA \
-  value = value * fudge_factor_;
+  value = audio_farbling_callback_.Run(value, i);
 
 #include "../../../../../../third_party/blink/renderer/modules/webaudio/realtime_analyser.cc"
 

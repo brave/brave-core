@@ -20,6 +20,38 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
 
+namespace {
+
+const uint64_t zero = 0;
+
+inline uint64_t lfsr_next(uint64_t v) {
+  return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
+}
+
+float Identity(float value, size_t index) {
+  return value;
+}
+
+float ConstantMultiplier(double fudge_factor, float value, size_t index) {
+  return value * fudge_factor;
+}
+
+float PseudoRandomSequence(uint64_t seed, float value, size_t index) {
+  static uint64_t v;
+  const double maxUInt64AsDouble = UINT64_MAX;
+  if (index == 0) {
+    // start of loop, reset to initial seed which was passed in and is based on
+    // the domain key
+    v = seed;
+  }
+  // get next value in PRNG sequence
+  v = lfsr_next(v);
+  // return pseudo-random float between 0 and 0.1
+  return (v / maxUInt64AsDouble) / 10;
+}
+
+}  // namespace
+
 namespace brave {
 
 const char kBraveSessionToken[] = "brave_session_token";
@@ -54,15 +86,28 @@ BraveSessionCache& BraveSessionCache::From(Document& document) {
   return *cache;
 }
 
-double BraveSessionCache::GetFudgeFactor() {
-  double fudge_factor = 1.0;
-  if (farbling_enabled_) {
-    const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-    const double maxUInt64AsDouble = UINT64_MAX;
-    fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-    VLOG(1) << "audio fudge factor (based on session token) = " << fudge_factor;
+AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
+    blink::LocalFrame* frame) {
+  if (farbling_enabled_ && frame && frame->GetContentSettingsClient()) {
+    switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
+      case BraveFarblingLevel::OFF: {
+        break;
+      }
+      case BraveFarblingLevel::BALANCED: {
+        const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
+        const double maxUInt64AsDouble = UINT64_MAX;
+        double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+        VLOG(1) << "audio fudge factor (based on session token) = "
+                << fudge_factor;
+        return base::BindRepeating(&ConstantMultiplier, fudge_factor);
+      }
+      case BraveFarblingLevel::MAXIMUM: {
+        uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+       return base::BindRepeating(&PseudoRandomSequence, seed);
+      }
+    }
   }
-  return fudge_factor;
+  return base::BindRepeating(&Identity);
 }
 
 scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
@@ -118,7 +163,6 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbBalanced(
       base::StringPiece(reinterpret_cast<const char*>(pixels), pixel_count),
       canvas_key, sizeof canvas_key));
   uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
-  const uint64_t zero = 0;
   uint64_t pixel_index;
   // iterate through 32-byte canvas key and use each bit to determine how to
   // perturb the current pixel
@@ -129,7 +173,7 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbBalanced(
       pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
       // find next pixel to perturb
-      v = ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
+      v = lfsr_next(v);
     }
   }
   // convert back to a StaticBitmapImage to return to the caller
@@ -152,11 +196,10 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbMax(
   const uint64_t count = 4 * data_buffer->Width() * data_buffer->Height();
   // initial seed based on domain key
   uint64_t v = *reinterpret_cast<uint64_t*>(domain_key_);
-  const uint64_t zero = 0;
   // iterate through pixel data and overwrite with next value in PRNG sequence
   for (uint64_t i = 0; i < count; i++) {
     pixels[i] = v % 256;
-    v = ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
+    v = lfsr_next(v);
   }
   // convert back to a StaticBitmapImage to return to the caller
   scoped_refptr<blink::StaticBitmapImage> perturbed_bitmap =
