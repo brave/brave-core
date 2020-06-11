@@ -27,6 +27,7 @@ source_set("infobars") {
     "//components/infobars/core",
     "//components/prefs",
     "//components/strings",
+    "//components/vector_icons",
     "//ui/base",
     "//ui/views",
     "//url",

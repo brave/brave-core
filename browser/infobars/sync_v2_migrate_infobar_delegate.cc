@@ -24,6 +24,7 @@
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
@@ -83,7 +84,7 @@ SyncV2MigrateInfoBarDelegate::GetIdentifier() const {
 }
 
 const gfx::VectorIcon& SyncV2MigrateInfoBarDelegate::GetVectorIcon() const {
-  return views::kInfoIcon;
+  return vector_icons::kSyncIcon;;
 }
 
 bool SyncV2MigrateInfoBarDelegate::ShouldExpire(
