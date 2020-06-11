@@ -340,7 +340,6 @@ class NTPDownloader {
     private func setETag(_ etag: String, type: ResourceType) {
         do {
             let etagFileURL = try self.ntpETagFileURL(type: type)
-            let etag = etag.replacingOccurrences(of: "\"", with: "")
             try etag.write(to: etagFileURL, atomically: true, encoding: .utf8)
         } catch {
             logger.error(error)
