@@ -4,6 +4,7 @@
 
 #import "BATBraveRewards.h"
 #import "DataController.h"
+#import "RewardsLogging.h"
 
 @implementation BATBraveRewardsConfiguration
 
@@ -85,6 +86,8 @@
                              adsClass:(nullable Class)adsClass
 {
   if ((self = [super init])) {
+    rewards::set_rewards_client_for_logging(self);
+    
     self.configuration = configuration;
     self.delegate = delegate;
     self.ledgerClass = ledgerClass ?: BATBraveLedger.class;
@@ -113,9 +116,9 @@
   self.ads = [[self.adsClass alloc] initWithStateStoragePath:adsStorage];
   NSString *ledgerStorage = [self.configuration.stateStoragePath stringByAppendingPathComponent:@"ledger"];
   self.ledger = [[self.ledgerClass alloc] initWithStateStoragePath:ledgerStorage];
+  __auto_type __weak weakSelf = self;
   self.ads.ledger = self.ledger;
   self.ledger.ads = self.ads;
-  __auto_type __weak weakSelf = self;
   self.ledger.faviconFetcher = ^(NSURL *pageURL, void (^completion)(NSURL * _Nullable)) {
     [weakSelf.delegate faviconURLFromPageURL:pageURL completion:completion];
   };
