@@ -68,6 +68,12 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
   // We need 62, 63, 64 for ContentSettingsTypes for Android tabs migration. We
   // read only from these settings
+  /* Commneting out as this value (62) collides with the newly added
+     WINDOW_PLACEMENT value in components/content_settings/core/common/content_settings_types.h.
+     Also, commenting out corresponding migration code in
+     android/java/org/chromium/chrome/browser/upgrade/
+     BraveUpgradeJobIntentService.java#L301
+     for CONTENT_SETTINGS_TYPE_DESKTOP_VIEW
   Register(static_cast<ContentSettingsType>(62), "desktop-view",
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
            WhitelistedSchemes(),
@@ -77,6 +83,7 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            ContentSettingsInfo::PERSISTENT,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
+  */
   Register(static_cast<ContentSettingsType>(63), "play-video-in-background",
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
            WhitelistedSchemes(),

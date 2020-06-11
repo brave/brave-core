@@ -298,8 +298,15 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled(
             BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER));
         // View pages in Desktop mode option
+        /* Commneting out as this value (62) collides with the newly added 
+           WINDOW_PLACEMENT value in 
+           components/content_settings/core/common/content_settings_types.h.
+           Also, commenting out corresponding registration in 
+           chromium_src/components/content_settings/core/browser/
+           content_settings_registry.cc
         BravePrefServiceBridge.getInstance().setDesktopModeEnabled(
             BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_DESKTOP_VIEW));
+        */
 
         // Background image settings settings
         if (sharedPreferences.contains(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES)) {
