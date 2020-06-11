@@ -34,6 +34,7 @@ namespace ads {
 class Client;
 class Bundle;
 class AdsServe;
+class SubdivisionTargeting;
 class AdNotifications;
 class AdConversions;
 class FrequencyCapping;
@@ -151,6 +152,8 @@ class AdsImpl : public Ads {
   void ChangeLocale(
       const std::string& locale) override;
 
+  void OnAdsSubdivisionTargetingCodeHasChanged() override;
+
   void OnPageLoaded(
       const std::string& url,
       const std::string& content) override;
@@ -250,6 +253,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<AdConversions> ad_conversions_;
   std::unique_ptr<PageClassifier> page_classifier_;

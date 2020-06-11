@@ -105,6 +105,9 @@ class ADS_EXPORT Ads {
   virtual void ChangeLocale(
       const std::string& locale) = 0;
 
+  // Should be called when the ads subdivision targeting code has changed
+  virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
+
   // Should be called when a page has loaded in a browser tab, and the HTML is
   // available for analysis
   virtual void OnPageLoaded(

@@ -140,12 +140,23 @@ class AdsServiceImpl : public AdsService,
   // AdsClient implementation
   bool IsEnabled() const override;
 
-  const std::string GetCountryCode() const override;
-
   bool ShouldAllowAdConversionTracking() const override;
 
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
+
+  bool ShouldAllowAdsSubdivisionTargeting() const override;
+  void SetAllowAdsSubdivisionTargeting(
+      const bool should_allow) override;
+
+  std::string GetAdsSubdivisionTargetingCode() const override;
+  void SetAdsSubdivisionTargetingCode(
+      const std::string& subdivision_targeting_code) override;
+
+  std::string
+  GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const override;
+  void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      const std::string& subdivision_targeting_code) override;
 
   // KeyedService implementation
   void Shutdown() override;

@@ -66,6 +66,82 @@ class AdsBox extends React.Component<Props, State> {
     )
   }
 
+  getAdsSubdivisions = () => {
+    const {
+      adsSubdivisionTargeting,
+      automaticallyDetectedAdsSubdivisionTargeting
+    } = this.props.rewardsData.adsData
+
+    let subdivisions: any = [
+      ['US-AL', 'Alabama'],
+      ['US-AK', 'Alaska'],
+      ['US-AZ', 'Arizona'],
+      ['US-AR', 'Arkansas'],
+      ['US-CA', 'California'],
+      ['US-CO', 'Colorado'],
+      ['US-CT', 'Connecticut'],
+      ['US-DE', 'Delaware'],
+      ['US-FL', 'Florida'],
+      ['US-GA', 'Georgia'],
+      ['US-HI', 'Hawaii'],
+      ['US-ID', 'Idaho'],
+      ['US-IL', 'Illinois'],
+      ['US-IN', 'Indiana'],
+      ['US-IA', 'Iowa'],
+      ['US-KS', 'Kansas'],
+      ['US-KY', 'Kentucky'],
+      ['US-LA', 'Louisiana'],
+      ['US-ME', 'Maine'],
+      ['US-MD', 'Maryland'],
+      ['US-MA', 'Massachusetts'],
+      ['US-MI', 'Michigan'],
+      ['US-MN', 'Minnesota'],
+      ['US-MS', 'Mississippi'],
+      ['US-MO', 'Missouri'],
+      ['US-MT', 'Montana'],
+      ['US-NE', 'Nebraska'],
+      ['US-NV', 'Nevada'],
+      ['US-NH', 'New Hampshire'],
+      ['US-NJ', 'New Jersey'],
+      ['US-NM', 'New Mexico'],
+      ['US-NY', 'New York'],
+      ['US-NC', 'North Carolina'],
+      ['US-ND', 'North Dakota'],
+      ['US-OH', 'Ohio'],
+      ['US-OK', 'Oklahoma'],
+      ['US-OR', 'Oregon'],
+      ['US-PA', 'Pennsylvania'],
+      ['US-RI', 'Rhode Island'],
+      ['US-SC', 'South Carolina'],
+      ['US-SD', 'South Dakota'],
+      ['US-TN', 'Tennessee'],
+      ['US-TX', 'Texas'],
+      ['US-UT', 'Utah'],
+      ['US-VT', 'Vermont'],
+      ['US-VA', 'Virginia'],
+      ['US-WA', 'Washington'],
+      ['US-WV', 'West Virginia'],
+      ['US-WI', 'Wisconsin'],
+      ['US-WY', 'Wyoming']
+    ]
+
+    if (adsSubdivisionTargeting === 'DISABLED') {
+      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisabled')])
+    } else {
+      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisable')])
+    }
+
+    const subdivisionMap = new Map(subdivisions)
+    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting) as string
+    if (subdivision !== '' && adsSubdivisionTargeting === 'AUTO') {
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutomaticallyDetectedAs', { adsSubdivisionTarget : subdivision })])
+    } else {
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutomaticallyDetect')])
+    }
+
+    return subdivisions
+  }
+
   adsNotSupportedAlert = (supported: boolean) => {
     if (supported) {
       return null
@@ -77,8 +153,9 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   onAdsSettingChange = (key: string, value: boolean) => {
-    let newValue: any = value
     const { adsEnabled } = this.props.rewardsData.adsData
+
+    let newValue: any = value
 
     if (key === 'adsEnabled') {
       newValue = !adsEnabled
@@ -92,7 +169,11 @@ class AdsBox extends React.Component<Props, State> {
       return null
     }
 
-    const { adsPerHour } = this.props.rewardsData.adsData
+    const {
+      adsPerHour,
+      shouldAllowAdsSubdivisionTargeting,
+      adsSubdivisionTargeting
+    } = this.props.rewardsData.adsData
 
     return (
       <Grid columns={1} customStyle={{ margin: '0 auto' }}>
@@ -105,13 +186,37 @@ class AdsBox extends React.Component<Props, State> {
               {['1', '2', '3', '4', '5'].map((num: string) => {
                 return (
                   <div key={`num-per-hour-${num}`} data-value={num}>
-                   {getLocale(`adsPerHour${num}`)}
+                    {getLocale(`adsPerHour${num}`)}
                   </div>
                 )
               })}
             </Select>
           </ControlWrapper>
         </Column>
+        { shouldAllowAdsSubdivisionTargeting ?
+          <>
+            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+              <ControlWrapper text={getLocale('adsSubdivisionTargetingTitle')}>
+                <Select
+                  value={(adsSubdivisionTargeting || '').toString()}
+                  onChange={this.onAdsSettingChange.bind(this, 'adsSubdivisionTargeting')}
+                >
+                  {
+                    this.getAdsSubdivisions().map((subdivision: Array<String>) => {
+                      return (
+                        <div key={`${subdivision[0]}`} data-value={subdivision[0]}>
+                          {`${subdivision[1]}`}
+                        </div>
+                      )
+                    })
+                  }
+                </Select>
+              </ControlWrapper>
+            </Column>
+            <div>
+              {getLocale('adsSubdivisionTargetingDescription')} <a href={'https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ'} target={'_blank'}>{getLocale('adsSubdivisionTargetingLearn')}</a>
+            </div>
+          </> : null }
       </Grid>
     )
   }

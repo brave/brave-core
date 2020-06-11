@@ -33,6 +33,22 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(GetAdsPerDay, uint64_t());
 
+  MOCK_CONST_METHOD0(ShouldAllowAdsSubdivisionTargeting, bool());
+
+  MOCK_METHOD1(SetAllowAdsSubdivisionTargeting, void(
+      const bool should_allow));
+
+  MOCK_CONST_METHOD0(GetAdsSubdivisionTargetingCode, std::string());
+
+  MOCK_METHOD1(SetAdsSubdivisionTargetingCode, void(
+      const std::string& subdivision_targeting_code));
+
+  MOCK_CONST_METHOD0(GetAutomaticallyDetectedAdsSubdivisionTargetingCode,
+      std::string());
+
+  MOCK_METHOD1(SetAutomaticallyDetectedAdsSubdivisionTargetingCode, void(
+      const std::string& subdivision_targeting_code));
+
   MOCK_METHOD1(SetIdleThreshold, void(
       const int threshold));
 
