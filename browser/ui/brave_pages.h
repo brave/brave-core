@@ -15,6 +15,7 @@ void ShowWebcompatReporter(Browser* browser);
 void ShowBraveRewards(Browser* browser);
 void ShowBraveWallet(Browser* browser);
 void ShowExtensionSettings(Browser* browser);
+void ShowSync(Browser* browser);
 
 }  // namespace brave
 

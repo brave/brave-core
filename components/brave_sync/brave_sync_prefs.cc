@@ -23,7 +23,9 @@ const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
 // Indicate all meta info set in V1 has been stripped in
 // BraveBookmarkModelLoadedObserver
 const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
-
+// Has dismissed message about migration to sync v2
+const char kSyncV2MigrateNoticeDismissed[] =
+    "brave_sync_v2.migrate_notice_dismissed";
 // Deprecated
 // ============================================================================
 const char kSyncSeed[] = "brave_sync.seed";
@@ -65,6 +67,7 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
   registry->RegisterBooleanPref(kSyncV1Migrated, false);
   registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
+  registry->RegisterBooleanPref(kSyncV2MigrateNoticeDismissed, false);
 
 // Deprecated
 // ============================================================================
@@ -145,6 +148,14 @@ void Prefs::SetSyncV1MetaInfoCleared(bool is_cleared) {
 
 bool Prefs::IsSyncV1Enabled() const {
   return pref_service_->GetBoolean(kSyncEnabled);
+}
+
+bool Prefs::IsSyncMigrateNoticeDismissed() const {
+  return pref_service_->GetBoolean(kSyncV2MigrateNoticeDismissed);
+}
+
+void Prefs::SetDismissSyncMigrateNotice(bool is_dismissed) {
+  pref_service_->SetBoolean(kSyncV2MigrateNoticeDismissed, is_dismissed);
 }
 
 void Prefs::Clear() {
