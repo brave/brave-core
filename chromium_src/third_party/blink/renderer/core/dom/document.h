@@ -45,6 +45,7 @@ class CORE_EXPORT BraveSessionCache final
   scoped_refptr<blink::StaticBitmapImage> PerturbPixels(
       blink::LocalFrame* frame,
       scoped_refptr<blink::StaticBitmapImage> image_bitmap);
+  WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
 
  private:
   bool farbling_enabled_;

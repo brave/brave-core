@@ -57,6 +57,12 @@ namespace brave {
 const char kBraveSessionToken[] = "brave_session_token";
 const char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
 
+// acceptable letters for generating random strings
+const char kLettersForRandomStrings[] =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789. ";
+// length of kLettersForRandomStrings array
+const size_t kLettersForRandomStringsLength = 64;
+
 BraveSessionCache::BraveSessionCache(Document& document)
     : Supplement<Document>(document) {
   base::StringPiece host =
@@ -206,6 +212,25 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbMax(
       blink::UnacceleratedStaticBitmapImage::Create(
           data_buffer->RetainedImage());
   return perturbed_bitmap;
+}
+
+WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
+                                                    wtf_size_t length) {
+  uint8_t key[32];
+  crypto::HMAC h(crypto::HMAC::SHA256);
+  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
+               sizeof session_key_));
+  CHECK(h.Sign(seed, key, sizeof key));
+  // initial PRNG seed based on session key and passed-in seed string
+  uint64_t v = *reinterpret_cast<uint64_t*>(key);
+  UChar* destination;
+  WTF::String value = WTF::String::CreateUninitialized(length, destination);
+  for (wtf_size_t i = 0; i < length; i++) {
+    destination[i] =
+        kLettersForRandomStrings[v % kLettersForRandomStringsLength];
+    v = lfsr_next(v);
+  }
+  return value;
 }
 
 }  // namespace brave
