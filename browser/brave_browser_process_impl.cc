@@ -43,6 +43,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -161,6 +162,9 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 
   InitSystemRequestHandlerCallback();
+
+  prefs::BravePrefService::GetInstance()->RegisterPrefService(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs());
 }
 
 brave_component_updater::BraveComponent::Delegate*
