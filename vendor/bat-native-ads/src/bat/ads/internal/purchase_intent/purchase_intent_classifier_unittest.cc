@@ -63,9 +63,9 @@ std::vector<TestTriplets> kTestSearchQueries = {
   {"https://www.ecosia.org/search?q=audi+a6+review",
       audi_a6_segments, 2},
   {"https://www.kbb.com/bmw/6-series/2017/styles/?intent=trade-in-sell&mileage=100000",  // NOLINT
-      _funnel_site_segments, 1},
+      _automotive_segments, 1},
   {"https://www.cars.com/for-sale/searchresults.action/?mkId=20050&rd=10&searchSource=QUICK_FORM&zc=10001",  // NOLINT
-      _funnel_site_segments, 1},
+      _automotive_segments, 1},
   {"https://www.google.com/search?source=hp&ei=lY5BXpenN-qUlwSd7bvICQ&q=foo+bar&oq=foo+bar&gs_l=psy-ab.3..0l10.1452.2016..2109...0.0..0.57.381.7......0....1..gws-wiz.......0i131j0i10.CeBo7A4BiSM&ved=0ahUKEwjXxbuPvcfnAhVqyoUKHZ32DpkQ4dUDCAg&uact=5",  // NOLINT
       no_segments, 0},
   {"https://creators.brave.com/",
