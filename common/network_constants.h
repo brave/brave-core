@@ -41,7 +41,6 @@ extern const char kGoogleOAuthPattern[];
 extern const char kCookieHeader[];
 extern const char kRefererHeader[];
 extern const char kUserAgentHeader[];
-extern const char kBravePartnerHeader[];
 extern const char kBraveServicesKeyHeader[];
 
 extern const char kBittorrentMimeType[];

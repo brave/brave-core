@@ -116,7 +116,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
-    "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/shield_exceptions_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
@@ -293,12 +292,6 @@ test("brave_unit_tests") {
     sources += [
       "//brave/browser/brave_stats_updater_unittest.cc",
     ]
-    if (!is_android) {
-      sources += [
-        # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-        "//brave/browser/net/brave_referrals_network_delegate_helper_unittest.cc",
-      ]
-    }
   }
 
   if (enable_brave_webtorrent) {

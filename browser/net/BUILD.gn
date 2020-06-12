@@ -62,17 +62,6 @@ source_set("net") {
     "//url",
   ]
 
-  if (enable_brave_referrals) {
-    sources += [
-      "brave_referrals_network_delegate_helper.cc",
-      "brave_referrals_network_delegate_helper.h",
-    ]
-
-    deps += [
-      "//brave/components/brave_referrals/browser",
-    ]
-  }
-
   if (enable_brave_webtorrent) {
     deps += [
       "//brave/components/brave_webtorrent/browser/",

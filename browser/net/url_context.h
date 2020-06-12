@@ -87,7 +87,6 @@ struct BraveRequestInfo {
 
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
-  const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
   bool cancel_request_explicitly = false;
   std::string mock_data_url;
