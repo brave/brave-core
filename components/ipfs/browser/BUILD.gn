@@ -2,6 +2,8 @@ source_set("browser") {
   sources = [
     "brave_ipfs_client_updater.cc",
     "brave_ipfs_client_updater.h",
+    "ipfs_service.cc",
+    "ipfs_service.h",
   ]
 
   deps = [

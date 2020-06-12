@@ -1,0 +1,6 @@
+source_set("ipfs") {
+  sources = [
+    "ipfs_service_factory.cc",
+    "ipfs_service_factory.h",
+  ]
+}
