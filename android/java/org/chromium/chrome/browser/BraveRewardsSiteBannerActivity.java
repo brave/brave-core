@@ -323,8 +323,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             // blinded wallets)
             BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
             if (balance_obj != null) {
-                double braveFunds = balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) +
-                        balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED);
+                double braveFunds = ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_ANONYMOUS) && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) != null) ? balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) : .0) +
+                                    ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_BLINDED) && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED) != null) ? balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED) : .0);
                 if (braveFunds <= 0) {
                     note_part1 = getResources().getString(R.string.brave_ui_site_banner_connected_text);
                 }
