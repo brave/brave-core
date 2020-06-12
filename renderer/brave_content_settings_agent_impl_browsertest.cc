@@ -341,6 +341,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(nullptr, EvalJs(frame, "sessionStorage"));
   }
 
+  template <typename T>
+  void CheckLocalStorageThrows(T* frame) {
+    EXPECT_FALSE(ExecJs(frame, "localStorage"));
+    EXPECT_FALSE(ExecJs(frame, "sessionStorage"));
+  }
+
  private:
   GURL url_;
   GURL cross_site_url_;
@@ -884,7 +890,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateToPageWithIframe();
   CheckLocalStorageAccessible(contents());
 
-  // Local storage is accessible.
+  // Local storage is null, accessing it doesn't throw.
   NavigateIframe(cross_site_url());
   CheckLocalStorageNull(child_frame());
 
@@ -897,6 +903,17 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Local storage is accessible.
   NavigateIframe(cross_site_url());
   CheckLocalStorageAccessible(child_frame());
+
+  // Throws when used on a data url.
+  const GURL data_url("data:text/html,<title>Data URL</title>");
+  ui_test_utils::NavigateToURL(browser(), data_url);
+  CheckLocalStorageThrows(contents());
+
+  // Throws in a sandboxed iframe.
+  const GURL sandboxed(
+      embedded_test_server()->GetURL("a.com", "/sandboxed_iframe.html"));
+  ui_test_utils::NavigateToURL(browser(), sandboxed);
+  CheckLocalStorageThrows(child_frame());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockScripts) {
