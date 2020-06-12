@@ -101,6 +101,19 @@ void InitSystemRequestHandlerCallback() {
       ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
 }
 
+PrefService* BraveGetPrefs() {
+  return ProfileManager::GetActiveUserProfile()
+      ->GetOriginalProfile()
+      ->GetPrefs();
+}
+
+void InitGetPrefsCallback() {
+  prefs::BravePrefService::GetPrefsCallback get_prefs_callback =
+      base::Bind(BraveGetPrefs);
+  prefs::BravePrefService::GetInstance()->RegisterGetPrefsCallback(
+      get_prefs_callback);
+}
+
 }  // namespace
 
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
@@ -163,8 +176,7 @@ void BraveBrowserProcessImpl::Init() {
 
   InitSystemRequestHandlerCallback();
 
-  prefs::BravePrefService::GetInstance()->RegisterPrefService(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs());
+  InitGetPrefsCallback();
 }
 
 brave_component_updater::BraveComponent::Delegate*
