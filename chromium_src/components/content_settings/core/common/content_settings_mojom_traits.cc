@@ -8,6 +8,6 @@
       data.ReadFingerprintingRules(&out->fingerprinting_rules) && \
       data.ReadBraveShieldsRules(&out->brave_shields_rules) &&
 
-#include "../../../../../components/content_settings/core/common/content_settings_mojom_traits.cc"  // NOLINT
+#include "../../../../../../components/content_settings/core/common/content_settings_mojom_traits.cc"
 
 #undef BRAVE_READ_RENDERER_CONTENT_SETTING_RULES_DATA_VIEW

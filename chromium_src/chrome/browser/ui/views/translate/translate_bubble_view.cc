@@ -23,4 +23,4 @@
 #define BRAVE_TRANSLATE_BUBBLE_VIEW_ TranslateBubbleView
 #endif
 
-#include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc" // NOLINT
+#include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc"

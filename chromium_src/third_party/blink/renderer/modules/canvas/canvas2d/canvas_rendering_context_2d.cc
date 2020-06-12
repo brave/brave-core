@@ -9,5 +9,5 @@
   if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) \
     return MakeGarbageCollected<TextMetrics>();
 
-#include "../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc"
+#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc"
 #undef BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT

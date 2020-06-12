@@ -6,6 +6,6 @@
 #define BRAVE_IS_RENDERER_CONTENT_SETTING \
   content_type == ContentSettingsType::AUTOPLAY ||
 
-#include "../../../../../components/content_settings/core/common/content_settings.cc"  // NOLINT
+#include "../../../../../../components/content_settings/core/common/content_settings.cc"
 
 #undef BRAVE_IS_RENDERER_CONTENT_SETTING

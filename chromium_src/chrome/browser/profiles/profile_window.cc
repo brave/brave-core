@@ -6,7 +6,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 
 #define CreateAndSwitchToNewProfile CreateAndSwitchToNewProfile_ChromiumImpl
-#include "../../../../../../chrome/browser/profiles/profile_window.cc"
+#include "../../../../../chrome/browser/profiles/profile_window.cc"
 #undef CreateAndSwitchToNewProfile
 
 #include "base/bind.h"
