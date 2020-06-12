@@ -7,8 +7,6 @@
 
 #include "brave/common/pref_names.h"
 #include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
 #include "components/navigation_interception/navigation_params.h"
 #include "components/prefs/pref_service.h"
@@ -23,13 +21,15 @@ namespace {
 using navigation_interception::InterceptNavigationDelegate;
 using navigation_interception::NavigationParams;
 
-Profile* GetOriginalProfile() {
-  return ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
-}
-
 bool ShouldPlayVideoInBrowser(const GURL& url) {
-  if (!GetOriginalProfile()->GetPrefs()->GetBoolean(
-          kPlayYTVideoInBrowserEnabled)) {
+  PrefService* pref_service =
+      prefs::BravePrefService::GetInstance()->GetPrefs();
+  if (!pref_service) {
+    NOTREACHED();
+    return false;
+  }
+
+  if (!pref_service->GetBoolean(kPlayYTVideoInBrowserEnabled)) {
     return false;
   }
 
