@@ -9,7 +9,7 @@
 #define GetRequestType GetRequestType_ChromiumImpl
 #define GetPermissionType GetPermissionType_ChromiumImpl
 #define IsPermission IsPermission_ChromiumImpl
-#include "../../../../../components/permissions/permission_util.cc"
+#include "../../../../components/permissions/permission_util.cc"
 #undef IsPermission
 #undef GetPermissionType
 #undef GetRequestType

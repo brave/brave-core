@@ -235,4 +235,4 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
 
 }  // namespace brave
 
-#include "../../../../../../third_party/blink/renderer/core/dom/document.cc"
+#include "../../../../../../../third_party/blink/renderer/core/dom/document.cc"

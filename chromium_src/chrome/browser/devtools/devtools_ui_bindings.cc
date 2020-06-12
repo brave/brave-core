@@ -8,7 +8,7 @@
 #include "chrome/browser/devtools/devtools_ui_bindings.h"
 
 #define IsValidRemoteFrontendURL IsValidRemoteFrontendURL_ChromiumImpl
-#include "../../../../../../chrome/browser/devtools/devtools_ui_bindings.cc"
+#include "../../../../../chrome/browser/devtools/devtools_ui_bindings.cc"
 #undef IsValidRemoteFrontendURL
 
 bool DevToolsUIBindings::IsValidRemoteFrontendURL(const GURL& url) {
