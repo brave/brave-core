@@ -179,11 +179,12 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload_http) {
 }
 
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
+  brave::SetSafeBrowsingEndpointForTesting(true);
   const GURL url(
       "https://safebrowsing.googleapis.com/v4/"
       "threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");
   GURL::Replacements replacements;
-  replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+  replacements.SetHostStr(brave::kSafeBrowsingTestingEndpoint);
   const GURL expected_url(url.ReplaceComponents(replacements));
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -194,11 +195,12 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
 }
 
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
+  brave::SetSafeBrowsingEndpointForTesting(true);
   const GURL url(
       "https://safebrowsing.googleapis.com/v5/"
       "threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");
   GURL::Replacements replacements;
-  replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+  replacements.SetHostStr(brave::kSafeBrowsingTestingEndpoint);
   GURL expected_url(url.ReplaceComponents(replacements));
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
