@@ -11,6 +11,8 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
@@ -23,6 +25,8 @@
 #endif
 
 namespace brave {
+
+namespace {
 
 // Update server checks happen from the profile context for admin policy
 // installed extensions. Update server checks happen from the system context for
@@ -44,6 +48,32 @@ bool IsUpdaterURL(const GURL& gurl) {
       updater_patterns.begin(), updater_patterns.end(),
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
+
+bool RewriteBugReportingURL(const GURL& request_url, GURL* new_url) {
+  GURL url("https://github.com/brave/brave-browser/issues/new");
+  std::string query = "title=Crash%20Report&labels=crash";
+  // We are expecting 3 query keys: comment, template, and labels
+  base::StringPairs pairs;
+  if (!base::SplitStringIntoKeyValuePairs(request_url.query(), '=', '&',
+                                          &pairs) || pairs.size() != 3) {
+      return false;
+  }
+  for (const auto& pair : pairs) {
+    if (pair.first == "comment") {
+      query += "&body=" + pair.second;
+      base::ReplaceSubstringsAfterOffset(&query, 0, "Chrome", "Brave");
+    } else if (pair.first != "template" && pair.first != "labels") {
+      return false;
+    }
+  }
+
+  GURL::Replacements replacements;
+  replacements.SetQueryStr(query);
+  *new_url = url.ReplaceComponents(replacements);
+  return true;
+}
+
+}  // namespace
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
@@ -67,6 +97,9 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kChromeCastPrefix);
   static URLPattern clients4_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kClients4Prefix);
+  static URLPattern bugsChromium_pattern(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      "*://bugs.chromium.org/p/chromium/issues/entry?*");
 
   if (IsUpdaterURL(request_url)) {
     replacements.SetQueryStr(request_url.query_piece());
@@ -95,6 +128,11 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
     replacements.SetHostStr(kBraveClients4Proxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
+  }
+
+  if (bugsChromium_pattern.MatchesURL(request_url)) {
+    if (RewriteBugReportingURL(request_url, new_url))
+      return net::OK;
   }
 
   return net::OK;
