@@ -570,16 +570,18 @@ void AdsServiceImpl::OnInitialize(
     const int32_t result) {
   if (result != ads::Result::SUCCESS) {
     VLOG(0) << "Failed to initialize ads";
+
     is_initialized_ = false;
-  } else {
-    is_initialized_ = true;
-
-    SetAdsServiceForNotificationHandler();
-
-    MaybeViewAdNotification();
-
-    StartCheckIdleStateTimer();
+    return;
   }
+
+  is_initialized_ = true;
+
+  SetAdsServiceForNotificationHandler();
+
+  MaybeViewAdNotification();
+
+  StartCheckIdleStateTimer();
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
@@ -635,6 +637,11 @@ void AdsServiceImpl::MaybeStart(
     return;
   }
 
+  if (!IsEnabled()) {
+    Stop();
+    return;
+  }
+
   if (should_restart) {
     VLOG(1) << "Restarting ads service";
     Shutdown();
@@ -645,16 +652,12 @@ void AdsServiceImpl::MaybeStart(
     return;
   }
 
-  if (IsEnabled()) {
-    if (should_restart) {
-      base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
-          base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
-          base::TimeDelta::FromSeconds(1));
-    } else {
-      Start();
-    }
+  if (should_restart) {
+    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
+        base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
+        base::TimeDelta::FromSeconds(1));
   } else {
-    Stop();
+    Start();
   }
 }
 
