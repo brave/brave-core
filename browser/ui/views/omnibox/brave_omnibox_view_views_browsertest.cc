@@ -13,6 +13,7 @@
 #include "url/gurl.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/strings/grit/ui_strings.h"
+#include "ui/views/controls/textfield/textfield.h"
 
 class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
  public:
@@ -29,7 +30,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   ui_test_utils::NavigateToURL(browser(), GURL(test_url));
 
   omnibox_view()->SelectAll(true);
-  omnibox_view()->ExecuteCommand(IDS_APP_COPY, 0);
+  omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
   std::string text_from_clipboard;
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
