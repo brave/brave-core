@@ -5,6 +5,6 @@
 
 // Build with content library.
 #include "brave/browser/brave_browser_main_loop.h"
-#include "brave/browser/brave_browser_main_loop.cc"  // NOLINT
+#include "brave/browser/brave_browser_main_loop.cc"
 
-#include "../../../content/browser/browser_main_loop.cc"  // NOLINT
+#include "../../../../content/browser/browser_main_loop.cc"

@@ -19,7 +19,7 @@
         int button_context = style::CONTEXT_BUTTON_MD); \
       static std::unique_ptr<MdTextButton> Create
 
-#include "../../../../../ui/views/controls/button/md_text_button.h"
+#include "../../../../../../ui/views/controls/button/md_text_button.h"
 #undef Create
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_

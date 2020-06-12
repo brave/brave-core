@@ -10,5 +10,5 @@
     return ScriptPromise::CastUndefined(script_state); \
   }
 
-#include "../../../../../../third_party/blink/renderer/modules/mediastream/media_devices.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/mediastream/media_devices.cc"
 #undef BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES

@@ -9,7 +9,7 @@
 
 // Override button creation to return BraveTextButton instances
 #define Create Create_ChromiumImpl
-#include "../../../../../ui/views/controls/button/md_text_button.cc"
+#include "../../../../../../ui/views/controls/button/md_text_button.cc"
 #undef Create
 
 namespace {

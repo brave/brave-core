@@ -11,7 +11,7 @@
   bool IsAutoplayAllowedPerSettings() const; \
                                              \
  public:
-#include "../../../../../third_party/blink/renderer/core/html/media/autoplay_policy.h"  // NOLINT
+#include "../../../../../../../../third_party/blink/renderer/core/html/media/autoplay_policy.h"
 
 #undef BRAVE_AUTOPLAY_POLICY_H
 

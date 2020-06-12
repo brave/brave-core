@@ -15,6 +15,6 @@
           .GetAudioFarblingCallback(                      \
               To<LocalDOMWindow>(context)->document()->GetFrame());
 
-#include "../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
 
 #undef BRAVE_ANALYSERNODE_CONSTRUCTOR

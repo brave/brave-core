@@ -18,6 +18,6 @@
 // define BRAVE_TRANSLATE_BUBBLE_VIEW_H_
 
 class BraveTranslateBubbleView;
-#include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.h"
+#include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
