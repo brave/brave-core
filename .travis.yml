@@ -20,7 +20,6 @@ cache:
 env:
   - TEST_SUITE=lint
   - TEST_SUITE=build-storybook
-  - TEST_SUITE=test-security
   - TEST_SUITE=test-unit
   - TEST_SUITE=pep8
 
