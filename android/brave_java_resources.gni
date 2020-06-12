@@ -56,7 +56,6 @@ brave_java_resources = [
   "java/res/drawable/ic_chevron_right.xml",
   "java/res/drawable/rounded_holo.xml",
   "java/res/drawable/wallet_verify_button.xml",
-  "java/res/drawable/wallet_verify_button_disabled.xml",
   "java/res/drawable/ic_help.xml",
   "java/res/drawable/plain_checkbox.xml",
   "java/res/drawable/rect_round_corners_12.xml",
