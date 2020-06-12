@@ -23,7 +23,7 @@
   IsPermission_ChromiumImpl(ContentSettingsType type); \
   static bool IsPermission
 
-#include "../../../../../components/permissions/permission_util.h"
+#include "../../../../components/permissions/permission_util.h"
 #undef IsPermission
 #undef GetPermissionType
 #undef GetRequestType

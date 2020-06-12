@@ -14,7 +14,7 @@
   bool isPointInStroke(ScriptState*, const double x, const double y);       \
   bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y);
 
-#include "../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
+#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
 #undef BRAVE_BASE_RENDERING_CONTEXT_2D_H
 

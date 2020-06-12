@@ -50,7 +50,7 @@
         String(brave::BraveSessionCache::From(canvas()->GetDocument()) \
                    .GenerateRandomString("UNMASKED_VENDOR_WEBGL", 8)));
 
-#include "../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"
 #undef BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER
 #undef BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR
 #undef BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING

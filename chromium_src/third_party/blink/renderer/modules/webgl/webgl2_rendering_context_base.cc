@@ -9,5 +9,5 @@
   if (canvas() && !AllowFingerprinting(canvas()->GetDocument().GetFrame())) \
     return ScriptValue::CreateNull(script_state->GetIsolate());
 
-#include "../../../../../../third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc"
 #undef BRAVE_WEBGL2_RENDERING_CONTEXT_BASE

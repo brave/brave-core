@@ -9,7 +9,7 @@
 #define BRAVE_IMAGE_DATA_BUFFER_H \
   sk_sp<SkImage> RetainedImage() { return retained_image_; }
 
-#include "../../../../../../third_party/blink/renderer/platform/graphics/image_data_buffer.h"
+#include "../../../../../../../third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
 #undef BRAVE_IMAGE_DATA_BUFFER_H
 

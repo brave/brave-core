@@ -19,7 +19,7 @@
     return true;                                                       \
   }
 
-#include "../../../../../third_party/blink/renderer/core/html/media/autoplay_policy.cc"  // NOLINT
+#include "../../../../../../../../third_party/blink/renderer/core/html/media/autoplay_policy.cc"
 
 #undef BRAVE_AUTOPLAY_POLICY_IS_GESTURE_NEEDED_FOR_PLAYBACK
 #undef BRAVE_AUTOPLAY_POLICY_IS_AUTOPLAY_ALLOWED_PER_SETTINGS

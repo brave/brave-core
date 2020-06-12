@@ -8,7 +8,7 @@
 
 #define ShouldTrackURLForRestore ShouldTrackURLForRestore_ChromiumImpl
 
-#include "../../../../chrome/browser/sessions/session_common_utils.cc"
+#include "../../../../../chrome/browser/sessions/session_common_utils.cc"
 
 #undef ShouldTrackURLForRestore
 
