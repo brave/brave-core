@@ -132,6 +132,16 @@ Result CatalogState::FromJson(
         ad_conversion.observation_window =
             conversion["observationWindow"].GetUint();
 
+        base::Time end_at_timestamp;
+        if (!base::Time::FromUTCString(campaign_info.end_at.c_str(),
+            &end_at_timestamp)) {
+          continue;
+        }
+
+        base::Time expiry_timestamp = end_at_timestamp +
+            base::TimeDelta::FromDays(ad_conversion.observation_window);
+        ad_conversion.expiry_timestamp = expiry_timestamp.ToDoubleT();
+
         creative_set_info.ad_conversions.push_back(ad_conversion);
       }
 
