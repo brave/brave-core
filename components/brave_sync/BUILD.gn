@@ -71,10 +71,7 @@ source_set("prefs") {
   ]
 }
 
-source_set("brave_sync") {
-  sources = [
-  ]
-
+group("brave_sync") {
   deps = [
     ":crypto",
     ":features",

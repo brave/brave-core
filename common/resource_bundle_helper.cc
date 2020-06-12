@@ -10,10 +10,12 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
-#include "components/nacl/common/nacl_switches.h"
-#include "content/public/common/content_switches.h"
 #include "services/service_manager/embedder/switches.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if !defined(OS_IOS)
+#include "content/public/common/content_switches.h"
+#endif
 
 #if defined(OS_MACOSX)
 #include "base/mac/foundation_util.h"
@@ -87,24 +89,25 @@ void InitializeResourceBundle() {
 // and resources loaded.
 bool SubprocessNeedsResourceBundle() {
   auto cmd = *base::CommandLine::ForCurrentProcess();
+#if defined(OS_IOS)
+  return false;
+#else
   std::string process_type = cmd.GetSwitchValueASCII(switches::kProcessType);
   return
 #if defined(OS_POSIX) && !defined(OS_MACOSX)
       // The zygote process opens the resources for the renderers.
       process_type == service_manager::switches::kZygoteProcess ||
-#endif
+#endif  // defined(OS_POSIX) && !defined(OS_MACOSX)
 #if defined(OS_MACOSX)
       // Mac needs them too for scrollbar related images and for sandbox
       // profiles.
-#if !defined(DISABLE_NACL)
-      process_type == switches::kNaClLoaderProcess ||
-#endif
       process_type == switches::kPpapiPluginProcess ||
       process_type == switches::kPpapiBrokerProcess ||
       process_type == switches::kGpuProcess ||
-#endif
+#endif  // defined(OS_MACOSX)
       process_type == switches::kRendererProcess ||
       process_type == switches::kUtilityProcess;
+#endif  // defined(OS_IOS)
 }
 
 }  // namespace brave
