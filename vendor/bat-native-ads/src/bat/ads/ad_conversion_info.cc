@@ -21,7 +21,8 @@ bool AdConversionInfo::operator==(
   return creative_set_id == rhs.creative_set_id &&
       type == rhs.type &&
       url_pattern == rhs.url_pattern &&
-      observation_window == rhs.observation_window;
+      observation_window == rhs.observation_window &&
+      expiry_timestamp == rhs.expiry_timestamp;
 }
 
 bool AdConversionInfo::operator!=(
@@ -65,6 +66,10 @@ Result AdConversionInfo::FromJson(
     observation_window = document["observation_window"].GetUint();
   }
 
+  if (document.HasMember("expiry_timestamp")) {
+    expiry_timestamp = document["expiry_timestamp"].GetUint64();
+  }
+
   return SUCCESS;
 }
 
@@ -82,6 +87,9 @@ void SaveToJson(JsonWriter* writer, const AdConversionInfo& info) {
 
   writer->String("observation_window");
   writer->Uint(info.observation_window);
+
+  writer->String("expiry_timestamp");
+  writer->Uint64(info.expiry_timestamp);
 
   writer->EndObject();
 }

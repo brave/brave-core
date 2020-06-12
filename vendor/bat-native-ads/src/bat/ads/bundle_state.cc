@@ -5,6 +5,7 @@
 
 #include "bat/ads/bundle_state.h"
 
+#include "base/time/time.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/url_util.h"
 
@@ -139,6 +140,11 @@ Result BundleState::FromJson(
             ad_conversion["observationWindow"].GetUint();
       }
 
+      if (ad_conversion.HasMember("expiryTimestamp")) {
+        info.expiry_timestamp =
+            ad_conversion["expiryTimestamp"].GetUint64();
+      }
+
       new_ad_conversions.push_back(info);
     }
   }
@@ -238,6 +244,9 @@ void SaveToJson(
 
     writer->String("observationWindow");
     writer->Uint(ad_conversion.observation_window);
+
+    writer->String("expiryTimestamp");
+    writer->Uint64(ad_conversion.expiry_timestamp);
 
     writer->EndObject();
   }

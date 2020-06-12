@@ -25,8 +25,8 @@ namespace brave_ads {
 
 namespace {
 
-const int kCurrentVersionNumber = 6;
-const int kCompatibleVersionNumber = 6;
+const int kCurrentVersionNumber = 7;
+const int kCompatibleVersionNumber = 7;
 
 }  // namespace
 
@@ -342,24 +342,27 @@ bool BundleStateDatabase::CreateAdConversionsTable() {
   // new constraints to the schema
   const std::string sql = base::StringPrintf(
       "CREATE TABLE %s "
-          "(id INTEGER PRIMARY KEY, "
-          "creative_set_id LONGVARCHAR NOT NULL, "
+          "(creative_set_id LONGVARCHAR NOT NULL, "
           "type LONGVARCHAR NOT NULL, "
           "url_pattern LONGVARCHAR NOT NULL, "
-          "observation_window INTEGER NOT NULL)",
+          "observation_window INTEGER NOT NULL, "
+          "expiry_timestamp TIMESTAMP, "
+          "UNIQUE(creative_set_id, type, url_pattern), "
+          "PRIMARY KEY(creative_set_id, type, url_pattern))",
       table_name);
 
   return GetDB().Execute(sql.c_str());
 }
 
-bool BundleStateDatabase::TruncateAdConversionsTable() {
+bool BundleStateDatabase::PurgeExpiredAdConversions() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
 
   const std::string sql =
-      "DELETE FROM ad_conversions";
+      "DELETE FROM ad_conversions "
+          "WHERE strftime('%s','now') >= expiry_timestamp";
 
   sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
@@ -378,16 +381,18 @@ bool BundleStateDatabase::InsertOrUpdateAdConversion(
           "(creative_set_id, "
           "type, "
           "url_pattern, "
-          "observation_window) VALUES (%s)",
-      CreateBindingParameterPlaceholders(4).c_str());
+          "observation_window, "
+          "expiry_timestamp) VALUES (%s)",
+      CreateBindingParameterPlaceholders(5).c_str());
 
   sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   statement.BindString(0, info.creative_set_id);
   statement.BindString(1, info.type);
   statement.BindString(2, info.url_pattern);
-  // Use BindInt64 for uint32_t types to avoid uint32_t to int32_t cast.
+  // Use BindInt64 for uint32_t types to avoid uint32_t to int32_t cast
   statement.BindInt64(3, info.observation_window);
+  statement.BindInt64(4, info.expiry_timestamp);
 
   return statement.Run();
 }
@@ -403,11 +408,10 @@ bool BundleStateDatabase::SaveBundleState(
     return false;
   }
 
-  // We are completely replacing the database here so truncate all the tables
   if (!TruncateCategoriesTable() ||
       !TruncateCreativeAdNotificationCategoriesTable() ||
       !TruncateCreativeAdNotificationsTable() ||
-      !TruncateAdConversionsTable()) {
+      !PurgeExpiredAdConversions()) {
     GetDB().RollbackTransaction();
     return false;
   }
@@ -525,7 +529,8 @@ bool BundleStateDatabase::GetAdConversions(
           "ac.creative_set_id, "
           "ac.type, "
           "ac.url_pattern, "
-          "ac.observation_window "
+          "ac.observation_window, "
+          "ac.expiry_timestamp "
       "FROM ad_conversions AS ac";
 
   sql::Statement statement(db_.GetUniqueStatement(sql.c_str()));
@@ -536,6 +541,7 @@ bool BundleStateDatabase::GetAdConversions(
     info.type = statement.ColumnString(1);
     info.url_pattern = statement.ColumnString(2);
     info.observation_window = statement.ColumnInt(3);
+    info.expiry_timestamp = statement.ColumnInt64(4);
     ad_conversions->emplace_back(info);
   }
 
@@ -639,6 +645,11 @@ bool BundleStateDatabase::Migrate() {
 
       case 5: {
         success = MigrateV5toV6();
+        break;
+      }
+
+      case 6: {
+        success = MigrateV6toV7();
         break;
       }
 
@@ -779,6 +790,26 @@ bool BundleStateDatabase::MigrateV5toV6() {
           "PRIMARY KEY(region, uuid))";
 
   return GetDB().Execute(create_ad_info_table_sql.c_str());
+}
+
+bool BundleStateDatabase::MigrateV6toV7() {
+  const std::string drop_ad_conversions_table_sql =
+      "DROP TABLE IF EXISTS ad_conversions";
+  if (!GetDB().Execute(drop_ad_conversions_table_sql.c_str())) {
+    return false;
+  }
+
+  const std::string create_ad_conversions_table_sql =
+      "CREATE TABLE ad_conversions "
+          "(creative_set_id LONGVARCHAR NOT NULL, "
+          "type LONGVARCHAR NOT NULL, "
+          "url_pattern LONGVARCHAR NOT NULL, "
+          "observation_window INTEGER NOT NULL, "
+          "expiry_timestamp TIMESTAMP, "
+          "UNIQUE(creative_set_id, type, url_pattern), "
+          "PRIMARY KEY(creative_set_id, type, url_pattern))";
+
+  return GetDB().Execute(create_ad_conversions_table_sql.c_str());
 }
 
 }  // namespace brave_ads
