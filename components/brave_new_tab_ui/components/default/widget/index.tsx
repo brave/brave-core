@@ -22,6 +22,7 @@ export interface WidgetProps {
 }
 
 export interface WidgetState {
+  hoveringOverMenu: boolean
   widgetMenuPersist: boolean
 }
 
@@ -30,6 +31,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     constructor (props: P & WidgetProps) {
       super(props)
       this.state = {
+        hoveringOverMenu: false,
         widgetMenuPersist: false
       }
     }
@@ -39,11 +41,23 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     }
 
     persistWidgetHover = () => {
-      this.setState({ widgetMenuPersist: true })
+      this.setState({
+        hoveringOverMenu: true,
+        widgetMenuPersist: true
+      })
     }
 
     unpersistWidgetHover = () => {
-      this.setState({ widgetMenuPersist: false })
+      if (!this.state.hoveringOverMenu) {
+        this.setState({ widgetMenuPersist: false })
+      }
+    }
+
+    disableMenu = () => {
+      this.setState({
+        hoveringOverMenu: false,
+        widgetMenuPersist: false
+      })
     }
 
     render () {
@@ -88,6 +102,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             hideWidget={hideWidget as HideWidgetFunction}
             unpersistWidgetHover={this.unpersistWidgetHover}
             onMouseEnter={this.persistWidgetHover}
+            onMouseLeave={this.disableMenu}
           />
           }
         </StyledWidgetContainer>
