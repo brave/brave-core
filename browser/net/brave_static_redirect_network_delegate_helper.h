@@ -7,12 +7,15 @@
 #define BRAVE_BROWSER_NET_BRAVE_STATIC_REDIRECT_NETWORK_DELEGATE_HELPER_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/net/url_context.h"
 
 struct BraveRequestInfo;
 
 namespace brave {
+
+extern const char kSafeBrowsingTestingEndpoint[];
 
 int OnBeforeURLRequest_StaticRedirectWork(
     const ResponseCallback& next_callback,
@@ -21,6 +24,8 @@ int OnBeforeURLRequest_StaticRedirectWork(
 int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     const GURL& request_url,
     GURL* new_url);
+
+void SetSafeBrowsingEndpointForTesting(bool testing);
 
 }  // namespace brave
 

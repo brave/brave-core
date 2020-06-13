@@ -5,7 +5,9 @@
 
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 
+#include <algorithm>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "brave/browser/translate/buildflags/buildflags.h"
@@ -14,6 +16,24 @@
 #include "extensions/common/url_pattern.h"
 
 namespace brave {
+
+const char kSafeBrowsingTestingEndpoint[] = "test.safebrowsing.com";
+
+namespace {
+
+bool g_safebrowsing_api_endpoint_for_testing_ = false;
+
+std::string GetSafeBrowsingEndpoint() {
+  if (g_safebrowsing_api_endpoint_for_testing_)
+    return kSafeBrowsingTestingEndpoint;
+  return SAFEBROWSING_ENDPOINT;
+}
+
+}  // namespace
+
+void SetSafeBrowsingEndpointForTesting(bool testing) {
+  g_safebrowsing_api_endpoint_for_testing_ = testing;
+}
 
 int OnBeforeURLRequest_StaticRedirectWork(
     const ResponseCallback& next_callback,
@@ -65,8 +85,9 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (safeBrowsing_pattern.MatchesHost(request_url)) {
-    replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+  if (!GetSafeBrowsingEndpoint().empty() &&
+      safeBrowsing_pattern.MatchesHost(request_url)) {
+    replacements.SetHostStr(GetSafeBrowsingEndpoint());
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
