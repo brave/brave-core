@@ -58,19 +58,6 @@ def _OverrideVersionKey(plist, brave_version):
     plist['CFBundleVersion'] = str(adjusted_minor) + '.' + version_values[2]
 
 
-def  _RegisterBraveSchemeURL(plist, brave_channel):
-  # Only stable channel register brave scheme url type.
-  if brave_channel:
-    return
-
-  if 'CFBundleURLTypes' in plist:
-    brave_url_type = {
-      'CFBundleURLName': 'Brave scheme URL',
-      'CFBundleURLSchemes': ['brave'],
-    }
-    plist['CFBundleURLTypes'].append(brave_url_type)
-
-
 def Main(argv):
   parser = optparse.OptionParser('%prog [options]')
   parser.add_option('--plist', dest='plist_path', action='store',
@@ -116,8 +103,6 @@ def Main(argv):
 
   if options.brave_channel:
     plist['KSChannelID'] = options.brave_channel
-
-  _RegisterBraveSchemeURL(plist, options.brave_channel)
 
   plist['CrProductDirName'] = options.brave_product_dir_name
 
