@@ -25,11 +25,12 @@ const char kComponentUpdaterProxy[] = "https://componentupdater.brave.com";
 
 TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
      ModifyComponentUpdaterURL) {
+  brave::SetUpdateURLHostForTesting(true);
   const std::string query_string("?foo=bar");
   const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   const GURL expected_url(
-      std::string(kBraveUpdatesExtensionsProdEndpoint + query_string));
+      std::string(brave::kUpdaterTestingEndpoint + query_string));
 
   int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);
@@ -39,13 +40,14 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
 
 TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
      ModifyComponentUpdaterURLDev) {
+  brave::SetUpdateURLHostForTesting(true);
   base::CommandLine::ForCurrentProcess()->AppendSwitch(
       switches::kUseGoUpdateDev);
   const std::string query_string("?foo=bar");
   const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   const GURL expected_url(
-      std::string(kBraveUpdatesExtensionsDevEndpoint + query_string));
+      std::string(brave::kUpdaterTestingEndpoint + query_string));
 
   int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);

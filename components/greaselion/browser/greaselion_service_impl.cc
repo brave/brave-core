@@ -89,11 +89,11 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
       *base::CommandLine::ForCurrentProcess();
   if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
-    crypto::SHA256HashString(kBraveUpdatesExtensionsDevEndpoint + script_name,
+    crypto::SHA256HashString(UPDATER_DEV_ENDPOINT + script_name,
                              raw,
                              crypto::kSHA256Length);
   } else {
-    crypto::SHA256HashString(kBraveUpdatesExtensionsProdEndpoint + script_name,
+    crypto::SHA256HashString(UPDATER_PROD_ENDPOINT + script_name,
                              raw,
                              crypto::kSHA256Length);
   }

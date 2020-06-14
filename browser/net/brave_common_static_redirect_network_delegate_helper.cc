@@ -26,7 +26,24 @@
 
 namespace brave {
 
+const char kUpdaterTestingEndpoint[] = "test.updater.com";
+
 namespace {
+
+bool g_updater_url_host_for_testing_ = false;
+
+std::string GetUpdateURLHost() {
+  if (g_updater_url_host_for_testing_)
+    return kUpdaterTestingEndpoint;
+
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
+      !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
+    return UPDATER_PROD_ENDPOINT;
+  }
+  return UPDATER_DEV_ENDPOINT;
+}
 
 // Update server checks happen from the profile context for admin policy
 // installed extensions. Update server checks happen from the system context for
@@ -75,6 +92,10 @@ bool RewriteBugReportingURL(const GURL& request_url, GURL* new_url) {
 
 }  // namespace
 
+void SetUpdateURLHostForTesting(bool testing) {
+  g_updater_url_host_for_testing_ = testing;
+}
+
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
@@ -102,16 +123,10 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
       "*://bugs.chromium.org/p/chromium/issues/entry?*");
 
   if (IsUpdaterURL(request_url)) {
-    replacements.SetQueryStr(request_url.query_piece());
-    const base::CommandLine& command_line =
-        *base::CommandLine::ForCurrentProcess();
-    if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
-        !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
-      *new_url = GURL(kBraveUpdatesExtensionsProdEndpoint)
-                            .ReplaceComponents(replacements);
-    } else {
-      *new_url = GURL(kBraveUpdatesExtensionsDevEndpoint)
-                            .ReplaceComponents(replacements);
+    auto update_host = GetUpdateURLHost();
+    if (!update_host.empty()) {
+      replacements.SetQueryStr(request_url.query_piece());
+      *new_url = GURL(update_host).ReplaceComponents(replacements);
     }
     return net::OK;
   }
