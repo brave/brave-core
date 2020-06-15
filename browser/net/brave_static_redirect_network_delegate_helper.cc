@@ -56,6 +56,9 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
                                          kSafeBrowsingPrefix);
   static URLPattern safebrowsingfilecheck_pattern(URLPattern::SCHEME_HTTPS,
                                          kSafeBrowsingFileCheckPrefix);
+
+  // To-Do (@jumde) - Update the naming for the variables below
+  // https://github.com/brave/brave-browser/issues/10314
   static URLPattern crlSet_pattern1(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix1);
   static URLPattern crlSet_pattern2(
@@ -73,6 +76,13 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   static URLPattern googleDl_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       "*://dl.google.com/*");
+
+  static URLPattern widevine_gvt1_pattern(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      kWidevineGvt1Prefix);
+  static URLPattern widevine_google_dl_pattern(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      kWidevineGoogleDlPrefix);
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
@@ -144,14 +154,16 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (gvt1_pattern.MatchesURL(request_url)) {
+  if (gvt1_pattern.MatchesURL(request_url) &&
+      !widevine_gvt1_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (googleDl_pattern.MatchesURL(request_url)) {
+  if (googleDl_pattern.MatchesURL(request_url) &&
+      !widevine_google_dl_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
     *new_url = request_url.ReplaceComponents(replacements);

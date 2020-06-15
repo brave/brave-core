@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/strings/string_util.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/network_constants.h"
@@ -237,6 +238,33 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGoogleDl) {
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
   EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(rc, net::OK);
+}
+
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, DontModifyGvt1ForWidevine) {
+  const GURL url(
+      "http://r2---sn-n4v7sn7y.gvt1.com/edgedl/chromewebstore/"
+      "L2Nocm9tZV9leHRlbnNpb24vYmxvYnMvYjYxQUFXaFBmeUtPbVFUYUh"
+      "mRGV0MS1Wdw/4.10.1610.0_oimompecagnajdejgnnjijobebaeigek"
+      ".crx");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc =
+      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
+  EXPECT_EQ(request_info->new_url_spec, "");
+  EXPECT_EQ(rc, net::OK);
+}
+
+TEST(BraveStaticRedirectNetworkDelegateHelperTest,
+     DontModifyGoogleDlForWidevine) {
+  const GURL url(
+      "http://dl.google.com/edgedl/chromewebstore/"
+      "L2Nocm9tZV9leHRlbnNpb24vYmxvYnMvYjYxQUFXaFBmeUtPbVFUYUh"
+      "mRGV0MS1Wdw/4.10.1610.0_oimompecagnajdejgnnjijobebaeigek"
+      ".crx");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc =
+      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
+  EXPECT_EQ(request_info->new_url_spec, "");
   EXPECT_EQ(rc, net::OK);
 }
 
