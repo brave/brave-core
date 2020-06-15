@@ -300,6 +300,7 @@
 		27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */; };
 		2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727369A24A65F650096DCB9 /* UIActionExtensions.swift */; };
 		2726636924944BFA0056CFE1 /* BraveTodayWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726636824944BFA0056CFE1 /* BraveTodayWelcomeView.swift */; };
+		2726637324981B600056CFE1 /* BraveTodaySectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		27325A5724097DB900790DC6 /* LedgerInitializationFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */; };
 		27325A622410586D00790DC6 /* SKUPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A612410586D00790DC6 /* SKUPurchaseViewController.swift */; };
@@ -1676,6 +1677,7 @@
 		27201F0324589B9800C19DD1 /* NewTabPageNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageNotifications.swift; sourceTree = "<group>"; };
 		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
 		2726636824944BFA0056CFE1 /* BraveTodayWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodayWelcomeView.swift; sourceTree = "<group>"; };
+		2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodaySectionHeaderView.swift; sourceTree = "<group>"; };
 		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
 		27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerInitializationFailedView.swift; sourceTree = "<group>"; };
 		27325A612410586D00790DC6 /* SKUPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKUPurchaseViewController.swift; sourceTree = "<group>"; };
@@ -3716,6 +3718,7 @@
 				27A1ABFD24855C1700344503 /* FeedItemView.swift */,
 				27A1ABF924855C1700344503 /* Cards */,
 				27A1AC0A2485A0CC00344503 /* Composer */,
+				2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */,
 			);
 			path = "Brave Today";
 			sourceTree = "<group>";
@@ -6691,6 +6694,7 @@
 				4422D4C821BFFB7600BF1855 /* env.cc in Sources */,
 				4422D56321BFFB7F00BF1855 /* compile.cc in Sources */,
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
+				2726637324981B600056CFE1 /* BraveTodaySectionHeaderView.swift in Sources */,
 				27C461DE211B76500088A441 /* ShieldsView.swift in Sources */,
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */,

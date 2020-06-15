@@ -19,6 +19,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         }
     }
     
+    @objc private func tappedBraveTodaySettings() {
+        
+    }
+    
     func registerCells(to collectionView: UICollectionView) {
         collectionView.register(FeedCardCell<BraveTodayWelcomeView>.self)
         collectionView.register(FeedCardCell<HeadlineCardView>.self)

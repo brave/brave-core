@@ -126,7 +126,7 @@ class VerticalFeedGroupView: FeedGroupView, FeedCardContent {
 /// A group of feed items numbered and placed vertically in a card
 class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
     required init() {
-        super.init(axis: .vertical, feedLayout: .verticalNoImage, transformItems: { views in
+        super.init(axis: .vertical, feedLayout: .basic, transformItems: { views in
             // Turn the usual feed group item into a numbered item
             views.enumerated().map { view in
                 UIStackView().then {
