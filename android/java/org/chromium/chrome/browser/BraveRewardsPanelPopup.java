@@ -1577,6 +1577,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private void SetVerifyWalletControl(@WalletStatus final int status) {
         Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
         boolean annonwallet = BraveRewardsHelper.isAnonWallet();
+        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor editor = sharedPref.edit();
         if (!annonwallet) {
             int rightDrawable = 0;
             int leftDrawable = 0;
@@ -1584,19 +1586,27 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
+                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
+                editor.apply();
+
                 rightDrawable = R.drawable.disclosure;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.CONNECTED:
+                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
+                editor.apply();
+
+                rightDrawable = R.drawable.verified_disclosure;
+                text = R.string.brave_ui_wallet_button_unverified;
+                btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
+                break;
             case BraveRewardsExternalWallet.PENDING:
                 rightDrawable = R.drawable.verified_disclosure;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.VERIFIED:
-                SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-                SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
                 editor.apply();
 
@@ -1659,6 +1669,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             public void onClick(View v) {
                 switch (status) {
                 case BraveRewardsExternalWallet.NOT_CONNECTED:
+                case BraveRewardsExternalWallet.CONNECTED:
+                case BraveRewardsExternalWallet.PENDING:
+                case BraveRewardsExternalWallet.VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
                         Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
                     } else {
@@ -1669,16 +1682,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                         Intent intent = BuildVerifyWalletActivityIntent(status);
                         mActivity.startActivityForResult(intent, requestCode);
                     }
-                    break;
-                case BraveRewardsExternalWallet.CONNECTED:
-                case BraveRewardsExternalWallet.PENDING:
-                case BraveRewardsExternalWallet.VERIFIED:
-                    int requestCode =
-                        (status == BraveRewardsExternalWallet.NOT_CONNECTED) ?
-                        BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE :
-                        BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
-                    Intent intent = BuildVerifyWalletActivityIntent(status);
-                    mActivity.startActivityForResult(intent, requestCode);
                     break;
                 case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                 case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
