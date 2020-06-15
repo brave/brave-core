@@ -20,11 +20,14 @@ std::string BraveServicesKeyForTesting() {
 }
 
 void AddBraveServicesKeyHeader(network::ResourceRequest* url_request) {
-  static URLPattern proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                  kBraveProxyPattern);
-  if (proxy_pattern.MatchesURL(url_request->url)) {
-      url_request->headers.SetHeaderIfMissing(kBraveServicesKeyHeader,
-                                              BRAVE_SERVICES_KEY);
+  static URLPattern brave_proxy_pattern(URLPattern::SCHEME_HTTPS,
+                                        kBraveProxyPattern);
+  static URLPattern bravesoftware_proxy_pattern(URLPattern::SCHEME_HTTPS,
+                                                kBraveSoftwareProxyPattern);
+  if (brave_proxy_pattern.MatchesURL(url_request->url) ||
+      bravesoftware_proxy_pattern.MatchesURL(url_request->url)) {
+    url_request->headers.SetHeaderIfMissing(kBraveServicesKeyHeader,
+                                            BRAVE_SERVICES_KEY);
   }
   return;
 }
