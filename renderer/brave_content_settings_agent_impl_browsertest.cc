@@ -345,6 +345,24 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(ExecScriptGetStr(kCookieScript, frame), cookie);
   }
 
+  template <typename T>
+  void CheckLocalStorageAccessible(T* frame) {
+    EXPECT_EQ(1, EvalJs(frame, "localStorage.test = 1"));
+    EXPECT_EQ(1, EvalJs(frame, "sessionStorage.test = 1"));
+  }
+
+  template <typename T>
+  void CheckLocalStorageNull(T* frame) {
+    EXPECT_EQ(nullptr, EvalJs(frame, "localStorage"));
+    EXPECT_EQ(nullptr, EvalJs(frame, "sessionStorage"));
+  }
+
+  template <typename T>
+  void CheckLocalStorageThrows(T* frame) {
+    EXPECT_FALSE(ExecJs(frame, "localStorage"));
+    EXPECT_FALSE(ExecJs(frame, "sessionStorage"));
+  }
+
  private:
   GURL url_;
   GURL cross_site_url_;
@@ -930,6 +948,59 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   NavigateIframe(cross_site_url());
   CheckCookie(child_frame(), kEmptyCookie);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       LocalStorageTest) {
+  // Brave defaults:
+  // Main frame storage is always accessible.
+  NavigateToPageWithIframe();
+  CheckLocalStorageAccessible(contents());
+
+  // Local storage is null, accessing it shouldn't throw.
+  NavigateIframe(cross_site_url());
+  CheckLocalStorageNull(child_frame());
+
+  // Cookies allowed:
+  AllowCookies();
+  // Main frame storage is always accessible.
+  NavigateToPageWithIframe();
+  CheckLocalStorageAccessible(contents());
+
+  // Local storage is accessible.
+  NavigateIframe(cross_site_url());
+  CheckLocalStorageAccessible(child_frame());
+
+  // Thirdy-part cookies blocked:
+  Block3PCookies();
+  // Main frame storage is always accessible.
+  NavigateToPageWithIframe();
+  CheckLocalStorageAccessible(contents());
+
+  // Local storage is null, accessing it doesn't throw.
+  NavigateIframe(cross_site_url());
+  CheckLocalStorageNull(child_frame());
+
+  // Shields down, third-party cookies still blocked:
+  ShieldsDown();
+  // Main frame storage is always accessible.
+  NavigateToPageWithIframe();
+  CheckLocalStorageAccessible(contents());
+
+  // Local storage is accessible.
+  NavigateIframe(cross_site_url());
+  CheckLocalStorageAccessible(child_frame());
+
+  // Throws when used on a data url.
+  const GURL data_url("data:text/html,<title>Data URL</title>");
+  ui_test_utils::NavigateToURL(browser(), data_url);
+  CheckLocalStorageThrows(contents());
+
+  // Throws in a sandboxed iframe.
+  const GURL sandboxed(
+      embedded_test_server()->GetURL("a.com", "/sandboxed_iframe.html"));
+  ui_test_utils::NavigateToURL(browser(), sandboxed);
+  CheckLocalStorageThrows(child_frame());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockScripts) {
