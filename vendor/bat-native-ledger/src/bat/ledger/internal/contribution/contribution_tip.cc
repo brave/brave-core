@@ -81,7 +81,23 @@ void ContributionTip::ServerPublisher(
   queue->partial = false;
   queue->publishers = std::move(queue_list);
 
-  contribution_->Start(std::move(queue));
+  auto save_callback = std::bind(&ContributionTip::QueueSaved,
+      this,
+      _1,
+      callback);
+
+  ledger_->SaveContributionQueue(std::move(queue), save_callback);
+}
+
+void ContributionTip::QueueSaved(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result == ledger::Result::LEDGER_OK) {
+    contribution_->ProcessContributionQueue();
+  } else {
+    BLOG(0, "Queue was not saved");
+  }
+
   callback(ledger::Result::LEDGER_OK);
 }
 

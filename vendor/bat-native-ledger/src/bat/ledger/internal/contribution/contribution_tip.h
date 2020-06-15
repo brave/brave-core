@@ -37,6 +37,10 @@ class ContributionTip {
       const double amount,
       ledger::ResultCallback callback);
 
+  void QueueSaved(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
   void SavePending(
       const std::string& publisher_key,
       const double amount,
