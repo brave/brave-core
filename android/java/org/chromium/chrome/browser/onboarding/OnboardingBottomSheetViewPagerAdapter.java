@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.view.LayoutInflater;
+import com.airbnb.lottie.LottieAnimationView;
 
 import org.chromium.chrome.R;
 
@@ -42,10 +43,11 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
                 mContext.getResources().getString(R.string.websites_load_faster_text),
                 mContext.getResources().getString(R.string.get_weekly_updates_text)
             );
-    private static final List<Integer> mImages = Arrays.asList(
-                R.drawable.ic_adsblocked,
-                R.drawable.ic_datasaved,
-                R.drawable.ic_timesaved,
+
+    private static final List<String> mAnimations = Arrays.asList(
+                "privacy_protection.json",
+                "save_data_and_battery.json",
+                "website_loads_faster.json",
                 null
             );
 
@@ -100,10 +102,12 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
             }
         });
 
-        ImageView mImage = layout.findViewById(R.id.onboarding_image);
-        if (mImages.get(position) != null) {
-            mImage.setVisibility(View.VISIBLE);
-            mImage.setImageResource(mImages.get(position));
+        LottieAnimationView mAnimatedView = layout.findViewById(R.id.onboarding_image);
+        if (mAnimations.get(position) != null) {
+            mAnimatedView.setVisibility(View.VISIBLE);
+            mAnimatedView.setAnimation(mAnimations.get(position));
+            mAnimatedView.playAnimation();
+            mAnimatedView.loop(false);
         }
 
         container.addView(layout);
