@@ -1,4 +1,4 @@
-if (is_android) {
+if (is_android || is_ios) {
   source_set("common") {
     sources = [
       "//extensions/common/error_utils.cc",

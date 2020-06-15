@@ -49,11 +49,8 @@ source_set("common") {
   sources = [
     "brave_channel_info.cc",
     "brave_channel_info.h",
-    "brave_content_client.cc",
-    "brave_content_client.h",
     "brave_features.cc",
     "brave_features.h",
-    "brave_isolated_worlds.h",
     "brave_paths.cc",
     "brave_paths.h",
     "common_message_generator.cc",
@@ -100,10 +97,22 @@ source_set("common") {
     "//brave/chromium_src:common",
     "//brave/components/resources",
     "//components/resources",
-    "//content/public/common",
     "//extensions/buildflags",
+    "//services/service_manager",
     "//ui/base",
   ]
+
+  if (!is_ios) {
+    sources += [
+      "brave_content_client.cc",
+      "brave_content_client.h",
+      "brave_isolated_worlds.h",
+    ]
+
+    deps += [
+      "//content/public/common",
+    ]
+  }
 
   if (is_mac) {
     sources += [
