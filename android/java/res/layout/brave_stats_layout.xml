@@ -22,74 +22,115 @@
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:baselineAligned="false" >
-        <LinearLayout
-            android:id="@+id/brave_stats_ads"
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:baselineAligned="false"
-            android:layout_weight="1" >
-            <TextView
-                android:id="@+id/brave_stats_text_ads_count"
+            android:layout_weight="1">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/ads_animation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="#FB542B"
-                android:textStyle="bold"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/brave_stats_text_ads"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/brave_stats_ads"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:text="@string/brave_stats_text_ads" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/brave_stats_data_saved"
+                android:orientation="vertical"
+                android:baselineAligned="false">
+                <TextView
+                    android:id="@+id/brave_stats_text_ads_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#FB542B"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/brave_stats_text_ads"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:text="@string/brave_stats_text_ads" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:baselineAligned="false"
-            android:layout_weight="1" >
-            <TextView
-                android:id="@+id/brave_stats_data_saved_value"
+            android:layout_weight="1">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/data_animation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="#A0A5EB"
-                android:textStyle="bold"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/brave_stats_data_saved_text"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/brave_stats_data_saved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:text="@string/brave_stats_text_data_saved" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/brave_stats_time"
+                android:orientation="vertical"
+                android:baselineAligned="false">
+                <TextView
+                    android:id="@+id/brave_stats_data_saved_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#A0A5EB"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/brave_stats_data_saved_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:text="@string/brave_stats_text_data_saved" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:baselineAligned="false"
-            android:layout_weight="1" >
-            <TextView
-                android:id="@+id/brave_stats_text_time_count"
+            android:layout_weight="1">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/time_animation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/brave_state_time_count_color"
-                android:textStyle="bold"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/brave_stats_text_time"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/brave_stats_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:text="@string/brave_stats_text_time" />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:baselineAligned="false">
+                <TextView
+                    android:id="@+id/brave_stats_text_time_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/brave_state_time_count_color"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/brave_stats_text_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:text="@string/brave_stats_text_time" />
+            </LinearLayout>
+
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>

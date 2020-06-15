@@ -88,20 +88,37 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
-                FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });
+        // view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        //     @Override
+        //     public void onGlobalLayout() {
+        //         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+        //         FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        //         BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        //         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        //     }
+        // });
 
         ViewPager pager = (ViewPager) view.findViewById(R.id.viewpager);
         OnboardingBottomSheetViewPagerAdapter adapter = new OnboardingBottomSheetViewPagerAdapter(mOnboardingType, mNewTabPageListener);
         pager.setOffscreenPageLimit(0);
         pager.setAdapter(adapter);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mNewTabPageListener.selectedPage(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager, true);
