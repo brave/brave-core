@@ -16,6 +16,7 @@
            BECAUSE YOUR RESOURCES ARE FUNCTIONALLY RELATED OR FALL UNDER THE
            SAME CONDITIONALS. -->
       <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR" file="brave/brave_wayback_infobar.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR_DARK" file="brave/brave_wayback_infobar_dark.png" />
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/product_logo_32_beta.png" />
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/product_logo_32_nightly.png" />
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/product_logo_32_dev.png" />

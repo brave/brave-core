@@ -9,7 +9,6 @@ aggregate_vector_icons("brave_vector_icons") {
 
   icons = [
     "download_unlock.icon",
-    "sad_folder.icon",
     "speedreader.icon",
     "speedreader_on_active.icon",
     "speedreader_on_inactive.icon",
