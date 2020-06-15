@@ -26,7 +26,8 @@ TEST(BravePrivateCdnHelper, RemovePadding) {
   constexpr size_t invalid_input_count =
       sizeof(invalid_inputs) / sizeof(std::string);
   for (size_t i = 0; i < invalid_input_count; i++) {
-    EXPECT_FALSE(helper->RemovePadding(&invalid_inputs[i]));
+    base::StringPiece padded_string(invalid_inputs[i]);
+    EXPECT_FALSE(helper->RemovePadding(&padded_string));
   }
 
   std::string inputs[] = {
@@ -73,7 +74,8 @@ TEST(BravePrivateCdnHelper, RemovePadding) {
                 "Inputs and outputs must have the same number of elements.");
 
   for (size_t i = 0; i < input_count; i++) {
-    EXPECT_TRUE(helper->RemovePadding(&inputs[i]));
-    EXPECT_EQ(inputs[i], outputs[i]);
+    base::StringPiece padded_string(inputs[i]);
+    EXPECT_TRUE(helper->RemovePadding(&padded_string));
+    EXPECT_EQ(padded_string, outputs[i]);
   }
 }

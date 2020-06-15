@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/singleton.h"
+#include "base/strings/string_piece.h"
 
 namespace brave {
 
@@ -21,7 +22,7 @@ class PrivateCdnHelper final {
     return base::Singleton<PrivateCdnHelper>::get();
   }
 
-  bool RemovePadding(std::string* padded_string) const;
+  bool RemovePadding(base::StringPiece* padded_string) const;
 
  private:
   friend struct base::DefaultSingletonTraits<PrivateCdnHelper>;
