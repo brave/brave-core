@@ -12,6 +12,7 @@ brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
 brave_chrome_java_deps = [
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
+  "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/zxing:zxing_java",
   "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
