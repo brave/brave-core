@@ -184,9 +184,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (sponsoredTab == null)
+        if (sponsoredTab == null) {
             initilizeSponsoredTab();
-        checkAndShowNTPImage(false);
+        }
+        if (sponsoredTab != null) {
+            checkAndShowNTPImage(false);
+        }
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
     }
 
@@ -431,6 +434,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void initilizeSponsoredTab() {
+        if (mTab == null) return;
         if (TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId())) == null) {
             SponsoredTab mSponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
             TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
@@ -447,9 +451,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         public void onInteractabilityChanged(Tab tab, boolean interactable) {
             // Force a layout update if the tab is now in the foreground.
             if (interactable) {
-                if (sponsoredTab == null)
+                if (sponsoredTab == null) {
                     initilizeSponsoredTab();
-                if (!sponsoredTab.isMoreTabs()) {
+                }
+                if (sponsoredTab != null && !sponsoredTab.isMoreTabs()) {
                     checkAndShowNTPImage(false);
                 }
             } else {
@@ -471,9 +476,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         @Override
         public void updateNTPImage() {
-            if (sponsoredTab == null)
+            if (sponsoredTab == null) {
                 initilizeSponsoredTab();
-            checkAndShowNTPImage(false);
+            }
+            if (sponsoredTab != null) {
+                checkAndShowNTPImage(false);
+            }
         }
 
         @Override
