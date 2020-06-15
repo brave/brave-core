@@ -31,14 +31,14 @@ void BraveComponent::Register(const std::string& component_name,
                      delegate_,
                      component_id);
   auto ready_callback =
-      base::BindOnce(&BraveComponent::OnComponentReady,
-                     weak_factory_.GetWeakPtr(),
-                     component_id);
+      base::BindRepeating(&BraveComponent::OnComponentReady,
+                          weak_factory_.GetWeakPtr(),
+                          component_id);
 
   delegate_->Register(component_name_,
                       component_base64_public_key_,
                       std::move(registered_callback),
-                      std::move(ready_callback));
+                      ready_callback);
 }
 
 bool BraveComponent::Unregister() {

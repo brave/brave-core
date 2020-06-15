@@ -18,7 +18,7 @@ namespace brave_component_updater {
 
 class BraveComponent {
  public:
-  using ReadyCallback = base::OnceCallback<void(const base::FilePath&,
+  using ReadyCallback = base::RepeatingCallback<void(const base::FilePath&,
                                                 const std::string& manifest)>;
   class Delegate {
    public:
