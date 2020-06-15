@@ -1586,22 +1586,19 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             switch (status) {
             case BraveRewardsExternalWallet.NOT_CONNECTED:
-                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
-                editor.apply();
-
                 rightDrawable = R.drawable.disclosure;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.CONNECTED:
-                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
-                editor.apply();
-
                 rightDrawable = R.drawable.verified_disclosure;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.PENDING:
+                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
+                editor.apply();
+
                 rightDrawable = R.drawable.verified_disclosure;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
