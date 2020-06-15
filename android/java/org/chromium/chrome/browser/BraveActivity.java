@@ -100,15 +100,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     @Override
-    public void onStartWithNative() {
-        super.onStartWithNative();
-
-        // Disable NTP suggestions
-        PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_SECTION_ENABLED, false);
-        PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_LIST_VISIBLE, false);
-    }
-
-    @Override
     public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
         final TabImpl currentTab = (TabImpl) getActivityTab();
         // Handle items replaced by Brave.
