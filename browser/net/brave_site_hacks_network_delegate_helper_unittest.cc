@@ -114,7 +114,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
   }
 }
 
-TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
+TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerTruncated) {
   const std::vector<const GURL> urls({GURL("https://digg.com/7"),
                                       GURL("https://slashdot.org/5"),
                                       GURL("https://bondy.brian.org")});
@@ -128,7 +128,9 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
     EXPECT_EQ(rc, net::OK);
     // new_url should not be set.
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-    EXPECT_EQ(brave_request_info->new_referrer, url.GetOrigin().spec());
+    EXPECT_TRUE(brave_request_info->new_referrer.has_value());
+    EXPECT_EQ(brave_request_info->new_referrer.value(),
+              original_referrer.GetOrigin().spec());
   }
 }
 

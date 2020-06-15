@@ -438,28 +438,39 @@ void DispatchBlockedEvent(const GURL& request_url,
 #endif
 }
 
-bool ShouldSetReferrer(bool allow_referrers,
-                       bool shields_up,
-                       const GURL& original_referrer,
-                       const GURL& tab_origin,
-                       const GURL& target_url,
-                       const GURL& new_referrer_url,
-                       network::mojom::ReferrerPolicy policy,
-                       Referrer* output_referrer) {
-  if (!output_referrer || allow_referrers || !shields_up ||
-      original_referrer.is_empty() ||
-      // Same TLD+1 whouldn't set the referrer
-      SameDomainOrHost(
-          target_url, original_referrer,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ||
-      // Whitelisted referrers shoud never set the referrer
-      (g_brave_browser_process &&
-       g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
-           tab_origin, target_url.GetOrigin()))) {
+bool MaybeChangeReferrer(bool allow_referrers,
+                         bool shields_up,
+                         const GURL& current_referrer,
+                         const GURL& tab_origin,
+                         const GURL& target_url,
+                         network::mojom::ReferrerPolicy policy,
+                         Referrer* output_referrer) {
+  DCHECK(output_referrer);
+  if (allow_referrers || !shields_up || current_referrer.is_empty()) {
     return false;
   }
+
+  // TODO(iefremov): Get rid of the whitelist once our webcompat is OK.
+  if (g_brave_browser_process &&
+      g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
+          tab_origin, target_url.GetOrigin())) {
+    return false;
+  }
+
+  const url::Origin original_referrer = url::Origin::Create(current_referrer);
+  const url::Origin target_origin = url::Origin::Create(target_url);
+
+  if (original_referrer.IsSameOriginWith(target_origin)) {
+    // Do nothing for same-origin requests. This check also prevents us from
+    // sending referrer from HTTPS to HTTP.
+    return false;
+  }
+
+  // Cap referrer to "strict-origin-when-cross-origin" or anything more
+  // restrictive according do given policy.
   *output_referrer = Referrer::SanitizeForRequest(
-      target_url, Referrer(new_referrer_url, policy));
+      target_url, Referrer(current_referrer.GetOrigin(), policy));
+
   return true;
 }
 

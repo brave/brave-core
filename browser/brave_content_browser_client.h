@@ -93,6 +93,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                          const GURL& request_url,
                          const GURL& document_url,
                          bool is_main_frame,
+                         const std::string& method,
                          blink::mojom::ReferrerPtr* referrer) override;
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
