@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4b89a92e661ba17b419a96a2dd9ca58ecacb2643..9f089c642f5e8b1a31404e2bbbfe4c433c9394f4 100644
+index 4b89a92e661ba17b419a96a2dd9ca58ecacb2643..9e1545b66d4c975a1beadaaf62c5be70f3753c2f 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -34,7 +34,9 @@ by a child template that "extends" this file.
@@ -26,8 +26,8 @@ index 4b89a92e661ba17b419a96a2dd9ca58ecacb2643..9f089c642f5e8b1a31404e2bbbfe4c43
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
      <uses-permission android:name="android.permission.NFC"/>
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-+<!--
      <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
++<!--
      <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
 +-->
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
