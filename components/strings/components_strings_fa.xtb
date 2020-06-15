@@ -34,9 +34,6 @@
 <translation id="5040262127954254034">حریم خصوصی</translation>
 <translation id="3061707000357573562">سرویس وصله</translation>
 <translation id="1914326953223720820">سرویس خارج کردن از فشرده‌سازی</translation>
-<translation id="1623104350909869708">جلوگیری از ایجاد پنجره‌های اضافی توسط این صفحه</translation>
-<translation id="2677748264148917807">خروج</translation>
-<translation id="5556459405103347317">تازه‌سازی</translation>
 <translation id="2359808026110333948">ادامه</translation>
 <translation id="4378154925671717803">تلفن</translation>
 <translation id="8131740175452115882">تأیید</translation>
@@ -70,12 +67,13 @@
 <translation id="7701040980221191251">هیچ کدام</translation>
 <translation id="8428213095426709021">تنظیمات</translation>
 <translation id="9038649477754266430">استفاده از یک سرویس پیش‌بینی برای بار کردن سریع‌تر صفحه‌ها</translation>
+<translation id="2344028582131185878">بارگیری‌های خودکار</translation>
+<translation id="3414952576877147120">اندازه:</translation>
 <translation id="4850886885716139402">نما</translation>
 <translation id="7180611975245234373">بازخوانی</translation>
-<translation id="1426410128494586442">بله</translation>
-<translation id="4250680216510889253">نه</translation>
 <translation id="4522570452068850558">جزئیات</translation>
 <translation id="3586931643579894722">عدم نمایش جزئیات</translation>
+<translation id="5556459405103347317">تازه‌سازی</translation>
 <translation id="614940544461990577">این موارد را امتحان کنید:</translation>
 <translation id="4943872375798546930">نتیجه‌ای پیدا نشد</translation>
 <translation id="8688672835843460752">دردسترس</translation>
@@ -94,6 +92,8 @@
 <translation id="4880827082731008257">سابقه جستجو</translation>
 <translation id="4756388243121344051">&amp;سابقه</translation>
 <translation id="1644574205037202324">سابقه</translation>
+<translation id="1623104350909869708">جلوگیری از ایجاد پنجره‌های اضافی توسط این صفحه</translation>
+<translation id="2677748264148917807">خروج</translation>
 <translation id="3950820424414687140">ورود به سیستم</translation>
 <translation id="8286036467436129157">ورود به سیستم</translation>
 <translation id="8503813439785031346">نام کاربری</translation>
@@ -138,11 +138,12 @@
 <translation id="2586657967955657006">کلیپ‌بورد</translation>
 <translation id="6059925163896151826">‏دستگاه‌های USB</translation>
 <translation id="7638605456503525968">درگاه‌های سریال</translation>
+<translation id="3784372983762739446">دستگاه‌های بلوتوث</translation>
 <translation id="2215727959747642672">ویرایش فایل</translation>
 <translation id="6545864417968258051">اسکن کردن بلوتوث</translation>
 <translation id="534295439873310000">‏دستگاه‌های NFC</translation>
-<translation id="4943703118917034429">واقعیت مجازی</translation>
-<translation id="3513704683820682405">واقعیت افزوده</translation>
+<translation id="4670064810192446073">واقعیت مجازی</translation>
+<translation id="2025115093177348061">واقعیت افزوده</translation>
 <translation id="5039804452771397117">مجاز</translation>
 <translation id="7053983685419859001">مسدود کردن</translation>
 <translation id="57838592816432529">بی‌صدا کردن</translation>
@@ -158,9 +159,24 @@
 <translation id="5932224571077948991">سایتْ آگهی‌های مزاحم یا گمراه‌کننده نشان می‌دهد</translation>
 <translation id="7878562273885520351">ممکن است گذرواژه‌تان درمعرض خطر باشد</translation>
 <translation id="1089439967362294234">تغییر گذرواژه</translation>
-<translation id="9008201768610948239">نادیده گرفتن</translation>
 <translation id="1186201132766001848">بررسی گذرواژه‌ها</translation>
+<translation id="9008201768610948239">نادیده گرفتن</translation>
+<translation id="808894953321890993">تغییر گذرواژه</translation>
 <translation id="5979084224081478209">بررسی گذرواژه‌ها</translation>
+<translation id="6107012941649240045">صادر شده برای</translation>
+<translation id="5030338702439866405">صدور توسط</translation>
+<translation id="5826507051599432481">‏نام مشترک (CN)</translation>
+<translation id="6898699227549475383">‏سازمان (O)</translation>
+<translation id="3308006649705061278">‏واحد سازمانی (OU)</translation>
+<translation id="8705331520020532516">شمارهٔ سریال</translation>
+<translation id="1902576642799138955">مدت اعتبار</translation>
+<translation id="5895187275912066135">تاریخ صدور</translation>
+<translation id="4121428309786185360">تاریخ انقضا</translation>
+<translation id="4154664944169082762">اثر انگشت</translation>
+<translation id="7238585580608191973">‏اثر انگشت SHA-256</translation>
+<translation id="5209518306177824490">‏اثر انگشت SHA-1</translation>
+<translation id="6786747875388722282">افزونه‌ها</translation>
+<translation id="7240120331469437312">نام دیگر موضوع گواهی</translation>
 <translation id="10614374240317010">هرگز ذخیره نمی‌شود</translation>
 <translation id="5869522115854928033">گذرواژه‌های ذخیره‌شده</translation>
 <translation id="230699814587342492">‏گذرواژه‌های Brave</translation>
@@ -191,6 +207,36 @@
 <translation id="1197088940767939838">نارنجی</translation>
 <translation id="1555130319947370107">آبی</translation>
 <translation id="138218114945450791">آبی روشن</translation>
+<translation id="5612720917913232150"><ph name="URL"/> می‌خواهد از موقعیت مکانی رایانه شما استفاده کند</translation>
+<translation id="4733082559415072992"><ph name="URL"/> می‌خواهد از موقعیت مکانی دستگاهتان استفاده کند</translation>
+<translation id="4677585247300749148"><ph name="URL"/> می‌خواهد به رویدادهای مربوط به دسترس‌پذیری پاسخ دهد</translation>
+<translation id="3461266716147554923"><ph name="URL"/> می‌خواهد به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند</translation>
+<translation id="131405271941274527">‏<ph name="URL"/> می‌خواهد وقتی با تلفنتان روی دستگاه NFC ضربه می‌زنید، اطلاعات را ارسال و دریافت کند</translation>
+<translation id="5146995429444047494">اعلان‌های مربوط به <ph name="ORIGIN"/> مسدود شده‌اند</translation>
+<translation id="1195558154361252544">اعلان‌ها به‌طور خودکار برای همه سایت‌ها، به‌جز آن‌هایی که مجاز کرده‌اید، مسدود می‌شوند</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> می‌خواهد از میکروفن شما استفاده کند</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> می‌خواهد از دوربین شما استفاده کند</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> می‌خواهد برایتان اعلان  ارسال کند</translation>
+<translation id="6910240653697687763">‏<ph name="URL"/> می‌خواهد کنترل کامل دستگاه‌های MIDI شما را به‌دست آورد</translation>
+<translation id="503498442187459473"><ph name="HOST"/> می‌خواهد از دوربین و میکروفن شما استفاده کند</translation>
+<translation id="8282947398454257691">شناسه یکتای دستگاهتان را بداند</translation>
+<translation id="8329449853370113380">‏<ph name="URL"/> می‌خواهد محتوای محافظت‌شده را پخش کند. Brave Software هویت دستگاهتان را به تأیید می‌رساند.</translation>
+<translation id="2650609753175229582">‏<ph name="URL"/> می‌خواهد محتوای محافظت‌شده پخش کند. هویت دستگاهتان توسط Brave Software به‌تأیید می‌رسد و ممکن است این سایت به آن دسترسی داشته باشد.</translation>
+<translation id="3016780570757425217">مکان‌تان را بدانید</translation>
+<translation id="7221855153210829124">نمایش اعلان‌ها</translation>
+<translation id="8606726445206553943">‏استفاده از دستگاه‌های MIDI شما</translation>
+<translation id="7409836189476010449">‏اجرای Flash</translation>
+<translation id="7438976808740265764">‏Flash Player دیگر پس از دسامبر ۲۰۲۰ پشتیبانی نمی‌شود.</translation>
+<translation id="4761104368405085019">استفاده از میکروفون خود</translation>
+<translation id="9150045010208374699">استفاده از دوربین خود</translation>
+<translation id="4953689047182316270">پاسخ دادن به رویدادهای مربوط به دسترس‌پذیری</translation>
+<translation id="6116338172782435947">به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند</translation>
+<translation id="5804427196348435412">‏استفاده از دستگاه‌های مجهز به NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> می‌خواهد داده‌ها را برای همیشه در دستگاهتان ذخیره کند</translation>
+<translation id="1030706264415084469"><ph name="URL"/> می‌خواهد داده‌های بزرگ را برای همیشه در دستگاهتان ذخیره کند</translation>
+<translation id="1712552549805331520"><ph name="URL"/> می‌خواهد داده‌ها را برای همیشه در رایانه محلی‌تان ذخیره کند</translation>
+<translation id="1997484222658892567"><ph name="URL"/> می‌خواهد داده‌های بزرگ را برای همیشه در رایانه محلی‌تان ذخیره کند</translation>
+<translation id="7648992873808071793">ذخیره کردن فایل در این دستگاه</translation>
 <translation id="4813512666221746211">خطای شبکه</translation>
 <translation id="3380365263193509176">خطای ناشناس</translation>
 <translation id="5565735124758917034">فعال</translation>
@@ -206,6 +252,8 @@
 <translation id="5720705177508910913">کاربر کنونی</translation>
 <translation id="6965978654500191972">دستگاه</translation>
 <translation id="4728558894243024398">پلت فورم</translation>
+<translation id="1426410128494586442">بله</translation>
+<translation id="4250680216510889253">نه</translation>
 <translation id="2380886658946992094">قانونی</translation>
 <translation id="1588438908519853928">معمولی</translation>
 <translation id="1974060860693918893">پیشرفته</translation>
@@ -227,7 +275,6 @@
 <translation id="583281660410589416">ناشناس</translation>
 <translation id="9170848237812810038">&amp;واگرد</translation>
 <translation id="2972581237482394796">انجام مجدد</translation>
-<translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="5804241973901381774">مجوزها</translation>
 <translation id="8004582292198964060">مرورگر</translation>
 </translationbundle>

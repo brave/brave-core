@@ -9,8 +9,6 @@
 <translation id="2445484935443597917">Buat Profil Baharu</translation>
 <translation id="2666990579225592931">Buka Tetingkap Tetamu</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak dibenarkan dalam Brave.</translation>
-<translation id="7450557937477381864">Tutup Chrome</translation>
-<translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
 <translation id="6786747875388722282">Sambungan</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
@@ -22,7 +20,6 @@
 <translation id="8410111618231938546">Google Widevine ialah secebis kod Pengurusan Hak Digital (DRM) yang kami di Perisian Brave tidak memilikinya dan tidak boleh memeriksanya. The Kod Google Widevine dimuatkan dari pelayan Google, bukan dari pelayan kami. Ia dimuatkan hanya apabila anda mendayakan pilihan ini. Kami tidak menggalakkan anda untuk menggunakan DRM, namun kami menghormati pilihan pengguna dan mengakui bahawa sebahagian pengguna Brave ingin menggunakan perkhidmatan yang memerlukannya.
 
 Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevine. Anda bersetuju bahawa Brave tidak bertanggungjawab terhadap sebarang kerosakan atau ganti rugi berhubung dengan penggunaan Google Widevine.</translation>
-<translation id="453977518730680921">Automain media</translation>
 <translation id="410351446219883937">Main automatik</translation>
 <translation id="2240268017737062801">Tanya bila laman mahu memain automatik media</translation>
 <translation id="3371702087847741961">Tanya apabila laman mahu memainkan media (disyorkan)</translation>
@@ -39,11 +36,14 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7635711399568194460">Sembunyi butang Brave Rewards dalam bar lokasi apabila Brave Rewatds tidak diaktifkan</translation>
 <translation id="1520361618554057102">Sentiasa tunjukkan penanda buku pada halaman Tab Baharu</translation>
 <translation id="5802665280774361839">Tunjukkan autolengkap dalam bar alamat</translation>
+<translation id="597020512043916976">Paparkan laman-laman teratas dari segi cadangan autolengkap</translation>
+<translation id="264150068416846820">Tunjukkan laman-laman yang dicadangkan oleh Brave dalam cadangan autolengkap</translation>
 <translation id="7781069478569868053">Halaman Tab Baharu</translation>
 <translation id="2467749191278759605">Suaikan Papan Pemuka Brave</translation>
 <translation id="1717331825806276156">Imej latar belakang</translation>
 <translation id="1820041496463124489">Imej tajaan</translation>
 <translation id="8173998484743827990">Statistik Brave</translation>
+<translation id="5551238871320268996">Brave Bersama</translation>
 <translation id="6966052266404721769">Binance</translation>
 <translation id="4643117005422448078">Laman Popular</translation>
 <translation id="1776831331757823105">Jam</translation>
@@ -72,23 +72,22 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7390783310074170337">Paparan lalai</translation>
 <translation id="130615081792797568">Paparan ringkas</translation>
 <translation id="2360360976480535628">Paparan lanjutan</translation>
-<translation id="5709627087332022422">Sekat penjejak merentas laman</translation>
-<translation id="6447842834002726250">Kuki</translation>
-<translation id="6522412052085018663">Pengecapan jari</translation>
+<translation id="2133317862976486547">Sekat iklan &amp; penjejak</translation>
+<translation id="4385707520896576447">Kuki</translation>
+<translation id="4978786495456601191">Pengecapan jari</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="4824468494729001999">Sekat skrip</translation>
-<translation id="519861640102428255">Rupa &amp;amp; Rasa</translation>
+<translation id="519861640102428255">Rupa &amp; Rasa</translation>
 <translation id="4800195524776354947">Paparkan bilangan item yang disekat pada ikon Perisai</translation>
 <translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
-<translation id="4699812599455071925">Hanya sekat kuki merentas laman</translation>
-<translation id="5657156137487675418">Benarkan semua kuki</translation>
-<translation id="6883611015375728278">Sekat semua kuki</translation>
-<translation id="5963670684159057574">Sekat pengecapan jari merentas laman</translation>
-<translation id="769702552748212954">Benarkan semua pengecapan jari</translation>
-<translation id="4540198958192073185">Sekat semua cap jari</translation>
+<translation id="4078738236287221428">Iklan &amp; penjejak disekat (agresif)</translation>
+<translation id="7740996059027112821">Penjejak &amp; iklan disekat (standard)</translation>
+<translation id="4176463684765177261">Benarkan semua penjejak &amp; iklan</translation>
+<translation id="5770288601196774623">Hanya sekat kuki merentas laman</translation>
+<translation id="3587482841069643663">Sekat semua kuki</translation>
 <translation id="8942080017911802454">Dasar Pengendalian IP WebRTC</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="8798099450830957504">Lalai</translation>
@@ -110,6 +109,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7701040980221191251">Tiada</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="3905324891414560921">Pembekal Web3 untuk menggunakan Dapps</translation>
+<translation id="5913089932885076110">Muatkan Dompet Kripto ketika bermula</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
 <translation id="1765684547504191670">Menggunakan komponen Media Router untuk membolehkan Chromecast dalam pelayar.</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
@@ -171,10 +171,13 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6469509880167172749">Hantar analitik produk persendirian secara automatik sepenuhnya kepada Brave</translation>
 <translation id="7090566321964540749">Maklumat awanama ini hanya membolehkan Brave menganggarkan penggunaan keseluruhan ciri-ciri tertentu.</translation>
 <translation id="9111960429693394744">Adakah anda ingin menggunakan Dompet Brave's Crypto atau MetaMask untuk Dapps?</translation>
+<translation id="8721775358057000783">Adakah anda ingin memulakan Dompet Kripto untuk sokongan internet3 di halaman ini?</translation>
 <translation id="7583735190612229830">Sediakan Dompet Crypto untuk berinteraksi dengan aplikasi ini dan aplikasi lain sepertinya.</translation>
-<translation id="8337117349965899723">Gunakan Dompet Cyrpto</translation>
+<translation id="4823406846571523661">Tetapkan Dompet Kripto</translation>
 <translation id="5756155765711979898">Gunakan MetaMask</translation>
 <translation id="6754134632841262799">PERSEDIAAN</translation>
+<translation id="8199661191594897555">Mulakan Dompet Kripto dan tambah nilai</translation>
+<translation id="8428213095426709021">Tetapan</translation>
 <translation id="4552520379838695057">Maaf, laman tiada.</translation>
 <translation id="2609895996619941644">Adakah anda ingin memeriksa jika ada versi tersimpan di Wayback Machine?</translation>
 <translation id="8053093028263274061">Maaf, tiada versi tersimpan tersedia.</translation>
@@ -185,8 +188,10 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2336228925368920074">Tanda Halaman Semua Tab...</translation>
 <translation id="796831669370432378">Untuk menambahkan penanda buku, klik butang penanda buku di sebelah palang alamat</translation>
 <translation id="4989337484121655457">Akses Cakera Penuh diperlukan</translation>
-<translation id="8025559074845816210">Brave memerlukan Akses Cakera Penuh untuk mengimport Tanda Buku anda daripada Safari.</translation>
+<translation id="5501596373144334003">Brave memerlukan Akses Cakera Penuh untuk mengimport Penanda Buku dan Sejarah anda daripada Safari.</translation>
 <translation id="8515328844674404333">Lihat cara mengizinkan Akses Cakera Penuh dari Keutamaan Sistem anda.</translation>
 <translation id="6414878884710400018">Buka Keutamaan Sistem</translation>
 <translation id="5570470519803062774">Tetapan Tapak dan Perisai</translation>
+<translation id="8487693399751278191">Import penanda buku sekarang...</translation>
+<translation id="2557899542277210112">Untuk akses pantas, letakkan penanda buku anda di sini di atas bar penanda buku.</translation>
 </translationbundle>

@@ -416,7 +416,9 @@ class BraveRewardsBrowserTest
             "[\"site2.com\",\"wallet_connected\",false,\"address5\",{}],"
             "[\"site3.com\",\"wallet_connected\",false,\"address6\",{}],"
             "[\"laurenwags.github.io\",\"wallet_connected\",false,\"address2\","
-              "{\"donationAmounts\": [5,10,20]}]"
+              "{\"donationAmounts\": [5,10,20]}],"
+            "[\"kjozwiakstaging.github.io\",\"wallet_connected\",false,\"aa\","
+              "{\"donationAmounts\": [5,50,100]}]"
             "]";
       }
 
@@ -2938,27 +2940,38 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetACOff) {
   run_loop_second.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, CheckIfReconcileWasResetEmpty) {
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    SplitProcessOneTimeTip) {
+  SetUpUpholdWallet(50.0);
   EnableRewards();
-  uint64_t current_stamp = 0;
-
-  base::RunLoop run_loop_first;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        current_stamp = stamp;
-        run_loop_first.Quit();
-      }));
-  run_loop_first.Run();
-
   ClaimPromotionViaCode();
 
-  rewards_service_->StartMonthlyContributionForTest();
+  TipPublisher(
+      "kjozwiakstaging.github.io",
+      ContributionType::OneTimeTip,
+      true,
+      1);
 
-  base::RunLoop run_loop_second;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        ASSERT_NE(current_stamp, stamp);
-        run_loop_second.Quit();
-      }));
-  run_loop_second.Run();
+  ActivateTabAtIndex(0);
+
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='showMonthlyReport']");
+
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='tab-oneTimeDonation']");
+
+  rewards_service_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "[data-test-id='activity-table-body'] tr:nth-of-type(1) "
+      "td:nth-of-type(3)",
+      "20.0BAT4.28 USD");
+
+  rewards_service_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "[data-test-id='activity-table-body'] tr:nth-of-type(2) "
+      "td:nth-of-type(3)",
+      "30.0BAT6.42 USD");
 }

@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Axudar a mellorar Brave enviando informes sobre fallos e <ph name="UMA_LINK"/> a Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/>: Brave</translation>
 <translation id="7830723774663008396">Brave: <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> (Inicio de sesión, Brave)</translation>
+<translation id="8745514854244955877">Brave (inicio de sesión de rede, <ph name="PAGE_TITLE"/>)</translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> (inicio de sesión de rede)</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> (versión beta de Brave)</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> (Brave para programadores)</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> (versión experimental de Brave)</translation>
@@ -44,8 +47,12 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="5785919770853225148">Brave gardará este contrasinal na túa Conta de Brave Software. Non terás que recordalo.</translation>
 <translation id="8211837073776713955">Brave permíteche saber se os teus contrasinais están en risco nalgún momento</translation>
 <translation id="113959764510199339">Brave está tentando mostrar contrasinais.</translation>
+<translation id="96347285368592620">Brave está tentando copiar os contrasinais.</translation>
+<translation id="2953892977076487219">Brave está tentando editar contrasinais.</translation>
 <translation id="7503098128120083822">Brave quere exportar os teus contrasinais.</translation>
 <translation id="8285294305439559616">Brave está tentando mostrar contrasinais. Escribe os teus contrasinais de Windows para permitir esta acción.</translation>
+<translation id="8090497651549769448">Brave está tentando copiar os contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
+<translation id="3861679447659630159">Brave está tentando editar os contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="5918095577778020936">Brave quere exportar os teus contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="8320964054148936490">Este ordenador xa conta cunha versión máis recente de Brave. Se o software non funciona, desinstala Brave e téntao de novo.</translation>
 <translation id="7691786510374174420">Non se puido efectuar a instalación debido a un erro non especificado. Se se está executando Brave actualmente, péchao e téntao de novo.</translation>
@@ -192,7 +199,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="3262506503470845422">Obter axuda sobre Brave</translation>
 <translation id="1864557848095568223">Actualizando Brave</translation>
 <translation id="1786715389543715322">Actualizando Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">A actualización case rematou. Volve iniciar Brave para finalizala.</translation>
+<translation id="7914115000169617076">A actualización está a piques de rematar. Reinicia Brave para completala. As ventás do modo de incógnito non se volverán abrir.</translation>
 <translation id="8208853227947884571">Brave está actualizado</translation>
 <translation id="573759479754913123">Acerca de Brave OS</translation>
 <translation id="7573289029918943991">Para ver ser o teu dispositivo está actualizado, accede á <ph name="LINK_BEGIN"/>configuración de Brave OS<ph name="LINK_END"/></translation>
@@ -210,6 +217,12 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="8586264863973514035">Para aplicar os cambios, reinicia Brave</translation>
 <translation id="7021823858304886493">Permitir inicio de sesión en Brave</translation>
 <translation id="1649714546770135458">Ao desactivar esta opción, podes iniciar sesión nos sitios de Brave Software, como Gmail, sen iniciar sesión en Brave</translation>
+<translation id="2796517443093885402">Brave pode protexerte contra violacións da seguranza dos datos, extensións prexudiciais e moito máis</translation>
+<translation id="428541510811554120">Brave non puido buscar actualizacións. Verifica a conexión a Internet.</translation>
+<translation id="2633397153656205379">Brave non se actualizou, xa que se produciu un erro. <ph name="BEGIN_LINK"/>Soluciona os problemas de actualización de Brave e as actualizacións que non se puidesen realizar<ph name="END_LINK"/>.</translation>
+<translation id="8622246347342688645">Brave non puido comprobar os teus contrasinais porque non iniciaches sesión</translation>
+<translation id="7006260220514217183">A opción Navegación segura está desactivada. Brave recomenda activala.</translation>
+<translation id="1785833016412082453">Brave non puido comprobar as túas extensións. Téntao de novo máis tarde.</translation>
 <translation id="9220324636239049437">Esta acción eliminará 1 elemento deste dispositivo. Para recuperar os teus datos máis tarde, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Esta acción eliminará <ph name="ITEMS_COUNT"/> elementos deste dispositivo. Para recuperar os teus datos máis tarde, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Esta acción eliminará os teus datos de navegación deste dispositivo. Para recuperar os teus datos máis tarde, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>

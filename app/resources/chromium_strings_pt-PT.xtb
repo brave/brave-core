@@ -2,6 +2,9 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-PT">
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">O Brave é um navegador de internet que executa páginas Web e aplicações à velocidade da luz. É rápido, estável e fácil de utilizar. Navegue na Web com mais segurança, com proteção contra programas maliciosos e phishing integrada no Brave.</translation>
 <translation id="4331809312908958774">SO Brave</translation>
 <translation id="4847979153841887006">Logótipo do Brave</translation>
@@ -10,6 +13,9 @@
 <translation id="7918740962659365265">Ajudar a melhorar o Brave ao enviar relatórios de falhas e <ph name="UMA_LINK"/> à Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Início de sessão na rede – Brave</translation>
+<translation id="8745514854244955877">Brave – Início de sessão na rede – <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Início de sessão na rede</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -42,8 +48,12 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="5785919770853225148">O Brave vai guardar esta palavra-passe na sua Conta Brave Software. Não tem de a memorizar.</translation>
 <translation id="8211837073776713955">O Brave indica-lhe se as suas palavras-passe forem comprometidas.</translation>
 <translation id="113959764510199339">O Brave está a tentar mostrar palavras-passe.</translation>
+<translation id="96347285368592620">O Brave está a tentar copiar palavras-passe.</translation>
+<translation id="2953892977076487219">O Brave está a tentar editar palavras-passe.</translation>
 <translation id="7503098128120083822">O Brave pretende exportar as suas palavras-passe.</translation>
 <translation id="8285294305439559616">O Brave está a tentar mostrar palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
+<translation id="8090497651549769448">O Brave está a tentar copiar palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
+<translation id="3861679447659630159">O Brave está a tentar editar palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
 <translation id="5918095577778020936">O Brave pretende exportar as suas palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
 <translation id="8320964054148936490">Este computador já tem uma versão mais recente do Brave. Se o software não estiver a funcionar, desinstale o Brave e tente novamente.</translation>
 <translation id="7691786510374174420">A instalação falhou devido a um erro não especificado. Se o Brave estiver em execução, feche-o e tente de novo.</translation>
@@ -139,7 +149,13 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="2433912322225810055">Também controla a página apresentada quando inicia o Brave ou pesquisa a partir da Caixa geral.</translation>
 <translation id="2871190378186459992">Descubra aplicações, jogos, extensões e temas fantásticos para o Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regra de importação para o Brave permitir o tráfego mDNS.</translation>
+<translation id="7272074097076644710">Regra de entrada para o Brave Beta para permitir o tráfego mDNS.</translation>
+<translation id="4991512282053949769">Regra de entrada para o Brave Nightly para permitir o tráfego mDNS.</translation>
+<translation id="3856641371299712128">Regra de entrada para o Brave Dev para permitir o tráfego mDNS.</translation>
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave Software. Pode desativar esta opção nas definições em qualquer altura.</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave Software.</translation>
 <translation id="215320507915280336">Utiliza o mesmo corretor ortográfico utilizado na Pesquisa Brave Software. O texto que introduzir no navegador é enviado à Brave Software. Pode alterar este comportamento nas definições.</translation>
@@ -190,7 +206,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="3262506503470845422">Obter ajuda relacionada com o Brave</translation>
 <translation id="1864557848095568223">A atualizar o Brave…</translation>
 <translation id="1786715389543715322">A atualizar o Brave (<ph name="PROGRESS_PERCENT"/>)…</translation>
-<translation id="2182657378556811785">Quase atualizado! Reinicie o Brave para concluir a atualização.</translation>
+<translation id="7914115000169617076">Quase atualizado! Reinicie o Brave para concluir a atualização. Não é possível reabrir as suas janelas de navegação anónima.</translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
 <translation id="573759479754913123">Acerca do SO Brave</translation>
 <translation id="7573289029918943991">Para ver se o seu dispositivo está atualizado, aceda às <ph name="LINK_BEGIN"/>Definições do Brave OS<ph name="LINK_END"/>.</translation>
@@ -208,6 +224,12 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="8586264863973514035">Para aplicar as alterações, reinicie o Brave.</translation>
 <translation id="7021823858304886493">Permitir o início de sessão no Brave</translation>
 <translation id="1649714546770135458">Ao desativar esta opção, pode iniciar sessão nos sites Brave Software como o Gmail sem iniciar sessão no Brave.</translation>
+<translation id="2796517443093885402">O Brave pode ajudar a proteger contra violações de dados, extensões prejudiciais e muito mais.</translation>
+<translation id="428541510811554120">O Brave não consegue verificar se existem atualizações. Experimente verificar a sua ligação à Internet.</translation>
+<translation id="2633397153656205379">O Brave não foi atualizado. Ocorreu um erro. <ph name="BEGIN_LINK"/>Corrija problemas de atualização do Brave e falhas nas atualizações<ph name="END_LINK"/>.</translation>
+<translation id="8622246347342688645">O Brave não consegue verificar as suas palavras-passe porque não tem sessão iniciada.</translation>
+<translation id="7006260220514217183">A Navegação segura está desativada. O Brave recomenda que a ative.</translation>
+<translation id="1785833016412082453">O Brave não consegue verificar as suas extensões. Tente novamente mais tarde.</translation>
 <translation id="9220324636239049437">Esta ação elimina 1 item deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Esta ação elimina <ph name="ITEMS_COUNT"/> itens deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Esta ação elimina os dados de navegação deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>

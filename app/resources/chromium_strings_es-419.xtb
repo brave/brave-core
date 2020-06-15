@@ -10,6 +10,9 @@
 <translation id="7918740962659365265">Envía a Brave Software informes de fallos y <ph name="UMA_LINK"/> para ayudar a mejorar Brave.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="4658486203392098459"><ph name="PAGE_TITLE"/>: Acceso a la red - Brave</translation>
+<translation id="8745514854244955877">Brave: Acceso a la red - <ph name="PAGE_TITLE"/></translation>
+<translation id="5903106910045431592"><ph name="PAGE_TITLE"/>: Acceso a la red</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/>: Versión Beta de Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/>: Brave para desarrolladores</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/>: Brave Canary</translation>
@@ -36,8 +39,12 @@
 <translation id="5785919770853225148">Brave guardará esta contraseña en tu cuenta de Brave Software, por lo que no tendrás que recordarla.</translation>
 <translation id="8211837073776713955">Brave te informará si tus contraseñas se ven comprometidas</translation>
 <translation id="113959764510199339">Brave está intentando mostrar contraseñas.</translation>
+<translation id="96347285368592620">Brave está intentando copiar contraseñas.</translation>
+<translation id="2953892977076487219">Brave está intentando editar contraseñas.</translation>
 <translation id="7503098128120083822">Brave desea exportar tus contraseñas.</translation>
 <translation id="8285294305439559616">Brave está intentando mostrar contraseñas. Para permitirlo, ingresa tu contraseña de Windows.</translation>
+<translation id="8090497651549769448">Brave está intentando copiar contraseñas. Para permitirlo, ingresa tu contraseña de Windows.</translation>
+<translation id="3861679447659630159">Brave está intentando editar contraseñas. Para permitirlo, ingresa tu contraseña de Windows.</translation>
 <translation id="5918095577778020936">Brave desea exportar tus contraseñas. Para permitirlo, escribe tu contraseña de Windows.</translation>
 <translation id="8320964054148936490">Este equipo ya tiene una versión más reciente de Brave. Si el software no funciona, desinstala Brave y vuelve a intentarlo.</translation>
 <translation id="7691786510374174420">No se pudo completar la instalación debido a un error no identificado. Si Brave se está ejecutando en este momento, ciérralo e intenta nuevamente.</translation>
@@ -184,7 +191,7 @@
 <translation id="3262506503470845422">Obtener ayuda con Brave</translation>
 <translation id="1864557848095568223">Actualizando Brave</translation>
 <translation id="1786715389543715322">Actualizando Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
-<translation id="2182657378556811785">Brave está casi actualizado. Reinícialo para completar la actualización.</translation>
+<translation id="7914115000169617076">Falta poco para finalizar el proceso. Reinicia Brave para completar la actualización. No se volverán a abrir las ventanas de incógnito.</translation>
 <translation id="8208853227947884571">Brave está actualizado.</translation>
 <translation id="573759479754913123">Acerca del Sistema operativo Brave</translation>
 <translation id="7573289029918943991">Para saber si tu dispositivo está actualizado, ve a la <ph name="LINK_BEGIN"/>configuración del Sistema operativo Brave<ph name="LINK_END"/></translation>
@@ -202,6 +209,12 @@
 <translation id="8586264863973514035">Para aplicar los cambios, vuelve a ejecutar Brave</translation>
 <translation id="7021823858304886493">Permitir el acceso a Brave</translation>
 <translation id="1649714546770135458">Si desactivas esta preferencia, podrás acceder a sitios de Brave Software (como Gmail) sin tener que acceder a Brave</translation>
+<translation id="2796517443093885402">Brave puede protegerte ante violaciones de la seguridad de los datos, extensiones dañadas y mucho más</translation>
+<translation id="428541510811554120">Brave no puede buscar actualizaciones. Revisa la conexión a Internet.</translation>
+<translation id="2633397153656205379">No se actualizó Brave porque se produjo un error. <ph name="BEGIN_LINK"/>Soluciona los problemas de actualización y las actualizaciones con error de Brave.<ph name="END_LINK"/></translation>
+<translation id="8622246347342688645">Brave no puede revisar las contraseñas porque no accediste a tu cuenta</translation>
+<translation id="7006260220514217183">La Navegación segura está desactivada. Brave recomienda activarla.</translation>
+<translation id="1785833016412082453">Brave no puede revisar las extensiones. Vuelve a intentarlo más tarde.</translation>
 <translation id="9220324636239049437">Esta acción borrará 1 elemento de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Esta acción borrará <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Esta acción borrará tus datos de navegación de este dispositivo. Si más adelante deseas recuperarlos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>

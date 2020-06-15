@@ -6,15 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_INSTALL_PROMPT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_INSTALL_PROMPT_H_
 
-#define GetDialogTitle virtual GetDialogTitle
+#define GetDialogTitle    \
+  GetDialogTitle_ChromiumImpl() const; \
+  base::string16 GetDialogTitle
 
-#define BRAVE_EXTENSION_INSTALL_PROMPT_H \
- private:                                \
-  friend class BravePrompt;              \
-                                         \
- public:
 #include "../../../../../chrome/browser/extensions/extension_install_prompt.h"
-#undef BRAVE_EXTENSION_INSTALL_PROMPT_H_
 #undef GetDialogTitle
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_INSTALL_PROMPT_H_

@@ -93,3 +93,44 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(redirect.path(), url.path());
   EXPECT_EQ(rc, net::OK);
 }
+
+TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+     RedirectBugsChromium) {
+  // Check when we will redirect.
+  const GURL url(
+      "https://bugs.chromium.org/p/chromium/issues/"
+      "entry?template=Crash%20Report&comment=IMPORTANT%20Chrome&labels="
+      "Restrict-View-"
+      "EditIssue%2CStability-Crash%2CUser-Submitted");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  const GURL redirect = GURL(request_info->new_url_spec);
+  EXPECT_EQ(redirect.host(), "github.com");
+  EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
+  EXPECT_EQ(redirect.path(), "/brave/brave-browser/issues/new");
+  EXPECT_EQ(redirect.query(),
+            "title=Crash%20Report&labels=crash&body=IMPORTANT%20Brave");
+  EXPECT_EQ(rc, net::OK);
+
+  // Check when we should not redirect: wrong query keys count
+  request_info.reset();
+  const GURL url_fewer_keys(
+      "https://bugs.chromium.org/p/chromium/issues/entry?template=A");
+  request_info = std::make_shared<brave::BraveRequestInfo>(url_fewer_keys);
+  rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(rc, net::OK);
+
+  // Check when we should not redirect: wrong query keys
+  request_info.reset();
+  const GURL url_wrong_keys(
+      "https://bugs.chromium.org/p/chromium/issues/entry?t=A&l=B&c=C");
+  request_info = std::make_shared<brave::BraveRequestInfo>(url_wrong_keys);
+  rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                   request_info);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(rc, net::OK);
+}

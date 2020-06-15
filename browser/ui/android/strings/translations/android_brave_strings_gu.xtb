@@ -5,10 +5,8 @@
 <translation id="6303294677342628402">શિલ્ડ્સ</translation>
 <translation id="6132506775968708399">3 જા પક્ષ કૂકીઝ અવરોધિત કરો</translation>
 <translation id="7835726359440951858">જાહેરાતો અને ટ્રેકિંગ અવરોધિત કરો</translation>
-<translation id="520895744850022668">બધી જગ્યા પર HTTPS</translation>
 <translation id="94154759592465111">લિપિઓ અવરોધિત કરો</translation>
 <translation id="7458422973722236530">ફિંગરપ્રિન્ટિંગ સુરક્ષા</translation>
-<translation id="252011129655042182">જાહેરાતો અને ટ્રેકર્સ</translation>
 <translation id="6754976710186182237">ફિંગરપ્રિન્ટ પદ્ધતિઓ</translation>
 <translation id="2313532038420432247">HTTPS  અપગ્રેડ્સ</translation>
 <translation id="7461425058443653485">લિપીઓ અવરોધિત કરવામાં આવી છે</translation>
@@ -19,6 +17,7 @@
 <translation id="1468415711258933398">માનક ટૅબ</translation>
 <translation id="3377025655491224618">છૂપું ટૅબ</translation>
 <translation id="9148058034647219655">બહાર નીકળો</translation>
+<translation id="520895744850022668">બધી જગ્યા પર HTTPS</translation>
 <translation id="8710614491157212477">શક્ય હોય ત્યારે HTTP ને બદલે HTTPS નો ઉપયોગ કરીને સમર્થિત સાઇટો ખોલે છે</translation>
 <translation id="8387201461264842096">જાહેરાત અવરોધિત કરો</translation>
 <translation id="1934885595886623674">જાહેરાતો લોડ થવાથી રોકે છે</translation>
@@ -156,7 +155,7 @@
 <translation id="1713542052890184975">કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.</translation>
 <translation id="2323069945529668668">ઉહ-ઓહ!</translation>
 <translation id="7510166204621526816">Brave પુરસ્કારો સર્વર પ્રતિસાદ આપતું નથી. અમે તેને શક્ય તેટલી વહેલી તકે ઠીક કરીશું.</translation>
-<translation id="2626799779920242286">કૃપયા પછીથી ફરી પ્રયાસ કરો</translation>
+<translation id="7117228822971127758">કૃપા કરીને થોડા સમય પછી ફરી પ્રયાસ કરો</translation>
 <translation id="3068742524072211213"><ph name="DATE"/> ના સમાપ્ત થાય છે</translation>
 <translation id="4292832015778676417">જાહેરાતો દ્વારા કમાયા</translation>
 <translation id="683765328936486920">YouTube પર</translation>
@@ -220,4 +219,9 @@
 <translation id="8782039523249932839">આ તમારા Brave વૉલેટને હટાવી નાખશે અને તમારા બધા Brave પુરસ્કારો ડેટાને રીસેટ કરશે</translation>
 <translation id="6810078320346589989">એક બુકમાર્ક બનાવો</translation>
 <translation id="6336451774241870485">નવું ખાનગી ટૅબ</translation>
+<translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
+<translation id="3368922792935385530">કનેક્ટેડ</translation>
+<translation id="6680650203439190394">રેટ કરો</translation>
+<translation id="7961015016161918242">ક્યારેય નહીં</translation>
+<translation id="5657156137487675418">બધી કૂકીઝને મંજૂરી આપો</translation>
 </translationbundle>

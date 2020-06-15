@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">គណនី Brave Software</translation>
 <translation id="3157931365184549694">ស្តារ</translation>
 <translation id="5040262127954254034">ឯកជនភាព</translation>
-<translation id="1623104350909869708">បង្ការទំព័រនេះពីការបង្កើតប្រអប់បន្ថែម។</translation>
-<translation id="2677748264148917807">ចាកចេញ</translation>
-<translation id="5556459405103347317">ដំណើរការឡើងវិញ</translation>
 <translation id="2359808026110333948">បន្ត</translation>
 <translation id="4378154925671717803">ទូរស័ព្ទ</translation>
 <translation id="8131740175452115882">អះអាង</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">កំពុងគណនា...</translation>
 <translation id="7701040980221191251">គ្មាន</translation>
 <translation id="8428213095426709021">ការកំណត់</translation>
+<translation id="2344028582131185878">ទាញយកស្វ័យប្រវត្តិ</translation>
+<translation id="3414952576877147120">ទំហំ៖</translation>
 <translation id="4850886885716139402">មើល</translation>
 <translation id="7180611975245234373">ធ្វើឲ្យថ្មីឡើងវិញ…</translation>
-<translation id="1426410128494586442">បាទ/ចាស</translation>
-<translation id="4250680216510889253">ទេ</translation>
 <translation id="4522570452068850558">ព័ត៌មានលំអិត</translation>
 <translation id="3586931643579894722">លាក់ព័ត៌មានលំអិត</translation>
+<translation id="5556459405103347317">ដំណើរការឡើងវិញ</translation>
 <translation id="614940544461990577">សាកល្បង៖</translation>
 <translation id="4943872375798546930">គ្មានលទ្ធផលទេ</translation>
 <translation id="8688672835843460752">អាចប្រើបាន</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">ប្រវត្តិស្វែងរក</translation>
 <translation id="4756388243121344051">ប្រវត្តិ</translation>
 <translation id="1644574205037202324">ប្រវត្តិ</translation>
+<translation id="1623104350909869708">បង្ការទំព័រនេះពីការបង្កើតប្រអប់បន្ថែម។</translation>
+<translation id="2677748264148917807">ចាកចេញ</translation>
 <translation id="3950820424414687140">ចូល</translation>
 <translation id="8286036467436129157">ចូល</translation>
 <translation id="8503813439785031346">ឈ្មោះអ្នកប្រើ</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">អង្គ​ចងចាំ</translation>
 <translation id="6059925163896151826">ឧបករណ៍ USB</translation>
 <translation id="7638605456503525968">រន្ធ​ស៊េរី</translation>
+<translation id="3784372983762739446">ឧបករណ៍​ប៊្លូធូស</translation>
 <translation id="2215727959747642672">ការកែឯកសារ</translation>
 <translation id="6545864417968258051">ការស្កេនប៊្លូធូស</translation>
 <translation id="534295439873310000">ឧបករណ៍ NFC</translation>
-<translation id="4943703118917034429">VR</translation>
-<translation id="3513704683820682405">AR</translation>
+<translation id="4670064810192446073">VR</translation>
+<translation id="2025115093177348061">AR</translation>
 <translation id="5039804452771397117">អនុញ្ញាត</translation>
 <translation id="7053983685419859001">ទប់ស្កាត់</translation>
 <translation id="57838592816432529">បិទសម្លេង</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">ពាក្យសម្ងាត់​របស់អ្នក​អាចត្រូវ​បានគេលួចប្រើ​</translation>
 <translation id="1089439967362294234">ប្ដូរ​ពាក្យ​សម្ងាត់</translation>
 <translation id="9008201768610948239">មិនអើពើ</translation>
+<translation id="808894953321890993">ប្ដូរ​ពាក្យ​សម្ងាត់</translation>
+<translation id="5979084224081478209">ពិនិត្យពាក្យសម្ងាត់</translation>
+<translation id="6107012941649240045">បោះផ្សាយជូន</translation>
+<translation id="5030338702439866405">ចេញដោយ</translation>
+<translation id="5826507051599432481">ឈ្មោះទូទៅ (CN)</translation>
+<translation id="6898699227549475383">អង្គភាព (O)</translation>
+<translation id="3308006649705061278">ក្រុមអង្គភាព (OU)</translation>
+<translation id="8705331520020532516">លេខសេរ៊ី</translation>
+<translation id="1902576642799138955">រយៈពេលមានសុពលភាព</translation>
+<translation id="5895187275912066135">ចេញនៅថ្ងៃទី</translation>
+<translation id="4121428309786185360">ផុតកំណត់នៅថ្ងៃទី៖</translation>
+<translation id="4154664944169082762">ស្នាមម្រាមដៃ</translation>
+<translation id="7238585580608191973">ស្នាមម្រាមដៃ SHA-256</translation>
+<translation id="5209518306177824490">ស្នាមម្រាមដៃ SHA-1</translation>
+<translation id="6786747875388722282">កម្មវិធីបន្ថែម</translation>
+<translation id="7240120331469437312">ឈ្មោះជម្រើសភាគីវិញ្ញាបនប័ត្រ</translation>
 <translation id="10614374240317010">មិនដែលបានរក្សាទុក</translation>
 <translation id="5869522115854928033">ពាក្យសម្ងាត់ដែលបានរក្សាទុក</translation>
 <translation id="230699814587342492">ពាក្យ​សម្ងាត់ Brave</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">ស</translation>
 <translation id="1197088940767939838">ទឹក​ក្រូច</translation>
 <translation id="1555130319947370107">ខៀវ</translation>
+<translation id="5612720917913232150"><ph name="URL"/> ចង់ប្រើ​ទីតាំង​កុំព្យូទ័រ​របស់អ្នក</translation>
+<translation id="4733082559415072992"><ph name="URL"/> ចង់ប្រើ​ទីតាំង​ឧបករណ៍​របស់អ្នក</translation>
+<translation id="4677585247300749148"><ph name="URL"/> ចង់ឆ្លើយតប​នឹងព្រឹត្តិការណ៍​ភាពងាយស្រួល</translation>
+<translation id="3461266716147554923"><ph name="URL"/> ចង់​មើល​អត្ថបទ និង​រូបភាព​ដែល​បាន​ចម្លង​ទៅអង្គចងចាំ</translation>
+<translation id="131405271941274527"><ph name="URL"/> ចង់ផ្ញើ និង​ទទួលព័ត៌មាន នៅពេល​អ្នកចុច​ទូរសព្ទ​របស់អ្នក នៅលើ​ឧបករណ៍ NFC</translation>
+<translation id="5146995429444047494">ការជូនដំណឹង​សម្រាប់ <ph name="ORIGIN"/> ត្រូវបានទប់ស្កាត់</translation>
+<translation id="1195558154361252544">ការជូនដំណឹង​ត្រូវបានទប់ស្កាត់​ដោយស្វ័យប្រវត្តិ​សម្រាប់គេហទំព័រ​ទាំងអស់ លើកលែងតែ​គេហទំព័រ​ដែលអ្នក​អនុញ្ញាត​ប៉ុណ្ណោះ</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> ចង់​ប្រើ​មីក្រូហ្វូន​របស់អ្នក</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> ចង់ប្រើ​កាមេរ៉ា​របស់អ្នក</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> ចង់​ផ្ញើ​ការជូន​ដំណឹងទៅអ្នក</translation>
+<translation id="6910240653697687763"><ph name="URL"/> ចង់​គ្រប់គ្រង​ឧបករណ៍ MIDI របស់អ្នក​ទាំងស្រុង</translation>
+<translation id="503498442187459473"><ph name="HOST"/> ចង់ប្រើកាមេរ៉ា និងមីក្រូហ្វូនរបស់អ្នក</translation>
+<translation id="8282947398454257691">ដឹងពីឧបករណ៍សម្គាល់ឧបករណ៍តែមួយរបស់អ្នក</translation>
+<translation id="8329449853370113380"><ph name="URL"/> ចង់​ចាក់​ខ្លឹមសារ​ដែលមានការ​ការពារ។ អត្តសញ្ញាណរបស់​ឧបករណ៍​អ្នក​នឹង​ត្រូវ​បាន​ផ្ទៀងផ្ទាត់​ដោយ Brave Software ។</translation>
+<translation id="2650609753175229582"><ph name="URL"/> ចង់ចាក់ខ្លឹមសារ​ដែលមានការ​ការពារ។ អត្តសញ្ញាណ​ឧបករណ៍របស់អ្នក​នឹងត្រូវផ្ទៀងផ្ទាត់​ដោយ Brave Software ហើយអាចនឹង​ត្រូវបានចូលប្រើ​ដោយគេហទំព័រនេះ។</translation>
+<translation id="3016780570757425217">ដឹងពីទីតាំងរបស់អ្នក</translation>
+<translation id="7221855153210829124">បង្ហាញការជូនដំណឹង</translation>
+<translation id="8606726445206553943">ប្រើឧបករណ៍ MIDI របស់អ្នក</translation>
+<translation id="7409836189476010449">ដំណើរការ Flash</translation>
+<translation id="7438976808740265764">Flash Player នឹង​លែងប្រើបាន​ទៀតហើយ បន្ទាប់ពី​ខែធ្នូ ឆ្នាំ 2020។</translation>
+<translation id="4761104368405085019">ប្រើម៉ៃក្រូហ្វូនរបស់អ្នក</translation>
+<translation id="9150045010208374699">ប្រើកាមេរ៉ារបស់អ្នក</translation>
+<translation id="4953689047182316270">ឆ្លើយតប​នឹងព្រឹត្តិការណ៍​ភាពងាយស្រួល</translation>
+<translation id="6116338172782435947">មើល​អត្ថបទ និង​រូបភាព​ដែល​បានចម្លង​ទៅ​អង្គ​ចងចាំ</translation>
+<translation id="5804427196348435412">ប្រើ​ឧបករណ៍ NFC</translation>
+<translation id="3194737229810486521"><ph name="URL"/> ចង់ផ្ទុក​ទិន្នន័យ​នៅលើ​ឧបករណ៍​របស់អ្នក​ជាអចិន្ត្រៃយ៍</translation>
+<translation id="1030706264415084469"><ph name="URL"/> ចង់ផ្ទុក​ទិន្នន័យ​ទំហំធំ​នៅលើ​ឧបករណ៍​របស់អ្នក​ជា​អចិន្ត្រៃយ៍</translation>
+<translation id="1712552549805331520"><ph name="URL"/> ចង់​ផ្ទុក​ទិន្នន័យ​នៅក្នុង​កុំព្យូទ័រ​មូលដ្ឋាន​របស់អ្នក​ជាអចិន្ត្រៃយ៍</translation>
+<translation id="1997484222658892567"><ph name="URL"/> ចង់ផ្ទុក​ទិន្នន័យ​ទំហំ​ធំ​នៅលើ​កុំព្យូទ័រ​មូលដ្ឋាន​របស់អ្នក​ជាអចិន្ត្រៃយ៍</translation>
+<translation id="7648992873808071793">ផ្ទុកឯកសារនៅលើឧបករណ៍នេះ</translation>
 <translation id="4813512666221746211">កំហុសឆ្គងបណ្តាញ</translation>
 <translation id="3380365263193509176">កំហុសឆ្គងមិនស្គាល់</translation>
 <translation id="5565735124758917034">សកម្ម</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">អ្នកប្រើបច្ចុប្បន្ន</translation>
 <translation id="6965978654500191972">ឧបករណ៍</translation>
 <translation id="4728558894243024398">អង្គប្រតិបត្តិការ</translation>
+<translation id="1426410128494586442">បាទ/ចាស</translation>
+<translation id="4250680216510889253">ទេ</translation>
 <translation id="1588438908519853928">ធម្មតា</translation>
 <translation id="1974060860693918893">កម្រិតខ្ពស់</translation>
 <translation id="5308380583665731573">ភ្ជាប់</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">មិនស្គាល់</translation>
 <translation id="9170848237812810038">បកក្រោយ</translation>
 <translation id="2972581237482394796">ធ្វើវិញ</translation>
-<translation id="6786747875388722282">កម្មវិធីបន្ថែម</translation>
 <translation id="5804241973901381774">ការអនុញ្ញាត</translation>
 <translation id="8004582292198964060">កម្មវិធីរុករក</translation>
 </translationbundle>

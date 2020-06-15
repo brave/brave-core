@@ -5,10 +5,10 @@
 <translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="6132506775968708399">مسدود کردن کوکی‌های شخص ثالث</translation>
 <translation id="7835726359440951858">مسدود کردن آگهی‌ها و ردگیری‌ها</translation>
-<translation id="520895744850022668">HTTPS در همه جا</translation>
+<translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="94154759592465111">مسدود کردن اسکریپت</translation>
 <translation id="7458422973722236530">محافظت دربرابر انگشت‌نگاری</translation>
-<translation id="252011129655042182">آگهی‌ها و ردگیرها</translation>
+<translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
 <translation id="6754976710186182237">شیوه‌های اثرانگشت</translation>
 <translation id="2313532038420432247">به‌روزرسانی‌های HTTPS</translation>
 <translation id="7461425058443653485">اسکریپت مسدود شد</translation>
@@ -19,6 +19,7 @@
 <translation id="1468415711258933398">برگه استاندارد</translation>
 <translation id="3377025655491224618">برگه ناشناس</translation>
 <translation id="9148058034647219655">خروج</translation>
+<translation id="520895744850022668">HTTPS در همه جا</translation>
 <translation id="8710614491157212477">سایت‌های پشتیبانی‌شده را در صورت امکان به جای HTTP با HTTPS باز می‌کند.</translation>
 <translation id="8387201461264842096">مسدود کردن آگهی</translation>
 <translation id="1934885595886623674">مانع از بارگیری آگهی‌ها می‌شود</translation>
@@ -26,6 +27,7 @@
 <translation id="7459000603787995422">بستن برگه‌ها هنگام خروج</translation>
 <translation id="1680858055899097121">بین جلسه‌های مرور وب، برگه‌ها نگه داشته نمی‌شوند</translation>
 <translation id="4339730410920731698">آگهی‌ها و ردیاب‌ها مسدود شدند</translation>
+<translation id="6761596877474675418">داده‌ها ذخیره شد</translation>
 <translation id="3034562645284925177">زمان تخمینی ذخیره شد</translation>
 <translation id="6572660632052512096">حالت دسک‌تاپ</translation>
 <translation id="1340503115760585811">فعال کردن نمای دسک‌تاپ برای برگه‌های جدید</translation>
@@ -159,7 +161,7 @@
 <translation id="1713542052890184975">لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.</translation>
 <translation id="2323069945529668668">وای!</translation>
 <translation id="7510166204621526816">سرور «پاداش‌های Brave» پاسخ نمی‌دهد. در اسرع وقت مشکل را برطرف خواهیم کرد.</translation>
-<translation id="2626799779920242286">لطفاً بعداً دوباره امتحان کنید.</translation>
+<translation id="7117228822971127758">لطفاً بعداً دوباره امتحان کنید</translation>
 <translation id="3068742524072211213">در <ph name="DATE"/> منقضی می‌شود.</translation>
 <translation id="4292832015778676417">دریافت‌شده از آگهی‌ها</translation>
 <translation id="683765328936486920">در YouTube</translation>
@@ -227,7 +229,6 @@
 <translation id="6199596294742117349">این برگه خصوصی است</translation>
 <translation id="5858455511731621847">با اینکه سایت‌های بازدیدشده شما در برگه‌های خصوصی به‌صورت محلی ذخیره نمی‌شوند، اما این برگه‌ها باعث نمی‌شود تا شما برای ISP، کارفرما یا سایت‌های بازدیدشده ناشناس یا غیرقابل مشاهده باشید.</translation>
 <translation id="5789441016350810005">وقتی مرورگر در پس‌زمینه بود، «آگهی‌های Brave» ارسال شد</translation>
-<translation id="7127980134843952133">سابقه بارگیری</translation>
 <translation id="3690140184638701871">مشارکت و انعام</translation>
 <translation id="844921671123185605">انعام ماهانه شما پردازش شده است!</translation>
 <translation id="3124090095880236567">روشن کردن آگهی‌ها</translation>
@@ -250,15 +251,82 @@
 <translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
 <translation id="8297488609722895137">عکس از <ph name="PHOTO_BY"/></translation>
-<translation id="3794079107601824147">برای مشاهده این تصویر پس‌زمینه، پول دریافت کنید.</translation>
-<translation id="4836823081419522426">شما 70 درصد درآمد آگهی برای این حمایت مالی خصوصی را دریافت خواهید کرد که می‌توانید از آن برای پشتیبانی از سازندگان محتوای وب استفاده کنید. برای مطالبه سهم خود، «پاداش‌های Brave» را روشن کنید.</translation>
-<translation id="7307847920988946894">روشن کردن «پاداش‌ها»</translation>
 <translation id="1605521356929094020">روشن کردن «آگهی‌های Brave»</translation>
-<translation id="1647482814782886825">با خاموش کردن «پاداش‌ها»، موافقت خود را با <ph name="TERMS_OF_SERVICE"/> اعلام می‌کنید. همچنین می‌توانید <ph name="HIDE_SPONSORED_IMAGES"/> را انتخاب کنید.</translation>
+<translation id="5878330112719288629">با ضربه زدن روی «کسب و ارائه»، موافقت خود را با <ph name="TERMS_OF_SERVICE"/> اعلام می‌کنید.</translation>
+<translation id="3794079107601824147">برای مشاهده این تصویر پس‌زمینه، پول دریافت کنید.</translation>
 <translation id="7136586167396205364">تصاویر حمایت‌شده را پنهان کنید</translation>
 <translation id="2927095357213611519">شما می‌توانید با توکن‌ها از سازندگان وب حمایت کنید.\nبا مشاهده آگهی‌های رعایت‌کننده حریم خصوصی، توکن دریافت کنید.</translation>
-<translation id="4016415345213871193">برای مشاهده این تصویر پس‌زمینه، پول دریافت می‌کنید.</translation>
-<translation id="5895280237921845725">درباره تصاویر حمایت‌شده در «پاداش‌های Brave»، <ph name="LEARN_MORE"/>. همچنین می‌توانید با تصمیم خود <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="1908278071064820219">همچنین می‌توانید با تصمیم خود <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
-<translation id="7931660128190969207">برای مشاهده این تصویر پس‌زمینه پول دریافت کنید. برای مطالبه سهم خود، «آگهی‌های Brave» را روشن کنید.</translation>
+<translation id="213787746370741250">باز کردن زبانه‌ها در «زبانه‌های سفارشی»</translation>
+<translation id="8030169304546394654">ارتباط قطع شد</translation>
+<translation id="8267327690882073581">تأیید کیف پول</translation>
+<translation id="543510923939676996">کیف پول تأیید شد!‍</translation>
+<translation id="8673913984316081937">تأیید کیف پول شما اختیاری است</translation>
+<translation id="8558636200953226885">اما درصورت تأیید، می‌توانید...</translation>
+<translation id="8697510149346635496">BAT را برداشت کنید که از مشاهده تبلیغاتی به دست آمده‌اند که به حریم خصوصی احترام می‌گذارند</translation>
+<translation id="1481480653609649134">با کارت اعتباری و سایر منابع، BAT اضافی خریداری کنید</translation>
+<translation id="9096003370755878766">BAT را که قبلاً به کیف پاداش‌های Brave خود اضافه کرده‌اید، برداشت کنید</translation>
+<translation id="1554282356558968486">سرویس کیف پول ما ارائه‌شده است توسط</translation>
+<translation id="6569877533335686968">Uphold</translation>
+<translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
+<translation id="723054503945711909">Brave Software Inc.اطلاعات شخصی را که در زمان ایجاد یک حساب با Uphold در اختیار آنها قرار داده‌اید، پردازش و ذخیره‌سازی نخواهد کرد و به آنها دسترسی نخواهد داشت.</translation>
+<translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
+<translation id="2193391216824305230">کیف پول کاربر</translation>
+<translation id="7591798679868259510">رفتن به حساب Uphold من</translation>
+<translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
+<translation id="6239274080752256452">برداشتن سرمایه</translation>
+<translation id="8874184842967597500">متصل نیست</translation>
+<translation id="3368922792935385530">متصل</translation>
+<translation id="4569155249847375786">تأیید شد</translation>
+<translation id="5358719431303818601">قطع‌شده و تأییدنشده</translation>
+<translation id="4241449868720191203">قطع‌شده و تأییدشده</translation>
+<translation id="3248185426436836442">معوق</translation>
+<translation id="8108013093558639183">در حال حاضر، بر اساس مکانی که حساب شما در آن باز شده است، BAT در منطقه شما پشتیبانی نمی‌شود. بعداً در دسترس بودن آن را دوباره بررسی کنید.</translation>
+<translation id="4190454391025419535">منطقه پشتیبانی نمی‌شود</translation>
+<translation id="6830703472632069884">مشکلی در تأیید کیف پول شما وجود داشت، لطفاً در زمان دیگری دوباره امتحان کنید.</translation>
+<translation id="3512533646933434345">خطا در تأیید کیف پول</translation>
+<translation id="2260513517001048012">توجه: این «پدیدآورنده تأییدشده Brave» هنوز حسابش را پیکربندی نکرده است تا از کاربران Brave کمک مالی دریافت کند. مرورگرتان تا زمانی که پدیدآورنده به تأیید برسد، یا تا 90 روز سعی می‌کند کمک را انجام دهد.</translation>
+<translation id="4488355059795908907">این «پدیدآورنده تأییدشده Brave» هنوز حسابش را پیکربندی نکرده است تا از کاربران Brave کمک مالی دریافت کند. تا زمانی که این روند کامل نشود، هر انعامی که ارسال می‌کنید در کیف پولتان باقی می‌ماند.</translation>
+<translation id="2495032782748793764">پیش‌فرض Brave</translation>
+<translation id="9132378787893584761">Brave را با دوستان خود به اشتراک بگذارید!</translation>
+<translation id="717952606991220586">متأسفیم، مشکلی پیش آمد. لطفاً بعداً دوباره امتحان کنید.</translation>
+<translation id="2524310205387880526">رتبه دادن به Brave</translation>
+<translation id="6680650203439190394">رتبه‌بندی</translation>
+<translation id="2635089463885398597">تجربه خود از کار با Brave را چگونه رتبه‌بندی می‌کنید؟</translation>
+<translation id="141901961143729572">اشتراک‌گذاری افکار خود</translation>
+<translation id="7961015016161918242">هرگز</translation>
+<translation id="1275213816424141989">شاید بعداً</translation>
+<translation id="6991128190741664836">بعداً</translation>
+<translation id="8851456134224363571">فوق‌العاده است! لطف می‌کنید در Play Store به ما رتبه بدهید؟</translation>
+<translation id="8668962040900592974">به ما بگویید که چگونه می‌توانیم پیشرفت کنیم</translation>
+<translation id="4406937629441301400">در ازای مشاهده این تصویر، توکن کسب کنید و با بازارسال آن از پدیدآورندگان حمایت کنید. <ph name="LEARN_MORE"/></translation>
+<translation id="8693132237667961044">در ازای مشاهده این تصویر توکن دریافت کنید. برای درخواست سهم خود، «کسب و ارائه» را روشن کنید.</translation>
+<translation id="6632345639591919543">در ازای مشاهده این تصویر، توکن دریافت می‌کنید.\n<ph name="LEARN_MORE"/></translation>
+<translation id="1465733111003593696">در ازای مشاهده این تصویر، توکن دریافت می‌کنید.</translation>
+<translation id="7952665812649667034">آماده «کسب و ارائه» هستم</translation>
+<translation id="7877201489035217175">کسب اطلاعات بیشتر درباره تصاویر حمایت‌شده</translation>
+<translation id="828092975561478703">برای هر تصویر حمایت‌شده که مشاهده می‌کنید، 70% درآمد را در قالب توکن دریافت می‌کنید. با «آگهی‌های Brave»، شما همواره روی تبلیغاتی که مشاهده می‌کنید، کنترل دارید.</translation>
+<translation id="4941539331405513605">مسدود کردن کوکی‌های بین سایتی</translation>
+<translation id="3763681089644577874">مسدود کردن کوکی‌ها</translation>
+<translation id="614747795780742163">مانع از این می‌شود که وب‌سایت‌ها اطلاعات مربوط به بازدیدهای قبلی شما را ذخیره کنند</translation>
+<translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
+<translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
+<translation id="5963670684159057574">مسدود کردن انگشت‌نگاری بین سایتی</translation>
+<translation id="3895527457258986253">مسدود کردن تشخیص اثر انگشت</translation>
+<translation id="184568144098869637">مانع از آن می‌شود که مرورگر دستگاه شما را شناسایی کند</translation>
+<translation id="4540198958192073185">مسدود کردن همه انگشت‌نگاری‌ها</translation>
+<translation id="769702552748212954">مجاز بودن انواع انگشت‌نگاری</translation>
+<translation id="2888409909650566510">آگهی‌ها و سایر موارد\nناخوشایند مسدود شده‌اند</translation>
+<translation id="6930134873084561197">سایت‌ها اغلب شامل کوکی‌ها و اسکریپت‌هایی هستند که درتلاشند شما و دستگاهتان را شناسایی کنند. آنها می‌خواهند با ردیابی آنچه در سایت‌ها انجام می‌دهید، شما را شناسایی و در سراسر وب دنبال کنند.\n\nBrave این موارد را مسدود می‌کند تا بتوانید بدون اینکه در همه جا دنبال شوید، وب را مرور کنید.</translation>
+<translation id="8553998445606452168">درباره سپرهای ایمنی Brave</translation>
+<translation id="8912304686498704084">فعال</translation>
+<translation id="4963218453264888510">غیرفعال</translation>
+<translation id="7474113515179313724">بدون محافظ حریم خصوصی Brave این سایت را مرور می‌کنید. آیا این سایت با فعال بودن «سپر امنیتی» درست کار نمی‌کند؟</translation>
+<translation id="9055546041146396417">اگر این سایت خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید.</translation>
+<translation id="1209739344687072997">گزارش خرابی سایت</translation>
+<translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
+<translation id="5429200298326665264">توجه: نشانی این سایت به‌همراه شماره نسخه Brave شما و نشانی IP شما (که ذخیره نخواهد شد) ارسال می‌شود.</translation>
+<translation id="5299848999918506028">متشکریم!</translation>
+<translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
+<translation id="650318023204990401">کنترل‌های پیشرفته</translation>
+<translation id="7182293319417450928">حداقل موجودی ‎25 BAT برای تأیید لازم است.</translation>
 </translationbundle>

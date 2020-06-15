@@ -44,7 +44,7 @@ def create_xtb_format_translationbundle_tag(lang):
     # error on Windows otherwise. So we need to force it back to "iw" here
     # for minimal impact.
     translationbundle_tag.set(
-        'lang', lang.replace('_', '-').replace('he', 'iw'))
+        'lang', lang.replace('_', '-').replace('he', 'iw').replace('sr-BA@latin', 'sr-Latn'))
     # Adds a newline so the first translation isn't glued to the
     # translationbundle element for us weak humans.
     translationbundle_tag.text = '\n'
@@ -101,7 +101,9 @@ def get_transifex_languages(grd_file_path):
 def get_transifex_translation_file_content(source_file_path, filename,
                                            lang_code):
     """Obtains a translation Android xml format and returns the string"""
-    lang_code = lang_code.replace('-', '_').replace('iw', 'he')
+    lang_code = lang_code.replace('-', '_')
+    lang_code = lang_code.replace('iw', 'he')
+    lang_code = lang_code.replace('sr_Latn', 'sr_BA@latin')
     url_part = 'project/%s/resource/%s/translation/%s?mode=default' % (
         transifex_project_name,
         transifex_name_from_filename(source_file_path, filename), lang_code)
@@ -521,7 +523,9 @@ def upload_missing_translations_to_transifex(source_string_path, lang_code,
                                              chromium_grd_strings, xtb_strings,
                                              chromium_xtb_strings):
     """For each chromium translation that we don't know about, upload it."""
-    lang_code = lang_code.replace('-', '_').replace('iw', 'he')
+    lang_code = lang_code.replace('-', '_')
+    lang_code = lang_code.replace('iw', 'he')
+    lang_code = lang_code.replace('sr_Latn', 'sr_BA@latin')
     for idx, (string_name, string_value,
               string_fp, desc) in enumerate(grd_strings):
         string_fp = str(string_fp)

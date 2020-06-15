@@ -28,9 +28,6 @@
 <translation id="5713644099811900409">Brave Software есептік жазбасы</translation>
 <translation id="3157931365184549694">Қалпына келтіру</translation>
 <translation id="5040262127954254034">Құпиялылық</translation>
-<translation id="1623104350909869708">Бұл беттің қосымша диалогтік терезелерді жасауына жол бермеу</translation>
-<translation id="2677748264148917807">Шығу</translation>
-<translation id="5556459405103347317">Қайта жүктеу</translation>
 <translation id="2359808026110333948">Жалғастыру</translation>
 <translation id="4378154925671717803">Телефон</translation>
 <translation id="8131740175452115882">Растау</translation>
@@ -59,12 +56,13 @@
 <translation id="397105322502079400">Есептелуде…</translation>
 <translation id="7701040980221191251">Жоқ</translation>
 <translation id="8428213095426709021">Параметрлер</translation>
+<translation id="2344028582131185878">Автоматты жүктеулер</translation>
+<translation id="3414952576877147120">Көлемі:</translation>
 <translation id="4850886885716139402">Көрініс</translation>
 <translation id="7180611975245234373">Жаңарту</translation>
-<translation id="1426410128494586442">Иә</translation>
-<translation id="4250680216510889253">Жоқ</translation>
 <translation id="4522570452068850558">Мәліметтер</translation>
 <translation id="3586931643579894722">Мәліметтерді жасыру</translation>
+<translation id="5556459405103347317">Қайта жүктеу</translation>
 <translation id="614940544461990577">Орындап көріңіз:</translation>
 <translation id="4943872375798546930">Нәтижесіз</translation>
 <translation id="8688672835843460752">Қолжетімді</translation>
@@ -82,6 +80,8 @@
 <translation id="4880827082731008257">Іздеу тарихы</translation>
 <translation id="4756388243121344051">&amp;Журнал</translation>
 <translation id="1644574205037202324">Журнал</translation>
+<translation id="1623104350909869708">Бұл беттің қосымша диалогтік терезелерді жасауына жол бермеу</translation>
+<translation id="2677748264148917807">Шығу</translation>
 <translation id="3950820424414687140">Кіру</translation>
 <translation id="8286036467436129157">Кіру</translation>
 <translation id="8503813439785031346">Пайдаланушы аты</translation>
@@ -123,11 +123,12 @@
 <translation id="2586657967955657006">Буфер</translation>
 <translation id="6059925163896151826">USB құрылғылары</translation>
 <translation id="7638605456503525968">Сериялық порттар</translation>
+<translation id="3784372983762739446">Bluetooth құрылғылары</translation>
 <translation id="2215727959747642672">Файлды өңдеу</translation>
 <translation id="6545864417968258051">Bluetooth құрылғыларын іздеу</translation>
 <translation id="534295439873310000">NFC функциясы бар құрылғылар</translation>
-<translation id="4943703118917034429">Виртуалды шындық</translation>
-<translation id="3513704683820682405">Толықтырылған шындық</translation>
+<translation id="4670064810192446073">Виртуалды шындық</translation>
+<translation id="2025115093177348061">Толықтырылған шындық</translation>
 <translation id="5039804452771397117">Рұқсат беру</translation>
 <translation id="7053983685419859001">Бөгеу</translation>
 <translation id="57838592816432529">Дыбысын өшіру</translation>
@@ -143,6 +144,22 @@
 <translation id="7878562273885520351">Құпия сөзіңіз ұрланған болуы мүмкін</translation>
 <translation id="1089439967362294234">Құпия сөзді өзгерту</translation>
 <translation id="9008201768610948239">Елемеу</translation>
+<translation id="808894953321890993">Кұпия сөзді өзгерту</translation>
+<translation id="5979084224081478209">Құпия сөздерді тексеру</translation>
+<translation id="6107012941649240045">Кімге берілді</translation>
+<translation id="5030338702439866405">Берген</translation>
+<translation id="5826507051599432481">Ортақ атау (CN)</translation>
+<translation id="6898699227549475383">Ұйым (O)</translation>
+<translation id="3308006649705061278">Ұйымдық бірлік (OU)</translation>
+<translation id="8705331520020532516">Сериялық нөмір</translation>
+<translation id="1902576642799138955">Жарамдылық мерзімі</translation>
+<translation id="5895187275912066135">Шығарылған күні</translation>
+<translation id="4121428309786185360">Аяқталу күні</translation>
+<translation id="4154664944169082762">Саусақ іздері</translation>
+<translation id="7238585580608191973">SHA-256 саусақ ізі</translation>
+<translation id="5209518306177824490">SHA-1 саусақ ізі</translation>
+<translation id="6786747875388722282">Кеңейтімдер</translation>
+<translation id="7240120331469437312">Certificate Subject Alternative Name</translation>
 <translation id="10614374240317010">Ешқашан сақталмайды</translation>
 <translation id="5869522115854928033">Сақталған құпия сөздер</translation>
 <translation id="230699814587342492">Brave құпия сөздері</translation>
@@ -169,6 +186,36 @@
 <translation id="2713444072780614174">Ақ</translation>
 <translation id="1197088940767939838">Қызғылт сары</translation>
 <translation id="1555130319947370107">Көк</translation>
+<translation id="5612720917913232150"><ph name="URL"/> компьютеріңіздің орналасқан жер деректерін пайдаланғысы келеді</translation>
+<translation id="4733082559415072992"><ph name="URL"/> құрылғыңыздың орналасқан жер деректерін пайдаланғысы келеді</translation>
+<translation id="4677585247300749148"><ph name="URL"/> арнайы мүмкіндіктер оқиғаларына жауап бергісі келеді</translation>
+<translation id="3461266716147554923"><ph name="URL"/> беті буферге көшірілген мәтін мен кескіндерді көргісі келеді</translation>
+<translation id="131405271941274527">NFC құрылғыңыздағы телефоныңызды түрткенде, <ph name="URL"/> ақпарат алмасуға рұқсат сұрайды.</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> сайты үшін хабарландырулар бөгелді</translation>
+<translation id="1195558154361252544">Сіз рұқсат еткеннен басқа сайттар үшін хабарландырулар автоматты түрде бөгелді.</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> хосты микрофоныңызды пайдаланғысы келеді</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> хосты камераңызды пайдаланғысы келеді</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> хабарландыру жіберуге рұқсат сұрады</translation>
+<translation id="6910240653697687763"><ph name="URL"/> беті MIDI құрылғыларыңызды толық бақылағысы келеді</translation>
+<translation id="503498442187459473"><ph name="HOST"/> хосты камераңыз бен микрофоныңызды пайдаланғысы келеді</translation>
+<translation id="8282947398454257691">Бірегей құрылғы идентификаторыңызды білу</translation>
+<translation id="8329449853370113380"><ph name="URL"/> қорғалған мазмұнды ойнатуға рұқсат сұрады. Brave Software құрылғыңыздың идентификаторын тексереді.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> қорғалған мазмұнды ойнатқысы келеді. Brave Software құрылғыңыздың идентификаторын растағаннан кейін барып, сайт мазмұнды пайдалана алады.</translation>
+<translation id="3016780570757425217">Орналасқан жеріңізді білу</translation>
+<translation id="7221855153210829124">Хабарландыруларды көрсету</translation>
+<translation id="8606726445206553943">MIDI құрылғыларыңызды пайдалану</translation>
+<translation id="7409836189476010449">Flash плагинін іске қосу</translation>
+<translation id="7438976808740265764">2020 жылдың желтоқсанынан кейін Flash Player-ге қолдау көрсетілмейді.</translation>
+<translation id="4761104368405085019">Микрофоныңызды пайдалану</translation>
+<translation id="9150045010208374699">Камераңызды пайдалану</translation>
+<translation id="4953689047182316270">Арнайы мүмкіндіктер оқиғаларына жауап беру</translation>
+<translation id="6116338172782435947">Буферге көшірілетін мәтіндер мен кескіндерді көру</translation>
+<translation id="5804427196348435412">NFC функциясы бар құрылғыларды пайдалану</translation>
+<translation id="3194737229810486521"><ph name="URL"/> деректерді құрылғыңызда біржола сақтағысы келеді</translation>
+<translation id="1030706264415084469"><ph name="URL"/> үлкен көлемді деректерді құрылғыңызда біржола сақтағысы келеді</translation>
+<translation id="1712552549805331520"><ph name="URL"/> деректерді жергілікті компьютеріңізде біржола сақтағысы келеді</translation>
+<translation id="1997484222658892567"><ph name="URL"/> үлкен көлемді деректерді жергілікті компьютеріңізде біржола сақтағысы келеді</translation>
+<translation id="7648992873808071793">Файлдарды осы құрылғыда сақтау</translation>
 <translation id="4813512666221746211">Желі қатесі</translation>
 <translation id="3380365263193509176">Белгісіз қате</translation>
 <translation id="5565735124758917034">Белсенді</translation>
@@ -183,6 +230,8 @@
 <translation id="5720705177508910913">Ағымдағы пайдаланушы</translation>
 <translation id="6965978654500191972">Құрылғы</translation>
 <translation id="4728558894243024398">Платформа</translation>
+<translation id="1426410128494586442">Иә</translation>
+<translation id="4250680216510889253">Жоқ</translation>
 <translation id="1588438908519853928">Қалыпты</translation>
 <translation id="1974060860693918893">Қосымша</translation>
 <translation id="5308380583665731573">Қосылу</translation>
@@ -199,7 +248,6 @@
 <translation id="583281660410589416">Белгісіз</translation>
 <translation id="9170848237812810038">&amp;Болдырмау</translation>
 <translation id="2972581237482394796">&amp;Қайта орындау</translation>
-<translation id="6786747875388722282">Кеңейтімдер</translation>
 <translation id="5804241973901381774">Рұқсаттар</translation>
 <translation id="8004582292198964060">Браузер</translation>
 </translationbundle>

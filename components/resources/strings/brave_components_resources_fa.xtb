@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fa">
-<translation id="4339730410920731698">آگهی‌ها و ردیاب‌ها مسدود شدند</translation>
+<translation id="5288293905681750318">ردیاب‌ها و آگهی‌ها مسدود شده‌اند</translation>
 <translation id="2313532038420432247">به‌روزرسانی‌های HTTPS</translation>
-<translation id="7679428712334662192">زمان تخمینی ذخیره شد</translation>
-<translation id="8411095021655121794">پهنای باند تخمینی ذخیره‌شده</translation>
+<translation id="788493840831967104">زمان صرفه‌جویی‌شده</translation>
+<translation id="2318592590318590295">پهنای باند صرفه‌جویی‌شده</translation>
 <translation id="5206618227023752085">سایت برتر برداشته شد.</translation>
 <translation id="2079545284768500474">واگرد</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -34,6 +34,8 @@
 <translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="3446024864193919737">نشان دادن «پاداش‌های Brave»</translation>
 <translation id="6274899614137380422">نمایش Binance</translation>
+<translation id="5551238871320268996">Brave در کنار هم</translation>
+<translation id="4799744519698299121">کارت‌های بیشتر</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
 <translation id="2875302873837723333">سایت‌های برتر</translation>
 <translation id="8173998484743827990">آمار Brave</translation>
@@ -177,30 +179,35 @@
 <translation id="2852258589816753010">BAT در حال حاضر در منطقه شما پشتیبانی نمی شود، مراجعه کنید به <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for updates.</translation>
 <translation id="2564425876266960486">خطا در ایجاد کارت Brave Browser BAT</translation>
 <translation id="7422678632904904341">مقدار:</translation>
-<translation id="5923611424721173182">تطبیق فعلی</translation>
+<translation id="5025866799968038247">اطلاعات موجودی</translation>
+<translation id="1642443162274867084">کیف پول ایجاد شد</translation>
 <translation id="5457113250005438886">نامعتبر</translation>
 <translation id="7687511348932340294">مبنای اطلاعات کلیدی:</translation>
-<translation id="7180611975245234373">بازخوانی</translation>
-<translation id="3292669871848742742">امتحان مجدد سطح:</translation>
-<translation id="2026565607270413420">امتحان مجدد مرحله:</translation>
-<translation id="2461822463642141190">فعلی</translation>
-<translation id="4516620156082016131">نهایی</translation>
-<translation id="68932200202726709">بار مفید</translation>
-<translation id="8654112359048700618">آماده کردن</translation>
-<translation id="419610644429723755">اثبات</translation>
-<translation id="8851921643210663606">تطبیق</translation>
-<translation id="839736845446313156">ثبت‌نام</translation>
-<translation id="583281660410589416">ناشناس</translation>
-<translation id="1822318934917272490">مشاهده</translation>
-<translation id="9165277745676544288">رأی دادن</translation>
-<translation id="7311077304864384837">برنده‌ها</translation>
-<translation id="5771119664738037159">«پاداش‌های Brave» فعال نیست. آن را با رفت به مورد زیر فعال کنید:</translation>
-<translation id="4235360514405112390">معتبر</translation>
-<translation id="2700943637868737038">شناسه مشاهده:</translation>
-<translation id="3576689061489548788">شناسه پرداخت کیف پول:</translation>
 <translation id="758790787422117549">شناسه شخصی</translation>
+<translation id="3671566813999349838">مبلغ</translation>
+<translation id="751223241692981112">درخواست شد در</translation>
+<translation id="3913089081619091801">شناسه درخواست</translation>
+<translation id="972516647724462985">منقضی می‌شود در</translation>
+<translation id="3970114302595058915">شناسه</translation>
+<translation id="8511126279042126492">تبلیغ Legacy</translation>
+<translation id="4250680216510889253">نه</translation>
+<translation id="1426410128494586442">بله</translation>
+<translation id="8102423594645796250">تبلیغات</translation>
+<translation id="7805768142964895445">وضعیت</translation>
+<translation id="5565735124758917034">فعال</translation>
+<translation id="2196753816869469810">تأییدشده</translation>
+<translation id="1098052486217676340">پایان یافت</translation>
+<translation id="8000774832235490222">تمام‌شده</translation>
+<translation id="2448312741937722512">نوع</translation>
+<translation id="5334568292977026472">UGP</translation>
+<translation id="3798449238516105146">نسخه</translation>
+<translation id="7180611975245234373">بازخوانی</translation>
+<translation id="5771119664738037159">«پاداش‌های Brave» فعال نیست. آن را با رفت به مورد زیر فعال کنید:</translation>
+<translation id="6672180611914406778">مجموع موجودی</translation>
 <translation id="2223892939866251845">شناسه کاربر</translation>
-<translation id="1642443162274867084">کیف پول ایجاد شد</translation>
+<translation id="4235360514405112390">معتبر</translation>
+<translation id="2326487656644542536">اطلاعات کیف پول</translation>
+<translation id="3576689061489548788">شناسه پرداخت کیف پول:</translation>
 <translation id="5094577350232361255">درباره</translation>
 <translation id="4918086044614829423">پذیرفتن</translation>
 <translation id="5916290544882167205">Brave Software‏. Brave نشان تجاری ثبت‌شده Brave Software است. ممکن است نام سایت‌ها، نشان‌های تجاری یا نشان‌های تجاری ثبت‌شده مالک آن سایت‌ها باشد.</translation>
@@ -220,7 +227,6 @@
 <translation id="5317780077021120954">ذخیره</translation>
 <translation id="5441565662498481293">به‌طور خودکار انعامی به این مورد ارسال می‌کنید:</translation>
 <translation id="2827387977307390755">اجازه ارائه انعام به</translation>
-<translation id="3671566813999349838">مبلغ</translation>
 <translation id="3819257035322786455">پشتیبان‌گیری</translation>
 <translation id="1312977698678162065">با تماشای آگهی‌های مرتبطی که به حریم خصوصی‌تان احترام می‌گذارند پاداش دریافت کنید.</translation>
 <translation id="4396256076373444156">هنگام تماشای آگهی‌های مرتبطی که به حریم خصوصی‌تان احترام می‌گذارند، امتیاز جمع‌آوری کنید.</translation>
@@ -281,6 +287,7 @@
 <translation id="7513117072433487074">{{currency}} استفاده‌نشده تا تاریخ انقضا، به‌طور خودکار به «صندوق رشد کاربر Brave» بازگردانده می‌شود.</translation>
 <translation id="279567716178902927">تاریخ انقضای امتیاز</translation>
 <translation id="2104073734684466851">امتیازها</translation>
+<translation id="2291686779354188838">سلام، {{name}}!</translation>
 <translation id="1389143276807887637">وارد کردن</translation>
 <translation id="7335371657242627509">لحاظ کردن در کمک خودکار</translation>
 <translation id="8446884382197647889">بیشتر بدانید</translation>
@@ -323,7 +330,6 @@
 <translation id="6381574025952123568">موجودی اولیه</translation>
 <translation id="532275381857891532">تاریخچه 7 روزه تبلیغات</translation>
 <translation id="4923459931733593730">پرداخت</translation>
-<translation id="5693657857413982604">پرداخت {{day}}ام هر ماه انجام می‌شود.</translation>
 <translation id="6104680658798556671">پرداخت انجام نشد.</translation>
 <translation id="3138528956349114724">سایت‌های پین‌شده اکنون به این صورت هستند</translation>
 <translation id="2337632028350283479">نحوه کار کمک‌های ماهانه به این صورت است:</translation>
@@ -371,6 +377,8 @@
 <translation id="8014425282125849700">گاهی اوقات، امتیازهای توکن رایگان از Brave دریافت می‌کنید. حتماً مراقب چنین اعلامی باشید!</translation>
 <translation id="2185598236335233939">همراه با استفاده از Brave، اعلان‌های آگهی را جستجو کنید. با هر بار مشاهده آگهی، موجودی امتیازهای BAT شما افزایش می‌یابد.</translation>
 <translation id="1370034647041840967">بابت توجهتان به آگهی‌ها توکن دریافت کنید و با بازارسال آن (pay it forward) از پدیدآورندگانی که برایتان مهم هستند حمایت کنید!</translation>
+<translation id="1701701253000051237">افزودن، برداشتن و مدیریت سرمایه را در <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> انجام دهید.</translation>
+<translation id="4208741993667364007">کیف پول Brave شما از سوی <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ارائه می‌شود.</translation>
 <translation id="6401272292123354754">«پاداش‌های Brave» برپایه «توکن توجه پایه» (Basic Attention Token) ساخته شده است. درباره BAT بیشتر بدانید</translation>
 <translation id="7823359893981882407">اینجا</translation>
 <translation id="4483635855837696643">بازیابی کیف پول</translation>
@@ -413,7 +421,6 @@
 <translation id="3983104749597726322">توییت</translation>
 <translation id="5636843789453098076">برای توییت @{{ user }}، به او انعام دهید:</translation>
 <translation id="4242384385082203046">برای توییت @{{ user }}، به او انعام دهید!</translation>
-<translation id="2448312741937722512">نوع</translation>
 <translation id="8772672608371898774">ناشر مورد تأیید Brave</translation>
 <translation id="5050370287908180130">برای جزئیات، صورتحساب ماهانه را ببینید</translation>
 <translation id="8615803647903750175">فعالیت کیف پول</translation>
@@ -464,6 +471,7 @@
 <translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
 <translation id="46988480989545156">تأیید کیف پول</translation>
+<translation id="4986087720311945758">سرویس کیف پول ما را <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ارائه می‌کند</translation>
 <translation id="6771734945114850124">لطفاً شناسه صادرشده دولتی خود را در اختیار داشته باشید.</translation>
 <translation id="8697510149346635496">BAT را برداشت کنید که از مشاهده تبلیغاتی به دست آمده‌اند که به حریم خصوصی احترام می‌گذارند</translation>
 <translation id="1481480653609649134">با کارت اعتباری و سایر منابع، BAT اضافی خریداری کنید</translation>
@@ -497,6 +505,9 @@
 <translation id="6759185676704303656">برای مشاهده این تصویر پس‌زمینه پول دریافت می‌کنید.</translation>
 <translation id="1749232564087138444">درباره تصاویر حمایت‌شده در Brave Rewards،‏ <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="6113004497629356998">پنهان کردن تصاویر حمایت‌شده</translation>
+<translation id="5977237145327845546">یک تماس تصویری خصوصی با دوستان و همکاران خود شروع کنید.</translation>
+<translation id="5850325887346946383">شروع تماس تصویری</translation>
+<translation id="3651550649176056334">درباره داده‌های شما</translation>
 <translation id="223536150967420869">خرید</translation>
 <translation id="5110244215256675209">خرید کریپتو</translation>
 <translation id="5749014321384313843">می‌خواهم هزینه کنم…</translation>
@@ -523,8 +534,9 @@
 <translation id="3909193058140362331">نمی‌توان تبدیل را پردازش کرد. لطفاً دوباره امتحان کنید.</translation>
 <translation id="5721542149042740780">مقداری که وارد کرده‌اید از مقداری که درحال حاضر در دسترس دارید بیشتر است.</translation>
 <translation id="7144878232160441200">امتحان دوباره</translation>
-<translation id="92653931566014756">نشانی در دسترس نیست</translation>
+<translation id="7431764818502638140">اطلاعات موجود نیست</translation>
 <translation id="6409345078064530735">نشانی سپرده</translation>
+<translation id="7153116947319792513">یادداشت سپرده</translation>
 <translation id="1383876407941801731">جستجو</translation>
 <translation id="6432284126416751397">تأیید تبدیل</translation>
 <translation id="1301340234286078471">تبدیل</translation>
@@ -599,6 +611,13 @@
 <translation id="5286379413446391050">به سرورهای Sync متصل نشد</translation>
 <translation id="2410472020237369473">ممکن است ساعت رایانه شما روی زمان یا منطقه زمانی اشتباه تنظیم شده باشد. تنظیمات ساعت را بررسی کنید.</translation>
 <translation id="5655621391922317800">کیف پول‌های رمزگذاری‌شده</translation>
+<translation id="616639131065447379">به «کیف پول‌های رمزگذاری‌شده Brave» خوش آمدید</translation>
+<translation id="1740464057879304704">«کیف پول‌های رمزگذاری‌شده» به شما امکان می‌دهند با رمزارز و دارایی‌های مربوط به آن در Brave کار کنید. «کیف پول‌های رمزگذاری‌شده» از توکن‌های «اتریم»، مانند ETH و BAT و همچنین از موارد قابل وصول پشتیبانی می‌کنند و به شما امکان می‌دهند با برنامه‌ها و سایر قراردادهای هوشمند کار کنید. همه این قابلیت‌ها برای افرادی طراحی شده‌اند که با «اتریم» و سایر سیستم‌های زنجیره بلوکی آشنا هستند یا برای یادگیری در مورد آنها هیجان‌زده هستند.</translation>
+<translation id="4855440621031541830">تنها در صورتی از «کیف پول‌های رمزگذاری‌شده» استفاده کنید که می‌پذیرید در قبال تمام خطراتی که این استفاده در پی دارد، تنها شما مسئول هستید و می‌پذیرید که Brave Software در قبال هرگونه ضرر، شامل ضررهای ضمنی یا تبعی که ممکن است در نتیجه این استفاده بر شما تحمیل شود، هیچ‌گونه مسئولیت یا تعهدی ندارد.</translation>
+<translation id="3187473319809074178">این مورد کاملاً مجزا است از</translation>
+<translation id="8327818101454798856">بنابراین، اگر به دنبال پشتیبانی برای سایت‌های دلخواهتان هستید، در عوض، به آنجا بروید.</translation>
+<translation id="4894106830958548828">متوجه هستم</translation>
+<translation id="453977518730680921">پخش خودکار رسانه</translation>
 <translation id="7701466644604753106">روشن کردن تندخوان</translation>
 <translation id="763042262431778831">خاموش کردن تندخوان</translation>
 </translationbundle>

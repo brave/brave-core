@@ -32,9 +32,6 @@
 <translation id="5040262127954254034">தனியுரிமை</translation>
 <translation id="3061707000357573562">பேட்ச் சேவை</translation>
 <translation id="1914326953223720820">ஜிப் கோப்புகளைத் திறக்கும் சேவை</translation>
-<translation id="1623104350909869708">கூடுதல் உரையாடல்களை உருவாக்குவதிலிருந்து இந்தப் பக்கத்தைத் தடு</translation>
-<translation id="2677748264148917807">வெளியேறு</translation>
-<translation id="5556459405103347317">மீண்டும் ஏற்று</translation>
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="4378154925671717803">மொபைல்</translation>
 <translation id="8131740175452115882">உறுதிப்படுத்து</translation>
@@ -67,12 +64,13 @@
 <translation id="7701040980221191251">எதுவுமில்லை</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
 <translation id="9038649477754266430">பக்கங்களை இன்னும் விரைவாக ஏற்ற, யூக சேவையைப் பயன்படுத்தவும்</translation>
+<translation id="2344028582131185878">தானியக்கப் பதிவிறக்கங்கள்</translation>
+<translation id="3414952576877147120">அளவு:</translation>
 <translation id="4850886885716139402">காட்சி</translation>
 <translation id="7180611975245234373">புதுப்பி</translation>
-<translation id="1426410128494586442">ஆம்</translation>
-<translation id="4250680216510889253">இல்லை</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
 <translation id="3586931643579894722">விவரங்களை மறை</translation>
+<translation id="5556459405103347317">மீண்டும் ஏற்று</translation>
 <translation id="614940544461990577">இவற்றைச் செய்து பார்க்கவும்:</translation>
 <translation id="4943872375798546930">முடிவுகள் இல்லை</translation>
 <translation id="8688672835843460752">மீதமுள்ளது:</translation>
@@ -90,6 +88,8 @@
 <translation id="4880827082731008257">வரலாற்றில் தேடு</translation>
 <translation id="4756388243121344051">&amp;வரலாறு</translation>
 <translation id="1644574205037202324">வரலாறு</translation>
+<translation id="1623104350909869708">கூடுதல் உரையாடல்களை உருவாக்குவதிலிருந்து இந்தப் பக்கத்தைத் தடு</translation>
+<translation id="2677748264148917807">வெளியேறு</translation>
 <translation id="3950820424414687140">உள்நுழைக</translation>
 <translation id="8286036467436129157">உள்நுழை</translation>
 <translation id="8503813439785031346">பயனர்பெயர்</translation>
@@ -132,11 +132,12 @@
 <translation id="2586657967955657006">கிளிப்போர்டு</translation>
 <translation id="6059925163896151826">USB சாதனங்கள்</translation>
 <translation id="7638605456503525968">சீரியல் போர்ட்டுகள்</translation>
+<translation id="3784372983762739446">புளூடூத் சாதனங்கள்</translation>
 <translation id="2215727959747642672">கோப்பைத் திருத்துதல்</translation>
 <translation id="6545864417968258051">புளூடூத் ஸ்கேனிங்</translation>
 <translation id="534295439873310000">NFC சாதனங்கள்</translation>
-<translation id="4943703118917034429">விர்ச்சுவல் ரியாலிட்டி</translation>
-<translation id="3513704683820682405">ஆக்மென்ட்டட் ரியாலிட்டி</translation>
+<translation id="4670064810192446073">விர்ச்சுவல் ரியாலிட்டி</translation>
+<translation id="2025115093177348061">ஆக்மென்ட்டட் ரியாலிட்டி</translation>
 <translation id="5039804452771397117">அனுமதி</translation>
 <translation id="7053983685419859001">தடு</translation>
 <translation id="57838592816432529">ஒலியடக்கு</translation>
@@ -152,9 +153,24 @@
 <translation id="5932224571077948991">குறுக்கிடும் அல்லது தவறாக வழிநடத்தும் விளம்பரங்களை தளம் காண்பிக்கிறது</translation>
 <translation id="7878562273885520351">உங்கள் கடவுச்சொல் திருடப்பட்டிருக்கலாம்</translation>
 <translation id="1089439967362294234">கடவுச்சொல்லை மாற்று</translation>
-<translation id="9008201768610948239">புறக்கணி</translation>
 <translation id="1186201132766001848">கடவுச்சொற்களைச் சோதித்துப் பார்க்கவும்</translation>
+<translation id="9008201768610948239">புறக்கணி</translation>
+<translation id="808894953321890993">கடவுச்சொல்லை மாற்று</translation>
 <translation id="5979084224081478209">கடவுச்சொற்களைச் சோதித்துப் பார்க்கவும்</translation>
+<translation id="6107012941649240045">வழங்கப்பட்டது</translation>
+<translation id="5030338702439866405">வழங்கியது</translation>
+<translation id="5826507051599432481">பொதுவான பெயர் (CN)</translation>
+<translation id="6898699227549475383">நிறுவனம் (O)</translation>
+<translation id="3308006649705061278">நிறுவன யூனிட் (OU)</translation>
+<translation id="8705331520020532516">வரிசை எண்</translation>
+<translation id="1902576642799138955">செல்லுபடிக் காலம்</translation>
+<translation id="5895187275912066135">வழங்கப்பட்டது</translation>
+<translation id="4121428309786185360">அன்று காலாவதியாகிறது</translation>
+<translation id="4154664944169082762">விரல் அச்சுகள்</translation>
+<translation id="7238585580608191973">SHA-256 விரல்அச்சு</translation>
+<translation id="5209518306177824490">SHA-1 விரல்அச்சு</translation>
+<translation id="6786747875388722282">நீட்டிப்புகள்</translation>
+<translation id="7240120331469437312">சான்றிதழ் பொருள் மாற்றுப் பெயர்</translation>
 <translation id="10614374240317010">எப்போதும் சேமிக்காதவை</translation>
 <translation id="5869522115854928033">சேமிக்கப்பட்ட கடவுச்சொற்கள்</translation>
 <translation id="230699814587342492">Brave கடவுச்சொற்கள்</translation>
@@ -182,6 +198,36 @@
 <translation id="2713444072780614174">வெள்ளை</translation>
 <translation id="1197088940767939838">ஆரஞ்சு</translation>
 <translation id="1555130319947370107">நீலம்</translation>
+<translation id="5612720917913232150"><ph name="URL"/> உங்கள் கணினியின் இருப்பிடத்தைப் பயன்படுத்த விரும்புகிறது</translation>
+<translation id="4733082559415072992">உங்கள் சாதனத்தின் இருப்பிடத்தை, <ph name="URL"/> பயன்படுத்த விரும்புகிறது</translation>
+<translation id="4677585247300749148">அணுகல்தன்மை நிகழ்வுகளுக்கு, <ph name="URL"/> பதிலளிக்க விரும்புகிறது</translation>
+<translation id="3461266716147554923">கிளிப்போர்டுக்கு நகலெடுத்த உரையையும் படங்களையும், <ph name="URL"/> என்ற இணைப்பு பார்க்க விரும்புகிறது</translation>
+<translation id="131405271941274527">NFC சாதனத்தில் உங்கள் மொபைலைத் தட்டும்போது தகவலை அனுப்புவதற்கும் பெறுவதற்குமான அனுமதி <ph name="URL"/>க்குத் தேவை</translation>
+<translation id="5146995429444047494"><ph name="ORIGIN"/> இணையதளத்திற்கான அறிவிப்புகள் தடுக்கப்பட்டுள்ளன</translation>
+<translation id="1195558154361252544">நீங்கள் அனுமதிக்கும் தளங்களைத் தவிர பிற அனைத்துத் தளங்களுக்கும் அறிவிப்புகள் தானாகவே முடக்கப்படும்</translation>
+<translation id="3532844647053365774"><ph name="HOST"/> உங்கள் மைக்ரோஃபோனைப் பயன்படுத்த விரும்புகிறது</translation>
+<translation id="7108634116785509031"><ph name="HOST"/> உங்கள் கேமராவைப் பயன்படுத்த விரும்புகிறது</translation>
+<translation id="5426179911063097041"><ph name="SITE"/> உங்களுக்கு அறிவிப்புகளை அனுப்ப விரும்புகிறது</translation>
+<translation id="6910240653697687763"><ph name="URL"/> MIDI சாதனங்களின் முழுக் கட்டுப்பாடையும் பெற விரும்புகிறது</translation>
+<translation id="503498442187459473"><ph name="HOST"/> உங்கள் கேமராவையும் மைக்ரோஃபோனையும் பயன்படுத்த விரும்புகிறது</translation>
+<translation id="8282947398454257691">உங்கள் தனிப்பட்ட சாதன அடையாளங்காட்டியை அறியும்</translation>
+<translation id="8329449853370113380">பாதுகாக்கப்பட்ட உள்ளடக்கத்தை இயக்க <ph name="URL"/> விரும்புகிறது. உங்கள் சாதனத்தின் அடையாளத்தை Brave Software சரிபார்க்கும்.</translation>
+<translation id="2650609753175229582">பாதுகாக்கப்பட்ட உள்ளடக்கத்தை <ph name="URL"/> இயக்க விரும்புகிறது. உங்கள் சாதனத்தின் அடையாளத்தை Brave Software சரிபார்க்கும், சாதன அடையாளத்தை இந்தத் தளம் அணுகக்கூடும்.</translation>
+<translation id="3016780570757425217">உங்கள் இருப்பிடத்தை அறியும்</translation>
+<translation id="7221855153210829124">அறிவிப்புகளைக் காட்டுதல்</translation>
+<translation id="8606726445206553943">MIDI சாதனங்களைப் பயன்படுத்தவும்</translation>
+<translation id="7409836189476010449">ஃபிளாஷை இயக்க</translation>
+<translation id="7438976808740265764">டிசம்பர் 2020க்குப் பிறகு Flash Playerரைப் பயன்படுத்த இயலாது.</translation>
+<translation id="4761104368405085019">உங்கள் மைக்ரோஃபோனைப் பயன்படுத்தலாம்</translation>
+<translation id="9150045010208374699">உங்கள் கேமராவைப் பயன்படுத்தலாம்</translation>
+<translation id="4953689047182316270">அணுகல்தன்மை நிகழ்வுகளுக்குப் பதிலளித்தல்</translation>
+<translation id="6116338172782435947">கிளிப்போர்டுக்கு நகலெடுத்த உரையையும் படங்களையும் பார்க்க விரும்புகிறது</translation>
+<translation id="5804427196348435412">NFC சாதனங்களைப் பயன்படுத்துவதற்கான அனுமதி</translation>
+<translation id="3194737229810486521">உங்கள் சாதனத்தில், தரவை நிரந்தரமாகச் சேமிக்க <ph name="URL"/> விரும்புகிறது</translation>
+<translation id="1030706264415084469">உங்கள் சாதனத்தில், அதிக அளவு தரவை நிரந்தரமாகச் சேமிக்க <ph name="URL"/> விரும்புகிறது</translation>
+<translation id="1712552549805331520">உங்கள் அகக் கணினியில், தரவை நிரந்தரமாகச் சேமிக்க <ph name="URL"/> விரும்புகிறது</translation>
+<translation id="1997484222658892567">உங்கள் அகக் கணினியில், அதிக அளவு தரவை நிரந்தரமாகச் சேமிக்க <ph name="URL"/> விரும்புகிறது</translation>
+<translation id="7648992873808071793">இந்தச் சாதனத்தில் கோப்புகளைச் சேமிக்கும்</translation>
 <translation id="4813512666221746211">நெட்வொர்க் பிழை</translation>
 <translation id="3380365263193509176">அறியப்படாத பிழை</translation>
 <translation id="5565735124758917034">செயலில் உள்ளது</translation>
@@ -197,6 +243,8 @@
 <translation id="5720705177508910913">நடப்புப் பயனர்</translation>
 <translation id="6965978654500191972">சாதனம்</translation>
 <translation id="4728558894243024398">ப்ளாட்ஃபார்ம்</translation>
+<translation id="1426410128494586442">ஆம்</translation>
+<translation id="4250680216510889253">இல்லை</translation>
 <translation id="1588438908519853928">இயல்பு</translation>
 <translation id="1974060860693918893">மேம்பட்டவை</translation>
 <translation id="5308380583665731573">இணை</translation>
@@ -217,7 +265,6 @@
 <translation id="583281660410589416">தெரியவில்லை</translation>
 <translation id="9170848237812810038">&amp;செயல்தவிர்</translation>
 <translation id="2972581237482394796">&amp;மீண்டும் செய்</translation>
-<translation id="6786747875388722282">நீட்டிப்புகள்</translation>
 <translation id="5804241973901381774">அனுமதிகள்</translation>
 <translation id="8004582292198964060">உலாவி</translation>
 </translationbundle>

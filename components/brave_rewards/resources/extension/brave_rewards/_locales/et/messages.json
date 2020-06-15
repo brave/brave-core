@@ -588,5 +588,15 @@
   "pointGrants":  {
     "message": "Punktivõimalused",
     "description": "BAT Points Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Tere, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
   }
 }
