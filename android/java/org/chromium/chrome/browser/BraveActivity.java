@@ -92,6 +92,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     // Sync worker
     public BraveSyncWorker mBraveSyncWorker;
 
+    public BraveActivity() {
+        // Disable key checker to avoid asserts on Brave keys in debug
+        SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
+    }
+
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
