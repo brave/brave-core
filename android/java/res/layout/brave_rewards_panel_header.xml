@@ -44,7 +44,7 @@
                     android:id="@+id/btn_verify_wallet"
                     android:layout_height="25dp"
                     android:layout_width="wrap_content"
-                    android:background="@drawable/wallet_verify_button_disabled"
+                    android:background="@drawable/wallet_disconnected_button"
                     android:text="@string/brave_ui_wallet_button_unverified"
                     android:fontFamily="sans-serif"
                     android:drawablePadding="12dp"
