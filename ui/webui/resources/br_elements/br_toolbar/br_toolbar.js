@@ -135,7 +135,8 @@ Polymer({
   },
 
   notifyIfExtraSlotFilled() {
-    const slotIsFilled = this.toolbarExtraSlot.assignedNodes().length !== 0
+    let slots = this.toolbarExtraSlot.assignedNodes()
+    const slotIsFilled = slots.length !== 0 && slots[0].nodeType != Node.TEXT_NODE
     const classNameFilled = '-slot-filled'
     if (slotIsFilled) {
       this.toolbarExtraElement.classList.add(classNameFilled)
