@@ -265,6 +265,12 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               rewriter->End();
               const std::string& transformed = rewriter->GetOutput();
 
+              // TODO(AndriusA): would be better to pass explicit signal
+              // back from rewriter to indicate if content was found
+              if (transformed.length() < 500) {
+                return data;
+              }
+
               return GetDistilledPageResources() + transformed;
             },
             std::move(buffered_body_), whitelist_->MakeRewriter(response_url_)),
