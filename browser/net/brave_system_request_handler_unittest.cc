@@ -12,8 +12,19 @@
 
 namespace brave {
 
-TEST(BraveSystemRequestHandlerTest, AddBraveServiceKeyHeader) {
+TEST(BraveSystemRequestHandlerTest, AddBraveServiceKeyHeaderForBrave) {
     GURL url("https://demo.brave.com");
+    network::ResourceRequest request;
+
+    request.url = url;
+    brave::AddBraveServicesKeyHeader(&request);
+    std::string key;
+    EXPECT_TRUE(request.headers.GetHeader(kBraveServicesKeyHeader, &key));
+    EXPECT_EQ(key, BraveServicesKeyForTesting());
+}
+
+TEST(BraveSystemRequestHandlerTest, AddBraveServiceKeyHeaderForBraveSoftware) {
+    GURL url("https://demo.bravesoftware.com");
     network::ResourceRequest request;
 
     request.url = url;

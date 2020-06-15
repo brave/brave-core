@@ -6,6 +6,7 @@
 #include "brave/common/network_constants.h"
 
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
+const char kBraveSoftwareProxyPattern[] = "https://*.bravesoftware.com/*";
 const char kBraveUpdatesExtensionsProdEndpoint[] =
     "https://go-updater.brave.com/extensions";
 

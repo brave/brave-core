@@ -75,6 +75,7 @@ class SystemNetworkContextManagerBrowsertest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SystemNetworkContextManagerBrowsertest,
                        CheckForBraveServiceKey) {
   EXPECT_TRUE(LoadURL("demo.brave.com"));
+  EXPECT_TRUE(LoadURL("demo.bravesoftware.com"));
   EXPECT_FALSE(LoadURL("brave.demo.com"));
   EXPECT_FALSE(LoadURL("randomdomain.com"));
 }
