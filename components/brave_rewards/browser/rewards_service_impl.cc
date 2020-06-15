@@ -789,7 +789,6 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 
   if (result == ledger::Result::WALLET_CREATED) {
     SetRewardsMainEnabled(true);
-    SetAutoContribute(true);
     StartNotificationTimers(true);
 
     // Record P3A:
