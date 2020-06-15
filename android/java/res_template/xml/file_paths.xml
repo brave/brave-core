@@ -8,7 +8,6 @@
 <!-- for the ContentProvider. -->
 
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <root-path name="root" path="." />
     <files-path name="images" path="images/"/>
     <cache-path name="cache" path="net-export/"/>
     <cache-path name="passwords" path="passwords/"/>
