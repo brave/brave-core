@@ -100,6 +100,7 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
 
         ViewPager pager = (ViewPager) view.findViewById(R.id.viewpager);
         OnboardingBottomSheetViewPagerAdapter adapter = new OnboardingBottomSheetViewPagerAdapter(mOnboardingType, mNewTabPageListener);
+        pager.setOffscreenPageLimit(0);
         pager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);

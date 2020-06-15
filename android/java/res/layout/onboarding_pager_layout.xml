@@ -11,14 +11,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/onboarding_image"
         android:layout_width="318dp"
         android:layout_height="233dp"
         android:gravity="center"
         android:contentDescription="@null"
         android:visibility="gone"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/onboarding_header"
