@@ -139,6 +139,19 @@ extension FeedItemView {
         /// Defines a feed item layout where the thumbnail resides on top taking up
         /// the full-width then underneath is a padded label stack with the title,
         /// date, and finally the item's brand
+        ///
+        /// ```
+        /// ╭─────────────────╮
+        /// │                 │
+        /// │      image      │
+        /// │                 │
+        /// ├─────────────────┤
+        /// │ title           │
+        /// │ date            │
+        /// │ brand image     │
+        /// ╰─────────────────╯
+        /// ```
+        ///
         static let brandedHeadline = Layout(
             root: .init(
                 axis: .vertical,
@@ -162,6 +175,18 @@ extension FeedItemView {
         )
         /// Defines a simple vertical feed item layout. Thumbnail title and date.
         ///
+        /// ```
+        /// ┌───────────┐
+        /// │           │
+        /// │    img    │
+        /// │           │
+        /// ├───────────┤
+        /// ├───────────┤
+        /// │ title     │
+        /// │ date      │
+        /// └───────────┘
+        /// ```
+        ///
         /// This layout does not include any padding around itself, it will be up
         /// to the parent to provide adequite padding.
         static let vertical = Layout(
@@ -176,11 +201,18 @@ extension FeedItemView {
                 ]
             )
         )
-        /// Defines a simple vertical feed item layout without any thumbnail
+        /// Defines a basic feed item layout without any thumbnail
+        ///
+        /// ```
+        /// ┌───────────┐
+        /// │ title     │
+        /// │ date      │
+        /// └───────────┘
+        /// ```
         ///
         /// This layout does not include any padding around itself, it will be up
         /// to the parent to provide adequite padding.
-        static let verticalNoImage = Layout(
+        static let basic = Layout(
             root: .init(
                 axis: .vertical,
                 spacing: 10,
@@ -192,6 +224,14 @@ extension FeedItemView {
         )
         /// Defines a horizontal feed item layout which on the left has the brand,
         /// title and date, and on the right a square thumbnail
+        ///
+        /// ```
+        /// ┌───────────────────────────┐
+        /// │ brand             ╭─────╮ │
+        /// │ title             │ img │ |
+        /// │ date              ╰─────╯ │
+        /// └───────────────────────────┘
+        /// ```
         ///
         /// This layout does not include any padding around itself, it will be up
         /// to the parent to provide adequite padding.
