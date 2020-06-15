@@ -32,6 +32,8 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/p2a/buildflags.h"
+#include "brave/components/p2a/brave_p2a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
@@ -197,6 +199,9 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_whitelist();
+#endif
+#if BUILDFLAG(BRAVE_P2A_ENABLED)
+  brave_p2a_service();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -411,3 +416,15 @@ BraveBrowserProcessImpl::speedreader_whitelist() {
   return speedreader_whitelist_.get();
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
+// TODO(Moritz Haller): Change/associate buildflag to brave ads
+#if BUILDFLAG(BRAVE_P2A_ENABLED)
+brave::BraveP2AService* BraveBrowserProcessImpl::brave_p2a_service() {
+  if (brave_p2a_service_) {
+    return brave_p2a_service_.get();
+  }
+  brave_p2a_service_ = new brave::BraveP2AService(local_state());
+  brave_p2a_service()->InitCallbacks();
+  return brave_p2a_service_.get();
+}
+#endif

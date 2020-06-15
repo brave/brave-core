@@ -1,0 +1,28 @@
+source_set("p2a") {
+  sources = [
+    "brave_p2a_log_store.cc",
+    "brave_p2a_log_store.h",
+    "brave_p2a_service.cc",
+    "brave_p2a_service.h",
+    "brave_p2a_scheduler.cc",
+    "brave_p2a_scheduler.h",
+    "brave_p2a_switches.h",
+    "brave_p2a_uploader.cc",
+    "brave_p2a_uploader.h",
+  ]
+
+  deps = [
+    "//brave/common",
+    "//brave/components/brave_prochlo",
+    "//brave/components/brave_prochlo:prochlo_proto",
+    "//brave/vendor/brave_base",
+    "//components/metrics",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/public/common",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}
+

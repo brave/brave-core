@@ -21,6 +21,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveStatsUpdater;
+class BraveP2AService;
 class BraveP3AService;
 }  // namespace brave
 
@@ -92,6 +93,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   extensions::BraveTorClientUpdater* tor_client_updater();
 #endif
   brave::BraveP3AService* brave_p3a_service();
+  brave::BraveP2AService* brave_p2a_service();
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
@@ -155,6 +157,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
+  scoped_refptr<brave::BraveP2AService> brave_p2a_service_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
 
