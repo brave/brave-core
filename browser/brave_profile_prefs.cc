@@ -10,6 +10,7 @@
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -240,6 +241,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if !defined(OS_ANDROID)
   BraveOmniboxClientImpl::RegisterPrefs(registry);
+#endif
+
+// TODO(Moritz Haller): Put behind Ads enabled buildflag?
+#if !defined(OS_ANDROID)
+  brave_ads::AdsP2A::RegisterPrefs(registry);
 #endif
 
   RegisterProfilePrefsForMigration(registry);

@@ -5,9 +5,12 @@
 
 #include "brave/components/p2a/brave_p2a_service.h"
 
+#include <stdint.h>
+
+#include <map>
 #include <memory>
 #include <string>
-#include <iostream>
+
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
 #include "base/metrics/histogram_samples.h"
@@ -46,8 +49,14 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 // TODO(iefremov): Provide moar histograms!
 // Whitelist for histograms that we collect. Will be replaced with something
 // updating on the fly.
-constexpr const char* kCollectedHistograms[] = {
+const char* kCollectedHistograms[] = {
     "Brave.P2A.SentAnswersCount",
+    "Brave.Ads.ViewConfirmationCount",
+};
+
+// TODO(Moritz Haller): Can we check bucket counts for hist in base::metrics?
+const std::map<std::string, uint16_t> kCollectedHistogramBinCounts = {
+    {"Brave.Ads.ViewConfirmationCount", 7}
 };
 
 base::TimeDelta GetRandomizedUploadInterval(
@@ -117,8 +126,9 @@ void BraveP2AService::Init(
   log_store_.reset(new BraveP2ALogStore(this, local_state_));
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
+  // TODO(Moritz Haller): Remove
   for (const auto& entry : histogram_values_) {
-    log_store_->UpdateValue(entry.first.as_string(), entry.second);
+    log_store_->UpdateValue(entry.first.as_string(), entry.second, 42);
   }
   histogram_values_ = {};
   // Do rotation if needed.
@@ -257,6 +267,10 @@ void BraveP2AService::StartScheduledUpload() {
   if (!log_store_->has_staged_log()) {
     log_store_->StageNextLog();
   }
+
+  const std::string log = log_store_->staged_log();
+  VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes";
+  uploader_->UploadLog(log, "", "", {});
 }
 
 void BraveP2AService::OnHistogramChanged(base::StringPiece histogram_name,
@@ -274,20 +288,26 @@ void BraveP2AService::OnHistogramChanged(base::StringPiece histogram_name,
     return;
   }
 
+  // TODO(Moritz Haller): only for "linear histograms"? Handle better
+  auto iter = kCollectedHistogramBinCounts.find(histogram_name.as_string());
+  uint16_t bucket_count =
+      iter != kCollectedHistogramBinCounts.end() ? iter->second : 0;
+
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                  base::BindOnce(&BraveP2AService::OnHistogramChangedOnUI, this,
-                                histogram_name, sample, bucket));
+                                histogram_name, sample, bucket, bucket_count));
 }
 
 void BraveP2AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
                                              base::HistogramBase::Sample sample,
-                                             size_t bucket) {
+                                             size_t bucket,
+                                             size_t bucket_count) {
   VLOG(2) << "BraveP2AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
     histogram_values_[histogram_name] = bucket;
   } else {
-    log_store_->UpdateValue(histogram_name.as_string(), bucket);
+    log_store_->UpdateValue(histogram_name.as_string(), bucket, bucket_count);
   }
 }
 

@@ -2,6 +2,8 @@ source_set("p2a") {
   sources = [
     "brave_p2a_log_store.cc",
     "brave_p2a_log_store.h",
+    "brave_p2a_protocols.cc",
+    "brave_p2a_protocols.h",
     "brave_p2a_service.cc",
     "brave_p2a_service.h",
     "brave_p2a_scheduler.cc",

@@ -12,11 +12,14 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
+#include "brave/components/p2a/brave_p2a_protocols.h"
+
 namespace brave {
 
 namespace {
 constexpr char kPrefName[] = "p2a.logs";
 constexpr char kLogValueKey[] = "value";
+constexpr char kLogBinCountKey[] = "bucket_count";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
 
@@ -47,10 +50,13 @@ void BraveP2ALogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kPrefName);
 }
 
-void BraveP2ALogStore::UpdateValue(const std::string& histogram_name,
-                                   uint64_t value) {
+void BraveP2ALogStore::UpdateValue(
+    const std::string& histogram_name,
+    uint64_t value,
+    uint64_t bucket_count) {
   LogEntry& entry = log_[histogram_name];
   entry.value = value;
+  entry.bucket_count = bucket_count;
   if (!entry.sent) {
     DCHECK(entry.sent_timestamp.is_null());
     unsent_entries_.insert(histogram_name);
@@ -61,6 +67,8 @@ void BraveP2ALogStore::UpdateValue(const std::string& histogram_name,
   update->SetPath({histogram_name, kLogValueKey},
                   base::Value(base::NumberToString(value)));
   update->SetPath({histogram_name, kLogSentKey}, base::Value(entry.sent));
+  update->SetPath({histogram_name, kLogBinCountKey},
+                  base::Value(base::NumberToString(bucket_count)));
 }
 
 void BraveP2ALogStore::ResetUploadStamps() {
@@ -123,9 +131,16 @@ void BraveP2ALogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-  staged_log_ = delegate_->Serialize(staged_entry_key_, staged_entry_value);
+  uint16_t staged_entry_bucket_count = log_[staged_entry_key_].bucket_count;
 
-  VLOG(2) << "BraveP2ALogStore::StageNextLog: staged " << staged_entry_key_;
+  // TODO(Moritz Haller): Enforce bucket constraints (4-12) to comply to the
+  // privacy budget of eps=2.1
+  uint64_t perturbed_value = DirectEncodingProtocol::Perturb(
+      staged_entry_bucket_count, staged_entry_value);
+  staged_log_ = delegate_->Serialize(staged_entry_key_, perturbed_value);
+
+  VLOG(2) << "BraveP2ALogStore::StageNextLog: perturbed value staged "
+      << staged_entry_key_;
 }
 
 void BraveP2ALogStore::DiscardStagedLog() {
@@ -178,6 +193,16 @@ void BraveP2ALogStore::LoadPersistedUnsentLogs() {
     if (const base::Value* v =
             dict.FindKeyOfType(kLogValueKey, base::Value::Type::STRING)) {
       if (!base::StringToUint64(v->GetString(), &entry.value)) {
+        return;
+      }
+    } else {
+      return;
+    }
+
+    // Bin count.
+    if (const base::Value* v =
+            dict.FindKeyOfType(kLogBinCountKey, base::Value::Type::STRING)) {
+      if (!base::StringToUint64(v->GetString(), &entry.bucket_count)) {
         return;
       }
     } else {

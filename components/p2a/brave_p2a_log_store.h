@@ -43,7 +43,10 @@ class BraveP2ALogStore : public metrics::LogStore {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void UpdateValue(const std::string& histogram_name, uint64_t value);
+  void UpdateValue(
+      const std::string& histogram_name,
+      uint64_t value,
+      uint64_t bucket_count);
   // Marks all saved values as unsent.
   void ResetUploadStamps();
 
@@ -76,6 +79,7 @@ class BraveP2ALogStore : public metrics::LogStore {
     }
 
     uint64_t value = 0u;
+    uint64_t bucket_count = 0u;
     bool sent = false;
     base::Time sent_timestamp;  // At the moment only for debugging purposes.
   };

@@ -42,6 +42,8 @@ source_set("browser") {
       "ad_notification.h",
       "ads_notification_handler.cc",
       "ads_notification_handler.h",
+      "ads_p2a.cc",
+      "ads_p2a.h",
       "ads_service_impl.cc",
       "ads_service_impl.h",
       "background_helper.cc",

@@ -28,7 +28,7 @@ namespace brave {
 class BraveP2AScheduler;
 class BraveP2AUploader;
 
-// Core class for Brave Privacy-Preserving Product Analytics machinery.
+// Core class for Brave Privacy-Preserving Ad Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
 // on any thread.
 // TODO(iefremov): It should be possible to get rid of refcounted here.
@@ -70,7 +70,8 @@ class BraveP2AService : public base::RefCountedThreadSafe<BraveP2AService>,
 
   void OnHistogramChangedOnUI(base::StringPiece histogram_name,
                               base::HistogramBase::Sample sample,
-                              size_t bucket);
+                              size_t bucket,
+                              size_t bucket_count);
 
   void OnLogUploadComplete(int response_code, int error_code, bool was_https);
 
