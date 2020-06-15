@@ -137,12 +137,6 @@ std::string URLMethodToRequestType(
     case ads::URLRequestMethod::PUT: {
       return "PUT";
     }
-
-    default: {
-      NOTREACHED();
-
-      return "GET";
-    }
   }
 }
 
@@ -541,8 +535,8 @@ GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const {
 void AdsServiceImpl::Shutdown() {
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
-  for (auto* const loader : url_loaders_) {
-    delete loader;
+  for (auto* const url_loader : url_loaders_) {
+    delete url_loader;
   }
   url_loaders_.clear();
 
@@ -927,25 +921,44 @@ void AdsServiceImpl::NotificationTimedOut(
   OnClose(profile_, GURL(), uuid, false, base::OnceClosure());
 }
 
-void AdsServiceImpl::OnURLLoaderComplete(
-    network::SimpleURLLoader* loader,
+void AdsServiceImpl::OnURLRequestStarted(
+    const GURL& final_url,
+    const network::mojom::URLResponseHead& response_head) {
+  VLOG(6) << "Started URL request for " << final_url.PathForRequest();
+
+  if (response_head.headers->response_code() == -1) {
+    VLOG(6) << "Response headers are malformed!!";
+    return;
+  }
+
+  VLOG(6) << response_head.headers->raw_headers();
+}
+
+void AdsServiceImpl::OnURLRequestComplete(
+    network::SimpleURLLoader* url_loader,
     ads::URLRequestCallback callback,
     const std::unique_ptr<std::string> response_body) {
-  DCHECK(url_loaders_.find(loader) != url_loaders_.end());
-  url_loaders_.erase(loader);
+  DCHECK(url_loaders_.find(url_loader) != url_loaders_.end());
+  url_loaders_.erase(url_loader);
 
   if (!connected()) {
     return;
   }
 
-  auto response_code = -1;
+  int response_code = -1;
 
   std::map<std::string, std::string> headers;
 
-  if (loader->ResponseInfo() && loader->ResponseInfo()->headers) {
-    response_code = loader->ResponseInfo()->headers->response_code();
+  if (!url_loader->ResponseInfo()) {
+    VLOG(6) << "ResponseInfo was never received";
+  } else if (!url_loader->ResponseInfo()->headers) {
+    VLOG(6) << "Failed to obtain headers from the network stack";
+  } else {
+    response_code = url_loader->ResponseInfo()->headers->response_code();
 
-    auto headers_list = loader->ResponseInfo()->headers;
+    scoped_refptr<net::HttpResponseHeaders> headers_list =
+        url_loader->ResponseInfo()->headers;
+
     if (headers_list) {
       size_t iter = 0;
       std::string key;
@@ -1990,35 +2003,39 @@ void AdsServiceImpl::URLRequest(
       const std::string& content_type,
       const ads::URLRequestMethod method,
       ads::URLRequestCallback callback) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(url);
-  request->method = URLMethodToRequestType(method);
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = GURL(url);
+  resource_request->method = URLMethodToRequestType(method);
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   for (const auto& header : headers) {
-    request->headers.AddHeaderFromString(header);
+    resource_request->headers.AddHeaderFromString(header);
   }
 
-  auto* url_loader = network::SimpleURLLoader::Create(std::move(request),
-      GetNetworkTrafficAnnotationTag()).release();
+  network::SimpleURLLoader* url_loader =
+      network::SimpleURLLoader::Create(std::move(resource_request),
+          GetNetworkTrafficAnnotationTag()).release();
 
   if (!content.empty()) {
     url_loader->AttachStringForUpload(content, content_type);
   }
 
+  url_loader->SetOnResponseStartedCallback(base::BindOnce(
+      &AdsServiceImpl::OnURLRequestStarted, base::Unretained(this)));
+
   url_loader->SetRetryOptions(kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
+  url_loader->SetAllowHttpErrorResults(true);
+
   url_loaders_.insert(url_loader);
 
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(profile_);
-
-  auto* url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
+      content::BrowserContext::GetDefaultStoragePartition(profile_)
+          ->GetURLLoaderFactoryForBrowserProcess();
 
   url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory, base::BindOnce(&AdsServiceImpl::OnURLLoaderComplete,
-          base::Unretained(this), url_loader, callback));
+      url_loader_factory.get(), base::BindOnce(&AdsServiceImpl::
+          OnURLRequestComplete, base::Unretained(this), url_loader, callback));
 }
 
 void AdsServiceImpl::Save(
