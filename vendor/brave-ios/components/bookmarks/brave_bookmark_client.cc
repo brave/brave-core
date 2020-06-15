@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/vendor/brave-ios/components/bookmarks/brave_bookmark_client.h"
+#include "brave/vendor/brave-ios/components/bookmarks/bookmark_model_factory.h"
+#include "components/bookmarks/browser/base_bookmark_model_observer.h"
 
 #include "base/logging.h"
 #include "base/metrics/user_metrics.h"
@@ -46,9 +48,8 @@ void BraveBookmarkClient::GetTypedCountForUrls(
     UrlTypedCountMap* url_typed_count_map) {
 }
 
-bool BraveBookmarkClient::IsPermanentNodeVisible(
-    const bookmarks::BookmarkPermanentNode* node) {
-  return node->type() == bookmarks::BookmarkNode::MOBILE;
+bool BraveBookmarkClient::IsPermanentNodeVisibleWhenEmpty(bookmarks::BookmarkNode::Type type) {
+  return type == bookmarks::BookmarkNode::MOBILE;
 }
 
 void BraveBookmarkClient::RecordAction(const base::UserMetricsAction& action) {

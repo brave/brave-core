@@ -1,4 +1,5 @@
 #include "brave/vendor/brave-ios/components/Bookmarks.h"
+#include "brave/ios/web/brave_webmain.h"
 
 #include "base/files/file_path.h"
 #include "base/strings/utf_string_conversions.h"
@@ -41,7 +42,7 @@
 @interface BookmarksService()
 {
   std::unique_ptr<BraveMainDelegate> delegate_;
-  std::unique_ptr<web::WebMain> web_main_;
+  std::unique_ptr<web::BraveWebMain> web_main_;
   std::unique_ptr<ChromeBrowserState> browser_state_;
   std::unique_ptr<BraveSyncService> sync_service_;
 }
@@ -52,11 +53,15 @@
   if ((self = [super init])) {
     // TODO(bridiver) - move this stuff somewhere else, the BookmarksService
     // shouldn't own all this stuff
+    
     delegate_.reset(new BraveMainDelegate());
 
     web::WebMainParams params(delegate_.get());
-    web_main_ = std::make_unique<web::WebMain>(std::move(params));
+    params.register_exit_manager = false;
+    
+    web_main_ = std::make_unique<web::BraveWebMain>(std::move(params));
 
+    fprintf(stderr, "WE'RE GOLDEN!");
     browser_state_ = std::make_unique<ChromeBrowserState>(
         base::FilePath(kIOSChromeInitialBrowserState));
     sync_service_ = std::make_unique<BraveSyncService>(browser_state_.get());

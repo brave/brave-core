@@ -6,6 +6,9 @@
 //
 
 #include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
+#include "brave/vendor/brave-ios/components/bookmarks/bookmark_model_factory.h"
+#include "brave/vendor/brave-ios/components/browser_state/bookmark_model_loaded_observer.h"
+#include "components/bookmarks/browser/bookmark_model.h"
 
 #include "base/files/file_util.h"
 #include "base/mac/foundation_util.h"
@@ -92,13 +95,29 @@ ChromeBrowserState::ChromeBrowserState(const base::FilePath& name)
 
   bool directories_created = EnsureBrowserStateDirectoriesCreated(state_path_);
   DCHECK(directories_created);
+          
+  //TODO: BRANDON
+  /*// Bring up the policy system before creating |prefs_|.
+  if (IsEnterprisePolicyEnabled()) {
+    BrowserPolicyConnectorIOS* connector =
+        GetApplicationContext()->GetBrowserPolicyConnector();
+    DCHECK(connector);
+    policy_schema_registry_ = BuildSchemaRegistryForBrowserState(
+        this, connector->GetChromeSchema(), connector->GetSchemaRegistry());
+    policy_connector_ = BuildBrowserStatePolicyConnector(
+        policy_schema_registry_.get(), connector);
+  }*/
 
   // RegisterBrowserStatePrefs(pref_registry_.get());
   BrowserStateDependencyManager::GetInstance()
       ->RegisterBrowserStatePrefsForServices(pref_registry_.get());
 
-  prefs_ = CreateBrowserStatePrefs(state_path_, GetIOTaskRunner().get(),
-                                   pref_registry_);
+  prefs_ = CreateBrowserStatePrefs(state_path_,
+                                   GetIOTaskRunner().get(),
+                                   pref_registry_,
+                                   nullptr, //policy_connector_ ? policy_connector_->GetPolicyService() :
+                                   nullptr); //GetApplicationContext()->GetBrowserPolicyConnector()
+          
   // Register on BrowserState.
   user_prefs::UserPrefs::Set(this, prefs_.get());
 
@@ -107,9 +126,9 @@ ChromeBrowserState::ChromeBrowserState(const base::FilePath& name)
 
   // Listen for bookmark model load, to bootstrap the sync service.
   // TODO(bridiver)
-  // bookmarks::BookmarkModel* model =
-  //     ios::BookmarkModelFactory::GetForBrowserState(this);
-  // model->AddObserver(new BookmarkModelLoadedObserver(this));
+  bookmarks::BookmarkModel* model =
+       ios::BookmarkModelFactory::GetForBrowserState(this);
+  model->AddObserver(new BookmarkModelLoadedObserver(this));
 }
 
 ChromeBrowserState::~ChromeBrowserState() {}

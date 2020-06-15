@@ -24,6 +24,8 @@ source_set("browser_state") {
     "chrome_browser_state.mm",
     "browser_state_otr_helper.cc",
     "browser_state_otr_helper.h",
+    "bookmark_model_loaded_observer.cc",
+    "bookmark_model_loaded_observer.h",
   ]
 
   deps = [

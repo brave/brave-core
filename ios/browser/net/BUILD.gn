@@ -6,17 +6,19 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("app") {
+source_set("net") {
   sources = [
-    "brave_main_delegate.h",
-    "brave_main_delegate.mm",
+    "ios_chrome_network_delegate.h",
+    "ios_chrome_network_delegate.mm",
   ]
 
   deps = [
-    "//brave/ios/browser",
-    "//brave/ios/web",
     "//base",
+    "//components/prefs",
+    "//ios/web/public",
     "//ios/web/public/init",
+    "//ios/web/public/thread",
+    "//net",
   ]
 
   configs += [ "//build/config/compiler:enable_arc" ]
