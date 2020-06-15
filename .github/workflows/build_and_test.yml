@@ -9,6 +9,7 @@ on:
 
 jobs:
   test:
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'CI/skip')) }}
     name: Run tests
     runs-on: macOS-latest
     env:
