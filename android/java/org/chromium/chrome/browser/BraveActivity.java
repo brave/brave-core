@@ -97,6 +97,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
 
+    public BraveActivity() {
+        // Disable key checker to avoid asserts on Brave keys in debug
+        SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
+    }
+
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
