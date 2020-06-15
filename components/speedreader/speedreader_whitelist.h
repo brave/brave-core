@@ -9,9 +9,14 @@
 #include <memory>
 #include <string>
 
+#include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+
+namespace base {
+class FilePath;
+}
 
 namespace speedreader {
 class SpeedReader;
@@ -42,9 +47,11 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
   using GetDATFileDataResult =
       brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
 
+  void OnWhitelistFileReady(const base::FilePath& path, bool error);
   void OnGetDATFileData(GetDATFileDataResult result);
 
   std::unique_ptr<speedreader::SpeedReader> speedreader_;
+  std::unique_ptr<base::FilePathWatcher> whitelist_path_watcher_;
   base::WeakPtrFactory<SpeedreaderWhitelist> weak_factory_{this};
 };
 
