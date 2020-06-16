@@ -57,13 +57,13 @@ Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
 
 class BraveShieldsRuleIterator : public RuleIterator {
  public:
-  BraveShieldsRuleIterator(std::vector<Rule>::const_iterator iterator,
-                           std::vector<Rule>::const_iterator end)
-      : iterator_(iterator),
-        end_(end) {}
+  explicit BraveShieldsRuleIterator(std::vector<Rule> rules)
+      : rules_(std::move(rules)) {
+    iterator_ = rules_.begin();
+  }
 
   bool HasNext() const override {
-    return iterator_ != end_;
+    return iterator_ != rules_.end();
   }
 
   Rule Next() override {
@@ -71,8 +71,8 @@ class BraveShieldsRuleIterator : public RuleIterator {
   }
 
  private:
+  std::vector<Rule> rules_;
   std::vector<Rule>::const_iterator iterator_;
-  std::vector<Rule>::const_iterator end_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsRuleIterator);
 };
@@ -278,9 +278,14 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
       const ResourceIdentifier& resource_identifier,
       bool incognito) const {
   if (content_type == ContentSettingsType::COOKIES) {
-    return std::make_unique<BraveShieldsRuleIterator>(
-        cookie_rules_.at(incognito).begin(),
-        cookie_rules_.at(incognito).end());
+    std::vector<Rule> rules;
+    for (auto i = cookie_rules_.at(incognito).begin();
+         i != cookie_rules_.at(incognito).end();
+         ++i) {
+      rules.emplace_back(CloneRule(*i));
+    }
+
+    return std::make_unique<BraveShieldsRuleIterator>(std::move(rules));
   }
 
   // Early return. We don't store flash plugin setting in preference.
@@ -309,9 +314,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   if (prefs_->GetBoolean(kGoogleLoginControlType)) {
       auto rule = Rule(ContentSettingsPattern::FromString(kGoogleOAuthPattern),
                        ContentSettingsPattern::Wildcard(),
-                       ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
-      rules.push_back(CloneRule(rule));
-      brave_cookie_rules_[incognito].push_back(CloneRule(rule));
+                       base::Value::FromUniquePtrValue(
+                           ContentSettingToValue(CONTENT_SETTING_ALLOW)));
+      rules.emplace_back(CloneRule(rule));
+      brave_cookie_rules_[incognito].emplace_back(CloneRule(rule));
   }
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
@@ -322,7 +328,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       "",
       incognito);
   while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
-    rules.push_back(CloneRule(chromium_cookies_iterator->Next()));
+    rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
   }
   chromium_cookies_iterator.reset();
 
@@ -334,7 +340,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // collect shield rules
   std::vector<Rule> shield_rules;
   while (brave_shields_iterator && brave_shields_iterator->HasNext()) {
-    shield_rules.push_back(CloneRule(brave_shields_iterator->Next()));
+    shield_rules.emplace_back(CloneRule(brave_shields_iterator->Next()));
   }
 
   brave_shields_iterator.reset();
@@ -349,8 +355,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
     auto rule = brave_cookies_iterator->Next();
     if (IsActive(rule, shield_rules)) {
-      rules.push_back(CloneRule(rule, true));
-      brave_cookie_rules_[incognito].push_back(CloneRule(rule, true));
+      rules.emplace_back(CloneRule(rule, true));
+      brave_cookie_rules_[incognito].emplace_back(CloneRule(rule, true));
     }
   }
 
@@ -362,14 +368,16 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
     // Shields down.
     if (ValueToContentSetting(&shield_rule.value) == CONTENT_SETTING_BLOCK) {
-      rules.push_back(
+      rules.emplace_back(
           Rule(ContentSettingsPattern::Wildcard(),
                shield_rule.primary_pattern,
-               ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone()));
-      brave_cookie_rules_[incognito].push_back(
+               base::Value::FromUniquePtrValue(
+                   ContentSettingToValue(CONTENT_SETTING_ALLOW))));
+      brave_cookie_rules_[incognito].emplace_back(
           Rule(ContentSettingsPattern::Wildcard(),
                shield_rule.primary_pattern,
-               ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone()));
+               base::Value::FromUniquePtrValue(
+                   ContentSettingToValue(CONTENT_SETTING_ALLOW))));
     }
   }
 
@@ -388,7 +396,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                     ValueToContentSetting(&old_rule.value);
         });
     if (match == old_rules.end()) {
-      brave_cookie_updates.push_back(CloneRule(new_rule));
+      brave_cookie_updates.emplace_back(CloneRule(new_rule));
     }
   }
 
@@ -404,7 +412,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                  new_rule.secondary_pattern == old_rule.secondary_pattern;
         });
     if (match == brave_cookie_rules_[incognito].end()) {
-      brave_cookie_updates.push_back(
+      brave_cookie_updates.emplace_back(
           Rule(old_rule.primary_pattern,
                old_rule.secondary_pattern,
                base::Value()));
