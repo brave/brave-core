@@ -4726,7 +4726,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7235716375204803342">Načítání aktivit...</translation>
 <translation id="8314381333424235892">Rozšíření chybí nebo nebylo nainstalováno</translation>
 <translation id="7647403192093989392">Žádné nedávné aktivity</translation>
-<translation id="38046578254905003">Vyhledejte si rozšíření a témata v <ph name="BEGIN_LINK">&amp;lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&amp;gt;</ph>Internetovém obchodě<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph></translation>
+<translation id="38046578254905003">Vyhledejte si rozšíření a témata v <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Internetovém obchodě<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">K dispozici není žádný popis</translation>
 <translation id="3855441664322950881">Zabalit rozšíření</translation>
 <translation id="2958721676848865875">Upozornění na zabalení rozšíření</translation>
