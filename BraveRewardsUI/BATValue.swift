@@ -20,7 +20,7 @@ public struct BATValue: DisplayableOption {
     value = doubleValue
   }
   
-  public init?(probi probiValue: String, precision: Int16 = 1) {
+  public init?(probi probiValue: String, precision: Int16 = 3) {
     let decimalNumber = NSDecimalNumber(string: probiValue)
     
     if decimalNumber == NSDecimalNumber.notANumber { return nil }
@@ -38,7 +38,7 @@ public struct BATValue: DisplayableOption {
   }
   
   public var displayString: String {
-    return String(format: "%.1f", value)
+    return String(format: "%.3f", value)
   }
   
   var probiValue: String {
