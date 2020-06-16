@@ -2314,7 +2314,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8736288397686080465">Este sitio se ha actualizado en segundo plano.</translation>
 <translation id="6945221475159498467">Seleccionar</translation>
 <translation id="4130199216115862831">Registro del Dispositivo</translation>
-<translation id="6231881193380278751">Añade un parámetro de consulta en la URL para actualizar la página automáticamente: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Añade un parámetro de consulta en la URL para actualizar la página automáticamente: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Actualizar</translation>
 <translation id="6643016212128521049">Eliminar</translation>
 <translation id="211144231511833662">Borrar tipos</translation>
@@ -4767,7 +4767,7 @@ other {Abrir Todas (#) en una Ventana Nueva}}</translation>
 <translation id="7235716375204803342">Recuperando actividades...</translation>
 <translation id="8314381333424235892">Falta la extensión o no está instalada</translation>
 <translation id="7647403192093989392">Ninguna actividad reciente</translation>
-<translation id="38046578254905003">Encuentra extensiones y temas en la <ph name="BEGIN_LINK">&amp;lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&amp;gt;</ph>Web Store<ph name="END_LINK">&amp;lt;/a&amp;gt;</ph></translation>
+<translation id="38046578254905003">Encuentra extensiones y temas en la <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">No se ha especificado ninguna descripción</translation>
 <translation id="3855441664322950881">Empaquetar extensión</translation>
 <translation id="2958721676848865875">Advertencia sobre el empaquetado de extensión</translation>
