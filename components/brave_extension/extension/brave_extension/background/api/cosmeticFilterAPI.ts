@@ -39,8 +39,8 @@ export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: s
 }
 
 // Fires on content-script loaded
-export const applyAdblockCosmeticFilters = (tabId: number, hostname: string, hide1pContent: boolean) => {
-  chrome.braveShields.hostnameCosmeticResources(hostname, async (resources) => {
+export const applyAdblockCosmeticFilters = (tabId: number, url: string, hide1pContent: boolean) => {
+  chrome.braveShields.urlCosmeticResources(url, async (resources) => {
     if (chrome.runtime.lastError) {
       console.warn('Unable to get cosmetic filter data for the current host', chrome.runtime.lastError)
       return
@@ -65,7 +65,7 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string, hid
       runAt: 'document_start'
     })
 
-    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions, resources.injected_script || '')
+    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions, resources.injected_script || '', resources.generichide)
   })
 }
 

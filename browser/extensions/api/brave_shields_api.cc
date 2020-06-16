@@ -49,22 +49,22 @@ const char kInvalidControlTypeError[] = "Invalid ControlType.";
 
 
 ExtensionFunction::ResponseAction
-BraveShieldsHostnameCosmeticResourcesFunction::Run() {
-  std::unique_ptr<brave_shields::HostnameCosmeticResources::Params> params(
-      brave_shields::HostnameCosmeticResources::Params::Create(*args_));
+BraveShieldsUrlCosmeticResourcesFunction::Run() {
+  std::unique_ptr<brave_shields::UrlCosmeticResources::Params> params(
+      brave_shields::UrlCosmeticResources::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   base::Optional<base::Value> resources = g_brave_browser_process->
-      ad_block_service()->HostnameCosmeticResources(params->hostname);
+      ad_block_service()->UrlCosmeticResources(params->url);
 
   if (!resources || !resources->is_dict()) {
     return RespondNow(Error(
-        "Hostname-specific cosmetic resources could not be returned"));
+        "Url-specific cosmetic resources could not be returned"));
   }
 
   base::Optional<base::Value> regional_resources = g_brave_browser_process->
       ad_block_regional_service_manager()->
-          HostnameCosmeticResources(params->hostname);
+          UrlCosmeticResources(params->url);
 
   if (regional_resources && regional_resources->is_dict()) {
     ::brave_shields::MergeResourcesInto(
@@ -75,7 +75,7 @@ BraveShieldsHostnameCosmeticResourcesFunction::Run() {
 
   base::Optional<base::Value> custom_resources = g_brave_browser_process->
       ad_block_custom_filters_service()->
-          HostnameCosmeticResources(params->hostname);
+          UrlCosmeticResources(params->url);
 
   if (custom_resources && custom_resources->is_dict()) {
     ::brave_shields::MergeResourcesInto(

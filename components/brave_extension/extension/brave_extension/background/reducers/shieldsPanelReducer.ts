@@ -386,7 +386,8 @@ export default function shieldsPanelReducer (
       chrome.tabs.sendMessage(action.tabId, {
         type: 'cosmeticFilteringBackgroundReady',
         scriptlet: action.scriptlet,
-        hide1pContent: tabData.firstPartyCosmeticFiltering
+        hide1pContent: tabData.firstPartyCosmeticFiltering,
+        generichide: action.generichide
       })
       break
     }
@@ -399,7 +400,7 @@ export default function shieldsPanelReducer (
       Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
         .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
           if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, getHostname(action.url), hide1pContent)
+            applyAdblockCosmeticFilters(action.tabId, action.url, hide1pContent)
           }
         })
         .catch(() => {

@@ -188,7 +188,8 @@ interface CosmeticFilterRuleExceptionsReturn {
   type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
   tabId: number,
   exceptions: string[],
-  scriptlet: string
+  scriptlet: string,
+  generichide: boolean
 }
 
 export interface CosmeticFilterRuleExceptions {

@@ -192,18 +192,18 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 }
 
 base::Optional<base::Value>
-AdBlockRegionalServiceManager::HostnameCosmeticResources(
-        const std::string& hostname) {
+AdBlockRegionalServiceManager::UrlCosmeticResources(
+        const std::string& url) {
   auto it = this->regional_services_.begin();
   if (it == this->regional_services_.end()) {
     return base::Optional<base::Value>();
   }
   base::Optional<base::Value> first_value =
-      it->second->HostnameCosmeticResources(hostname);
+      it->second->UrlCosmeticResources(url);
 
   for ( ; it != this->regional_services_.end(); it++) {
     base::Optional<base::Value> next_value =
-        it->second->HostnameCosmeticResources(hostname);
+        it->second->UrlCosmeticResources(url);
     if (first_value) {
       if (next_value) {
         MergeResourcesInto(&*first_value, &*next_value, false);
