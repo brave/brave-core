@@ -1,60 +1,20 @@
 diff --git a/components/os_crypt/key_storage_kwallet.cc b/components/os_crypt/key_storage_kwallet.cc
-index aa4b3d4a6b5c7b1f725d6446ea5e573094ec935b..8e1ac53bccaf2213466af3daf685ee88f3253f11 100644
+index 10eb2a15cf7682e46c4bee2b32cd3eb8e14d10b2..533cb4c4d76edd5f0666f99975bfdbeb06d8cbdc 100644
 --- a/components/os_crypt/key_storage_kwallet.cc
 +++ b/components/os_crypt/key_storage_kwallet.cc
-@@ -7,6 +7,7 @@
- #include <utility>
- 
- #include "base/base64.h"
-+#include "base/command_line.h"
- #include "base/rand_util.h"
- #include "components/os_crypt/kwallet_dbus.h"
- #include "dbus/bus.h"
-@@ -90,11 +91,25 @@ std::string KeyStorageKWallet::GetKeyImpl() {
-   if (!InitFolder())
-     return std::string();
- 
-+  const char *folder_name, *key;
-+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-+  if (command_line->HasSwitch("import-chrome")) {
-+    folder_name = "Chrome Keys";
-+    key = "Chrome Safe Storage";
-+  } else if (command_line->HasSwitch("import-chromium") ||
-+             command_line->HasSwitch("import-brave")) {
-+    folder_name = "Chromium Keys";
-+    key = "Chromium Safe Storage";
-+  } else {
-+    folder_name = KeyStorageLinux::kFolderName;
-+    key = KeyStorageLinux::kKey;
-+  }
-+
+@@ -94,6 +94,7 @@ base::Optional<std::string> KeyStorageKWallet::GetKeyImpl() {
    // Read password
-   std::string password;
+   base::Optional<std::string> password;
    error =
--      kwallet_dbus_->ReadPassword(handle_, KeyStorageLinux::kFolderName,
--                                  KeyStorageLinux::kKey, app_name_, &password);
-+      kwallet_dbus_->ReadPassword(handle_, folder_name,
-+                                  key, app_name_, &password);
++      BRAVE_KEY_STORAGE_KWALLET_GET_KEY_IMPL
+       kwallet_dbus_->ReadPassword(handle_, KeyStorageLinux::kFolderName,
+                                   KeyStorageLinux::kKey, app_name_, &password);
    if (error)
-     return std::string();
- 
-@@ -114,8 +129,18 @@ std::string KeyStorageKWallet::GetKeyImpl() {
- 
+@@ -118,6 +119,7 @@ base::Optional<std::string> KeyStorageKWallet::GetKeyImpl() {
  bool KeyStorageKWallet::InitFolder() {
    bool has_folder = false;
-+  const char *folder_name;
-+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-+  if (command_line->HasSwitch("import-chrome")) {
-+    folder_name = "Chrome Keys";
-+  } else if (command_line->HasSwitch("import-chromium") ||
-+             command_line->HasSwitch("import-brave")) {
-+    folder_name = "Chromium Keys";
-+  } else {
-+    folder_name = KeyStorageLinux::kFolderName;
-+  }
    KWalletDBus::Error error = kwallet_dbus_->HasFolder(
--      handle_, KeyStorageLinux::kFolderName, app_name_, &has_folder);
-+      handle_, folder_name, app_name_, &has_folder);
++      BRAVE_KEY_STORAGE_KWALLET_INIT_FOLDER
+       handle_, KeyStorageLinux::kFolderName, app_name_, &has_folder);
    if (error)
      return false;
- 
