@@ -13,6 +13,11 @@ import * as SettingsPrivate from '../../../../../common/settingsPrivate'
  * @return a promise with the corresponding shields panel data for the input tabData
  */
 export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
+  // Supress data until page load completes
+  if (tabData && tabData.status === 'loading' && !tabData.url) {
+    return new Promise(r => r({}))
+  }
+
   if (tabData === undefined || !tabData.url) {
     return Promise.reject(new Error('No tab url specified'))
   }
@@ -20,6 +25,12 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   const url = new window.URL(tabData.url)
   const origin = url.origin
   const hostname = url.hostname
+  const protocol = url.protocol
+
+  // Check whether it is an internal page
+  if (protocol === 'chrome:') {
+    return new Promise(r => r({}))
+  }
 
   return Promise.all([
     chrome.braveShields.getBraveShieldsEnabledAsync(tabData.url),
