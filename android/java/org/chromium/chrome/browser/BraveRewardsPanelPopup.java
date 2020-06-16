@@ -112,6 +112,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private static final int BALANCE_REPORT_RECURRING_DONATION = 3;
     private static final int BALANCE_REPORT_ONE_TIME_DONATION = 4;
 
+    public static final String PREF_VERIFY_WALLET_ENABLE = "verify_wallet_enable";
+
     protected final View anchor;
     private final PopupWindow window;
     private final BraveRewardsPanelPopup thisObject;
@@ -169,6 +171,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     public static boolean isBraveRewardsEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(BraveRewardsPanelPopup.PREF_IS_BRAVE_REWARDS_ENABLED, false);
+    }
+
+    private boolean isVerifyWalletEnabled() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        return sharedPreferences.getBoolean(BraveRewardsPanelPopup.PREF_VERIFY_WALLET_ENABLE, false);
     }
 
     public BraveRewardsPanelPopup(View anchor) {
@@ -1527,9 +1534,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                 Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
                 if (btnVerifyWallet != null) {
-                    if (walletBalance < WALLET_BALANCE_LIMIT) {
+                    if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
                         btnVerifyWallet.setBackgroundResource(
-                            R.drawable.wallet_verify_button_disabled);
+                            R.drawable.wallet_disconnected_button);
                     } else {
                         btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
                     }
@@ -1570,6 +1577,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private void SetVerifyWalletControl(@WalletStatus final int status) {
         Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
         boolean annonwallet = BraveRewardsHelper.isAnonWallet();
+        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor editor = sharedPref.edit();
         if (!annonwallet) {
             int rightDrawable = 0;
             int leftDrawable = 0;
@@ -1582,12 +1591,22 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.CONNECTED:
+                rightDrawable = R.drawable.verified_disclosure;
+                text = R.string.brave_ui_wallet_button_unverified;
+                btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
+                break;
             case BraveRewardsExternalWallet.PENDING:
+                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
+                editor.apply();
+
                 rightDrawable = R.drawable.verified_disclosure;
                 text = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case BraveRewardsExternalWallet.VERIFIED:
+                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
+                editor.apply();
+
                 leftDrawable = R.drawable.uphold_white;
                 rightDrawable = R.drawable.verified_disclosure;
                 text = R.string.brave_ui_wallet_button_verified;
@@ -1645,32 +1664,36 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         btnVerifyWallet.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (walletBalance < WALLET_BALANCE_LIMIT) {
-                    Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
-                } else {
-                    switch (status) {
-                    case BraveRewardsExternalWallet.NOT_CONNECTED:
-                    case BraveRewardsExternalWallet.CONNECTED:
-                    case BraveRewardsExternalWallet.PENDING:
-                    case BraveRewardsExternalWallet.VERIFIED:
+                switch (status) {
+                case BraveRewardsExternalWallet.NOT_CONNECTED:
+                case BraveRewardsExternalWallet.CONNECTED:
+                case BraveRewardsExternalWallet.PENDING:
+                case BraveRewardsExternalWallet.VERIFIED:
+                    if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
+                        Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
+                    } else {
                         int requestCode =
                             (status == BraveRewardsExternalWallet.NOT_CONNECTED) ?
                             BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE :
                             BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
                         Intent intent = BuildVerifyWalletActivityIntent(status);
                         mActivity.startActivityForResult(intent, requestCode);
-                        break;
-                    case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
-                    case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
-                        if (! TextUtils.isEmpty(mExternal_wallet.mVerify_url)) {
+                    }
+                    break;
+                case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
+                case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
+                    if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
+                        Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (!TextUtils.isEmpty(mExternal_wallet.mVerify_url)) {
                             dismiss();
                             mBraveActivity.openNewOrSelectExistingTab (mExternal_wallet.mVerify_url);
                         }
-                        break;
-                    default:
-                        Log.e (TAG, "Unexpected external wallet status");
-                        return;
                     }
+                    break;
+                default:
+                    Log.e (TAG, "Unexpected external wallet status");
+                    return;
                 }
             }
         }));
