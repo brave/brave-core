@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import SDWebImage
 
 extension FixedWidthInteger {
     /// The host-endian representation of this integer.
@@ -20,6 +21,21 @@ extension FixedWidthInteger {
 }
 
 public class PrivateCDN {
+    fileprivate static func payloadLength(for data: Data) -> UInt32? {
+        guard data.count > 4 else {
+            // Missing length field
+            return nil
+        }
+        let length = data.withUnsafeBytes {
+            return $0.load(as: UInt32.self).hostEndian
+        }
+        guard data.count > length else {
+            // Payload shorter than expected length
+            return nil
+        }
+        return length
+    }
+    
     /// Private CDN data unpadded to the original data
     ///
     /// The data which is obtained from the private CDN contains this structure:
@@ -33,20 +49,32 @@ public class PrivateCDN {
     ///  - `padding`: a variable-length string of uppercase `P` characters of
     ///               the length required to pad the file to its final size
     public static func unpadded(data: Data) -> Data? {
-        guard data.count > 4 else {
-            // Missing length field
-            return nil
-        }
-        let length = data.withUnsafeBytes {
-            return $0.load(as: UInt32.self).hostEndian
-        }
-        guard data.count > length else {
-            // Payload shorter than expected length
-            return nil
-        }
-        
+        guard let length = payloadLength(for: data) else { return nil }
         let startIndex = data.startIndex.advanced(by: 4)
         let endIndex = startIndex.advanced(by: Int(length))
         return data.subdata(in: startIndex..<endIndex)
+    }
+}
+
+/// A custom SDWebImageCoder that will decode padded images that come from the Private CDN
+public class PrivateCDNImageCoder: NSObject, SDWebImageCoder {
+    public func canDecode(from data: Data?) -> Bool {
+        guard let data = data else { return false }
+        return PrivateCDN.payloadLength(for: data) != nil
+    }
+    public func decodedImage(with data: Data?) -> UIImage? {
+        guard let paddedData = data, let unpaddedData = PrivateCDN.unpadded(data: paddedData) else {
+            return nil
+        }
+        return SDWebImageCodersManager.sharedInstance().decodedImage(with: unpaddedData)
+    }
+    public func decompressedImage(with image: UIImage?, data: AutoreleasingUnsafeMutablePointer<NSData?>, options optionsDict: [String: NSObject]? = nil) -> UIImage? {
+        SDWebImageCodersManager.sharedInstance().decompressedImage(with: image, data: data, options: optionsDict)
+    }
+    public func canEncode(to format: SDImageFormat) -> Bool {
+        SDWebImageCodersManager.sharedInstance().canEncode(to: format)
+    }
+    public func encodedData(with image: UIImage?, format: SDImageFormat) -> Data? {
+        SDWebImageCodersManager.sharedInstance().encodedData(with: image, format: format)
     }
 }
