@@ -6,6 +6,8 @@
 brave_components_sync_driver_sources = [
   "//brave/components/sync/driver/brave_sync_auth_manager.cc",
   "//brave/components/sync/driver/brave_sync_auth_manager.h",
+  "//brave/components/sync/driver/brave_sync_stopped_reporter.cc",
+  "//brave/components/sync/driver/brave_sync_stopped_reporter.h",
 ]
 brave_components_sync_driver_deps = [
   "//brave/common:network_constants",
