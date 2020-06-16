@@ -218,6 +218,10 @@ Polymer({
 
     this.browserProxy_.didNavigateAwayFromSyncPage(!this.setupSuccessful_);
 
+    // Reset state as this component could actually be kept around even though
+    // it is hidden.
+    this.setupSuccessful_ = false
+
     window.removeEventListener('beforeunload', this.beforeunloadCallback_);
     this.beforeunloadCallback_ = null;
 
