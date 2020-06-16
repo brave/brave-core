@@ -89,11 +89,11 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   getContributions = () => {
-    // TODO(https://github.com/brave/brave-browser/issues/8633): implement
+    this.actions.getContributions()
   }
 
   render () {
-    const { isRewardsEnabled, info, promotions, log, fullLog } = this.props.rewardsInternalsData
+    const { isRewardsEnabled, contributions, promotions, log, fullLog } = this.props.rewardsInternalsData
 
     if (!isRewardsEnabled) {
       return (
@@ -129,7 +129,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
             <Promotions items={promotions} onGet={this.getPromotions} />
           </div>
           <div data-key='contributions' data-title={getLocale('tabContributions')}>
-            <Contributions items={info.currentReconciles} onGet={this.getContributions} />
+            <Contributions items={contributions} onGet={this.getContributions} />
           </div>
         </Tabs>
       </Wrapper>)

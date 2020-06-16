@@ -9,18 +9,31 @@ import { ButtonWrapper } from '../style'
 import { Button } from 'brave-ui/components'
 
 interface Props {
-  items: RewardsInternals.CurrentReconcile[]
+  items: RewardsInternals.ContributionInfo[]
   onGet: () => void
 }
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
-export const Contributions = (props: Props) => {
-  if (!props.items || props.items.length === 0) {
+const getItems = (items: RewardsInternals.ContributionInfo[]) => {
+  if (!items || items.length === 0) {
     return null
   }
 
+  return items
+    .sort((first, second) => {
+      return second.createdAt - first.createdAt
+    })
+    .map((item, index) => (
+      <div key={item.id}>
+        <Contribution contribution={item || ''} />
+        {(index !== items.length - 1) ? <hr/> : null}
+      </div>
+    ))
+}
+
+export const Contributions = (props: Props) => {
   return (
     <>
       <ButtonWrapper>
@@ -31,15 +44,7 @@ export const Contributions = (props: Props) => {
           onClick={props.onGet}
         />
       </ButtonWrapper>
-      {props.items.map((item, index) => (
-        <>
-          <div>
-            {getLocale('currentReconcile')} {index + 1}
-            <Contribution reconcile={item || ''} />
-          </div>
-          <hr/>
-        </>
-      ))}
+      {getItems(props.items)}
     </>
   )
 }

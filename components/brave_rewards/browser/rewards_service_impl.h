@@ -311,6 +311,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
 
+  void GetAllContributions(GetAllContributionsCallback callback) override;
+
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
   // Testing methods
@@ -682,6 +684,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback,
       const std::vector<std::string>& ids);
+
+  void OnGetAllContributions(
+      GetAllContributionsCallback callback,
+      ledger::ContributionInfoList contributions);
 
   void OnGetAllPromotions(
       GetAllPromotionsCallback callback,
