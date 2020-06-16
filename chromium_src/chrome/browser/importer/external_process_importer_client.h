@@ -6,11 +6,21 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_CLIENT_H_
 
+// To prevent re-defining Start() in timer.h by ours overriding.
+#include "base/timer/timer.h"
+
 #define BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H \
     friend class BraveExternalProcessImporterClient;
+
+#define Start virtual Start
+#define Cancel virtual Cancel
+#define CloseMojoHandles virtual CloseMojoHandles
 
 #include "../../../../../chrome/browser/importer/external_process_importer_client.h"
 
 #undef BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H
+#undef Start
+#undef Cancel
+#undef CloseMojoHandles
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_CLIENT_H_

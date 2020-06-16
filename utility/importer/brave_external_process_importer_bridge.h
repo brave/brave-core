@@ -8,12 +8,17 @@
 
 #include <string>
 
+#include "brave/common/importer/brave_importer_bridge.h"
+#include "brave/common/importer/profile_import.mojom.h"
 #include "chrome/utility/importer/external_process_importer_bridge.h"
 
-class BraveExternalProcessImporterBridge
-    : public ExternalProcessImporterBridge {
+class BraveExternalProcessImporterBridge : public ExternalProcessImporterBridge,
+                                           public BraveImporterBridge {
  public:
-  using ExternalProcessImporterBridge::ExternalProcessImporterBridge;
+  BraveExternalProcessImporterBridge(
+      const base::flat_map<uint32_t, std::string>& localized_strings,
+      mojo::SharedRemote<chrome::mojom::ProfileImportObserver> observer,
+      mojo::SharedRemote<brave::mojom::ProfileImportObserver> brave_observer);
 
   BraveExternalProcessImporterBridge(
       const BraveExternalProcessImporterBridge&) = delete;
@@ -28,6 +33,8 @@ class BraveExternalProcessImporterBridge
 
  private:
   ~BraveExternalProcessImporterBridge() override;
+
+  mojo::SharedRemote<brave::mojom::ProfileImportObserver> brave_observer_;
 };
 
 #endif  // BRAVE_UTILITY_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_BRIDGE_H_

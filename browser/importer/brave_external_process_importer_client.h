@@ -8,18 +8,35 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
+#include "base/strings/string16.h"
+#include "brave/common/importer/profile_import.mojom.h"
 #include "chrome/browser/importer/external_process_importer_client.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 class BraveExternalProcessImporterClient
-    : public ExternalProcessImporterClient {
+    : public ExternalProcessImporterClient,
+      public brave::mojom::ProfileImportObserver {
  public:
-  using ExternalProcessImporterClient::ExternalProcessImporterClient;
+  BraveExternalProcessImporterClient(
+      base::WeakPtr<ExternalProcessImporterHost> importer_host,
+      const importer::SourceProfile& source_profile,
+      uint16_t items,
+      InProcessImporterBridge* bridge);
 
   BraveExternalProcessImporterClient(
       const BraveExternalProcessImporterClient&) = delete;
   BraveExternalProcessImporterClient& operator=(
       const BraveExternalProcessImporterClient&) = delete;
 
+  // ExternalProcessImportClient overrides:
+  void Start() override;
+  void Cancel() override;
+  void CloseMojoHandles() override;
+  void OnImportItemFinished(importer::ImportItem import_item) override;
+
+  // brave::mojom::ProfileImportObserver overrides:
   void OnCreditCardImportReady(
       const base::string16& name_on_card,
       const base::string16& expiration_month,
@@ -29,6 +46,14 @@ class BraveExternalProcessImporterClient
 
  protected:
   ~BraveExternalProcessImporterClient() override;
+
+ private:
+  // Used to start and stop the actual brave importer running in a different
+  // process.
+  mojo::Remote<brave::mojom::ProfileImport> brave_profile_import_;
+
+  // Used to receive progress updates from the brave importer.
+  mojo::Receiver<brave::mojom::ProfileImportObserver> brave_receiver_{this};
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H_

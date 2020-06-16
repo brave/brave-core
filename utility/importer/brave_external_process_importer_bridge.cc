@@ -5,6 +5,16 @@
 
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 
+#include <utility>
+
+BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(
+    const base::flat_map<uint32_t, std::string>& localized_strings,
+    mojo::SharedRemote<chrome::mojom::ProfileImportObserver> observer,
+    mojo::SharedRemote<brave::mojom::ProfileImportObserver> brave_observer)
+    : ExternalProcessImporterBridge(std::move(localized_strings),
+                                         std::move(observer)),
+      brave_observer_(std::move(brave_observer)) {}
+
 BraveExternalProcessImporterBridge::
     ~BraveExternalProcessImporterBridge() = default;
 
@@ -14,8 +24,8 @@ void BraveExternalProcessImporterBridge::SetCreditCard(
     const base::string16& expiration_year,
     const base::string16& decrypted_card_number,
     const std::string& origin) {
-  observer_->OnCreditCardImportReady(name_on_card, expiration_month,
-                                     expiration_year, decrypted_card_number,
-                                     origin);
+  brave_observer_->OnCreditCardImportReady(
+      name_on_card, expiration_month,
+      expiration_year, decrypted_card_number,
+      origin);
 }
-

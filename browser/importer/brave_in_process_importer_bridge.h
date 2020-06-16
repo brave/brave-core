@@ -8,9 +8,11 @@
 
 #include <string>
 
+#include "brave/common/importer/brave_importer_bridge.h"
 #include "chrome/browser/importer/in_process_importer_bridge.h"
 
-class BraveInProcessImporterBridge : public InProcessImporterBridge {
+class BraveInProcessImporterBridge : public InProcessImporterBridge,
+                                     public BraveImporterBridge {
  public:
   using InProcessImporterBridge::InProcessImporterBridge;
 
@@ -18,6 +20,7 @@ class BraveInProcessImporterBridge : public InProcessImporterBridge {
   BraveInProcessImporterBridge operator=(
       const BraveInProcessImporterBridge&) = delete;
 
+  // BraveImporterBridge overrides:
   void SetCreditCard(const base::string16& name_on_card,
                      const base::string16& expiration_month,
                      const base::string16& expiration_year,

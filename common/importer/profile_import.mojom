@@ -1,0 +1,44 @@
+// Copyright 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+module brave.mojom;
+
+import "chrome/common/importer/profile_import.mojom";
+import "mojo/public/mojom/base/string16.mojom";
+
+[Native]
+struct SourceProfile;
+
+[Native]
+enum ImportItem;
+
+// These are messages sent from the profile import process to the browser.
+// These messages send information about the status of the import and individual
+// import tasks.
+interface ProfileImportObserver {
+  OnCreditCardImportReady(mojo_base.mojom.String16 name_on_card,
+                          mojo_base.mojom.String16 expiration_month,
+                          mojo_base.mojom.String16 expiration_year,
+                          mojo_base.mojom.String16 decrypted_card_number,
+                          string origin);
+};
+
+// This interface is used to control the import process.
+interface ProfileImport {
+  // Start the importer. |items| is a bitmask of importer::ImportItem of items
+  // to import.
+  StartImport(
+      chrome.mojom.SourceProfile source_profile,
+      uint16 items,
+      map<uint32, string> localized_strings,
+      pending_remote<chrome.mojom.ProfileImportObserver> observer,
+      pending_remote<ProfileImportObserver> brave_observer);
+
+  // Stop the importer.
+  CancelImport();
+
+  // Tell the importer that we're done with one item.
+  ReportImportItemFinished(chrome.mojom.ImportItem item);
+};

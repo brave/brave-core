@@ -67,19 +67,9 @@ source_set("common") {
     "webui_url_constants.h",
   ]
 
-  if (!is_android) {
-    sources += [
-      "importer/brave_importer_bridge.h",
-      "importer/chrome_importer_utils.cc",
-      "importer/chrome_importer_utils.h",
-      "importer/importer_constants.h",
-      "importer/scoped_copy_file.cc",
-      "importer/scoped_copy_file.h",
-    ]
-
+  if (!is_android && !is_ios) {
     deps += [
-      "//components/webdata/common",
-      "//sql",
+      "//brave/common/importer",
     ]
   }
 
@@ -121,24 +111,6 @@ source_set("common") {
 
     deps += [
       "//content/public/common",
-    ]
-  }
-
-  if (is_mac) {
-    sources += [
-      "importer/chrome_importer_utils_mac.mm",
-    ]
-  }
-
-  if (is_linux) {
-    sources += [
-      "importer/chrome_importer_utils_linux.cc",
-    ]
-  }
-
-  if (is_win) {
-    sources += [
-      "importer/chrome_importer_utils_win.cc",
     ]
   }
 }

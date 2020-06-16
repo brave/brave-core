@@ -34,6 +34,7 @@ source_set("utility") {
 
     deps += [
       "//base",
+      "//brave/common/importer:interfaces",
       "//chrome/app:chromium_strings",
       "//components/os_crypt",
       "//components/password_manager/core/browser",

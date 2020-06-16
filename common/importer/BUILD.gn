@@ -1,0 +1,66 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("interfaces") {
+  sources = [ "profile_import.mojom" ]
+
+  cpp_typemaps = [
+    {
+      types = [
+        {
+          mojom = "chrome.mojom.SourceProfile"
+          cpp = "::importer::SourceProfile"
+        },
+      ]
+      traits_headers = [
+        "//chrome/common/importer/profile_import_process_param_traits.h",
+      ]
+      traits_public_deps = [ "//chrome/common/importer" ]
+    },
+  ]
+
+  deps = [
+    "//chrome/common/importer:interfaces",
+    "//components/autofill/core/common/mojom:mojo_types",
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}
+
+source_set("importer") {
+  sources = [
+    "brave_importer_bridge.h",
+    "chrome_importer_utils.cc",
+    "chrome_importer_utils.h",
+    "importer_constants.h",
+    "scoped_copy_file.cc",
+    "scoped_copy_file.h",
+  ]
+
+  deps = [
+    "//components/webdata/common",
+    "//sql",
+  ]
+
+  if (is_mac) {
+    sources += [
+      "chrome_importer_utils_mac.mm",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "chrome_importer_utils_linux.cc",
+    ]
+  }
+
+  if (is_win) {
+    sources += [
+      "chrome_importer_utils_win.cc",
+    ]
+  }
+}
