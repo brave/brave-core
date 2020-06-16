@@ -34,6 +34,7 @@
 		0A1E84462190A57F0042F782 /* SyncAddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1E843C2190A57F0042F782 /* SyncAddDeviceViewController.swift */; };
 		0A24F7F0233E9136004D2F3A /* ObjcExceptionBridging.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A27ABA123D1B9C400194921 /* BrandedImageCalloutState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */; };
+		0A2BD6092497780A00254494 /* libadblock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2BD6082497780A00254494 /* libadblock.a */; };
 		0A2F921C22146B7700304249 /* FrecencyQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F921B22146B7700304249 /* FrecencyQuery.swift */; };
 		0A39D56D21930B89008B2772 /* ScriptOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39D56C21930B89008B2772 /* ScriptOpener.swift */; };
 		0A3C789D23055C4A0022F6D8 /* OnboardingSearchEnginesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3C789C23055C4A0022F6D8 /* OnboardingSearchEnginesViewController.swift */; };
@@ -119,7 +120,6 @@
 		0AD4FEF4223AC32200E00C05 /* JSValueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEF3223AC32200E00C05 /* JSValueExtensions.swift */; };
 		0AD4FEFA223BBE5400E00C05 /* SyncCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEF9223BBE5400E00C05 /* SyncCryptoTests.swift */; };
 		0AD5E9C42200591F00D0D91B /* BraveShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD5E9C32200591F00D0D91B /* BraveShield.swift */; };
-		0AD9F87D22F0421B008B4D95 /* libadblock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A063D4A22EB2945001CE50B /* libadblock.a */; };
 		0AD9F88122F049E5008B4D95 /* AdblockRustEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD9F88022F049E5008B4D95 /* AdblockRustEngine.swift */; };
 		0AD9F88E22F05376008B4D95 /* AdblockRustTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD9F88D22F05376008B4D95 /* AdblockRustTests.swift */; };
 		0ADCD4522319640F0078CC67 /* UserAgentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADCD4512319640F0078CC67 /* UserAgentBuilder.swift */; };
@@ -1295,7 +1295,6 @@
 
 /* Begin PBXFileReference section */
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
-		0A063D4A22EB2945001CE50B /* libadblock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libadblock.a; sourceTree = "<group>"; };
 		0A063D4B22EB2945001CE50B /* ablock_rust_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ablock_rust_lib.h; sourceTree = "<group>"; };
 		0A0B951123571EF200E6543A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A0D3D3821A4BD0600BEE65B /* SafeBrowsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsing.swift; sourceTree = "<group>"; };
@@ -1345,6 +1344,7 @@
 		0A24F846233EB5B5004D2F3A /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		0A24F847233EB5B5004D2F3A /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandedImageCalloutState.swift; sourceTree = "<group>"; };
+		0A2BD6082497780A00254494 /* libadblock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libadblock.a; sourceTree = "<group>"; };
 		0A2D5DF623571F02001ED889 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0A2F921B22146B7700304249 /* FrecencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrecencyQuery.swift; sourceTree = "<group>"; };
 		0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
@@ -2608,7 +2608,6 @@
 			files = (
 				5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */,
 				0AC0D39A233E7CAF0091EFA5 /* ObjcExceptionBridging.framework in Frameworks */,
-				0AD9F87D22F0421B008B4D95 /* libadblock.a in Frameworks */,
 				278C468D23F1E6270083347F /* BraveUI.framework in Frameworks */,
 				F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */,
 				5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */,
@@ -2620,6 +2619,7 @@
 				2FCAE2311ABB51F800877008 /* Storage.framework in Frameworks */,
 				A1D841FD20BC405E00BDAFF7 /* pop.framework in Frameworks */,
 				3BA9A0231D2C208C00BD418C /* Fuzi.framework in Frameworks */,
+				0A2BD6092497780A00254494 /* libadblock.a in Frameworks */,
 				A1F66A8020DD87CA00303328 /* Static.framework in Frameworks */,
 				5D1DC52820AC9AFB00905E5A /* Data.framework in Frameworks */,
 				7BA4A9471C4CED900091D032 /* GCDWebServers.framework in Frameworks */,
@@ -2986,7 +2986,7 @@
 			isa = PBXGroup;
 			children = (
 				0A063D4B22EB2945001CE50B /* ablock_rust_lib.h */,
-				0A063D4A22EB2945001CE50B /* libadblock.a */,
+				0A2BD6082497780A00254494 /* libadblock.a */,
 				0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */,
 			);
 			path = Resources;
