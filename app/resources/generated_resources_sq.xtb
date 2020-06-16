@@ -31,7 +31,7 @@
 <translation id="7253276740368043692">Që të merrni skedat tuaja prej pajisjesh të tjera, bëni hyrjen në Brave.</translation>
 <translation id="6351063337294363751">Të dhënat tuaja të shfletimit mund t’i spastroni prej kësaj menuje</translation>
 <translation id="6040143037577758943">Mbylle</translation>
-<translation id="6463795194797719782">&amp;amp;Përpunoni</translation>
+<translation id="6463795194797719782">&amp;Përpunoni</translation>
 <translation id="8131740175452115882">Ripohojeni</translation>
 <translation id="4394049700291259645">Çaktivizoje</translation>
 <translation id="3089137131053189723">Kërkimi u spastrua</translation>
@@ -42,61 +42,61 @@
 <translation id="2295864384543949385"><ph name="NUM_RESULTS"/> rezultate</translation>
 <translation id="3303855915957856445">S’u gjetën përfundime kërkimi</translation>
 <translation id="8967866634928501045">Shtypni bashkë tastet Alt Shift A që të shfaqet</translation>
-<translation id="998747458861718449">I&amp;amp;nspektoje</translation>
+<translation id="998747458861718449">I&amp;nspektoje</translation>
 <translation id="4428301600092811022">Të merren përshkrime figurash nga Brave-i?</translation>
 <translation id="741204030948306876">Po</translation>
 <translation id="780301667611848630">Jo, faleminderit</translation>
-<translation id="3943582379552582368">&amp;amp;Mbrapsht</translation>
-<translation id="6691936601825168937">&amp;amp;Përpara</translation>
-<translation id="3280237271814976245">Ruajeni &amp;amp;si…</translation>
-<translation id="1175364870820465910">&amp;amp;Shtypni…</translation>
+<translation id="3943582379552582368">&amp;Mbrapsht</translation>
+<translation id="6691936601825168937">&amp;Përpara</translation>
+<translation id="3280237271814976245">Ruajeni &amp;si…</translation>
+<translation id="1175364870820465910">&amp;Shtypni…</translation>
 <translation id="8664389313780386848">&amp;Shihni burim faqeje</translation>
 <translation id="2889064240420137087">Hapeni lidhjen me…</translation>
 <translation id="4345587454538109430">Formësojeni…</translation>
-<translation id="4989966318180235467">Inspektoni faqe &amp;amp;sfond</translation>
-<translation id="5370819323174483825">&amp;amp;Ringarkoje</translation>
+<translation id="4989966318180235467">Inspektoni faqe &amp;sfond</translation>
+<translation id="5370819323174483825">&amp;Ringarkoje</translation>
 <translation id="6406303162637086258">Simulo rinisje shfletuesi</translation>
-<translation id="2326931316514688470">&amp;amp;Ringarkoje aplikacionin</translation>
-<translation id="5979421442488174909">&amp;amp;Përkthejeni në <ph name="LANGUAGE"/></translation>
+<translation id="2326931316514688470">&amp;Ringarkoje aplikacionin</translation>
+<translation id="5979421442488174909">&amp;Përkthejeni në <ph name="LANGUAGE"/></translation>
 <translation id="6398765197997659313">Dilni nga Sa Krejt Ekrani</translation>
-<translation id="6239558157302047471">Ringarko &amp;amp;kuadrin</translation>
+<translation id="6239558157302047471">Ringarko &amp;kuadrin</translation>
 <translation id="1163931534039071049">&amp;Shihni burim kuadri</translation>
-<translation id="6886871292305414135">Hape lidhjen në &amp;amp;skedë të re</translation>
-<translation id="8899851313684471736">Hape lidhjen në &amp;amp;dritare të re</translation>
+<translation id="6886871292305414135">Hape lidhjen në &amp;skedë të re</translation>
+<translation id="8899851313684471736">Hape lidhjen në &amp;dritare të re</translation>
 <translation id="658539216370629794">Hape lidhjen në dritare &amp;private</translation>
 <translation id="3144647712221361880">Hape lidhjen si</translation>
 <translation id="9137916601698928395">Hape lidhjen si <ph name="USER"/></translation>
 <translation id="1137673463384776352">Hape lidhjen në <ph name="APP"/></translation>
 <translation id="8863753581171631212">Hape lidhjen në dritare të re <ph name="APP"/></translation>
-<translation id="6308937455967653460">Ruajeni &amp;amp;lidhjen si…</translation>
-<translation id="1084824384139382525">Kopjo &amp;amp;adresë lidhjeje</translation>
-<translation id="8382913212082956454">Kopjo adresë &amp;amp;email</translation>
+<translation id="6308937455967653460">Ruajeni &amp;lidhjen si…</translation>
+<translation id="1084824384139382525">Kopjo &amp;adresë lidhjeje</translation>
+<translation id="8382913212082956454">Kopjo adresë &amp;email</translation>
 <translation id="8823514049557262177">Kopjo amp;amp;tekst lidhjeje</translation>
 <translation id="2423578206845792524">Ru&amp;ajeni figurën si…</translation>
-<translation id="3347086966102161372">K&amp;amp;opjo adresë figure</translation>
+<translation id="3347086966102161372">K&amp;opjo adresë figure</translation>
 <translation id="6518014396551869914">Kopjamp;o figurën</translation>
 <translation id="345693547134384690">Hape amp;amp;figurën në skedë të re</translation>
 <translation id="4681930562518940301">Hape amp;amp;figurën origjinale në skedë të re</translation>
 <translation id="3269093882174072735">Ngarko figurë</translation>
 <translation id="994289308992179865">&amp;Pambarimisht</translation>
-<translation id="7309257895202129721">Shfaq &amp;amp;kontrolle</translation>
-<translation id="1850508293116537636">Rrotulloje sipas kahut &amp;amp;orar</translation>
-<translation id="49896407730300355">Rrotulloje sipas kahut &amp;amp;antiorar</translation>
-<translation id="4839303808932127586">Ru&amp;amp;ajeni videon si…</translation>
-<translation id="782057141565633384">K&amp;amp;opjo adresë videoje</translation>
-<translation id="8584280235376696778">&amp;amp;Hape videon në skedë të re</translation>
-<translation id="5764483294734785780">Ru&amp;amp;jeni audion si…</translation>
-<translation id="708060913198414444">K&amp;amp;opjo adresë audioje</translation>
-<translation id="3936390757709632190">&amp;amp;Hape audion në skedë të re</translation>
+<translation id="7309257895202129721">Shfaq &amp;kontrolle</translation>
+<translation id="1850508293116537636">Rrotulloje sipas kahut &amp;orar</translation>
+<translation id="49896407730300355">Rrotulloje sipas kahut &amp;antiorar</translation>
+<translation id="4839303808932127586">Ru&amp;ajeni videon si…</translation>
+<translation id="782057141565633384">K&amp;opjo adresë videoje</translation>
+<translation id="8584280235376696778">&amp;Hape videon në skedë të re</translation>
+<translation id="5764483294734785780">Ru&amp;jeni audion si…</translation>
+<translation id="708060913198414444">K&amp;opjo adresë audioje</translation>
+<translation id="3936390757709632190">&amp;Hape audion në skedë të re</translation>
 <translation id="916607977885256133">Picture in Picture</translation>
 <translation id="7750228210027921155">Picture in picture</translation>
-<translation id="9170848237812810038">&amp;amp;Zhbëje</translation>
-<translation id="2972581237482394796">&amp;amp;Ribëje</translation>
-<translation id="3909791450649380159">&amp;amp;Prije</translation>
-<translation id="7814458197256864873">&amp;amp;Kopjoje</translation>
-<translation id="5233736638227740678">&amp;amp;Ngjite</translation>
+<translation id="9170848237812810038">&amp;Zhbëje</translation>
+<translation id="2972581237482394796">&amp;Ribëje</translation>
+<translation id="3909791450649380159">&amp;Prije</translation>
+<translation id="7814458197256864873">&amp;Kopjoje</translation>
+<translation id="5233736638227740678">&amp;Ngjite</translation>
 <translation id="2218515861914035131">Ngjite si tekst të thjeshtë</translation>
-<translation id="1017280919048282932">&amp;amp;Shtoje në fjalor</translation>
+<translation id="1017280919048282932">&amp;Shtoje në fjalor</translation>
 <translation id="1732768497619250086">Merr përshkrime figurash nga Brave-i</translation>
 <translation id="7561196759112975576">Përherë</translation>
 <translation id="2241634353105152135">Vetëm një herë</translation>
@@ -106,82 +106,82 @@
 <translation id="7658239707568436148">Anuloje</translation>
 <translation id="8915370057835397490">Po ngarkohet sugjerim</translation>
 <translation id="6191804255817539692">S’ka më sugjerime nga Brave-i</translation>
-<translation id="1901303067676059328">Përzgjidhini &amp;amp;krejt</translation>
-<translation id="3797900183766075808">&amp;amp;Kërkoni me <ph name="SEARCH_ENGINE"/> për “<ph name="SEARCH_TERMS"/>”</translation>
-<translation id="2721037002783622288">&amp;amp;Kërkoni me <ph name="SEARCH_ENGINE"/> për figurë</translation>
-<translation id="4593021220803146968">&amp;amp;Kalo te <ph name="URL"/></translation>
+<translation id="1901303067676059328">Përzgjidhini &amp;krejt</translation>
+<translation id="3797900183766075808">&amp;Kërkoni me <ph name="SEARCH_ENGINE"/> për “<ph name="SEARCH_TERMS"/>”</translation>
+<translation id="2721037002783622288">&amp;Kërkoni me <ph name="SEARCH_ENGINE"/> për figurë</translation>
+<translation id="4593021220803146968">&amp;Kalo te <ph name="URL"/></translation>
 <translation id="8823704566850948458">Sugjeroni fjalëkalim…</translation>
 <translation id="6042308850641462728">Më tepër</translation>
 <translation id="6268252012308737255">Hape me <ph name="APP"/></translation>
-<translation id="5509693895992845810">Ruajeni &amp;amp;Si…</translation>
-<translation id="7421925624202799674">&amp;amp;Shihni Burim Faqeje</translation>
+<translation id="5509693895992845810">Ruajeni &amp;Si…</translation>
+<translation id="7421925624202799674">&amp;Shihni Burim Faqeje</translation>
 <translation id="1588870296199743671">Hapeni Lidhjen Me…</translation>
-<translation id="3760460896538743390">Inspektoni Faqe &amp;amp;Sfond</translation>
+<translation id="3760460896538743390">Inspektoni Faqe &amp;Sfond</translation>
 <translation id="5486561344817861625">Simulo Rinisje Shfletuesi</translation>
-<translation id="7786889348652477777">&amp;amp;Ringarko Aplikacionin</translation>
+<translation id="7786889348652477777">&amp;Ringarko Aplikacionin</translation>
 <translation id="215753907730220065">Dilni Nga Sa Krejt Ekrani</translation>
-<translation id="2114326799768592691">Ringarko &amp;amp;Kuadrin</translation>
-<translation id="3021678814754966447">&amp;amp;Shihni Burim Kuadri</translation>
-<translation id="9027459031423301635">Hape Lidhjen në &amp;amp;Skedë të Re</translation>
-<translation id="1769104665586091481">Hape Lidhjen në &amp;amp;Dritare të Re</translation>
+<translation id="2114326799768592691">Ringarko &amp;Kuadrin</translation>
+<translation id="3021678814754966447">&amp;Shihni Burim Kuadri</translation>
+<translation id="9027459031423301635">Hape Lidhjen në &amp;Skedë të Re</translation>
+<translation id="1769104665586091481">Hape Lidhjen në &amp;Dritare të Re</translation>
 <translation id="1432267168815937878">Hape Lidhjen në Dritare &amp;Private</translation>
 <translation id="2142328300403846845">Hape Lidhjen si</translation>
 <translation id="6892812721183419409">Hape Lidhjen si <ph name="USER"/></translation>
 <translation id="2006638907958895361">Hape Lidhjen në <ph name="APP"/></translation>
 <translation id="1003088604756913841">Hape Lidhjen në Dritare të re <ph name="APP"/></translation>
-<translation id="4478664379124702289">Ruajeni &amp;amp;Lidhjen Si…</translation>
-<translation id="3511307672085573050">Kopjo &amp;amp;Adresë Lidhjeje</translation>
-<translation id="6824564591481349393">Kopjo Adresë &amp;amp;Email</translation>
+<translation id="4478664379124702289">Ruajeni &amp;Lidhjen Si…</translation>
+<translation id="3511307672085573050">Kopjo &amp;Adresë Lidhjeje</translation>
+<translation id="6824564591481349393">Kopjo Adresë &amp;Email</translation>
 <translation id="1047431265488717055">Kopjo amp;amp;Tekst Lidhjeje</translation>
 <translation id="5910363049092958439">Ru&amp;aje imazhin si...</translation>
-<translation id="7966241909927244760">K&amp;amp;opjo Adresë Figure</translation>
+<translation id="7966241909927244760">K&amp;opjo Adresë Figure</translation>
 <translation id="6206311232642889873">Kopjamp;o Figurën</translation>
 <translation id="7849264908733290972">Hape amp;amp;Figurën në Skedë të Re</translation>
 <translation id="1054153489933238809">Hape amp;amp;Figurën Origjinale në Skedë të Re</translation>
 <translation id="1026822031284433028">Ngarko Figurë</translation>
-<translation id="1725149567830788547">Shfaq &amp;amp;Kontrolle</translation>
-<translation id="5427459444770871191">Rrotulloje Sipas Kahut &amp;amp;Orar</translation>
-<translation id="7800518121066352902">Rrotulloje Sipas Kahut &amp;amp;Antiorar</translation>
-<translation id="4256316378292851214">Ru&amp;amp;ajeni Videon Si…</translation>
-<translation id="7947962633355574091">K&amp;amp;opjo Adresë Videoje</translation>
-<translation id="4643612240819915418">&amp;amp;Hape Videon në Skedë të Re</translation>
-<translation id="5116628073786783676">Ru&amp;amp;jeni Audion Si…</translation>
-<translation id="1465176863081977902">K&amp;amp;opjo Adresë Audioje</translation>
-<translation id="2019718679933488176">&amp;amp;Hape Audion në Skedë të Re</translation>
-<translation id="8248050856337841185">&amp;amp;Ngjite</translation>
+<translation id="1725149567830788547">Shfaq &amp;Kontrolle</translation>
+<translation id="5427459444770871191">Rrotulloje Sipas Kahut &amp;Orar</translation>
+<translation id="7800518121066352902">Rrotulloje Sipas Kahut &amp;Antiorar</translation>
+<translation id="4256316378292851214">Ru&amp;ajeni Videon Si…</translation>
+<translation id="7947962633355574091">K&amp;opjo Adresë Videoje</translation>
+<translation id="4643612240819915418">&amp;Hape Videon në Skedë të Re</translation>
+<translation id="5116628073786783676">Ru&amp;jeni Audion Si…</translation>
+<translation id="1465176863081977902">K&amp;opjo Adresë Audioje</translation>
+<translation id="2019718679933488176">&amp;Hape Audion në Skedë të Re</translation>
+<translation id="8248050856337841185">&amp;Ngjite</translation>
 <translation id="8449008133205184768">Ngjite dhe Përputhi Stilin</translation>
-<translation id="9033857511263905942">&amp;amp;Ngjite</translation>
+<translation id="9033857511263905942">&amp;Ngjite</translation>
 <translation id="1815083418640426271">Ngjite Si Tekst të Thjeshtë</translation>
-<translation id="4022426551683927403">&amp;amp;Shtoje në Fjalor</translation>
+<translation id="4022426551683927403">&amp;Shtoje në Fjalor</translation>
 <translation id="6849870115130610913">Merr Përshkrime Figurash nga Brave-i</translation>
 <translation id="372722114124766626">Vetëm Një Herë</translation>
 <translation id="4079140982534148664">Përdor Kontroll të Thelluar Drejtshkrimi</translation>
 <translation id="7487141338393529395">Aktivizo Kontroll të Thelluar Drejtshkrimi</translation>
 <translation id="4930714375720679147">Aktivizoje</translation>
-<translation id="6264365405983206840">Përzgjidhini &amp;amp;Krejt</translation>
-<translation id="3948116654032448504">&amp;amp;Kërkoni me <ph name="SEARCH_ENGINE"/> për Figurë</translation>
+<translation id="6264365405983206840">Përzgjidhini &amp;Krejt</translation>
+<translation id="3948116654032448504">&amp;Kërkoni me <ph name="SEARCH_ENGINE"/> për Figurë</translation>
 <translation id="2932085390869194046">Sugjeroni Fjalëkalim…</translation>
 <translation id="3067198360141518313">Xhiroje këtë shtojcë</translation>
 <translation id="2076269580855484719">Fshihe këtë shtojcë</translation>
 <translation id="8496717697661868878">Xhiroje Këtë Shtojcë</translation>
 <translation id="2553440850688409052">Fshihe Këtë Shtojcë</translation>
 <translation id="3036546437875325427">Aktivizo Flash-in</translation>
-<translation id="1476607407192946488">&amp;amp;Rregullime Gjuhe</translation>
-<translation id="3560034655160545939">&amp;amp;Kontroll drejtshkrimi</translation>
-<translation id="1049795001945932310">&amp;amp;Rregullime gjuhe</translation>
-<translation id="6498249116389603658">&amp;amp;Krejt gjuhët tuaja</translation>
+<translation id="1476607407192946488">&amp;Rregullime Gjuhe</translation>
+<translation id="3560034655160545939">&amp;Kontroll drejtshkrimi</translation>
+<translation id="1049795001945932310">&amp;Rregullime gjuhe</translation>
+<translation id="6498249116389603658">&amp;Krejt gjuhët tuaja</translation>
 <translation id="5978277834170881274">&amp;Përdor kontroll elementar drejtshkrimi</translation>
 <translation id="4200983522494130825">&amp;Skedë e Re</translation>
-<translation id="8418445294933751433">&amp;amp;Shfaqe si skedë</translation>
-<translation id="1723824996674794290">Dritare e &amp;amp;re</translation>
-<translation id="6516243500644829484">Dritare e re &amp;amp;private</translation>
+<translation id="8418445294933751433">&amp;Shfaqe si skedë</translation>
+<translation id="1723824996674794290">Dritare e &amp;re</translation>
+<translation id="6516243500644829484">Dritare e re &amp;private</translation>
 <translation id="6120205520491252677">Fiksoje këtë faqe te skena e Nisjes…</translation>
 <translation id="9065203028668620118">Përpunojeni</translation>
-<translation id="5329858601952122676">&amp;amp;Fshije</translation>
-<translation id="4608500690299898628">&amp;amp;Gjeni…</translation>
-<translation id="3712897371525859903">Ruajeni faqen &amp;amp;si…</translation>
+<translation id="5329858601952122676">&amp;Fshije</translation>
+<translation id="4608500690299898628">&amp;Gjeni…</translation>
+<translation id="3712897371525859903">Ruajeni faqen &amp;si…</translation>
 <translation id="3200941271596533635">Ndrysho modalitetin e lexuesit</translation>
-<translation id="6607831829715835317">Më tepër mjet&amp;amp;e</translation>
+<translation id="6607831829715835317">Më tepër mjet&amp;e</translation>
 <translation id="3994878504415702912">&amp;Zmadho</translation>
 <translation id="4779083564647765204">Zmadho</translation>
 <translation id="8755376271068075440">&amp;Më i madh</translation>
@@ -189,41 +189,41 @@
 <translation id="6163363155248589649">&amp;Normale</translation>
 <translation id="1918141783557917887">Më i vogël</translation>
 <translation id="6095984072944024315">−</translation>
-<translation id="1689945336726856614">Kopjo &amp;amp;URL-në</translation>
+<translation id="1689945336726856614">Kopjo &amp;URL-në</translation>
 <translation id="2119349053129246860">Hape në <ph name="APP"/></translation>
 <translation id="7855678561139483478">Lëvize skedën në dritare të re</translation>
-<translation id="3285322247471302225">&amp;amp;Skedë e Re</translation>
-<translation id="8879284080359814990">&amp;amp;Shfaqe Si Skedë</translation>
-<translation id="176587472219019965">Dritare e &amp;amp;Re</translation>
-<translation id="7973394300052703468">Dritare e Re &amp;amp;Private</translation>
+<translation id="3285322247471302225">&amp;Skedë e Re</translation>
+<translation id="8879284080359814990">&amp;Shfaqe Si Skedë</translation>
+<translation id="176587472219019965">Dritare e &amp;Re</translation>
+<translation id="7973394300052703468">Dritare e Re &amp;Private</translation>
 <translation id="5157635116769074044">Fiksoje këtë Faqe te Skena e Nisjes…</translation>
-<translation id="5830720307094128296">Ruajeni Faqen &amp;amp;Si…</translation>
+<translation id="5830720307094128296">Ruajeni Faqen &amp;Si…</translation>
 <translation id="7706963867324547089">Ndrysho modalitetin e lexuesit</translation>
-<translation id="7853747251428735">Më tepër Mjet&amp;amp;e</translation>
+<translation id="7853747251428735">Më tepër Mjet&amp;e</translation>
 <translation id="6390020764191254941">Lëvize skedën në dritare të re</translation>
 <translation id="4109135793348361820">Shpjere dritaren te <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Bëje Tekstin Më të Madh</translation>
 <translation id="7134098520442464001">Bëje Tekstin Më të Vogël</translation>
-<translation id="2440604414813129000">Shihini b&amp;amp;urimin</translation>
-<translation id="6362853299801475928">&amp;amp;Njoftoni një të metë…</translation>
-<translation id="3778740492972734840">&amp;amp;Mjete zhvilluesi</translation>
-<translation id="6824584962142919697">&amp;amp;Inspektoni elementë</translation>
-<translation id="1587275751631642843">&amp;amp;Konsolë JavaScript</translation>
-<translation id="8059417245945632445">&amp;amp;Inspektoni pajisje</translation>
-<translation id="4035758313003622889">&amp;amp;Përgjegjës punësh</translation>
-<translation id="1454223536435069390">&amp;amp;Bëni një foto të ekranit</translation>
-<translation id="175196451752279553">&amp;amp;Rihap skedë të mbyllur</translation>
-<translation id="7392915005464253525">&amp;amp;Rihap dritare të mbyllur</translation>
-<translation id="4508765956121923607">Shihini B&amp;amp;urimin</translation>
-<translation id="4792711294155034829">&amp;amp;Njoftoni një të Metë…</translation>
-<translation id="5112577000029535889">&amp;amp;Mjete Zhvilluesi</translation>
-<translation id="5184063094292164363">&amp;amp;Konsolë JavaScript</translation>
-<translation id="7056526158851679338">&amp;amp;Inspektoni Pajisje</translation>
-<translation id="947329552760389097">&amp;amp;Inspektoni Elementë</translation>
-<translation id="48838266408104654">&amp;amp;Përgjegjës Punësh</translation>
-<translation id="6277518330158259200">&amp;amp;Bëni një Foto të ekranit</translation>
-<translation id="5288678174502918605">&amp;amp;Rihap Skedë të Mbyllur</translation>
-<translation id="2731392572903530958">&amp;amp;Rihap Dritare të Mbyllur</translation>
+<translation id="2440604414813129000">Shihini b&amp;urimin</translation>
+<translation id="6362853299801475928">&amp;Njoftoni një të metë…</translation>
+<translation id="3778740492972734840">&amp;Mjete zhvilluesi</translation>
+<translation id="6824584962142919697">&amp;Inspektoni elementë</translation>
+<translation id="1587275751631642843">&amp;Konsolë JavaScript</translation>
+<translation id="8059417245945632445">&amp;Inspektoni pajisje</translation>
+<translation id="4035758313003622889">&amp;Përgjegjës punësh</translation>
+<translation id="1454223536435069390">&amp;Bëni një foto të ekranit</translation>
+<translation id="175196451752279553">&amp;Rihap skedë të mbyllur</translation>
+<translation id="7392915005464253525">&amp;Rihap dritare të mbyllur</translation>
+<translation id="4508765956121923607">Shihini B&amp;urimin</translation>
+<translation id="4792711294155034829">&amp;Njoftoni një të Metë…</translation>
+<translation id="5112577000029535889">&amp;Mjete Zhvilluesi</translation>
+<translation id="5184063094292164363">&amp;Konsolë JavaScript</translation>
+<translation id="7056526158851679338">&amp;Inspektoni Pajisje</translation>
+<translation id="947329552760389097">&amp;Inspektoni Elementë</translation>
+<translation id="48838266408104654">&amp;Përgjegjës Punësh</translation>
+<translation id="6277518330158259200">&amp;Bëni një Foto të ekranit</translation>
+<translation id="5288678174502918605">&amp;Rihap Skedë të Mbyllur</translation>
+<translation id="2731392572903530958">&amp;Rihap Dritare të Mbyllur</translation>
 <translation id="7422192691352527311">Parapëlqime...</translation>
 <translation id="5801568494490449797">Parapëlqime</translation>
 <translation id="3677911431265050325">Kërko sajtin për celular</translation>
@@ -231,30 +231,30 @@
 <translation id="1032605640136438169">Shqyrto kushtet e reja</translation>
 <translation id="8712637175834984815">E mora vesh</translation>
 <translation id="5007392906805964215">Rishiko</translation>
-<translation id="4408599188496843485">&amp;amp;Ndihmë</translation>
+<translation id="4408599188496843485">&amp;Ndihmë</translation>
 <translation id="8378714024927312812">Administruar nga enti juaj</translation>
 <translation id="7928836894214140642">Administruar nga <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="6723661294526996303">Importoni faqerojtës dhe rregullime...</translation>
 <translation id="9203398526606335860">&amp;Profilizimi u aktivizua</translation>
-<translation id="3819800052061700452">&amp;amp;Sa krejt ekrani</translation>
-<translation id="6053401458108962351">&amp;amp;Spastro të dhëna shfletimi...</translation>
-<translation id="7861215335140947162">&amp;amp;Shkarkime</translation>
-<translation id="862542460444371744">&amp;amp;Zgjerime</translation>
-<translation id="8925458182817574960">&amp;amp;Rregullime</translation>
-<translation id="9147392381910171771">&amp;amp;Mundësi</translation>
-<translation id="5756163054456765343">Qendër &amp;amp;ndihme</translation>
+<translation id="3819800052061700452">&amp;Sa krejt ekrani</translation>
+<translation id="6053401458108962351">&amp;Spastro të dhëna shfletimi...</translation>
+<translation id="7861215335140947162">&amp;Shkarkime</translation>
+<translation id="862542460444371744">&amp;Zgjerime</translation>
+<translation id="8925458182817574960">&amp;Rregullime</translation>
+<translation id="9147392381910171771">&amp;Mundësi</translation>
+<translation id="5756163054456765343">Qendër &amp;ndihme</translation>
 <translation id="4891089016822695758">Forum për beta-n</translation>
-<translation id="7199158086730159431">Merrni &amp;amp;Ndihmë</translation>
-<translation id="630065524203833229">D&amp;amp;ilni</translation>
+<translation id="7199158086730159431">Merrni &amp;Ndihmë</translation>
+<translation id="630065524203833229">D&amp;ilni</translation>
 <translation id="3855676282923585394">Importoni Faqerojtës dhe Rregullime...</translation>
 <translation id="4821935166599369261">&amp;Profilizimi u aktivizua</translation>
-<translation id="3827774300009121996">&amp;amp;Sa Krejt Ekrani</translation>
-<translation id="3616741288025931835">&amp;amp;Spastro të Dhëna Shfletimi...</translation>
-<translation id="1618268899808219593">Qendër &amp;amp;Ndihme</translation>
+<translation id="3827774300009121996">&amp;Sa Krejt Ekrani</translation>
+<translation id="3616741288025931835">&amp;Spastro të Dhëna Shfletimi...</translation>
+<translation id="1618268899808219593">Qendër &amp;Ndihme</translation>
 <translation id="7324297612904500502">Forum Për Beta-n</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5912378097832178659">&amp;amp;Përpunoni motorë kërkimesh...</translation>
-<translation id="5702898740348134351">&amp;amp;Përpunoni Motorë Kërkimesh...</translation>
+<translation id="5912378097832178659">&amp;Përpunoni motorë kërkimesh...</translation>
+<translation id="5702898740348134351">&amp;Përpunoni Motorë Kërkimesh...</translation>
 <translation id="2454247629720664989">Fjalëkyç</translation>
 <translation id="5327248766486351172">Emër</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Parazgjedhje)</translation>
@@ -407,27 +407,27 @@
 <translation id="2743387203779672305">Kopjo te kujtesa e fragmenteve</translation>
 <translation id="883911313571074303">Shëno imazhin</translation>
 <translation id="6291953229176937411">Shfaqe te "Gjetësi"</translation>
-<translation id="8133676275609324831">&amp;amp;Shfaqe në dosje</translation>
+<translation id="8133676275609324831">&amp;Shfaqe në dosje</translation>
 <translation id="2371076942591664043">Hape kur të &amp;përfundosh</translation>
 <translation id="5139955368427980650">&amp;Hape</translation>
-<translation id="7167486101654761064">&amp;amp;Hapi përherë kartelat e këtij lloji</translation>
+<translation id="7167486101654761064">&amp;Hapi përherë kartelat e këtij lloji</translation>
 <translation id="2251218783371366160">Hap me shikuesin e sistemit</translation>
 <translation id="5794414402486823030">Gjithmonë hape me shikuesin e sistemit</translation>
-<translation id="3807747707162121253">&amp;amp;Anuloje</translation>
-<translation id="253434972992662860">&amp;amp;Pauzë</translation>
+<translation id="3807747707162121253">&amp;Anuloje</translation>
+<translation id="253434972992662860">&amp;Pauzë</translation>
 <translation id="2135787500304447609">&amp;Vazhdo</translation>
-<translation id="1507246803636407672">&amp;amp;Hidhe tej</translation>
-<translation id="4645676300727003670">&amp;amp;Mbaje</translation>
-<translation id="3592260987370335752">&amp;amp;Mësoni më tepër</translation>
-<translation id="2233502537820838181">&amp;amp;Më tepër informacion</translation>
+<translation id="1507246803636407672">&amp;Hidhe tej</translation>
+<translation id="4645676300727003670">&amp;Mbaje</translation>
+<translation id="3592260987370335752">&amp;Mësoni më tepër</translation>
+<translation id="2233502537820838181">&amp;Më tepër informacion</translation>
 <translation id="8933960630081805351">&amp;Shfaqe te "Gjetësi"</translation>
-<translation id="8724859055372736596">&amp;amp;Shfaqe në Dosje</translation>
+<translation id="8724859055372736596">&amp;Shfaqe në Dosje</translation>
 <translation id="5494362494988149300">Hape kur të &amp;përfundosh</translation>
-<translation id="7631887513477658702">&amp;amp;Hapi Përherë Kartelat e Këtij Lloji</translation>
+<translation id="7631887513477658702">&amp;Hapi Përherë Kartelat e Këtij Lloji</translation>
 <translation id="4887424188275796356">Hap me "Shikuesin e sistemit"</translation>
 <translation id="4146026355784316281">Hape gjithmonë me shikuesin e sistemit</translation>
-<translation id="7253521419891527137">&amp;amp;Mësoni Më Tepër</translation>
-<translation id="8708671767545720562">&amp;amp;Më tepër Informacion</translation>
+<translation id="7253521419891527137">&amp;Mësoni Më Tepër</translation>
+<translation id="8708671767545720562">&amp;Më tepër Informacion</translation>
 <translation id="424726838611654458">Hape gjithmonë në Adobe Reader</translation>
 <translation id="2020225359413970060">Skano skedarin</translation>
 <translation id="8546930481464505581">Personalizo shiritin me prekje</translation>
@@ -488,7 +488,7 @@
 <translation id="2609896558069604090">Krijo shkurtore...</translation>
 <translation id="8678933587484842200">Si dëshiron që të hapet ky aplikacion?</translation>
 <translation id="397105322502079400">Po llogarit...</translation>
-<translation id="2352662711729498748">&amp;lt; 1 MB</translation>
+<translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="8941173171815156065">Revoko lejen "<ph name="PERMISSION"/>"</translation>
 <translation id="741906494724992817">Ky aplikacion nuk kërkon leje të veçanta.</translation>
 <translation id="1616206807336925449">Kjo shtesë nuk kërkon leje të veçanta.</translation>
@@ -585,8 +585,8 @@
 <translation id="7339763383339757376">PKCS #7, një certifikatë</translation>
 <translation id="8326478304147373412">PKCS #7, zinxhiri i certifikatës</translation>
 <translation id="2144536955299248197">Paraqitësi i certifikatës: <ph name="CERTIFICATE_NAME"/></translation>
-<translation id="8477384620836102176">&amp;amp;Të përgjithshme</translation>
-<translation id="431076611119798497">&amp;amp;Hollësi</translation>
+<translation id="8477384620836102176">&amp;Të përgjithshme</translation>
+<translation id="431076611119798497">&amp;Hollësi</translation>
 <translation id="878069093594050299">Kjo certifikatë është verifikuar për përdorimet e mëposhtme:</translation>
 <translation id="6707389671160270963">Dëshmi SSL Klienti</translation>
 <translation id="3775432569830822555">Dëshmi SSL Shërbyesi</translation>
@@ -597,7 +597,7 @@
 <translation id="6052976518993719690">Autoritet Dëshmish SSL</translation>
 <translation id="7507930499305566459">Certifikata e reaguesit të statusit</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
-<translation id="3251759466064201842">&amp;lt;Jo Pjesë e Dëshmisë&amp;gt;</translation>
+<translation id="3251759466064201842">&lt;Jo Pjesë e Dëshmisë&gt;</translation>
 <translation id="6059652578941944813">Hierarkia e certifikatave</translation>
 <translation id="3867944738977021751">Fushat e certifikatës</translation>
 <translation id="265390580714150011">Vlera e fushës</translation>
@@ -1285,7 +1285,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="5466374726908360271">Ngj&amp;it dhe kërko për “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="3711931198657368127">Ngj&amp;it dhe shko te <ph name="URL"/></translation>
 <translation id="968037381421390582">Ngj&amp;it dhe kërko për “<ph name="SEARCH_TERMS"/>”</translation>
-<translation id="4321442524549817090">&amp;amp;Shfaq URL</translation>
+<translation id="4321442524549817090">&amp;Shfaq URL</translation>
 <translation id="6151323131516309312">Shtyp <ph name="SEARCH_KEY"/> për të kërkuar në <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Shtyp <ph name="SEARCH_KEY"/> për të dërguar komanda te <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Skeda</translation>
@@ -1896,7 +1896,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="4547659257713117923">Pa Skeda Nga Pajisje të Tjera</translation>
 <translation id="572328651809341494">Skeda së fundi</translation>
 <translation id="4152670763139331043">{NUM_TABS, plural, =1 {1 skedë} other {# skeda}}</translation>
-<translation id="4756388243121344051">&amp;amp;Historik</translation>
+<translation id="4756388243121344051">&amp;Historik</translation>
 <translation id="9026731007018893674">shkarkoje</translation>
 <translation id="1232569758102978740">Pa titull</translation>
 <translation id="9218430445555521422">Caktoje si parazgjedhje</translation>
@@ -2078,17 +2078,17 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="4811503964269049987">Skeda e zgjedhur e grupit</translation>
 <translation id="2007404777272201486">Raporto një problem...</translation>
 <translation id="3118319026408854581">Ndihma e <ph name="PRODUCT_NAME"/></translation>
-<translation id="6721972322305477112">&amp;amp;Kartelë</translation>
-<translation id="5729712731028706266">&amp;amp;Shihni</translation>
+<translation id="6721972322305477112">&amp;Kartelë</translation>
+<translation id="5729712731028706266">&amp;Shihni</translation>
 <translation id="268053382412112343">Hi&amp;storiku</translation>
-<translation id="1122198203221319518">&amp;amp;Mjete</translation>
-<translation id="4443536555189480885">&amp;amp;Ndihmë</translation>
+<translation id="1122198203221319518">&amp;Mjete</translation>
+<translation id="4443536555189480885">&amp;Ndihmë</translation>
 <translation id="2113479184312716848">Hap &amp;skedarin...</translation>
 <translation id="8695825812785969222">Hap &amp;vendndodhjen...</translation>
 <translation id="5449716055534515760">Mbyll dri&amp;taren</translation>
-<translation id="4647090755847581616">&amp;amp;Mbylle Skedën</translation>
-<translation id="1108600514891325577">&amp;amp;Ndalu</translation>
-<translation id="657402800789773160">&amp;amp;Ringarkoje Këtë Faqe</translation>
+<translation id="4647090755847581616">&amp;Mbylle Skedën</translation>
+<translation id="1108600514891325577">&amp;Ndalu</translation>
+<translation id="657402800789773160">&amp;Ringarkoje Këtë Faqe</translation>
 <translation id="2610260699262139870">Madhësia a&amp;ktuale</translation>
 <translation id="5558129378926964177">Afroje&amp;</translation>
 <translation id="1829192082282182671">&amp;Zvogëlo</translation>
@@ -2153,9 +2153,9 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="8076835018653442223">Qasja në skedarët lokalë në pajisjen tënde është e çaktivizuar nga administratori yt</translation>
 <translation id="9041692268811217999">Qasja në skedarët lokalë në kompjuterin tënd është çaktivizuar nga administratori yt</translation>
 <translation id="494286511941020793">Ndihma për konfigurimin e përfaqësuesit</translation>
-<translation id="8754200782896249056">&amp;lt;p&amp;gt;Kur xhirohet <ph name="PRODUCT_NAME"/> nën një mjedis dekstop që mbulohet, do të përdoren rregullime ndërmjetësi të sistemit.  Por ose sistemi juaj nuk mbulohet, ose pati një problem me hapjen e formësimit të sistemit tuaj.&amp;lt;/p&amp;gt;
+<translation id="8754200782896249056">&lt;p&gt;Kur xhirohet <ph name="PRODUCT_NAME"/> nën një mjedis dekstop që mbulohet, do të përdoren rregullime ndërmjetësi të sistemit.  Por ose sistemi juaj nuk mbulohet, ose pati një problem me hapjen e formësimit të sistemit tuaj.&lt;/p&gt;
 
-          &amp;lt;p&amp;gt;Por mundeni prapë ta formësoni përmes rreshtit të urdhrave.  Ju lutemi, shihni &amp;lt;code&amp;gt;man <ph name="PRODUCT_BINARY_NAME"/>&amp;lt;/code&amp;gt; për më tepër të dhëna mbi shenja dhe ndryshore mjedisi.&amp;lt;/p&amp;gt;</translation>
+          &lt;p&gt;Por mundeni prapë ta formësoni përmes rreshtit të urdhrave.  Ju lutemi, shihni &lt;code&gt;man <ph name="PRODUCT_BINARY_NAME"/>&lt;/code&gt; për më tepër të dhëna mbi shenja dhe ndryshore mjedisi.&lt;/p&gt;</translation>
 <translation id="6410257289063177456">Skedarët e imazheve</translation>
 <translation id="3192947282887913208">Skedarët audio</translation>
 <translation id="3771294271822695279">Skedarët video</translation>
@@ -2611,46 +2611,46 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="3785308913036335955">Shfaq Shkurtore Aplikacioni</translation>
 <translation id="711840821796638741">Shfaq Faqerojtës të Administruar</translation>
 <translation id="2367972762794486313">Shfaq aplikacione</translation>
-<translation id="8368859634510605990">&amp;amp;Hap krejt faqerojtësit</translation>
+<translation id="8368859634510605990">&amp;Hap krejt faqerojtësit</translation>
 <translation id="7489355918927585587">{COUNT, plural,
-          =0 {&amp;amp;Hapi krejt}
-          =1 {&amp;amp;Hape faqerojtësin}
-          other {&amp;amp;Hapi krejt (#)}}</translation>
+          =0 {&amp;Hapi krejt}
+          =1 {&amp;Hape faqerojtësin}
+          other {&amp;Hapi krejt (#)}}</translation>
 <translation id="1016437870506746108">{COUNT, plural,
-          =0 {Hapi krejt në &amp;amp;dritare të re}
-          =1 {Hape në &amp;amp;dritare të re}
-          other {Hapi krejt (#) në &amp;amp;dritare të re}}</translation>
+          =0 {Hapi krejt në &amp;dritare të re}
+          =1 {Hape në &amp;dritare të re}
+          other {Hapi krejt (#) në &amp;dritare të re}}</translation>
 <translation id="6744651634043798597">{COUNT, plural,
-          =0 {Hapi krejt në &amp;amp;dritare private}
-          =1 {Hape në &amp;amp;dritare private}
-          other {Hapi krejt (#) në &amp;amp;dritare private}}</translation>
-<translation id="3613422051106148727">&amp;amp;Hape në skedë të re</translation>
-<translation id="4853020600495124913">Hape në &amp;amp;dritare të re</translation>
-<translation id="2431625704210501303">Hape në &amp;amp;dritare private</translation>
-<translation id="6702639462873609204">&amp;amp;Përpunoni…</translation>
-<translation id="3088325635286126843">&amp;amp;Riemërtoni…</translation>
-<translation id="713122686776214250">Shtoni fa&amp;amp;qe…</translation>
-<translation id="7690853182226561458">Shtoni &amp;amp;dosje…</translation>
-<translation id="4620367155626060530">&amp;amp;Shfaq faqerojtës</translation>
-<translation id="6466988389784393586">&amp;amp;Hapi Krejt Faqerojtësit</translation>
+          =0 {Hapi krejt në &amp;dritare private}
+          =1 {Hape në &amp;dritare private}
+          other {Hapi krejt (#) në &amp;dritare private}}</translation>
+<translation id="3613422051106148727">&amp;Hape në skedë të re</translation>
+<translation id="4853020600495124913">Hape në &amp;dritare të re</translation>
+<translation id="2431625704210501303">Hape në &amp;dritare private</translation>
+<translation id="6702639462873609204">&amp;Përpunoni…</translation>
+<translation id="3088325635286126843">&amp;Riemërtoni…</translation>
+<translation id="713122686776214250">Shtoni fa&amp;qe…</translation>
+<translation id="7690853182226561458">Shtoni &amp;dosje…</translation>
+<translation id="4620367155626060530">&amp;Shfaq faqerojtës</translation>
+<translation id="6466988389784393586">&amp;Hapi Krejt Faqerojtësit</translation>
 <translation id="3799201711591988491">{COUNT, plural,
-          =0 {&amp;amp;Hapi Krejt}
-          =1 {&amp;amp;Hape Faqerojtësin}
-          other {&amp;amp;Hapi Krejt (#)}}</translation>
+          =0 {&amp;Hapi Krejt}
+          =1 {&amp;Hape Faqerojtësin}
+          other {&amp;Hapi Krejt (#)}}</translation>
 <translation id="7433692219247014412">{COUNT, plural,
-          =0 {Hapi Krejt në &amp;amp;Dritare të Re}
-          =1 {Hape në &amp;amp;Dritare të Re}
-          other {Hapi Krejt (#) në &amp;amp;Dritare të Re}}</translation>
+          =0 {Hapi Krejt në &amp;Dritare të Re}
+          =1 {Hape në &amp;Dritare të Re}
+          other {Hapi Krejt (#) në &amp;Dritare të Re}}</translation>
 <translation id="2633634757060186848">{COUNT, plural,
-          =0 {Hapi Krejt në &amp;amp;Dritare Private}
-          =1 {Hape në &amp;amp;Dritare Private}
-          other {Hapi Krejt (#) në &amp;amp;Dritare Private}}</translation>
-<translation id="9024127637873500333">&amp;amp;Hape në Skedë të Re</translation>
-<translation id="665061930738760572">Hape në &amp;amp;Dritare të Re</translation>
-<translation id="1985165269306590797">Hape në &amp;amp;Dritare Private</translation>
-<translation id="8824701697284169214">Shtoni Fa&amp;amp;qe…</translation>
-<translation id="2489918096470125693">Shtoni &amp;amp;Dosje…</translation>
-<translation id="4680518314108745448">&amp;amp;Shfaq Faqerojtës</translation>
+          =0 {Hapi Krejt në &amp;Dritare Private}
+          =1 {Hape në &amp;Dritare Private}
+          other {Hapi Krejt (#) në &amp;Dritare Private}}</translation>
+<translation id="9024127637873500333">&amp;Hape në Skedë të Re</translation>
+<translation id="665061930738760572">Hape në &amp;Dritare të Re</translation>
+<translation id="1985165269306590797">Hape në &amp;Dritare Private</translation>
+<translation id="8824701697284169214">Shtoni Fa&amp;qe…</translation>
+<translation id="2489918096470125693">Shtoni &amp;Dosje…</translation>
+<translation id="4680518314108745448">&amp;Shfaq Faqerojtës</translation>
 <translation id="2897878306272793870">Jeni i sigurt se doni të hapen <ph name="TAB_COUNT"/> skeda?</translation>
 <translation id="4430369329743628066">Faqerojtësi u shtua</translation>
 <translation id="6404511346730675251">Përpunoni faqerojtës</translation>
@@ -2670,7 +2670,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
      =1 {Kjo dosje përmban një faqerojtës. Jeni i sigurt se doni të fshihet?}
      other {Kjo dosje përmban # faqerojtës. Jeni i sigurt se doni të fshihet?}}</translation>
 <translation id="939736085109172342">Dosje e re</translation>
-<translation id="7910768399700579500">&amp;amp;Dosje e re</translation>
+<translation id="7910768399700579500">&amp;Dosje e re</translation>
 <translation id="2224551243087462610">Përpunoni emër dosjeje</translation>
 <translation id="5078638979202084724">Faqeruaji krejt skedat</translation>
 <translation id="5857090052475505287">Dosje e Re</translation>
@@ -2678,10 +2678,10 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="1015318665228971643">Përpunoni Emër Dosjeje</translation>
 <translation id="5449588825071916739">Faqeruaji Krejt Skedat</translation>
 <translation id="3828029223314399057">Kërkoni te faqerojtës</translation>
-<translation id="8116972784401310538">&amp;amp;Përgjegjës faqerojtësish</translation>
+<translation id="8116972784401310538">&amp;Përgjegjës faqerojtësish</translation>
 <translation id="5496587651328244253">Sistemojini</translation>
 <translation id="8775144690796719618">URL e pavlefshme</translation>
-<translation id="5111692334209731439">&amp;amp;Përgjegjës Faqerojtësish</translation>
+<translation id="5111692334209731439">&amp;Përgjegjës Faqerojtësish</translation>
 <translation id="5125751979347152379">URL e pavlefshme.</translation>
 <translation id="7550830279652415241">faqerojtës_<ph name="DATESTAMP"/>.html</translation>
 <translation id="4871370605780490696">Shtoni faqerojtës</translation>
@@ -2721,7 +2721,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="2277769717710009150">{COUNT, plural,
       =1 {1 objekt i kopjuar}
       other {# objekte të kopjuar}}</translation>
-<translation id="9115675100829699941">&amp;amp;Faqerojtës</translation>
+<translation id="9115675100829699941">&amp;Faqerojtës</translation>
 <translation id="9023015617655685412">Faqeruajeni këtë skedë…</translation>
 <translation id="1482626744466814421">Faqeruajeni Këtë Skedë…</translation>
 <translation id="4474155171896946103">Faqeruajini krejt skedat...</translation>
@@ -3219,7 +3219,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="6474498546677193336">Ndarja nuk mund të anulohej sepse kjo dosje po përdoret nga një aplikacion. Ndarja e dosjes do të anulohet kur Linux të ndalojë punën më pas.</translation>
 <translation id="3458794975359644386">Anulimi i ndarjes dështoi</translation>
 <translation id="7396017167185131589">Dosjet e ndara do të shfaqen këtu</translation>
-<translation id="2936851848721175671">Kopjeruajtje &amp;amp; rikthim</translation>
+<translation id="2936851848721175671">Kopjeruajtje &amp; rikthim</translation>
 <translation id="3819257035322786455">Kopjeruajtje</translation>
 <translation id="3233271424239923319">Kopjeruaj aplikacione dhe kartela Linux</translation>
 <translation id="184273675144259287">Zëvendësoni aplikacionet dhe kartelat tuaja Linux me një kopjeruajtje të mëparshme</translation>
@@ -4728,8 +4728,8 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="1607139524282324606">Pastro regjistrimin</translation>
 <translation id="6025215716629925253">Gjurmë stive</translation>
 <translation id="2214893006758804920">{LINE_COUNT, plural,
-      =1 {&amp;lt;1 rresht jo i shfaqur&amp;gt;}
-      other {&amp;lt;<ph name="NUMBER_OF_LINES"/> rreshta jo të shfaqur&amp;gt;}}</translation>
+      =1 {&lt;1 rresht jo i shfaqur&gt;}
+      other {&lt;<ph name="NUMBER_OF_LINES"/> rreshta jo të shfaqur&gt;}}</translation>
 <translation id="1006873397406093306">Kjo shtesë mund të lexojë dhe të ndryshojë të dhënat në sajte. Mund të kontrollosh se në cilat sajte mund të qaset shtesa.</translation>
 <translation id="8389492867173948260">Lejo që kjo shtesë të lexojë dhe të ndryshojë të gjitha të dhënat në faqet që viziton:</translation>
 <translation id="407173827865827707">Me klikim</translation>
@@ -4752,7 +4752,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="5812674658566766066">Zgjero të gjitha</translation>
 <translation id="3115580024857770654">Palos të gjitha</translation>
 <translation id="3524965460886318643">Eksporto aktivitetet</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Inspekto pamjet</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> të tjera...</translation>
 <translation id="2450849356604136918">Nuk ka shikime aktive</translation>
