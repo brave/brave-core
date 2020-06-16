@@ -20,7 +20,7 @@
 <translation id="1036348656032585052">Çaktivizoje</translation>
 <translation id="8105368624971345109">Çaktivizoje</translation>
 <translation id="4989809363548539747">Kjo shtojcë s’mbulohet</translation>
-<translation id="1175364870820465910">&amp;amp;Shtypni…</translation>
+<translation id="1175364870820465910">&amp;Shtypni…</translation>
 <translation id="129553762522093515">Mbyllur së fundi</translation>
 <translation id="8870413625673593573">Mbyllur Së Fundi</translation>
 <translation id="1594030484168838125">Zgjidhni</translation>
@@ -322,7 +322,7 @@ other {# sites}}</translation>
 <translation id="6744009308914054259">Ndërkohë që pret lidhjen në internet, mund të shkosh tek Shkarkimet dhe të lexosh artikuj jashtë internetit.</translation>
 <translation id="4646534391647090355">Më dërgo atje tani</translation>
 <translation id="1010200102790553230">Ngarkoje më vonë faqen</translation>
-<translation id="230476913390177517">Brave do të të njoftojë kur kjo faqe të jetë gati. &amp;lt;a&amp;gt;Cancel&amp;lt;/a&amp;gt;</translation>
+<translation id="230476913390177517">Brave do të të njoftojë kur kjo faqe të jetë gati. &lt;a&gt;Cancel&lt;/a&gt;</translation>
 <translation id="3226128629678568754">Shtyp butonin ringarko që të rifusësh të dhënat që duhen për të ngarkuar faqen.</translation>
 <translation id="6203231073485539293">Kontrollo nëse je i lidhur në Internet</translation>
 <translation id="6146055958333702838">Kontrollo çdo kabllo dhe rinis çdo ruter, modem apo pajisje të tjera rrjeti që je duke përdorur.</translation>
@@ -969,8 +969,8 @@ other {# sites}}</translation>
 <translation id="8725066075913043281">Riprovoni</translation>
 <translation id="5684874026226664614">Mos! Kjo faqe nuk mund të përkthehej.</translation>
 <translation id="583281660410589416">I panjohur</translation>
-<translation id="9170848237812810038">&amp;amp;Zhbëje</translation>
-<translation id="2972581237482394796">&amp;amp;Ribëje</translation>
+<translation id="9170848237812810038">&amp;Zhbëje</translation>
+<translation id="2972581237482394796">&amp;Ribëje</translation>
 <translation id="5804241973901381774">Lejet</translation>
 <translation id="8004582292198964060">Shfletuesi</translation>
 <translation id="1822540298136254167">Faqet e internetit që ti viziton dhe koha e shpenzuar në to</translation>
