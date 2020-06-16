@@ -14,12 +14,12 @@
 
 namespace ads {
 
-class AdsClient;
+class AdsImpl;
 
 class SubdivisionTargeting {
  public:
   SubdivisionTargeting(
-      AdsClient* ads_client);
+      AdsImpl* ads);
 
   ~SubdivisionTargeting();
 
@@ -63,7 +63,7 @@ class SubdivisionTargeting {
 
   void FetchAfterDelay();
 
-  AdsClient* ads_client_;  // NOT OWNED
+  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace ads

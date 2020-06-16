@@ -4,49 +4,70 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping.h"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/time_util.h"
-#include "bat/ads/internal/client.h"
 
-#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/ad_history.h"
+#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_utils.h"
+
+#include "base/time/time.h"
 
 namespace ads {
 
+namespace {
+
+const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
+    base::Time::kHoursPerDay;
+
+}  // namespace
+
 AdsPerDayFrequencyCap::AdsPerDayFrequencyCap(
-    const AdsClient* const ads_client,
-    const FrequencyCapping* const frequency_capping)
-    : ads_client_(ads_client),
-      frequency_capping_(frequency_capping) {
+    const AdsImpl* const ads)
+    : ads_(ads) {
+  DCHECK(ads_);
 }
 
 AdsPerDayFrequencyCap::~AdsPerDayFrequencyCap() = default;
 
 bool AdsPerDayFrequencyCap::IsAllowed() {
-  auto respects_day_limit = AreAdsPerDayBelowAllowedThreshold();
+  const std::deque<AdHistory> history = ads_->get_client()->GetAdsHistory();
+  const std::deque<uint64_t> filtered_history = FilterHistory(history);
 
-  if (!respects_day_limit) {
+  if (!DoesRespectCap(filtered_history)) {
     last_message_ = "You have exceeded the allowed ads per day";
+
+    return false;
   }
 
-  return respects_day_limit;
+  return true;
 }
 
-std::string AdsPerDayFrequencyCap::GetLastMessage() const {
+std::string AdsPerDayFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool AdsPerDayFrequencyCap::AreAdsPerDayBelowAllowedThreshold() const {
-  auto history = frequency_capping_->GetAdsShownHistory();
+bool AdsPerDayFrequencyCap::DoesRespectCap(
+    const std::deque<uint64_t>& history) const {
+  const uint64_t day_window = kSecondsPerDay;
 
-  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-  auto day_allowed = ads_client_->GetAdsPerDay();
+  const uint64_t day_allowed = ads_->get_ads_client()->GetAdsPerDay();
 
-  auto respects_day_limit =
-      frequency_capping_->DoesHistoryRespectCapForRollingTimeConstraint(
-          history, day_window, day_allowed);
+  return DoesHistoryRespectCapForRollingTimeConstraint(history, day_window,
+      day_allowed);
+}
 
-  return respects_day_limit;
+std::deque<uint64_t> AdsPerDayFrequencyCap::FilterHistory(
+    const std::deque<AdHistory>& history) const {
+  std::deque<uint64_t> filtered_history;
+
+  for (const auto& ad : history) {
+    if (ad.ad_content.ad_action != ConfirmationType::kViewed) {
+      continue;
+    }
+
+    filtered_history.push_back(ad.timestamp_in_seconds);
+  }
+
+  return filtered_history;
 }
 
 }  // namespace ads

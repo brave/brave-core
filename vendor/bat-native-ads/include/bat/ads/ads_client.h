@@ -21,6 +21,7 @@
 #include "bat/ads/export.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/result.h"
+#include "bat/ads/log_stream.h"
 
 namespace ads {
 

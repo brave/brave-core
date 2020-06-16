@@ -8,11 +8,9 @@
 #include "bat/confirmations/confirmation_type.h"
 
 #include "bat/confirmations/internal/confirmations_impl.h"
+#include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/static_values.h"
-#include "bat/confirmations/internal/refill_tokens.h"
-#include "bat/confirmations/internal/redeem_token.h"
-#include "bat/confirmations/internal/payout_tokens.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/time_util.h"
 
@@ -30,22 +28,26 @@ using std::placeholders::_2;
 namespace confirmations {
 
 ConfirmationsImpl::ConfirmationsImpl(
-    ConfirmationsClient* confirmations_client) :
-    is_initialized_(false),
-    unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
-    unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
-    estimated_pending_rewards_(0.0),
-    next_payment_date_in_seconds_(0),
-    ads_rewards_(std::make_unique<AdsRewards>(this, confirmations_client)),
-    refill_tokens_(std::make_unique<RefillTokens>(
-        this, confirmations_client, unblinded_tokens_.get())),
-    redeem_token_(std::make_unique<RedeemToken>(this, confirmations_client,
-        unblinded_tokens_.get(), unblinded_payment_tokens_.get())),
-    payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
-        unblinded_payment_tokens_.get())),
-    state_has_loaded_(false),
-    confirmations_client_(confirmations_client) {
+    ConfirmationsClient* confirmations_client)
+    : is_initialized_(false),
+      unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
+      unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
+      estimated_pending_rewards_(0.0),
+      next_payment_date_in_seconds_(0),
+      ads_rewards_(std::make_unique<AdsRewards>(this)),
+      refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>(this,
+          unblinded_tokens_.get())),
+      redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>(this,
+          unblinded_tokens_.get(), unblinded_payment_tokens_.get())),
+      redeem_unblinded_payment_tokens_(std::make_unique<
+          RedeemUnblindedPaymentTokens>(this, unblinded_payment_tokens_.get())),
+      state_has_loaded_(false),
+      confirmations_client_(confirmations_client) {
   set_confirmations_client_for_logging(confirmations_client_);
+
+  redeem_unblinded_token_->set_delegate(this);
+  redeem_unblinded_payment_tokens_->set_delegate(this);
+  refill_unblinded_tokens_->set_delegate(this);
 }
 
 ConfirmationsImpl::~ConfirmationsImpl() = default;
@@ -82,9 +84,9 @@ void ConfirmationsImpl::MaybeStart() {
   is_initialized_ = true;
   BLOG(1, "Successfully initialized confirmations");
 
-  payout_tokens_->PayoutAfterDelay(wallet_info_);
+  redeem_unblinded_payment_tokens_->RedeemAfterDelay(wallet_info_);
 
-  RefillTokensIfNecessary();
+  RefillUnblindedTokensIfNecessary();
 
   StartRetryingFailedConfirmations();
 }
@@ -395,7 +397,7 @@ bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
     return false;
   }
 
-  payout_tokens_->set_token_redemption_timestamp_in_seconds(
+  redeem_unblinded_payment_tokens_->set_token_redemption_timestamp(
       MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds));
 
   return true;
@@ -876,7 +878,7 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
   if (public_key_was_rotated) {
     unblinded_tokens_->RemoveAllTokens();
     if (is_initialized_) {
-      RefillTokensIfNecessary();
+      RefillUnblindedTokensIfNecessary();
     }
   }
 
@@ -1160,7 +1162,7 @@ void ConfirmationsImpl::ConfirmAd(
       << "  geoTarget: " << info.geo_target << "\n"
       << "  confirmationType: " << std::string(confirmation_type));
 
-  redeem_token_->Redeem(info, confirmation_type);
+  redeem_unblinded_token_->Redeem(info, confirmation_type);
 }
 
 void ConfirmationsImpl::ConfirmAction(
@@ -1178,18 +1180,18 @@ void ConfirmationsImpl::ConfirmAction(
       << "  creativeSetId: " << creative_set_id << "\n"
       << "  confirmationType: " << std::string(confirmation_type));
 
-  redeem_token_->Redeem(creative_instance_id, creative_set_id,
+  redeem_unblinded_token_->Redeem(creative_instance_id, creative_set_id,
       confirmation_type);
 }
 
-void ConfirmationsImpl::RefillTokensIfNecessary() const {
+void ConfirmationsImpl::RefillUnblindedTokensIfNecessary() const {
   DCHECK(wallet_info_.IsValid());
 
-  refill_tokens_->Refill(wallet_info_, public_key_);
+  refill_unblinded_tokens_->Refill(wallet_info_, public_key_);
 }
 
 uint64_t ConfirmationsImpl::GetNextTokenRedemptionDateInSeconds() const {
-  return payout_tokens_->get_token_redemption_timestamp_in_seconds();
+  return redeem_unblinded_payment_tokens_->get_token_redemption_timestamp();
 }
 
 void ConfirmationsImpl::StartRetryingFailedConfirmations() {
@@ -1214,9 +1216,49 @@ void ConfirmationsImpl::RetryFailedConfirmations() {
   ConfirmationInfo confirmation_info(confirmations_.front());
   RemoveConfirmationFromQueue(confirmation_info);
 
-  redeem_token_->Redeem(confirmation_info);
+  redeem_unblinded_token_->Redeem(confirmation_info);
 
   StartRetryingFailedConfirmations();
+}
+
+void ConfirmationsImpl::OnDidRedeemUnblindedToken(
+    const ConfirmationInfo& confirmation) {
+  BLOG(1, "Successfully redeemed unblinded token with confirmation id "
+      << confirmation.id << ", creative instance id "
+          << confirmation.creative_instance_id << " and "
+              << std::string(confirmation.type));
+}
+
+void ConfirmationsImpl::OnFailedToRedeemUnblindedToken(
+    const ConfirmationInfo& confirmation) {
+  BLOG(1, "Failed to redeem unblinded token with confirmation id "
+      << confirmation.id << ", creative instance id "
+          <<  confirmation.creative_instance_id << " and "
+              << std::string(confirmation.type));
+}
+
+void ConfirmationsImpl::OnDidRedeemUnblindedPaymentTokens() {
+  BLOG(1, "Successfully redeemed unblinded payment tokens");
+}
+
+void ConfirmationsImpl::OnFailedToRedeemUnblindedPaymentTokens() {
+  BLOG(1, "Failed to redeem unblinded payment tokens");
+}
+
+void ConfirmationsImpl::OnDidRetryRedeemingUnblindedPaymentTokens() {
+  BLOG(1, "Retry redeeming unblinded payment tokens");
+}
+
+void ConfirmationsImpl::OnDidRefillUnblindedTokens() {
+  BLOG(1, "Successfully refilled unblinded tokens");
+}
+
+void ConfirmationsImpl::OnFailedToRefillUnblindedTokens() {
+  BLOG(1, "Failed to refill unblinded tokens");
+}
+
+void ConfirmationsImpl::OnDidRetryRefillingUnblindedTokens() {
+  BLOG(1, "Retry refilling unblinded tokens");
 }
 
 }  // namespace confirmations

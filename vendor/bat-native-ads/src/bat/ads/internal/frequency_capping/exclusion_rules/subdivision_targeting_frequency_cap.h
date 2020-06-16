@@ -8,19 +8,17 @@
 
 #include <string>
 
-#include "bat/ads/internal/frequency_capping/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-class FrequencyCapping;
-class SubdivisionTargeting;
+class AdsImpl;
 struct CreativeAdnfo;
 
 class SubdivisionTargetingFrequencyCap : public ExclusionRule {
  public:
   SubdivisionTargetingFrequencyCap(
-      const FrequencyCapping* const frequency_capping,
-      const SubdivisionTargeting* const subdivision_targeting);
+      const AdsImpl* const ads);
 
   ~SubdivisionTargetingFrequencyCap() override;
 
@@ -32,11 +30,10 @@ class SubdivisionTargetingFrequencyCap : public ExclusionRule {
   bool ShouldExclude(
       const CreativeAdInfo& ad) override;
 
-  std::string GetLastMessage() const override;
+  std::string get_last_message() const override;
 
  private:
-  const FrequencyCapping* const frequency_capping_;  // NOT OWNED
-  const SubdivisionTargeting* const subdivision_targeting_;  // NOT OWNED
+  const AdsImpl* const ads_;  // NOT OWNED
 
   std::string last_message_;
 

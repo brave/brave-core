@@ -91,13 +91,13 @@ ConfirmationType::operator std::string() const {
 }
 
 bool ConfirmationType::operator==(
-    const ConfirmationType type) const {
-  return value_ == type.value_;
+    const ConfirmationType& rhs) const {
+  return value_ == rhs.value_;
 }
 
 bool ConfirmationType::operator!=(
-    const ConfirmationType type) const {
-  return value_ != type.value_;
+    const ConfirmationType& rhs) const {
+  return value_ != rhs.value_;
 }
 
 }  // namespace ads

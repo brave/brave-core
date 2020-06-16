@@ -11,10 +11,18 @@
 
 namespace ads {
 
-Timer::Timer() = default;
+Timer::Timer()
+    : timer_(std::make_unique<base::OneShotTimer>()) {
+  DCHECK(timer_);
+}
 
 Timer::~Timer() {
   Stop();
+}
+
+void Timer::set_timer_for_testing(
+    std::unique_ptr<base::OneShotTimer> timer) {
+  timer_ = std::move(timer);
 }
 
 base::Time Timer::Start(
@@ -22,7 +30,7 @@ base::Time Timer::Start(
     base::OnceClosure user_task) {
   Stop();
 
-  timer_.Start(FROM_HERE, base::TimeDelta::FromSeconds(delay),
+  timer_->Start(FROM_HERE, base::TimeDelta::FromSeconds(delay),
       std::move(user_task));
 
   const base::Time time =
@@ -39,7 +47,7 @@ base::Time Timer::StartWithPrivacy(
 }
 
 bool Timer::IsRunning() const {
-  return timer_.IsRunning();
+  return timer_->IsRunning();
 }
 
 void Timer::Stop() {
@@ -47,7 +55,7 @@ void Timer::Stop() {
     return;
   }
 
-  timer_.Stop();
+  timer_->Stop();
 }
 
 }  // namespace ads

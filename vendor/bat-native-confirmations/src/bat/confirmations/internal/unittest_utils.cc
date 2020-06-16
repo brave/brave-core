@@ -5,16 +5,13 @@
 
 #include "bat/confirmations/internal/unittest_utils.h"
 
-#include "bat/confirmations/internal/confirmations_client_mock.h"
-#include "bat/confirmations/internal/confirmations_impl_mock.h"
-#include "bat/confirmations/internal/platform_helper_mock.h"
-
 #include "base/base_paths.h"
-#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
+#include "bat/confirmations/internal/confirmations_client_mock.h"
+#include "bat/confirmations/internal/platform_helper_mock.h"
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -22,18 +19,19 @@ using ::testing::Return;
 
 namespace confirmations {
 
-void Initialize(
-    ConfirmationsImpl* confirmations) {
-  confirmations->Initialize(
-      [](const bool success) {
-    ASSERT_TRUE(success);
-  });
-}
-
-base::FilePath GetTestDataPath() {
+base::FilePath GetDataPath() {
   base::FilePath path;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  path = path.AppendASCII("brave/vendor/bat-native-confirmations/test/data");
+  path = path.AppendASCII("brave");
+  path = path.AppendASCII("vendor");
+  path = path.AppendASCII("bat-native-confirmations");
+  path = path.AppendASCII("data");
+  return path;
+}
+
+base::FilePath GetTestPath() {
+  base::FilePath path = GetDataPath();
+  path = path.AppendASCII("test");
   return path;
 }
 
@@ -48,7 +46,7 @@ void MockLoadState(
       .WillByDefault(Invoke([](
           const std::string& name,
           LoadCallback callback) {
-        base::FilePath path = GetTestDataPath();
+        base::FilePath path = GetTestPath();
         path = path.AppendASCII(name);
 
         std::string value;
@@ -81,15 +79,6 @@ void MockClientInfo(
         client->channel = channel;
         return client;
       });
-}
-
-void MockPlatformHelper(
-    PlatformHelperMock* mock,
-    const std::string& platform) {
-  PlatformHelper::GetInstance()->set_for_testing(mock);
-
-  ON_CALL(*mock, GetPlatformName())
-      .WillByDefault(Return(platform));
 }
 
 }  // namespace confirmations

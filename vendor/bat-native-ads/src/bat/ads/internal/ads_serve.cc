@@ -10,7 +10,6 @@
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
-#include "bat/ads/ads_client.h"
 
 #include "base/time/time.h"
 
@@ -22,11 +21,9 @@ namespace ads {
 
 AdsServe::AdsServe(
     AdsImpl* ads,
-    AdsClient* ads_client,
     Bundle* bundle)
     : catalog_last_updated_(0),
       ads_(ads),
-      ads_client_(ads_client),
       bundle_(bundle) {
   BuildUrl();
 }
@@ -45,7 +42,8 @@ void AdsServe::DownloadCatalog() {
       this, url_, _1, _2, _3);
 
   BLOG(5, UrlRequestToString(url_, {}, "", "", URLRequestMethod::GET));
-  ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
+  ads_->get_ads_client()->URLRequest(url_, {}, "", "", URLRequestMethod::GET,
+      callback);
 }
 
 void AdsServe::DownloadCatalogAfterDelay() {
@@ -162,7 +160,7 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   catalog.Save(json, callback);
 
   auto issuers_info = std::make_unique<IssuersInfo>(catalog.GetIssuers());
-  ads_client_->SetCatalogIssuers(std::move(issuers_info));
+  ads_->get_ads_client()->SetCatalogIssuers(std::move(issuers_info));
 
   return true;
 }

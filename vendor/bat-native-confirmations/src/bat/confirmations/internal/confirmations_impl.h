@@ -18,20 +18,27 @@
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/internal/ads_rewards.h"
+#include "bat/confirmations/internal/redeem_unblinded_payment_tokens.h"
+#include "bat/confirmations/internal/redeem_unblinded_token.h"
+#include "bat/confirmations/internal/refill_unblinded_tokens.h"
 
 #include "base/values.h"
 
 namespace confirmations {
 
 class UnblindedTokens;
-class RefillTokens;
-class RedeemToken;
-class PayoutTokens;
 
-class ConfirmationsImpl : public Confirmations {
+class ConfirmationsImpl
+    : public Confirmations,
+      public RedeemUnblindedPaymentTokensDelegate,
+      public RedeemUnblindedTokenDelegate,
+      public RefillUnblindedTokensDelegate {
  public:
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
+
+  ConfirmationsImpl(const ConfirmationsImpl&) = delete;
+  ConfirmationsImpl& operator=(const ConfirmationsImpl&) = delete;
 
   ConfirmationsClient* get_client() const;
 
@@ -78,7 +85,7 @@ class ConfirmationsImpl : public Confirmations {
 
   // Refill tokens
   void StartRetryingToGetRefillSignedTokens(const uint64_t start_timer_in);
-  void RefillTokensIfNecessary() const;
+  void RefillUnblindedTokensIfNecessary() const;
 
   // Payout tokens
   uint64_t GetNextTokenRedemptionDateInSeconds() const;
@@ -128,11 +135,12 @@ class ConfirmationsImpl : public Confirmations {
   uint64_t next_payment_date_in_seconds_;
   std::unique_ptr<AdsRewards> ads_rewards_;
 
-  std::unique_ptr<RefillTokens> refill_tokens_;
+  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
 
-  std::unique_ptr<RedeemToken> redeem_token_;
+  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
-  std::unique_ptr<PayoutTokens> payout_tokens_;
+  std::unique_ptr<RedeemUnblindedPaymentTokens>
+      redeem_unblinded_payment_tokens_;
 
   // State
   void OnStateSaved(const Result result);
@@ -186,12 +194,24 @@ class ConfirmationsImpl : public Confirmations {
   bool ParseUnblindedPaymentTokensFromJSON(
       base::DictionaryValue* dictionary);
 
+  // RedeemTokenDelegate implementation
+  void OnDidRedeemUnblindedToken(
+      const ConfirmationInfo& confirmation) override;
+  void OnFailedToRedeemUnblindedToken(
+      const ConfirmationInfo& confirmation) override;
+
+  // RedeemUnblindedPaymentTokensDelegate implementation
+  void OnDidRedeemUnblindedPaymentTokens() override;
+  void OnFailedToRedeemUnblindedPaymentTokens() override;
+  void OnDidRetryRedeemingUnblindedPaymentTokens() override;
+
+  // RefillUnblindedTokensDelegate implementation
+  void OnDidRefillUnblindedTokens() override;
+  void OnFailedToRefillUnblindedTokens() override;
+  void OnDidRetryRefillingUnblindedTokens() override;
+
   // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
-
-  // Not copyable, not assignable
-  ConfirmationsImpl(const ConfirmationsImpl&) = delete;
-  ConfirmationsImpl& operator=(const ConfirmationsImpl&) = delete;
 };
 
 }  // namespace confirmations

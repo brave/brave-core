@@ -1,50 +1,56 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-#include <vector>
-
-#include "testing/gtest/include/gtest/gtest.h"
-
-#include "base/time/time.h"
-
-#include "bat/ads/internal/frequency_capping/exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 
-#include "bat/ads/internal/client_mock.h"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/test/task_environment.h"
+#include "base/time/time.h"
+#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_unittest_utils.h"
+#include "bat/ads/internal/unittest_utils.h"
 
-// npm run test -- brave_unit_tests --filter=Ads*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
-using std::placeholders::_1;
-using ::testing::_;
-using ::testing::Invoke;
+using ::testing::NiceMock;
+using ::testing::Return;
+
+namespace ads {
 
 namespace {
 
-const std::vector<std::string> kTestCreativeSetIds = {
-    "654f10df-fbc4-4a92-8d43-2edf73734a60",
-    "465f10df-fbc4-4a92-8d43-4edf73734a60"
+const std::vector<std::string> kCreativeSetIds = {
+  "654f10df-fbc4-4a92-8d43-2edf73734a60",
+  "465f10df-fbc4-4a92-8d43-4edf73734a60"
 };
 
 }  // namespace
 
-namespace ads {
-
-class BraveAdsConversionFrequencyCapTest : public ::testing::Test {
+class BatAdsConversionFrequencyCapTest : public ::testing::Test {
  protected:
-    BraveAdsConversionFrequencyCapTest()
-    : mock_ads_client_(std::make_unique<MockAdsClient>()),
-      ads_(std::make_unique<AdsImpl>(mock_ads_client_.get())) {
+  BatAdsConversionFrequencyCapTest()
+      : ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
+        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
+        locale_helper_mock_(std::make_unique<NiceMock<
+            brave_l10n::LocaleHelperMock>>()),
+        frequency_cap_(std::make_unique<ConversionFrequencyCap>(ads_.get())) {
     // You can do set-up work for each test here
+
+    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
+        locale_helper_mock_.get());
   }
 
-  ~BraveAdsConversionFrequencyCapTest() override {
+  ~BatAdsConversionFrequencyCapTest() override {
     // You can do clean-up work that doesn't throw exceptions here
   }
 
@@ -55,19 +61,21 @@ class BraveAdsConversionFrequencyCapTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
-    auto callback = std::bind(
-        &BraveAdsConversionFrequencyCapTest::OnAdsImplInitialize, this, _1);
-    ads_->Initialize(callback);
+    ON_CALL(*ads_client_mock_, IsEnabled())
+        .WillByDefault(Return(true));
 
-    client_mock_ = std::make_unique<ClientMock>(ads_.get(),
-        mock_ads_client_.get());
-    frequency_capping_ = std::make_unique<FrequencyCapping>(client_mock_.get());
-    exclusion_rule_ = std::make_unique<ConversionFrequencyCap>(
-        frequency_capping_.get());
-  }
+    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
+        .WillByDefault(Return(true));
 
-  void OnAdsImplInitialize(const Result result) {
-    EXPECT_EQ(Result::SUCCESS, result);
+    ON_CALL(*locale_helper_mock_, GetLocale())
+        .WillByDefault(Return("en-US"));
+
+    MockLoad(ads_client_mock_.get());
+    MockLoadUserModelForLanguage(ads_client_mock_.get());
+    MockLoadJsonSchema(ads_client_mock_.get());
+    MockSave(ads_client_mock_.get());
+
+    Initialize(ads_.get());
   }
 
   void TearDown() override {
@@ -75,55 +83,78 @@ class BraveAdsConversionFrequencyCapTest : public ::testing::Test {
     // destructor)
   }
 
-  std::unique_ptr<MockAdsClient> mock_ads_client_;
-  std::unique_ptr<AdsImpl> ads_;
+  // Objects declared here can be used by all tests in the test case
 
-  std::unique_ptr<ClientMock> client_mock_;
-  std::unique_ptr<FrequencyCapping> frequency_capping_;
-  std::unique_ptr<ConversionFrequencyCap> exclusion_rule_;
-  CreativeAdNotificationInfo ad_notification_info_;
+  base::test::TaskEnvironment task_environment_;
+
+  std::unique_ptr<AdsClientMock> ads_client_mock_;
+  std::unique_ptr<AdsImpl> ads_;
+  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<ConversionFrequencyCap> frequency_cap_;
 };
 
-TEST_F(BraveAdsConversionFrequencyCapTest, AdAllowedWithNoAdHistory) {
+TEST_F(BatAdsConversionFrequencyCapTest,
+    AllowAdIfThereIsNoAdConversionHistory) {
   // Arrange
-  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(0);
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetIds.at(0);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BraveAdsConversionFrequencyCapTest, AdNotAllowedWithMatchingAds) {
+TEST_F(BatAdsConversionFrequencyCapTest,
+    DoNotAllowAdIfShouldNotAllowAdConversionTrackingAndHasAConversion) {
   // Arrange
-  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(0);
+  ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
+      .WillByDefault(Return(false));
 
-  client_mock_->GeneratePastAdConversionHistoryFromNow(
-      ad_notification_info_.creative_set_id, base::Time::kSecondsPerHour, 1);
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetIds.at(0);
+
+  GeneratePastAdConversionHistoryFromNow(ads_->get_client(),
+      ad.creative_set_id, base::Time::kSecondsPerHour, 1);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_TRUE(is_ad_excluded);
+  EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BraveAdsConversionFrequencyCapTest, AdAllowedWithNonMatchingAds) {
+TEST_F(BatAdsConversionFrequencyCapTest,
+    DoNotAllowAdIfAlreadyConverted) {
   // Arrange
-  client_mock_->GeneratePastAdConversionHistoryFromNow(
-      kTestCreativeSetIds.at(0), base::Time::kSecondsPerHour, 1);
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetIds.at(0);
 
-  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(1);
+  GeneratePastAdConversionHistoryFromNow(ads_->get_client(),
+      ad.creative_set_id, base::Time::kSecondsPerHour, 1);
 
   // Act
-  const bool is_ad_excluded =
-      exclusion_rule_->ShouldExclude(ad_notification_info_);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(is_ad_excluded);
+  EXPECT_TRUE(should_exclude);
+}
+
+TEST_F(BatAdsConversionFrequencyCapTest,
+    AllowAdIfNotAlreadyConverted) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetIds.at(1);
+
+  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(),
+      kCreativeSetIds.at(0), base::Time::kSecondsPerHour, 1);
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
 }
 
 }  // namespace ads

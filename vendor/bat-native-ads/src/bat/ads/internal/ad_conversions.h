@@ -9,9 +9,7 @@
 #include <deque>
 #include <string>
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/client.h"
 #include "bat/ads/internal/ad_conversion_queue_item_info.h"
 #include "bat/ads/internal/timer.h"
 
@@ -20,14 +18,12 @@
 namespace ads {
 
 class AdsImpl;
-class Client;
 
 class AdConversions {
  public:
   AdConversions(
-      AdsImpl* ads,
-      AdsClient* ads_client,
-      Client* client);
+      AdsImpl* ads);
+
   ~AdConversions();
 
   void Initialize(
@@ -95,8 +91,6 @@ class AdConversions {
       AdConversionQueueItemInfo* info) const;
 
   AdsImpl* ads_;  // NOT OWNED
-  AdsClient* ads_client_;  // NOT OWNED
-  Client* client_;  // NOT OWNED
 };
 
 }  // namespace ads

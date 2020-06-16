@@ -8,10 +8,12 @@
 
 #include <stdint.h>
 
-#include "bat/confirmations/internal/timer.h"
+#include <memory>
 
 #include "base/bind.h"
 #include "base/time/time.h"
+#include "base/timer/timer.h"
+#include "bat/confirmations/internal/timer.h"
 
 namespace confirmations {
 
@@ -20,6 +22,12 @@ class RetryTimer {
   RetryTimer();
 
   ~RetryTimer();
+
+  // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
+  // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +
+  // FastForward*() to this when possible
+  void set_timer_for_testing(
+      std::unique_ptr<base::OneShotTimer> timer);
 
   // Start a timer to run at a geometrically distributed number of seconds
   // |~delay| from now. If the timer is already running, it will be replaced to

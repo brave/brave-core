@@ -21,13 +21,13 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ads_serve.h"
 #include "bat/ads/internal/bundle.h"
+#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/ad_conversions.h"
 #include "bat/ads/internal/ad_notification_result_type.h"
 #include "bat/ads/internal/ad_notifications.h"
 #include "bat/ads/internal/timer.h"
-#include "bat/ads/internal/page_classifier/page_classifier.h"
-#include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 
 namespace ads {
 
@@ -37,7 +37,6 @@ class AdsServe;
 class SubdivisionTargeting;
 class AdNotifications;
 class AdConversions;
-class FrequencyCapping;
 class ExclusionRule;
 class PermissionRule;
 class PurchaseIntentClassifier;
@@ -51,9 +50,10 @@ class AdsImpl : public Ads {
 
   AdsClient* get_ads_client() const;
   Client* get_client() const;
-
   AdNotifications* get_ad_notifications() const;
-  PageClassifier* get_page_classifier() const;
+  SubdivisionTargeting* get_subdivision_targeting() const;
+  AdConversions* get_ad_conversions() const;
+  classification::PageClassifier* get_page_classifier() const;
 
   InitializeCallback initialize_callback_;
   void Initialize(
@@ -161,8 +161,9 @@ class AdsImpl : public Ads {
   void ExtractPurchaseIntentSignal(
       const std::string& url);
   void GeneratePurchaseIntentSignalHistoryEntry(
-      const PurchaseIntentSignalInfo& purchase_intent_signal);
-  PurchaseIntentWinningCategoryList GetWinningPurchaseIntentCategories();
+      const classification::PurchaseIntentSignalInfo& purchase_intent_signal);
+  classification::PurchaseIntentWinningCategoryList
+      GetWinningPurchaseIntentCategories();
 
   void MaybeClassifyPage(
       const std::string& url,
@@ -185,12 +186,8 @@ class AdsImpl : public Ads {
       const Result result,
       const std::vector<std::string>& categories,
       const CreativeAdNotificationList& ads);
-  CategoryList GetCategoriesToServeAd();
-  void ServeAdNotification(
-      const CreativeAdNotificationList& ads);
-  void OnServeAdNotification(
-      const Result result,
-      const AdConversionList& ad_conversions,
+  classification::CategoryList GetCategoriesToServeAd();
+  void ServeAdNotificationWithPacing(
       const CreativeAdNotificationList& ads);
   void SuccessfullyServedAd();
   void FailedToServeAdNotification(
@@ -198,11 +195,6 @@ class AdsImpl : public Ads {
 
   CreativeAdNotificationList GetEligibleAds(
       const CreativeAdNotificationList& ads);
-  CreativeAdNotificationList GetEligibleAdsForConversions(
-      const CreativeAdNotificationList& ads,
-      const AdConversionList& ad_conversions);
-  CreativeAdNotificationList GetEligibleAdsForPriorities(
-      const CreativeAdNotificationList& ads) const;
   CreativeAdNotificationList GetUnseenAdsAndRoundRobinIfNeeded(
       const CreativeAdNotificationList& ads) const;
   CreativeAdNotificationList GetUnseenAds(
@@ -254,10 +246,10 @@ class AdsImpl : public Ads {
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<AdConversions> ad_conversions_;
-  std::unique_ptr<PageClassifier> page_classifier_;
-  std::unique_ptr<PurchaseIntentClassifier> purchase_intent_classifier_;
+  std::unique_ptr<classification::PageClassifier> page_classifier_;
+  std::unique_ptr<classification::PurchaseIntentClassifier>
+      purchase_intent_classifier_;
 
  private:
   bool is_initialized_;

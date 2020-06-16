@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "issuers": [
+    {
+      "name": "confirmation",
+      "publicKey": "BI5i6wAueQuVqi8k7i4SdRkwLVzBPqWvWS5HuZMlkoh7AIggZd5bt2HmJRDjTTVYmSMYevO5lJQWM2ggylgL6lQ="
+    },
+    {
+      "name": "payment",
+      "publicKey": "BLdGsFrY/F3rmg1HWFV9a6t0qVxRJNtY+rQgxoCXBmpLusNEjSA0dStClnS4xpacOzbX11V5O/GL4N5HNFfwjwA="
+    },
+    {
+      "name": "0.10BAT",
+      "publicKey": "BBQx5mijw8shWtP3e3mwSv6wFo9niMsPJnP87oe1969zmTW4uo7xd0SLX9DWxiydL5iWWeeWJ6MGqTvf8HXqTcg="
+    },
+    {
+      "name": "0.20BAT",
+      "publicKey": "BA1sYidgJ56m8JEgnMX7TwprkLWXfPl+4VTHpM43fDWSI3AQpZCA0QgpQTXvPzf4woob6lagdk7Xdh7mlXxLvXw="
+    }
+  ],
+  "ping": 7200000,
+  "campaigns": [
+    {
+      "creativeSets": [
+        {
+          "creatives": [
+            {
+              "creativeInstanceId": "d9dc0028-8f86-4c92-b25d-981bc1bdb903",
+              "type": {
+                "code": "notification_all_v1",
+                "name": "notification",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Test Ad 1",
+                "title": "Campaign 1 - Creative 1",
+                "targetUrl": "https://brave.com/1"
+              }
+            },
+            {
+              "creativeInstanceId": "22763cfb-e40f-4fc8-b5ca-2c2cb40acca1",
+              "type": {
+                "code": "notification_all_v1",
+                "name": "notification",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Test Ad 2",
+                "title": "Campaign 1 - Creative 2",
+                "targetUrl": "https://brave.com/2"
+              }
+            }
+          ],
+          "segments": [
+            {
+              "code": "RuHxHavV2",
+              "name": "technology & computing",
+            },
+            {
+              "code": "mqiPIYccl",
+              "name": "technology & computing-apple",
+            }
+          ],
+          "oses": [],
+          "conversions": [],
+          "creativeSetId": "dea8df38-27b6-4b53-a699-77629934db80",
+          "perDay": 3,
+          "totalMax": 10
+        }
+      ],
+      "dayParts": [],
+      "geoTargets": [
+        {
+          "code": "US",
+          "name": "United States"
+        }
+      ],
+      "campaignId": "06e33ce9-8ae3-459c-b806-fac6dc51923a",
+      "startAt": "2020-05-01T00:00:00.000Z",
+      "endAt": "2037-31-12T00:00:00.000Z",
+      "dailyCap": 10,
+      "advertiserId": "a21d9f5f-af1b-4f8d-9116-f7d609633c37",
+      "priority": 1
+    },
+    {
+      "creativeSets": [
+        {
+          "creatives": [
+            {
+              "creativeInstanceId": "95e4d9e2-a2e9-4c81-8fa4-ec087064146f",
+              "type": {
+                "code": "notification_all_v1",
+                "name": "notification",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Test Ad",
+                "title": "Campaign 2 - Creative 1",
+                "targetUrl": "https://brave.com/1"
+              }
+            }
+          ],
+          "segments": [
+            {
+              "code": "Svp7l-zGN",
+              "name": "untargeted"
+            }
+          ],
+          "oses": [
+            {
+              "code": "mbwfZU-4W",
+              "name": "android"
+            },
+            {
+              "code": "i1g4cO6Pl",
+              "name": "windows"
+            },
+            {
+              "code": "_Bt5nxrNo",
+              "name": "macos"
+            }
+          ],
+          "conversions": [],
+          "creativeSetId": "8f4525b2-20fe-48e1-9089-838e1925d167",
+          "perDay": 1,
+          "totalMax": 10
+        }
+      ],
+      "dayParts": [],
+      "geoTargets": [
+        {
+          "code": "US",
+          "name": "United States"
+        }
+      ],
+      "campaignId": "c2fead5e-7738-42ed-bade-34f7f6ef4922",
+      "startAt": "2020-05-01T00:00:00.000Z",
+      "endAt": "2037-31-12T00:00:00.000Z",
+      "dailyCap": 5,
+      "advertiserId": "0f987a5f-8158-4e46-be9f-03a7ebfc591b",
+      "priority": 1
+    }
+  ],
+  "catalogId": "a3cd25e99647957ca54c18cb52e0784e1dd6584d"
+}

@@ -22,8 +22,8 @@ class AdsImpl;
 class AdNotifications {
  public:
   AdNotifications(
-      AdsImpl* ads,
-      AdsClient* ads_client);
+      AdsImpl* ads);
+
   ~AdNotifications();
 
   void Initialize(
@@ -114,7 +114,6 @@ class AdNotifications {
   base::Value GetAsList();
 
   AdsImpl* ads_;  // NOT OWNED
-  AdsClient* ads_client_;  // NOT OWNED
 };
 
 }  // namespace ads

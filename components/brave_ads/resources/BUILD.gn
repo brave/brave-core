@@ -7,6 +7,6 @@ repack("resources") {
   ]
 
   deps = [
-    "//brave/vendor/bat-native-ads/resources",
+    "//brave/vendor/bat-native-ads/data/resources",
   ]
 }

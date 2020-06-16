@@ -25,9 +25,10 @@ using std::placeholders::_3;
 namespace ads {
 
 SubdivisionTargeting::SubdivisionTargeting(
-    AdsClient* ads_client)
-    : ads_client_(ads_client) {
-  DCHECK(ads_client_);
+    AdsImpl* ads)
+    : ads_(ads) {
+  DCHECK(ads_);
+
   BuildUrl();
 }
 
@@ -56,7 +57,7 @@ bool SubdivisionTargeting::ShouldAllowAdsSubdivisionTargeting(
 
 bool SubdivisionTargeting::IsDisabled() const {
   const std::string subdivision_targeting_code =
-      ads_client_->GetAdsSubdivisionTargetingCode();
+      ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
 
   if (subdivision_targeting_code != "DISABLED") {
     return false;
@@ -71,7 +72,7 @@ void SubdivisionTargeting::MaybeFetch(
     BLOG(1, "Ads subdivision targeting is not supported for " << locale
         << " locale");
 
-    ads_client_->SetAllowAdsSubdivisionTargeting(false);
+    ads_->get_ads_client()->SetAllowAdsSubdivisionTargeting(false);
     return;
   }
 
@@ -82,7 +83,7 @@ void SubdivisionTargeting::MaybeFetch(
 
   if (!ShouldAutomaticallyDetect()) {
     const std::string subdivision_targeting_code =
-        ads_client_->GetAdsSubdivisionTargetingCode();
+        ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
 
     BLOG(1, "Ads subdivision targeting is enabled for "
         << subdivision_targeting_code);
@@ -97,10 +98,11 @@ void SubdivisionTargeting::MaybeFetch(
 
 std::string SubdivisionTargeting::GetAdsSubdivisionTargetingCode() const {
   if (ShouldAutomaticallyDetect()) {
-    return ads_client_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
+    return ads_->get_ads_client()->
+        GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
   }
 
-  return ads_client_->GetAdsSubdivisionTargetingCode();
+  return ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,12 +122,12 @@ bool SubdivisionTargeting::IsSupportedLocale(
 void SubdivisionTargeting::MaybeAllowAdsSubdivisionTargetingForLocale(
     const std::string& locale) {
   const bool should_allow = ShouldAllowAdsSubdivisionTargeting(locale);
-  ads_client_->SetAllowAdsSubdivisionTargeting(should_allow);
+  ads_->get_ads_client()->SetAllowAdsSubdivisionTargeting(should_allow);
 }
 
 bool SubdivisionTargeting::ShouldAutomaticallyDetect() const {
   const std::string subdivision_targeting_code =
-      ads_client_->GetAdsSubdivisionTargetingCode();
+      ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
 
   if (subdivision_targeting_code != "AUTO") {
     return false;
@@ -142,11 +144,12 @@ void SubdivisionTargeting::Fetch() {
   BLOG(1, "Fetch ads subdivision");
   BLOG(2, "GET " << GETSTATE_PATH);
 
-  const auto callback =
-      std::bind(&SubdivisionTargeting::OnFetch, this, url_, _1, _2, _3);
+  const auto callback = std::bind(&SubdivisionTargeting::OnFetch, this, url_,
+      _1, _2, _3);
 
   BLOG(5, UrlRequestToString(url_, {}, "", "", URLRequestMethod::GET));
-  ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
+  ads_->get_ads_client()->URLRequest(url_, {}, "", "", URLRequestMethod::GET,
+      callback);
 }
 
 void SubdivisionTargeting::OnFetch(
@@ -220,7 +223,7 @@ bool SubdivisionTargeting::ParseJson(
   std::string subdivision_targeting_code =
       base::StringPrintf("%s-%s", country->c_str(), region->c_str());
 
-  ads_client_->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+  ads_->get_ads_client()->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
       subdivision_targeting_code);
 
   return true;

@@ -1868,10 +1868,6 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #endif
 }
 
-std::string AdsServiceImpl::GetLocale() const {
-  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-}
-
 bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
   return !net::NetworkChangeNotifier::IsOffline();
 }
@@ -1897,6 +1893,10 @@ std::vector<std::string> AdsServiceImpl::GetUserModelLanguages() const {
   }
 
   return languages;
+}
+
+std::string AdsServiceImpl::GetLocale() const {
+  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 }
 
 std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(

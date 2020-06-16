@@ -5,39 +5,15 @@
 
 #include "bat/ads/internal/url_util.h"
 
+#include <string>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BraveAdsUrlUtilTest : public ::testing::Test {
- protected:
-  BraveAdsUrlUtilTest() {
-    // You can do set-up work for each test here
-  }
-
-  ~BraveAdsUrlUtilTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
-};
-
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     UrlMatchesPatternWithNoWildcards) {
   // Arrange
   const std::string url = "https://www.foo.com/";
@@ -50,7 +26,20 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_TRUE(does_match);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
+    UrlWithPathMatchesPatternWithNoWildcards) {
+  // Arrange
+  const std::string url = "https://www.foo.com/bar";
+  const std::string pattern = "https://www.foo.com/bar";
+
+  // Act
+  const bool does_match = UrlMatchesPattern(url, pattern);
+
+  // Assert
+  EXPECT_TRUE(does_match);
+}
+
+TEST(BatAdsUrlUtilTest,
     UrlDoesNotMatchPattern) {
   // Arrange
   const std::string url = "https://www.foo.com/";
@@ -63,7 +52,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_FALSE(does_match);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     UrlDoesNotMatchPatternWithMissingEmptyPath) {
   // Arrange
   const std::string url = "https://www.foo.com/";
@@ -76,7 +65,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_FALSE(does_match);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     UrlMatchesEndWildcardPattern) {
   // Arrange
   const std::string url = "https://www.foo.com/bar?key=test";
@@ -89,7 +78,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_TRUE(does_match);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     UrlMatchesMidWildcardPattern) {
   // Arrange
   const std::string url = "https://www.foo.com/woo-bar-hoo";
@@ -102,7 +91,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_TRUE(does_match);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     UrlDoesNotMatchMidWildcardPattern) {
   // Arrange
   const std::string url = "https://www.foo.com/woo";
@@ -115,7 +104,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_FALSE(does_match);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     SameSite) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
@@ -128,7 +117,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_TRUE(is_same_site);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     NotSameSite) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
@@ -141,7 +130,7 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_FALSE(is_same_site);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     SameSiteForUrlWithNoSubdomain) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
@@ -154,10 +143,36 @@ TEST_F(BraveAdsUrlUtilTest,
   EXPECT_TRUE(is_same_site);
 }
 
-TEST_F(BraveAdsUrlUtilTest,
+TEST(BatAdsUrlUtilTest,
     NotSameSiteForUrlWithNoSubdomain) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
+  const std::string url2 = "https://bar.com/foo";
+
+  // Act
+  const bool is_same_site = SameSite(url1, url2);
+
+  // Assert
+  EXPECT_FALSE(is_same_site);
+}
+
+TEST(BatAdsUrlUtilTest,
+    SameSiteForUrlWithRef) {
+  // Arrange
+  const std::string url1 = "https://foo.com?bar=test#ref";
+  const std::string url2 = "https://foo.com/bar";
+
+  // Act
+  const bool is_same_site = SameSite(url1, url2);
+
+  // Assert
+  EXPECT_TRUE(is_same_site);
+}
+
+TEST(BatAdsUrlUtilTest,
+    NotSameSiteForUrlWithRef) {
+  // Arrange
+  const std::string url1 = "https://foo.com?bar=test#ref";
   const std::string url2 = "https://bar.com/foo";
 
   // Act

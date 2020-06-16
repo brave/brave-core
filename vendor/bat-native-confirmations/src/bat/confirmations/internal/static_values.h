@@ -32,9 +32,9 @@ const uint64_t kNextTokenRedemptionAfterSeconds =
 const uint64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
 
-const uint64_t kRetryRefillTokensAfterSeconds = 15;
+const uint64_t kRetryRefillUnblindedTokensAfterSeconds = 15;
 
-const uint64_t kRetryPayoutTokensAfterSeconds =
+const uint64_t kRetryRedeemUnblindedPaymentTokensAfterSeconds =
     1 * base::Time::kSecondsPerMinute;
 
 const uint64_t kRetryAdsRewardsAfterSeconds =

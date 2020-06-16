@@ -13,6 +13,11 @@ RetryTimer::RetryTimer() = default;
 
 RetryTimer::~RetryTimer() = default;
 
+void RetryTimer::set_timer_for_testing(
+    std::unique_ptr<base::OneShotTimer> timer) {
+  timer_.set_timer_for_testing(std::move(timer));
+}
+
 base::Time RetryTimer::Start(
     const uint64_t delay,
     base::OnceClosure user_task) {
