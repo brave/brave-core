@@ -27,10 +27,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       mojom::BatLedgerClientAssociatedPtrInfo client_info);
   ~BatLedgerClientMojoProxy() override;
 
-  void OnReconcileComplete(ledger::Result result,
-                           const std::string& contribution_id,
-                           const double amount,
-                           const ledger::RewardsType type) override;
+  void OnReconcileComplete(
+      const ledger::Result result,
+      ledger::ContributionInfoPtr contribution) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;

@@ -66,7 +66,8 @@ class RewardsNotificationServiceImpl
       unsigned int result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type) override;
+      const int32_t type,
+      const int32_t processor) override;
 
   void TriggerOnNotificationAdded(
       const RewardsNotification& rewards_notification);

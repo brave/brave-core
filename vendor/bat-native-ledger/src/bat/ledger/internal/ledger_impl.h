@@ -228,9 +228,7 @@ class LedgerImpl : public ledger::Ledger {
 
   virtual void ContributionCompleted(
       const ledger::Result result,
-      const double amount,
-      const std::string& contribution_id,
-      const ledger::RewardsType type);
+      ledger::ContributionInfoPtr contribution);
 
   std::string URIEncode(const std::string& value) override;
 
@@ -509,10 +507,19 @@ class LedgerImpl : public ledger::Ledger {
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback);
 
-  virtual void MarkUblindedTokensAsSpent(
+  virtual void MarkUnblindedTokensAsSpent(
       const std::vector<std::string>& ids,
       ledger::RewardsType redeem_type,
       const std::string& redeem_id,
+      ledger::ResultCallback callback);
+
+  void MarkUnblindedTokensAsReserved(
+      const std::vector<std::string>& ids,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
+
+  void MarkUnblindedTokensAsSpendable(
+      const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void GetSpendableUnblindedTokensByTriggerIds(
@@ -681,6 +688,10 @@ class LedgerImpl : public ledger::Ledger {
   void GetSKUTransactionByOrderId(
       const std::string& order_id,
       ledger::GetSKUTransactionCallback callback);
+
+  virtual void GetReservedUnblindedTokens(
+      const std::string& redeem_id,
+      ledger::GetUnblindedTokenListCallback callback);
 
   virtual void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<ledger::CredsBatchType>& batch_types,

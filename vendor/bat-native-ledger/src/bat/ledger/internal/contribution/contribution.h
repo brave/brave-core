@@ -54,10 +54,8 @@ class Contribution {
   // Does final stage in contribution
   // Sets reports and contribution info
   void ContributionCompleted(
-      const std::string& contribution_id,
-      const ledger::RewardsType type,
-      const double amount,
-      const ledger::Result result);
+      const ledger::Result result,
+      ledger::ContributionInfoPtr contribution);
 
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
@@ -170,6 +168,10 @@ class Contribution {
   void SetRetryCounter(ledger::ContributionInfoPtr contribution);
 
   void Retry(
+      const ledger::Result result,
+      const std::string& contribution_string);
+
+  void OnMarkUnblindedTokensAsSpendable(
       const ledger::Result result,
       const std::string& contribution_string);
 

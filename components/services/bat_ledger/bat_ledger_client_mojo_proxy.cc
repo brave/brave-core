@@ -75,18 +75,12 @@ void BatLedgerClientMojoProxy::LoadURL(
 }
 
 void BatLedgerClientMojoProxy::OnReconcileComplete(
-    ledger::Result result,
-    const std::string& contribution_id,
-    const double amount,
-    const ledger::RewardsType type) {
+    const ledger::Result result,
+    ledger::ContributionInfoPtr contribution) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->OnReconcileComplete(
-      result,
-      contribution_id,
-      amount,
-      type);
+  bat_ledger_client_->OnReconcileComplete(result, std::move(contribution));
 }
 
 void BatLedgerClientMojoProxy::Log(

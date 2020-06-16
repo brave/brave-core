@@ -51,7 +51,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
       unsigned int result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type) {}
+      const int32_t type,
+      const int32_t processor) {}
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool ads_enabled) {}

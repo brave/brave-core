@@ -54,6 +54,15 @@ class Unblinded {
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
+  void GetContributionInfoAndReservedUnblindedTokens(
+      const std::string& contribution_id,
+      GetContributionInfoAndUnblindedTokensCallback callback);
+
+  void OnReservedUnblindedTokens(
+      ledger::UnblindedTokenList list,
+      const std::string& contribution_id,
+      GetContributionInfoAndUnblindedTokensCallback callback);
+
   void OnGetContributionInfo(
       ledger::ContributionInfoPtr contribution,
       const std::vector<ledger::UnblindedToken>& list,
@@ -108,6 +117,19 @@ class Unblinded {
       const ledger::Result result,
       const std::string& contribution_id,
       const bool final_publisher,
+      ledger::ResultCallback callback);
+
+  void OnMarkUnblindedTokensAsReserved(
+      const ledger::Result result,
+      const std::vector<ledger::UnblindedToken>& list,
+      const std::string& contribution_string,
+      const std::vector<ledger::CredsBatchType>& types,
+      ledger::ResultCallback callback);
+
+  void OnReservedUnblindedTokensForRetryAttempt(
+      const ledger::UnblindedTokenList& list,
+      const std::vector<ledger::CredsBatchType>& types,
+      const std::string& contribution_string,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

@@ -371,14 +371,27 @@ class Database {
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void MarkUblindedTokensAsSpent(
+  void MarkUnblindedTokensAsSpent(
       const std::vector<std::string>& ids,
       ledger::RewardsType redeem_type,
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
+  void MarkUnblindedTokensAsReserved(
+      const std::vector<std::string>& ids,
+      const std::string& redeem_id,
+      ledger::ResultCallback callback);
+
+  void MarkUnblindedTokensAsSpendable(
+      const std::string& redeem_id,
+      ledger::ResultCallback callback);
+
   void GetSpendableUnblindedTokensByTriggerIds(
       const std::vector<std::string>& trigger_ids,
+      ledger::GetUnblindedTokenListCallback callback);
+
+  void GetReservedUnblindedTokens(
+      const std::string& redeem_id,
       ledger::GetUnblindedTokenListCallback callback);
 
   void GetSpendableUnblindedTokensByBatchTypes(

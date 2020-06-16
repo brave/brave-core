@@ -23,11 +23,9 @@ class MockLedgerClient : public LedgerClient {
   MockLedgerClient();
   ~MockLedgerClient() override;
 
-  MOCK_METHOD4(OnReconcileComplete, void(
+  MOCK_METHOD2(OnReconcileComplete, void(
       Result result,
-      const std::string& contribution_id,
-      const double amount,
-      const ledger::RewardsType type));
+      ContributionInfoPtr contribution));
 
   MOCK_METHOD1(LoadLedgerState, void(
       ledger::OnLoadCallback callback));

@@ -18,7 +18,7 @@
 - (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback;
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
+- (void)onReconcileComplete:(ledger::Result)result contribution:(ledger::ContributionInfoPtr)contribution;
 - (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback;

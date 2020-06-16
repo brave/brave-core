@@ -709,13 +709,13 @@ IN_PROC_BROWSER_TEST_F(
         "FROM contribution_info_publishers";
     sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
     while (info_sql.Step()) {
-      auto contribution_publishers = ledger::ContributionPublisher::New();
-      contribution_publishers->contribution_id = info_sql.ColumnString(0);
-      contribution_publishers->publisher_key = info_sql.ColumnString(1);
-      contribution_publishers->total_amount = info_sql.ColumnDouble(2);
-      contribution_publishers->contributed_amount = info_sql.ColumnDouble(3);
+      auto contribution_publisher = ledger::ContributionPublisher::New();
+      contribution_publisher->contribution_id = info_sql.ColumnString(0);
+      contribution_publisher->publisher_key = info_sql.ColumnString(1);
+      contribution_publisher->total_amount = info_sql.ColumnDouble(2);
+      contribution_publisher->contributed_amount = info_sql.ColumnDouble(3);
 
-      list.push_back(std::move(contribution_publishers));
+      list.push_back(std::move(contribution_publisher));
     }
     EXPECT_EQ(static_cast<int>(list.size()), 4);
 
@@ -818,6 +818,42 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(contribution_queue.amount, 456.0);
     EXPECT_EQ(contribution_queue.partial, true);
     EXPECT_EQ(contribution_queue.completed_at, 0u);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_27_UnblindedTokens) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
+
+    ledger::UnblindedToken unblinded_token;
+    uint64_t reserved_at;
+    const std::string query =
+        "SELECT token_id, token_value, public_key, value, creds_id, "
+        "expires_at, reserved_at "
+        "FROM unblinded_tokens LIMIT 1";
+    sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
+    while (sql.Step()) {
+      unblinded_token.id = sql.ColumnInt64(0);
+      unblinded_token.token_value = sql.ColumnString(1);
+      unblinded_token.public_key = sql.ColumnString(2);
+      unblinded_token.value = sql.ColumnDouble(3);
+      unblinded_token.creds_id = sql.ColumnString(4);
+      unblinded_token.expires_at = sql.ColumnInt64(5);
+      reserved_at = sql.ColumnInt64(10);
+    }
+
+    EXPECT_EQ(unblinded_token.id, 1ull);
+    EXPECT_EQ(unblinded_token.token_value, "123");
+    EXPECT_EQ(unblinded_token.public_key, "456");
+    EXPECT_EQ(unblinded_token.value, 30.0);
+    EXPECT_EQ(unblinded_token.creds_id, "789");
+    EXPECT_EQ(unblinded_token.expires_at, 1640995200ul);
+    EXPECT_EQ(reserved_at, 0ul);
   }
 }
 

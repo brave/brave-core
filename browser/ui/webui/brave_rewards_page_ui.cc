@@ -225,7 +225,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       unsigned int result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type) override;
+      const int32_t type,
+      const int32_t processor) override;
+
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
       int result) override;
@@ -1002,7 +1004,8 @@ void RewardsDOMHandler::OnReconcileComplete(
     unsigned int result,
     const std::string& contribution_id,
     const double amount,
-    const int32_t type) {
+    const int32_t type,
+    const int32_t processor) {
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue complete;
     complete.SetKey("result", base::Value(static_cast<int>(result)));

@@ -74,9 +74,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnReconcileComplete(
       const Result result,
-      const std::string& contribution_id,
-      const double amount,
-      const ledger::RewardsType type) = 0;
+      ContributionInfoPtr contribution) = 0;
 
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 

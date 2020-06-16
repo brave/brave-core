@@ -1039,29 +1039,29 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount
+- (void)onReconcileComplete:(ledger::Result)result contribution:(ledger::ContributionInfoPtr)contribution
 {
   // TODO we changed from probi to amount, so from string to double
   if (result == ledger::Result::LEDGER_OK) {
-    if (type == ledger::RewardsType::RECURRING_TIP) {
+    if (contribution->type == ledger::RewardsType::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
     [self fetchBalance:nil];
   }
 
-  if ((result == ledger::Result::LEDGER_OK && type == ledger::RewardsType::AUTO_CONTRIBUTE) ||
+  if ((result == ledger::Result::LEDGER_OK && contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) ||
       result == ledger::Result::LEDGER_ERROR ||
       result == ledger::Result::NOT_ENOUGH_FUNDS ||
       result == ledger::Result::TIP_ERROR) {
-    const auto viewingId = [NSString stringWithUTF8String:viewing_id.c_str()];
-    const auto info = @{ @"viewingId": viewingId,
+    const auto contributionId = [NSString stringWithUTF8String:contribution->contribution_id.c_str()];
+    const auto info = @{ @"viewingId": contributionId,
                          @"result": @((BATResult)result),
-                         @"type": @((BATRewardsType)type),
-                         @"amount": [@(amount) stringValue] };
+                         @"type": @((BATRewardsType)contribution->type),
+                         @"amount": [@(contribution->amount) stringValue] };
 
     [self addNotificationOfKind:BATRewardsNotificationKindAutoContribute
                        userInfo:info
-                 notificationID:[NSString stringWithFormat:@"contribution_%@", viewingId]];
+                 notificationID:[NSString stringWithFormat:@"contribution_%@", contributionId]];
   }
 
   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
@@ -1070,9 +1070,9 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     }
     if (observer.reconcileCompleted) {
       observer.reconcileCompleted(static_cast<BATResult>(result),
-                                  [NSString stringWithUTF8String:viewing_id.c_str()],
-                                  static_cast<BATRewardsType>(type),
-                                  [@(amount) stringValue]);
+                                  [NSString stringWithUTF8String:contribution->contribution_id.c_str()],
+                                  static_cast<BATRewardsType>(contribution->type),
+                                  [@(contribution->amount) stringValue]);
     }
   }
 }

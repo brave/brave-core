@@ -158,11 +158,9 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::UrlMethod,
           ledger::LoadURLCallback));
 
-  MOCK_METHOD4(ContributionCompleted, void(
+  MOCK_METHOD2(ContributionCompleted, void(
       const ledger::Result,
-      const double,
-      const std::string&,
-      const ledger::RewardsType));
+      ledger::ContributionInfoPtr contribution));
 
   MOCK_METHOD1(URIEncode, std::string(const std::string&));
 
@@ -439,7 +437,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(SaveUnblindedTokenList, void(
     ledger::UnblindedTokenList, ledger::ResultCallback));
 
-  MOCK_METHOD4(MarkUblindedTokensAsSpent, void(
+  MOCK_METHOD4(MarkUnblindedTokensAsSpent, void(
       const std::vector<std::string>&,
       ledger::RewardsType,
       const std::string&,
@@ -475,6 +473,10 @@ class MockLedgerImpl : public LedgerImpl {
       ledger::RunDBTransactionCallback));
 
   MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback callback));
+
+  MOCK_METHOD2(GetReservedUnblindedTokens, void(
+      const std::string&,
+      ledger::GetUnblindedTokenListCallback));
 
   MOCK_METHOD2(GetSpendableUnblindedTokensByBatchTypes, void(
       const std::vector<ledger::CredsBatchType>&,
