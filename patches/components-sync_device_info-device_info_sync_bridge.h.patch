@@ -1,0 +1,12 @@
+diff --git a/components/sync_device_info/device_info_sync_bridge.h b/components/sync_device_info/device_info_sync_bridge.h
+index 379c7cc7f2cfc97bf36ac1466a967bcd61e4ea1a..857319abb288f52f531f163b1df8845c790cc4fb 100644
+--- a/components/sync_device_info/device_info_sync_bridge.h
++++ b/components/sync_device_info/device_info_sync_bridge.h
+@@ -84,6 +84,7 @@ class DeviceInfoSyncBridge : public ModelTypeSyncBridge,
+   bool IsPulseTimerRunningForTest() const;
+   void ForcePulseForTest() override;
+ 
++ BRAVE_DEVICE_INFO_SYNC_BRIDGE_H_
+  private:
+   // Cache of all syncable and local data, stored by device cache guid.
+   using ClientIdToSpecifics =

@@ -1,0 +1,12 @@
+diff --git a/components/sync_device_info/device_info_tracker.h b/components/sync_device_info/device_info_tracker.h
+index 1d909fb35194651d3256207798fd09a3a7dbc98d..974737823cefbe612b511d910001e6deaaf2404d 100644
+--- a/components/sync_device_info/device_info_tracker.h
++++ b/components/sync_device_info/device_info_tracker.h
+@@ -47,6 +47,7 @@ class DeviceInfoTracker {
+   // Returns if the provided |cache_guid| is the current device cache_guid for
+   // the current device or was of the recently used.
+   virtual bool IsRecentLocalCacheGuid(const std::string& cache_guid) const = 0;
++  BRAVE_DEVICE_INFO_TRACKER_H_
+ };
+ 
+ }  // namespace syncer

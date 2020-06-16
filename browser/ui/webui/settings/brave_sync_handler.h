@@ -6,12 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observer.h"
 #include "base/values.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 namespace syncer {
+class DeviceInfoTracker;
+class LocalDeviceInfoProvider;
 class SyncService;
 }
 class Profile;
@@ -38,14 +41,20 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleGetQRCode(const base::ListValue* args);
   void HandleReset(const base::ListValue* args);
 
+  void OnSelfDeleted(base::Value callback_id);
+
   base::Value GetSyncDeviceList();
   syncer::SyncService* GetSyncService() const;
+  syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
+  syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
 
   Profile* profile_ = nullptr;
 
   // Manages observer lifetimes.
   ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
+
+  base::WeakPtrFactory<BraveSyncHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncHandler);
 };
