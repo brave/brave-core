@@ -45,7 +45,13 @@
     <output filename="brave_components_strings_en-GB.pak" type="data_package" lang="en-GB" />
     <output filename="brave_components_strings_en-US.pak" type="data_package" lang="en" />
     <output filename="brave_components_strings_es.pak" type="data_package" lang="es" />
-    <output filename="brave_components_strings_es-419.pak" type="data_package" lang="es-419" />
+    <if expr="is_ios">
+      <!-- iOS uses es-MX for es-419 -->
+      <output filename="brave_components_strings_es-MX.pak" type="data_package" lang="es-419" />
+    </if>
+    <if expr="not is_ios">
+      <output filename="brave_components_strings_es-419.pak" type="data_package" lang="es-419" />
+    </if>
     <output filename="brave_components_strings_et.pak" type="data_package" lang="et" />
     <output filename="brave_components_strings_fa.pak" type="data_package" lang="fa" />
     <output filename="brave_components_strings_fake-bidi.pak" type="data_package" lang="fake-bidi" />
@@ -72,7 +78,13 @@
          be 'nb'. -->
     <output filename="brave_components_strings_nb.pak" type="data_package" lang="no" />
     <output filename="brave_components_strings_pl.pak" type="data_package" lang="pl" />
-    <output filename="brave_components_strings_pt-BR.pak" type="data_package" lang="pt-BR" />
+    <if expr="is_ios">
+      <!-- iOS uses pt for pt-BR -->
+      <output filename="brave_components_strings_pt.pak" type="data_package" lang="pt-BR" />
+    </if>
+    <if expr="not is_ios">
+      <output filename="brave_components_strings_pt-BR.pak" type="data_package" lang="pt-BR" />
+    </if>
     <output filename="brave_components_strings_pt-PT.pak" type="data_package" lang="pt-PT" />
     <output filename="brave_components_strings_ro.pak" type="data_package" lang="ro" />
     <output filename="brave_components_strings_ru.pak" type="data_package" lang="ru" />
