@@ -130,6 +130,14 @@ bool URLMatches(const std::string& url,
 
 enum class ContributionType { OneTimeTip, MonthlyTip };
 
+class MadeRequest {
+ public:
+  MadeRequest(const std::string& url, int32_t method)
+      : url(url), method(method) {}
+  std::string url;
+  int32_t method;
+};
+
 }  // namespace
 
 namespace brave_test_resp {
@@ -359,7 +367,7 @@ class BraveRewardsBrowserTest
                        int* response_status_code,
                        std::string* response,
                        std::map<std::string, std::string>* headers) {
-    request_made_ = true;
+    requests_made_.emplace_back(url, method);
     std::vector<std::string> tmp = base::SplitString(url,
                                                      "/",
                                                      base::TRIM_WHITESPACE,
@@ -1436,7 +1444,7 @@ class BraveRewardsBrowserTest
   bool last_publisher_added_ = false;
   bool alter_publisher_list_ = false;
   bool show_defaults_in_properties_ = false;
-  bool request_made_ = false;
+  std::vector<MadeRequest> requests_made_;
   double balance_ = 0;
   double reconciled_tip_total_ = 0;
   double pending_balance_ = 0;
@@ -2758,7 +2766,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
   ASSERT_TRUE(popup_contents);
 
   // Make sure that no request was made
-  ASSERT_FALSE(request_made_);
+  ASSERT_TRUE(requests_made_.empty());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
@@ -2965,4 +2973,37 @@ IN_PROC_BROWSER_TEST_F(
       "[data-test-id='activity-table-body'] tr:nth-of-type(2) "
       "td:nth-of-type(3)",
       "30.0BAT42.90 USD");
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    ZeroBalanceWalletClaimNotCalled) {
+  SetUpUpholdWallet(50.0);
+  EnableRewardsViaCode();
+
+  requests_made_.clear();  // only consider requests made after initialization
+
+  base::RunLoop run_loop;
+  auto test_callback =
+      [&](int32_t result,
+          std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
+        EXPECT_EQ(result, static_cast<int>(ledger::Result::LEDGER_OK));
+        EXPECT_FALSE(requests_made_.empty());
+
+        // Should not attempt to call /v2/wallet/UUID/claim endpoint
+        // since by default the wallet should contain 0 `user_funds`
+        auto wallet_claim_call = std::find_if(
+            requests_made_.begin(), requests_made_.end(),
+            [](const MadeRequest& req) {
+              return req.url.find("/v2/wallet") != std::string::npos &&
+                     req.url.find("/claim") != std::string::npos;
+            });
+
+        EXPECT_TRUE(wallet_claim_call == requests_made_.end());
+        run_loop.Quit();
+      };
+
+  rewards_service_->GetExternalWallet(
+      "uphold", base::BindLambdaForTesting(test_callback));
+  run_loop.Run();
 }

@@ -265,6 +265,9 @@ std::string Wallet::GetClaimPayload(
     const std::string anon_address) {
   ledger::UnsignedTxProperties unsigned_tx;
   unsigned_tx.amount = user_funds;
+  if (unsigned_tx.amount.empty()) {
+    unsigned_tx.amount = "0";
+  }
   unsigned_tx.currency = "BAT";
   unsigned_tx.destination = new_address;
   const ledger::UnsignedTxState unsigned_tx_state;
@@ -303,8 +306,8 @@ std::string Wallet::GetClaimPayload(
   signed_tx.SetStringKey("octets", octets);
 
   base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetStringKey("amount", user_funds);
-  denomination.SetStringKey("currency", "BAT");
+  denomination.SetStringKey("amount", unsigned_tx.amount);
+  denomination.SetStringKey("currency", unsigned_tx.currency);
 
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("destination", new_address);
