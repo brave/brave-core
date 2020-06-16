@@ -140,7 +140,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             balance = rewards_balance.mTotal;
         }
 
-        DecimalFormat df = new DecimalFormat("#.#");
+        DecimalFormat df = new DecimalFormat("#.###");
         df.setRoundingMode(RoundingMode.FLOOR);
         df.setMinimumFractionDigits(1);
         String walletAmount = df.format(balance) + " "+(isAnonWallet ? getResources().getString(R.string.brave_ui_bat_points_text) : getResources().getString(R.string.brave_ui_bat_text));
@@ -468,7 +468,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 if (rewardsBalance != null) {
                     balance = rewardsBalance.mTotal;
                 }
-                DecimalFormat df = new DecimalFormat("#.#");
+                DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);
                 df.setMinimumFractionDigits(1);
                 String walletAmount = df.format(balance) + " "
