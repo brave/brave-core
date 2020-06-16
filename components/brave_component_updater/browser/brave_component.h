@@ -18,7 +18,7 @@ namespace brave_component_updater {
 
 class BraveComponent {
  public:
-  using ReadyCallback = base::OnceCallback<void(const base::FilePath&,
+  using ReadyCallback = base::RepeatingCallback<void(const base::FilePath&,
                                                 const std::string& manifest)>;
   class Delegate {
    public:
@@ -48,6 +48,9 @@ class BraveComponent {
  private:
   static void OnComponentRegistered(Delegate* delegate,
                                     const std::string& component_id);
+  void OnComponentReadyInternal(const std::string& component_id,
+                                const base::FilePath& install_dir,
+                                const std::string& manifest);
 
   std::string component_name_;
   std::string component_id_;
