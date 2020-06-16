@@ -163,6 +163,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
               creative_ad_notifications.end()) {
             creative_ad_notifications.insert({segment_name, {}});
           }
+
+          info.category = segment_name;
           creative_ad_notifications.at(segment_name).push_back(info);
           entries++;
 
@@ -172,6 +174,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
                 == creative_ad_notifications.end()) {
               creative_ad_notifications.insert({top_level_segment_name, {}});
             }
+
+            info.category = top_level_segment_name;
             creative_ad_notifications.at(top_level_segment_name)
                 .push_back(info);
             entries++;
