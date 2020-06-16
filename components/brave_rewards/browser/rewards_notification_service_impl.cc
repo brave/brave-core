@@ -367,7 +367,8 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     unsigned int result,
     const std::string& contribution_id,
     const double amount,
-    const int32_t type) {
+    const int32_t type,
+    const int32_t processor) {
   auto converted_result = static_cast<ledger::Result>(result);
   auto converted_type = static_cast<ledger::RewardsType>(type);
 

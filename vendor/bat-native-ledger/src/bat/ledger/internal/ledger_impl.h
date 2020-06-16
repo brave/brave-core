@@ -228,9 +228,7 @@ class LedgerImpl : public ledger::Ledger {
 
   virtual void ContributionCompleted(
       const ledger::Result result,
-      const double amount,
-      const std::string& contribution_id,
-      const ledger::RewardsType type);
+      ledger::ContributionInfoPtr contribution);
 
   std::string URIEncode(const std::string& value) override;
 

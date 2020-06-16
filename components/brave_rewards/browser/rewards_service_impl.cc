@@ -876,20 +876,20 @@ void RewardsServiceImpl::OnRecoverWallet(
 
 void RewardsServiceImpl::OnReconcileComplete(
     const ledger::Result result,
-    const std::string& contribution_id,
-    const double amount,
-    const ledger::RewardsType type) {
+    ledger::ContributionInfoPtr contribution) {
   if (result == ledger::Result::LEDGER_OK &&
-      type == ledger::RewardsType::RECURRING_TIP) {
+      contribution->type == ledger::RewardsType::RECURRING_TIP) {
     MaybeShowNotificationTipsPaid();
   }
 
   for (auto& observer : observers_)
-    observer.OnReconcileComplete(this,
-                                 static_cast<int>(result),
-                                 contribution_id,
-                                 amount,
-                                 static_cast<int>(type));
+    observer.OnReconcileComplete(
+        this,
+        static_cast<int>(result),
+        contribution->contribution_id,
+        contribution->amount,
+        static_cast<int>(contribution->type),
+        static_cast<int>(contribution->processor));
 }
 
 void RewardsServiceImpl::LoadLedgerState(

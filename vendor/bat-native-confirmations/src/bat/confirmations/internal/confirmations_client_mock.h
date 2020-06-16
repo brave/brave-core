@@ -28,11 +28,9 @@ class ConfirmationsClientMock : public ConfirmationsClient {
 
   MOCK_METHOD0(GetRewardsParameters, void());
 
-  MOCK_METHOD4(OnReconcileComplete, void(
-      Result result,
-      const std::string& contribution_id,
-      const double amount,
-      const ledger::RewardsType type));
+  MOCK_METHOD2(OnReconcileComplete, void(
+      const ledger::Result result,
+      ledger::ContributionInfoPtr contribution));
 
   MOCK_METHOD1(LoadLedgerState, void(
       ledger::OnLoadCallback callback));

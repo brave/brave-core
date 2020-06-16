@@ -41,8 +41,8 @@ void NativeLedgerClient::Log(const char * file, const int line, const int verbos
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result publisherInfo:std::move(publisher_info) windowId:windowId];
 }
-void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) {
-  [bridge_ onReconcileComplete:result viewingId:viewing_id type:type amount:amount];
+void NativeLedgerClient::OnReconcileComplete(ledger::Result result, ledger::ContributionInfoPtr contribution) {
+  [bridge_ onReconcileComplete:result contribution:std::move(contribution)];
 }
 void NativeLedgerClient::ResetState(const std::string & name, ledger::ResultCallback callback) {
   [bridge_ resetState:name callback:callback];

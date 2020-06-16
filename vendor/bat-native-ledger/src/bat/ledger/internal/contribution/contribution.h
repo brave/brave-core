@@ -54,10 +54,8 @@ class Contribution {
   // Does final stage in contribution
   // Sets reports and contribution info
   void ContributionCompleted(
-      const std::string& contribution_id,
-      const ledger::RewardsType type,
-      const double amount,
-      const ledger::Result result);
+      const ledger::Result result,
+      ledger::ContributionInfoPtr contribution);
 
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);

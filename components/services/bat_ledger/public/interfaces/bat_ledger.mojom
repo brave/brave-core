@@ -161,8 +161,7 @@ interface BatLedgerClient {
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
 
-  OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
-      double amount, ledger.mojom.RewardsType type);
+  OnReconcileComplete(ledger.mojom.Result result, ledger.mojom.ContributionInfo contribution);
 
   OnPanelPublisherInfo(ledger.mojom.Result result,
                        ledger.mojom.PublisherInfo publisher_info,

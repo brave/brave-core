@@ -65,14 +65,10 @@ void LedgerClientMojoProxy::LoadPublisherState(
 
 void LedgerClientMojoProxy::OnReconcileComplete(
     const ledger::Result result,
-    const std::string& contribution_id,
-    const double amount,
-    const ledger::RewardsType type) {
+    ledger::ContributionInfoPtr contribution) {
   ledger_client_->OnReconcileComplete(
       result,
-      contribution_id,
-      amount,
-      type);
+      std::move(contribution));
 }
 
 void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,

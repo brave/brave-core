@@ -312,7 +312,8 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
     unsigned int result,
     const std::string& contribution_id,
     const double amount,
-    const int32_t type) {
+    const int32_t type,
+    const int32_t processor) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;

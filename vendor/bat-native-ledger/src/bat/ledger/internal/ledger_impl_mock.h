@@ -158,11 +158,9 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::UrlMethod,
           ledger::LoadURLCallback));
 
-  MOCK_METHOD4(ContributionCompleted, void(
+  MOCK_METHOD2(ContributionCompleted, void(
       const ledger::Result,
-      const double,
-      const std::string&,
-      const ledger::RewardsType));
+      ledger::ContributionInfoPtr contribution));
 
   MOCK_METHOD1(URIEncode, std::string(const std::string&));
 

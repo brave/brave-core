@@ -524,7 +524,8 @@ class RewardsBrowserTest
 
   void WaitForMultipleTipReconcileCompleted(int32_t needed) {
     multiple_tip_reconcile_needed_ = needed;
-    if (multiple_tip_reconcile_completed_) {
+    if (multiple_tip_reconcile_completed_ ||
+        multiple_tip_reconcile_count_ == needed) {
       return;
     }
 
@@ -708,14 +709,19 @@ class RewardsBrowserTest
         &brave_test_resp::uphold_commit_resp_));
   }
 
-  void UpdateContributionBalance(double amount, bool verified = false) {
+  void UpdateContributionBalance(
+      double amount,
+      bool verified = false,
+      const ledger::ContributionProcessor processor =
+          ledger::ContributionProcessor::BRAVE_TOKENS) {
     if (verified) {
-      if (balance_ > 0) {
+      if (processor == ledger::ContributionProcessor::BRAVE_TOKENS ||
+          processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS) {
         balance_ -= amount;
         return;
       }
 
-      if (verified_wallet_) {
+      if (processor == ledger::ContributionProcessor::UPHOLD) {
         external_balance_ -= amount;
         return;
       }
@@ -996,7 +1002,8 @@ class RewardsBrowserTest
       const std::string& publisher,
       ContributionType type,
       bool should_contribute = false,
-      int32_t selection = 0) {
+      int32_t selection = 0,
+      int32_t number_of_contributions = 1) {
     // we shouldn't be adding publisher to AC list,
     // so that we can focus only on tipping part
     rewards_service_->SetPublisherMinVisitTime(8);
@@ -1063,8 +1070,8 @@ class RewardsBrowserTest
       }
     } else if (type == ContributionType::OneTimeTip && should_contribute) {
       // Wait for reconciliation to complete
-      WaitForTipReconcileCompleted();
-      ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+      WaitForMultipleTipReconcileCompleted(number_of_contributions);
+      ASSERT_EQ(multiple_tip_reconcile_status_, ledger::Result::LEDGER_OK);
     }
 
     // Make sure that thank you banner shows correct publisher data
@@ -1194,13 +1201,17 @@ class RewardsBrowserTest
       unsigned int result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type) {
+      const int32_t type,
+      const int32_t processor) {
     const auto converted_result = static_cast<ledger::Result>(result);
     const auto converted_type =
         static_cast<ledger::RewardsType>(type);
 
     if (converted_result == ledger::Result::LEDGER_OK) {
-      UpdateContributionBalance(amount, true);
+      UpdateContributionBalance(
+          amount,
+          true,
+          static_cast<ledger::ContributionProcessor>(processor));
     }
 
     if (converted_type == ledger::RewardsType::AUTO_CONTRIBUTE) {
@@ -2937,7 +2948,8 @@ IN_PROC_BROWSER_TEST_F(
       "kjozwiakstaging.github.io",
       ContributionType::OneTimeTip,
       true,
-      1);
+      1,
+      2);
 
   ActivateTabAtIndex(0);
 

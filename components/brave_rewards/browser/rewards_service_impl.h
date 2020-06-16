@@ -475,9 +475,7 @@ class RewardsServiceImpl : public RewardsService,
       double balance);
   void OnReconcileComplete(
       const ledger::Result result,
-      const std::string& contribution_id,
-      const double amount,
-      const ledger::RewardsType type) override;
+      ledger::ContributionInfoPtr contribution) override;
   void OnAttestPromotion(
       AttestPromotionCallback callback,
       const ledger::Result result,

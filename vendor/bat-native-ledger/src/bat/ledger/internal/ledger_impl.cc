@@ -672,22 +672,16 @@ uint64_t LedgerImpl::GetReconcileStamp() {
 
 void LedgerImpl::ContributionCompleted(
     const ledger::Result result,
-    const double amount,
-    const std::string& contribution_id,
-    const ledger::RewardsType type) {
+    ledger::ContributionInfoPtr contribution) {
   bat_contribution_->ContributionCompleted(
-      contribution_id,
-      type,
-      amount,
-      result);
+      result,
+      contribution->Clone());
 
   // TODO(https://github.com/brave/brave-browser/issues/7717)
   // rename to ContributionCompleted
   ledger_client_->OnReconcileComplete(
       result,
-      contribution_id,
-      amount,
-      type);
+      contribution->Clone());
 }
 
 void LedgerImpl::GetRewardsParameters(
