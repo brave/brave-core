@@ -255,6 +255,7 @@ void Create::RegisterPersonaCallback(
 
   ledger_->SetWalletInfo(wallet_info);
   ledger_->SetContributionAmount(fee_amount);
+  ledger_->SetAutoContribute(true);
   ledger_->SetBootStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
   callback(ledger::Result::WALLET_CREATED);
