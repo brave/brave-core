@@ -125,8 +125,8 @@ void BraveComponentInstallerPolicy::ComponentReady(
     const base::FilePath& install_dir,
     std::unique_ptr<base::DictionaryValue> manifest) {
   ready_callback_.Run(
-          install_dir,
-          GetManifestString(std::move(manifest), base64_public_key_));
+      install_dir,
+      GetManifestString(std::move(manifest), base64_public_key_));
 }
 
 base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {

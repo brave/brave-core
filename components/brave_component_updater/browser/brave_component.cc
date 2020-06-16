@@ -53,9 +53,9 @@ scoped_refptr<base::SequencedTaskRunner> BraveComponent::GetTaskRunner() {
 }
 
 void BraveComponent::OnComponentReadyInternal(
-  const std::string& component_id,
-  const base::FilePath& install_dir,
-  const std::string& manifest) {
+    const std::string& component_id,
+    const base::FilePath& install_dir,
+    const std::string& manifest) {
   VLOG(2) << "component ready: " << manifest;
   OnComponentReady(component_id, install_dir, manifest);
 }
