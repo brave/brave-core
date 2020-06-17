@@ -6,7 +6,7 @@
 #ifndef BAT_ADS_INTERNAL_ELIGIBLE_ADS_ELIGIBLE_ADS_FILTER_H_
 #define BAT_ADS_INTERNAL_ELIGIBLE_ADS_ELIGIBLE_ADS_FILTER_H_
 
-#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/internal/creative_ad_notification_info.h"
 
 namespace ads {
 

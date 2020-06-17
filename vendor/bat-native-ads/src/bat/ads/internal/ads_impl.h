@@ -16,13 +16,15 @@
 
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
-#include "bat/ads/creative_ad_notification_info.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ads_serve.h"
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier.h"
 #include "bat/ads/internal/client.h"
+#include "bat/ads/internal/creative_ad_notification_info.h"
+#include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/ad_conversions.h"
 #include "bat/ads/internal/ad_notification_result_type.h"
 #include "bat/ads/internal/ad_notifications.h"
@@ -65,6 +67,8 @@ class AdsImpl : public Ads {
   void InitializeStep4(
       const Result result);
   void InitializeStep5(
+      const Result result);
+  void InitializeStep6(
       const Result result);
   bool IsInitialized();
 
@@ -174,17 +178,17 @@ class AdsImpl : public Ads {
   void ServeAdNotificationIfReady(
       const bool should_force);
   void ServeAdNotificationFromCategories(
-      const std::vector<std::string>& categories);
+      const classification::CategoryList& categories);
   void OnServeAdNotificationFromCategories(
       const Result result,
-      const std::vector<std::string>& categories,
+      const classification::CategoryList& categories,
       const CreativeAdNotificationList& ads);
   bool ServeAdNotificationFromParentCategories(
-      const std::vector<std::string>& categories);
+      const classification::CategoryList& categories);
   void ServeUntargetedAdNotification();
   void OnServeUntargetedAdNotification(
       const Result result,
-      const std::vector<std::string>& categories,
+      const classification::CategoryList& categories,
       const CreativeAdNotificationList& ads);
   classification::CategoryList GetCategoriesToServeAd();
   void ServeAdNotificationWithPacing(
@@ -247,6 +251,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<AdConversions> ad_conversions_;
+  std::unique_ptr<database::Initialize> database_;
   std::unique_ptr<classification::PageClassifier> page_classifier_;
   std::unique_ptr<classification::PurchaseIntentClassifier>
       purchase_intent_classifier_;

@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -24,10 +25,10 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/mojom.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
-#include "brave/components/brave_ads/browser/bundle_state_database.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -90,8 +91,7 @@ const unsigned int kRetriesCountOnNetworkChange = 1;
 namespace {
 
 static std::map<std::string, int> g_schema_resource_ids = {
-  {ads::_catalog_schema_resource_name, IDR_ADS_CATALOG_SCHEMA},
-  {ads::_bundle_schema_resource_name, IDR_ADS_BUNDLE_SCHEMA},
+  {ads::_catalog_schema_resource_name, IDR_ADS_CATALOG_SCHEMA}
 };
 
 int GetSchemaResourceId(
@@ -171,32 +171,6 @@ bool EnsureBaseDirectoryExistsOnFileTaskRunner(
   return base::CreateDirectory(path);
 }
 
-ads::CreativeAdNotificationList GetCreativeAdNotificationsOnFileTaskRunner(
-    const std::vector<std::string>& categories,
-    BundleStateDatabase* backend) {
-  ads::CreativeAdNotificationList ads;
-
-  if (!backend) {
-    return ads;
-  }
-
-  backend->GetCreativeAdNotifications(categories, &ads);
-  return ads;
-}
-
-ads::AdConversionList GetAdConversionsOnFileTaskRunner(
-    BundleStateDatabase* backend) {
-  ads::AdConversionList ad_conversions;
-
-  if (!backend) {
-    return ad_conversions;
-  }
-
-  backend->GetAdConversions(&ad_conversions);
-
-  return ad_conversions;
-}
-
 bool ResetOnFileTaskRunner(const base::FilePath& path) {
   bool recursive;
 
@@ -208,15 +182,6 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   }
 
   return base::DeleteFile(path, recursive);
-}
-
-bool SaveBundleStateOnFileTaskRunner(
-    std::unique_ptr<ads::BundleState> bundle_state,
-    BundleStateDatabase* backend) {
-  if (backend && backend->SaveBundleState(*bundle_state))
-    return true;
-
-  return false;
 }
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -252,9 +217,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
            base::TaskPriority::BEST_EFFORT,
             base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
+    database_(new ads::Database(base_path_.AppendASCII("database.sqlite"))),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
-    bundle_state_backend_(new BundleStateDatabase(
-        base_path_.AppendASCII("bundle_state"))),
     display_service_(NotificationDisplayService::GetForProfile(profile_)),
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
@@ -283,7 +247,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
-  file_task_runner_->DeleteSoon(FROM_HERE, bundle_state_backend_.release());
+  file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
@@ -978,32 +942,6 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
   return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
-void AdsServiceImpl::OnGetCreativeAdNotifications(
-    const ads::GetCreativeAdNotificationsCallback& callback,
-    const std::vector<std::string>& categories,
-    const ads::CreativeAdNotificationList& ads) {
-  if (!connected()) {
-    return;
-  }
-
-  auto result = ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
-
-  callback(result, categories, ads);
-}
-
-void AdsServiceImpl::OnGetAdConversions(
-    const ads::GetAdConversionsCallback& callback,
-    const ads::AdConversionList& ad_conversions) {
-  if (!connected()) {
-    return;
-  }
-
-  const auto result = ad_conversions.empty() ?
-      ads::Result::FAILED : ads::Result::SUCCESS;
-
-  callback(result, ad_conversions);
-}
-
 void AdsServiceImpl::OnGetAdsHistory(
     OnGetAdsHistoryCallback callback,
     const std::string& json) {
@@ -1118,16 +1056,6 @@ void AdsServiceImpl::OnToggleFlagAd(
     const std::string& creative_instance_id,
     const bool flagged) {
   std::move(callback).Run(creative_instance_id, flagged);
-}
-
-void AdsServiceImpl::OnSaveBundleState(
-    const ads::ResultCallback& callback,
-    const bool success) {
-  if (!connected()) {
-    return;
-  }
-
-  callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
 void AdsServiceImpl::OnLoaded(
@@ -2081,35 +2009,34 @@ std::string AdsServiceImpl::LoadJsonSchema(
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
 }
 
-void AdsServiceImpl::SaveBundleState(
-    std::unique_ptr<ads::BundleState> bundle_state,
-    ads::ResultCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&SaveBundleStateOnFileTaskRunner,
-                    base::Passed(std::move(bundle_state)),
-                    bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnSaveBundleState,
-                     AsWeakPtr(),
-                     callback));
+ads::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
+    ads::DBTransactionPtr transaction,
+    ads::Database* database) {
+  auto response = ads::DBCommandResponse::New();
+
+  if (!database) {
+    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
+  } else {
+    database->RunTransaction(std::move(transaction), response.get());
+  }
+
+  return response;
 }
 
-void AdsServiceImpl::GetCreativeAdNotifications(
-    const std::vector<std::string>& categories,
-    ads::GetCreativeAdNotificationsCallback callback) {
+void AdsServiceImpl::RunDBTransaction(
+    ads::DBTransactionPtr transaction,
+    ads::RunDBTransactionCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetCreativeAdNotificationsOnFileTaskRunner,
-          categories, bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnGetCreativeAdNotifications,
-          AsWeakPtr(), std::move(callback), categories));
-}
-
-void AdsServiceImpl::GetAdConversions(
-    ads::GetAdConversionsCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetAdConversionsOnFileTaskRunner,
-          bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnGetAdConversions, AsWeakPtr(),
+      base::BindOnce(&RunDBTransactionOnFileTaskRunner,
+          base::Passed(std::move(transaction)), database_.get()),
+      base::BindOnce(&AdsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
           std::move(callback)));
+}
+
+void AdsServiceImpl::OnRunDBTransaction(
+    ads::RunDBTransactionCallback callback,
+    ads::DBCommandResponsePtr response) {
+  callback(std::move(response));
 }
 
 void AdsServiceImpl::DiagnosticLog(

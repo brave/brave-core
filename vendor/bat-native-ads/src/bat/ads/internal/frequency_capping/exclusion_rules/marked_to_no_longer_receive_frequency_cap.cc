@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/creative_ad_info.h"
+#include "bat/ads/internal/creative_ad_info.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/filtered_ad.h"
 

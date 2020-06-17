@@ -436,100 +436,23 @@ void AdsClientMojoBridge::ConfirmAction(
 }
 
 // static
-void AdsClientMojoBridge::OnSaveBundleState(
-    CallbackHolder<SaveBundleStateCallback>* holder,
-    const ads::Result result) {
+void AdsClientMojoBridge::OnRunDBTransaction(
+    CallbackHolder<RunDBTransactionCallback>* holder,
+    ads::DBCommandResponsePtr response) {
   DCHECK(holder);
-
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run(std::move(response));
   }
-
   delete holder;
 }
 
-void AdsClientMojoBridge::SaveBundleState(
-    const std::string& bundle_state_json,
-    SaveBundleStateCallback callback) {
-  // this gets deleted in OnSaveBundleState
-  auto* holder = new CallbackHolder<SaveBundleStateCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  auto bundle_state = std::make_unique<ads::BundleState>();
-
-  auto schema = ads_client_->LoadJsonSchema(ads::_bundle_schema_resource_name);
-
-  if (bundle_state->FromJson(bundle_state_json, schema) !=
-      ads::Result::SUCCESS) {
-    std::move(holder->get()).Run(ToMojomResult(ads::Result::FAILED));
-    return;
-  }
-
-  ads_client_->SaveBundleState(std::move(bundle_state),
-      std::bind(AdsClientMojoBridge::OnSaveBundleState, holder, _1));
-}
-
-// static
-void AdsClientMojoBridge::OnGetCreativeAdNotifications(
-    CallbackHolder<GetCreativeAdNotificationsCallback>* holder,
-    const ads::Result result,
-    const std::vector<std::string>& categories,
-    const ads::CreativeAdNotificationList& ads) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::vector<std::string> json_list;
-
-    for (const auto& ad : ads) {
-      json_list.push_back(ad.ToJson());
-    }
-
-    std::move(holder->get()).Run(ToMojomResult(result), categories, json_list);
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::GetCreativeAdNotifications(
-    const std::vector<std::string>& categories,
-    GetCreativeAdNotificationsCallback callback) {
-  // this gets deleted in OnGetCreativeAdNotifications
-  auto* holder = new CallbackHolder<GetCreativeAdNotificationsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ads_client_->GetCreativeAdNotifications(categories,
-      std::bind(AdsClientMojoBridge::OnGetCreativeAdNotifications,
-          holder, _1, _2, _3));
-}
-
-// static
-void AdsClientMojoBridge::OnGetAdConversions(
-    CallbackHolder<GetAdConversionsCallback>* holder,
-    const ads::Result result,
-    const ads::AdConversionList& ad_conversions) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::vector<std::string> json_list;
-
-    for (const auto& ad_conversion : ad_conversions) {
-      json_list.push_back(ad_conversion.ToJson());
-    }
-
-    std::move(holder->get()).Run(ToMojomResult(result), json_list);
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::GetAdConversions(
-    GetAdConversionsCallback callback) {
-  // this gets deleted in OnGetAdConversions
-  auto* holder = new CallbackHolder<GetAdConversionsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ads_client_->GetAdConversions(
-      std::bind(AdsClientMojoBridge::OnGetAdConversions, holder, _1, _2));
+void AdsClientMojoBridge::RunDBTransaction(
+    ads::DBTransactionPtr transaction,
+    RunDBTransactionCallback callback) {
+  auto* holder = new CallbackHolder<RunDBTransactionCallback>(AsWeakPtr(),
+      std::move(callback));
+  ads_client_->RunDBTransaction(std::move(transaction),
+      std::bind(AdsClientMojoBridge::OnRunDBTransaction, holder, _1));
 }
 
 }  // namespace bat_ads

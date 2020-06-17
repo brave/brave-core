@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/catalog_state.h"
-#include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/static_values.h"
-#include "bat/ads/internal/logging.h"
 
 #include "url/gurl.h"
+#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/static_values.h"
 
 namespace ads {
 
@@ -140,7 +140,8 @@ Result CatalogState::FromJson(
 
         base::Time expiry_timestamp = end_at_timestamp +
             base::TimeDelta::FromDays(ad_conversion.observation_window);
-        ad_conversion.expiry_timestamp = expiry_timestamp.ToDoubleT();
+        ad_conversion.expiry_timestamp =
+            static_cast<int64_t>(expiry_timestamp.ToDoubleT());
 
         creative_set_info.ad_conversions.push_back(ad_conversion);
       }

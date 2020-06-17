@@ -24,6 +24,7 @@
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/ad_events/ad_notification_event_factory.h"
+#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
@@ -95,6 +96,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       ads_serve_(std::make_unique<AdsServe>(this, bundle_.get())),
       subdivision_targeting_(std::make_unique<SubdivisionTargeting>(this)),
       ad_conversions_(std::make_unique<AdConversions>(this)),
+      database_(std::make_unique<database::Initialize>(this)),
       page_classifier_(std::make_unique<classification::PageClassifier>(this)),
       purchase_intent_classifier_(std::make_unique<
           classification::PurchaseIntentClassifier>(kPurchaseIntentSignalLevel,
@@ -148,18 +150,19 @@ void AdsImpl::Initialize(
 
   auto initialize_step_2_callback =
       std::bind(&AdsImpl::InitializeStep2, this, _1);
-  client_->Initialize(initialize_step_2_callback);
+  database_->CreateOrOpen(initialize_step_2_callback);
 }
 
 void AdsImpl::InitializeStep2(
     const Result result) {
   if (result != SUCCESS) {
+    BLOG(0, "Failed to initialize database: " << database_->get_last_message());
     initialize_callback_(FAILED);
     return;
   }
 
   const auto callback = std::bind(&AdsImpl::InitializeStep3, this, _1);
-  ad_notifications_->Initialize(callback);
+  client_->Initialize(callback);
 }
 
 void AdsImpl::InitializeStep3(
@@ -170,10 +173,21 @@ void AdsImpl::InitializeStep3(
   }
 
   const auto callback = std::bind(&AdsImpl::InitializeStep4, this, _1);
-  ad_conversions_->Initialize(callback);
+  ad_notifications_->Initialize(callback);
 }
 
 void AdsImpl::InitializeStep4(
+    const Result result) {
+  if (result != SUCCESS) {
+    initialize_callback_(FAILED);
+    return;
+  }
+
+  const auto callback = std::bind(&AdsImpl::InitializeStep5, this, _1);
+  ad_conversions_->Initialize(callback);
+}
+
+void AdsImpl::InitializeStep5(
     const Result result) {
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
@@ -189,7 +203,7 @@ void AdsImpl::InitializeStep4(
   ChangeLocale(locale);
 }
 
-void AdsImpl::InitializeStep5(
+void AdsImpl::InitializeStep6(
     const Result result) {
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
@@ -314,7 +328,7 @@ void AdsImpl::OnUserModelLoaded(
       << language << " language");
 
   if (!IsInitialized()) {
-    InitializeStep5(SUCCESS);
+    InitializeStep6(SUCCESS);
   }
 }
 
@@ -628,7 +642,7 @@ void AdsImpl::ChangeLocale(
   if (!page_classifier_->ShouldClassifyPages()) {
     client_->SetUserModelLanguage(language_code);
 
-    InitializeStep5(SUCCESS);
+    InitializeStep6(SUCCESS);
     return;
   }
 
@@ -856,7 +870,9 @@ void AdsImpl::ServeAdNotificationFromCategories(
 
   const auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
       this, _1, _2, _3);
-  ads_client_->GetCreativeAdNotifications(categories, callback);
+
+  database::table::CreativeAdNotifications database_table(this);
+  database_table.GetCreativeAdNotifications(categories, callback);
 }
 
 void AdsImpl::OnServeAdNotificationFromCategories(
@@ -909,7 +925,9 @@ bool AdsImpl::ServeAdNotificationFromParentCategories(
 
   const auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
       this, _1, _2, _3);
-  ads_client_->GetCreativeAdNotifications(parent_categories, callback);
+
+  database::table::CreativeAdNotifications database_table(this);
+  database_table.GetCreativeAdNotifications(parent_categories, callback);
 
   return true;
 }
@@ -923,12 +941,14 @@ void AdsImpl::ServeUntargetedAdNotification() {
 
   const auto callback = std::bind(&AdsImpl::OnServeUntargetedAdNotification,
       this, _1, _2, _3);
-  ads_client_->GetCreativeAdNotifications(categories, callback);
+
+  database::table::CreativeAdNotifications database_table(this);
+  database_table.GetCreativeAdNotifications(categories, callback);
 }
 
 void AdsImpl::OnServeUntargetedAdNotification(
     const Result result,
-    const std::vector<std::string>& categories,
+    const classification::CategoryList& categories,
     const CreativeAdNotificationList& ads) {
   auto eligible_ads = GetEligibleAds(ads);
   if (eligible_ads.empty()) {

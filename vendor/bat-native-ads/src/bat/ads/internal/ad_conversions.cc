@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "bat/ads/internal/ad_conversions.h"
+#include "bat/ads/internal/database/tables/ad_conversions_database_table.h"
 #include "bat/ads/internal/filters/ads_history_filter_factory.h"
 #include "bat/ads/internal/sorts/ad_conversions_sort_factory.h"
 #include "bat/ads/internal/sorts/ads_history_sort_factory.h"
@@ -62,9 +63,9 @@ void AdConversions::Check(
 
   BLOG(1, "Checking URL for ad conversion");
 
-  auto callback =
-      std::bind(&AdConversions::OnGetAdConversions, this, url, _1, _2);
-  ads_->get_ads_client()->GetAdConversions(callback);
+  database::table::AdConversions database_table(ads_);
+  database_table.GetAdConversions(std::bind(&AdConversions::OnGetAdConversions,
+      this, url, _1, _2));
 }
 
 void AdConversions::StartTimerIfReady() {

@@ -12,8 +12,6 @@
 
 - (void)confirmAd:(const ads::AdInfo &)info confirmationType:(const ads::ConfirmationType)confirmation_type;
 - (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)confirmation_type;
-- (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::GetCreativeAdNotificationsCallback)callback;
-- (void)getAdConversions:(ads::GetAdConversionsCallback)callback;
 - (uint64_t)getAdsPerDay;
 - (uint64_t)getAdsPerHour;
 - (void)getClientInfo:(ads::ClientInfo *)info;
@@ -30,7 +28,6 @@
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)reset:(const std::string &)name callback:(ads::ResultCallback)callback;
 - (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::ResultCallback)callback;
-- (void)saveBundleState:(std::unique_ptr<ads::BundleState>)state callback:(ads::ResultCallback)callback;
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info;
 - (void)setIdleThreshold:(const int)threshold;
 - (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info;
@@ -42,5 +39,6 @@
 - (void)setAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
 - (std::string)automaticallyDetectedAdsSubdivisionTargetingCode;
 - (void)setAutomaticallyDetectedAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
+- (void)runDBTransaction:(ads::DBTransactionPtr)transaction callback:(ads::RunDBTransactionCallback)callback;
 
 @end

@@ -24,7 +24,6 @@ class Bundle {
   ~Bundle();
 
   bool UpdateFromCatalog(const Catalog& catalog);
-  void Reset();
 
   std::string GetCatalogId() const;
   uint64_t GetCatalogVersion() const;
@@ -37,29 +36,21 @@ class Bundle {
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
   bool DoesOsSupportCreativeSet(
-    const CatalogCreativeSetInfo& creative_set);
+      const CatalogCreativeSetInfo& creative_set);
 
   std::string GetClientOS();
 
-  void SaveState();
-  void OnStateSaved(
-      const std::string& catalog_id,
-      const uint64_t& catalog_version,
-      const uint64_t& catalog_ping,
-      const uint64_t& catalog_last_updated_timestamp_in_seconds,
+  void OnCreativeAdNotificationsSaved(
       const Result result);
-
-  void OnStateReset(
-      const std::string& catalog_id,
-      const uint64_t& catalog_version,
-      const uint64_t& catalog_ping,
-      const uint64_t& catalog_last_updated_timestamp_in_seconds,
+  void OnPurgedExpiredAdConversions(
+      const Result result);
+  void OnAdConversionsSaved(
       const Result result);
 
   std::string catalog_id_;
-  uint64_t catalog_version_;
-  uint64_t catalog_ping_;
-  uint64_t catalog_last_updated_timestamp_in_seconds_;
+  uint64_t catalog_version_ = 0;
+  uint64_t catalog_ping_ = 0;
+  uint64_t catalog_last_updated_timestamp_in_seconds_ = 0;
 
   AdsImpl* ads_;  // NOT OWNED
 };

@@ -20,6 +20,8 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/classification/classification_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/classification/page_classifier/page_classifier_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/classification/page_classifier/page_classifier_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/database/tables/ad_conversions_database_table_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/database/tables/creative_ad_notifications_database_table_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_confirmation_filter_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_filter_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_date_range_filter_unittest.cc",

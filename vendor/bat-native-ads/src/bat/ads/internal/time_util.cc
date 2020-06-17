@@ -6,6 +6,7 @@
 #include "bat/ads/internal/time_util.h"
 
 #include "base/i18n/time_formatting.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string16.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
@@ -71,6 +72,11 @@ uint64_t MigrateTimestampToDoubleT(
 
   const base::Time time = now + base::TimeDelta::FromSeconds(delta);
   return static_cast<uint64_t>(time.ToDoubleT());
+}
+
+std::string NowAsString() {
+  const int64_t timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  return base::NumberToString(timestamp);
 }
 
 }  // namespace ads

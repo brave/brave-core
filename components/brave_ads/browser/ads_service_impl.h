@@ -20,6 +20,7 @@
 #include "base/timer/timer.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/database.h"
 #include "bat/ads/mojom.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
@@ -55,7 +56,6 @@ class SimpleURLLoader;
 namespace brave_ads {
 
 class AdsNotificationHandler;
-class BundleStateDatabase;
 
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
@@ -238,15 +238,6 @@ class AdsServiceImpl : public AdsService,
       ads::URLRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
-  void OnGetCreativeAdNotifications(
-      const ads::GetCreativeAdNotificationsCallback& callback,
-      const std::vector<std::string>& categories,
-      const ads::CreativeAdNotificationList& ads);
-
-  void OnGetAdConversions(
-      const ads::GetAdConversionsCallback& callback,
-      const ads::AdConversionList& ad_conversions);
-
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
       const std::string& json);
@@ -279,9 +270,6 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       const bool flagged);
 
-  void OnSaveBundleState(
-      const ads::ResultCallback& callback,
-      const bool success);
   void OnLoaded(
       const ads::LoadCallback& callback,
       const std::string& value);
@@ -294,6 +282,10 @@ class AdsServiceImpl : public AdsService,
 
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
+
+  void OnRunDBTransaction(
+      ads::RunDBTransactionCallback callback,
+      ads::DBCommandResponsePtr response);
 
   void MigratePrefs();
   bool MigratePrefs(
@@ -435,16 +427,9 @@ class AdsServiceImpl : public AdsService,
   std::string LoadJsonSchema(
       const std::string& name) override;
 
-  void SaveBundleState(
-      std::unique_ptr<ads::BundleState> bundle_state,
-      ads::ResultCallback callback) override;
-
-  void GetCreativeAdNotifications(
-      const std::vector<std::string>& categories,
-      ads::GetCreativeAdNotificationsCallback callback) override;
-
-  void GetAdConversions(
-      ads::GetAdConversionsCallback callback) override;
+  void RunDBTransaction(
+      ads::DBTransactionPtr transaction,
+      ads::RunDBTransactionCallback callback) override;
 
   void DiagnosticLog(
       const std::string& file,
@@ -481,6 +466,8 @@ class AdsServiceImpl : public AdsService,
 
   base::OneShotTimer onboarding_timer_;
 
+  std::unique_ptr<ads::Database> database_;
+
   ui::IdleState last_idle_state_;
 
   base::RepeatingTimer idle_poll_timer_;
@@ -488,8 +475,6 @@ class AdsServiceImpl : public AdsService,
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
-
-  std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
 
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED

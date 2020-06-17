@@ -9,6 +9,7 @@
 #import "BATBraveLedger.h"
 
 #import "bat/ads/ads.h"
+#import "bat/ads/database.h"
 
 #import "NativeAdsClient.h"
 #import "NativeAdsClientBridge.h"
@@ -48,7 +49,7 @@ static NSString * const kAutomaticallyDetectedAdsSubdivisionTargetingCodePrefKey
 @interface BATBraveAds () <NativeAdsClientBridge> {
   NativeAdsClient *adsClient;
   ads::Ads *ads;
-  std::unique_ptr<ads::BundleState> bundleState;
+  ads::Database *adsDatabase;
 
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -58,6 +59,7 @@ static NSString * const kAutomaticallyDetectedAdsSubdivisionTargetingCodePrefKey
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) dispatch_queue_t prefsWriteThread;
 @property (nonatomic) NSMutableDictionary *prefs;
+@property (nonatomic) dispatch_queue_t databaseQueue;
 @end
 
 @implementation BATBraveAds
@@ -72,6 +74,7 @@ static NSString * const kAutomaticallyDetectedAdsSubdivisionTargetingCodePrefKey
 
     self.storagePath = path;
     self.commonOps = [[BATCommonOperations alloc] initWithStoragePath:path];
+    adsDatabase = nullptr;
 
     self.prefsWriteThread = dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
@@ -146,10 +149,29 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)initializeIfAdsEnabled
 {
   if (![self isAdsServiceRunning] && self.enabled) {
+    self.databaseQueue = dispatch_queue_create("com.rewards.ads.db-transactions", DISPATCH_QUEUE_SERIAL);
+    
+    const auto* dbPath = [self adsDatabasePath].UTF8String;
+    adsDatabase = new ads::Database(base::FilePath(dbPath));
+
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
     ads->Initialize(^(bool) { });
   }
+}
+
+- (NSString *)adsDatabasePath
+{
+  return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
+}
+
+- (void)resetAdsDatabase
+{
+  delete adsDatabase;
+  const auto dbPath = [self adsDatabasePath];
+  [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
+  [NSFileManager.defaultManager removeItemAtPath:[dbPath stringByAppendingString:@"-journal"] error:nil];
+  adsDatabase = new ads::Database(base::FilePath(dbPath.UTF8String));
 }
 
 - (void)shutdown
@@ -158,6 +180,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
     ads->Shutdown(^(bool) {
       delete ads;
       delete adsClient;
+      delete adsDatabase;
       ads = nil;
       adsClient = nil;
     });
@@ -423,31 +446,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
             confirmationType:[NSString stringWithUTF8String:std::string(confirmationType).c_str()]];
 }
 
-- (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::GetCreativeAdNotificationsCallback)callback
-{
-  if (![self isAdsServiceRunning]) { return; }
-
-  ads::CreativeAdNotificationList found_ads;
-  for (const auto & category : categories) {
-    auto it = bundleState->creative_ad_notifications.find(category);
-    if (it == bundleState->creative_ad_notifications.end()) {
-      continue;
-    }
-
-    found_ads.insert(found_ads.end(), it->second.begin(), it->second.end());
-  }
-
-  callback(ads::Result::SUCCESS, categories, found_ads);
-}
-
-- (void)getAdConversions:(ads::GetAdConversionsCallback)callback
-{
-  // TODO(khickinson): To be implemented
-  if (![self isAdsServiceRunning]) { return; }
-
-  callback(ads::Result::SUCCESS, {});
-}
-
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info
 {
   if (![self isAdsServiceRunning]) { return; }
@@ -580,20 +578,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   }
 }
 
-- (void)saveBundleState:(std::unique_ptr<ads::BundleState>)state callback:(ads::ResultCallback)callback
-{
-  if (state.get() == nullptr) {
-    callback(ads::Result::FAILED);
-    return;
-  }
-  bundleState.reset(state.release());
-  if ([self.commonOps saveContents:bundleState->ToJson() name:"bundle.json"]) {
-    callback(ads::Result::SUCCESS);
-  } else {
-    callback(ads::Result::FAILED);
-  }
-}
-
 #pragma mark - Logging
 
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message
@@ -660,6 +644,25 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)setAutomaticallyDetectedAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code
 {
   self.automaticallyDetectedSubdivisionTargetingCode = [NSString stringWithCString:subdivision_targeting_code.c_str() encoding:[NSString defaultCStringEncoding]];
+}
+
+- (void)runDBTransaction:(ads::DBTransactionPtr)transaction
+                callback:(ads::RunDBTransactionCallback)callback
+{
+  if (!adsDatabase || transaction.get() == nullptr) {
+    auto response = ads::DBCommandResponse::New();
+    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
+    callback(std::move(response));
+  } else {
+    __block auto transactionClone = transaction->Clone();
+    dispatch_async(self.databaseQueue, ^{
+      __block auto response = ads::DBCommandResponse::New();
+      adsDatabase->RunTransaction(std::move(transactionClone), response.get());
+      dispatch_async(dispatch_get_main_queue(), ^{
+        callback(std::move(response));
+      });
+    });
+  }
 }
 
 @end

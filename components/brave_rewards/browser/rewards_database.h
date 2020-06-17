@@ -27,13 +27,13 @@ class RewardsDatabase {
 
   void RunTransaction(
       ledger::DBTransactionPtr transaction,
-      ledger::DBCommandResponse* response);
+      ledger::DBCommandResponse* command_response);
 
  private:
   ledger::DBCommandResponse::Status Initialize(
       const int32_t version,
       const int32_t compatible_version,
-      ledger::DBCommandResponse* response);
+      ledger::DBCommandResponse* command_response);
 
   ledger::DBCommandResponse::Status Execute(ledger::DBCommand* command);
 
@@ -41,7 +41,7 @@ class RewardsDatabase {
 
   ledger::DBCommandResponse::Status Read(
       ledger::DBCommand* command,
-      ledger::DBCommandResponse* response);
+      ledger::DBCommandResponse* command_response);
 
   ledger::DBCommandResponse::Status Migrate(
       const int32_t version,

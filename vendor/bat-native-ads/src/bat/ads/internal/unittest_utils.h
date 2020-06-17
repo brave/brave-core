@@ -6,23 +6,71 @@
 #ifndef BAT_ADS_INTERNAL_UNITTEST_UTILS_H_
 #define BAT_ADS_INTERNAL_UNITTEST_UTILS_H_
 
-#include <deque>
-#include <string>
+#include <stdint.h>
 
-#include "bat/ads/result.h"
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/files/file_path.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/client_info_platform_type.h"
+#include "bat/ads/database.h"
+#include "bat/ads/result.h"
 
 namespace ads {
+
+// A list of endpoints where the response can be inline or read from the file
+// system. Filenames should begin with forward slash. i.e.
+//
+//    {
+//      "/foo/bar", {
+//        {
+//          net::HTTP_OK, "The quick brown fox jumps over the lazy dog"
+//        }
+//      }
+//    }
+//
+// or
+//
+//    {
+//      "/foo/bar", {
+//        {
+//           net::HTTP_OK, "/response.json"
+//        },
+//        {
+//           net::HTTP_CREATED, "To me there's no creativity without boundaries"
+//        }
+//      }
+//    }
+//
+// Inline responses can contain |<time:period>| tags for mocking timestamps,
+// where |period| should be |now|, |distant_past|, |distant_future|, |+/-#
+// seconds|, |+/-# minutes|, |+/-# hours| or |+/-# days|. i.e.
+//
+//    {
+//      "/foo/bar", {
+//        {
+//          net::HTTP_OK, "An example response with a <time:+7 days> tag"
+//        }
+//      }
+//    }
+//
+// The same endpoint can be added multiple times where responses are returned in
+// the specified order
+
+using URLResponse = std::pair<int, std::string>;
+using URLResponses = std::vector<URLResponse>;
+using URLEndpoints = std::map<std::string, URLResponses>;
 
 class AdsClientMock;
 class AdsImpl;
 
 template<class T>
 void Initialize(
-    T object) {
+    const T& object) {
   object->Initialize(
       [](const Result result) {
     ASSERT_EQ(Result::SUCCESS, result);
@@ -34,43 +82,32 @@ base::FilePath GetTestPath();
 base::FilePath GetResourcesPath();
 
 void MockLoad(
-    AdsClientMock* mock);
+    const std::unique_ptr<AdsClientMock>& mock);
 
 void MockSave(
-    AdsClientMock* mock);
+    const std::unique_ptr<AdsClientMock>& mock);
 
 void MockLoadUserModelForLanguage(
-    AdsClientMock* mock);
+    const std::unique_ptr<AdsClientMock>& mock);
 
 void MockLoadJsonSchema(
-    AdsClientMock* mock);
+    const std::unique_ptr<AdsClientMock>& mock);
 
-// Checks that |deq1| and |deq2| contain the same number of elements and each
-// element in |deq1| is present in |deq2| and vice-versa (Uses the == operator
-// for comparing). Returns true if it is the case. Note that this method will
-// return true for (aab, abb)
-template <class T>
-bool CompareDequeAsSets(
-    const std::deque<T>& deq1,
-    const std::deque<T>& deq2) {
-  if (deq1.size() != deq2.size()) {
-    return false;
-  }
+void MockURLRequest(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const URLEndpoints& endpoints);
 
-  for (size_t i = 0; i < deq2.size(); i++) {
-    bool found = false;
+void MockRunDBTransaction(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const std::unique_ptr<Database>& database);
 
-    for (size_t j = 0; (j < deq2.size()) && !found; j++) {
-      found = found || (deq1[i] == deq2[j]);
-    }
+void MockGetClientInfo(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const ClientInfoPlatformType platform_type);
 
-    if (!found) {
-      return false;
-    }
-  }
+int64_t DistantPast();
 
-  return true;
-}
+int64_t DistantFuture();
 
 }  // namespace ads
 

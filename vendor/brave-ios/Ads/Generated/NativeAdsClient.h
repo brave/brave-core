@@ -39,9 +39,6 @@ class NativeAdsClient : public ads::AdsClient {
   void Load(const std::string & name, ads::LoadCallback callback) override;
   void Reset(const std::string & name, ads::ResultCallback callback) override;
   std::string LoadJsonSchema(const std::string & name) override;
-  void SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::ResultCallback callback) override;
-  void GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::GetCreativeAdNotificationsCallback callback) override;
-  void GetAdConversions(ads::GetAdConversionsCallback callback) override;
   void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   void SetAllowAdsSubdivisionTargeting(const bool should_allow) override;
@@ -49,4 +46,5 @@ class NativeAdsClient : public ads::AdsClient {
   void SetAdsSubdivisionTargetingCode(const std::string & subdivision_targeting_code) override;
   std::string GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const override;
   void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(const std::string & subdivision_targeting_code) override;
+  void RunDBTransaction(ads::DBTransactionPtr transaction, ads::RunDBTransactionCallback callback) override;
 };

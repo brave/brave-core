@@ -7,14 +7,12 @@
 #define BAT_ADS_INTERNAL_CATALOG_STATE_H_
 
 #include <stdint.h>
-#include <string>
-#include <vector>
-#include <map>
 
-#include "bat/ads/issuers_info.h"
+#include <string>
 
 #include "bat/ads/internal/catalog_campaign_info.h"
-#include "bat/ads/internal/json_helper.h"
+#include "bat/ads/issuers_info.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 

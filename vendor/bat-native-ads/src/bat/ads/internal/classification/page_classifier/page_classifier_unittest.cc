@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/test/task_environment.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
@@ -21,6 +23,8 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+using ::testing::_;
+using ::testing::Invoke;
 using ::testing::NiceMock;
 using ::testing::Return;
 
@@ -51,18 +55,24 @@ class BatAdsPageClassifierTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    const base::FilePath path = temp_dir_.GetPath();
+
     ON_CALL(*ads_client_mock_, IsEnabled())
         .WillByDefault(Return(true));
 
     ON_CALL(*locale_helper_mock_, GetLocale())
         .WillByDefault(Return("en-US"));
 
-    MockLoad(ads_client_mock_.get());
-    MockLoadUserModelForLanguage(ads_client_mock_.get());
-    MockLoadJsonSchema(ads_client_mock_.get());
-    MockSave(ads_client_mock_.get());
+    MockLoad(ads_client_mock_);
+    MockLoadUserModelForLanguage(ads_client_mock_);
+    MockLoadJsonSchema(ads_client_mock_);
+    MockSave(ads_client_mock_);
 
-    Initialize(ads_.get());
+    database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
+    MockRunDBTransaction(ads_client_mock_, database_);
+
+    Initialize(ads_);
   }
 
   void TearDown() override {
@@ -74,9 +84,12 @@ class BatAdsPageClassifierTest : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
+  base::ScopedTempDir temp_dir_;
+
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsPageClassifierTest,

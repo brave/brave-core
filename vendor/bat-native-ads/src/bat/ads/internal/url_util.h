@@ -6,7 +6,9 @@
 #ifndef BAT_ADS_INTERNAL_URL_UTIL_H_
 #define BAT_ADS_INTERNAL_URL_UTIL_H_
 
+#include <map>
 #include <string>
+#include <vector>
 
 #include "bat/ads/ads_client.h"
 
@@ -22,6 +24,9 @@ bool SameSite(
 
 std::string GetUrlMethodName(
     const URLRequestMethod method);
+
+std::map<std::string, std::string> NormalizeHeaders(
+    const std::vector<std::string>& headers);
 
 }  // namespace ads
 

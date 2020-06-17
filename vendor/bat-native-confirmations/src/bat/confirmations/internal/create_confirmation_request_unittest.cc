@@ -47,10 +47,10 @@ class BatConfirmationsCreateConfirmationRequestTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
-    MockLoadState(confirmations_client_mock_.get());
-    MockSaveState(confirmations_client_mock_.get());
+    MockLoadState(confirmations_client_mock_);
+    MockSaveState(confirmations_client_mock_);
 
-    Initialize(confirmations_.get());
+    Initialize(confirmations_);
   }
 
   void TearDown() override {

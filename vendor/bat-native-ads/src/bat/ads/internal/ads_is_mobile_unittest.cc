@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/test/task_environment.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/ads_client_mock.h"
@@ -26,14 +25,10 @@ namespace ads {
 class BatAdsIsMobileTest : public ::testing::Test {
  protected:
   BatAdsIsMobileTest()
-      : ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        locale_helper_mock_(std::make_unique<NiceMock<
-            brave_l10n::LocaleHelperMock>>()) {
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
+        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())) {
     // You can do set-up work for each test here
-
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
   }
 
   ~BatAdsIsMobileTest() override {
@@ -46,19 +41,6 @@ class BatAdsIsMobileTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-
-    ON_CALL(*ads_client_mock_, IsEnabled())
-        .WillByDefault(Return(true));
-
-    ON_CALL(*locale_helper_mock_, GetLocale())
-        .WillByDefault(Return("en-US"));
-
-    MockLoad(ads_client_mock_.get());
-    MockLoadUserModelForLanguage(ads_client_mock_.get());
-    MockLoadJsonSchema(ads_client_mock_.get());
-    MockSave(ads_client_mock_.get());
-
-    Initialize(ads_.get());
   }
 
   void TearDown() override {
@@ -72,7 +54,6 @@ class BatAdsIsMobileTest : public ::testing::Test {
 
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<AdsImpl> ads_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
 };
 
 TEST_F(BatAdsIsMobileTest,

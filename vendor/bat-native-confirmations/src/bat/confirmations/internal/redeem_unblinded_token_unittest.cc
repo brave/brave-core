@@ -68,12 +68,12 @@ class BatConfirmationsRedeemUnblindedTokenTest : public ::testing::Test {
     ON_CALL(*platform_helper_mock_, GetPlatformName())
         .WillByDefault(Return("test"));
 
-    MockLoadState(confirmations_client_mock_.get());
-    MockSaveState(confirmations_client_mock_.get());
+    MockLoadState(confirmations_client_mock_);
+    MockSaveState(confirmations_client_mock_);
 
-    MockClientInfo(confirmations_client_mock_.get(), "test");
+    MockClientInfo(confirmations_client_mock_, "test");
 
-    Initialize(confirmations_.get());
+    Initialize(confirmations_);
   }
 
   void TearDown() override {

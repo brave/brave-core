@@ -112,21 +112,23 @@ RewardsDatabase::~RewardsDatabase() = default;
 
 void RewardsDatabase::RunTransaction(
     ledger::DBTransactionPtr transaction,
-    ledger::DBCommandResponse* response) {
+    ledger::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!response) {
+  if (!command_response) {
     return;
   }
 
   if (!db_.is_open() && !db_.Open(db_path_)) {
-    response->status = ledger::DBCommandResponse::Status::INITIALIZATION_ERROR;
+    command_response->status =
+        ledger::DBCommandResponse::Status::INITIALIZATION_ERROR;
     return;
   }
 
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
-    response->status = ledger::DBCommandResponse::Status::TRANSACTION_ERROR;
+    command_response->status =
+        ledger::DBCommandResponse::Status::TRANSACTION_ERROR;
     return;
   }
 
@@ -140,11 +142,11 @@ void RewardsDatabase::RunTransaction(
         status = Initialize(
             transaction->version,
             transaction->compatible_version,
-            response);
+            command_response);
         break;
       }
       case ledger::DBCommand::Type::READ: {
-        status = Read(command.get(), response);
+        status = Read(command.get(), command_response);
         break;
       }
       case ledger::DBCommand::Type::EXECUTE: {
@@ -168,23 +170,24 @@ void RewardsDatabase::RunTransaction(
 
     if (status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
       committer.Rollback();
-      response->status = status;
+      command_response->status = status;
       return;
     }
   }
 
   if (!committer.Commit()) {
-    response->status = ledger::DBCommandResponse::Status::TRANSACTION_ERROR;
+    command_response->status =
+        ledger::DBCommandResponse::Status::TRANSACTION_ERROR;
   }
 }
 
 ledger::DBCommandResponse::Status RewardsDatabase::Initialize(
     const int32_t version,
     const int32_t compatible_version,
-    ledger::DBCommandResponse* response) {
+    ledger::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!response) {
+  if (!command_response) {
     return ledger::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
@@ -215,7 +218,7 @@ ledger::DBCommandResponse::Status RewardsDatabase::Initialize(
   value->set_int_value(table_version);
   auto result = ledger::DBCommandResult::New();
   result->set_value(std::move(value));
-  response->result = std::move(result);
+  command_response->result = std::move(result);
 
   return ledger::DBCommandResponse::Status::RESPONSE_OK;
 }
@@ -270,12 +273,12 @@ ledger::DBCommandResponse::Status RewardsDatabase::Run(
 
 ledger::DBCommandResponse::Status RewardsDatabase::Read(
     ledger::DBCommand* command,
-    ledger::DBCommandResponse* response) {
+    ledger::DBCommandResponse* command_response) {
   if (!initialized_) {
     return ledger::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  if (!command || !response) {
+  if (!command || !command_response) {
     return ledger::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
@@ -288,9 +291,9 @@ ledger::DBCommandResponse::Status RewardsDatabase::Read(
 
   auto result = ledger::DBCommandResult::New();
   result->set_records(std::vector<ledger::DBRecordPtr>());
-  response->result = std::move(result);
+  command_response->result = std::move(result);
   while (statement.Step()) {
-    response->result->get_records().push_back(
+    command_response->result->get_records().push_back(
         CreateRecord(&statement, command->record_bindings));
   }
 

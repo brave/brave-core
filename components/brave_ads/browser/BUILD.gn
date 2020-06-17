@@ -46,8 +46,6 @@ source_set("browser") {
       "ads_service_impl.h",
       "background_helper.cc",
       "background_helper.h",
-      "bundle_state_database.cc",
-      "bundle_state_database.h",
       "notification_helper.cc",
       "notification_helper.h",
     ]
@@ -97,7 +95,7 @@ source_set("browser") {
       "//components/wifi",
       "//net",
       "//services/network/public/cpp",
-      "//sql",
+      "//services/network/public/mojom",
       "//ui/base",
       "//ui/message_center/public/cpp",
     ]

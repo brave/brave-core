@@ -105,16 +105,9 @@ class BatAdsClientMojoBridge
   std::string LoadJsonSchema(
       const std::string& name) override;
 
-  void SaveBundleState(
-      std::unique_ptr<ads::BundleState> bundle_state,
-      ads::ResultCallback callback) override;
-
-  void GetCreativeAdNotifications(
-      const std::vector<std::string>& categories,
-      ads::GetCreativeAdNotificationsCallback callback) override;
-
-  void GetAdConversions(
-      ads::GetAdConversionsCallback callback) override;
+  void RunDBTransaction(
+      ads::DBTransactionPtr transaction,
+      ads::RunDBTransactionCallback callback) override;
 
   void Log(
       const char* file,

@@ -3,22 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <vector>
+#include "bat/ads/internal/bundle.h"
+
+#include <limits>
 #include <map>
 #include <utility>
+#include <vector>
 
-#include "bat/ads/bundle_state.h"
-
-#include "bat/ads/internal/bundle.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/bundle_state.h"
 #include "bat/ads/internal/catalog.h"
-#include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/database/tables/ad_conversions_database_table.h"
+#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/static_values.h"
-
-#include "base/strings/string_util.h"
-#include "base/strings/string_split.h"
-#include "base/time/time.h"
+#include "bat/ads/internal/time_util.h"
 
 using std::placeholders::_1;
 
@@ -26,10 +27,7 @@ namespace ads {
 
 Bundle::Bundle(
     AdsImpl* ads)
-    : catalog_version_(0),
-      catalog_ping_(0),
-      catalog_last_updated_timestamp_in_seconds_(0),
-      ads_(ads) {}
+    : ads_(ads) {}
 
 Bundle::~Bundle() = default;
 
@@ -48,22 +46,19 @@ bool Bundle::UpdateFromCatalog(
   catalog_last_updated_timestamp_in_seconds_ =
       bundle_state->catalog_last_updated_timestamp_in_seconds;
 
-  auto callback = std::bind(&Bundle::OnStateSaved,
-      this, catalog_id_, catalog_version_, catalog_ping_,
-          catalog_last_updated_timestamp_in_seconds_, _1);
-  ads_->get_ads_client()->SaveBundleState(std::move(bundle_state), callback);
+  database::table::CreativeAdNotifications database_table(ads_);
+  database_table.Save(bundle_state->creative_ad_notifications,
+      std::bind(&Bundle::OnCreativeAdNotificationsSaved, this, _1));
+
+  database::table::AdConversions ad_conversions_database_table(ads_);
+
+  ad_conversions_database_table.PurgeExpiredAdConversions(
+      std::bind(&Bundle::OnPurgedExpiredAdConversions, this, _1));
+
+  ad_conversions_database_table.Save(bundle_state->ad_conversions,
+      std::bind(&Bundle::OnAdConversionsSaved, this, _1));
 
   return true;
-}
-
-void Bundle::Reset() {
-  auto bundle_state = std::make_unique<BundleState>();
-
-  auto callback = std::bind(&Bundle::OnStateReset,
-      this, bundle_state->catalog_id, bundle_state->catalog_version,
-          bundle_state->catalog_ping,
-              bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
-  ads_->get_ads_client()->SaveBundleState(std::move(bundle_state), callback);
 }
 
 std::string Bundle::GetCatalogId() const {
@@ -98,7 +93,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     const Catalog& catalog) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  CreativeAdNotificationMap creative_ad_notifications;
+  CreativeAdNotificationList creative_ad_notifications;
   AdConversionList ad_conversions;
 
   // Campaigns
@@ -122,6 +117,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       // Ad notification creatives
       for (const auto& creative : creative_set.creative_ad_notifications) {
         if (!DoesOsSupportCreativeSet(creative_set)) {
+          BLOG(1, "Creative set id " << creative_set.creative_set_id
+              << " does not support " << GetClientOS());
+
           continue;
         }
 
@@ -129,8 +127,31 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
-        info.start_at_timestamp = campaign.start_at;
-        info.end_at_timestamp = campaign.end_at;
+
+        base::Time start_at_time;
+        if (base::Time::FromUTCString(campaign.start_at.c_str(),
+            &start_at_time)) {
+          info.start_at_timestamp =
+              static_cast<int64_t>(start_at_time.ToDoubleT());
+        } else {
+          info.start_at_timestamp = std::numeric_limits<int64_t>::min();
+
+          BLOG(1, "Creative set id " << creative_set.creative_set_id
+              << " has an invalid startAt timestamp");
+        }
+
+        base::Time end_at_time;
+        if (base::Time::FromUTCString(campaign.end_at.c_str(),
+            &end_at_time)) {
+          info.end_at_timestamp =
+              static_cast<int64_t>(end_at_time.ToDoubleT());
+        } else {
+          info.end_at_timestamp = std::numeric_limits<int64_t>::max();
+
+          BLOG(1, "Creative set id " << creative_set.creative_set_id
+              << " has an invalid endAt timestamp");
+        }
+
         info.daily_cap = campaign.daily_cap;
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
@@ -158,25 +179,14 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
             continue;
           }
 
-          if (creative_ad_notifications.find(segment_name) ==
-              creative_ad_notifications.end()) {
-            creative_ad_notifications.insert({segment_name, {}});
-          }
-
           info.category = segment_name;
-          creative_ad_notifications.at(segment_name).push_back(info);
+          creative_ad_notifications.push_back(info);
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
           if (top_level_segment_name != segment_name) {
-            if (creative_ad_notifications.find(top_level_segment_name)
-                == creative_ad_notifications.end()) {
-              creative_ad_notifications.insert({top_level_segment_name, {}});
-            }
-
             info.category = top_level_segment_name;
-            creative_ad_notifications.at(top_level_segment_name)
-                .push_back(info);
+            creative_ad_notifications.push_back(info);
             entries++;
           }
         }
@@ -252,42 +262,34 @@ std::string Bundle::GetClientOS() {
   }
 }
 
-void Bundle::OnStateSaved(
-    const std::string& catalog_id,
-    const uint64_t& catalog_version,
-    const uint64_t& catalog_ping,
-    const uint64_t& catalog_last_updated_timestamp_in_seconds,
+void Bundle::OnCreativeAdNotificationsSaved(
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(0, "Failed to save bundle state");
-
-    // If the bundle fails to save, we will retry the next time a bundle is
-    // downloaded from the Ads Serve
+    BLOG(0, "Failed to save creative ad notifications state");
     return;
   }
 
-  BLOG(3, "Successfully saved bundle state");
+  BLOG(3, "Successfully saved creative ad notifications state");
 }
 
-void Bundle::OnStateReset(
-    const std::string& catalog_id,
-    const uint64_t& catalog_version,
-    const uint64_t& catalog_ping,
-    const uint64_t& catalog_last_updated_timestamp_in_seconds,
+void Bundle::OnPurgedExpiredAdConversions(
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(0, "Failed to reset bundle state");
-
+    BLOG(0, "Failed to purge expired ad conversions");
     return;
   }
 
-  catalog_id_ = catalog_id;
-  catalog_version_ = catalog_version;
-  catalog_ping_ = catalog_ping;
-  catalog_last_updated_timestamp_in_seconds_ =
-      catalog_last_updated_timestamp_in_seconds;
+  BLOG(3, "Successfully purged expired ad conversions");
+}
 
-  BLOG(3, "Successfully reset bundle state");
+void Bundle::OnAdConversionsSaved(
+    const Result result) {
+  if (result != SUCCESS) {
+    BLOG(0, "Failed to save ad conversions state");
+    return;
+  }
+
+  BLOG(3, "Successfully saved ad conversions state");
 }
 
 }  // namespace ads

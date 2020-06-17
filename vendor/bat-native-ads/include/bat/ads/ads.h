@@ -36,9 +36,6 @@ extern Environment _environment;
 // arguments
 extern bool _is_debug;
 
-// Bundle schema resource name
-extern const char _bundle_schema_resource_name[];
-
 // Catalog schema resource name
 extern const char _catalog_schema_resource_name[];
 

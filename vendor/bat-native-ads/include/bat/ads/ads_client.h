@@ -13,15 +13,12 @@
 #include <memory>
 #include <functional>
 
-#include "bat/ads/creative_ad_notification_info.h"
-#include "bat/ads/ad_conversion_info.h"
 #include "bat/ads/issuers_info.h"
-#include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/result.h"
-#include "bat/ads/log_stream.h"
+#include "bat/ads/mojom.h"
 
 namespace ads {
 
@@ -35,14 +32,10 @@ using ResultCallback = std::function<void(const Result)>;
 
 using LoadCallback = std::function<void(const Result, const std::string&)>;
 
-using GetCreativeAdNotificationsCallback = std::function<void(const Result,
-    const std::vector<std::string>&, const CreativeAdNotificationList&)>;
-
-using GetAdConversionsCallback = std::function<void(const Result,
-    const AdConversionList&)>;
-
 using URLRequestCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>&)>;
+
+using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -177,13 +170,6 @@ class ADS_EXPORT AdsClient {
       const std::string& value,
       ResultCallback callback) = 0;
 
-  // Should save the bundle state to persistent storage. The callback takes one
-  // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
-  // should be set to |FAILED|
-  virtual void SaveBundleState(
-      std::unique_ptr<BundleState> state,
-      ResultCallback callback) = 0;
-
   // Should load a value from persistent storage. The callback takes 2 arguments
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
   // set to |FAILED|. |value| should contain the persisted value
@@ -196,12 +182,11 @@ class ADS_EXPORT AdsClient {
   //
   //   resources/
   //   ├──catalog-schema.json
-  //   ├──bundle-schema.json
   //
-  // |catalog-schema.json| and |bundle-schema.json| are JSON schemas which
-  // specify the JSON-based format to define the structure of the JSON data for
-  // validation, documentation, and interaction control. It provides the
-  // contract for the JSON data and how that data can be modified
+  // |catalog-schema.json| is a JSON schema used to specify the JSON-based
+  // format to define the structure of the JSON data for validation,
+  // documentation, and interaction control. It provides the contract for the
+  // JSON data and how that data can be modified
   virtual std::string LoadJsonSchema(
       const std::string& name) = 0;
 
@@ -211,22 +196,9 @@ class ADS_EXPORT AdsClient {
   virtual void Reset(
       const std::string& name, ResultCallback callback) = 0;
 
-  // Should fetch all creative ad notifications for the specified |category|
-  // where the current time is between the ad |start_timestamp| and
-  // |end_timestamp| from the previously persisted bundle state. The callback
-  // takes 3 arguments — |Result| should be set to |SUCCESS| if successful;
-  // otherwise, should be set to |FAILED|. |category| should contain the
-  // category. |ads| should contain an array of ads
-  virtual void GetCreativeAdNotifications(
-      const std::vector<std::string>& categories,
-      GetCreativeAdNotificationsCallback callback) = 0;
-
-  // Should fetch all ad conversions from the previously persisted bundle state.
-  // The callback takes 2 arguments — |Result| should be set to |SUCCESS| if
-  // successful; otherwise, should be set to |FAILED|. |ad_conversions| should
-  // contain an array of ad conversions
-  virtual void GetAdConversions(
-      GetAdConversionsCallback callback) = 0;
+  virtual void RunDBTransaction(
+      DBTransactionPtr transaction,
+      RunDBTransactionCallback callback) = 0;
 
   // Verbose level logging
   virtual void Log(

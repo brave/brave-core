@@ -11,6 +11,7 @@
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/ad_conversion_queue_item_info.h"
+#include "bat/ads/internal/ad_conversion_info.h"
 #include "bat/ads/internal/timer.h"
 
 #include "base/values.h"
