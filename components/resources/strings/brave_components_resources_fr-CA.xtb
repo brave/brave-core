@@ -94,7 +94,7 @@
 <translation id="3829010735958850433">Sauter le tour d'accueil</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="7954950242989581218">Naviguer en toute sécurité</translation>
-<translation id="2188651882929633653">Les boucliers de Brave bloquent les trucs flippants qui essaient de vous suivre sur le Web — y compris la plupart des publicités. Réglez les boucliers en position “ basse ” si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>des analyses de produits entièrement privées<ph name="END_LINK_P3A">&amp;lt;/a&amp;gt;</ph> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cette fonctionnalité dans <ph name="BEGIN_LINK_P3A_SETTINGS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph> Paramètres <ph name="END_LINK_P3A_SETTINGS">&amp;lt;/a&amp;gt;</ph>.</translation>
+<translation id="2188651882929633653">Les boucliers de Brave bloquent les trucs flippants qui essaient de vous suivre sur le Web — y compris la plupart des publicités. Réglez les boucliers en position “ basse ” si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>des analyses de produits entièrement privées<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cette fonctionnalité dans <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph> Paramètres <ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Publicités</translation>
 <translation id="2128226640852355533">Gagnez {{currency}} en visionnant des publicités Brave. Les publicités présentées sont basées sur vos intérêts, tels qu'ils sont déduits de votre comportement de navigation. Aucune donnée personnelle ou historique de navigation ne quitte jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Contribuer automatiquement</translation>
@@ -176,7 +176,7 @@
 <translation id="3082557070674409251">Cliqué</translation>
 <translation id="7119308337584989771">Rejeté</translation>
 <translation id="6805660603861526473">Vu</translation>
-<translation id="2852258589816753010">BAT n'est pas actuellement pris en charge dans votre région. Veuillez vous référer à <ph name="BEGIN_LINK_REGION_TEXT">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>here<ph name="END_LINK_REGION_TEXT">&amp;lt;/a&amp;gt;</ph> afin d'obtenir des mises à jour.</translation>
+<translation id="2852258589816753010">BAT n'est pas actuellement pris en charge dans votre région. Veuillez vous référer à <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> afin d'obtenir des mises à jour.</translation>
 <translation id="2564425876266960486">Erreur lors de la création de la carte BAT du navigateur Brave</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="5025866799968038247">Informations sur le solde</translation>
