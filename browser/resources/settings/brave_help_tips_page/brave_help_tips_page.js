@@ -11,14 +11,6 @@
    * brave's help tips features.
    */
   Polymer({
-    is: 'settings-brave-help-tips-page',
-
-    /** @private {?settings.BraveHelpTipsBrowserProxy} */
-    browserProxy_: null,
-
-    /** @override */
-    created: function() {
-      this.browserProxy_ = settings.BraveHelpTipsBrowserProxyImpl.getInstance();
-    },
+    is: 'settings-brave-help-tips-page'
   });
 })();
