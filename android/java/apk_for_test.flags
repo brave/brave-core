@@ -40,3 +40,10 @@
     *** getMaxRowsForMostVisitedTiles(...);
     *** mSiteSectionView;
 }
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
+    *** mActivity;
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+}
