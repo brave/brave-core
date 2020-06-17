@@ -8,7 +8,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
@@ -18,7 +17,23 @@
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
+
+namespace {
+
+//  Returns the eTLD+1 for the top level frame the document is in.
+//
+//  Returns the eTLD+1 (effective registrable domain) for the top level
+//  frame that the given document is in. This includes frames that
+//  are disconnect, remote or local to the top level frame.
+std::string TopETLDPlusOneForDoc(const Document& doc) {
+  const auto host = doc.TopFrameOrigin()->Host();
+  return blink::network_utils::GetDomainAndRegistry(host,
+      blink::network_utils::kIncludePrivateRegistries).Utf8();
+}
+
+}  // namespace
 
 namespace brave {
 
@@ -27,10 +42,7 @@ const char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
 
 BraveSessionCache::BraveSessionCache(Document& document)
     : Supplement<Document>(document) {
-  base::StringPiece host =
-      base::StringPiece(document.TopFrameOrigin()->ToUrlOrigin().host());
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      host, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const std::string domain = TopETLDPlusOneForDoc(document);
   farbling_enabled_ = !domain.empty();
   if (farbling_enabled_) {
     base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
