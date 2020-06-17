@@ -6,13 +6,15 @@
 import Foundation
 
 class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
-    var tappedHeadline: (() -> Void)?
+    var actionHandler: ((Int, FeedItemAction) -> Void)?
     
     let feedView = FeedItemView(layout: .brandedHeadline).then {
         // Title label slightly different
         $0.titleLabel.font = .systemFont(ofSize: 18.0, weight: .semibold)
         $0.isUserInteractionEnabled = false
     }
+    
+    private var contextMenuDelegate: NSObject?
     
     required init() {
         super.init(frame: .zero)
@@ -23,10 +25,22 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
         }
         
         addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
+        
+        if #available(iOS 13.0, *) {
+            let contextMenuDelegate = FeedContextMenu(handler: { [weak self] action in
+                self?.actionHandler?(0, action)
+            })
+            addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
+            self.contextMenuDelegate = contextMenuDelegate
+        }
+    }
+    
+    func prepareForReuse() {
+        print(self.interactions)
     }
     
     @objc private func tappedSelf() {
-        tappedHeadline?()
+        actionHandler?(0, .tapped)
     }
 }
 
@@ -46,6 +60,12 @@ class SmallHeadlineCardView: HeadlineCardView {
 }
 
 class SmallHeadlinePairCardView: UIView, FeedCardContent {
+    var actionHandler: ((Int, FeedItemAction) -> Void)? {
+        didSet {
+            smallHeadelineCardViews.left.actionHandler = actionHandler
+            smallHeadelineCardViews.right.actionHandler = actionHandler
+        }
+    }
     
     private let stackView = UIStackView().then {
         $0.distribution = .fillEqually

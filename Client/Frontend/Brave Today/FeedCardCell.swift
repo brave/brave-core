@@ -6,8 +6,17 @@ import Foundation
 import Storage
 import BraveUI
 
+/// The actions you can perform on a feed item in the list
+enum FeedItemAction: Equatable {
+    /// The user simply tapped on the item and should open the feed URL
+    case tapped
+    /// The user choose to open the feed item in a new tab (and possibly in private mode)
+    case openInNewTab(_ isPrivate: Bool = false)
+}
+
 protocol FeedCardContent {
     var view: UIView { get }
+    var actionHandler: ((_ itemIndex: Int, _ action: FeedItemAction) -> Void)? { get set }
     init()
 }
 
