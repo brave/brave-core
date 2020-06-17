@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388708b56fd 100644
+index 2ec6259205e403e149311c6df2347571e575d5ba..60ccf601271cdedc55fbf3feac47594f665f7eb7 100644
 --- a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 +++ b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-@@ -837,6 +837,7 @@ void RTCPeerConnection::Dispose() {
+@@ -839,6 +839,7 @@ void RTCPeerConnection::Dispose() {
  ScriptPromise RTCPeerConnection::createOffer(ScriptState* script_state,
                                               const RTCOfferOptions* options,
                                               ExceptionState& exception_state) {
@@ -10,7 +10,7 @@ index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388
    if (signaling_state_ ==
        webrtc::PeerConnectionInterface::SignalingState::kClosed) {
      exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
-@@ -900,6 +901,7 @@ ScriptPromise RTCPeerConnection::CreateOffer(
+@@ -902,6 +903,7 @@ ScriptPromise RTCPeerConnection::CreateOffer(
    ExecutionContext* context = ExecutionContext::From(script_state);
    UseCounter::Count(
        context, WebFeature::kRTCPeerConnectionCreateOfferLegacyFailureCallback);
@@ -18,7 +18,7 @@ index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388
    if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
      return ScriptPromise::CastUndefined(script_state);
  
-@@ -961,6 +963,7 @@ ScriptPromise RTCPeerConnection::CreateOffer(
+@@ -963,6 +965,7 @@ ScriptPromise RTCPeerConnection::CreateOffer(
  ScriptPromise RTCPeerConnection::createAnswer(ScriptState* script_state,
                                                const RTCAnswerOptions* options,
                                                ExceptionState& exception_state) {
@@ -26,7 +26,7 @@ index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388
    if (signaling_state_ ==
        webrtc::PeerConnectionInterface::SignalingState::kClosed) {
      exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
-@@ -1023,6 +1026,7 @@ ScriptPromise RTCPeerConnection::CreateAnswer(
+@@ -1025,6 +1028,7 @@ ScriptPromise RTCPeerConnection::CreateAnswer(
          context, WebFeature::kRTCPeerConnectionCreateAnswerLegacyCompliant);
    }
  
@@ -34,15 +34,15 @@ index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388
    if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
      return ScriptPromise::CastUndefined(script_state);
  
-@@ -1337,6 +1341,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
-     ScriptState* script_state,
-     const RTCSessionDescriptionInit* session_description_init,
-     ExceptionState& exception_state) {
+@@ -1346,6 +1350,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
+   }
+ 
+   DCHECK(script_state->ContextIsValid());
 +  BRAVE_RTC_PEER_CONNECTION
-   if (session_description_init->type().IsNull() &&
-       session_description_init->sdp().IsNull()) {
+   if (!session_description_init->hasType()) {
      return setLocalDescription(script_state);
-@@ -1397,6 +1402,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
+   }
+@@ -1411,6 +1416,7 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
            WebFeature::
                kRTCPeerConnectionSetLocalDescriptionLegacyNoFailureCallback);
    }
@@ -50,15 +50,15 @@ index 35aa9094e41e95f121a71b3b762d3e8b443b2280..7a95bdbf3174743b96dd436b8d326388
    String sdp;
    if (session_description_init->type() != "rollback") {
      DOMException* exception =
-@@ -1449,6 +1455,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
-     ScriptState* script_state,
-     const RTCSessionDescriptionInit* session_description_init,
-     ExceptionState& exception_state) {
+@@ -1470,6 +1476,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
+   }
+ 
+   DCHECK(script_state->ContextIsValid());
 +  BRAVE_RTC_PEER_CONNECTION
    if (session_description_init->type() != "rollback") {
      MaybeWarnAboutUnsafeSdp(session_description_init);
      ReportSetSdpUsage(SetSdpOperationType::kSetRemoteDescription,
-@@ -1503,6 +1510,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
+@@ -1531,6 +1538,7 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
            WebFeature::
                kRTCPeerConnectionSetRemoteDescriptionLegacyNoFailureCallback);
    }
