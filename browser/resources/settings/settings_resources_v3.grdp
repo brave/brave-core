@@ -31,11 +31,6 @@
           use_base_dir="false"
           preprocess="true"
           type="BINDATA" />
-  <include name="IDR_SETTINGS_BRAVE_SOCIAL_BLOCKING_PAGE_SOCIAL_BLOCKING_BROWSER_PROXY_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/social_blocking_page/social_blocking_browser_proxy.m.js"
-          use_base_dir="false"
-          preprocess="true"
-          type="BINDATA" />
   <include name="IDR_SETTINGS_BRAVE_SOCIAL_BLOCKING_PAGE_SOCIAL_BLOCKING_PAGE_M_JS"
           file="${root_gen_dir}/brave/browser/resources/settings/social_blocking_page/social_blocking_page.m.js"
           use_base_dir="false"
