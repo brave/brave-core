@@ -315,6 +315,10 @@ source_set("browser_process") {
       "ipfs",
       "//brave/components/ipfs/browser",
     ]
+    sources += [
+      "ipfs/ipfs_tab_helper.cc",
+      "ipfs/ipfs_tab_helper.h",
+    ]
   }
 
   if (brave_together_enabled) {
