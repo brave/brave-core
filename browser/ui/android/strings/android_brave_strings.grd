@@ -309,11 +309,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
         Troubleshooting onboarding
       </message>
-      <message name="IDS_WELCOME_TO_BRAVE_BROWSER" desc="Title for search engine page for onboarding">
-        Welcome to Brave Browser
+      <message name="IDS_CHOOSE_DEFAULT_SEARCH_ENGINE" desc="Title Text for search engine page for onboarding">
+        Choose default search engine
       </message>
-      <message name="IDS_SELECT_YOUR_DEFAULT_SEARCH_ENGINE" desc="Text for search engine page for onboarding">
-        Select your default search engine
+      <message name="IDS_SEARCH_ENGINE_TEXT" desc="Text for search engine page for onboarding">
+        For a more private search experience, try DuckDuckGo.
+      </message>
+      <message name="IDS_SAVE" desc="Text for save button">
+        Save
       </message>
       <message name="IDS_BLOCK" desc="Partial Text for brave shield page">
         Block

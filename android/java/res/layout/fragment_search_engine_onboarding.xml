@@ -21,34 +21,28 @@
         android:background="@color/onboarding_bg_color"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/brave_onboarding"
-            android:layout_gravity="center"
-            android:contentDescription="@string/search_engine_onboarding"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/welcome_to_brave_browser"
+            android:text="@string/choose_default_search_engine"
             android:lineSpacingMultiplier="1.2"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:textSize="20sp"
             android:textColor="@color/onboarding_text_color"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/search_engine_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:lineSpacingMultiplier="1.2"
-            android:text="@string/select_your_default_search_engine"
+            android:text="@string/search_engine_text"
             android:textColor="@color/onboarding_text_color"
             android:textSize="@dimen/onboarding_text_size" />
 
@@ -66,40 +60,34 @@
 
         </ScrollView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/search_engine_text"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="14sp"
+            android:textColor="@color/onboarding_text_color"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="64dp"
+            android:background="@drawable/orange_rounded_button"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/onboarding_text_size"
+            style="?android:attr/borderlessButtonStyle"/>
+
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/action_layout"
-        android:layout_width="match_parent"
-        android:layout_gravity="center_vertical|bottom"
-        android:background="@color/onboarding_bg_color"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btn_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="16dp"
-            android:background="@android:color/transparent"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/skip"
-            android:textColor="@color/onboarding_gray" />
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/next"
-            android:drawableEnd="@drawable/chevron_right"
-            android:textColor="@color/onboarding_orange" />
-
-    </FrameLayout>
 
 </LinearLayout>
