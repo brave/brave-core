@@ -1,13 +1,12 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index ff43d7e511fce90fe8dd4f798b9d575dec283681..10f92d16721d16e968f7295a954b4ed446b558dd 100644
+index e3e37799207498c99218573daa331c5c5b0ceb4c..96819457361482089ea9726de997e19bb5c1a97d 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-@@ -73,7 +73,7 @@ views::Widget* BookmarkBubbleView::ShowBubble(
-   // Bookmark bubble should always anchor TOP_RIGHT, but the
-   // LocationBarBubbleDelegateView does not know that and may use different
-   // arrow anchoring.
--  bookmark_bubble_->SetArrow(views::BubbleBorder::TOP_RIGHT);
-+  bookmark_bubble_->SetArrow(views::BubbleBorder::TOP_LEFT);
-   if (!anchor_view) {
-     bookmark_bubble_->SetAnchorRect(anchor_rect);
-     bookmark_bubble_->set_parent_window(parent_window);
+@@ -202,6 +202,7 @@ BookmarkBubbleView::BookmarkBubbleView(
+   WidgetDelegate::SetShowCloseButton(true);
+ 
+   SetArrow(views::BubbleBorder::TOP_RIGHT);
++  BRAVE_BOOKMARK_BUBBLE_VIEW
+   SetButtonLabel(ui::DIALOG_BUTTON_OK, l10n_util::GetStringUTF16(IDS_DONE));
+   SetButtonLabel(
+       ui::DIALOG_BUTTON_CANCEL,
