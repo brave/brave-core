@@ -68,7 +68,7 @@ class FeedGroupView: UIView {
         }
         let stackView = UIStackView().then {
             $0.axis = .vertical
-            $0.spacing = 20
+            $0.spacing = 16
         }
         stackView.addStackViewItems(
             .view(titleLabel),
