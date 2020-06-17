@@ -10,7 +10,8 @@
 // The RenderView should always be ready when the content script begins, so
 // this message is used to trigger CSS insertion instead.
 chrome.runtime.sendMessage({
-  type: 'contentScriptsLoaded'
+  type: 'contentScriptsLoaded',
+  location: window.location
 })
 
 const parseDomain = require('parse-domain')
@@ -536,8 +537,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'cosmeticFilteringBackgroundReady': {
+      if (msg.hideOptions !== undefined) {
+        scheduleQueuePump(msg.hideOptions.hide1pContent, msg.hideOptions.generichide)
+      }
       injectScriptlet(msg.scriptlet)
-      scheduleQueuePump(msg.hide1pContent, msg.generichide)
       break
     }
     case 'cosmeticFilterConsiderNewSelectors': {

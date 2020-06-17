@@ -42,7 +42,7 @@ chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData
   onContextMenuClicked(info, tab)
 })
 
-// content script listener for right click DOM selection event
+// content script listener for events from the cosmetic filtering content script
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
@@ -71,11 +71,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (tabId === undefined) {
         break
       }
-      const url = tab.url
+      const url = msg.location.href
       if (url === undefined) {
         break
       }
-      shieldsPanelActions.contentScriptsLoaded(tabId, url)
+      const frameId = sender.frameId
+      if (frameId === undefined) {
+        break
+      }
+      shieldsPanelActions.contentScriptsLoaded(tabId, frameId, url)
     }
   }
 })
