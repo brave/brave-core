@@ -106,6 +106,9 @@ public class BraveNewTabPageView extends NewTabPageView {
         super.onAttachedToWindow();
         if (sponsoredTab == null)
             initilizeSponsoredTab();
+        if (mNewTabPageLayout != null && mNewTabPageLayout.getPlaceholder() != null) {
+            mNewTabPageLayout.getPlaceholder().setVisibility(View.GONE);
+        }
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
     }
@@ -419,15 +422,14 @@ public class BraveNewTabPageView extends NewTabPageView {
     private NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver mNTPBackgroundImageServiceObserver = new NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver() {
         @Override
         public void onUpdated() {
-            checkAndShowNTPImage(true);
-            if (mNewTabPageLayout != null && mNewTabPageLayout.getPlaceholder() != null) {
-                mNewTabPageLayout.getPlaceholder().setVisibility(View.GONE);
+            if (NTPUtil.isReferralEnabled()) {
+                checkAndShowNTPImage(true);
+                ((BraveNewTabPageLayout)mNewTabPageLayout).removeDefaultTopSites();
+                if (mNTPBackgroundImagesBridge.isSuperReferral()
+                        && NTPBackgroundImagesBridge.enableSponsoredImages()
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    mNTPBackgroundImagesBridge.getTopSites();
             }
-            ((BraveNewTabPageLayout)mNewTabPageLayout).removeDefaultTopSites();
-            if (mNTPBackgroundImagesBridge.isSuperReferral()
-                    && NTPBackgroundImagesBridge.enableSponsoredImages()
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                mNTPBackgroundImagesBridge.getTopSites();
         }
     };
 
