@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/reporting_observer.idl b/third_party/blink/renderer/core/frame/reporting_observer.idl
-index 134e31d61ab3982f92fcfaae00d16554b038c17f..cd55f89e87dc8be9adddadb83ff0ade0b93f42ff 100644
+index 03017d16102e63567eff11c1b5066ebff899b023..5ea94e97d108d69477814eb0cf9bed1e04c15461 100644
 --- a/third_party/blink/renderer/core/frame/reporting_observer.idl
 +++ b/third_party/blink/renderer/core/frame/reporting_observer.idl
 @@ -7,6 +7,7 @@
@@ -7,6 +7,6 @@ index 134e31d61ab3982f92fcfaae00d16554b038c17f..cd55f89e87dc8be9adddadb83ff0ade0
  
  [
 +    ContextEnabled=ReportingObservers,
-     ActiveScriptWrappable
+     ActiveScriptWrappable,
+     Exposed=(Window,Worker)
  ] interface ReportingObserver {
-     [CallWith=ExecutionContext] constructor(ReportingObserverCallback callback, optional ReportingObserverOptions options = {});
