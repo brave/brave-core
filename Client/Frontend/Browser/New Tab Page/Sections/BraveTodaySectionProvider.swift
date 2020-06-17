@@ -65,8 +65,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
             cell.content.feedView.setupWithItem(item)
-            cell.content.tappedHeadline = {
-                print("Tapped Feed Headline with URL: \(item.url?.absoluteString ?? "<null>")")
+            cell.content.actionHandler = { _, action in
+                if action == .tapped {
+                    print("Tapped Feed Headline with URL: \(item.url?.absoluteString ?? "<null>")")
+                }
             }
             return cell
         case .headlinePair(let pair):

@@ -9,7 +9,7 @@ import BraveUI
 /// the feeds.
 class FeedGroupView: UIView {
     /// The user has tapped the feed that exists at a specific index
-    var tappedFeedAtIndex: ((Int) -> Void)?
+    var actionHandler: ((Int, FeedItemAction) -> Void)?
     /// The title label appearing above the list of feeds
     let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 21, weight: .bold)
@@ -29,6 +29,8 @@ class FeedGroupView: UIView {
             $0.height.equalTo(20)
         }
     }
+    /// The context menu delegate if on iOS 13
+    private var contextMenuDelegates: [NSObject] = []
     /// The blurred background view
     private let backgroundView = FeedCardBackgroundView()
     /// Create a card that contains a list of feeds within it
@@ -63,8 +65,15 @@ class FeedGroupView: UIView {
         
         super.init(frame: .zero)
         
-        buttons.forEach {
-            $0.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
+        zip(buttons.indices, buttons).forEach { (index, button) in
+            button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
+            if #available(iOS 13.0, *) {
+                let contextMenuDelegate = FeedContextMenu(handler: { [weak self] action in
+                    self?.actionHandler?(index, action)
+                }, padPreview: true)
+                button.addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
+                contextMenuDelegates.append(contextMenuDelegate)
+            }
         }
         let stackView = UIStackView().then {
             $0.axis = .vertical
@@ -104,7 +113,7 @@ class FeedGroupView: UIView {
     
     @objc private func tappedButton(_ sender: SpringButton) {
         if let index = buttons.firstIndex(where: { sender === $0 }) {
-            tappedFeedAtIndex?(index)
+            actionHandler?(index, .tapped)
         }
     }
 }

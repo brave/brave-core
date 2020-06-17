@@ -200,6 +200,7 @@
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
 		2718B26E2391BB8E00F378BF /* DisabledSettingGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */; };
+		2719DA00249AAC2A0080AB48 /* FeedContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2719D9FF249AAC2A0080AB48 /* FeedContextMenu.swift */; };
 		271DEC2B234CC760009DAC37 /* BraveRewardsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		271DEC2E234CC760009DAC37 /* BraveRewardsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; };
 		271DEC2F234CC760009DAC37 /* BraveRewardsUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1567,6 +1568,7 @@
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledSettingGraphicView.swift; sourceTree = "<group>"; };
+		2719D9FF249AAC2A0080AB48 /* FeedContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContextMenu.swift; sourceTree = "<group>"; };
 		271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraveRewardsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraveRewardsUI.h; sourceTree = "<group>"; };
 		271DEC1C234CC75F009DAC37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3716,6 +3718,7 @@
 				2726636824944BFA0056CFE1 /* BraveTodayWelcomeView.swift */,
 				27A1ABFB24855C1700344503 /* FeedCardCell.swift */,
 				27A1ABFD24855C1700344503 /* FeedItemView.swift */,
+				2719D9FF249AAC2A0080AB48 /* FeedContextMenu.swift */,
 				27A1ABF924855C1700344503 /* Cards */,
 				27A1AC0A2485A0CC00344503 /* Composer */,
 				2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */,
@@ -6699,6 +6702,7 @@
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */,
 				27FCA8E02447708300A8CA48 /* FavoritesSectionProvider.swift in Sources */,
+				2719DA00249AAC2A0080AB48 /* FeedContextMenu.swift in Sources */,
 				4422D4DA21BFFB7600BF1855 /* iterator.cc in Sources */,
 				4422D4AF21BFFB7600BF1855 /* status.cc in Sources */,
 				4422D4EA21BFFB7600BF1855 /* db_impl.cc in Sources */,
