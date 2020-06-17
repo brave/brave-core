@@ -10,19 +10,6 @@
  * social blocking options
  */
 Polymer({
-  is: 'settings-social-blocking-page',
-
-  properties: {},
-
-  /** @private {?settings.DefaultBraveShieldsBrowserProxy} */
-  browserProxy_: null,
-
-  /** @override */
-  created: function() {
-    this.browserProxy_ = settings.SocialBlockingBrowserProxyImpl.getInstance();
-  },
-
-  /** @override */
-  ready: function() {},
+  is: 'settings-social-blocking-page'
 });
 })();
