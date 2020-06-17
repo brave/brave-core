@@ -16,6 +16,7 @@ public class BraveClassAdapter {
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
+        chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         return chain;
     }
 }

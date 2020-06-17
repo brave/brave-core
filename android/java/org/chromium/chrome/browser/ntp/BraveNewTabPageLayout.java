@@ -81,7 +81,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
     private static final short MILLISECONDS_PER_ITEM = 50;
-    private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
 
     private ViewGroup mBraveStatsView;
 
@@ -94,11 +93,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ImageView bgImageView;
     private Profile mProfile;
 
-    private TabImpl mTabImpl;
-    private Tab mTab;
     private SponsoredTab sponsoredTab;
 
-    private NewTabPageLayout mNewTabPageLayout;
     private BitmapDrawable imageDrawable;
 
     private FetchWallpaperWorkerTask mWorkerTask;
@@ -106,13 +102,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private ViewGroup mainLayout;
     private DatabaseHelper mDatabaseHelper;
-    private BraveActivity mBraveActivity;
 
     private ViewGroup mSiteSectionView;
 
+    private Supplier<Tab> mTabProvider;
+    private Activity mActivity;
+
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
@@ -194,7 +192,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
 
         if (!isFromBottomSheet) {
-            mNewTabPageLayout.setBackgroundResource(0);
+            setBackgroundResource(0);
             if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
                 imageDrawable.getBitmap().recycle();
             }
@@ -234,10 +232,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
                 lifecycleDispatcher, overviewModeBehavior, uma);
 
-        mTabImpl = (TabImpl) tabProvider.get();
-        mTab = tabProvider.get();
         assert (activity instanceof BraveActivity);
-        mBraveActivity = (BraveActivity) activity;
+        mActivity = activity;
+        mTabProvider = tabProvider;
     }
 
     @Override
@@ -267,13 +264,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 && sponsoredTab != null
                 && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(
-                    mNewTabPageLayout.getResources().getColor(android.R.color.white));
+                    getResources().getColor(android.R.color.white));
             mDataSavedTextView.setTextColor(
-                    mNewTabPageLayout.getResources().getColor(android.R.color.white));
+                    getResources().getColor(android.R.color.white));
             mEstTimeSavedTextView.setTextColor(
-                    mNewTabPageLayout.getResources().getColor(android.R.color.white));
+                    getResources().getColor(android.R.color.white));
             mEstTimeSavedCountTextView.setTextColor(
-                    mNewTabPageLayout.getResources().getColor(android.R.color.white));
+                    getResources().getColor(android.R.color.white));
         }
 
         TraceEvent.end(TAG + ".updateBraveStats()");
@@ -332,10 +329,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void showNTPImage(NTPImage ntpImage) {
-        NTPUtil.updateOrientedUI(mBraveActivity, mNewTabPageLayout);
-        ImageView mSponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-        FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
-        TextView mCreditText = (TextView)mNewTabPageLayout.findViewById(R.id.credit_text);
+        NTPUtil.updateOrientedUI(mActivity, this);
+        ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
+        FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
+        TextView mCreditText = (TextView) findViewById(R.id.credit_text);
         if (ntpImage instanceof Wallpaper
                 && NTPUtil.isReferralEnabled()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -350,8 +347,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    SuperReferralShareDialogFragment mSuperReferralShareDialogFragment = new SuperReferralShareDialogFragment();
-                    mSuperReferralShareDialogFragment.show(mBraveActivity.getSupportFragmentManager(), "SuperReferralShareDialogFragment");
+                    SuperReferralShareDialogFragment mSuperReferralShareDialogFragment =
+                            new SuperReferralShareDialogFragment();
+                    mSuperReferralShareDialogFragment.show(
+                            ((BraveActivity) mActivity).getSupportFragmentManager(),
+                            "SuperReferralShareDialogFragment");
                 }
             });
         } else if (BravePrefServiceBridge.getInstance().getBoolean(
@@ -364,7 +364,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 mSponsoredLogo.setVisibility(View.GONE);
                 mSuperReferralLogo.setVisibility(View.GONE);
                 if (backgroundImage.getImageCredit() != null) {
-                    String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
+                    String imageCreditStr = String.format(getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
 
                     SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
                     spannableString.setSpan(
@@ -389,7 +389,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
-        bgImageView = (ImageView)mNewTabPageLayout.findViewById(R.id.bg_image_view);
+        bgImageView = (ImageView) findViewById(R.id.bg_image_view);
         bgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
         ViewTreeObserver observer = bgImageView.getViewTreeObserver();
@@ -407,8 +407,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()) {
-            NTPUtil.showNonDistruptiveBanner(
-                    mBraveActivity, mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
+            NTPUtil.showNonDistruptiveBanner((BraveActivity) mActivity, this, brOption,
+                    sponsoredTab, newTabPageListener);
         }
     }
 
@@ -427,12 +427,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void initilizeSponsoredTab() {
-        if (mTab == null) return;
-        if (TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId())) == null) {
+        if (TabAttributes.from(getTab()).get(String.valueOf(getTabImpl().getId())) == null) {
             SponsoredTab mSponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
-            TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
+            TabAttributes.from(getTab()).set(String.valueOf(getTabImpl().getId()), mSponsoredTab);
         }
-        sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));
+        sponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTabImpl()).getId()));
         if (mNTPBackgroundImagesBridge.isSuperReferral()
             && NTPBackgroundImagesBridge.enableSponsoredImages()
             && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -452,7 +451,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 }
             } else {
                 if(!isFromBottomSheet){
-                    mNewTabPageLayout.setBackgroundResource(0);
+                    setBackgroundResource(0);
                     if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
                         imageDrawable.getBitmap().recycle();
                     }
@@ -504,10 +503,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         @Override
         public void onUpdated() {
             checkAndShowNTPImage(true);
-            if (mNewTabPageLayout != null && mNewTabPageLayout.getPlaceholder() != null) {
-                mNewTabPageLayout.getPlaceholder().setVisibility(View.GONE);
+            if (getPlaceholder() != null) {
+                getPlaceholder().setVisibility(View.GONE);
             }
-            ((BraveNewTabPageLayout)mNewTabPageLayout).removeDefaultTopSites();
+            removeDefaultTopSites();
             if (mNTPBackgroundImagesBridge.isSuperReferral()
                     && NTPBackgroundImagesBridge.enableSponsoredImages()
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -524,10 +523,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         @Override
         public void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper) {
             if(!NTPUtil.isReferralEnabled()) {
-                FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
+                FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
                 mSuperReferralLogo.setVisibility(View.GONE);
 
-                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                ImageView sponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
                 sponsoredLogo.setVisibility(View.VISIBLE);
                 sponsoredLogo.setImageBitmap(logoWallpaper);
                 sponsoredLogo.setOnClickListener(new View.OnClickListener() {
@@ -543,8 +542,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     };
 
     private void loadTopSites(List<TopSiteTable> topSites) {
-        LinearLayout superReferralSitesLayout = (LinearLayout) mNewTabPageLayout.findViewById(R.id.ntp_super_referral_sites_layout);
-        LayoutInflater inflater = (LayoutInflater) mBraveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout superReferralSitesLayout = (LinearLayout) findViewById(R.id.ntp_super_referral_sites_layout);
+        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for(TopSiteTable topSite : topSites) {
             final View view = inflater.inflate(R.layout.suggestions_tile_view, null);
@@ -601,8 +600,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     menu.add(R.string.contextmenu_save_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            if (mTab != null) {
-                                OfflinePageBridge.getForProfile(mProfile).scheduleDownload(mTab.getWebContents(),
+                            if (getTab() != null) {
+                                OfflinePageBridge.getForProfile(mProfile).scheduleDownload(getTab().getWebContents(),
                                         OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, topSite.getDestinationUrl(), DownloadUiActionFlags.ALL);
                             } else {
                                 RequestCoordinatorBridge.getForProfile(mProfile).savePageLater(
@@ -635,5 +634,19 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private boolean hasParent(View view) {
         return view != null && view.getParent() != null;
+    }
+
+    private Tab getTab() {
+        Tab tab = mTabProvider.get();
+        if (tab == null && mActivity instanceof ChromeTabbedActivity) {
+            ChromeTabbedActivity chromeActivity = ((ChromeTabbedActivity) mActivity);
+            tab = chromeActivity.getActivityTab();
+        }
+        assert tab != null;
+        return tab;
+    }
+
+    private TabImpl getTabImpl() {
+        return (TabImpl) getTab();
     }
 }

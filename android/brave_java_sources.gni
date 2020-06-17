@@ -9,6 +9,7 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/safetynet/java_sources.gni")
+import("//components/feed/features.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
@@ -146,6 +147,12 @@ if (brave_rewards_enabled || enable_brave_referrals) {
 
 if (brave_ads_enabled) {
   brave_java_sources += brave_ads_java_sources
+}
+
+if (enable_feed_in_chrome) {
+  brave_java_sources += [
+    "//brave/android/feed/core/java/src/org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator.java",
+  ]
 }
 
 if (enable_brave_sync) {
