@@ -87,14 +87,23 @@
         justify-content: center;
         cursor: pointer;
       }
+      .device[disabled]
+      {
+        cursor: not-allowed;
+      }
 
       .device-image
       {
         margin-bottom: 20px;
         height: 100px;
       }
+      [disabled] > .device-image
+      {
+        opacity: .3;
+      }
       .device-title
       {
+        color: var(--cr-primary-text-color);
         align-self: unset;
         font-weight: 600;
         font-size: 20px;
@@ -103,6 +112,19 @@
         padding: 0;
         font-family: Poppins, sans-serif;
       }
+      .device-subtitle
+      {
+        align-self: unset;
+        font-weight: 400;
+        font-style: italic;
+        margin: 0;
+      }
+      [disabled] > .device-title,
+      [disabled] > .device-subtitle
+      {
+        color: var(--cr-secondary-text-color);
+      }
+
       .sync-code-widget
       {
         margin: 0 20px;
@@ -175,9 +197,10 @@
           <span class="dialog-subtitle">$i18n{braveSyncChooseDeviceDesc}</span>
         </div>
         <div slot="body" class="devices">
-          <button class="device mobile" on-click="handleChooseMobile_">
+          <button disabled class="device mobile" on-click="handleChooseMobile_">
             <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_mobile.svg" />
             <h2 class="device-title">$i18n{braveSyncChooseDeviceMobileTitle}</h2>
+            <h3 class="device-subtitle">(coming soon)</h3>
           </button>
           <button class="device computer" on-click="handleChooseComputer_">
             <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_computer.svg" />
@@ -246,11 +269,13 @@
           </div>
         </div>
         <div slot="button-container" class="button-group">
-          <button class="tertiary-button"
+          <!-- TODO(petemill): button temporarily disabled
+            waiting on mobile feature completion
+         <button class="tertiary-button"
             on-click="handleChooseMobile_"
           >
             $i18n{braveSyncViewCodeQRCodeButton}
-          </button>
+          </button> -->
           <cr-button class="action-button"
             on-click="handleDone_"
           >
