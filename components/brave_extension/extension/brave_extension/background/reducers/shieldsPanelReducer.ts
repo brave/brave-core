@@ -382,12 +382,21 @@ export default function shieldsPanelReducer (
         console.error('Active tab not found')
         break
       }
-      state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
-      chrome.tabs.sendMessage(action.tabId, {
+      let message: { type: string, scriptlet: string, hideOptions?: { hide1pContent: boolean, generichide: boolean } } = {
         type: 'cosmeticFilteringBackgroundReady',
         scriptlet: action.scriptlet,
-        hide1pContent: tabData.firstPartyCosmeticFiltering,
-        generichide: action.generichide
+        hideOptions: undefined
+      }
+      if (action.frameId === 0) {
+        // Non-scriptlet cosmetic filters are only applied on the top-level frame
+        state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
+        message.hideOptions = {
+          hide1pContent: tabData.firstPartyCosmeticFiltering,
+          generichide: action.generichide
+        }
+      }
+      chrome.tabs.sendMessage(action.tabId, message, {
+        frameId: action.frameId
       })
       break
     }
@@ -400,7 +409,7 @@ export default function shieldsPanelReducer (
       Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
         .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
           if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, action.url, hide1pContent)
+            applyAdblockCosmeticFilters(action.tabId, action.frameId, action.url, hide1pContent)
           }
         })
         .catch(() => {

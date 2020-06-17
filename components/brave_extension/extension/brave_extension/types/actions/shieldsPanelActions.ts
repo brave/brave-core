@@ -187,23 +187,25 @@ export interface GenerateClassIdStylesheet {
 interface CosmeticFilterRuleExceptionsReturn {
   type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
   tabId: number,
+  frameId: number,
   exceptions: string[],
   scriptlet: string,
   generichide: boolean
 }
 
 export interface CosmeticFilterRuleExceptions {
-  (tabId: number, exceptions: string[], scriptlet: string): CosmeticFilterRuleExceptionsReturn
+  (tabId: number, frameId: number, exceptions: string[], scriptlet: string, generichide: boolean): CosmeticFilterRuleExceptionsReturn
 }
 
 interface ContentScriptsLoadedReturn {
   type: types.CONTENT_SCRIPTS_LOADED,
   tabId: number,
+  frameId: number,
   url: string,
 }
 
 export interface ContentScriptsLoaded {
-  (tabId: number, url: string): ContentScriptsLoadedReturn
+  (tabId: number, frameId: number, url: string): ContentScriptsLoadedReturn
 }
 
 export type shieldPanelActions =
