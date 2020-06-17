@@ -22,7 +22,6 @@ class InfoBar;
 namespace views {
 class ImageView;
 class Label;
-class Separator;
 }  // namespace views
 
 class BraveWaybackMachineInfoBarButtonContainer;
@@ -70,9 +69,8 @@ class BraveWaybackMachineInfoBarContentsView
   content::WebContents* contents_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
-  views::Separator* separator_ = nullptr;
   BraveWaybackMachineInfoBarButtonContainer* button_ = nullptr;
-  views::ImageView* sad_folder_ = nullptr;
+  views::ImageView* wayback_spot_graphic_ = nullptr;
   bool wayback_url_fetch_requested_ = false;
 };
 

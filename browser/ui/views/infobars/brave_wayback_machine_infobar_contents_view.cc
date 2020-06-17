@@ -29,10 +29,10 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
-#include "ui/views/controls/separator.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "url/gurl.h"
@@ -41,12 +41,6 @@ namespace {
 // IDs of the colors to use for infobar elements.
 constexpr int kInfoBarLabelBackgroundColor = ThemeProperties::COLOR_INFOBAR;
 constexpr int kInfoBarLabelTextColor = ThemeProperties::COLOR_BOOKMARK_TEXT;
-constexpr int kInfoBarSeparatorColor =
-    BraveThemeProperties::COLOR_WAYBACK_INFOBAR_SEPARATOR;
-constexpr int kInfoBarSadFolderColor =
-    BraveThemeProperties::COLOR_WAYBACK_INFOBAR_SAD_FOLDER;
-
-constexpr int kSadFolderSize = 22;
 }  // namespace
 
 BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
@@ -68,15 +62,19 @@ BraveWaybackMachineInfoBarContentsView::
 
 void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
   views::View::OnThemeChanged();
+
   const SkColor background_color = GetColor(kInfoBarLabelBackgroundColor);
   const SkColor text_color = GetColor(kInfoBarLabelTextColor);
   for (auto* label : labels_) {
     label->SetBackgroundColor(background_color);
     label->SetEnabledColor(text_color);
   }
-  separator_->SetColor(GetColor(kInfoBarSeparatorColor));
-  sad_folder_->SetImage(
-      gfx::CreateVectorIcon(kSadFolderIcon, GetColor(kInfoBarSadFolderColor)));
+
+  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+  wayback_spot_graphic_->SetImage(
+      rb.GetImageSkiaNamed(ui::NativeTheme::GetInstanceForNativeUi()->
+          ShouldUseDarkColors() ? IDR_BRAVE_WAYBACK_INFOBAR_DARK
+                                : IDR_BRAVE_WAYBACK_INFOBAR));
 }
 
 void BraveWaybackMachineInfoBarContentsView::ButtonPressed(
@@ -108,18 +106,10 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
 }
 
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
-  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
-  views::ImageView* wayback_spot_graphic = new views::ImageView();
-  wayback_spot_graphic->SetImage(
-      rb.GetImageSkiaNamed(IDR_BRAVE_WAYBACK_INFOBAR));
-  wayback_spot_graphic->SetProperty(views::kMarginsKey,
-                          gfx::Insets(6, 20, 6, 20));
-  AddChildView(wayback_spot_graphic);
-
-  separator_ = new views::Separator;
-  separator_->SetProperty(views::kMarginsKey,
-                          gfx::Insets(12, 0, 12, 20));
-  AddChildView(separator_);
+  wayback_spot_graphic_ = new views::ImageView();
+  wayback_spot_graphic_->SetProperty(views::kMarginsKey,
+                                    gfx::Insets(8, 34, 8, 24));
+  AddChildView(wayback_spot_graphic_);
 
   const views::FlexSpecification label_flex_rule =
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
@@ -172,13 +162,6 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                       DISTANCE_TOAST_LABEL_VERTICAL),
                   0));
   AddChildView(label);
-
-  sad_folder_ = new views::ImageView();
-  sad_folder_->SetPreferredSize(gfx::Size(kSadFolderSize, kSadFolderSize));
-  sad_folder_->SizeToPreferredSize();
-  views_visible_after_checking_.push_back(sad_folder_);
-  sad_folder_->SetProperty(views::kMarginsKey, gfx::Insets(12, 10));
-  AddChildView(sad_folder_);
 
   button_ = new BraveWaybackMachineInfoBarButtonContainer(this);
   views_visible_before_checking_.push_back(button_);

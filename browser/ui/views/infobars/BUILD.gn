@@ -18,6 +18,7 @@ source_set("brave_wayback_machine") {
     "//content/public/browser",
     "//ui/base",
     "//ui/gfx",
+    "//ui/native_theme",
     "//ui/views",
     "//url",
   ]
