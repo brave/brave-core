@@ -105,7 +105,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private ViewGroup mSiteSectionView;
 
-    private Supplier<Tab> mTabProvider;
+    private Tab mTab;
     private Activity mActivity;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
@@ -211,6 +211,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         if (sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+            if (bgImageView != null) {
+                // We need to redraw image to fit parent properly
+                bgImageView.setImageResource(android.R.color.transparent);
+            }
             NTPImage ntpImage = sponsoredTab.getTabNTPImage(false);
             if (ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
@@ -241,7 +245,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
-        mTabProvider = tabProvider;
     }
 
     @Override
@@ -643,14 +646,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         return view != null && view.getParent() != null;
     }
 
+    public void setTab(Tab tab) {
+        mTab = tab;
+    }
+
     private Tab getTab() {
-        Tab tab = mTabProvider.get();
-        if (tab == null && mActivity instanceof ChromeTabbedActivity) {
-            ChromeTabbedActivity chromeActivity = ((ChromeTabbedActivity) mActivity);
-            tab = chromeActivity.getActivityTab();
-        }
-        assert tab != null;
-        return tab;
+        assert mTab != null;
+        return mTab;
     }
 
     private TabImpl getTabImpl() {
