@@ -32,6 +32,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
     }
 
     @Test
@@ -60,6 +61,10 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mChromeSyncEnabled"));
         Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mMasterSyncEnabled"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mActivity"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mScrollViewForPolicy"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mNtpHeader"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mRootView"));
     }
 
     private boolean classExists(String className) {

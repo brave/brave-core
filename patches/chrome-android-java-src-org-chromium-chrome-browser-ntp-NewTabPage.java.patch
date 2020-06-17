@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
+index 83657d3a9d528cc51e69be8dad61eb67f6e652a4..703764e66938d7427fb4341ab42a5ba52d2b19db 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPage.java
+@@ -440,7 +440,7 @@ public class NewTabPage implements NativePage, InvalidationAwareThumbnailProvide
+         }
+ 
+         mFeedSurfaceProvider =
+-                new FeedSurfaceCoordinator(activity, snackbarManager, tabModelSelector, tabProvider,
++                new org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator(activity, snackbarManager, tabModelSelector, tabProvider,
+                         new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout),
+                         mNewTabPageLayout, sectionHeaderView, actionApi, isInNightMode, this,
+                         mNewTabPageManager.getNavigationDelegate(), profile);
