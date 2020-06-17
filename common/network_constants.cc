@@ -49,6 +49,12 @@ const char kCRLSetPrefix4[] =
     "/*crxd";
 const char kChromeCastPrefix[] =
     "*://*.gvt1.com/edgedl/chromewebstore/*pkedcjkdefgpdelpbcmbmeomcjbeemfm*";
+
+const char kWidevineGvt1Prefix[] =
+    "*://*.gvt1.com/*oimompecagnajdejgnnjijobebaeigek*";
+const char kWidevineGoogleDlPrefix[] =
+    "*://dl.google.com/*oimompecagnajdejgnnjijobebaeigek*";
+
 const char kForbesPattern[] = "https://www.forbes.com/*";
 const char kForbesExtraCookies[] =
     "forbes_ab=true; welcomeAd=true; adblock_session=Off; "
