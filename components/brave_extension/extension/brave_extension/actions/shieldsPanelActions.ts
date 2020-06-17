@@ -147,19 +147,21 @@ export const generateClassIdStylesheet = (tabId: number, classes: string[], ids:
   }
 }
 
-export const cosmeticFilterRuleExceptions = (tabId: number, exceptions: string[], scriptlet: string) => {
+export const cosmeticFilterRuleExceptions: actions.CosmeticFilterRuleExceptions = (tabId: number, frameId: number, exceptions: string[], scriptlet: string) => {
   return {
     type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
     tabId,
+    frameId,
     exceptions,
     scriptlet
   }
 }
 
-export const contentScriptsLoaded: actions.ContentScriptsLoaded = (tabId: number, url: string) => {
+export const contentScriptsLoaded: actions.ContentScriptsLoaded = (tabId: number, frameId: number, url: string) => {
   return {
     type: types.CONTENT_SCRIPTS_LOADED,
     tabId,
+    frameId,
     url
   }
 }

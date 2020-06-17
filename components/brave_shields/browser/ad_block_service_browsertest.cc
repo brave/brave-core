@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
@@ -1077,6 +1078,37 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
               contents,
               "checkSelector('.ad', 'color', 'Impossible value')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
+// Test scriptlet injection that modifies window attributes
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringIframeScriptlet) {
+  std::string scriptlet = "(function() {"
+      "  window.JSON.parse = function() { return {} }"
+      "})();";
+  std::string scriptlet_base64;
+  base::Base64Encode(scriptlet, &scriptlet_base64);
+  UpdateAdBlockInstanceWithRules("b.com##+js(hjt)", "[{"
+          "\"name\": \"hijacktest\","
+          "\"aliases\": [\"hjt\"],"
+          "\"kind\": {\"mime\": \"application/javascript\"},"
+          "\"content\": \"" + scriptlet_base64 + "\"}]");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/iframe_messenger.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = true;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "window.domAutomationController.send(show_ad)",
               &as_expected));
   EXPECT_TRUE(as_expected);
 }
