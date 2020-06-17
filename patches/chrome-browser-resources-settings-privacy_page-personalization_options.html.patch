@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e38338761e0c7377 100644
+index 76c63b3a0ec34d52395dca48dbf7dfff42e86220..afb559a269044bff03f2b9d164143fa16a64fab8 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -16,6 +16,7 @@
@@ -10,27 +10,28 @@ index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e3833876
  
  <!--
   * Note: If a synced pref is added/removed from this file, the method
-@@ -36,6 +37,7 @@
+@@ -35,6 +36,7 @@
          border-top: none;
        }
      </style>
 +<if expr="_google_chrome">
  <if expr="not chromeos">
      <settings-toggle-button id="signinAllowedToggle"
-         disabled="[[syncFirstSetupInProgress_]]"
-@@ -46,18 +48,22 @@
+         class="hr"
+@@ -46,6 +48,7 @@
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 +</if>
-     <settings-toggle-button hidden="[[!pageVisibility.searchPrediction]]"
+     <settings-toggle-button class="hr"
+         hidden="[[!pageVisibility.searchPrediction]]"
          pref="{{prefs.search.suggest_enabled}}"
-         label="$i18n{searchSuggestPref}"
+@@ -53,12 +56,15 @@
          sub-label="$i18n{searchSuggestPrefDesc}">
      </settings-toggle-button>
    <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]">
 +<if expr="_google_chrome">
-     <settings-toggle-button id="linkDoctor"
+     <settings-toggle-button id="linkDoctor" class="hr"
          pref="{{prefs.alternate_error_pages.enabled}}"
          label="$i18n{linkDoctorPref}"
          sub-label="$i18n{linkDoctorPrefDesc}">
@@ -40,8 +41,8 @@ index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e3833876
 +    <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
  <if expr="_google_chrome">
  <if expr="chromeos">
-     <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
-@@ -65,6 +71,8 @@
+     <settings-toggle-button class="hr"
+@@ -67,6 +73,8 @@
          sub-label="$i18n{enablePersonalizationLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -49,8 +50,8 @@ index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e3833876
 +<if expr="_chromium">
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
-         pref="[[metricsReportingPref_]]"
-@@ -79,12 +87,14 @@
+         class="hr"
+@@ -82,13 +90,15 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -58,6 +59,7 @@ index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e3833876
 +</if><!-- _chromium -->
 +<if expr="_google_chrome">
      <settings-toggle-button
+         class="hr"
          pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
          label="$i18n{urlKeyedAnonymizedDataCollection}"
          sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
@@ -65,8 +67,8 @@ index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e3833876
 +</if>
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
-         pref="{{prefs.spellcheck.use_spelling_service}}"
-@@ -103,6 +113,7 @@
+         class="hr"
+@@ -108,6 +118,7 @@
        </settings-toggle-button>
      </template>
  
@@ -74,7 +76,7 @@ index dace1a9871a103be45af87a72f043c4df98cadf2..02ac6f4d338e7f7301dd5af3e3833876
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -114,6 +125,7 @@
+@@ -119,6 +130,7 @@
        <div>$i18n{restartToApplyChanges}</div>
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>

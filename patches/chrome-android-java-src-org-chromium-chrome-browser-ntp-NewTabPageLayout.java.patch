@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index 480e1d231b5e311270d529298a29145971af62cc..238eb0021d848943fd166794a9431fab9ffc3a20 100644
+index 72c56798d26fa57d3b961f4bddddbfd2a73fb3ac..f13efdcdf17c6a8e2216d3f2572533f13a151455 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -73,7 +73,7 @@ import org.chromium.ui.vr.VrModeObserver;
+@@ -61,7 +61,7 @@ import org.chromium.ui.vr.VrModeObserver;
   * Layout for the new tab page. This positions the page elements in the correct vertical positions.
   * There are no separate phone and tablet UIs; this layout adapts based on the available space.
   */
@@ -11,16 +11,16 @@ index 480e1d231b5e311270d529298a29145971af62cc..238eb0021d848943fd166794a9431fab
      private static final String TAG = "NewTabPageLayout";
      // Used to signify the cached resource value is unset.
      private static final int UNSET_RESOURCE_FLAG = -1;
-@@ -85,7 +85,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -73,7 +73,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
  
      private LogoView mSearchProviderLogoView;
-     private SearchBoxContainerView mSearchBoxContainerView;
+     private SearchBoxCoordinator mSearchBoxCoordinator;
 -    private ViewGroup mSiteSectionView;
 +    protected ViewGroup mSiteSectionView;
      private SiteSectionViewHolder mSiteSectionViewHolder;
      private ImageView mVoiceSearchButton;
      private View mTileGridPlaceholder;
-@@ -430,7 +430,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -426,7 +426,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  1f);
      }
  
@@ -29,12 +29,12 @@ index 480e1d231b5e311270d529298a29145971af62cc..238eb0021d848943fd166794a9431fab
          mSiteSectionView = SiteSection.inflateSiteSection(this);
          ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
          layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-@@ -795,7 +795,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -793,7 +793,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
          }
      }
  
--    private static int getMaxTileRows() {
-+    protected int getMaxTileRows() {
-         return 2;
-     }
- 
+-    private int getMaxRowsForMostVisitedTiles() {
++    protected int getMaxRowsForMostVisitedTiles() {
+         Integer maxRows = mQueryTileSection == null
+                 ? null
+                 : mQueryTileSection.getMaxRowsForMostVisitedTiles();

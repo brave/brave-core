@@ -1,19 +1,19 @@
 diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
-index 6d5084e46272ff6e9250ce28aaf62a2ff086d249..7db8ebe97a6a2c0ab652430d2fbed356e9b9606a 100644
+index bedb16b046d45b257e28e29e410afe43f5c8817c..e42ab4d47c07d027b17e69b9c2afc22b5757f59b 100644
 --- a/android_webview/browser/aw_permission_manager.cc
 +++ b/android_webview/browser/aw_permission_manager.cc
-@@ -339,6 +339,7 @@ int AwPermissionManager::RequestPermissions(
-       case PermissionType::VR:
-       case PermissionType::AR:
+@@ -341,6 +341,7 @@ int AwPermissionManager::RequestPermissions(
        case PermissionType::STORAGE_ACCESS_GRANT:
+       case PermissionType::CAMERA_PAN_TILT_ZOOM:
+       case PermissionType::WINDOW_PLACEMENT:
 +      BRAVE_PERMISSION_TYPES
          NOTIMPLEMENTED() << "RequestPermissions is not implemented for "
                           << static_cast<int>(permissions[i]);
          pending_request_raw->SetPermissionStatus(permissions[i],
-@@ -544,6 +545,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
-       case PermissionType::VR:
-       case PermissionType::AR:
+@@ -548,6 +549,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
        case PermissionType::STORAGE_ACCESS_GRANT:
+       case PermissionType::CAMERA_PAN_TILT_ZOOM:
+       case PermissionType::WINDOW_PLACEMENT:
 +      BRAVE_PERMISSION_TYPES
          NOTIMPLEMENTED() << "CancelPermission not implemented for "
                           << static_cast<int>(permission);

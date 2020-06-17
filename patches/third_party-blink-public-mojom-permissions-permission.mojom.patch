@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
-index 8b2409fe513cd1afb9ba373d6ab25d42bedf2ad5..18e67432f93082c583d890245f4cb699823b7f5d 100644
+index 372df35d637cd7b585ea44a37d06b6fb91560596..cdaab740dc78162d9d115a9d433e97c9cfc524d6 100644
 --- a/third_party/blink/public/mojom/permissions/permission.mojom
 +++ b/third_party/blink/public/mojom/permissions/permission.mojom
-@@ -26,6 +26,7 @@ enum PermissionName {
-   WAKE_LOCK,
+@@ -28,6 +28,7 @@ enum PermissionName {
    NFC,
    STORAGE_ACCESS,
+   WINDOW_PLACEMENT,
 +  AUTOPLAY,
  };
  
- // This is similar to WakeLockType in modules/wake_lock/wake_lock.idl.
+ struct MidiPermissionDescriptor {
