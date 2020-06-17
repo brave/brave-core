@@ -69,7 +69,7 @@ class FeedDataSource {
             do {
                 let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem>].self, from: data).compactMap { $0.wrappedValue }
                 DispatchQueue.main.async {
-                    self.feeds = self.scored(feeds: decodedFeeds)
+                    self.feeds = self.scored(feeds: decodedFeeds).sorted(by: <)
                     self.generateCards()
                     completion()
                 }
@@ -103,7 +103,7 @@ class FeedDataSource {
             1st item, Large Card, Latest item from query
             Deals card
          */
-        let deals = feeds.filter { $0.item.publisherID == "brave_offers" }
+        var deals = feeds.filter { $0.item.publisherID == "brave_offers" }
         var sponsors = feeds.filter { $0.item.contentType == "product" }
         var articles = feeds.filter { $0.item.contentType == "article" }
         var media = feeds.lazy.filter { $0.item.contentType == "image" }
@@ -117,6 +117,7 @@ class FeedDataSource {
         if !deals.isEmpty {
             let items = deals.prefix(3).map(\.item)
             cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+            deals.removeFirst(3)
         }
         
         /**
@@ -134,6 +135,38 @@ class FeedDataSource {
              Video Cards always Large, less than 3 per collection
          */
         
+        do {
+            // Cards 1 to 6: Latest items
+            // - 2x Large Headline
+            // - 2x Small Headline Pair
+            let items = articles.prefix(6).map(\.item)
+            cards.append(.headline(items[0]))
+            cards.append(.headline(items[1]))
+            cards.append(.headlinePair((items[2], items[3])))
+            cards.append(.headlinePair((items[4], items[5])))
+            articles.removeFirst(6)
+        }
+        
+        do {
+            // Card 7: Category of items
+            // - Vertical List card, 3 stories from multiple sources of same category
+            // - Don't repeat category until all have been used
+            if let category = articles.first?.item.category {
+                let items = Array(articles.lazy.filter({ $0.item.category == category }).prefix(3).map(\.item))
+                cards.append(.group(items, title: category, direction: .vertical, displayBrand: false))
+                articles.removeAll(where: { items.contains($0.item) })
+            }
+        }
+        
+        do {
+            // Card 8 and 9: Commercial
+            // - 1x sponsored card (large headline)
+            // - 1x affiliate deals card
+            cards.append(.headline(sponsors.removeFirst().item))
+            let items = deals.prefix(3).map(\.item)
+            cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+            deals.removeFirst(3)
+        }
         
         self.cards = cards
     }

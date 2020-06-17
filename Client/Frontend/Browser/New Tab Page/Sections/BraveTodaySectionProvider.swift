@@ -91,6 +91,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 return UICollectionViewCell()
             }
             groupView.titleLabel.text = title
+            groupView.titleLabel.isHidden = title.isEmpty
             zip(groupView.feedViews, items).forEach { (view, item) in
                 view.setupWithItem(item)
             }
@@ -99,6 +100,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             } else {
                 groupView.groupBrandImageView.image = nil
             }
+            groupView.groupBrandImageView.isHidden = !displayBrand
             return cell
         case .numbered(let items, let title):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>

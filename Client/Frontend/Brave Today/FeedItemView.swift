@@ -32,6 +32,7 @@ class FeedItemView: UIView {
     var titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
         $0.appearanceTextColor = .white
+        $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.numberOfLines = 2
     }
     /// The date of when the article was posted (if applicable)
@@ -78,6 +79,7 @@ class FeedItemView: UIView {
                 $0.axis = stack.axis
                 $0.spacing = stack.spacing
                 $0.layoutMargins = stack.padding
+                $0.alignment = stack.alignment
                 $0.isLayoutMarginsRelativeArrangement = true
                 $0.isUserInteractionEnabled = false
                 for child in stack.children {
@@ -116,6 +118,7 @@ extension FeedItemView {
             var axis: NSLayoutConstraint.Axis = .horizontal
             var spacing: CGFloat = 0
             var padding: UIEdgeInsets = .zero
+            var alignment: UIStackView.Alignment = .fill
             var children: [Component]
         }
         enum ImageLayout {
@@ -239,6 +242,7 @@ extension FeedItemView {
             root: .init(
                 axis: .horizontal,
                 spacing: 10,
+                alignment: .center,
                 children: [
                     .stack(
                         .init(
@@ -251,7 +255,7 @@ extension FeedItemView {
                             ]
                         )
                     ),
-                    .thumbnail(.aspectRatio(1))
+                    .thumbnail(.fixedSize(CGSize(width: 98, height: 98)))
                 ]
             )
         )

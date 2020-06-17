@@ -8,7 +8,7 @@ import Foundation
 struct FeedSource: Decodable {
     var isDefault: Bool
     var id: String
-    var logo: URL?
+    @URLString var logo: URL?
     var name: String
     
     enum CodingKeys: String, CodingKey {

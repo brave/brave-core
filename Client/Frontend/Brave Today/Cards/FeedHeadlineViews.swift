@@ -35,6 +35,7 @@ class SmallHeadlineCardView: HeadlineCardView {
     required init() {
         super.init()
         
+        feedView.titleLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         feedView.titleLabel.numberOfLines = 4
     }
     
@@ -47,7 +48,8 @@ class SmallHeadlineCardView: HeadlineCardView {
 class SmallHeadlinePairCardView: UIView, FeedCardContent {
     
     private let stackView = UIStackView().then {
-        $0.distribution = .equalSpacing
+        $0.distribution = .fillEqually
+        $0.spacing = 20
     }
     
     let smallHeadelineCardViews: (left: SmallHeadlineCardView, right: SmallHeadlineCardView) = (SmallHeadlineCardView(), SmallHeadlineCardView())
@@ -58,6 +60,10 @@ class SmallHeadlinePairCardView: UIView, FeedCardContent {
         addSubview(stackView)
         stackView.addArrangedSubview(smallHeadelineCardViews.left)
         stackView.addArrangedSubview(smallHeadelineCardViews.right)
+        
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     @available(*, unavailable)
