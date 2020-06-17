@@ -182,8 +182,8 @@
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認したいですか？</translation>
 <translation id="8053093028263274061">申し訳ございません、利用可能な保存されたバージョンはありません。</translation>
 <translation id="8517321676372639828">保存されたバージョンをチェックする</translation>
-<translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&amp;lt;/a&amp;gt;</ph> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>オープンソース・ソフトウェア<ph name="END_LINK_OSS">&amp;lt;/a&amp;gt;</ph>が含まれています。
-<ph name="BEGIN_LINK_SOURCE_CODE">&amp;lt;a target="_blank" href="$4"&amp;gt;</ph>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE">&amp;lt;/a&amp;gt;</ph>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&amp;lt;a target="_blank" href="$3"&amp;gt;</ph>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS">&amp;lt;/a&amp;gt;</ph>をお読みください。</translation>
+<translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>オープンソース・ソフトウェア<ph name="END_LINK_OSS">&lt;/a&gt;</ph>が含まれています。
+<ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
