@@ -396,6 +396,8 @@ source_set("browser_process") {
     sources += [
       "//chrome/browser/google/google_update_win.cc",
       "//chrome/browser/google/google_update_win.h",
+      "//chrome/browser/google/switches.cc",
+      "//chrome/browser/google/switches.h",
     ]
 
     deps += [
