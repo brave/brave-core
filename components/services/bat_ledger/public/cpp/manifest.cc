@@ -21,16 +21,14 @@ const service_manager::Manifest& GetManifest() {
                   .WithInstanceSharingPolicy(
                       service_manager::Manifest::InstanceSharingPolicy::
                           kSharedAcrossGroups)
-                  .WithExecutionMode(service_manager::Manifest::ExecutionMode::
-                                         kOutOfProcessBuiltin)
-#if !defined(OS_ANDROID)
-                  .WithSandboxType("none")
-#endif
+                  .WithExecutionMode(
+                      service_manager::Manifest::ExecutionMode::
+                          kOutOfProcessBuiltin)
                   .Build())
           .ExposeCapability(
               "bat_ledger",
-                            service_manager::Manifest::InterfaceList<
-                                mojom::BatLedgerService>())
+              service_manager::Manifest::InterfaceList<
+                  mojom::BatLedgerService>())
           .Build()};
   return *manifest;
 }
