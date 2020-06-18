@@ -43,8 +43,12 @@ const getProcessorString = (processor: number) => {
 
 const getContributionStepString = (step: number) => {
   switch (step) {
+    case -6:
+      return getLocale('contributionStepAutoContributeOff')
+    case -5:
+      return getLocale('contributionStepRewardsOff')
     case -4:
-      return getLocale('contributionAutoContributeTableEmpty')
+      return getLocale('contributionStepAutoContributeTableEmpty')
     case -3:
       return getLocale('contributionStepNotEnoughFunds')
     case -2:
