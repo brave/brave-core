@@ -522,11 +522,22 @@ class RewardsServiceImpl : public RewardsService,
                                     ledger::FetchIconCallback callback,
                                     bool success);
 
+  bool MaybeTailDiagnosticLog(
+      const int num_lines);
+
   void DiagnosticLog(
       const std::string& file,
       const int line,
       const int verbose_level,
       const std::string& message) override;
+
+  bool WriteToDiagnosticLogOnFileTaskRunner(
+      const base::FilePath& log_path,
+      const int num_lines,
+      const std::string& file,
+      const int line,
+      const int verbose_level,
+      const std::string& message);
 
   void OnWriteToLogOnFileTaskRunner(
     const bool success);
@@ -535,11 +546,18 @@ class RewardsServiceImpl : public RewardsService,
       const int num_lines,
       LoadDiagnosticLogCallback callback) override;
 
+  std::string LoadDiagnosticLogOnFileTaskRunner(
+      const base::FilePath& path,
+      const int num_lines);
+
   void OnLoadDiagnosticLogOnFileTaskRunner(
       LoadDiagnosticLogCallback callback,
       const std::string& value);
 
   void ClearDiagnosticLog(ClearDiagnosticLogCallback callback) override;
+
+  bool ClearDiagnosticLogOnFileTaskRunner(
+      const base::FilePath& path);
 
   void OnClearDiagnosticLogOnFileTaskRunner(
       ClearDiagnosticLogCallback callback,
@@ -714,6 +732,7 @@ class RewardsServiceImpl : public RewardsService,
   mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath diagnostic_log_path_;
+  base::File diagnostic_log_;
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
