@@ -30,7 +30,7 @@
         android:layout_toStartOf="@+id/brave_sync_remove_device"
         android:paddingStart="10dip" />
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/brave_sync_remove_device"
         android:layout_width="wrap_content"
