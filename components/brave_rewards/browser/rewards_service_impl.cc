@@ -313,6 +313,28 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
+bool ProcessPublisher(const GURL& url) {
+  // we should always process publisher on desktop
+  #if !defined(OS_ANDROID)
+    return true;
+  #endif
+
+  const std::vector<GURL> excluded = {
+      GURL("https://twitter.com")
+  };
+
+  for (const auto& domain : excluded) {
+    if (net::registry_controlled_domains::SameDomainOrHost(
+        url,
+        domain,
+        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 const char pref_prefix[] = "brave.rewards.";
 
 }  // namespace
@@ -615,6 +637,10 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   if (!Connected())
     return;
 
+  if (!ProcessPublisher(url)) {
+    return;
+  }
+
   auto origin = url.GetOrigin();
   const std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
@@ -676,6 +702,10 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
   if (!Connected())
     return;
 
+  if (!ProcessPublisher(url)) {
+    return;
+  }
+
   std::string output;
   url::RawCanonOutputW<1024> canonOutput;
   url::DecodeURLEscapeSequences(post_data.c_str(),
@@ -705,6 +735,10 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                                    const GURL& referrer) {
   if (!Connected())
     return;
+
+  if (!ProcessPublisher(url)) {
+    return;
+  }
 
   std::map<std::string, std::string> parts;
 
@@ -1964,13 +1998,13 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     const std::string& url,
     const std::string& favicon_url,
     const std::string& publisher_blob) {
-  GURL parsedUrl(url);
+  GURL parsed_url(url);
 
-  if (!parsedUrl.is_valid()) {
+  if (!parsed_url.is_valid() || !ProcessPublisher(parsed_url)) {
     return;
   }
 
-  auto origin = parsedUrl.GetOrigin();
+  auto origin = parsed_url.GetOrigin();
   std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
 
@@ -1985,7 +2019,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 
   ledger::VisitDataPtr visit_data = ledger::VisitData::New();
   visit_data->domain = visit_data->name = baseDomain;
-  visit_data->path = parsedUrl.PathForRequest();
+  visit_data->path = parsed_url.PathForRequest();
   visit_data->url = origin.spec();
   visit_data->favicon_url = favicon_url;
 
