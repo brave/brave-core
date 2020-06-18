@@ -26,6 +26,7 @@
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -47,6 +48,12 @@ ledger::ContributionStep ConvertResultIntoContributionStep(
     }
     case ledger::Result::NOT_ENOUGH_FUNDS: {
       return ledger::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
+    }
+    case ledger::Result::REWARDS_OFF: {
+      return ledger::ContributionStep::STEP_REWARDS_OFF;
+    }
+    case ledger::Result::AC_OFF: {
+      return ledger::ContributionStep::STEP_AC_OFF;
     }
     default: {
       return ledger::ContributionStep::STEP_FAILED;
@@ -752,6 +759,23 @@ void Contribution::Retry(
 
   // negative steps are final steps, nothing to retry
   if (static_cast<int>(contribution->step) < 0) {
+    return;
+  }
+
+  if (!braveledger_state::GetRewardsMainEnabled(ledger_)) {
+    BLOG(1, "Rewards is disabled, completing contribution");
+    ledger_->ContributionCompleted(
+        ledger::Result::REWARDS_OFF,
+        std::move(contribution));
+    return;
+  }
+
+  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE &&
+      !braveledger_state::GetAutoContributeEnabled(ledger_)) {
+    BLOG(1, "AC is disabled, completing contribution");
+    ledger_->ContributionCompleted(
+        ledger::Result::AC_OFF,
+        std::move(contribution));
     return;
   }
 
