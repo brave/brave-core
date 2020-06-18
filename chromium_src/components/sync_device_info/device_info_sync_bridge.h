@@ -6,15 +6,21 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_SYNC_BRIDGE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_SYNC_BRIDGE_H_
 
-#define BRAVE_DEVICE_INFO_SYNC_BRIDGE_H_                      \
-  void DeleteDeviceInfo(const std::string& client_id,         \
-                        base::OnceClosure callback) override; \
-                                                              \
- private:                                                     \
-  void OnDeviceInfoDeleted(const std::string& client_id,      \
-                           base::OnceClosure callback);
+#include "components/sync_device_info/device_info_tracker.h"
+
+#define ForcePulseForTest                                                    \
+  DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) \
+      override;                                                              \
+  void ForcePulseForTest
+
+// private:
+#define StoreSpecifics                              \
+  OnDeviceInfoDeleted(const std::string& client_id, \
+                      base::OnceClosure callback);  \
+  void StoreSpecifics
 
 #include "../../../../components/sync_device_info/device_info_sync_bridge.h"
 
-#undef BRAVE_DEVICE_INFO_SYNC_BRIDGE_H_
+#undef ForcePulseForTest
+#undef StoreSpecifics
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_SYNC_BRIDGE_H_
