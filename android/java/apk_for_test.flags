@@ -47,3 +47,8 @@
     *** mNtpHeader;
     *** mRootView;
 }
+
+-keep class org.chromium.chrome.browser.ntp.NewTabPage {
+    *** mNewTabPageLayout;
+    *** mFeedSurfaceProvider;
+}
