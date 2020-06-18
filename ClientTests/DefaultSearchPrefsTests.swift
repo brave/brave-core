@@ -15,11 +15,11 @@ class DefaultSearchPrefsTests: XCTestCase {
         let searchPrefs = DefaultSearchPrefs(with: Bundle.main.resourceURL!.appendingPathComponent("SearchPlugins").appendingPathComponent("list.json"))!
 
         // setup the most popular locales
-        let allEngines = ["bing", "duckduckgo", "qwant", "startpage", "google"]
+        let allEngines = ["yahoo", "bing", "duckduckgo", "qwant", "startpage", "google"]
         let us = (lang: ["en-US", "en"], region: "US", resultList: allEngines, resultDefault: "Google")
         let england = (lang: ["en-GB"], region: "GB", resultList: allEngines, resultDefault: "Google")
         let france = (lang: ["fr-FR", "fr"], region: "FR", resultList: allEngines, resultDefault: "Google")
-        let japan = (lang: ["ja-JP", "ja"], region: "JP", resultList: allEngines, resultDefault: "Google")
+        let japan = (lang: ["ja-JP", "ja"], region: "JP", resultList: ["yahoo-jp", "bing", "duckduckgo", "qwant", "startpage", "google"], resultDefault: "Google")
         let canada = (lang: ["en-CA", "en"], region: "CA", resultList: allEngines, resultDefault: "Google")
         let russia = (lang: ["ru-RU", "ru"], region: "RU", resultList: ["yandex-ru", "duckduckgo", "qwant", "startpage", "google"], resultDefault: "Яндекс")
         let taiwan = (lang: ["zh-TW", "zh"], region: "TW", resultList: allEngines, resultDefault: "Google")
