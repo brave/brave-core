@@ -61,5 +61,6 @@ source_set("chromium_sources") {
     "//components/proxy_config",
     "//components/sync_preferences",
     "//components/user_prefs",
+    "//ios/chrome/browser/policy:feature_flags",
   ]
 }
