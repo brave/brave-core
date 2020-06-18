@@ -63,14 +63,20 @@
                 android:textAppearance="@style/TextAppearance.Headline.Primary.Light" />
 
             <TextView
-                android:id="@+id/new_tab_incognito_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="60dp"
-                android:text="@null"
+                android:text="@string/new_tab_private_desc"
                 android:textColor="@color/modern_grey_400"
                 android:gravity="center" />
+
+            <!-- This is just dummy view to avoid crashes within Chromium's part of code-->
+            <TextView
+                android:id="@+id/new_tab_incognito_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
 
             <TextView
