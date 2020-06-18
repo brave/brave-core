@@ -33,7 +33,7 @@ struct FeedItem: Equatable, Decodable {
         case publishTime = "publish_time"
         case url
         case domain
-        case imageURL = "img"
+        case imageURL = "padded_img"
         case title
         case description
         case contentType = "content_type"

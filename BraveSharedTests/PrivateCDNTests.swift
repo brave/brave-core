@@ -28,7 +28,7 @@ class PrivateCDNTests: BraveSharedTests {
     func testValidData() throws {
         let raw = "ABCDEFG"
         let rawData = try XCTUnwrap(raw.data(using: .ascii))
-        let length = UInt32(rawData.count)
+        let length = UInt32(rawData.count).bigEndian
         let lengthData = withUnsafePointer(to: length) {
             Data(bytes: $0, count: 4)
         }
@@ -36,16 +36,6 @@ class PrivateCDNTests: BraveSharedTests {
         let paddingData = try XCTUnwrap(padding.data(using: .ascii))
         
         let data = lengthData + rawData + paddingData
-        let unpadded = try XCTUnwrap(PrivateCDN.unpadded(data: data))
-        XCTAssertEqual(rawData, unpadded)
-    }
-    
-    func testBigEndianLength() throws {
-        let raw = "ABCDEFG"
-        let rawData = try XCTUnwrap(raw.data(using: .ascii))
-        let length: [UInt8] = [UInt8(rawData.count), 0, 0, 0]
-        let lengthData = Data(bytes: length, count: 4)
-        let data = lengthData + rawData
         let unpadded = try XCTUnwrap(PrivateCDN.unpadded(data: data))
         XCTAssertEqual(rawData, unpadded)
     }

@@ -27,7 +27,7 @@ public class PrivateCDN {
             return nil
         }
         let length = data.withUnsafeBytes {
-            return $0.load(as: UInt32.self).hostEndian
+            return UInt32(bigEndian: $0.load(as: UInt32.self)).hostEndian
         }
         guard data.count > length else {
             // Payload shorter than expected length
@@ -69,7 +69,7 @@ public class PrivateCDNImageCoder: NSObject, SDWebImageCoder {
         return SDWebImageCodersManager.sharedInstance().decodedImage(with: unpaddedData)
     }
     public func decompressedImage(with image: UIImage?, data: AutoreleasingUnsafeMutablePointer<NSData?>, options optionsDict: [String: NSObject]? = nil) -> UIImage? {
-        SDWebImageCodersManager.sharedInstance().decompressedImage(with: image, data: data, options: optionsDict)
+        image
     }
     public func canEncode(to format: SDImageFormat) -> Bool {
         SDWebImageCodersManager.sharedInstance().canEncode(to: format)
