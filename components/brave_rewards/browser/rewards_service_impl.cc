@@ -108,7 +108,6 @@ static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 namespace {
 
-base::File g_diagnostic_log;
 const int kDiagnosticLogMaxVerboseLevel = 6;
 const int kTailDiagnosticLogToNumLines = 20000;
 const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
@@ -224,32 +223,6 @@ bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
   }
 
   return res;
-}
-
-std::string LoadDiagnosticLogOnFileTaskRunner(
-    const base::FilePath& path,
-    const int num_lines) {
-  if (!base::PathExists(path)) {
-    return "";
-  }
-
-  std::string value;
-  if (!TailFileAsString(&g_diagnostic_log, num_lines, &value)) {
-    return base::StringPrintf("ERROR: %s",
-        GetLastFileError(&g_diagnostic_log).c_str());
-  }
-
-  return value;
-}
-
-bool ClearDiagnosticLogOnFileTaskRunner(const base::FilePath& path) {
-  if (!base::PathExists(path)) {
-    return true;
-  }
-
-  g_diagnostic_log.Close();
-
-  return base::DeleteFile(path, false);
 }
 
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
@@ -2328,15 +2301,15 @@ void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
       "rewards_notification_tips_processed");
 }
 
-bool MaybeTailDiagnosticLog(
+bool RewardsServiceImpl::MaybeTailDiagnosticLog(
     const int num_lines) {
-  if (!g_diagnostic_log.IsValid()) {
+  if (!diagnostic_log_.IsValid()) {
     return false;
   }
 
   static bool first_run = true;
 
-  const int64_t length = g_diagnostic_log.GetLength();
+  const int64_t length = diagnostic_log_.GetLength();
   if (length == -1) {
     return false;
   }
@@ -2347,42 +2320,7 @@ bool MaybeTailDiagnosticLog(
 
   first_run = false;
 
-  if (!TailFile(&g_diagnostic_log, num_lines)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool WriteToDiagnosticLogOnFileTaskRunner(
-    const base::FilePath& log_path,
-    const int num_lines,
-    const std::string& file,
-    const int line,
-    const int verbose_level,
-    const std::string& message) {
-  if (!InitializeLog(&g_diagnostic_log, log_path)) {
-    VLOG(0) << "Failed to initialize diagnostic log: "
-        << GetLastFileError(&g_diagnostic_log);
-
-    return false;
-  }
-
-  const base::Time time = base::Time::Now();
-
-  const std::string log_entry =
-      FriendlyFormatLogEntry(time, file, line, verbose_level, message);
-
-  if (!WriteToLog(&g_diagnostic_log, log_entry)) {
-    VLOG(0) << "Failed to write to diagnostic log: "
-        << GetLastFileError(&g_diagnostic_log);
-
-    return false;
-  }
-
-  if (!MaybeTailDiagnosticLog(num_lines)) {
-    VLOG(0) << "Failed to vacuum diagnostic log";
-
+  if (!TailFile(&diagnostic_log_, num_lines)) {
     return false;
   }
 
@@ -2403,11 +2341,52 @@ void RewardsServiceImpl::DiagnosticLog(
   }
 
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&WriteToDiagnosticLogOnFileTaskRunner,
-          diagnostic_log_path_, kTailDiagnosticLogToNumLines, file, line,
-              verbose_level, message),
+      base::BindOnce(&RewardsServiceImpl::WriteToDiagnosticLogOnFileTaskRunner,
+          base::Unretained(this),
+          diagnostic_log_path_,
+          kTailDiagnosticLogToNumLines,
+          file,
+          line,
+          verbose_level,
+          message),
       base::BindOnce(&RewardsServiceImpl::OnWriteToLogOnFileTaskRunner,
           AsWeakPtr()));
+}
+
+
+bool RewardsServiceImpl::WriteToDiagnosticLogOnFileTaskRunner(
+    const base::FilePath& log_path,
+    const int num_lines,
+    const std::string& file,
+    const int line,
+    const int verbose_level,
+    const std::string& message) {
+  if (!InitializeLog(&diagnostic_log_, log_path)) {
+    VLOG(0) << "Failed to initialize diagnostic log: "
+        << GetLastFileError(&diagnostic_log_);
+
+    return false;
+  }
+
+  const base::Time time = base::Time::Now();
+
+  const std::string log_entry =
+      FriendlyFormatLogEntry(time, file, line, verbose_level, message);
+
+  if (!WriteToLog(&diagnostic_log_, log_entry)) {
+    VLOG(0) << "Failed to write to diagnostic log: "
+        << GetLastFileError(&diagnostic_log_);
+
+    return false;
+  }
+
+  if (!MaybeTailDiagnosticLog(num_lines)) {
+    VLOG(0) << "Failed to vacuum diagnostic log";
+
+    return false;
+  }
+
+  return true;
 }
 
 void RewardsServiceImpl::OnWriteToLogOnFileTaskRunner(
@@ -2419,11 +2398,29 @@ void RewardsServiceImpl::LoadDiagnosticLog(
       const int num_lines,
       LoadDiagnosticLogCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadDiagnosticLogOnFileTaskRunner, diagnostic_log_path_,
+      base::BindOnce(&RewardsServiceImpl::LoadDiagnosticLogOnFileTaskRunner,
+          base::Unretained(this),
+          diagnostic_log_path_,
           num_lines),
       base::BindOnce(&RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner,
           AsWeakPtr(),
           std::move(callback)));
+}
+
+std::string RewardsServiceImpl::LoadDiagnosticLogOnFileTaskRunner(
+    const base::FilePath& path,
+    const int num_lines) {
+  if (!base::PathExists(path)) {
+    return "";
+  }
+
+  std::string value;
+  if (!TailFileAsString(&diagnostic_log_, num_lines, &value)) {
+    return base::StringPrintf("ERROR: %s",
+        GetLastFileError(&diagnostic_log_).c_str());
+  }
+
+  return value;
 }
 
 void RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner(
@@ -2435,10 +2432,23 @@ void RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner(
 void RewardsServiceImpl::ClearDiagnosticLog(
     ClearDiagnosticLogCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&ClearDiagnosticLogOnFileTaskRunner, diagnostic_log_path_),
+      base::BindOnce(&RewardsServiceImpl::ClearDiagnosticLogOnFileTaskRunner,
+          base::Unretained(this),
+          diagnostic_log_path_),
       base::BindOnce(&RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner,
           AsWeakPtr(),
           std::move(callback)));
+}
+
+bool RewardsServiceImpl::ClearDiagnosticLogOnFileTaskRunner(
+    const base::FilePath& path) {
+  if (!base::PathExists(path)) {
+    return true;
+  }
+
+  diagnostic_log_.Close();
+
+  return base::DeleteFile(path, false);
 }
 
 void RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner(
