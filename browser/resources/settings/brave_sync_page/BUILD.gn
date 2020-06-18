@@ -1,0 +1,79 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//third_party/closure_compiler/compile_js.gni")
+import("//tools/polymer/polymer.gni")
+import("//ui/webui/resources/tools/js_modulizer.gni")
+import("../settings.gni")
+
+# ES Module conversion from HTML Imports code
+
+group("web_modules") {
+  public_deps = [
+    ":brave_sync_code_dialog_module",
+    ":brave_sync_configure_module",
+    ":brave_sync_page_module",
+    ":brave_sync_setup_module",
+    ":brave_sync_subpage_module",
+    ":modules",
+  ]
+}
+
+polymer_modulizer("brave_sync_code_dialog") {
+  js_file = "brave_sync_code_dialog.js"
+  html_file = "brave_sync_code_dialog.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+    "brave/browser/resources/settings/brave_sync_page/brave_sync_browser_proxy.html|BraveSyncBrowserProxy",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+polymer_modulizer("brave_sync_configure") {
+  js_file = "brave_sync_configure.js"
+  html_file = "brave_sync_configure.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+    "brave/browser/resources/settings/brave_sync_page/brave_sync_browser_proxy.html|BraveSyncBrowserProxy",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+polymer_modulizer("brave_sync_page") {
+  js_file = "brave_sync_page.js"
+  html_file = "brave_sync_page.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+    "brave/browser/resources/settings/brave_sync_page/brave_sync_browser_proxy.html|BraveSyncBrowserProxy",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+polymer_modulizer("brave_sync_setup") {
+  js_file = "brave_sync_setup.js"
+  html_file = "brave_sync_setup.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+    "brave/browser/resources/settings/brave_sync_page/brave_sync_browser_proxy.html|BraveSyncBrowserProxy",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+polymer_modulizer("brave_sync_subpage") {
+  js_file = "brave_sync_subpage.js"
+  html_file = "brave_sync_subpage.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [
+    "brave/browser/resources/settings/brave_sync_page/brave_sync_browser_proxy.html|BraveSyncBrowserProxy",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+js_modulizer("modules") {
+  input_files = [
+    "brave_sync_browser_proxy.js",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}

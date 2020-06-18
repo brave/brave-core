@@ -1,0 +1,10 @@
+import("//chrome/browser/resources/settings/settings.gni")
+
+settings_namespace_rewrites += [
+  "settings.BraveAppearanceBrowserProxyImpl|BraveAppearanceBrowserProxyImpl",
+  "settings.BraveDefaultExtensionsBrowserProxyImpl|BraveDefaultExtensionsBrowserProxyImpl",
+  "settings.BraveNewTabBrowserProxyImpl|BraveNewTabBrowserProxyImpl",
+  "settings.BravePrivacyBrowserProxyImpl|BravePrivacyBrowserProxyImpl",
+  "settings.BraveSyncBrowserProxy|BraveSyncBrowserProxy",
+  "settings.DefaultBraveShieldsBrowserProxyImpl|DefaultBraveShieldsBrowserProxyImpl",
+]

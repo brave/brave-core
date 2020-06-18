@@ -29,7 +29,7 @@
       <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_SUPER_REFERRAL_HTML" file="brave_appearance_page/super_referral.html" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_SUPER_REFERRAL_JS" file="brave_appearance_page/super_referral.js" type="chrome_html" preprocess="true" />
 
-      <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="brave_page_visibility.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="brave_page_visibility.js" compress="false" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML" file="brave_privacy_page/brave_personalization_options.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS" file="brave_privacy_page/brave_personalization_options.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML" file="brave_privacy_page/brave_privacy_page_browser_proxy.html" type="chrome_html" />
@@ -38,7 +38,6 @@
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_ON_EXIT_PAGE_JS" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_HTML" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_JS" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_HTML" file="brave_reset_page/brave_reset_profile_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_JS" file="brave_reset_page/brave_reset_profile_dialog_behavior.js" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
       <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_HTML" file="brave_sync_page/brave_sync_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
@@ -72,7 +71,7 @@
     </structures>
     <includes>
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />
-      <part file="settings_resources_v3.grdp" />
+      <part file="settings_resources_generated.grdp" />
     </includes>
   </release>
 </grit>

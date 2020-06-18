@@ -12,24 +12,14 @@ import("../settings.gni")
 
 group("web_modules") {
   public_deps = [
-    ":brave_personalization_options_module",
-    ":modules",
+    ":brave_help_tips_page_module",
   ]
 }
 
-polymer_modulizer("brave_personalization_options") {
-  js_file = "brave_personalization_options.js"
-  html_file = "brave_personalization_options.html"
+polymer_modulizer("brave_help_tips_page") {
+  js_file = "brave_help_tips_page.js"
+  html_file = "brave_help_tips_page.html"
   html_type = "dom-module"
-  auto_imports = settings_auto_imports + [
-    "brave/browser/resources/settings/brave_privacy_page/brave_privacy_page_browser_proxy.html|BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl",
-  ]
-  namespace_rewrites = settings_namespace_rewrites
-}
-
-js_modulizer("modules") {
-  input_files = [
-    "brave_privacy_page_browser_proxy.js",
-  ]
+  auto_imports = settings_auto_imports
   namespace_rewrites = settings_namespace_rewrites
 }
