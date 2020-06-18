@@ -60,6 +60,7 @@ import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
 import org.chromium.ui.UiUtils;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 
 import java.net.URL;
 import java.util.List;
@@ -291,8 +292,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         return;
       }
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
-      if (!OnboardingPrefManager.getInstance().isOnboardingShown()) {
-        OnboardingPrefManager.getInstance().showOnboarding(getContext());
+      Context context = getContext();
+      if ((PackageUtils.isFirstInstall(context)
+           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())))
+          && !OnboardingPrefManager.getInstance().isOnboardingShown()) {
+        OnboardingPrefManager.getInstance().showOnboarding(context);
       } else {
         if (null != mRewardsPopup) {
           return;
@@ -333,9 +337,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration,
                                      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
                                      List<Animator> animators) {
-
-    if (!OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
-      Context context = getContext();
+    Context context = getContext();
+    if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
       Intent searchActivityIntent = new Intent(context, SearchActivity.class);
       context.startActivity(searchActivityIntent);
     } else {

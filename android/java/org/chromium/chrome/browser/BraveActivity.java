@@ -210,13 +210,26 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             mBraveSyncWorker = new BraveSyncWorker(app);
         }
 
-        if(!RateUtils.getInstance(this).getPrefRateEnabled()) {
+        if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
             RateUtils.getInstance(this).setPrefRateEnabled(true);
             RateUtils.getInstance(this).setNextRateDateAndCount();
         }
 
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
+
+        OnboardingActivity onboardingActivity = null;
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof OnboardingActivity)) continue;
+
+            onboardingActivity = (OnboardingActivity) ref;
+        }
+
+        if (onboardingActivity == null
+                && OnboardingPrefManager.getInstance().showOnboardingForSkip()) {
+            OnboardingPrefManager.getInstance().showOnboarding(this);
+            OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
+        }
     }
 
     private void createNotificationChannel() {
@@ -239,8 +252,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private void setupBraveSetDefaultBrowserNotification() {
         // Post task to IO thread because isBraveSetAsDefaultBrowser may cause
         // sqlite file IO operation underneath
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () ->
-        {
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             Context context = ContextUtils.getApplicationContext();
             if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
                 // Don't ask again
@@ -260,14 +272,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
         Intent browserIntent =
-                new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
+            new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
         boolean supportsDefault = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
         ResolveInfo resolveInfo = getPackageManager().resolveActivity(
-                browserIntent, supportsDefault ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+                                      browserIntent, supportsDefault ? PackageManager.MATCH_DEFAULT_ONLY : 0);
         Context context = ContextUtils.getApplicationContext();
         if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
             Toast toast = Toast.makeText(
-                    context, R.string.brave_already_set_as_default_browser, Toast.LENGTH_LONG);
+                              context, R.string.brave_already_set_as_default_browser, Toast.LENGTH_LONG);
             toast.show();
             return;
         }
@@ -276,7 +288,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
                 LayoutInflater inflater = getLayoutInflater();
                 View layout = inflater.inflate(R.layout.brave_set_default_browser_dialog,
-                        (ViewGroup) findViewById(R.id.brave_set_default_browser_toast_container));
+                                               (ViewGroup) findViewById(R.id.brave_set_default_browser_toast_container));
 
                 Toast toast = new Toast(context);
                 toast.setDuration(Toast.LENGTH_LONG);
@@ -302,7 +314,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 context.startActivity(intent);
             } else {
                 Toast toast = Toast.makeText(
-                        context, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
+                                  context, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
                 toast.show();
                 return;
             }
@@ -343,13 +355,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         int tabIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
 
         // Find if tab exists
-        if (tabIndex != TabModel.INVALID_TAB_INDEX){
+        if (tabIndex != TabModel.INVALID_TAB_INDEX) {
             tab = tabModel.getTabAt(tabIndex);
             // Moving tab forward
             tabModel.moveTab(tab.getId(), tabModel.getCount());
             tabModel.setIndex(
-                    TabModelUtils.getTabIndexById(tabModel, tab.getId()),
-                    TabSelectionType.FROM_USER);
+                TabModelUtils.getTabIndexById(tabModel, tab.getId()),
+                TabSelectionType.FROM_USER);
             return tab;
         } else {
             return null;
@@ -398,11 +410,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onActivityResult (int requestCode, int resultCode,
-            Intent data) {
+                                  Intent data) {
         if (resultCode == RESULT_OK &&
                 (requestCode == VERIFY_WALLET_ACTIVITY_REQUEST_CODE ||
-                requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
-                requestCode == SITE_BANNER_REQUEST_CODE) ) {
+                 requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
+                 requestCode == SITE_BANNER_REQUEST_CODE) ) {
             dismissRewardsPanel();
             String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
             if (! TextUtils.isEmpty(open_url)) {
@@ -417,16 +429,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
      */
     private void setBgBraveAdsDefaultOff() {
         SharedPreferences sharedPreferences =
-                ContextUtils.getAppSharedPreferences();
+            ContextUtils.getAppSharedPreferences();
         boolean exists = sharedPreferences.contains(
-                BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET);
+                             BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET);
         if (!exists) {
             SharedPreferences.Editor sharedPreferencesEditor =
-                    sharedPreferences.edit();
+                sharedPreferences.edit();
             sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPreferences.PREF_ADS_SWITCH, false);
+                BraveRewardsPreferences.PREF_ADS_SWITCH, false);
             sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET, true);
+                BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET, true);
             sharedPreferencesEditor.apply();
         }
     }
@@ -436,10 +448,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveDbUtil dbUtil = BraveDbUtil.getInstance();
         if (dbUtil.dbOperationRequested()) {
             AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(dbUtil.performDbExportOnStart() ? "Exporting database, please wait..."
+            .setMessage(dbUtil.performDbExportOnStart() ? "Exporting database, please wait..."
                         : "Importing database, please wait...")
-                .setCancelable(false)
-                .create();
+            .setCancelable(false)
+            .create();
             dialog.setCanceledOnTouchOutside(false);
             if (dbUtil.performDbExportOnStart()) {
                 dbUtil.setPerformDbExportOnStart(false);

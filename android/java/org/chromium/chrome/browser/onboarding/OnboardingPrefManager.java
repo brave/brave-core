@@ -30,6 +30,7 @@ import java.util.Map;
 public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING = "onboarding";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
+    private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
     public static final String ONBOARDING_TYPE = "onboarding_type";
@@ -100,6 +101,34 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_SEARCH_ENGINE_ONBOARDING, isShown);
         sharedPreferencesEditor.apply();
+    }
+
+    public long getNextOnboardingDate() {
+        return mSharedPreferences.getLong(PREF_NEXT_ONBOARDING_DATE, 0);
+    }
+
+    public void setNextOnboardingDate(long nextDate) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_NEXT_ONBOARDING_DATE, nextDate);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean hasOnboardingShownForSkip() {
+        return mSharedPreferences.getBoolean(PREF_ONBOARDING_FOR_SKIP, false);
+    }
+
+    public void setOnboardingShownForSkip(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_FOR_SKIP, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean showOnboardingForSkip() {
+        boolean shouldShow = !hasOnboardingShownForSkip()
+                             && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BraveRewardsPanelPopup.isBraveRewardsEnabled())
+                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+                             && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
+        return shouldShow;
     }
 
     // private boolean shouldShowNewUserOnboarding(Context context) {
