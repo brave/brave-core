@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/string_piece_forward.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/translate_network_constants.h"
@@ -23,7 +24,7 @@ namespace {
 
 bool g_safebrowsing_api_endpoint_for_testing_ = false;
 
-std::string GetSafeBrowsingEndpoint() {
+base::StringPiece GetSafeBrowsingEndpoint() {
   if (g_safebrowsing_api_endpoint_for_testing_)
     return kSafeBrowsingTestingEndpoint;
   return SAFEBROWSING_ENDPOINT;
@@ -95,9 +96,10 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (!GetSafeBrowsingEndpoint().empty() &&
+  auto safebrowsing_endpoint = GetSafeBrowsingEndpoint();
+  if (!safebrowsing_endpoint.empty() &&
       safeBrowsing_pattern.MatchesHost(request_url)) {
-    replacements.SetHostStr(GetSafeBrowsingEndpoint());
+    replacements.SetHostStr(safebrowsing_endpoint);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
