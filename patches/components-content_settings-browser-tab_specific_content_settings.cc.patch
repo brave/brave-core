@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/browser/tab_specific_content_settings.cc b/components/content_settings/browser/tab_specific_content_settings.cc
-index c968729c940e87f099ab49137986a66823a82b8a..ba0347f50620540d23e3e7c90bb25d2d83d17986 100644
+index b783a2c6fde5aa1c04164beb9a458b664abb8484..e87a8e06dd0885516cf6cdfc71f0bcdeef0dd1a6 100644
 --- a/components/content_settings/browser/tab_specific_content_settings.cc
 +++ b/components/content_settings/browser/tab_specific_content_settings.cc
 @@ -220,6 +220,7 @@ bool TabSpecificContentSettings::IsContentBlocked(
