@@ -373,8 +373,8 @@ public class NTPUtil {
         }
 
         imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
-
-        Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, startX, startY, layoutWidth, (int) layoutHeight);
+        
+        Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, (startX + layoutWidth) <= imageBitmap.getWidth() ? startX : 0, (startY + (int) layoutHeight) <= imageBitmap.getHeight() ? startY : 0, layoutWidth, (int) layoutHeight);
         Bitmap bitmapWithGradient = ImageUtils.addGradient(newBitmap);
 
         imageBitmap.recycle();
