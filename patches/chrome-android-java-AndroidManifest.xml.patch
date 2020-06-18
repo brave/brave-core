@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4b89a92e661ba17b419a96a2dd9ca58ecacb2643..9e1545b66d4c975a1beadaaf62c5be70f3753c2f 100644
+index 8c264ba98b6af8e5921dbda61a76658040b6935c..062bc6a74940bd118237ce1c8a945cd299ce2165 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -34,7 +34,9 @@ by a child template that "extends" this file.
@@ -72,7 +72,7 @@ index 4b89a92e661ba17b419a96a2dd9ca58ecacb2643..9e1545b66d4c975a1beadaaf62c5be70
          {% endif %}
  
          <!-- Cast support -->
-@@ -1216,6 +1232,7 @@ by a child template that "extends" this file.
+@@ -1220,6 +1236,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
