@@ -29,7 +29,6 @@ if (chrome.extension.inIncognitoContext) {
   // isn't called for incognito windows.  And since chrome.windows.onCreated
   // doesn't get called for the first window, we need to work around it here.
   // See https://github.com/brave/brave-browser/issues/1437 for more discussion.
-  setTimeout(() => {
-    checkForNewWindows()
-  }, 1000)
+  chrome.alarms.create({ delayInMinutes: 1.0 })
+  chrome.alarms.onAlarm.addListener(checkForNewWindows)
 }

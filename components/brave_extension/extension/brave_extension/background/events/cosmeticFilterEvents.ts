@@ -11,30 +11,32 @@ export let rule = {
   selector: ''
 }
 
-// parent menu
-chrome.contextMenus.create({
-  title: 'Brave',
-  id: 'brave',
-  contexts: ['all']
-})
-// block ad child menu
-chrome.contextMenus.create({
-  title: getLocale('addBlockElement'),
-  id: 'addBlockElement',
-  parentId: 'brave',
-  contexts: ['all']
-})
-chrome.contextMenus.create({
-  title: getLocale('resetSiteFilterSettings'),
-  id: 'resetSiteFilterSettings',
-  parentId: 'brave',
-  contexts: ['all']
-})
-chrome.contextMenus.create({
-  title: getLocale('resetAllFilterSettings'),
-  id: 'resetAllFilterSettings',
-  parentId: 'brave',
-  contexts: ['all']
+chrome.runtime.onInstalled.addListener(() => {
+  // parent menu
+  chrome.contextMenus.create({
+    title: 'Brave',
+    id: 'brave',
+    contexts: ['all']
+  })
+  // block ad child menu
+  chrome.contextMenus.create({
+    title: getLocale('addBlockElement'),
+    id: 'addBlockElement',
+    parentId: 'brave',
+    contexts: ['all']
+  })
+  chrome.contextMenus.create({
+    title: getLocale('resetSiteFilterSettings'),
+    id: 'resetSiteFilterSettings',
+    parentId: 'brave',
+    contexts: ['all']
+  })
+  chrome.contextMenus.create({
+    title: getLocale('resetAllFilterSettings'),
+    id: 'resetAllFilterSettings',
+    parentId: 'brave',
+    contexts: ['all']
+  })
 })
 // context menu listener emit event -> query -> tabsCallback -> onSelectorReturned
 
