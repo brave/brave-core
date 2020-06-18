@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
+index ac02720085559c2930de7592e7413cd9d993c872..600b688cedaea67b1ecaa0e059881cb585686bd8 100644
+--- a/chrome/browser/extensions/updater/chrome_update_client_config.h
++++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
+@@ -73,6 +73,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
+   bool IsPerUserInstall() const override;
+   std::unique_ptr<update_client::ProtocolHandlerFactory>
+   GetProtocolHandlerFactory() const override;
++  BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
+ 
+  protected:
+   friend class base::RefCountedThreadSafe<ChromeUpdateClientConfig>;
