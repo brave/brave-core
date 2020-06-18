@@ -6,10 +6,17 @@
 #include "brave/components/speedreader/features.h"
 
 #include "base/feature_list.h"
+#include "brave/components/speedreader/buildflags.h"
 
 namespace speedreader {
 
-const base::Feature kSpeedreaderFeature{"Speedreader",
-                                        base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kSpeedreaderFeature {
+      "Speedreader",
+#if BUILDFLAG(ENABLE_SPEEDREADER_FEATURE)
+      base::FEATURE_ENABLED_BY_DEFAULT
+#else
+      base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+};
 
 }  // namespace speedreader
