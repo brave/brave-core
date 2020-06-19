@@ -47,8 +47,10 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
   using GetDATFileDataResult =
       brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
 
-  void OnWhitelistFileReady(const base::FilePath& path, bool error);
   void OnGetDATFileData(GetDATFileDataResult result);
+
+  // Used in testing/development with custom rule set for auto-reloading
+  void OnWhitelistFileReady(const base::FilePath& path, bool error);
 
   std::unique_ptr<speedreader::SpeedReader> speedreader_;
   std::unique_ptr<base::FilePathWatcher> whitelist_path_watcher_;
