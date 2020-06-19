@@ -170,7 +170,7 @@ export class Panel extends React.Component<Props, State> {
 
   onBackupWallet = (id: string) => {
     chrome.tabs.create({
-      url: 'chrome://rewards#backup-restore'
+      url: 'chrome://rewards#manage-wallet'
     })
     this.actions.deleteNotification(id)
   }

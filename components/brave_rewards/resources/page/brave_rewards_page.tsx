@@ -254,6 +254,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onInitialized(result)
   }
 
+  function completeReset (success: boolean) {
+    getActions().onCompleteReset(success)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -301,7 +305,8 @@ window.cr.define('brave_rewards', function () {
     reconcileStampReset,
     monthlyReportIds,
     countryCode,
-    initialized
+    initialized,
+    completeReset
   }
 })
 

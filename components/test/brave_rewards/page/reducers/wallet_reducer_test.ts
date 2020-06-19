@@ -50,6 +50,8 @@ describe('wallet reducer', () => {
       expectedState.walletCreated = true
       expectedState.enabledMain = true
       expectedState.createdTimestamp = constantDate.getTime()
+      expectedState.enabledAds = true
+      expectedState.enabledContribute = true
 
       expect(assertion).toEqual({
         rewardsData: expectedState

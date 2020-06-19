@@ -344,3 +344,9 @@ export const toggleEnableMain = (enable: boolean) => action(types.TOGGLE_ENABLE_
 export const onInitialized = (result: boolean) => action(types.ON_INITIALIZED, {
   result
 })
+
+export const completeReset = () => action(types.COMPLETE_RESET)
+
+export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
+  success
+})

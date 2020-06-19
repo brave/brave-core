@@ -231,7 +231,6 @@ class RewardsServiceImpl : public RewardsService,
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
-  void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
 
   void SetAutoContributionAmount(const double amount) const override;
 
@@ -335,7 +334,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnStopLedger(const ledger::Result result);
 
-  const base::OneShotEvent& ready() const { return ready_; }
+  void Reset();
 
   void OnCreate();
 
@@ -375,8 +374,6 @@ class RewardsServiceImpl : public RewardsService,
       const bool recurring,
       const double amount);
 
-  void OnResetTheWholeState(base::Callback<void(bool)> callback,
-                                 bool success);
   void OnRecurringTip(const ledger::Result result);
 
   void TriggerOnGetCurrentBalanceReport(
@@ -564,6 +561,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void ClearDiagnosticLog(ClearDiagnosticLogCallback callback) override;
 
+  void CompleteReset(SuccessCallback callback) override;
+
   bool ClearDiagnosticLogOnFileTaskRunner(
       const base::FilePath& path);
 
@@ -719,6 +718,8 @@ class RewardsServiceImpl : public RewardsService,
       GetAllPromotionsCallback callback,
       base::flat_map<std::string, ledger::PromotionPtr> promotions);
 
+  void OnCompleteReset(SuccessCallback callback, const bool success);
+
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();
   void CreateWalletAttestationResult(
@@ -754,7 +755,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
   std::unique_ptr<RewardsServicePrivateObserver> private_observer_;
 
-  base::OneShotEvent ready_;
+  std::unique_ptr<base::OneShotEvent> ready_;
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   std::map<std::string, BitmapFetcherService::RequestId>

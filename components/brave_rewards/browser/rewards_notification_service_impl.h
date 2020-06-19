@@ -37,7 +37,7 @@ class RewardsNotificationServiceImpl
                        RewardsNotificationID id = "",
                        bool only_once = false) override;
   void DeleteNotification(RewardsNotificationID id) override;
-  void DeleteAllNotifications() override;
+  void DeleteAllNotifications(const bool delete_displayed) override;
   void GetNotification(RewardsNotificationID id) override;
   void GetNotifications() override;
   const RewardsNotificationsMap& GetAllNotifications() const override;

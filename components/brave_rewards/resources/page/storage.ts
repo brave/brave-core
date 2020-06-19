@@ -10,9 +10,9 @@ const keyName = 'rewards-data'
 export const defaultState: Rewards.State = {
   createdTimestamp: null,
   enabledMain: false,
-  enabledAds: true,
+  enabledAds: false,
   enabledAdsMigrated: false,
-  enabledContribute: true,
+  enabledContribute: false,
   firstLoad: null,
   walletCreated: false,
   walletCreateFailed: false,
@@ -114,3 +114,7 @@ export const debouncedSave = debounce((data: Rewards.State) => {
     window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }
 }, 50)
+
+export const save = (data: Rewards.State) => {
+  window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
+}

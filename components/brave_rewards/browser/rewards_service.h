@@ -133,6 +133,8 @@ using LoadDiagnosticLogCallback = base::OnceCallback<void(const std::string&)>;
 
 using ClearDiagnosticLogCallback = base::OnceCallback<void(const bool success)>;
 
+using SuccessCallback = base::OnceCallback<void(const bool success)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -273,8 +275,6 @@ class RewardsService : public KeyedService {
 
   virtual void RemovePendingContribution(const uint64_t id) = 0;
   virtual void RemoveAllPendingContributions() = 0;
-  virtual void ResetTheWholeState(
-      const base::Callback<void(bool)>& callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
@@ -349,6 +349,8 @@ class RewardsService : public KeyedService {
 
   virtual void ClearDiagnosticLog(
       ClearDiagnosticLogCallback callback) = 0;
+
+  virtual void CompleteReset(SuccessCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

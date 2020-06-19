@@ -72,3 +72,7 @@ export const debouncedSave = debounce((data: RewardsExtension.State) => {
     window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }
 }, 50)
+
+export const save = (data: RewardsExtension.State) => {
+  window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
+}

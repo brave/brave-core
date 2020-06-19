@@ -14,7 +14,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
   font-size: 14px;
   font-family: Muli, sans-serif;
   letter-spacing: 0;
-  font-weight: 200;
+  color: ${p => p.theme.color.text};
   line-height: 26px;
   margin-bottom: 40px;
 `
@@ -85,22 +85,17 @@ export const StyledSafe = styled<{}, 'span'>('span')`
   color: ${p => p.theme.color.brandBatInteracting};
 `
 
-export const StyledTabWrapper = styled<{}, 'div'>('div')`
-  margin: 0 auto;
-  max-width: 400px;
-`
-
 export const StyledControlWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   margin-bottom: 30px;
 `
 
 export const StyledText = styled<{}, 'p'>('p')`
-  font-size: 16px;
-  font-weight: 200;
+  font-size: 15px;
   letter-spacing: 0;
   line-height: 26px;
   font-family: Muli, sans-serif;
+  color: ${p => p.theme.color.text};
 `
 
 export const StyledTextWrapper = styled<{}, 'div'>('div')`

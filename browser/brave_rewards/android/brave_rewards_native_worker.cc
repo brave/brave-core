@@ -486,35 +486,23 @@ void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env,
 
 void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj) {
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
-    ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
-  if (ads_service_) {
-    ads_service_->ResetTheWholeState(base::Bind(
-           &BraveRewardsNativeWorker::OnAdsResetTheWholeState,
-           weak_factory_.GetWeakPtr()));
-  } else {
-    OnAdsResetTheWholeState(true);
-  }
-}
-
-void BraveRewardsNativeWorker::OnAdsResetTheWholeState(bool sucess) {
-  if (sucess && brave_rewards_service_) {
-    brave_rewards_service_->ResetTheWholeState(base::Bind(
+  if (brave_rewards_service_) {
+    brave_rewards_service_->CompleteReset(base::Bind(
            &BraveRewardsNativeWorker::OnResetTheWholeState,
            weak_factory_.GetWeakPtr()));
   } else {
     JNIEnv* env = base::android::AttachCurrentThread();
 
     Java_BraveRewardsNativeWorker_OnResetTheWholeState(env,
-            weak_java_brave_rewards_native_worker_.get(env), sucess);
+            weak_java_brave_rewards_native_worker_.get(env), false);
   }
 }
 
-void BraveRewardsNativeWorker::OnResetTheWholeState(bool sucess) {
+void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
   Java_BraveRewardsNativeWorker_OnResetTheWholeState(env,
-          weak_java_brave_rewards_native_worker_.get(env), sucess);
+          weak_java_brave_rewards_native_worker_.get(env), success);
 }
 
 double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(

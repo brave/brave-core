@@ -65,7 +65,7 @@ RewardsNotificationsDeleteAllNotificationsFunction::Run() {
   RewardsNotificationService* rewards_notification_service =
       RewardsServiceFactory::GetForProfile(profile)->GetNotificationService();
   if (rewards_notification_service) {
-    rewards_notification_service->DeleteAllNotifications();
+    rewards_notification_service->DeleteAllNotifications(false);
   }
   return RespondNow(NoArguments());
 }

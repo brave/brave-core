@@ -371,4 +371,23 @@ void ExtensionRewardsServiceObserver::OnUnblindedTokensReady(
   event_router->BroadcastEvent(std::move(event));
 }
 
+void ExtensionRewardsServiceObserver::OnCompleteReset(const bool success) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  extensions::api::brave_rewards::OnCompleteReset::Properties properties;
+  properties.success = success;
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnCompleteReset::Create(properties)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnCompleteReset::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 }  // namespace brave_rewards

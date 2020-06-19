@@ -645,6 +645,8 @@ void AdsServiceImpl::OnResetAllState(
     return;
   }
 
+  profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
   VLOG(1) << "Successfully reset ads state";
 }
 
@@ -1674,23 +1676,6 @@ std::string AdsServiceImpl::GetStringPref(
   // If the preference path does exist then a value was serialized, so return
   // the serialized value
   return value;
-}
-
-void AdsServiceImpl::ResetTheWholeState(
-    const base::Callback<void(bool)>& callback) {
-  SetEnabled(false);
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&ResetOnFileTaskRunner,
-                     base_path_),
-      base::BindOnce(&AdsServiceImpl::OnResetTheWholeState,
-                     AsWeakPtr(), std::move(callback)));
-}
-
-void AdsServiceImpl::OnResetTheWholeState(
-    base::Callback<void(bool)> callback,
-    bool success) {
-  callback.Run(success);
 }
 
 void AdsServiceImpl::SetStringPref(

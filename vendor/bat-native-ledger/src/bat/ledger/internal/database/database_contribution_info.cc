@@ -840,6 +840,11 @@ void DatabaseContributionInfo::OnGetList(
     return;
   }
 
+  if (response->result->get_records().empty()) {
+    callback({});
+    return;
+  }
+
   ledger::ContributionInfoList list;
   std::vector<std::string> contribution_ids;
   for (auto const& record : response->result->get_records()) {

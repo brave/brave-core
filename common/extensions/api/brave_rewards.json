@@ -310,6 +310,23 @@
         "type": "function",
         "description": "Fired when we get unblinded tokens",
         "parameters": []
+      },
+      {
+        "name": "onCompleteReset",
+        "type": "function",
+        "description": "Fired when rewards was reset",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "success": {
+                "type": "boolean",
+                "description": "was reset successful"
+              }
+            }
+          }
+        ]
       }
     ],
     "functions": [

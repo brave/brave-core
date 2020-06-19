@@ -3,13 +3,30 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Type, Props } from './index'
+import { Type } from './index'
 import palette from 'brave-ui/theme/colors'
 
 interface StyleProps {
-  left?: boolean
   selected?: boolean
   type?: Type
+  size?: number
+  tabIndexSelected?: number
+}
+
+const getMargin = (index?: number, size?: number) => {
+  if (index === 0) {
+    return 4
+  }
+
+  if (!index) {
+    index = 0
+  }
+
+  if (index + 1 === size) {
+    return -4
+  }
+
+  return 0
 }
 
 export const RewardsTabWrapper = styled<{}, 'div'>('div')`
@@ -30,25 +47,26 @@ export const StyledSlider = styled<{}, 'div'>('div')`
   height: 100%;
   background: #DFDFE8;
   border-radius: 21.5px 21.5px 21.5px 21.5px;
+  display: flex;
 `
 
-export const StyledBullet = styled<Props, 'div'>('div')`
+export const StyledBullet = styled<StyleProps, 'div'>('div')`
   top: -17px;
-  width: 50%;
+  width: ${p => 100 / ((p && p.size) || 1)}%;
   height: 37px;
   background: ${p => p.theme.color.primaryBackground};
   border-radius: 21.5px 21.5px 21.5px 21.5px;
   position: relative;
   transition: all .4s ease;
-  transform: translate(calc(${p => p.tabIndexSelected === 0 ? 2 : 97}%), calc(-50% - 4px));
+  transform: translate(calc(${p => 100 * (((p && p.tabIndexSelected) || 0))}%), calc(-50% - 4px));
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+  margin-left: ${p => getMargin(p.tabIndexSelected, p.size)}px;
 `
 
 export const StyledTab = styled<StyleProps, 'div'>('div')`
-  width: 50%;
   display: block;
   height: 100%;
-  float: ${p => p.left ? 'left' : 'right'};
+  flex-basis: 100%;
 `
 
 export const StyledText = styled<StyleProps, 'div'>('div')`
