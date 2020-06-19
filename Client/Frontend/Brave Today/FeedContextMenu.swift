@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import Shared
 
 @available(iOS 13.0, *)
 class FeedContextMenu: NSObject, UIContextMenuInteractionDelegate {
@@ -21,18 +22,30 @@ class FeedContextMenu: NSObject, UIContextMenuInteractionDelegate {
             identifier: "feed-item" as NSString,
             previewProvider: nil,
             actionProvider: { _ in
-                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
-                    UIAction(title: "Open in New Tab", handler: { _ in
-                        
-                    }),
+                let openActions: [UIAction] = [
+                    self.openInNewTab,
+                    // Brave Today is only available in normal tabs, so this isn't technically required
+                    // but good to be on the safe side
+                    !PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                        self.openInNewPrivateTab :
+                        nil
+                ].compactMap({ $0 })
+                let manageActions = [
+                    self.hideContent,
+                    self.blockSource
+                ]
+                
+                return UIMenu(title: "", children: [
+                    UIMenu(title: "", options: [.displayInline], children: openActions),
+                    UIMenu(title: "", options: [.displayInline], children: manageActions)
                 ])
             }
         )
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.handler(.tapped)
+        self.waitUntilDismissed {
+            self.handler(.opened())
         }
     }
     
@@ -54,5 +67,49 @@ class FeedContextMenu: NSObject, UIContextMenuInteractionDelegate {
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         targetedPreview(for: interaction)
+    }
+}
+
+// MARK: - Actions
+@available(iOS 13.0, *)
+extension FeedContextMenu {
+    private func waitUntilDismissed(_ task: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            task()
+        }
+    }
+    
+    private var openInNewTab: UIAction {
+        .init(title: Strings.openNewTabButtonTitle) { _ in
+            self.waitUntilDismissed {
+                self.handler(.opened(inNewTab: true))
+            }
+        }
+    }
+    
+    private var openInNewPrivateTab: UIAction {
+        .init(title: Strings.openNewPrivateTabButtonTitle) { _ in
+            self.waitUntilDismissed {
+                self.handler(.opened(inNewTab: true, switchingToPrivateMode: true))
+            }
+        }
+    }
+    
+    private var hideContent: UIAction {
+        // FIXME: Localize, Get our own image
+        .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill")) { _ in
+            self.waitUntilDismissed {
+                self.handler(.hide)
+            }
+        }
+    }
+    
+    private var blockSource: UIAction {
+        // FIXME: Localize, Get our own image
+        .init(title: "Block Source", image: UIImage(systemName: "nosign")) { _ in
+            self.waitUntilDismissed {
+                self.handler(.blockSource)
+            }
+        }
     }
 }

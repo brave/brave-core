@@ -203,6 +203,7 @@
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
 		2718B26E2391BB8E00F378BF /* DisabledSettingGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */; };
 		2719DA00249AAC2A0080AB48 /* FeedContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2719D9FF249AAC2A0080AB48 /* FeedContextMenu.swift */; };
+		2719DA09249D37490080AB48 /* SponsorCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2719DA08249D37490080AB48 /* SponsorCardView.swift */; };
 		271DEC2B234CC760009DAC37 /* BraveRewardsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		271DEC2E234CC760009DAC37 /* BraveRewardsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; };
 		271DEC2F234CC760009DAC37 /* BraveRewardsUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -400,6 +401,7 @@
 		27D3155523D8B0CE00219462 /* MonthlyTipsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155423D8B0CE00219462 /* MonthlyTipsDetailViewController.swift */; };
 		27D3155723D8B16200219462 /* SettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155623D8B16200219462 /* SettingsTableView.swift */; };
 		27D87C2E2152B50200FB55C6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D87C2D2152B50200FB55C6 /* GradientView.swift */; };
+		27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA04C1249D4336004F5D2E /* FeedCardContent.swift */; };
 		27EB6020244607DA00265C1B /* NewTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EB601F244607DA00265C1B /* NewTabPageViewController.swift */; };
 		27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* BraveShareTo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
@@ -1574,6 +1576,7 @@
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledSettingGraphicView.swift; sourceTree = "<group>"; };
 		2719D9FF249AAC2A0080AB48 /* FeedContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContextMenu.swift; sourceTree = "<group>"; };
+		2719DA08249D37490080AB48 /* SponsorCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SponsorCardView.swift; sourceTree = "<group>"; };
 		271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraveRewardsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraveRewardsUI.h; sourceTree = "<group>"; };
 		271DEC1C234CC75F009DAC37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1769,6 +1772,7 @@
 		27D3155623D8B16200219462 /* SettingsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableView.swift; sourceTree = "<group>"; };
 		27D87C2D2152B50200FB55C6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		27D922B221C9830F00345BF3 /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
+		27EA04C1249D4336004F5D2E /* FeedCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardContent.swift; sourceTree = "<group>"; };
 		27EB601F244607DA00265C1B /* NewTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageViewController.swift; sourceTree = "<group>"; };
 		27F443952135E11200296C58 /* BraveShareTo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveShareTo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F4439C2135E11200296C58 /* BraveShareToInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BraveShareToInfo.plist; sourceTree = "<group>"; };
@@ -3724,6 +3728,7 @@
 				27A1ABFB24855C1700344503 /* FeedCardCell.swift */,
 				27A1ABFD24855C1700344503 /* FeedItemView.swift */,
 				2719D9FF249AAC2A0080AB48 /* FeedContextMenu.swift */,
+				27EA04C1249D4336004F5D2E /* FeedCardContent.swift */,
 				27A1ABF924855C1700344503 /* Cards */,
 				27A1AC0A2485A0CC00344503 /* Composer */,
 				2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */,
@@ -3737,6 +3742,7 @@
 				27A1ABFC24855C1700344503 /* FeedCardBackgroundView.swift */,
 				27A1ABFA24855C1700344503 /* FeedGroupViews.swift */,
 				27A1AC0824859D0900344503 /* FeedHeadlineViews.swift */,
+				2719DA08249D37490080AB48 /* SponsorCardView.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -6797,6 +6803,7 @@
 				4422D55B21BFFB7F00BF1855 /* onepass.cc in Sources */,
 				0A3C78A1230597DA0022F6D8 /* OnboardingShieldsViewController.swift in Sources */,
 				27FCA8E3244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift in Sources */,
+				27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */,
 				0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */,
 				D0C95EF6201A55A800E4E51C /* BrowserViewController+UIDropInteractionDelegate.swift in Sources */,
 				27A1ABFF24855C1700344503 /* FeedGroupViews.swift in Sources */,
@@ -6808,6 +6815,7 @@
 				0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */,
 				D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */,
 				E650755C1E37F747006961AC /* Swizzling.m in Sources */,
+				2719DA09249D37490080AB48 /* SponsorCardView.swift in Sources */,
 				D3B6923D1B9F9444004B87A4 /* FindInPageBar.swift in Sources */,
 				2F44FC721A9E840300FD20CC /* SettingsNavigationController.swift in Sources */,
 				0AADC4D220D2A6A200FDE368 /* FavoritesHelper.swift in Sources */,

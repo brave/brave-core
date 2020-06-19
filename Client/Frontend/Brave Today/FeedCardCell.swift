@@ -6,24 +6,6 @@ import Foundation
 import Storage
 import BraveUI
 
-/// The actions you can perform on a feed item in the list
-enum FeedItemAction: Equatable {
-    /// The user simply tapped on the item and should open the feed URL
-    case tapped
-    /// The user choose to open the feed item in a new tab (and possibly in private mode)
-    case openInNewTab(_ isPrivate: Bool = false)
-}
-
-protocol FeedCardContent {
-    var view: UIView { get }
-    var actionHandler: ((_ itemIndex: Int, _ action: FeedItemAction) -> Void)? { get set }
-    init()
-}
-
-extension FeedCardContent where Self: UIView {
-    var view: UIView { self }
-}
-
 /// Defines the basic feed card cell. A feed card can display 1 or more feed
 /// items. This cell is defined by the `View` type
 class FeedCardCell<Content: FeedCardContent>: UICollectionViewCell, CollectionViewReusable {
