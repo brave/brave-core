@@ -104,16 +104,18 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         
         let isLandscape = frame.width > frame.height
         
-        let braveTodayEnabled = Preferences.BraveToday.isEnabled.value
+        let braveTodayVisible =
+            !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+            Preferences.BraveToday.isEnabled.value
         
         imageCreditButton.snp.remakeConstraints {
             $0.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide).inset(16 + (braveTodayEnabled ? 30 : 0))
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide).inset(16 + (braveTodayVisible ? 30 : 0))
         }
         
         sponsorLogoButton.snp.remakeConstraints {
             $0.size.equalTo(170)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10 + (braveTodayEnabled ? 30 : 0))
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10 + (braveTodayVisible ? 30 : 0))
             
             if isLandscape {
                 $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(20)
@@ -124,7 +126,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         
         qrCodeButton.snp.remakeConstraints {
             $0.size.equalTo(48)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24 + (braveTodayEnabled ? 30 : 0))
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24 + (braveTodayVisible ? 30 : 0))
             
             if isLandscape {
                 $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(48)

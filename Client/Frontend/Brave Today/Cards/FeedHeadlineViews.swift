@@ -40,7 +40,7 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
     }
     
     @objc private func tappedSelf() {
-        actionHandler?(0, .tapped)
+        actionHandler?(0, .opened())
     }
 }
 
@@ -60,12 +60,7 @@ class SmallHeadlineCardView: HeadlineCardView {
 }
 
 class SmallHeadlinePairCardView: UIView, FeedCardContent {
-    var actionHandler: ((Int, FeedItemAction) -> Void)? {
-        didSet {
-            smallHeadelineCardViews.left.actionHandler = actionHandler
-            smallHeadelineCardViews.right.actionHandler = actionHandler
-        }
-    }
+    var actionHandler: ((Int, FeedItemAction) -> Void)?
     
     private let stackView = UIStackView().then {
         $0.distribution = .fillEqually
@@ -80,6 +75,13 @@ class SmallHeadlinePairCardView: UIView, FeedCardContent {
         addSubview(stackView)
         stackView.addArrangedSubview(smallHeadelineCardViews.left)
         stackView.addArrangedSubview(smallHeadelineCardViews.right)
+        
+        smallHeadelineCardViews.left.actionHandler = { [weak self] _, action in
+            self?.actionHandler?(0, action)
+        }
+        smallHeadelineCardViews.right.actionHandler = { [weak self] _, action in
+            self?.actionHandler?(1, action)
+        }
         
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()

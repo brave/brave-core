@@ -26,6 +26,7 @@ class FeedItemView: UIView {
     /// fill the available space
     lazy var thumbnailImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
+        $0.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
         $0.clipsToBounds = true
     }
     /// The feed title label, defaults to 2 line maximum
@@ -98,6 +99,14 @@ class FeedItemView: UIView {
                 $0.isAccessibilityElement = false
                 $0.isUserInteractionEnabled = false
             }
+        case .flexibleSpace(let minHeight):
+            return UIView().then {
+                $0.snp.makeConstraints {
+                    $0.height.greaterThanOrEqualTo(minHeight)
+                }
+                $0.isAccessibilityElement = false
+                $0.isUserInteractionEnabled = false
+            }
         }
     }
     
@@ -130,6 +139,7 @@ extension FeedItemView {
         enum Component {
             case stack(Stack)
             case customSpace(CGFloat)
+            case flexibleSpace(minHeight: CGFloat)
             case thumbnail(ImageLayout)
             case title(_ numberOfLines: Int = 2)
             case date
@@ -168,7 +178,7 @@ extension FeedItemView {
                             children: [
                                 .title(),
                                 .date,
-                                .customSpace(20),
+                                .flexibleSpace(minHeight: 16),
                                 .brandImage
                             ]
                         )
@@ -256,6 +266,21 @@ extension FeedItemView {
                         )
                     ),
                     .thumbnail(.fixedSize(CGSize(width: 98, height: 98)))
+                ]
+            )
+        )
+        /// Defines a feed item layout used for simply displaying a banner image which is
+        /// half the height of its width when shown
+        ///
+        /// ```
+        /// ╭─────────────────╮
+        /// │       img       │
+        /// ╰─────────────────╯
+        /// ```
+        static let bannerThumbnail = Layout(
+            root: .init(
+                children: [
+                    .thumbnail(.aspectRatio(2.0))
                 ]
             )
         )

@@ -124,11 +124,17 @@ class NewTabPageViewController: UIViewController, Themeable {
             }),
             DuckDuckGoCalloutSectionProvider(profile: profile, action: { [weak self] in
                 self?.delegate?.tappedDuckDuckGoCallout()
-            }),
-            BraveTodaySectionProvider(dataSource: feedDataSource),
+            })
         ]
-
-        layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
+        
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            sections.append(
+                BraveTodaySectionProvider(dataSource: feedDataSource, actionHandler: {
+                    print("Feed \($0) actioned: \(String(describing: $1))")
+                })
+            )
+            layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
+        }
 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -495,11 +501,13 @@ class NewTabPageViewController: UIViewController, Themeable {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if !Preferences.BraveToday.isEnabled.value {
-            return
+        let braveTodayVisible =
+            !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+                Preferences.BraveToday.isEnabled.value
+        if braveTodayVisible {
+            // Hide the buttons as BraveToday feeds appear
+            backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
         }
-        // Hide the buttons as BraveToday feeds appear
-        backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
     }
 }
 

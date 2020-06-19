@@ -9,9 +9,12 @@ import BraveUI
 class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     let dataSource: FeedDataSource
     var sectionDidChange: (() -> Void)?
+    var actionHandler: (FeedItem, FeedItemAction) -> Void
     
-    init(dataSource: FeedDataSource) {
+    init(dataSource: FeedDataSource, actionHandler: @escaping (FeedItem, FeedItemAction) -> Void) {
         self.dataSource = dataSource
+        self.actionHandler = actionHandler
+        
         super.init()
         
         self.dataSource.load { [weak self] in
@@ -30,6 +33,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         collectionView.register(FeedCardCell<VerticalFeedGroupView>.self)
         collectionView.register(FeedCardCell<HorizontalFeedGroupView>.self)
         collectionView.register(FeedCardCell<NumberedFeedGroupView>.self)
+        collectionView.register(FeedCardCell<SponsorCardView>.self)
     }
     
     var landscapeBehavior: NTPLandscapeSizingBehavior {
@@ -53,6 +57,17 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        func handler(for item: FeedItem) -> (Int, FeedItemAction) -> Void {
+            return { [weak self] _, action in
+                self?.actionHandler(item, action)
+            }
+        }
+        func handler(from feedList: @escaping (Int) -> FeedItem) -> (Int, FeedItemAction) -> Void {
+            return { [weak self] index, action in
+                self?.actionHandler(feedList(index), action)
+            }
+        }
+        
         if indexPath.item == 0 {
             return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
         }
@@ -62,19 +77,21 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             return UICollectionViewCell()
         }
         switch card {
+        case .sponsor(let item):
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
+            cell.content.feedView.setupWithItem(item)
+            cell.content.actionHandler = handler(for: item)
+            return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
             cell.content.feedView.setupWithItem(item)
-            cell.content.actionHandler = { _, action in
-                if action == .tapped {
-                    print("Tapped Feed Headline with URL: \(item.url?.absoluteString ?? "<null>")")
-                }
-            }
+            cell.content.actionHandler = handler(for: item)
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
             cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.0)
             cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.1)
+            cell.content.actionHandler = handler(from: { $0 == 0 ? pair.0 : pair.1 })
             return cell
         case .group(let items, let title, let direction, let displayBrand):
             let groupView: FeedGroupView
@@ -103,6 +120,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 groupView.groupBrandImageView.image = nil
             }
             groupView.groupBrandImageView.isHidden = !displayBrand
+            groupView.actionHandler = handler(from: { items[$0] })
             return cell
         case .numbered(let items, let title):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
@@ -110,6 +128,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             zip(cell.content.feedViews, items).forEach { (view, item) in
                 view.setupWithItem(item)
             }
+            cell.content.actionHandler = handler(from: { items[$0] })
             return cell
         }
     }
@@ -119,7 +138,7 @@ extension FeedItemView {
     func setupWithItem(_ feedItem: FeedItem) {
         titleLabel.text = feedItem.title
         if #available(iOS 13, *) {
-            dateLabel.text = RelativeDateTimeFormatter().localizedString(for: Date(), relativeTo: feedItem.publishTime)
+            dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.publishTime, relativeTo: Date())
         }
         thumbnailImageView.sd_setImage(with: feedItem.imageURL)
         if let logo = feedItem.publisherLogo {

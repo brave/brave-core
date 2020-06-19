@@ -11,6 +11,7 @@ import Shared
 private let logger = Logger.browserLogger
 
 enum FeedCard {
+    case sponsor(_ feed: FeedItem)
     case headline(_ feed: FeedItem)
     case headlinePair(_ feeds: (FeedItem, FeedItem))
     case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
@@ -109,7 +110,7 @@ class FeedDataSource {
         var media = feeds.lazy.filter { $0.item.contentType == "image" }
         
         if !sponsors.isEmpty {
-            cards.append(.headline(sponsors.removeFirst().item))
+            cards.append(.sponsor(sponsors.removeFirst().item))
         }
         if !articles.isEmpty {
             cards.append(.headline(articles.removeFirst().item))
@@ -162,7 +163,7 @@ class FeedDataSource {
             // Card 8 and 9: Commercial
             // - 1x sponsored card (large headline)
             // - 1x affiliate deals card
-            cards.append(.headline(sponsors.removeFirst().item))
+            cards.append(.sponsor(sponsors.removeFirst().item))
             let items = deals.prefix(3).map(\.item)
             cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
             deals.removeFirst(3)

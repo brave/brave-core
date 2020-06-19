@@ -113,7 +113,7 @@ class FeedGroupView: UIView {
     
     @objc private func tappedButton(_ sender: SpringButton) {
         if let index = buttons.firstIndex(where: { sender === $0 }) {
-            actionHandler?(index, .tapped)
+            actionHandler?(index, .opened())
         }
     }
 }
