@@ -48,17 +48,37 @@ SpeedreaderWhitelist::SpeedreaderWhitelist(Delegate* delegate)
         cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderWhitelistPath));
     VLOG(2) << "Speedreader whitelist from " << whitelist_path;
 
-    base::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-        base::BindOnce(
-            &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
-            whitelist_path),
-        base::BindOnce(&SpeedreaderWhitelist::OnGetDATFileData,
-                       weak_factory_.GetWeakPtr()));
+    OnWhitelistFileReady(whitelist_path, false /* no error */);
+
+    whitelist_path_watcher_ = std::make_unique<base::FilePathWatcher>();
+    if (!whitelist_path_watcher_->Watch(
+            whitelist_path, false /*recursive*/,
+            base::Bind(&SpeedreaderWhitelist::OnWhitelistFileReady,
+                       weak_factory_.GetWeakPtr()))) {
+      LOG(ERROR) << "SpeedReader could not watch filesystem for changes"
+                 << " at path " << whitelist_path.LossyDisplayName();
+    }
   }
 }
 
 SpeedreaderWhitelist::~SpeedreaderWhitelist() = default;
+
+void SpeedreaderWhitelist::OnWhitelistFileReady(const base::FilePath& path,
+                                                bool error) {
+  if (error) {
+    LOG(ERROR) << "SpeedReader got an error watching for file changes."
+               << " Stopping watching.";
+    whitelist_path_watcher_.reset();
+    return;
+  }
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(
+          &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
+          path),
+      base::BindOnce(&SpeedreaderWhitelist::OnGetDATFileData,
+                     weak_factory_.GetWeakPtr()));
+}
 
 void SpeedreaderWhitelist::OnComponentReady(const std::string& component_id,
                                             const base::FilePath& install_dir,
@@ -81,6 +101,7 @@ std::unique_ptr<Rewriter> SpeedreaderWhitelist::MakeRewriter(const GURL& url) {
 }
 
 void SpeedreaderWhitelist::OnGetDATFileData(GetDATFileDataResult result) {
+  VLOG(2) << "Speedreader loaded from DAT file";
   speedreader_ = std::move(result.first);
 }
 
