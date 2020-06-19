@@ -34,8 +34,6 @@ extern const char kEnableSmartTrackingProtection[];
 
 extern const char kFastWidevineBundleUpdate[];
 
-extern const char kUseGoUpdateDev[];
-
 extern const char kComponentUpdateIntervalInSec[];
 
 extern const char kDisableDnsOverHttps[];

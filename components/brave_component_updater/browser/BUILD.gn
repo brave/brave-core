@@ -20,10 +20,13 @@ source_set("browser") {
     "brave_on_demand_updater.h",
     "dat_file_util.cc",
     "dat_file_util.h",
+    "features.cc",
+    "features.h",
     "local_data_files_service.cc",
     "local_data_files_service.h",
     "local_data_files_observer.cc",
     "local_data_files_observer.h",
+    "switches.h",
   ]
 
   public_configs = [ ":updater_config" ]

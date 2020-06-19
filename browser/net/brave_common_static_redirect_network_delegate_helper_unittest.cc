@@ -10,8 +10,8 @@
 
 #include "base/command_line.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/brave_component_updater/browser/switches.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -42,7 +42,7 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
      ModifyComponentUpdaterURLDev) {
   brave::SetUpdateURLHostForTesting(true);
   base::CommandLine::ForCurrentProcess()->AppendSwitch(
-      switches::kUseGoUpdateDev);
+      brave_component_updater::kUseGoUpdateDev);
   const std::string query_string("?foo=bar");
   const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);

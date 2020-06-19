@@ -13,9 +13,9 @@
 #include "base/feature_list.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/common/brave_features.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_component_updater/browser/switches.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/url_pattern.h"
@@ -38,8 +38,9 @@ std::string GetUpdateURLHost() {
 
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
-      !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
+  if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
+      !base::FeatureList::IsEnabled(
+          brave_component_updater::kUseDevUpdaterUrl)) {
     return UPDATER_PROD_ENDPOINT;
   }
   return UPDATER_DEV_ENDPOINT;
