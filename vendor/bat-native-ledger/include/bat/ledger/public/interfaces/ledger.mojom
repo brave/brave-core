@@ -5,6 +5,8 @@
 module ledger.mojom;
 
 enum ContributionStep {
+  STEP_AC_OFF = -6,
+  STEP_REWARDS_OFF = -5,
   STEP_AC_TABLE_EMPTY = -4,
   STEP_NOT_ENOUGH_FUNDS = -3,
   STEP_FAILED = -2,
@@ -240,7 +242,9 @@ enum Result {
   RETRY_SHORT = 30,
   RETRY_LONG = 31,
   CONTINUE = 32,
-  IN_PROGRESS= 33
+  IN_PROGRESS= 33,
+  REWARDS_OFF = 34,
+  AC_OFF = 35
 };
 
 enum PublisherStatus {
