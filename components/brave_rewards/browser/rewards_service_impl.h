@@ -66,7 +66,7 @@ class GreaselionService;
 #endif
 
 class Profile;
-class RewardsBrowserTest;
+class RewardsFlagBrowserTest;
 
 namespace brave_rewards {
 
@@ -327,7 +327,7 @@ class RewardsServiceImpl : public RewardsService,
   void ForTestingSetTestResponseCallback(GetTestResponseCallback callback);
 
  private:
-  friend class ::RewardsBrowserTest;
+  friend class ::RewardsFlagBrowserTest;
 
   const base::OneShotEvent& ready() const { return ready_; }
 

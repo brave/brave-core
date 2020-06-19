@@ -1,13 +1,12 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/test/rewards_browsertest_utils.h"
-
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "content/public/test/browser_test_utils.h"
 
-namespace rewards_browsertest_utils {
+namespace rewards_browsertest_util {
 
 static const char kWaitForElementToAppearScript[] = R"(
     const waitForElementToAppear = (selector) => {
@@ -43,6 +42,7 @@ void WaitForElementToAppear(
     content::WebContents* context,
     const std::string& selector,
     bool should_appear) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
       content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
@@ -71,6 +71,7 @@ void WaitForElementToEqual(
     content::WebContents* context,
     const std::string& selector,
     const std::string& expectedValue) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
       content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
@@ -131,6 +132,7 @@ void WaitForElementToContain(
     content::WebContents* context,
     const std::string& selector,
     const std::string& substring) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
       content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
@@ -192,6 +194,7 @@ void WaitForElementToContainHTML(
     content::WebContents* context,
     const std::string& selector,
     const std::string& html) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
       content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
@@ -252,6 +255,7 @@ void WaitForElementToContainHTML(
 void WaitForElementThenClick(
     content::WebContents* context,
     const std::string& selector) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
       content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
@@ -281,6 +285,7 @@ std::string WaitForElementThenGetAttribute(
     content::WebContents* context,
     const std::string& selector,
     const std::string& attribute_name) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
     content::JsReplace(R"(
         new Promise(async (resolve, reject) => {
@@ -298,11 +303,11 @@ std::string WaitForElementThenGetAttribute(
     selector,
     attribute_name);
 
-    auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(
+    context,
+    script,
+    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+    content::ISOLATED_WORLD_ID_CONTENT_END);
 
   return result.ExtractString();
 }
@@ -310,6 +315,7 @@ std::string WaitForElementThenGetAttribute(
 std::string WaitForElementThenGetContent(
     content::WebContents* context,
     const std::string& selector) {
+  DCHECK(context);
   auto script = kWaitForElementToAppearScript +
     content::JsReplace(R"(
         new Promise(async (resolve, reject) => {
@@ -325,11 +331,11 @@ std::string WaitForElementThenGetContent(
     )",
     selector);
 
-    auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(
+    context,
+    script,
+    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+    content::ISOLATED_WORLD_ID_CONTENT_END);
 
   return result.ExtractString();
 }
@@ -338,6 +344,7 @@ void DragAndDrop(
     content::WebContents* context,
     const std::string& drag_selector,
     const std::string& drop_selector) {
+  DCHECK(context);
   const std::string js_code = base::StringPrintf(
       R"(
         var triggerDragAndDrop = function (selectorDrag, selectorDrop) {
@@ -405,7 +412,52 @@ void DragAndDrop(
 }
 
 void IsMediaTipsInjected(content::WebContents* context, bool should_appear) {
+  DCHECK(context);
   WaitForElementToAppear(context, ".action-brave-tip", should_appear);
 }
 
-}  // namespace rewards_browsertest_utils
+std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
+  DCHECK(context);
+  WaitForElementToAppear(context, "[data-test-id=amount-wrapper] div span");
+  auto options = content::EvalJs(
+      context,
+      R"(
+          const delay = t => new Promise(resolve => setTimeout(resolve, t));
+          delay(500).then(() => Array.prototype.map.call(
+              document.querySelectorAll(
+                  "[data-test-id=amount-wrapper] div span"),
+              node => parseFloat(node.innerText)))
+      )",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
+
+  std::vector<double> result;
+  for (const auto& value : options.GetList()) {
+    result.push_back(value.GetDouble());
+  }
+  return result;
+}
+
+std::vector<double> GetRewardsPopupTipOptions(content::WebContents* context) {
+  DCHECK(context);
+  WaitForElementToAppear(context, "option:not(:disabled)");
+  auto options = content::EvalJs(
+      context,
+      R"_(
+        const delay = t => new Promise(resolve => setTimeout(resolve, t));
+        delay(0).then(() =>
+            Array.prototype.map.call(
+                document.querySelectorAll("option:not(:disabled)"),
+                node => parseFloat(node.value)))
+      )_",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
+
+  std::vector<double> result;
+  for (const auto& value : options.GetList()) {
+    result.push_back(value.GetDouble());
+  }
+  return result;
+}
+
+}  // namespace rewards_browsertest_util

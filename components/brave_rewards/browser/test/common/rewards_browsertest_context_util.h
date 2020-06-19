@@ -1,19 +1,21 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_BROWSERTEST_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_BROWSERTEST_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_UTIL_H_
 
 #include <string>
+#include <vector>
+
 #include "build/build_config.h"
 
 namespace content {
 class WebContents;
 }  // namespace content
 
-namespace rewards_browsertest_utils {
+namespace rewards_browsertest_util {
 
 void WaitForElementToAppear(
     content::WebContents* context,
@@ -55,6 +57,10 @@ void DragAndDrop(
 
 void IsMediaTipsInjected(content::WebContents* contents, bool should_appear);
 
-}  // namespace rewards_browsertest_utils
+std::vector<double> GetSiteBannerTipOptions(content::WebContents* site_banner);
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_REWARDS_BROWSERTEST_UTILS_H_
+std::vector<double> GetRewardsPopupTipOptions(content::WebContents* popup);
+
+}  // namespace rewards_browsertest_util
+
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_UTIL_H_
