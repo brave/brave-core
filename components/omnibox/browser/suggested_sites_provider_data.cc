@@ -13,58 +13,64 @@ SuggestedSitesProvider::GetSuggestedSites() {
   {
     SuggestedSitesMatch(
       "binance.com",
-      GURL("https://www.binance.com?ref=39346846"),
+      GURL("https://www.binance.com?ref=17605639"),
       GURL("https://www.binance.com"),
-      base::ASCIIToUTF16("binance.com?ref=39346846"))
+      base::ASCIIToUTF16("binance.com?ref=17605639"))
+  }, {
+  SuggestedSitesMatch(
+      "ftx.com",
+      GURL("https://ftx.com/#a=10percentDiscountOnFees"),
+      GURL("https://www.ftx.com"),
+      base::ASCIIToUTF16("ftx.com/#a=10percentDiscountOnFees"))
   }, {
     SuggestedSitesMatch(
       "bitcoin",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=BTC&ref=176056396&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=BTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "btc",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=BTC&ref=17605639&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=BTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BTC&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "ethereum",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=ETH&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=ETH&ref=17605639&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=ETH"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "eth",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=ETH&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=ETH&ref=17605639&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=ETH"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=ETH&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "litecoin",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=LTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=LTC&ref=17605639&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=LTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "ltc",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=LTC&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=LTC&ref=17605639&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=LTC"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=LTC&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "bnb",
       GURL("https://www.binance.com/en/buy-sell-crypto"
-           "?fiat=USD&crypto=BNB&ref=39346846&utm_source=brave"),
+           "?fiat=USD&crypto=BNB&ref=17605639&utm_source=brave"),
       GURL("https://www.binance.com/en/buy-sell-crypto?crypto=BNB"),
-      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BNB&ref=39346846"))  // NOLINT
+      base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BNB&ref=17605639"))  // NOLINT
   }, {
     SuggestedSitesMatch(
       "binance.us",
@@ -115,9 +121,9 @@ SuggestedSitesProvider::GetSuggestedSites() {
   }, {
     SuggestedSitesMatch(
       "ledger.com/pages/ledger-nano-x",
-      GURL("https://shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327"),
+      GURL("https://shop.ledger.com/pages/ledger-nano-x?r=6c8c"),
       GURL("https://shop.ledger.com/pages/ledger-nano-x"),
-      base::ASCIIToUTF16("shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327"))
+      base::ASCIIToUTF16("shop.ledger.com/pages/ledger-nano-x?r=6c8c"))
   }, {
     SuggestedSitesMatch(
       "trezor.io/product/trezor-one-metallic",

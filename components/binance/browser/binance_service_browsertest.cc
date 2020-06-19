@@ -479,7 +479,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetOAuthClientURL) {
     "scope=user%3Aemail%2Cuser%3Aaddress%2Casset%3Abalance%2Casset%3Aocbs&"
     "code_challenge=da0KASk6XZX4ksgvIGAa87iwNSVvmWdys2GYh3kjBZw&"
     "code_challenge_method=S256&"
-    "ref=39346846");
+    "ref=17605639");
   // Replace the code_challenge since it is always different
   client_url = net::AppendOrReplaceQueryParameter(client_url, "code_challenge",
       "ultra-fake-id");
