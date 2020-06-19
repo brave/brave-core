@@ -177,6 +177,9 @@
       <message name="IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX" desc="Checkbox for importing extensions list">
         Extensions
       </message>
+      <message name="IDS_SETTINGS_IMPORT_PAYMENTS_CHECKBOX" desc="Checkbox for importing payments info">
+        Payment methods
+      </message>
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Widevine
       </message>

@@ -46,6 +46,8 @@ source_set("switches") {
 }
 
 source_set("common") {
+  deps = []
+
   sources = [
     "brave_channel_info.cc",
     "brave_channel_info.h",
@@ -65,11 +67,9 @@ source_set("common") {
     "webui_url_constants.h",
   ]
 
-  if (!is_android) {
-    sources += [
-      "importer/chrome_importer_utils.cc",
-      "importer/chrome_importer_utils.h",
-      "importer/importer_constants.h",
+  if (!is_android && !is_ios) {
+    deps += [
+      "//brave/common/importer",
     ]
   }
 
@@ -88,7 +88,7 @@ source_set("common") {
     ]
   }
 
-  deps = [
+  deps += [
     "//base",
     ":network_constants",
     ":pref_names",
@@ -111,24 +111,6 @@ source_set("common") {
 
     deps += [
       "//content/public/common",
-    ]
-  }
-
-  if (is_mac) {
-    sources += [
-      "importer/chrome_importer_utils_mac.mm",
-    ]
-  }
-
-  if (is_linux) {
-    sources += [
-      "importer/chrome_importer_utils_linux.cc",
-    ]
-  }
-
-  if (is_win) {
-    sources += [
-      "importer/chrome_importer_utils_win.cc",
     ]
   }
 }

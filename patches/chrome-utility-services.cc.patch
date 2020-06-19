@@ -1,0 +1,12 @@
+diff --git a/chrome/utility/services.cc b/chrome/utility/services.cc
+index e5f664d649fbea46b8377956223ad5ed7cf86176..2debed72d9ec22437b058fb00214f9de79ae70a6 100644
+--- a/chrome/utility/services.cc
++++ b/chrome/utility/services.cc
+@@ -286,6 +286,7 @@ mojo::ServiceFactory* GetMainThreadServiceFactory() {
+     RunAssistantAudioDecoder,
+ #endif
+ #endif
++    BRAVE_GET_MAIN_THREAD_SERVICE_FACTORY
+   };
+   // clang-format on
+   return factory.get();

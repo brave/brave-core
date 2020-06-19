@@ -8,7 +8,8 @@
 
 #define BRAVE_IMPORT_ITEM \
   EXTENSIONS         = 1 << 7, \
-  ALL                = (1 << 8) - 1  // All the bits should be 1, hence the -1.
+  PAYMENTS           = 1 << 8, \
+  ALL                = (1 << 9) - 1  // All the bits should be 1, hence the -1.
 
 #define BRAVE_VISIT_SOURCE \
   VISIT_SOURCE_CHROME_IMPORTED = 4,

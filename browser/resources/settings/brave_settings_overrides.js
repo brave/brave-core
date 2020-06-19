@@ -137,7 +137,9 @@ BravePatching.RegisterPolymerComponentBehaviors({
         }
         this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
           !(this.getPref('import_dialog_extensions').value &&
-            this.selected_.extensions)
+            this.selected_.extensions) &&
+          !(this.getPref('import_dialog_payments').value &&
+            this.selected_.payments)
       }
     }
   }],
@@ -520,7 +522,12 @@ BravePatching.RegisterPolymerTemplateModifications({
         <settings-checkbox
             hidden="[[!selected_.extensions]]"
             pref="{{prefs.import_dialog_extensions}}"
-            label="${I18nBehavior.i18n('importExtensions')}">
+            label="${I18nBehavior.i18n('importExtensions')}" no-set-pref>
+        </settings-checkbox>
+        <settings-checkbox
+            hidden="[[!selected_.payments]]"
+            pref="{{prefs.import_dialog_payments}}"
+            label="${I18nBehavior.i18n('importPayments')}" no-set-pref>
         </settings-checkbox>
     `
     checkBoxesParent.innerHTML = innerHTML

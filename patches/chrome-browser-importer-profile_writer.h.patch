@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/importer/profile_writer.h b/chrome/browser/importer/profile_writer.h
-index f4d0fe0af3a81d9f73bc410b8db4914cfff0dbf9..996b1ef8503a149ae16886bf88f35e51547abf54 100644
+index f4d0fe0af3a81d9f73bc410b8db4914cfff0dbf9..f85b83e1ee77c8ac2f05fb3ded7e1f9473b442dd 100644
 --- a/chrome/browser/importer/profile_writer.h
 +++ b/chrome/browser/importer/profile_writer.h
-@@ -86,6 +86,7 @@ class ProfileWriter : public base::RefCountedThreadSafe<ProfileWriter> {
+@@ -84,6 +84,7 @@ class ProfileWriter : public base::RefCountedThreadSafe<ProfileWriter> {
+   virtual void AddAutofillFormDataEntries(
+       const std::vector<autofill::AutofillEntry>& autofill_entries);
  
++  BRAVE_PROFILE_WRITER_H
   protected:
    friend class base::RefCountedThreadSafe<ProfileWriter>;
-+  friend class BraveProfileWriter;
- 
-   virtual ~ProfileWriter();
  

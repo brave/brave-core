@@ -26,7 +26,8 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
         import_dialog_history: true,
         import_dialog_saved_passwords: true,
         import_dialog_search_engine: true,
-        import_dialog_extensions: true
+        import_dialog_extensions: true,
+        import_dialog_payments: true
       }
       chrome.send('importData', [payload, importTypes])
       break

@@ -41,6 +41,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // import data
   (*s_brave_whitelist)[kImportDialogExtensions] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kImportDialogPayments] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Default Brave shields
   (*s_brave_whitelist)[kShieldsAdvancedViewEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
