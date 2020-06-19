@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Web Audio farbling test</title>
+</head>
+<body>
+<script>
+  const duration = 1;
+  const sampleRate = 8000;
+  const ctx = new AudioContext();
+  const audioBuffer = ctx.createBuffer(1, sampleRate * duration, sampleRate);
+  const destArray = new Float32Array(sampleRate * duration);
+  for (var i = 0; i < sampleRate * duration; i++) {
+      destArray[i] = 1;
+  }
+  audioBuffer.copyToChannel(destArray, 0);
+  audioBuffer.copyFromChannel(destArray, 0);
+  var adder = (a, x) => a + x;
+  document.title = Math.round(destArray.reduce(adder));
+</script>
+</body>
+</html>
