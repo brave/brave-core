@@ -61,9 +61,15 @@ import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.OnboardingActivity;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import java.util.Calendar;
 
@@ -81,6 +87,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String OPEN_URL = "open_url";
+
+    private static final int DAYS_4 = 4;
 
     /**
      * Settings for sending local notification reminders.
@@ -217,6 +225,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
+
+        if (PackageUtils.isFirstInstall(this) 
+            && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_4);
+            OnboardingPrefManager.getInstance().setNextOnboardingDate(
+                calender.getTimeInMillis());
+        }
 
         OnboardingActivity onboardingActivity = null;
         for (Activity ref : ApplicationStatus.getRunningActivities()) {

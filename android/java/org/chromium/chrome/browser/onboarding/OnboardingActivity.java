@@ -25,7 +25,6 @@ import java.util.Date;
 
 public class OnboardingActivity extends AppCompatActivity implements OnViewPagerAction {
     private NonSwipeableViewPager viewPager;
-    private static final int DAYS_4 = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +41,6 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
 
     @Override
     public void onSkip() {
-        if (!OnboardingPrefManager.getInstance().hasOnboardingShownForSkip()) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_4);
-
-            OnboardingPrefManager.getInstance().setNextOnboardingDate(
-                calender.getTimeInMillis());
-        }
         finish();
     }
 
