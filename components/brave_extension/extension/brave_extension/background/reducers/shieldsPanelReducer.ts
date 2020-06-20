@@ -375,9 +375,17 @@ export default function shieldsPanelReducer (
         break
       }
       state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
-      chrome.tabs.sendMessage(action.tabId, {
+      let message: { type: string, scriptlet: string, hideOptions?: { } } = {
         type: 'cosmeticFilteringBackgroundReady',
-        scriptlet: action.scriptlet
+        scriptlet: action.scriptlet,
+        hideOptions: undefined
+      }
+      if (action.frameId === 0) {
+        // Non-scriptlet cosmetic filters are only applied on the top-level frame
+        message.hideOptions = {}
+      }
+      chrome.tabs.sendMessage(action.tabId, message, {
+        frameId: action.frameId
       })
       break
     }
@@ -392,7 +400,7 @@ export default function shieldsPanelReducer (
         .then((braveShieldsEnabled: boolean) => {
           const doCosmeticBlocking = braveShieldsEnabled && cosmeticBlockingEnabled
           if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, getHostname(action.url))
+            applyAdblockCosmeticFilters(action.tabId, action.frameId, getHostname(action.url))
           }
         })
       break
