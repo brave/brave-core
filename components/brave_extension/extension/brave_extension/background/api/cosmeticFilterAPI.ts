@@ -39,33 +39,35 @@ export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: s
 }
 
 // Fires on content-script loaded
-export const applyAdblockCosmeticFilters = (tabId: number, hostname: string, hide1pContent: boolean) => {
+export const applyAdblockCosmeticFilters = (tabId: number, frameId: number, hostname: string, hide1pContent: boolean) => {
   chrome.braveShields.hostnameCosmeticResources(hostname, async (resources) => {
     if (chrome.runtime.lastError) {
       console.warn('Unable to get cosmetic filter data for the current host', chrome.runtime.lastError)
       return
     }
 
-    if (hide1pContent) {
-      resources.force_hide_selectors.push(...resources.hide_selectors)
-    } else {
-      informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
+    if (frameId === 0) {
+      if (hide1pContent) {
+        resources.force_hide_selectors.push(...resources.hide_selectors)
+      } else {
+        informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
+      }
+
+      let styledStylesheet = ''
+      if (resources.force_hide_selectors.length > 0) {
+        styledStylesheet += resources.force_hide_selectors.join(',') + '{display:none!important;}\n'
+      }
+      for (const selector in resources.style_selectors) {
+        styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
+      }
+      chrome.tabs.insertCSS(tabId, {
+        code: styledStylesheet,
+        cssOrigin: 'user',
+        runAt: 'document_start'
+      })
     }
 
-    let styledStylesheet = ''
-    if (resources.force_hide_selectors.length > 0) {
-      styledStylesheet += resources.force_hide_selectors.join(',') + '{display:none!important;}\n'
-    }
-    for (const selector in resources.style_selectors) {
-      styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
-    }
-    chrome.tabs.insertCSS(tabId, {
-      code: styledStylesheet,
-      cssOrigin: 'user',
-      runAt: 'document_start'
-    })
-
-    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions, resources.injected_script || '')
+    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, frameId, resources.exceptions, resources.injected_script || '')
   })
 }
 
