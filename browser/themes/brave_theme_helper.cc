@@ -27,14 +27,17 @@ const SkColor kLightOmniboxText = SkColorSetRGB(0x42, 0x42, 0x42);
 const SkColor kPrivateLocationBarBgBase = SkColorSetRGB(0x1b, 0x0e, 0x2c);
 
 SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
+  if (priv) {
+    return color_utils::HSLShift(kPrivateLocationBarBgBase,
+                                 {-1, -1, hover ? 0.54 : 0.52});
+  }
+
   return dark ? (hover ? SkColorSetRGB(0x44, 0x44, 0x44)
                        : SkColorSetRGB(0x22, 0x22, 0x22))
-              : (priv ? color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                              {-1, -1, hover ? 0.54 : 0.52})
-                      : (hover ? color_utils::AlphaBlend(
-                                     SK_ColorWHITE,
-                                     SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
-                               : SK_ColorWHITE));
+              : (hover ? color_utils::AlphaBlend(
+                             SK_ColorWHITE,
+                             SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
+                       : SK_ColorWHITE);
 }
 
 // Omnibox result bg colors
@@ -48,12 +51,17 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
   } else if (id == ThemeProperties::COLOR_OMNIBOX_RESULTS_BG_SELECTED) {
     state = OmniboxPartState::SELECTED;
   }
+
+  SkColor color;
+  if (priv) {
+    color = color_utils::HSLShift(kPrivateLocationBarBgBase,
+                                  {-1, -1, high_contrast ? 0.45 : 0.56});
+  } else {
+    color = dark ? (high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800)
+                 : SK_ColorWHITE;
+  }
   return color_utils::BlendTowardMaxContrast(
-      dark
-          ? (high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800)
-          : (priv ? color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                          {-1, -1, high_contrast ? 0.45 : 0.56})
-                  : SK_ColorWHITE),
+      color,
       gfx::ToRoundedInt(GetOmniboxStateOpacity(state) * 0xff));
 }
 
