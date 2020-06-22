@@ -362,27 +362,6 @@ public class BraveNewTabPageView extends NewTabPageView {
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
-    private TabObserver mTabObserver = new EmptyTabObserver() {
-        @Override
-        public void onInteractabilityChanged(Tab tab, boolean interactable) {
-            // Force a layout update if the tab is now in the foreground.
-            if (interactable) {
-                if (sponsoredTab == null)
-                    initilizeSponsoredTab();
-                if (!sponsoredTab.isMoreTabs()) {
-                    checkAndShowNTPImage(false);
-                }
-            } else {
-                if (!isFromBottomSheet) {
-                    mNewTabPageLayout.setBackgroundResource(0);
-                    if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
-                        imageDrawable.getBitmap().recycle();
-                    }
-                }
-            }
-        }
-    };
-
     private NewTabPageListener newTabPageListener = new NewTabPageListener() {
         @Override
         public void updateInteractableFlag(boolean isBottomSheet) {
