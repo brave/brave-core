@@ -249,7 +249,8 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_browsertest_util::RunUntilIdle();
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
+// Disabled in https://github.com/brave/brave-browser/issues/10392
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, DISABLED_HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
