@@ -46,11 +46,18 @@ export class RewardsPanel extends React.Component<Props, State> {
       })
     })
 
-    chrome.windows.getCurrent({}, this.onWindowCallback)
-
     chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledMain(enabled)
+
+      if (enabled) {
+        this.startRewards()
+      }
     }))
+
+  }
+
+  startRewards = () => {
+    chrome.windows.getCurrent({}, this.onWindowCallback)
 
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       this.props.actions.onAllNotifications(list)
@@ -76,9 +83,10 @@ export class RewardsPanel extends React.Component<Props, State> {
     ) {
       this.getTabData()
     }
-    if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
-      chrome.windows.getCurrent({}, this.onWindowCallback)
-      this.getBalance()
+
+    if (!prevProps.rewardsPanelData.enabledMain &&
+        this.props.rewardsPanelData.enabledMain) {
+      this.startRewards()
     }
   }
 

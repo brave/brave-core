@@ -14,6 +14,9 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -87,7 +90,13 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
 
 class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
  public:
-  GreaselionServiceTest() {}
+  GreaselionServiceTest(): https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    brave::RegisterPathProvider();
+    response_ =
+        std::make_unique<rewards_browsertest::RewardsBrowserTestResponse>();
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    response_->LoadMocks();
+  }
 
   // BaseLocalDataFilesBrowserTest overrides
   const char* test_data_directory() override { return kTestDataDirectory; }
@@ -120,16 +129,49 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     g_brave_browser_process->greaselion_download_service()->rules()->clear();
   }
 
-  void SetRewardsEnabled(bool enabled) {
-    RewardsService* rewards_service =
-        RewardsServiceFactory::GetForProfile(profile());
-    rewards_service->SetRewardsMainEnabled(enabled);
+  void StartRewards() {
+    // HTTP resolver
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_.RegisterRequestHandler(
+        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+    ASSERT_TRUE(https_server_.Start());
+
+    // Rewards service
+    brave::RegisterPathProvider();
+    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
+        brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
+
+    // Response mock
+    rewards_service_->ForTestingSetTestResponseCallback(
+        base::BindRepeating(
+            &GreaselionServiceTest::GetTestResponse,
+            base::Unretained(this)));
+    rewards_service_->SetLedgerEnvForTesting();
+
+    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
     // wait for the Greaselion service to install all the extensions it creates
     // after the rewards service is turned off or on
     GreaselionServiceWaiter(greaselion_service).Wait();
   }
+
+  void GetTestResponse(
+      const std::string& url,
+      int32_t method,
+      int* response_status_code,
+      std::string* response,
+      std::map<std::string, std::string>* headers) {
+    response_->Get(
+        url,
+        method,
+        response_status_code,
+        response);
+  }
+
+  std::unique_ptr<rewards_browsertest::RewardsBrowserTestResponse> response_;
+  net::test_server::EmbeddedTestServer https_server_;
+  brave_rewards::RewardsServiceImpl* rewards_service_;
 };
 
 // Ensure the site specific script service properly clears its cache of
@@ -236,7 +278,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
   // rules are active
   EXPECT_EQ(title, "OK");
 
-  SetRewardsEnabled(true);
+  StartRewards();
   ui_test_utils::NavigateToURL(browser(), url);
   contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));

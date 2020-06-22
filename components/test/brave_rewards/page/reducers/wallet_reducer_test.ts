@@ -23,8 +23,10 @@ describe('wallet reducer', () => {
 
   it('should handle initial state', () => {
     const assertion = reducers(undefined, actions.createWallet())
+    const expectedState: Rewards.State = { ...defaultState }
+    expectedState.initializing = true
     expect(assertion).toEqual({
-      rewardsData: defaultState
+      rewardsData: expectedState
     })
   })
 

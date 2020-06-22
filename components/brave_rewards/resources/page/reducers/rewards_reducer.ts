@@ -10,6 +10,23 @@ import { defaultState } from '../storage'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
+    case types.TOGGLE_ENABLE_MAIN: {
+      if (state.initializing) {
+        break
+      }
+
+      state = { ...state }
+      const key = 'enabledMain'
+      const enable = action.payload.enable
+
+      if (enable) {
+        state.initializing = true
+      }
+
+      state[key] = enable
+      chrome.send('brave_rewards.saveSetting', [key, enable.toString()])
+      break
+    }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
@@ -38,15 +55,22 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
-    case types.ON_SETTING_SAVE:
+    case types.ON_SETTING_SAVE: {
       state = { ...state }
       const key = action.payload.key
       const value = action.payload.value
-      if (key) {
-        state[key] = value
+      const persist = action.payload.persist
+      if (!key) {
+        break
+      }
+
+      if (persist) {
         chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
+
+      state[key] = value
       break
+    }
     case types.UPDATE_ADS_REWARDS: {
       state = { ...state }
       chrome.send('brave_rewards.updateAdsRewards')
@@ -210,8 +234,17 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_REWARDS_ENABLED: {
+      const enabled: boolean = action.payload.enabled
       state = { ...state }
-      state.enabledMain = action.payload.enabled
+      if (state.enabledMain && !enabled) {
+        state = defaultState
+        state.enabledMain = false
+        state.walletCreated = true
+        state.firstLoad = false
+        break
+      }
+
+      state.enabledMain = enabled
       break
     }
     case types.GET_TRANSACTION_HISTORY:
@@ -391,6 +424,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state = {
         ...state,
         currentCountryCode: countryCode
+      }
+      break
+    }
+    case types.ON_INITIALIZED: {
+      state = {
+        ...state,
+        initializing: false
       }
       break
     }

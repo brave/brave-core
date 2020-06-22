@@ -969,4 +969,29 @@ void DatabaseContributionInfo::UpdateContributedAmount(
       callback);
 }
 
+void DatabaseContributionInfo::FinishAllInProgressRecords(
+    ledger::ResultCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+  const std::string query = base::StringPrintf(
+    "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0",
+    kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(
+      command.get(),
+      0,
+      static_cast<int>(ledger::ContributionStep::STEP_REWARDS_OFF));
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
 }  // namespace braveledger_database

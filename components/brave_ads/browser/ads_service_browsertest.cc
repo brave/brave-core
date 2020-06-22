@@ -20,7 +20,6 @@
 #include "brave/common/brave_paths.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -115,7 +114,6 @@ bool URLMatches(const std::string& url,
 
 class BraveAdsBrowserTest
     : public InProcessBrowserTest,
-      public brave_rewards::RewardsServiceObserver,
       public brave_rewards::RewardsNotificationServiceObserver,
       public base::SupportsWeakPtr<BraveAdsBrowserTest> {
  public:
@@ -159,10 +157,6 @@ class BraveAdsBrowserTest
     ads_service_ = static_cast<brave_ads::AdsServiceImpl*>(
         brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
     ASSERT_NE(nullptr, ads_service_);
-    rewards_service_->AddObserver(this);
-    if (!rewards_service_->IsWalletInitialized()) {
-      WaitForWalletInitialization();
-    }
     rewards_service_->SetLedgerEnvForTesting();
   }
 
@@ -171,24 +165,6 @@ class BraveAdsBrowserTest
     // destructor)
 
     InProcessBrowserTest::TearDown();
-  }
-
-  void WaitForWalletInitialization() {
-    if (wallet_initialized_)
-      return;
-    wait_for_wallet_initialization_loop_.reset(new base::RunLoop);
-    wait_for_wallet_initialization_loop_->Run();
-  }
-
-  void OnWalletInitialized(
-      brave_rewards::RewardsService* rewards_service,
-      int32_t result) {
-    const auto converted_result = static_cast<ledger::Result>(result);
-    ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
-                converted_result == ledger::Result::LEDGER_OK);
-    wallet_initialized_ = true;
-    if (wait_for_wallet_initialization_loop_)
-      wait_for_wallet_initialization_loop_->Quit();
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -542,9 +518,6 @@ class BraveAdsBrowserTest
 
   std::unique_ptr<base::RunLoop> brave_ads_have_arrived_notification_run_loop_;
   bool brave_ads_have_arrived_notification_was_already_shown_ = false;
-
-  std::unique_ptr<base::RunLoop> wait_for_wallet_initialization_loop_;
-  bool wallet_initialized_ = false;
 
   std::string registrarVK_;
   std::string verification_;

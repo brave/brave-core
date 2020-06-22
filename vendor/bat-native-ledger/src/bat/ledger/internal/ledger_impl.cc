@@ -252,7 +252,7 @@ void LedgerImpl::ShutdownConfirmations() {
 }
 
 bool LedgerImpl::IsConfirmationsRunning() {
-  if (!bat_confirmations_) {
+  if (!bat_confirmations_ || !initialized_) {
     return false;
   }
 
@@ -448,6 +448,11 @@ void LedgerImpl::LoadURL(
     const std::string& content_type,
     const ledger::UrlMethod method,
     ledger::LoadURLCallback callback) {
+  if (shutting_down_) {
+    BLOG(1,  url + " will not be executed as we are shutting down");
+    return;
+  }
+
   BLOG(5, ledger::UrlRequestToString(url, headers, content, content_type,
       method));
 
@@ -1659,6 +1664,28 @@ void LedgerImpl::SaveProcessedPublisherList(
 
 void LedgerImpl::FetchParameters() {
   bat_api_->FetchParameters();
+}
+
+void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
+  shutting_down_ = true;
+  ledger_client_->ClearAllNotifications();
+
+  auto disconnect_callback = std::bind(&LedgerImpl::ShutdownWallets,
+      this,
+      _1,
+      callback);
+
+  bat_wallet_->DisconnectAllWallets(disconnect_callback);
+}
+
+void LedgerImpl::ShutdownWallets(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  BLOG_IF(
+      1,
+      result != ledger::Result::LEDGER_OK,
+      "Not all wallets were disconnected");
+  bat_database_->FinishAllInProgressContributions(callback);
 }
 
 }  // namespace bat_ledger

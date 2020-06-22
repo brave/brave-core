@@ -78,7 +78,8 @@ export const defaultState: Rewards.State = {
     autoContributeChoice: 0,
     autoContributeChoices: [],
     rate: 0
-  }
+  },
+  initializing: false
 }
 
 const cleanData = (state: Rewards.State) => {

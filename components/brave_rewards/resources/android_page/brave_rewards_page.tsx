@@ -178,6 +178,10 @@ window.cr.define('brave_rewards', function () {
     getActions().getBalance()
   }
 
+  function initialized (result: number) {
+    getActions().onInitialized(result)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -208,7 +212,8 @@ window.cr.define('brave_rewards', function () {
     balance,
     reconcileComplete,
     onlyAnonWallet,
-    unblindedTokensReady
+    unblindedTokensReady,
+    initialized
   }
 })
 

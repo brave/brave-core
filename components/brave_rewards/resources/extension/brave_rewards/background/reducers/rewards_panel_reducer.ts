@@ -253,10 +253,19 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     }
     case types.ON_ENABLED_MAIN: {
       state = { ...state }
-      if (payload.enabledMain == null) {
+      const enabled = payload.enabledMain
+      if (enabled == null) {
         break
       }
-      state.enabledMain = payload.enabledMain
+
+      if (state.enabledMain && !enabled) {
+        state = storage.defaultState
+        state.enabledMain = false
+        state.walletCreated = true
+        break
+      }
+
+      state.enabledMain = enabled
       break
     }
     case types.ON_ENABLED_AC: {
@@ -395,6 +404,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           notifications: {},
           currentNotification: undefined
         }
+        setBadgeText(state)
         break
       }
 
@@ -483,6 +493,15 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         ...state,
         parameters: payload.parameters
       }
+      break
+    }
+    case types.ON_ALL_NOTIFICATIONS_DELETED: {
+      state = {
+        ...state,
+        notifications: {},
+        currentNotification: undefined
+      }
+      setBadgeText(state)
       break
     }
   }

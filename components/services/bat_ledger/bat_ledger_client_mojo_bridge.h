@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
-#define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
+#ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_BRIDGE_H_
+#define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_BRIDGE_H_
 
 #include <map>
 #include <memory>
@@ -14,18 +14,22 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
-
-class SkBitmap;
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace bat_ledger {
 
-class BatLedgerClientMojoProxy : public ledger::LedgerClient,
-                      public base::SupportsWeakPtr<BatLedgerClientMojoProxy> {
+class BatLedgerClientMojoBridge :
+    public ledger::LedgerClient,
+    public base::SupportsWeakPtr<BatLedgerClientMojoBridge>{
  public:
-  BatLedgerClientMojoProxy(
-      mojom::BatLedgerClientAssociatedPtrInfo client_info);
-  ~BatLedgerClientMojoProxy() override;
+  BatLedgerClientMojoBridge(
+      mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info);
+  ~BatLedgerClientMojoBridge() override;
+
+  BatLedgerClientMojoBridge(const BatLedgerClientMojoBridge&) = delete;
+  BatLedgerClientMojoBridge& operator=(
+      const BatLedgerClientMojoBridge&) = delete;
 
   void OnReconcileComplete(
       const ledger::Result result,
@@ -134,21 +138,21 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void PendingContributionSaved(const ledger::Result result) override;
 
- private:
-  bool Connected() const;
-
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-
-  mojom::BatLedgerClientAssociatedPtr bat_ledger_client_;
 
   void OnLoadLedgerState(ledger::OnLoadCallback callback,
       const ledger::Result result, const std::string& data);
   void OnLoadPublisherState(ledger::OnLoadCallback callback,
       const ledger::Result result, const std::string& data);
 
-  DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);
+  void ClearAllNotifications() override;
+
+ private:
+  bool Connected() const;
+
+  mojo::AssociatedRemote<mojom::BatLedgerClient> bat_ledger_client_;
 };
 
 }  // namespace bat_ledger
 
-#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_BRIDGE_H_

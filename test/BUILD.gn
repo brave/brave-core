@@ -625,8 +625,6 @@ test("brave_browser_tests") {
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h",
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.cc",
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h",
-      "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_observer.cc",
-      "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_observer.h",
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.cc",
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h",
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.cc",

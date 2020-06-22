@@ -12,11 +12,14 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_observer.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
+#include "net/dns/mock_host_resolver.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest.*
 
@@ -25,7 +28,7 @@ namespace rewards_browsertest {
 class RewardsStateBrowserTest : public InProcessBrowserTest {
  public:
   RewardsStateBrowserTest() {
-    observer_ = std::make_unique<RewardsBrowserTestObserver>();
+    response_ = std::make_unique<RewardsBrowserTestResponse>();
   }
 
   bool SetUpUserDataDirectory() override {
@@ -39,18 +42,41 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    // HTTP resolver
+    https_server_.reset(new net::EmbeddedTestServer(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_->RegisterRequestHandler(
+        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+    ASSERT_TRUE(https_server_->Start());
+
     // Rewards service
     brave::RegisterPathProvider();
     profile_ = browser()->profile();
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(profile_));
 
-    // Observer
-    observer_->Initialize(rewards_service_);
-    if (!rewards_service_->IsWalletInitialized()) {
-      observer_->WaitForWalletInitialization();
-    }
+    // Response mock
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    response_->LoadMocks();
+    rewards_service_->ForTestingSetTestResponseCallback(
+        base::BindRepeating(
+            &RewardsStateBrowserTest::GetTestResponse,
+            base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
+  }
+
+  void GetTestResponse(
+      const std::string& url,
+      int32_t method,
+      int* response_status_code,
+      std::string* response,
+      std::map<std::string, std::string>* headers) {
+    response_->Get(
+        url,
+        method,
+        response_status_code,
+        response);
   }
 
   void TearDown() override {
@@ -135,12 +161,13 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
   }
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
-  std::unique_ptr<RewardsBrowserTestObserver> observer_;
-
   Profile* profile_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  std::unique_ptr<RewardsBrowserTestResponse> response_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
       5);
@@ -184,6 +211,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetString("brave.rewards.wallet.payment_id"),
       "eea767c4-cd27-4411-afd4-78a9c6b54dbc");

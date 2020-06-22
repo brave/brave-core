@@ -137,6 +137,8 @@ class Database {
 
   void GetAllContributions(ledger::ContributionInfoListCallback callback);
 
+  void FinishAllInProgressContributions(ledger::ResultCallback callback);
+
   /**
    * CONTRIBUTION QUEUE
    */

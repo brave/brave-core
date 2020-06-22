@@ -715,6 +715,8 @@ class LedgerImpl : public ledger::Ledger {
 
   void FetchParameters();
 
+  void Shutdown(ledger::ResultCallback callback) override;
+
  private:
   void OnStateInitialized(
       const ledger::Result result,
@@ -797,6 +799,10 @@ class LedgerImpl : public ledger::Ledger {
       ledger::PublisherInfoCallback callback,
       const std::string& publisher_key);
 
+  void ShutdownWallets(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
@@ -815,6 +821,7 @@ class LedgerImpl : public ledger::Ledger {
 
   bool initialized_;
   bool initializing_;
+  bool shutting_down_ = false;
 
   std::map<uint32_t, ledger::VisitData> current_pages_;
   uint64_t last_tab_active_time_;

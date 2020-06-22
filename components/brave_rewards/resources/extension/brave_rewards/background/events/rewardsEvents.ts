@@ -34,6 +34,10 @@ chrome.rewardsNotifications.onNotificationDeleted.addListener((id: string, type:
   })
 })
 
+chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(() => {
+  rewardsPanelActions.onAllNotificationsDeleted()
+})
+
 chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
   rewardsPanelActions.onEnabledMain(enabledMain)
 })

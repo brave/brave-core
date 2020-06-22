@@ -356,6 +356,8 @@ class LEDGER_EXPORT Ledger {
       const std::vector<ledger::SKUOrderItem>& items,
       ledger::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback) = 0;
+
+  virtual void Shutdown(ledger::ResultCallback callback) = 0;
 };
 
 }  // namespace ledger

@@ -36,6 +36,7 @@ describe('rewards_actions', () => {
       meta: undefined,
       payload: {
         key: 'key',
+        persist: true,
         value: 'value'
       }
     })

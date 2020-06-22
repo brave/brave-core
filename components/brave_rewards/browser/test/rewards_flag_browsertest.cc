@@ -9,11 +9,13 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_observer.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
+#include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsFlagBrowserTest.*
@@ -23,11 +25,19 @@ namespace rewards_browsertest {
 class RewardsFlagBrowserTest : public InProcessBrowserTest {
  public:
   RewardsFlagBrowserTest() {
-    observer_ = std::make_unique<RewardsBrowserTestObserver>();
+    response_ = std::make_unique<RewardsBrowserTestResponse>();
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    // HTTP resolver
+    https_server_.reset(new net::EmbeddedTestServer(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_->RegisterRequestHandler(
+        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+    ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
     brave::RegisterPathProvider();
@@ -35,12 +45,27 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(profile));
 
-    // Observer
-    observer_->Initialize(rewards_service_);
-    if (!rewards_service_->IsWalletInitialized()) {
-      observer_->WaitForWalletInitialization();
-    }
+    // Response mock
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    response_->LoadMocks();
+    rewards_service_->ForTestingSetTestResponseCallback(
+        base::BindRepeating(
+            &RewardsFlagBrowserTest::GetTestResponse,
+            base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
+  }
+
+  void GetTestResponse(
+      const std::string& url,
+      int32_t method,
+      int* response_status_code,
+      std::string* response,
+      std::map<std::string, std::string>* headers) {
+    response_->Get(
+        url,
+        method,
+        response_status_code,
+        response);
   }
 
   void TearDown() override {
@@ -121,137 +146,127 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
   MOCK_METHOD1(OnGetShortRetries, void(bool));
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
-  std::unique_ptr<RewardsBrowserTestObserver> observer_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  std::unique_ptr<RewardsBrowserTestResponse> response_;
   bool callback_called_ = false;
   std::unique_ptr<base::RunLoop> wait_for_callback_;
 };
 
-IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
-  testing::InSequence s;
-  // SetEnvironment(ledger::Environment::PRODUCTION)
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
-  // Staging - true and 1
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING)).Times(2);
-  // Staging - false and random
   EXPECT_CALL(*this, OnGetEnvironment(
-      ledger::Environment::PRODUCTION)).Times(2);
+      ledger::Environment::PRODUCTION)).Times(3);
+
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
 
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   GetEnvironment();
 
-  // Staging - true
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("staging=true");
   GetEnvironment();
 
-  // Staging - 1
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("staging=1");
   GetEnvironment();
 
-  // Staging - false
   rewards_service_->SetEnvironment(ledger::Environment::STAGING);
   rewards_service_->HandleFlags("staging=false");
   GetEnvironment();
 
-  // Staging - random
   rewards_service_->SetEnvironment(ledger::Environment::STAGING);
   rewards_service_->HandleFlags("staging=werwe");
   GetEnvironment();
+}
 
-  // SetDebug(true)
-  EXPECT_CALL(*this, OnGetDebug(true));
-  // Debug - true and 1
-  EXPECT_CALL(*this, OnGetDebug(true)).Times(2);
-  // Debug - false and random
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
+  EXPECT_CALL(*this, OnGetDebug(true)).Times(3);
   EXPECT_CALL(*this, OnGetDebug(false)).Times(2);
+
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
 
   rewards_service_->SetDebug(true);
   GetDebug();
 
-  // Debug - true
   rewards_service_->SetDebug(false);
   rewards_service_->HandleFlags("debug=true");
   GetDebug();
 
-  // Debug - 1
   rewards_service_->SetDebug(false);
   rewards_service_->HandleFlags("debug=1");
   GetDebug();
 
-  // Debug - false
   rewards_service_->SetDebug(true);
   rewards_service_->HandleFlags("debug=false");
   GetDebug();
 
-  // Debug - random
   rewards_service_->SetDebug(true);
   rewards_service_->HandleFlags("debug=werwe");
   GetDebug();
+}
 
-  // SetEnvironment(ledger::Environment::PRODUCTION)
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
-  // Development - true and 1
-  EXPECT_CALL(
-      *this,
-      OnGetEnvironment(ledger::Environment::DEVELOPMENT)).Times(2);
-  // Development - false and random
-  EXPECT_CALL(
-      *this,
-      OnGetEnvironment(ledger::Environment::PRODUCTION)).Times(2);
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::DEVELOPMENT))
+      .Times(2);
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION))
+      .Times(3);
+
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
 
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   GetEnvironment();
 
-  // Development - true
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=true");
   GetEnvironment();
 
-  // Development - 1
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=1");
   GetEnvironment();
 
-  // Development - false
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=false");
   GetEnvironment();
 
-  // Development - random
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=werwe");
   GetEnvironment();
+}
 
-  // positive number
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
-  // negative number and string
   EXPECT_CALL(*this, OnGetReconcileInterval(0)).Times(2);
 
-  // Reconcile interval - positive number
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
+
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->HandleFlags("reconcile-interval=10");
   GetReconcileInterval();
 
-  // Reconcile interval - negative number
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->HandleFlags("reconcile-interval=-1");
   GetReconcileInterval();
 
-  // Reconcile interval - string
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->HandleFlags("reconcile-interval=sdf");
   GetReconcileInterval();
+}
 
-  EXPECT_CALL(*this, OnGetShortRetries(true));   // on
-  EXPECT_CALL(*this, OnGetShortRetries(false));  // off
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsShortRetries) {
+  EXPECT_CALL(*this, OnGetShortRetries(true));
+  EXPECT_CALL(*this, OnGetShortRetries(false));
 
-  // Short retries - on
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
+
   rewards_service_->SetShortRetries(false);
   rewards_service_->HandleFlags("short-retries=true");
   GetShortRetries();
 
-  // Short retries - off
   rewards_service_->SetShortRetries(true);
   rewards_service_->HandleFlags("short-retries=false");
   GetShortRetries();
@@ -263,6 +278,8 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
   EXPECT_CALL(*this, OnGetShortRetries(true));
 
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->SetDebug(true);
   rewards_service_->SetReconcileInterval(0);
@@ -283,6 +300,8 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
   EXPECT_CALL(*this, OnGetShortRetries(false));
 
+  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->SetDebug(false);
   rewards_service_->SetReconcileInterval(0);

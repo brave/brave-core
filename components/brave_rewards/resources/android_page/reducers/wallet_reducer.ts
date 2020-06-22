@@ -25,15 +25,18 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       state.walletCreateFailed = false
       state.walletCreated = false
+      state.initializing = true
       chrome.send('brave_rewards.createWalletRequested')
       break
     case types.WALLET_CREATED:
       state = { ...state }
       state = createWallet(state)
+      state.initializing = false
       chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
       break
     case types.WALLET_CREATE_FAILED:
       state = { ...state }
+      state.initializing = false
       state.walletCreateFailed = true
       break
     case types.GET_REWARDS_PARAMETERS:
