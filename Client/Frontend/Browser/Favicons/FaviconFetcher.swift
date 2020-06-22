@@ -217,8 +217,9 @@ class FaviconFetcher {
             if let image = image {
                 favicon.width = Int(image.size.width)
                 favicon.height = Int(image.size.height)
-                if addingToDatabase && !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                    FaviconMO.add(favicon, forSiteUrl: self.url)
+                if addingToDatabase {
+                    FaviconMO.add(favicon, forSiteUrl: self.url,
+                                  persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
                 }
                 
                 completion(image)
@@ -237,8 +238,20 @@ class FaviconFetcher {
     }
     
     private func fetchIcon(_ completion: @escaping (URL, FaviconAttributes) -> Void) {
+        // Fetch icon logic:
+        // 1. Check if current domain has a favicon.
+        var domainFavicon = domain.favicon
+        
+        // 2. Private mode uses their own in-memory only favicons.
+        // If no in-memory favicon is found we look if there's any persisted one(from normal browsing mode)
+        // and use that one until in-memory favicon is saved.
+        if domainFavicon == nil,
+            PrivateBrowsingManager.shared.isPrivateBrowsing {
+            domainFavicon = Domain.getPersistedDomain(for: url)?.favicon
+        }
+        
         // Attempt to find favicon cached for the given Domain
-        if let favicon = domain.favicon, let urlString = favicon.url, let url = URL(string: urlString) {
+        if let favicon = domainFavicon, let urlString = favicon.url, let url = URL(string: urlString) {
             // Verify that the favicon we have on file is what we want to pull
             // If not, we will just default to monogram to avoid blurry images
             if faviconOnFileMatchesFetchKind(favicon) {

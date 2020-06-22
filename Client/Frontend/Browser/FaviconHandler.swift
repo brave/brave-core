@@ -46,10 +46,7 @@ class FaviconHandler {
             guard let tab = tab else { return }
             
             tab.favicons.append(favicon)
-            if !tab.isPrivate {
-                FaviconMO.add(favicon, forSiteUrl: currentURL)
-                
-            }
+            FaviconMO.add(favicon, forSiteUrl: currentURL, persistent: !tab.isPrivate)
         }
 
         let onCompletedSiteFavicon: ImageCacheCompletion = { image, data, _, _, url in
