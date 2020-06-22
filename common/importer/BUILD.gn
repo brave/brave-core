@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//extensions/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
@@ -42,9 +43,17 @@ source_set("importer") {
   ]
 
   deps = [
+    "//chrome/common/importer",
     "//components/webdata/common",
+    "//extensions/buildflags",
     "//sql",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//extensions/common",
+    ]
+  }
 
   if (is_mac) {
     sources += [
