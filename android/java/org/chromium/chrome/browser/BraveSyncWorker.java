@@ -24,8 +24,35 @@ public class BraveSyncWorker {
     private Context mContext;
     private String mDebug = "true";
 
+    private long mNativeBraveSyncWorker;
+
+    @CalledByNative
+    private void setNativePtr(long nativePtr) {
+        assert mNativeBraveSyncWorker == 0;
+        mNativeBraveSyncWorker = nativePtr;
+    }
+
+    private void Init() {
+        if (mNativeBraveSyncWorker == 0) {
+            nativeInit();
+        }
+    }
+
+    @Override
+    protected void finalize() {
+        Destroy();
+    }
+
+    private void Destroy() {
+        if (mNativeBraveSyncWorker != 0) {
+            nativeDestroy(mNativeBraveSyncWorker);
+            mNativeBraveSyncWorker = 0;
+        }
+    }
+
     public BraveSyncWorker(Context context) {
         mContext = context;
+        Init();
         (new MigrationFromV1()).MigrateFromSyncV1();
     }
 
@@ -104,7 +131,54 @@ public class BraveSyncWorker {
         }
     };
 
+    public String GetCodephrase() {
+        return nativeGetSyncCodeWords(mNativeBraveSyncWorker);
+    }
+
+    public void SaveCodephrase(String codephrase) {
+        nativeSaveCodeWords(mNativeBraveSyncWorker, codephrase);
+    }
+
+    public String GetSeedHexFromWords(String codephrase) {
+        return nativeGetSeedHexFromWords(codephrase);
+    }
+
+    public String GetWordsFromSeedHex(String seedHex) {
+        return nativeGetWordsFromSeedHex(seedHex);
+    }
+
+    public void RequestSync() {
+        nativeRequestSync(mNativeBraveSyncWorker);
+    }
+
+    public boolean IsFirstSetupComplete() {
+        return nativeIsFirstSetupComplete(mNativeBraveSyncWorker);
+    }
+
+    public void FinalizeSyncSetup() {
+        nativeFinalizeSyncSetup(mNativeBraveSyncWorker);
+    }
+
+    public void ResetSync() {
+        nativeResetSync(mNativeBraveSyncWorker);
+    }
+
+    private native void nativeInit();
+    private native void nativeDestroy(long nativeBraveSyncWorker);
+
     private native void nativeDestroyV1LevelDb();
     private native void nativeMarkSyncV1WasEnabledAndMigrated();
+
+    private native String nativeGetSyncCodeWords(long nativeBraveSyncWorker);
+    private native void nativeRequestSync(long nativeBraveSyncWorker);
+
+    private native String nativeGetSeedHexFromWords(String passphrase);
+    private native String nativeGetWordsFromSeedHex(String seedHex);
+    private native void nativeSaveCodeWords(long nativeBraveSyncWorker, String passphrase);
+
+    private native void nativeFinalizeSyncSetup(long nativeBraveSyncWorker);
+
+    private native boolean nativeIsFirstSetupComplete(long nativeBraveSyncWorker);
+
     private native void nativeResetSync(long nativeBraveSyncWorker);
-  }
+}
