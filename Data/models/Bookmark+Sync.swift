@@ -109,7 +109,7 @@ extension Bookmark {
         let highestOrderBookmark = allBookmarks.filter { $0.syncOrder != nil }.max { a, b in
             guard let aOrder = a.syncOrder, let bOrder = b.syncOrder else { return false } // Should be never nil at this point
             
-            return aOrder < bOrder
+            return aOrder.compare(bOrder, options: .numeric) == .orderedAscending 
         }
         
         return highestOrderBookmark?.syncOrder

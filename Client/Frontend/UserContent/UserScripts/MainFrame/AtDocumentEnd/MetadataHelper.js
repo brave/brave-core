@@ -5,11 +5,46 @@
 
 "use strict";
 
-const metadataparser = require("page-metadata-parser/parser.js");
+const {getMetadata:metadataparser, metadataRuleSets} = require("page-metadata-parser");
 
 function MetadataWrapper() {
   this.getMetadata = function() {
-    return metadataparser.getMetadata(window.document, document.URL);
+    const customRuleSets = metadataRuleSets;
+    customRuleSets.icon.rules = [
+       ['link[rel="icon" i]', element => element.getAttribute('href')],
+       ['link[rel="fluid-icon"]', element => element.getAttribute('href')],
+       ['link[rel="shortcut icon"]', element => element.getAttribute('href')],
+       ['link[rel="Shortcut Icon"]', element => element.getAttribute('href')],
+    ];
+    customRuleSets.largeIcon = {
+      rules: [
+        ['link[rel="apple-touch-icon"]', element => element.getAttribute('href')],
+        ['link[rel="apple-touch-icon-precomposed"]', element => element.getAttribute('href')]
+      ],
+      defaultValue: null,
+      scorers: [
+        // Handles the case where multiple icons are listed with specific sizes ie
+        // <link rel="icon" href="small.png" sizes="16x16">
+        // <link rel="icon" href="large.png" sizes="32x32">
+        (element, score) => {
+          // We want to get as close to 180x180
+          const goal = 180 * 180;
+          const sizes = element.getAttribute('sizes');
+
+          if (sizes) {
+            const sizeMatches = sizes.match(/\d+/g);
+
+            if (sizeMatches) {
+              const sizeMulti = sizeMatches.reduce((a, b) => a * b);
+              return 1.0 - (Math.abs(sizeMulti - goal)) / goal;
+            }
+          }
+          return 0.01
+        }
+      ],
+      processors: customRuleSets.icon.processors
+    };
+    return metadataparser(window.document, document.URL, customRuleSets);
   };
 }
 

@@ -98,8 +98,6 @@ extension Preferences {
         static let backgroundImages = Option<Bool>(key: "newtabpage.background-images", default: true)
         /// Whether sponsored images are included into the background image rotation
         static let backgroundSponsoredImages = Option<Bool>(key: "newtabpage.background-sponsored-images", default: true)
-        /// Whether the iOS keyboard auto-opens on a NTP or not
-        static let autoOpenKeyboard = Option<Bool>(key: "newtabpage.auto-open-keyboard", default: false)
         
         /// At least one notification must show before we lock showing subsequent notifications.
         static let atleastOneNTPNotificationWasShowed = Option<Bool>(key: "newtabpage.one-notificaiton-showed",

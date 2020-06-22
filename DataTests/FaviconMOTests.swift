@@ -45,7 +45,7 @@ class FaviconMOTests: CoreDataTestCase {
         let favicon = Favicon(url: exampleUrl.absoluteString)
         
         backgroundSaveAndWaitForExpectation {
-            FaviconMO.add(favicon, forSiteUrl: exampleUrl)
+            FaviconMO.add(favicon, forSiteUrl: exampleUrl, persistent: true)
         }
         
         return try! DataController.viewContext.fetch(fetchRequest).first

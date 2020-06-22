@@ -21,7 +21,7 @@ class ScreenshotHelper {
 
         if let url = tab.url {
             if url.isAboutHomeURL {
-                if let homePanel = controller?.favoritesViewController {
+                if let homePanel = controller?.tabManager.selectedTab?.newTabPageViewController {
                     screenshot = homePanel.view.screenshot(quality: UIConstants.activeScreenshotQuality)
                 }
             } else {

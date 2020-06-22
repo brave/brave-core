@@ -7,8 +7,7 @@ import Foundation
 struct AdblockResourcesMappings {
     static func generalAdblockName(for fileType: FileType) -> String? {
         switch fileType {
-        case .dat: return "combined-included-rs"
-        case .json: return "combined-included"
+        case .dat, .json: return "latest"
         default: return nil
         }
     }

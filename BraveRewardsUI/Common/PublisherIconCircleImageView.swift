@@ -7,7 +7,8 @@ import BraveUI
 
 class PublisherIconCircleImageView: UIView {
   
-  private var imageView = UIImageView()
+  private(set) var imageView = UIImageView()
+  private var backgroundColorObserver: NSKeyValueObservation?
   
   init(size: CGFloat, inset: CGFloat = 7.0) {
     super.init(frame: .zero)
@@ -33,6 +34,10 @@ class PublisherIconCircleImageView: UIView {
       $0.borderColor = Colors.neutral100.cgColor
       $0.borderWidth = 1.0 / UIScreen.main.scale
     }
+    
+    backgroundColorObserver = imageView.observe(\.backgroundColor, options: [.initial, .new], changeHandler: { [weak self] imageView, _ in
+      self?.backgroundColor = imageView.backgroundColor ?? .white
+    })
   }
   
   @available(*, unavailable)
