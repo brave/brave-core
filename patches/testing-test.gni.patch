@@ -1,0 +1,12 @@
+diff --git a/testing/test.gni b/testing/test.gni
+index eda4330b2e39587b6ce745a04b0a154b2a3cb65f..25ab98f422e05a28d5b5a77c2c8dd1a6b4f3545f 100644
+--- a/testing/test.gni
++++ b/testing/test.gni
+@@ -143,7 +143,6 @@ template("test") {
+         apk_name = invoker.target_name
+         if (defined(invoker.output_name)) {
+           apk_name = invoker.output_name
+-          install_script_name = "install_${invoker.output_name}"
+         }
+ 
+         if (defined(invoker.deps)) {
