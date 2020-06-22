@@ -59,10 +59,17 @@ net::RedirectInfo CreateRedirectInfo(
     const GURL& new_url,
     int response_code,
     const base::Optional<std::string>& referrer_policy_header) {
+  // Workaround for a bug in Chromium (crbug.com/1097681).
+  // download_utils.cc do not set update_first_party_url_on_redirect to true
+  // for new ResourceRequests, but we can mitigate it by looking at
+  // |is_main_frame| which is true for navigations and downloads.
+  const bool update_first_party_url_on_redirect =
+      (original_request.update_first_party_url_on_redirect ||
+       original_request.is_main_frame);
   return net::RedirectInfo::ComputeRedirectInfo(
       original_request.method, original_request.url,
       original_request.site_for_cookies,
-      original_request.update_first_party_url_on_redirect
+      update_first_party_url_on_redirect
           ? net::URLRequest::UPDATE_FIRST_PARTY_URL_ON_REDIRECT
           : net::URLRequest::NEVER_CHANGE_FIRST_PARTY_URL,
       original_request.referrer_policy, original_request.referrer.spec(),
