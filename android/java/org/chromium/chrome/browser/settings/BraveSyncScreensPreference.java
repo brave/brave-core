@@ -82,7 +82,6 @@ import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.SettingsActivity;
-import org.chromium.chrome.browser.sync.BraveSyncService;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -98,8 +97,7 @@ import java.util.TimerTask;
  */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
       implements View.OnClickListener, SettingsActivity.OnBackPressedListener,
-      CompoundButton.OnCheckedChangeListener, BarcodeTracker.BarcodeGraphicTrackerCallback,
-      BraveSyncService.GetSettingsAndDevicesCallback {
+      CompoundButton.OnCheckedChangeListener, BarcodeTracker.BarcodeGraphicTrackerCallback {
 
   private static final String TAG = "SYNC";
   // Permission request codes need to be < 256
@@ -118,9 +116,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
   // Timeout to show cancel button while loading devices on sync chain creation
   private static final int CANCEL_LOAD_BUTTON_TIMEOUT = 15*1000;
 
-  // TODO(sergz): Uncomment sync service impl when we fully migrate on sync v2
-  // private BraveSyncService mSyncService;
-  // private BraveSyncServiceObserver mSyncServiceObserver;
   private BraveSyncScreensObserver mSyncScreensObserver;
   private Switch mSyncSwitchBookmarks;
   // The have a sync code button displayed in the Sync view.
@@ -524,65 +519,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           }
           mainActivity.mBraveSyncWorker.InitJSWebView(mSyncScreensObserver);
       }
-      // TODO(sergz): Uncomment sync service impl when we fully migrate on sync v2
-      // Initialize mSyncServiceObserver
-      // if (null != mSyncService) {
-      //     if (null == mSyncServiceObserver) {
-      //         mSyncServiceObserver = new BraveSyncServiceObserver() {
-      //             @Override
-      //             public void onSyncSetupError(String message) {
-      //                 try {
-      //                     if (null == getActivity()) {
-      //                         return;
-      //                     }
-      //                     if (null != message && !message.isEmpty()) {
-      //                         if (message.equals("Credential server response 400. Signed request body of the client timestamp is required.")) {
-      //                             message = getResources().getString(R.string.brave_sync_requires_correct_time);
-      //                         }
-      //                         message = " [" + message + "]";
-      //                     }
-      //                     final String messageFinal = (null == message) ? "" : message;
-      //                     getActivity().runOnUiThread(new Runnable() {
-      //                         @Override
-      //                         public void run() {
-      //                             cancelTimeoutTimer();
-      //                             showEndDialog(getResources().getString(R.string.brave_sync_device_failure) + messageFinal);
-      //                         }
-      //                     });
-      //                 } catch(Exception exc) {
-      //                     Log.e(TAG, "onSyncSetupError exception: " + exc);
-      //                 }
-      //             }
-
-      //             @Override
-      //             public void onSyncStateChanged() {
-      //             }
-
-      //             @Override
-      //             public void onHaveSyncWords(String[] syncWords) {
-      //                 try {
-      //                     if (null == getActivity()) {
-      //                         return;
-      //                     }
-      //                     getActivity().runOnUiThread(new Runnable() {
-      //                         @Override
-      //                         public void run() {
-      //                             cancelTimeoutTimer();
-      //                             mSyncService.onSetSyncEnabled(true);
-      //                             String words = "";
-      //                             for (int i = 0; i < syncWords.length; i++) {
-      //                                 words = words + " " + syncWords[i].trim();
-      //                             }
-      //                             mBraveSyncAddDeviceCodeWords.setText(words.trim());
-      //                         }
-      //                     });
-      //                 } catch(Exception exc) {
-      //                     Log.e(TAG, "onCodeWordsReceived exception: " + exc);
-      //                 }
-      //             }
-      //         };
-      //     }
-      // }
 
       mSyncSwitchBookmarks = (Switch) getView().findViewById(R.id.sync_bookmarks_switch);
       if (null != mSyncSwitchBookmarks) {
@@ -846,21 +782,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
               }
               mainActivity.mBraveSyncWorker.GetNumber(words);
           }
-          // TODO(sergz): Uncomment sync service impl when we fully migrate on sync v2
-          // String[] words = mCodeWords.getText().toString().trim().replace("   ", " ").replace("\n", " ").split(" ");
-          // if (BraveSyncService.NICEWARE_WORD_COUNT != words.length && BraveSyncService.BIP39_WORD_COUNT != words.length) {
-          //     if (null != mSyncServiceObserver) {
-          //         mSyncServiceObserver.onSyncSetupError(getResources().getString(R.string.brave_sync_word_count_error));
-          //     }
-          //     return;
-          // }
-          // TODO(sergz): Uncomment sync service impl when we fully migrate on sync v2
-          // if (null != mSyncService && null != words) {
-          //     for (int i = 0; i < words.length; i++) {
-          //         words[i] = words[i].trim();
-          //     }
-          //     mSyncServiceObserver.onHaveSyncWords(words);
-          // }
       } else if (mEnterCodeWordsButton == v) {
           getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
           if (null != mScrollViewSyncInitial) {
@@ -1622,73 +1543,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                       Log.w(TAG, "No need to load devices for other pages");
                                       return;
                                   }
-                                  // TODO(sergz): Uncomment sync service impl when we fully migrate on sync v2
-                                  // String currentDeviceId = BravePrefServiceBridge.getInstance().getSyncDeviceId();
-                                  // Load other devices in chain
-                                  // if (null != mSyncService) {
-                                  //     new Thread(new Runnable() {
-                                  //         @Override
-                                  //         public void run() {
-                                  //             if (null == getActivity()) {
-                                  //                 return;
-                                  //             }
-                                  //             getActivity().runOnUiThread(new Runnable() {
-                                  //                 @Override
-                                  //                 public void run() {
-                                  //                     ViewGroup insertPoint = (ViewGroup) getView().findViewById(R.id.brave_sync_devices);
-                                  //                     insertPoint.removeAllViews();
-                                  //                     cancelTimeoutTimer();
-                                  //                     int index = 0;
-                                  //                     for (BraveSyncService.ResolvedRecordToApply device : devices) {
-                                  //                         View separator = (View) mInflater.inflate(R.layout.menu_separator, null);
-                                  //                         View listItemView = (View) mInflater.inflate(R.layout.brave_sync_device, null);
-                                  //                         if (null != listItemView && null != separator && null != insertPoint) {
-                                  //                             TextView textView = (TextView) listItemView.findViewById(R.id.brave_sync_device_text);
-                                  //                             if (null != textView) {
-                                  //                                 textView.setText(device.mDeviceName);
-                                  //                             }
-                                  //                             AppCompatImageView deleteButton = (AppCompatImageView) listItemView.findViewById(R.id.brave_sync_remove_device);
-                                  //                             if (null != deleteButton) {
-                                  //                                 if (currentDeviceId.equals(device.mDeviceId)) {
-                                  //                                     // Current device is deleted by button on the bottom
-                                  //                                     deleteButton.setVisibility(View.GONE);
-                                  //                                     if (null != textView) {
-                                  //                                         // Highlight curret device
-                                  //                                         textView.setTextColor(ApiCompatibilityUtils.getColor(getActivity().getResources(), R.color.brave_theme_color));
-                                  //                                         String currentDevice = device.mDeviceName + " " + getResources().getString(R.string.brave_sync_this_device_text);
-                                  //                                         textView.setText(currentDevice);
-                                  //                       }
-                                  //                                     if (null != mRemoveDeviceButton) {
-                                  //                                         mRemoveDeviceButton.setTag(device);
-                                  //                                         mRemoveDeviceButton.setVisibility(View.VISIBLE);
-                                  //                                         mRemoveDeviceButton.setEnabled(true);
-                                  //                                     }
-                                  //                                 } else {
-                                  //                                     deleteButton.setTag(device);
-                                  //                                     deleteButton.setOnClickListener(v -> {
-                                  //                                         BraveSyncService.ResolvedRecordToApply deviceToDelete = (BraveSyncService.ResolvedRecordToApply) v.getTag();
-                                  //                                         deleteDeviceDialog(deviceToDelete.mDeviceName, deviceToDelete.mDeviceId, deviceToDelete.mObjectId, v);
-                                  //                                     });
-                                  //                                 }
-                                  //                             }
-
-                                  //                             insertPoint.addView(separator, index++);
-                                  //                             insertPoint.addView(listItemView, index++);
-                                  //                         }
-                                  //                     }
-                                  //                     if (index > 0) {
-                                  //                         dismissCancelLoadingButton();
-                                  //                         mBraveSyncTextDevicesTitle.setText(getResources().getString(R.string.brave_sync_devices_title));
-                                  //                         View separator = (View) mInflater.inflate(R.layout.menu_separator, null);
-                                  //                         if (null != insertPoint && null != separator) {
-                                  //                             insertPoint.addView(separator, index++);
-                                  //                         }
-                                  //                     }
-                                  //                 }
-                                  //             });
-                                  //         }
-                                  //     }).start();
-                                  // }
                               }
                           });
       } catch (Exception exc) {

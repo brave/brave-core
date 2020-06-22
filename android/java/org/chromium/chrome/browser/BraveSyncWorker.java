@@ -25,8 +25,6 @@ import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge.BookmarkItem;
-import org.chromium.chrome.browser.bookmarks.BraveBookmarkModel;
-import org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils;
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmarksShim;
 import org.chromium.chrome.browser.preferences.BraveSyncScreensObserver;
 import org.chromium.chrome.browser.WebContentsFactory;

@@ -9,7 +9,6 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
-        chain = new BraveBookmarkModelClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveAndroidSyncSettingsClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
