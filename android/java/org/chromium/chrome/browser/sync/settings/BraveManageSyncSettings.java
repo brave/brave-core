@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
 // See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
 public class BraveManageSyncSettings extends ManageSyncSettings {
@@ -20,6 +21,8 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     private Preference mManageSyncData;
 
+    private ChromeSwitchPreference mSyncPaymentsIntegration;
+
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
@@ -27,5 +30,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         getPreferenceScreen().removePreference(mGoogleActivityControls);
         getPreferenceScreen().removePreference(mSyncEncryption);
         getPreferenceScreen().removePreference(mManageSyncData);
+
+        mSyncPaymentsIntegration.setVisible(false);
     }
 }
