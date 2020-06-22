@@ -5,6 +5,7 @@
 import UIKit
 import SnapKit
 import Shared
+import Data
 
 class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     
@@ -38,9 +39,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
         $0.alignment = .center
     }
     
-    private let faviconImageView = UIImageView().then {
-        $0.image = #imageLiteral(resourceName: "defaultTopSiteIcon")
-        $0.contentMode = .scaleAspectFit
+    private let faviconImageView = LargeFaviconView().then {
         $0.snp.makeConstraints {
             $0.size.equalTo(UX.faviconSize)
         }
@@ -75,7 +74,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
         if url?.isBookmarklet == true {
             url = url?.removingPercentEncoding
         } else if let url = url, let favUrl = URL(string: url) {
-            faviconImageView.setIcon(nil, forURL: favUrl)
+            faviconImageView.domain = Domain.getOrCreate(forUrl: favUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
         }
         
         titleTextField.text = title ?? Strings.newBookmarkDefaultName

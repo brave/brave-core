@@ -37,7 +37,8 @@ private extension TrayToBrowserAnimator {
         // Hide browser components
         bvc.toggleSnackBarVisibility(show: false)
         toggleWebViewVisibility(false, usingTabManager: bvc.tabManager)
-        bvc.favoritesViewController?.view.isHidden = true
+        bvc.activeNewTabPageViewController?.view.isHidden = true
+        selectedTab.newTabPageViewController?.view.isHidden = true
         bvc.webViewContainerBackdrop.isHidden = true
         bvc.statusBarOverlay.isHidden = false
         if let url = selectedTab.url, !url.isReaderModeURL {
@@ -94,7 +95,7 @@ private extension TrayToBrowserAnimator {
             bvc.toggleSnackBarVisibility(show: true)
             toggleWebViewVisibility(true, usingTabManager: bvc.tabManager)
             bvc.webViewContainerBackdrop.isHidden = false
-            bvc.favoritesViewController?.view.isHidden = false
+            selectedTab.newTabPageViewController?.view.isHidden = false
             bvc.topToolbar.isTransitioning = false
             bvc.updateTabsBarVisibility()
             transitionContext.completeTransition(true)
@@ -189,7 +190,7 @@ private extension BrowserToTrayAnimator {
         cell.titleBackgroundView.transform = CGAffineTransform(translationX: 0, y: -cell.titleBackgroundView.frame.size.height)
 
         // Hide views we don't want to show during the animation in the BVC
-        bvc.favoritesViewController?.view.isHidden = true
+        bvc.tabManager.selectedTab?.newTabPageViewController?.view.isHidden = true
         bvc.statusBarOverlay.isHidden = true
         bvc.toggleSnackBarVisibility(show: false)
         toggleWebViewVisibility(false, usingTabManager: bvc.tabManager)
@@ -234,7 +235,7 @@ private extension BrowserToTrayAnimator {
 
                 bvc.toggleSnackBarVisibility(show: true)
                 toggleWebViewVisibility(true, usingTabManager: bvc.tabManager)
-                bvc.favoritesViewController?.view.isHidden = false
+                bvc.tabManager.selectedTab?.newTabPageViewController?.view.isHidden = false
 
                 resetTransformsForViews([bvc.header, bvc.readerModeBar, bvc.footer])
                 bvc.topToolbar.isTransitioning = false

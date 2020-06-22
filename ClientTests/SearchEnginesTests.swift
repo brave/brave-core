@@ -178,7 +178,7 @@ class SearchEnginesTests: XCTestCase {
     }
 
     func testUnorderedSearchEngines() {
-        let unorderedList = ["Google", "Bing", "DuckDuckGo", "Qwant", "StartPage"]
+        let unorderedList = ["Google", "Yahoo", "Bing", "DuckDuckGo", "Qwant", "StartPage"]
         ["zh-TW", "en-CA", "de-DE", "en-US"].forEach {
             XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: $0)).compactMap({$0.shortName}), unorderedList)
         }

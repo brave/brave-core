@@ -260,13 +260,13 @@ class TabManager: NSObject {
         
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             let previousFaviconURL = URL(string: previousTab.displayFavicon?.url ?? "")
-            if previousFaviconURL == nil {
+            if previousFaviconURL == nil && !previousTabUrl.isLocal {
                 rewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
             }
             rewards.reportTabUpdated(Int(previousTab.rewardsId), url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
                                      isPrivate: previousTab.isPrivate)
             let faviconURL = URL(string: newSelectedTab.displayFavicon?.url ?? "")
-            if faviconURL == nil {
+            if faviconURL == nil && !newTabUrl.isLocal {
                 rewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
             }
             rewards.reportTabUpdated(Int(newSelectedTab.rewardsId), url: newTabUrl, faviconURL: faviconURL, isSelected: true,

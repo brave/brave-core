@@ -150,7 +150,9 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       cell.siteNameLabel.attributedText = attrName
       
       cell.siteImageView.image = UIImage(frameworkResourceNamed: "defaultFavicon")
-      setFavicon(identifier: tip.id, pageURL: tip.url, faviconURL: tip.faviconUrl)
+      if let url = URL(string: tip.url) {
+        state.dataSource?.retrieveFavicon(for: url, on: cell.siteImageView)
+      }
       cell.verifiedStatusImageView.isHidden = tip.status == .notVerified
       cell.typeNameLabel.text = Strings.oneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
       cell.tokenView.batContainer.amountLabel.text = "\(tip.weight)"
@@ -169,30 +171,6 @@ extension TipsDetailViewController {
       if let balance = $0 { report = balance }
     }
     return report
-  }
-  
-  fileprivate func setFavicon(identifier: String, pageURL: String, faviconURL: String?) {
-    if let pageURL = URL(string: pageURL) {
-      state.dataSource?.retrieveFavicon(for: pageURL, faviconURL: URL(string: faviconURL ?? ""), completion: {[weak self] favData in
-        guard let self = self,
-          let image = favData?.image  else {
-            return
-        }
-        
-        let indices = self.tipsList.enumerated().compactMap({ $0.element.id == identifier ? $0.offset : nil })
-        if indices.isEmpty {
-          return
-        }
-
-        if let tableView = (self.view as? SettingsTableView)?.tableView {
-          for index in indices {
-            if let cell = tableView.cellForRow(at: IndexPath(row: index, section: Section.tips.rawValue)) as? TipsTableCell {
-              cell.siteImageView.image = image
-            }
-          }
-        }
-      })
-    }
   }
   
   func setupLedgerObservers() {

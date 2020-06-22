@@ -1,0 +1,48 @@
+name: Build
+
+on: 
+  push:
+    branches:
+      - development
+      - beta
+  pull_request:
+
+jobs:
+  test:
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'CI/skip')) }}
+    name: Run tests
+    runs-on: macOS-latest
+    env:
+        # The XCode version to use. If you want to update it please refer to this document:
+        # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/software-installed-on-github-hosted-runners#xcode
+        # and set proper version.
+        XCODE_VERSION: 11.5
+
+    steps:
+      - name: Select XCode
+        # Use XCODE_VERSION env variable to set the XCode version you want.
+        run: sudo xcode-select --switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install required software.
+        run: |
+          brew install swiftlint
+      - name: Update node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '11.x'
+      - name: Cache carthage
+        uses: actions/cache@v2
+        with:
+          path: Carthage
+          # New XCode/swift version requires recompiling Carthage dependencies.
+          key: carthage-${{ env.XCODE_VERSION }}-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            carthage-${{ env.XCODE_VERSION }}-
+            carthage-
+      - name: Run bootstrap script
+        run: ./bootstrap.sh --ci
+      - name: Run tests
+        run: |
+          set -o pipefail
+          fastlane ios test

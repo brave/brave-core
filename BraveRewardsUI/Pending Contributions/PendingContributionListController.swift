@@ -199,10 +199,7 @@ extension PendingContributionListController: UITableViewDataSource {
     cell.accessoryType = .disclosureIndicator
     
     if let url = URL(string: contribution.url) {
-      state.dataSource?.retrieveFavicon(for: url, faviconURL: URL(string: contribution.faviconUrl)) { data in
-        cell.siteImageView.image = data?.image ?? UIImage(frameworkResourceNamed: "defaultFavicon")
-        cell.siteImageView.backgroundColor = data?.backgroundColor
-      }
+      state.dataSource?.retrieveFavicon(for: url, on: cell.siteImageView.imageView)
     }
     
     cell.verifiedStatusImageView.isHidden = contribution.status == .notVerified

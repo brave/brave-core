@@ -8,7 +8,7 @@ class ExclusionListCell: UITableViewCell, TableViewReusable {
   
   private let siteStackView = UIStackView()
   
-  let siteImageView = PublisherIconCircleImageView(size: 28)
+  let siteImageView = PublisherIconCircleImageView(size: 28, inset: 4)
   
   let verifiedStatusImageView = UIImageView(image: UIImage(frameworkResourceNamed: "icn-verify")).then {
     $0.isHidden = true

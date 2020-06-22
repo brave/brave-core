@@ -299,14 +299,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       publisherView.checkAgainButton.isHidden = publisher != nil
       publisherView.setCheckAgainIsLoading(state.ledger.isLoadingPublisherList)
       
-      state.dataSource?.retrieveFavicon(for: state.url, faviconURL: URL(string: publisher?.faviconUrl ?? "") ?? state.faviconURL, completion: { [weak self] faviconData in
-        guard let data = faviconData else { return }
-        
-        self?.publisherSummaryView.publisherView.faviconImageView.do {
-          $0.image = data.image
-          $0.backgroundColor = data.backgroundColor
-        }
-      })
+      state.dataSource?.retrieveFavicon(for: state.url, on: publisherSummaryView.publisherView.faviconImageView.imageView)
       
       guard let publisher = publisher else {
         publisherView.updatePublisherName(state.dataSource?.displayString(for: state.url) ?? "", provider: "")

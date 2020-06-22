@@ -15,8 +15,7 @@ public protocol RewardsDataSource: AnyObject {
   ///
   /// Execute completionBlock with FaviconData
   func retrieveFavicon(for pageURL: URL,
-                       faviconURL: URL?,
-                       completion: @escaping (FaviconData?) -> Void)
+                       on imageView: UIImageView)
   
   /// Get the page HTML for the given tab id if its available
   func pageHTML(for tabId: UInt64, completionHandler: @escaping (String?) -> Void)

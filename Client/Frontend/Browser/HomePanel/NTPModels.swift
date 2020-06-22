@@ -58,12 +58,19 @@ class NTPBackground: Codable {
     }()
 }
 
-struct NTPLogo: Codable {
+class NTPLogo: Codable {
     let imageUrl: String
     let alt: String
     let companyName: String
     /// Url to take the user to after the logo is tapped.
     let destinationUrl: String
+    
+    init(imageUrl: String, alt: String, companyName: String, destinationUrl: String) {
+        self.imageUrl = imageUrl
+        self.alt = alt
+        self.companyName = companyName
+        self.destinationUrl = destinationUrl
+    }
     
     lazy var image: UIImage? = {
         UIImage(contentsOfFile: imageUrl)

@@ -23,7 +23,7 @@ class AdblockResourceDownloader {
     
     static let folderName = "abp-data"
     
-    static let endpoint = "https://adblock-data.s3.brave.com/iOS13"
+    static let endpoint = "https://adblock-data.s3.brave.com/ios"
     
     init(networkManager: NetworkManager = NetworkManager(), locale: String? = Locale.current.languageCode) {
         if locale == nil {
@@ -73,7 +73,8 @@ class AdblockResourceDownloader {
             let fileExtension = fileType.rawValue
             let etagExtension = fileExtension + ".etag"
             
-            guard let resourceName = type.resourceName(for: fileType), var url = type.endpoint else {
+            guard let resourceName = type.resourceName(for: fileType),
+                var url = URL(string: AdblockResourceDownloader.endpoint) else {
                 return Deferred<AdBlockNetworkResource>()
             }
             

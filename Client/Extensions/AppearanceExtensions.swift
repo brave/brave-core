@@ -45,6 +45,7 @@ extension Theme {
         UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).appearanceBackgroundColor = tablePrimaryColor
         
         UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).appearanceTextColor = colors.tints.home
+        UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self]).appearanceTextColor = colors.tints.home
         
         AddEditHeaderView.appearance().appearanceBackgroundColor = tableSecondaryColor
         UITextField.appearance().appearanceTextColor = colors.tints.home

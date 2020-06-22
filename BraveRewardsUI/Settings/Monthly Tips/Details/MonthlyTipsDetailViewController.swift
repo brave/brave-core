@@ -184,10 +184,7 @@ extension MonthlyTipsDetailViewController: UITableViewDataSource {
       cell.siteNameLabel.attributedText = attrName
       cell.siteImageView.image = UIImage(frameworkResourceNamed: "defaultFavicon")
       if let url = URL(string: publisher.url) {
-        state.dataSource?.retrieveFavicon(for: url, faviconURL: URL(string: publisher.faviconUrl)) { data in
-          cell.siteImageView.image = data?.image ?? UIImage(frameworkResourceNamed: "defaultFavicon")
-          cell.siteImageView.backgroundColor = data?.backgroundColor
-        }
+        state.dataSource?.retrieveFavicon(for: url, on: cell.siteImageView)
       }
       cell.verifiedStatusImageView.isHidden = publisher.status == .notVerified
       let contribution = publisher.weight

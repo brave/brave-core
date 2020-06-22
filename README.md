@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/brave/brave-ios.svg?branch=development)](https://travis-ci.org/brave/brave-ios)
+![Build](https://github.com/brave/brave-ios/workflows/Build/badge.svg?branch=development)
 
 Brave for iOS 🦁
 ===============

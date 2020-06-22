@@ -59,6 +59,12 @@ public final class Domain: NSManagedObject, CRUD {
         return getOrCreateInternal(url, context: context, saveStrategy: saveStrategy)
     }
     
+    /// Returns saved Domain for url or nil if it doesn't exist.
+    /// Always called on main thread context.
+    public class func getPersistedDomain(for url: URL) -> Domain? {
+        Domain.first(where: NSPredicate(format: "url == %@", url.domainURL.absoluteString))
+    }
+    
     // MARK: Shields
 
     public class func setBraveShield(forUrl url: URL, shield: BraveShield,
@@ -189,10 +195,6 @@ extension Domain {
                     // Delete
                     context.delete($0)
                 }
-            }
-            for obj in results {
-                // Cascading delete on favicon, it will also get deleted
-                context.delete(obj)
             }
         } catch {
             let fetchError = error as NSError
