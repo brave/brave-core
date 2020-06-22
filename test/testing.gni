@@ -1,6 +1,7 @@
+import("//brave/build/rust/config.gni")
 import("//testing/test.gni")
 
-if (is_mac) {
+if (fix_rust_install_name) {
   template("fix_testing_install_name_impl") {
     action(target_name) {
       forward_variables_from(invoker, "*")
@@ -14,35 +15,34 @@ if (is_mac) {
 
       args = [
         "/usr/bin/install_name_tool",
-        "-change",
-        current_path,
-        new_path,
+      ] + command_args + [
         rebase_path(executable_path, root_build_dir),
       ]
     }
   }
 
   template("fix_testing_install_name") {
+    change_args = []
     foreach(change, changes) {
-      fix_testing_install_name_impl(target_name + "_unit_tests") {
-        forward_variables_from(invoker, "*")
-        executable_path = "$root_build_dir/brave_unit_tests"
-        current_path = change[0]
-        new_path = change[1]
-        # input is the same as the output so just fake it
-        outputs = [ "$root_build_dir/alwaysrununittests/$target_name" ]
-        deps = [ "//brave/test:brave_unit_tests_impl" ]
-      }
+      change_args += ["-change", change[0], change[1]]
+    }
 
-      fix_testing_install_name_impl(target_name + "_browser_tests") {
-        forward_variables_from(invoker, "*")
-        executable_path = "$root_build_dir/brave_browser_tests"
-        current_path = change[0]
-        new_path = change[1]
-        # input is the same as the output so just fake it
-        outputs = [ "$root_build_dir/alwaysrunbrowsertests/$target_name" ]
-        deps = [ "//brave/test:brave_browser_tests_impl" ]
-      }
+    fix_testing_install_name_impl(target_name + "_unit_tests") {
+      forward_variables_from(invoker, "*")
+      executable_path = "$root_build_dir/brave_unit_tests"
+      command_args = change_args
+      # input is the same as the output so just fake it
+      outputs = [ "$root_build_dir/alwaysrununittests/$target_name" ]
+      deps = [ "//brave/test:brave_unit_tests_impl" ]
+    }
+
+    fix_testing_install_name_impl(target_name + "_browser_tests") {
+      forward_variables_from(invoker, "*")
+      executable_path = "$root_build_dir/brave_browser_tests"
+      command_args = change_args
+      # input is the same as the output so just fake it
+      outputs = [ "$root_build_dir/alwaysrunbrowsertests/$target_name" ]
+      deps = [ "//brave/test:brave_browser_tests_impl" ]
     }
   }
 }
