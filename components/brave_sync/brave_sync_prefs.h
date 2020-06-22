@@ -45,6 +45,11 @@ class Prefs {
 
   // It is only used to read whether sync v1 was enabled before upgrading
   bool IsSyncV1Enabled() const;
+#if defined(OS_ANDROID)
+  // Used for android clients to pretend sync v1 was enabled through the prefs.
+  // Originally Android used shared preferences
+  void SetSyncV1WasEnabled() const;
+#endif
 
   bool IsSyncMigrateNoticeDismissed() const;
   void SetDismissSyncMigrateNotice(bool is_dismissed);
