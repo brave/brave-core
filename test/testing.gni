@@ -31,7 +31,7 @@ if (is_mac) {
         new_path = change[1]
         # input is the same as the output so just fake it
         outputs = [ "$root_build_dir/alwaysrununittests/$target_name" ]
-        deps = [ "//brave/test:brave_unit_tests" ]
+        deps = [ "//brave/test:brave_unit_tests_impl" ]
       }
 
       fix_testing_install_name_impl(target_name + "_browser_tests") {
@@ -41,7 +41,7 @@ if (is_mac) {
         new_path = change[1]
         # input is the same as the output so just fake it
         outputs = [ "$root_build_dir/alwaysrunbrowsertests/$target_name" ]
-        deps = [ "//brave/test:brave_browser_tests" ]
+        deps = [ "//brave/test:brave_browser_tests_impl" ]
       }
     }
   }
