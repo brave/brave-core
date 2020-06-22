@@ -1649,7 +1649,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Settings
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Brave Pay data for Autofill. 'Brave Pay' should not be translated as it is the product name.">
-        Credit cards and addresses using Brave Pay
+        Credit cards and addresses
       </message>
       <message name="IDS_SYNC_ENCRYPTION" desc="Preference category name for sync encryption. [CHAR-LIMT=32]">
         Encryption
