@@ -26,7 +26,7 @@ void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
 void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
                                                base::OnceClosure callback) {
   // Make sure the deleted device info is sent
-  if (change_processor()->IsEntityUnsynced(local_cache_guid_)) {
+  if (change_processor()->IsEntityUnsynced(client_id)) {
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
