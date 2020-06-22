@@ -20,26 +20,91 @@ import java.lang.Runnable;
 @JNINamespace("chrome::android")
 public class BraveSyncWorker {
     public static final String TAG = "SYNC";
-    public static final String PREF_NAME = "SyncPreferences";
-    private static final String PREF_LAST_FETCH_NAME = "TimeLastFetch";
-    private static final String PREF_LATEST_DEVICE_RECORD_TIMESTAMPT_NAME = "LatestDeviceRecordTime";
-    private static final String PREF_LAST_TIME_SEND_NOT_SYNCED_NAME = "TimeLastSendNotSynced";
-    public static final String PREF_DEVICE_ID = "DeviceId";
-    public static final String PREF_BASE_ORDER = "BaseOrder";
-    public static final String PREF_LAST_ORDER = "LastOrder";
-    public static final String PREF_SEED = "Seed";
-    public static final String PREF_SYNC_DEVICE_NAME = "SyncDeviceName";
-    private static final String PREF_SYNC_SWITCH = "sync_switch";
-    private static final String PREF_SYNC_BOOKMARKS = "brave_sync_bookmarks";
-    public static final String PREF_SYNC_TABS = "brave_sync_tabs";
-    public static final String PREF_SYNC_HISTORY = "brave_sync_history";
-    public static final String PREF_SYNC_AUTOFILL_PASSWORDS = "brave_sync_autofill_passwords";
-    public static final String PREF_SYNC_PAYMENT_SETTINGS = "brave_sync_payment_settings";
 
     private Context mContext;
     private String mDebug = "true";
 
     public BraveSyncWorker(Context context) {
         mContext = context;
+        (new MigrationFromV1()).MigrateFromSyncV1();
     }
+
+    private class MigrationFromV1 {
+        // Deprecated
+        public static final String PREF_NAME = "SyncPreferences";
+        private static final String PREF_LAST_FETCH_NAME = "TimeLastFetch";
+        private static final String PREF_LATEST_DEVICE_RECORD_TIMESTAMPT_NAME =
+                "LatestDeviceRecordTime";
+        private static final String PREF_LAST_TIME_SEND_NOT_SYNCED_NAME = "TimeLastSendNotSynced";
+        public static final String PREF_DEVICE_ID = "DeviceId";
+        public static final String PREF_BASE_ORDER = "BaseOrder";
+        public static final String PREF_LAST_ORDER = "LastOrder";
+        public static final String PREF_SEED = "Seed";
+        public static final String PREF_SYNC_DEVICE_NAME = "SyncDeviceName";
+        private static final String PREF_SYNC_SWITCH = "sync_switch";
+        private static final String PREF_SYNC_BOOKMARKS = "brave_sync_bookmarks";
+        public static final String PREF_SYNC_TABS = "brave_sync_tabs"; // never used
+        public static final String PREF_SYNC_HISTORY = "brave_sync_history"; // never used
+        public static final String PREF_SYNC_AUTOFILL_PASSWORDS =
+                "brave_sync_autofill_passwords"; // never used
+        public static final String PREF_SYNC_PAYMENT_SETTINGS =
+                "brave_sync_payment_settings"; // never used
+
+        private boolean HaveSyncV1Prefs() {
+            SharedPreferences sharedPref = mContext.getSharedPreferences(PREF_NAME, 0);
+
+            String deviceId = sharedPref.getString(PREF_DEVICE_ID, null);
+            if (null == deviceId) {
+                return false;
+            }
+            return true;
+        }
+
+        private void DeleteSyncV1Prefs() {
+            SharedPreferences sharedPref = mContext.getSharedPreferences(PREF_NAME, 0);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove(PREF_LAST_FETCH_NAME)
+                    .remove(PREF_LATEST_DEVICE_RECORD_TIMESTAMPT_NAME)
+                    .remove(PREF_LAST_TIME_SEND_NOT_SYNCED_NAME)
+                    .remove(PREF_SYNC_SWITCH)
+                    .remove(PREF_SYNC_BOOKMARKS)
+                    .remove(PREF_SYNC_TABS)
+                    .remove(PREF_SYNC_HISTORY)
+                    .remove(PREF_SYNC_AUTOFILL_PASSWORDS)
+                    .remove(PREF_SYNC_PAYMENT_SETTINGS)
+                    .remove(PREF_DEVICE_ID)
+                    .remove(PREF_BASE_ORDER)
+                    .remove(PREF_LAST_ORDER)
+                    .remove(PREF_SYNC_DEVICE_NAME)
+                    .apply();
+            // Keep old PREF_SEED just in case
+        }
+
+        private void DeleteSyncV1LevelDb() {
+            nativeDestroyV1LevelDb();
+        }
+
+        public void MigrateFromSyncV1() {
+            // Do all migration work in file IO thread because we may need to
+            // read shared preferences and delete level db
+            PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+                if (HaveSyncV1Prefs()) {
+                    Log.i(TAG, "Found sync v1 data, doing migration");
+                    DeleteSyncV1Prefs();
+                    DeleteSyncV1LevelDb();
+                    // Mark sync v1 was enabled to trigger informers
+                    ThreadUtils.runOnUiThreadBlocking(new Runnable() {
+                        @Override
+                        public void run() {
+                            nativeMarkSyncV1WasEnabledAndMigrated();
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    private native void nativeDestroyV1LevelDb();
+    private native void nativeMarkSyncV1WasEnabledAndMigrated();
+    private native void nativeResetSync(long nativeBraveSyncWorker);
   }

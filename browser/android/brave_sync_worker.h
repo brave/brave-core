@@ -17,6 +17,9 @@ class BraveSyncWorker {
   BraveSyncWorker(JNIEnv* env, jobject obj);
   ~BraveSyncWorker();
 
+  void ResetSync(JNIEnv* env,
+                 const base::android::JavaParamRef<jobject>& jcaller);
+
  private:
   JavaObjectWeakGlobalRef weak_java_shields_config_;
 };
