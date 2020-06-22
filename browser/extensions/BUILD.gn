@@ -128,5 +128,8 @@ source_set("extensions") {
 }
 
 config("infura_config") {
-  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
+  defines = [
+    "BRAVE_SERVICES_KEY=\"$brave_services_key\"",
+    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\""
+  ]
 }

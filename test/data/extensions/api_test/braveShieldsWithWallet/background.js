@@ -7,7 +7,8 @@ function testBasics() {
     function braveShieldsHasWalletAccessButNotSeed() {
       if (chrome.braveWallet && !chrome.braveWallet.getWalletSeed &&
           !chrome.braveWallet.getBitGoSeed &&
-          !chrome.braveWallet.getProjectID) {
+          !chrome.braveWallet.getProjectID &&
+          !chrome.braveWallet.getBraveKey) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();

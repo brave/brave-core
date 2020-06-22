@@ -35,4 +35,15 @@ std::string GetInfuraProjectID() {
   return project_id;
 }
 
+std::string GetBraveKey() {
+  std::string brave_key(BRAVE_SERVICES_KEY);
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+
+  if (env->HasVar("BRAVE_SERVICES_KEY")) {
+    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
+  }
+
+  return brave_key;
+}
+
 }  // namespace extensions

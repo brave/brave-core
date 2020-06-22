@@ -90,6 +90,15 @@ class BraveWalletGetProjectIDFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletGetBraveKeyFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getBraveKey", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetBraveKeyFunction() override {}
+  ResponseAction Run() override;
+};
+
 class BraveWalletResetWalletFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.resetWallet", UNKNOWN)

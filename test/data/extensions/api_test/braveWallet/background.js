@@ -149,6 +149,7 @@ function testBasics() {
       if (chrome.braveWallet && chrome.braveWallet.getWalletSeed &&
           chrome.braveWallet.getBitGoSeed &&
           chrome.braveWallet.getProjectID &&
+          chrome.braveWallet.getBraveKey &&
           chrome.braveWallet.getWeb3Provider) {
         chrome.test.succeed();
       } else {
@@ -263,6 +264,16 @@ function testBasics() {
           return
         }
         console.log('Failed project ID is: ' + projectID)
+        chrome.test.fail();
+      })
+    },
+    function braveWalletExtensionGetBraveKeyWorks() {
+      chrome.braveWallet.getBraveKey((key) => {
+        if (key === "test-brave-key") {
+          chrome.test.succeed();
+          return
+        }
+        console.log('Failure, brave key is: ' + key)
         chrome.test.fail();
       })
     }
