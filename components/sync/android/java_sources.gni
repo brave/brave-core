@@ -1,1 +1,0 @@
-brave_sync_java_sources = [ "//brave/components/sync/android/java/src/org/chromium/components/sync/BraveAndroidSyncSettings.java" ]
