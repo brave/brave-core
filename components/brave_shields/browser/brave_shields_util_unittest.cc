@@ -617,24 +617,33 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
   /* DEFAULT */
   brave_shields::SetFingerprintingControlType(
       profile(), ControlType::DEFAULT, GURL());
-  setting =
-      map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
-                             brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
-  setting = map->GetContentSetting(GURL(), GURL("https://firstParty"),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  ControlType type =
+      brave_shields::GetFingerprintingControlType(profile(), GURL());
+  EXPECT_EQ(ControlType::DEFAULT, type);
 
   // setting should apply to all urls
-  setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
-  setting = map->GetContentSetting(
-      GURL("http://brave.com"), GURL("https://firstParty"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  type = brave_shields::GetFingerprintingControlType(
+      profile(), GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::DEFAULT, type);
+
+  /* Global ALLOW and Site explicit DEFAULT */
+  brave_shields::SetFingerprintingControlType(profile(), ControlType::ALLOW,
+                                              GURL());
+  brave_shields::SetFingerprintingControlType(profile(), ControlType::DEFAULT,
+                                              GURL("http://brave.com"));
+
+  // Site should have DEFAULT if it's explicitly set.
+  type = brave_shields::GetFingerprintingControlType(
+      profile(), GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::DEFAULT, type);
+
+  /* Global BLOCK and Site explicit DEFAULT */
+  brave_shields::SetFingerprintingControlType(profile(), ControlType::BLOCK,
+                                              GURL());
+  // Site should have DEFAULT if it's explicitly set.
+  type = brave_shields::GetFingerprintingControlType(
+      profile(), GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::DEFAULT, type);
 }
 
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
