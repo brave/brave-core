@@ -21,5 +21,9 @@ source_set("browser") {
       "//net",
       "//services/network/public/cpp",
     ]
+
+    if (is_android) {
+      deps += [ "//brave/components/safetynet:android" ]
+    }
   }
 }

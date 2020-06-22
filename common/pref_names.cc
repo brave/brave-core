@@ -98,4 +98,5 @@ const char kPlayYTVideoInBrowserEnabled[] =
 const char kBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
 const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
+const char kSafetynetStatus[] = "safetynet.status";
 #endif

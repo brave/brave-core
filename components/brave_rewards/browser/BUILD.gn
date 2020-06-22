@@ -111,7 +111,7 @@ source_set("browser") {
     ]
 
     if (is_android) {
-      deps += [ "android" ]
+      deps += [ "//brave/components/safetynet:android" ]
     }
   }
 }

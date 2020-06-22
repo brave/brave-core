@@ -86,6 +86,7 @@ extern const char kDesktopModeEnabled[];
 extern const char kPlayYTVideoInBrowserEnabled[];
 extern const char kBackgroundVideoPlaybackEnabled[];
 extern const char kSafetynetCheckFailed[];
+extern const char kSafetynetStatus[];
 #endif
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

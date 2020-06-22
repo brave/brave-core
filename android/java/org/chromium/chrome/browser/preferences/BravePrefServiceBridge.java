@@ -95,6 +95,10 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getSafetynetCheckFailed();
     }
 
+    public void setSafetynetStatus(String status) {
+        BravePrefServiceBridgeJni.get().setSafetynetStatus(status);
+    }
+
     public void setUseRewardsStagingServer(boolean enabled) {
         BravePrefServiceBridgeJni.get().setUseRewardsStagingServer(enabled);
     }
@@ -215,6 +219,8 @@ public class BravePrefServiceBridge {
 
         void setSafetynetCheckFailed(boolean value);
         boolean getSafetynetCheckFailed();
+
+        void setSafetynetStatus(String status);
 
         void setUseRewardsStagingServer(boolean enabled);
         boolean getUseRewardsStagingServer();
