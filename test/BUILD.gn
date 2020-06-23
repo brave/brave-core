@@ -27,7 +27,7 @@ if (is_android) {
 }
 
 if (fix_rust_install_name) {
-  fix_testing_install_name("fix_brave_test_install_name") {
+  fix_testing_install_name("fix_test_install_name_brave") {
     changes = [
       [adblock_shared_lib_install_name, "@executable_path/" + rebase_path(adblock_lib_path, root_build_dir)],
     ]
@@ -37,11 +37,21 @@ if (fix_rust_install_name) {
         [challenge_bypass_shared_lib_install_name, "@executable_path/" + rebase_path(challenge_bypass_lib_path, root_build_dir)]
       ]
     }
+
     if (enable_speedreader) {
       changes += [
         [speedreader_shared_lib_install_name, "@executable_path/" + rebase_path(speedreader_lib_path, root_build_dir)],
       ]
     }
+  }
+} else {
+  group("fix_test_install_name_brave_unit_tests") {
+    testonly = true
+    deps = [ ":brave_unit_tests" ]
+  }
+  group("fix_test_install_name_brave_browser_tests") {
+    testonly = true
+    deps = [ ":brave_browser_tests" ]
   }
 }
 
@@ -91,18 +101,8 @@ group("other_unit_tests") {
   }
 }
 
-group("brave_unit_tests") {
+test("brave_unit_tests") {
   testonly = true
-  if (fix_rust_install_name) {
-    deps = [ ":fix_brave_test_install_name_unit_tests" ]
-  } else {
-    deps = [ ":brave_unit_tests_impl"]
-  }
-}
-
-test("brave_unit_tests_impl") {
-  testonly = true
-  output_name = "brave_unit_tests"
   sources = [
     "//brave/browser/brave_content_browser_client_unittest.cc",
     "//brave/browser/brave_resources_util_unittest.cc",
@@ -482,18 +482,8 @@ static_library("browser_tests_runner") {
 
 if (!is_android) {
 
-group("brave_browser_tests") {
+test("brave_browser_tests") {
   testonly = true
-  if (fix_rust_install_name) {
-    deps = [ ":fix_brave_test_install_name_browser_tests" ]
-  } else {
-    deps = [ ":brave_browser_tests_impl"]
-  }
-}
-
-test("brave_browser_tests_impl") {
-  testonly = true
-  output_name = "brave_browser_tests"
   sources = [
     "//brave/app/brave_main_delegate_browsertest.cc",
     "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
