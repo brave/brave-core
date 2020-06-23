@@ -16,6 +16,16 @@ index 1c1bd65c5f7ac55bf9d1f33ae7d7bcd2a5bc9d24..a4d38630fd7c0f4c7b4cd2c34add2122
  namespace blink {
  
  bool IsBackForwardLoadType(WebFrameLoadType type) {
+@@ -765,7 +772,8 @@ void FrameLoader::StartNavigation(const FrameLoadRequest& passed_request,
+     }
+   }
+ 
+-  if (request.ClientRedirectReason() != ClientNavigationReason::kNone) {
++  // work around missing code in our snapshot of upstream Chromium
++  if (1/*request.ClientRedirectReason() != ClientNavigationReason::kNone*/) {
+     probe::FrameRequestedNavigation(frame_, frame_, url,
+                                     request.ClientRedirectReason());
+   }
 @@ -765,6 +772,23 @@ void FrameLoader::StartNavigation(const FrameLoadRequest& passed_request,
        origin_document ? origin_document->AddressSpace()
                        : network::mojom::IPAddressSpace::kUnknown;

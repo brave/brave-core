@@ -37,6 +37,49 @@ index 98229c0fc7ff5c86fe0da4d20936cbcfe90c9720..0130fc2cfacb22aa2633c83560c85823
          ScriptController::kExecuteScriptWhenScriptsDisabled);
    }
  }
+@@ -941,9 +945,27 @@ void InspectorPageAgent::FrameRequestedNavigation(
+     Frame* target_frame,
+     const KURL& url,
+     ClientNavigationReason reason) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  if (target_frame->IsMainFrame()) { // probably not right once remote frames have PG support
++    LocalFrame* main_frame = inspected_frames_->Root();
++    if (main_frame) {
++      Document* document = main_frame->GetDocument();
++      if (document) {
++        ::brave_page_graph::PageGraph* const page_graph = document->GetPageGraph();
++        if (page_graph) {
++              std::string graphml(page_graph->ToGraphML());
++              GetFrontend()->finalPageGraph(String::FromUTF8(graphml.c_str()));
++        }
++      }
++    }
++  }
++#endif
++  using ReasonEnum =
++      protocol::Page::FrameScheduledNavigationNotification::ReasonEnum;
+   GetFrontend()->frameRequestedNavigation(
+       IdentifiersFactory::FrameId(target_frame),
+-      ClientNavigationReasonToProtocol(reason), url.GetString());
++      (reason == ClientNavigationReason::kNone) ? ReasonEnum::Reload : ClientNavigationReasonToProtocol(reason), // work around missing code in our snapshot of upstream Chromium
++      url.GetString());
+ }
+ 
+ void InspectorPageAgent::FrameScheduledNavigation(
+@@ -951,9 +973,12 @@ void InspectorPageAgent::FrameScheduledNavigation(
+     const KURL& url,
+     base::TimeDelta delay,
+     ClientNavigationReason reason) {
++  using ReasonEnum =
++      protocol::Page::FrameScheduledNavigationNotification::ReasonEnum;
+   GetFrontend()->frameScheduledNavigation(
+       IdentifiersFactory::FrameId(frame), delay.InSecondsF(),
+-      ClientNavigationReasonToProtocol(reason), url.GetString());
++      (reason == ClientNavigationReason::kNone) ? ReasonEnum::Reload : ClientNavigationReasonToProtocol(reason), // work around missing code in our snapshot of upstream Chromium
++      url.GetString());
+ }
+ 
+ void InspectorPageAgent::FrameClearedScheduledNavigation(LocalFrame* frame) {
 @@ -1380,6 +1384,29 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
    return Response::OK();
  }
