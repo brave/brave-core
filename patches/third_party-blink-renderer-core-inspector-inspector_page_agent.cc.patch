@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-index 1ff765e6e0e238c713e8235efb4958a96a99eadd..020a417f1c5719547ae4f0f049a5a61be14a430d 100644
+index 1ff765e6e0e238c713e8235efb4958a96a99eadd..6346f72118acba955d6d342b8eb2c57300ee3ca9 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
 @@ -85,6 +85,8 @@
@@ -37,7 +37,58 @@ index 1ff765e6e0e238c713e8235efb4958a96a99eadd..020a417f1c5719547ae4f0f049a5a61b
          ScriptController::kExecuteScriptWhenScriptsDisabled);
    }
  }
-@@ -1393,6 +1397,29 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
+@@ -948,9 +952,33 @@ void InspectorPageAgent::FrameRequestedNavigation(
+     Frame* target_frame,
+     const KURL& url,
+     ClientNavigationReason reason) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    // probably not right once remote frames have PG support
++    if (target_frame->IsMainFrame()) {
++      LocalFrame* main_frame = inspected_frames_->Root();
++      if (main_frame) {
++        Document* document = main_frame->GetDocument();
++        if (document) {
++          ::brave_page_graph::PageGraph* const page_graph =
++              document->GetPageGraph();
++          if (page_graph) {
++            std::string graphml(page_graph->ToGraphML());
++            GetFrontend()->finalPageGraph(String::FromUTF8(graphml.c_str()));
++          }
++        }
++      }
++    }
++  }
++#endif
++  namespace ReasonEnum = protocol::Page::ClientNavigationReasonEnum;
+   GetFrontend()->frameRequestedNavigation(
+       IdentifiersFactory::FrameId(target_frame),
+-      ClientNavigationReasonToProtocol(reason), url.GetString());
++      // work around missing code in our snapshot of upstream Chromium
++      (reason == ClientNavigationReason::kNone)
++          ? ReasonEnum::Reload
++          : ClientNavigationReasonToProtocol(reason),
++      url.GetString());
+   GetFrontend()->flush();
+ }
+ 
+@@ -959,9 +987,14 @@ void InspectorPageAgent::FrameScheduledNavigation(
+     const KURL& url,
+     base::TimeDelta delay,
+     ClientNavigationReason reason) {
++  namespace ReasonEnum = protocol::Page::ClientNavigationReasonEnum;
+   GetFrontend()->frameScheduledNavigation(
+       IdentifiersFactory::FrameId(frame), delay.InSecondsF(),
+-      ClientNavigationReasonToProtocol(reason), url.GetString());
++      // work around missing code in our snapshot of upstream Chromium
++      (reason == ClientNavigationReason::kNone)
++          ? ReasonEnum::Reload
++          : ClientNavigationReasonToProtocol(reason),
++      url.GetString());
+   GetFrontend()->flush();
+ }
+ 
+@@ -1393,6 +1426,29 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
    return Response::Success();
  }
  
