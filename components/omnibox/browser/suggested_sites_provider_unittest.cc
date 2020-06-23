@@ -49,11 +49,11 @@ TEST_F(SuggestedSitesProviderTest, SmokeTest) {
 }
 
 TEST_F(SuggestedSitesProviderTest, FourOrMoreChars) {
-  provider_->Start(CreateAutocompleteInput("bin"), false);
+  provider_->Start(CreateAutocompleteInput("bit"), false);
   EXPECT_TRUE(provider_->matches().empty());
 
   // Less than 4 chars no match
-  provider_->Start(CreateAutocompleteInput("bina"), false);
+  provider_->Start(CreateAutocompleteInput("bitc"), false);
   EXPECT_FALSE(provider_->matches().empty());
 }
 
@@ -66,16 +66,16 @@ TEST_F(SuggestedSitesProviderTest, LessThan4IfExact) {
 }
 
 TEST_F(SuggestedSitesProviderTest, OnlyMatchFromStart) {
-  provider_->Start(CreateAutocompleteInput("coinb"), false);
+  provider_->Start(CreateAutocompleteInput("bitc"), false);
   EXPECT_FALSE(provider_->matches().empty());
 
   // Suffix of a match doesn't match
-  provider_->Start(CreateAutocompleteInput("base"), false);
+  provider_->Start(CreateAutocompleteInput("coin"), false);
   EXPECT_TRUE(provider_->matches().empty());
 }
 
 TEST_F(SuggestedSitesProviderTest, NoMatchingWhenPrefIsOff) {
   prefs()->SetBoolean(kBraveSuggestedSiteSuggestionsEnabled, false);
-  provider_->Start(CreateAutocompleteInput("coinb"), false);
+  provider_->Start(CreateAutocompleteInput("bitc"), false);
   EXPECT_TRUE(provider_->matches().empty());
 }
