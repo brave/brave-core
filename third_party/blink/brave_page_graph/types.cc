@@ -244,6 +244,52 @@ const string& JSBuiltInToSting(const JSBuiltIn built_in) noexcept {
   return js_built_in_enum_to_str_map.at(built_in);
 }
 
+namespace {
+  const map<WebAPI, string> web_api_enum_to_str_map = {
+    {kWebAPIDocumentReferrer, "Document.referrer"},
+    {kWebAPILocationAncestorOrigins, "Location.ancestorOrigins"},
+    {kWebAPILocationAssign, "Location.assign"},
+    {kWebAPILocationHash, "Location.hash"},
+    {kWebAPILocationHost, "Location.host"},
+    {kWebAPILocationHostname, "Location.hostname"},
+    {kWebAPILocationHref, "Location.href"},
+    {kWebAPILocationOrigin, "Location.origin"},
+    {kWebAPILocationPathname, "Location.pathname"},
+    {kWebAPILocationPort, "Location.port"},
+    {kWebAPILocationProtocol, "Location.protocol"},
+    {kWebAPILocationReload, "Location.reload"},
+    {kWebAPILocationReplace, "Location.replace"},
+    {kWebAPILocationSearch, "Location.search"},
+  };
+
+  const map<string, WebAPI> web_api_str_to_enum_map = {
+    {"Document.referrer", kWebAPIDocumentReferrer},
+    {"Location.ancestorOrigins", kWebAPILocationAncestorOrigins},
+    {"Location.assign", kWebAPILocationAssign},
+    {"Location.hash", kWebAPILocationHash},
+    {"Location.host", kWebAPILocationHost},
+    {"Location.hostname", kWebAPILocationHostname},
+    {"Location.href", kWebAPILocationHref},
+    {"Location.origin", kWebAPILocationOrigin},
+    {"Location.pathname", kWebAPILocationPathname},
+    {"Location.port", kWebAPILocationPort},
+    {"Location.protocol", kWebAPILocationProtocol},
+    {"Location.reload", kWebAPILocationReload},
+    {"Location.replace", kWebAPILocationReplace},
+    {"Location.search", kWebAPILocationSearch},
+  };
+}
+
+WebAPI WebAPIFromString(const string& web_api_name) noexcept {
+  LOG_ASSERT(web_api_str_to_enum_map.count(web_api_name) != 0);
+  return web_api_str_to_enum_map.at(web_api_name);
+}
+
+const string& WebAPIToString(const WebAPI web_api) noexcept {
+  LOG_ASSERT(web_api_enum_to_str_map.count(web_api) != 0);
+  return web_api_enum_to_str_map.at(web_api);
+}
+
 FingerprintingRule::FingerprintingRule(const std::string& primary_pattern,
                                        const std::string& secondary_pattern,
                                        const std::string& source,

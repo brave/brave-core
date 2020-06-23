@@ -154,8 +154,12 @@ friend NodeHTMLElement;
     const StorageLocation location);
   void RegisterStorageClear(const StorageLocation location);
 
+  void RegisterWebAPICall(const WebAPI web_api,
+    const std::vector<const WTF::String>& arguments);
   void RegisterWebAPICall(const MethodName& method,
     const std::vector<const WTF::String>& arguments);
+  void RegisterWebAPIResult(const WebAPI web_api,
+    const WTF::String& result);
   void RegisterWebAPIResult(const MethodName& method,
     const WTF::String& result);
   void RegisterJSBuiltInCall(const JSBuiltIn built_in,
