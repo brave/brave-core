@@ -18,12 +18,18 @@ index a90396259fd23ea1bfb732d05021fd0fcf5d42bd..6d3edf4e8bd8b3eb4f42e7ec0458ad12
    # Returns iframe node that owns iframe with the given domain.
    experimental command getFrameOwner
      parameters
-@@ -5409,6 +5418,11 @@ domain Page
+@@ -5409,6 +5418,17 @@ domain Page
    # Enables page domain notifications.
    command enable
  
 +  command generatePageGraph
 +    returns
++      # Generated page graph GraphML.
++      string data
++
++  # Page graph is about to become stale/dropped because of top-frame navigation
++  event finalPageGraph
++    parameters
 +      # Generated page graph GraphML.
 +      string data
 +
