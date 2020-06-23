@@ -1,0 +1,4 @@
+build: Release
+brave-browser: 1.10.x (7e07f2574f0d61f1ceca904091466006dddf26e0)
+brave-core: 1.10.x-ios (261aa5b6143c269ede179ee55ff413a6fe567843)
+  latest tag: v1.10.97
