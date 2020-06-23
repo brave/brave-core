@@ -178,6 +178,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (sponsoredTab == null) {
             initilizeSponsoredTab();
         }
+        if (getPlaceholder() != null) {
+            getPlaceholder().setVisibility(View.GONE);
+        }
         if (sponsoredTab != null) {
             checkAndShowNTPImage(false);
         }
@@ -441,28 +444,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
-    private TabObserver mTabObserver = new EmptyTabObserver() {
-        @Override
-        public void onInteractabilityChanged(Tab tab, boolean interactable) {
-            // Force a layout update if the tab is now in the foreground.
-            if (interactable) {
-                if (sponsoredTab == null) {
-                    initilizeSponsoredTab();
-                }
-                if (sponsoredTab != null && !sponsoredTab.isMoreTabs()) {
-                    checkAndShowNTPImage(false);
-                }
-            } else {
-                if(!isFromBottomSheet){
-                    setBackgroundResource(0);
-                    if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
-                        imageDrawable.getBitmap().recycle();
-                    }
-                }
-            }
-        }
-    };
-
     private NewTabPageListener newTabPageListener = new NewTabPageListener() {
         @Override
         public void updateInteractableFlag(boolean isBottomSheet) {
@@ -505,15 +486,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver mNTPBackgroundImageServiceObserver = new NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver() {
         @Override
         public void onUpdated() {
-            checkAndShowNTPImage(true);
-            if (getPlaceholder() != null) {
-                getPlaceholder().setVisibility(View.GONE);
+            if (NTPUtil.isReferralEnabled()) {
+                checkAndShowNTPImage(true);
+                removeDefaultTopSites();
+                if (mNTPBackgroundImagesBridge.isSuperReferral()
+                        && NTPBackgroundImagesBridge.enableSponsoredImages()
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    mNTPBackgroundImagesBridge.getTopSites();
             }
-            removeDefaultTopSites();
-            if (mNTPBackgroundImagesBridge.isSuperReferral()
-                    && NTPBackgroundImagesBridge.enableSponsoredImages()
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                mNTPBackgroundImagesBridge.getTopSites();
         }
     };
 
