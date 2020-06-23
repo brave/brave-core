@@ -643,7 +643,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     }
 
     public void ShowWebSiteView(boolean returning_to_rewards) {
-        ((TextView)this.root.findViewById(R.id.br_bat_wallet)).setText(String.format(Locale.getDefault(), "%.1f", 0.0));
+        ((TextView)this.root.findViewById(R.id.br_bat_wallet)).setText(String.format(Locale.getDefault(), "%.3f", 0.0));
         String usdText = String.format(this.root.getResources().getString(R.string.brave_ui_usd), "0.00");
         ((TextView)this.root.findViewById(R.id.br_usd_wallet)).setText(usdText);
 
@@ -884,10 +884,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 if (splittedValue.length != 0 && splittedValue[0].length() >= 18) {
                     value = BraveRewardsHelper.probiToDouble(args[3]);
                     valueString = Double.isNaN(value) ?
-                                  ERROR_CONVERT_PROBI : String.format("%.1f", value);
+                                  ERROR_CONVERT_PROBI : String.format("%.3f", value);
                 } else {
                     value = Double.parseDouble(args[3]);
-                    valueString = String.format("%.1f", value);
+                    valueString = String.format("%.3f", value);
                 }
 
                 description = String.format(
@@ -1303,8 +1303,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             double  probiDouble = report[i];
             boolean hideControls = (probiDouble == 0);
-            String value = Double.isNaN(probiDouble) ? ERROR_CONVERT_PROBI : String.format(Locale.getDefault(), "%.1f", probiDouble);
-
+            String value = Double.isNaN(probiDouble) ? ERROR_CONVERT_PROBI : String.format(Locale.getDefault(), "%.3f", probiDouble);
+ 
             String usdValue = ERROR_CONVERT_PROBI;
             if (! Double.isNaN(probiDouble)) {
                 double usdValueDouble = probiDouble * mBraveRewardsNativeWorker.GetWalletRate();
@@ -1433,7 +1433,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         if (amount > 0.0) {
             String non_verified_summary =
                 String.format(root.getResources().getString(
-                                  R.string.brave_ui_reserved_amount_text), String.format("%.1f", amount), batPointsText) +
+                                  R.string.brave_ui_reserved_amount_text), String.format("%.3f", amount), batPointsText) +
                 " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more) +
                 ".</font>";
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(non_verified_summary);
