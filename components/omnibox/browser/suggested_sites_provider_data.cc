@@ -12,12 +12,6 @@ SuggestedSitesProvider::GetSuggestedSites() {
   static const std::vector<SuggestedSitesMatch> suggested_sites = {
   {
     SuggestedSitesMatch(
-      "binance.com",
-      GURL("https://www.binance.com?ref=39346846"),
-      GURL("https://www.binance.com"),
-      base::ASCIIToUTF16("binance.com?ref=39346846"))
-  }, {
-    SuggestedSitesMatch(
       "bitcoin",
       GURL("https://www.binance.com/en/buy-sell-crypto"
            "?fiat=USD&crypto=BTC&ref=39346846&utm_source=brave"),
@@ -67,12 +61,6 @@ SuggestedSitesProvider::GetSuggestedSites() {
       base::ASCIIToUTF16("binance.com/en/buy-sell-crypto?crypto=BNB&ref=39346846"))  // NOLINT
   }, {
     SuggestedSitesMatch(
-      "binance.us",
-      GURL("https://www.binance.us?ref=35089877"),
-      GURL("https://www.binance.us"),
-      base::ASCIIToUTF16("binance.us?ref=35089877"))
-  }, {
-    SuggestedSitesMatch(
       "bitcoin",
       GURL("https://www.binance.us/en/buy-sell-crypto"
            "?fiat=USD&crypto=BTC&ref=35089877&utm_source=brave"),
@@ -106,28 +94,7 @@ SuggestedSitesProvider::GetSuggestedSites() {
            "?fiat=USD&crypto=BNB&ref=35089877&utm_source=brave"),
       GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BNB"),
       base::ASCIIToUTF16("binance.us/en/buy-sell-crypto?crypto=BNB&ref=35089877"))  // NOLINT
-  }, {
-    SuggestedSitesMatch(
-      "coinbase.com/join",
-      GURL("https://www.coinbase.com/join/sezc_n"),
-      GURL("https://www.coinbase.com/join"),
-      base::ASCIIToUTF16("coinbase.com/join/sezc_n"))
-  }, {
-    SuggestedSitesMatch(
-      "ledger.com/pages/ledger-nano-x",
-      GURL("https://shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327"),
-      GURL("https://shop.ledger.com/pages/ledger-nano-x"),
-      base::ASCIIToUTF16("shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327"))
-  }, {
-    SuggestedSitesMatch(
-      "trezor.io/product/trezor-one-metallic",
-      GURL("https://shop.trezor.io/product/trezor-one-metallic"
-           "?offer_id=24&aff_id=3494"),
-      GURL("https://shop.trezor.io/product/trezor-one-metallic"),
-      base::ASCIIToUTF16("shop.trezor.io/product/trezor-one-metallic"
-                         "?offer_id=24&aff_id=3494"))
-  },
-  };
+  }};
 
   return suggested_sites;
 }
