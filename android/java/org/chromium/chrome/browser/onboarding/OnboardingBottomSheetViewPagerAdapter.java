@@ -85,6 +85,9 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
         case OnboardingPrefManager.ONBOARDING_TIME:
             position = 2;
             break;
+        case OnboardingPrefManager.ONBOARDING_INVALID_OPTION:
+            layout.findViewById(R.id.indicator_layout).setVisibility(View.VISIBLE);
+            break;
         }
 
         TextView mHeader = layout.findViewById(R.id.onboarding_header);
@@ -106,8 +109,23 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
         if (mAnimations.get(position) != null) {
             mAnimatedView.setVisibility(View.VISIBLE);
             mAnimatedView.setAnimation(mAnimations.get(position));
-            mAnimatedView.playAnimation();
             mAnimatedView.loop(false);
+            mAnimatedView.playAnimation();
+        }
+
+        switch (position) {
+        case 0:
+            layout.findViewById(R.id.indicator_1).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+            break;
+        case 1:
+            layout.findViewById(R.id.indicator_2).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+            break;
+        case 2:
+            layout.findViewById(R.id.indicator_3).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+            break;
+        case 3:
+            layout.findViewById(R.id.indicator_4).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+            break;
         }
 
         container.addView(layout);
