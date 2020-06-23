@@ -23,15 +23,6 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:tabBackground="@drawable/indicator_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp"/>
             
         </androidx.viewpager.widget.ViewPager>
 

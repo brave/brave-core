@@ -295,6 +295,15 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                      blockersInfo.mHTTPSUpgrades, blockersInfo.mScriptsBlocked, blockersInfo.mFingerprintsBlocked);
     }
 
+    public int getAdsTackersBlockedCount(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return 0;
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked;
+    }
+
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
         if (mContext == null) {
             return;
