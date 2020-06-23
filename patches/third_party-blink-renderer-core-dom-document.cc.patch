@@ -226,3 +226,23 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
    cookie_jar_->SetCookie(value);
  }
  
+@@ -5996,6 +6184,19 @@ bool Document::CookiesEnabled() const {
+ }
+ 
+ const AtomicString& Document::referrer() const {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph =
++        const_cast<Document*>(this)->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall(brave_page_graph::kWebAPIDocumentReferrer,
++                                     std::vector<const String>());
++      page_graph->RegisterWebAPIResult(
++          brave_page_graph::kWebAPIDocumentReferrer,
++          Loader() ? Loader()->GetReferrer().referrer : g_null_atom);
++    }
++  }
++#endif
+   if (Loader())
+     return Loader()->GetReferrer().referrer;
+   return g_null_atom;

@@ -1097,6 +1097,11 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
   }
 }
 
+void PageGraph::RegisterWebAPICall(const WebAPI web_api,
+    const vector<const String>& arguments) {
+  RegisterWebAPICall(WebAPIToString(web_api), arguments);
+}
+
 void PageGraph::RegisterWebAPICall(const MethodName& method,
     const vector<const String>& arguments) {
   vector<const string> local_args;
@@ -1127,6 +1132,11 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
 
   AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
     webapi_node, local_args));
+}
+
+void PageGraph::RegisterWebAPIResult(const WebAPI web_api,
+    const String& result) {
+  RegisterWebAPIResult(WebAPIToString(web_api), result);
 }
 
 void PageGraph::RegisterWebAPIResult(const MethodName& method,

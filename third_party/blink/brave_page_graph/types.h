@@ -190,6 +190,25 @@ typedef enum {
 JSBuiltIn JSBuiltInFromString(const std::string& built_in_name) noexcept;
 const std::string& JSBuiltInToSting(const JSBuiltIn built_in_name) noexcept;
 
+typedef enum {
+  kWebAPIDocumentReferrer = 0,
+  kWebAPILocationAncestorOrigins,
+  kWebAPILocationAssign,
+  kWebAPILocationHash,
+  kWebAPILocationHost,
+  kWebAPILocationHostname,
+  kWebAPILocationHref,
+  kWebAPILocationOrigin,
+  kWebAPILocationPathname,
+  kWebAPILocationPort,
+  kWebAPILocationProtocol,
+  kWebAPILocationReload,
+  kWebAPILocationReplace,
+  kWebAPILocationSearch,
+} WebAPI;
+WebAPI WebAPIFromString(const std::string& built_in_name) noexcept;
+const std::string& WebAPIToString(const WebAPI built_in_name) noexcept;
+
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;
