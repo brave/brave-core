@@ -97,14 +97,14 @@ class TabBarCell: UICollectionViewCell {
                 titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
                 closeButton.isHidden = false
                 titleLabel.textColor = theme.colors.tints.header
-                backgroundColor = theme.colors.home
+                backgroundColor = theme.colors.header
             }
                 // Prevent swipe and release outside- deselects cell.
             else if currentIndex != tabManager?.currentDisplayedIndex {
                 titleLabel.font = UIFont.systemFont(ofSize: 12)
-                titleLabel.textColor = theme.colors.tints.header.withAlphaComponent(0.4)
+                titleLabel.textColor = theme.colors.tints.header.withAlphaComponent(0.6)
                 closeButton.isHidden = true
-                backgroundColor = theme.colors.header
+                backgroundColor = theme.colors.home
             }
         }
     }
