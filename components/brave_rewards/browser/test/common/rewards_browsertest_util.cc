@@ -37,11 +37,6 @@ double IsRewardsEnabled(Browser* browser, const bool private_window) {
       brave_rewards::prefs::kBraveRewardsEnabled);
 }
 
-void RunUntilIdle() {
-  base::RunLoop loop;
-  loop.RunUntilIdle();
-}
-
 GURL GetRewardsUrl() {
   GURL rewards_url("brave://rewards");
   return rewards_url;
