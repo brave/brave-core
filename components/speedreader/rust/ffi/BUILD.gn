@@ -47,7 +47,7 @@ cargo_build("speedreader_rust_lib") {
   if (fix_rust_install_name) {
     rust_flags += " -C link-args=-Wl,-install_name,$speedreader_shared_lib_install_name "
   }
-  output = "${root_gen_dir}/speedreader/out/${cargo_lib_prefix}speedreader_ffi${cargo_lib_suffix}"
+  output = speedreader_lib_path
   manifest_path = "Cargo.toml"
   build_path = "${root_gen_dir}/speedreader/out"
 }

@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/build/rust/config.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
@@ -13,7 +14,9 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/speedreader/rust/ffi/config.gni")
+import("//brave/test/testing.gni")
 import("//brave/vendor/adblock_rust_ffi/config.gni")
+import("//brave/vendor/challenge_bypass_ristretto_ffi/config.gni")
 import("//components/gcm_driver/config.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -91,7 +94,7 @@ group("other_unit_tests") {
 group("brave_unit_tests") {
   testonly = true
   if (fix_rust_install_name) {
-    deps = [ ":fix_brave_test_install_name_unit_test" ]
+    deps = [ ":fix_brave_test_install_name_unit_tests" ]
   } else {
     deps = [ ":brave_unit_tests_impl"]
   }
@@ -482,7 +485,7 @@ if (!is_android) {
 group("brave_browser_tests") {
   testonly = true
   if (fix_rust_install_name) {
-    deps = [ ":fix_brave_test_install_name_browser_test" ]
+    deps = [ ":fix_brave_test_install_name_browser_tests" ]
   } else {
     deps = [ ":brave_browser_tests_impl"]
   }
