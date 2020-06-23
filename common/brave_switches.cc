@@ -49,8 +49,6 @@ const char kEnableSmartTrackingProtection[] =
 
 const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
 
-const char kUseGoUpdateDev[] = "use-dev-goupdater-url";
-
 // Use custom update interval in sec
 const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
 

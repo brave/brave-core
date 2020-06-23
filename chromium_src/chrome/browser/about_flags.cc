@@ -8,6 +8,7 @@
 #include "base/strings/string_util.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -50,7 +51,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \
-     FEATURE_VALUE_TYPE(features::kUseDevUpdaterUrl)},                     \
+     FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl)},      \
     {"brave-ntp-branded-wallpaper",                                        \
      flag_descriptions::kBraveNTPBrandedWallpaperName,                     \
      flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,      \

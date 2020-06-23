@@ -7,14 +7,6 @@
 
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveSoftwareProxyPattern[] = "https://*.bravesoftware.com/*";
-const char kBraveUpdatesExtensionsProdEndpoint[] =
-    "https://go-updater.brave.com/extensions";
-
-const char kBraveUpdatesExtensionsDevEndpoint[] =
-    "https://go-updater-dev.bravesoftware.com/extensions";
-// For debgugging:
-// const char kBraveUpdatesExtensionsEndpoint[] =
-// "http://localhost:8192/extensions";
 
 const char kBraveReferralsServer[] = "laptop-updates.brave.com";
 const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";

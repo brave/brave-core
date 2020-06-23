@@ -8,8 +8,6 @@
 
 extern const char kBraveProxyPattern[];
 extern const char kBraveSoftwareProxyPattern[];
-extern const char kBraveUpdatesExtensionsProdEndpoint[];
-extern const char kBraveUpdatesExtensionsDevEndpoint[];
 
 extern const char kBraveReferralsServer[];
 extern const char kBraveReferralsHeadersPath[];

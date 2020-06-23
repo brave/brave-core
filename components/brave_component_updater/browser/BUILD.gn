@@ -1,5 +1,17 @@
 import("//extensions/buildflags/buildflags.gni")
 
+declare_args() {
+  updater_dev_endpoint = ""
+  updater_prod_endpoint = ""
+}
+
+config("updater_config") {
+  defines = [
+    "UPDATER_DEV_ENDPOINT=\"$updater_dev_endpoint\"",
+    "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
+  ]
+}
+
 source_set("browser") {
   sources = [
     "brave_component.cc",
@@ -8,12 +20,16 @@ source_set("browser") {
     "brave_on_demand_updater.h",
     "dat_file_util.cc",
     "dat_file_util.h",
+    "features.cc",
+    "features.h",
     "local_data_files_service.cc",
     "local_data_files_service.h",
     "local_data_files_observer.cc",
     "local_data_files_observer.h",
+    "switches.h",
   ]
 
+  public_configs = [ ":updater_config" ]
   deps = [
     "//base",
   ]

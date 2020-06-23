@@ -27,9 +27,9 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/values.h"
-#include "brave/common/brave_features.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/common/chrome_paths.h"
@@ -87,13 +87,14 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   std::string script_name = rule->name();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
-      !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
-    crypto::SHA256HashString(kBraveUpdatesExtensionsDevEndpoint + script_name,
+  if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
+      !base::FeatureList::IsEnabled(
+          brave_component_updater::kUseDevUpdaterUrl)) {
+    crypto::SHA256HashString(UPDATER_DEV_ENDPOINT + script_name,
                              raw,
                              crypto::kSHA256Length);
   } else {
-    crypto::SHA256HashString(kBraveUpdatesExtensionsProdEndpoint + script_name,
+    crypto::SHA256HashString(UPDATER_PROD_ENDPOINT + script_name,
                              raw,
                              crypto::kSHA256Length);
   }

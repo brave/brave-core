@@ -2,7 +2,7 @@
 # It is not intended for manual editing.
 [[package]]
 name = "adblock"
-version = "0.2.7"
+version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "addr 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1068,7 +1068,7 @@ dependencies = [
 name = "speedreader"
 version = "0.1.0"
 dependencies = [
- "adblock 0.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "adblock 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "flate2 1.0.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "html5ever 0.25.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1315,7 +1315,7 @@ dependencies = [
 ]
 
 [metadata]
-"checksum adblock 0.2.7 (registry+https://github.com/rust-lang/crates.io-index)" = "f904dae28e043972a1acc1e1cdf303b6ab40a144387667d4ad29882cb93bd695"
+"checksum adblock 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)" = "c72a14fab62d2236f515ce61da459805fe0cfee981f5a816d04b32a1c3289ba4"
 "checksum addr 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "22199dd03e5cff19ede8c2b835c93460f998b4716e225d06d740d925ceac5d75"
 "checksum adler32 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "5d2e7343e7fc9de883d1b0341e0b13970f764c14101234857d2ddafa1cb1cac2"
 "checksum ahash 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)" = "6f33b5018f120946c1dcf279194f238a9f146725593ead1c08fa47ff22b0b5d3"
