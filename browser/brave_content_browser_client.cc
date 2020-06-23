@@ -319,9 +319,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
   bool use_proxy = false;
   // TODO(iefremov): Skip proxying for certain requests?
   use_proxy = BraveProxyingURLLoaderFactory::MaybeProxyRequest(
-      browser_context, frame,
-      type == URLLoaderFactoryType::kNavigation ? -1 : render_process_id,
-      factory_receiver);
+      browser_context, frame, render_process_id, factory_receiver);
 
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,

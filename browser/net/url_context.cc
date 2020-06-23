@@ -89,11 +89,15 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).
   if (ctx->tab_origin.is_empty()) {
-    ctx->tab_origin = brave_shields::BraveShieldsWebContentsObserver::
-                          GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                                       ctx->render_frame_id,
-                                                       ctx->frame_tree_node_id)
-                              .GetOrigin();
+    // TODO(iefremov): Find out the proper method of getting web contents.
+    // Probably drop |render_process_id| if |frame_tree_node_id| is enough?
+    // TODO(iefremov): Service workers don't have an associatd web contents,
+    // should we use RenderFrameHost instead?
+    content::WebContents* contents =
+        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+    if (contents) {
+      ctx->tab_origin = contents->GetLastCommittedURL().GetOrigin();
+    }
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);

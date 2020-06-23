@@ -5,11 +5,8 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 
-#include <map>
 #include <memory>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
@@ -25,14 +22,12 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/browser/frame_host/frame_tree_node.h"
-#include "content/browser/frame_host/navigator.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_message_macros.h"
 
@@ -46,7 +41,6 @@ using extensions::Event;
 using extensions::EventRouter;
 #endif
 
-using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
 
@@ -101,34 +95,6 @@ WebContents* GetWebContents(
 
 namespace brave_shields {
 
-base::Lock BraveShieldsWebContentsObserver::frame_data_map_lock_;
-std::map<BraveShieldsWebContentsObserver::RenderFrameIdKey, GURL>
-    BraveShieldsWebContentsObserver::frame_key_to_tab_url_;
-std::map<int, GURL>
-    BraveShieldsWebContentsObserver::frame_tree_node_id_to_tab_url_;
-
-BraveShieldsWebContentsObserver::RenderFrameIdKey::RenderFrameIdKey()
-    : render_process_id(content::ChildProcessHost::kInvalidUniqueID),
-      frame_routing_id(MSG_ROUTING_NONE) {}
-
-BraveShieldsWebContentsObserver::RenderFrameIdKey::RenderFrameIdKey(
-    int render_process_id,
-    int frame_routing_id)
-    : render_process_id(render_process_id),
-      frame_routing_id(frame_routing_id) {}
-
-bool BraveShieldsWebContentsObserver::RenderFrameIdKey::operator<(
-    const RenderFrameIdKey& other) const {
-  return std::tie(render_process_id, frame_routing_id) <
-         std::tie(other.render_process_id, other.frame_routing_id);
-}
-
-bool BraveShieldsWebContentsObserver::RenderFrameIdKey::operator==(
-    const RenderFrameIdKey& other) const {
-  return render_process_id == other.render_process_id &&
-         frame_routing_id == other.frame_routing_id;
-}
-
 BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
 }
 
@@ -147,66 +113,14 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
-
-    base::AutoLock lock(frame_data_map_lock_);
-    const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
-    frame_key_to_tab_url_[key] = web_contents->GetURL();
-    frame_tree_node_id_to_tab_url_[rfh->GetFrameTreeNodeId()] =
-        web_contents->GetURL();
   }
-}
-
-void BraveShieldsWebContentsObserver::RenderFrameDeleted(
-    RenderFrameHost* rfh) {
-  base::AutoLock lock(frame_data_map_lock_);
-  const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
-  frame_key_to_tab_url_.erase(key);
-  frame_tree_node_id_to_tab_url_.erase(rfh->GetFrameTreeNodeId());
 }
 
 void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
     RenderFrameHost* old_host, RenderFrameHost* new_host) {
-  if (old_host) {
-    RenderFrameDeleted(old_host);
-  }
   if (new_host) {
     RenderFrameCreated(new_host);
   }
-}
-
-void BraveShieldsWebContentsObserver::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  RenderFrameHost* main_frame = web_contents()->GetMainFrame();
-  if (!web_contents() || !main_frame) {
-    return;
-  }
-  int process_id = main_frame->GetProcess()->GetID();
-  int routing_id = main_frame->GetRoutingID();
-  int tree_node_id = main_frame->GetFrameTreeNodeId();
-
-  base::AutoLock lock(frame_data_map_lock_);
-  frame_key_to_tab_url_[{process_id, routing_id}] = web_contents()->GetURL();
-  frame_tree_node_id_to_tab_url_[tree_node_id] = web_contents()->GetURL();
-}
-
-// static
-GURL BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-    int render_process_id, int render_frame_id, int render_frame_tree_node_id) {
-  base::AutoLock lock(frame_data_map_lock_);
-  if (-1 != render_process_id && -1 != render_frame_id) {
-    auto iter = frame_key_to_tab_url_.find({render_process_id,
-                                            render_frame_id});
-    if (iter != frame_key_to_tab_url_.end()) {
-      return iter->second;
-    }
-  }
-  if (-1 != render_frame_tree_node_id) {
-    auto iter2 = frame_tree_node_id_to_tab_url_.find(render_frame_tree_node_id);
-    if (iter2 != frame_tree_node_id_to_tab_url_.end()) {
-      return iter2->second;
-    }
-  }
-  return GURL();
 }
 
 bool BraveShieldsWebContentsObserver::IsBlockedSubresource(
