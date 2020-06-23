@@ -367,7 +367,6 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         if searchQuery.isEmpty || !searchEngines.shouldShowSearchSuggestions || searchQuery.looksLikeAURL() {
             suggestionCell.suggestions = []
-            tableView.reloadData()
             return
         }
 
