@@ -100,7 +100,6 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
 
         ViewPager pager = (ViewPager) view.findViewById(R.id.viewpager);
         OnboardingBottomSheetViewPagerAdapter adapter = new OnboardingBottomSheetViewPagerAdapter(mOnboardingType, mNewTabPageListener);
-        pager.setOffscreenPageLimit(0);
         pager.setAdapter(adapter);
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -119,9 +118,6 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
 
             }
         });
-
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(pager, true);
 
         ImageView btnClose = view.findViewById(R.id.onboarding_bottom_sheet_close);
         btnClose.setOnClickListener(new View.OnClickListener() {

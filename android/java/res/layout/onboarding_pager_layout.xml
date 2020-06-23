@@ -36,7 +36,46 @@
         android:textSize="16sp"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="56dp"/>
+        android:layout_marginBottom="32dp"/>
+
+    <LinearLayout
+        android:id="@+id/indicator_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <View 
+            android:id="@+id/indicator_1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/default_indicator"/>
+
+        <View 
+            android:id="@+id/indicator_2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/default_indicator"/>
+
+        <View 
+            android:id="@+id/indicator_3"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/default_indicator"/>
+
+        <View 
+            android:id="@+id/indicator_4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/default_indicator"/>
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_turn_on_privacy_stats"
