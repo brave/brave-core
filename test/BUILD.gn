@@ -49,6 +49,7 @@ if (fix_rust_install_name) {
     testonly = true
     deps = [ ":brave_unit_tests" ]
   }
+
   group("fix_test_install_name_brave_browser_tests") {
     testonly = true
     deps = [ ":brave_browser_tests" ]
@@ -724,7 +725,9 @@ test("brave_browser_tests") {
   ]
   }
 }
-} # if (!is_android) {
+} else { # if (!is_android) {
+  group("brave_browser_tests") {}
+}
 
 # All in this section is for running instrumentation java tests
 if (is_android) {
