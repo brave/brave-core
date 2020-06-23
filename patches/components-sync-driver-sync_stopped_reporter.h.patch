@@ -1,0 +1,13 @@
+diff --git a/components/sync/driver/sync_stopped_reporter.h b/components/sync/driver/sync_stopped_reporter.h
+index a0763bc9d46d2dc159e8d7ec8a06e315ac32a104..d619cb9b9abf9a84fdc070dc013129c6719ddec6 100644
+--- a/components/sync/driver/sync_stopped_reporter.h
++++ b/components/sync/driver/sync_stopped_reporter.h
+@@ -32,7 +32,7 @@ class SyncStoppedReporter {
+       const std::string& user_agent,
+       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+       ResultCallback callback);
+-  ~SyncStoppedReporter();
++  virtual ~SyncStoppedReporter();
+ 
+   // Inform the sync server that sync was stopped on this device.
+   // |access_token|, |cache_guid|, and |birthday| must not be empty.

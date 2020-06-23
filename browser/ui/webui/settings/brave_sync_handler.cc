@@ -39,15 +39,15 @@ std::string StrFromUint8Array(const std::vector<uint8_t>& arr) {
 
 }  // namespace
 
-BraveSyncHandler::BraveSyncHandler() { }
-BraveSyncHandler::~BraveSyncHandler() { }
+BraveSyncHandler::BraveSyncHandler() : weak_ptr_factory_(this) {}
+BraveSyncHandler::~BraveSyncHandler() {}
 
 void BraveSyncHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
   web_ui()->RegisterMessageCallback(
       "SyncGetDeviceList",
-       base::BindRepeating(&BraveSyncHandler::HandleGetDeviceList,
-                           base::Unretained(this)));
+      base::BindRepeating(&BraveSyncHandler::HandleGetDeviceList,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "SyncSetupSetSyncCode",
       base::BindRepeating(&BraveSyncHandler::HandleSetSyncCode,
@@ -57,18 +57,15 @@ void BraveSyncHandler::RegisterMessages() {
       base::BindRepeating(&BraveSyncHandler::HandleGetSyncCode,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "SyncGetQRCode",
-      base::BindRepeating(&BraveSyncHandler::HandleGetQRCode,
-                          base::Unretained(this)));
+      "SyncGetQRCode", base::BindRepeating(&BraveSyncHandler::HandleGetQRCode,
+                                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
                                             base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
-  syncer::DeviceInfoTracker* tracker =
-      DeviceInfoSyncServiceFactory::GetForProfile(profile_)
-          ->GetDeviceInfoTracker();
+  syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
   DCHECK(tracker);
   if (tracker)
     device_info_tracker_observer_.Add(tracker);
@@ -174,17 +171,17 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
+  base::Value callback_id_arg(callback_id->Clone());
 
-  auto* sync_service = GetSyncService();
-  if (sync_service) {
-    sync_service->GetUserSettings()->SetSyncRequested(false);
-    sync_service->StopAndClear();
-  }
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  brave_sync_prefs.Clear();
+  syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
+  DCHECK(tracker);
+  const syncer::DeviceInfo* local_device_info =
+      GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
-  // Sync prefs will be clear in ProfileSyncService::StopImpl
-  ResolveJavascriptCallback(*callback_id, base::Value());
+  tracker->DeleteDeviceInfo(local_device_info->guid(),
+                            base::BindOnce(&BraveSyncHandler::OnSelfDeleted,
+                                           weak_ptr_factory_.GetWeakPtr(),
+                                           std::move(callback_id_arg)));
 }
 
 syncer::SyncService* BraveSyncHandler::GetSyncService() const {
@@ -193,23 +190,45 @@ syncer::SyncService* BraveSyncHandler::GetSyncService() const {
              : nullptr;
 }
 
+syncer::DeviceInfoTracker* BraveSyncHandler::GetDeviceInfoTracker() const {
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  return device_info_sync_service->GetDeviceInfoTracker();
+}
+
+syncer::LocalDeviceInfoProvider* BraveSyncHandler::GetLocalDeviceInfoProvider()
+    const {
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  return device_info_sync_service->GetLocalDeviceInfoProvider();
+}
+
+void BraveSyncHandler::OnSelfDeleted(base::Value callback_id) {
+  auto* sync_service = GetSyncService();
+  if (sync_service) {
+    sync_service->GetUserSettings()->SetSyncRequested(false);
+    sync_service->StopAndClear();
+  }
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.Clear();
+  // Sync prefs will be clear in ProfileSyncService::StopImpl
+
+  ResolveJavascriptCallback(callback_id, base::Value());
+}
+
 base::Value BraveSyncHandler::GetSyncDeviceList() {
   AllowJavascript();
-  auto* device_info_service =
-      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
-  syncer::DeviceInfoTracker* tracker =
-      device_info_service->GetDeviceInfoTracker();
+  syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
   DCHECK(tracker);
-  const syncer::DeviceInfo* local_device_info = device_info_service
-     ->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
+  const syncer::DeviceInfo* local_device_info =
+      GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
   base::Value device_list(base::Value::Type::LIST);
 
   for (const auto& device : tracker->GetAllDeviceInfo()) {
     auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
-    bool is_current_device = local_device_info
-        ? local_device_info->guid() == device->guid()
-        : false;
+    bool is_current_device =
+        local_device_info ? local_device_info->guid() == device->guid() : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
     device_list.Append(std::move(device_value));
   }

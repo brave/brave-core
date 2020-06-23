@@ -54,3 +54,4 @@ components/brave_referrals/browser/brave_referrals_service* @simonhong
 components/brave_sync/ @darkdh
 components/sync/driver/ @darkdh
 chromium_src/components/sync/ @darkdh
+chromium_src/components/sync_device_info/device_info_sync_bridge.cc @darkdh

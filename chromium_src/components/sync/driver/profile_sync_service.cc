@@ -7,6 +7,7 @@
 #include "components/prefs/pref_service.h"
 
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
+#include "brave/components/sync/driver/brave_sync_stopped_reporter.h"
 
 #define BRAVE_PROFILE_SYNC_SERVICE                                         \
   brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService()); \
@@ -25,12 +26,14 @@
   brave_sync_prefs_change_registrar_.RemoveAll();
 
 #define SyncAuthManager BraveSyncAuthManager
+#define SyncStoppedReporter BraveSyncStoppedReporter
 
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
 
 #undef BRAVE_PROFILE_SYNC_SERVICE
 #undef BRAVE_D_PROFILE_SYNC_SERVICE
 #undef SyncAuthManager
+#undef SyncStoppedReporter
 
 namespace syncer {
 void ProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
