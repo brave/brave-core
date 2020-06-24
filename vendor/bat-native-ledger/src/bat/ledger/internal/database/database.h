@@ -167,7 +167,7 @@ class Database {
       ledger::CredsBatchPtr info,
       ledger::ResultCallback callback);
 
-  void GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback);
+  void GetAllCredsBatches(ledger::GetCredsBatchListCallback callback);
 
   void UpdateCredsBatchStatus(
       const std::string& trigger_id,
@@ -180,6 +180,10 @@ class Database {
       const ledger::CredsBatchType trigger_type,
       const ledger::CredsBatchStatus status,
       ledger::ResultCallback callback);
+
+  void GetCredsBatchesByTriggers(
+      const std::vector<std::string>& trigger_ids,
+      ledger::GetCredsBatchListCallback callback);
 
   /**
    * MEDIA PUBLISHER INFO

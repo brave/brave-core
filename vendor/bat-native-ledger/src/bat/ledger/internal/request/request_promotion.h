@@ -27,6 +27,8 @@ std::string ReportClobberedClaimsUrl();
 
 std::string GetTransferTokens();
 
+std::string GetBatlossURL(const std::string& payment_id, const int32_t version);
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_PROMOTION_REQUESTS_H_

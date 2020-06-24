@@ -286,7 +286,7 @@ void DatabaseCredsBatch::SaveSignedCreds(
 }
 
 void DatabaseCredsBatch::GetAllRecords(
-    ledger::GetAllCredsBatchCallback callback) {
+    ledger::GetCredsBatchListCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -313,7 +313,7 @@ void DatabaseCredsBatch::GetAllRecords(
   transaction->commands.push_back(std::move(command));
 
   auto transaction_callback =
-      std::bind(&DatabaseCredsBatch::OnGetAllRecords,
+      std::bind(&DatabaseCredsBatch::OnGetRecords,
           this,
           _1,
           callback);
@@ -321,9 +321,9 @@ void DatabaseCredsBatch::GetAllRecords(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseCredsBatch::OnGetAllRecords(
+void DatabaseCredsBatch::OnGetRecords(
     ledger::DBCommandResponsePtr response,
-    ledger::GetAllCredsBatchCallback callback) {
+    ledger::GetCredsBatchListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -418,6 +418,45 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
       callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseCredsBatch::GetRecordsByTriggers(
+    const std::vector<std::string>& trigger_ids,
+    ledger::GetCredsBatchListCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
+      "signed_creds, public_key, batch_proof, status FROM %s "
+      "WHERE trigger_id IN (%s)",
+    kTableName,
+    GenerateStringInCase(trigger_ids).c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback =
+      std::bind(&DatabaseCredsBatch::OnGetRecords,
+          this,
+          _1,
+          callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
