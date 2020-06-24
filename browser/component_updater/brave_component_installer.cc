@@ -124,17 +124,9 @@ void BraveComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     std::unique_ptr<base::DictionaryValue> manifest) {
-  // It appears to be possible for the ComponentInstaller to call
-  // `ComponentReady` more than once. There is a call in
-  // ComponentInstaller::FinishRegistration and another one in
-  // ComponentInstaller::Install. So a call to Register followed by a call
-  // to Install could result in a crash here. See
-  // https://github.com/brave/brave-browser/issues/4624
-  if (!ready_callback_.is_null()) {
-    std::move(ready_callback_).Run(
-          install_dir,
-          GetManifestString(std::move(manifest), base64_public_key_));
-  }
+  ready_callback_.Run(
+      install_dir,
+      GetManifestString(std::move(manifest), base64_public_key_));
 }
 
 base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {
