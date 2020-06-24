@@ -36,5 +36,7 @@ const char kStatePromotionLastFetchStamp[] =
 const char kStatePromotionCorruptedMigrated[] =
     "brave.rewards.promotion_corrupted_migrated2";
 const char kStateAnonTransferChecked[] =  "brave.rewards.anon_transfer_checked";
+const char kStateEmptyBalanceChecked[] =
+    "brave.rewards.empty_balance_checked";
 }  // namespace prefs
 }  // namespace brave_rewards

@@ -24,6 +24,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/promotion/promotion.h"
+#include "bat/ledger/internal/recovery/recovery.h"
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
@@ -113,6 +114,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
+    braveledger_recovery::Check(this);
 
     // Set wallet info for Confirmations when launching the browser or creating
     // a wallet for the first time
@@ -1723,7 +1725,8 @@ void LedgerImpl::PromotionCredentialCompleted(
   bat_database_->PromotionCredentialCompleted(promotion_id, callback);
 }
 
-void LedgerImpl::GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback) {
+void LedgerImpl::GetAllCredsBatches(
+    ledger::GetCredsBatchListCallback callback) {
   bat_database_->GetAllCredsBatches(callback);
 }
 
@@ -1854,6 +1857,12 @@ void LedgerImpl::UpdatePromotionsBlankPublicKey(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
   bat_database_->UpdatePromotionsBlankPublicKey(ids, callback);
+}
+
+void LedgerImpl::GetCredsBatchesByTriggers(
+    const std::vector<std::string>& trigger_ids,
+    ledger::GetCredsBatchListCallback callback) {
+  bat_database_->GetCredsBatchesByTriggers(trigger_ids, callback);
 }
 
 }  // namespace bat_ledger
