@@ -496,7 +496,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
+      "INSERT OR IGNORE INTO %s "
       "(token_id, token_value, public_key, value, creds_id, expires_at) "
       "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);

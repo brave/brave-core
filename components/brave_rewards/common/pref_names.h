@@ -51,6 +51,7 @@ extern const char kStateParametersAutoContributeChoices[];
 extern const char kStateParametersTipChoices[];
 extern const char kStateParametersMonthlyTipChoices[];
 extern const char kStateFetchOldBalance[];
+extern const char kStateEmptyBalanceChecked[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs
