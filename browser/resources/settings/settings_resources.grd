@@ -104,6 +104,11 @@
           compress="false"
           preprocess="true"
           type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SYNC_CONTROLS_JS"
+          file="brave_overrides/sync_controls.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
         <!-- end overrides -->
     </includes>
   </release>

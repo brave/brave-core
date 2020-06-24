@@ -24,6 +24,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -239,6 +240,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       password_manager::prefs::kPasswordLeakDetectionEnabled,
       base::Value(false));
+  registry->SetDefaultPrefValue(autofill::prefs::kAutofillWalletImportEnabled,
+                                base::Value(false));
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterPrefs(registry);
