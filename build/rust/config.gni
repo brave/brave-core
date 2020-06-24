@@ -5,14 +5,13 @@
 
 import("//build/config/sysroot.gni")
 
-declare_args() {
-  rust_flags = ""
-  rustc_target = ""
-  rustc_toolchain = ""
-  cargo_lib_prefix = ""
-  cargo_lib_suffix = ""
-  rust_shared_lib = is_mac
-}
+rust_flags = ""
+rustc_target = ""
+rustc_toolchain = ""
+cargo_lib_prefix = ""
+cargo_lib_suffix = ""
+rust_shared_lib = is_mac
+fix_rust_install_name = rust_shared_lib && !is_component_build
 
 # See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
