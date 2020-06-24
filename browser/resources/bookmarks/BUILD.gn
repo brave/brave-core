@@ -1,0 +1,16 @@
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("resources") {
+  source = "bookmarks_resources.grd"
+
+  outputs = [
+    "grit/brave_bookmarks_resources.h",
+    "grit/brave_bookmarks_resources_map.cc",
+    "grit/brave_bookmarks_resources_map.h",
+    "brave_bookmarks_resources.pak",
+  ]
+
+  output_dir = "$root_gen_dir/brave/browser/resources/bookmarks"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}

@@ -119,4 +119,7 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_script/brave_wallet_script.grd": {
     "includes": [46750]
   },
+  "brave/browser/resources/bookmarks/bookmarks_resources.grd": {
+    "includes": [47000],
+  },
 }

@@ -233,6 +233,8 @@ const util = {
     const chromeBrowserResourcesDir = path.join(config.srcDir, 'chrome', 'browser', 'resources')
     const braveBrowserResourcesDir = path.join(config.braveCoreDir, 'browser', 'resources')
     const braveAppVectorIconsDir = path.join(config.braveCoreDir, 'vector_icons', 'chrome', 'app')
+    const chromeUIResourcesDir = path.join(config.srcDir, 'ui', 'resources')
+    const braveUIResourcesDir = path.join(config.braveCoreDir, 'ui', 'resources')
     const chromeAndroidJavaStringsTranslationsDir = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'strings', 'translations')
     const braveAndroidJavaStringsTranslationsDir = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'strings', 'translations')
 
@@ -267,6 +269,7 @@ const util = {
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent'), path.join(chromeComponentsDir, 'resources', 'default_200_percent')])
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent', 'brave'), path.join(chromeComponentsDir, 'resources', 'default_200_percent', 'chromium')])
     fileMap.add([path.join(braveAppVectorIconsDir, 'vector_icons', 'brave'), path.join(chromeAppDir, 'vector_icons', 'brave')])
+    fileMap.add([braveUIResourcesDir, chromeUIResourcesDir])
     // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])

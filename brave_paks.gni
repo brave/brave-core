@@ -63,6 +63,7 @@ template("brave_extra_paks") {
       sources += [
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
+        "$root_gen_dir/brave/browser/resources/bookmarks/brave_bookmarks_resources.pak",
         "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
       ]
     }
@@ -76,6 +77,7 @@ template("brave_extra_paks") {
       deps += [
         "//brave/app:brave_generated_resources_grit",
         "//brave/app/theme:brave_unscaled_resources",
+        "//brave/browser/resources/bookmarks:resources",
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
       ]
