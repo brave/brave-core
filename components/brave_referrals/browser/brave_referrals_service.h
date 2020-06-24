@@ -17,6 +17,10 @@
 #include "base/values.h"
 #include "url/gurl.h"
 
+#if defined(OS_ANDROID)
+#include "brave/components/safetynet/safetynet_check.h"
+#endif
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -91,6 +95,13 @@ class BraveReferralsService {
 
   // Invoked after reading contents of promo code file.
   void OnReadPromoCodeComplete();
+
+#if defined(OS_ANDROID)
+  void GetSafetynetStatusResult(const bool token_received,
+                                const std::string& result_string,
+                                const bool attestation_passed);
+  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
+#endif
 
   bool initialized_;
   base::Time first_run_timestamp_;

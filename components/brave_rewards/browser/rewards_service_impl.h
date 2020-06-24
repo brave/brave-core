@@ -34,10 +34,8 @@
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
-#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
-#include "brave/components/brave_rewards/browser/android/safetynet_check.h"
-#elif defined(OS_ANDROID)
-#include "chrome/browser/android/brave/safetynet_check.h"
+#if defined(OS_ANDROID)
+#include "brave/components/safetynet/safetynet_check.h"
 #endif
 
 namespace base {

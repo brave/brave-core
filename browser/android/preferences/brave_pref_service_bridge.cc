@@ -191,6 +191,13 @@ jboolean JNI_BravePrefServiceBridge_GetSafetynetCheckFailed(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(kSafetynetCheckFailed);
 }
 
+void JNI_BravePrefServiceBridge_SetSafetynetStatus(
+    JNIEnv* env,
+    const JavaParamRef<jstring>& status) {
+  g_browser_process->local_state()->SetString(
+      kSafetynetStatus, ConvertJavaStringToUTF8(env, status));
+}
+
 void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(
     JNIEnv* env,
     jboolean enabled) {

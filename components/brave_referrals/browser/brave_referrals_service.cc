@@ -516,6 +516,10 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
   root.SetKey("api_key", base::Value(api_key_));
   root.SetKey("download_id",
               base::Value(pref_service_->GetString(kReferralDownloadID)));
+#if defined(OS_ANDROID)
+  root.SetKey("safetynet_status",
+              base::Value(pref_service_->GetString(kSafetynetStatus)));
+#endif
 
   std::string result;
   base::JSONWriter::Write(root, &result);
@@ -607,7 +611,31 @@ void BraveReferralsService::InitReferral() {
       kMaxReferralServerResponseSizeBytes);
 }
 
+#if defined(OS_ANDROID)
+void BraveReferralsService::GetSafetynetStatusResult(
+    const bool token_received,
+    const std::string& result_string,
+    const bool attestation_passed) {
+  if (pref_service_->GetString(kSafetynetStatus).empty()) {
+    NOTREACHED() << "Failed to get safetynet status";
+    pref_service_->SetString(kSafetynetStatus, "not verified");
+  }
+  CheckForReferralFinalization();
+}
+#endif
+
 void BraveReferralsService::CheckForReferralFinalization() {
+#if defined(OS_ANDROID)
+  if (pref_service_->GetString(kSafetynetStatus).empty()) {
+    // Get safetynet status before finalization
+    safetynet_check::ClientAttestationCallback attest_callback =
+        base::BindOnce(&BraveReferralsService::GetSafetynetStatusResult,
+                       weak_factory_.GetWeakPtr());
+    safetynet_check_runner_.performSafetynetCheck(
+        "", std::move(attest_callback), true);
+    return;
+  }
+#endif
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("brave_referral_finalization_checker",
         R"(
@@ -691,6 +719,7 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kReferralHeaders);
 #if defined(OS_ANDROID)
   registry->RegisterTimePref(kReferralAndroidFirstRunTimestamp, base::Time());
+  registry->RegisterStringPref(kSafetynetStatus, std::string());
 #endif
 }
 

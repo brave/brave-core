@@ -5,8 +5,9 @@
 
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/browser/android/java_sources.gni")
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/safetynet/java_sources.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
@@ -142,7 +143,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java"
 ]
 
-if (brave_rewards_enabled) {
+if (brave_rewards_enabled || enable_brave_referrals) {
   brave_java_sources += brave_rewards_java_sources
 }
 
