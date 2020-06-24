@@ -65,7 +65,7 @@ class FeedDataSource {
             $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
             $0.timeZone = TimeZone(secondsFromGMT: 0)
         })
-        session.dataRequest(with: URL(string: "https://nlbtest.rapidpacket.com/mvp_200.json")!) { [weak self] data, response, error in
+        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
             guard let self = self, let data = data else { return }
             do {
                 let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem>].self, from: data).compactMap { $0.wrappedValue }
