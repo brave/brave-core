@@ -27,19 +27,6 @@
         android:textSize="16sp"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/brave_sync_device_image"
-        android:layout_toStartOf="@+id/brave_sync_remove_device"
         android:paddingStart="10dip" />
-
-    <android.support.v7.widget.AppCompatImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/brave_sync_remove_device"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/ListItemEndIcon"
-        android:contentDescription="@string/remove"
-        android:src="@drawable/ic_delete_white_24dp"
-        app:tint="@color/default_icon_color_tint_list"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
