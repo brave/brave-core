@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:textSize="22sp"
         android:layout_marginBottom="16dp"
-        android:textColor="@android:color/white"/>
+        android:textColor="@color/onboarding_text_color"/>
 
     <TextView
         android:id="@+id/onboarding_text"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:gravity="center"
-        android:textColor="@android:color/white"
+        android:textColor="@color/onboarding_text_color"
         android:layout_marginBottom="32dp"/>
 
     <LinearLayout

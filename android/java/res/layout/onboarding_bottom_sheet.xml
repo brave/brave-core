@@ -10,7 +10,7 @@
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#80000000"
+    android:background="@color/onboarding_bg_color"
     android:maxWidth="400dp"
     android:padding="16dp">
 
