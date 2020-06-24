@@ -116,8 +116,13 @@ Polymer({
       return
     }
     const data = await this.syncBrowserProxy_.getQRCode(this.syncCode)
-    this.$$('#qrCode').innerText = data
-    // TODO(petemill): generate a canvas / image
+    if (!data) {
+      console.error('getQRCode failed');
+      return;
+    }
+    const img = new Image();
+    img.src = data;
+    this.$$('#qrCode').appendChild(img);
   },
 
 });
