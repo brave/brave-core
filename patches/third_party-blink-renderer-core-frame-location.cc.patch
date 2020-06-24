@@ -10,7 +10,7 @@ index 1d21eaac8747..bd6b607fbf87 100644
 +                                  const String& value,
 +                                  bool is_set) const {
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
++  if (dom_window_->IsLocalDOMWindow()) {
 +    brave_page_graph::PageGraph* page_graph =
 +        const_cast<Location*>(this)->GetDocument()->GetPageGraph();
 +    if (page_graph != nullptr) {
