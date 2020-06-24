@@ -23,5 +23,10 @@ public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiv
     public void onReceive(final Context context, Intent intent) {
         if (!Intent.ACTION_MY_PACKAGE_REPLACED.equals(intent.getAction())) return;
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
+        try {
+            NotificationIntent.fireNotificationIfNecessary(context);
+        } catch (Exception exc) {
+            // Just ignore if we could not send a notification
+        }
     }
 }

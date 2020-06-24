@@ -10,4 +10,10 @@
     public static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_enabled";
     public static final String BRAVE_USE_CUSTOM_TABS = "use_custom_tabs";
     public static final String BRAVE_APP_OPEN_COUNT = "brave_app_open_count";
+    public static final String BRAVE_UPDATE_EXTRA_PARAM =
+    	"org.chromium.chrome.browser.upgrade.UPDATE_NOTIFICATION_NEW";
+    public static final String BRAVE_NOTIFICATION_PREF_NAME =
+    	"org.chromium.chrome.browser.upgrade.NotificationUpdateTimeStampPreferences_New";
+    public static final String BRAVE_MILLISECONDS_NAME =
+    	"org.chromium.chrome.browser.upgrade.Milliseconds_New";
  }

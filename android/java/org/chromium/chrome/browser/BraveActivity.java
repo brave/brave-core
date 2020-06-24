@@ -15,6 +15,7 @@ import android.content.pm.ResolveInfo;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -39,6 +41,7 @@ import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
@@ -61,6 +64,8 @@ import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+
+import java.util.Calendar;
 
 /**
  * Brave's extension for ChromeActivity
@@ -480,5 +485,30 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             dbUtil.cleanUpDbOperationRequest();
         }
         super.performPreInflationStartup();
+    }
+
+    @Override
+    protected @LaunchIntentDispatcher.Action int maybeDispatchLaunchIntent(
+            Intent intent, Bundle savedInstanceState) {
+        boolean notificationUpdate = IntentUtils.safeGetBooleanExtra(
+                intent, BravePreferenceKeys.BRAVE_UPDATE_EXTRA_PARAM, false);
+        if (notificationUpdate) {
+            SetUpdatePreferences();
+        }
+
+        return super.maybeDispatchLaunchIntent(intent, savedInstanceState);
+    }
+
+    private void SetUpdatePreferences() {
+        Calendar currentTime = Calendar.getInstance();
+        long milliSeconds = currentTime.getTimeInMillis();
+
+        SharedPreferences sharedPref =
+            getApplicationContext().getSharedPreferences(
+                BravePreferenceKeys.BRAVE_NOTIFICATION_PREF_NAME, 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putLong(BravePreferenceKeys.BRAVE_MILLISECONDS_NAME, milliSeconds);
+        editor.apply();
     }
 }
