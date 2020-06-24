@@ -71,7 +71,11 @@ SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse() const {
     AccountInfo account_info;
     account_info.account_id = CoreAccountId::FromString(client_id);
     account_info.gaia = client_id;
-    account_info.email = "sync@brave.com";
+    // about:sync-internals needs space separator in order to confine table
+    // data within specific width. (ex. client_version and encrypted_types)
+    account_info.email =
+        std::string(client_id).insert(client_id.length() / 2, 1, ' ') +
+        " @brave.com";
     VLOG(1) << "brave client id=" << client_id;
     return SyncAccountInfo(account_info, true);
   } else {
