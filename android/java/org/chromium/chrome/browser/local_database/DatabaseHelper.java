@@ -20,7 +20,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static volatile DatabaseHelper mInstance;
+    private static volatile DatabaseHelper mInstance;
 
     // Database Version
     private static final int DATABASE_VERSION = 2;
@@ -28,11 +28,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "brave_db";
 
-    public static DatabaseHelper getInstance() {
-    	if (mInstance == null) {
-    		Context context = ContextUtils.getApplicationContext();
-    		mInstance = new DatabaseHelper(context);
-    	}
+    public static synchronized DatabaseHelper getInstance() {
+        if (mInstance == null) {
+            Context context = ContextUtils.getApplicationContext();
+            mInstance = new DatabaseHelper(context);
+        }
         return mInstance;
     }
 
@@ -46,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // create notes table
         db.execSQL(TopSiteTable.CREATE_TABLE);
+        db.execSQL(BraveStatsTable.CREATE_TABLE);
     }
 
     // Upgrading database
@@ -55,34 +56,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private boolean isTopSiteAlreadyAdded(String destinationUrl) {
-    	SQLiteDatabase sqldb = this.getReadableDatabase();
-	    String query = "Select * from " + TopSiteTable.TABLE_NAME + " where " + TopSiteTable.COLUMN_DESTINATION_URL + " =?";
-	    Cursor cursor = sqldb.rawQuery(query, new String[] {destinationUrl});
-	        if(cursor.getCount() <= 0){
-	            cursor.close();
-	            return false;
-	        }
-	    cursor.close();
-	    return true;
+        SQLiteDatabase sqldb = this.getReadableDatabase();
+        String query = "Select * from " + TopSiteTable.TABLE_NAME + " where " + TopSiteTable.COLUMN_DESTINATION_URL + " =?";
+        Cursor cursor = sqldb.rawQuery(query, new String[] {destinationUrl});
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
     public void insertTopSite(TopSite topSite) {
-    	if(!isTopSiteAlreadyAdded(topSite.getDestinationUrl()) && !NTPUtil.isInRemovedTopSite(topSite.getDestinationUrl())) {
-    		// get writable database as we want to write data
-	        SQLiteDatabase db = this.getWritableDatabase();
+        if (!isTopSiteAlreadyAdded(topSite.getDestinationUrl()) && !NTPUtil.isInRemovedTopSite(topSite.getDestinationUrl())) {
+            // get writable database as we want to write data
+            SQLiteDatabase db = this.getWritableDatabase();
 
-	        ContentValues values = new ContentValues();
-	        values.put(TopSiteTable.COLUMN_NAME, topSite.getName());
-	        values.put(TopSiteTable.COLUMN_DESTINATION_URL, topSite.getDestinationUrl());
-	        values.put(TopSiteTable.COLUMN_BACKGROUND_COLOR, topSite.getBackgroundColor());
-	        values.put(TopSiteTable.COLUMN_IMAGE_PATH, topSite.getImagePath());
+            ContentValues values = new ContentValues();
+            values.put(TopSiteTable.COLUMN_NAME, topSite.getName());
+            values.put(TopSiteTable.COLUMN_DESTINATION_URL, topSite.getDestinationUrl());
+            values.put(TopSiteTable.COLUMN_BACKGROUND_COLOR, topSite.getBackgroundColor());
+            values.put(TopSiteTable.COLUMN_IMAGE_PATH, topSite.getImagePath());
 
-	        // insert row
-	        db.insert(TopSiteTable.TABLE_NAME, null, values);
+            // insert row
+            db.insert(TopSiteTable.TABLE_NAME, null, values);
 
-	        // close db connection
-	        db.close();
-    	}
+            // close db connection
+            // db.close();
+        }
     }
 
     public List<TopSiteTable> getAllTopSites() {
@@ -98,17 +99,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 TopSiteTable topSite = new TopSiteTable(
-                	cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_NAME)),
-                	cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_DESTINATION_URL)),
-                	cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_BACKGROUND_COLOR)),
-                	cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_IMAGE_PATH)));
+                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_DESTINATION_URL)),
+                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_BACKGROUND_COLOR)),
+                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_IMAGE_PATH)));
 
                 topSites.add(topSite);
             } while (cursor.moveToNext());
         }
 
         // close db connection
-        db.close();
+        // db.close();
 
         return topSites;
     }
@@ -129,7 +130,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteTopSite(String destinationUrl) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TopSiteTable.TABLE_NAME, TopSiteTable.COLUMN_DESTINATION_URL + " = ?",
-                new String[]{destinationUrl});
-        db.close();
+                  new String[] {destinationUrl});
+        // db.close();
+    }
+
+    public void insertStats(BraveStatsTable braveStat) {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(BraveStatsTable.COLUMN_URL, braveStat.getUrl());
+        values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
+        values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
+        values.put(BraveStatsTable.COLUMN_ADS_BLOCKED_TRACKERS_BLOCKED, braveStat.getAdsBlockedTrackersBlocked());
+        values.put(BraveStatsTable.COLUMN_DATA_SAVED, braveStat.getDataSaved());
+        values.put(BraveStatsTable.COLUMN_TIME_SAVED, braveStat.getTimeSaved());
+
+        // insert row
+        db.insert(BraveStatsTable.TABLE_NAME, null, values);
+
+        // close db connection
+        // db.close();
+    }
+
+    public List<BraveStatsTable> getAllStats() {
+        List<BraveStatsTable> braveStats = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + BraveStatsTable.TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                BraveStatsTable braveStat = new BraveStatsTable(
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)),
+                    cursor.getInt(cursor.getColumnIndex(BraveStatsTable.COLUMN_ADS_BLOCKED_TRACKERS_BLOCKED)),
+                    cursor.getInt(cursor.getColumnIndex(BraveStatsTable.COLUMN_DATA_SAVED)),
+                    cursor.getDouble(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIME_SAVED)));
+
+                braveStats.add(braveStat);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        // db.close();
+
+        return braveStats;
     }
 }

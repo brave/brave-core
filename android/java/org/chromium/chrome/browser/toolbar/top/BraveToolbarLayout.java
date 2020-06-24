@@ -27,6 +27,9 @@ import androidx.appcompat.app.AlertDialog;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.MathUtils;
+import org.chromium.base.task.AsyncTask;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -65,15 +68,22 @@ import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.local_database.BraveStatsTable;
 
 import java.net.URL;
 import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
   View.OnLongClickListener,
   BraveRewardsObserver,
   BraveRewardsNativeWorker.PublisherObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+  private static final short MILLISECONDS_PER_ITEM = 50;
 
   private ImageButton mBraveShieldsButton;
   private ImageButton mBraveRewardsButton;
@@ -255,6 +265,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               }
             });
           }
+          addStatsToDb(tab, url);
         }
       }
 
@@ -282,6 +293,37 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         }
       }
     };
+  }
+
+  private void addStatsToDb(Tab tab, String url) {
+    final DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
+    new AsyncTask<Void>() {
+      @Override
+      protected Void doInBackground() {
+        try {
+          int adsTrackersBlockedCount = mBraveShieldsHandler.getAdsTackersBlockedCount(tab.getId());
+          DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm", Locale.getDefault());
+          String timestamp = df.format(Calendar.getInstance().getTime());
+          URL urlObject = new URL(url);
+          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), timestamp, adsTrackersBlockedCount, 0, adsTrackersBlockedCount * MILLISECONDS_PER_ITEM);
+          mDatabaseHelper.insertStats(braveStatsTable);
+        } catch (Exception e) {
+          // Do nothing if url is invalid.
+          // Just return w/o showing shields popup.
+          return null;
+        }
+        return null;
+      }
+      @Override
+      protected void onPostExecute(Void result) {
+        assert ThreadUtils.runningOnUiThread();
+        if (isCancelled()) return;
+
+        for (BraveStatsTable braveStatsTable : mDatabaseHelper.getAllStats()) {
+          Log.e("NTP", braveStatsTable.getUrl() + " : " + braveStatsTable.getAdsBlockedTrackersBlocked());
+        }
+      }
+    } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }
 
   @Override
