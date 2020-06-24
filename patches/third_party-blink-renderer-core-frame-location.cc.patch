@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/location.cc b/third_party/blink/renderer/core/frame/location.cc
-index 63deafc4f52b9f591749e475250e7c06f862d488..4361f583cd59d3883c44da06a7b51d3090e5c027 100644
+index 63deafc4f52b9f591749e475250e7c06f862d488..766ab87a0aef9aea87c0ab8a52489849f55260ae 100644
 --- a/third_party/blink/renderer/core/frame/location.cc
 +++ b/third_party/blink/renderer/core/frame/location.cc
 @@ -70,36 +70,69 @@ inline const KURL& Location::Url() const {
@@ -10,7 +10,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..4361f583cd59d3883c44da06a7b51d30
 +                                  const String& value,
 +                                  bool is_set) const {
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
++  if (dom_window_->IsLocalDOMWindow()) {
 +    brave_page_graph::PageGraph* page_graph =
 +        const_cast<Location*>(this)->GetDocument()->GetPageGraph();
 +    if (page_graph != nullptr) {
