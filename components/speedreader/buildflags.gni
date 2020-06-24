@@ -1,5 +1,8 @@
+import("//brave/build/config.gni")
 import("//build/config/features.gni")
 
 declare_args() {
   enable_speedreader = !is_android
+  enable_speedreader_feature = brave_channel == "nightly"
+    || brave_channel == "development"
 }

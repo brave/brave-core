@@ -268,7 +268,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               // TODO(brave-browser/issues/10372): would be better to pass
               // explicit signal back from rewriter to indicate if content was
               // found
-              if (transformed.length() < 500) {
+              if (transformed.length() < 1024) {
                 return data;
               }
 
