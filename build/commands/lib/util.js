@@ -29,6 +29,11 @@ const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
 
+
+const patchIgnoreErrorPaths = [
+  'chrome/VERSION'
+]
+
 async function applyPatches() {
   const GitPatcher = require('./gitPatcher')
   Log.progress('Applying patches...')
@@ -54,9 +59,9 @@ async function applyPatches() {
   v8PatchStatus.forEach(s => s.path = path.join('v8', s.path))
   devtoolsFrontendSrcStatus.forEach(s => s.path = path.join('devtoolsFrontendSrc', s.path))
   const allPatchStatus = chromiumPatchStatus.concat(v8PatchStatus).concat(devtoolsFrontendSrcStatus)
-  Log.allPatchStatus(allPatchStatus, 'Chromium')
+  Log.allPatchStatus(allPatchStatus, 'Chromium', patchIgnoreErrorPaths)
 
-  const hasPatchError = allPatchStatus.some(p => p.error)
+  const hasPatchError = allPatchStatus.some(p => p.error && !patchIgnoreErrorPaths.includes(p.path))
   Log.progress('Done applying patches.')
   // Exit on error in any patch
   if (hasPatchError) {
