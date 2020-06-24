@@ -4424,8 +4424,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_CHANGE_IT_BACK" desc="The text of the button to revert to old settings; displayed in the dialog describing settings overridden by an extension.">
         Change it back
       </message>
-      <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_IGNORE" desc="The text of the button to ignore the settings changes, allowing the extension changes to remain in effect. Displayed in the dialog describing settings overridden by an extension.">
-        Ignore
+      <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_KEEP_IT" desc="The text of the button to ignore the settings changes, allowing the extension changes to remain in effect. Displayed in the dialog describing settings overridden by an extension.">
+        Keep it
       </message>
       <message name="IDS_EXTENSION_NTP_OVERRIDDEN_DIALOG_TITLE_GENERIC" desc="The title of the dialog informing the user that the new tab page has been overridden by an extension.">
         Did you mean to change this page?
