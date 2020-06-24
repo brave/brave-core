@@ -1030,10 +1030,10 @@ until they verify, or until 90 days have passed.
         A minimum balance of 25 BAT is required to verify.
       </message>
       <message name="IDS_UPDATE_NOTIFICATION_TITLE" desc="Title of notification on application update.">
-        Brave update
+        Save Data Online
       </message>
       <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
-        The new Brave browser is faster
+        Browse faster and block ads with Brave
       </message>
     </messages>
   </release>
