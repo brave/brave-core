@@ -23,8 +23,6 @@ void GetTestDataDir(base::FilePath* test_data_dir);
 
 double IsRewardsEnabled(Browser* browser, const bool private_window = false);
 
-void RunUntilIdle();
-
 GURL GetRewardsUrl();
 
 GURL GetNewTabUrl();

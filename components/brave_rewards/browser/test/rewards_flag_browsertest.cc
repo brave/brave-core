@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
+#include "base/run_loop.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -44,28 +47,72 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDown();
   }
 
+  void ResetWaitForCallback() {
+    callback_called_ = false;
+    wait_for_callback_.reset(new base::RunLoop);
+  }
+
+  void WaitForCallback() {
+    if (callback_called_) {
+      return;
+    }
+    wait_for_callback_->Run();
+  }
+
+  void CallbackCalled() {
+    callback_called_ = true;
+    wait_for_callback_->Quit();
+  }
+
   void GetReconcileInterval() {
+    ResetWaitForCallback();
     rewards_service_->GetReconcileInterval(
-        base::Bind(&RewardsFlagBrowserTest::OnGetReconcileInterval,
-          base::Unretained(this)));
+        base::Bind(&RewardsFlagBrowserTest::OnGetReconcileIntervalWrapper,
+                   base::Unretained(this)));
+    WaitForCallback();
   }
 
   void GetShortRetries() {
+    ResetWaitForCallback();
     rewards_service_->GetShortRetries(
-        base::Bind(&RewardsFlagBrowserTest::OnGetShortRetries,
-          base::Unretained(this)));
+        base::Bind(&RewardsFlagBrowserTest::OnGetShortRetriesWrapper,
+                   base::Unretained(this)));
+    WaitForCallback();
   }
 
   void GetEnvironment() {
+    ResetWaitForCallback();
     rewards_service_->GetEnvironment(
-        base::Bind(&RewardsFlagBrowserTest::OnGetEnvironment,
-          base::Unretained(this)));
+        base::Bind(&RewardsFlagBrowserTest::OnGetEnvironmentWrapper,
+                   base::Unretained(this)));
+    WaitForCallback();
   }
 
   void GetDebug() {
-    rewards_service_->GetDebug(
-        base::Bind(&RewardsFlagBrowserTest::OnGetDebug,
-          base::Unretained(this)));
+    ResetWaitForCallback();
+    rewards_service_->GetDebug(base::Bind(
+        &RewardsFlagBrowserTest::OnGetDebugWrapper, base::Unretained(this)));
+    WaitForCallback();
+  }
+
+  void OnGetReconcileIntervalWrapper(int32_t interval) {
+    OnGetReconcileInterval(interval);
+    CallbackCalled();
+  }
+
+  void OnGetShortRetriesWrapper(bool retries) {
+    OnGetShortRetries(retries);
+    CallbackCalled();
+  }
+
+  void OnGetEnvironmentWrapper(ledger::Environment environment) {
+    OnGetEnvironment(environment);
+    CallbackCalled();
+  }
+
+  void OnGetDebugWrapper(bool debug) {
+    OnGetDebug(debug);
+    CallbackCalled();
   }
 
   MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
@@ -75,6 +122,8 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<RewardsBrowserTestObserver> observer_;
+  bool callback_called_ = false;
+  std::unique_ptr<base::RunLoop> wait_for_callback_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
@@ -89,31 +138,26 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
 
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Staging - true
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("staging=true");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Staging - 1
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("staging=1");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Staging - false
   rewards_service_->SetEnvironment(ledger::Environment::STAGING);
   rewards_service_->HandleFlags("staging=false");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Staging - random
   rewards_service_->SetEnvironment(ledger::Environment::STAGING);
   rewards_service_->HandleFlags("staging=werwe");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // SetDebug(true)
   EXPECT_CALL(*this, OnGetDebug(true));
@@ -124,31 +168,26 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
 
   rewards_service_->SetDebug(true);
   GetDebug();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Debug - true
   rewards_service_->SetDebug(false);
   rewards_service_->HandleFlags("debug=true");
   GetDebug();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Debug - 1
   rewards_service_->SetDebug(false);
   rewards_service_->HandleFlags("debug=1");
   GetDebug();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Debug - false
   rewards_service_->SetDebug(true);
   rewards_service_->HandleFlags("debug=false");
   GetDebug();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Debug - random
   rewards_service_->SetDebug(true);
   rewards_service_->HandleFlags("debug=werwe");
   GetDebug();
-  rewards_browsertest_util::RunUntilIdle();
 
   // SetEnvironment(ledger::Environment::PRODUCTION)
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
@@ -163,31 +202,26 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
 
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Development - true
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=true");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Development - 1
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=1");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Development - false
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=false");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Development - random
   rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=werwe");
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 
   // positive number
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
@@ -198,19 +232,16 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->HandleFlags("reconcile-interval=10");
   GetReconcileInterval();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Reconcile interval - negative number
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->HandleFlags("reconcile-interval=-1");
   GetReconcileInterval();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Reconcile interval - string
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->HandleFlags("reconcile-interval=sdf");
   GetReconcileInterval();
-  rewards_browsertest_util::RunUntilIdle();
 
   EXPECT_CALL(*this, OnGetShortRetries(true));   // on
   EXPECT_CALL(*this, OnGetShortRetries(false));  // off
@@ -219,13 +250,11 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsSingleArg) {
   rewards_service_->SetShortRetries(false);
   rewards_service_->HandleFlags("short-retries=true");
   GetShortRetries();
-  rewards_browsertest_util::RunUntilIdle();
 
   // Short retries - off
   rewards_service_->SetShortRetries(true);
   rewards_service_->HandleFlags("short-retries=false");
   GetShortRetries();
-  rewards_browsertest_util::RunUntilIdle();
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
@@ -246,7 +275,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   GetShortRetries();
   GetEnvironment();
   GetDebug();
-  rewards_browsertest_util::RunUntilIdle();
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
@@ -267,7 +295,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   GetShortRetries();
   GetDebug();
   GetEnvironment();
-  rewards_browsertest_util::RunUntilIdle();
 }
 
 }  // namespace rewards_browsertest
