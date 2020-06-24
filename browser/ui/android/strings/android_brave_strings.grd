@@ -1158,6 +1158,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES_TITLE" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
         Show suggested sites in autocomplete
       </message>
+      <message name="IDS_UPDATE_NOTIFICATION_TITLE" desc="Title of notification on application update.">
+        Brave update
+      </message>
+      <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
+        The new Brave browser is faster
+      </message>
     </messages>
   </release>
 </grit>
