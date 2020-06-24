@@ -4,16 +4,11 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/brave_stats_layout"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
     <LinearLayout
-        android:id="@+id/brave_stats"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/brave_stats_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -26,13 +21,13 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="0.33">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/ads_animation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
                 android:visibility="gone"/>
 
             <LinearLayout
@@ -62,13 +57,13 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="0.34">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/data_animation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
                 android:visibility="gone"/>
 
             <LinearLayout
@@ -99,13 +94,13 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="0.33">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/time_animation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
                 android:visibility="gone"/>
 
             <LinearLayout
@@ -133,4 +128,3 @@
 
         </FrameLayout>
     </LinearLayout>
-</LinearLayout>
