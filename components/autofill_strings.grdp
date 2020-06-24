@@ -279,7 +279,7 @@
   <if expr="not is_ios">
     <then>
       <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Brave Pay' should not be translated as it is the product name. Sentence-Cased.">
-        Payment methods and addresses
+        Payment methods and addresses using Brave Pay
       </message>
     </then>
     <else>
