@@ -176,7 +176,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         // Make sure that imageView has a frame calculated before we attempt
         // to use it.
-        backgroundView.imageView.layoutIfNeeded()
+        backgroundView.layoutIfNeeded()
         if let image = backgroundView.imageView.image {
             // Need to calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio
             let sizeRatio = backgroundView.imageView.frame.size.width / image.size.width
