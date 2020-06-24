@@ -68,9 +68,9 @@ const char k_youtube_ads_block_script[] =
     "    });"
     "})();";
 
-bool IsYouTubeDomain(content::WebContents* contents) {
+bool IsYouTubeDomain(const GURL& url) {
   if (net::registry_controlled_domains::SameDomainOrHost(
-          contents->GetLastCommittedURL(), GURL("https://www.youtube.com"),
+          url, GURL("https://www.youtube.com"),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return true;
   }
@@ -89,14 +89,13 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   return true;
 }
 
-bool IsAdBlockEnabled(content::WebContents* contents) {
+bool IsAdBlockEnabled(content::WebContents* contents, const GURL& url) {
   Profile* profile = static_cast<Profile*>(contents->GetBrowserContext());
 
   brave_shields::ControlType control_type =
       brave_shields::GetAdControlType(profile,
       contents->GetLastCommittedURL());
-  if (brave_shields::GetBraveShieldsEnabled(profile,
-        contents->GetLastCommittedURL()) &&
+  if (brave_shields::GetBraveShieldsEnabled(profile, url) &&
       control_type != brave_shields::ALLOW) {
     content::RenderFrameHost::AllowInjectingJavaScript();
 
@@ -119,7 +118,7 @@ BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {
 void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   // Filter only YT domains here
-  if (!IsYouTubeDomain(web_contents())) {
+  if (!IsYouTubeDomain(web_contents()->GetLastCommittedURL())) {
     return;
   }
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
@@ -127,11 +126,26 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
         base::UTF8ToUTF16(k_youtube_background_playback_script),
         base::NullCallback());
   }
-  if (IsAdBlockEnabled(web_contents())) {
+  if (IsAdBlockEnabled(web_contents(),
+      web_contents()->GetLastCommittedURL())) {
     web_contents()->GetMainFrame()->ExecuteJavaScript(
         base::UTF8ToUTF16(k_youtube_ads_block_script),
         base::NullCallback());
   }
+}
+
+void BackgroundVideoPlaybackTabHelper::ResourceLoadComplete(
+    content::RenderFrameHost* render_frame_host,
+    const content::GlobalRequestID& request_id,
+    const blink::mojom::ResourceLoadInfo& resource_load_info) {
+  if (!render_frame_host || !IsYouTubeDomain(resource_load_info.final_url) ||
+      !IsAdBlockEnabled(web_contents(), resource_load_info.final_url)) {
+    return;
+  }
+
+  render_frame_host->ExecuteJavaScript(
+      base::UTF8ToUTF16(k_youtube_ads_block_script),
+      base::NullCallback());
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundVideoPlaybackTabHelper)
