@@ -106,7 +106,7 @@ extension FeedContextMenu {
     
     private var blockSource: UIAction {
         // FIXME: Localize, Get our own image
-        .init(title: "Block Source", image: UIImage(systemName: "nosign")) { _ in
+        .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive) { _ in
             self.waitUntilDismissed {
                 self.handler(.blockSource)
             }
