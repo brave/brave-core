@@ -262,7 +262,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     }
                     ArrayList<BraveSyncDevices.SyncDeviceInfo> deviceInfos =
                             BraveSyncDevices.get().GetSyncDeviceList();
-                    Log.i(TAG, "Got " + deviceInfos.size() + " devices");
+                    Log.v(TAG, "Got " + deviceInfos.size() + " devices");
                     ViewGroup insertPoint =
                             (ViewGroup) getView().findViewById(R.id.brave_sync_devices);
                     insertPoint.removeAllViews();
@@ -486,7 +486,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         BraveActivity mainActivity = BraveActivity.getBraveActivity();
         assert (mainActivity != null);
         boolean firstSetupComplete = mainActivity.mBraveSyncWorker.IsFirstSetupComplete();
-        Log.i(TAG, "setAppropriateView first setup complete " + firstSetupComplete);
+        Log.v(TAG, "setAppropriateView first setup complete " + firstSetupComplete);
         if (!firstSetupComplete) {
             if (null != mCameraSourcePreview) {
                 mCameraSourcePreview.stop();
@@ -896,13 +896,14 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // Barcode is valid when its raw representation has length of 64
     // and when it's possible to convert the barcode to bip39 code words
     private boolean isBarCodeValid(String barcode) {
-        Log.i(TAG, "isBarCodeValid barcode length=" + barcode.length());
+        Log.v(TAG, "isBarCodeValid barcode length=" + barcode.length());
         if (barcode == null) {
             Log.e(TAG, "Barcode is empty");
             return false;
         }
         if (barcode.length() != 64) {
             Log.e(TAG, "Wrong barcode data length " + barcode.length() + " instead of 64");
+            return false;
         }
         BraveActivity mainActivity = BraveActivity.getBraveActivity();
         if (null == mainActivity || null == mainActivity.mBraveSyncWorker) {
@@ -941,7 +942,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void showEndDialog(String message) {
-        Log.i(TAG, "showEndDialog message=" + message);
         AlertDialog.Builder alert =
                 new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
         if (null == alert) {
@@ -963,7 +963,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void deleteDeviceDialog(BraveSyncDevices.SyncDeviceInfo deviceToDelete, View v) {
         assert deviceToDelete != null;
         assert !deviceToDelete.mName.isEmpty();
-        Log.i(TAG, "deleteDeviceDialog deviceToDelete.mName=" + deviceToDelete.mName);
+        Log.v(TAG, "deleteDeviceDialog deviceToDelete.mName=" + deviceToDelete.mName);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
         if (null == alert) {
             return;
