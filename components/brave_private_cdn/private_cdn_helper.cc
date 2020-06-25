@@ -9,7 +9,7 @@
 
 namespace brave {
 
-bool PrivateCdnHelper::RemovePadding(std::string* padded_string) const {
+bool PrivateCdnHelper::RemovePadding(base::StringPiece* padded_string) const {
   if (!padded_string) {
     return false;
   }
@@ -20,16 +20,16 @@ bool PrivateCdnHelper::RemovePadding(std::string* padded_string) const {
 
   // Read payload length from the header.
   uint32_t data_length;
-  base::ReadBigEndian(padded_string->c_str(), &data_length);
+  base::ReadBigEndian(padded_string->data(), &data_length);
 
   // Remove length header.
-  padded_string->erase(0, sizeof(uint32_t));
+  padded_string->remove_prefix(sizeof(uint32_t));
   if (padded_string->size() < data_length) {
     return false;  // Payload shorter than expected length
   }
 
   // Remove padding.
-  padded_string->resize(data_length);
+  padded_string->remove_suffix(padded_string->size() - data_length);
   return true;
 }
 
