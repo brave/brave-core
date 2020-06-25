@@ -102,9 +102,9 @@ ControlType ControlTypeFromString(const std::string& string) {
 }
 
 void SetBraveShieldsEnabled(HostContentSettingsMap* map,
-                            PrefService* local_state,
                             bool enable,
-                            const GURL& url) {
+                            const GURL& url,
+                            PrefService* local_state) {
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return;
 
@@ -151,9 +151,9 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
 }
 
 void SetAdControlType(HostContentSettingsMap* map,
-                      PrefService* local_state,
                       ControlType type,
-                      const GURL& url) {
+                      const GURL& url,
+                      PrefService* local_state) {
   DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
   auto primary_pattern = GetPatternFromURL(url);
 
@@ -182,9 +182,9 @@ ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url) {
 }
 
 void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
-                                     PrefService* local_state,
                                      ControlType type,
-                                     const GURL& url) {
+                                     const GURL& url,
+                                     PrefService* local_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid()) {
@@ -240,9 +240,9 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 }
 
 void SetCookieControlType(HostContentSettingsMap* map,
-                          PrefService* local_state,
                           ControlType type,
-                          const GURL& url) {
+                          const GURL& url,
+                          PrefService* local_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
@@ -295,9 +295,9 @@ bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
 }
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
-                                  PrefService* local_state,
                                   ControlType type,
-                                  const GURL& url) {
+                                  const GURL& url,
+                                  PrefService* local_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
@@ -350,9 +350,9 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 }
 
 void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
-                               PrefService* local_state,
                                bool enable,
-                               const GURL& url) {
+                               const GURL& url,
+                               PrefService* local_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
@@ -376,7 +376,7 @@ void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
   if (!primary_pattern.IsValid())
     return;
 
-  map ->SetContentSettingCustomScope(
+  map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::PLUGINS, kHTTPUpgradableResources,
       CONTENT_SETTING_DEFAULT);
@@ -390,9 +390,9 @@ bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url) {
 }
 
 void SetNoScriptControlType(HostContentSettingsMap* map,
-                            PrefService* local_state,
                             ControlType type,
-                            const GURL& url) {
+                            const GURL& url,
+                            PrefService* local_state) {
   DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
   auto primary_pattern = GetPatternFromURL(url);
 

@@ -35,7 +35,7 @@ void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
     control_type = ControlType::BLOCK;
   }
 
-  SetCookieControlType(map, local_state, control_type, GURL());
+  SetCookieControlType(map, control_type, GURL(), local_state);
 }
 
 void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {

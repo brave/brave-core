@@ -98,20 +98,14 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->allow_brave_shields =
-      brave_shields::GetBraveShieldsEnabled(
-          HostContentSettingsMapFactory::GetForProfile(profile),
-          ctx->tab_origin);
+      brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin);
   ctx->allow_ads = brave_shields::GetAdControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      ctx->tab_origin) == brave_shields::ControlType::ALLOW;
+      map, ctx->tab_origin) == brave_shields::ControlType::ALLOW;
   ctx->allow_http_upgradable_resource =
-      !brave_shields::GetHTTPSEverywhereEnabled(
-           HostContentSettingsMapFactory::GetForProfile(profile),
-           ctx->tab_origin);
-  ctx->allow_referrers = brave_shields::AllowReferrers(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      ctx->tab_origin);
+      !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
+  ctx->allow_referrers = brave_shields::AllowReferrers(map, ctx->tab_origin);
   ctx->upload_data = GetUploadData(request);
 }
 

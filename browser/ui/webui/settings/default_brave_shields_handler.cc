@@ -89,10 +89,10 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
 
   brave_shields::SetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      g_browser_process->local_state(),
       value ? ControlType::BLOCK
             : ControlType::ALLOW,
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
@@ -119,9 +119,9 @@ void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
 
   brave_shields::SetCosmeticFilteringControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      g_browser_process->local_state(),
       ControlTypeFromString(value),
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
@@ -148,9 +148,9 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
 
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      g_browser_process->local_state(),
       ControlTypeFromString(value),
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
@@ -177,9 +177,9 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
 
   brave_shields::SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      g_browser_process->local_state(),
       ControlTypeFromString(value),
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
@@ -191,9 +191,9 @@ void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
 
   brave_shields::SetHTTPSEverywhereEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      g_browser_process->local_state(),
       value,
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(
@@ -205,8 +205,8 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
 
   brave_shields::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      g_browser_process->local_state(),
       value ? ControlType::BLOCK
             : ControlType::ALLOW,
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }

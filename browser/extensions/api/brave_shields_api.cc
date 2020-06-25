@@ -190,8 +190,9 @@ BraveShieldsSetBraveShieldsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
-      params->enabled, url);
+      params->enabled,
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }
@@ -259,8 +260,9 @@ BraveShieldsSetCosmeticFilteringControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetCosmeticFilteringControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
-      control_type, url);
+      control_type,
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }
@@ -307,8 +309,9 @@ ExtensionFunction::ResponseAction BraveShieldsSetAdControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
-      control_type, url);
+      control_type,
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }
@@ -353,8 +356,9 @@ BraveShieldsSetCookieControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
-      control_type, url);
+      control_type,
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }
@@ -400,9 +404,9 @@ BraveShieldsSetFingerprintingControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
       control_type,
-      url);
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }
@@ -444,8 +448,9 @@ BraveShieldsSetHTTPSEverywhereEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetHTTPSEverywhereEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
-      params->enabled, url);
+      params->enabled,
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }
@@ -491,9 +496,9 @@ BraveShieldsSetNoScriptControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      g_browser_process->local_state(),
       control_type,
-      url);
+      url,
+      g_browser_process->local_state());
 
   return RespondNow(NoArguments());
 }

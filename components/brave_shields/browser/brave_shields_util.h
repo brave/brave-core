@@ -32,24 +32,24 @@ std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
 
 void SetBraveShieldsEnabled(HostContentSettingsMap* map,
-                            PrefService* local_state,
                             bool enable,
-                            const GURL& url);
+                            const GURL& url,
+                            PrefService* local_state = nullptr);
 // reset to the default value
 void ResetBraveShieldsEnabled(HostContentSettingsMap* map,
                               const GURL& url);
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetAdControlType(HostContentSettingsMap* map,
-                      PrefService* local_state,
                       ControlType type,
-                      const GURL& url);
+                      const GURL& url,
+                      PrefService* local_state = nullptr);
 ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url);
 
 void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
-                                     PrefService* local_state,
                                      ControlType type,
-                                     const GURL& url);
+                                     const GURL& url,
+                                     PrefService* local_state = nullptr);
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
 bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
@@ -57,9 +57,9 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
-                          PrefService* local_state,
                           ControlType type,
-                          const GURL& url);
+                          const GURL& url,
+                          PrefService* local_state = nullptr);
 ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
 
 // Referrers is always set along with cookies so there is no setter and
@@ -67,25 +67,25 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
 bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
-                                  PrefService* local_state,
                                   ControlType type,
-                                  const GURL& url);
+                                  const GURL& url,
+                                  PrefService* local_state = nullptr);
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url);
 
 void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
-                               PrefService* local_state,
                                bool enable,
-                               const GURL& url);
+                               const GURL& url,
+                               PrefService* local_state = nullptr);
 // reset to the default value
 void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
                                  const GURL& url);
 bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetNoScriptControlType(HostContentSettingsMap* map,
-                            PrefService* local_state,
                             ControlType type,
-                            const GURL& url);
+                            const GURL& url,
+                            PrefService* local_state = nullptr);
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
 

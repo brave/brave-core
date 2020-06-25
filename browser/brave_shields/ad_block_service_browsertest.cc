@@ -847,7 +847,6 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
   brave_shields::SetCosmeticFilteringControlType(
       content_settings(),
-      nullptr,
       brave_shields::ControlType::ALLOW,
       GURL());
   UpdateAdBlockInstanceWithRules(
@@ -949,7 +948,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringHide1pContent) {
   brave_shields::SetCosmeticFilteringControlType(
       content_settings(),
-      nullptr,
       brave_shields::ControlType::BLOCK,
       GURL());
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");

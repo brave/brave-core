@@ -53,26 +53,22 @@ IN_PROC_BROWSER_TEST_F(CookiePrefServiceTest, CookieControlType_Preference) {
   // Control -> preference
   /* BLOCK */
   brave_shields::SetCookieControlType(content_settings(),
-                                      nullptr,
                                       ControlType::BLOCK,
                                       GURL());
   EXPECT_EQ(CONTENT_SETTING_BLOCK, GetCookiePref());
 
   /* ALLOW */
   brave_shields::SetCookieControlType(content_settings(),
-                                      nullptr,
                                       ControlType::ALLOW,
                                       GURL());
   EXPECT_EQ(CONTENT_SETTING_ALLOW, GetCookiePref());
 
   /* BLOCK_THIRD_PARTY */
   brave_shields::SetCookieControlType(content_settings(),
-                                      nullptr,
                                       ControlType::BLOCK,
                                       GURL());
   EXPECT_EQ(CONTENT_SETTING_BLOCK, GetCookiePref());
   brave_shields::SetCookieControlType(content_settings(),
-                                      nullptr,
                                       ControlType::BLOCK_THIRD_PARTY,
                                       GURL());
   EXPECT_EQ(CONTENT_SETTING_ALLOW, GetCookiePref());
