@@ -8,8 +8,16 @@
  * 'brave-sync-setup' is the UI for starting or joining a sync chain
  * settings.
  */
+import './brave_sync_code_dialog.js';
+
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
+import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+
 Polymer({
   is: 'settings-brave-sync-setup',
+
+  _template: html`{__html_template__}`,
 
   properties: {
     syncCode: {
@@ -36,11 +44,11 @@ Polymer({
     }
   },
 
-  /** @private {?settings.BraveSyncBrowserProxy} */
+  /** @private {?BraveSyncBrowserProxy} */
   syncBrowserProxy_: null,
 
   created: function() {
-    this.syncBrowserProxy_ = settings.BraveSyncBrowserProxy.getInstance();
+    this.syncBrowserProxy_ = BraveSyncBrowserProxy.getInstance();
   },
 
   handleStartSyncChain_: async function () {
