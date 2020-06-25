@@ -9,7 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "components/metrics/metrics_log_uploader.h"
+#include "base/callback.h"
+#include "base/memory/ref_counted.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -19,27 +20,29 @@ class SimpleURLLoader;
 
 namespace brave {
 
-class BraveP3AUploader : public metrics::MetricsLogUploader {
+class BraveP3AUploader {
  public:
+  using UploadCallback = base::RepeatingCallback<void(int, int, bool)>;
+
   BraveP3AUploader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      const GURL server_url,
-      const MetricsLogUploader::UploadCallback& on_upload_complete);
+      const GURL& p3a_endpoint,
+      const GURL& p2a_endpoint,
+      const UploadCallback& on_upload_complete);
 
-  ~BraveP3AUploader() override;
+  ~BraveP3AUploader();
 
   // From metrics::MetricsLogUploader
   void UploadLog(const std::string& compressed_log_data,
-                 const std::string& log_hash,
-                 const std::string& log_signature,
-                 const metrics::ReportingInfo& reporting_info) override;
+                 const std::string& upload_type);
 
   void OnUploadComplete(std::unique_ptr<std::string> response_body);
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  const GURL server_url_;
-  const MetricsLogUploader::UploadCallback on_upload_complete_;
+  const GURL p3a_endpoint_;
+  const GURL p2a_endpoint_;
+  const UploadCallback on_upload_complete_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   DISALLOW_COPY_AND_ASSIGN(BraveP3AUploader);
 };

@@ -10,8 +10,10 @@
 
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/metrics_hashes.h"
+#include "base/metrics/sample_vector.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -41,7 +43,8 @@ namespace {
 
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
-constexpr char kDefaultUploadServerUrl[] = "https://p3a.brave.com/";
+constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
+constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
@@ -72,12 +75,20 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Sync.Status",
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
+
+    // P2A
+    "Brave.P2A.Test",
 };
 
 base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
-  return base::TimeDelta::FromSecondsD(
+  const auto delta = base::TimeDelta::FromSecondsD(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
+  UMA_HISTOGRAM_EXACT_LINEAR(
+      "Brave.P2A.Test",
+      delta > base::TimeDelta::FromSecondsD(5) ? 0 : 1,
+      1);
+  return delta;
 }
 
 base::TimeDelta TimeDeltaTillMonday(base::Time time) {
@@ -134,7 +145,7 @@ void BraveP3AService::Init(
   average_upload_interval_ =
       base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
 
-  upload_server_url_ = GURL(kDefaultUploadServerUrl);
+  upload_server_url_ = GURL(kP3AServerUrl);
   MaybeOverrideSettingsFromCommandLine();
 
   VLOG(2) << "BraveP3AService::Init() Done!";
@@ -170,7 +181,7 @@ void BraveP3AService::Init(
 
   // Init other components.
   uploader_.reset(new BraveP3AUploader(
-      url_loader_factory, upload_server_url_,
+      url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
       base::Bind(&BraveP3AService::OnLogUploadComplete, this)));
 
   upload_scheduler_.reset(new BraveP3AScheduler(
@@ -295,8 +306,10 @@ void BraveP3AService::StartScheduledUpload() {
   bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
   if (p3a_enabled) {
     const std::string log = log_store_->staged_log();
-    VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes";
-    uploader_->UploadLog(log, "", "", {});
+    const std::string log_type = log_store_->staged_log_type();
+    VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
+            << "of type " << log_type;
+    uploader_->UploadLog(log, log_type);
   }
 }
 
@@ -313,6 +326,20 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     LOG(ERROR) << "Only linear histograms are supported at the moment!";
     NOTREACHED();
     return;
+  }
+
+  // Special handling of P2A histograms.
+  if (base::StartsWith(histogram_name, "Brave.P2A.",
+                       base::CompareCase::SENSITIVE)) {
+    // We need the bucket count to make proper perturbation.
+    // All P2A metrics should be implemented as linear histograms.
+    base::SampleVector* vector =
+        static_cast<base::SampleVector*>(samples.get());
+    DCHECK(vector);
+    const size_t bucket_count = vector->bucket_ranges()->bucket_count() - 1;
+    VLOG(2) << "P2A metric " << histogram_name << " has bucket count "
+            << bucket_count;
+    // TODO: Perturb the bucket.
   }
 
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},

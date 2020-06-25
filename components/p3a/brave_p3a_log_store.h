@@ -51,6 +51,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   bool has_unsent_logs() const override;
   bool has_staged_log() const override;
   const std::string& staged_log() const override;
+  std::string staged_log_type() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
   void StageNextLog() override;

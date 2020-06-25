@@ -8,6 +8,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -103,6 +104,18 @@ const std::string& BraveP3ALogStore::staged_log() const {
   DCHECK(iter != log_.end());
 
   return staged_log_;
+}
+
+std::string BraveP3ALogStore::staged_log_type() const {
+  DCHECK(!staged_entry_key_.empty());
+  auto iter = log_.find(staged_entry_key_);
+  DCHECK(iter != log_.end());
+
+  if (base::StartsWith(iter->first, "Brave.P2A",
+                       base::CompareCase::SENSITIVE)) {
+    return "p2a";
+  }
+  return "p3a";
 }
 
 const std::string& BraveP3ALogStore::staged_log_hash() const {
