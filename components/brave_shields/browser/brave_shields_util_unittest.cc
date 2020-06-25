@@ -547,248 +547,90 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   // setting should be default to start with
-  auto setting =
-      map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
-                             brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
-  setting = map->GetContentSetting(GURL(), GURL("https://firstParty"),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
-  setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  setting = map->GetContentSetting(
-      GURL("http://brave.com"), GURL("https://firstParty"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  auto type = brave_shields::GetFingerprintingControlType(map, GURL());
+  EXPECT_EQ(ControlType::DEFAULT, type);
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::DEFAULT, type);
 
   /* ALLOW */
   brave_shields::SetFingerprintingControlType(map, nullptr, ControlType::ALLOW,
                                               GURL());
-  setting =
-      map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
-                             brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
-  setting = map->GetContentSetting(GURL(), GURL("https://firstParty"),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  type = brave_shields::GetFingerprintingControlType(map, GURL());
+  EXPECT_EQ(ControlType::ALLOW, type);
+
   // setting should apply to all urls
-  setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
-  setting = map->GetContentSetting(
-      GURL("http://brave.com"), GURL("https://firstParty"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::ALLOW, type);
 
   /* BLOCK */
   brave_shields::SetFingerprintingControlType(map, nullptr, ControlType::BLOCK,
                                               GURL());
-  setting =
-      map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
-                             brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
-  setting = map->GetContentSetting(GURL(), GURL("https://firstParty"),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+  type = brave_shields::GetFingerprintingControlType(map, GURL());
+  EXPECT_EQ(ControlType::BLOCK, type);
+
   // setting should apply to all urls
-  setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
-  setting = map->GetContentSetting(
-      GURL("http://brave.com"), GURL("https://firstParty"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::BLOCK, type);
 
   /* DEFAULT */
   brave_shields::SetFingerprintingControlType(
       map, nullptr, ControlType::DEFAULT, GURL());
-  ControlType type =
-      brave_shields::GetFingerprintingControlType(map, GURL());
+  type = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, type);
 
   // setting should apply to all urls
-  type = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, type);
 
   /* Global ALLOW and Site explicit DEFAULT */
-  brave_shields::SetFingerprintingControlType(map,
-                                              nullptr,
-                                              ControlType::ALLOW,
-                                              GURL());
-  brave_shields::SetFingerprintingControlType(map,
-                                              nullptr,
-                                              ControlType::DEFAULT,
-                                              GURL("http://brave.com"));
-
+  brave_shields::SetFingerprintingControlType(
+      map, nullptr, ControlType::ALLOW, GURL());
+  brave_shields::SetFingerprintingControlType(
+      map, nullptr, ControlType::DEFAULT, GURL("http://brave.com"));
   // Site should have DEFAULT if it's explicitly set.
-  type = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, type);
 
   /* Global BLOCK and Site explicit DEFAULT */
   brave_shields::SetFingerprintingControlType(
       map, nullptr, ControlType::BLOCK, GURL());
   // Site should have DEFAULT if it's explicitly set.
-  type = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, type);
 }
 
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetFingerprintingControlType(map, nullptr, ControlType::ALLOW,
-                                              GURL("http://brave.com"));
-  // override should apply to origin
-  auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
-                                        ContentSettingsType::PLUGINS,
-                                        brave_shields::kFingerprintingV2);
-  setting = map->GetContentSetting(
-      GURL("http://brave.com"), GURL("https://firstParty"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
-
+  brave_shields::SetFingerprintingControlType(
+      map, nullptr, ControlType::ALLOW, GURL("http://brave.com"));
+  auto type = brave_shields::GetFingerprintingControlType(
+      map, GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::ALLOW, type);
   // override should also apply to different scheme
-  setting = map->GetContentSetting(GURL("https://brave.com"), GURL(),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
-  setting = map->GetContentSetting(
-      GURL("https://brave.com"), GURL("https://firstParty"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("https://brave.com"));
+  EXPECT_EQ(ControlType::ALLOW, type);
+
+  brave_shields::SetFingerprintingControlType(
+      map, nullptr, ControlType::BLOCK, GURL("http://brave.com"));
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("http://brave.com"));
+  EXPECT_EQ(ControlType::BLOCK, type);
+  // override should also apply to different scheme
+  type = brave_shields::GetFingerprintingControlType(map,
+                                                     GURL("https://brave.com"));
+  EXPECT_EQ(ControlType::BLOCK, type);
 
   // override should not apply to default
-  setting =
-      map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
-                             brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
-  // override should not apply to default
-  setting = map->GetContentSetting(GURL(), GURL("https://firstParty"),
-                                   ContentSettingsType::PLUGINS,
-                                   brave_shields::kFingerprintingV2);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
-}
-
-TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_Default) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-
-  auto setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::DEFAULT, setting);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::DEFAULT, setting);
-
-  /* ALLOW */
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_ALLOW);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::ALLOW, setting);
-
-  /* BLOCK */
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_BLOCK);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::BLOCK, setting);
-
-  /* DEFAULT */
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_BLOCK);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::BLOCK, setting);
-}
-
-TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ForOrigin) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-
-  auto setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::DEFAULT, setting);
-
-  /* ALLOW */
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
-      brave_shields::kFingerprintingV2, CONTENT_SETTING_ALLOW);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::DEFAULT, setting);
-
-  /* BLOCK */
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
-      brave_shields::kFingerprintingV2, CONTENT_SETTING_BLOCK);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::DEFAULT, setting);
-
-  /* DEFAULT */
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
-      brave_shields::kFingerprintingV2, CONTENT_SETTING_BLOCK);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
-      CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetFingerprintingControlType(
-      map, GURL("http://brave.com"));
-  EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetFingerprintingControlType(map, GURL());
-  EXPECT_EQ(ControlType::DEFAULT, setting);
+  type = brave_shields::GetFingerprintingControlType(map, GURL());
+  EXPECT_EQ(ControlType::DEFAULT, type);
 }
 
 /* HTTPSEVERYWHERE CONTROL */
