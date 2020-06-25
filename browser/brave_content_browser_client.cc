@@ -33,6 +33,7 @@
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -380,10 +381,12 @@ void BraveContentBrowserClient::MaybeHideReferrer(
 #endif
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  const bool allow_referrers = brave_shields::AllowReferrers(profile,
-                                                             document_url);
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(profile,
-                                                                document_url);
+  const bool allow_referrers = brave_shields::AllowReferrers(
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      document_url);
+  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      document_url);
   // Some top-level navigations get empty referrers (brave/brave-browser#3422).
   network::mojom::ReferrerPolicy policy = (*referrer)->policy;
   if (is_main_frame) {
@@ -398,7 +401,8 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
       allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
-      policy, &new_referrer)) {
+      policy, g_brave_browser_process->referrer_whitelist_service(),
+      &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }

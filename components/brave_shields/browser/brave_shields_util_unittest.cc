@@ -100,7 +100,7 @@ TEST_F(BraveShieldsUtilTest, ControlTypeFromString) {
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetBraveShieldsEnabled(profile(), true,
+  brave_shields::SetBraveShieldsEnabled(map, nullptr, true,
                                         GURL("http://brave.com"));
   // setting should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
@@ -122,34 +122,34 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
 }
 
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_IsNotHttpHttps) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto setting = brave_shields::GetBraveShieldsEnabled(
-      profile(), GURL("chrome://preferences"));
+      map, GURL("chrome://preferences"));
   EXPECT_EQ(false, setting);
-  brave_shields::SetBraveShieldsEnabled(profile(), ControlType::ALLOW,
+  brave_shields::SetBraveShieldsEnabled(map, nullptr, ControlType::ALLOW,
                                         GURL("chrome://preferences"));
-  setting = brave_shields::GetBraveShieldsEnabled(profile(),
+  setting = brave_shields::GetBraveShieldsEnabled(map,
                                                   GURL("chrome://preferences"));
   EXPECT_EQ(false, setting);
 
-  setting =
-      brave_shields::GetBraveShieldsEnabled(profile(), GURL("about:blank"));
+  setting = brave_shields::GetBraveShieldsEnabled(map, GURL("about:blank"));
   EXPECT_EQ(false, setting);
-  brave_shields::SetBraveShieldsEnabled(profile(), ControlType::ALLOW,
+  brave_shields::SetBraveShieldsEnabled(map, nullptr, ControlType::ALLOW,
                                         GURL("about:blank"));
   setting =
-      brave_shields::GetBraveShieldsEnabled(profile(), GURL("about:blank"));
+      brave_shields::GetBraveShieldsEnabled(map, GURL("about:blank"));
   EXPECT_EQ(false, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetBraveShieldsEnabled_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetBraveShieldsEnabled(profile(), GURL());
+  auto setting = brave_shields::GetBraveShieldsEnabled(map, GURL());
   EXPECT_EQ(true, setting);
-  setting = brave_shields::GetBraveShieldsEnabled(profile(),
+  setting = brave_shields::GetBraveShieldsEnabled(map,
                                                   GURL("http://brave.com"));
   EXPECT_EQ(true, setting);
-  setting = brave_shields::GetBraveShieldsEnabled(profile(),
+  setting = brave_shields::GetBraveShieldsEnabled(map,
                                                   GURL("https://brave.com"));
   EXPECT_EQ(true, setting);
 
@@ -158,25 +158,25 @@ TEST_F(BraveShieldsUtilTest, GetBraveShieldsEnabled_ForOrigin) {
       ContentSettingsPattern::FromString("http://brave.com/*"),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
       brave_shields::kBraveShields, CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetBraveShieldsEnabled(profile(),
+  setting = brave_shields::GetBraveShieldsEnabled(map,
                                                   GURL("http://brave.com/*"));
   EXPECT_EQ(false, setting);
   // https in unchanged
-  setting = brave_shields::GetBraveShieldsEnabled(profile(),
+  setting = brave_shields::GetBraveShieldsEnabled(map,
                                                   GURL("https://brave.com"));
   EXPECT_EQ(true, setting);
   // default is unchanged
-  setting = brave_shields::GetBraveShieldsEnabled(profile(), GURL());
+  setting = brave_shields::GetBraveShieldsEnabled(map, GURL());
   EXPECT_EQ(true, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetBraveShieldsEnabled_IsNotHttpHttps) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto setting = brave_shields::GetBraveShieldsEnabled(
-      profile(), GURL("chrome://preferences"));
+      map, GURL("chrome://preferences"));
   EXPECT_EQ(false, setting);
 
-  setting =
-      brave_shields::GetBraveShieldsEnabled(profile(), GURL("about:blank"));
+  setting = brave_shields::GetBraveShieldsEnabled(map, GURL("about:blank"));
   EXPECT_EQ(false, setting);
 }
 
@@ -193,7 +193,7 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
 
   /* ALLOW */
-  brave_shields::SetAdControlType(profile(), ControlType::ALLOW, GURL());
+  brave_shields::SetAdControlType(map, nullptr, ControlType::ALLOW, GURL());
   setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::PLUGINS, brave_shields::kAds);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
@@ -205,7 +205,7 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   /* BLOCK */
-  brave_shields::SetAdControlType(profile(), ControlType::BLOCK, GURL());
+  brave_shields::SetAdControlType(map, nullptr, ControlType::BLOCK, GURL());
   setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::PLUGINS, brave_shields::kAds);
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
@@ -220,7 +220,7 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_Default) {
 TEST_F(BraveShieldsUtilTest, SetAdControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetAdControlType(profile(), ControlType::ALLOW,
+  brave_shields::SetAdControlType(map, nullptr, ControlType::ALLOW,
                                   GURL("http://brave.com"));
   // setting should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
@@ -243,7 +243,7 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_ForOrigin) {
 TEST_F(BraveShieldsUtilTest, GetAdControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetAdControlType(profile(), GURL());
+  auto setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* ALLOW */
@@ -251,7 +251,7 @@ TEST_F(BraveShieldsUtilTest, GetAdControlType_Default) {
                                     ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::PLUGINS,
                                     brave_shields::kAds, CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetAdControlType(profile(), GURL());
+  setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   /* BLOCK */
@@ -259,20 +259,18 @@ TEST_F(BraveShieldsUtilTest, GetAdControlType_Default) {
                                     ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::PLUGINS,
                                     brave_shields::kAds, CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetAdControlType(profile(), GURL());
+  setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetAdControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetAdControlType(profile(), GURL());
+  auto setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting =
-      brave_shields::GetAdControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetAdControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting =
-      brave_shields::GetAdControlType(profile(), GURL("https://brave.com"));
+  setting = brave_shields::GetAdControlType(map, GURL("https://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* ALLOW */
@@ -281,15 +279,14 @@ TEST_F(BraveShieldsUtilTest, GetAdControlType_ForOrigin) {
       ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
       brave_shields::kAds, CONTENT_SETTING_ALLOW);
   setting =
-      brave_shields::GetAdControlType(profile(), GURL("http://brave.com"));
+      brave_shields::GetAdControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   // https in unchanged
-  setting =
-      brave_shields::GetAdControlType(profile(), GURL("https://brave.com"));
+  setting = brave_shields::GetAdControlType(map, GURL("https://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
   // default is unchanged
-  setting = brave_shields::GetAdControlType(profile(), GURL());
+  setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* BLOCK */
@@ -299,12 +296,12 @@ TEST_F(BraveShieldsUtilTest, GetAdControlType_ForOrigin) {
                                     ContentSettingsType::PLUGINS,
                                     brave_shields::kAds, CONTENT_SETTING_ALLOW);
   setting =
-      brave_shields::GetAdControlType(profile(), GURL("http://brave.com"));
+      brave_shields::GetAdControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
   setting =
-      brave_shields::GetAdControlType(profile(), GURL("https://brave.com"));
+      brave_shields::GetAdControlType(map, GURL("https://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetAdControlType(profile(), GURL());
+  setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   // set override to block
@@ -313,14 +310,14 @@ TEST_F(BraveShieldsUtilTest, GetAdControlType_ForOrigin) {
       ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
       brave_shields::kAds, CONTENT_SETTING_BLOCK);
   setting =
-      brave_shields::GetAdControlType(profile(), GURL("http://brave.com/*"));
+      brave_shields::GetAdControlType(map, GURL("http://brave.com/*"));
   EXPECT_EQ(ControlType::BLOCK, setting);
   // https in unchanged
   setting =
-      brave_shields::GetAdControlType(profile(), GURL("https://brave.com"));
+      brave_shields::GetAdControlType(map, GURL("https://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
   // default is unchanged
-  setting = brave_shields::GetAdControlType(profile(), GURL());
+  setting = brave_shields::GetAdControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 }
 
@@ -344,7 +341,7 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
 
   /* ALLOW */
-  brave_shields::SetCookieControlType(profile(), ControlType::ALLOW, GURL());
+  brave_shields::SetCookieControlType(map, nullptr, ControlType::ALLOW, GURL());
   setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::PLUGINS, brave_shields::kCookies);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
@@ -363,7 +360,7 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   /* BLOCK */
-  brave_shields::SetCookieControlType(profile(), ControlType::BLOCK, GURL());
+  brave_shields::SetCookieControlType(map, nullptr, ControlType::BLOCK, GURL());
   setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::PLUGINS, brave_shields::kCookies);
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
@@ -382,8 +379,8 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   /* BLOCK_THIRD_PARTY */
-  brave_shields::SetCookieControlType(profile(), ControlType::BLOCK_THIRD_PARTY,
-                                      GURL());
+  brave_shields::SetCookieControlType(map, nullptr,
+                                      ControlType::BLOCK_THIRD_PARTY, GURL());
   setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::PLUGINS, brave_shields::kCookies);
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
@@ -406,7 +403,7 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_Default) {
 TEST_F(BraveShieldsUtilTest, SetCookieControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetCookieControlType(profile(), ControlType::ALLOW,
+  brave_shields::SetCookieControlType(map, nullptr, ControlType::ALLOW,
                                       GURL("http://brave.com"));
   // override should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
@@ -441,10 +438,10 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_ForOrigin) {
 TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetCookieControlType(profile(), GURL());
+  auto setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
   setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+      brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* ALLOW */
@@ -457,10 +454,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies,
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetCookieControlType(profile(), GURL());
+  setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   /* BLOCK */
@@ -473,10 +469,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies,
       CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetCookieControlType(profile(), GURL());
+  setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* BLOCK_THIRD_PARTY */
@@ -489,10 +484,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies,
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetCookieControlType(profile(), GURL());
+  setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
-  setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 }
 
@@ -500,7 +494,7 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
   auto setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+      brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* ALLOW */
@@ -513,10 +507,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies,
       CONTENT_SETTING_ALLOW);
-  setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetCookieControlType(profile(), GURL());
+  setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* BLOCK */
@@ -529,10 +522,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies,
       CONTENT_SETTING_BLOCK);
-  setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetCookieControlType(profile(), GURL());
+  setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* BLOCK_THIRD_PARTY */
@@ -545,10 +537,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies,
       CONTENT_SETTING_ALLOW);
-  setting =
-      brave_shields::GetCookieControlType(profile(), GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
-  setting = brave_shields::GetCookieControlType(profile(), GURL());
+  setting = brave_shields::GetCookieControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 }
 
@@ -573,7 +564,7 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
 
   /* ALLOW */
-  brave_shields::SetFingerprintingControlType(profile(), ControlType::ALLOW,
+  brave_shields::SetFingerprintingControlType(map, nullptr, ControlType::ALLOW,
                                               GURL());
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
@@ -594,7 +585,7 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   /* BLOCK */
-  brave_shields::SetFingerprintingControlType(profile(), ControlType::BLOCK,
+  brave_shields::SetFingerprintingControlType(map, nullptr, ControlType::BLOCK,
                                               GURL());
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
@@ -616,40 +607,44 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
 
   /* DEFAULT */
   brave_shields::SetFingerprintingControlType(
-      profile(), ControlType::DEFAULT, GURL());
+      map, nullptr, ControlType::DEFAULT, GURL());
   ControlType type =
-      brave_shields::GetFingerprintingControlType(profile(), GURL());
+      brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, type);
 
   // setting should apply to all urls
   type = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, type);
 
   /* Global ALLOW and Site explicit DEFAULT */
-  brave_shields::SetFingerprintingControlType(profile(), ControlType::ALLOW,
+  brave_shields::SetFingerprintingControlType(map,
+                                              nullptr,
+                                              ControlType::ALLOW,
                                               GURL());
-  brave_shields::SetFingerprintingControlType(profile(), ControlType::DEFAULT,
+  brave_shields::SetFingerprintingControlType(map,
+                                              nullptr,
+                                              ControlType::DEFAULT,
                                               GURL("http://brave.com"));
 
   // Site should have DEFAULT if it's explicitly set.
   type = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, type);
 
   /* Global BLOCK and Site explicit DEFAULT */
-  brave_shields::SetFingerprintingControlType(profile(), ControlType::BLOCK,
-                                              GURL());
+  brave_shields::SetFingerprintingControlType(
+      map, nullptr, ControlType::BLOCK, GURL());
   // Site should have DEFAULT if it's explicitly set.
   type = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, type);
 }
 
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetFingerprintingControlType(profile(), ControlType::ALLOW,
+  brave_shields::SetFingerprintingControlType(map, nullptr, ControlType::ALLOW,
                                               GURL("http://brave.com"));
   // override should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
@@ -685,10 +680,10 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
 TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  auto setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, setting);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, setting);
 
   /* ALLOW */
@@ -701,10 +696,10 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_Default) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   /* BLOCK */
@@ -717,10 +712,10 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_Default) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
       CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* DEFAULT */
@@ -733,10 +728,10 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_Default) {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
 }
 
@@ -744,7 +739,7 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
   auto setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::DEFAULT, setting);
 
   /* ALLOW */
@@ -758,9 +753,9 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ForOrigin) {
       ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
       CONTENT_SETTING_ALLOW);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, setting);
 
   /* BLOCK */
@@ -774,9 +769,9 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ForOrigin) {
       ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
       CONTENT_SETTING_BLOCK);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, setting);
 
   /* DEFAULT */
@@ -790,9 +785,9 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ForOrigin) {
       ContentSettingsType::PLUGINS, brave_shields::kFingerprintingV2,
       CONTENT_SETTING_ALLOW);
   setting = brave_shields::GetFingerprintingControlType(
-      profile(), GURL("http://brave.com"));
+      map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetFingerprintingControlType(profile(), GURL());
+  setting = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, setting);
 }
 
@@ -810,7 +805,7 @@ TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_Default) {
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
 
   /* disabled */
-  brave_shields::SetHTTPSEverywhereEnabled(profile(), false, GURL());
+  brave_shields::SetHTTPSEverywhereEnabled(map, nullptr, false, GURL());
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
                              brave_shields::kHTTPUpgradableResources);
@@ -823,7 +818,7 @@ TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_Default) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   /* enabled */
-  brave_shields::SetHTTPSEverywhereEnabled(profile(), true, GURL());
+  brave_shields::SetHTTPSEverywhereEnabled(map, nullptr, true, GURL());
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::PLUGINS,
                              brave_shields::kHTTPUpgradableResources);
@@ -839,7 +834,7 @@ TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_Default) {
 TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetHTTPSEverywhereEnabled(profile(), false,
+  brave_shields::SetHTTPSEverywhereEnabled(map, nullptr, false,
                                            GURL("http://brave.com"));
   // setting should apply to origin
   auto setting = map->GetContentSetting(
@@ -863,7 +858,7 @@ TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_ForOrigin) {
 TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  auto setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(true, setting);
 
   /* ALLOW */
@@ -871,7 +866,7 @@ TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_Default) {
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::PLUGINS, brave_shields::kHTTPUpgradableResources,
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(false, setting);
 
   /* BLOCK */
@@ -879,19 +874,19 @@ TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_Default) {
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::PLUGINS, brave_shields::kHTTPUpgradableResources,
       CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(true, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  auto setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(true, setting);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("http://brave.com"));
   EXPECT_EQ(true, setting);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("https://brave.com"));
   EXPECT_EQ(true, setting);
 
@@ -900,16 +895,16 @@ TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_ForOrigin) {
       ContentSettingsPattern::FromString("http://brave.com/*"),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
       brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   // https in unchanged
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("https://brave.com"));
   EXPECT_EQ(true, setting);
   // default is unchanged
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(true, setting);
 
   /* BLOCK */
@@ -918,13 +913,13 @@ TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_ForOrigin) {
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::PLUGINS, brave_shields::kHTTPUpgradableResources,
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("https://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   // set override to block
@@ -933,14 +928,14 @@ TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_ForOrigin) {
       ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
       brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_BLOCK);
   setting = brave_shields::GetHTTPSEverywhereEnabled(
-      profile(), GURL("http://brave.com/*"));
+      map, GURL("http://brave.com/*"));
   EXPECT_EQ(true, setting);
   // https in unchanged
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(),
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map,
                                                      GURL("https://brave.com"));
   EXPECT_EQ(false, setting);
   // default is unchanged
-  setting = brave_shields::GetHTTPSEverywhereEnabled(profile(), GURL());
+  setting = brave_shields::GetHTTPSEverywhereEnabled(map, GURL());
   EXPECT_EQ(false, setting);
 }
 
@@ -956,7 +951,8 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   /* BLOCK */
-  brave_shields::SetNoScriptControlType(profile(), ControlType::BLOCK, GURL());
+  brave_shields::SetNoScriptControlType(map, nullptr,
+                                        ControlType::BLOCK, GURL());
   setting = map->GetContentSetting(GURL(), GURL(),
                                    ContentSettingsType::JAVASCRIPT, "");
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
@@ -967,7 +963,8 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   /* ALLOW */
-  brave_shields::SetNoScriptControlType(profile(), ControlType::ALLOW, GURL());
+  brave_shields::SetNoScriptControlType(map, nullptr,
+                                        ControlType::ALLOW, GURL());
   setting = map->GetContentSetting(GURL(), GURL(),
                                    ContentSettingsType::JAVASCRIPT, "");
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
@@ -981,7 +978,7 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
 TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetNoScriptControlType(profile(), ControlType::BLOCK,
+  brave_shields::SetNoScriptControlType(map, nullptr, ControlType::BLOCK,
                                         GURL("http://brave.com"));
   // setting should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
@@ -1002,33 +999,33 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_ForOrigin) {
 TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  auto setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   /* BLOCK */
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* ALLOW */
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  auto setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("https://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
 
@@ -1038,15 +1035,15 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
       ContentSettingsPattern::FromString("http://brave.com/*"),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT, "",
       CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("http://brave.com/*"));
   EXPECT_EQ(ControlType::BLOCK, setting);
   // https in unchanged
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("https://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
   // default is unchanged
-  setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   /* ALLOW */
@@ -1054,28 +1051,28 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("https://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::FromString("http://brave.com/*"),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT, "",
       CONTENT_SETTING_ALLOW);
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("http://brave.com"));
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   // https in unchanged
-  setting = brave_shields::GetNoScriptControlType(profile(),
+  setting = brave_shields::GetNoScriptControlType(map,
                                                   GURL("https://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
   // default is unchanged
-  setting = brave_shields::GetNoScriptControlType(profile(), GURL());
+  setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 }

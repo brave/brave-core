@@ -23,7 +23,8 @@ class CookiePrefService : public KeyedService,
                           public content_settings::Observer {
  public:
   explicit CookiePrefService(HostContentSettingsMap* host_content_settings_map,
-                             PrefService* prefs);
+                             PrefService* prefs,
+                             PrefService* local_state);
   ~CookiePrefService() override;
 
  private:
@@ -50,6 +51,7 @@ class CookiePrefService : public KeyedService,
   Lock lock_;
   HostContentSettingsMap* host_content_settings_map_;
   PrefService* prefs_;
+  PrefService* local_state_;
   PrefChangeRegistrar pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(CookiePrefService);
