@@ -29,20 +29,17 @@ function addBraveBehaviors(moduleName, component) {
 
 const allBraveTemplateModificationsMap = {}
 
-function addBraveTemplateModifications(moduleName, component) {
-  if (allBraveTemplateModificationsMap[moduleName]) {
-    const template = component.template || component._template
-    if (template) {
-      const templateContent = template.content
-      const t0 = debug && performance.now()
-      allBraveTemplateModificationsMap[moduleName](templateContent)
-      const t1 = debug && performance.now()
-      if (debug)
-        console.debug(`Modifying template '${moduleName}' took ${t1 - t0}ms`)
-    } else {
-      console.error(`Source template not found for override of component "${moduleName}"`)
-    }
-    delete allBraveTemplateModificationsMap[moduleName]
+function addBraveTemplateModifications(moduleName, component, modifyFn) {
+  const template = component.template || component._template
+  if (template) {
+    const templateContent = template.content
+    const t0 = debug && performance.now()
+    modifyFn(templateContent)
+    const t1 = debug && performance.now()
+    if (debug)
+      console.debug(`Modifying template '${moduleName}' took ${t1 - t0}ms`)
+  } else {
+    console.error(`Source template not found for override of component "${moduleName}"`)
   }
 }
 
@@ -71,13 +68,27 @@ function addBraveStyleOverride(moduleName, component) {
 
 export function RegisterPolymerComponentBehaviors(behaviorsMap) {
   if (debug) {
-    console.log('RegisterPolymerComponentBehaviors', Object.keys(behaviorsMap))
+    console.log('RegisterPolymerComponentBehaviors', ...Object.keys(behaviorsMap))
   }
   Object.assign(allBehaviorsMap, behaviorsMap)
 }
 
 export function RegisterPolymerTemplateModifications(modificationsMap) {
-  Object.assign(allBraveTemplateModificationsMap, modificationsMap)
+  if (debug) {
+    console.log('RegisterPolymerTemplateModifications', ...Object.keys(modificationsMap))
+  }
+  const awaitingComponentModifications = {}
+  for (const componentName in modificationsMap) {
+    const modifyFn = modificationsMap[componentName]
+    const existingComponent = window.customElements.get(componentName)
+    if (!existingComponent) {
+      awaitingComponentModifications[componentName] = modificationsMap[componentName]
+      continue
+    }
+    // Component is already defined, modify now.
+    addBraveTemplateModifications(componentName, existingComponent, modifyFn)
+  }
+  Object.assign(allBraveTemplateModificationsMap, awaitingComponentModifications)
 }
 
 const moduleNamesWithStyleOverrides = []
@@ -160,7 +171,11 @@ function PerformBraveModifications(name, component) {
     console.debug(`Polymer component registering: ${name}`, component)
   }
   addBraveBehaviors(name, component)
-  addBraveTemplateModifications(name, component)
+  const templateModifyFn = allBraveTemplateModificationsMap[name]
+  if (templateModifyFn) {
+    addBraveTemplateModifications(name, component, templateModifyFn)
+    delete allBraveTemplateModificationsMap[name]
+  }
   if (moduleNamesWithStyleOverrides.includes(name)) {
     addBraveStyleOverride(name, component)
   }
