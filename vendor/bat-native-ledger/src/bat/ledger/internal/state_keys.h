@@ -17,6 +17,7 @@ namespace ledger {
   const char kStatePromotionCorruptedMigrated[] =
       "promotion_corrupted_migrated2";
   const char kStateAnonTransferChecked[] = "anon_transfer_checked";
+  const char kStateEmptyBalanceChecked[] ="empty_balance_checked";
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_STATE_KEYS_H_

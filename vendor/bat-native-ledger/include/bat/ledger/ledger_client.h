@@ -78,7 +78,7 @@ using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
 using GetCredsBatchCallback = std::function<void(CredsBatchPtr)>;
-using GetAllCredsBatchCallback = std::function<void(CredsBatchList)>;
+using GetCredsBatchListCallback = std::function<void(CredsBatchList)>;
 using GetPromotionListCallback = std::function<void(PromotionList)>;
 
 using SKUOrderCallback =

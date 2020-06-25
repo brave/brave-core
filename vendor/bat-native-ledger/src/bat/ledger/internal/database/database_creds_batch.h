@@ -33,7 +33,7 @@ class DatabaseCredsBatch: public DatabaseTable {
       ledger::CredsBatchPtr creds,
       ledger::ResultCallback callback);
 
-  void GetAllRecords(ledger::GetAllCredsBatchCallback callback);
+  void GetAllRecords(ledger::GetCredsBatchListCallback callback);
 
   void UpdateStatus(
       const std::string& trigger_id,
@@ -47,6 +47,10 @@ class DatabaseCredsBatch: public DatabaseTable {
       const ledger::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
+  void GetRecordsByTriggers(
+      const std::vector<std::string>& trigger_ids,
+      ledger::GetCredsBatchListCallback callback);
+
  private:
   bool CreateTableV18(ledger::DBTransaction* transaction);
 
@@ -58,9 +62,9 @@ class DatabaseCredsBatch: public DatabaseTable {
       ledger::DBCommandResponsePtr response,
       ledger::GetCredsBatchCallback callback);
 
-  void OnGetAllRecords(
+  void OnGetRecords(
       ledger::DBCommandResponsePtr response,
-      ledger::GetAllCredsBatchCallback callback);
+      ledger::GetCredsBatchListCallback callback);
 };
 
 }  // namespace braveledger_database
