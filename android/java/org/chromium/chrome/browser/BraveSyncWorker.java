@@ -90,21 +90,7 @@ public class BraveSyncWorker {
         private void DeleteSyncV1Prefs() {
             SharedPreferences sharedPref = mContext.getSharedPreferences(PREF_NAME, 0);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.remove(PREF_LAST_FETCH_NAME)
-                    .remove(PREF_LATEST_DEVICE_RECORD_TIMESTAMPT_NAME)
-                    .remove(PREF_LAST_TIME_SEND_NOT_SYNCED_NAME)
-                    .remove(PREF_SYNC_SWITCH)
-                    .remove(PREF_SYNC_BOOKMARKS)
-                    .remove(PREF_SYNC_TABS)
-                    .remove(PREF_SYNC_HISTORY)
-                    .remove(PREF_SYNC_AUTOFILL_PASSWORDS)
-                    .remove(PREF_SYNC_PAYMENT_SETTINGS)
-                    .remove(PREF_DEVICE_ID)
-                    .remove(PREF_BASE_ORDER)
-                    .remove(PREF_LAST_ORDER)
-                    .remove(PREF_SYNC_DEVICE_NAME)
-                    .apply();
-            // Keep old PREF_SEED just in case
+            editor.clear().apply();
         }
 
         private void DeleteSyncV1LevelDb() {
