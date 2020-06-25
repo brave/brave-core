@@ -172,6 +172,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {
       "https://example.com/?+fbclid=1",
       "https://example.com/?%20fbclid=1",
       "https://example.com/#fbclid=1",
+      "https://example.com/1;k=v;&a=b&c=d&gclid=1234;%3fhttp://ad.co/?e=f&g=1",
   });
   for (const auto& url : urls) {
     auto brave_request_info =
