@@ -263,6 +263,12 @@ RegisterPolymerTemplateModifications({
       // Remove 'startup'
       const sectionStartup = getSectionElement(actualTemplate.content, 'onStartup')
       sectionStartup.remove()
+      // Remove 'You and Brave' (a.k.a. people)
+      const peopleSection = getSectionElement(actualTemplate.content, 'people')
+      peopleSection.remove()
+      // Remove 'Default browser'
+      const sectionDefaultBrowser = getSectionElement(actualTemplate.content, 'defaultBrowser')
+      sectionDefaultBrowser.remove()
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {
