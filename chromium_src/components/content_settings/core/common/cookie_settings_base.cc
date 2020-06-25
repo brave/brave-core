@@ -27,6 +27,8 @@ constexpr char kUbi[] = "https://[*.]ubi.com/*";
 constexpr char kAmericanexpress[] = "https://[*.]americanexpress.com/*";
 constexpr char kAexp[] = "https://[*.]aexp-static.com/*";
 constexpr char kSony[] = "https://[*.]sony.com/*";
+constexpr char kGoogle[] = "https://[*.]google.com/*";
+constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -43,6 +45,13 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kWordpress),
             ContentSettingsPattern::FromString(kWp)
+          },
+          {
+            ContentSettingsPattern::FromString(kGoogle),
+            ContentSettingsPattern::FromString(kGoogleusercontent)
+          },
+            ContentSettingsPattern::FromString(kGoogleusercontent),
+            ContentSettingsPattern::FromString(kGoogle)
           },
           {
             ContentSettingsPattern::FromString(kPlaystation),
