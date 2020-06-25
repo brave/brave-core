@@ -87,12 +87,11 @@ group("web_modules") {
     "brave_privacy_page:web_modules",
     "brave_sync_page:web_modules",
     "default_brave_shields_page:web_modules",
+    "getting_started_page:web_modules",
     "social_blocking_page:web_modules",
     # local targets
     ":brave_page_visibility",
-    # TODO(petemill): Add Local targets (e.g. brave_settings_overrides)
-    # when settings is rendered fully with ES Modules / polymer3, e.g.:
-    # ":modulize",
+    ":icons_module",
   ]
 }
 
@@ -100,4 +99,11 @@ js_library("brave_page_visibility") {
   deps = [
     "//ui/webui/resources/js:load_time_data.m",
   ]
+}
+
+
+polymer_modulizer("icons") {
+  js_file = "brave_icons.m.js"
+  html_file = "brave_icons.html"
+  html_type = "iron-iconset"
 }

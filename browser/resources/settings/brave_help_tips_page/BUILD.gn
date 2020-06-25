@@ -3,9 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/polymer/polymer.gni")
-import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
 
 # ES Module conversion from HTML Imports code

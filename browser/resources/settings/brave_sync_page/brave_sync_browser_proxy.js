@@ -3,34 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// clang-format off
-// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
-// clang-format on
+import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
-cr.define('settings', function() {
-
-  class BraveSyncBrowserProxy {
-    getSyncCode() {
-      return cr.sendWithPromise('SyncSetupGetSyncCode');
-    }
-    getQRCode(syncCode) {
-      return cr.sendWithPromise('SyncGetQRCode', syncCode);
-    }
-    getDeviceList() {
-      return cr.sendWithPromise('SyncGetDeviceList');
-    }
-    setSyncCode(syncCode) {
-      return cr.sendWithPromise('SyncSetupSetSyncCode', syncCode);
-    }
-    resetSyncChain() {
-      return cr.sendWithPromise('SyncSetupReset');
-    }
+export class BraveSyncBrowserProxy {
+  getSyncCode() {
+    return sendWithPromise('SyncSetupGetSyncCode');
   }
+  getQRCode(syncCode) {
+    return sendWithPromise('SyncGetQRCode', syncCode);
+  }
+  getDeviceList() {
+    return sendWithPromise('SyncGetDeviceList');
+  }
+  setSyncCode(syncCode) {
+    return sendWithPromise('SyncSetupSetSyncCode', syncCode);
+  }
+  resetSyncChain() {
+    return sendWithPromise('SyncSetupReset');
+  }
+}
 
-  cr.addSingletonGetter(BraveSyncBrowserProxy);
-
-  // #cr_define_end
-  return {
-    BraveSyncBrowserProxy,
-  };
-});
+addSingletonGetter(BraveSyncBrowserProxy);

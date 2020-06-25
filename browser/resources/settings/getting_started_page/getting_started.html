@@ -1,0 +1,15 @@
+<style include="settings-shared md-select iron-flex">
+</style>
+<settings-people-page prefs="{{prefs}}"
+  page-visibility="[[pageVisibility]]">
+</settings-people-page>
+<settings-animated-pages id="pages" section="getStarted">
+  <div route-path="default">
+    <settings-default-browser-page></settings-default-browser-page>
+    <div class="settings-box">$i18n{onStartup}</div>
+    <div class="settings-box continuation">
+      <settings-on-startup-page prefs="{{prefs}}">
+      </settings-on-startup-page>
+    </div>
+  </div>
+</settings-animated-pages>
