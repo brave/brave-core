@@ -48,16 +48,6 @@ const char kWidevineGvt1Prefix[] =
 const char kWidevineGoogleDlPrefix[] =
     "*://dl.google.com/*oimompecagnajdejgnnjijobebaeigek*";
 
-const char kForbesPattern[] = "https://www.forbes.com/*";
-const char kForbesExtraCookies[] =
-    "forbes_ab=true; welcomeAd=true; adblock_session=Off; "
-    "dailyWelcomeCookie=true";
-const char kTwitterPattern[] = "https://*.twitter.com/*";
-const char kGoogleOAuthPattern[] = "https://accounts.google.com/*";
-
-const char kCookieHeader[] = "Cookie";
-// Intentional misspelling on referrer to match HTTP spec
-const char kRefererHeader[] = "Referer";
 const char kUserAgentHeader[] = "User-Agent";
 const char kBravePartnerHeader[] = "X-Brave-Partner";
 const char kBraveServicesKeyHeader[] = "BraveServiceKey";
