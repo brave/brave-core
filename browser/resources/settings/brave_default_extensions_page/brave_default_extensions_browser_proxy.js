@@ -8,7 +8,7 @@
 
 cr.define('settings', function() {
   /** @interface */
-  class BraveDefaultExtensionsBrowserProxy {
+  /* #export */ class BraveDefaultExtensionsBrowserProxy {
     /**
      * @param {boolean} value name.
      */
@@ -26,7 +26,7 @@ cr.define('settings', function() {
   /**
    * @implements {settings.BraveDefaultExtensionsBrowserProxy}
    */
-  class BraveDefaultExtensionsBrowserProxyImpl {
+  /* #export */ class BraveDefaultExtensionsBrowserProxyImpl {
     /** @override */
     setWebTorrentEnabled(value) {
       chrome.send('setWebTorrentEnabled', [value]);

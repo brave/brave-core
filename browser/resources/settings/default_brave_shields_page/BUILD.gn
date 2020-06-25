@@ -87,7 +87,7 @@ polymer_modulizer("default_brave_shields_page") {
   html_file = "default_brave_shields_page.html"
   html_type = "dom-module"
   auto_imports = settings_auto_imports + [
-                   "chrome/browser/resources/settings/default_brave_shields_page/default_brave_shields_browser_proxy.html|DefaultBraveShieldsBrowserProxy, DefaultBraveShieldsBrowserProxyImpl",
+                   "brave/browser/resources/settings/default_brave_shields_page/default_brave_shields_browser_proxy.html|DefaultBraveShieldsBrowserProxy, DefaultBraveShieldsBrowserProxyImpl",
                  ]
   namespace_rewrites = settings_namespace_rewrites
 }

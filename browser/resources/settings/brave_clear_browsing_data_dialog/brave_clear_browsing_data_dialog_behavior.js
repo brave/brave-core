@@ -3,7 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-BraveClearBrowsingDataOnExitBehaviorImpl = {
+import "./brave_clear_browsing_data_on_exit_page.js"
+
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
+import {loadTimeData} from "../i18n_setup.js"
+import {I18nBehavior} from "chrome://resources/js/i18n_behavior.m.js"
+
+const BraveClearBrowsingDataOnExitBehaviorImpl = {
 
   ready: function() {
     this.addOnExitElements_();
@@ -41,7 +48,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
         'settings-brave-clear-browsing-data-on-exit-page');
     onExitPage.id = 'on-exit-tab';
     onExitPage.prefs = this.prefs;
-    Polymer.dom(this.$.tabs).appendChild(onExitPage);
+    this.$.tabs.appendChild(onExitPage);
     // Append Save button.
     let saveButton = document.createElement('cr-button');
     saveButton.id = 'saveOnExitSettingsConfirm';
@@ -49,7 +56,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
     saveButton.hidden = true;
     saveButton.className = 'action-button';
     saveButton.innerText = this.i18n('save');
-    Polymer.dom(this.$.clearBrowsingDataConfirm).parentNode.appendChild(
+    this.$.clearBrowsingDataConfirm.parentNode.appendChild(
         saveButton);
   },
 
@@ -107,5 +114,6 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
 };
 
 // Extend I18nBehavior so that we can use i18n.
-BraveClearBrowsingDataOnExitBehavior =
-  [I18nBehavior, BraveClearBrowsingDataOnExitBehaviorImpl]
+export const BraveClearBrowsingDataOnExitBehavior = [
+  I18nBehavior, BraveClearBrowsingDataOnExitBehaviorImpl
+]
