@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- MD Extensions strings (included from generated_resources.grd). -->
+<grit-part>
+  <message name="IDS_EXTENSIONS_VIEW_INCOGNITO" desc="Text that signifies that the extension view is in a private process.">
+    (Private)
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_ALLOW_INCOGNITO" desc="The text next to the checkbox to enable an extension in private mode.">
+    Allow in private
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Brave web store.">
+    View in Web Store
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Store.">
+    Web Store
+  </message>
+  <message name="IDS_EXTENSIONS_NO_INSTALLED_ITEMS" desc="The message shown to the user on the Extensions settings page when there are no extensions or apps installed.">
+    Find extensions and themes in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE" desc="The text for the link to get more extensions in the extensions page.">
+    Open Web Store
+  </message>
+  <if expr="is_macosx">
+  </if>
+<if expr="chromeos">
+  </if>
+<if expr="is_macosx or chromeos">
+  </if>
+<if expr="not is_macosx and not chromeos">
+  </if>
+<if expr="chromeos">
+  </if>
+</grit-part>
