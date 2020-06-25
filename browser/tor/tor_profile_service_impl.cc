@@ -133,6 +133,10 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
 TorProfileServiceImpl::~TorProfileServiceImpl() {
   if (tor_launcher_factory_)
     tor_launcher_factory_->RemoveObserver(this);
+
+  if (g_brave_browser_process) {
+    g_brave_browser_process->tor_client_updater()->RemoveObserver(this);
+  }
 }
 
 void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
