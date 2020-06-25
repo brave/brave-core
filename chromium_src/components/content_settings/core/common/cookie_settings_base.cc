@@ -52,7 +52,7 @@ bool BraveIsAllowedThirdParty(
           },
           {
             ContentSettingsPattern::FromString(kGoogleusercontent),
-            ContentSettingsPattern::FromString(kGoogle),
+            ContentSettingsPattern::FromString(kGoogle)
           },
           {
             ContentSettingsPattern::FromString(kPlaystation),
