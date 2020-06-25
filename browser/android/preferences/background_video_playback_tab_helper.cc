@@ -10,6 +10,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/browser/web_contents/web_contents_impl.h"
@@ -92,10 +93,10 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 bool IsAdBlockEnabled(content::WebContents* contents, const GURL& url) {
   Profile* profile = static_cast<Profile*>(contents->GetBrowserContext());
 
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   brave_shields::ControlType control_type =
-      brave_shields::GetAdControlType(profile,
-      contents->GetLastCommittedURL());
-  if (brave_shields::GetBraveShieldsEnabled(profile, url) &&
+      brave_shields::GetAdControlType(map, contents->GetLastCommittedURL());
+  if (brave_shields::GetBraveShieldsEnabled(map, url) &&
       control_type != brave_shields::ALLOW) {
     content::RenderFrameHost::AllowInjectingJavaScript();
 
