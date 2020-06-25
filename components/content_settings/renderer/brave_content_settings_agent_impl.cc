@@ -5,6 +5,7 @@
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>

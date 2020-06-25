@@ -14,7 +14,7 @@ const char* GetApplicationName();
 #define BRAVE_KEY_STORAGE_LIBSECRET_GET_KEY_IMPL       \
   if (true) {                                          \
     attrs.Append("application", GetApplicationName()); \
-  } else
+  } else  // NOLINT
 
 #define BRAVE_KEY_STORAGE_LIBSECRET_K_APPLICATION_NAME \
   const char kApplicationName[] = "brave";
