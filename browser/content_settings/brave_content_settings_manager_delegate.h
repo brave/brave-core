@@ -6,11 +6,14 @@
 #ifndef BRAVE_BROWSER_CONTENT_SETTINGS_BRAVE_CONTENT_SETTINGS_MANAGER_DELEGATE_H_
 #define BRAVE_BROWSER_CONTENT_SETTINGS_BRAVE_CONTENT_SETTINGS_MANAGER_DELEGATE_H_
 
+#include <memory>
+
 #include "chrome/browser/content_settings/content_settings_manager_delegate.h"
 
 namespace chrome {
 
-class BraveContentSettingsManagerDelegate : public ContentSettingsManagerDelegate {
+class BraveContentSettingsManagerDelegate
+    : public ContentSettingsManagerDelegate {
  public:
   ~BraveContentSettingsManagerDelegate() override;
 

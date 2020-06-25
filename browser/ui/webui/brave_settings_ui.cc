@@ -65,8 +65,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
     // Rewrite path for any generated entries
     std::string path(kBraveSettingsResources[i].name);
     size_t pos = path.find(generated_prefix);
-    if (pos != std::string::npos)
-    {
+    if (pos != std::string::npos) {
       path.erase(pos, generated_prefix_len);
     }
     html_source->AddResourcePath(path, kBraveSettingsResources[i].value);

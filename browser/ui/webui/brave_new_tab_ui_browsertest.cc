@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -18,7 +19,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-using namespace content;
+using namespace content;  // NOLINT
 
 namespace {
 class ObserverLogger : public RenderProcessHostObserver {
@@ -44,7 +45,7 @@ class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
  public:
   void GoBack(WebContents* web_contents) {
     WindowedNotificationObserver load_stop_observer(
-        NOTIFICATION_LOAD_STOP,
+        content::NOTIFICATION_LOAD_STOP,
         NotificationService::AllSources());
     web_contents->GetController().GoBack();
     load_stop_observer.Wait();
@@ -80,7 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
   bool is_brave_new_tab = false;
   ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))",
+      "window.domAutomationController.send(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))",  // NOLINT
       &is_brave_new_tab));
   ASSERT_TRUE(is_brave_new_tab);
 }

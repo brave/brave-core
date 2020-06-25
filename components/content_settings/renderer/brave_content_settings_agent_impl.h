@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
-#define BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
+#ifndef BRAVE_COMPONENTS_CONTENT_SETTINGS_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
+#define BRAVE_COMPONENTS_CONTENT_SETTINGS_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -72,4 +73,4 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
 
 }  // namespace content_settings
 
-#endif  // BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
+#endif  // BRAVE_COMPONENTS_CONTENT_SETTINGS_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_

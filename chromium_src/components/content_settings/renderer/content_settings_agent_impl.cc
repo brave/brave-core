@@ -11,6 +11,7 @@
                                                                               \
 bool ContentSettingsAgentImpl::IsWhitelistedForContentSettings(               \
      const WebSecurityOrigin& origin, const WebURL& document_url) const {
+// #define BRAVE_CONTENT_SETTINGS_AGENT_IMPL_IS_WHITELISTED_FOR_CONTENT_SETTINGS
 
 #include "../../../../../components/content_settings/renderer/content_settings_agent_impl.cc"
 #undef IsWhitelistedForContentSettings
