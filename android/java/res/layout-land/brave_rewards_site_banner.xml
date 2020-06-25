@@ -282,7 +282,7 @@
                     android:layout_gravity="start|bottom"
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
-                    android:text="0.00 BAT"
+                    android:text="0.000 BAT"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />

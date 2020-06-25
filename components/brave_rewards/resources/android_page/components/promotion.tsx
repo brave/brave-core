@@ -116,7 +116,7 @@ class Promotion extends React.Component<Props, State> {
       return false
     }
 
-    return tokens !== '0.0'
+    return tokens !== '0.000'
   }
 
   render () {
@@ -130,7 +130,7 @@ class Promotion extends React.Component<Props, State> {
     // Handle that ugp type string can actually be 'android' on android
     let type: PromotionType = promotion.type === 1 ? 'ads' : 'ugp'
     let promoId
-    let tokens = '0.0'
+    let tokens = '0.000'
     let date = ''
 
     if (promotion.promotionId) {
@@ -138,7 +138,7 @@ class Promotion extends React.Component<Props, State> {
     }
 
     if (promotion.amount) {
-      tokens = promotion.amount.toFixed(1)
+      tokens = promotion.amount.toFixed(3)
     }
 
     if (promotion.type !== 1) { // Rewards.PromotionTypes.ADS

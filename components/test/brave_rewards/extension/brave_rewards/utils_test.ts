@@ -22,22 +22,22 @@ describe('Rewards Panel extension - Utils', () => {
 
   describe('handleContributionAmount', () => {
     it('amount is 0', () => {
-      expect(handleContributionAmount('0')).toBe('0.0')
+      expect(handleContributionAmount('0')).toBe('0.000')
     })
     it('amount is in wrong format', () => {
-      expect(handleContributionAmount('dasdfasdfasdf')).toBe('0.0')
+      expect(handleContributionAmount('dasdfasdfasdf')).toBe('0.000')
     })
     it('amount is probi', () => {
-      expect(handleContributionAmount('1000000000000000000')).toBe('1.0')
+      expect(handleContributionAmount('1000000000000000000')).toBe('1.000')
     })
     it('amount is probi', () => {
-      expect(handleContributionAmount('10454000000000000000')).toBe('10.5')
+      expect(handleContributionAmount('10454500000000000000')).toBe('10.455')
     })
     it('amount is double', () => {
-      expect(handleContributionAmount('10.454545')).toBe('10.5')
+      expect(handleContributionAmount('10.454545')).toBe('10.455')
     })
     it('amount is int', () => {
-      expect(handleContributionAmount('10')).toBe('10.0')
+      expect(handleContributionAmount('10')).toBe('10.000')
     })
   })
 })

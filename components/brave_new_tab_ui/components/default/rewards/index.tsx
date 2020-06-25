@@ -195,7 +195,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         {
           !showEnableAds && !(type === AmountItemType.ADS && !adsSupported)
           ? <div data-test-id={`widget-amount-total-${type}`}>
-              <Amount>{amount.toFixed(1)}</Amount>
+              <Amount>{amount.toFixed(3)}</Amount>
               <ConvertedAmount>
                 {batFormatString}<AmountUSD>{converted} USD</AmountUSD>
               </ConvertedAmount>

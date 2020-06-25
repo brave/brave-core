@@ -32,7 +32,7 @@ export const generateContributionMonthly = (properties: Rewards.RewardsParameter
 
   return properties.autoContributeChoices.map((item: number) => {
     return {
-      tokens: item.toFixed(1),
+      tokens: item.toFixed(3),
       converted: convertBalance(item, properties.rate)
     }
   })
