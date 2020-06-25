@@ -25,12 +25,6 @@
           preprocess="true"
           compress="false"
           type="BINDATA" />
-  <include name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.m.js"
-          use_base_dir="false"
-          preprocess="true"
-          compress="false"
-          type="BINDATA" />
   <include name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_ON_EXIT_PAGE_JS"
           file="${root_gen_dir}/brave/browser/resources/settings/brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js"
           use_base_dir="false"
