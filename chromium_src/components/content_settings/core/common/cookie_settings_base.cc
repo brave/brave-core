@@ -50,6 +50,7 @@ bool BraveIsAllowedThirdParty(
             ContentSettingsPattern::FromString(kGoogle),
             ContentSettingsPattern::FromString(kGoogleusercontent)
           },
+          {
             ContentSettingsPattern::FromString(kGoogleusercontent),
             ContentSettingsPattern::FromString(kGoogle)
           },
