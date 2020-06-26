@@ -1,36 +1,12 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index de596baf4e6507a9039a307dd95a66daeb17cd24..275f219712b0c0b9c70fe6d2c17aac53aff70312 100644
+index 5a9144b438a6ccad97e90092d4982ec8f4a9dbb3..0c27d1f3f6210a73fd5c8e98eda028ee2ba1a424 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -106,6 +106,7 @@ class LocationBarView : public LocationBar,
-   int GetBorderRadius() const;
- 
-   // Initializes the LocationBarView.
-+  virtual
-   void Init();
- 
-   // True if this instance has been initialized by calling Init, which can only
-@@ -158,6 +159,7 @@ class LocationBarView : public LocationBar,
- 
-   // Updates the controller, and, if |contents| is non-null, restores saved
-   // state that the tab holds.
-+  virtual
-   void Update(const content::WebContents* contents);
- 
-   // Clears the location bar's state for |contents|.
-@@ -177,6 +179,7 @@ class LocationBarView : public LocationBar,
-   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
-   gfx::Size GetMinimumSize() const override;
-   gfx::Size CalculatePreferredSize() const override;
-+  void Layout(views::View* trailing_view);
-   void Layout() override;
-   void OnThemeChanged() override;
-   void ChildPreferredSizeChanged(views::View* child) override;
-@@ -228,6 +231,7 @@ class LocationBarView : public LocationBar,
+@@ -232,6 +232,7 @@ class LocationBarView : public LocationBar,
+       security_state::SecurityLevel security_level) const override;
+   gfx::ImageSkia GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                       on_icon_fetched) const override;
++  BRAVE_LOCATION_BAR_VIEW_H_
  
   private:
-+  friend class BraveLocationBarView;
    FRIEND_TEST_ALL_PREFIXES(SecurityIndicatorTest, CheckIndicatorText);
-   FRIEND_TEST_ALL_PREFIXES(TouchLocationBarViewBrowserTest,
-                            OmniboxViewViewsSize);
