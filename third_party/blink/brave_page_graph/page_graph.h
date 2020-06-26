@@ -45,6 +45,7 @@ class NodeAdFilter;
 class NodeExtensions;
 class NodeFingerprintingFilter;
 class NodeFrame;
+class NodeDOMRoot;
 class NodeHTML;
 class NodeHTMLElement;
 class NodeHTMLText;
