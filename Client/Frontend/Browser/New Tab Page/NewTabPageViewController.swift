@@ -177,30 +177,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         // Make sure that imageView has a frame calculated before we attempt
         // to use it.
         backgroundView.layoutIfNeeded()
-        if let image = backgroundView.imageView.image {
-            // Need to calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio
-            let sizeRatio = backgroundView.imageView.frame.size.width / image.size.width
-            let focal = background.currentBackground?.wallpaper.focalPoint
-            // Center as fallback
-            let x = focal?.x ?? image.size.width / 2
-            let y = focal?.y ?? image.size.height / 2
-            let portrait = view.frame.height > view.frame.width
-            
-            // Center point of image is not center point of view.
-            // Take `0` for example, if specying `0`, setting centerX to 0, it is not attempting to place the left
-            //  side of the image to the middle (e.g. left justifying), it is instead trying to move the image view's
-            //  center to `0`, shifting the image _to_ the left, and making more of the image's right side visible.
-            // Therefore specifying `0` should take the imageView's left and pinning it to view's center.
-            
-            // So basically the movement needs to be "inverted" (hence negation)
-            // In landscape, left / right are pegged to superview
-            let imageViewOffset = portrait ? sizeRatio * -x : 0
-            backgroundView.imageConstraints?.portraitCenter.update(offset: imageViewOffset)
-            
-            // If potrait, top / bottom are just pegged to superview
-            let inset = portrait ? 0 : sizeRatio * -y
-            backgroundView.imageConstraints?.landscapeCenter.update(offset: inset)
-        }
+        calculateBackgroundCenterPoints()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -334,6 +311,39 @@ class NewTabPageViewController: UIViewController, Themeable {
             let portraitCenterConstraint = $0.left.equalTo(view.snp.centerX).priority(.high).constraint
             self.backgroundView.imageConstraints = (portraitCenterConstraint, landscapeCenterConstraint)
         }
+        
+        // This is usually done in `viewDidLayoutSubviews`, one exception:
+        // First launch, intial image loads, NTP assets is being downloaded,
+        // after it downloods we replace current image with sponsored one
+        // and have to recalculate center points.
+        calculateBackgroundCenterPoints()
+    }
+    
+    private func calculateBackgroundCenterPoints() {
+        guard let image = backgroundView.imageView.image else { return }
+        
+        // Need to calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio
+        let sizeRatio = backgroundView.imageView.frame.size.width / image.size.width
+        let focal = background.currentBackground?.wallpaper.focalPoint
+        // Center as fallback
+        let x = focal?.x ?? image.size.width / 2
+        let y = focal?.y ?? image.size.height / 2
+        let portrait = view.frame.height > view.frame.width
+        
+        // Center point of image is not center point of view.
+        // Take `0` for example, if specying `0`, setting centerX to 0, it is not attempting to place the left
+        //  side of the image to the middle (e.g. left justifying), it is instead trying to move the image view's
+        //  center to `0`, shifting the image _to_ the left, and making more of the image's right side visible.
+        // Therefore specifying `0` should take the imageView's left and pinning it to view's center.
+        
+        // So basically the movement needs to be "inverted" (hence negation)
+        // In landscape, left / right are pegged to superview
+        let imageViewOffset = portrait ? sizeRatio * -x : 0
+        backgroundView.imageConstraints?.portraitCenter.update(offset: imageViewOffset)
+        
+        // If potrait, top / bottom are just pegged to superview
+        let inset = portrait ? 0 : sizeRatio * -y
+        backgroundView.imageConstraints?.landscapeCenter.update(offset: inset)
     }
     
     // MARK: - Notifications
