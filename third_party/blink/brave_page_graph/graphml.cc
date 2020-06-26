@@ -81,8 +81,10 @@ namespace {
     kGraphMLAttrForTypeEdge, "response hash");
   const GraphMLAttr* const rule_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "rule");
-  const GraphMLAttr* const script_id_attr = new GraphMLAttr(
+  const GraphMLAttr* const script_id_edge_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "script id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const script_id_node_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "script id", kGraphMLAttrTypeLong);
   const GraphMLAttr* const script_type = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "script type");
   const GraphMLAttr* const secondary_pattern_attr = new GraphMLAttr(
@@ -107,9 +109,9 @@ namespace {
     node_text, node_type, page_graph_edge_id_attr, page_graph_node_id_attr,
     page_graph_edge_time_attr, page_graph_node_time_attr,
     parent_node_attr, primary_pattern_attr, request_id_attr, request_type_attr,
-    resource_type_attr, response_hash_attr, rule_attr, script_id_attr,
-    script_type, secondary_pattern_attr, source_attr, status_type, success_attr,
-    tag_attr, url_attr, value_attr
+    resource_type_attr, response_hash_attr, rule_attr, script_id_edge_attr,
+    script_id_node_attr, script_type, secondary_pattern_attr, source_attr,
+    status_type, success_attr, tag_attr, url_attr, value_attr
   };
 }
 
@@ -253,8 +255,10 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return response_hash_attr;
     case kGraphMLAttrDefRule:
       return rule_attr;
-    case kGraphMLAttrDefScriptId:
-      return script_id_attr;
+    case kGraphMLAttrDefScriptIdEdge:
+      return script_id_edge_attr;
+    case kGraphMLAttrDefScriptIdNode:
+      return script_id_node_attr;
     case kGraphMLAttrDefScriptType:
       return script_type;
     case kGraphMLAttrDefSecondaryPattern:
