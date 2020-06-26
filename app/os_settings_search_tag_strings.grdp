@@ -2,7 +2,7 @@
 <!-- Search tags used for CrOS settings search (go/cros-settings-search). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <!-- Newtork section. -->
+  <!-- Network section. -->
   <message name="IDS_OS_SETTINGS_TAG_NETWORK_SETTINGS" desc="Text for search result item which, when clicked, navigates the user to network settings. Alternate phrase for: 'Internet'">
     Network
   </message>
@@ -15,14 +15,11 @@
   <message name="IDS_OS_SETTINGS_TAG_ETHERNET_CONFIGURE" desc="Text for search result item which, when clicked, navigates the user to Ethernet settings, with a button to configure security preferences.">
     Configure Ethernet
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_WIFI" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings. Alternate phrase for: 'Wireless', 'Connectivity'">
+  <message name="IDS_OS_SETTINGS_TAG_WIFI" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings. Alternate phrase for: 'Wireless'">
     Wi-Fi networks
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_WIFI_ALT1" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings. Alternate phrase for: 'Wi-Fi networks', 'Connectivity'">
+  <message name="IDS_OS_SETTINGS_TAG_WIFI_ALT1" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings. Alternate phrase for: 'Wi-Fi networks'">
     Wireless
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_WIFI_ALT2" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings. Alternate phrase for: 'Wi-Fi networks', 'Wireless'">
-    Connectivity
   </message>
   <message name="IDS_OS_SETTINGS_TAG_KNOWN_NETWORKS" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings with saved (i.e., known) networks. Alternate phrase for: 'Saved Wi-Fi networks', 'Preferred Wi-Fi networks'">
     Known Wi-Fi networks
@@ -57,23 +54,20 @@
   <message name="IDS_OS_SETTINGS_TAG_DISCONNECT_WIFI" desc="Text for search result item which, when clicked, navigates the user to network settings for currently-connected network.">
     Disconnect Wi-Fi network
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_WIFI_CONFIGURE" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi network settings, with a button to configure security preferences.">
-    Configure Wi-Fi
+  <message name="IDS_OS_SETTINGS_TAG_ADD_WIFI" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi settings, with a button to add a new Wi-Fi network by manually typing the network's SSID and, if aplicable, password.">
+    Add Wi-Fi
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Mobile', 'LTE', 'Wireless', 'Connectivity'">
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Mobile', 'LTE', 'Wireless'">
     Cellular
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'LTE', 'Wireless', 'Connectivity'">
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'LTE', 'Wireless'">
     Mobile
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT2" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'Mobile', 'Wireless', 'Connectivity'">
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT2" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'Mobile', 'Wireless'">
     LTE
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT3" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'Mobile', 'LTE', 'Connectivity'">
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT3" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'Mobile', 'LTE'">
     Wireless
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ALT4" desc="Text for search result item which, when clicked, navigates the user to cellular network settings (e.g., LTE). Alternate phrase for: 'Cellular', 'Mobile', 'LTE', 'Wireless'">
-    Connectivity
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_ROAMING" desc="Text for search result item which, when clicked, navigates the user to Cellular network settings, with a toggle to enable/disable mobile roaming.">
     Cellular roaming
@@ -199,23 +193,14 @@
   </message>
 
   <!-- MultiDevice section. -->
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Better Together', 'Multi-device', 'Phone'">
-    Connected devices settings
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Phone'">
+    Connected devices
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_ALT1" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Connected devices settings', 'Multi-device', 'Phone'">
-    Better Together
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_ALT2" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Connected devices settings', 'Better Together', 'Phone'">
-    Multi-device
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_ALT3" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Connected devices settings', 'Better Together', 'Multi-device'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_ALT1" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Connected devices'">
     Phone
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK" desc="Text for search result item which, when clicked, navigates the user to Smart Lock settings (unlock Bravebook with Android phone). Alternate phrase for: 'EasyUnlock'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK" desc="Text for search result item which, when clicked, navigates the user to Smart Lock settings (unlock Bravebook with Android phone).">
     Smart Lock
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK_ALT1" desc="Text for search result item which, when clicked, navigates the user to Smart Lock settings (unlock Bravebook with Android phone). Alternate phrase for: 'Smart Lock settings'">
-    EasyUnlock
   </message>
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_MESSAGES" desc="Text for search result item which, when clicked, navigates the user to Messages settings (sync SMS between Bravebook and Android phone). Alternate phrase for: 'Android messages'">
     Messages settings
@@ -223,11 +208,8 @@
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_MESSAGES_ALT1" desc="Text for search result item which, when clicked, navigates the user to Messages settings (sync SMS between Bravebook and Android phone). Alternate phrase for: 'Messages settings'">
     Android messages
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to Smart Lock screen lock settings (for signing into Bravebook with Android phone). Alternate phrase for: 'EasyUnlock screen lock'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to Smart Lock screen lock settings (for signing into Bravebook with Android phone).">
     Smart Lock screen lock options
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK_OPTIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Smart Lock screen lock settings (for signing into Bravebook with Android phone). Alternate phrase for: 'Smart Lock screen lock options'">
-    EasyUnlock screen lock
   </message>
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_FORGET" desc="Text for search result item which, when clicked, navigates the user to multi-device settings, which an option to disconnect the currently-connected Android phone. Alternate phrase for: 'Disconnect connected phone'">
     Forget connected phone
@@ -238,6 +220,22 @@
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SET_UP" desc="Text for search result item which, when clicked, navigates the user to connected devices settings, with a button to set up the feature.">
     Connected devices setup
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_NEARBY_SHARE" desc="Text for search result item which, when clicked, navigates the user to connected multi-device settings Nearby Share.">
+    Nearby Share
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Nearby Share settings. Alternate phrase for: 'Enable Nearby Share'">
+    Turn on Nearby Share
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Nearby Share settings. Alternate phrase for: 'Turn on Nearby Share'">
+    Enable Nearby Share
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Nearby Share settings. Alternate phrase for: 'Disable Nearby Share'">
+    Turn off Nearby Share
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Nearby Share settings. Alternate phrase for: 'Turn off Nearby Share'">
+    Disable Nearby Share
+  </message>
+
 
   <!-- Profiles section. -->
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE" desc="Text for search result item which, when clicked, navigates the user to profiles settings.">
@@ -264,8 +262,11 @@
   <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN_WHEN_WAKING_ALT1" desc="Text for search result item which, when clicked, navigates the user to lock screen settings. Alternate phrase for: 'Lock screen settings'">
     Login screen
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN_PIN_OR_PASSWORD" desc="Text for search result item which, when clicked, navigates the user to lock screen settings, with an option to determine whether the device can be unlocked with a PIN.">
-    PIN lock screen settings
+  <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN_PIN_OR_PASSWORD" desc="Text for search result item which, when clicked, navigates the user to lock screen settings, with an option to determine whether the device can be unlocked with a PIN or a password. Alternate phrase for: 'Screen lock password'">
+    Screen lock PIN
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN_PIN_OR_PASSWORD_ALT1" desc="Text for search result item which, when clicked, navigates the user to lock screen settings, with an option to determine whether the device can be unlocked with a PIN or a password. Alternate phrase for: 'Screen lock PIN'">
+    Screen lock password
   </message>
   <message name="IDS_OS_SETTINGS_TAG_GUEST_BROWSING" desc="Text for search result item which, when clicked, navigates the user to account settings, with a toggle to enable/disable guest browsing.">
     Guest browsing
@@ -332,6 +333,27 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PARENTAL_CONTROLS_ALT2" desc="Text for search result item which, when clicked, navigates the user to parental control settings. Alternate phrase for: 'Parental controls', 'Child accounts'">
     Family Link
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_AND_GOOGLE_SERVICES" desc="Text for search result item which, when clicked, navigates the user to settings for Sync (syncs data between multiple Bravebooks) and Brave Services.">
+    Sync and Brave services
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Brave account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption password'">
+    Sync encryption options
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Brave account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption options'">
+    Sync encryption password
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_MANAGEMENT" desc="Text for search result item which, when clicked, navigates the user to sync settings, with the option to decide which types of data are synced via Brave Sync.">
+    Sync management
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_AUTOCOMPLETE_SEARCHES_AND_URLS" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which autocompletes user searches and URLs using browser history and cookies.">
+    Autocomplete searches and URLs
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_MAKE_SEARCHES_AND_BROWSER_BETTER" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which sends URLs of pages the user has visited to Brave, which helps to improve search/browsing results.">
+    Send URLs of pages you visit to Brave
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_GOOGLE_DRIVE_SEARCH_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which provides suggestions to visit Google Drive items when the user types in the address bar.">
+    Google Drive search suggestions
   </message>
 
   <!-- Device section. -->
@@ -401,11 +423,17 @@
   <message name="IDS_OS_SETTINGS_TAG_POWER" desc="Text for search result item which, when clicked, navigates the user to power settings.">
     Power
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_POWER_IDLE" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set the idle (i.e., sleep) behavior. Alternate phrase for: 'Sleep settings'">
-    Idle power
+  <message name="IDS_OS_SETTINGS_TAG_POWER_IDLE_WHILE_CHARGING" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set the idle (i.e., sleep) behavior while charging. Alternate phrase for: 'Sleep while charging'">
+    Idle power while charging
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_POWER_IDLE_ALT1" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set the idle (i.e., sleep) behavior. Alternate phrase for: 'Idle power settings'">
-    Sleep settings
+  <message name="IDS_OS_SETTINGS_TAG_POWER_IDLE_WHILE_CHARGING_ALT1" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set the idle (i.e., sleep) behavior while charging. Alternate phrase for: 'Idle power while charging'">
+    Sleep while charging
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_POWER_IDLE_WHILE_ON_BATTERY" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set the idle (i.e., sleep) behavior while on the device is being powered by its battery. Alternate phrase for: 'Sleep while on battery'">
+    Idle power on battery
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_POWER_IDLE_WHILE_ON_BATTERY_ALT1" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set the idle (i.e., sleep) behavior while on the device is being powered by its battery. Alternate phrase for: 'Idle power on battery'">
+    Sleep while on battery
   </message>
   <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD" desc="Text for search result item which, when clicked, navigates the user to touchpad settings. Alternate phrase for: 'Trackpad'">
     Touchpad
@@ -485,14 +513,44 @@
   <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ARRANGEMENT_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with the ability to rearrange screen positioning. Alternate phrase for: 'Display arrangement', 'Monitor arrangement'">
     Screen arrangement
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen orientation. Alternate phrase for: 'Monitor orientation', 'Screen orientation'">
+  <message name="IDS_OS_SETTINGS_TAG_MIRRORING" desc="Text for search result item which, when clicked, navigates the user to display settings, with a checkbox to enable/disable display mirroring.">
+    Display mirroring
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_UNIFIED_DESKTOP" desc="Text for search result item which, when clicked, navigates the user to display settings, with a toggle to enable/disable Unified Desktop mode, which allows windows to span multiple displays.">
+    Allow windows to span displays
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select display orientation (normal, or rotated 90/180/270 degrees). Alternate phrase for 'Display rotation'">
     Display orientation
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen orientation. Alternate phrase for: 'Display orientation', 'Screen orientation'">
-    Monitor orientation
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select display orientation (normal, or rotated 90/180/270 degrees). Alternate phrase for 'Display orientation'">
+    Display rotation
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_ORIENTATION_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen orientation. Alternate phrase for: 'Display orientation', 'Monitor orientation'">
-    Screen orientation
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_AMBIENT_COLORS" desc="Text for search result item which, when clicked, navigates the user to display settings, with a toggle to enable/disable ambient colors, which adapts the screen color to match the environment.">
+    Ambient colors
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_TOUCHSCREEN_CALIBRATION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a link to open the touchscreen calibration UI.">
+    Touchscreen calibration
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NIGHT_LIGHT_COLOR_TEMPERATURE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to increase/decrease the 'color temperature' for Night Light, which makes it easier to look at the screen in dim light.">
+    Night Light color temperature
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DOWNLOADED_CONTENT" desc="Text for search result item which, when clicked, navigates the user to downloaded content. Alternate phrase for: 'DLC'">
+    Downloaded Content
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DOWNLOADED_CONTENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to downloaded content. Alternate phrase for: 'Downloaded Content'">
+    DLC
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Delete Downloaded Content', 'Remove DLC', 'Delete DLC'">
+    Remove Downloaded Content
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Delete Downloaded Content', 'Remove Downloaded Content', 'Delete DLC'">
+    Remove DLC
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT_ALT2" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Remove Downloaded Content', 'Remove DLC', 'Delete DLC'">
+    Delete Downloaded Content
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT_ALT3" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Delete Downloaded Content', 'Remove DLC', 'Remove Downloaded Content'">
+    Delete DLC
   </message>
   <message name="IDS_OS_SETTINGS_TAG_EXTERNAL_STORAGE" desc="Text for search result item which, when clicked, navigates the user to external storage preferences.">
     External storage preferences
@@ -515,7 +573,7 @@
   <message name="IDS_OS_SETTINGS_TAG_POWER_SLEEP_COVER_CLOSED_ALT2" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to set whether the device sleeps when the lid is closed. Alternate phrase for: 'Sleep when cover is closed', 'Sleep when laptop is closed'">
     Sleep when lid is closed
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen orientation. Alternate phrase for: 'Monitor orientation', 'Screen orientation'">
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen resolution. Alternate phrase for: 'Monitor resolution', 'Screen resolution'">
     Display resolution
   </message>
   <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen resolution. Alternate phrase for: 'Display resolution', 'Screen resolution'">
@@ -524,7 +582,7 @@
   <message name="IDS_OS_SETTINGS_TAG_DISPLAY_RESOLUTION_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen resolution. Alternate phrase for: 'Display resolution', 'Monitor resolution'">
     Screen resolution
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen orientation. Alternate phrase for: 'Monitor orientation', 'Screen orientation'">
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen refresh rate. Alternate phrase for: 'Monitor refresh rate', 'Screen refresh rate'">
     Display refresh rate
   </message>
   <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE_ALT1" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen refresh rate. Alternate phrase for: 'Display refresh rate', 'Screen refresh rate'">
@@ -532,6 +590,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_DISPLAY_REFRESH_RATE_ALT2" desc="Text for search result item which, when clicked, navigates the user to display settings, with a dropdown to select screen refresh rate. Alternate phrase for: 'Display refresh rate', 'Monitor refresh rate'">
     Screen refresh rate
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DISPLAY_OVERSCAN" desc="Text for search result item which, when clicked, navigates the user to display settings, with an option to adjust monitor overscan.">
+    Overscan
   </message>
 
   <!-- Personalization section. -->
@@ -626,6 +687,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Turn on Brave Assistant'">
     Enable Brave Assistant
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TRAIN_VOICE_MODEL" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to train a voice model to listen for commands such as 'Okay Brave' or 'Hey Brave'">
+    Train Brave Assistant voice model
   </message>
 
   <!-- Apps section. -->
@@ -773,8 +837,8 @@
   <message name="IDS_OS_SETTINGS_TAG_PRIVACY" desc="Text for search result item which, when clicked, navigates the user to privacy settings.">
     Privacy settings
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRIVACY_VERIFIED_ACCESS" desc="Text for search result item which, when clicked, navigates the user to pirvacy settings, with a toggle to enable/disable verified access.">
-    Privacy verified access
+  <message name="IDS_OS_SETTINGS_TAG_PRIVACY_VERIFIED_ACCESS" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable verified access.">
+    Verified access
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PRIVACY_WIFI_SLEEP" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable allowing Wi-Fi to remain active while Bravebook is sleeping. Alternate phrase for: 'Keep Wi-Fi on while idle'">
     Keep Wi-Fi on during sleep
@@ -791,7 +855,7 @@
 
   <!-- Languages and Input section. -->
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT" desc="Text for search result item which, when clicked, navigates the user to languages and input settings.">
-    Languages and input settings
+    Languages and input
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_ADD_LANGUAGE" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with an option to add a new language.">
     Add languages
@@ -811,6 +875,9 @@
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_PERSONAL_INFORMATION_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to smart input settings, which with a toggle to enable/disable showing personal information suggestions.">
     Personal information suggestions
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EMOJI_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to smart input settings, with a section having a toggle to enable/disable showing emoji suggestions after an user types a word.">
+    Emoji suggestions
+  </message>
 
   <!-- Files section. -->
   <message name="IDS_OS_SETTINGS_TAG_FILES" desc="Text for search result item which, when clicked, navigates the user to files settings.">
@@ -827,23 +894,17 @@
   </message>
 
   <!-- Printing section. -->
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printing', 'CUPS'">
-    Printer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ALT1" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printer settings', 'CUPS'">
+  <message name="IDS_OS_SETTINGS_TAG_PRINTING" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printers', 'CUPS'">
     Printing
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ALT2" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printer settings', 'Printing'">
+  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ALT1" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printing', 'CUPS'">
+    Printers
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ALT2" desc="Text for search result item which, when clicked, navigates the user to printer settings for CUPS printers (a.k.a. those that can use the Unix protocol). Alternate phrase for: 'Printers', 'Printing'">
     CUPS
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ADD_PRINTER" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to add a printer. Alternate phrase for: 'Install printer', 'Setup printer'">
+  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ADD_PRINTER" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to add a printer.">
     Add printer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ADD_PRINTER_ALT1" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to add a printer. Alternate phrase for: 'Add printer', 'Setup printer'">
-    Install printer
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINTING_ADD_PRINTER_ALT2" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to add a printer. Alternate phrase for: 'Add printer', 'Install printer'">
-    Setup printer
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PRINTING_SAVED_PRINTERS" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to edit saved printers.">
     Saved printers
@@ -883,11 +944,17 @@
   <message name="IDS_OS_SETTINGS_TAG_A11y_CHROMEVOX_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable BraveVox (spoken feedback). Alternate phrase for: 'BraveVox (spoken feedback)'">
     Screen reader
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_COLOR" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable custom cursor colors.">
+   Cursor color
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_SELECT_TO_SPEAK" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable select-to-speak (hearing text read aloud after it is selected).">
     Select-to-speak
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings.">
-    Text-to-speech voice settings
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'TTS'">
+    Text-to-speech
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_TEXT_TO_SPEECH_ALT1" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings. Alternate phrase for 'Text-to-speech'">
+    TTS
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_SPEECH_RATE" desc="Text for search result item which, when clicked, navigates the user to text-to-speech voice accessibility settings, with a slider to set the speech rate.">
     Text-to-speech rate
@@ -958,6 +1025,9 @@
   <message name="IDS_OS_SETTINGS_TAG_A11Y_CAPTIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility captions settings.">
     Captions
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_LIVE_CAPTIONS" desc="Text for a search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable live captions.">
+    Live Captions
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_ENABLE_SWITCH_ACCESS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable switch access, which allows users to control the computer with just one or two switches.">
     Switch access
   </message>
@@ -989,17 +1059,8 @@
   </message>
 
   <!-- About Chrome OS section. -->
-  <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS" desc="Text for search result item which, when clicked, navigates the user to about Chrome OS settings, which gives information about the current Chrome OS version.">
-    About Chrome OS
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_VERSION" desc="Text for search result item which, when clicked, navigates the user to about Chrome OS settings, which gives information about the current Chrome OS version.">
-    Chrome OS version
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_DETAILED_BUILD" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings. Alternate phrase for: 'Device version'">
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_DETAILED_BUILD" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings.">
     Detailed build information
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_DETAILED_BUILD_ALT1" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings. Alternate phrase for: 'Detailed build information'">
-    Device version
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_CHANNEL" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to change to another channel (stable vs. beta vs. dev).">
     Change channel

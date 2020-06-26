@@ -263,6 +263,10 @@
     The profile who set up this computer has chosen to block this site.
   </message>
 
+  <message name="IDS_ERRORPAGES_SUMMARY_BLOCKED_BY_SECURITY" desc="Summary in the error page when the request has been blocked because of some security configuration of the site.">
+    This content is blocked. Contact the site owner to fix the issue.
+  </message>
+
   <message name="IDS_ERRORPAGES_HTTP_POST_WARNING" desc="The error message displayed when the user navigates back or forward to a page which would resubmit post data. They can hit reload to send POST data again and load the page.">
     This webpage requires data that you entered earlier in order to be properly displayed. You can send this data again, but by doing so you will repeat any action this page previously performed.
   </message>

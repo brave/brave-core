@@ -24,12 +24,6 @@
   <message name="IDS_OS_SEARCH_RESULT_ROW_A11Y_RESULT_SELECTED" desc="BraveVox alert to indicate the position number of a selected result in a list of search results and the selected result text itself, and that the user can press enter to navigate to section described by the search result.">
     Search result <ph name="LIST_POSITION">$1<ex>1</ex></ph> of <ph name="LIST_SIZE">$2<ex>2</ex></ph>: <ph name="SEARCH_RESULT_TEXT">$3<ex>Network Settings</ex></ph>. Press Enter to navigate to section.
   </message>
-  <message name="IDS_OS_SEARCH_BOX_A11Y_ONE_RESULT" desc="BraveVox alert to indicate the that one search result has been found.">
-    Displaying 1 search result for <ph name="QUERY">$1<ex>Wi-Fi</ex>.</ph>
-  </message>
-  <message name="IDS_OS_SEARCH_BOX_A11Y_RESULT_COUNT" desc="BraveVox alert to indicate the number of settings search results found.">
-    Displaying <ph name="NUMBER">$1<ex>1</ex></ph> search results for <ph name="QUERY">$2<ex>Wi-Fi</ex>.</ph>
-  </message>
 
   <!-- About (OS Settings) -->
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
@@ -264,6 +258,9 @@
   <message name="IDS_SETTINGS_LANGUAGES_MANAGE_INPUT_METHODS_TITLE" desc="Name of the settings sub-page which allows enabling and disabling input methods.">
     Manage input methods
   </message>
+  <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHOD_OPTIONS_TITLE" translateable="false" desc="Name of the settings sub-page which allows changing input method options.">
+    Input method options
+  </message>
   <message name="IDS_SETTINGS_LANGUAGES_SHOW_IME_MENU" desc="The label for the toggle button controlling showing the IME menu in the shelf.">
     Show input options in the shelf
   </message>
@@ -293,6 +290,12 @@
   </message>
   <message name="IDS_SETTINGS_SMART_INPUTS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
     Manage personal information
+  </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
+    Emoji suggestions
+  </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_EMOJI_SUGGESTION" desc="The label for the toggle button controlling showing emoji suggestions (when an user types a word, some emojis might be suggested for the user to insert after).">
+    Show emoji suggestions
   </message>
 
   <!-- Device Page (OS Settings) -->
@@ -484,6 +487,27 @@
   </message>
   <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_SIZE_LARGE_LABEL" desc="Label in the slider which indicates that this side makes the cursor large.">
     Large
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_ENABLED_LABEL" desc="Label for a checkbox which enables selecting custom cursor colors.">
+    Custom cursor color
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_OPTIONS_LABEL" desc="Label for a drop-down menu of cursor color options for custom cursor colors.">
+    Color
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_RED" desc="Label for a cursor color option which colors the cursor red.">
+    Red
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_ORANGE" desc="Label for a cursor color option which colors the cursor orange.">
+    Orange
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_GREEN" desc="Label for a cursor color option which colors the cursor green.">
+    Green
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_BLUE" desc="Label for a cursor color option which colors the cursor blue.">
+    Blue
+  </message>
+    <message name="IDS_SETTINGS_CURSOR_COLOR_PURPLE" desc="Label for a cursor color option which colors the cursor purple.">
+    Purple
   </message>
   <message name="IDS_SETTINGS_HIGH_CONTRAST_LABEL" desc="Label for checkbox which enables high-contrast UI.">
       Use high contrast mode
@@ -794,11 +818,12 @@
     Manage your signed-in accounts. Websites, apps, and extensions in Brave and Google Play may use these accounts to customize your experience, depending on permissions. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
-    Add a school account or manage child accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Manage your accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
-    Manage your accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>&lt;br&gt;&lt;br&gt;
-    Bookmarks, passwords, and other browser data are synced with the primary account.&lt;br&gt;&lt;br&gt;
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_FIRST_MESSAGE" desc="Description of the Account Manager Settings page for child users. Shown just below the link to learn more about account management.">
+     Bookmarks, passwords, and other browser data are synced with the primary account.
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_SECOND_MESSAGE" desc="Description of the Account Manager Settings page for child users. Shown just below the link to learn more about account management.">
     Adding a school account enables easy sign-in to websites and extensions as a student while still operating under parental controls.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
@@ -986,8 +1011,14 @@
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_TITLE" desc="Title for the add port dialog box.">
     Add port number
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_LABEL" desc="Label for the text input of an optional label.">
-    Label (Optional)
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_PORT_NUMBER_LABEL" desc="Label for the text input of the port number in the add port dialog. This dialog is for when a user wants to add a new port that network traffic should be redirected by into Crostini.">
+    Port number
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_PORT_NUMBER_PLACEHOLDER" desc="Placeholder text for the port number text input in the add port dialog. This dialog is for when a user wants to add a new port that network traffic should be redirected by into Crostini.">
+    1024-65535
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_LABEL_LABEL" desc="Label for the text input of an optional label to attach to the port in the add port dialog. This dialog is for when a user wants to add a new port that network traffic should be redirected by into Crostini.">
+    Label (optional)
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_TCP" desc="Label for the TCP protocol when forwarding ports. The parentheses are for formatting reasons.">
     (TCP)
@@ -996,13 +1027,19 @@
     (UDP)
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_ERROR" desc="Description for the error when adding an invalid port.">
-    Error forwarding port
+    Port must be between 1024 and 65535
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_EXISTING" desc="Description for the error when trying to add a port that already exists.">
+    Port forward already exists
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_REMOVE_ALL_PORTS" desc="Label for the button to deallocate all ports currently being forwarded in Crostini and clear the list of ports in the Crostini port forwarding settings page.">
     Remove all ports
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_REMOVE_PORT" desc="Label for the button to deallocate a specified port and remove it from the list of ports in the Crostini port forwarding settings page.">
     Remove port
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ACTIVATE_PORT_ERROR" desc="The error message shown on a toast that appears when a request to activate a port for forwarding network traffic into Crostini fails.">
+    Error forwarding port
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_TOGGLE_PORT_ARIA_LABEL" desc="The aria label for the toggle that controls the state of a port i.e. the text that screen readers will read out for the button.">
     Activate port
@@ -1641,8 +1678,32 @@
   <message name="IDS_SETTINGS_INTERNET_DETAIL" desc="Name of the settings page which displays network details.">
     Network Details
   </message>
+  <message name="IDS_SETTINGS_INTERNET_ETHERNET_DETAILS" desc="Name of the settings page which displays details about an Ethernet network.">
+    Ethernet details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_WIFI_DETAILS" desc="Name of the settings page which displays details about a Wi-Fi network.">
+    Wi-Fi details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_CELLULAR_DETAILS" desc="Name of the settings page which displays details about a cellular network (e.g., an LTE network).">
+    Cellular details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_INSTANT_TETHERING_DETAILS" desc="Name of the settings page which displays details about an Instant Tethering network (i.e., using a phone's internet through the Instant Tethering feature).">
+    Instant Tethering details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_VPN_DETAILS" desc="Name of the settings page which displays details about a VPN connection.">
+    VPN details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORKS" desc="Name of the settings page which displays a list of Wi-Fi networks which the user can choose to connect to.">
+    Wi-Fi networks
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_MOBILE_DATA_NETWORKS" desc="Name of the settings page which displays a list of mobile data networks which the user can choose to connect to.">
+    Mobile data networks
+  </message>
   <message name="IDS_SETTINGS_INTERNET_DEVICE_ENABLING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is enabling.">
     Enabling
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_DEVICE_DISABLING" desc="Settings &gt; Internet &gt; Message when a Cellular modem is turning off (disabling).">
+    Turning off
   </message>
   <message name="IDS_SETTINGS_INTERNET_DEVICE_INITIALIZING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is initializing.">
     Initializing
@@ -1746,6 +1807,9 @@
   <message name="IDS_SETTINGS_INTERNET_NETWORK_IP_CONFIG_AUTO" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically configure the network IP config.">
     Configure IP address automatically
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_METERED" desc="Settings &gt; Internet &gt; Network details: Label for the toggle indicating whether a network is metered.">
+    Metered network
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_PREFER" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether a network is preferred over other networks.">
     Prefer this network
   </message>
@@ -1773,8 +1837,17 @@
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared.">
     Other users of this device can use this network.
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is both synced to the users account and shared to all users on the device.  Also notes that changes made by other users are not synced.">
-    Synced with other devices on your account. Other users of this device can use this network. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED_OWNER" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared and was configured by the current user.">
+    You are sharing this network with other users of this device.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED_NOT_OWNER" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared with you (by another user or configured before login).">
+    This network is shared with you.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_NOT_SYNCED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is not synced to the user's account.">
+    This network is not synced to your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_DEVICE" desc="Settings &gt; Internet &gt; Network details: Text to show when a shared network is synced to the user's account.  Also notes that changes to the network that are made by other users are not synced.">
+    Synced with other devices on your account. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_USER" desc="Settings &gt; Internet &gt; Network details: Text to show when a user network is synced.">
     Synced with other devices on your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -2371,7 +2444,7 @@
     <ph name="REFRESH_RATE">$1<ex>60</ex></ph> Hz - interlaced
   </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings &gt; Displays, the title for the section for changing the display's zoom.">
-    Display Size
+    Display size
   </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the display's zoom.">
     Make items on your screen smaller or larger
@@ -2389,10 +2462,10 @@
     Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Default)
   </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MINIMUM" desc="In Device Settings &gt; Displays, the label of the minimum value for the display size slider">
-    Tiny
+    Small
   </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MAXIMUM" desc="In Device Settings &gt; Displays, the label of the maximum value for the display size slider">
-    Huge
+    Large
   </message>
   <message name="IDS_SETTINGS_DISPLAY_SCREEN" desc="In Device Settings &gt; Displays, the label for the dropdown menu for changing the dispay type.">
     Screen
@@ -2645,6 +2718,9 @@
     <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
     This doesn’t affect apps or content on other devices.
   </message>
+  <message name="IDS_SETTINGS_APP_DETAILS_TITLE" desc="The title of app details subpage, which displays details about a specific app.">
+    App details
+  </message>
 
   <!-- Apps > Manage your apps > Plugin VM > Shared folders -->
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS" desc="Label for managing shared folders for Plugin VM.">
@@ -2661,6 +2737,9 @@
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Plugin VM shared folder.">
     Stop sharing
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_EMPTY_MESSAGE" desc="Message shown when the user has not yet shared any folders in Plugin VM.">
+    Shared folders will appear here
   </message>
 
   <!-- Storage -->
@@ -2751,6 +2830,12 @@
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in Chrome OS.">
     Automatically sends diagnostic and usage data to Brave
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_TITLE" desc="The label of the checkbox to enable/disable Suggested Content in Chrome OS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
+    Suggest new content to explore
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_DESC" desc="The description of the checkbox to enable/disable Suggested Content in Chrome OS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
+    Includes apps, webpages, and more. Sends statistics to improve suggestions only if you’ve chosen to share usage data.
   </message>
   <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
     Enable Verified Access

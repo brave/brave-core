@@ -315,9 +315,6 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Strings that are only used when VR devices are supported -->
       <if expr="enable_vr">
         <part file="vr_strings.grdp" />
-        <if expr="not is_android">
-          <part file="xr_consent_ui_strings.grdp" />
-        </if>
       </if>
 
       <!-- Supervised user error page -->
@@ -373,6 +370,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_PERMISSIONS_BUBBLE_PROMPT_ACCESSIBLE_TITLE_TWO_PERMS_MORE" desc="The label that is read by a screen reader to describe the permissions prompt bubble. This will be followed by the short names of two permissions, then an &quot;and more&quot; descriptive text indicating that the dialog's body contains the entire list of requested permissions.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to: <ph name="FIRST_PERMISSION">$2<ex>use your microphone</ex></ph>, <ph name="SECOND_PERMISSION">$3<ex>use your location</ex></ph>, and more
+      </message>
+      <message name="IDS_PERMISSIONS_BUBBLE_PROMPT_THIS_FILE" desc="The text to be displayed instead of the origin when a local file requests permissions. This string will be inserted into Message ID 2121121439878997796, the full sentence will read: [This file] wants to request a permission.">
+        This file
       </message>
       <message name="IDS_PERMISSION_CUSTOMIZE" desc="Label on text button to allow the user to customize a permissions request.">
         Customize
@@ -1545,6 +1545,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_DOWNLOAD_STATUS_PAGE_READY_TITLE" desc="The title of a download notification for offline pages not stored in Downloads.">
                  Page is ready to view
         </message>
+        <message name="IDS_DOWNLOAD_STATUS_SCAN_TITLE" desc="The title of a download notification: the current download is being scanned.">
+                 Scanning <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>
+        </message>
         <message name="IDS_DOWNLOAD_NOTIFICATION_STATUS_COMPLETED" desc="Size and units downloaded, and the origin domain.">
           <ph name="DOWNLOAD_RECEIVED">$1<ex>154 MB</ex></ph> from <ph name="DOWNLOAD_DOMAIN">$2<ex>example.com</ex></ph>
         </message>
@@ -1583,9 +1586,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_STATUS_INTERRUPTED" desc="Status text for a download item that was interrupted.">
         Failed - <ph name="INTERRUPT_REASON">$1<ex>Disk full</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_SCANNED" desc="Status text for a download item that being scanned.">
-        Being scanned
-      </message>
       <message name="IDS_DOWNLOAD_UNCONFIRMED_PREFIX" desc="The prefix used in the unconfirmed download file.">
         Unconfirmed
       </message>
@@ -1613,6 +1613,12 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_PROMPT_DEEP_SCANNING_DOWNLOAD" desc="Message shown in the download shelf when a download is being scanned">
         Checking <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> with your organization's security policies...
+      </message>
+      <message name="IDS_PROMPT_DEEP_SCANNING_DOWNLOAD_SHORT" desc="Message shown in the download shelf when a download is being scanned, without the file name">
+        Checking with your organization's security policies.
+      </message>
+      <message name="IDS_PROMPT_DEEP_SCANNING_APP_DOWNLOAD" desc="Message shown in the download shelf when a download is being scanned for an Advanced Protection user">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is being scanned.
       </message>
       <message name="IDS_PROMPT_CONFIRM_MIXED_CONTENT_DOWNLOAD" desc="Message shown to the user to validate the download when the download content is a mixed-content download.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
@@ -1869,6 +1875,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </else>
       </if>
+      <message name="IDS_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
+        <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> is being scanned.
+      </message>
 
       <!-- Download Notification Labels -->
       <message name="IDS_DOWNLOAD_NOTIFICATION_COPY_TO_CLIPBOARD" desc="In the download notification, the text of 'Copy to clipboard' button, which is to copy the file content (eg. an image for image files) to the clipboard">
@@ -2109,6 +2118,12 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_INSTALL_PWA_BUTTON_LABEL" desc="Text for button that installs a web app to the operating system.">
         Install
+      </message>
+      <message name="IDS_INSTALL_PWA_RUN_ON_OS_LOGIN_LABEL" desc="Text for checkbox label for auto starting the web app with user login to the operating system session.">
+        {0, select,
+        tablet {Start app when you sign in to your tablet}
+        computer {Start app when you sign in to your computer}
+        other {Start app when you sign in to your device}}
       </message>
 
       <message name="IDS_BOOKMARK_APP_AX_BUBBLE_NAME_LABEL" desc="Text preceding the name of a bookmark app, read by spoken feedback.">
@@ -2446,11 +2461,17 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_ALLOWED_MEDIASTREAM_MIC_AND_CAMERA_NO_ACTION" desc="Radio button choice to allow a site to access microphone and camera, displayed in bubble when a page is accessing microphone and camera.">
         Continue allowing <ph name="HOST">$1<ex>mail.google.com</ex></ph> to access your camera and microphone
       </message>
+      <message name="IDS_ALLOWED_MEDIASTREAM_MIC_AND_CAMERA_PAN_TILT_ZOOM_NO_ACTION" desc="Radio button choice to allow a site to use and move camera, and use microphone, displayed in bubble when a page is accessing microphone and camera.">
+        Continue allowing <ph name="HOST">$1<ex>mail.google.com</ex></ph> to use and move your camera, and use your microphone
+      </message>
       <message name="IDS_ALLOWED_MEDIASTREAM_MIC_NO_ACTION" desc="Radio button choice to allow a site to access microphone, displayed in bubble when a page is accessing microphone.">
         Continue allowing <ph name="HOST">$1<ex>mail.google.com</ex></ph> to access your microphone
       </message>
       <message name="IDS_ALLOWED_MEDIASTREAM_CAMERA_NO_ACTION" desc="Radio button choice to allow a site to access camera, displayed in bubble when a page is accessing camera.">
         Continue allowing <ph name="HOST">$1<ex>mail.google.com</ex></ph> to access your camera
+      </message>
+      <message name="IDS_ALLOWED_CAMERA_PAN_TILT_ZOOM_NO_ACTION" desc="Radio button choice to allow a site to use and move camera, displayed in bubble when a page is accessing camera.">
+        Continue allowing <ph name="HOST">$1<ex>mail.google.com</ex></ph> to use and move your camera
       </message>
       <message name="IDS_BLOCKED_POPUPS_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when popup is blocked">
         Pop-up blocked
@@ -3340,8 +3361,11 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_PRERENDER_PREFIX" desc="The prefix for a Task Manager prerender row">
           Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_RENDERER_PREFIX" desc="The prefix for a Task Manager renderer row, only is visible when no other task claims that process">
-          Renderer: <ph name="RENDERER_URL">$1<ex>http://www.google.com</ex></ph>
+        <message name="IDS_TASK_MANAGER_SPARE_RENDERER_PREFIX" desc="Task Manager row for a 'spare' render process. That is a render process that was started in anticipation of it being needed so that when it is needed it is immediately ready for use">
+          Spare Renderer
+        </message>
+        <message name="IDS_TASK_MANAGER_UNKNOWN_RENDERER_PREFIX" desc="Task Manager row for an 'unknown' render process. That is a render process that the Task Manager knows is running, but that the Task Manager doesn't have any other information about, so that it is unable to present it to the user classified more precisely">
+          Renderer
         </message>
         <message name="IDS_TASK_MANAGER_DEDICATED_WORKER_PREFIX" desc="The prefix for a Task Manager dedicated worker row">
           Dedicated Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/dedicated-worker/basic/dedicated-worker.js</ex></ph>
@@ -3957,6 +3981,15 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_TRANSIENT_BACKGROUND" desc="Permission string for transient background permission.">
           Run in the background when requested by a cooperating native application
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_DEVICE_ATTRIBUTES" desc="Permission string for enterprise device attributes permission.">
+          See device information, such as its serial number or asset ID
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_NETWORKING_ATTRIBUTES" desc="Permission string for enterprise networking attributes permission.">
+          See network information, such as your IP or MAC address
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_PLATFORMKEYS" desc="Permission string for enterprise platform keys permission.">
+          Perform security-related tasks for your organization, such as managing certificates and keys stored on the device
+        </message>
       </if>
 
       <!-- Extension/App error messages -->
@@ -4204,9 +4237,6 @@ are declared in tools/grit/grit_rule.gni.
 
       <message name="IDS_EXTENSIONS_LOCKED_SUPERVISED_USER" desc="The error message (either shown in the extensions UI or logged) informing a supervised user that extensions cannot be changed.">
         Apps and extensions can only be modified by the manager (<ph name="CUSTODIAN_NAME">$1<ex>Jane Doe</ex></ph>).
-      </message>
-      <message name="IDS_EXTENSIONS_INSTALLED_BY_SUPERVISED_USER_CUSTODIAN" desc="The text in the extensions UI informing a supervised user that an extension was installed by their custodian and cannot be changed">
-        Installed by your custodian.
       </message>
       <message name="IDS_EXTENSION_LOAD_FROM_DIRECTORY" desc="Title of directory browse dialog when user wants to load an extension from a directory.">
         Select the extension directory.
@@ -5058,6 +5088,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASTE_AND_SEARCH" desc="The text label of the Paste And Go menu item when the clipboard contains a string to search for">
           Pa&amp;ste and search for “<ph name="SEARCH_TERMS">$1<ex>flowers</ex></ph>”
         </message>
+        <message name="IDS_PASTE_AND_GO_EMPTY" desc="The text label of the Paste And Go menu item when the clipboard is empty">
+          Pa&amp;ste and go
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_PASTE_AND_GO" desc="In Title Case: The text label of the Paste And Go menu item when the clipboard contains a URL">
@@ -5066,10 +5099,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASTE_AND_SEARCH" desc="In Title Case: The text label of the Paste And Go menu item when the clipboard contains a string to search for">
           Pa&amp;ste and Search for “<ph name="SEARCH_TERMS">$1<ex>flowers</ex></ph>”
         </message>
+        <message name="IDS_PASTE_AND_GO_EMPTY" desc="In Title Case: The text label of the Paste And Go menu item when the clipboard is empty">
+          Pa&amp;ste and Go
+        </message>
       </if>
-      <message name="IDS_SHOW_URL" desc="The text label of the Show URL menu item when the omnibox contains an elided URL or search query terms">
-        S&amp;how URL
-      </message>
       <message name="IDS_OMNIBOX_KEYWORD_HINT" desc="Shown to the user when the url in the omnibox has a keyword associated with it. $1 is replaced with an image showing the tab key. $2 is replaced with the description of the keyword.">
         Press <ph name="SEARCH_KEY">$1<ex>Tab</ex></ph> to search <ph name="SITE_NAME">$2<ex>google.com</ex></ph>
       </message>
@@ -5606,6 +5639,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
       </message>
+      <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
+        To group tabs together, right-click a tab
+      </message>
 
       <!-- Browser Hung Plugin Detector -->
       <if expr="is_win">
@@ -5708,6 +5744,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_BUBBLE_BLACKLIST_BUTTON" desc="Button text for the 'Save Password' bubble's 'Never remember for this site' option">
           Never
         </message>
+        <message name="IDS_PASSWORD_MANAGER_DESTINATION_DROPDOWN_ACCESSIBLE_NAME" desc="Accessible name of destination dropdown in the password save bubble">
+          Select where to save your password
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_DESTINATION_DROPDOWN_SAVE_TO_ACCOUNT" desc="Text shown in the destination dropdown in the password save bubble when saving to the account">
+          Save in your Brave Account
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_DESTINATION_DROPDOWN_SAVE_TO_DEVICE" desc="Text shown in the destination dropdown in the password save bubble when saving to the device">
+          Save only on this device
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_TITLE_SAVE_TO_ACCOUNT" desc="Title of the in Product Help shown when the 'Save to account` is selected ">
+          Choose where to save
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_BODY_SAVE_REAUTH_FAIL" desc="Body of the in Product Help shown in the password save bubble when the account auth fails">
+          This password will be saved on this device
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_BODY_SAVE_TO_ACCOUNT" desc="Body of the in Product Help shown when the 'Save to account` is selected">
+          You can save this password in your Brave Account or only on this device
+        </message>
         <message name="IDS_PASSWORD_MANAGER_TOOLTIP_SAVE" desc="Text for the 'Manage Passwords' icon's 'password to be saved' state">
           Save your password
         </message>
@@ -5737,6 +5791,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
           Move your password to your Brave account to access it securely wherever you're signed in
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_TITLE" desc="The title of the 'save unsynced credentials' bubble.">
+          Passwords not saved
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_DESCRIPTION" desc="The description text of the 'save unsynced credentials' bubble.">
+          Brave couldn't save these passwords in your Brave Account. You can still save them on this device.
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_SAVE_UNSYNCED_CREDENTIALS_BUTTON" desc="Button text for the 'save unsynced credentials' bubble's save option.">
+          Save
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_DISCARD_UNSYNCED_CREDENTIALS_BUTTON" desc="Button text for the 'save unsynced credentials' bubble's discard option.">
+          No thanks
         </message>
       </if>
       <if expr="is_android">
@@ -5835,6 +5901,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <if expr="enable_extensions">
         <!-- Feedback Dialog -->
+        <message name="IDS_FEEDBACK_REPORT_APP_TITLE" desc="The title of the feedback app as shown in the app switcher and system tray">
+          Feedback
+        </message>
         <if expr="use_titlecase">
           <message name="IDS_FEEDBACK_REPORT_PAGE_TITLE" desc="Label showing the title of the page that will be reported">
             Send Feedback to Brave
@@ -5962,14 +6031,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_MEDIA_MENU_NO_DEVICE_TITLE" desc="The title of the media select menu if there is no microphone or camera available on the machine">
         None available
       </message>
-      <if expr="is_android">
-        <message name="IDS_POPUPS_BLOCKED_INFOBAR_BUTTON_SHOW" desc="Pop-up Blocking Show Button [CHAR-LIMIT=32]">
-          Always show
-        </message>
-        <message name="IDS_POPUPS_BLOCKED_INFOBAR_TEXT" desc="Pop-up Blocking Title [CHAR-LIMIT=32] [ICU Syntax]">
-          {NUM_POPUPS,plural,=1{Pop-up blocked} other{# pop-ups blocked}}
-        </message>
-      </if>
 
       <message name="IDS_ZOOMLEVELS_CHROME_ERROR_PAGES_LABEL" desc="Label for zoom level list entry for Brave error pages.">
         (Brave error pages)
@@ -7428,6 +7489,29 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Continue
       </message>
 
+      <!-- Account password storage reauth tab modal dialog -->
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SAVE_TITLE" desc="Title of the account password storage reauth tab modal dialog. The dialog was shown because the user requested to save a password to their Brave account.">
+        Save this and other passwords in your Brave Account?
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SHOW_TITLE" desc="Title of the account password storage reauth tab modal dialog. The dialog was shown because the user requested to get passwords from their Brave account.">
+        Show passwords from your Brave Account
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_DESC" desc="Body of the account password storage reauth tab modal dialog.">
+        Your passwords from your Brave Account will also be available on this device while you're signed in
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SAVE_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog. The dialog was shown because the user requested to save a password to their Brave account.">
+        Save
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SHOW_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog. The dialog was shown because the user requested to get passwords from their Brave account.">
+        Show
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CLOSE_BUTTON_LABEL" desc="Label of the close button in the account password storage reauth tab modal dialog.">
+        Cancel
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_NEXT_BUTTON_LABEL" desc="Label of the next button in the account password storage reauth tab modal dialog. This button invites the user to authenticate to unlock the account password storage.">
+        Next
+      </message>
+
       <message name="IDS_PLUGIN_OUTDATED_PROMPT" desc="Infobar message when an outdated plugin was disabled">
         <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> was blocked because it is out of date
       </message>
@@ -8580,6 +8664,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MANAGE_PASSWORDS_DIFFERENT_DOMAIN_NO_PASSWORDS_TITLE" desc="The title text that is used in the manage passwords bubble when no passwords are available for a different domain.">
         No passwords saved for <ph name="ORIGIN">$1<ex>example.com</ex></ph>
       </message>
+      <message name="IDS_MANAGE_PASSWORDS_ACCOUNT_STORE_ICON_DESCRIPTION" desc="An accessibility text for images that mark passwords as stored in the user's profile.">
+        Password stored in your Brave account
+      </message>
       <message name="IDS_MANAGE_PASSWORDS_DELETED" desc="The text that is used in the manage passwords bubble when a password is deleted.">
         Password deleted
       </message>
@@ -8903,15 +8990,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!-- App List. -->
       <if expr="chromeos">
-        <message name="IDS_SEARCH_BOX_ACCESSIBILITY_NAME" desc="Hint text for the search box in fullscreen app list window with additional instructions to use the arrow keys in Accessibility mode.">
-          Search your device, apps, and web. Use the arrow keys to navigate your apps.
-        </message>
-        <message name="IDS_SEARCH_BOX_ACCESSIBILITY_NAME_TABLET" desc="Hint text for the search box in fullscreen app list window. Tablet mode only, so we don't mention the arrow keys.">
-          Search your device, apps, and web.
-        </message>
-        <message name="IDS_SEARCH_BOX_HINT_FULLSCREEN" desc="Hint text for the search box in fullscreen app list window.">
-          Search your device, apps, web...
-        </message>
         <message name="IDS_APP_ACTION_SHORTCUT_ACCESSIBILITY_NAME" desc="Hint text for the search result that performs a specific action with an app.">
           <ph name="ACTION_NAME">$1<ex>Compose</ex></ph> with <ph name="APP_NAME">$2<ex>GMail</ex></ph> App
         </message>
@@ -9331,25 +9409,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <ph name="EVENT_NAME">$3<ex>Event Description</ex></ph>
       </message>
 
-      <!-- External Navigation Strings -->
-      <if expr="is_android or chromeos">
-        <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in private mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
-          This site is about to share information with an app outside of private mode.
-        </message>
-        <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave private mode. [CHAR-LIMIT=32]" formatter_data="android_java">
-          Leave private mode?
-        </message>
-        <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_STAY" desc="Label for the dialog button to stay in private mode. [CHAR-LIMIT=20]" formatter_data="android_java">
-          Stay
-        </message>
-        <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_LEAVE" desc="Label for the dialog button to leave private mode. [CHAR-LIMIT=20]" formatter_data="android_java">
-          Leave
-        </message>
-        <message name="IDS_EXTERNAL_APP_RESTRICTED_ACCESS_ERROR" desc="A message shown to the user if Brave receives a file view request to something Brave does not have access to view." formatter_data="android_java">
-          Brave does not have access to the requested resource.
-        </message>
-      </if>
-
     <!-- WebUsb Notification -->
     <message name="IDS_WEBUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
       Go to <ph name="LANDING_PAGE">$1<ex>www.google.com</ex></ph> to connect.
@@ -9567,7 +9626,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Ad removed.
     </message>
     <message name="IDS_HEAVY_AD_INTERVENTION_SUMMARY" desc="Summary in heavy ad intervention page when ad was removed for using too many system resources.">
-      This ad uses too many resources for your device, so Brave removed it.
+      This ad used too many resources for your device, so Brave removed it.
+    </message>
+    <message name="IDS_HEAVY_AD_INTERVENTION_BUTTON_RELOAD" desc="Label for the button that reloads the page and disables the intervention">
+      Reload and show anyway
     </message>
 
     <if expr="is_win">
@@ -9681,17 +9743,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_TITLE" desc="Title of dialog for confirming write access to a file, or a directory and the files it contains, using the Native File System API">
       Save changes to <ph name="FILE_OR_FOLDER_NAME">$1<ex>README.md</ex></ph>?
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming write access to files using the Native File System API">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close this tab
-    </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming write access to a directory using the Native File System API">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close this tab
-    </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to files or directories using the Native File System API">
       Save changes
     </message>
-
-    <!-- New Native File System permission dialog -->
     <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming origin scoped write access to files using the Native File System API">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close all tabs for this site
     </message>
@@ -9810,17 +9864,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_BUTTON" desc="Text of the button in dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
       Choose a different file
-    </message>
-
-    <!-- Native File System directory access confirmation dialog. -->
-    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_CONFIRMATION_TITLE" desc="Title of dialog asking user if they intended to share a particular directory">
-      Let site view files?
-    </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_CONFIRMATION_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close this tab
-    </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_ALLOW_BUTTON" desc="'allow' button in the dialog asking user if they intended to share a particular directory">
-      View files
     </message>
 
     <!-- Relaunch notification bubble and dialog. -->

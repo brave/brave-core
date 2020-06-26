@@ -47,10 +47,10 @@
   <!-- Browser managed status section -->
   <if expr="not chromeos">
     <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the browser is managed, it indicates what the administrator can do on the browser.">
-      Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph>
+      Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the browser is not managed">
-      This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph>
+      This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
   </if>
 
@@ -177,27 +177,39 @@
     Brave Enterprise Connectors
   </message>
   <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise Connectors section of the page">
-    Your administrator has enabled Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
+    Your administrator has turned on Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
   </message>
   <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise Connectors section of the page">
-    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
+    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has turned on Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
   </message>
-  <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_NAME" desc="Name for the data loss prevention feature">
-    Data Loss Prevention
+  <message name="IDS_MANAGEMENT_CONNECTORS_EVENT" desc="Title of a column of the Connectors table showing the event that triggers a Connector">
+    Event
   </message>
-  <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_PERMISSIONS" desc="Permissions description for the data loss prevention feature.  The part that says 'that you download or upload in Brave' applies only to files, not the clipboard">
-    Scan the contents of the clipboard, as well as files that you download or upload in Brave.
+  <message name="IDS_MANAGEMENT_CONNECTORS_VISIBLE_DATA" desc="Title of a column of the Connectors table showing the data visible to a Connector">
+    Visible data
   </message>
-  <message name="IDS_MANAGEMENT_MALWARE_SCANNING_NAME" desc="Name for the malware scanning feature">
-    Malware Scanning
+  <message name="IDS_MANAGEMENT_FILE_ATTACHED_EVENT" desc="Event for the file attachment scanning feature.">
+    File is attached
   </message>
-  <message name="IDS_MANAGEMENT_MALWARE_SCANNING_PERMISSIONS" desc="Permissions description for the malware scanning feature">
-    Scan files that you download or upload in Brave.
+  <message name="IDS_MANAGEMENT_FILE_DOWNLOADED_EVENT" desc="Event for the file download scanning feature.">
+    File is downloaded
   </message>
-  <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_NAME" desc="Name for the enterprise reporting feature">
-    Enterprise Reporting
+  <message name="IDS_MANAGEMENT_TEXT_ENTERED_EVENT" desc="Event for the text entry scanning feature.">
+    Text is entered
   </message>
-  <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_PERMISSIONS" desc="Permissions description for the enterprise reporting feature">
-    Share data about security events that have been flagged by Brave Enterprise Connectors with your administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
+  <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_EVENT" desc="Event for the enterprise reporting feature">
+    Unsafe event occurs
+  </message>
+  <message name="IDS_MANAGEMENT_FILE_ATTACHED_VISIBLE_DATA" desc="Description of the visible data for the file attachment scanning feature.">
+    Files you upload or attach are sent to Brave Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
+  </message>
+  <message name="IDS_MANAGEMENT_FILE_DOWNLOADED_VISIBLE_DATA" desc="Description of the visible data for the file download scanning feature.">
+    Files you download are sent to Brave Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
+  </message>
+  <message name="IDS_MANAGEMENT_TEXT_ENTERED_VISIBLE_DATA" desc="Description of the visible data for the text entry scanning feature.">
+    Text you paste or attach is sent to Brave Cloud or third parties for analysis. For example, it might be scanned for sensitive data.
+  </message>
+  <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_VISIBLE_DATA" desc="Description of the visible data for the Connectors reporting feature">
+    When security events are flagged by Brave Enterprise Connectors, relevant data about the event is sent to your administrator. This can include URLs of pages you visit in Brave, file names or metadata, and the username that you use to sign in to your device and Brave.
   </message>
 </grit-part>

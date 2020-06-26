@@ -281,6 +281,12 @@
   <message name="IDS_SETTINGS_CREDIT_CARD_EXPIRED" desc="The error message that is shown when user attempts to enter or save an expired card.">
     Your card is expired
   </message>
+  <message name="IDS_SETTINGS_CREDIT_CARD_NICKNAME" desc="The title for the input that lets users modify the nickname of the credit card.">
+    Card nickname
+  </message>
+  <message name="IDS_SETTINGS_CREDIT_CARD_NICKNAME_INVALID" desc="The error message that is shown when user uses digit numbers in credit card nickname">
+    Nickname can’t include numbers
+  </message>
   <message name="IDS_SETTINGS_UPI_ID_LABEL" desc="A label which appears next to UPI IDs, when they are listed as stored payment info, but it is visually separate from the UPI ID. It lets the user know this is a UPI ID (e.g. as opposed to a credit card number). UPI is a system for payments in India. A UPI ID is an email-like string.">
     UPI ID
   </message>
@@ -289,6 +295,15 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS" desc="Name for the password section and settings entry used for managing passwords.">
     Passwords
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS" desc="Name for the passwords section used for managing passwords/exceptions stored on the device.">
+    Passwords
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_ON_DEVICE_ONLY_HEADING" desc="Title of a subsection in the 'device passwords' page displaying passwords/exceptions that are stored only on the device.">
+    Passwords on this device only
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_ON_DEVICE_AND_ACCOUNT_HEADING" desc="Title of a subsection in the 'device passwords' page displaying passwords/exceptions that are stored both on the device and in the account.">
+    Passwords on this device and in your Brave Account
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS" desc="Name for the check passwords subsection and settings entry used to perform a password bulk check.">
     Check passwords
@@ -407,6 +422,9 @@
   <message name="IDS_SETTINGS_PASSWORD_REMOVE" desc="Label for a context menu item that removes the selected password." meaning="Remove selected password.">
     Remove
   </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT" desc="Label for a context menu item that moves the selected password from the device to the user account.">
+    Move to Brave Account
+  </message>
   <message name="IDS_SETTINGS_PASSWORD_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter saved passwords.">
     Search passwords
   </message>
@@ -417,7 +435,7 @@
     Hide password
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_VIEW_DETAILS_TITLE" desc="Title for the dialog that shows password details. This dialog lets a user see a saved password and copy the username.">
-    Saved password details
+    Password details
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DETAILS" desc="Label for a context menu item that shows a dialog with details for the selected password.">
     Details
@@ -455,24 +473,81 @@
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD" desc="Label for an undo tooltip following a saved password deletion.">
     Password deleted
   </message>
-  <!-- TODO(crbug.com/1062344): Make it translateable and add translation screenshots once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT" desc="Label for an undo tooltip following deletion of a password from the account.">
+  <message name="IDS_SETTINGS_PASSWORD_STORED_ON_DEVICE" desc="Message displayed in the edit dialog for a password stored on the device.">
+    Your password is saved on this device
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_STORED_IN_ACCOUNT" desc="Message displayed in the edit dialog for a password stored in the account.">
+    Your password is saved in your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_STORED_IN_ACCOUNT_AND_ON_DEVICE" desc="Message displayed in the edit dialog for a password stored both on the device and in the account.">
+    Your password is saved on this device and in your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT" desc="Label for an undo tooltip following deletion of a password from the account.">
     Password deleted from your Brave sync chain
   </message>
-  <!-- TODO(crbug.com/1062344): Make it translateable and add translation screenshots once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_DEVICE" desc="Label for an undo tooltip following deletion of a password from the device.">
+  <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_DEVICE" desc="Label for an undo tooltip following deletion of a password from the device.">
     Password deleted from this device
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT_AND_DEVICE" desc="Label for an undo tooltip following deletion of a password from the account and the device.">
+    Password deleted from this device and your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that confirms whether the user wishes to move a password to their Brave Account.">
+    Move to Brave sync chain?
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_BODY" desc="Description message for the dialog that confirms whether the user wishes to move a password to their Brave Account.">
+    Move your password to your Brave sync chain to access it securely wherever you're signed in
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_MOVE_BUTTON_TEXT" desc="Text for the button that confirms moving a password to the user Brave Account.">
+    Move
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action of moving a password to the user Brave Account.">
+    No, thanks
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
+    Delete password?
+  </message>
+  <!-- TODO(crbug.com/1049141): Inject the website in the string and make it translateable. -->
+  <message translateable="false" name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_BODY" desc="Description message for the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
+    Your password is stored on this device and in your Brave sync chain. Which one do you want to delete?
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_REMOVE_BUTTON_TEXT" desc="Text for the button that confirms the action in the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
+    Delete
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action in the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
+    Cancel
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_ACCOUNT_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from their Brave Account.">
+    From your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_DEVICE_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from the device.">
+    From this device
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL_SINGULAR" desc="The label for the link on settings leading to the 'device passwords' page, when there is 1 device password.">
+    You have 1 password saved on this device
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL_PLURAL" desc="The label for the link on settings leading to the 'device passwords' page, when there is more than 1 device password.">
+    You have <ph name="NUMBER_OF_DEVICE_PASSWORDS">$1<ex>2</ex></ph> passwords saved on this device
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_SUB_LABEL" desc="The sub-label for the link on settings leading to the 'device passwords' page.">
+    Save all your passwords in your Brave sync chain, so you can use them on all your devices
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
     View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <!-- TODO(crbug.com/1062344): Make it translateable and use definitive label once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings triggering opt in to passwords account storage.">
-    Opt-in to account storage
+  <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS_PLAINTEXT" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online.">
+    View and manage saved passwords in your Brave sync chain
   </message>
-  <!-- TODO(crbug.com/1062344): Make it translateable and use definitive label once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings triggering opt out of passwords account storage.">
-    Opt-out of account storage
+  <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
+    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
+    Show
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
+    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
+    Remove from device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Brave.">
     Export passwords...
@@ -1102,6 +1177,9 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_PRIMARY_LABEL" desc="'Passwords' is an element in safety check that allows users to check for their passwords being compromised.">
     Passwords
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_FEATURE_UNAVAILABLE" desc="Explains that the password check feature is not available in this version of the browser.">
+    Password check is not available in Brave
+  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their passwords.">
     Review passwords
   </message>
@@ -1150,6 +1228,13 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their extensions settings.">
     Review extensions
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
+    Unwanted software protection
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_BUTTON_ARIA_LABEL" desc="Accessiblity text for the button that allows users to review and remove harmful software found on their computer.">
+    Review unwanted software
+  </message>
+
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
     Preload pages for faster browsing and searching
   </message>
@@ -2203,9 +2288,6 @@
   </message>
   <message name="IDS_SETTINGS_NO_HID_DEVICES_FOUND" desc="Explanation for not showing HID devices in site settings.">
     No HID devices found
-  </message>
-  <message name="IDS_SETTINGS_ADD_SITE_EXCEPTION_PLACEHOLDER" desc="Placeholder text shown before the user starts typing a new content settings exception for a site.">
-    [*.]example.com
   </message>
   <message name="IDS_SETTINGS_ADD_SITE_TITLE" desc="Title for the Add Site dialog">
     Add a site

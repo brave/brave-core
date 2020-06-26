@@ -62,6 +62,9 @@
   <message name="IDS_POLICY_DM_STATUS_CONSUMER_ACCOUNT_WITH_PACKAGED_LICENSE" desc="Message to show when the user tries to enroll a device with a packaged license using a consumer account.">
     Can't enroll with consumer account (packaged license available).
   </message>
+  <message name="IDS_POLICY_DM_STATUS_ENTERPRISE_ACCOUNT_IS_NOT_ELIGIBLE_TO_ENROLL" desc="Message to show when the user tries to enroll a device with an ineligible enterprise account.">
+    Can't enroll with enterprise account (enterprise account is not eligible).
+  </message>
   <message name="IDS_POLICY_VALIDATION_OK" desc="Message indicating successful policy validation.">
     Validation successful
   </message>
@@ -236,9 +239,6 @@
   <message name="IDS_POLICY_OVERRIDDEN" desc="The text displayed in the status column when the corresponding policy is being ignored because another policy is overriding it.">
     Ignored because it was overridden by <ph name="POLICY_NAME">$1<ex>ProxyMode</ex></ph>.
   </message>
-  <message name="IDS_POLICY_DEPRECATED" desc="The text displayed in the status column when the corresponding policy is deprecated.">
-    This policy has been deprecated.
-  </message>
   <message name="IDS_POLICY_VALUE_DEPRECATED" desc="The text displayed in the status column when a specific value for a policy is deprecated.">
     This value is deprecated for this policy.
   </message>
@@ -368,6 +368,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_LABEL_DEPRECATED" desc="Label for the status of a deprecated policy.">
     Deprecated
+  </message>
+  <message name="IDS_POLICY_LABEL_FUTURE" desc="Label for the status of an unreleased policy.">
+    Unreleased
   </message>
   <message name="IDS_POLICY_LABEL_IGNORED" desc="Label for the ignored row in the policy table.">
     Ignored
@@ -505,6 +508,9 @@ Additional details:
   <message name="IDS_POLICY_BLOCKED" desc="Text explaining that a policy is blocked, therefore ignored.">
     This policy is blocked, its value will be ignored.
   </message>
+  <message name="IDS_POLICY_INVALID" desc="Text explaining that a policy failed to validate against a schema, and therefore ignored.">
+    This policy value failed to validate against its schema and will be ignored.
+  </message>
   <message name="IDS_POLICY_IGNORED_BY_GROUP_MERGING" desc="Text explaining that a policy is ignored because another policy of the same group has a higher priority">
     This policy is ignored because another policy from the same policy group has a higher priority.
   </message>
@@ -539,6 +545,12 @@ Additional details:
   </message>
   <message name="IDS_POLICY_SIGNIN_PROFILE" desc="Label to indicate that the policy is for the sign-in screen profile.">
     sign-in screen profile
+  </message>
+  <message name="IDS_POLICY_COPY_VALUE" desc="Help text for link that copies the value of a policy.">
+    Copy the value of <ph name="POLICY_NAME">$1<ex>AllowDinosaurEasterEgg</ex></ph> policy
+  </message>
+  <message name="IDS_COPY_POLICIES_JSON" desc="Label for the button that copies policies in JSON format.">
+    Copy as JSON
   </message>
 
   <!-- Strings for Disabled chrome://.* screen -->

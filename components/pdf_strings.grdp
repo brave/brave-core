@@ -2,6 +2,12 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <if expr="enable_plugins">
+    <message name="IDS_PDF_DOWNLOAD_ORIGINAL" desc="The label for the menu option to download the original, unedited PDF document.">
+      Original
+    </message>
+    <message name="IDS_PDF_DOWNLOAD_EDITED" desc="The label for the menu option to download the edited PDF document.">
+      Edited
+    </message>
     <message name="IDS_PDF_NEED_PASSWORD" desc="A message asking the user for a password to open a PDF file.">
       This document is password protected.  Please enter a password.
     </message>
@@ -236,6 +242,9 @@
 
     <message name="IDS_AX_ROLE_DESCRIPTION_PDF_HIGHLIGHT" desc="Accessibility role description for PDF highlight">
       Highlight
+    </message>
+    <message name="IDS_AX_ROLE_DESCRIPTION_PDF_POPUP_NOTE" desc="Accessibility role description for popup note annotation associated with a PDF highlight">
+      Note
     </message>
   </if>
 </grit-part>
