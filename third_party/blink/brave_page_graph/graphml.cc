@@ -46,7 +46,7 @@ namespace {
   const GraphMLAttr* const incognito_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "incognito");
   const GraphMLAttr* const is_deleted_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeEdge, "is deleted", kGraphMLAttrTypeBoolean);
+    kGraphMLAttrForTypeNode, "is deleted", kGraphMLAttrTypeBoolean);
   const GraphMLAttr* const is_style_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "is style", kGraphMLAttrTypeBoolean);
   const GraphMLAttr* const key_attr = new GraphMLAttr(
