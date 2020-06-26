@@ -29,7 +29,7 @@ void RecordP3A(uint64_t answers_count) {
   } else if (10 <= answers_count) {
     answer = 3;
   }
-  UMA_HISTOGRAM_COUNTS_100("Brave.P3A.SentAnswersCount", answer);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.P3A.SentAnswersCount", answer, 3);
 }
 
 }  // namespace
