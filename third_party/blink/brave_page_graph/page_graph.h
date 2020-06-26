@@ -201,8 +201,7 @@ friend NodeHTMLElement;
 
   std::string ToGraphML() const;
 
-  const std::chrono::time_point<std::chrono::high_resolution_clock>&
-    GetTimestamp() const;
+  std::chrono::milliseconds GetTimestamp() const;
 
   void Log(const std::string& str) const;
 

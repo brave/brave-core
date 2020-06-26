@@ -127,7 +127,7 @@
 
 using ::std::chrono::duration_cast;
 using ::std::chrono::milliseconds;
-using ::std::chrono::system_clock::now;
+using ::std::chrono::system_clock;
 using ::std::endl;
 using ::std::make_unique;
 using ::std::map;
@@ -165,7 +165,7 @@ namespace {
 constexpr char kPageGraphVersion[] = "0.1";
 constexpr char kPageGraphUrl[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
 milliseconds NowInMs() {
-  return duration_cast<milliseconds>(now().time_since_epoch());
+  return duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 }
 
 }
@@ -1260,7 +1260,7 @@ string PageGraph::ToGraphML() const {
   return graphml_string;
 }
 
-const time_point<high_resolution_clock>& PageGraph::GetTimestamp() const {
+milliseconds PageGraph::GetTimestamp() const {
   return start_;
 }
 
