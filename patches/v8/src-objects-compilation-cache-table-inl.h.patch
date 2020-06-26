@@ -1,0 +1,44 @@
+diff --git a/src/objects/compilation-cache-table-inl.h b/src/objects/compilation-cache-table-inl.h
+index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c6f7891a8 100644
+--- a/src/objects/compilation-cache-table-inl.h
++++ b/src/objects/compilation-cache-table-inl.h
+@@ -34,7 +34,7 @@ uint32_t CompilationCacheShape::RegExpHash(String string, Smi flags) {
+ uint32_t CompilationCacheShape::StringSharedHash(String source,
+                                                  SharedFunctionInfo shared,
+                                                  LanguageMode language_mode,
+-                                                 int position) {
++                                                 int position, int parent_script_id) {
+   uint32_t hash = source.EnsureHash();
+   if (shared.HasSourceCode()) {
+     // Instead of using the SharedFunctionInfo pointer in the hash
+@@ -48,6 +48,7 @@ uint32_t CompilationCacheShape::StringSharedHash(String source,
+   STATIC_ASSERT(LanguageModeSize == 2);
+   if (is_strict(language_mode)) hash ^= 0x8000;
+   hash += position;
++  hash += parent_script_id;
+   return hash;
+ }
+ 
+@@ -57,19 +65,20 @@ uint32_t CompilationCacheShape::HashForObject(ReadOnlyRoots roots,
+   // Script: See StringSharedKey::ToHandle for the encoding.
+   FixedArray val = FixedArray::cast(object);
+   if (val.map() == roots.fixed_cow_array_map()) {
+-    DCHECK_EQ(4, val.length());
++    DCHECK_EQ(5, val.length());
+     String source = String::cast(val.get(1));
+     int language_unchecked = Smi::ToInt(val.get(2));
+     DCHECK(is_valid_language_mode(language_unchecked));
+     LanguageMode language_mode = static_cast<LanguageMode>(language_unchecked);
+     int position = Smi::ToInt(val.get(3));
++    int parent_script_id = Smi::ToInt(val.get(4));
+     Object shared_or_smi = val.get(0);
+     if (shared_or_smi.IsSmi()) {
+       DCHECK_EQ(position, kNoSourcePosition);
+       return StringSharedHash(source, language_mode);
+     } else {
+       return StringSharedHash(source, SharedFunctionInfo::cast(shared_or_smi),
+-                              language_mode, position);
++                              language_mode, position, parent_script_id);
+     }
+   }
+ 

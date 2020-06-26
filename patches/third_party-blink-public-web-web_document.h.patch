@@ -1,0 +1,19 @@
+diff --git a/third_party/blink/public/web/web_document.h b/third_party/blink/public/web/web_document.h
+index 4c9a6b2743c5211d95f03c21cbdc93e561e3fa5f..bb8f1de352766ec5d5166bf0cd78e5e12b85d093 100644
+--- a/third_party/blink/public/web/web_document.h
++++ b/third_party/blink/public/web/web_document.h
+@@ -140,6 +140,14 @@ class WebDocument : public WebNode {
+   // See cc/paint/element_id.h for the definition of these id.
+   BLINK_EXPORT uint64_t GetVisualViewportScrollingElementIdForTesting();
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  BLINK_EXPORT void RegisterResourceBlockAd(const GURL& url,
++                                            const std::string& rule);
++
++  BLINK_EXPORT void RegisterResourceBlockTracker(const GURL& url,
++                                                 const std::string& host);
++// #endif
++
+   BLINK_EXPORT bool IsLoaded();
+ 
+ #if INSIDE_BLINK

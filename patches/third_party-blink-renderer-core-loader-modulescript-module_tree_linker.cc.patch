@@ -1,0 +1,50 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
+index 5e710b04a5be3a165030e4f1c2bff0880813e96e..9ebe0a1496ec45c80ee533b38315ce8e42848922 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
+@@ -15,6 +15,7 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ // <specdef label="IMSGF"
+ // href="https://html.spec.whatwg.org/C/#internal-module-script-graph-fetching-procedure">
+ 
+@@ -169,7 +173,7 @@ void ModuleTreeLinker::AdvanceState(State new_state) {
+ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+                                  ModuleType module_type,
+                                  const ScriptFetchOptions& options) {
+-#if DCHECK_IS_ON()
++#if 1
+   original_url_ = original_url;
+   module_type_ = module_type;
+   root_is_inline_ = false;
+@@ -181,7 +185,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+ 
+   KURL url = original_url;
+ 
+-#if DCHECK_IS_ON()
++#if 1
+   url_ = url;
+ #endif
+ 
+@@ -239,7 +243,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+ // href="https://html.spec.whatwg.org/C/#fetch-an-inline-module-script-graph">
+ void ModuleTreeLinker::FetchRootInline(ModuleScript* module_script) {
+   DCHECK(module_script);
+-#if DCHECK_IS_ON()
++#if 1
+   original_url_ = module_script->BaseURL();
+   url_ = original_url_;
+   module_type_ = ModuleType::kJavaScript;
+@@ -441,6 +445,10 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {
+   // fetching procedure should be performed in parallel to each other.
+   // ...</spec>
+   for (const auto& module_request : module_requests) {
++    ::brave_page_graph::PageGraph* page_graph = modulator_->GetPageGraph();
++    if (page_graph) {
++      page_graph->RegisterModuleScriptForDescendant(module_script->SourceURL(), module_request.url);
++    }
+     // <spec step="8">... perform the internal module script graph fetching
+     // procedure given moduleRequest, fetch client settings object, destination,
+     // options, module script's settings object, visited set, and module

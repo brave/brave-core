@@ -1,0 +1,42 @@
+diff --git a/src/objects/compilation-cache-table.h b/src/objects/compilation-cache-table.h
+index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c6f7891a8 100644
+--- a/src/objects/compilation-cache-table.h
++++ b/src/objects/compilation-cache-table.h
+@@ -32,7 +32,7 @@ class CompilationCacheShape : public BaseShape<HashTableKey*> {
+   static inline uint32_t StringSharedHash(String source,
+                                           SharedFunctionInfo shared,
+                                           LanguageMode language_mode,
+-                                          int position);
++                                          int position, int parent_script_id);
+ 
+   static inline uint32_t StringSharedHash(String source,
+                                           LanguageMode language_mode);
+@@ -93,11 +93,11 @@
+   // The 'script' cache contains SharedFunctionInfos.
+   static MaybeHandle<SharedFunctionInfo> LookupScript(
+       Handle<CompilationCacheTable> table, Handle<String> src,
+-      LanguageMode language_mode, Isolate* isolate);
++      LanguageMode language_mode, Isolate* isolate, int parent_script_id);
+   static Handle<CompilationCacheTable> PutScript(
+       Handle<CompilationCacheTable> cache, Handle<String> src,
+       LanguageMode language_mode, Handle<SharedFunctionInfo> value,
+-      Isolate* isolate);
++      Isolate* isolate, int parent_script_id);
+ 
+   // Eval code only gets cached after a second probe for the
+   // code object. To do so, on first "put" only a hash identifying the
+@@ -110,12 +110,12 @@
+                                  Handle<String> src,
+                                  Handle<SharedFunctionInfo> shared,
+                                  Handle<Context> native_context,
+-                                 LanguageMode language_mode, int position);
++                                 LanguageMode language_mode, int position, int parent_script_id);
+   static Handle<CompilationCacheTable> PutEval(
+       Handle<CompilationCacheTable> cache, Handle<String> src,
+       Handle<SharedFunctionInfo> outer_info, Handle<SharedFunctionInfo> value,
+       Handle<Context> native_context, Handle<FeedbackCell> feedback_cell,
+-      int position);
++      int position, int parent_script_id);
+ 
+   // The RegExp cache contains JSRegExp::data fixed arrays.
+   Handle<Object> LookupRegExp(Handle<String> source, JSRegExp::Flags flags);

@@ -1,0 +1,17 @@
+diff --git a/content/browser/renderer_host/render_frame_host_impl.h b/content/browser/renderer_host/render_frame_host_impl.h
+index 3456986091abe0915361938b31ae6626dbd63f4a..fe3e46839bf5cb123d65937da6c0c98040febaa2 100644
+--- a/content/browser/renderer_host/render_frame_host_impl.h
++++ b/content/browser/renderer_host/render_frame_host_impl.h
+@@ -324,6 +324,12 @@ class CONTENT_EXPORT RenderFrameHostImpl
+   gfx::NativeView GetNativeView() override;
+   void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
+                            const std::string& message) override;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void RegisterResourceBlockAd(const GURL& url,
++                               const std::string& rule) override;
++  void RegisterResourceBlockTracker(const GURL& url,
++                                   const std::string& host) override;
++// #endif
+   void ExecuteJavaScriptMethod(const std::u16string& object_name,
+                                const std::u16string& method_name,
+                                base::Value arguments,

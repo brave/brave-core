@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc b/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
+index 141b1d06dda1eadc87c2300ffe491cd8ac604e96..2c621b9c7eabe54544194c68d78d5cbd5350f997 100644
+--- a/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
++++ b/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
+@@ -495,7 +495,7 @@ void WorkerOrWorkletGlobalScope::FetchModuleScript(
+       mojom::blink::FetchImportanceMode::kImportanceAuto,
+       RenderBlockingBehavior::kNonBlocking, reject_coep_unsafe_none);
+ 
+-  Modulator* modulator = Modulator::From(ScriptController()->GetScriptState());
++  Modulator* modulator = Modulator::From(ScriptController()->GetScriptState(), nullptr, 0);
+   // Step 3. "Perform the internal module script graph fetching procedure ..."
+   modulator->FetchTree(
+       module_url_record, ModuleType::kJavaScript,

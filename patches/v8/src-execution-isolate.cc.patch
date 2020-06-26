@@ -1,0 +1,84 @@
+diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
+index c9c6225eb8fd8b8278c707beb521bde910ab49d9..1dd8377dff2449071b9f25b333e2cac50a02cfeb 100644
+--- a/src/execution/isolate.cc
++++ b/src/execution/isolate.cc
+@@ -4403,6 +4406,79 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+   }
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int Isolate::GetExecutingScriptId(int* out_script_position) {
++  JavaScriptFrameIterator it(this);
++  while (!it.done()) {
++    JavaScriptFrame* frame = it.frame();
++    Handle<JSFunction> function(frame->function(), this);
++
++    Object maybe_script = function->shared().script();
++    if (!maybe_script.IsScript()) {
++      it.Advance();
++      continue;
++    }
++
++    Script script = Script::cast(maybe_script);
++    if (script.id() <= 0) {
++      it.Advance();
++      continue;
++    }
++
++    if (out_script_position) {
++      Handle<SharedFunctionInfo> shared(function->shared(), this);
++      SharedFunctionInfo::EnsureSourcePositionsAvailable(this, shared);
++      *out_script_position = frame->position();
++    }
++
++    return script.id();
++  }
++
++  return 0;
++}
++
++void Isolate::GetAllExecutingScripts(std::function<void(int, int)> callback) {
++  JavaScriptFrameIterator it(this);
++  while (!it.done()) {
++    JavaScriptFrame* frame = it.frame();
++    Handle<JSFunction> function(frame->function(), this);
++
++    Object maybe_script = function->shared().script();
++    if (!maybe_script.IsScript()) {
++      it.Advance();
++      continue;
++    }
++
++    Script script = Script::cast(maybe_script);
++    int script_id = script.id();
++    if (script_id <= 0) {
++      it.Advance();
++      continue;
++    }
++
++    Handle<SharedFunctionInfo> shared(function->shared(), this);
++    SharedFunctionInfo::EnsureSourcePositionsAvailable(this, shared);
++    int script_position = frame->position();
++
++    callback(script_id, script_position);
++    it.Advance();
++  }
++}
++
++void Isolate::ReportBuiltInCallAndResponse(const char* func_name,
++    const std::vector<const std::string>& args, const std::string& result) {
++  BuiltInFuncCallFunc call_func = GetBuiltInFuncCallFunc();
++  auto extern_isolate = reinterpret_cast<v8::Isolate*>(this);
++  if (call_func) {
++    call_func(*extern_isolate, func_name, args);
++  }
++  BuiltInFuncResponseFunc rs_func = GetBuiltInFuncResponseFunc();
++  if (rs_func) {
++    rs_func(*extern_isolate, func_name, result);
++  }
++}
++// #endif
++
+ #ifdef V8_INTL_SUPPORT
+ namespace {
+ std::string GetStringFromLocale(Handle<Object> locales_obj) {

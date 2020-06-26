@@ -1,0 +1,55 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
+index f8311716e36e0bdb3dfbb5d96df740f7057167f8..1608cd9769cdda28f87bad2c629bf92b4fc3d458 100644
+--- a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
++++ b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
+@@ -12,6 +12,13 @@
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+ #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <iostream>
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ JSEventHandlerForContentAttribute* JSEventHandlerForContentAttribute::Create(
+@@ -229,6 +236,36 @@ v8::Local<v8::Value> JSEventHandlerForContentAttribute::GetCompiledHandler(
+       return v8::Null(isolate);
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Node* event_recipient = nullptr;
++    if (element) {
++      event_recipient = element;
++    } else if (event_target.ToNode()) {
++      event_recipient = event_target.ToNode();
++    } else if (event_target.ToLocalDOMWindow() && event_target.ToLocalDOMWindow()->document()) {
++      event_recipient = event_target.ToLocalDOMWindow()->document()->body();
++    }
++    // std::cout << "element: " << (void *)element << std::endl;
++    // std::cout << "event_recipient: " << (void *)event_recipient << std::endl;
++    // std::cout << "IsTopLeveLNode(): " << event_target.IsTopLevelNode() << std::endl;
++    // std::cout << "ToLocalDOMWindow(): " << (void *)event_target.ToLocalDOMWindow() << std::endl;
++    if (event_recipient) {
++      ::brave_page_graph::PageGraph* page_graph = document->GetPageGraph();
++      if (page_graph != nullptr) {
++        const DOMNodeId node_id = DOMNodeIds::IdForNode(event_recipient);
++        const auto script_id = compiled_function->ScriptId();
++        page_graph->RegisterScriptCompilationFromAttr(node_id,
++            function_name_.GetString(), script_body_, script_id);
++      } else {
++        std::cout << "Skipping 1: " << script_body_ << std::endl;
++      }
++    } else {
++      std::cout << "Skipping 2: " << script_body_ << std::endl;
++    }
++  }
++// #endif
++
+   // Step 12. Set eventHandler's value to the result of creating a Web IDL
+   // EventHandler callback function object whose object reference is function
+   // and whose callback context is settings object.

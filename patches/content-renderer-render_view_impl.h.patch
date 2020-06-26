@@ -1,0 +1,34 @@
+diff --git a/content/renderer/render_view_impl.h b/content/renderer/render_view_impl.h
+index 701aac4f7865097899b76ee8c37db6eb32672b33..cc736ddee970baaec46e9d369e9831bb62714b52 100644
+--- a/content/renderer/render_view_impl.h
++++ b/content/renderer/render_view_impl.h
+@@ -59,6 +59,9 @@
+ #include "ui/gfx/geometry/rect_f.h"
+ #include "ui/surface/transport_dib.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "base/unguessable_token.h"
++// #endif
+ namespace blink {
+ class WebURLRequest;
+ struct WebWindowFeatures;
+@@ -235,6 +239,9 @@ class CONTENT_EXPORT RenderViewImpl : public blink::WebViewClient,
+   int HistoryForwardListCount() override;
+   void DidAutoResize(const blink::WebSize& newSize) override;
+   void DidFocus(blink::WebLocalFrame* calling_frame) override;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void FinalPageGraph(const std::string&, const std::string&) override;
++// #endif
+   bool CanHandleGestureEvent() override;
+   bool AllowPopupsDuringPageUnload() override;
+   void OnPageVisibilityChanged(PageVisibilityState visibility) override;
+@@ -603,6 +610,9 @@ class CONTENT_EXPORT RenderViewImpl : public blink::WebViewClient,
+   // is fine.
+   base::ObserverList<RenderViewObserver>::Unchecked observers_;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  base::UnguessableToken devtools_main_frame_token_;
++// #endif
+   // ---------------------------------------------------------------------------
+   // ADDING NEW DATA? Please see if it fits appropriately in one of the above
+   // sections rather than throwing it randomly at the end. If you're adding a

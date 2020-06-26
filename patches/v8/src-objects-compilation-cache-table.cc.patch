@@ -1,0 +1,62 @@
+diff --git a/src/objects/compilation-cache-table.cc b/src/objects/compilation-cache-table.cc
+index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c6f7891a8 100644
+--- a/src/objects/compilation-cache-table.cc
++++ b/src/objects/compilation-cache-table.cc
+@@ -143,9 +143,9 @@
+   //   called. When negative, position is the negation of the position in the
+   //   dynamic function's effective source where the ')' ends the parameters.
+   StringSharedKey(Handle<String> source, Handle<SharedFunctionInfo> shared,
+-                  LanguageMode language_mode, int position)
++                  LanguageMode language_mode, int position, int parent_script_id)
+       : HashTableKey(CompilationCacheShape::StringSharedHash(
+-            *source, *shared, language_mode, position)),
++            *source, *shared, language_mode, position, parent_script_id)),
+         source_(source),
+         shared_(shared),
+         language_mode_(language_mode),
+@@ -246,7 +246,7 @@
+ 
+ MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
+     Handle<CompilationCacheTable> table, Handle<String> src,
+-    LanguageMode language_mode, Isolate* isolate) {
++    LanguageMode language_mode, Isolate* isolate, int parent_script_id) {
+   src = String::Flatten(isolate, src);
+   StringSharedKey key(src, language_mode);
+   InternalIndex entry = table->FindEntry(isolate, &key);
+@@ -265,12 +265,12 @@
+ InfoCellPair CompilationCacheTable::LookupEval(
+     Handle<CompilationCacheTable> table, Handle<String> src,
+     Handle<SharedFunctionInfo> outer_info, Handle<Context> native_context,
+-    LanguageMode language_mode, int position) {
++    LanguageMode language_mode, int position, int parent_script_id) {
+   InfoCellPair empty_result;
+   Isolate* isolate = native_context->GetIsolate();
+   src = String::Flatten(isolate, src);
+ 
+-  StringSharedKey key(src, outer_info, language_mode, position);
++  StringSharedKey key(src, outer_info, language_mode, position, parent_script_id);
+   InternalIndex entry = table->FindEntry(isolate, &key);
+   if (entry.is_not_found()) return empty_result;
+ 
+@@ -298,7 +298,7 @@
+ Handle<CompilationCacheTable> CompilationCacheTable::PutScript(
+     Handle<CompilationCacheTable> cache, Handle<String> src,
+     LanguageMode language_mode, Handle<SharedFunctionInfo> value,
+-    Isolate* isolate) {
++    Isolate* isolate, int parent_script_id) {
+   src = String::Flatten(isolate, src);
+   StringSharedKey key(src, language_mode);
+   Handle<Object> k = key.AsHandle(isolate);
+@@ -314,10 +314,10 @@ Handle<CompilationCacheTable> CompilationCacheTable::PutEval(
+     Handle<CompilationCacheTable> cache, Handle<String> src,
+     Handle<SharedFunctionInfo> outer_info, Handle<SharedFunctionInfo> value,
+     Handle<Context> native_context, Handle<FeedbackCell> feedback_cell,
+-    int position) {
++    int position, int parent_script_id) {
+   Isolate* isolate = native_context->GetIsolate();
+   src = String::Flatten(isolate, src);
+-  StringSharedKey key(src, outer_info, value->language_mode(), position);
++  StringSharedKey key(src, outer_info, value->language_mode(), position, parent_script_id);
+ 
+   // This block handles 'real' insertions, i.e. the initial dummy insert
+   // (below) has already happened earlier.

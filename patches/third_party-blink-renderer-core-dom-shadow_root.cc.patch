@@ -1,0 +1,34 @@
+diff --git a/third_party/blink/renderer/core/dom/shadow_root.cc b/third_party/blink/renderer/core/dom/shadow_root.cc
+index 215a8af0e76b166fa9cea9feadee28eab5535ff5..2149975ac70f5a8a6b795d96b189c5e6ac855808 100644
+--- a/third_party/blink/renderer/core/dom/shadow_root.cc
++++ b/third_party/blink/renderer/core/dom/shadow_root.cc
+@@ -47,6 +47,8 @@
+ #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+ #include "third_party/blink/renderer/platform/wtf/size_assertions.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ struct SameSizeAsShadowRoot : public DocumentFragment, public TreeScope {
+@@ -75,6 +80,18 @@ ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
+       slot_assignment_mode_(static_cast<unsigned>(SlotAssignmentMode::kNamed)),
+       needs_dir_auto_attribute_update_(false),
+       supports_name_based_slot_assignment_(false),
+-      unused_(0) {}
++      unused_(0) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (document == nullptr) {
++      return;
++    }
++    if (document.GetPageGraph() != nullptr) {
++      document.GetPageGraph()->RegisterHTMLElementNodeCreated(
++        DOMNodeIds::IdForNode(this), nodeName());
++    }
++  }
++// #endif
++}
+ 
+ ShadowRoot::~ShadowRoot() = default;
+ 

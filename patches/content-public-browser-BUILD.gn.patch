@@ -1,0 +1,12 @@
+diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
+index 6254eaf68b84913e5f8ab83f2f14b975ec8fceaf..0ebd407b0d9289048c35ea4cf483fe8e350c89bd 100644
+--- a/content/public/browser/BUILD.gn
++++ b/content/public/browser/BUILD.gn
+@@ -448,6 +448,7 @@ jumbo_source_set("browser_sources") {
+     "//ui/base/dragdrop/mojom:mojom_headers",
+   ]
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//build:chromeos_buildflags",
+     "//cc",
+     "//components/services/storage/public/cpp",

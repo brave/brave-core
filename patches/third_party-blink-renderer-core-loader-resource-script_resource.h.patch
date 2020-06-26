@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/script_resource.h b/third_party/blink/renderer/core/loader/resource/script_resource.h
+index 791b32f9ac206030011b39c0a288a3e965f4310f..5f6c40098a9ab9e6739dc246f7251fe9949315f1 100644
+--- a/third_party/blink/renderer/core/loader/resource/script_resource.h
++++ b/third_party/blink/renderer/core/loader/resource/script_resource.h
+@@ -37,6 +37,7 @@
+ #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
+ #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
+ 
++#include <string>
+ namespace blink {
+ 
+ class FetchParameters;
+@@ -220,6 +224,8 @@ class CORE_EXPORT ScriptResource final : public TextResource {
+   }
+ };
+ 
++std::string ScriptDigest(ScriptResource* resource);
++std::string ResourceDigest(Resource* resource);
+ }  // namespace blink
+ 
+ #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_RESOURCE_SCRIPT_RESOURCE_H_

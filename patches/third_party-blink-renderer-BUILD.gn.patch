@@ -10,3 +10,11 @@ index ef5698c08e09957b4e850c413ea7db3f17c41871..7055ec8f02531078e62b767e92b9c152
  
  # arguments --------------------------------------------------------------------
  
+@@ -47,6 +47,7 @@ config("inside_blink") {
+       "-Wno-sign-conversion",
+       "-Wno-implicit-float-conversion",
+       "-Wno-implicit-int-conversion",
++      "-Wno-undefined-bool-conversion",
+     ]
+ 
+     if (!is_chromeos_ash ||

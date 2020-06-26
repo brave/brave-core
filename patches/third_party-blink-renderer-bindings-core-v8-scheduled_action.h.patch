@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.h b/third_party/blink/renderer/bindings/core/v8/scheduled_action.h
+index 4f81e0c38007ca5ffaea7167f90f31ce4ce55236..12e26e92b9b1359800f56c38e6a04932ba0b9ed8 100644
+--- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.h
++++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.h
+@@ -78,6 +79,9 @@ class ScheduledAction final : public GarbageCollected<ScheduledAction>,
+   Member<V8Function> function_;
+   HeapVector<ScriptValue> arguments_;
+   String code_;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int parent_script_id_ = 0;
++// #endif
+ };
+ 
+ }  // namespace blink

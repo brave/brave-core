@@ -1,0 +1,18 @@
+diff --git a/third_party/blink/renderer/core/frame/screen.h b/third_party/blink/renderer/core/frame/screen.h
+index e0d8200d7dd68a2dd866212114f79ab6e25f72e6..9bff98d4d224f6ec3d933645aff409bb82cba3e6 100644
+--- a/third_party/blink/renderer/core/frame/screen.h
++++ b/third_party/blink/renderer/core/frame/screen.h
+@@ -107,6 +107,13 @@ class CORE_EXPORT Screen : public EventTargetWithInlineData,
+   // This member is only valid for Screen objects obtained via the experimental
+   // Window Placement API.
+   const String id_;
++  virtual int heightInternal() const;
++  virtual int widthInternal() const;
++  virtual unsigned colorDepthInternal() const;
++  virtual int availLeftInternal() const;
++  virtual int availTopInternal() const;
++  virtual int availHeightInternal() const;
++  virtual int availWidthInternal() const;
+ };
+ 
+ }  // namespace blink

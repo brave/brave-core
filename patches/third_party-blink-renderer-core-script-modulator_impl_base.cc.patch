@@ -1,0 +1,51 @@
+diff --git a/third_party/blink/renderer/core/script/modulator_impl_base.cc b/third_party/blink/renderer/core/script/modulator_impl_base.cc
+index c86c9be0937875dab55758aeec80a4d181b84b1b..495f3417d0d4a893ea9c7adac012ebb1f20ca4ad 100644
+--- a/third_party/blink/renderer/core/script/modulator_impl_base.cc
++++ b/third_party/blink/renderer/core/script/modulator_impl_base.cc
+@@ -22,13 +22,16 @@
+ #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ ExecutionContext* ModulatorImplBase::GetExecutionContext() const {
+   return ExecutionContext::From(script_state_);
+ }
+ 
+-ModulatorImplBase::ModulatorImplBase(ScriptState* script_state)
++ModulatorImplBase::ModulatorImplBase(ScriptState* script_state, ::brave_page_graph::PageGraph* page_graph, DOMNodeId initiator_elm_id)
+     : script_state_(script_state),
+       task_runner_(ExecutionContext::From(script_state_)
+                        ->GetTaskRunner(TaskType::kNetworking)),
+@@ -38,7 +44,9 @@ ModulatorImplBase::ModulatorImplBase(ScriptState* script_state)
+           this,
+           ExecutionContext::From(script_state_))),
+       dynamic_module_resolver_(
+-          MakeGarbageCollected<DynamicModuleResolver>(this)) {
++          MakeGarbageCollected<DynamicModuleResolver>(this)),
++      page_graph_(page_graph),
++      initiator_(initiator_elm_id) {
+   DCHECK(script_state_);
+   DCHECK(task_runner_);
+ }
+@@ -220,6 +228,7 @@ void ModulatorImplBase::ResolveDynamically(
+     const ModuleRequest& module_request,
+     const KURL& referrer_url,
+     const ReferrerScriptInfo& referrer_info,
++    const ::brave_page_graph::ScriptId referrer_script_id,
+     ScriptPromiseResolver* resolver) {
+   String reason;
+   if (IsDynamicImportForbidden(&reason)) {
+@@ -230,7 +239,8 @@ void ModulatorImplBase::ResolveDynamically(
+   UseCounter::Count(GetExecutionContext(),
+                     WebFeature::kDynamicImportModuleScript);
+   dynamic_module_resolver_->ResolveDynamically(module_request, referrer_url,
+-                                               referrer_info, resolver);
++                                               referrer_info, referrer_script_id, page_graph_,
++                                               resolver);
+ }
+ 
+ // <specdef href="https://html.spec.whatwg.org/C/#hostgetimportmetaproperties">

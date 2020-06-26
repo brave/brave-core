@@ -1,0 +1,74 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
+index aa5720bd81d5f714ce91484e0804220aa1d88e55..6f9a3f55f8a604dd6501f6e164753d4dddf799d7 100644
+--- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
++++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
+@@ -71,6 +71,11 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
+ namespace blink {
+ 
+ void ScriptController::Trace(Visitor* visitor) {
+@@ -130,6 +135,57 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+              .ToLocal(&script))
+       return result;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      ScriptSourceLocationType script_location = source.SourceLocationType();
++      if (script_location != ScriptSourceLocationType::kInspector) {
++        ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
++          ->GetPageGraph();
++        if (page_graph != nullptr) {
++          const int script_id = script->GetUnboundScript()->GetId();
++          if (script_location ==
++              ScriptSourceLocationType::kEvalForScheduledAction) {
++            page_graph->RegisterScriptCompilationFromEval(
++                source.ParentScriptId(), script_id, source.Source().ToString());
++          } else {
++            ::brave_page_graph::ScriptType type;
++            switch (script_location) {
++              case ScriptSourceLocationType::kExternalFile:
++                type = ::brave_page_graph::ScriptType::kExternalFile;
++                break;
++              case ScriptSourceLocationType::kInline:
++                type = ::brave_page_graph::ScriptType::kInline;
++                break;
++              case ScriptSourceLocationType::kInlineInsideDocumentWrite:
++                type =
++                  ::brave_page_graph::ScriptType::kInlineInsideDocumentWrite;
++                break;
++              case ScriptSourceLocationType::kInlineInsideGeneratedElement:
++                type =
++                  ::brave_page_graph::ScriptType::kInlineInsideGeneratedElement;
++                break;
++              case ScriptSourceLocationType::kInternal:
++                type = ::brave_page_graph::ScriptType::kInternal;
++                break;
++              case ScriptSourceLocationType::kJavascriptUrl:
++                type = ::brave_page_graph::ScriptType::kJavascriptUrl;
++                break;
++              case ScriptSourceLocationType::kEvalForScheduledAction:
++                type = ::brave_page_graph::ScriptType::kEvalForScheduledAction;
++                break;
++              case ScriptSourceLocationType::kInspector:
++              default:
++                type = ::brave_page_graph::ScriptType::kInspector;
++                break;
++            }
++            if (script_location == ScriptSourceLocationType::kJavascriptUrl)
++              page_graph->RegisterJavaScriptURL(source);
++            page_graph->RegisterScriptCompilation(source, script_id, type);
++          }
++        }
++      }
++    }
++// #endif
+     v8::MaybeLocal<v8::Value> maybe_result;
+     maybe_result = V8ScriptRunner::RunCompiledScript(GetIsolate(), script,
+                                                      GetFrame()->DomWindow());

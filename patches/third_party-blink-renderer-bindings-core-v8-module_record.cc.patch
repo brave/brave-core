@@ -1,0 +1,52 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/module_record.cc b/third_party/blink/renderer/bindings/core/v8/module_record.cc
+index c3f7edf41a2416a0693abf179bb888af5ec8248d..a89794178f99b246fbb6c489e756107b722e91b2 100644
+--- a/third_party/blink/renderer/bindings/core/v8/module_record.cc
++++ b/third_party/blink/renderer/bindings/core/v8/module_record.cc
+@@ -21,6 +21,11 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/wtf.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++// #endif
++
+ namespace blink {
+ 
+ ModuleRecordProduceCacheData::ModuleRecordProduceCacheData(
+@@ -85,6 +90,22 @@ v8::Local<v8::Module> ModuleRecord::Compile(
+   }
+   DCHECK(!try_catch.HasCaught());
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph =
++        brave_page_graph::PageGraph::GetFromIsolate(*isolate);
++    if (page_graph != nullptr) {
++      int script_id = module->GetModuleScriptId();
++      if (script_id != 0) {
++        page_graph->RegisterUrlForScriptSource(params.BaseURL(), params.GetSourceText());
++        page_graph->RegisterScriptCompilation(
++            params.GetSourceText(), script_id,
++            brave_page_graph::ScriptType::kScriptTypeModule);
++      }
++    }
++  }
++// #endif
++
+   if (out_produce_cache_data) {
+     *out_produce_cache_data =
+         MakeGarbageCollected<ModuleRecordProduceCacheData>(
+@@ -187,7 +209,11 @@ v8::MaybeLocal<v8::Module> ModuleRecord::ResolveModuleCallback(
+     v8::Local<v8::FixedArray> import_assertions,
+     v8::Local<v8::Module> referrer) {
+   v8::Isolate* isolate = context->GetIsolate();
+-  Modulator* modulator = Modulator::From(ScriptState::From(context));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Modulator* modulator = Modulator::From(ScriptState::From(context), nullptr, 0);
++// #else
++//  Modulator* modulator = Modulator::From(ScriptState::From(context));
++// #endif
+   DCHECK(modulator);
+ 
+   ModuleRequest module_request(

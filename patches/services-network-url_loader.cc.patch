@@ -1,0 +1,35 @@
+diff --git a/services/network/url_loader.cc b/services/network/url_loader.cc
+index 9f5850c6870b4d82e40c6ef9429c17512cec1455..dfc2da1d40c1308a8a3a32e13d26ce927fe3851c 100644
+--- a/services/network/url_loader.cc
++++ b/services/network/url_loader.cc
+@@ -529,8 +529,14 @@ URLLoader::URLLoader(
+       peer_closed_handle_watcher_(FROM_HERE,
+                                   mojo::SimpleWatcher::ArmingPolicy::MANUAL,
+                                   base::SequencedTaskRunnerHandle::Get()),
+-      want_raw_headers_(request.report_raw_headers),
+-      devtools_request_id_(request.devtools_request_id),
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      // PG hack: always want/report raw headers
++      want_raw_headers_(true),
++      report_raw_headers_(true),
++// #else
++//      want_raw_headers_(request.report_raw_headers),
++//      devtools_request_id_(request.devtools_request_id),
++// #endif
+       request_mode_(request.mode),
+       request_credentials_mode_(request.credentials_mode),
+       request_destination_(request.destination),
+@@ -1700,7 +1706,12 @@ int32_t URLLoader::GetProcessId() const {
+ }
+ 
+ void URLLoader::SetAllowReportingRawHeaders(bool allow) {
+-  report_raw_headers_ = want_raw_headers_ && allow;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // PG hack: always report raw headers
++  report_raw_headers_ = true;
++// #else
++//   report_raw_headers_ = want_raw_headers_ && allow;
++// #endif
+ }
+ 
+ uint32_t URLLoader::GetResourceType() const {

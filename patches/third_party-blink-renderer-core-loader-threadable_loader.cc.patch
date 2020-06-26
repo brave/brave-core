@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/core/loader/threadable_loader.cc b/third_party/blink/renderer/core/loader/threadable_loader.cc
+index 2eabb5f8cf76cd0401b4ec66238c427f4a79c3b1..d9c103a53e30e2ba0a86d4f215950f553dfdefaf 100644
+--- a/third_party/blink/renderer/core/loader/threadable_loader.cc
++++ b/third_party/blink/renderer/core/loader/threadable_loader.cc
+@@ -153,15 +153,15 @@ void ThreadableLoader::LoadRequest(
+   if (request_context == mojom::blink::RequestContextType::VIDEO ||
+       request_context == mojom::blink::RequestContextType::AUDIO) {
+     DCHECK(async);
+-    RawResource::FetchMedia(params, resource_fetcher_, this);
++    raw_resource_ = RawResource::FetchMedia(params, resource_fetcher_, this);
+   } else if (request_context == mojom::blink::RequestContextType::MANIFEST) {
+     DCHECK(async);
+-    RawResource::FetchManifest(params, resource_fetcher_, this);
++    raw_resource_ = RawResource::FetchManifest(params, resource_fetcher_, this);
+   } else if (async) {
+-    RawResource::Fetch(params, resource_fetcher_, this);
++    raw_resource_ = RawResource::Fetch(params, resource_fetcher_, this);
+   } else {
+-    RawResource::FetchSynchronously(params, resource_fetcher_, this);
++    raw_resource_ = RawResource::FetchSynchronously(params, resource_fetcher_, this);
+   }
+ }
+ 
+ ThreadableLoader::~ThreadableLoader() {}
+@@ -1079,7 +1079,11 @@ Document* ThreadableLoader::GetDocument() const {
+   client->DidFail(error);
+ }
+ 
++RawResource* ThreadableLoader::GetRawResource() const {
++  return raw_resource_;
++}
+ void ThreadableLoader::Trace(Visitor* visitor) const {
++  visitor->Trace(raw_resource_);
+   visitor->Trace(execution_context_);
+   visitor->Trace(client_);
+   visitor->Trace(resource_fetcher_);

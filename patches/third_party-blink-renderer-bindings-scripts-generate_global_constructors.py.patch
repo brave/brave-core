@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/generate_global_constructors.py b/third_party/blink/renderer/bindings/scripts/generate_global_constructors.py
+index 8a571d5a68ae7b282af25e05fd512dd3f5a25297..bd1a66e87689ffdc70d818969be27805d33d4a1a 100755
+--- a/third_party/blink/renderer/bindings/scripts/generate_global_constructors.py
++++ b/third_party/blink/renderer/bindings/scripts/generate_global_constructors.py
+@@ -123,7 +123,9 @@ def generate_global_constructors_list(interface_name, extended_attributes):
+           extended_attributes[name]) if extended_attributes[name] else '')
+         for name in [
+             'RuntimeEnabled', 'ContextEnabled', 'CrossOriginIsolated',
+-            'DirectSocketEnabled', 'SecureContext'
++            'DirectSocketEnabled', 'SecureContext',
++            # @pagegraph
++            'TrackInPageGraph', 'TrackInPageGraphAs'
+         ] if name in extended_attributes
+     ]
+ 

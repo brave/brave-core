@@ -1,0 +1,123 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_use_element.cc b/third_party/blink/renderer/core/svg/svg_use_element.cc
+index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab9d707226 100644
+--- a/third_party/blink/renderer/core/svg/svg_use_element.cc
++++ b/third_party/blink/renderer/core/svg/svg_use_element.cc
+@@ -48,6 +48,9 @@
+ #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
+ namespace blink {
+ 
+ SVGUseElement::SVGUseElement(Document& document)
+@@ -316,7 +322,16 @@ Element* SVGUseElement::ResolveTargetElement() {
+   }
+   if (!document_content_ || !document_content_->GetDocument())
+     return nullptr;
+-  return document_content_->GetDocument()->getElementById(element_identifier);
++  auto* element = document_content_->GetDocument()->getElementById(element_identifier);
++  {
++    if (GetDocument().GetPageGraph() != nullptr) {
++      GetDocument().GetPageGraph()->TryRegisterHTMLElementNodeCreated(
++          DOMNodeIds::IdForNode(element),
++          element->tagName(),
++          brave_page_graph::ElementType::kElementTypeDefault);
++    }
++  }
++  return element;
+ }
+ 
+ SVGElement* SVGUseElement::InstanceRoot() const {
+@@ -347,7 +364,11 @@ void SVGUseElement::BuildPendingResource() {
+ 
+   if (auto* target = DynamicTo<SVGElement>(ResolveTargetElement())) {
+     DCHECK(target->isConnected());
+-    AttachShadowTree(*target);
++    AttachShadowTree(*target
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                     , GetDocument().GetPageGraph()
++// #endif
++        );
+   }
+   DCHECK(!needs_shadow_tree_recreation_);
+ }
+@@ -369,13 +390,27 @@ String SVGUseElement::title() const {
+ }
+ 
+ static void AssociateCorrespondingElements(SVGElement& target_root,
+-                                           SVGElement& instance_root) {
++                                           SVGElement& instance_root
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                           , brave_page_graph::PageGraph* pg
++// #endif
++    ) {
+   auto target_range =
+       Traversal<SVGElement>::InclusiveDescendantsOf(target_root);
+   auto target_iterator = target_range.begin();
+   for (SVGElement& instance :
+        Traversal<SVGElement>::InclusiveDescendantsOf(instance_root)) {
+     DCHECK(!instance.CorrespondingElement());
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      if (pg != nullptr) {
++        pg->TryRegisterHTMLElementNodeCreated(
++            DOMNodeIds::IdForNode(&instance),
++            instance.tagName(),
++            brave_page_graph::ElementType::kElementTypeDefault);
++      }
++    }
++// #endif
+     instance.SetCorrespondingElement(&*target_iterator);
+     ++target_iterator;
+   }
+@@ -414,7 +449,11 @@ static void MoveChildrenToReplacementElement(ContainerNode& source_root,
+   }
+ }
+ 
+-SVGElement* SVGUseElement::CreateInstanceTree(SVGElement& target_root) const {
++SVGElement* SVGUseElement::CreateInstanceTree(SVGElement& target_root
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        , brave_page_graph::PageGraph* pg
++// #endif
++    ) const {
+   SVGElement* instance_root = &To<SVGElement>(target_root.CloneWithChildren());
+   if (IsA<SVGSymbolElement>(target_root)) {
+     // Spec: The referenced 'symbol' and its contents are deep-cloned into
+@@ -435,12 +474,20 @@ SVGElement* SVGUseElement::CreateInstanceTree(SVGElement& target_root) const {
+     instance_root = svg_element;
+   }
+   TransferUseWidthAndHeightIfNeeded(*this, *instance_root, target_root);
+-  AssociateCorrespondingElements(target_root, *instance_root);
++  AssociateCorrespondingElements(target_root, *instance_root
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++          , pg
++// #endif
++      );
+   RemoveDisallowedElementsFromSubtree(*instance_root);
+   return instance_root;
+ }
+ 
+-void SVGUseElement::AttachShadowTree(SVGElement& target) {
++void SVGUseElement::AttachShadowTree(SVGElement& target,
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        brave_page_graph::PageGraph* pg
++// #endif
++    ) {
+   DCHECK(!InstanceRoot());
+   DCHECK(!needs_shadow_tree_recreation_);
+ 
+@@ -451,7 +498,11 @@ void SVGUseElement::AttachShadowTree(SVGElement& target) {
+   // Set up root SVG element in shadow tree.
+   // Clone the target subtree into the shadow tree, not handling <use> and
+   // <symbol> yet.
+-  UseShadowRoot().AppendChild(CreateInstanceTree(target));
++  UseShadowRoot().AppendChild(CreateInstanceTree(target
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                                 , pg
++// #endif
++      ));
+ 
+   // Assure shadow tree building was successful.
+   DCHECK(InstanceRoot());

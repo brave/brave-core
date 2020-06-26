@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/core/html/html_link_element.cc b/third_party/blink/renderer/core/html/html_link_element.cc
+index f5efe07788b8a614830ba81b6adb8dfc3fc8446e..7acc01ee90872a6fd5d7bea84ead22bce1bd1bce 100644
+--- a/third_party/blink/renderer/core/html/html_link_element.cc
++++ b/third_party/blink/renderer/core/html/html_link_element.cc
+@@ -61,7 +61,9 @@ HTMLLinkElement::HTMLLinkElement(Document& document,
+                                              html_names::kResourcesAttr)),
+       scopes_(
+           MakeGarbageCollected<DOMTokenList>(*this, html_names::kScopesAttr)),
+-      created_by_parser_(flags.IsCreatedByParser()) {}
++      created_by_parser_(flags.IsCreatedByParser()) {
++  link_loader_->SetHTMLLinkElementOwner(this);
++}
+ 
+ HTMLLinkElement::~HTMLLinkElement() = default;
+ 

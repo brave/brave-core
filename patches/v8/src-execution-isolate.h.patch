@@ -1,0 +1,56 @@
+diff --git a/src/execution/isolate.h b/src/execution/isolate.h
+index 037e6ea7f59d0b917dc766adab3a20a716d025ce..65062c8ab2bb0ab2081e487038737cb717188a6a 100644
+--- a/src/execution/isolate.h
++++ b/src/execution/isolate.h
+@@ -1517,6 +1518,38 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+ 
+   bool HasClientIsolates() const { return client_isolate_head_; }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int GetExecutingScriptId(int* out_script_position = nullptr);
++  void GetAllExecutingScripts(std::function<void(int, int)> callback);
++
++  EvalScriptCompiledFunc GetEvalScriptCompiledFunc() const {
++    return eval_script_compiled_func_;
++  }
++
++  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func) {
++    eval_script_compiled_func_ = func;
++  }
++
++  BuiltInFuncCallFunc GetBuiltInFuncCallFunc() const {
++    return built_in_func_call_func_;
++  }
++
++  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func) {
++    built_in_func_call_func_ = func;
++  }
++
++  BuiltInFuncResponseFunc GetBuiltInFuncResponseFunc() const {
++    return built_in_func_response_func_;
++  }
++
++  void SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func) {
++    built_in_func_response_func_ = func;
++  }
++
++  void ReportBuiltInCallAndResponse(const char* func_name,
++    const std::vector<const std::string>& args, const std::string& result);
++// #endif
++
+  private:
+   explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator,
+                    bool is_shared);
+@@ -1856,6 +1889,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+   // in case of a crash.
+   AddCrashKeyCallback add_crash_key_callback_ = nullptr;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  EvalScriptCompiledFunc eval_script_compiled_func_ = nullptr;
++  BuiltInFuncCallFunc built_in_func_call_func_ = nullptr;
++  BuiltInFuncResponseFunc built_in_func_response_func_ = nullptr;
++// #endif
++
+   // Delete new/delete operators to ensure that Isolate::New() and
+   // Isolate::Delete() are used for Isolate creation and deletion.
+   void* operator new(size_t, void* ptr) { return ptr; }

@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_script_element.h b/third_party/blink/renderer/core/svg/svg_script_element.h
+index 91c98f76fb00ed4144f24c6e0d8e8abade49909f..63a9160eade218ce0b50b16e14ef44dca37ee3d8 100644
+--- a/third_party/blink/renderer/core/svg/svg_script_element.h
++++ b/third_party/blink/renderer/core/svg/svg_script_element.h
+@@ -29,6 +29,7 @@
+ #include "third_party/blink/renderer/platform/bindings/parkable_string.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+ namespace blink {
+ 
+ class ScriptLoader;
+@@ -97,6 +101,7 @@ class SVGScriptElement final : public SVGElement,
+   ExecutionContext* GetExecutionContext() const override;
+   void DispatchLoadEvent() override;
+   void DispatchErrorEvent() override;
++  DOMNodeId GetDOMNodeId() const override { return DOMNodeIds::IdForNode((Node*) this); }
+ 
+   Type GetScriptElementType() override;
+ 

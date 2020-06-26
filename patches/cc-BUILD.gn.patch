@@ -1,0 +1,30 @@
+diff --git a/cc/BUILD.gn b/cc/BUILD.gn
+index 87888ce868a93ccfc3d0f91c283107112c9c3f59..d8f7630a73788a480dca4c3c6f5182e220f6193b 100644
+--- a/cc/BUILD.gn
++++ b/cc/BUILD.gn
+@@ -6,7 +6,24 @@ import("//gpu/vulkan/features.gni")
+ if (is_android) {
+   import("//build/config/android/rules.gni")
+ }
+ 
++config("cc_cflags") {
++  cflags = []
++
++  if (is_clang) {
++    cflags += [ "-Wno-undefined-bool-conversion" ]
++  }
++
++  if (is_win) {
++    # TODO(vmpstr): Some SoftwareImageDecodeCacheTests use virtual inheritance,
++    # which MSVC doesn't like. Suppress "Foo inherits Bar via dominance"
++    # warnings for now.
++    cflags += [ "/wd4250" ]
++  }
++}
++
+ cc_component("cc") {
++  configs = [ ":cc_cflags" ]
++
+   sources = [
+     "benchmarks/benchmark_instrumentation.cc",
+     "benchmarks/benchmark_instrumentation.h",

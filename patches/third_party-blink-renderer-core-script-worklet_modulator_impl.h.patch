@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/core/script/worklet_modulator_impl.h b/third_party/blink/renderer/core/script/worklet_modulator_impl.h
+index cfd769b9467b47ad3f888ed4f01346e7ac02c8bf..fe65cc15b4fc266b6e27ec0c5b80053dcab02815 100644
+--- a/third_party/blink/renderer/core/script/worklet_modulator_impl.h
++++ b/third_party/blink/renderer/core/script/worklet_modulator_impl.h
+@@ -9,6 +9,11 @@
+ 
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ class ModuleScriptFetcher;
+@@ -19,7 +24,7 @@ class ScriptState;
+ // context should be implemented in this class, not in ModulatorImplBase.
+ class WorkletModulatorImpl final : public ModulatorImplBase {
+  public:
+-  explicit WorkletModulatorImpl(ScriptState*);
++  explicit WorkletModulatorImpl(ScriptState*, ::brave_page_graph::PageGraph*, DOMNodeId);
+ 
+   // Implements ModulatorImplBase.
+   ModuleScriptFetcher* CreateModuleScriptFetcher(

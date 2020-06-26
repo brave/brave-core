@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+index 15c2ebe09f8fcf9464b42c934a003b071de27849..795bc42f55a0cd73f1cef0e89971a0c77965f427 100644
+--- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
++++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+@@ -70,6 +70,7 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,
+                                  const String& handler)
+     : script_state_(
+           MakeGarbageCollected<ScriptStateProtectingContext>(script_state)) {
++  parent_script_id_ = script_state->GetIsolate()->GetExecutingScriptId();
+   if (script_state->World().IsWorkerWorld() ||
+       BindingSecurity::ShouldAllowAccessTo(
+           EnteredDOMWindow(script_state->GetIsolate()),
+@@ -150,8 +151,10 @@ void ScheduledAction::Execute(ExecutionContext* context) {
+   // TODO(crbug.com/1133238): Plumb base URL etc. from the initializing script.
+   DVLOG(1) << "ScheduledAction::execute " << this << ": executing from source";
+   v8::HandleScope scope(script_state_->GetIsolate());
++  ScriptSourceCode source_code(code_,
++                       ScriptSourceLocationType::kEvalForScheduledAction);
++  source_code.SetParentScriptId(parent_script_id_);
+   ClassicScript* script = MakeGarbageCollected<ClassicScript>(
+-      ScriptSourceCode(code_,
+-                       ScriptSourceLocationType::kEvalForScheduledAction),
++      source_code,
+       KURL(), ScriptFetchOptions(), SanitizeScriptErrors::kDoNotSanitize);
+   script->RunScriptOnScriptStateAndReturnValue(script_state_->Get());

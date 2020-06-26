@@ -1,0 +1,70 @@
+diff --git a/third_party/blink/renderer/core/loader/image_loader.cc b/third_party/blink/renderer/core/loader/image_loader.cc
+index a5f02639f9bbf10221fb5a34e1580613764787aa..1ae76f1e7b9cbdd890163e71611f3cb0449eeeaf 100644
+--- a/third_party/blink/renderer/core/loader/image_loader.cc
++++ b/third_party/blink/renderer/core/loader/image_loader.cc
+@@ -23,6 +23,7 @@
+ #include "third_party/blink/renderer/core/loader/image_loader.h"
+ 
+ #include <memory>
++#include <sstream>
+ #include <utility>
+ 
+ #include "third_party/blink/public/mojom/fetch/fetch_api_request.mojom-blink.h"
+@@ -69,6 +70,16 @@
+ #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+ #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++
++#include "third_party/blink/renderer/core/loader/resource/image_resource.h"
++
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -572,7 +583,16 @@ void ImageLoader::DoUpdateFromElement(
+           PreviewsTypes::kSubresourceRedirectOn);
+     }
+ 
+-    new_image_content = ImageResourceContent::Fetch(params, document.Fetcher());
++    new_image_content = ImageResourceContent::Fetch(params, document.Fetcher(), &inspector_id_);
++    {
++      ::brave_page_graph::PageGraph* page_graph = element_->GetDocument().GetPageGraph();
++      if (page_graph != nullptr) {
++        auto node_id = DOMNodeIds::IdForNode(element_);
++        page_graph->RegisterRequestStartFromElm(
++          node_id, inspector_id_, url,
++          ::brave_page_graph::RequestType::kRequestTypeImage);
++      }
++    }
+ 
+     // If this load is starting while navigating away, treat it as an auditing
+     // keepalive request, and don't report its results back to the element.
+@@ -816,6 +841,22 @@ void ImageLoader::ImageNotifyFinished(ImageResourceContent* resource) {
+   if (html_image_element)
+     LazyImageHelper::RecordMetricsOnLoadFinished(html_image_element);
+ 
++  {
++    ::brave_page_graph::PageGraph* page_graph = element_->GetDocument()
++        .GetPageGraph();
++    if (page_graph != nullptr) {
++      const ResourceResponse& rep = content->GetResponse();
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
++
++      if (content->ErrorOccurred()) {
++        page_graph->RegisterRequestError(inspector_id_, metadata);
++      } else {
++        page_graph->RegisterRequestComplete(inspector_id_,
++            ResourceType::kImage, metadata,
++            ImageDigest(image_content_->GetImage()));
++      }
++    }
++  }
+   if (content->ErrorOccurred()) {
+     pending_load_event_.Cancel();
+ 

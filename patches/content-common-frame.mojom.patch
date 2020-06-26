@@ -1,0 +1,15 @@
+diff --git a/content/common/frame.mojom b/content/common/frame.mojom
+index 118765f9323faae3782ea69d6063174dcf5c4373..131728edfcaf1f705b68c92c5a5e956e2a6f47e8 100644
+--- a/content/common/frame.mojom
++++ b/content/common/frame.mojom
+@@ -330,6 +330,10 @@ struct RemoteMainFrameInterfaces {
+ // KEEP THE COMMIT FUNCTIONS IN SYNC in content/common/navigation_client.mojom.
+ // These will eventually be removed from Frame.
+ interface Frame {
++  // Record that a resource was blocked by an ad filter.
++  RegisterResourceBlockAd(url.mojom.Url url, string rule);
++  // Record that a resource was blocked by an ad filter.
++  RegisterResourceBlockTracker(url.mojom.Url url, string host);
+   // Tells the renderer that a same-document navigation should be committed.
+   // The renderer will return a status value indicating whether the commit
+   // could proceed as expected or not. In particular, it might be necessary to

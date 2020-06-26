@@ -1,0 +1,99 @@
+diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
+index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..38eb494022589775e30934d1a264a551e7cbf615 100644
+--- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
++++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
+@@ -100,6 +100,18 @@
+ #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
++
++#include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
++
++#include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
++
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -1156,6 +1168,25 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+   loader_->SetTimeout(timeout_);
+   base::TimeTicks start_time = base::TimeTicks::Now();
+   loader_->Start(std::move(request));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    // Will happen if the frame is destroyed before the request goes out,
++    // as a result of the MakeGarbageCollected wrapped ThreadableLoader
++    // instance.
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph =
++          ::brave_page_graph::PageGraph::GetFromExecutionContext(*GetExecutionContext());
++        if (page_graph != nullptr) {
++          page_graph->RegisterRequestStartFromCurrentScript(
++            raw_resource->InspectorId(), url_,
++            brave_page_graph::RequestType::kRequestTypeAJAX);
++        }
++      }
++    }
++  }
++// #endif
+ 
+   if (!async_) {
+     base::TimeDelta blocking_time = base::TimeTicks::Now() - start_time;
+@@ -1346,6 +1377,23 @@ void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
+ 
+   probe::DidFinishXHR(GetExecutionContext(), this);
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph =
++            ::brave_page_graph::PageGraph::GetFromExecutionContext(
++                *GetExecutionContext());
++        if (page_graph != nullptr) {
++          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
++          page_graph->RegisterRequestError(raw_resource->InspectorId(), response_metadata);
++        }
++      }
++    }
++  }
++// #endif
++
+   send_flag_ = false;
+   if (!async_) {
+     DCHECK_NE(exception_code, DOMExceptionCode::kNoError);
+@@ -1790,6 +1838,25 @@ void XMLHttpRequest::NotifyParserStopped() {
+ void XMLHttpRequest::EndLoading() {
+   probe::DidFinishXHR(GetExecutionContext(), this);
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph =
++            ::brave_page_graph::PageGraph::GetFromExecutionContext(
++                *GetExecutionContext());
++        if (page_graph != nullptr) {
++          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
++          page_graph->RegisterRequestComplete(raw_resource->InspectorId(), raw_resource->GetType(),
++                                              response_metadata,
++                                              ResourceDigest(raw_resource));
++        }
++      }
++    }
++  }
++// #endif
++
+   if (loader_) {
+     // Set |m_error| in order to suppress the cancel notification (see
+     // XMLHttpRequest::didFail).

@@ -1,0 +1,28 @@
+diff --git a/src/d8/d8.cc b/src/d8/d8.cc
+index dd00c58288f8e8a63da12c87ddd47489af5840b3..8bf4f25a96363f374450831042e8f98792c90dbc 100644
+--- a/src/d8/d8.cc
++++ b/src/d8/d8.cc
+@@ -85,6 +85,10 @@
+     if (i::FLAG_trace_backing_store) PrintF(__VA_ARGS__); \
+   } while (false)
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++// #endif
++
+ namespace v8 {
+ 
+ namespace {
+@@ -1113,6 +1117,12 @@ void PerIsolateData::SetTimeout(Local<Function> callback,
+                                 Local<Context> context) {
+   set_timeout_callbacks_.emplace(isolate_, callback);
+   set_timeout_contexts_.emplace(isolate_, context);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    internal::Isolate i_isolate = reinterpret_cast<internal::Isolate*>(isolate_);
++    i_isolate->ReportBuiltInCallAndResponse("setTimeout", {}, "");
++  }
++// #endif
+ }
+ 
+ MaybeLocal<Function> PerIsolateData::GetTimeoutCallback() {

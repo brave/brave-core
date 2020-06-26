@@ -2,6 +2,75 @@ diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc 
 index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc57a01253 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
+@@ -90,6 +90,8 @@
+ #include "ui/base/resource/scale_factor.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <string>
+ namespace blink {
+ 
+ namespace {
+@@ -307,6 +313,59 @@ CanvasRenderingContext* HTMLCanvasElement::GetCanvasRenderingContext(
+ 
+   if (ContentsCcLayer() != old_contents_cc_layer)
+     OnContentsCcLayerChanged();
++  {
++    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(type);
++      std::stringstream buffer;
++      buffer << "alpha: " << attributes.alpha
++        << ", antialias: " << attributes.antialias
++        << ", color_space: " << attributes.color_space
++        << ", depth: " << attributes.depth
++        << ", fail_if_major_performance_caveat: "
++          << attributes.fail_if_major_performance_caveat
++        << ", desynchronized: " << attributes.desynchronized
++        << ", pixel_format: " << attributes.pixel_format
++        << ", premultiplied_alpha: " << attributes.premultiplied_alpha
++        << ", preserve_drawing_buffer: " << attributes.preserve_drawing_buffer
++        << ", power_preference: " << attributes.power_preference
++        << ", stencil: " << attributes.stencil
++        << ", xr_compatible: " << attributes.xr_compatible;
++      args.push_back(buffer.str().c_str());
++
++      page_graph->RegisterWebAPICall("HTMLCanvasElement.getContext", args);
++
++      String res = "<null>";
++      if (result != nullptr) {
++        switch (result->GetContextType()) {
++          case CanvasRenderingContext::kContext2D:
++            res = "CanvasRenderingContext: 2d";
++            break;
++          case CanvasRenderingContext::kContextExperimentalWebgl:
++            res = "CanvasRenderingContext: experimental-webgl";
++            break;
++          case CanvasRenderingContext::kContextWebgl:
++            res = "CanvasRenderingContext: webgl";
++            break;
++          case CanvasRenderingContext::kContextWebgl2:
++            res = "CanvasRenderingContext: webgl2";
++            break;
++          case CanvasRenderingContext::kContextImageBitmap:
++            res = "CanvasRenderingContext: bitmaprenderer";
++            break;
++          case CanvasRenderingContext::kContextGPUPresent:
++            res = "CanvasRenderingContext: gpupresent";
++            break;
++          default:
++            res = "CanvasRenderingContext: unknown context type";
++            break;
++        }
++      }
++
++      page_graph->RegisterWebAPIResult("HTMLCanvasElement.getContext", res);
++    }
++  }
+   return result;
+ }
+ 
 @@ -929,6 +929,7 @@ String HTMLCanvasElement::ToDataURLInternal(
      if (!data_buffer)
        return String("data:,");
@@ -10,3 +79,51 @@ index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc
      String data_url = data_buffer->ToDataURL(encoding_mime_type, quality);
      base::TimeDelta elapsed_time = base::TimeTicks::Now() - start_time;
      float sqrt_pixels =
+@@ -940,6 +1006,30 @@ String HTMLCanvasElement::toDataURL(const String& mime_type,
+     if (v8_value->IsNumber())
+       quality = v8_value.As<v8::Number>()->Value();
+   }
++
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String result = ToDataURLInternal(mime_type, quality, kBackBuffer);
++    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      if (!mime_type.IsEmpty()) {
++        args.push_back(mime_type);
++      }
++      if (quality != kUndefinedQualityValue) {
++        String quality_string(std::to_string(quality).c_str());
++        args.push_back(quality_string);
++      }
++
++      page_graph->RegisterWebAPICall("HTMLCanvasElement.toDataURL", args);
++
++      page_graph->RegisterWebAPIResult("HTMLCanvasElement.toDataURL", result);
++    }
++
++    return result;
++  }
++// #endif
++
+   return ToDataURLInternal(mime_type, quality, kBackBuffer);
+ }
+ 
+@@ -986,6 +1076,16 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+             : 0);
+   }
+ 
++  {
++    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(callback->NameInHeapSnapshot());
++      args.push_back(ImageEncodingMimeTypeName(encoding_mime_type));
++      args.push_back(String(std::to_string(quality).c_str()));
++      page_graph->RegisterWebAPICall("HTMLCanvasElement.toBlob", args);
++    }
++  }
+   if (async_creator) {
+     async_creator->ScheduleAsyncBlobCreation(quality);
+   } else {

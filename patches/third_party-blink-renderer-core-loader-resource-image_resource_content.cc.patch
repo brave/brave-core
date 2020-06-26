@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/image_resource_content.cc b/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
+index 854baaa5e41d312c7a64bcdcd030a0cec2cc00bc..e8b9d1934d32ac192430eee202c6824189cbe3b2 100644
+--- a/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
++++ b/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
+@@ -25,6 +25,12 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ #include "v8/include/v8.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++namespace brave_page_graph {
++using InspectorId = uint64_t;
++}
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -139,6 +145,18 @@ ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
+   return resource->GetContent();
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
++                                                  ResourceFetcher* fetcher,
++                                                  brave_page_graph::InspectorId* identifier) {
++  ImageResource* resource = ImageResource::Fetch(params, fetcher);
++  if (!resource)
++    return nullptr;
++  *identifier = resource->InspectorId();
++  return resource->GetContent();
++}
++// #endif
++
+ void ImageResourceContent::SetImageResourceInfo(ImageResourceInfo* info) {
+   info_ = info;
+ }

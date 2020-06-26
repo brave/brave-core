@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/core/html/html_script_element.h b/third_party/blink/renderer/core/html/html_script_element.h
+index dc5f7fb99a6374933030659e8e8a17e8c9c9040f..3869913037e21473776474958165e61b0d724307 100644
+--- a/third_party/blink/renderer/core/html/html_script_element.h
++++ b/third_party/blink/renderer/core/html/html_script_element.h
+@@ -32,6 +32,7 @@
+ #include "third_party/blink/renderer/platform/bindings/parkable_string.h"
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+ namespace blink {
+ 
+ class StringOrTrustedScript;
+@@ -106,6 +110,7 @@ class CORE_EXPORT HTMLScriptElement final : public HTMLElement,
+                                const String& script_content) override;
+   void DispatchLoadEvent() override;
+   void DispatchErrorEvent() override;
++  DOMNodeId GetDOMNodeId() const override { return DOMNodeIds::IdForNode((Node*) this); }
+ 
+   Type GetScriptElementType() override;
+ 

@@ -1,0 +1,142 @@
+diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
+index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb4dad8277 100644
+--- a/third_party/blink/renderer/core/script/script_loader.cc
++++ b/third_party/blink/renderer/core/script/script_loader.cc
+@@ -71,6 +71,11 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_view.h"
+ 
++#include "third_party/blink/renderer/core/html/html_script_element.h"
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "third_party/blink/renderer/core/svg/svg_script_element.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ ScriptLoader::ScriptLoader(ScriptElementBase* element,
+@@ -110,6 +118,10 @@ void ScriptLoader::Trace(Visitor* visitor) {
+   visitor->Trace(pending_script_);
+   visitor->Trace(prepared_pending_script_);
+   visitor->Trace(resource_keep_alive_);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  visitor->Trace(script_elm_html_);
++  visitor->Trace(script_elm_svg_);
++// #endif
+   PendingScriptClient::Trace(visitor);
+ }
+ 
+@@ -363,7 +375,7 @@ bool IsImportMapEnabled(LocalDOMWindow* context_window) {
+     return true;
+ 
+   Modulator* modulator =
+-      Modulator::From(ToScriptStateForMainWorld(context_window->GetFrame()));
++      Modulator::From(ToScriptStateForMainWorld(context_window->GetFrame()), nullptr, 0);
+   if (!modulator)
+     return true;
+ 
+@@ -501,7 +513,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+   // If the script’s type is "importmap": [spec text]
+   if (GetScriptType() == ScriptTypeAtPrepare::kImportMap) {
+     Modulator* modulator =
+-        Modulator::From(ToScriptStateForMainWorld(context_window->GetFrame()));
++        Modulator::From(ToScriptStateForMainWorld(context_window->GetFrame()), context_window->GetFrame()->GetDocument()->GetPageGraph(), element_->GetDOMNodeId());
+     auto aquiring_state = modulator->GetAcquiringImportMapsState();
+     switch (aquiring_state) {
+       case Modulator::AcquiringImportMapsState::kAfterModuleScriptLoad:
+@@ -601,10 +613,27 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+         // Fetch an external module script graph given url, settings object, and
+         // options.</spec>
+         Modulator* modulator = Modulator::From(
+-            ToScriptStateForMainWorld(context_window->GetFrame()));
++            ToScriptStateForMainWorld(context_window->GetFrame()), context_window->GetFrame()->GetDocument()->GetPageGraph(), element_->GetDOMNodeId());
+         FetchModuleScriptTree(url, fetch_client_settings_object_fetcher,
+                               modulator, options);
+       }
++      {
++        ::brave_page_graph::PageGraph* page_graph = context_window
++          ->GetFrame()->GetDocument()->GetPageGraph();
++        if (page_graph != nullptr) {
++          HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++          SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++          if (script_elm_html != nullptr) {
++            page_graph->RegisterElmForRemoteScript(
++              DOMNodeIds::IdForNode(script_elm_html),
++              url);
++          } else if (script_elm_svg != nullptr) {
++            page_graph->RegisterElmForRemoteScript(
++              DOMNodeIds::IdForNode(script_elm_svg),
++              url);
++          }
++        }
++      }
+       // <spec step="24.6">When the chosen algorithm asynchronously completes,
+       // set the script's script to the result. At that time, the script is
+       // ready.
+@@ -682,6 +713,25 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+         // <spec step="25.2.A.3">The script is ready.</spec>
+         //
+         // Implemented by ClassicPendingScript.
++        {
++          ::brave_page_graph::PageGraph* const page_graph = context_window
++            ->GetFrame()->GetDocument()->GetPageGraph();
++          if (page_graph != nullptr) {
++            HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++            SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++            ClassicScript* classic_script = static_cast<ClassicScript*>(
++              prepared_pending_script_->GetSource(base_url));
++            if (script_elm_html != nullptr) {
++              page_graph->RegisterElmForLocalScript(
++                DOMNodeIds::IdForNode(script_elm_html),
++                classic_script->GetScriptSourceCode());
++            } else if (script_elm_svg != nullptr) {
++              page_graph->RegisterElmForLocalScript(
++                DOMNodeIds::IdForNode(script_elm_svg),
++                classic_script->GetScriptSourceCode());
++            }
++          }
++        }
+         break;
+       }
+ 
+@@ -696,7 +749,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+         // href="https://html.spec.whatwg.org/C/#fetch-an-inline-module-script-graph">
+         const KURL& source_url = element_document.Url();
+         Modulator* modulator = Modulator::From(
+-            ToScriptStateForMainWorld(context_window->GetFrame()));
++            ToScriptStateForMainWorld(context_window->GetFrame()), context_window->GetFrame()->GetDocument()->GetPageGraph(), element_->GetDOMNodeId());
++        {
++          ::brave_page_graph::PageGraph* const page_graph = context_window
++            ->GetFrame()->GetDocument()->GetPageGraph();
++          if (page_graph != nullptr) {
++            HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++            ScriptSourceCode source = ScriptSourceCode(element_->ChildTextContent().Impl());
++            if (script_elm_html != nullptr) {
++              page_graph->RegisterElmForLocalScript(
++                DOMNodeIds::IdForNode(script_elm_html),
++                source);
++            }
++          }
++        }
+ 
+         // <spec label="fetch-an-inline-module-script-graph" step="1">Let script
+         // be the result of creating a JavaScript module script using source
+@@ -1048,4 +1117,19 @@ String ScriptLoader::GetScriptText() const {
+                                      element_->GetExecutionContext());
+ }
+ 
++void ScriptLoader::SetSVGScriptElement(SVGScriptElement* const elm) {
++  script_elm_svg_ = elm;
++}
++
++SVGScriptElement* ScriptLoader::GetSVGScriptElement() const {
++  return script_elm_svg_;
++}
++
++void ScriptLoader::SetHTMLScriptElement(HTMLScriptElement* const elm) {
++  script_elm_html_ = elm;
++}
++
++HTMLScriptElement* ScriptLoader::GetHTMLScriptElement() const {
++  return script_elm_html_;
++}
+ }  // namespace blink

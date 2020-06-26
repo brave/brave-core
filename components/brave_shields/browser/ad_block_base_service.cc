@@ -119,7 +119,8 @@ void AdBlockBaseService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    const BlockDecision** block_decision) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
   // Determine third-party here so the library doesn't need to figure it out.
@@ -129,10 +130,14 @@ void AdBlockBaseService::ShouldStartRequest(
       url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
+  std::string filter;
   ad_block_client_->matches(
       url.spec(), url.host(), tab_host, is_third_party,
       ResourceTypeToString(resource_type), did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      did_match_exception, did_match_important, &filter, mock_data_url);
+  if (block_decision) {
+    *block_decision = new AdBlockDecision(filter);
+  }
 
   // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
   //  << tab_host

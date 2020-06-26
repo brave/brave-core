@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/macros.h"
 #include "base/synchronization/lock.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "brave/components/brave_shields/common/brave_shields.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_receiver_set.h"
@@ -40,7 +41,8 @@ class BraveShieldsWebContentsObserver
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
-  static void DispatchBlockedEvent(const GURL& request_url,
+  static void DispatchBlockedEvent(const BlockDecision* block_decision,
+                                   const GURL& request_url,
                                    int frame_tree_node_id,
                                    const std::string& block_type);
   static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);

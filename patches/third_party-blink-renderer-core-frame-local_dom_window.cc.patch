@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/frame/local_dom_window.cc b/third_party/blink/renderer/core/frame/local_dom_window.cc
+index 558e2a8b2da6da2c0f8692309930df26bcaa136a..05d9db21269c245b1f1b1902750b476ac0f1ad5b 100644
+--- a/third_party/blink/renderer/core/frame/local_dom_window.cc
++++ b/third_party/blink/renderer/core/frame/local_dom_window.cc
+@@ -219,6 +219,9 @@ static void UntrackAllBeforeUnloadEventListeners(LocalDOMWindow* dom_window) {
+ 
+ }  // namespace
+ 
++void LocalDOMWindow::ExpectToSendFinalPageGraphOnUnload() {
++  //TrackUnloadEventListener(this);
++}
+ LocalDOMWindow::LocalDOMWindow(LocalFrame& frame, WindowAgent* agent)
+     : DOMWindow(frame),
+       ExecutionContext(V8PerIsolateData::MainThreadIsolate(), agent),

@@ -1,0 +1,13 @@
+diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
+index 32fc54e791af444e146d2fa3ac68f2dbc53fbbd7..c873a380e7542efee501c806e4482b416fb3d5a9 100644
+--- a/content/renderer/BUILD.gn
++++ b/content/renderer/BUILD.gn
+@@ -335,6 +335,7 @@ target(link_target_type, "renderer") {
+   deps = [
+     "//base",
+     "//base:i18n",
++    "//brave/third_party/blink/brave_page_graph",
+     "//build:chromecast_buildflags",
+     "//build:chromeos_buildflags",
+     "//cc",
+     "//cc/animation",

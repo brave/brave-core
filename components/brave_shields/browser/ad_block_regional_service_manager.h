@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -53,7 +54,8 @@ class AdBlockRegionalServiceManager {
                           bool* did_match_rule,
                           bool* did_match_exception,
                           bool* did_match_important,
-                          std::string* mock_data_url);
+                          std::string* mock_data_url,
+                          const BlockDecision** block_decision);
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,

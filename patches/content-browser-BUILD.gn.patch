@@ -1,0 +1,12 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index a5c2729a6c0e96844a118125c7ebbfd99c171ee8..488e33036102710f089bbe8680abb00af05308a7 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -45,6 +45,7 @@ jumbo_source_set("browser") {
+     "//base:clang_profiling_buildflags",
+     "//base/third_party/dynamic_annotations",
+     "//base/tracing/protos:chrome_track_event_resources",
++    "//brave/third_party/blink/brave_page_graph",
+     "//build:branding_buildflags",
+     "//build:chromecast_buildflags",
+     "//build:chromeos_buildflags",

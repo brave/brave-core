@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/loader/image_loader.h b/third_party/blink/renderer/core/loader/image_loader.h
+index 181069a59f9984c62f10a6d0a1e086bd0bffd89b..dde4d28a75ef8c71908d3101f5b41eab478e56cf 100644
+--- a/third_party/blink/renderer/core/loader/image_loader.h
++++ b/third_party/blink/renderer/core/loader/image_loader.h
+@@ -36,6 +36,10 @@
+ #include "third_party/blink/renderer/platform/wtf/hash_set.h"
+ #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/types.h"
++// #endif
++
+ namespace blink {
+ 
+ class ContainerNode;
+@@ -256,6 +260,10 @@ class CORE_EXPORT ImageLoader : public GarbageCollected<ImageLoader>,
+ 
+   LazyImageLoadState lazy_image_load_state_;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::InspectorId inspector_id_;
++// #endif
++
+   // DecodeRequest represents a single request to the Decode() function. The
+   // decode requests have one of the following states:
+   //

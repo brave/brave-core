@@ -1,0 +1,84 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
+index 43e2ca14dde26828a13251413d7d966e893dab34..2d2c95bda46835e607540da8393c5a87db124a0c 100644
+--- a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
++++ b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
+@@ -130,7 +130,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+     DCHECK(!streamer->IsStreamingSuppressed());
+     return v8::ScriptCompiler::Compile(
+         isolate->GetCurrentContext(),
+-        streamer->Source(v8::ScriptType::kClassic), code, origin);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        streamer->Source(v8::ScriptType::kClassic), code, origin,
++        source_code.ParentScriptId());
++// #else
++//      streamer->Source(v8::ScriptType::kClassic), code, origin);
++// #endif
+   }
+ 
+   // Allow inspector to use its own compilation cache store.
+@@ -141,7 +150,14 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+   probe::ApplyCompilationModeOverride(execution_context, source_code,
+                                       &inspector_data, &compile_options);
+   if (inspector_data) {
+-    v8::ScriptCompiler::Source source(code, origin, inspector_data);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    v8::ScriptCompiler::Source source(code,
++                                      v8::Integer::New(isolate,
++                                        source_code.ParentScriptId()),
++                                      origin, inspector_data);
++// #else
++//    v8::ScriptCompiler::Source source(code, origin, inspector_data);
++// #endif
+     v8::MaybeLocal<v8::Script> script =
+         v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
+                                     v8::ScriptCompiler::kConsumeCodeCache);
+@@ -151,7 +167,14 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+   switch (compile_options) {
+     case v8::ScriptCompiler::kNoCompileOptions:
+     case v8::ScriptCompiler::kEagerCompile: {
+-      v8::ScriptCompiler::Source source(code, origin);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      v8::ScriptCompiler::Source source(code,
++                                        v8::Integer::New(isolate,
++                                          source_code.ParentScriptId()),
++                                        origin);
++// #else
++//    v8::ScriptCompiler::Source source(code, origin);
++// #endif
+       return v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
+                                          compile_options, no_cache_reason);
+     }
+@@ -161,7 +184,14 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+       SingleCachedMetadataHandler* cache_handler = source_code.CacheHandler();
+       v8::ScriptCompiler::CachedData* cached_data =
+           V8CodeCache::CreateCachedData(cache_handler);
+-      v8::ScriptCompiler::Source source(code, origin, cached_data);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      v8::ScriptCompiler::Source source(code,
++                                        v8::Integer::New(isolate,
++                                          source_code.ParentScriptId()),
++                                        origin, cached_data);
++// #else
++//    v8::ScriptCompiler::Source source(code, origin, cached_data);
++// #endif
+       v8::MaybeLocal<v8::Script> script =
+           v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
+                                       v8::ScriptCompiler::kConsumeCodeCache);
+@@ -752,7 +752,7 @@ ScriptEvaluationResult V8ScriptRunner::EvaluateModule(
+   //
+   // The settings object is |module_script->SettingsObject()|.
+   ScriptState* script_state = module_script->SettingsObject()->GetScriptState();
+-  DCHECK_EQ(Modulator::From(script_state), module_script->SettingsObject());
++  DCHECK_EQ(Modulator::From(script_state, nullptr, 0), module_script->SettingsObject());
+   ExecutionContext* execution_context = ExecutionContext::From(script_state);
+   v8::Isolate* isolate = script_state->GetIsolate();
+ 
+@@ -752,7 +752,7 @@ ScriptEvaluationResult V8ScriptRunner::EvaluateModule(
+     execution_context->GetTaskRunner(TaskType::kNetworking)
+         ->PostTask(FROM_HERE,
+                    WTF::Bind(&Modulator::ProduceCacheModuleTreeTopLevel,
+-                             WrapWeakPersistent(Modulator::From(script_state)),
++                             WrapWeakPersistent(Modulator::From(script_state, nullptr, 0)),
+                              WrapWeakPersistent(module_script)));
+   }
+ 

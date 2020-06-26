@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py b/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
+index baeeebbb697f76aa72afd002042cc6b3e7b7ffe6..cd96e85db99516c844ec3964595e7bbce95896aa 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
+@@ -32,6 +33,7 @@ from .codegen_utils import collect_include_headers_of_idl_types
+ from .codegen_utils import component_export
+ from .codegen_utils import component_export_header
+ from .codegen_utils import enclose_with_header_guard
++from .codegen_utils import make_const_string_definitions
+ from .codegen_utils import make_copyright_header
+ from .codegen_utils import make_forward_declarations
+ from .codegen_utils import make_header_include_directives
+@@ -800,20 +802,22 @@ def generate_dictionary(dictionary):
+     ])
+     header_blink_ns.body.extend([
+         make_forward_declarations(header_node.accumulator),
+         TextNode(""),
++        make_const_string_definitions(header_node.accumulator),
++        TextNode(""),
+     ])
+     source_node.extend([
+         make_copyright_header(),
+         TextNode(""),
+         TextNode("#include \"{}\"".format(header_path)),
+         TextNode(""),
+         make_header_include_directives(source_node.accumulator),
+         TextNode(""),
+         source_blink_ns,
+     ])
+     source_blink_ns.body.extend([
+-        make_forward_declarations(source_node.accumulator),
++        make_const_string_definitions(source_node.accumulator),
+         TextNode(""),
+     ])
+ 
+     # Assemble the parts.

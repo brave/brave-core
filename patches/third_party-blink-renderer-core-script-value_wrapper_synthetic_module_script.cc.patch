@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/script/value_wrapper_synthetic_module_script.cc b/third_party/blink/renderer/core/script/value_wrapper_synthetic_module_script.cc
+index ddbd7b224820fe29eb2f1a6ab5ff63cd6318eda4..3f5e83de2e845e24b22848df27fd68515fe53166 100644
+--- a/third_party/blink/renderer/core/script/value_wrapper_synthetic_module_script.cc
++++ b/third_party/blink/renderer/core/script/value_wrapper_synthetic_module_script.cc
+@@ -182,7 +182,7 @@ v8::MaybeLocal<v8::Value> ValueWrapperSyntheticModuleScript::EvaluationSteps(
+     v8::Local<v8::Module> module) {
+   v8::Isolate* isolate = context->GetIsolate();
+   ScriptState* script_state = ScriptState::From(context);
+-  Modulator* modulator = Modulator::From(script_state);
++  Modulator* modulator = Modulator::From(script_state, nullptr, 0);
+   ModuleRecordResolver* module_record_resolver =
+       modulator->GetModuleRecordResolver();
+   const ValueWrapperSyntheticModuleScript*

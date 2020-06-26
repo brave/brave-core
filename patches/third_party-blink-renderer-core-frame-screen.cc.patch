@@ -1,0 +1,68 @@
+diff --git a/third_party/blink/renderer/core/frame/screen.cc b/third_party/blink/renderer/core/frame/screen.cc
+index f46aba9f7b171535314442900b8faf42e9895601..48cd6c397eac851d09591af87673ee6cb3e673e5 100644
+--- a/third_party/blink/renderer/core/frame/screen.cc
++++ b/third_party/blink/renderer/core/frame/screen.cc
+@@ -36,6 +36,7 @@
+ #include "third_party/blink/renderer/core/probe/core_probes.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_statics.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ namespace {
+@@ -53,6 +53,7 @@ const ScreenInfo& GetScreenInfo(LocalFrame& frame) {
+ Screen::Screen(LocalDOMWindow* window) : ExecutionContextClient(window) {}
+ 
+ int Screen::height() const {
++BRAVE_PAGEGRAPH_SCREEN_HEIGHT_WRAPPER
+   if (display_)
+     return display_->bounds.height();
+   if (!DomWindow())
+@@ -67,6 +68,7 @@ int Screen::height() const {
+ }
+ 
+ int Screen::width() const {
++BRAVE_PAGEGRAPH_SCREEN_WIDTH_WRAPPER
+   if (display_)
+     return display_->bounds.width();
+   if (!DomWindow())
+@@ -81,6 +83,7 @@ int Screen::width() const {
+ }
+ 
+ unsigned Screen::colorDepth() const {
++BRAVE_PAGEGRAPH_SCREEN_COLORDEPTH_WRAPPER
+   if (display_)
+     return display_->color_depth;
+   if (!DomWindow())
+@@ -93,6 +96,7 @@ unsigned Screen::pixelDepth() const {
+ }
+ 
+ int Screen::availLeft() const {
++BRAVE_PAGEGRAPH_SCREEN_AVAILLEFT_WRAPPER
+   if (display_)
+     return display_->work_area.x();
+   if (!DomWindow())
+@@ -107,6 +111,7 @@ int Screen::availLeft() const {
+ }
+ 
+ int Screen::availTop() const {
++BRAVE_PAGEGRAPH_SCREEN_AVAILTOP_WRAPPER
+   if (display_)
+     return display_->work_area.y();
+   if (!DomWindow())
+@@ -121,6 +126,7 @@ int Screen::availTop() const {
+ }
+ 
+ int Screen::availHeight() const {
++BRAVE_PAGEGRAPH_SCREEN_AVAILHEIGHT_WRAPPER
+   if (display_)
+     return display_->work_area.height();
+   if (!DomWindow())
+@@ -135,6 +141,7 @@ int Screen::availHeight() const {
+ }
+ 
+ int Screen::availWidth() const {
++BRAVE_PAGEGRAPH_SCREEN_AVAILWIDTH_WRAPPER
+   if (display_)
+     return display_->work_area.width();
+   if (!DomWindow())

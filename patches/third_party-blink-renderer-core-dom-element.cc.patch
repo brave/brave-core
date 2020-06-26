@@ -1,0 +1,61 @@
+diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
+index 9801e9a3cf88d2b87ca5f19c97869f4b95c4619d..14b6a131a1dcd272f700b422a751d2e5e05f1dd4 100644
+--- a/third_party/blink/renderer/core/dom/element.cc
++++ b/third_party/blink/renderer/core/dom/element.cc
+@@ -166,6 +166,14 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <iostream>
++#include "third_party/blink/renderer/core/dom/document.h"
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
++// #endif
++
+ namespace blink {
+ 
+ enum class ClassStringContent { kEmpty, kWhiteSpaceOnly, kHasClasses };
+@@ -509,7 +517,25 @@ void EnqueueAutofocus(Element& element) {
+ Element::Element(const QualifiedName& tag_name,
+                  Document* document,
+                  ConstructionType type)
+-    : ContainerNode(document, type), tag_name_(tag_name) {}
++    : ContainerNode(document, type), tag_name_(tag_name) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  if (GetDocument().GetPageGraph() != nullptr) {
++    ::brave_page_graph::ElementType element_type =
++        ::brave_page_graph::kElementTypeDefault;
++
++    if (HasTagName(html_names::kIFrameTag)
++        || HasTagName(html_names::kObjectTag)
++        || HasTagName(html_names::kEmbedTag)
++        || HasTagName(html_names::kFrameTag)
++        || HasTagName(html_names::kPortalTag)) {
++      element_type = ::brave_page_graph::kElementTypeFrameOwner;
++    }
++
++    GetDocument().GetPageGraph()->RegisterHTMLElementNodeCreated(
++      DOMNodeIds::IdForNode(this), tag_name_.ToString(), element_type);
++  }
++// #endif
++}
+ 
+ Element* Element::GetAnimationTarget() {
+   return this;
+@@ -2411,6 +2437,14 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
+ 
+ DISABLE_CFI_PERF
+ void Element::AttributeChanged(const AttributeModificationParams& params) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++  if (page_graph != nullptr) {
++    brave_page_graph::DispatchAttributeChanged(page_graph,
++        DOMNodeIds::IdForNode(this), params.name.ToString(),
++        params.old_value, params.new_value);
++  }
++// #endif
+   const QualifiedName& name = params.name;
+   if (name == html_names::kSlotAttr && params.old_value != params.new_value) {
+     if (ShadowRoot* root = ShadowRootOfParent())

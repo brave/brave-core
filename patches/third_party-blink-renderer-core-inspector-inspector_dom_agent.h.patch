@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/core/inspector/inspector_dom_agent.h b/third_party/blink/renderer/core/inspector/inspector_dom_agent.h
+index 689a068d88836c01451108ef3e191aa12c14a8d9..062fd79c8a027220502bbaf2b88ade063dc02c78 100644
+--- a/third_party/blink/renderer/core/inspector/inspector_dom_agent.h
++++ b/third_party/blink/renderer/core/inspector/inspector_dom_agent.h
+@@ -47,6 +47,7 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ #include "v8/include/v8-inspector.h"
+ 
++
+ namespace blink {
+ 
+ class CharacterData;
+@@ -247,6 +248,12 @@ class CORE_EXPORT InspectorDOMAgent final
+   protocol::Response getFileInfo(const String& object_id,
+                                  String* path) override;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  protocol::Response reportPageGraphInfo(
++      int node_id,
++      std::unique_ptr<protocol::Array<String>>* report) override;
++// #endif
++
+   bool Enabled() const;
+   void ReleaseDanglingNodes();
+ 

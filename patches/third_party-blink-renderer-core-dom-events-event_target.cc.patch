@@ -1,0 +1,185 @@
+diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
+index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dbae899c43b 100644
+--- a/third_party/blink/renderer/core/dom/events/event_target.cc
++++ b/third_party/blink/renderer/core/dom/events/event_target.cc
+@@ -64,6 +64,13 @@
+ #include "third_party/blink/renderer/platform/wtf/threading.h"
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <limits>
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ namespace {
+ 
+@@ -253,6 +260,18 @@ void EventTargetData::Trace(Visitor* visitor) {
+   visitor->Trace(event_listener_map);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int EventTargetData::GetNextRegisteredEventListenerId() const {
++  int next_registered_event_listener_id = last_registered_event_listener_id;
++  if (next_registered_event_listener_id == std::numeric_limits<int>::max()) {
++    next_registered_event_listener_id = 0;
++  }
++  ++next_registered_event_listener_id;
++
++  return next_registered_event_listener_id;
++}
++// #endif
++
+ EventTarget::EventTarget() = default;
+ 
+ EventTarget::~EventTarget() = default;
+@@ -493,6 +512,29 @@ bool EventTarget::addEventListener(const AtomicString& event_type,
+   return AddEventListenerInternal(event_type, listener, options);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++static int GetListenerScriptId(ExecutionContext* const execution_context,
++                               EventListener* const listener,
++                               EventTarget* const target) {
++  v8::Isolate* const isolate(execution_context->GetIsolate());
++  v8::HandleScope handle_scope(isolate);
++
++  if (IsA<JSBasedEventListener>(listener)) {
++    JSBasedEventListener* const js_listener =
++        To<JSBasedEventListener>(listener);
++    v8::Local<v8::Value> maybe_listener_function =
++        js_listener->GetEffectiveFunction(*target);
++    if (maybe_listener_function->IsFunction()) {
++      v8::Local<v8::Function> listener_function =
++          maybe_listener_function.As<v8::Function>()
++              ->GetInnermostFunction();
++      return listener_function->ScriptId();
++    }
++  }
++  return 0;
++}
++// #endif
++
+ bool EventTarget::AddEventListenerInternal(
+     const AtomicString& event_type,
+     EventListener* listener,
+@@ -524,9 +566,41 @@ bool EventTarget::AddEventListenerInternal(
+   }
+ 
+   RegisteredEventListener registered_listener;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int next_registered_event_listener_id =
++        EnsureEventTargetData().GetNextRegisteredEventListenerId();
++    registered_listener.SetId(next_registered_event_listener_id);
++  }
++// #endif
+   bool added = EnsureEventTargetData().event_listener_map.Add(
+       event_type, listener, options, &registered_listener);
+   if (added) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      int listener_id = registered_listener.Id();
++      EnsureEventTargetData().last_registered_event_listener_id = listener_id;
++
++      ExecutionContext* const execution_context(GetExecutionContext());
++      if (execution_context) {
++        ::brave_page_graph::PageGraph* const page_graph =
++            ::brave_page_graph::PageGraph::GetFromExecutionContext(
++                *execution_context);
++        if (page_graph) {
++          if (Node* const node = ToNode()) {
++            if (node->IsHTMLElement()) {
++              DOMNodeId const node_id = DOMNodeIds::IdForNode(node);
++              int listener_script_id = GetListenerScriptId(execution_context,
++                                                          listener, this);
++              page_graph->RegisterEventListenerAdd(node_id, event_type,
++                                                  listener_id,
++                                                  listener_script_id);
++            }
++          }
++        }
++      }
++    }
++// #endif
+     if (options->hasSignal()) {
+       // Instead of passing the entire |options| here, which could create a
+       // circular reference due to |options| holding a Member<AbortSignal>, just
+@@ -626,6 +701,31 @@ bool EventTarget::RemoveEventListenerInternal(
+                                     &registered_listener))
+     return false;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ExecutionContext* const execution_context(GetExecutionContext());
++    if (execution_context) {
++      ::brave_page_graph::PageGraph* const page_graph =
++          ::brave_page_graph::PageGraph::GetFromExecutionContext(
++              *execution_context);
++      if (page_graph) {
++        if (Node* const node = ToNode()) {
++          if (node->IsHTMLElement()) {
++            DOMNodeId const node_id = DOMNodeIds::IdForNode(node);
++            int listener_id = registered_listener.Id();
++            int listener_script_id =
++                GetListenerScriptId(execution_context,
++                                    const_cast<EventListener*>(listener), this);
++            page_graph->RegisterEventListenerRemove(node_id, event_type,
++                                                    listener_id,
++                                                    listener_script_id);
++          }
++        }
++      }
++    }
++  }
++// #endif
++
+   // Notify firing events planning to invoke the listener at 'index' that
+   // they have one less listener to invoke.
+   if (d->firing_event_iterators) {
+@@ -683,6 +783,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
+       probe::AsyncTaskScheduled(GetExecutionContext(), event_type,
+                                 listener->async_task_id());
+     }
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      EventTargetData& event_target_data = EnsureEventTargetData();
++
++      int old_listener_id = registered_listener->Id();
++      int listener_id = event_target_data.GetNextRegisteredEventListenerId();
++      registered_listener->SetId(listener_id);
++      event_target_data.last_registered_event_listener_id = listener_id;
++
++      ExecutionContext* const execution_context(GetExecutionContext());
++      if (execution_context) {
++        ::brave_page_graph::PageGraph* const page_graph =
++            ::brave_page_graph::PageGraph::GetFromExecutionContext(
++                *execution_context);
++        if (page_graph) {
++          if (Node* const node = ToNode()) {
++            if (node->IsHTMLElement()) {
++              DOMNodeId const node_id = DOMNodeIds::IdForNode(node);
++
++              int old_listener_script_id =
++                  GetListenerScriptId(execution_context,
++                                      registered_listener->Callback(), this);
++              page_graph->RegisterEventListenerRemove(node_id, event_type,
++                                                      old_listener_id,
++                                                      old_listener_script_id);
++
++              int listener_script_id = GetListenerScriptId(execution_context,
++                                                          listener, this);
++              page_graph->RegisterEventListenerAdd(node_id, event_type,
++                                                  listener_id,
++                                                  listener_script_id);
++            }
++          }
++        }
++      }
++    }
++// #endif
+     registered_listener->SetCallback(listener);
+     return true;
+   }

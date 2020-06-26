@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/core/script/document_modulator_impl.h b/third_party/blink/renderer/core/script/document_modulator_impl.h
+index a0eac9f5ff6b37580f1d0c5e3430ce1e77dd2aea..b431fb8f6600f24c607f1347a0d0ed75c5ffa2a5 100644
+--- a/third_party/blink/renderer/core/script/document_modulator_impl.h
++++ b/third_party/blink/renderer/core/script/document_modulator_impl.h
+@@ -9,6 +9,8 @@
+ #include "third_party/blink/public/mojom/v8_cache_options.mojom-blink.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ class ModuleScriptFetcher;
+@@ -20,7 +25,7 @@ class ScriptState;
+ // ModulatorImplBase.
+ class DocumentModulatorImpl final : public ModulatorImplBase {
+  public:
+-  explicit DocumentModulatorImpl(ScriptState*);
++  explicit DocumentModulatorImpl(ScriptState*, ::brave_page_graph::PageGraph*, DOMNodeId);
+ 
+   // Implements Modulator.
+   ModuleScriptFetcher* CreateModuleScriptFetcher(

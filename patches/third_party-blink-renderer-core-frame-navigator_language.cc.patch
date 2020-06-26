@@ -1,0 +1,110 @@
+diff --git a/third_party/blink/renderer/core/frame/navigator_language.cc b/third_party/blink/renderer/core/frame/navigator_language.cc
+index 061e738dfb92d55e4ef03093e15215f26d4352cd..bc65a4a09d885f898c61a3d316deae10bf7f6b17 100644
+--- a/third_party/blink/renderer/core/frame/navigator_language.cc
++++ b/third_party/blink/renderer/core/frame/navigator_language.cc
+@@ -9,6 +9,12 @@
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <sstream>
++#include <string>
++// #endif
++
+ namespace blink {
+ 
+ Vector<String> ParseAndSanitize(const String& accept_languages) {
+@@ -35,21 +41,84 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* execution_context)
+     : execution_context_(execution_context) {}
+ 
+ AtomicString NavigatorLanguage::language() {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  String result;
+   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
+       (execution_context_ && execution_context_->IsSecureContext())) {
+-    return AtomicString(languages().front());
++    // We need to make sure we don't call languages(), since that would yield an
++    // incorrect graph in the end
++    EnsureUpdatedLanguage();
++    result = languages_.front();
+   }
+-  return AtomicString();
++
++  if (execution_context_) {
++    brave_page_graph::PageGraph* page_graph =
++      brave_page_graph::PageGraph::GetFromIsolate(*execution_context_->GetIsolate());
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("NavigatorLanguage.language",
++        std::vector<const String>());
++      page_graph->RegisterWebAPIResult("NavigatorLanguage.language", result);
++    }
++  }
++
++  return AtomicString(result);
++// #else
++//   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
++//       (execution_context_ && execution_context_->IsSecureContext())) {
++//     return AtomicString(languages().front());
++//   }
++//   return AtomicString();
++// #endif
+ }
+ 
+ const Vector<String>& NavigatorLanguage::languages() {
+-  if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
+-      (execution_context_ && execution_context_->IsSecureContext())) {
+-    EnsureUpdatedLanguage();
+-    return languages_;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    const Vector<String>* result;
++    if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
++        (execution_context_ && execution_context_->IsSecureContext())) {
++      EnsureUpdatedLanguage();
++      result = &languages_;
++    } else {
++      DEFINE_STATIC_LOCAL(const Vector<String>, empty_vector, {});
++      result = &empty_vector;
++    }
++
++    if (execution_context_) {
++      brave_page_graph::PageGraph* page_graph =
++        brave_page_graph::PageGraph::GetFromIsolate(*execution_context_->GetIsolate());
++
++      if (page_graph != nullptr) {
++        std::stringstream result_buffer;
++        bool is_first_language = true;
++        for (auto* it = result->begin(); it != result->end(); ++it) {
++          if (is_first_language) {
++            is_first_language = false;
++          } else {
++            result_buffer << ", ";
++          }
++          result_buffer << it->Utf8().data();
++        }
++        String result_string(result_buffer.str().c_str());
++
++        page_graph->RegisterWebAPICall("NavigatorLanguage.languages",
++          std::vector<const String>());
++        page_graph->RegisterWebAPIResult("NavigatorLanguage.languages",
++          result_string);
++      }
++    }
++
++    return *result;
+   }
+-  DEFINE_STATIC_LOCAL(const Vector<String>, empty_vector, {});
+-  return empty_vector;
++// #else
++//   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
++//       (execution_context_ && execution_context_->IsSecureContext())) {
++//     EnsureUpdatedLanguage();
++//     return languages_;
++//   }
++//   DEFINE_STATIC_LOCAL(const Vector<String>, empty_vector, {});
++//   return empty_vector;
++// #endif
+ }
+ 
+ AtomicString NavigatorLanguage::SerializeLanguagesForClientHintHeader() {

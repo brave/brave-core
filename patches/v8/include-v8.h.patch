@@ -1,0 +1,130 @@
+diff --git a/include/v8.h b/include/v8.h
+index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..b119e54debaffb42b32e8d88fc7d6bc1cc8eb1aa 100644
+--- a/include/v8.h
++++ b/include/v8.h
+@@ -18,6 +18,7 @@
+ #include <stdio.h>
+ 
+ #include <atomic>
++#include <functional>
+ #include <memory>
+ #include <string>
+ #include <type_traits>
+@@ -28,6 +29,7 @@
+ #include "v8-version.h"   // NOLINT(build/include_directory)
+ #include "v8config.h"     // NOLINT(build/include_directory)
+ 
++#include <string>
+ // We reserve the V8_* prefix for macros defined in V8 public API and
+ // assume there are no name conflicts with the embedder's code.
+ 
+@@ -1308,6 +1313,7 @@ class V8_EXPORT ScriptOrModule {
+    * the ScriptOrigin.
+    */
+   Local<PrimitiveArray> GetHostDefinedOptions();
++  int GetScriptId() const;
+ };
+ 
+ /**
+@@ -1541,6 +1550,7 @@ class V8_EXPORT Module : public Data {
+    */
+   Local<UnboundModuleScript> GetUnboundModuleScript();
+ 
++  int GetModuleScriptId() const;
+   /**
+    * Returns the underlying script's id.
+    *
+@@ -1659,6 +1672,10 @@ class V8_EXPORT ScriptCompiler {
+     // Source takes ownership of CachedData.
+     V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
+                      CachedData* cached_data = nullptr);
++    V8_INLINE Source(Local<String> source_string,
++                     Local<Integer> parent_script_id,
++                     const ScriptOrigin& origin,
++                     CachedData* cached_data = nullptr);
+     V8_INLINE explicit Source(Local<String> source_string,
+                               CachedData* cached_data = nullptr);
+     V8_INLINE ~Source();
+@@ -1686,6 +1705,7 @@ class V8_EXPORT ScriptCompiler {
+     ScriptOriginOptions resource_options;
+     Local<Value> source_map_url;
+     Local<PrimitiveArray> host_defined_options;
++    Local<Integer> parent_script_id;
+ 
+     // Cached data from previous compilation (if a kConsume*Cache flag is
+     // set), or hold newly generated cache data (kProduce*Cache flags) are
+@@ -1872,7 +1894,7 @@ class V8_EXPORT ScriptCompiler {
+    */
+   static V8_WARN_UNUSED_RESULT MaybeLocal<Script> Compile(
+       Local<Context> context, StreamedSource* source,
+-      Local<String> full_source_string, const ScriptOrigin& origin);
++      Local<String> full_source_string, const ScriptOrigin& origin, int parent_script_id = 0);
+ 
+   /**
+    * Return a version tag for CachedData for the current V8 version & flags.
+@@ -4508,6 +4534,8 @@ class V8_EXPORT Function : public Object {
+    */
+   Local<Value> GetBoundFunction() const;
+ 
++  // Unwrap any bindings to the innermost function, including nested bindings.
++  Local<Function> GetInnermostFunction() const;
+   /**
+    * Calls builtin Function.prototype.toString on this function.
+    * This is different from Value::ToString() that may call a user-defined
+@@ -8159,6 +8192,18 @@ class V8_EXPORT MeasureMemoryDelegate {
+       Local<Promise::Resolver> promise_resolver, MeasureMemoryMode mode);
+ };
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++typedef void (*EvalScriptCompiledFunc)(v8::Isolate& isolate,
++    const int parent_script_id, const int script_id,
++    v8::Local<v8::String> source);
++
++typedef void (*BuiltInFuncCallFunc)(v8::Isolate& isolate,
++    const char* builtin_name, const std::vector<const std::string>& args);
++
++typedef void (*BuiltInFuncResponseFunc)(v8::Isolate& isolate,
++    const char* builtin_name, const std::string& value);
++// #endif
++
+ /**
+  * Isolate represents an isolated instance of the V8 engine.  V8 isolates have
+  * completely separate states.  Objects from one isolate must not be used in
+@@ -9505,6 +9550,15 @@ class V8_EXPORT Isolate {
+   void operator delete(void*, size_t) = delete;
+   void operator delete[](void*, size_t) = delete;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int GetExecutingScriptId(int* out_script_position = nullptr);
++  void GetAllExecutingScripts(std::function<void(int, int)> callback);
++
++  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
++  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func);
++  void SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func);
++// #endif
++
+  private:
+   template <class K, class V, class Traits>
+   friend class PersistentValueMapBase;
+@@ -11265,6 +11319,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
+       host_defined_options(origin.HostDefinedOptions()),
+       cached_data(data) {}
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++ScriptCompiler::Source::Source(Local<String> string,
++                               Local<Integer> parent_script_id,
++                               const ScriptOrigin& origin, CachedData* data)
++    : source_string(string),
++      resource_name(origin.ResourceName()),
++      resource_line_offset(origin.LineOffset()),
++      resource_column_offset(origin.ColumnOffset()),
++      resource_options(origin.Options()),
++      source_map_url(origin.SourceMapUrl()),
++      host_defined_options(origin.HostDefinedOptions()),
++      parent_script_id(parent_script_id),
++      cached_data(data) {}
++// #endif
++
+ ScriptCompiler::Source::Source(Local<String> string,
+                                CachedData* data)
+     : source_string(string), cached_data(data) {}

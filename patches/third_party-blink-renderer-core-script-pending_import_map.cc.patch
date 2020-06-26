@@ -1,0 +1,35 @@
+diff --git a/third_party/blink/renderer/core/script/pending_import_map.cc b/third_party/blink/renderer/core/script/pending_import_map.cc
+index 2d51fbf4301221cc172fef521faa43446b71c725..3bebf621cc2b4690c78af38b887bff5122cf8d0d 100644
+--- a/third_party/blink/renderer/core/script/pending_import_map.cc
++++ b/third_party/blink/renderer/core/script/pending_import_map.cc
+@@ -11,6 +11,12 @@
+ #include "third_party/blink/renderer/core/script/script_element_base.h"
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/frame/local_frame.h"
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ PendingImportMap* PendingImportMap::CreateInline(ScriptElementBase& element,
+@@ -20,7 +26,7 @@ PendingImportMap* PendingImportMap::CreateInline(ScriptElementBase& element,
+   ExecutionContext* context = element.GetExecutionContext();
+   ScriptState* script_state =
+       ToScriptStateForMainWorld(To<LocalDOMWindow>(context)->GetFrame());
+-  Modulator* modulator = Modulator::From(script_state);
++  Modulator* modulator = Modulator::From(script_state, To<LocalDOMWindow>(context)->GetFrame()->GetDocument()->GetPageGraph(), element.GetDOMNodeId());
+ 
+   ScriptValue error_to_rethrow;
+   ImportMap* import_map = ImportMap::Parse(
+@@ -83,7 +89,7 @@ void PendingImportMap::RegisterImportMap() const {
+   if (!frame)
+     return;
+ 
+-  Modulator* modulator = Modulator::From(ToScriptStateForMainWorld(frame));
++  Modulator* modulator = Modulator::From(ToScriptStateForMainWorld(frame), frame->GetDocument()->GetPageGraph(), element_->GetDOMNodeId());
+ 
+   ScriptState* script_state = modulator->GetScriptState();
+   ScriptState::Scope scope(script_state);

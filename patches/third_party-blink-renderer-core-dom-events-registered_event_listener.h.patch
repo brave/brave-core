@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/dom/events/registered_event_listener.h b/third_party/blink/renderer/core/dom/events/registered_event_listener.h
+index baeea9d843aa4d0eac7e4fc922302acb08846a37..0631896c7d7ab4ad411fe8f0be6bef220d8f5e84 100644
+--- a/third_party/blink/renderer/core/dom/events/registered_event_listener.h
++++ b/third_party/blink/renderer/core/dom/events/registered_event_listener.h
+@@ -48,6 +49,11 @@ class RegisteredEventListener final {
+ 
+   void Trace(Visitor* visitor) const;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int Id() const { return id_; }
++  void SetId(const int id) { id_ = id; }
++// #endif
++
+   AddEventListenerOptionsResolved* Options() const;
+ 
+   const EventListener* Callback() const { return callback_; }
+@@ -82,6 +88,9 @@ class RegisteredEventListener final {
+   bool ShouldFire(const Event&) const;
+ 
+  private:
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int id_;
++// #endif
+   Member<EventListener> callback_;
+   unsigned use_capture_ : 1;
+   unsigned passive_ : 1;

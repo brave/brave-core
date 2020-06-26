@@ -1,0 +1,117 @@
+diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
+index 595e59f55148c45b4f77e06fc9858acf23388b0c..e769ba7a3257809e9890933d01c871b82e12ee16 100644
+--- a/src/codegen/compiler.cc
++++ b/src/codegen/compiler.cc
+@@ -1683,6 +1684,9 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+   int source_length = source->length();
+   isolate->counters()->total_eval_size()->Increment(source_length);
+   isolate->counters()->total_compile_size()->Increment(source_length);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  const int parent_script_id = isolate->GetExecutingScriptId();
++// #endif
+ 
+   // The cache lookup key needs to be aware of the separation between the
+   // parameters and the body to prevent this valid invocation:
+@@ -1701,7 +1705,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+   }
+   CompilationCache* compilation_cache = isolate->compilation_cache();
+   InfoCellPair eval_result = compilation_cache->LookupEval(
+-      source, outer_info, context, language_mode, eval_scope_position);
++      source, outer_info, context, language_mode, eval_scope_position
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , parent_script_id
++// #endif
++      );
+   Handle<FeedbackCell> feedback_cell;
+   if (eval_result.has_feedback_cell()) {
+     feedback_cell = handle(eval_result.feedback_cell(), isolate);
+@@ -1776,7 +1784,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+         Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
+                                                isolate);
+         compilation_cache->PutEval(source, outer_info, context, shared_info,
+-                                   new_feedback_cell, eval_scope_position);
++                                   new_feedback_cell, eval_scope_position
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                   , parent_script_id
++// #endif
++                                   );
+       }
+     }
+   } else {
+@@ -1789,11 +1801,30 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+       Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
+                                              isolate);
+       compilation_cache->PutEval(source, outer_info, context, shared_info,
+-                                 new_feedback_cell, eval_scope_position);
++                                 new_feedback_cell, eval_scope_position
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                 , parent_script_id
++// #endif
++                                 );
+     }
+   }
+   DCHECK(is_compiled_scope.is_compiled());
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    EvalScriptCompiledFunc eval_script_compiled_func =
++        isolate->GetEvalScriptCompiledFunc();
++    if (eval_script_compiled_func) {
++      Object maybe_script = result->shared().script();
++      if (maybe_script.IsScript()) {
++        Script script = Script::cast(maybe_script);
++        eval_script_compiled_func(*reinterpret_cast<v8::Isolate*>(isolate),
++            parent_script_id, script.id(), v8::Utils::ToLocal(source));
++      }
++    }
++  }
++// #endif
++
+   return result;
+ }
+ 
+@@ -2222,7 +2253,7 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+     // First check per-isolate compilation cache.
+     maybe_result = compilation_cache->LookupScript(
+         source, script_details.name_obj, script_details.line_offset,
+-        script_details.column_offset, origin_options, language_mode);
++        script_details.column_offset, origin_options, language_mode, script_details.parent_script_id);
+     if (!maybe_result.is_null()) {
+       compile_timer.set_hit_isolate_cache();
+     } else if (can_consume_code_cache) {
+@@ -2242,7 +2277,7 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+         // Promote to per-isolate compilation cache.
+         is_compiled_scope = inner_result->is_compiled_scope(isolate);
+         DCHECK(is_compiled_scope.is_compiled());
+-        compilation_cache->PutScript(source, language_mode, inner_result);
++        compilation_cache->PutScript(source, language_mode, inner_result, script_details.parent_script_id);
+         maybe_result = inner_result;
+       } else {
+         // Deserializer failed. Fall through to compile.
+@@ -2277,7 +2316,7 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+     Handle<SharedFunctionInfo> result;
+     if (use_compilation_cache && maybe_result.ToHandle(&result)) {
+       DCHECK(is_compiled_scope.is_compiled());
+-      compilation_cache->PutScript(source, language_mode, result);
++      compilation_cache->PutScript(source, language_mode, result, script_details.parent_script_id);
+     } else if (maybe_result.is_null() && natives != EXTENSION_CODE) {
+       isolate->ReportPendingMessages();
+     }
+@@ -2403,7 +2446,7 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+                  "V8.StreamingFinalization.CheckCache");
+     maybe_result = compilation_cache->LookupScript(
+         source, script_details.name_obj, script_details.line_offset,
+-        script_details.column_offset, origin_options, task->language_mode());
++        script_details.column_offset, origin_options, task->language_mode(), script_details.parent_script_id);
+     if (!maybe_result.is_null()) {
+       compile_timer.set_hit_isolate_cache();
+     }
+@@ -2480,7 +2527,7 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+       // Add compiled code to the isolate cache.
+       TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("v8.compile"),
+                    "V8.StreamingFinalization.AddToCache");
+-      compilation_cache->PutScript(source, task->language_mode(), result);
++      compilation_cache->PutScript(source, task->language_mode(), result, script_details.parent_script_id);
+     }
+   }
+ 

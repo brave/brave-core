@@ -1,0 +1,31 @@
+diff --git a/test/cctest/heap/test-heap.cc b/test/cctest/heap/test-heap.cc
+index d181f764f84ba2eb3fe9e50a862bcb4a07d5b686..9ec448c8ef506de0f2bbbcd9ff3056cc3debee1f 100644
+--- a/test/cctest/heap/test-heap.cc
++++ b/test/cctest/heap/test-heap.cc
+@@ -1341,7 +1342,7 @@ TEST(CompilationCacheCachingBehavior) {
+     MaybeHandle<SharedFunctionInfo> cached_script =
+         compilation_cache->LookupScript(source, Handle<Object>(), 0, 0,
+                                         v8::ScriptOriginOptions(true, false),
+-                                        language_mode);
++                                        language_mode, 0);
+     CHECK(!cached_script.is_null());
+   }
+ 
+@@ -1352,7 +1357,7 @@ TEST(CompilationCacheCachingBehavior) {
+     MaybeHandle<SharedFunctionInfo> cached_script =
+         compilation_cache->LookupScript(source, Handle<Object>(), 0, 0,
+                                         v8::ScriptOriginOptions(true, false),
+-                                        language_mode);
++                                        language_mode, 0);
+     CHECK(!cached_script.is_null());
+ 
+     // Progress code age until it's old and ready for GC.
+@@ -1372,7 +1381,7 @@ TEST(CompilationCacheCachingBehavior) {
+     MaybeHandle<SharedFunctionInfo> cached_script =
+         compilation_cache->LookupScript(source, Handle<Object>(), 0, 0,
+                                         v8::ScriptOriginOptions(true, false),
+-                                        language_mode);
++                                        language_mode, 0);
+     CHECK(cached_script.is_null());
+   }
+ }

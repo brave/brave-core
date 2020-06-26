@@ -1,0 +1,489 @@
+diff --git a/src/builtins/builtins-date.cc b/src/builtins/builtins-date.cc
+index 258b1022da3c60360abc0f663392d5ff7769e2cd..e71c74910ee07dd09ffd92fccad0b9b724d2c15e 100644
+--- a/src/builtins/builtins-date.cc
++++ b/src/builtins/builtins-date.cc
+@@ -16,6 +16,10 @@
+ #endif
+ #include "src/strings/string-stream.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++// #endif
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -205,9 +209,27 @@ Object SetLocalDateValue(Isolate* isolate, Handle<JSDate> date,
+ // ES #sec-date-constructor
+ BUILTIN(DateConstructor) {
+   HandleScope scope(isolate);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    BuiltInFuncCallFunc call_func = isolate->GetBuiltInFuncCallFunc();
++    if (call_func) {
++      call_func(*reinterpret_cast<v8::Isolate*>(isolate), "new Date()",
++        {});
++    }
++  }
++// #endif
+   if (args.new_target()->IsUndefined(isolate)) {
+     double const time_val = JSDate::CurrentTimeValue(isolate);
+     DateBuffer buffer = ToDateString(time_val, isolate->date_cache());
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    BuiltInFuncResponseFunc rs_func = isolate->GetBuiltInFuncResponseFunc();
++    if (rs_func) {
++      rs_func(*reinterpret_cast<v8::Isolate*>(isolate), "new Date()",
++        std::string(buffer.begin()));
++    }
++  }
++// #endif
+     RETURN_RESULT_OR_FAILURE(
+         isolate, isolate->factory()->NewStringFromUtf8(VectorOf(buffer)));
+   }
+@@ -287,12 +309,27 @@ BUILTIN(DateConstructor) {
+       time_val = std::numeric_limits<double>::quiet_NaN();
+     }
+   }
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    BuiltInFuncResponseFunc rs_func = isolate->GetBuiltInFuncResponseFunc();
++    if (rs_func) {
++      rs_func(*reinterpret_cast<v8::Isolate*>(isolate), "new Date()",
++          std::to_string(time_val));
++    }
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(isolate, JSDate::New(target, new_target, time_val));
+ }
+ 
+ // ES6 section 20.3.3.1 Date.now ( )
+ BUILTIN(DateNow) {
+   HandleScope scope(isolate);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.now", {},
++        std::to_string(JSDate::CurrentTimeValue(isolate)));
++  }
++// #endif
+   return *isolate->factory()->NewNumber(JSDate::CurrentTimeValue(isolate));
+ }
+ 
+@@ -303,6 +340,13 @@ BUILTIN(DateParse) {
+   ASSIGN_RETURN_FAILURE_ON_EXCEPTION(
+       isolate, string,
+       Object::ToString(isolate, args.atOrUndefined(isolate, 1)));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    std::string value(string->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.parse", {value},
++        std::to_string(ParseDateTimeString(isolate, string)));
++  }
++// #endif
+   return *isolate->factory()->NewNumber(ParseDateTimeString(isolate, string));
+ }
+ 
+@@ -362,6 +406,20 @@ BUILTIN(DateUTC) {
+   }
+   double const day = MakeDay(year, month, date);
+   double const time = MakeTime(hours, minutes, seconds, ms);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.UTC",
++      { std::to_string(year),
++        std::to_string(month),
++        std::to_string(date),
++        std::to_string(hours),
++        std::to_string(minutes),
++        std::to_string(seconds),
++        std::to_string(ms)
++      },
++      std::to_string(DateCache::TimeClip(MakeDate(day, time))));
++  }
++// #endif
+   return *isolate->factory()->NewNumber(
+       DateCache::TimeClip(MakeDate(day, time)));
+ }
+@@ -383,6 +441,12 @@ BUILTIN(DatePrototypeSetDate) {
+     isolate->date_cache()->YearMonthDayFromDays(days, &year, &month, &day);
+     time_val = MakeDate(MakeDay(year, month, value->Number()), time_within_day);
+   }
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.setDate",
++      {std::to_string(time_val)}, "");
++  }
++// #endif
+   return SetLocalDateValue(isolate, date, time_val);
+ }
+ 
+@@ -419,6 +483,12 @@ BUILTIN(DatePrototypeSetFullYear) {
+     }
+   }
+   double time_val = MakeDate(MakeDay(y, m, dt), time_within_day);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.setFullYear",
++        {std::to_string(y), std::to_string(m), std::to_string(dt)}, "");
++  }
++// #endif
+   return SetLocalDateValue(isolate, date, time_val);
+ }
+ 
+@@ -459,6 +529,15 @@ BUILTIN(DatePrototypeSetHours) {
+       }
+     }
+     time_val = MakeDate(day, MakeTime(h, m, s, milli));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setHours",
++          { std::to_string(h),
++            std::to_string(m),
++            std::to_string(s),
++            std::to_string(milli)}, "");
++    }
++// #endif
+   }
+   return SetLocalDateValue(isolate, date, time_val);
+ }
+@@ -480,6 +559,12 @@ BUILTIN(DatePrototypeSetMilliseconds) {
+     int m = (time_within_day / (60 * 1000)) % 60;
+     int s = (time_within_day / 1000) % 60;
+     time_val = MakeDate(day, MakeTime(h, m, s, ms->Number()));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setMilliseconds",
++          {std::to_string(ms->Number())}, "");
++    }
++// #endif
+   }
+   return SetLocalDateValue(isolate, date, time_val);
+ }
+@@ -515,6 +600,12 @@ BUILTIN(DatePrototypeSetMinutes) {
+       }
+     }
+     time_val = MakeDate(day, MakeTime(h, m, s, milli));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setMinutes",
++          {std::to_string(m), std::to_string(s), std::to_string(milli)}, "");
++    }
++// #endif
+   }
+   return SetLocalDateValue(isolate, date, time_val);
+ }
+@@ -542,6 +633,17 @@ BUILTIN(DatePrototypeSetMonth) {
+       ASSIGN_RETURN_FAILURE_ON_EXCEPTION(isolate, date,
+                                          Object::ToNumber(isolate, date));
+       dt = date->Number();
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        isolate->ReportBuiltInCallAndResponse("Date.prototype.setMonth",
++            {std::to_string(m), std::to_string(dt)}, "");
++      }
++    } else {
++      {
++        isolate->ReportBuiltInCallAndResponse("Date.prototype.setMonth",
++            {std::to_string(m)}, "");
++      }
++// #endif
+     }
+     time_val = MakeDate(MakeDay(year, m, dt), time_within_day);
+   }
+@@ -571,6 +673,17 @@ BUILTIN(DatePrototypeSetSeconds) {
+       ASSIGN_RETURN_FAILURE_ON_EXCEPTION(isolate, ms,
+                                          Object::ToNumber(isolate, ms));
+       milli = ms->Number();
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        isolate->ReportBuiltInCallAndResponse("Date.prototype.setSeconds",
++            {std::to_string(s), std::to_string(milli)}, "");
++      }
++    } else {
++      {
++        isolate->ReportBuiltInCallAndResponse("Date.prototype.setSeconds",
++            {std::to_string(s)}, "");
++      }
++// #endif
+     }
+     time_val = MakeDate(day, MakeTime(h, m, s, milli));
+   }
+@@ -584,6 +697,12 @@ BUILTIN(DatePrototypeSetTime) {
+   Handle<Object> value = args.atOrUndefined(isolate, 1);
+   ASSIGN_RETURN_FAILURE_ON_EXCEPTION(isolate, value,
+                                      Object::ToNumber(isolate, value));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.setTime",
++        {std::to_string(value->Number())}, "");
++  }
++// #endif
+   return *JSDate::SetValue(date, DateCache::TimeClip(value->Number()));
+ }
+ 
+@@ -602,6 +721,12 @@ BUILTIN(DatePrototypeSetUTCDate) {
+   isolate->date_cache()->YearMonthDayFromDays(days, &year, &month, &day);
+   double const time_val =
+       MakeDate(MakeDay(year, month, value->Number()), time_within_day);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCDate",
++        {std::to_string(value->Number())}, "");
++  }
++// #endif
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+ 
+@@ -637,6 +762,12 @@ BUILTIN(DatePrototypeSetUTCFullYear) {
+     }
+   }
+   double const time_val = MakeDate(MakeDay(y, m, dt), time_within_day);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCFullYear",
++        {std::to_string(y), std::to_string(m), std::to_string(dt)}, "");
++  }
++// #endif
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+ 
+@@ -676,6 +807,13 @@ BUILTIN(DatePrototypeSetUTCHours) {
+       }
+     }
+     time_val = MakeDate(day, MakeTime(h, m, s, milli));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCHours",
++          {std::to_string(h), std::to_string(m), std::to_string(s),
++          std::to_string(milli)}, "");
++    }
++// #endif
+   }
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+@@ -696,6 +834,12 @@ BUILTIN(DatePrototypeSetUTCMilliseconds) {
+     int m = (time_within_day / (60 * 1000)) % 60;
+     int s = (time_within_day / 1000) % 60;
+     time_val = MakeDate(day, MakeTime(h, m, s, ms->Number()));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCMilliseconds",
++          {std::to_string(time_ms)}, "");
++    }
++// #endif
+   }
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+@@ -730,6 +874,12 @@ BUILTIN(DatePrototypeSetUTCMinutes) {
+       }
+     }
+     time_val = MakeDate(day, MakeTime(h, m, s, milli));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCMinutes",
++          {std::to_string(m), std::to_string(s), std::to_string(milli)}, "");
++    }
++// #endif
+   }
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+@@ -758,6 +908,12 @@ BUILTIN(DatePrototypeSetUTCMonth) {
+       dt = date->Number();
+     }
+     time_val = MakeDate(MakeDay(year, m, dt), time_within_day);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCMonth",
++          {std::to_string(m), std::to_string(dt)}, "");
++    }
++// #endif
+   }
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+@@ -786,6 +942,12 @@ BUILTIN(DatePrototypeSetUTCSeconds) {
+       milli = ms->Number();
+     }
+     time_val = MakeDate(day, MakeTime(h, m, s, milli));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      isolate->ReportBuiltInCallAndResponse("Date.prototype.setUTCSeconds",
++          {std::to_string(s), std::to_string(milli)}, "");
++    }
++// #endif
+   }
+   return *JSDate::SetValue(date, DateCache::TimeClip(time_val));
+ }
+@@ -796,6 +958,16 @@ BUILTIN(DatePrototypeToDateString) {
+   CHECK_RECEIVER(JSDate, date, "Date.prototype.toDateString");
+   DateBuffer buffer =
+       ToDateString(date->value().Number(), isolate->date_cache(), kDateOnly);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = isolate->factory()
++      ->NewStringFromUtf8(VectorOf(buffer))
++      .ToHandleChecked();
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.toDateString",
++        {}, value);
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, isolate->factory()->NewStringFromUtf8(VectorOf(buffer)));
+ }
+@@ -824,6 +996,15 @@ BUILTIN(DatePrototypeToISOString) {
+     SNPrintF(ArrayVector(buffer), "+%06d-%02d-%02dT%02d:%02d:%02d.%03dZ", year,
+              month + 1, day, hour, min, sec, ms);
+   }
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = isolate->factory()
++      ->NewStringFromAsciiChecked(buffer);
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.toISOString",
++        {}, value);
++  }
++// #endif
+   return *isolate->factory()->NewStringFromAsciiChecked(buffer);
+ }
+ 
+@@ -833,6 +1014,15 @@ BUILTIN(DatePrototypeToString) {
+   CHECK_RECEIVER(JSDate, date, "Date.prototype.toString");
+   DateBuffer buffer =
+       ToDateString(date->value().Number(), isolate->date_cache());
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = isolate->factory()->NewStringFromUtf8(VectorOf(buffer))
++      .ToHandleChecked();
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.toString",
++        {}, value);
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, isolate->factory()->NewStringFromUtf8(VectorOf(buffer)));
+ }
+@@ -843,6 +1033,16 @@ BUILTIN(DatePrototypeToTimeString) {
+   CHECK_RECEIVER(JSDate, date, "Date.prototype.toTimeString");
+   DateBuffer buffer =
+       ToDateString(date->value().Number(), isolate->date_cache(), kTimeOnly);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = isolate->factory()
++      ->NewStringFromUtf8(VectorOf(buffer))
++      .ToHandleChecked();
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.toTimeString",
++        {}, value);
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, isolate->factory()->NewStringFromUtf8(VectorOf(buffer)));
+ }
+@@ -856,7 +1056,15 @@ BUILTIN(DatePrototypeToLocaleDateString) {
+ 
+   const char* method = "Date.prototype.toLocaleDateString";
+   CHECK_RECEIVER(JSDate, date, method);
+-
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = Object::ToString(
++        isolate, args.atOrUndefined(isolate, 1)).ToHandleChecked();
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse(method,
++        {value}, std::string("<ignored>"));
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, JSDateTimeFormat::ToLocaleDateTime(
+                    isolate,
+@@ -876,7 +1084,16 @@ BUILTIN(DatePrototypeToLocaleString) {
+ 
+   const char* method = "Date.prototype.toLocaleString";
+   CHECK_RECEIVER(JSDate, date, method);
+-
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = Object::ToString(
++        isolate, args.atOrUndefined(isolate, 1))
++      .ToHandleChecked();
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse(method,
++        {value}, std::string("<ignored>"));
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, JSDateTimeFormat::ToLocaleDateTime(
+                    isolate,
+@@ -896,7 +1113,16 @@ BUILTIN(DatePrototypeToLocaleTimeString) {
+ 
+   const char* method = "Date.prototype.toLocaleTimeString";
+   CHECK_RECEIVER(JSDate, date, method);
+-
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Handle<String> v8_str = Object::ToString(
++        isolate, args.atOrUndefined(isolate, 1))
++      .ToHandleChecked();
++    std::string value(v8_str->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse(method,
++        {value}, std::string("<ignored>"));
++  }
++// #endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, JSDateTimeFormat::ToLocaleDateTime(
+                    isolate,
+@@ -927,6 +1153,14 @@ BUILTIN(DatePrototypeToUTCString) {
+                       : "%s, %02d %s %04d %02d:%02d:%02d GMT",
+            kShortWeekDays[weekday], day, kShortMonths[month], year, hour, min,
+            sec);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    auto v8_str = *isolate->factory()->NewStringFromAsciiChecked(buffer);
++    std::string value(v8_str.ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.toUTCString",
++        {}, value);
++  }
++// #endif
+   return *isolate->factory()->NewStringFromAsciiChecked(buffer);
+ }
+ 
+@@ -941,6 +1175,12 @@ BUILTIN(DatePrototypeGetYear) {
+   int days = isolate->date_cache()->DaysFromTime(local_time_ms);
+   int year, month, day;
+   isolate->date_cache()->YearMonthDayFromDays(days, &year, &month, &day);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.getYear",
++        {}, std::to_string(year - 1900));
++  }
++// #endif
+   return Smi::FromInt(year - 1900);
+ }
+ 
+@@ -970,6 +1210,12 @@ BUILTIN(DatePrototypeSetYear) {
+     dt = day;
+   }
+   double time_val = MakeDate(MakeDay(y, m, dt), time_within_day);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.setYear",
++        {std::to_string(y)}, "");
++  }
++// #endif
+   return SetLocalDateValue(isolate, date, time_val);
+ }
+ 
+@@ -998,6 +1244,13 @@ BUILTIN(DatePrototypeToJson) {
+     }
+     RETURN_RESULT_OR_FAILURE(
+         isolate, Execution::Call(isolate, function, receiver_obj, 0, nullptr));
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    std::string value(name->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.prototype.toJSON",
++        {}, value);
++  }
++// #endif
+   }
+ }
+ 

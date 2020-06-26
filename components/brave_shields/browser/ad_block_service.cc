@@ -69,24 +69,25 @@ void AdBlockService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    const BlockDecision** block_decision) {
   AdBlockBaseService::ShouldStartRequest(
       url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
+      did_match_important, mock_data_url, block_decision);
   if (did_match_important && *did_match_important) {
     return;
   }
 
   regional_service_manager()->ShouldStartRequest(
       url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
+      did_match_important, mock_data_url, block_decision);
   if (did_match_important && *did_match_important) {
     return;
   }
 
   custom_filters_service()->ShouldStartRequest(
       url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
+      did_match_important, mock_data_url, block_decision);
 }
 
 absl::optional<std::string> AdBlockService::GetCspDirectives(

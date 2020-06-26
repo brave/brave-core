@@ -1,0 +1,59 @@
+diff --git a/third_party/blink/renderer/core/style/style_fetched_image.cc b/third_party/blink/renderer/core/style/style_fetched_image.cc
+index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e0776c4a40b 100644
+--- a/third_party/blink/renderer/core/style/style_fetched_image.cc
++++ b/third_party/blink/renderer/core/style/style_fetched_image.cc
+@@ -39,9 +39,16 @@
+ #include "third_party/blink/renderer/platform/graphics/bitmap_image.h"
+ #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
+ 
++#include <sstream>
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "third_party/blink/renderer/core/loader/resource/image_resource.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
+ namespace blink {
+ 
+ StyleFetchedImage::StyleFetchedImage(ImageResourceContent* image,
++                                     brave_page_graph::InspectorId inspector_id,
+                                      const Document& document,
+                                      bool is_lazyload_possibly_deferred,
+                                      bool origin_clean,
+@@ -55,6 +62,7 @@ StyleFetchedImage::StyleFetchedImage(ImageResourceContent* image,
+     : document_(document),
+       url_(url),
+       origin_clean_(origin_clean),
++      inspector_id_(inspector_id),
+       is_ad_related_(is_ad_related) {
+   is_image_resource_ = true;
+   is_lazyload_possibly_deferred_ = is_lazyload_possibly_deferred;
+@@ -134,10 +160,28 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
+   image_->RemoveObserver(observer);
+ }
+ 
+-void StyleFetchedImage::ImageNotifyFinished(ImageResourceContent*) {
++void StyleFetchedImage::ImageNotifyFinished(ImageResourceContent* resource) {
+   if (!document_)
+     return;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Document* mutable_document = (Document*)(document_.Get());
++    ::brave_page_graph::PageGraph* page_graph =
++        mutable_document->GetPageGraph();
++    if (page_graph != nullptr) {
++      const ResourceResponse& rep = resource->GetResponse();
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
++
++      if (resource->ErrorOccurred()) {
++        page_graph->RegisterRequestError(inspector_id_, metadata);
++      } else {
++        page_graph->RegisterRequestComplete(inspector_id_,
++            ResourceType::kImage, metadata, ImageDigest(resource->GetImage()));
++      }
++    }
++  }
++// #endif
+   if (image_ && image_->HasImage()) {
+     Image& image = *image_->GetImage();
+ 

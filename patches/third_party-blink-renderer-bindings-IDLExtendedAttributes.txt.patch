@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/bindings/IDLExtendedAttributes.txt b/third_party/blink/renderer/bindings/IDLExtendedAttributes.txt
+index ea35e717c763fdb1570a77ab8bb81eaa6d747ad4..58ec7d648dbbf8cdf985ea69a39512b75b5dc7bf 100644
+--- a/third_party/blink/renderer/bindings/IDLExtendedAttributes.txt
++++ b/third_party/blink/renderer/bindings/IDLExtendedAttributes.txt
+@@ -110,6 +110,8 @@ SecureContext=|*
+ Serializable
+ SetterCallWith=ExecutionContext|Isolate|ScriptState
+ StringContext=TrustedHTML|TrustedScript|TrustedScriptURL
++TrackInPageGraph
++TrackInPageGraphAs=*
+ Transferable
+ TreatNullAs=EmptyString
+ URL

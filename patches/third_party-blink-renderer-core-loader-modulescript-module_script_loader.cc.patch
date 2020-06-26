@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
+index 0296fc6c7866ae9290997059e1481e2c0eba5407..258c25b05d2f4a7c85273140b2f2891ac1220612 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
+@@ -219,7 +219,7 @@ void ModuleScriptLoader::FetchInternal(
+   module_fetcher_ =
+       modulator_->CreateModuleScriptFetcher(custom_fetch_type, PassKey());
+   module_fetcher_->Fetch(fetch_params, module_request.GetExpectedModuleType(),
+-                         fetch_client_settings_object_fetcher, level, this);
++                         fetch_client_settings_object_fetcher, modulator_, level, this);
+ }
+ 
+ // <specdef href="https://html.spec.whatwg.org/C/#fetch-a-single-module-script">

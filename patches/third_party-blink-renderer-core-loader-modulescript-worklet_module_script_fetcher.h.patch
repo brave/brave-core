@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.h b/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.h
+index 2a5901a95f1a0bf473e55b024e73d7ad453a4f52..78b3aedf481e5b1f2e0330c512f339c5b3de82bd 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.h
++++ b/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.h
+@@ -34,6 +34,7 @@ class CORE_EXPORT WorkletModuleScriptFetcher final
+   void Fetch(FetchParameters&,
+              ModuleType,
+              ResourceFetcher*,
++             const Modulator*,
+              ModuleGraphLevel,
+              ModuleScriptFetcher::Client*) override;
+ 

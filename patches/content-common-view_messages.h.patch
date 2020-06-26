@@ -1,0 +1,27 @@
+diff --git a/content/common/view_messages.h b/content/common/view_messages.h
+index b75aee16237cad6043cd6cfbe22a166e10327a16..d8bfeb6aa5faac84cf43f52812835e3d233004eb 100644
+--- a/content/common/view_messages.h
++++ b/content/common/view_messages.h
+@@ -59,6 +59,9 @@
+ #include "third_party/blink/public/platform/mac/web_scrollbar_theme.h"
+ #endif
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "base/unguessable_token.h"
++// #endif
+ #undef IPC_MESSAGE_EXPORT
+ #define IPC_MESSAGE_EXPORT CONTENT_EXPORT
+ 
+@@ -146,6 +149,12 @@ IPC_MESSAGE_ROUTED1(ViewHostMsg_UpdateTargetURL,
+ 
+ IPC_MESSAGE_ROUTED0(ViewHostMsg_Focus)
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++IPC_MESSAGE_CONTROL(ViewHostMsg_FinalPageGraph,
++                    base::UnguessableToken /* devtools main frame token */,
++                    std::string /* frame id */,
++                    std::string /* data */)
++// #endif
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ // A renderer sends this to the browser process when it wants to access a PPAPI
+ // broker. In contrast to FrameHostMsg_OpenChannelToPpapiBroker, this is called

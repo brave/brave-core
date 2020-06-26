@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/text_resource.h b/third_party/blink/renderer/core/loader/resource/text_resource.h
+index 6016e3ab40b471de0b8446485f7924da8abfe307..4137c749c99e7ff991fc14d9990f89c3c00af45f 100644
+--- a/third_party/blink/renderer/core/loader/resource/text_resource.h
++++ b/third_party/blink/renderer/core/loader/resource/text_resource.h
+@@ -44,6 +44,18 @@ class CORE_EXPORT TextResource : public Resource {
+   std::unique_ptr<TextResourceDecoder> decoder_;
+ };
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED
++void MaybeEncodeTextContent(const String& text_content,
++                            const char* buffer_data,
++                            wtf_size_t buffer_size,
++                            String* result,
++                            bool* base64_encoded);
++
++void MaybeEncodeTextContent(const WTF::String& text_content,
++                            scoped_refptr<const SharedBuffer> buffer,
++                            WTF::String* result,
++                            bool* base64_encoded);
++// #endif
+ template <>
+ struct DowncastTraits<TextResource> {
+   static bool AllowFrom(const Resource& resource) {

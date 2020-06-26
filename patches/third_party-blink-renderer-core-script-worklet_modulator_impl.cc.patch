@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/core/script/worklet_modulator_impl.cc b/third_party/blink/renderer/core/script/worklet_modulator_impl.cc
+index 7b77edd0b4ecb356750386326c652d794befd057..82908f6e7c155facfb782c4b7038c09c3bdd1ab7 100644
+--- a/third_party/blink/renderer/core/script/worklet_modulator_impl.cc
++++ b/third_party/blink/renderer/core/script/worklet_modulator_impl.cc
+@@ -7,10 +7,15 @@
+ #include "third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.h"
+ #include "third_party/blink/renderer/core/workers/worklet_global_scope.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+-WorkletModulatorImpl::WorkletModulatorImpl(ScriptState* script_state)
+-    : ModulatorImplBase(script_state) {}
++WorkletModulatorImpl::WorkletModulatorImpl(ScriptState* script_state, ::brave_page_graph::PageGraph* page_graph, DOMNodeId initiator_elm_id)
++    : ModulatorImplBase(script_state, page_graph, initiator_elm_id) {}
+ 
+ ModuleScriptFetcher* WorkletModulatorImpl::CreateModuleScriptFetcher(
+     ModuleScriptCustomFetchType custom_fetch_type,

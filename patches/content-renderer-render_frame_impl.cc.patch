@@ -2,6 +2,46 @@ diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_fra
 index 14627b6297bb91d290411f23482ff453cc177e0e..a2fb7482fdc647ef2acdc98f0b6ffe9b2be07476 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
+@@ -2472,6 +2476,19 @@ void RenderFrameImpl::GetSerializedHtmlWithLocalLinks(
+                                 save_with_empty_url);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::OnRegisterResourceBlockAd(
++    const GURL& url,
++    const std::string& rule) {
++  RegisterResourceBlockAd(url, rule);
++}
++
++void RenderFrameImpl::OnRegisterResourceBlockTracker(
++    const GURL& url,
++    const std::string& host) {
++  RegisterResourceBlockTracker(url, host);
++}
++// #endif
+ void RenderFrameImpl::SetWantErrorMessageStackTrace() {
+   want_error_message_stack_trace_ = true;
+   v8::Isolate::GetCurrent()->SetCaptureStackTraceForUncaughtExceptions(true);
+@@ -2973,6 +2991,19 @@ void RenderFrameImpl::AddMessageToConsole(
+   AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::RegisterResourceBlockAd(
++    const GURL& url,
++    const std::string& rule) {
++  frame_->GetDocument().RegisterResourceBlockAd(url, rule);
++}
++
++void RenderFrameImpl::RegisterResourceBlockTracker(
++    const GURL& url,
++    const std::string& host) {
++  frame_->GetDocument().RegisterResourceBlockTracker(url, host);
++}
++// #endif
+ blink::PreviewsState RenderFrameImpl::GetPreviewsState() {
+   WebDocumentLoader* document_loader = frame_->GetDocumentLoader();
+   return document_loader ? document_loader->GetPreviewsState()
 @@ -4287,6 +4287,7 @@ bool RenderFrameImpl::ShouldUseUserAgentOverride() const {
    // Temporarily return early and fix properly as part of
    // https://crbug.com/426555.

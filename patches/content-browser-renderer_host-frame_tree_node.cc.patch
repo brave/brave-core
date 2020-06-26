@@ -1,0 +1,78 @@
+diff --git a/content/browser/renderer_host/frame_tree_node.cc b/content/browser/renderer_host/frame_tree_node.cc
+index d73f27b744f0866b0a2b6bf48f2f5cd6f16299c3..46e761fd749f2aa47c797100e4bd6679b0aa427f 100644
+--- a/content/browser/renderer_host/frame_tree_node.cc
++++ b/content/browser/renderer_host/frame_tree_node.cc
+@@ -44,6 +44,16 @@ typedef std::unordered_map<int, FrameTreeNode*> FrameTreeNodeIdMap;
+ base::LazyInstance<FrameTreeNodeIdMap>::DestructorAtExit
+     g_frame_tree_node_id_map = LAZY_INSTANCE_INITIALIZER;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++typedef std::unordered_map<base::UnguessableToken,
++                           FrameTreeNode*,
++                           base::UnguessableTokenHash>
++    DevToolsFrameTokenMap;
++
++base::LazyInstance<DevToolsFrameTokenMap>::DestructorAtExit
++    g_devtools_frame_token_map = LAZY_INSTANCE_INITIALIZER;
++// #endif
++
+ // These values indicate the loading progress status. The minimum progress
+ // value matches what Blink's ProgressTracker has traditionally used for a
+ // minimum progress value.
+@@ -99,6 +109,17 @@ FrameTreeNode* FrameTreeNode::GloballyFindByID(int frame_tree_node_id) {
+   return it == nodes->end() ? nullptr : it->second;
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// static
++FrameTreeNode* FrameTreeNode::GloballyFindByDevToolsFrameToken(
++    const base::UnguessableToken& devtools_frame_token) {
++  DCHECK_CURRENTLY_ON(BrowserThread::UI);
++  DevToolsFrameTokenMap* nodes = g_devtools_frame_token_map.Pointer();
++  auto it = nodes->find(devtools_frame_token);
++  return it == nodes->end() ? nullptr : it->second;
++}
++// #endif
++
+ // static
+ FrameTreeNode* FrameTreeNode::From(RenderFrameHost* rfh) {
+   if (!rfh)
+@@ -142,10 +163,21 @@ FrameTreeNode::FrameTreeNode(
+       frame_owner_properties_(frame_owner_properties),
+       blame_context_(frame_tree_node_id_, FrameTreeNode::From(parent)),
+       render_manager_(this, frame_tree->manager_delegate()) {
+-  std::pair<FrameTreeNodeIdMap::iterator, bool> result =
+-      g_frame_tree_node_id_map.Get().insert(
+-          std::make_pair(frame_tree_node_id_, this));
+-  CHECK(result.second);
++  {
++    std::pair<FrameTreeNodeIdMap::iterator, bool> result =
++        g_frame_tree_node_id_map.Get().insert(
++            std::make_pair(frame_tree_node_id_, this));
++    CHECK(result.second);
++  }
++
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    std::pair<DevToolsFrameTokenMap::iterator, bool> result =
++        g_devtools_frame_token_map.Get().insert(
++            std::make_pair(devtools_frame_token_, this));
++    CHECK(result.second);
++  }
++// #endif
+ 
+   // Note: this should always be done last in the constructor.
+   blame_context_.Initialize();
+@@ -209,6 +241,12 @@ FrameTreeNode::~FrameTreeNode() {
+ 
+   g_frame_tree_node_id_map.Get().erase(frame_tree_node_id_);
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    g_devtools_frame_token_map.Get().erase(devtools_frame_token_);
++  }
++// #endif
++
+   // If a frame with a pending navigation is detached, make sure the
+   // WebContents (and its observers) update their loading state.
+   // TODO(dcheng): This should just check `IsLoading()`, but `IsLoading()`

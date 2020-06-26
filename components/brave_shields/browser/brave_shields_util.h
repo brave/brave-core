@@ -13,6 +13,8 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "services/network/public/mojom/referrer_policy.mojom.h"
 
+#include "brave/components/brave_shields/common/block_decision.h"
+
 namespace content {
 struct Referrer;
 }

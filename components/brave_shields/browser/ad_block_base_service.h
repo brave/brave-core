@@ -18,6 +18,7 @@
 #include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
@@ -47,7 +48,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                           bool* did_match_rule,
                           bool* did_match_exception,
                           bool* did_match_important,
-                          std::string* mock_data_url) override;
+                          std::string* mock_data_url,
+                          const BlockDecision** block_decision) override;
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,

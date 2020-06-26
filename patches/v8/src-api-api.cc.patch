@@ -1,0 +1,169 @@
+diff --git a/src/api/api.cc b/src/api/api.cc
+index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11f23106e5 100644
+--- a/src/api/api.cc
++++ b/src/api/api.cc
+@@ -2204,6 +2205,13 @@ MaybeLocal<Value> Script::Run(Local<Context> context) {
+   RETURN_ESCAPED(result);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int ScriptOrModule::GetScriptId() const {
++  i::Handle<i::Script> self = Utils::OpenHandle(this);
++  return self->id();
++}
++// #endif
++
+ Local<Value> ScriptOrModule::GetResourceName() {
+   i::Handle<i::Script> obj = Utils::OpenHandle(this);
+   i::Isolate* isolate = obj->GetIsolate();
+@@ -2443,12 +2451,23 @@ void Module::SetSyntheticModuleExport(Local<String> export_name,
+                                       i_export_name, i_export_value);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int Module::GetModuleScriptId() const {
++  i::Handle<i::Module> self = Utils::OpenHandle(this);
++  i::Handle<i::SharedFunctionInfo> shared(
++      i::Handle<i::SourceTextModule>::cast(self)->GetSharedFunctionInfo(), self->GetIsolate());
++  if (shared->script().IsScript())
++    return i::Script::cast(shared->script()).id();
++  return 0;
++}
++// #endif
++
+ namespace {
+ 
+ i::Compiler::ScriptDetails GetScriptDetails(
+     i::Isolate* isolate, Local<Value> resource_name, int resource_line_offset,
+     int resource_column_offset, Local<Value> source_map_url,
+-    Local<PrimitiveArray> host_defined_options) {
++    Local<PrimitiveArray> host_defined_options, Local<Integer> parent_script_id) {
+   i::Compiler::ScriptDetails script_details;
+   if (!resource_name.IsEmpty()) {
+     script_details.name_obj = Utils::OpenHandle(*(resource_name));
+@@ -2461,6 +2484,10 @@ i::Compiler::ScriptDetails GetScriptDetails(
+   }
+   script_details.line_offset = resource_line_offset;
+   script_details.column_offset = resource_column_offset;
++  if (!parent_script_id.IsEmpty()) {
++    script_details.parent_script_id =
++        static_cast<int>(parent_script_id->Value());
++  }
+   script_details.host_defined_options =
+       host_defined_options.IsEmpty()
+           ? isolate->factory()->empty_fixed_array()
+@@ -2497,7 +2526,7 @@ MaybeLocal<UnboundScript> ScriptCompiler::CompileUnboundInternal(
+   i::Compiler::ScriptDetails script_details = GetScriptDetails(
+       isolate, source->resource_name, source->resource_line_offset,
+       source->resource_column_offset, source->source_map_url,
+-      source->host_defined_options);
++      source->host_defined_options, source->parent_script_id);
+   i::MaybeHandle<i::SharedFunctionInfo> maybe_function_info =
+       i::Compiler::GetSharedFunctionInfoForScript(
+           isolate, str, script_details, source->resource_options, nullptr,
+@@ -2625,7 +2658,7 @@ MaybeLocal<Function> ScriptCompiler::CompileFunctionInContext(
+     i::Compiler::ScriptDetails script_details = GetScriptDetails(
+         isolate, source->resource_name, source->resource_line_offset,
+         source->resource_column_offset, source->source_map_url,
+-        source->host_defined_options);
++        source->host_defined_options, source->parent_script_id);
+ 
+     i::ScriptData* script_data = nullptr;
+     if (options == kConsumeCodeCache) {
+@@ -2556,12 +2589,12 @@ ScriptCompiler::ScriptStreamingTask* ScriptCompiler::StartStreaming(
+ namespace {
+ i::MaybeHandle<i::SharedFunctionInfo> CompileStreamedSource(
+     i::Isolate* isolate, ScriptCompiler::StreamedSource* v8_source,
+-    Local<String> full_source_string, const ScriptOrigin& origin) {
++    Local<String> full_source_string, const ScriptOrigin& origin, Local<Integer> parent_script_id) {
+   i::Handle<i::String> str = Utils::OpenHandle(*(full_source_string));
+   i::Compiler::ScriptDetails script_details =
+       GetScriptDetails(isolate, origin.ResourceName(), origin.LineOffset(),
+                        origin.ColumnOffset(), origin.SourceMapUrl(),
+-                       origin.HostDefinedOptions());
++                       origin.HostDefinedOptions(), parent_script_id);
+   i::ScriptStreamingData* data = v8_source->impl();
+   return i::Compiler::GetSharedFunctionInfoForStreamedScript(
+       isolate, str, script_details, origin.Options(), data);
+@@ -2683,14 +2720,14 @@ i::MaybeHandle<i::SharedFunctionInfo> CompileStreamedSource(
+ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
+                                            StreamedSource* v8_source,
+                                            Local<String> full_source_string,
+-                                           const ScriptOrigin& origin) {
++                                           const ScriptOrigin& origin, int parent_script_id) {
+   PREPARE_FOR_EXECUTION(context, ScriptCompiler, Compile, Script);
+   TRACE_EVENT_CALL_STATS_SCOPED(isolate, "v8", "V8.ScriptCompiler");
+   TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("v8.compile"),
+                "V8.CompileStreamedScript");
+   i::Handle<i::SharedFunctionInfo> sfi;
+   i::MaybeHandle<i::SharedFunctionInfo> maybe_sfi =
+-      CompileStreamedSource(isolate, v8_source, full_source_string, origin);
++      CompileStreamedSource(isolate, v8_source, full_source_string, origin, v8::Integer::New(reinterpret_cast<v8::Isolate*>(isolate), parent_script_id));
+   has_pending_exception = !maybe_sfi.ToHandle(&sfi);
+   if (has_pending_exception) isolate->ReportPendingMessages();
+   RETURN_ON_FAILED_EXECUTION(Script);
+@@ -2608,7 +2641,7 @@ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
+                "V8.CompileStreamedModule");
+   i::Handle<i::SharedFunctionInfo> sfi;
+   i::MaybeHandle<i::SharedFunctionInfo> maybe_sfi =
+-      CompileStreamedSource(isolate, v8_source, full_source_string, origin);
++      CompileStreamedSource(isolate, v8_source, full_source_string, origin, Local<Integer>());
+   has_pending_exception = !maybe_sfi.ToHandle(&sfi);
+   if (has_pending_exception) isolate->ReportPendingMessages();
+   RETURN_ON_FAILED_EXECUTION(Module);
+@@ -5128,6 +5173,21 @@ Local<v8::Value> Function::GetBoundFunction() const {
+   return v8::Undefined(reinterpret_cast<v8::Isolate*>(self->GetIsolate()));
+ }
+ 
++Local<Function> Function::GetInnermostFunction() const {
++  auto self = Utils::OpenHandle(this);
++
++  Local<Function> function = Utils::Convert<i::Object, Function>(self);
++  while (true) {
++    Local<v8::Value> bound_function = function->GetBoundFunction();
++    if (bound_function->IsFunction()) {
++      function = bound_function.As<Function>();
++    } else {
++      break;
++    }
++  }
++
++  return function;
++}
+ MaybeLocal<String> v8::Function::FunctionProtoToString(Local<Context> context) {
+   PREPARE_FOR_EXECUTION(context, Function, FunctionProtoToString, String);
+   auto self = Utils::OpenHandle(this);
+@@ -8080,6 +8145,33 @@ void Isolate::CheckMemoryPressure() {
+   heap->ReportExternalMemoryPressure();
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int Isolate::GetExecutingScriptId(int* out_script_position) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  return internal_isolate->GetExecutingScriptId(out_script_position);
++}
++
++void Isolate::GetAllExecutingScripts(std::function<void(int, int)> callback) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  return internal_isolate->GetAllExecutingScripts(callback);
++}
++
++void Isolate::SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetEvalScriptCompiledFunc(func);
++}
++
++void Isolate::SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetBuiltInFuncCallFunc(func);
++}
++
++void Isolate::SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetBuiltInFuncResponseFunc(func);
++}
++// #endif
++
+ HeapProfiler* Isolate::GetHeapProfiler() {
+   i::HeapProfiler* heap_profiler =
+       reinterpret_cast<i::Isolate*>(this)->heap_profiler();

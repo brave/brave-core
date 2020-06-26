@@ -29,6 +29,15 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
 
+// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+#include "third_party/blink/public/web/blink.h"
+
+#include "v8/include/v8.h"
+
+#include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+// #endif
+
 namespace content_settings {
 namespace {
 
@@ -126,6 +135,22 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
+// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+    {
+      v8::Isolate* isolate = blink::MainThreadIsolate();
+      v8::HandleScope handle_scope(isolate);
+      v8::Local<v8::Context> context =
+          render_frame()->GetWebFrame()->MainWorldScriptContext();
+      if (!context.IsEmpty()) {
+        ::brave_page_graph::PageGraph* const page_graph =
+            ::brave_page_graph::PageGraph::GetFromContext(context);
+        if (page_graph) {
+          page_graph->RegisterResourceBlockJavaScript(blocked_script_url_);
+        }
+      }
+    }
+// #endif
+
     BraveSpecificDidBlockJavaScript(
         base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();

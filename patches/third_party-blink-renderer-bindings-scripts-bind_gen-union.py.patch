@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/union.py b/third_party/blink/renderer/bindings/scripts/bind_gen/union.py
+index 18c9d64f92dd2518224ef19cab283934e317e419..f25b0b475792f639bd75f105187efb2676808e54 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/union.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/union.py
+@@ -18,6 +19,7 @@ from .codegen_context import CodeGenContext
+ from .codegen_utils import component_export
+ from .codegen_utils import component_export_header
+ from .codegen_utils import enclose_with_header_guard
++from .codegen_utils import make_const_string_definitions
+ from .codegen_utils import make_copyright_header
+ from .codegen_utils import make_forward_declarations
+ from .codegen_utils import make_header_include_directives
+@@ -164,6 +166,8 @@ def generate_union(union):
+     header_blink_ns.body.extend([
+         make_forward_declarations(header_node.accumulator),
+         EmptyNode(),
++        make_const_string_definitions(header_node.accumulator),
++        EmptyNode(),
+     ])
+     source_node.extend([
+         make_copyright_header(),

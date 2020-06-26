@@ -1,0 +1,35 @@
+diff --git a/third_party/blink/renderer/core/css/css_image_value.cc b/third_party/blink/renderer/core/css/css_image_value.cc
+index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e0776c4a40b 100644
+--- a/third_party/blink/renderer/core/css/css_image_value.cc
++++ b/third_party/blink/renderer/core/css/css_image_value.cc
+@@ -37,6 +37,9 @@
+ #include "third_party/blink/renderer/platform/network/network_state_notifier.h"
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ CSSImageValue::CSSImageValue(const AtomicString& raw_value,
+@@ -116,8 +116,19 @@ StyleImage* CSSImageValue::CacheImage(
+ 
+     FetchParameters params =
+         PrepareFetch(document, image_request_behavior, cross_origin);
++    brave_page_graph::InspectorId inspector_id;
++    ImageResourceContent* image = ImageResourceContent::Fetch(params, document.Fetcher(), &inspector_id);
++    {
++      Document& mutable_document = const_cast<Document&>(document);
++      ::brave_page_graph::PageGraph* page_graph =
++          mutable_document.GetPageGraph();
++      if (page_graph != nullptr) {
++        page_graph->RegisterRequestStartFromCSS(inspector_id, params.Url(),
++            ::brave_page_graph::RequestType::kRequestTypeImage);
++      }
++    }
+     cached_image_ = MakeGarbageCollected<StyleFetchedImage>(
+-        ImageResourceContent::Fetch(params, document.Fetcher()), document,
++        image, inspector_id, document,
+         params.GetImageRequestBehavior() == FetchParameters::kDeferImageLoad,
+         origin_clean_ == OriginClean::kTrue, is_ad_related_, params.Url());
+   }

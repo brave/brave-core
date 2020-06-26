@@ -1,0 +1,30 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/enumeration.py b/third_party/blink/renderer/bindings/scripts/bind_gen/enumeration.py
+index 3401ff9de18299c8cf17cd8e4a38031885854e00..62f6efe105d78e1b6aef454da1ef6eca145f244e 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/enumeration.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/enumeration.py
+@@ -17,6 +17,7 @@ from .codegen_format import format_template as _format
+ from .codegen_utils import component_export
+ from .codegen_utils import component_export_header
+ from .codegen_utils import enclose_with_header_guard
++from .codegen_utils import make_const_string_definitions
+ from .codegen_utils import make_copyright_header
+ from .codegen_utils import make_forward_declarations
+ from .codegen_utils import make_header_include_directives
+@@ -293,6 +294,8 @@ def generate_enumeration(enumeration):
+     header_blink_ns.body.extend([
+         make_forward_declarations(header_node.accumulator),
+         EmptyNode(),
++        make_const_string_definitions(header_node.accumulator),
++        EmptyNode(),
+     ])
+     source_node.extend([
+         make_copyright_header(),
+@@ -306,6 +309,8 @@ def generate_enumeration(enumeration):
+     source_blink_ns.body.extend([
+         make_forward_declarations(source_node.accumulator),
+         EmptyNode(),
++        make_const_string_definitions(source_node.accumulator),
++        EmptyNode(),
+     ])
+ 
+     # Assemble the parts.

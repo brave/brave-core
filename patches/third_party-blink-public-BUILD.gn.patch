@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/BUILD.gn b/third_party/blink/public/BUILD.gn
+index 1893be9ca15a7c6a2c8f1992eb7600be52719991..2d2089e06c0118a4aa74163eb00a44d4f9ec2a00 100644
+--- a/third_party/blink/public/BUILD.gn
++++ b/third_party/blink/public/BUILD.gn
+@@ -20,6 +20,7 @@ if (is_android) {
+ group("blink") {
+   public_deps = [ ":blink_headers" ]
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//third_party/blink/renderer/controller",
+     "//third_party/blink/renderer/core",
+     "//third_party/blink/renderer/modules",

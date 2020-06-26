@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/renderer/core/frame/navigator.idl b/third_party/blink/renderer/core/frame/navigator.idl
+index 9a1f030202f5fd4e76083a9ddbfad5d675e89e73..568ebd849e50f5e28cc1cbf78eae20d87b04c989 100644
+--- a/third_party/blink/renderer/core/frame/navigator.idl
++++ b/third_party/blink/renderer/core/frame/navigator.idl
+@@ -29,9 +29,9 @@
+ 
+     // TODO(foolip): productSub and vendor are not yet in the spec:
+     // https://www.w3.org/Bugs/Public/show_bug.cgi?id=27954
+-    [HighEntropy=Direct, MeasureAs=NavigatorProductSub] readonly attribute DOMString productSub;
++    [HighEntropy=Direct, MeasureAs=NavigatorProductSub, TrackInPageGraph] readonly attribute DOMString productSub;
+     // https://www.w3.org/Bugs/Public/show_bug.cgi?id=27786
+-    [HighEntropy=Direct, MeasureAs=NavigatorVendor] readonly attribute DOMString vendor;
++    [HighEntropy=Direct, MeasureAs=NavigatorVendor, TrackInPageGraph] readonly attribute DOMString vendor;
+ };
+ 
+ Navigator includes NavigatorConcurrentHardware;

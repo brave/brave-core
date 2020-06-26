@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/frame/local_dom_window.h b/third_party/blink/renderer/core/frame/local_dom_window.h
+index 7494c6d34a6867a67c0d6b13d97a525af43cc85d..25c64e8ec403084acea5508a3ff65e6a4154526e 100644
+--- a/third_party/blink/renderer/core/frame/local_dom_window.h
++++ b/third_party/blink/renderer/core/frame/local_dom_window.h
+@@ -365,6 +365,9 @@ class CORE_EXPORT LocalDOMWindow final : public DOMWindow,
+ 
+   void DispatchPagehideEvent(PageTransitionEventPersistence persistence);
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void ExpectToSendFinalPageGraphOnUnload();
++// #endif
+   InputMethodController& GetInputMethodController() const {
+     return *input_method_controller_;
+   }

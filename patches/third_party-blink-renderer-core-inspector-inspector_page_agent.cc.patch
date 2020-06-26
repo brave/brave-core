@@ -1,0 +1,103 @@
+diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
+index 1ff765e6e0e238c713e8235efb4958a96a99eadd..96150fa72b677d860ec7c7c875b8de8b5f40260e 100644
+--- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
++++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
+@@ -85,6 +85,8 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ #include "v8/include/v8-inspector.h"
+ 
++#include "third_party/blink/renderer/core/loader/resource/text_resource.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ using protocol::Response;
+@@ -238,44 +244,6 @@ static std::unique_ptr<TextResourceDecoder> CreateResourceTextDecoder(
+   return std::unique_ptr<TextResourceDecoder>();
+ }
+ 
+-static void MaybeEncodeTextContent(const String& text_content,
+-                                   const char* buffer_data,
+-                                   wtf_size_t buffer_size,
+-                                   String* result,
+-                                   bool* base64_encoded) {
+-  if (!text_content.IsNull()) {
+-    *result = text_content;
+-    *base64_encoded = false;
+-  } else if (buffer_data) {
+-    *result =
+-        Base64Encode(base::as_bytes(base::make_span(buffer_data, buffer_size)));
+-    *base64_encoded = true;
+-  } else if (text_content.IsNull()) {
+-    *result = "";
+-    *base64_encoded = false;
+-  } else {
+-    DCHECK(!text_content.Is8Bit());
+-    *result = Base64Encode(
+-        base::as_bytes(base::make_span(StringUTF8Adaptor(text_content))));
+-    *base64_encoded = true;
+-  }
+-}
+-
+-static void MaybeEncodeTextContent(const String& text_content,
+-                                   scoped_refptr<const SharedBuffer> buffer,
+-                                   String* result,
+-                                   bool* base64_encoded) {
+-  if (!buffer) {
+-    return MaybeEncodeTextContent(text_content, nullptr, 0, result,
+-                                  base64_encoded);
+-  }
+-
+-  const SharedBuffer::DeprecatedFlatData flat_buffer(std::move(buffer));
+-  return MaybeEncodeTextContent(text_content, flat_buffer.Data(),
+-                                SafeCast<wtf_size_t>(flat_buffer.size()),
+-                                result, base64_encoded);
+-}
+-
+ // static
+ KURL InspectorPageAgent::UrlWithoutFragment(const KURL& url) {
+   KURL result = url;
+@@ -878,10 +846,10 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+          v8_inspector::V8ContextInfo::executionContextId(
+              script_state->GetContext()));
+      DCHECK(scope);
+-     ClassicScript::CreateUnspecifiedScript(ScriptSourceCode(source))
++     ClassicScript::CreateUnspecifiedScript(ScriptSourceCode(source, ScriptSourceLocationType::kInspector))
+          ->RunScriptInIsolatedWorldAndReturnValue(window, world->GetWorldId());
+    } else {
+-     ClassicScript::CreateUnspecifiedScript(ScriptSourceCode(source))
++     ClassicScript::CreateUnspecifiedScript(ScriptSourceCode(source, ScriptSourceLocationType::kInspector))
+          ->RunScriptInIsolatedWorldAndReturnValue(window, world->GetWorldId());
+    }
+  }
+@@ -1393,6 +1363,31 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
+   return Response::Success();
+ }
+ 
++Response InspectorPageAgent::generatePageGraph(String* data) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  LocalFrame* main_frame = inspected_frames_->Root();
++  if (!main_frame) {
++    return Response::ServerError("No main frame found");
++  }
++
++  Document* document = main_frame->GetDocument();
++  if (!document) {
++    return Response::ServerError("No Document instance to generate page graph for");
++  }
++
++  ::brave_page_graph::PageGraph* const page_graph = document->GetPageGraph();
++  if (!page_graph) {
++    return Response::ServerError("No Page Graph for this Document");
++  }
++
++  std::string graphml(page_graph->ToGraphML());
++  *data = String::FromUTF8(graphml.c_str());
++  return Response::Success();
++// #else
++//   return Response::ServerError("Browser not built with Page Graph support");
++// #endif
++}
++
+ Response InspectorPageAgent::generateTestReport(const String& message,
+                                                 Maybe<String> group) {
+   LocalDOMWindow* window = inspected_frames_->Root()->DomWindow();

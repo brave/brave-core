@@ -1,0 +1,109 @@
+diff --git a/third_party/blink/renderer/modules/storage/storage_area.cc b/third_party/blink/renderer/modules/storage/storage_area.cc
+index cc24c65ae77d3ca71cba58b8c66dbba339d4a68c..a104183579dbeefafb352ec41513016db8c95be2 100644
+--- a/third_party/blink/renderer/modules/storage/storage_area.cc
++++ b/third_party/blink/renderer/modules/storage/storage_area.cc
+@@ -40,6 +40,9 @@
+ #include "third_party/blink/renderer/platform/wtf/functional.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
++#include "third_party/blink/renderer/core/dom/document.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <iostream>
+ 
+ namespace blink {
+ 
+ StorageArea* StorageArea::Create(LocalDOMWindow* window,
+@@ -94,6 +100,28 @@ String StorageArea::getItem(const String& key,
+     exception_state.ThrowSecurityError("access is denied for this document.");
+     return String();
+   }
++
++  {
++    String value;
++    value = cached_area_->GetItem(key);
++
++    brave_page_graph::PageGraph* page_graph = DomWindow()->GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageRead(key, value,
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageRead(key, value,
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++
++    return value;
++  }
++
+   return cached_area_->GetItem(key);
+ }
+ 
+@@ -111,6 +141,21 @@ NamedPropertySetterResult StorageArea::setItem(
+         "Setting the value of '" + key + "' exceeded the quota.");
+     return NamedPropertySetterResult::kIntercepted;
+   }
++  {
++    brave_page_graph::PageGraph* page_graph = DomWindow()->GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageWrite(key, value,
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageWrite(key, value,
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++  }
+   RecordModificationInMetrics();
+   return NamedPropertySetterResult::kIntercepted;
+ }
+@@ -121,6 +168,21 @@ NamedPropertyDeleterResult StorageArea::removeItem(
+     exception_state.ThrowSecurityError("access is denied for this document.");
+     return NamedPropertyDeleterResult::kDidNotDelete;
+   }
++  {
++    brave_page_graph::PageGraph* page_graph = DomWindow()->GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageDelete(key,
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageDelete(key,
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++  }
+   RecordModificationInMetrics();
+   cached_area_->RemoveItem(key, this);
+   return NamedPropertyDeleterResult::kDeleted;
+@@ -130,6 +196,21 @@ void StorageArea::clear(ExceptionState& exception_state) {
+     exception_state.ThrowSecurityError("access is denied for this document.");
+     return;
+   }
++  {
++    brave_page_graph::PageGraph* page_graph = DomWindow()->GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageClear(
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageClear(
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++  }
+   RecordModificationInMetrics();
+   cached_area_->Clear(this);
+ }

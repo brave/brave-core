@@ -1,0 +1,35 @@
+diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
+index b8f4aa80447cf56d29de438a032096010709c2c5..7e073c23c8bdc805f953562a6bfd46ad986cffe2 100644
+--- a/third_party/blink/renderer/core/loader/frame_loader.cc
++++ b/third_party/blink/renderer/core/loader/frame_loader.cc
+@@ -128,6 +128,9 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++// #include "third_party/blink/renderer/core/dom/document.h"
++// #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++// #include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ bool IsBackForwardLoadType(WebFrameLoadType type) {
+@@ -797,6 +804,20 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
+     }
+   }
+ 
++  // First see if there is a parent
++  // {
++  //   Frame* parent_frame = frame_->Tree().Parent();
++  //   if (parent_frame != nullptr &&
++  //       parent_frame->IsLocalFrame() &&
++  //       parent_frame->GetDocument()->GetPageGraph() != nullptr) {
++  //     LocalFrame* local_parent_frame = static_cast<LocalFrame*>(parent_frame);
++  //     const DOMNodeId node_id = frame_->GetPageGraphNodeIdInParentDocument();
++  //     current_request_id_ = local_parent_frame->GetDocument()->GetPageGraph()->GetNewRequestId();
++  //     local_parent_frame->GetDocument()->GetPageGraph()->RegisterRequestStartFromElm(
++  //       node_id, current_request_id_, ::brave_page_graph::kRequestTypeDocument
++  //     );
++  //   }
++  // }
+   Client()->BeginNavigation(
+       resource_request, request.GetFrameType(), origin_window,
+       nullptr /* document_loader */, navigation_type,

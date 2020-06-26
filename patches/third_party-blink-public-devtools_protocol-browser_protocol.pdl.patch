@@ -1,0 +1,39 @@
+diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
+index f444e470f0ae75405f7504d82135486d01ceb575..9949b0403408f4fbd2dc84001105356f34682c3c 100644
+--- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
++++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
+@@ -2138,6 +2138,15 @@ domain DOM
+   # Undoes the last performed action.
+   experimental command undo
+ 
++  # Generates a report from a node's Page Graph info.
++  command reportPageGraphInfo
++    parameters
++      # Id of the element to report on.
++      NodeId nodeId
++    returns
++      # Generated report lines
++      array of string report
++
+   # Returns iframe node that owns iframe with the given domain.
+   experimental command getFrameOwner
+     parameters
+@@ -5592,6 +5601,18 @@ domain Page
+   # Enables page domain notifications.
+   command enable
+ 
++  experimental command generatePageGraph
++    returns
++      # Generated page graph GraphML.
++      string data
++
++  experimental event finalPageGraph
++    parameters
++      # Frame id the page graph is associated with.
++      string frameId
++      # Generated page graph GraphML.
++      string data
++
+   command getAppManifest
+     returns
+       # Manifest location.

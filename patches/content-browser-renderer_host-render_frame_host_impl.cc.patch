@@ -1,0 +1,23 @@
+diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
+index 9f68f4f7fa57aba2365297c2df2a04f828a7781f..1d3f6e6195b125b4380b9edfd1d3b5136e110539 100644
+--- a/content/browser/renderer_host/render_frame_host_impl.cc
++++ b/content/browser/renderer_host/render_frame_host_impl.cc
+@@ -2090,6 +2090,18 @@ void RenderFrameHostImpl::AddMessageToConsole(
+   AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameHostImpl::RegisterResourceBlockAd(const GURL& url,
++                                                  const std::string& rule) {
++  GetMojomFrameInRenderer()->RegisterResourceBlockAd(std::move(url), std::move(rule));
++}
++
++void RenderFrameHostImpl::RegisterResourceBlockTracker(const GURL& url,
++                                                       const std::string& host) {
++  GetMojomFrameInRenderer()->RegisterResourceBlockTracker(std::move(url), std::move(host));
++}
++// #endif
++
+ void RenderFrameHostImpl::ExecuteJavaScriptMethod(
+     const std::u16string& object_name,
+     const std::u16string& method_name,

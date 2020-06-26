@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/modules/storage/BUILD.gn b/third_party/blink/renderer/modules/storage/BUILD.gn
+index b76fee95b96146e2f8b99aa73784ef266141ea06..a15273b465ea0f9ab2905bc3ccffe06bd5eb5ed3 100644
+--- a/third_party/blink/renderer/modules/storage/BUILD.gn
++++ b/third_party/blink/renderer/modules/storage/BUILD.gn
+@@ -25,6 +25,10 @@ blink_modules_sources("storage") {
+     "storage_namespace.cc",
+     "storage_namespace.h",
+   ]
++
++  deps = [
++    "//brave/third_party/blink/brave_page_graph",
++  ]
+ }
+ 
+ source_set("unit_tests") {

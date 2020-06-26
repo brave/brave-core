@@ -1,0 +1,63 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc b/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc
+index 43bb0c89006fbd22cffa0dec0214c59e4ee5b1d2..c31c591a95db287c62393df2d11b6bddfd8b4652 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc
+@@ -6,6 +6,10 @@
+ #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
+ #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
+ 
++#include "third_party/blink/renderer/core/loader/resource/script_resource.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
+ namespace blink {
+ 
+ WorkletModuleScriptFetcher::WorkletModuleScriptFetcher(
+@@ -17,6 +25,7 @@ WorkletModuleScriptFetcher::WorkletModuleScriptFetcher(
+     FetchParameters& fetch_params,
+     ModuleType expected_module_type,
+     ResourceFetcher* fetch_client_settings_object_fetcher,
++    const Modulator* modulator,
+     ModuleGraphLevel level,
+     ModuleScriptFetcher::Client* client) {
+   DCHECK_EQ(fetch_params.GetScriptType(), mojom::blink::ScriptType::kModule);
+@@ -36,8 +45,18 @@ void WorkletModuleScriptFetcher::Fetch(
+   // different global scope?
+   url_ = fetch_params.Url();
+   expected_module_type_ = expected_module_type;
+-  ScriptResource::Fetch(fetch_params, fetch_client_settings_object_fetcher,
++  ScriptResource* resource = ScriptResource::Fetch(fetch_params, fetch_client_settings_object_fetcher,
+                         this, ScriptResource::kNoStreaming);
++  ::brave_page_graph::PageGraph* page_graph = modulator->GetPageGraph();
++  if (page_graph != nullptr) {
++    this->page_graph_ = page_graph;
++    const auto initiator_elm = modulator->GetInitiatingDOMNodeId();
++    if(initiator_elm > 0) {
++      page_graph->RegisterRequestStartFromElm(initiator_elm, resource->InspectorId(), fetch_params.Url(), brave_page_graph::RequestType::kRequestTypeScriptModule);
++    } else {
++      LOG(ERROR) << "no initiator element for " << fetch_params.Url();
++    }
++  }
+ }
+ 
+ void WorkletModuleScriptFetcher::NotifyFinished(Resource* resource) {
+@@ -54,6 +78,19 @@ void WorkletModuleScriptFetcher::NotifyFinished(Resource* resource) {
+                    script_resource->CacheHandler());
+   }
+ 
++  {
++    if (page_graph_ != nullptr) {
++      const ResourceResponse& rep = resource->GetResponse();
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
++
++      if (resource->ErrorOccurred()) {
++        page_graph_->RegisterRequestError(resource->InspectorId(), metadata);
++      } else {
++        page_graph_->RegisterRequestComplete(resource->InspectorId(),
++            resource->GetType(), metadata, ResourceDigest(resource));
++      }
++    }
++  }
+   // This will eventually notify |client| passed to
+   // WorkletModuleScriptFetcher::Fetch().
+   module_responses_map_->SetEntryParams(url_, expected_module_type_, params);

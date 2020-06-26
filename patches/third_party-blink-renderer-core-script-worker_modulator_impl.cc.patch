@@ -1,0 +1,19 @@
+diff --git a/third_party/blink/renderer/core/script/worker_modulator_impl.cc b/third_party/blink/renderer/core/script/worker_modulator_impl.cc
+index 6541c78624bdd4185067fbc45fc89b5ed70c2508..f98601723c915046b6b30f660fdfa1912c898300 100644
+--- a/third_party/blink/renderer/core/script/worker_modulator_impl.cc
++++ b/third_party/blink/renderer/core/script/worker_modulator_impl.cc
+@@ -12,10 +12,12 @@
+ #include "third_party/blink/renderer/core/loader/modulescript/worker_module_script_fetcher.h"
+ #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+-WorkerModulatorImpl::WorkerModulatorImpl(ScriptState* script_state)
+-    : ModulatorImplBase(script_state) {}
++WorkerModulatorImpl::WorkerModulatorImpl(ScriptState* script_state, ::brave_page_graph::PageGraph* page_graph, DOMNodeId initiator_elm_id)
++    : ModulatorImplBase(script_state, page_graph, initiator_elm_id) {}
+ 
+ ModuleScriptFetcher* WorkerModulatorImpl::CreateModuleScriptFetcher(
+     ModuleScriptCustomFetchType custom_fetch_type,

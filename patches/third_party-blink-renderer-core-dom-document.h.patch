@@ -1,0 +1,46 @@
+diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
+index 6733851f4251561921ddc8afff26d652617e85bb..3c5f9e952f1536951133e89ebd10cbeb6c02d7c7 100644
+--- a/third_party/blink/renderer/core/dom/document.h
++++ b/third_party/blink/renderer/core/dom/document.h
+@@ -73,6 +73,10 @@
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ #include "third_party/blink/renderer/platform/wtf/hash_set.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace base {
+ class SingleThreadTaskRunner;
+ }
+@@ -1443,7 +1447,7 @@ class CORE_EXPORT Document : public ContainerNode,
+   // EnsureTemplateDocument().
+   bool IsTemplateDocument() const { return template_document_host_; }
+   Document& EnsureTemplateDocument();
+-  Document* TemplateDocumentHost() { return template_document_host_; }
++  Document* TemplateDocumentHost() const { return template_document_host_; }
+ 
+   // TODO(thestig): Rename these and related functions, since we can call them
+   // for controls outside of forms as well.
+@@ -1691,6 +1696,9 @@ class CORE_EXPORT Document : public ContainerNode,
+   FontPreloadManager& GetFontPreloadManager() { return *font_preload_manager_; }
+   void FontPreloadingFinishedOrTimedOut();
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::PageGraph* GetPageGraph();
++// #endif
+   void IncrementAsyncScriptCount() { async_script_count_++; }
+   void RecordAsyncScriptCount();
+ 
+@@ -1706,6 +1714,11 @@ class CORE_EXPORT Document : public ContainerNode,
+     return parser_sync_policy_;
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::PageGraph* page_graph_;
++  brave_page_graph::PageGraph* page_graph_non_owning_;
++  bool registered_remote_frame_creation_;
++// #endif
+  private:
+   friend class DocumentTest;
+   friend class IgnoreDestructiveWriteCountIncrementer;

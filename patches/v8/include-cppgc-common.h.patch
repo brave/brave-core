@@ -1,0 +1,13 @@
+diff --git a/include/cppgc/common.h b/include/cppgc/common.h
+index 228b9abb74e76348d82bde17dfc19399bf57bd0e..fea404f43a9fc38e74c96effc56de42530da31a5 100644
+--- a/include/cppgc/common.h
++++ b/include/cppgc/common.h
+@@ -5,8 +5,6 @@
+ #ifndef INCLUDE_CPPGC_COMMON_H_
+ #define INCLUDE_CPPGC_COMMON_H_
+ 
+-// TODO(chromium:1056170): Remove dependency on v8.
+-#include "v8config.h"  // NOLINT(build/include_directory)
+ 
+ namespace cppgc {
+ 

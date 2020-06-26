@@ -1,0 +1,69 @@
+diff --git a/third_party/blink/renderer/core/frame/frame_console.cc b/third_party/blink/renderer/core/frame/frame_console.cc
+index 25d8991f8dd320c9c2dbf00d162802818ca8386f..acbad42aad0cf9a44582583f3bd10ac63a4d3577 100644
+--- a/third_party/blink/renderer/core/frame/frame_console.cc
++++ b/third_party/blink/renderer/core/frame/frame_console.cc
+@@ -43,6 +43,11 @@
+ #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "base/json/json_string_value_serializer.h"
++// #endif
++
+ namespace blink {
+ 
+ FrameConsole::FrameConsole(LocalFrame& frame) : frame_(&frame) {}
+@@ -71,6 +76,52 @@ void FrameConsole::ReportMessageToClient(mojom::ConsoleMessageSource source,
+   if (source == mojom::ConsoleMessageSource::kNetwork)
+     return;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  if (source == mojom::ConsoleMessageSource::kJavaScript || source == mojom::ConsoleMessageSource::kConsoleApi) {
++    if (frame_->GetDocument() != nullptr) {
++      ::brave_page_graph::PageGraph* page_graph = frame_->GetDocument()->GetPageGraph();
++      if (page_graph != nullptr) {
++        base::Value dict{base::Value::Type::DICTIONARY};
++
++        const char* source_name = nullptr;
++        switch (source) {
++          case mojom::ConsoleMessageSource::kJavaScript: source_name = "JavaScript"; break; 
++          case mojom::ConsoleMessageSource::kConsoleApi: source_name = "ConsoleApi"; break; 
++	  default: source_name = "Unknown";
++        }
++        dict.SetStringKey("source", source_name);
++
++        const char* level_name = "Unknown";
++        switch (level) {
++          case mojom::ConsoleMessageLevel::kVerbose: level_name = "Verbose"; break;
++          case mojom::ConsoleMessageLevel::kInfo: level_name = "Info"; break;
++          case mojom::ConsoleMessageLevel::kWarning: level_name = "Warning"; break;
++          case mojom::ConsoleMessageLevel::kError: level_name = "Error"; break;
++        }
++        dict.SetStringKey("level", level_name);
++        
++        dict.SetStringKey("message", message.Utf8());
++        
++        base::Value loc{base::Value::Type::DICTIONARY};
++        loc.SetStringKey("url", location->Url().Utf8());
++        loc.SetIntKey("line", location->LineNumber());
++        loc.SetIntKey("column", location->ColumnNumber());
++        loc.SetIntKey("scriptId", location->ScriptId());
++        dict.SetKey("location", std::move(loc));
++
++        std::string output;
++        JSONStringValueSerializer serializer{&output};
++        DCHECK(serializer.Serialize(dict));
++
++        page_graph->RegisterWebAPICall(
++            ::brave_page_graph::WebAPI::kWebAPIConsoleLog,
++            std::vector<const String>{String::FromUTF8(output)});
++      }
++    } 
++  }
++// #endif
++
++
+   String url = location->Url();
+   String stack_trace;
+   if (source == mojom::ConsoleMessageSource::kConsoleApi) {

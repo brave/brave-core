@@ -5,6 +5,8 @@ static_library("common") {
     "brave_shield_constants.h",
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
+    "block_decision.cc",
+    "block_decision.h",
     "features.cc",
     "features.h",
     "pref_names.cc",

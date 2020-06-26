@@ -1,0 +1,19 @@
+diff --git a/third_party/blink/renderer/core/script/document_modulator_impl.cc b/third_party/blink/renderer/core/script/document_modulator_impl.cc
+index f8edf807ba6ec0695a7f2f3b1efc4936a8dcce16..9c19679906a92788412e0d2a9f38d6b40dbb56b7 100644
+--- a/third_party/blink/renderer/core/script/document_modulator_impl.cc
++++ b/third_party/blink/renderer/core/script/document_modulator_impl.cc
+@@ -10,10 +10,12 @@
+ 
+ #include "third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+-DocumentModulatorImpl::DocumentModulatorImpl(ScriptState* script_state)
+-    : ModulatorImplBase(script_state) {}
++DocumentModulatorImpl::DocumentModulatorImpl(ScriptState* script_state, ::brave_page_graph::PageGraph* page_graph, DOMNodeId initiator_elm_id)
++    : ModulatorImplBase(script_state, page_graph, initiator_elm_id) {}
+ 
+ ModuleScriptFetcher* DocumentModulatorImpl::CreateModuleScriptFetcher(
+     ModuleScriptCustomFetchType custom_fetch_type,

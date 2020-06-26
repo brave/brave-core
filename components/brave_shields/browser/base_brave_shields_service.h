@@ -16,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -37,7 +38,8 @@ class BaseBraveShieldsService : public BraveComponent {
                                   bool* did_match_rule,
                                   bool* did_match_exception,
                                   bool* did_match_important,
-                                  std::string* mock_data_url);
+                                  std::string* mock_data_url,
+                                  const BlockDecision** block_decision);
 
  protected:
   virtual bool Init() = 0;

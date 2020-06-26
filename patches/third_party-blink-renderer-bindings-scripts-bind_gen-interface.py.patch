@@ -1,0 +1,184 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
+index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8cae18e72cc 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
+@@ -40,6 +40,7 @@ from .codegen_utils import component_export
+ from .codegen_utils import component_export_header
+ from .codegen_utils import enclose_with_header_guard
+ from .codegen_utils import make_copyright_header
++from .codegen_utils import make_const_string_definitions
+ from .codegen_utils import make_forward_declarations
+ from .codegen_utils import make_header_include_directives
+ from .codegen_utils import write_code_node_to_file
+@@ -1197,6 +1198,87 @@ def make_report_measure_as(cg_context):
+     return node
+ 
+ 
++def make_report_track_in_page_graph_as(cg_context):
++    assert isinstance(cg_context, CodeGenContext)
++
++    target = cg_context.member_like or cg_context.property_
++    ext_attrs = target.extended_attributes
++    if not ("TrackInPageGraph" in ext_attrs or "TrackInPageGraphAs" in ext_attrs):
++        return None
++
++    binding_name = \
++        ext_attrs.value_of("TrackInPageGraphAs") or ext_attrs.value_of("TrackInPageGraph")
++
++    if cg_context.constructor:
++        const_name = "kBinding_{}".format(cg_context.class_like.identifier)
++        if not binding_name:
++            binding_name = cg_context.class_like.identifier
++    else:
++        const_name = "kBinding_{}_{}".format(
++            cg_context.class_like.identifier,
++            cg_context.property_.identifier)
++        if not binding_name:
++            binding_name = "{}#{}".format(
++                cg_context.class_like.identifier,
++                cg_context.property_.identifier)
++
++    if cg_context.attribute_get or cg_context.exposed_construct:
++        binding_type = "Attribute"
++        binding_event = "AttributeGet"
++    elif cg_context.attribute_set:
++        binding_type = "Attribute"
++        binding_event = "AttributeSet"
++    elif cg_context.constant:
++        binding_type = "Constant"
++        binding_event = "ConstantGet"
++    elif cg_context.constructor:
++        binding_type = "Constructor"
++        binding_event = "ConstructorCall"
++    elif cg_context.operation:
++        binding_type = "Method"
++        binding_event = "MethodCall"
++    else:
++        assert False
++
++    if cg_context.attribute_get or cg_context.attribute_set:
++        inline_const_definition = ""
++    else:
++        inline_const_definition = \
++            ("    static const ::brave_page_graph::Binding "
++             "{} = \"{}\";\n").format(const_name, binding_name)
++
++    pattern = ("// [TrackInPageGraph], [TrackInPageGraphAs]\n"
++               "// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)\n"
++               "{{\n"
++               "  ::brave_page_graph::PageGraph* page_graph = "
++               "::brave_page_graph::PageGraph::GetFromExecutionContext("
++               "*${execution_context});\n"
++               "  if (page_graph) {{\n"
++               "{_1}"
++               "    page_graph->RegisterBindingEvent({_2}, "
++               "::brave_page_graph::kBindingType{_3}, "
++               "::brave_page_graph::kBindingEvent{_4});\n"
++               "  }}\n"
++               "}}\n"
++               "// #endif")
++    _1 = inline_const_definition
++    _2 = const_name
++    _3 = binding_type
++    _4 = binding_event
++    node = TextNode(_format(pattern, _1=_1, _2=_2, _3=_3, _4=_4))
++    node.accumulate(
++        CodeGenAccumulator.require_include_headers([
++            "brave/third_party/blink/brave_page_graph/page_graph.h",
++            "brave/third_party/blink/brave_page_graph/types.h",
++        ]))
++    if cg_context.attribute_get or cg_context.attribute_set:
++        node.accumulate(
++            CodeGenAccumulator.require_const_strings([
++                (const_name, binding_name)
++            ]))
++    return node
++
++
+ def make_return_value_cache_return_early(cg_context):
+     assert isinstance(cg_context, CodeGenContext)
+ 
+@@ -1490,6 +1572,7 @@ def make_attribute_get_callback_def(cg_context, function_name):
+         make_bindings_trace_event(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+     ])
+@@ -1535,6 +1618,7 @@ def make_attribute_set_callback_def(cg_context, function_name):
+         make_bindings_trace_event(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+     ])
+@@ -1576,6 +1660,7 @@ def make_constant_callback_def(cg_context, function_name):
+     logging_nodes = SequenceNode([
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+     ])
+     if not logging_nodes:
+@@ -1659,6 +1744,7 @@ def make_constructor_function_def(cg_context, function_name):
+     body.extend([
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+         make_check_argument_length(cg_context),
+@@ -1724,6 +1810,7 @@ def make_exposed_construct_callback_def(cg_context, function_name):
+         make_bindings_trace_event(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+         TextNode(v8_set_return_value),
+@@ -1755,6 +1842,7 @@ def make_operation_function_def(cg_context, function_name):
+         make_report_coop_access(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+     ])
+@@ -4611,6 +4699,8 @@ def generate_interface(interface):
+     api_header_blink_ns.body.extend([
+         make_forward_declarations(api_header_node.accumulator),
+         EmptyNode(),
++        make_const_string_definitions(api_header_node.accumulator),
++        EmptyNode(),
+     ])
+     api_source_node.extend([
+         make_copyright_header(),
+@@ -4624,6 +4714,8 @@ def generate_interface(interface):
+     api_source_blink_ns.body.extend([
+         make_forward_declarations(api_source_node.accumulator),
+         EmptyNode(),
++        make_const_string_definitions(api_source_node.accumulator),
++        EmptyNode(),
+     ])
+     if is_cross_components:
+         impl_header_node.extend([
+@@ -4640,6 +4732,8 @@ def generate_interface(interface):
+         impl_header_blink_ns.body.extend([
+             make_forward_declarations(impl_header_node.accumulator),
+             EmptyNode(),
++            make_const_string_definitions(impl_header_node.accumulator),
++            EmptyNode(),
+         ])
+         impl_source_node.extend([
+             make_copyright_header(),
+@@ -4653,6 +4747,8 @@ def generate_interface(interface):
+         impl_source_blink_ns.body.extend([
+             make_forward_declarations(impl_source_node.accumulator),
+             EmptyNode(),
++            make_const_string_definitions(impl_source_node.accumulator),
++            EmptyNode(),
+         ])
+     api_header_node.accumulator.add_include_headers([
+         class_like.code_generator_info.blink_headers[0],

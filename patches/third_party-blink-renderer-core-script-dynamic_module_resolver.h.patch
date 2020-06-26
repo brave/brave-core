@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.h b/third_party/blink/renderer/core/script/dynamic_module_resolver.h
+index e73c78d383bbea22321e4cc7eeb730ad136aef38..729027f3d939e6df50a68fed00141b6e3360e8ba 100644
+--- a/third_party/blink/renderer/core/script/dynamic_module_resolver.h
++++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.h
+@@ -11,6 +11,8 @@
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ class Modulator;
+@@ -33,6 +38,8 @@ class CORE_EXPORT DynamicModuleResolver final
+   void ResolveDynamically(const ModuleRequest& module_request,
+                           const KURL& referrer_resource_url,
+                           const ReferrerScriptInfo& referrer_info,
++                          ::brave_page_graph::ScriptId referrer_script_id,
++                          ::brave_page_graph::PageGraph* page_graph,
+                           ScriptPromiseResolver*);
+ 
+  private:

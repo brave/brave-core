@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/image_resource.h b/third_party/blink/renderer/core/loader/resource/image_resource.h
+index 129be3d3b19b8f7cccba32f998de257527c98801..c990dd6c79486fd35ecb092a626f7d4e08e64e35 100644
+--- a/third_party/blink/renderer/core/loader/resource/image_resource.h
++++ b/third_party/blink/renderer/core/loader/resource/image_resource.h
+@@ -183,6 +183,7 @@ class CORE_EXPORT ImageResource final
+   }
+ };
+ 
++std::string ImageDigest(Image* image);
+ }  // namespace blink
+ 
+ #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_RESOURCE_IMAGE_RESOURCE_H_

@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/core/script/script_element_base.h b/third_party/blink/renderer/core/script/script_element_base.h
+index 875ac0468e98e85c678b42cafc24716a587e4669..c474edaa25960a226b247f72de9b23dff8ed35d7 100644
+--- a/third_party/blink/renderer/core/script/script_element_base.h
++++ b/third_party/blink/renderer/core/script/script_element_base.h
+@@ -28,6 +28,7 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+ namespace blink {
+ 
+ class Document;
+@@ -79,6 +83,7 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
+ 
+   virtual Type GetScriptElementType() = 0;
+ 
++  virtual DOMNodeId GetDOMNodeId() const = 0;
+  protected:
+   ScriptLoader* InitializeScriptLoader(CreateElementFlags);
+ 

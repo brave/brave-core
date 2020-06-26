@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_use_element.h b/third_party/blink/renderer/core/svg/svg_use_element.h
+index 6d20db0dd8d32843d8f68f192ecb2c4fb35dfb31..e6d120b7df439db13734b75a4908152cd89af2b9 100644
+--- a/third_party/blink/renderer/core/svg/svg_use_element.h
++++ b/third_party/blink/renderer/core/svg/svg_use_element.h
+@@ -31,6 +31,7 @@
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ #include "third_party/blink/renderer/platform/loader/fetch/resource_client.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ 
+ namespace blink {
+ 
+ class SVGAnimatedLength;
+@@ -98,10 +102,10 @@ class SVGUseElement final : public SVGGraphicsElement,
+   }
+ 
+   Element* ResolveTargetElement();
+-  void AttachShadowTree(SVGElement& target);
++  void AttachShadowTree(SVGElement& target, brave_page_graph::PageGraph* pg);
+   void DetachShadowTree();
+   CORE_EXPORT SVGElement* InstanceRoot() const;
+-  SVGElement* CreateInstanceTree(SVGElement& target_root) const;
++  SVGElement* CreateInstanceTree(SVGElement& target_root, brave_page_graph::PageGraph* pg) const;
+   void ClearResourceReference();
+   bool HasCycleUseReferencing(const ContainerNode& target_instance,
+                               const SVGElement& new_target) const;

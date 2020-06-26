@@ -27,6 +27,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'android_deps'),
         os.path.join('brave', 'third_party', 'blink'),
+        os.path.join('brave', 'third_party', 'devtools-frontend'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
 
         # Build dependencies which don't end up in the binaries.
@@ -132,6 +133,9 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
 
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
+        if 'autoplay-whitelist' in path:
+            return # this has been removed upstream, so we can ignore it
+                   # in our pagegraph branch
         if (target_os == 'android'):
             if path in DESKTOP_ONLY_PATHS:
                 return  # Desktop failures are not relevant on Android.

@@ -1,0 +1,213 @@
+diff --git a/third_party/blink/renderer/core/frame/location.cc b/third_party/blink/renderer/core/frame/location.cc
+index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9cad3d2eb 100644
+--- a/third_party/blink/renderer/core/frame/location.cc
++++ b/third_party/blink/renderer/core/frame/location.cc
+@@ -70,47 +70,94 @@ inline const KURL& Location::Url() const {
+   return url;
+ }
+ 
++void Location::PageGraphLogWebAPI(const brave_page_graph::WebAPI web_api,
++                                  const String& value,
++                                  bool is_set) const {
++  if (dom_window_->IsLocalDOMWindow()) {
++    brave_page_graph::PageGraph* page_graph =
++        const_cast<Location*>(this)->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall(web_api,
++                                     is_set ? std::vector<const String>({value})
++                                            : std::vector<const String>());
++      page_graph->RegisterWebAPIResult(web_api, is_set ? g_null_atom : value);
++    }
++  }
++}
++
+ String Location::href() const {
+-  return Url().StrippedForUseAsHref();
++  const String& result = Url().StrippedForUseAsHref();
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHref, result, false);
++  return result;
+ }
+ 
+ String Location::protocol() const {
+-  return DOMURLUtilsReadOnly::protocol(Url());
++  const String& result = DOMURLUtilsReadOnly::protocol(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationProtocol, result, false);
++  return result;
+ }
+ 
+ String Location::host() const {
+-  return DOMURLUtilsReadOnly::host(Url());
++  const String& result = DOMURLUtilsReadOnly::host(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHost, result, false);
++  return result;
+ }
+ 
+ String Location::hostname() const {
+-  return DOMURLUtilsReadOnly::hostname(Url());
++  const String& result = DOMURLUtilsReadOnly::hostname(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHostname, result, false);
++  return result;
+ }
+ 
+ String Location::port() const {
+-  return DOMURLUtilsReadOnly::port(Url());
++  const String& result = DOMURLUtilsReadOnly::port(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationPort, result, false);
++  return result;
+ }
+ 
+ String Location::pathname() const {
+-  return DOMURLUtilsReadOnly::pathname(Url());
++  const String& result = DOMURLUtilsReadOnly::pathname(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationPathname, result, false);
++  return result;
+ }
+ 
+ String Location::search() const {
+-  return DOMURLUtilsReadOnly::search(Url());
++  const String& result = DOMURLUtilsReadOnly::search(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationSearch, result, false);
++  return result;
+ }
+ 
+ String Location::origin() const {
+-  return DOMURLUtilsReadOnly::origin(Url());
++  const String& result = DOMURLUtilsReadOnly::origin(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationOrigin, result, false);
++  return result;
+ }
+ 
+ DOMStringList* Location::ancestorOrigins() const {
+   auto* origins = MakeGarbageCollected<DOMStringList>();
+-  if (!IsAttached())
+-    return origins;
+-  for (Frame* frame = dom_window_->GetFrame()->Tree().Parent(); frame;
+-       frame = frame->Tree().Parent()) {
+-    origins->Append(
+-        frame->GetSecurityContext()->GetSecurityOrigin()->ToString());
++  if (IsAttached()) {
++    for (Frame* frame = dom_window_->GetFrame()->Tree().Parent(); frame;
++         frame = frame->Tree().Parent()) {
++      origins->Append(
++          frame->GetSecurityContext()->GetSecurityOrigin()->ToString());
++    }
+   }
++
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    base::ListValue things;
++    for (uint32_t i = 0; i < origins->length(); ++i) {
++      things.AppendString(origins->item(i).Utf8());
++    }
++
++    std::string output;
++    JSONStringValueSerializer serializer{&output};
++    DCHECK(serializer.Serialize(things));
++    PageGraphLogWebAPI(brave_page_graph::kWebAPILocationAncestorOrigins,
++                       String::FromUTF8(output), false);
++  }
++// #endif
++
+   return origins;
+ }
+ 
+@@ -123,12 +172,15 @@ String Location::toString() const {
+ }
+ 
+ String Location::hash() const {
+-  return DOMURLUtilsReadOnly::hash(Url());
++  const String& result = DOMURLUtilsReadOnly::hash(Url());
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHash, result, false);
++  return result;
+ }
+ 
+ void Location::setHref(v8::Isolate* isolate,
+                        const String& url_string,
+                        ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHref, url_string, true);
+   LocalDOMWindow* incumbent_window = IncumbentDOMWindow(isolate);
+   LocalDOMWindow* entered_window = EnteredDOMWindow(isolate);
+   SetLocation(url_string, incumbent_window, entered_window, &exception_state);
+@@ -145,6 +197,7 @@ void Location::setProtocol(v8::Isolate* isolate,
+     return;
+   }
+ 
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationProtocol, protocol, true);
+   SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
+               EnteredDOMWindow(isolate), &exception_state);
+ }
+@@ -152,6 +205,7 @@ void Location::setProtocol(v8::Isolate* isolate,
+ void Location::setHost(v8::Isolate* isolate,
+                        const String& host,
+                        ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHost, host, true);
+   KURL url = GetDocument()->Url();
+   url.SetHostAndPort(host);
+   SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
+@@ -161,6 +215,7 @@ void Location::setHost(v8::Isolate* isolate,
+ void Location::setHostname(v8::Isolate* isolate,
+                            const String& hostname,
+                            ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHostname, hostname, true);
+   KURL url = GetDocument()->Url();
+   url.SetHost(hostname);
+   SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
+@@ -170,6 +225,7 @@ void Location::setHostname(v8::Isolate* isolate,
+ void Location::setPort(v8::Isolate* isolate,
+                        const String& port,
+                        ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationPort, port, true);
+   KURL url = GetDocument()->Url();
+   url.SetPort(port);
+   SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
+@@ -179,6 +235,7 @@ void Location::setPort(v8::Isolate* isolate,
+ void Location::setPathname(v8::Isolate* isolate,
+                            const String& pathname,
+                            ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationPathname, pathname, true);
+   KURL url = GetDocument()->Url();
+   url.SetPath(pathname);
+   SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
+@@ -188,6 +245,7 @@ void Location::setPathname(v8::Isolate* isolate,
+ void Location::setSearch(v8::Isolate* isolate,
+                          const String& search,
+                          ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationSearch, search, true);
+   KURL url = GetDocument()->Url();
+   url.SetQuery(search);
+   SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
+@@ -202,6 +260,8 @@ void Location::setHash(v8::Isolate* isolate,
+   String new_fragment_identifier = hash;
+   if (hash[0] == '#')
+     new_fragment_identifier = hash.Substring(1);
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationHash,
++                     new_fragment_identifier, true);
+   url.SetFragmentIdentifier(new_fragment_identifier);
+   // Note that by parsing the URL and *then* comparing fragments, we are
+   // comparing fragments post-canonicalization, and so this handles the
+@@ -215,6 +275,7 @@ void Location::setHash(v8::Isolate* isolate,
+ void Location::assign(v8::Isolate* isolate,
+                       const String& url_string,
+                       ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationAssign, url_string, true);
+   LocalDOMWindow* incumbent_window = IncumbentDOMWindow(isolate);
+   LocalDOMWindow* entered_window = EnteredDOMWindow(isolate);
+   SetLocation(url_string, incumbent_window, entered_window, &exception_state);
+@@ -223,6 +284,8 @@ void Location::assign(v8::Isolate* isolate,
+ void Location::replace(v8::Isolate* isolate,
+                        const String& url_string,
+                        ExceptionState& exception_state) {
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationReplace, url_string,
++                     true);
+   LocalDOMWindow* incumbent_window = IncumbentDOMWindow(isolate);
+   LocalDOMWindow* entered_window = EnteredDOMWindow(isolate);
+   SetLocation(url_string, incumbent_window, entered_window, &exception_state,
+@@ -236,6 +299,8 @@ void Location::reload() {
+     return;
+   // reload() is not cross-origin accessible, so |dom_window_| will always be
+   // local.
++  PageGraphLogWebAPI(brave_page_graph::kWebAPILocationReload, g_null_atom,
++                     false);
+   To<LocalDOMWindow>(dom_window_.Get())
+       ->GetFrame()
+       ->Reload(WebFrameLoadType::kReload);

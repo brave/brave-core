@@ -10,11 +10,13 @@ index dccd9d974b96641e51c4c7c84639b89ea73325a1..8485e2104dce46c367ecd754d1211e65
  
    sources = [
      "core_initializer.cc",
-@@ -279,6 +280,7 @@ component("core") {
+@@ -279,7 +280,9 @@ component("core") {
      "//v8",
    ]
  
 +  public_deps += brave_blink_renderer_core_public_deps
    deps = [
++    "//brave/third_party/blink/brave_page_graph",
      "//build:chromeos_buildflags",
      "//components/paint_preview/common",
+     "//components/performance_manager/public/mojom:mojom_blink",

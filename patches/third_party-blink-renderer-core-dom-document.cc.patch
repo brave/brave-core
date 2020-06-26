@@ -1,0 +1,214 @@
+diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
+index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb740102a66 100644
+--- a/third_party/blink/renderer/core/dom/document.cc
++++ b/third_party/blink/renderer/core/dom/document.cc
+@@ -335,6 +335,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+ static WeakDocumentSet& liveDocumentSet();
+ #endif
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/inspector/identifiers_factory.h"
++#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
++#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
++
++#include "brave/third_party/blink/brave_page_graph/logging.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -654,6 +663,11 @@ Document::Document(const DocumentInit& initializer,
+                    DocumentClassFlags document_classes)
+     : ContainerNode(nullptr, kCreateDocument),
+       TreeScope(*this),
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      page_graph_(nullptr),
++      page_graph_non_owning_(nullptr),
++      registered_remote_frame_creation_(false),
++// #endif
+       is_initial_empty_document_(initializer.IsInitialEmptyDocument()),
+       is_prerendering_(initializer.IsPrerendering()),
+       evaluate_media_queries_on_style_recalc_(false),
+@@ -865,8 +879,100 @@ Document::~Document() {
+   DCHECK(!ax_object_cache_);
+ 
+   InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
++
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  page_graph_non_owning_ = nullptr;
++
++  if (page_graph_ != nullptr) {
++    delete page_graph_;
++    page_graph_ = nullptr;
++  }
++// #endif
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++brave_page_graph::PageGraph* Document::GetPageGraph() {
++  Document* const context_document = To<LocalDOMWindow>(GetExecutionContext())->document();
++  if (!context_document) {
++    return nullptr;
++  }
++
++  if (wasDiscarded() || context_document->wasDiscarded()) {
++    return nullptr;
++  }
++
++  if (page_graph_non_owning_ != nullptr) {
++    return page_graph_non_owning_;
++  }
++
++  if (page_graph_ != nullptr) {
++    return page_graph_;
++  }
++
++  LocalFrame* const frame = GetFrame();
++  if (!frame) {
++    return context_document->GetPageGraph();
++  }
++  if (frame->IsProvisional()) {
++    return nullptr;
++  }
++
++  // Only instrument documents belonging to ordinary pages (and not, e.g.,
++  // service workers).
++  bool is_ordinary_document = false;
++  LocalFrame* const context_frame = context_document->GetFrame();
++  if (context_frame) {
++    Page* const context_page = context_frame->GetPage();
++    if (context_page && context_page->IsOrdinary()) {
++      is_ordinary_document = true;
++    }
++  }
++  if (!is_ordinary_document) {
++    PG_LOG("(skipping PageGraph instrumentation on document "
++               << context_document->Url().GetString() << ")");
++    return nullptr;
++  }
++
++  // If we're a child frame, then we can punt the decision on whether
++  // to instantiate a page graph instance upward.  But we need to
++  // make sure to add the page graph instance to the local isolate
++  // if the top frame has a PageGraph.
++  if (!frame->IsLocalRoot()) {
++    Document* local_frame_root_document =
++        context_frame->LocalFrameRoot().GetDocument();
++    PG_LOG_ASSERT(local_frame_root_document);
++    page_graph_non_owning_ = local_frame_root_document->GetPageGraph();
++    return page_graph_non_owning_;
++  }
++
++  PG_LOG_ASSERT(!IsTemplateDocument());
++  PG_LOG_ASSERT(context_document == this);
++
++  // Otherwise, we're the top document, and we need to decide if we should
++  // create a page graph instance.  We do this for documents that look like
++  // there HTML documents fetched over HTTP (so not file://, not extension
++  // content pages, etc.
++  const bool top_doc_is_html = IsHTMLDocument();
++  const bool top_doc_is_http_delivered = Url().ProtocolIsInHTTPFamily();
++  if (!top_doc_is_html || !top_doc_is_http_delivered) {
++    return nullptr;
++  }
++
++  const String frame_id = IdentifiersFactory::FrameId(GetFrame());
++  page_graph_ = new ::brave_page_graph::PageGraph(*GetExecutionContext(),
++                                                  frame_id,
++                                                  DOMNodeIds::IdForNode(this),
++                                                  nodeName(), Url());
++
++  LocalDOMWindow* const dom_window = domWindow();
++  if (dom_window) {
++    dom_window->ExpectToSendFinalPageGraphOnUnload();
++  }
++
++  return page_graph_;
++}
++// #endif
++
+ Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
+                                                 const Position& position) {
+   DCHECK(position.IsNotNull());
+@@ -4205,6 +4311,15 @@ void Document::DispatchUnloadEvents(
+   if (parser_)
+     parser_->StopParsing();
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Page* const page = GetPage();
++    if (page) {
++      page->FinalPageGraph(this);
++    }
++  }
++// #endif
++
+   if (load_event_progress_ == kLoadEventNotRun ||
+       // TODO(dcheng): We should consider if we can make this conditional check
+       // stronger with a DCHECK() that this isn't called if the unload event is
+@@ -5911,6 +6026,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+     CountUse(WebFeature::kFileAccessedCookies);
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* const page_graph =
++        const_cast<Document*>(this)->GetPageGraph();
++    if (page_graph) {
++      String cookies;
++      if (cookie_jar_) {
++        cookies = cookie_jar_->Cookies();
++      }
++
++      page_graph->RegisterStorageRead(cookie_url_.GetString(), cookies,
++          brave_page_graph::kStorageLocationCookie);
++    }
++  }
++// #endif
++
+   return cookie_jar_->Cookies();
+ }
+ 
+@@ -5937,6 +6068,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+     UseCounter::Count(*this, WebFeature::kFileAccessedCookies);
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* const page_graph = GetPageGraph();
++    if (page_graph) {
++      Vector<String> cookie_structure;
++      value.Split("=", cookie_structure);
++      String key = *(cookie_structure.begin());
++      String cookie_value = value.Substring(key.length() + 1, value.length());
++
++      page_graph->RegisterStorageWrite(key, cookie_value,
++          brave_page_graph::kStorageLocationCookie);
++    }
++  }
++// #endif
++
+   cookie_jar_->SetCookie(value);
+ }
+ 
+@@ -5952,6 +6098,19 @@ bool Document::CookiesEnabled() const {
+ }
+ 
+ const AtomicString& Document::referrer() const {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph =
++        const_cast<Document*>(this)->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall(brave_page_graph::kWebAPIDocumentReferrer,
++                                     std::vector<const String>());
++      page_graph->RegisterWebAPIResult(
++          brave_page_graph::kWebAPIDocumentReferrer,
++          Loader() ? Loader()->GetReferrer().referrer : g_null_atom);
++    }
++  }
++// #endif
+   if (Loader())
+     return Loader()->GetReferrer().referrer;
+   return g_null_atom;

@@ -1,0 +1,39 @@
+diff --git a/src/codegen/compiler.h b/src/codegen/compiler.h
+index 7284003de96f03c1bad100bcbe6f675d9e27fc16..50c4fc164eeee6cb0e2e63553093363e8ae3f232 100644
+--- a/src/codegen/compiler.h
++++ b/src/codegen/compiler.h
+@@ -17,6 +17,7 @@
+ #include "src/utils/allocation.h"
+ #include "src/zone/zone.h"
+ 
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -116,15 +117,25 @@ class V8_EXPORT_PRIVATE Compiler : public AllStatic {
+ 
+   struct ScriptDetails {
+     ScriptDetails()
+-        : line_offset(0), column_offset(0), repl_mode(REPLMode::kNo) {}
++        : line_offset(0), column_offset(0),
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        parent_script_id(0),
++// #endif
++        repl_mode(REPLMode::kNo) {}
+     explicit ScriptDetails(Handle<Object> script_name)
+         : line_offset(0),
+           column_offset(0),
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++          parent_script_id(0),
++// #endif
+           name_obj(script_name),
+           repl_mode(REPLMode::kNo) {}
+ 
+     int line_offset;
+     int column_offset;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    int parent_script_id;
++// #endif
+     i::MaybeHandle<i::Object> name_obj;
+     i::MaybeHandle<i::Object> source_map_url;
+     i::MaybeHandle<i::FixedArray> host_defined_options;

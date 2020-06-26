@@ -1,0 +1,145 @@
+diff --git a/src/codegen/compilation-cache.cc b/src/codegen/compilation-cache.cc
+index ef3d83a06eb88a37c50763c890359c4210369ef1..e804f5788bf1bd11e276fb802253abb0f7c95b52 100644
+--- a/src/codegen/compilation-cache.cc
++++ b/src/codegen/compilation-cache.cc
+@@ -130,7 +131,7 @@ bool CompilationCacheScript::HasOrigin(Handle<SharedFunctionInfo> function_info,
+ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+     Handle<String> source, MaybeHandle<Object> name, int line_offset,
+     int column_offset, ScriptOriginOptions resource_options,
+-    LanguageMode language_mode) {
++    LanguageMode language_mode, int parent_script_id) {
+   MaybeHandle<SharedFunctionInfo> result;
+ 
+   // Probe the script generation tables. Make sure not to leak handles
+@@ -141,7 +146,7 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+     DCHECK_EQ(generations(), 1);
+     Handle<CompilationCacheTable> table = GetTable(generation);
+     MaybeHandle<SharedFunctionInfo> probe = CompilationCacheTable::LookupScript(
+-        table, source, language_mode, isolate());
++        table, source, language_mode, isolate(), parent_script_id);
+     Handle<SharedFunctionInfo> function_info;
+     if (probe.ToHandle(&function_info)) {
+       // Break when we've found a suitable shared function info that
+@@ -175,18 +184,18 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+ 
+ void CompilationCacheScript::Put(Handle<String> source,
+                                  LanguageMode language_mode,
+-                                 Handle<SharedFunctionInfo> function_info) {
++                                 Handle<SharedFunctionInfo> function_info, int parent_script_id) {
+   HandleScope scope(isolate());
+   Handle<CompilationCacheTable> table = GetFirstTable();
+   SetFirstTable(CompilationCacheTable::PutScript(table, source, language_mode,
+-                                                 function_info, isolate()));
++                                                 function_info, isolate(), parent_script_id));
+ }
+ 
+ InfoCellPair CompilationCacheEval::Lookup(Handle<String> source,
+                                           Handle<SharedFunctionInfo> outer_info,
+                                           Handle<Context> native_context,
+                                           LanguageMode language_mode,
+-                                          int position) {
++                                          int position, int parent_script_id) {
+   HandleScope scope(isolate());
+   // Make sure not to leak the table into the surrounding handle
+   // scope. Otherwise, we risk keeping old tables around even after
+@@ -196,7 +217,7 @@ InfoCellPair CompilationCacheEval::Lookup(Handle<String> source,
+   DCHECK_EQ(generations(), 1);
+   Handle<CompilationCacheTable> table = GetTable(generation);
+   result = CompilationCacheTable::LookupEval(
+-      table, source, outer_info, native_context, language_mode, position);
++      table, source, outer_info, native_context, language_mode, position, parent_script_id);
+   if (result.has_shared()) {
+     isolate()->counters()->compilation_cache_hits()->Increment();
+   } else {
+@@ -210,12 +235,12 @@ void CompilationCacheEval::Put(Handle<String> source,
+                                Handle<SharedFunctionInfo> function_info,
+                                Handle<Context> native_context,
+                                Handle<FeedbackCell> feedback_cell,
+-                               int position) {
++                               int position, int parent_script_id) {
+   HandleScope scope(isolate());
+   Handle<CompilationCacheTable> table = GetFirstTable();
+   table =
+       CompilationCacheTable::PutEval(table, source, outer_info, function_info,
+-                                     native_context, feedback_cell, position);
++                                     native_context, feedback_cell, position, parent_script_id);
+   SetFirstTable(table);
+ }
+ 
+@@ -264,18 +297,18 @@ void CompilationCache::Remove(Handle<SharedFunctionInfo> function_info) {
+ MaybeHandle<SharedFunctionInfo> CompilationCache::LookupScript(
+     Handle<String> source, MaybeHandle<Object> name, int line_offset,
+     int column_offset, ScriptOriginOptions resource_options,
+-    LanguageMode language_mode) {
++    LanguageMode language_mode, int parent_script_id) {
+   if (!IsEnabledScriptAndEval()) return MaybeHandle<SharedFunctionInfo>();
+ 
+   return script_.Lookup(source, name, line_offset, column_offset,
+-                        resource_options, language_mode);
++                        resource_options, language_mode, parent_script_id);
+ }
+ 
+ InfoCellPair CompilationCache::LookupEval(Handle<String> source,
+                                           Handle<SharedFunctionInfo> outer_info,
+                                           Handle<Context> context,
+                                           LanguageMode language_mode,
+-                                          int position) {
++                                          int position, int parent_script_id) {
+   InfoCellPair result;
+   if (!IsEnabledScriptAndEval()) return result;
+ 
+@@ -283,14 +328,14 @@ InfoCellPair CompilationCache::LookupEval(Handle<String> source,
+ 
+   if (context->IsNativeContext()) {
+     result = eval_global_.Lookup(source, outer_info, context, language_mode,
+-                                 position);
++                                 position, parent_script_id);
+     cache_type = "eval-global";
+ 
+   } else {
+     DCHECK_NE(position, kNoSourcePosition);
+     Handle<Context> native_context(context->native_context(), isolate());
+     result = eval_contextual_.Lookup(source, outer_info, native_context,
+-                                     language_mode, position);
++                                     language_mode, position, parent_script_id);
+     cache_type = "eval-contextual";
+   }
+ 
+@@ -309,11 +362,11 @@ MaybeHandle<FixedArray> CompilationCache::LookupRegExp(Handle<String> source,
+ 
+ void CompilationCache::PutScript(Handle<String> source,
+                                  LanguageMode language_mode,
+-                                 Handle<SharedFunctionInfo> function_info) {
++                                 Handle<SharedFunctionInfo> function_info, int parent_script_id) {
+   if (!IsEnabledScriptAndEval()) return;
+   LOG(isolate(), CompilationCacheEvent("put", "script", *function_info));
+ 
+-  script_.Put(source, language_mode, function_info);
++  script_.Put(source, language_mode, function_info, parent_script_id);
+ }
+ 
+ void CompilationCache::PutEval(Handle<String> source,
+@@ -321,20 +382,20 @@ void CompilationCache::PutEval(Handle<String> source,
+                                Handle<Context> context,
+                                Handle<SharedFunctionInfo> function_info,
+                                Handle<FeedbackCell> feedback_cell,
+-                               int position) {
++                               int position, int parent_script_id) {
+   if (!IsEnabledScriptAndEval()) return;
+ 
+   const char* cache_type;
+   HandleScope scope(isolate());
+   if (context->IsNativeContext()) {
+     eval_global_.Put(source, outer_info, function_info, context, feedback_cell,
+-                     position);
++                     position, parent_script_id);
+     cache_type = "eval-global";
+   } else {
+     DCHECK_NE(position, kNoSourcePosition);
+     Handle<Context> native_context(context->native_context(), isolate());
+     eval_contextual_.Put(source, outer_info, function_info, native_context,
+-                         feedback_cell, position);
++                         feedback_cell, position, parent_script_id);
+     cache_type = "eval-contextual";
+   }
+   LOG(isolate(), CompilationCacheEvent("put", cache_type, *function_info));

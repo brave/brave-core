@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h b/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h
+index c863f63f94bc2b63938773901a699ce4fa4be480..d33344649c5eade47bdb4da7e81e8a3b32fd38bf 100644
+--- a/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h
++++ b/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h
+@@ -32,6 +32,7 @@
+ #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+ 
++#include <string>
+ namespace blink {
+ 
+ class CSSParserContext;
+@@ -100,6 +104,8 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
+   }
+ };
+ 
++std::string StyleSheetDigest(CSSStyleSheetResource* resource);
++std::string ResourceDigest(Resource* resource);
+ }  // namespace blink
+ 
+ #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_RESOURCE_CSS_STYLE_SHEET_RESOURCE_H_

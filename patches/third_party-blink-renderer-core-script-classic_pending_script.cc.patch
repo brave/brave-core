@@ -1,0 +1,78 @@
+diff --git a/third_party/blink/renderer/core/script/classic_pending_script.cc b/third_party/blink/renderer/core/script/classic_pending_script.cc
+index 99d8e6a6d8109118f928943db1d4af7bea2d83f0..4953748d417555f21aada2545901371a796ab480 100644
+--- a/third_party/blink/renderer/core/script/classic_pending_script.cc
++++ b/third_party/blink/renderer/core/script/classic_pending_script.cc
+@@ -31,6 +31,12 @@
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ #include "third_party/blink/renderer/platform/wtf/functional.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "third_party/blink/renderer/core/html/html_script_element.h"
++#include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
+ namespace blink {
+ 
+ // <specdef href="https://html.spec.whatwg.org/C/#fetch-a-classic-script">
+@@ -67,8 +79,19 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
+   // We allow streaming, as WatchForLoad() is always called when the script
+   // needs to execute and the ScriptResource is not finished, so
+   // SetClientIsWaitingForFinished is always set on the resource.
+-  ScriptResource::Fetch(params, element_document.Fetcher(), pending_script,
+-                        ScriptResource::kAllowStreaming);
++  ScriptResource* resource = ScriptResource::Fetch(params,
++      element_document.Fetcher(), pending_script,
++      ScriptResource::kAllowStreaming);
++  {
++    ::brave_page_graph::PageGraph* page_graph = element->GetDocument()
++      .GetPageGraph();
++    if (page_graph != nullptr) {
++      HTMLScriptElement* script_elm = static_cast<HTMLScriptElement*>(element);
++      page_graph->RegisterRequestStartFromElm(
++        DOMNodeIds::IdForNode(script_elm), resource->InspectorId(), url,
++        brave_page_graph::RequestType::kRequestTypeScriptClassic);
++    }
++  }
+   pending_script->CheckState();
+   return pending_script;
+ }
+@@ -291,6 +319,21 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
+                          });
+ 
+   bool error_occurred = GetResource()->ErrorOccurred() || integrity_failure_;
++  {
++    ::brave_page_graph::PageGraph* page_graph = element->GetDocument()
++      .GetPageGraph();
++    if (page_graph != nullptr) {
++      const ResourceResponse& rep = resource->GetResponse();
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
++
++      if (error_occurred) {
++        page_graph->RegisterRequestError(resource->InspectorId(), metadata);
++      } else {
++        page_graph->RegisterRequestComplete(resource->InspectorId(),
++            resource->GetType(), metadata, ResourceDigest(GetResource()));
++      }
++    }
++  }
+   AdvanceReadyState(error_occurred ? kErrorOccurred : kReady);
+ }
+ 
+@@ -394,6 +439,16 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
+                          not_streamed_reason);
+ 
+   ScriptSourceCode source_code(streamer, resource, not_streamed_reason);
++  if (is_external_) {
++    ::brave_page_graph::PageGraph* page_graph = GetElement()->GetDocument()
++      .GetPageGraph();
++    if (page_graph != nullptr) {
++      // Its possible the requested URL, and the URL for the returned
++      // resource, will change (e.g. HSTS, 301s, etc).  Make sure we
++      // use the originally requested URL to make sure everything lines up.
++      page_graph->RegisterUrlForScriptSource(resource->Url(), source_code);
++    }
++  }
+   // The base URL for external classic script is
+   //
+   // <spec href="https://html.spec.whatwg.org/C/#concept-script-base-url">

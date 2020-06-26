@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/webgl/BUILD.gn b/third_party/blink/renderer/modules/webgl/BUILD.gn
+index e64e0c2e1022ad8bd428f5830ae1b47076609088..ed80edfd3c6f22200eaad22b42c928978d2db7c0 100644
+--- a/third_party/blink/renderer/modules/webgl/BUILD.gn
++++ b/third_party/blink/renderer/modules/webgl/BUILD.gn
+@@ -165,6 +165,7 @@ blink_modules_sources("webgl") {
+ 
+   public_deps = [ "//device/vr/public/mojom:vr_service_blink" ]
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//build:chromeos_buildflags",
+     "//third_party/blink/renderer/modules/xr:xr",
+   ]

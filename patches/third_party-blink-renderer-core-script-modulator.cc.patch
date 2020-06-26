@@ -1,0 +1,51 @@
+diff --git a/third_party/blink/renderer/core/script/modulator.cc b/third_party/blink/renderer/core/script/modulator.cc
+index 2f48e3a2cef9915f077008c5a4009aae45cc0587..892dedee9d1dd78e88fd08b2f596f1f27126a801 100644
+--- a/third_party/blink/renderer/core/script/modulator.cc
++++ b/third_party/blink/renderer/core/script/modulator.cc
+@@ -16,13 +16,18 @@
+ #include "third_party/blink/renderer/platform/bindings/script_state.h"
+ #include "third_party/blink/renderer/platform/bindings/v8_per_context_data.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+ const char kPerContextDataKey[] = "Modulator";
+ }  // namespace
+ 
+-Modulator* Modulator::From(ScriptState* script_state) {
++Modulator* Modulator::From(ScriptState* script_state, ::brave_page_graph::PageGraph* page_graph, DOMNodeId initiator_elm_id) {
+   if (!script_state)
+     return nullptr;
+ 
+@@ -36,7 +41,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+     return modulator;
+   ExecutionContext* execution_context = ExecutionContext::From(script_state);
+   if (auto* window = DynamicTo<LocalDOMWindow>(execution_context)) {
+-    modulator = MakeGarbageCollected<DocumentModulatorImpl>(script_state);
++    modulator = MakeGarbageCollected<DocumentModulatorImpl>(script_state, page_graph, initiator_elm_id);
+     Modulator::SetModulator(script_state, modulator);
+ 
+     // See comment in LocalDOMWindow::modulator_ for this workaround.
+@@ -44,7 +49,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+     window->SetModulator(modulator);
+   } else if (auto* worklet_scope =
+                  DynamicTo<WorkletGlobalScope>(execution_context)) {
+-    modulator = MakeGarbageCollected<WorkletModulatorImpl>(script_state);
++    modulator = MakeGarbageCollected<WorkletModulatorImpl>(script_state, page_graph, initiator_elm_id);
+     Modulator::SetModulator(script_state, modulator);
+ 
+     // See comment in WorkerOrWorkletGlobalScope::modulator_ for this
+@@ -52,7 +57,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+     worklet_scope->SetModulator(modulator);
+   } else if (auto* worker_scope =
+                  DynamicTo<WorkerGlobalScope>(execution_context)) {
+-    modulator = MakeGarbageCollected<WorkerModulatorImpl>(script_state);
++    modulator = MakeGarbageCollected<WorkerModulatorImpl>(script_state, page_graph, initiator_elm_id);
+     Modulator::SetModulator(script_state, modulator);
+ 
+     // See comment in WorkerOrWorkletGlobalScope::modulator_ for this

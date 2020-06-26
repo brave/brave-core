@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.h b/third_party/blink/renderer/core/inspector/inspector_page_agent.h
+index fa1e022ce6bfd0ec5609b050ee027575ec4a27e2..99c430a848308e61f35515b21b4b0bcc847d5402 100644
+--- a/third_party/blink/renderer/core/inspector/inspector_page_agent.h
++++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.h
+@@ -169,6 +169,8 @@ class CORE_EXPORT InspectorPageAgent final
+   protocol::Response waitForDebugger() override;
+   protocol::Response setInterceptFileChooserDialog(bool enabled) override;
+ 
++  protocol::Response generatePageGraph(String* data) override;
++
+   // InspectorInstrumentation API
+   void DidClearDocumentOfWindowObject(LocalFrame*);
+   void DidNavigateWithinDocument(LocalFrame*);

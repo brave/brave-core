@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/core/loader/link_loader.h b/third_party/blink/renderer/core/loader/link_loader.h
+index 925ba7787c377192e28818192b586db0c67f4cf2..2f076f868938d2c31160f4dc9c0ac67a7ce26576 100644
+--- a/third_party/blink/renderer/core/loader/link_loader.h
++++ b/third_party/blink/renderer/core/loader/link_loader.h
+@@ -45,6 +45,7 @@ class LinkLoaderClient;
+ class PrerenderHandle;
+ class Resource;
+ class ResourceClient;
++class HTMLLinkElement;
+ 
+ // The LinkLoader can load link rel types icon, dns-prefetch, prefetch, and
+ // prerender.
+@@ -73,6 +76,7 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
+ 
+   Resource* GetResourceForTesting();
+ 
++  void SetHTMLLinkElementOwner(HTMLLinkElement* link_element);
+   void Trace(Visitor*) const override;
+ 
+  private:
+@@ -86,6 +93,7 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
+   Member<LinkLoaderClient> client_;
+ 
+   Member<PrerenderHandle> prerender_;
++  Member<HTMLLinkElement> link_element_;
+ };
+ 
+ }  // namespace blink

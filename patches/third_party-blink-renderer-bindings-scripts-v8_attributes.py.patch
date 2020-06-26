@@ -1,0 +1,31 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/v8_attributes.py b/third_party/blink/renderer/bindings/scripts/v8_attributes.py
+index 3adf4eaf8411d00d8f68f9a89efe939ac94d423a..6d68789f70b214894f335d1367dc6b82f818e0e3 100644
+--- a/third_party/blink/renderer/bindings/scripts/v8_attributes.py
++++ b/third_party/blink/renderer/bindings/scripts/v8_attributes.py
+@@ -163,15 +163,16 @@ def attribute_context(interface, attribute, interfaces, component_info):
+     if 'LogActivity' in extended_attributes:
+         includes.add('platform/bindings/v8_per_context_data.h')
+ 
+-    # [DeprecateAs], [MeasureAs]
++    # [DeprecateAs], [MeasureAs], [TrackInPageGraphAs]
+     deprecate_as = v8_utilities.deprecate_as(attribute)
+     measure_as = v8_utilities.measure_as(attribute, interface)
++    track_in_page_graph_as = v8_utilities.track_in_page_graph_as(attribute, interface)
+ 
+     # [HighEntropy]
+     high_entropy = v8_utilities.high_entropy(attribute)
+ 
+     is_lazy_data_attribute = \
+-        (constructor_type and not (measure_as or deprecate_as)) or \
++        (constructor_type and not (measure_as or deprecate_as or track_in_page_graph_as)) or \
+         (str(idl_type) == 'Window' and attribute.name in ('frames', 'self', 'window'))
+ 
+     runtime_features = component_info['runtime_enabled_features']
+@@ -287,6 +291,7 @@ def attribute_context(interface, attribute, interfaces, component_info):
+         v8_utilities.direct_socket_enabled(attribute, interface),
+         # [SecureContext]
+         'secure_context_test': v8_utilities.secure_context(attribute, interface),
++        'track_in_page_graph_as': track_in_page_graph_as,
+         'use_output_parameter_for_result': idl_type.use_output_parameter_for_result,
+         'world_suffixes': (
+             ['', 'ForMainWorld']

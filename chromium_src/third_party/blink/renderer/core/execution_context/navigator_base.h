@@ -13,6 +13,16 @@
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 
 #define BRAVE_NAVIGATOR_BASE_USER_AGENT                                \
+  {                                                                         \
+    brave_page_graph::PageGraph* page_graph =                               \
+      DomWindow()->GetFrame()->GetDocument()->GetPageGraph();               \
+    if (page_graph != nullptr) {                                            \
+      String result = DomWindow()->GetFrame()->Loader().UserAgent();        \
+      page_graph->RegisterWebAPICall("NavigatorID.userAgent",               \
+        std::vector<const String>());                                       \
+      page_graph->RegisterWebAPIResult("NavigatorID.userAgent", result);    \
+    }                                                                       \
+  }                                                                         \
   if (blink::WebContentSettingsClient* settings =                      \
           brave::GetContentSettingsClientFor(GetExecutionContext())) { \
     if (!settings->AllowFingerprinting(true)) {                        \

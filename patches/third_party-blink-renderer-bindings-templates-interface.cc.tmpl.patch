@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/bindings/templates/interface.cc.tmpl b/third_party/blink/renderer/bindings/templates/interface.cc.tmpl
+index b8f328b781761b30756e2a5dcff1fb2eabfb4c45..610d5a2da07446908a91659ab8460d7712120b53 100644
+--- a/third_party/blink/renderer/bindings/templates/interface.cc.tmpl
++++ b/third_party/blink/renderer/bindings/templates/interface.cc.tmpl
+@@ -877,6 +877,17 @@ static void Constructor(const v8::FunctionCallbackInfo<v8::Value>& info) {
+   Dactyloscoper::Record(execution_context_for_measurement, WebFeature::k{{measure_as('Constructor')}});
+   {% endif %}
+   {% endif %}
++  {% if track_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      static const ::brave_page_graph::Binding kBinding_{{v8_class}} = "{{track_in_page_graph_as}}";
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class}}, ::brave_page_graph::kBindingTypeConstructor, ::brave_page_graph::kBindingEventConstructorCall);
++    }
++  }
++  // #endif
++  {% endif %}
+   if (!info.IsConstructCall()) {
+     V8ThrowException::ThrowTypeError(
+         info.GetIsolate(),

@@ -1,0 +1,43 @@
+diff --git a/third_party/blink/renderer/core/script/modulator_impl_base.h b/third_party/blink/renderer/core/script/modulator_impl_base.h
+index fcae74ca78363501c92a90a85602352f9a77bae8..243785e53d0fb18f0d5e3e9cf6af3046e82524cf 100644
+--- a/third_party/blink/renderer/core/script/modulator_impl_base.h
++++ b/third_party/blink/renderer/core/script/modulator_impl_base.h
+@@ -12,6 +12,9 @@
+ #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ 
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+ namespace blink {
+ 
+ class DynamicModuleResolver;
+@@ -29,8 +35,10 @@ class ModulatorImplBase : public Modulator {
+   ~ModulatorImplBase() override;
+   void Trace(Visitor*) const override;
+ 
++  ::brave_page_graph::PageGraph* GetPageGraph() const override { return this->page_graph_; }
++  DOMNodeId GetInitiatingDOMNodeId() const override { return this->initiator_; }
+  protected:
+-  explicit ModulatorImplBase(ScriptState*);
++  explicit ModulatorImplBase(ScriptState*, ::brave_page_graph::PageGraph*, DOMNodeId);
+ 
+   ExecutionContext* GetExecutionContext() const;
+ 
+@@ -76,6 +86,7 @@ class ModulatorImplBase : public Modulator {
+   void ResolveDynamically(const ModuleRequest& module_request,
+                           const KURL&,
+                           const ReferrerScriptInfo&,
++                          const ::brave_page_graph::ScriptId,
+                           ScriptPromiseResolver*) override;
+   const ImportMap* GetImportMapForTest() const final { return import_map_; }
+ 
+@@ -115,6 +126,8 @@ class ModulatorImplBase : public Modulator {
+   // [spec text]
+   AcquiringImportMapsState acquiring_import_maps_ =
+       AcquiringImportMapsState::kAcquiring;
++  brave_page_graph::PageGraph* page_graph_;
++  DOMNodeId initiator_;
+ };
+ 
+ }  // namespace blink

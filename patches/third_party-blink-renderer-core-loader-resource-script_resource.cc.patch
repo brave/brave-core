@@ -1,0 +1,68 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/script_resource.cc b/third_party/blink/renderer/core/loader/resource/script_resource.cc
+index a7a69c2617a7309b8d5b38aaa837864db9b3634a..c25c15c0e219f38b89e48d135f751bdfe11565dd 100644
+--- a/third_party/blink/renderer/core/loader/resource/script_resource.cc
++++ b/third_party/blink/renderer/core/loader/resource/script_resource.cc
+@@ -50,6 +50,17 @@
+ #include "third_party/blink/renderer/platform/wtf/functional.h"
+ #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED
++#include "brave/third_party/blink/brave_page_graph/logging.h"
++
++#include "third_party/blink/renderer/platform/crypto.h"
++
++#include "third_party/blink/renderer/platform/wtf/text/base64.h"
++#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
++
++#include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -567,4 +578,45 @@ void ScriptResource::CheckStreamingState() const {
+   }
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED
++std::string ScriptDigest(ScriptResource* resource) {
++  DigestValue digest;
++  String result;
++  bool base64_encoded;
++  MaybeEncodeTextContent(
++    resource->TextForInspector(),
++    resource->ResourceBuffer(), &result, &base64_encoded);
++  std::string str_copy(result.Utf8().data());
++  const bool digest_succeeded = ComputeDigest(kHashAlgorithmSha256,
++      str_copy.c_str(), str_copy.size(), digest);
++  PG_LOG_ASSERT(digest_succeeded);
++  return std::string(WTF::Base64Encode(digest).Utf8().data());
++}
++
++std::string ResourceDigest(Resource* resource) {
++  ResourceType type = resource->GetType();
++  if (type == ResourceType::kCSSStyleSheet) {
++    return StyleSheetDigest(To<CSSStyleSheetResource>(resource));
++  } else if (type == ResourceType::kScript) {
++    return ScriptDigest(To<ScriptResource>(resource));
++  }
++
++  DigestValue digest;
++  if (!resource->ResourceBuffer()) {
++    return "";
++  }
++
++  const size_t size = resource->ResourceBuffer()->size();
++  auto data = std::make_unique<char[]>(size);
++  if (resource->ResourceBuffer()->GetBytes(data.get(), size)) {
++    const bool digest_succeeded = ComputeDigest(kHashAlgorithmSha256,
++        data.get(), size, digest);
++    PG_LOG_ASSERT(digest_succeeded);
++    return std::string(WTF::Base64Encode(digest).Utf8().data());
++  }
++
++  return std::string("");
++}
++// #endif
++
+ }  // namespace blink

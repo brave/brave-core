@@ -1,0 +1,40 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc b/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
+index 72248101cdaee12ff71d0d6cd9b83ea50db2c829..9c969dfb8546a98f7fcad97e75a949d42d38b2f2 100644
+--- a/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
++++ b/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
+@@ -574,7 +574,12 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
+     v8::Local<v8::FixedArray> v8_import_assertions) {
+   ScriptState* script_state = ScriptState::From(context);
+ 
+-  Modulator* modulator = Modulator::From(script_state);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromContext(context);
++  Modulator* modulator = Modulator::From(script_state, page_graph, 0);
++// #else
++//  Modulator* modulator = Modulator::From(script_state);
++// #endif
+   if (!modulator) {
+     // Inactive browsing context (detached frames) doesn't have a modulator.
+     // We chose to return a rejected promise (which may never get to catch(),
+@@ -634,7 +634,7 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
+   auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
+   ScriptPromise promise = resolver->Promise();
+   modulator->ResolveDynamically(module_request, referrer_resource_url,
+-                                referrer_info, resolver);
++                                referrer_info, 0, resolver);
+   return v8::Local<v8::Promise>::Cast(promise.V8Value());
+ }
+ 
+@@ -641,7 +646,11 @@ static void HostGetImportMetaProperties(v8::Local<v8::Context> context,
+   v8::Isolate* isolate = context->GetIsolate();
+   v8::HandleScope handle_scope(isolate);
+ 
+-  Modulator* modulator = Modulator::From(script_state);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Modulator* modulator = Modulator::From(script_state, nullptr, 0);
++// #else
++//  Modulator* modulator = Modulator::From(script_state);
++// #endif
+   if (!modulator)
+     return;
+ 

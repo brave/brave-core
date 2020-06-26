@@ -1,0 +1,13 @@
+diff --git a/test/cctest/test-serialize.cc b/test/cctest/test-serialize.cc
+index 7ce8ef715296586d3cee84f6270e326d4b3748b9..8f0468e54e2be85c1ceee64e3ab246e10eb3298b 100644
+--- a/test/cctest/test-serialize.cc
++++ b/test/cctest/test-serialize.cc
+@@ -1726,7 +1727,7 @@ TEST(CodeSerializerPromotedToCompilationCache) {
+ 
+   MaybeHandle<SharedFunctionInfo> shared =
+       isolate->compilation_cache()->LookupScript(
+-          src, src, 0, 0, v8::ScriptOriginOptions(), LanguageMode::kSloppy);
++          src, src, 0, 0, v8::ScriptOriginOptions(), LanguageMode::kSloppy, 0);
+ 
+   CHECK(*shared.ToHandleChecked() == *copy);
+ 

@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
+index 24d34305f41a5ed72387792c29cc0543a3a9b8cf..cc5557df4477b72efc944219a8d257116cbcdaa2 100644
+--- a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
++++ b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
+@@ -178,6 +178,12 @@ void LazyLoadFrameObserver::LoadImmediately() {
+   // DisconnectContentFrame() if the content frame changes.
+   CHECK(element_->ContentFrame());
+ 
++  // if (element_->GetDocument().GetPageGraph() != nullptr) {
++  //   element_->GetDocument().GetPageGraph()->RegisterRequestStartFromElm(
++  //     DOMNodeIds::IdForNode(element_),
++  //     scoped_request_info->resource_request.Url().GetString().Utf8().data(),
++  //     brave_page_graph::kRequestTypeDocument);
++  // }
+   FrameLoadRequest request(element_->GetDocument().domWindow(),
+                            scoped_request_info->resource_request);
+ 

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/wtf/BUILD.gn b/third_party/blink/renderer/platform/wtf/BUILD.gn
+index 6f993be10f6921f999500becef77d22d5a1593d3..7f886e4ea534b156002ec3adf3c1eedfecc8e926 100644
+--- a/third_party/blink/renderer/platform/wtf/BUILD.gn
++++ b/third_party/blink/renderer/platform/wtf/BUILD.gn
+@@ -19,6 +19,7 @@ buildflag_header("buildflags") {
+ 
+ visibility = [
+   ":*",
++  "//brave/third_party/blink/brave_page_graph:brave_page_graph",
+   "//:gn_all",
+   "//mojo/public/cpp/bindings/*",
+   "//third_party/blink/*",

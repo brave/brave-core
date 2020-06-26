@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/page/chrome_client_impl.h b/third_party/blink/renderer/core/page/chrome_client_impl.h
+index ec816f101cafd2892decc761195347bd21809b46..974e0e6b74adca7f95eb642ca579e7f8e7c8ad73 100644
+--- a/third_party/blink/renderer/core/page/chrome_client_impl.h
++++ b/third_party/blink/renderer/core/page/chrome_client_impl.h
+@@ -288,6 +288,9 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
+ 
+   void DocumentDetached(Document&) override;
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void FinalPageGraph(Document&) override;
++// #endif
+   double UserZoomFactor() const override;
+ 
+   void BatterySavingsChanged(LocalFrame& main_frame,
