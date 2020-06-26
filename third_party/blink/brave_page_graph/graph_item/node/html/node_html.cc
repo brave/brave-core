@@ -52,7 +52,7 @@ void NodeHTML::AddGraphMLAttributes(xmlDocPtr doc,
   GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
       ->AddValueNode(doc, parent_node, node_id_);
   GraphMLAttrDefForType(kGraphMLAttrDefIsDeleted)
-      ->AddValueNode(doc, parent_node, is_deleted_ ? "true" : "false");
+      ->AddValueNode(doc, parent_node, is_deleted_);
 }
 
 void NodeHTML::AddInEdge(const Edge* const in_edge) {

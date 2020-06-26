@@ -41,7 +41,7 @@ void EdgeAttribute::AddGraphMLAttributes(xmlDocPtr doc,
   GraphMLAttrDefForType(kGraphMLAttrDefKey)
       ->AddValueNode(doc, parent_node, name_);
   GraphMLAttrDefForType(kGraphMLAttrDefIsStyle)
-      ->AddValueNode(doc, parent_node, is_style_ ? "true" : "false");
+      ->AddValueNode(doc, parent_node, is_style_);
 }
 
 bool EdgeAttribute::IsEdgeAttribute() const {

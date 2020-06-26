@@ -179,7 +179,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const bool value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeBoolean);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
-      BAD_CAST to_string(value).c_str());
+      BAD_CAST value ? "true" : "false");
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
 }
 
