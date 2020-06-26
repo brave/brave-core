@@ -20,15 +20,15 @@ import com.airbnb.lottie.LottieAnimationView;
 import org.chromium.chrome.R;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.OnboradingBottomSheetDialogFragment.OnboradingBottomSheetListener;
 
 import java.util.List;
 import java.util.Arrays;
 
 public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
     private int mOnboardingType;
-    private NewTabPageListener mNewTabPageListener;
+    private OnboradingBottomSheetListener mOnboradingBottomSheetListener;
 
     private static final Context mContext = ContextUtils.getApplicationContext();
     private static final List<String> mHeaders = Arrays.asList(
@@ -51,9 +51,9 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
                 null
             );
 
-    public OnboardingBottomSheetViewPagerAdapter(int onboardingType, NewTabPageListener newTabPageListener) {
+    public OnboardingBottomSheetViewPagerAdapter(int onboardingType, OnboradingBottomSheetListener onboradingBottomSheetListener) {
         this.mOnboardingType = onboardingType;
-        this.mNewTabPageListener = newTabPageListener;
+        this.mOnboradingBottomSheetListener = onboradingBottomSheetListener;
     }
 
     @Override
@@ -97,11 +97,19 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
         mText.setText(mTexts.get(position));
 
         Button mAction = layout.findViewById(R.id.btn_turn_on_privacy_stats);
-        mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            mAction.setText(mContext.getResources().getString(R.string.next));
+        } else {
+            mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
+        }
+
         mAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
+                }
+                mOnboradingBottomSheetListener.goToNextPage();
             }
         });
 
