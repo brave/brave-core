@@ -164,10 +164,11 @@ namespace {
 
 constexpr char kPageGraphVersion[] = "0.1";
 constexpr char kPageGraphUrl[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
-milliseconds NowInMs() {
-  return duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+
 }
 
+milliseconds NowInMs() {
+  return duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 }
 
 static constexpr int kV8ContextPerContextDataIndex = static_cast<int>(

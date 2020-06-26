@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 
+#include <chrono>
 #include <map>
 #include <string>
 #include <vector>
@@ -17,6 +18,7 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+using ::std::chrono::milliseconds;
 using ::std::endl;
 using ::std::map;
 using ::std::string;
@@ -64,9 +66,9 @@ namespace {
   const GraphMLAttr* const page_graph_node_id_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "id", kGraphMLAttrTypeLong);
   const GraphMLAttr* const page_graph_edge_time_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeEdge, "timestamp", kGraphMLAttrTypeDouble);
+    kGraphMLAttrForTypeEdge, "timestamp", kGraphMLAttrTypeLong);
   const GraphMLAttr* const page_graph_node_time_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeNode, "timestamp", kGraphMLAttrTypeDouble);
+    kGraphMLAttrForTypeNode, "timestamp", kGraphMLAttrTypeLong);
   const GraphMLAttr* const parent_node_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "parent", kGraphMLAttrTypeLong);
   const GraphMLAttr* const primary_pattern_attr = new GraphMLAttr(
@@ -196,6 +198,14 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
   LOG_ASSERT(type_ == kGraphMLAttrTypeDouble);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
       BAD_CAST to_string(value).c_str());
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
+}
+
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const milliseconds value) const {
+  LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
+  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
+      BAD_CAST to_string(value.count()).c_str());
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
 }
 
