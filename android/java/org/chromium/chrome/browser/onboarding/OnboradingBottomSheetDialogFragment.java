@@ -35,6 +35,11 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private int mOnboardingType;
     private NewTabPageListener mNewTabPageListener;
+    private ViewPager mViewPager;
+
+    public interface OnboradingBottomSheetListener {
+        void goToNextPage();
+    }
 
     public static OnboradingBottomSheetDialogFragment newInstance() {
         return new OnboradingBottomSheetDialogFragment();
@@ -54,7 +59,6 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     @Override
     public void onPause() {
-        // newTabPageListener.updateInteractableFlag(true);
         super.onPause();
     }
 
@@ -98,11 +102,12 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
         //     }
         // });
 
-        ViewPager pager = (ViewPager) view.findViewById(R.id.viewpager);
-        OnboardingBottomSheetViewPagerAdapter adapter = new OnboardingBottomSheetViewPagerAdapter(mOnboardingType, mNewTabPageListener);
-        pager.setAdapter(adapter);
+        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        OnboardingBottomSheetViewPagerAdapter adapter = new OnboardingBottomSheetViewPagerAdapter(mOnboardingType, mOnboradingBottomSheetListener);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setCurrentItem(0);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -127,4 +132,14 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
     }
+
+    private OnboradingBottomSheetListener mOnboradingBottomSheetListener = new OnboradingBottomSheetListener() {
+        @Override
+        public void goToNextPage() {
+            if (mViewPager != null) {
+                int currentPage = mViewPager.getCurrentItem();
+                mViewPager.setCurrentItem(currentPage + 1);
+            }
+        }
+    };
 }
