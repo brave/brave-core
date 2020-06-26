@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-index 389cf6c69aad4b1287283616aca44108277ee1bf..53cb7ccbc9d5a978c26dca3fad37e4990390fcde 100644
+index 06d046d9413f6121f943f86a7caacf40b419ef62..84b4e294c2cf97bf2d9c4ab520d6fa41e25c91a3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
 @@ -75,7 +75,7 @@ import org.chromium.ui.widget.ButtonCompat;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260dd29c2eb 100644
+index 024329e85dc21fd44efd0ea14706823545744752..9502b8ec29c5444cb88934c7590eaf17e61360d5 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -11,6 +11,7 @@
@@ -52,7 +52,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260
          </template>
          <template is="dom-if" if="[[privacySettingsRedesignEnabled_]]" restamp>
            <cr-link-row id="clearBrowsingData"
-@@ -181,6 +188,7 @@
+@@ -182,6 +189,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -60,7 +60,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -198,6 +206,7 @@
+@@ -199,6 +207,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -68,7 +68,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -240,6 +249,7 @@
+@@ -241,6 +250,7 @@
                sub-option-label="$i18n{deleteDataPostSession}"
                sub-option-mode="cookies-session-only">
            </category-default-setting>
@@ -76,7 +76,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260
            <settings-toggle-button
                id="blockThirdPartyCookies"
                class="hr"
-@@ -250,6 +260,7 @@
+@@ -251,6 +261,7 @@
                    "onBlockThirdPartyCookiesToggleChange_"
                no-set-pref>
            </settings-toggle-button>
@@ -84,7 +84,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260
            <cr-link-row id="site-data-trigger" class="hr"
                on-click="onSiteDataTap_" label="$i18n{siteSettingsCookieLink}">
            </cr-link-row>
-@@ -339,11 +350,13 @@
+@@ -341,11 +352,13 @@
          <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
              search-term="{{searchFilter_}}">
@@ -98,7 +98,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
                block-header="$i18n{siteSettingsBlock}"
-@@ -443,6 +456,19 @@
+@@ -445,6 +458,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>

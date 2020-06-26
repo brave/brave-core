@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-index b0ae472102cddf9e7b65edd3e759f5746565412c..51c41e23686b7dc5544cba44461818939f52a260 100644
+index 35b09259f0a9346cb7cef05d250d71b22f109def..f8baaac619d00f542b7c3b11eeddae28399f2503 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 @@ -44,7 +44,7 @@ import java.util.Map;

@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index e58d8ef5f3b0eaaec3579386beefda823b67567d..9331ed00a85884264e959cc5905b8289feb0d340 100644
+index 631c7ad9662c3e9f645f7b1d918142e4f82eca73..2747d43324f900534eb1339699e0633e1b091876 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -63,7 +63,7 @@ namespace {
@@ -11,7 +11,7 @@ index e58d8ef5f3b0eaaec3579386beefda823b67567d..9331ed00a85884264e959cc5905b8289
    switch (type) {
      case PermissionRequestType::MULTIPLE:
        return "AudioAndVideoCapture";
-@@ -564,6 +564,7 @@ void PermissionUmaUtil::RecordPermissionAction(
+@@ -565,6 +565,7 @@ void PermissionUmaUtil::RecordPermissionAction(
        base::UmaHistogramEnumeration("Permissions.Action.WindowPlacement",
                                      action, PermissionAction::NUM);
        break;

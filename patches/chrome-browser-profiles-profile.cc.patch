@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index e1582599124cdd81d6bab4e1d8280a731b4f4342..36fa5ccb3c93c77bae846cf4173de0a59b90ee13 100644
+index 8c927a9eff92874cfaa04473dfd23d6f3cefef9a..1b9532a9db0405f62159f04457d14da9c870bbdb 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
 @@ -247,7 +247,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";

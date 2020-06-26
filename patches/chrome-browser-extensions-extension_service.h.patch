@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/extension_service.h b/chrome/browser/extensions/extension_service.h
-index 678419b7cfe6ba61ac0e4e90716962afa624e96e..e95b14dc4803601a6a6509de6f107aed1c413476 100644
+index 41f95845e6a68fd765a24c7096224633122dcf6e..409fe5dd3a388b4cc4543037091778956704aa03 100644
 --- a/chrome/browser/extensions/extension_service.h
 +++ b/chrome/browser/extensions/extension_service.h
-@@ -445,6 +445,7 @@ class ExtensionService : public ExtensionServiceInterface,
+@@ -441,6 +441,7 @@ class ExtensionService : public ExtensionServiceInterface,
    }
  
   private:
 +  friend class BraveExtensionService;
    // Loads extensions specified via a command line flag/switch.
    void LoadExtensionsFromCommandLineFlag(const char* switch_name);
- 
+ #if defined(OS_CHROMEOS)

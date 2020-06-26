@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index feeaf77aaec383c8708da10c39186dc3758ca9e1..341e394709d384f758995752708f6a7c9aaffc60 100755
+index 11052131622f797bdfbcd6a4d921f3dfded9a19c..2b4071665c76debaa24d150ab905508dbe627c7a 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
@@ -28,7 +28,7 @@ index feeaf77aaec383c8708da10c39186dc3758ca9e1..341e394709d384f758995752708f6a7c
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -667,7 +670,8 @@ def GenerateCredits(
+@@ -668,7 +671,8 @@ def GenerateCredits(
    for path in third_party_dirs:
      try:
        metadata = ParseDir(path, _REPOSITORY_ROOT)

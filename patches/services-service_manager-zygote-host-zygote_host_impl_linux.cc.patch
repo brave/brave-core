@@ -1,8 +1,8 @@
 diff --git a/services/service_manager/zygote/host/zygote_host_impl_linux.cc b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
-index 08ecc3c80c0acccae26dca0ccf46441204d809dc..c08730cb708c68c65e0a0adb585c7295c0d22c45 100644
+index 2f46ecdae63eebc86aad4a627d8f362341d08b2f..2a6e70f7fc4fc8b3490f275a024405aa22d785c1 100644
 --- a/services/service_manager/zygote/host/zygote_host_impl_linux.cc
 +++ b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
-@@ -114,13 +114,9 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
+@@ -115,13 +115,9 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
      use_suid_sandbox_for_adj_oom_score_ = use_suid_sandbox_;
    } else {
      LOG(FATAL)

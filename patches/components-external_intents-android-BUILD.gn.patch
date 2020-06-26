@@ -1,16 +1,16 @@
 diff --git a/components/external_intents/android/BUILD.gn b/components/external_intents/android/BUILD.gn
-index 530cfa2c449b94854ace00cc710818fb496d2a7e..485013372d51d3ae48f685de5a20884f3574c8c4 100644
+index f0688b0e6edc5228902841a71d4a8881ded4045f..91ab5a649ec03db573e5e482b049baa72c1c7d85 100644
 --- a/components/external_intents/android/BUILD.gn
 +++ b/components/external_intents/android/BUILD.gn
-@@ -29,6 +29,7 @@ android_library("java") {
-     "//ui/android:ui_java",
+@@ -31,6 +31,7 @@ android_library("java") {
      "//url:gurl_java",
+     "//url:origin_java",
    ]
 +  enable_bytecode_rewriter = true
  }
  
  android_resources("java_resources") {
-@@ -57,6 +58,7 @@ static_library("android") {
+@@ -59,6 +60,7 @@ static_library("android") {
      "//components/navigation_interception",
      "//content/public/browser",
    ]

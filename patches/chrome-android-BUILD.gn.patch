@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 2e9596b4a61d65c4edf11826d616e6bb19707d89..b2495d18322af77d6b7ac62614fd5daff915b6a3 100644
+index 186436316c9163675417e40b33c33cb7c37dafc2..697cf7d99b29c6da505302f5ce8c066eb3ec961d 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -209,6 +209,7 @@ android_resources("chrome_app_java_resources") {
+@@ -232,6 +232,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
      "//third_party/android_deps:com_google_android_material_material_java",
    ]
@@ -10,7 +10,7 @@ index 2e9596b4a61d65c4edf11826d616e6bb19707d89..b2495d18322af77d6b7ac62614fd5daf
    custom_package = "org.chromium.chrome"
  }
  
-@@ -469,6 +470,7 @@ android_library("chrome_java") {
+@@ -499,6 +500,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,15 +18,15 @@ index 2e9596b4a61d65c4edf11826d616e6bb19707d89..b2495d18322af77d6b7ac62614fd5daf
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -508,6 +510,7 @@ android_library("chrome_java") {
-     "//content/public/browser:contacts_picker_properties_requested_javagen",
+@@ -539,6 +541,7 @@ android_library("chrome_java") {
      "//net:effective_connection_type_java",
+     "//net/dns:secure_dns_mode_generated_enum",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
  
    # From java_sources.gni.
    sources = chrome_java_sources + [
-@@ -617,6 +620,7 @@ group("jni_headers") {
+@@ -643,6 +646,7 @@ group("jni_headers") {
      "//chrome/browser/ui/messages/android:jni_headers",
      "//chrome/browser/util:jni_headers",
    ]
@@ -34,7 +34,7 @@ index 2e9596b4a61d65c4edf11826d616e6bb19707d89..b2495d18322af77d6b7ac62614fd5daf
  }
  
  action("chrome_android_java_google_api_keys_srcjar") {
-@@ -1541,6 +1545,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1648,6 +1652,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

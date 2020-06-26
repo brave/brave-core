@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 7f3bd89cebf11799d171edbfaffbfeb9ed386bf5..980107cc27e4ce731688f36232cee5ee7c348a06 100644
+index 1db1716b80f809158d42e79c4d13d26c26f2ab3d..cc1935164d31e46847ae34662e13f774e04ec612 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -504,6 +504,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -502,6 +502,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 6e9e8df813ef37209847b080cf1054e558fda876..eefc6f2a85ac258b2355c21ab1144520e9b24041 100644
+index 04008cc7802af33d8597dd120c480e7b582bc77b..23cedc8a95a0ebb3d565520bd0206007fe445a84 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -1449,6 +1449,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -1248,6 +1248,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
          boolean editingAllowed =
                  currentTab == null || bridge == null || bridge.isEditBookmarksEnabled();
          mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);

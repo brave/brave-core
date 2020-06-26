@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/model.py b/chrome/installer/mac/signing/model.py
-index 364e63403f4a9f333760cf00b3d61c62668a650f..766e0d5e2cb976cb58ef043dec53c05cd5c66f31 100644
+index 51157728f41560ea33fe0470f43af456ebb91cee..a193eb7517b37119a232bbb7cff26ceed1443c6d 100644
 --- a/chrome/installer/mac/signing/model.py
 +++ b/chrome/installer/mac/signing/model.py
-@@ -312,7 +312,7 @@ class Paths(object):
+@@ -315,7 +315,7 @@ class Paths(object):
          Returns:
              Path to the packaging directory.
          """

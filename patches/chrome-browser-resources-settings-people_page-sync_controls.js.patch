@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.js b/chrome/browser/resources/settings/people_page/sync_controls.js
-index 8fa7de339ef145321ef5f8d1719c01f8dae92726..bd8a34082a3a6cd1f0325df1c3f5db2df9c046bb 100644
+index 0ff778824d81b54fd0fb6dbe3a597b9710f5894a..7901856c98937fddaba1a208fbf24a736d369350 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.js
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.js
 @@ -99,7 +99,7 @@ Polymer({

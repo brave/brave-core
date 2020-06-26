@@ -1,12 +1,12 @@
 diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
-index 4c86fd265efdfb2fd561e93c5b495c74fc93b486..116cbcdaa9deb09ff40c2716ba7541f64b5b38ce 100644
+index 8244a181e58b4e12ee5073a6c06058794142f615..5b078bf53eeb375a4e00fe2b44ab916992f59892 100644
 --- a/components/omnibox/browser/omnibox_edit_model.cc
 +++ b/components/omnibox/browser/omnibox_edit_model.cc
-@@ -386,6 +386,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
+@@ -364,6 +364,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
        (*text == display_text_ || *text == url_for_editing_)) {
      *url_from_text = controller()->GetLocationBarModel()->GetURL();
      *write_url = true;
 +    BRAVE_ADJUST_TEXT_FOR_COPY
  
-     // If the omnibox is displaying a URL, set the hyperlink text to the URL's
-     // spec. This undoes any URL elisions.
+     // Don't let users copy Reader Mode page URLs.
+     // We display the original article's URL in the omnibox, so users will
