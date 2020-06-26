@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "build/build_config.h"

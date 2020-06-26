@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
+#include "base/logging.h"
 #include "base/task/post_task.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_component.h"

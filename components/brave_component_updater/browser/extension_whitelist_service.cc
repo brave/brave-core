@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/logging.h"
 #include "base/task_runner_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"

@@ -5,6 +5,7 @@
 #include "brave/components/brave_rewards/browser/publisher_info_backend.h"
 
 #include "base/files/file_util.h"
+#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "third_party/leveldatabase/env_chromium.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"

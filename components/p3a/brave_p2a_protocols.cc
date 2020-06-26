@@ -10,7 +10,7 @@
 #include <numeric>
 #include <vector>
 
-#include "base/logging.h"
+#include "base/check_op.h"
 #include "base/rand_util.h"
 
 namespace {

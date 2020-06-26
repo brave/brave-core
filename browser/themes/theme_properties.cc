@@ -5,6 +5,7 @@
 
 #include "brave/browser/themes/theme_properties.h"
 
+#include "base/notreached.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "ui/gfx/color_palette.h"
 

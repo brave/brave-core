@@ -8,6 +8,7 @@
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/values.h"
 
 bool GeminiJSONParser::GetTokensFromJSON(
