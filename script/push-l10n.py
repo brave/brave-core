@@ -9,6 +9,7 @@ from lib.transifex import (check_for_chromium_upgrade,
                            upload_missing_json_translations_to_transifex,
                            upload_source_files_to_transifex,
                            should_use_transifex)
+from lib.grd_string_replacements import get_override_file_path
 
 
 BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -39,7 +40,10 @@ def main():
                                       args.source_string_path[0])
     filename = os.path.basename(source_string_path).split('.')[0]
     if not should_use_transifex(source_string_path, filename):
-        print'Handled locally, not sending to Transifex: ', source_string_path
+        source_string_path = get_override_file_path(source_string_path)
+        filename = os.path.basename(source_string_path).split('.')[0]
+        print'Handled locally, sending only overrides to Transifex: ', source_string_path, 'filename: ', filename
+        upload_source_files_to_transifex(source_string_path, filename)
         return
 
     print '[transifex]: ', source_string_path
