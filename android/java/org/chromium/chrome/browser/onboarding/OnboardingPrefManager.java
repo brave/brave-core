@@ -33,6 +33,7 @@ public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
+    private static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
     public static final String ONBOARDING_TYPE = "onboarding_type";
     public static final String FROM_SETTINGS = "from_settings";
 
@@ -103,6 +104,16 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
+    public boolean hasShieldsTooltipShown() {
+        return mSharedPreferences.getBoolean(PREF_SHIELDS_TOOLTIP, false);
+    }
+
+    public void setShieldsTooltipShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHIELDS_TOOLTIP, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
     public long getNextOnboardingDate() {
         return mSharedPreferences.getLong(PREF_NEXT_ONBOARDING_DATE, 0);
     }
@@ -131,62 +142,11 @@ public class OnboardingPrefManager {
         return shouldShow;
     }
 
-    // private boolean shouldShowNewUserOnboarding(Context context) {
-    //     boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
-    //                          && PackageUtils.isFirstInstall(context)
-    //                          && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
-
-    //     return shouldShow;
-    // }
-
-    // private boolean shouldShowExistingUserOnboardingIfRewardsIsSwitchedOff(Context context) {
-    //     boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
-    //                          && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
-    //                          && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
-    //                          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-    //                          && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
-
-    //     return shouldShow;
-    // }
-
-    // private boolean shouldShowExistingUserOnboardingIfRewardsIsSwitchedOn(Context context) {
-    //     boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
-    //                          && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
-    //                          && BraveRewardsPanelPopup.isBraveRewardsEnabled()
-    //                          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-    //                          && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
-
-    //     return shouldShow;
-    // }
-
     public boolean isAdsAvailable() {
         return BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedProfile());
     }
 
-    // public boolean isAdsAvailableNewLocale() {
-    //     return BraveAdsNativeHelper.nativeIsNewlySupportedLocale(Profile.getLastUsedProfile());
-    // }
-
     public void showOnboarding(Context context) {
-        // int onboardingType = -1;
-        // if (fromSettings) {
-        //     onboardingType = NEW_USER_ONBOARDING;
-        // } else {
-        //     if (shouldShowNewUserOnboarding(context)) {
-        //         onboardingType = NEW_USER_ONBOARDING;
-        //     } else if (shouldShowExistingUserOnboardingIfRewardsIsSwitchedOff(context)) {
-        //         onboardingType = EXISTING_USER_REWARDS_OFF_ONBOARDING;
-        //     } else if (shouldShowExistingUserOnboardingIfRewardsIsSwitchedOn(context)) {
-        //         onboardingType = EXISTING_USER_REWARDS_ON_ONBOARDING;
-        //     }
-        // }
-
-        // if (onboardingType >= 0) {
-        //     Intent intent = new Intent(context, OnboardingActivity.class);
-        //     intent.putExtra(ONBOARDING_TYPE, onboardingType);
-        //     intent.putExtra(FROM_SETTINGS, fromSettings);
-        //     context.startActivity(intent);
-        // }
         Intent intent = new Intent(context, OnboardingActivity.class);
         context.startActivity(intent);
     }

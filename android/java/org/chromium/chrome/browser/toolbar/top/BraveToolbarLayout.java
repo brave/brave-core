@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabModelObserver;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
@@ -239,14 +240,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         if (getToolbarDataProvider().getTab() == tab) {
           mBraveShieldsHandler.updateHost(url);
           updateBraveShieldsButtonState(tab);
-          PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
-          mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              mPopupWindow.dismiss();
-              showShieldsMenu(mBraveShieldsButton);
-            }
-          });
+          if (!NewTabPage.isNTPUrl(tab.getUrlString())
+              && !OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
+              && PackageUtils.isFirstInstall(getContext())) {
+            PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
+            OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
+            mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                mPopupWindow.dismiss();
+                showShieldsMenu(mBraveShieldsButton);
+              }
+            });
+          }
         }
       }
 
