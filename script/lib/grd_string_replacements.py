@@ -131,6 +131,13 @@ def get_override_file_path(source_string_path):
     """Obtain src/brave source string override path for local grd strings with replacements"""
     filename = os.path.basename(source_string_path)
     (basename, ext) = filename.split('.')
-    override_string_path = os.path.join(os.path.dirname(source_string_path),
-                                        '.'.join((basename + '_override', ext)))
+    if ext == 'xtb':
+        # _override goes after the string name but before the _[locale].xtb part
+        parts = basename.split('_')
+        parts.insert(-1, 'override')
+        override_string_path = os.path.join(os.path.dirname(source_string_path),
+                                            '.'.join(('_'.join(parts), ext)))
+    else:
+        override_string_path = os.path.join(os.path.dirname(source_string_path),
+                                            '.'.join((basename + '_override', ext)))
     return override_string_path

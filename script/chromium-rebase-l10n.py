@@ -34,7 +34,6 @@ def generate_overrides_and_replace_strings(source_string_path):
 
     # Remove uneeded things from the override grds
     nodes_to_remove = [
-        '//file',
         '//outputs',
         '//comment()',
     ]
@@ -51,6 +50,9 @@ def generate_overrides_and_replace_strings(source_string_path):
         else:
             # No grdp override here, carry on
             part.getparent().remove(part)
+    files = modified_xml_tree.xpath('//file')
+    for f in files:
+        f.attrib['path'] = get_override_file_path(f.attrib['path'])
 
     # Write out an override file that is a duplicate of the original file but with strings that
     # are shared with Chrome stripped out.
