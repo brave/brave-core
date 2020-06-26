@@ -10,6 +10,8 @@
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 
@@ -70,7 +72,8 @@ void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetAdControlType(profile_, GURL());
+  ControlType setting = brave_shields::GetAdControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -84,10 +87,12 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
   bool value;
   args->GetBoolean(0, &value);
 
-  brave_shields::SetAdControlType(profile_,
-                                  value ? ControlType::BLOCK
-                                        : ControlType::ALLOW,
-                                  GURL());
+  brave_shields::SetAdControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      value ? ControlType::BLOCK
+            : ControlType::ALLOW,
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
@@ -96,7 +101,8 @@ void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
   CHECK(profile_);
 
   bool enabled = brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-      profile_, GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -111,9 +117,11 @@ void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
   std::string value;
   args->GetString(0, &value);
 
-  brave_shields::SetCosmeticFilteringControlType(profile_,
-                                                 ControlTypeFromString(value),
-                                                 GURL());
+  brave_shields::SetCosmeticFilteringControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      ControlTypeFromString(value),
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
@@ -121,7 +129,9 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetCookieControlType(profile_, GURL());
+  ControlType setting = brave_shields::GetCookieControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -136,9 +146,11 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
   std::string value;
   args->GetString(0, &value);
 
-  brave_shields::SetCookieControlType(profile_,
-                                      ControlTypeFromString(value),
-                                      GURL());
+  brave_shields::SetCookieControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      ControlTypeFromString(value),
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
@@ -146,8 +158,9 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
-  ControlType setting =
-      brave_shields::GetFingerprintingControlType(profile_, GURL());
+  ControlType setting = brave_shields::GetFingerprintingControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -163,9 +176,10 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
   args->GetString(0, &value);
 
   brave_shields::SetFingerprintingControlType(
-      profile_,
+      HostContentSettingsMapFactory::GetForProfile(profile_),
       ControlTypeFromString(value),
-      GURL());
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
@@ -175,9 +189,11 @@ void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
   bool value;
   args->GetBoolean(0, &value);
 
-  brave_shields::SetHTTPSEverywhereEnabled(profile_,
-                                           value,
-                                           GURL());
+  brave_shields::SetHTTPSEverywhereEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      value,
+      GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(
@@ -187,8 +203,10 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
   bool value;
   args->GetBoolean(0, &value);
 
-  brave_shields::SetNoScriptControlType(profile_,
-                                        value ? ControlType::BLOCK
-                                              : ControlType::ALLOW,
-                                        GURL());
+  brave_shields::SetNoScriptControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      value ? ControlType::BLOCK
+            : ControlType::ALLOW,
+      GURL(),
+      g_browser_process->local_state());
 }

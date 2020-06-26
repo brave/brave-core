@@ -219,60 +219,63 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void Block3PCookies() {
-    brave_shields::SetCookieControlType(browser()->profile(),
+    brave_shields::SetCookieControlType(content_settings(),
                                         ControlType::BLOCK_THIRD_PARTY,
                                         top_level_page_url());
   }
 
   void BlockCookies() {
     brave_shields::SetCookieControlType(
-        browser()->profile(), ControlType::BLOCK, top_level_page_url());
+        content_settings(), ControlType::BLOCK, top_level_page_url());
   }
 
   void AllowCookies() {
     brave_shields::SetCookieControlType(
-        browser()->profile(), ControlType::ALLOW, top_level_page_url());
+        content_settings(), ControlType::ALLOW, top_level_page_url());
   }
 
   void ShieldsDown() {
-    brave_shields::SetBraveShieldsEnabled(browser()->profile(), false,
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          false,
                                           top_level_page_url());
   }
 
   void ShieldsUp() {
-    brave_shields::SetBraveShieldsEnabled(browser()->profile(), true,
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          true,
                                           top_level_page_url());
   }
 
   void AllowFingerprinting() {
     brave_shields::SetFingerprintingControlType(
-        browser()->profile(), ControlType::ALLOW, top_level_page_url());
+        content_settings(), ControlType::ALLOW, top_level_page_url());
   }
 
   void BlockFingerprinting() {
     brave_shields::SetFingerprintingControlType(
-        browser()->profile(), ControlType::BLOCK, top_level_page_url());
+        content_settings(), ControlType::BLOCK, top_level_page_url());
   }
 
   void BlockThirdPartyFingerprinting() {
-    brave_shields::SetFingerprintingControlType(browser()->profile(),
+    brave_shields::SetFingerprintingControlType(content_settings(),
                                                 ControlType::BLOCK_THIRD_PARTY,
                                                 top_level_page_url());
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        browser()->profile(), ControlType::DEFAULT, top_level_page_url());
+    brave_shields::SetFingerprintingControlType(content_settings(),
+                                                ControlType::DEFAULT,
+                                                top_level_page_url());
   }
 
   void BlockScripts() {
     brave_shields::SetNoScriptControlType(
-        browser()->profile(), ControlType::BLOCK, top_level_page_url());
+        content_settings(), ControlType::BLOCK, top_level_page_url());
   }
 
   void AllowScripts() {
     brave_shields::SetNoScriptControlType(
-        browser()->profile(), ControlType::ALLOW, top_level_page_url());
+        content_settings(), ControlType::ALLOW, top_level_page_url());
   }
 
   content::WebContents* contents() {

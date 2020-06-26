@@ -22,7 +22,8 @@ namespace brave_shields {
 namespace {
 
 void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
-                                   PrefService* prefs) {
+                                   PrefService* prefs,
+                                   PrefService* local_state) {
   auto control_type = ControlType::ALLOW;
   if (prefs->GetBoolean(prefs::kBlockThirdPartyCookies)) {
     control_type = ControlType::BLOCK_THIRD_PARTY;
@@ -34,7 +35,7 @@ void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
     control_type = ControlType::BLOCK;
   }
 
-  SetCookieControlType(map, control_type, GURL());
+  SetCookieControlType(map, control_type, GURL(), local_state);
 }
 
 void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
@@ -76,8 +77,11 @@ void CookiePrefService::Lock::Release() {
 
 CookiePrefService::CookiePrefService(
     HostContentSettingsMap* host_content_settings_map,
-    PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
+    PrefService* prefs,
+    PrefService* local_state)
+    : host_content_settings_map_(host_content_settings_map),
+      prefs_(prefs),
+      local_state_(local_state) {
   SetCookiePrefDefaults(host_content_settings_map, prefs);
   host_content_settings_map_->AddObserver(this);
   pref_change_registrar_.Init(prefs_);
@@ -97,7 +101,9 @@ CookiePrefService::~CookiePrefService() {
 
 void CookiePrefService::OnPreferenceChanged() {
   if (lock_.Try()) {
-    SetCookieControlTypeFromPrefs(host_content_settings_map_, prefs_);
+    SetCookieControlTypeFromPrefs(host_content_settings_map_,
+                                  prefs_,
+                                  local_state_);
     lock_.Release();
   }
 }

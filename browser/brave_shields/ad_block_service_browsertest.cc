@@ -20,6 +20,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_features.h"
@@ -90,6 +91,10 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForAdBlockServiceThreads();
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
+  }
+
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
@@ -840,8 +845,10 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
-  brave_shields::SetCosmeticFilteringControlType(browser()->profile(),
-          brave_shields::ControlType::ALLOW, GURL());
+  brave_shields::SetCosmeticFilteringControlType(
+      content_settings(),
+      brave_shields::ControlType::ALLOW,
+      GURL());
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -939,8 +946,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Test cosmetic filtering bypasses 1st party checks when toggled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringHide1pContent) {
-  brave_shields::SetCosmeticFilteringControlType(browser()->profile(),
-          brave_shields::ControlType::BLOCK, GURL());
+  brave_shields::SetCosmeticFilteringControlType(
+      content_settings(),
+      brave_shields::ControlType::BLOCK,
+      GURL());
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
   WaitForBraveExtensionShieldsDataReady();

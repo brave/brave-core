@@ -19,9 +19,11 @@ struct Referrer;
 
 class GURL;
 class HostContentSettingsMap;
-class Profile;
+class PrefService;
 
 namespace brave_shields {
+
+class ReferrerWhitelistService;
 
 enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
 
@@ -29,49 +31,63 @@ ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
 
-void SetBraveShieldsEnabled(Profile* profile, bool enable, const GURL& url);
+void SetBraveShieldsEnabled(HostContentSettingsMap* map,
+                            bool enable,
+                            const GURL& url,
+                            PrefService* local_state = nullptr);
 // reset to the default value
-void ResetBraveShieldsEnabled(Profile* profile, const GURL& url);
-bool GetBraveShieldsEnabled(Profile* profile, const GURL& url);
+void ResetBraveShieldsEnabled(HostContentSettingsMap* map,
+                              const GURL& url);
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 
-void SetAdControlType(Profile* profile, ControlType type, const GURL& url);
-ControlType GetAdControlType(Profile* profile, const GURL& url);
+void SetAdControlType(HostContentSettingsMap* map,
+                      ControlType type,
+                      const GURL& url,
+                      PrefService* local_state = nullptr);
+ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url);
 
-void SetCosmeticFilteringControlType(Profile* profile,
+void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      ControlType type,
-                                     const GURL& url);
-ControlType GetCosmeticFilteringControlType(Profile* profile, const GURL& url);
-bool ShouldDoCosmeticFiltering(Profile* profile, const GURL& url);
-bool IsFirstPartyCosmeticFilteringEnabled(Profile* profile, const GURL& url);
+                                     const GURL& url,
+                                     PrefService* local_state = nullptr);
+ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
+                                            const GURL& url);
+bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
+bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
+                                          const GURL& url);
 
-void SetCookieControlType(Profile* profile, ControlType type, const GURL& url);
 void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
-                          const GURL& url);
-ControlType GetCookieControlType(Profile* profile, const GURL& url);
+                          const GURL& url,
+                          PrefService* local_state = nullptr);
 ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
 
 // Referrers is always set along with cookies so there is no setter and
 // these is just included for backwards compat.
-bool AllowReferrers(Profile* profile, const GURL& url);
 bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
 
-void SetFingerprintingControlType(Profile* profile,
+void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,
-                                  const GURL& url);
-ControlType GetFingerprintingControlType(Profile* profile, const GURL& url);
+                                  const GURL& url,
+                                  PrefService* local_state = nullptr);
+ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
+                                         const GURL& url);
 
-void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
+void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
+                               bool enable,
+                               const GURL& url,
+                               PrefService* local_state = nullptr);
 // reset to the default value
-void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
-void ResetHTTPSEverywhereEnabled(Profile* profile, const GURL& url);
-bool GetHTTPSEverywhereEnabled(Profile* profile, const GURL& url);
+void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
+                                 const GURL& url);
+bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
 
-void SetNoScriptControlType(Profile* profile,
+void SetNoScriptControlType(HostContentSettingsMap* map,
                             ControlType type,
-                            const GURL& url);
-ControlType GetNoScriptControlType(Profile* profile, const GURL& url);
+                            const GURL& url,
+                            PrefService* local_state = nullptr);
+ControlType GetNoScriptControlType(HostContentSettingsMap* map,
+                                   const GURL& url);
 
 void DispatchBlockedEvent(const GURL& request_url,
                           int render_frame_id,
@@ -79,13 +95,15 @@ void DispatchBlockedEvent(const GURL& request_url,
                           int frame_tree_node_id,
                           const std::string& block_type);
 
-bool MaybeChangeReferrer(bool allow_referrers,
-                         bool shields_up,
-                         const GURL& current_referrer,
-                         const GURL& tab_origin,
-                         const GURL& target_url,
-                         network::mojom::ReferrerPolicy policy,
-                         content::Referrer* output_referrer);
+bool MaybeChangeReferrer(
+    bool allow_referrers,
+    bool shields_up,
+    const GURL& current_referrer,
+    const GURL& tab_origin,
+    const GURL& target_url,
+    network::mojom::ReferrerPolicy policy,
+    brave_shields::ReferrerWhitelistService* referrer_whitelist_service,
+    content::Referrer* output_referrer);
 
 
 }  // namespace brave_shields

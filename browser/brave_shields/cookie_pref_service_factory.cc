@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/components/brave_shields/browser/cookie_pref_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -37,7 +38,8 @@ KeyedService* CookiePrefServiceFactory::BuildServiceInstanceFor(
   auto* profile = Profile::FromBrowserContext(context);
   return new CookiePrefService(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      profile->GetPrefs());
+      profile->GetPrefs(),
+      g_browser_process->local_state());
 }
 
 bool CookiePrefServiceFactory::ServiceIsCreatedWithBrowserContext() const {

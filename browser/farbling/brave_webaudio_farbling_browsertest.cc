@@ -67,19 +67,23 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
 
   const GURL& farbling_url() { return farbling_url_; }
 
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
+
   void AllowFingerprinting() {
     brave_shields::SetFingerprintingControlType(
-        browser()->profile(), ControlType::ALLOW, top_level_page_url_);
+        content_settings(), ControlType::ALLOW, top_level_page_url_);
   }
 
   void BlockFingerprinting() {
     brave_shields::SetFingerprintingControlType(
-        browser()->profile(), ControlType::BLOCK, top_level_page_url_);
+        content_settings(), ControlType::BLOCK, top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
     brave_shields::SetFingerprintingControlType(
-        browser()->profile(), ControlType::DEFAULT, top_level_page_url_);
+        content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
   template <typename T>

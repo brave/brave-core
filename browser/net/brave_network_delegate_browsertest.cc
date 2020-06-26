@@ -121,42 +121,46 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void DefaultBlockAllCookies() {
-    brave_shields::SetCookieControlType(
-        browser()->profile(), brave_shields::ControlType::BLOCK, GURL());
+    brave_shields::SetCookieControlType(content_settings(),
+                                        brave_shields::ControlType::BLOCK,
+                                        GURL());
   }
 
   void DefaultBlockThirdPartyCookies() {
     brave_shields::SetCookieControlType(
-        browser()->profile(), brave_shields::ControlType::BLOCK_THIRD_PARTY,
+        content_settings(),
+        brave_shields::ControlType::BLOCK_THIRD_PARTY,
         GURL());
   }
 
   void DefaultAllowAllCookies() {
-    brave_shields::SetCookieControlType(
-        browser()->profile(), brave_shields::ControlType::ALLOW, GURL());
+    brave_shields::SetCookieControlType(content_settings(),
+                                        brave_shields::ControlType::ALLOW,
+                                        GURL());
   }
 
   void AllowCookies(const GURL url) {
-    brave_shields::SetCookieControlType(browser()->profile(),
+    brave_shields::SetCookieControlType(content_settings(),
                                         brave_shields::ControlType::ALLOW,
                                         url);
   }
 
   void BlockThirdPartyCookies(const GURL url) {
     brave_shields::SetCookieControlType(
-        browser()->profile(),
+        content_settings(),
         brave_shields::ControlType::BLOCK_THIRD_PARTY,
         url);
   }
 
   void BlockCookies(const GURL url) {
-    brave_shields::SetCookieControlType(browser()->profile(),
+    brave_shields::SetCookieControlType(content_settings(),
                                         brave_shields::ControlType::BLOCK,
                                         url);
   }
 
   void ShieldsDown(const GURL url) {
-    brave_shields::SetBraveShieldsEnabled(browser()->profile(), false,
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          false,
                                           url);
   }
 
