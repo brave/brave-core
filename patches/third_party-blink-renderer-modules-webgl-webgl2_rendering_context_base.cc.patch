@@ -2,14 +2,81 @@ diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_b
 index a8cae56cbe4d78551d394cdea94b73bb1a26f09e..92b513b1ce9a2f83a2fd3ce8ee6bc3e89bd1088b 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-@@ -5040,6 +5040,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+@@ -33,6 +34,11 @@
+ #include "third_party/blink/renderer/platform/heap/heap.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ using WTF::String;
+ 
+ namespace blink {
+@@ -5040,8 +5046,33 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                                                       GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
 +  BRAVE_WEBGL2_RENDERING_CONTEXT_BASE
    switch (pname) {
      case GL_SHADING_LANGUAGE_VERSION: {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = WebGLAny(
++          script_state,
++          "WebGL GLSL ES 3.00 (" +
++              String(ContextGL()->GetString(GL_SHADING_LANGUAGE_VERSION)) +
++              ")");
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.SHADING_LANGUAGE_VERSION");
++          page_graph->RegisterWebAPICall("WebGL2RenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGL2RenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
        return WebGLAny(
+           script_state,
+           "WebGL GLSL ES 3.00 (" +
+@@ -5049,6 +5082,28 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+               ")");
+     }
+     case GL_VERSION:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = WebGLAny(
++          script_state,
++          "WebGL 2.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.VERSION");
++          page_graph->RegisterWebAPICall("WebGL2RenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGL2RenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return WebGLAny(
+           script_state,
+           "WebGL 2.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
 @@ -5581,6 +5582,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
    if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
                               kFunctionName, target, attachment))

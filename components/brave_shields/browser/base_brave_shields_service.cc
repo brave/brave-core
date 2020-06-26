@@ -61,7 +61,8 @@ bool BaseBraveShieldsService::ShouldStartRequest(
     const std::string& tab_host,
     bool* did_match_exception,
     bool* cancel_request_explicitly,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    const BlockDecision** block_decision) {
   if (did_match_exception) {
     *did_match_exception = false;
   }

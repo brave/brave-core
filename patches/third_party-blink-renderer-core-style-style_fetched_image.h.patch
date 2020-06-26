@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/style/style_fetched_image.h b/third_party/blink/renderer/core/style/style_fetched_image.h
+index d579633c07e12065d9ff3d8cd08c2917f457e289..d6864f15f6c1b809155aa291a757b3f3d48c0d7d 100644
+--- a/third_party/blink/renderer/core/style/style_fetched_image.h
++++ b/third_party/blink/renderer/core/style/style_fetched_image.h
+@@ -29,6 +29,11 @@
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#endif
++
+ namespace blink {
+ 
+ class Document;
+@@ -88,6 +93,9 @@ class StyleFetchedImage final : public StyleImage,
+   Member<const Document> document_;
+   const KURL url_;
+   const bool origin_clean_;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::InspectorId inspector_id_;
++#endif
+ 
+   // Whether this was created by an ad-related CSSParserContext.
+   const bool is_ad_related_;

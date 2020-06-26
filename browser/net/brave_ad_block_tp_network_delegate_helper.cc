@@ -29,26 +29,32 @@ namespace brave {
 
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
   bool did_match_exception = false;
+  const brave_shields::BlockDecision* block_decision = nullptr;
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
           ctx->request_url, ctx->resource_type, tab_host,
           &did_match_exception, &ctx->cancel_request_explicitly,
-          &ctx->mock_data_url)) {
+          &ctx->mock_data_url, &block_decision)) {
     ctx->blocked_by = kAdBlocked;
+    ctx->block_decision = block_decision;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_regional_service_manager()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
                                        &ctx->cancel_request_explicitly,
-                                       &ctx->mock_data_url)) {
+                                       &ctx->mock_data_url,
+                                       &block_decision)) {
     ctx->blocked_by = kAdBlocked;
+    ctx->block_decision = block_decision;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_custom_filters_service()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
                                        &ctx->cancel_request_explicitly,
-                                       &ctx->mock_data_url)) {
+                                       &ctx->mock_data_url,
+                                       &block_decision)) {
     ctx->blocked_by = kAdBlocked;
+    ctx->block_decision = block_decision;
   }
 }
 
@@ -59,7 +65,7 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
     brave_shields::DispatchBlockedEvent(
         ctx->request_url,
         ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
-        brave_shields::kAds);
+        ctx->block_decision);
   }
   next_callback.Run();
 }

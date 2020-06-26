@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/core/loader/link_loader.h b/third_party/blink/renderer/core/loader/link_loader.h
+index 925ba7787c377192e28818192b586db0c67f4cf2..7592ba3ab30cb630ef5d12afdcb30b20b9b08006 100644
+--- a/third_party/blink/renderer/core/loader/link_loader.h
++++ b/third_party/blink/renderer/core/loader/link_loader.h
+@@ -45,6 +45,9 @@ class LinkLoaderClient;
+ class PrerenderHandle;
+ class Resource;
+ class ResourceClient;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++class HTMLLinkElement;
++#endif
+ 
+ // The LinkLoader can load link rel types icon, dns-prefetch, prefetch, and
+ // prerender.
+@@ -73,6 +76,10 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
+ 
+   Resource* GetResourceForTesting();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void SetHTMLLinkElementOwner(HTMLLinkElement* link_element);
++#endif
++
+   void Trace(Visitor*) override;
+ 
+  private:
+@@ -86,6 +93,10 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
+   Member<LinkLoaderClient> client_;
+ 
+   Member<PrerenderHandle> prerender_;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Member<HTMLLinkElement> link_element_;
++#endif
+ };
+ 
+ }  // namespace blink

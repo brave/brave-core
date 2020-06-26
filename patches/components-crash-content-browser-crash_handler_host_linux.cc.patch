@@ -1,0 +1,13 @@
+diff --git a/components/crash/content/browser/crash_handler_host_linux.cc b/components/crash/content/browser/crash_handler_host_linux.cc
+index e63d26f25a37d5ed736d2a88a50f2b5d8511501c..3a756087fca570c64b5b381573afefc0711516ce 100644
+--- a/components/crash/content/browser/crash_handler_host_linux.cc
++++ b/components/crash/content/browser/crash_handler_host_linux.cc
+@@ -480,7 +480,7 @@ void CrashHandlerHostLinux::QueueCrashDumpTask(
+   msg.msg_iov = &done_iov;
+   msg.msg_iovlen = 1;
+ 
+-  HANDLE_EINTR(sendmsg(signal_fd, &msg, MSG_DONTWAIT | MSG_NOSIGNAL));
++  ANALYZER_ALLOW_UNUSED(HANDLE_EINTR(sendmsg(signal_fd, &msg, MSG_DONTWAIT | MSG_NOSIGNAL)));
+   close(signal_fd);
+ 
+   uploader_thread_->task_runner()->PostTask(

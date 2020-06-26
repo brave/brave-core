@@ -1,0 +1,57 @@
+diff --git a/content/common/frame_messages.h b/content/common/frame_messages.h
+index 118765f9323faae3782ea69d6063174dcf5c4373..89d594dea7e525993388d7707b0f11aaffd39951 100644
+--- a/content/common/frame_messages.h
++++ b/content/common/frame_messages.h
+@@ -79,6 +79,8 @@
+ #include "url/gurl.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/common/pepper_renderer_instance_data.h"
+ #endif
+@@ -492,6 +492,17 @@ IPC_MESSAGE_ROUTED0(FrameMsg_SwapIn)
+ // commit, activation and frame swap of the current DOM tree in blink.
+ IPC_MESSAGE_ROUTED1(FrameMsg_VisualStateRequest, uint64_t /* id */)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Record that a resource was blocked by an ad filter.
++IPC_MESSAGE_ROUTED2(FrameMsg_RegisterResourceBlockAd,
++                    GURL /* url */,
++                    std::string /* rule */)
++
++// Record that a resource was blocked by a tracker filter.
++IPC_MESSAGE_ROUTED2(FrameMsg_RegisterResourceBlockTracker,
++                    GURL /* url */,
++                    std::string /* host */)
++#endif
+ // TODO(https://crbug.com/995428): Deprecated.
+ // Tells the renderer to reload the frame.
+ IPC_MESSAGE_ROUTED0(FrameMsg_Reload)
+@@ -739,6 +752,12 @@ IPC_MESSAGE_CONTROL2(FrameHostMsg_DidCreateInProcessInstance,
+ IPC_MESSAGE_CONTROL1(FrameHostMsg_DidDeleteInProcessInstance,
+                      int32_t /* instance */)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Sent to a proxy to register a remote frame creation event for the
++// FrameOwner of an out-of-process frame.
++IPC_MESSAGE_ROUTED1(FrameMsg_RegisterRemoteFrameCreated, GURL /* url */)
++#endif
++
+ // Notification that a plugin has created a new plugin instance. The parameters
+ // indicate:
+ //  - The plugin process ID that we're creating the instance for.
+@@ -913,6 +932,12 @@ IPC_MESSAGE_ROUTED0(FrameHostMsg_HidePopup)
+ 
+ #endif
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Register a remote frame creation event for the FrameOwner of an
++// out-of-process frame.
++IPC_MESSAGE_ROUTED1(FrameHostMsg_RegisterRemoteFrameCreated, GURL /* url */)
++#endif
++
+ // Adding a new message? Stick to the sort order above: first platform
+ // independent FrameMsg, then ifdefs for platform specific FrameMsg, then
+ // platform independent FrameHostMsg, then ifdefs for platform specific

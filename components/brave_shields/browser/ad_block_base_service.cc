@@ -123,7 +123,8 @@ bool AdBlockBaseService::ShouldStartRequest(
     const std::string& tab_host,
     bool* did_match_exception,
     bool* cancel_request_explicitly,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    const BlockDecision** block_decision) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
   // Determine third-party here so the library doesn't need to figure it out.
@@ -135,16 +136,20 @@ bool AdBlockBaseService::ShouldStartRequest(
       INCLUDE_PRIVATE_REGISTRIES);
   bool explicit_cancel;
   bool saved_from_exception;
+  std::string filter;
   if (ad_block_client_->matches(
           url.spec(), url.host(), tab_host, is_third_party,
           ResourceTypeToString(resource_type), &explicit_cancel,
-          &saved_from_exception, mock_data_url)) {
+          &saved_from_exception, &filter, mock_data_url)) {
     if (cancel_request_explicitly) {
       *cancel_request_explicitly = explicit_cancel;
     }
     // We'd only possibly match an exception filter if we're returning true.
     if (did_match_exception) {
       *did_match_exception = false;
+    }
+    if (block_decision) {
+      *block_decision = new AdBlockDecision(filter);
     }
     // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
     //  << tab_host

@@ -1,0 +1,23 @@
+diff --git a/content/renderer/render_frame_proxy.h b/content/renderer/render_frame_proxy.h
+index d202bf52adfda3e7fe064a86bd32d8c410b54c52..2430f2ef8978263848f7056a92ffc54ef48e8978 100644
+--- a/content/renderer/render_frame_proxy.h
++++ b/content/renderer/render_frame_proxy.h
+@@ -31,6 +31,8 @@
+ #include "third_party/blink/public/web/web_remote_frame_client.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ struct WebRect;
+ }
+@@ -223,6 +225,9 @@ class CONTENT_EXPORT RenderFrameProxy : public IPC::Listener,
+   void OnDeleteProxy();
+   void OnCompositorFrameSwapped(const IPC::Message& message);
+   void OnUpdateOpener(int opener_routing_id);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void OnRegisterRemoteFrameCreated(const GURL& url);
++#endif
+   void OnDidUpdateName(const std::string& name, const std::string& unique_name);
+   void OnEnforceInsecureRequestPolicy(
+       blink::mojom::InsecureRequestPolicy policy);

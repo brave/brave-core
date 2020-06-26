@@ -1,0 +1,40 @@
+diff --git a/third_party/blink/renderer/core/loader/threadable_loader.h b/third_party/blink/renderer/core/loader/threadable_loader.h
+index 791054957324feddf904ba3c7833516a82b4ccba..830d31ffff6f17cbe5c6f7e0dc37383a28b26c4a 100644
+--- a/third_party/blink/renderer/core/loader/threadable_loader.h
++++ b/third_party/blink/renderer/core/loader/threadable_loader.h
+@@ -49,11 +49,15 @@
+ #include "third_party/blink/renderer/platform/wtf/forward.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
+ namespace blink {
+ 
+ class ExecutionContext;
+ class KURL;
+ class LocalFrame;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++class RawResource;
++#endif
+ class ResourceRequest;
+ class SecurityOrigin;
+ class ThreadableLoaderClient;
+@@ -131,6 +136,9 @@ class CORE_EXPORT ThreadableLoader final
+ 
+   void SetDefersLoading(bool);
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  RawResource* GetRawResource() const;
++#endif
+   void Trace(Visitor* visitor) override;
+ 
+  private:
+@@ -272,6 +282,9 @@ class CORE_EXPORT ThreadableLoader final
+ 
+   RawResourceClientStateChecker checker_;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Member<RawResource> raw_resource_ = nullptr;
++#endif
+   DISALLOW_COPY_AND_ASSIGN(ThreadableLoader);
+ };
+ 

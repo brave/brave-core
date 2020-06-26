@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/BUILD.gn b/third_party/blink/renderer/core/frame/BUILD.gn
+index f6c78c5dde4ffcc19b92fb2512e886c48c7a4072..bd330ff41648d91c8570c27acea23780217f232f 100644
+--- a/third_party/blink/renderer/core/frame/BUILD.gn
++++ b/third_party/blink/renderer/core/frame/BUILD.gn
+@@ -215,6 +215,7 @@ blink_core_sources("frame") {
+   ]
+ 
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//skia",
+     "//ui/base/cursor",
+     "//ui/base/cursor/mojom:cursor_type_blink",

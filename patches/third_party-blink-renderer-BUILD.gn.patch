@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/BUILD.gn b/third_party/blink/renderer/BUILD.gn
+index 6431181c63adac8f7e57fc2ca907e9b1e6dd2e54..b45bb4e0f910867283c3dde5547f61aee4733189 100644
+--- a/third_party/blink/renderer/BUILD.gn
++++ b/third_party/blink/renderer/BUILD.gn
+@@ -47,6 +47,7 @@ config("inside_blink") {
+       "-Wno-sign-conversion",
+       "-Wno-implicit-float-conversion",
+       "-Wno-implicit-int-conversion",
++      "-Wno-undefined-bool-conversion",
+     ]
+ 
+     if (!is_chromeos || default_toolchain != "//build/toolchain/cros:target") {

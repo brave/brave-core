@@ -1,0 +1,52 @@
+diff --git a/third_party/blink/renderer/core/script/script_loader.h b/third_party/blink/renderer/core/script/script_loader.h
+index b0aee119e0502dbe0c59cc55d001e2daf07b8ece..f4441063296ec487156f96d7d15aeab2ecc906ac 100644
+--- a/third_party/blink/renderer/core/script/script_loader.h
++++ b/third_party/blink/renderer/core/script/script_loader.h
+@@ -38,6 +38,8 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ class Resource;
+@@ -46,6 +48,11 @@ class ScriptElementBase;
+ class Script;
+ class ScriptResource;
+ class Modulator;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++class HTMLScriptElement;
++class SVGScriptElement;
++#endif
++
+ 
+ class CORE_EXPORT ScriptLoader final : public GarbageCollected<ScriptLoader>,
+                                        public PendingScriptClient,
+@@ -114,6 +121,14 @@ class CORE_EXPORT ScriptLoader final : public GarbageCollected<ScriptLoader>,
+   // crbug.com/721914 is fixed.
+   PendingScript* GetPendingScriptIfControlledByScriptRunnerForCrossDocMove();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void SetHTMLScriptElement(HTMLScriptElement* const elm);
++  HTMLScriptElement* GetHTMLScriptElement() const;
++
++  void SetSVGScriptElement(SVGScriptElement* const);
++  SVGScriptElement* GetSVGScriptElement() const;
++#endif
++
+  private:
+   bool IgnoresLoadRequest() const;
+   bool IsScriptForEventSupported() const;
+@@ -197,6 +212,11 @@ class CORE_EXPORT ScriptLoader final : public GarbageCollected<ScriptLoader>,
+   // and thus to keep it on MemoryCache, even after script execution, as long
+   // as ScriptLoader is alive. crbug.com/778799
+   Member<Resource> resource_keep_alive_;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Member<HTMLScriptElement> script_elm_html_;
++  Member<SVGScriptElement> script_elm_svg_;
++#endif
+ };
+ 
+ }  // namespace blink

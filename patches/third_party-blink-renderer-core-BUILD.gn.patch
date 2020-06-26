@@ -10,11 +10,13 @@ index c89f727a5a34e06f98d37ef51e9cb4687bca521e..ef8d3628ccc047adde15f5e520aefe70
  
    # If you create a new subdirectory, make a new BUILD file for that directory
    # and reference it in the deps below rather than adding the sources here.
-@@ -217,6 +218,7 @@ component("core") {
+@@ -217,7 +218,9 @@ component("core") {
      "//url",
      "//v8",
    ]
 +  public_deps += brave_blink_renderer_core_public_deps
    deps = [
++    "//brave/third_party/blink/brave_page_graph",
      "//components/paint_preview/common",
      "//third_party/blink/public/common",
+     "//third_party/blink/renderer/platform",

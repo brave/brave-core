@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/html/html_script_element.cc b/third_party/blink/renderer/core/html/html_script_element.cc
+index 1fda09d556ecaecbc827bf709109b71bc19892b0..5df354cb414f42b9dd025abd11aa769249c848e2 100644
+--- a/third_party/blink/renderer/core/html/html_script_element.cc
++++ b/third_party/blink/renderer/core/html/html_script_element.cc
+@@ -41,6 +41,8 @@
+ #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ HTMLScriptElement::HTMLScriptElement(Document& document,
+@@ -48,7 +50,11 @@ HTMLScriptElement::HTMLScriptElement(Document& document,
+     : HTMLElement(html_names::kScriptTag, document),
+       children_changed_by_api_(false),
+       loader_(InitializeScriptLoader(flags.IsCreatedByParser(),
+-                                     flags.WasAlreadyStarted())) {}
++                                     flags.WasAlreadyStarted())) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  loader_->SetHTMLScriptElement(this);
++#endif
++}
+ 
+ const AttrNameToTrustedType& HTMLScriptElement::GetCheckedAttributeTypes()
+     const {

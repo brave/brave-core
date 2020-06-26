@@ -57,6 +57,7 @@ source_set("browser") {
     "//brave/components/brave_shields/common",
     "//brave/components/content_settings/core/browser",
     "//brave/content:common",
+    "//brave/third_party/blink/brave_page_graph",
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//chrome/common",
     "//components/content_settings/core/common",

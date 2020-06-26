@@ -28,6 +28,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'android_deps'),
         os.path.join('brave', 'third_party', 'blink'),
+        os.path.join('brave', 'third_party', 'devtools-frontend'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
     ])
 

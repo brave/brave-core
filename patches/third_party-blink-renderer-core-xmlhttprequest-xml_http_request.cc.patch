@@ -1,0 +1,47 @@
+diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
+index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..7372772f1b1d980634fcefdf1f2c9bd5792b350f 100644
+--- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
++++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
+@@ -100,6 +100,14 @@
+ #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
++#include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -1156,6 +1164,27 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+   loader_->SetTimeout(timeout_);
+   base::TimeTicks start_time = base::TimeTicks::Now();
+   loader_->Start(std::move(request));
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    // Will happen if the frame is destroyed before the request goes out,
++    // as a result of the MakeGarbageCollected wrapped ThreadableLoader
++    // instance.
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph =
++          ::brave_page_graph::PageGraph::GetFromIsolate(*isolate_);
++        if (page_graph != nullptr) {
++          page_graph->RegisterRequestStartFromCurrentScript(
++            raw_resource->InspectorId(), url_,
++            brave_page_graph::RequestType::kRequestTypeAJAX);
++        }
++      }
++    }
++  }
++#else
++  loader_->Start(request);
++#endif
+ 
+   if (!async_) {
+     base::TimeDelta blocking_time = base::TimeTicks::Now() - start_time;
