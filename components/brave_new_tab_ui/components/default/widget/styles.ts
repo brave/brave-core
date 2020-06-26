@@ -55,7 +55,7 @@ export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
   min-width: ${p => p.isCrypto ? '284px' : 'initial'};
   position: relative;
   transition: background 0.5s ease;
-  border-radius: ${p => p.isCrypto ? 'initial' : '16px'};
+  border-radius: ${p => p.isCrypto ? '6px' : '16px'};
 
   ${StyledWidgetMenuContainer}:hover & {
     background: rgba(33, 37, 41, 0.48);
