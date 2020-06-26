@@ -1,0 +1,21 @@
+source_set("bookmark") {
+  sources = [
+    "brave_bookmark_tab_helper.cc",
+    "brave_bookmark_tab_helper.h",
+    "bookmark_prefs_service.cc",
+    "bookmark_prefs_service.h",
+    "bookmark_prefs_service_factory.cc",
+    "bookmark_prefs_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//components/bookmarks/common",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//content/public/browser",
+  ]
+}
