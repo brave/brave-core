@@ -1,65 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 4a7c610cec562ed067a86629b8a6f5d0b8758ddf..4c39c4ed51ec0299d65637c442d7119277615d48 100644
+index 4a7c610cec562ed067a86629b8a6f5d0b8758ddf..cb5b05a4baadffd0c09e750d4b89925d06bd5266 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -116,15 +116,15 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
-     private PreferenceCategory mSyncingCategory;
- 
-     private ChromeSwitchPreference mSyncEverything;
--    private CheckBoxPreference mSyncAutofill;
--    private CheckBoxPreference mSyncBookmarks;
--    private CheckBoxPreference mSyncPaymentsIntegration;
--    private CheckBoxPreference mSyncHistory;
--    private CheckBoxPreference mSyncPasswords;
--    private CheckBoxPreference mSyncRecentTabs;
--    private CheckBoxPreference mSyncSettings;
-+    private ChromeSwitchPreference mSyncAutofill;
-+    private ChromeSwitchPreference mSyncBookmarks;
-+    private ChromeSwitchPreference mSyncPaymentsIntegration;
-+    private ChromeSwitchPreference mSyncHistory;
-+    private ChromeSwitchPreference mSyncPasswords;
-+    private ChromeSwitchPreference mSyncRecentTabs;
-+    private ChromeSwitchPreference mSyncSettings;
-     // Contains preferences for all sync data types.
--    private CheckBoxPreference[] mSyncTypePreferences;
-+    private ChromeSwitchPreference[] mSyncTypePreferences;
- 
-     private Preference mGoogleActivityControls;
-     private Preference mSyncEncryption;
-@@ -161,14 +161,14 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
-         mSyncEverything = (ChromeSwitchPreference) findPreference(PREF_SYNC_EVERYTHING);
-         mSyncEverything.setOnPreferenceChangeListener(this);
- 
--        mSyncAutofill = (CheckBoxPreference) findPreference(PREF_SYNC_AUTOFILL);
--        mSyncBookmarks = (CheckBoxPreference) findPreference(PREF_SYNC_BOOKMARKS);
-+        mSyncAutofill = (ChromeSwitchPreference) findPreference(PREF_SYNC_AUTOFILL);
-+        mSyncBookmarks = (ChromeSwitchPreference) findPreference(PREF_SYNC_BOOKMARKS);
-         mSyncPaymentsIntegration =
--                (CheckBoxPreference) findPreference(PREF_SYNC_PAYMENTS_INTEGRATION);
--        mSyncHistory = (CheckBoxPreference) findPreference(PREF_SYNC_HISTORY);
--        mSyncPasswords = (CheckBoxPreference) findPreference(PREF_SYNC_PASSWORDS);
--        mSyncRecentTabs = (CheckBoxPreference) findPreference(PREF_SYNC_RECENT_TABS);
--        mSyncSettings = (CheckBoxPreference) findPreference(PREF_SYNC_SETTINGS);
-+                (ChromeSwitchPreference) findPreference(PREF_SYNC_PAYMENTS_INTEGRATION);
-+        mSyncHistory = (ChromeSwitchPreference) findPreference(PREF_SYNC_HISTORY);
-+        mSyncPasswords = (ChromeSwitchPreference) findPreference(PREF_SYNC_PASSWORDS);
-+        mSyncRecentTabs = (ChromeSwitchPreference) findPreference(PREF_SYNC_RECENT_TABS);
-+        mSyncSettings = (ChromeSwitchPreference) findPreference(PREF_SYNC_SETTINGS);
- 
-         mGoogleActivityControls = findPreference(PREF_GOOGLE_ACTIVITY_CONTROLS);
-         mSyncEncryption = findPreference(PREF_ENCRYPTION);
-@@ -179,9 +179,9 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
-                 this, () -> SyncSettingsUtils.openSyncDashboard(getActivity())));
- 
-         mSyncTypePreferences =
--                new CheckBoxPreference[] {mSyncAutofill, mSyncBookmarks, mSyncPaymentsIntegration,
-+                new ChromeSwitchPreference[] {mSyncAutofill, mSyncBookmarks, mSyncPaymentsIntegration,
-                         mSyncHistory, mSyncPasswords, mSyncRecentTabs, mSyncSettings};
--        for (CheckBoxPreference type : mSyncTypePreferences) {
-+        for (ChromeSwitchPreference type : mSyncTypePreferences) {
-             type.setOnPreferenceChangeListener(this);
-         }
- 
+@@ -24,7 +24,7 @@ import androidx.appcompat.app.AlertDialog;
+ import androidx.fragment.app.DialogFragment;
+ import androidx.fragment.app.FragmentManager;
+ import androidx.fragment.app.FragmentTransaction;
+-import androidx.preference.CheckBoxPreference;
++import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
+ import androidx.preference.Preference;
+ import androidx.preference.PreferenceCategory;
+ import androidx.preference.PreferenceFragmentCompat;
 @@ -309,7 +309,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
      private void updateSyncPreferences() {
          String signedInAccountName = CoreAccountInfo.getEmailFrom(
@@ -69,12 +20,3 @@ index 4a7c610cec562ed067a86629b8a6f5d0b8758ddf..4c39c4ed51ec0299d65637c442d71192
              // May happen if account is removed from the device while this screen is shown.
              getActivity().finish();
              return;
-@@ -525,7 +525,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
-         boolean syncEverything = mProfileSyncService.hasKeepEverythingSynced();
-         mSyncEverything.setChecked(syncEverything);
-         if (syncEverything) {
--            for (CheckBoxPreference pref : mSyncTypePreferences) {
-+            for (ChromeSwitchPreference pref : mSyncTypePreferences) {
-                 pref.setChecked(true);
-                 pref.setEnabled(false);
-             }

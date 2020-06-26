@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
-import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
 
 // See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
 public class BraveManageSyncSettings extends ManageSyncSettings {
@@ -21,7 +21,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     private Preference mManageSyncData;
 
-    private ChromeSwitchPreference mSyncPaymentsIntegration;
+    private CheckBoxPreference mSyncPaymentsIntegration;
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
