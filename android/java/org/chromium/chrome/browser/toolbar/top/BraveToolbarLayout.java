@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.PopupWindow;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
@@ -238,6 +239,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         if (getToolbarDataProvider().getTab() == tab) {
           mBraveShieldsHandler.updateHost(url);
           updateBraveShieldsButtonState(tab);
+          PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
+          mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              mPopupWindow.dismiss();
+              showShieldsMenu(mBraveShieldsButton);
+            }
+          });
         }
       }
 
@@ -274,23 +283,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       return;
     }
     if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
-      Tab currentTab = getToolbarDataProvider().getTab();
-      if (currentTab == null) {
-        return;
-      }
-      try {
-        URL url = new URL(currentTab.getUrlString());
-        // Don't show shields popup if protocol is not valid for shields.
-        if (!isValidProtocolForShields(url.getProtocol())) {
-          return;
-        }
-        mBraveShieldsHandler.show(mBraveShieldsButton, currentTab.getUrlString(),
-                                  url.getHost(), currentTab.getId(), Profile.fromWebContents(((TabImpl)currentTab).getWebContents()));
-      } catch (Exception e) {
-        // Do nothing if url is invalid.
-        // Just return w/o showing shields popup.
-        return;
-      }
+      showShieldsMenu(mBraveShieldsButton);
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
       Context context = getContext();
       if ((PackageUtils.isFirstInstall(context)
@@ -312,6 +305,26 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
         mIsInitialNotificationPosted = false;
       }
+    }
+  }
+
+  private void showShieldsMenu(View mBraveShieldsButton) {
+    Tab currentTab = getToolbarDataProvider().getTab();
+    if (currentTab == null) {
+      return;
+    }
+    try {
+      URL url = new URL(currentTab.getUrlString());
+      // Don't show shields popup if protocol is not valid for shields.
+      if (!isValidProtocolForShields(url.getProtocol())) {
+        return;
+      }
+      mBraveShieldsHandler.show(mBraveShieldsButton, currentTab.getUrlString(),
+                                url.getHost(), currentTab.getId(), Profile.fromWebContents(((TabImpl)currentTab).getWebContents()));
+    } catch (Exception e) {
+      // Do nothing if url is invalid.
+      // Just return w/o showing shields popup.
+      return;
     }
   }
 
