@@ -2,5 +2,16 @@ source_set("ipfs") {
   sources = [
     "ipfs_service_factory.cc",
     "ipfs_service_factory.h",
+    "ipfs_tab_helper.cc",
+    "ipfs_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/infobars",
+    "//brave/components/ipfs/browser",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+    "//extensions/common",
   ]
 }
