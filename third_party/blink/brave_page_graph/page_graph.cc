@@ -7,6 +7,7 @@
 
 #include <climits>
 #include <chrono>
+#include <ctime>
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -125,10 +126,8 @@
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
 using ::std::chrono::duration_cast;
-using ::std::chrono::high_resolution_clock;
-using ::std::chrono::microseconds;
-using ::std::chrono::seconds;
-using ::std::chrono::time_point;
+using ::std::chrono::milliseconds;
+using ::std::chrono::system_clock::now;
 using ::std::endl;
 using ::std::make_unique;
 using ::std::map;
@@ -162,17 +161,13 @@ using ::WTF::String;
 namespace brave_page_graph {
 
 namespace {
-  PageGraph* yuck = nullptr;
-  constexpr char kPageGraphVersion[] = "0.1";
-  constexpr char kPageGraphUrl[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
+
+constexpr char kPageGraphVersion[] = "0.1";
+constexpr char kPageGraphUrl[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
+milliseconds NowInMs() {
+  return duration_cast<milliseconds>(now().time_since_epoch());
 }
 
-void write_to_disk(int signal) {
-  std::ofstream outfile("/tmp/pagegraph.log");
-  string output = yuck->ToGraphML();
-  std::cout << output;
-  outfile.write(output.c_str(), output.size());
-  outfile.close();
 }
 
 static constexpr int kV8ContextPerContextDataIndex = static_cast<int>(
@@ -257,9 +252,8 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
       local_storage_node_(new NodeStorageLocalStorage(this)),
       session_storage_node_(new NodeStorageSessionStorage(this)),
       execution_context_(execution_context),
-      start_(high_resolution_clock::now()) {
+      start_(NowInMs()) {
   const string local_tag_name(tag_name.Utf8().data());
-
   const KURL normalized_url = NormalizeUrl(url);
   const string local_url(normalized_url.GetString().Utf8().data());
 
@@ -293,9 +287,6 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
     isolate->SetBuiltInFuncCallFunc(&OnBuiltInFuncCall);
     isolate->SetBuiltInFuncResponseFunc(&OnBuiltInFuncResponse);
   }
-
-  yuck = this;
-  signal(30, &write_to_disk);
 }
 
 PageGraph::~PageGraph() {}
@@ -1235,22 +1226,12 @@ string PageGraph::ToGraphML() const {
   xmlNodePtr time_container_node = xmlNewChild(desc_container_node, NULL,
       BAD_CAST "time", NULL);
 
-  const string start_time_seconds = to_string(
-    duration_cast<seconds>(start_).count());
-  const string start_time_ms = to_string(
-    duration_cast<microseconds>(start_).count());
-  const string start_time_desc = start_time_seconds + "." + start_time_ms;
   xmlNewTextChild(time_container_node, NULL, BAD_CAST "start",
-      BAD_CAST start_time_desc.c_str());
+      BAD_CAST to_string(start_).c_str());
 
-  const auto end_time = high_resolution_clock::now();
-  const string end_time_seconds = to_string(
-    duration_cast<seconds>(end_time).count());
-  const string end_time_ms = to_string(
-    duration_cast<microseconds>(end_time).count());
-  const string end_time_desc = end_time_seconds + "." + end_time_ms;
+  const milliseconds end_time = NowInMs();
   xmlNewTextChild(time_container_node, NULL, BAD_CAST "end",
-      BAD_CAST end_time_desc.c_str());
+      BAD_CAST to_string(end_time).c_str());
 
   for (const GraphMLAttr* const graphml_attr : GetGraphMLAttrs()) {
     graphml_attr->AddDefinitionNode(graphml_root_node);

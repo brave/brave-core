@@ -313,7 +313,8 @@ friend NodeHTMLElement;
   // it exists, will always be for the top level frame.
   blink::ExecutionContext& execution_context_;
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+  // Timestamp for when this instance was created.
+  std::chrono::milliseconds start_;
 };
 
 }  // namespace brave_page_graph
