@@ -33,6 +33,12 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
 
+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+#include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+#endif
+
 namespace {
 
 GURL GetOriginOrURL(
@@ -140,6 +146,16 @@ bool BraveContentSettingsAgentImpl::AllowScript(
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+    blink::WebLocalFrame* const frame = render_frame()->GetWebFrame();
+    ::brave_page_graph::PageGraph* const page_graph =
+        ::brave_page_graph::PageGraph::GetFromContext(
+            frame->MainWorldScriptContext());
+    if (page_graph) {
+      page_graph->RegisterResourceBlockJavaScript(blocked_script_url_);
+    }
+#endif
+
     BraveSpecificDidBlockJavaScript(
       base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();

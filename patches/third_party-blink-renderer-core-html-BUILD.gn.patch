@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/html/BUILD.gn b/third_party/blink/renderer/core/html/BUILD.gn
+index de82c30b599b380d5aa078d84cf8bdcf345fe2ce..e6f86df60068b562782643b2e273b78a1d5fd8ac 100644
+--- a/third_party/blink/renderer/core/html/BUILD.gn
++++ b/third_party/blink/renderer/core/html/BUILD.gn
+@@ -590,6 +590,7 @@ blink_core_sources("html") {
+       [ "canvas/canvas_rendering_context.cc" ]  # https://crbug.com/716395
+ 
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//services/metrics/public/cpp:metrics_cpp",
+     "//skia:skcms",
+     "//third_party/blink/public/strings",

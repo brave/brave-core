@@ -1,0 +1,64 @@
+diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
+index 1ff765e6e0e238c713e8235efb4958a96a99eadd..8be85d386d03dc19a579f7a096a9abae68f47e4d 100644
+--- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
++++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
+@@ -85,6 +85,8 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ #include "v8/include/v8-inspector.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ using protocol::Response;
+@@ -864,7 +866,7 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+     const String world_name = worlds_to_evaluate_on_load_.Get(key);
+     if (world_name.IsEmpty()) {
+       frame->GetScriptController().ExecuteScriptInMainWorld(
+-          source, ScriptSourceLocationType::kUnknown,
++          source, ScriptSourceLocationType::kInspector,
+           ScriptController::kExecuteScriptWhenScriptsDisabled);
+       continue;
+     }
+@@ -878,12 +880,14 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+     // a foreign world.
+     v8::HandleScope handle_scope(V8PerIsolateData::MainThreadIsolate());
+     frame->GetScriptController().ExecuteScriptInIsolatedWorld(
+-        world->GetWorldId(), source, KURL(), SanitizeScriptErrors::kSanitize);
++        world->GetWorldId(),
++        ScriptSourceCode(source, ScriptSourceLocationType::kInspector), KURL(),
++        SanitizeScriptErrors::kSanitize);
+   }
+ 
+   if (!script_to_evaluate_on_load_once_.IsEmpty()) {
+     frame->GetScriptController().ExecuteScriptInMainWorld(
+-        script_to_evaluate_on_load_once_, ScriptSourceLocationType::kUnknown,
++        script_to_evaluate_on_load_once_, ScriptSourceLocationType::kInspector,
+         ScriptController::kExecuteScriptWhenScriptsDisabled);
+   }
+ }
+@@ -1393,6 +1397,24 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
+   return Response::Success();
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++Response InspectorPageAgent::generatePageGraph(String* data) {
++  LocalFrame* main_frame = inspected_frames_->Root();
++  if (!main_frame) {
++    return Response::ServerError("No main frame found");
++  }
++
++  Document* document = main_frame->GetDocument();
++  if (!document) {
++    return Response::ServerError("No Document instance to generate page graph for");
++  }
++
++  std::string page_graph(document->GetPageGraph()->ToGraphML());
++  *data = String::FromUTF8(page_graph.c_str());
++  return Response::Success();
++}
++#endif
++
+ Response InspectorPageAgent::generateTestReport(const String& message,
+                                                 Maybe<String> group) {
+   LocalDOMWindow* window = inspected_frames_->Root()->DomWindow();

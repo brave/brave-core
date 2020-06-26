@@ -18,6 +18,7 @@
 #include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
@@ -45,7 +46,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                           const std::string& tab_host,
                           bool* did_match_exception,
                           bool* cancel_request_explicitly,
-                          std::string* mock_data_url) override;
+                          std::string* mock_data_url,
+                          const BlockDecision** block_decision) override;
   void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);

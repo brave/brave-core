@@ -1,0 +1,40 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/module_record.cc b/third_party/blink/renderer/bindings/core/v8/module_record.cc
+index f6389c8bcd9f1762c73cba217eabf5945d9e25be..509e73de930ec778d5371f489b6aee12bdc8e695 100644
+--- a/third_party/blink/renderer/bindings/core/v8/module_record.cc
++++ b/third_party/blink/renderer/bindings/core/v8/module_record.cc
+@@ -17,6 +17,12 @@
+ #include "third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#endif
++
+ namespace blink {
+ 
+ // static
+@@ -126,6 +132,22 @@ v8::Local<v8::Module> ModuleRecord::Compile(
+   }
+   DCHECK(!try_catch.HasCaught());
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph =
++        brave_page_graph::PageGraph::GetFromIsolate(*isolate);
++    if (page_graph != nullptr) {
++      ScriptSourceCode source_code(source);
++      int script_id = module->GetModuleScriptId();
++      if (script_id != 0) {
++        page_graph->RegisterScriptCompilation(
++            ScriptSourceCode(source), script_id,
++            brave_page_graph::ScriptType::kScriptTypeModule);
++      }
++    }
++  }
++#endif
++
+   if (out_produce_cache_data) {
+     *out_produce_cache_data =
+         MakeGarbageCollected<ModuleRecordProduceCacheData>(

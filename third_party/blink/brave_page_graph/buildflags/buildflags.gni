@@ -1,0 +1,5 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  brave_page_graph_enabled = true
+}

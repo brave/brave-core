@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc b/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc
+index 56ec1b3c20e39e64ca29eb7f24114929ece7daec..437a55477f213d41ff2eeb5c838497ea57ea6e23 100644
+--- a/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc
++++ b/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc
+@@ -42,6 +42,8 @@
+ #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ WebRemoteFrame* WebRemoteFrame::Create(
+@@ -319,6 +321,14 @@ bool WebRemoteFrameImpl::IsIgnoredForHitTest() const {
+   return GetFrame()->IsIgnoredForHitTest();
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void WebRemoteFrameImpl::RegisterRemoteFrameCreatedForFrameOwner(
++    const GURL& url) {
++  DCHECK(GetFrame()->Owner()->IsLocal());
++  GetFrame()->Owner()->RegisterRemoteFrameCreated(url);
++}
++#endif
++
+ void WebRemoteFrameImpl::UpdateUserActivationState(
+     mojom::blink::UserActivationUpdateType update_type) {
+   GetFrame()->UpdateUserActivationState(update_type);

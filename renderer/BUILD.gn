@@ -19,6 +19,7 @@ source_set("renderer") {
     "//base",
     "//brave/common",
     "//brave/components/brave_shields/common",
+    "//brave/third_party/blink/brave_page_graph",
     "//chrome/common",
     "//components/content_settings/core/common",
     "//content/public/renderer",

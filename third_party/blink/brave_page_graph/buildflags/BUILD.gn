@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/third_party/blink/brave_page_graph/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "BRAVE_PAGE_GRAPH_ENABLED=$brave_page_graph_enabled",
+  ]
+}

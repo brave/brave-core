@@ -1,0 +1,218 @@
+diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
+index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc9873561035d4229f 100644
+--- a/third_party/blink/renderer/core/dom/document.cc
++++ b/third_party/blink/renderer/core/dom/document.cc
+@@ -335,6 +335,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+ static WeakDocumentSet& liveDocumentSet();
+ #endif
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <iostream>
++#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
++#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
++
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -654,6 +663,11 @@ Document::Document(const DocumentInit& initializer,
+                    DocumentClassFlags document_classes)
+     : ContainerNode(nullptr, kCreateDocument),
+       TreeScope(*this),
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      page_graph_(nullptr),
++      page_graph_non_owning_(nullptr),
++      registered_remote_frame_creation_(false),
++#endif
+       evaluate_media_queries_on_style_recalc_(false),
+       pending_sheet_layout_(kNoLayoutWithPendingSheets),
+       window_agent_factory_(initializer.GetWindowAgentFactory()),
+@@ -865,7 +879,140 @@ Document::~Document() {
+   DCHECK(!ax_object_cache_);
+ 
+   InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  page_graph_non_owning_ = nullptr;
++
++  if (page_graph_ != nullptr) {
++    delete page_graph_;
++    page_graph_ = nullptr;
++  }
++#endif
++}
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++static bool IsDocumentLocal(const blink::Document* document) {
++  // If the current document is in a different security origin than the
++  // root document, then stop, don't track anything.
++  //
++  // Two cases here, taking into account that the "site-per-process" feature
++  // might be included in the "--disable-features" argument:
++  //
++  // 1) The local frame root is NOT the main frame, in which case we can be
++  //    sure that the "site-per-process" feature is enabled, and that the
++  //    current document is remote and therefore has a different origin than
++  //    the root document, so we do NOT build PG for it.
++  //
++  // 2) The frame of the TopDocument() IS the main frame. We'll need to
++  //    traverse the entire document chain up to the root document (whose frame
++  //    is the main frame) to see if any document has a security origin
++  //    different than that of the root document.
++
++  blink::LocalFrame* const frame = document->GetFrame();
++  if (!frame) {
++    return false;
++  }
++
++  // Case 1 of security origin check.
++  if (!frame->LocalFrameRoot().IsMainFrame()) {
++    return false;
++  }
++
++  // Case 2 of security origin check.
++  const blink::Document* const top_doc = &document->TopDocument();
++  const blink::Document* current_doc = document;
++  while (current_doc != top_doc) {
++    blink::SecurityOrigin::AccessResultDomainDetail detail;
++    if (!current_doc->GetSecurityOrigin()->CanAccess(
++        top_doc->GetSecurityOrigin(), detail)) {
++      return false;
++    }
++    LOG_ASSERT(current_doc->LocalOwner());
++    current_doc = &current_doc->LocalOwner()->GetDocument();
++  }
++
++  return true;
++}
++
++brave_page_graph::PageGraph* Document::GetPageGraph() {
++  Document* const context_document = ContextDocument();
++  if (!context_document) {
++    return nullptr;
++  }
++
++  if (wasDiscarded() || context_document->wasDiscarded()) {
++    return nullptr;
++  }
++
++  if (!IsDocumentLocal(context_document)) {
++    // Report remote frame creation to owner.
++    if (!context_document->registered_remote_frame_creation_) {
++      if (Frame* const frame = context_document->GetFrame()) {
++        if (FrameOwner* const frame_owner = frame->Owner()) {
++          frame_owner->RegisterRemoteFrameCreated(context_document->Url());
++          registered_remote_frame_creation_ = true;
++        }
++      }
++    }
++    return nullptr;
++  }
++
++  if (page_graph_non_owning_ != nullptr) {
++    return page_graph_non_owning_;
++  }
++
++  if (page_graph_ != nullptr) {
++    return page_graph_;
++  }
++
++  // Only instrument documents belonging to ordinary pages (and not, e.g.,
++  // service workers).
++
++  bool is_ordinary_document = false;
++
++  LocalFrame* const context_frame = context_document->GetFrame();
++  if (context_frame) {
++    Page* const context_page = context_frame->GetPage();
++    if (context_page && context_page->IsOrdinary()) {
++      is_ordinary_document = true;
++    }
++  }
++
++  if (!is_ordinary_document) {
++    std::cout << "(skipping PageGraph instrumentation on document "
++              << context_document->Url().GetString() << ")"
++              << std::endl;
++    return nullptr;
++  }
++
++  // If we're a child frame, then we can punt the decision on whether
++  // to instantiate a page graph instance upward.  But we need to
++  // make sure to add the page graph instance to the local isolate
++  // if the top frame has a PageGraph.
++  if (!IsInMainFrame()) {
++    page_graph_non_owning_ = context_document->TopDocument().GetPageGraph();
++    return page_graph_non_owning_;
++  }
++
++  LOG_ASSERT(!IsTemplateDocument());
++  LOG_ASSERT(context_document == this);
++
++  // Otherwise, we're the top document, and we need to decide if we should
++  // create a page graph instance.  We do this for documents that look like
++  // there HTML documents fetched over HTTP (so not file://, not extension
++  // content pages, etc.
++  const bool top_doc_is_html = IsHTMLDocument();
++  const bool top_doc_is_http_delivered = Url().ProtocolIsInHTTPFamily();
++  if (!top_doc_is_html || !top_doc_is_http_delivered) {
++    return nullptr;
++  }
++
++  page_graph_ = new ::brave_page_graph::PageGraph(*GetExecutionContext(),
++                                                  DOMNodeIds::IdForNode(this),
++                                                  nodeName(), Url());
++  return page_graph_;
+ }
++#endif
+ 
+ Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
+                                                 const Position& position) {
+@@ -5911,6 +6058,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+   if (!cookie_jar_)
+     return String();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* const page_graph =
++        const_cast<Document*>(this)->GetPageGraph();
++    if (page_graph) {
++      String cookies;
++      if (cookie_jar_) {
++        cookies = cookie_jar_->Cookies();
++      }
++
++      page_graph->RegisterStorageRead(cookie_url_.GetString(), cookies,
++          brave_page_graph::kStorageLocationCookie);
++    }
++  }
++#endif
++
+   return cookie_jar_->Cookies();
+ }
+ 
+@@ -5937,6 +6100,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+   if (!cookie_jar_)
+     return;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* const page_graph = GetPageGraph();
++    if (page_graph) {
++      Vector<String> cookie_structure;
++      value.Split("=", cookie_structure);
++      String key = *(cookie_structure.begin());
++      String cookie_value = value.Substring(key.length() + 1, value.length());
++
++      page_graph->RegisterStorageWrite(key, cookie_value,
++          brave_page_graph::kStorageLocationCookie);
++    }
++  }
++#endif
++
+   cookie_jar_->SetCookie(value);
+ }
+ 

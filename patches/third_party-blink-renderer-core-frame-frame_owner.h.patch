@@ -1,0 +1,33 @@
+diff --git a/third_party/blink/renderer/core/frame/frame_owner.h b/third_party/blink/renderer/core/frame/frame_owner.h
+index a96fde635047aab7e299a73cbbf3a4a225b7aea8..de77ae7510039d7678c60dd60a4d328fdf40f9e7 100644
+--- a/third_party/blink/renderer/core/frame/frame_owner.h
++++ b/third_party/blink/renderer/core/frame/frame_owner.h
+@@ -11,6 +11,8 @@
+ #include "third_party/blink/renderer/platform/heap/handle.h"
+ #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ class Frame;
+@@ -41,6 +43,9 @@ class CORE_EXPORT FrameOwner : public GarbageCollectedMixin {
+   // DispatchLoad().
+   virtual void AddResourceTiming(const ResourceTimingInfo&) = 0;
+   virtual void DispatchLoad() = 0;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  virtual void RegisterRemoteFrameCreated(const GURL& url) = 0;
++#endif
+ 
+   // On load failure, a frame can ask its owner to render fallback content
+   // which replaces the frame contents.
+@@ -135,6 +140,9 @@ class CORE_EXPORT DummyFrameOwner final
+   }
+   void AddResourceTiming(const ResourceTimingInfo&) override {}
+   void DispatchLoad() override {}
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void RegisterRemoteFrameCreated(const GURL& url) override {}
++#endif
+   bool CanRenderFallbackContent() const override { return false; }
+   void RenderFallbackContent(Frame*) override {}
+   void IntrinsicSizingInfoChanged() override {}

@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/plugins/BUILD.gn b/third_party/blink/renderer/modules/plugins/BUILD.gn
+index 75fbb95ddb26a4ff2990c95c7caee6c6be373f96..9f5b3959cddf644409ee01c57dbca7ac29cfeec3 100644
+--- a/third_party/blink/renderer/modules/plugins/BUILD.gn
++++ b/third_party/blink/renderer/modules/plugins/BUILD.gn
+@@ -17,4 +17,8 @@ blink_modules_sources("plugins") {
+     "navigator_plugins.cc",
+     "navigator_plugins.h",
+   ]
++
++  deps = [
++    "//brave/third_party/blink/brave_page_graph",
++  ]
+ }

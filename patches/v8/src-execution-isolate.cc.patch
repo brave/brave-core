@@ -1,0 +1,49 @@
+diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
+index c9c6225eb8fd8b8278c707beb521bde910ab49d9..fe3b8754a18fd8ed790124f04269ac36f9915dd1 100644
+--- a/src/execution/isolate.cc
++++ b/src/execution/isolate.cc
+@@ -93,6 +93,8 @@
+ #include "src/diagnostics/unwinding-info-win64.h"
+ #endif  // V8_OS_WIN64
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ extern "C" const uint8_t* v8_Default_embedded_blob_;
+ extern "C" uint32_t v8_Default_embedded_blob_size_;
+ 
+@@ -4403,6 +4405,35 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+   }
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int Isolate::GetExecutingScriptId() {
++  StackTraceFrameIterator it(this);
++  while (!it.done()) {
++    if (!it.is_javascript() && !it.is_wasm()) {
++      it.Advance();
++      continue;
++    }
++
++    JavaScriptFrame* frame = it.javascript_frame();
++    Handle<JSFunction> function(frame->function(), this);
++
++    Object maybe_script = function->shared().script();
++    if (!maybe_script.IsScript()) {
++      it.Advance();
++      continue;
++    }
++
++    Script script = Script::cast(maybe_script);
++
++    if (script.id() > 0) {
++      return script.id();
++    }
++  }
++
++  return 0;
++}
++#endif
++
+ #ifdef V8_INTL_SUPPORT
+ icu::UMemory* Isolate::get_cached_icu_object(ICUObjectCacheType cache_type) {
+   return icu_object_cache_[cache_type].get();

@@ -1,0 +1,31 @@
+diff --git a/third_party/blink/renderer/core/dom/text.cc b/third_party/blink/renderer/core/dom/text.cc
+index d572463a14c19752487ee463ab1490e434a12997..10b88ec21ecfd3ebc19b710329692809b889bfe2 100644
+--- a/third_party/blink/renderer/core/dom/text.cc
++++ b/third_party/blink/renderer/core/dom/text.cc
+@@ -44,10 +44,26 @@
+ #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/document.h"
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ Text* Text::Create(Document& document, const String& data) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Text* text_node = MakeGarbageCollected<Text>(document, data, kCreateText);
++  if (document.GetPageGraph() != nullptr) {
++    document.GetPageGraph()->RegisterHTMLTextNodeCreated(
++      DOMNodeIds::IdForNode(text_node), data);
++  }
++  return text_node;
++#else
+   return MakeGarbageCollected<Text>(document, data, kCreateText);
++#endif
+ }
+ 
+ Text* Text::CreateEditingText(Document& document, const String& data) {

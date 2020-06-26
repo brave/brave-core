@@ -1,0 +1,8 @@
+copy("copy_devtools_modules") {
+  sources = [
+    "//brave/third_party/devtools-frontend/src/front_end/elements/PageGraphInfoWidget.js",
+  ]
+  outputs = [
+    "$root_out_dir/resources/inspector/elements/PageGraphInfoWidget.js",
+  ]
+}

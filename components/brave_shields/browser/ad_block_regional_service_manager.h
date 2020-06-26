@@ -17,6 +17,7 @@
 #include "base/synchronization/lock.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -50,7 +51,8 @@ class AdBlockRegionalServiceManager {
                           const std::string& tab_host,
                           bool* matching_exception_filter,
                           bool* cancel_request_explicitly,
-                          std::string* mock_data_url);
+                          std::string* mock_data_url,
+                          const BlockDecision** block_decision);
   void EnableTag(const std::string& tag, bool enabled);
   void AddResources(const std::string& resources);
   void EnableFilterList(const std::string& uuid, bool enabled);

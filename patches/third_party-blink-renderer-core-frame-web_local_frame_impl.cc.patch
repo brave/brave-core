@@ -1,0 +1,40 @@
+diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
+index 2660078b0ed37bc3313e645f59e38cd306b1fdca..8bbe6cb50360f5cf43b07c6c762ed2a425a9785a 100644
+--- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
++++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
+@@ -260,6 +260,12 @@
+ #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
+ #include "third_party/blink/renderer/platform/wtf/hash_map.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ static int g_frame_count = 0;
+@@ -883,6 +889,22 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
+   CHECK_GT(world_id, DOMWrapperWorld::kMainWorldId);
+   CHECK_LT(world_id, DOMWrapperWorld::kDOMWrapperWorldEmbedderWorldIdLimit);
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Document* document = GetFrame()->GetDocument();
++    if (document != nullptr) {
++      ::brave_page_graph::PageGraph* page_graph = document->GetPageGraph();
++      if (page_graph != nullptr) {
++        for (unsigned i = 0; i < num_sources; i += 1) {
++          const WebScriptSource source = sources_in[i];
++          page_graph->RegisterUrlForExtensionScriptSource(source.url.GetString(),
++            source.code);
++        }
++      }
++    }
++  }
++#endif
++
+   scoped_refptr<DOMWrapperWorld> isolated_world =
+       DOMWrapperWorld::EnsureIsolatedWorld(ToIsolate(GetFrame()), world_id);
+   auto* executor = MakeGarbageCollected<PausableScriptExecutor>(
