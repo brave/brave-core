@@ -14,7 +14,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/base/containers/utils.h"
-#include "brave/components/services/bat_ledger/bat_ledger_client_mojo_proxy.h"
+#include "brave/components/services/bat_ledger/bat_ledger_client_mojo_bridge.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -23,16 +23,14 @@ using std::placeholders::_3;
 namespace bat_ledger {
 
 BatLedgerImpl::BatLedgerImpl(
-    mojom::BatLedgerClientAssociatedPtrInfo client_info)
-  : bat_ledger_client_mojo_proxy_(
-      new BatLedgerClientMojoProxy(std::move(client_info))),
+    mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info)
+  : bat_ledger_client_mojo_bridge_(
+      new BatLedgerClientMojoBridge(std::move(client_info))),
     ledger_(
-      ledger::Ledger::CreateInstance(bat_ledger_client_mojo_proxy_.get())) {
+      ledger::Ledger::CreateInstance(bat_ledger_client_mojo_bridge_.get())) {
 }
 
-BatLedgerImpl::~BatLedgerImpl() {
-}
-
+BatLedgerImpl::~BatLedgerImpl() = default;
 
 void BatLedgerImpl::OnInitialize(
     CallbackHolder<InitializeCallback>* holder,
@@ -1072,6 +1070,28 @@ void BatLedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 
   ledger_->GetAllPromotions(
       std::bind(BatLedgerImpl::OnGetAllPromotions,
+          holder,
+          _1));
+}
+
+// static
+void BatLedgerImpl::OnShutdown(
+    CallbackHolder<ShutdownCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::Shutdown(ShutdownCallback callback) {
+  auto* holder = new CallbackHolder<ShutdownCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->Shutdown(
+      std::bind(BatLedgerImpl::OnShutdown,
           holder,
           _1));
 }

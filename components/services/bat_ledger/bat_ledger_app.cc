@@ -9,41 +9,36 @@
 #include <utility>
 
 #include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
-#include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace bat_ledger {
 
-namespace {
-
-void OnBatLedgerServiceRequest(
-    service_manager::ServiceKeepalive* keepalive,
-    bat_ledger::mojom::BatLedgerServiceRequest request) {
-
-  mojo::MakeStrongBinding(
-      std::make_unique<bat_ledger::BatLedgerServiceImpl>(
-          keepalive->CreateRef()), std::move(request));
-}
-
-}  // namespace
-
-BatLedgerApp::BatLedgerApp(
-        service_manager::mojom::ServiceRequest request) :
+BatLedgerApp::BatLedgerApp(service_manager::mojom::ServiceRequest request) :
     service_binding_(this, std::move(request)),
     service_keepalive_(&service_binding_, base::TimeDelta()) {
 }
 
-BatLedgerApp::~BatLedgerApp() {}
+BatLedgerApp::~BatLedgerApp() = default;
 
 void BatLedgerApp::OnStart() {
-  registry_.AddInterface(
-      base::BindRepeating(&OnBatLedgerServiceRequest, &service_keepalive_));
+  binders_.Add(base::BindRepeating(&BatLedgerApp::BindBatLedgerServiceReceiver,
+      base::Unretained(this),
+      &service_keepalive_));
 }
 
-void BatLedgerApp::OnBindInterface(
-    const service_manager::BindSourceInfo& source_info,
+void BatLedgerApp::BindBatLedgerServiceReceiver(
+    service_manager::ServiceKeepalive* keepalive,
+    mojo::PendingReceiver<bat_ledger::mojom::BatLedgerService> receiver) {
+  receivers_.Add(
+      std::make_unique<bat_ledger::BatLedgerServiceImpl>(
+          keepalive->CreateRef()),
+      std::move(receiver));
+}
+
+void BatLedgerApp::OnConnect(
+    const service_manager::ConnectSourceInfo& source_info,
     const std::string& interface_name,
-    mojo::ScopedMessagePipeHandle interface_pipe) {
-  registry_.BindInterface(interface_name, std::move(interface_pipe));
+    mojo::ScopedMessagePipeHandle receiver_pipe) {
+  binders_.TryBind(interface_name, &receiver_pipe);
 }
 
 }  // namespace bat_ledger

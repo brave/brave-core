@@ -57,5 +57,6 @@
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::Result)result;
+- (void)clearAllNotifications;
 
 @end

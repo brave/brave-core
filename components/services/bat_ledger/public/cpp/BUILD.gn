@@ -1,7 +1,7 @@
 source_set("cpp") {
   sources = [
-    "ledger_client_mojo_proxy.cc",
-    "ledger_client_mojo_proxy.h",
+    "ledger_client_mojo_bridge.cc",
+    "ledger_client_mojo_bridge.h",
   ]
 
   deps = [

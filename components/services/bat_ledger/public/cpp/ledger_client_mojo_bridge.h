@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
-#define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
+#ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_BRIDGE_H_
+#define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_BRIDGE_H_
 
 #include <map>
 #include <memory>
@@ -18,11 +18,15 @@
 
 namespace bat_ledger {
 
-class LedgerClientMojoProxy : public mojom::BatLedgerClient,
-                          public base::SupportsWeakPtr<LedgerClientMojoProxy> {
+class LedgerClientMojoBridge :
+    public mojom::BatLedgerClient,
+    public base::SupportsWeakPtr<LedgerClientMojoBridge> {
  public:
-  explicit LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
-  ~LedgerClientMojoProxy() override;
+  explicit LedgerClientMojoBridge(ledger::LedgerClient* ledger_client);
+  ~LedgerClientMojoBridge() override;
+
+  LedgerClientMojoBridge(const LedgerClientMojoBridge&) = delete;
+  LedgerClientMojoBridge& operator=(const LedgerClientMojoBridge&) = delete;
 
   // bat_ledger::mojom::BatLedgerClient
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
@@ -157,12 +161,14 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const int32_t verbose_level,
       const std::string& message) override;
 
+  void ClearAllNotifications() override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
   class CallbackHolder {
    public:
-    CallbackHolder(base::WeakPtr<LedgerClientMojoProxy> client,
+    CallbackHolder(base::WeakPtr<LedgerClientMojoBridge> client,
         Callback callback)
         : client_(client),
           callback_(std::move(callback)) {}
@@ -171,7 +177,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     Callback& get() { return callback_; }
 
    private:
-    base::WeakPtr<LedgerClientMojoProxy> client_;
+    base::WeakPtr<LedgerClientMojoBridge> client_;
     Callback callback_;
   };
 
@@ -230,10 +236,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const int table_version);
 
   ledger::LedgerClient* ledger_client_;
-
-  DISALLOW_COPY_AND_ASSIGN(LedgerClientMojoProxy);
 };
 
 }  // namespace bat_ledger
 
-#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_BRIDGE_H_

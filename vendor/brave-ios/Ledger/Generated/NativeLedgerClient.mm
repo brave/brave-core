@@ -158,3 +158,6 @@ void NativeLedgerClient::GetCreateScript(ledger::GetCreateScriptCallback callbac
 void NativeLedgerClient::PendingContributionSaved(const ledger::Result result) {
   [bridge_ pendingContributionSaved:result];
 }
+void NativeLedgerClient::ClearAllNotifications() {
+  [bridge_ clearAllNotifications];
+}

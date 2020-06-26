@@ -13,9 +13,10 @@ export const onWalletCreated = () => action(types.WALLET_CREATED)
 
 export const onWalletCreateFailed = () => action(types.WALLET_CREATE_FAILED)
 
-export const onSettingSave = (key: string, value: any) => action(types.ON_SETTING_SAVE, {
+export const onSettingSave = (key: string, value: any, persist: boolean = true) => action(types.ON_SETTING_SAVE, {
   key,
-  value
+  value,
+  persist
 })
 
 export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
@@ -334,4 +335,12 @@ export const getCountryCode = () => action(types.GET_COUNTRY_CODE)
 
 export const onCountryCode = (countryCode: string) => action(types.ON_COUNTRY_CODE, {
   countryCode
+})
+
+export const toggleEnableMain = (enable: boolean) => action(types.TOGGLE_ENABLE_MAIN, {
+  enable
+})
+
+export const onInitialized = (result: boolean) => action(types.ON_INITIALIZED, {
+  result
 })

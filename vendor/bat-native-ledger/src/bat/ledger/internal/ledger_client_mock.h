@@ -198,6 +198,8 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback));
 
   MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
+
+  MOCK_METHOD0(ClearAllNotifications, void());
 };
 
 }  // namespace ledger

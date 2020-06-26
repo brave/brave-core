@@ -44,6 +44,7 @@ declare namespace Rewards {
     enabledContribute: boolean
     enabledMain: boolean
     externalWallet?: ExternalWallet
+    initializing: boolean
     inlineTip: {
       twitter: boolean
       reddit: boolean

@@ -34,7 +34,8 @@ export const enum types {
   ON_INIT = '@@rewards_panel/ON_INIT',
   ON_BALANCE = '@@rewards_panel/ON_BALANCE',
   ON_EXTERNAL_WALLET = '@@rewards_panel/ON_EXTERNAL_WALLET',
-  ON_ANON_WALLET_STATUS = '@@rewards_panel/ON_ANON_WALLET_STATUS'
+  ON_ANON_WALLET_STATUS = '@@rewards_panel/ON_ANON_WALLET_STATUS',
+  ON_ALL_NOTIFICATIONS_DELETED = '@@rewards_panel/ON_ALL_NOTIFICATIONS_DELETED'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

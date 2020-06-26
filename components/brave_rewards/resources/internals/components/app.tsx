@@ -36,7 +36,18 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.getGeneralInfo()
+    // Process is not started until rewards is on,
+    // so we need to first check if rewards is on before we do anything
+    this.actions.getRewardsEnabled()
+  }
+
+  componentDidUpdate (prevProps: Props, prevState: State) {
+    if (
+      !prevProps.rewardsInternalsData.isRewardsEnabled &&
+      this.props.rewardsInternalsData.isRewardsEnabled
+    ) {
+      this.getGeneralInfo()
+    }
   }
 
   get actions () {
@@ -44,7 +55,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   getGeneralInfo = () => {
-    this.actions.getRewardsEnabled()
     this.actions.getRewardsInternalsInfo()
     this.actions.getBalance()
   }
@@ -100,7 +110,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
         <Wrapper id='rewardsInternalsPage'>
           <MainTitle level={2}>{getLocale('mainTitle')}</MainTitle>
           <DisabledContent>
-            {getLocale('rewardsNotEnabled')} <a href='brave://rewards' target='_blank'>brave://rewards</a>
+            {getLocale('rewardsNotEnabled')} <a href='chrome://rewards' target='_blank'>brave://rewards</a>
           </DisabledContent>
         </Wrapper>)
     }

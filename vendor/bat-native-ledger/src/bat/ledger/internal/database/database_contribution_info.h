@@ -60,6 +60,8 @@ class DatabaseContributionInfo: public DatabaseTable {
       const std::string& publisher_key,
       ledger::ResultCallback callback);
 
+  void FinishAllInProgressRecords(ledger::ResultCallback callback);
+
  private:
   bool CreateTableV2(ledger::DBTransaction* transaction);
 

@@ -10,6 +10,9 @@
 
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/unique_associated_receiver_set.h"
 #include "services/service_manager/public/cpp/service_context_ref.h"
 
 namespace bat_ledger {
@@ -18,11 +21,17 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
  public:
   explicit BatLedgerServiceImpl(
       std::unique_ptr<service_manager::ServiceContextRef> service_ref);
+
   ~BatLedgerServiceImpl() override;
 
+  BatLedgerServiceImpl(const BatLedgerServiceImpl&) = delete;
+  BatLedgerServiceImpl& operator=(const BatLedgerServiceImpl&) = delete;
+
   // bat_ledger::mojom::BatLedgerService
-  void Create(mojom::BatLedgerClientAssociatedPtrInfo client_info,
-              mojom::BatLedgerAssociatedRequest bat_ledger) override;
+  void Create(
+      mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,
+      mojo::PendingAssociatedReceiver<mojom::BatLedger> bat_ledger,
+      CreateCallback callback) override;
 
   void SetEnvironment(ledger::Environment environment) override;
   void SetDebug(bool isDebug) override;
@@ -38,8 +47,7 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
  private:
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
   bool initialized_;
-
-  DISALLOW_COPY_AND_ASSIGN(BatLedgerServiceImpl);
+  mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> receivers_;
 };
 
 }  // namespace bat_ledger

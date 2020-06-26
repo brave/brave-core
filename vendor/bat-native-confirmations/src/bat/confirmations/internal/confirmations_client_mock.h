@@ -222,6 +222,8 @@ class ConfirmationsClientMock : public ConfirmationsClient {
   MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback callback));
 
   MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
+
+  MOCK_METHOD0(ClearAllNotifications, void());
 };
 
 }  // namespace confirmations

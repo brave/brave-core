@@ -45,7 +45,11 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   onToggle = () => {
-    this.actions.onSettingSave('enabledMain', !this.props.rewardsData.enabledMain)
+    if (this.props.rewardsData.initializing) {
+      return
+    }
+
+    this.actions.toggleEnableMain(!this.props.rewardsData.enabledMain)
   }
 
   get actions () {
@@ -65,55 +69,36 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    this.actions.getRewardsMainEnabled()
+
     if (this.props.rewardsData.firstLoad === null) {
       // First load ever
-      this.actions.onSettingSave('firstLoad', true)
-      this.actions.getWalletPassphrase()
+      this.actions.onSettingSave('firstLoad', true, false)
     } else if (this.props.rewardsData.firstLoad) {
       // Second load ever
-      this.actions.onSettingSave('firstLoad', false)
+      this.actions.onSettingSave('firstLoad', false, false)
     }
 
-    this.actions.getRewardsParameters()
-    this.actions.getContributionAmount()
-    this.actions.getAutoContributeProperties()
-    this.actions.getBalance()
-    this.balanceTimerId = setInterval(() => {
-      this.actions.getBalance()
-    }, 60000)
-
-    if (this.props.rewardsData.firstLoad === false) {
-      this.refreshActions()
-    } else {
-      this.actions.getAdsData()
-    }
-
-    this.actions.fetchPromotions()
-    this.actions.getRewardsMainEnabled()
-    this.actions.updateAdsRewards()
-    this.actions.getExternalWallet('uphold')
-
-    // one time check (legacy fix)
-    if (!this.props.rewardsData.ui.paymentIdCheck) {
-      // https://github.com/brave/brave-browser/issues/3061
-      this.actions.getWalletPassphrase()
-    }
-
-    if (window.location.pathname.length > 1) {
-      const pathElements = window.location.pathname.split('/')
-      if (pathElements.length > 2) {
-        this.actions.processRewardsPageUrl(window.location.pathname, window.location.search)
-      }
+    if (this.props.rewardsData.enabledMain &&
+        !this.props.rewardsData.initializing) {
+      this.startRewards()
     }
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
     if (
-      !prevProps.rewardsData.enabledMain &&
       this.props.rewardsData.enabledMain &&
-      this.props.rewardsData.firstLoad === false
+      prevProps.rewardsData.initializing &&
+      !this.props.rewardsData.initializing
     ) {
-      this.refreshActions()
+      this.startRewards()
+    }
+
+    if (
+      prevProps.rewardsData.enabledMain &&
+      !this.props.rewardsData.enabledMain
+    ) {
+      this.stopRewards()
     }
 
     if (
@@ -139,6 +124,40 @@ class SettingsPage extends React.Component<Props, State> {
       this.setState({
         redirectModalDisplayed: 'show'
       })
+    }
+  }
+
+  stopRewards () {
+    clearInterval(this.balanceTimerId)
+    this.balanceTimerId = -1
+  }
+
+  startRewards () {
+    if (this.props.rewardsData.firstLoad) {
+      this.actions.getAdsData()
+      this.actions.getWalletPassphrase()
+    } else {
+      // normal load
+      this.refreshActions()
+    }
+
+    this.actions.getRewardsParameters()
+    this.actions.getContributionAmount()
+    this.actions.getAutoContributeProperties()
+    this.actions.getBalance()
+    this.balanceTimerId = setInterval(() => {
+      this.actions.getBalance()
+    }, 60000)
+
+    this.actions.fetchPromotions()
+    this.actions.updateAdsRewards()
+    this.actions.getExternalWallet('uphold')
+
+    if (window.location.pathname.length > 1) {
+      const pathElements = window.location.pathname.split('/')
+      if (pathElements.length > 2) {
+        this.actions.processRewardsPageUrl(window.location.pathname, window.location.search)
+      }
     }
   }
 
@@ -184,7 +203,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   componentWillUnmount () {
-    clearInterval(this.balanceTimerId)
+    this.stopRewards()
   }
 
   onRedirectError = () => {

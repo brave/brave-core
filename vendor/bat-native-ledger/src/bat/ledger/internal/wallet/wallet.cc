@@ -401,4 +401,34 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   callback(ledger::Result::LEDGER_OK);
 }
 
+void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
+  auto wallet_callback = std::bind(&Wallet::OnDisconnectAllWallets,
+      this,
+      _1,
+      callback);
+
+  ledger_->GetExternalWallets(wallet_callback);
+}
+
+void Wallet::OnDisconnectAllWallets(
+    std::map<std::string, ledger::ExternalWalletPtr> wallets,
+    ledger::ResultCallback callback) {
+  if (wallets.empty()) {
+    BLOG(1, "No wallets");
+    callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+
+  for (auto& wallet : wallets) {
+    auto wallet_new = ResetWallet(std::move(wallet.second));
+    if (!wallet_new) {
+      continue;
+    }
+
+    ledger_->SaveExternalWallet(wallet.first, std::move(wallet_new));
+  }
+
+  callback(ledger::Result::LEDGER_OK);
+}
+
 }  // namespace braveledger_wallet

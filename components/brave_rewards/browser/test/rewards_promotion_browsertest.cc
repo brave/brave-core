@@ -9,7 +9,6 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
@@ -25,7 +24,6 @@ namespace rewards_browsertest {
 class RewardsPromotionBrowserTest : public InProcessBrowserTest {
  public:
   RewardsPromotionBrowserTest() {
-    observer_ = std::make_unique<RewardsBrowserTestObserver>();
     promotion_ = std::make_unique<RewardsBrowserTestPromotion>();
     response_ = std::make_unique<RewardsBrowserTestResponse>();
   }
@@ -34,7 +32,6 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     // HTTP resolver
-    host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
@@ -55,12 +52,6 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsPromotionBrowserTest::GetTestResponse,
             base::Unretained(this)));
-
-    // Observer
-    observer_->Initialize(rewards_service_);
-    if (!rewards_service_->IsWalletInitialized()) {
-      observer_->WaitForWalletInitialization();
-    }
     rewards_service_->SetLedgerEnvForTesting();
 
     // Other
@@ -151,7 +142,6 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestObserver> observer_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
 };

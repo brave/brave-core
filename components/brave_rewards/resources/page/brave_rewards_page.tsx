@@ -250,6 +250,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onCountryCode(countryCode)
   }
 
+  function initialized (result: number) {
+    getActions().onInitialized(result)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -296,7 +300,8 @@ window.cr.define('brave_rewards', function () {
     monthlyReport,
     reconcileStampReset,
     monthlyReportIds,
-    countryCode
+    countryCode,
+    initialized
   }
 })
 

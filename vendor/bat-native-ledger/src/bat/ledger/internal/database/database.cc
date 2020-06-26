@@ -203,6 +203,11 @@ void Database::UpdateContributionInfoContributedAmount(
       callback);
 }
 
+void Database::FinishAllInProgressContributions(
+    ledger::ResultCallback callback) {
+  contribution_info_->FinishAllInProgressRecords(callback);
+}
+
 /**
  * CONTRIBUTION QUEUE
  */

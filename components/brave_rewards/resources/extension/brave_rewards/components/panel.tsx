@@ -102,7 +102,8 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
-    if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
+    if (!prevProps.rewardsPanelData.enabledMain &&
+        this.props.rewardsPanelData.enabledMain) {
       this.actions.fetchPromotions()
     }
   }

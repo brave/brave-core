@@ -20,13 +20,18 @@
 
 namespace bat_ledger {
 
-class BatLedgerClientMojoProxy;
+class BatLedgerClientMojoBridge;
 
-class BatLedgerImpl : public mojom::BatLedger,
+class BatLedgerImpl :
+    public mojom::BatLedger,
     public base::SupportsWeakPtr<BatLedgerImpl> {
  public:
-  explicit BatLedgerImpl(mojom::BatLedgerClientAssociatedPtrInfo client_info);
+  explicit BatLedgerImpl(
+      mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info);
   ~BatLedgerImpl() override;
+
+  BatLedgerImpl(const BatLedgerImpl&) = delete;
+  BatLedgerImpl& operator=(const BatLedgerImpl&) = delete;
 
   // bat_ledger::mojom::BatLedger
   void Initialize(
@@ -222,6 +227,8 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
+  void Shutdown(ShutdownCallback callback) override;
+
  private:
   void SetCatalogIssuers(
       const std::string& info) override;
@@ -416,10 +423,12 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetAllPromotionsCallback>* holder,
       ledger::PromotionMap items);
 
-  std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
-  std::unique_ptr<ledger::Ledger> ledger_;
+  static void OnShutdown(
+      CallbackHolder<ShutdownCallback>* holder,
+      const ledger::Result result);
 
-  DISALLOW_COPY_AND_ASSIGN(BatLedgerImpl);
+  std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
+  std::unique_ptr<ledger::Ledger> ledger_;
 };
 
 }  // namespace bat_ledger

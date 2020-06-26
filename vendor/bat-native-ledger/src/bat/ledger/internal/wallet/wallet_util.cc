@@ -31,10 +31,12 @@ ledger::ExternalWalletPtr ResetWallet(ledger::ExternalWalletPtr wallet) {
   wallet->user_name = "";
   wallet->one_time_string = "";
 
-  if (wallet->status == ledger::WalletStatus::VERIFIED) {
-    wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
-  } else {
-    wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+  if (wallet->status != ledger::WalletStatus::NOT_CONNECTED) {
+    if (wallet->status == ledger::WalletStatus::VERIFIED) {
+      wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
+    } else {
+      wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+    }
   }
 
   return wallet;

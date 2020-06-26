@@ -60,5 +60,7 @@ export const enum types {
   GET_BALANCE = '@@rewards/GET_BALANCE',
   ON_BALANCE = '@@rewards/ON_BALANCE',
   ONLY_ANON_WALLET = '@@rewards/ONLY_ANON_WALLET',
-  ON_ONLY_ANON_WALLET = '@@rewards/ON_ONLY_ANON_WALLET'
+  ON_ONLY_ANON_WALLET = '@@rewards/ON_ONLY_ANON_WALLET',
+  TOGGLE_ENABLE_MAIN = '@@rewards/TOGGLE_ENABLE_MAIN',
+  ON_INITIALIZED = '@@rewards/ON_INITIALIZED'
 }

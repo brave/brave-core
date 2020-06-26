@@ -9,7 +9,6 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -26,7 +25,6 @@ namespace rewards_browsertest {
 class RewardsPublisherBrowserTest : public InProcessBrowserTest {
  public:
   RewardsPublisherBrowserTest() {
-    observer_ = std::make_unique<RewardsBrowserTestObserver>();
     response_ = std::make_unique<RewardsBrowserTestResponse>();
   }
 
@@ -55,12 +53,6 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsPublisherBrowserTest::GetTestResponse,
             base::Unretained(this)));
-
-    // Observer
-    observer_->Initialize(rewards_service_);
-    if (!rewards_service_->IsWalletInitialized()) {
-      observer_->WaitForWalletInitialization();
-    }
     rewards_service_->SetLedgerEnvForTesting();
   }
 
@@ -93,7 +85,6 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestObserver> observer_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
 };
 

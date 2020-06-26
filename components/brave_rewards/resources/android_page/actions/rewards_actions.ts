@@ -193,3 +193,11 @@ export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
 export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
   only
 })
+
+export const toggleEnableMain = (enable: boolean) => action(types.TOGGLE_ENABLE_MAIN, {
+  enable
+})
+
+export const onInitialized = (result: boolean) => action(types.ON_INITIALIZED, {
+  result
+})

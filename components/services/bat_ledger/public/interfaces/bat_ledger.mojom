@@ -1,3 +1,4 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -9,8 +10,8 @@ import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledg
 const string kServiceName = "bat_ledger";
 
 interface BatLedgerService {
-  Create(associated BatLedgerClient bat_ledger_client,
-         associated BatLedger& bat_ledger);
+  Create(pending_associated_remote<BatLedgerClient> bat_ledger_client,
+         pending_associated_receiver<BatLedger> database) => ();
   SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
   SetReconcileInterval(int32 time);
@@ -154,6 +155,8 @@ interface BatLedger {
   GetAllMonthlyReportIds() => (array<string> ids);
 
   GetAllPromotions() => (map<string, ledger.mojom.Promotion> items);
+
+  Shutdown() => (ledger.mojom.Result result);
 };
 
 interface BatLedgerClient {
@@ -248,4 +251,6 @@ interface BatLedgerClient {
   PendingContributionSaved(ledger.mojom.Result result);
 
   Log(string file, int32 line, int32 verbose_level, string message);
+
+  ClearAllNotifications();
 };

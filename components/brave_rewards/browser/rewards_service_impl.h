@@ -26,7 +26,8 @@
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
-#include "mojo/public/cpp/bindings/associated_binding.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -315,6 +316,7 @@ class RewardsServiceImpl : public RewardsService,
 
   // Testing methods
   void SetLedgerEnvForTesting();
+  void PrepareLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
@@ -327,7 +329,15 @@ class RewardsServiceImpl : public RewardsService,
  private:
   friend class ::RewardsFlagBrowserTest;
 
+  void EnableGreaseLion(const bool enabled);
+
+  void StopLedger();
+
+  void OnStopLedger(const ledger::Result result);
+
   const base::OneShotEvent& ready() const { return ready_; }
+
+  void OnCreate();
 
   void OnResult(ledger::ResultCallback callback, const ledger::Result result);
 
@@ -638,6 +648,8 @@ class RewardsServiceImpl : public RewardsService,
       const bool recurring,
       const ledger::Result result);
 
+  void ClearAllNotifications() override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -724,9 +736,9 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionService* greaselion_service_;  // NOT OWNED
 #endif
-  mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
-      bat_ledger_client_binding_;
-  bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
+  mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
+      bat_ledger_client_receiver_;
+  mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;
   mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath diagnostic_log_path_;
@@ -753,6 +765,7 @@ class RewardsServiceImpl : public RewardsService,
   uint32_t next_timer_id_;
   bool reset_states_;
   bool is_wallet_initialized_ = false;
+  bool ledger_for_testing_ = false;
 
   GetTestResponseCallback test_response_callback_;
 

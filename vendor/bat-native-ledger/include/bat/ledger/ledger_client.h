@@ -189,6 +189,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetCreateScript(ledger::GetCreateScriptCallback callback) = 0;
 
   virtual void PendingContributionSaved(const ledger::Result result) = 0;
+
+  virtual void ClearAllNotifications() = 0;
 };
 
 }  // namespace ledger

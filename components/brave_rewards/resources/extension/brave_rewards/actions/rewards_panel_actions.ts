@@ -147,3 +147,5 @@ export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => act
 export const onAnonWalletStatus = (result: RewardsExtension.Result) => action(types.ON_ANON_WALLET_STATUS, {
   result
 })
+
+export const onAllNotificationsDeleted = () => action(types.ON_ALL_NOTIFICATIONS_DELETED)

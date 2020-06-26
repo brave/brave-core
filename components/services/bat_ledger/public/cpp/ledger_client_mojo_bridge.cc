@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
+#include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 
 #include "base/logging.h"
 #include "brave/base/containers/utils.h"
@@ -14,16 +14,16 @@ using std::placeholders::_3;
 
 namespace bat_ledger {
 
-LedgerClientMojoProxy::LedgerClientMojoProxy(
+LedgerClientMojoBridge::LedgerClientMojoBridge(
     ledger::LedgerClient* ledger_client)
   : ledger_client_(ledger_client) {
+  DCHECK(ledger_client_);
 }
 
-LedgerClientMojoProxy::~LedgerClientMojoProxy() {
-}
+LedgerClientMojoBridge::~LedgerClientMojoBridge() = default;
 
 // static
-void LedgerClientMojoProxy::OnLoadLedgerState(
+void LedgerClientMojoBridge::OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
     const std::string& data) {
@@ -33,16 +33,16 @@ void LedgerClientMojoProxy::OnLoadLedgerState(
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadLedgerState(LoadLedgerStateCallback callback) {
+void LedgerClientMojoBridge::LoadLedgerState(LoadLedgerStateCallback callback) {
   // deleted in OnLoadLedgerState
   auto* holder = new CallbackHolder<LoadLedgerStateCallback>(AsWeakPtr(),
       std::move(callback));
   ledger_client_->LoadLedgerState(
-      std::bind(LedgerClientMojoProxy::OnLoadLedgerState, holder, _1, _2));
+      std::bind(LedgerClientMojoBridge::OnLoadLedgerState, holder, _1, _2));
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadPublisherState(
+void LedgerClientMojoBridge::OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
     const std::string& data) {
@@ -52,18 +52,18 @@ void LedgerClientMojoProxy::OnLoadPublisherState(
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadPublisherState(
+void LedgerClientMojoBridge::LoadPublisherState(
     LoadPublisherStateCallback callback) {
   auto* holder = new CallbackHolder<LoadPublisherStateCallback>(AsWeakPtr(),
       std::move(callback));
   ledger_client_->LoadPublisherState(
-      std::bind(LedgerClientMojoProxy::OnLoadPublisherState,
+      std::bind(LedgerClientMojoBridge::OnLoadPublisherState,
           holder,
           _1,
           _2));
 }
 
-void LedgerClientMojoProxy::OnReconcileComplete(
+void LedgerClientMojoBridge::OnReconcileComplete(
     const ledger::Result result,
     ledger::ContributionInfoPtr contribution) {
   ledger_client_->OnReconcileComplete(
@@ -71,18 +71,18 @@ void LedgerClientMojoProxy::OnReconcileComplete(
       std::move(contribution));
 }
 
-void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
+void LedgerClientMojoBridge::SetTimer(uint64_t time_offset,
     SetTimerCallback callback) {
   uint32_t timer_id;
   ledger_client_->SetTimer(time_offset, &timer_id);
   std::move(callback).Run(timer_id);
 }
 
-void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
+void LedgerClientMojoBridge::KillTimer(const uint32_t timer_id) {
   ledger_client_->KillTimer(timer_id);
 }
 
-void LedgerClientMojoProxy::OnPanelPublisherInfo(
+void LedgerClientMojoBridge::OnPanelPublisherInfo(
     const ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
     uint64_t window_id) {
@@ -93,7 +93,7 @@ void LedgerClientMojoProxy::OnPanelPublisherInfo(
 }
 
 // static
-void LedgerClientMojoProxy::OnFetchFavIcon(
+void LedgerClientMojoBridge::OnFetchFavIcon(
     CallbackHolder<FetchFavIconCallback>* holder,
     bool success, const std::string& favicon_url) {
   DCHECK(holder);
@@ -102,17 +102,17 @@ void LedgerClientMojoProxy::OnFetchFavIcon(
   delete holder;
 }
 
-void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
+void LedgerClientMojoBridge::FetchFavIcon(const std::string& url,
     const std::string& favicon_key, FetchFavIconCallback callback) {
   // deleted in OnFetchFavIcon
   auto* holder = new CallbackHolder<FetchFavIconCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->FetchFavIcon(url, favicon_key,
-      std::bind(LedgerClientMojoProxy::OnFetchFavIcon, holder, _1, _2));
+      std::bind(LedgerClientMojoBridge::OnFetchFavIcon, holder, _1, _2));
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadNicewareList(
+void LedgerClientMojoBridge::OnLoadNicewareList(
     CallbackHolder<LoadNicewareListCallback>* holder,
     const ledger::Result result,
     const std::string& data) {
@@ -122,23 +122,23 @@ void LedgerClientMojoProxy::OnLoadNicewareList(
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadNicewareList(
+void LedgerClientMojoBridge::LoadNicewareList(
     LoadNicewareListCallback callback) {
   // deleted in OnLoadNicewareList
   auto* holder = new CallbackHolder<LoadNicewareListCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->LoadNicewareList(
-      std::bind(LedgerClientMojoProxy::OnLoadNicewareList,
+      std::bind(LedgerClientMojoBridge::OnLoadNicewareList,
         holder, _1, _2));
 }
 
-void LedgerClientMojoProxy::URIEncode(const std::string& value,
+void LedgerClientMojoBridge::URIEncode(const std::string& value,
     URIEncodeCallback callback) {
   std::move(callback).Run(ledger_client_->URIEncode(value));
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadURL(
+void LedgerClientMojoBridge::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,
     const ledger::UrlResponse& response) {
   DCHECK(holder);
@@ -148,7 +148,7 @@ void LedgerClientMojoProxy::OnLoadURL(
   }
 }
 
-void LedgerClientMojoProxy::LoadURL(const std::string& url,
+void LedgerClientMojoBridge::LoadURL(const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
@@ -159,16 +159,16 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       AsWeakPtr(), std::move(callback));
   ledger_client_->LoadURL(url, headers, content, contentType,
       method,
-      std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1));
+      std::bind(LedgerClientMojoBridge::OnLoadURL, holder, _1));
 }
 
-void LedgerClientMojoProxy::PublisherListNormalized(
+void LedgerClientMojoBridge::PublisherListNormalized(
     ledger::PublisherInfoList list) {
   ledger_client_->PublisherListNormalized(std::move(list));
 }
 
 // static
-void LedgerClientMojoProxy::OnSaveState(
+void LedgerClientMojoBridge::OnSaveState(
     CallbackHolder<SaveStateCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
@@ -177,7 +177,7 @@ void LedgerClientMojoProxy::OnSaveState(
   delete holder;
 }
 
-void LedgerClientMojoProxy::SaveState(
+void LedgerClientMojoBridge::SaveState(
     const std::string& name,
     const std::string& value,
     SaveStateCallback callback) {
@@ -187,11 +187,11 @@ void LedgerClientMojoProxy::SaveState(
 
   ledger_client_->SaveState(
       name, value,
-      std::bind(LedgerClientMojoProxy::OnSaveState, holder, _1));
+      std::bind(LedgerClientMojoBridge::OnSaveState, holder, _1));
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadState(
+void LedgerClientMojoBridge::OnLoadState(
     CallbackHolder<LoadStateCallback>* holder,
     const ledger::Result result,
     const std::string& value) {
@@ -201,7 +201,7 @@ void LedgerClientMojoProxy::OnLoadState(
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadState(
+void LedgerClientMojoBridge::LoadState(
     const std::string& name,
     LoadStateCallback callback) {
   // deleted in OnSaveState
@@ -209,12 +209,12 @@ void LedgerClientMojoProxy::LoadState(
       AsWeakPtr(), std::move(callback));
 
   ledger_client_->LoadState(
-      name, std::bind(LedgerClientMojoProxy::OnLoadState, holder,
+      name, std::bind(LedgerClientMojoBridge::OnLoadState, holder,
                       _1, _2));
 }
 
 // static
-void LedgerClientMojoProxy::OnResetState(
+void LedgerClientMojoBridge::OnResetState(
     CallbackHolder<ResetStateCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
@@ -223,7 +223,7 @@ void LedgerClientMojoProxy::OnResetState(
   delete holder;
 }
 
-void LedgerClientMojoProxy::ResetState(
+void LedgerClientMojoBridge::ResetState(
     const std::string& name,
     ResetStateCallback callback) {
   // deleted in OnResetState
@@ -232,118 +232,118 @@ void LedgerClientMojoProxy::ResetState(
 
   ledger_client_->ResetState(
       name,
-      std::bind(LedgerClientMojoProxy::OnResetState, holder, _1));
+      std::bind(LedgerClientMojoBridge::OnResetState, holder, _1));
 }
 
-void LedgerClientMojoProxy::SetBooleanState(const std::string& name,
+void LedgerClientMojoBridge::SetBooleanState(const std::string& name,
                                             bool value) {
   ledger_client_->SetBooleanState(name, value);
 }
 
-void LedgerClientMojoProxy::GetBooleanState(const std::string& name,
+void LedgerClientMojoBridge::GetBooleanState(const std::string& name,
                                             GetBooleanStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetBooleanState(name));
 }
 
-void LedgerClientMojoProxy::SetIntegerState(const std::string& name,
+void LedgerClientMojoBridge::SetIntegerState(const std::string& name,
                                             int value) {
   ledger_client_->SetIntegerState(name, value);
 }
 
-void LedgerClientMojoProxy::GetIntegerState(const std::string& name,
+void LedgerClientMojoBridge::GetIntegerState(const std::string& name,
                                             GetIntegerStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetIntegerState(name));
 }
 
-void LedgerClientMojoProxy::SetDoubleState(const std::string& name,
+void LedgerClientMojoBridge::SetDoubleState(const std::string& name,
                                            double value) {
   ledger_client_->SetDoubleState(name, value);
 }
 
-void LedgerClientMojoProxy::GetDoubleState(const std::string& name,
+void LedgerClientMojoBridge::GetDoubleState(const std::string& name,
                                            GetDoubleStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetDoubleState(name));
 }
 
-void LedgerClientMojoProxy::SetStringState(const std::string& name,
+void LedgerClientMojoBridge::SetStringState(const std::string& name,
                                            const std::string& value) {
   ledger_client_->SetStringState(name, value);
 }
 
-void LedgerClientMojoProxy::GetStringState(const std::string& name,
+void LedgerClientMojoBridge::GetStringState(const std::string& name,
                                            GetStringStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetStringState(name));
 }
 
-void LedgerClientMojoProxy::SetInt64State(const std::string& name,
+void LedgerClientMojoBridge::SetInt64State(const std::string& name,
                                           int64_t value) {
   ledger_client_->SetInt64State(name, value);
 }
 
-void LedgerClientMojoProxy::GetInt64State(const std::string& name,
+void LedgerClientMojoBridge::GetInt64State(const std::string& name,
                                           GetInt64StateCallback callback) {
   std::move(callback).Run(ledger_client_->GetInt64State(name));
 }
 
-void LedgerClientMojoProxy::SetUint64State(const std::string& name,
+void LedgerClientMojoBridge::SetUint64State(const std::string& name,
                                            uint64_t value) {
   ledger_client_->SetUint64State(name, value);
 }
 
-void LedgerClientMojoProxy::GetUint64State(const std::string& name,
+void LedgerClientMojoBridge::GetUint64State(const std::string& name,
                                            GetUint64StateCallback callback) {
   std::move(callback).Run(ledger_client_->GetUint64State(name));
 }
 
-void LedgerClientMojoProxy::ClearState(const std::string& name) {
+void LedgerClientMojoBridge::ClearState(const std::string& name) {
   ledger_client_->ClearState(name);
 }
 
-void LedgerClientMojoProxy::GetBooleanOption(
+void LedgerClientMojoBridge::GetBooleanOption(
     const std::string& name,
     GetBooleanOptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetBooleanOption(name));
 }
 
-void LedgerClientMojoProxy::GetIntegerOption(
+void LedgerClientMojoBridge::GetIntegerOption(
     const std::string& name,
     GetIntegerOptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetIntegerOption(name));
 }
 
-void LedgerClientMojoProxy::GetDoubleOption(
+void LedgerClientMojoBridge::GetDoubleOption(
     const std::string& name,
     GetDoubleOptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetDoubleOption(name));
 }
 
-void LedgerClientMojoProxy::GetStringOption(
+void LedgerClientMojoBridge::GetStringOption(
     const std::string& name,
     GetStringOptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetStringOption(name));
 }
 
-void LedgerClientMojoProxy::GetInt64Option(
+void LedgerClientMojoBridge::GetInt64Option(
     const std::string& name,
     GetInt64OptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetInt64Option(name));
 }
 
-void LedgerClientMojoProxy::GetUint64Option(
+void LedgerClientMojoBridge::GetUint64Option(
     const std::string& name,
     GetUint64OptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetUint64Option(name));
 }
 
-void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
+void LedgerClientMojoBridge::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }
 
-void LedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
+void LedgerClientMojoBridge::ConfirmationsTransactionHistoryDidChange() {
   ledger_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
-void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
+void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(
       const ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) {
@@ -354,7 +354,7 @@ void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
 }
 
 // static
-void LedgerClientMojoProxy::OnGetExternalWallets(
+void LedgerClientMojoBridge::OnGetExternalWallets(
     CallbackHolder<GetExternalWalletsCallback>* holder,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   DCHECK(holder);
@@ -363,24 +363,24 @@ void LedgerClientMojoProxy::OnGetExternalWallets(
   delete holder;
 }
 
-void LedgerClientMojoProxy::GetExternalWallets(
+void LedgerClientMojoBridge::GetExternalWallets(
     GetExternalWalletsCallback callback) {
   auto* holder = new CallbackHolder<GetExternalWalletsCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->GetExternalWallets(
-      std::bind(LedgerClientMojoProxy::OnGetExternalWallets,
+      std::bind(LedgerClientMojoBridge::OnGetExternalWallets,
                 holder,
                 _1));
 }
 
-void LedgerClientMojoProxy::SaveExternalWallet(
+void LedgerClientMojoBridge::SaveExternalWallet(
     const std::string& wallet_type,
     ledger::ExternalWalletPtr wallet) {
   ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
 }
 
 // static
-void LedgerClientMojoProxy::OnShowNotification(
+void LedgerClientMojoBridge::OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
@@ -390,7 +390,7 @@ void LedgerClientMojoProxy::OnShowNotification(
   delete holder;
 }
 
-void LedgerClientMojoProxy::ShowNotification(
+void LedgerClientMojoBridge::ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
       ShowNotificationCallback callback) {
@@ -399,46 +399,46 @@ void LedgerClientMojoProxy::ShowNotification(
   ledger_client_->ShowNotification(
       type,
       args,
-      std::bind(LedgerClientMojoProxy::OnShowNotification,
+      std::bind(LedgerClientMojoBridge::OnShowNotification,
                 holder,
                 _1));
 }
 
-void LedgerClientMojoProxy::GetTransferFees(
+void LedgerClientMojoBridge::GetTransferFees(
     const std::string& wallet_type,
     GetTransferFeesCallback callback) {
   auto list = ledger_client_->GetTransferFees(wallet_type);
   std::move(callback).Run(base::MapToFlatMap(std::move(list)));
 }
 
-void LedgerClientMojoProxy::SetTransferFee(
+void LedgerClientMojoBridge::SetTransferFee(
     const std::string& wallet_type,
     ledger::TransferFeePtr transfer_fee) {
   ledger_client_->SetTransferFee(wallet_type, std::move(transfer_fee));
 }
 
-void LedgerClientMojoProxy::RemoveTransferFee(
+void LedgerClientMojoBridge::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
-void LedgerClientMojoProxy::GetClientInfo(
+void LedgerClientMojoBridge::GetClientInfo(
     GetClientInfoCallback callback) {
   auto info = ledger_client_->GetClientInfo();
   std::move(callback).Run(std::move(info));
 }
 
-void LedgerClientMojoProxy::UnblindedTokensReady() {
+void LedgerClientMojoBridge::UnblindedTokensReady() {
   ledger_client_->UnblindedTokensReady();
 }
 
-void LedgerClientMojoProxy::ReconcileStampReset() {
+void LedgerClientMojoBridge::ReconcileStampReset() {
   ledger_client_->ReconcileStampReset();
 }
 
 // static
-void LedgerClientMojoProxy::OnRunDBTransaction(
+void LedgerClientMojoBridge::OnRunDBTransaction(
     CallbackHolder<RunDBTransactionCallback>* holder,
     ledger::DBCommandResponsePtr response) {
   DCHECK(holder);
@@ -448,7 +448,7 @@ void LedgerClientMojoProxy::OnRunDBTransaction(
   delete holder;
 }
 
-void LedgerClientMojoProxy::RunDBTransaction(
+void LedgerClientMojoBridge::RunDBTransaction(
     ledger::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
   auto* holder = new CallbackHolder<RunDBTransactionCallback>(
@@ -456,13 +456,13 @@ void LedgerClientMojoProxy::RunDBTransaction(
       std::move(callback));
   ledger_client_->RunDBTransaction(
       std::move(transaction),
-      std::bind(LedgerClientMojoProxy::OnRunDBTransaction,
+      std::bind(LedgerClientMojoBridge::OnRunDBTransaction,
                 holder,
                 _1));
 }
 
 // static
-void LedgerClientMojoProxy::OnGetCreateScript(
+void LedgerClientMojoBridge::OnGetCreateScript(
     CallbackHolder<GetCreateScriptCallback>* holder,
     const std::string& script,
     const int table_version) {
@@ -473,29 +473,33 @@ void LedgerClientMojoProxy::OnGetCreateScript(
   delete holder;
 }
 
-void LedgerClientMojoProxy::GetCreateScript(
+void LedgerClientMojoBridge::GetCreateScript(
     GetCreateScriptCallback callback) {
   auto* holder = new CallbackHolder<GetCreateScriptCallback>(
       AsWeakPtr(),
       std::move(callback));
   ledger_client_->GetCreateScript(
-      std::bind(LedgerClientMojoProxy::OnGetCreateScript,
+      std::bind(LedgerClientMojoBridge::OnGetCreateScript,
                 holder,
                 _1,
                 _2));
 }
 
-void LedgerClientMojoProxy::PendingContributionSaved(
+void LedgerClientMojoBridge::PendingContributionSaved(
     const ledger::Result result) {
   ledger_client_->PendingContributionSaved(result);
 }
 
-void LedgerClientMojoProxy::Log(
+void LedgerClientMojoBridge::Log(
     const std::string& file,
     const int32_t line,
     const int32_t verbose_level,
     const std::string& message) {
   ledger_client_->Log(file.c_str(), line, verbose_level, message);
+}
+
+void LedgerClientMojoBridge::ClearAllNotifications() {
+  ledger_client_->ClearAllNotifications();
 }
 
 }  // namespace bat_ledger

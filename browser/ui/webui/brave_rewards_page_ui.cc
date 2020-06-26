@@ -543,10 +543,18 @@ void RewardsDOMHandler::OnWalletInitialized(
   // ledger::Result::WALLET_CREATED
   if (result == 12) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreated");
-  } else if (result != 3 && result != 0) {
+    return;
+  }
+
+  if (result != 3 && result != 0) {
     // Report back all errors except when ledger_state is missing
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
+    return;
   }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.initialized",
+      base::Value(result));
 }
 
 void RewardsDOMHandler::GetAutoContributeProperties(
