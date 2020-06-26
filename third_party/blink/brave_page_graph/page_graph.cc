@@ -158,6 +158,8 @@ namespace brave_page_graph {
 
 namespace {
   PageGraph* yuck = nullptr;
+  constexpr char page_graph_version[] = "0.1";
+  constexpr char page_graph_url[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
 }
 
 void write_to_disk(int signal) {
@@ -1215,6 +1217,13 @@ string PageGraph::ToGraphML() const {
       BAD_CAST "http://www.w3.org/2001/XMLSchema-instance", BAD_CAST "xsi");
   xmlNewNsProp(graphml_root_node, xsi_ns, BAD_CAST "schemaLocation",
       BAD_CAST "http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd");
+
+  xmlNodePtr desc_container_node = xmlNewChild(graphml_root_node, NULL,
+      BAD_CAST "desc", NULL);
+  xmlNewTextChild(desc_container_node, NULL, BAD_CAST "version",
+      BAD_CAST page_graph_version);
+  xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
+      BAD_CAST page_graph_url);
 
   for (const GraphMLAttr* const graphml_attr : GetGraphMLAttrs()) {
     graphml_attr->AddDefinitionNode(graphml_root_node);
