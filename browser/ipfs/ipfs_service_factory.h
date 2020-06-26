@@ -9,8 +9,9 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-class IpfsService;
 class Profile;
+namespace ipfs {
+class IpfsService;
 
 class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
@@ -31,5 +32,7 @@ class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
 
   DISALLOW_COPY_AND_ASSIGN(IpfsServiceFactory);
 };
+
+}  // namespace ipfs
 
 #endif  // BRAVE_BROWSER_IPFS_IPFS_SERVICE_FACTORY_H_

@@ -7,6 +7,10 @@ source_set("browser") {
   ]
 
   deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//chrome/common:constants",
+    "//content/public/browser",
     "//third_party/re2",
   ]
 }

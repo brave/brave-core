@@ -10,6 +10,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
+namespace ipfs {
+
 // static
 IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
   return base::Singleton<IpfsServiceFactory>::get();
@@ -39,3 +41,5 @@ content::BrowserContext* IpfsServiceFactory::GetBrowserContextToUse(
       content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
+
+}  // namespace ipfs

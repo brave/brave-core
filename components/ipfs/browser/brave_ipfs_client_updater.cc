@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -8,6 +9,8 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/task/post_task.h"
+#include "base/task_runner.h"
+#include "base/task_runner_util.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ipfs {
@@ -17,11 +20,13 @@ std::string BraveIpfsClientUpdater::g_ipfs_client_component_id_(
 std::string BraveIpfsClientUpdater::g_ipfs_client_component_base64_public_key_(
     kIpfsClientComponentBase64PublicKey);
 
-BraveIpfsClientUpdater::BraveIpfsClientUpdater(BraveComponent::Delegate* delegate)
+BraveIpfsClientUpdater::BraveIpfsClientUpdater(
+    BraveComponent::Delegate* delegate)
     : BraveComponent(delegate),
       task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock()})),
-      registered_(false) {
+      registered_(false),
+      weak_ptr_factory_(this) {
 }
 
 BraveIpfsClientUpdater::~BraveIpfsClientUpdater() {
@@ -37,21 +42,18 @@ void BraveIpfsClientUpdater::Register() {
   registered_ = true;
 }
 
-base::FilePath BraveIpfsClientUpdater::GetExecutablePath() const {
-  return executable_path_;
-}
+namespace {
 
-void BraveIpfsClientUpdater::InitExecutablePath(
-    const base::FilePath& install_dir) {
+base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
   base::FilePath executable_path;
   base::FileEnumerator traversal(install_dir, false,
                                  base::FileEnumerator::FILES,
-                                 FILE_PATH_LITERAL("ipfs-*"));
+                                 FILE_PATH_LITERAL("go-ipfs_v*"));
   for (base::FilePath current = traversal.Next(); !current.empty();
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
     if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                        "ipfs-client"))
+                        "go-ipfs_v\\d+\\.\\d+\\.\\d+\\_\\w+-amd64"))
       continue;
     executable_path = current;
     break;
@@ -60,7 +62,7 @@ void BraveIpfsClientUpdater::InitExecutablePath(
   if (executable_path.empty()) {
     LOG(ERROR) << "Failed to locate Ipfs client executable in "
                << install_dir.value().c_str();
-    return;
+    return base::FilePath();
   }
 
 #if defined(OS_POSIX)
@@ -70,20 +72,42 @@ void BraveIpfsClientUpdater::InitExecutablePath(
   if (!base::SetPosixFilePermissions(executable_path, 0755)) {
     LOG(ERROR) << "Failed to set executable permission on "
                << executable_path.value().c_str();
-    return;
+    return base::FilePath();
   }
-#endif // defined(OS_POSIX)
+#endif  // defined(OS_POSIX)
 
-  executable_path_ = executable_path;
+  return executable_path;
+}
+
+}  // namespace
+
+void BraveIpfsClientUpdater::SetExecutablePath(const base::FilePath& path) {
+  executable_path_ = path;
+  for (Observer& observer : observers_)
+    observer.OnExecutableReady(path);
+}
+
+base::FilePath BraveIpfsClientUpdater::GetExecutablePath() const {
+  return executable_path_;
 }
 
 void BraveIpfsClientUpdater::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  GetTaskRunner()->PostTask(
-      FROM_HERE, base::Bind(&BraveIpfsClientUpdater::InitExecutablePath,
-                            base::Unretained(this), install_dir));
+  base::PostTaskAndReplyWithResult(
+      GetTaskRunner().get(), FROM_HERE,
+      base::BindOnce(&InitExecutablePath, install_dir),
+      base::BindOnce(&BraveIpfsClientUpdater::SetExecutablePath,
+        weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveIpfsClientUpdater::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveIpfsClientUpdater::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 // static
