@@ -395,13 +395,14 @@ export default function shieldsPanelReducer (
         console.error('Active tab not found')
         break
       }
-      const cosmeticBlockingEnabled = tabData.cosmeticBlocking
-      chrome.braveShields.getBraveShieldsEnabledAsync(action.url)
-        .then((braveShieldsEnabled: boolean) => {
+      Promise.all([chrome.braveShields.getBraveShieldsEnabledAsync(action.url), chrome.braveShields.getCosmeticFilteringEnabledAsync()])
+        .then(([braveShieldsEnabled, cosmeticBlockingEnabled]: [boolean, boolean]) => {
           const doCosmeticBlocking = braveShieldsEnabled && cosmeticBlockingEnabled
           if (doCosmeticBlocking) {
             applyAdblockCosmeticFilters(action.tabId, action.frameId, getHostname(action.url))
           }
+        }).catch(() => {
+          console.error('error getting cosmetic filtering enabled setting')
         })
       break
     }
