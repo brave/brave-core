@@ -1239,18 +1239,18 @@ string PageGraph::ToGraphML() const {
     duration_cast<seconds>(start_).count());
   const string start_time_ms = to_string(
     duration_cast<microseconds>(start_).count());
-  const char* start_time = start_time_seconds + "." + start_time_ms;
+  const string start_time_desc = start_time_seconds + "." + start_time_ms;
   xmlNewTextChild(time_container_node, NULL, BAD_CAST "start",
-      BAD_CAST start_time.c_str());
+      BAD_CAST start_time_desc.c_str());
 
   const auto end_time = high_resolution_clock::now();
   const string end_time_seconds = to_string(
     duration_cast<seconds>(end_time).count());
   const string end_time_ms = to_string(
     duration_cast<microseconds>(end_time).count());
-  const char* end_time = end_time_seconds + "." + end_time_ms;
+  const string end_time_desc = end_time_seconds + "." + end_time_ms;
   xmlNewTextChild(time_container_node, NULL, BAD_CAST "end",
-      BAD_CAST end_time.c_str());
+      BAD_CAST end_time_desc.c_str());
 
   for (const GraphMLAttr* const graphml_attr : GetGraphMLAttrs()) {
     graphml_attr->AddDefinitionNode(graphml_root_node);

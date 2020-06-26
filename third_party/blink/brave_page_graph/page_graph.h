@@ -269,7 +269,7 @@ friend NodeHTMLElement;
   NodeStorageSessionStorage* const session_storage_node_;
 
   // Non-owning reference to the HTML root of the document (i.e. <html>).
-  NodeHTMLElement* html_root_node_;
+  NodeDOMRoot* html_root_node_;
 
   // Index structure for storing and looking up webapi nodes.
   // This map does not own the references.
