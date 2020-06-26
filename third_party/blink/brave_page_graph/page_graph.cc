@@ -158,8 +158,8 @@ namespace brave_page_graph {
 
 namespace {
   PageGraph* yuck = nullptr;
-  constexpr char page_graph_version[] = "0.1";
-  constexpr char page_graph_url[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
+  constexpr char kPageGraphVersion[] = "0.1";
+  constexpr char kPageGraphUrl[] = "https://github.com/brave/brave-browser/wiki/PageGraph";
 }
 
 void write_to_disk(int signal) {
@@ -1221,9 +1221,31 @@ string PageGraph::ToGraphML() const {
   xmlNodePtr desc_container_node = xmlNewChild(graphml_root_node, NULL,
       BAD_CAST "desc", NULL);
   xmlNewTextChild(desc_container_node, NULL, BAD_CAST "version",
-      BAD_CAST page_graph_version);
+      BAD_CAST kPageGraphVersion);
+  xmlNewTextChild(desc_container_node, NULL, BAD_CAST "about",
+      BAD_CAST kPageGraphUrl);
   xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
-      BAD_CAST page_graph_url);
+      BAD_CAST local_url.c_str());
+
+  xmlNodePtr time_container_node = xmlNewChild(desc_container_node, NULL,
+      BAD_CAST "time", NULL);
+
+  const string start_time_seconds = to_string(
+    ::chrono::duration_cast<::chrono::seconds>(start_).count());
+  const string start_time_ms = to_string(
+    ::chrono::duration_cast<::chrono::microseconds>(start_).count());
+  const char* start_time = start_time_seconds + "." + start_time_ms;
+  xmlNewTextChild(time_container_node, NULL, BAD_CAST "start",
+      BAD_CAST start_time.c_str());
+
+  const auto end_time = std::chrono::high_resolution_clock::now();
+  const string end_time_seconds = to_string(
+    ::chrono::duration_cast<::chrono::seconds>(end_time).count());
+  const string end_time_ms = to_string(
+    ::chrono::duration_cast<::chrono::microseconds>(end_time).count());
+  const char* end_time = end_time_seconds + "." + end_time_ms;
+  xmlNewTextChild(time_container_node, NULL, BAD_CAST "end",
+      BAD_CAST end_time.c_str());
 
   for (const GraphMLAttr* const graphml_attr : GetGraphMLAttrs()) {
     graphml_attr->AddDefinitionNode(graphml_root_node);
