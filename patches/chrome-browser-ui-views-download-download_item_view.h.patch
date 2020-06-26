@@ -1,28 +1,12 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index c7d667fa2755f3ad454c6531887538a9b29decbb..77ed766cead51a480803204123bd97c21c6f47ea 100644
+index a754ed78a325cddfd51c33f3cf3bd8c20e76ee15..8cfccdc14aa3d31885d9e5fc6a8df7035c18c410 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -123,6 +123,7 @@ class DownloadItemView : public views::View,
+@@ -105,6 +105,7 @@ class DownloadItemView : public views::View,
+   gfx::Size CalculatePreferredSize() const override;
+   void OnPaint(gfx::Canvas* canvas) override;
    void OnThemeChanged() override;
++  BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
  
   private:
-+  friend class BraveDownloadItemView;
-   FRIEND_TEST_ALL_PREFIXES(DownloadItemViewDangerousDownloadLabelTest,
-                            AdjustTextAndGetSize);
- 
-@@ -175,6 +176,7 @@ class DownloadItemView : public views::View,
- 
-   // This function calculates the vertical coordinate to draw the file name text
-   // relative to local bounds.
-+  virtual
-   int GetYForFilenameText() const;
- 
-   void DrawIcon(gfx::Canvas* canvas);
-@@ -278,6 +280,7 @@ class DownloadItemView : public views::View,
-   // so that screenreaders can access the filename, status text, and
-   // dangerous download warning message (if any). The name will be presented
-   // when the download item receives focus.
-+  virtual
-   void UpdateAccessibleName();
- 
-   // Update accessible status text.
+   enum State { NORMAL = 0, HOT, PUSHED };
