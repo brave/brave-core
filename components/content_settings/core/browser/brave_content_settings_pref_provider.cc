@@ -17,6 +17,7 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -27,6 +28,9 @@
 namespace content_settings {
 
 namespace {
+
+constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
+constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   // brave plugin rules incorrectly use first party url as primary
@@ -304,6 +308,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   auto old_rules = std::move(brave_cookie_rules_[incognito]);
 
   rules.clear();
+  brave_cookie_rules_[incognito].clear();
 
   // kGoogleLoginControlType preference adds an exception for
   // accounts.google.com to access cookies in 3p context to allow login using
@@ -311,13 +316,26 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // oauth to work when the user sets custom overrides for a site.
   // For example: Google OAuth will be allowed if the user allows all cookies
   // and sets 3p cookie blocking for a site.
+  //
+  // We also create the same exception for firebase apps, since they
+  // are tightly bound to google, and require google auth to work.
+  // See: #5075, #9852, #10367
   if (prefs_->GetBoolean(kGoogleLoginControlType)) {
-      auto rule = Rule(ContentSettingsPattern::FromString(kGoogleOAuthPattern),
-                       ContentSettingsPattern::Wildcard(),
-                       base::Value::FromUniquePtrValue(
-                           ContentSettingToValue(CONTENT_SETTING_ALLOW)));
-      rules.emplace_back(CloneRule(rule));
-      brave_cookie_rules_[incognito].emplace_back(CloneRule(rule));
+    const auto google_auth_rule = Rule(
+        ContentSettingsPattern::FromString(kGoogleAuthPattern),
+        ContentSettingsPattern::Wildcard(),
+        base::Value::FromUniquePtrValue(
+            ContentSettingToValue(CONTENT_SETTING_ALLOW)));
+    rules.emplace_back(CloneRule(google_auth_rule));
+    brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
+
+    const auto firebase_rule = Rule(
+        ContentSettingsPattern::FromString(kFirebasePattern),
+        ContentSettingsPattern::Wildcard(),
+        base::Value::FromUniquePtrValue(
+            ContentSettingToValue(CONTENT_SETTING_ALLOW)));
+    rules.emplace_back(CloneRule(firebase_rule));
+    brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
   }
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
