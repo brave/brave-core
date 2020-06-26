@@ -258,29 +258,21 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let bookmark = frc.fetchedObjects?[indexPath.item] else { return nil }
         return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ -> UIMenu? in
-            let openInNewTab = UIAction(title: Strings.openNewTabButtonTitle, image: nil, identifier: nil, discoverabilityTitle: nil) { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.action(bookmark, .opened(inNewTab: true, switchingToPrivateMode: false))
-                }
-            }
-            let edit = UIAction(title: Strings.editBookmark, image: nil, identifier: nil, discoverabilityTitle: nil) { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.action(bookmark, .edited)
-                }
-            }
-            let delete = UIAction(title: Strings.removeFavorite, image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive) { _ in
-                // Wait until the menu dismisses before deleting it so user can
-                // see the interaction
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    bookmark.delete()
-                }
-            }
+            let openInNewTab = UIAction(title: Strings.openNewTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
+                self.action(bookmark, .opened(inNewTab: true, switchingToPrivateMode: false))
+            })
+            let edit = UIAction(title: Strings.editBookmark, handler: UIAction.deferredActionHandler { _ in
+                self.action(bookmark, .edited)
+            })
+            let delete = UIAction(title: Strings.removeFavorite, attributes: .destructive, handler: UIAction.deferredActionHandler { _ in
+                bookmark.delete()
+            })
             
             var urlChildren: [UIAction] = [openInNewTab]
             if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                let openInNewPrivateTab = UIAction(title: Strings.openNewPrivateTabButtonTitle, image: nil, identifier: nil, discoverabilityTitle: nil) { _ in
+                let openInNewPrivateTab = UIAction(title: Strings.openNewPrivateTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
                     self.action(bookmark, .opened(inNewTab: true, switchingToPrivateMode: true))
-                }
+                })
                 urlChildren.append(openInNewPrivateTab)
             }
             
