@@ -124,6 +124,11 @@
 #include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
+using ::std::chrono::duration_cast;
+using ::std::chrono::high_resolution_clock;
+using ::std::chrono::microseconds;
+using ::std::chrono::seconds;
+using ::std::chrono::time_point;
 using ::std::endl;
 using ::std::make_unique;
 using ::std::map;
@@ -252,7 +257,7 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
       local_storage_node_(new NodeStorageLocalStorage(this)),
       session_storage_node_(new NodeStorageSessionStorage(this)),
       execution_context_(execution_context),
-      start_(std::chrono::high_resolution_clock::now()) {
+      start_(high_resolution_clock::now()) {
   const string local_tag_name(tag_name.Utf8().data());
 
   const KURL normalized_url = NormalizeUrl(url);
@@ -1225,24 +1230,24 @@ string PageGraph::ToGraphML() const {
   xmlNewTextChild(desc_container_node, NULL, BAD_CAST "about",
       BAD_CAST kPageGraphUrl);
   xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
-      BAD_CAST local_url.c_str());
+      BAD_CAST html_root_node_->GetURL().c_str());
 
   xmlNodePtr time_container_node = xmlNewChild(desc_container_node, NULL,
       BAD_CAST "time", NULL);
 
   const string start_time_seconds = to_string(
-    ::chrono::duration_cast<::chrono::seconds>(start_).count());
+    duration_cast<seconds>(start_).count());
   const string start_time_ms = to_string(
-    ::chrono::duration_cast<::chrono::microseconds>(start_).count());
+    duration_cast<microseconds>(start_).count());
   const char* start_time = start_time_seconds + "." + start_time_ms;
   xmlNewTextChild(time_container_node, NULL, BAD_CAST "start",
       BAD_CAST start_time.c_str());
 
-  const auto end_time = std::chrono::high_resolution_clock::now();
+  const auto end_time = high_resolution_clock::now();
   const string end_time_seconds = to_string(
-    ::chrono::duration_cast<::chrono::seconds>(end_time).count());
+    duration_cast<seconds>(end_time).count());
   const string end_time_ms = to_string(
-    ::chrono::duration_cast<::chrono::microseconds>(end_time).count());
+    duration_cast<microseconds>(end_time).count());
   const char* end_time = end_time_seconds + "." + end_time_ms;
   xmlNewTextChild(time_container_node, NULL, BAD_CAST "end",
       BAD_CAST end_time.c_str());
@@ -1274,8 +1279,7 @@ string PageGraph::ToGraphML() const {
   return graphml_string;
 }
 
-const std::chrono::time_point<std::chrono::high_resolution_clock>&
-    PageGraph::GetTimestamp() const {
+const time_point<high_resolution_clock>& PageGraph::GetTimestamp() const {
   return start_;
 }
 
