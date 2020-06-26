@@ -247,6 +247,7 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:version_info",
       "//brave/components/brave_sync",
+      "//components/bookmarks/common",
       "//components/sync_device_info",
       "//third_party/blink/public/common",
     ]
