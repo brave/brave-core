@@ -1,0 +1,10 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  sources = [
+    "ipfs_service.mojom",
+  ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+  ]
+}

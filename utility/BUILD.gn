@@ -1,6 +1,7 @@
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 
@@ -59,6 +60,10 @@ source_set("utility") {
 
   if (enable_tor) {
     deps += [ "//brave/components/services/tor" ]
+  }
+
+  if (ipfs_enabled) {
+    deps += [ "//brave/components/services/ipfs" ]
   }
 
   if (brave_ads_enabled) {
