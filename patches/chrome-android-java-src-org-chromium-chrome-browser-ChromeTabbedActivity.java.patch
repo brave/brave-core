@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a7094c9cc4e8 100644
+index 94782dab1c82895ecce8289a2d12881e3ff6d0da..a3af709283e5631d0c59cd8c244a1f74cd1c7722 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -181,7 +181,7 @@ import java.util.Locale;
+@@ -184,7 +184,7 @@ import java.util.Locale;
+  * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
- public class ChromeTabbedActivity
--        extends ChromeActivity<ChromeActivityComponent> implements AccessibilityUtil.Observer {
-+        extends BraveActivity<ChromeActivityComponent> implements AccessibilityUtil.Observer {
+-public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent>
++public class ChromeTabbedActivity extends BraveActivity<ChromeActivityComponent>
+         implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-     private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
-@@ -1665,7 +1665,7 @@ public class ChromeTabbedActivity
+@@ -1675,7 +1675,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,7 +20,7 @@ index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a709
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1688,9 +1688,9 @@ public class ChromeTabbedActivity
+@@ -1698,9 +1698,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -32,7 +32,7 @@ index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a709
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2067,7 +2067,7 @@ public class ChromeTabbedActivity
+@@ -2091,7 +2091,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

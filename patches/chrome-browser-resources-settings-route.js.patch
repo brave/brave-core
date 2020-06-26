@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index e568edc001a19c7cb147fc255ff016f803f48edc..c8a1546e71e1c0ba9190a3142a63df858abd02d7 100644
+index 9320e5f3af9862106f2e2f2d77772b88617f4fca..2df6da3a5510d1894266e23d088e17069b3d9516 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -41,7 +41,9 @@ function addPrivacyChildRoutes(r) {
@@ -9,9 +9,9 @@ index e568edc001a19c7cb147fc255ff016f803f48edc..c8a1546e71e1c0ba9190a3142a63df85
 +      // <if expr="_google_chrome">
    r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
 +      // </if>
-   if (loadTimeData.getBoolean('enableWebXrContentSetting')) {
-     r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
-   }
+   r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
+   r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
+       r.SITE_SETTINGS.createChild('automaticDownloads');
 @@ -188,7 +190,9 @@ function createBrowserSettingsRoutes() {
      }
  

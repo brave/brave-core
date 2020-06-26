@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
-index 388cb640460ed60113b18b68cdf318856d9b31a2..eaa2c802661f493c09bccb451a4c5216180b9738 100755
+index e9f0476cc9b3b0d48101a172e8255ed8de7ffb31..97e58af47b660e368184d02f12f183b8b9406164 100755
 --- a/chrome/browser/resources/optimize_webui.py
 +++ b/chrome/browser/resources/optimize_webui.py
-@@ -56,6 +56,8 @@ _POLYMER_PATH = os.path.join(
+@@ -56,8 +56,12 @@ _POLYMER_PATH = os.path.join(
      '').replace('\\', '/')
  
  
@@ -10,23 +10,16 @@ index 388cb640460ed60113b18b68cdf318856d9b31a2..eaa2c802661f493c09bccb451a4c5216
 +
  # These files are already combined and minified.
  _BASE_EXCLUDES = [
-   # Common excludes for both Polymer 2 and 3.
-@@ -65,6 +67,8 @@ _BASE_EXCLUDES = [
-   'chrome://resources/css/text_defaults.css',
-   'chrome://resources/css/text_defaults_md.css',
-   'chrome://resources/mojo/mojo/public/js/mojo_bindings_lite.html',
 +  'chrome://brave-resources/fonts/muli.css',
 +  'chrome://brave-resources/fonts/poppins.css'
- 
    # Excludes applying only to Polymer 2.
    'chrome://resources/html/polymer.html',
-@@ -92,7 +96,8 @@ _URL_MAPPINGS = [
-     ('chrome://resources/html/', _HTML_RESOURCES_PATH),
-     ('chrome://resources/js/', _JS_RESOURCES_PATH),
-     ('chrome://resources/polymer/v1_0/', _POLYMER_PATH),
--    ('chrome://resources/images/', _IMAGES_RESOURCES_PATH)
-+    ('chrome://resources/images/', _IMAGES_RESOURCES_PATH),
+   'chrome://resources/polymer/v1_0/polymer/polymer.html',
+@@ -98,6 +102,7 @@ for (redirect_url, file_path) in [
+     ('resources/js/', _JS_RESOURCES_PATH),
+     ('resources/polymer/v1_0/', _POLYMER_PATH),
+     ('resources/images/', _IMAGES_RESOURCES_PATH),
 +    ('chrome://brave-resources/', _BR_RESOURCES_PATH)
- ]
- 
- 
+ ]:
+   # Redirect both the chrome://resources form and the scheme-relative form.
+   _URL_MAPPINGS.append(('chrome://' + redirect_url, file_path))
