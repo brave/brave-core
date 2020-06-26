@@ -80,7 +80,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="64dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/orange_rounded_button"
             android:text="@string/save"
             android:textAllCaps="false"
