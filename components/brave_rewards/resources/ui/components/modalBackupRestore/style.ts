@@ -16,7 +16,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
   letter-spacing: 0;
   font-weight: 200;
   line-height: 26px;
-  margin-top: 40px;
+  margin-bottom: 40px;
 `
 
 export const StyledImport = styled<{}, 'label'>('label')`
@@ -24,10 +24,10 @@ export const StyledImport = styled<{}, 'label'>('label')`
   cursor: pointer;
 `
 
-export const StyleButtonWrapper = styled<{}, 'div'>('div')`
+export const StyledButtonWrapper = styled<{}, 'div'>('div')`
   display: flex;
   margin-top: 20px;
-  justify-content: center;
+  margin-bottom: 40px;
 `
 
 export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
@@ -105,4 +105,12 @@ export const StyledText = styled<{}, 'p'>('p')`
 
 export const StyledTextWrapper = styled<{}, 'div'>('div')`
   margin-bottom: 25px;
+`
+
+export const StyledLink = styled<{}, 'a'>('a')`
+  color: ${p => p.theme.color.brandBatInteracting};
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 700;
+  margin-left: 3px;
 `

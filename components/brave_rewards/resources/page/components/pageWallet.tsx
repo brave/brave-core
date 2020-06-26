@@ -32,6 +32,7 @@ const clipboardCopy = require('clipboard-copy')
 interface State {
   activeTabId: number
   modalBackup: boolean
+  showBackupNotice: boolean
   modalActivity: boolean
   modalPendingContribution: boolean
   modalVerify: boolean
@@ -46,6 +47,7 @@ class PageWallet extends React.Component<Props, State> {
     this.state = {
       activeTabId: 0,
       modalBackup: false,
+      showBackupNotice: !this.hasUserFunds(),
       modalActivity: false,
       modalPendingContribution: false,
       modalVerify: false
@@ -54,6 +56,11 @@ class PageWallet extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
+  }
+
+  hasUserFunds () {
+    const { balance } = this.props.rewardsData
+    return balance.wallets['anonymous'] > 0
   }
 
   componentDidMount () {
@@ -79,8 +86,13 @@ class PageWallet extends React.Component<Props, State> {
 
   onModalBackupTabChange = () => {
     const newTabId = this.state.activeTabId === 0 ? 1 : 0
+    let showBackupNotice = false
+    if (newTabId === 0 && !this.hasUserFunds()) {
+      showBackupNotice = true
+    }
     this.setState({
-      activeTabId: newTabId
+      activeTabId: newTabId,
+      showBackupNotice: showBackupNotice
     })
   }
 
@@ -793,12 +805,14 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
+              showBackupNotice={this.state.showBackupNotice}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
               onCopy={this.onModalBackupOnCopy}
               onPrint={this.onModalBackupOnPrint}
               onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
+              onVerify={this.onVerifyClick.bind(this, true)}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
             : null

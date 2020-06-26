@@ -47,9 +47,9 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimeDeltaPref(prefs::kRewardsNotificationTimerInterval,
                                   base::TimeDelta::FromDays(1));
   registry->RegisterTimeDeltaPref(prefs::kRewardsBackupNotificationFrequency,
-                                  base::TimeDelta::FromDays(7));
+                                  base::TimeDelta::FromDays(30));
   registry->RegisterTimeDeltaPref(prefs::kRewardsBackupNotificationInterval,
-                                  base::TimeDelta::FromDays(7));
+                                  base::TimeDelta::FromDays(30));
   registry->RegisterTimeDeltaPref(prefs::kRewardsNotificationStartupDelay,
                                   base::TimeDelta::FromSeconds(30));
   registry->RegisterBooleanPref(prefs::kRewardsBackupSucceeded, false);

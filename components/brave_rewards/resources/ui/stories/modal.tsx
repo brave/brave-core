@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, text } from '@storybook/addon-knobs'
+import { withKnobs, boolean, text } from '@storybook/addon-knobs'
 
 // Components
 import { DetailRow as AdsHistoryRow } from '../components/tableAdsHistory'
@@ -48,6 +48,7 @@ storiesOf('Rewards/Modal', module)
         <ModalBackupRestore
           funds={'55 BAT'}
           activeTabId={store.state.activeTabId}
+          showBackupNotice={boolean('Show backup notice?', false)}
           backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
           error={text('Error', '')}
           onTabChange={onTabChange}
