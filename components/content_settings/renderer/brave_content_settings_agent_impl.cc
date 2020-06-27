@@ -97,14 +97,10 @@ void BraveContentSettingsAgentImpl::OnAllowScriptsOnce(
 }
 
 void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
-    bool is_same_document_navigation, ui::PageTransition transition) {
-  if (!is_same_document_navigation) {
-    temporarily_allowed_scripts_ =
+    ui::PageTransition transition) {
+  temporarily_allowed_scripts_ =
       std::move(preloaded_temporarily_allowed_scripts_);
-  }
-
-  ContentSettingsAgentImpl::DidCommitProvisionalLoad(
-      is_same_document_navigation, transition);
+  ContentSettingsAgentImpl::DidCommitProvisionalLoad(transition);
 }
 
 bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
