@@ -31,7 +31,7 @@ class NavigatorBrave final
 
   explicit NavigatorBrave(Navigator&);
 
-  void Trace(blink::Visitor*) override;
+  void Trace(blink::Visitor*) const override;
   const char* NameInHeapSnapshot() const override {
     return "NavigatorBrave";
   }
