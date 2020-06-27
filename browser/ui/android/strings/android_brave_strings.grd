@@ -221,7 +221,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Don't persist tabs between browsing sessions
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_ADS" desc="Title for the number of blocked ads and trackers">
-        Ads and Trackers Blocked
+        Trackers &amp; Ads Blocked
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
         Data Saved
