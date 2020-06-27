@@ -11,7 +11,6 @@ import androidx.preference.Preference;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 
 import java.util.HashMap;
 

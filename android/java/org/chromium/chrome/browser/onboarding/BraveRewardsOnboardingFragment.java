@@ -27,13 +27,10 @@ import android.widget.TextView;
 
 import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 
 public class BraveRewardsOnboardingFragment extends Fragment {

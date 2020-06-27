@@ -1151,6 +1151,15 @@ until they verify, or until 90 days have passed.
       <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
         Browse faster and block ads with Brave
       </message>
+      <message name="IDS_YOU_JUST_BLOCKED" desc="Shields tootltip text">
+        You just blocked some trackers &amp; ads.
+      </message>
+      <message name="IDS_TAKE_A_LOOK" desc="Shields tootltip text">
+        Take a look
+      </message>
+      <message name="IDS_NICE" desc="Shields tootltip title">
+        Nice!
+      </message>
     </messages>
   </release>
 </grit>

@@ -18,7 +18,6 @@ import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.lang.System;
 import java.util.HashMap;

@@ -21,7 +21,7 @@
 		android:ellipsize="end"
 		android:fontFamily="sans-serif"
 		android:layout_marginBottom="8dp"
-		android:text="Nice!"
+		android:text="@string/nice"
 		android:textColor="@android:color/white"/>
 
 	<TextView
@@ -30,7 +30,7 @@
 		android:textSize="16sp"
 		android:fontFamily="sans-serif"
 		android:layout_marginBottom="16dp"
-		android:text="You just blocked some trackers &amp; ads."
+		android:text="@string/you_just_blocked"
 		android:textColor="@android:color/white"/>
 
 	<TextView
@@ -38,7 +38,7 @@
 		android:layout_height="wrap_content"
 		android:textSize="16sp"
 		android:fontFamily="sans-serif"
-		android:text="Take a look"
+		android:text="@string/take_a_look"
 		android:textColor="@android:color/white"/>
 
 </LinearLayout>

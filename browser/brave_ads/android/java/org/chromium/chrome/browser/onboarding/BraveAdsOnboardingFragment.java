@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -129,22 +128,10 @@ public class BraveAdsOnboardingFragment extends Fragment {
                 setProgress(progress, endTime);
                 tvTimer.setText("0");
 
-                OnboardingPrefManager.getInstance().onboardingNotification(
-                    getActivity());
-
+                OnboardingPrefManager.getInstance().onboardingNotification(getActivity());
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // BraveRewardsHelper.crossfade(null, actionLayout, View.GONE, 1f,
-                        //                              BraveRewardsHelper.CROSS_FADE_DURATION);
-                        // new Handler().postDelayed(new Runnable() {
-                        //     @Override
-                        //     public void run() {
-                        //         BraveRewardsHelper.crossfade(null, btnDidntSeeAd, View.GONE, 1f,
-                        //                                      BraveRewardsHelper.CROSS_FADE_DURATION);
-                        //     }
-                        // }, 2000);
-                        // OnboardingPrefManager.isNotification = false;
                         assert onViewPagerAction != null;
                         if (onViewPagerAction != null)
                             onViewPagerAction.onNext();

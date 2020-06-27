@@ -19,7 +19,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchEngineEnum;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;

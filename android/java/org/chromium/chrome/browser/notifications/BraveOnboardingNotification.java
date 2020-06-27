@@ -21,9 +21,6 @@ import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationManagerProxyImpl;
 import org.chromium.chrome.browser.notifications.NotificationMetadata;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.OnboardingActivity;
-import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.Locale;
 
@@ -77,18 +74,10 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action != null && action.equals(DEEP_LINK)) {
-            // OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
-
             Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
             webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             webIntent.setPackage(context.getPackageName());
             context.startActivity(webIntent);
-            // if (OnboardingActivity.getOnboardingActivity() != null ) {
-            //     OnboardingActivity.getOnboardingActivity().finish();
-            // }
-            // if (BraveActivity.getBraveActivity() != null ) {
-            //     BraveActivity.getBraveActivity().openRewardsPanel();
-            // }
         } else {
             showOnboardingNotification(context);
         }

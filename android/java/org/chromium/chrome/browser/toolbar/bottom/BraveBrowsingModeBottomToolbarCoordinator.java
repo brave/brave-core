@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
-import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -25,7 +24,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
  * Brave's extension to BrowsingModeBottomToolbarCoordinator.
  */
 public class BraveBrowsingModeBottomToolbarCoordinator
-        extends BrowsingModeBottomToolbarCoordinator {
+    extends BrowsingModeBottomToolbarCoordinator {
     private final BrowsingModeBottomToolbarLinearLayout mBraveToolbarRoot;
     private final ActivityTabProvider mBraveTabProvider;
     private final BookmarksButton mBookmarkButton;
@@ -37,7 +36,7 @@ public class BraveBrowsingModeBottomToolbarCoordinator
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
             OnLongClickListener tabSwitcherLongClickListener) {
         super(root, tabProvider, homeButtonListener, searchAcceleratorListener,
-                shareButtonListenerSupplier, tabSwitcherLongClickListener);
+              shareButtonListenerSupplier, tabSwitcherLongClickListener);
         mBraveTabProvider = tabProvider;
         mBraveToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
         mBraveNewTabButton = mBraveToolbarRoot.findViewById(R.id.bottom_new_tab_button);
@@ -62,12 +61,12 @@ public class BraveBrowsingModeBottomToolbarCoordinator
 
     @Override
     public void initializeWithNative(OnClickListener newTabListener, OnClickListener tabSwitcherListener,
-            AppMenuButtonHelper menuButtonHelper, TabCountProvider tabCountProvider,
-            ThemeColorProvider themeColorProvider, IncognitoStateProvider incognitoStateProvider,
-            OverviewModeBehavior overviewModeBehavior) {
+                                     AppMenuButtonHelper menuButtonHelper, TabCountProvider tabCountProvider,
+                                     ThemeColorProvider themeColorProvider, IncognitoStateProvider incognitoStateProvider,
+                                     OverviewModeBehavior overviewModeBehavior) {
         super.initializeWithNative(newTabListener, tabSwitcherListener,
-                menuButtonHelper, tabCountProvider, themeColorProvider,
-                incognitoStateProvider, overviewModeBehavior);
+                                   menuButtonHelper, tabCountProvider, themeColorProvider,
+                                   incognitoStateProvider, overviewModeBehavior);
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
 
         mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
