@@ -34,4 +34,9 @@ public class SearchActivity extends FragmentActivity {
         fragmentTransaction.replace(android.R.id.content, fragment);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

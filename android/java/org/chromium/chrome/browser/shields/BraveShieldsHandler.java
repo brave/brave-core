@@ -180,7 +180,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mIconFetcher = new BraveRewardsHelper();
-        showPopupMenu(anchorView, false);
+        mPopupWindow = showPopupMenu(anchorView, false);
 
         updateValues(mTabId);
     }
