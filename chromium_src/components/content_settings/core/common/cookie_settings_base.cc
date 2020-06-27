@@ -22,6 +22,9 @@ constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
 constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
 constexpr char kSonyentertainmentnetwork[] =
     "https://[*.]sonyentertainmentnetwork.com/*";
+constexpr char kTwitch[] = "https://[*.]twitch.tv/*";
+constexpr char kReddit[] = "https://[*.]reddit.com/*";
+constexpr char kDiscord[] = "https://[*.]discord.com/*";
 constexpr char kUbisoft[] = "https://[*.]ubisoft.com/*";
 constexpr char kUbi[] = "https://[*.]ubi.com/*";
 constexpr char kAmericanexpress[] = "https://[*.]americanexpress.com/*";
@@ -75,6 +78,18 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kAexp),
             ContentSettingsPattern::FromString(kAmericanexpress)
+          },
+            ContentSettingsPattern::FromString(kTwitch),
+            ContentSettingsPattern::FromString(kReddit)
+          },
+            ContentSettingsPattern::FromString(kReddit),
+            ContentSettingsPattern::FromString(kTwitch)
+          },
+            ContentSettingsPattern::FromString(kTwitch),
+            ContentSettingsPattern::FromString(kDiscord)
+          },
+            ContentSettingsPattern::FromString(kDiscord),
+            ContentSettingsPattern::FromString(kTwitch)
           }
       });
 
