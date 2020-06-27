@@ -18,8 +18,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 public class OnboardingViewPagerAdapter extends FragmentPagerAdapter {
     private final OnViewPagerAction onViewPagerAction;
     private final Context context;
-    private final boolean isAdsAvailable;
-
     private static final int ONBOARDING_WITH_3_PAGES = 3;
 
     public OnboardingViewPagerAdapter(Context context, FragmentManager fm,
@@ -27,7 +25,6 @@ public class OnboardingViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         this.context = context;
         this.onViewPagerAction = onViewPagerAction;
-        isAdsAvailable = OnboardingPrefManager.getInstance().isAdsAvailable();
     }
 
     @Override
