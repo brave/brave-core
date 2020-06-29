@@ -99,26 +99,32 @@ LedgerImpl::~LedgerImpl() {
   }
 }
 
-void LedgerImpl::OnWalletInitializedInternal(
-    ledger::Result result,
+void LedgerImpl::OnInitialized(
+    const ledger::Result result,
     ledger::ResultCallback callback) {
   initializing_ = false;
   callback(result);
-  if (result == ledger::Result::LEDGER_OK ||
-      result == ledger::Result::WALLET_CREATED) {
+  if (result == ledger::Result::LEDGER_OK) {
     initialized_ = true;
-    bat_publisher_->SetPublisherServerListTimer(GetRewardsMainEnabled());
-    bat_contribution_->SetReconcileTimer();
-    bat_promotion_->Refresh(false);
-    bat_contribution_->Initialize();
-    bat_promotion_->Initialize();
-    bat_api_->Initialize();
-    braveledger_recovery::Check(this);
-
-    SetConfirmationsWalletInfo();
+    StartServices();
   } else {
     BLOG(0, "Failed to initialize wallet " << result);
   }
+}
+
+void LedgerImpl::StartServices() {
+  if (!IsWalletCreated()) {
+    return;
+  }
+
+  bat_publisher_->SetPublisherServerListTimer(GetRewardsMainEnabled());
+  bat_contribution_->SetReconcileTimer();
+  bat_promotion_->Refresh(false);
+  bat_contribution_->Initialize();
+  bat_promotion_->Initialize();
+  bat_api_->Initialize();
+  SetConfirmationsWalletInfo();
+  braveledger_recovery::Check(this);
 }
 
 void LedgerImpl::Initialize(
@@ -139,7 +145,7 @@ void LedgerImpl::InitializeDatabase(
     const bool execute_create_script,
     ledger::ResultCallback callback) {
   ledger::ResultCallback finish_callback =
-      std::bind(&LedgerImpl::OnWalletInitializedInternal,
+      std::bind(&LedgerImpl::OnInitialized,
           this,
           _1,
           std::move(callback));
@@ -262,16 +268,22 @@ bool LedgerImpl::IsConfirmationsRunning() {
 }
 
 void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
-  if (initializing_) {
-    return;
-  }
-
-  initializing_ = true;
-  auto on_wallet = std::bind(&LedgerImpl::OnWalletInitializedInternal,
+  auto create_callback = std::bind(&LedgerImpl::OnCreateWallet,
       this,
       _1,
-      std::move(callback));
-  bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
+      callback);
+
+  bat_wallet_->CreateWalletIfNecessary(create_callback);
+}
+
+void LedgerImpl::OnCreateWallet(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result == ledger::Result::WALLET_CREATED) {
+    StartServices();
+  }
+
+  callback(result);
 }
 
 void LedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,

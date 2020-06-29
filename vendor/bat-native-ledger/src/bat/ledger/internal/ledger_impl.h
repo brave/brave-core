@@ -189,9 +189,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void LoadPublisherState(ledger::OnLoadCallback callback);
 
-  void OnWalletInitializedInternal(ledger::Result result,
-                                   ledger::ResultCallback callback);
-
   void GetRewardsParameters(
       ledger::GetRewardsParametersCallback callback) override;
 
@@ -722,6 +719,12 @@ class LedgerImpl : public ledger::Ledger {
       ledger::GetCredsBatchListCallback callback);
 
  private:
+  void OnInitialized(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
+
+  void StartServices();
+
   void OnStateInitialized(
       const ledger::Result result,
       ledger::ResultCallback callback);
@@ -746,6 +749,10 @@ class LedgerImpl : public ledger::Ledger {
   void ShutdownConfirmations();
 
   bool IsConfirmationsRunning();
+
+  void OnCreateWallet(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
 
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
