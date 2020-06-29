@@ -26,23 +26,19 @@ BraveDownloadItemModel::BraveDownloadItemModel(DownloadUIModel& model)
 BraveDownloadItemModel::~BraveDownloadItemModel() {}
 
 // Adds origin url to the tooltip text and "Not secure", if needed.
-base::string16 BraveDownloadItemModel::GetTooltipText(
-    const gfx::FontList& font_list,
-    int max_width) {
-  base::string16 tooltip = model_.GetTooltipText(font_list, max_width);
+base::string16 BraveDownloadItemModel::GetTooltipText() {
+  base::string16 tooltip = model_.GetTooltipText();
 
   bool is_secure;
   base::string16 origin_url = GetOriginURLText(is_secure);
 
   if (!origin_url.empty()) {
     tooltip += base::ASCIIToUTF16("\n");
-    base::string16 tooltip_extra;
-    if (!is_secure)
-      tooltip_extra = l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE) +
-                      base::char16(' ');
-    tooltip_extra += origin_url;
-    tooltip +=
-        gfx::ElideText(tooltip_extra, font_list, max_width, gfx::ELIDE_TAIL);
+    if (!is_secure) {
+      tooltip += l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE) +
+                 base::char16(' ');
+    }
+    tooltip += origin_url;
   }
 
   return tooltip;

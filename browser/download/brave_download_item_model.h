@@ -24,11 +24,7 @@ class BraveDownloadItemModel {
   // a regular download, the tooltip is the filename and the origin URL with an
   // indicator if the URL is secure. For an interrupted download, falls back on
   // the base class behavior.
-  // |font_list| and |max_width| are used to elide the filename and/or interrupt
-  // reason as necessary to keep the width of the tooltip text under
-  // |max_width|. The tooltip will be at most 3 lines.
-  base::string16 GetTooltipText(const gfx::FontList& font_list,
-                                int max_width);
+  base::string16 GetTooltipText();
 
   // Returns a string suitable for use as the origin URL. |is_secure| is set to
   // true if the url is considered secure.

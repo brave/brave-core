@@ -130,19 +130,13 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     {"https://example.com:5678/foo.bar", "foo.bar\nhttps://example.com:5678"},
   };
 
-  const int kTooltipWidth = 1000;
-  const gfx::FontList& font_list =
-      ui::ResourceBundle::GetSharedInstance().GetFontList(
-          ui::ResourceBundle::BaseFont);
-
   SetupDownloadItemDefaults();
   for (unsigned i = 0; i < base::size(kTestCases); ++i) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
-    EXPECT_TRUE(base::LowerCaseEqualsASCII(base::UTF16ToUTF8(
-      model().GetTooltipText(font_list, kTooltipWidth)),
-      test_case.expected_tooltip));
+    EXPECT_EQ(base::ToLowerASCII(base::UTF16ToUTF8(model().GetTooltipText())),
+              test_case.expected_tooltip);
     Mock::VerifyAndClearExpectations(&item());
   }
 }

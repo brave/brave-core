@@ -127,8 +127,7 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 
   // Update tooltip.
-  base::string16 new_tip =
-      brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
+  base::string16 new_tip = brave_model_.GetTooltipText();
   if (new_tip != tooltip_text_) {
     tooltip_text_ = new_tip;
     TooltipTextChanged();
