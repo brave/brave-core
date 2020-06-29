@@ -29,6 +29,9 @@ using download::DownloadItem;
 
 namespace {
 
+// Size of the space used for the progress indicator.
+constexpr int kProgressIndicatorSize = 25;
+
 // The minimum vertical padding above and below contents of the download item.
 constexpr int kMinimumVerticalPadding = 6;
 
@@ -165,8 +168,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   if (origin_url_text_.empty() || IsShowingWarningDialog())
     return;
 
-  int x = kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding;
+  int x = kStartPadding + kProgressIndicatorSize + kProgressTextPadding;
   int text_width = kTextWidth;
 
   if (!is_origin_url_secure_) {
@@ -192,8 +194,7 @@ void BraveDownloadItemView::DrawLockIcon(gfx::Canvas* canvas) {
     return;
 
   int mirrored_x = GetMirroredXWithWidthInView(
-      kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding,
+      kStartPadding + kProgressIndicatorSize + kProgressTextPadding,
       kTextWidth);
 
   // Get lock icon of the needed height.
