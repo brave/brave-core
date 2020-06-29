@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
@@ -51,9 +52,16 @@ public class SafetyNetCheck {
     private static final long TEN_DAYS = 10 * 24 * 60 * 60 * 1000;
 
     private long mNativeSafetyNetCheck;
+    private Callback<Boolean> mSafetyNetCheckCallback;
 
     private SafetyNetCheck(long staticSafetyNetCheck) {
         mNativeSafetyNetCheck = staticSafetyNetCheck;
+        mSafetyNetCheckCallback = null;
+    }
+
+    private SafetyNetCheck(Callback<Boolean> safetyNetCheckCallback) {
+        mNativeSafetyNetCheck = 0;
+        mSafetyNetCheckCallback = safetyNetCheckCallback;
     }
 
     @CalledByNative
@@ -73,6 +81,11 @@ public class SafetyNetCheck {
     @CalledByNative
     public boolean clientAttestation(String nonceData, String apiKey,
             boolean performAttestationOnClient) {
+        return clientAttestation(nonceData, apiKey, performAttestationOnClient, false);
+    }
+
+    private boolean clientAttestation(String nonceData, String apiKey,
+            boolean performAttestationOnClient, boolean forceCheck) {
         boolean res = false;
         try {
             Activity activity = (Activity)BraveRewardsHelper.getChromeTabbedActivity();
@@ -83,7 +96,8 @@ public class SafetyNetCheck {
                 long lastTimeCheck = sharedPreferences.getLong(PREF_SAFETYNET_LAST_TIME_CHECK, 0);
                 Calendar currentTime = Calendar.getInstance();
                 long milliSeconds = currentTime.getTimeInMillis();
-                if (nonceData.isEmpty() && !safetyNetResult.isEmpty() && (milliSeconds - lastTimeCheck < TEN_DAYS)) {
+                if (!forceCheck && nonceData.isEmpty() && !safetyNetResult.isEmpty()
+                        && (milliSeconds - lastTimeCheck < TEN_DAYS)) {
                     clientAttestationResult(true, safetyNetResult, performAttestationOnClient);
                     return true;
                 }
@@ -135,7 +149,6 @@ public class SafetyNetCheck {
     */
     private void clientAttestationResult(
             boolean tokenReceived, String resultString, boolean performAttestationOnClient) {
-        if (mNativeSafetyNetCheck == 0) return;
         boolean attestationPassed = false;
         if (performAttestationOnClient) {
             if (tokenReceived) {
@@ -159,16 +172,30 @@ public class SafetyNetCheck {
                     BravePrefServiceBridge.getInstance().setSafetynetStatus(attestationPassed
                                     ? SAFETYNET_STATUS_VERIFIED_PASSED
                                     : SAFETYNET_STATUS_VERIFIED_NOT_PASSED);
+                    if (mSafetyNetCheckCallback != null) {
+                        mSafetyNetCheckCallback.onResult(attestationPassed);
+                    }
                 }
             } else {
                 BravePrefServiceBridge.getInstance().setSafetynetStatus(
                         SAFETYNET_STATUS_NOT_VERIFIED);
             }
         }
+        if (mNativeSafetyNetCheck == 0) return;
         nativeclientAttestationResult(
                 mNativeSafetyNetCheck, tokenReceived, resultString, attestationPassed);
     }
 
-    private native void nativeclientAttestationResult(long nativeSafetyNetCheck, boolean tokenReceived,
-            String resultString, boolean attestationPassed);
+    public String getApiKey() {
+        return nativeGetApiKey();
+    }
+
+    public static boolean updateSafetynetStatus(Callback<Boolean> safetyNetCheckCallback) {
+        SafetyNetCheck safetyNet = new SafetyNetCheck(safetyNetCheckCallback);
+        return safetyNet.clientAttestation("", safetyNet.getApiKey(), true, true);
+    }
+
+    private native void nativeclientAttestationResult(long nativeSafetyNetCheck,
+            boolean tokenReceived, String resultString, boolean attestationPassed);
+    private native String nativeGetApiKey();
 }

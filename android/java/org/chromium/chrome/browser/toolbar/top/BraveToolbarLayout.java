@@ -192,6 +192,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
       SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
       if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+              && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
               && !sharedPreferences.getBoolean(
                       AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)
               && mRewardsLayout != null) {

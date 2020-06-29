@@ -14,6 +14,12 @@
 
 namespace safetynet_check {
 
+static base::android::ScopedJavaLocalRef<jstring> JNI_SafetyNetCheck_GetApiKey(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  return base::android::ConvertUTF8ToJavaString(env, SAFETYNET_API_KEY);
+}
+
 SafetyNetCheck::SafetyNetCheck(SafetyNetCheckRunner* runner) {
   JNIEnv* env = base::android::AttachCurrentThread();
   java_obj_.Reset(env, Java_SafetyNetCheck_create(env,
