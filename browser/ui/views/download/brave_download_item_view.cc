@@ -11,6 +11,7 @@
 #include "base/auto_reset.h"
 #include "base/strings/string16.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/views/download/download_shelf_view.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
@@ -18,6 +19,7 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -182,7 +184,8 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
       origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
-  SkColor dimmed_text_color = SkColorSetA(GetTextColor(), 0xC7);
+  SkColor dimmed_text_color = SkColorSetA(
+      GetThemeProvider()->GetColor(ThemeProperties::COLOR_BOOKMARK_TEXT), 0xC7);
   canvas->DrawStringRect(
       originURL, origin_url_font_list_, dimmed_text_color,
       gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,
