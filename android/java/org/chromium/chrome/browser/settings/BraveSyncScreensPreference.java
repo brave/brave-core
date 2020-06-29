@@ -321,11 +321,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         getActivity().setTitle(R.string.sign_in_sync);
 
-        BraveActivity mainActivity = BraveActivity.getBraveActivity();
-        if (null != mainActivity && null != mainActivity.mBraveSyncWorker) {
-            mainActivity.mBraveSyncWorker.RequestSync();
-        }
-
         mScrollViewSyncInitial = (ScrollView) getView().findViewById(R.id.view_sync_initial);
         mScrollViewSyncChainCode = (ScrollView) getView().findViewById(R.id.view_sync_chain_code);
         mScrollViewSyncStartChain = (ScrollView) getView().findViewById(R.id.view_sync_start_chain);
@@ -726,6 +721,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void seedWordsReceivedImpl(String seedWords) {
         BraveActivity mainActivity = BraveActivity.getBraveActivity();
         if (null != mainActivity && null != mainActivity.mBraveSyncWorker) {
+            mainActivity.mBraveSyncWorker.RequestSync();
             mainActivity.mBraveSyncWorker.SaveCodephrase(seedWords);
             mainActivity.mBraveSyncWorker.FinalizeSyncSetup();
         }
@@ -1208,6 +1204,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
   private void setSyncDoneLayout() {
       BraveActivity mainActivity = BraveActivity.getBraveActivity();
       assert (null != mainActivity && null != mainActivity.mBraveSyncWorker);
+      boolean firstSetupComplete = mainActivity.mBraveSyncWorker.IsFirstSetupComplete();
       mainActivity.mBraveSyncWorker.SaveCodephrase(GetCodephrase());
       mainActivity.mBraveSyncWorker.FinalizeSyncSetup();
 
