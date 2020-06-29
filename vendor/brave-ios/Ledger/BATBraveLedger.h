@@ -249,6 +249,10 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (void)rewardsInternalInfo:(void (NS_NOESCAPE ^)(BATRewardsInternalsInfo * _Nullable info))completion;
 
+- (void)allContributions:(void (^)(NSArray<BATContributionInfo *> *contributions))completion;
+
+@property (nonatomic, readonly, copy) NSString *rewardsDatabasePath;
+
 #pragma mark - Reporting
 
 @property (nonatomic) UInt32 selectedTabId;
