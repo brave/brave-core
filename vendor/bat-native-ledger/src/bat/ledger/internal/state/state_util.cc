@@ -171,7 +171,13 @@ double GetAutoContributionAmount(bat_ledger::LedgerImpl* ledger) {
 
 uint64_t GetReconcileStamp(bat_ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
-  return ledger->GetUint64State(ledger::kStateNextReconcileStamp);
+  auto stamp = ledger->GetUint64State(ledger::kStateNextReconcileStamp);
+  if (stamp == 0) {
+    ledger->ResetReconcileStamp();
+    stamp = ledger->GetUint64State(ledger::kStateNextReconcileStamp);
+  }
+
+  return stamp;
 }
 
 void SetReconcileStamp(
