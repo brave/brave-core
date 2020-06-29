@@ -152,12 +152,6 @@ void PerfPredictorTabHelper::ResourceLoadComplete(
         resource_load_info);
 }
 
-void PerfPredictorTabHelper::DidAttachInterstitialPage() {
-  // web contents unloaded
-  // Clear the state, nothing saved on interstitial
-  bandwidth_predictor_->Reset();
-}
-
 void PerfPredictorTabHelper::WebContentsDestroyed() {
   // Run a prediction when Web Contents get destroyed (e.g. tab/window closed)
   RecordSavings();

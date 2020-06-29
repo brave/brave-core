@@ -85,10 +85,6 @@ class PerfPredictorTabHelper
       const content::GlobalRequestID& request_id,
       const blink::mojom::ResourceLoadInfo& resource_load_info) override;
 
-  // If an interstitial page got attached during loading, we ignore the load as
-  // adblocking does not have effect on interstitials
-  void DidAttachInterstitialPage() override;
-
   // When web contents are destroyed (tab closed, window closed, entire browser
   // closed, etc.) run the prediction
   void WebContentsDestroyed() override;
