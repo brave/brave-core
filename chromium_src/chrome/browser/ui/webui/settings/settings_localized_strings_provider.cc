@@ -276,8 +276,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_BRAVE_P3A_ENABLE_SETTING},
     {"p3aEnabledDesc",
       IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
-    {"remoteDebuggingEnabledTitle",
-      IDS_SETTINGS_REMOTE_DEBUGGING_TITLE},
     {"siteSettings",
       IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
   };

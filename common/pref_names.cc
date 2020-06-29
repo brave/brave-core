@@ -78,7 +78,6 @@ const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
-const char kRemoteDebuggingEnabled[] = "brave.remote_debugging_enabled";
 const char kAutocompleteEnabled[] = "brave.autocomplete_enabled";
 const char kTopSiteSuggestionsEnabled[] = "brave.top_site_suggestions_enabled";
 const char kBraveSuggestedSiteSuggestionsEnabled[] =

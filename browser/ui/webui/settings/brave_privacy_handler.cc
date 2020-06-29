@@ -29,11 +29,6 @@
 
 BravePrivacyHandler::BravePrivacyHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
-  local_state_change_registrar_.Add(
-      kRemoteDebuggingEnabled,
-      base::Bind(&BravePrivacyHandler::OnRemoteDebuggingEnabledChanged,
-                 base::Unretained(this)));
-
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   local_state_change_registrar_.Add(
       brave::kP3AEnabled,
@@ -66,15 +61,6 @@ void BravePrivacyHandler::RegisterMessages() {
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
 #endif
-
-  web_ui()->RegisterMessageCallback(
-      "setRemoteDebuggingEnabled",
-      base::BindRepeating(&BravePrivacyHandler::SetRemoteDebuggingEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "getRemoteDebuggingEnabled",
-      base::BindRepeating(&BravePrivacyHandler::GetRemoteDebuggingEnabled,
-                          base::Unretained(this)));
 }
 
 // static
@@ -143,34 +129,3 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
   }
 }
 #endif
-
-void BravePrivacyHandler::SetRemoteDebuggingEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-
-  bool enabled;
-  args->GetBoolean(0, &enabled);
-
-  PrefService* local_state = g_browser_process->local_state();
-  local_state->SetBoolean(kRemoteDebuggingEnabled, enabled);
-}
-
-void BravePrivacyHandler::GetRemoteDebuggingEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-
-  PrefService* local_state = g_browser_process->local_state();
-  bool enabled = local_state->GetBoolean(kRemoteDebuggingEnabled);
-
-  AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
-}
-
-void BravePrivacyHandler::OnRemoteDebuggingEnabledChanged() {
-  if (IsJavascriptAllowed()) {
-    PrefService* local_state = g_browser_process->local_state();
-    bool enabled = local_state->GetBoolean(kRemoteDebuggingEnabled);
-
-    FireWebUIListener("remote-debugging-enabled-changed", base::Value(enabled));
-  }
-}

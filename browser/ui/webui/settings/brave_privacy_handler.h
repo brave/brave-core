@@ -38,10 +38,6 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void OnP3AEnabledChanged();
 #endif
 
-  void SetRemoteDebuggingEnabled(const base::ListValue* args);
-  void GetRemoteDebuggingEnabled(const base::ListValue* args);
-  void OnRemoteDebuggingEnabledChanged();
-
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
 

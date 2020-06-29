@@ -67,7 +67,6 @@ extern const char kBraveWalletWeb3Provider[];
 extern const char kLoadCryptoWalletsOnStartup[];
 extern const char kOptedIntoCryptoWallets[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
-extern const char kRemoteDebuggingEnabled[];
 extern const char kAutocompleteEnabled[];
 extern const char kTopSiteSuggestionsEnabled[];
 extern const char kBraveSuggestedSiteSuggestionsEnabled[];
