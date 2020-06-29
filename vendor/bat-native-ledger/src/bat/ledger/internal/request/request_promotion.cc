@@ -59,4 +59,14 @@ std::string GetTransferTokens() {
   return BuildUrl("/suggestions/claim", PREFIX_V1, ServerTypes::kPromotion);
 }
 
+std::string GetBatlossURL(
+    const std::string& payment_id,
+    const int32_t version) {
+  const std::string& path = base::StringPrintf(
+      "/wallets/%s/events/batloss/%d",
+      payment_id.c_str(),
+      version);
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+}
+
 }  // namespace braveledger_request_util
