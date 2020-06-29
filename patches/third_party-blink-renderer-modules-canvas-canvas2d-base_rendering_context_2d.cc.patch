@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index b9837cb73ae8b152510850e4ad2c7f64c78772b1..4521d3f516b71341f7da556be08c9f6ae312459f 100644
+index b9837cb73ae8b152510850e4ad2c7f64c78772b1..2d8fef3f1c8764e161777bda4233bea868c6f2c4 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -1559,6 +1559,7 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(
-+    ScriptState* script_state,
++    BRAVE_GET_IMAGE_DATA_PARAMS
      int sx,
      int sy,
      int sw,

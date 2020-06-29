@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
+
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
@@ -14,7 +16,10 @@
                    .PerturbPixels(window->document()->GetFrame(), snapshot); \
   }
 
+#define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
 #include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
+#undef BRAVE_GET_IMAGE_DATA_PARAMS
+#undef BRAVE_GET_IMAGE_DATA
 
 namespace {
 
@@ -26,6 +31,15 @@ bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
 }  // namespace
 
 namespace blink {
+
+ImageData* BaseRenderingContext2D::getImageDataUnused(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ExceptionState& exception_state) {
+  return nullptr;
+}
 
 bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
                                            const double x,
@@ -64,5 +78,3 @@ bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
 }
 
 }  // namespace blink
-
-#undef BRAVE_GET_IMAGE_DATA

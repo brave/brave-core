@@ -1,16 +1,7 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-index de9369d92b033569a2824ec04dfd003392cb2251..dbb9ef33d42324ef35388d79b29a2341954e4fd3 100644
+index de9369d92b033569a2824ec04dfd003392cb2251..c5b9b12bc5878ae868d40084381a6317d109c207 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-@@ -196,7 +196,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
- 
-   // For deferred canvases this will have the side effect of drawing recorded
-   // commands in order to finalize the frame
--  virtual ImageData* getImageData(int sx,
-+  virtual ImageData* getImageData(ScriptState*, int sx,
-                                   int sy,
-                                   int sw,
-                                   int sh,
 @@ -319,6 +319,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
  
    const UsageCounters& GetUsage();
