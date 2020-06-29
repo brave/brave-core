@@ -2,6 +2,7 @@
 # This file is included in most gn files either directly or through
 # import("//build/config/chrome_build.gni") in compiler.gni
 import("//brave/brave_repack_locales.gni")
+import("//brave/browser/extensions/resources.gni")
 import("//brave/build/config/compiler.gni")
 import("//brave/build/features.gni")
 import("//brave/components/sync/driver/sources.gni")
