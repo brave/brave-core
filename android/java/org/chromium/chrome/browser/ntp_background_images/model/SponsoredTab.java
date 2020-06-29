@@ -20,17 +20,10 @@ public class SponsoredTab {
     private NTPImage ntpImage;
     private int tabIndex;
     private boolean mShouldShowBanner;
-    private boolean isMoreTabs;
 
     public SponsoredTab(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if (chromeTabbedActivity != null) {
-            TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-            isMoreTabs = tabModel.getCount() > SponsoredImageUtil.MAX_TABS ? true : false;
-        }
-
-        if (NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
+        if (NTPUtil.shouldEnableNTPFeature()) {
             ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
             tabIndex = SponsoredImageUtil.getTabIndex();
             updateBannerPref();
@@ -62,9 +55,5 @@ public class SponsoredTab {
 
     public void updateBannerPref() {
         mShouldShowBanner = ContextUtils.getAppSharedPreferences().getBoolean(BackgroundImagesPreferences.PREF_SHOW_NON_DISTRUPTIVE_BANNER, true);
-    }
-
-    public boolean isMoreTabs() {
-        return isMoreTabs;
     }
 }
