@@ -242,6 +242,16 @@ source_set("browser_process") {
       ]
     }
 
+    if (enable_brave_sync) {
+      sources += [
+        "sync/brave_sync_devices_android.cc",
+        "sync/brave_sync_devices_android.h",
+      ]
+      deps += [
+        "//components/sync_device_info",
+      ]
+    }
+
     deps += [
       "//brave/browser/android/preferences",
       "//brave/build/android:jni_headers",

@@ -230,29 +230,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             showBraveRateDialog();
     }
 
-    @Override
-    public void addOrEditBookmark(final Tab tabToBookmark) {
-        long tempBookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
-        final boolean bCreateBookmark = (BookmarkId.INVALID_ID == tempBookmarkId);
-
-        super.addOrEditBookmark(tabToBookmark);
-
-        final long bookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
-        final BookmarkModel bookmarkModel = new BookmarkModel();
-
-        bookmarkModel.finishLoadingBookmarkModel(() -> {
-            // Gives up the bookmarking if the tab is being destroyed.
-            BookmarkId newBookmarkId = new BookmarkId(bookmarkId, BookmarkType.NORMAL);
-            if (!((TabImpl)tabToBookmark).isClosing() && ((TabImpl)tabToBookmark).isInitialized()) {
-                if (null != mBraveSyncWorker && null != newBookmarkId) {
-                    mBraveSyncWorker.CreateUpdateBookmark(bCreateBookmark, bookmarkModel.getBookmarkById(newBookmarkId));
-                    bookmarkModel.destroy();
-                }
-            }
-            bookmarkModel.destroy();
-        });
-    }
-
     private void createNotificationChannel() {
         Context context = ContextUtils.getApplicationContext();
         // Create the NotificationChannel, but only on API 26+ because

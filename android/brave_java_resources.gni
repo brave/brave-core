@@ -651,7 +651,6 @@ brave_java_resources = [
   "java/res/layout/fragment_search_engine_onboarding.xml",
   "java/res/layout/brave_rewards_spinnner_item_dropdown.xml",
   "java/res/layout/brave_rewards_grants_list_item.xml",
-  "java/res/layout/add_sync_device_name_dialog.xml",
   "java/res/layout/brave_rewards_donation_sent.xml",
   "java/res/layout/ntp_bottom_sheet.xml",
   "java/res/layout/brave_shields_scripts_blocked_switcher.xml",

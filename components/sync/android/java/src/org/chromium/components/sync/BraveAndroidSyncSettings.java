@@ -7,34 +7,22 @@ package org.chromium.components.sync;
 
 // see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {
-    private boolean mIsSyncable;
-
-    private boolean mChromeSyncEnabled;
-
     private boolean mMasterSyncEnabled;
 
-	public BraveAndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate) {
+    public BraveAndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate) {
         super(syncContentResolverDelegate, null);
     }
 
-    public void setChromeSyncEnabled(boolean value) {
-    	mChromeSyncEnabled = false;
-    	notifyObservers();
+    // Chromium's AndroidSyncSettings.mChromeSyncEnabled is never set to true
+    // after app restart when Brave sync v2 is enabled, and by this reason on
+    // next SyncController.updateSyncStateFromAndroid sync gets disabled, so
+    // we act here as mChromeSyncEnabled would be true.
+    // Following up issue https://github.com/brave/brave-browser/issues/10454
+    @Override
+    public boolean isSyncEnabled() {
+        return mMasterSyncEnabled;
     }
 
-    public boolean updateCachedSettings() {
-    	boolean oldChromeSyncEnabled = mChromeSyncEnabled;
-        boolean oldMasterSyncEnabled = mMasterSyncEnabled;
-
-        mIsSyncable = false;
-        mChromeSyncEnabled = false;
-        mMasterSyncEnabled = false;
-
-        return oldChromeSyncEnabled != mChromeSyncEnabled
-                || oldMasterSyncEnabled != mMasterSyncEnabled;
-    }
-
-    public void notifyObservers() {
-        assert false;
-    }
+    @Override
+    public void disableChromeSync() { }
 }

@@ -15,26 +15,11 @@ public class BraveAndroidSyncSettingsClassAdapter extends BraveClassVisitor {
 
     public BraveAndroidSyncSettingsClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        deleteMethod(sBraveAndroidSyncSettingsClassName,
-        	"notifyObservers");
-        makePublicMethod(sAndroidSyncSettingsClassName,
-        	"notifyObservers");
 
-        makePublicMethod(sAndroidSyncSettingsClassName,
-            "updateCachedSettings");
         addMethodAnnotation(sBraveAndroidSyncSettingsClassName,
-            "updateCachedSettings", "Ljava/lang/Override;");
-
-        makePublicMethod(sAndroidSyncSettingsClassName,
-            "setChromeSyncEnabled");
+            "isSyncEnabled", "Ljava/lang/Override;");
         addMethodAnnotation(sBraveAndroidSyncSettingsClassName,
-            "setChromeSyncEnabled", "Ljava/lang/Override;");
-
-        deleteField(sBraveAndroidSyncSettingsClassName, "mIsSyncable");
-        makeProtectedField(sAndroidSyncSettingsClassName, "mIsSyncable");
-
-        deleteField(sBraveAndroidSyncSettingsClassName, "mChromeSyncEnabled");
-        makeProtectedField(sAndroidSyncSettingsClassName, "mChromeSyncEnabled");
+            "disableChromeSync", "Ljava/lang/Override;");
 
         deleteField(sBraveAndroidSyncSettingsClassName, "mMasterSyncEnabled");
         makeProtectedField(sAndroidSyncSettingsClassName, "mMasterSyncEnabled");

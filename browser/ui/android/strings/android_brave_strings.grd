@@ -657,9 +657,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Brave Ads are here!
       </message>
-      <message name="IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME" desc="Text for Brave Sync requires correct time.">
-	Your computer's clock may be set to the wrong time, or to the wrong time-zone. Check your clock settings
-      </message>
       <message name="IDS_BRAVE_SYNC_DEVICE_FAILURE" desc="Text for Brave Sync device failure.">
 	Sync could not be setup
       </message>
@@ -678,8 +675,11 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_WORD_COUNT_ERROR" desc="Text for Brave Sync word count error.">
 	Incorrect number of words
       </message>
-      <message name="IDS_BRAVE_SYNC_TIME_OUT_MESSAGE" desc="Text for Brave Sync time out message.">
-	Something went wrong, looks like your request timed out.
+      <message name="IDS_BRAVE_SYNC_WRONG_CODE_ERROR" desc="Text for wrong Brave Sync code error.">
+	Wrong sync code
+      </message>
+      <message name="IDS_BRAVE_SYNC_WRONG_QRCODE_ERROR" desc="Text for wrong Brave Sync QR code error.">
+	Wrong sync QR code
       </message>
       <message name="IDS_BRAVE_SYNC_OFFICIAL" desc="Text for Brave Sync preference.">
 	Brave Sync
@@ -699,8 +699,8 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_CODE_WORDS_TITLE" desc="Text for Brave Sync code words title.">
 	Pair
       </message>
-      <message name="IDS_BRAVE_SYNC_DELETE_SENT" desc="Text for Brave Sync delete request message.">
-	Delete request has been sent. Device will be removed shortly.
+      <message name="IDS_BRAVE_SYNC_CATEGORIES_TEXT" desc="Text for show categories to sync button.">
+  Categories
       </message>
       <message name="IDS_BRAVE_SYNC_REMOVE_DEVICE_TEXT" desc="Text for Brave Sync remove device message.">
 	Remove this device
@@ -734,9 +734,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_SYNC_CODE_WARNING" desc="Text for Brave Sync code warning message.">
 	Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.
-      </message>
-      <message name="IDS_BRAVE_SYNC_LOADING_DATA_TITLE" desc="Text for Brave Sync loading data title.">
-	Loading data...
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_2_NEW" desc="Text for Brave Sync add laptop part 2.">
 	On your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.
@@ -777,17 +774,8 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_USE_CAMERA_TEXT" desc="Text for Brave Sync use camera message.">
 	I'll use my camera...
       </message>
-      <message name="IDS_BRAVE_SYNC_EXAMPLE_DEVICE_NAME" desc="Text for Brave Sync example device name.">
-	Android device
-      </message>
       <message name="IDS_BRAVE_SYNC_DEVICE" desc="Text for sync device message.">
 	Sync device
-      </message>
-      <message name="IDS_BRAVE_SYNC_SETTINGS_ADD_DEVICE_NAME_TITLE" desc="Text for sync settings add device name.">
-	Add device name
-      </message>
-      <message name="IDS_BRAVE_SYNC_SETTINGS_ADD_DEVICE_NAME_LABEL" desc="Text for sync settings add device name label.">
-	Enter an optional name for this device
       </message>
       <message name="IDS_SETTINGS_EXIT" desc="Text for Settings exit.">
 	Settings exit
@@ -818,9 +806,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BOOKMARK" desc="Content description for the bookmark button.">
         Create a bookmark
-      </message>
-      <message name="IDS_SYNC_REQUIRES_CORRECT_TIME" desc="The message for the dialog where the user notified about sync setup failure.">
-        Your computer's clock may be set to the wrong time, or to the wrong time-zone. Check your clock settings
       </message>
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup

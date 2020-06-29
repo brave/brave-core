@@ -1,13 +1,22 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 4a7c610cec562ed067a86629b8a6f5d0b8758ddf..e5b2f7a726b7efe4d3f5dfe2322a1d375e49f631 100644
+index 4a7c610cec562ed067a86629b8a6f5d0b8758ddf..cb5b05a4baadffd0c09e750d4b89925d06bd5266 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -64,7 +64,7 @@ import java.util.Set;
-  * Settings fragment to customize Sync options (data types, encryption). Can be accessed from
-  * {@link SyncAndServicesSettings}.
-  */
--public class ManageSyncSettings extends PreferenceFragmentCompat
-+public class ManageSyncSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
-         implements PassphraseDialogFragment.Listener, PassphraseCreationDialogFragment.Listener,
-                    PassphraseTypeDialogFragment.Listener, Preference.OnPreferenceChangeListener,
-                    ProfileSyncService.SyncStateChangedListener,
+@@ -24,7 +24,7 @@ import androidx.appcompat.app.AlertDialog;
+ import androidx.fragment.app.DialogFragment;
+ import androidx.fragment.app.FragmentManager;
+ import androidx.fragment.app.FragmentTransaction;
+-import androidx.preference.CheckBoxPreference;
++import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
+ import androidx.preference.Preference;
+ import androidx.preference.PreferenceCategory;
+ import androidx.preference.PreferenceFragmentCompat;
+@@ -309,7 +309,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+     private void updateSyncPreferences() {
+         String signedInAccountName = CoreAccountInfo.getEmailFrom(
+                 IdentityServicesProvider.get().getIdentityManager().getPrimaryAccountInfo());
+-        if (signedInAccountName == null) {
++        if (false) {
+             // May happen if account is removed from the device while this screen is shown.
+             getActivity().finish();
+             return;

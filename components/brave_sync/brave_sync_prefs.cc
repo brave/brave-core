@@ -150,6 +150,12 @@ bool Prefs::IsSyncV1Enabled() const {
   return pref_service_->GetBoolean(kSyncEnabled);
 }
 
+#if defined(OS_ANDROID)
+void Prefs::SetSyncV1WasEnabled() const {
+  pref_service_->SetBoolean(kSyncEnabled, true);
+}
+#endif
+
 bool Prefs::IsSyncMigrateNoticeDismissed() const {
   return pref_service_->GetBoolean(kSyncV2MigrateNoticeDismissed);
 }

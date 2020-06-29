@@ -9,13 +9,9 @@ BRAVE_THIRD_PARTY_DIRS = [
     'vendor',
 ]
 
-ANDROID_ONLY_PATHS = [
-    os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'),
-]
+ANDROID_ONLY_PATHS = []
 
-DESKTOP_ONLY_PATHS = [
-    os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'),
-]
+DESKTOP_ONLY_PATHS = []
 
 
 def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
@@ -38,18 +34,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Add the licensing info that would normally be in a README.chromium file.
     # This is for when we pull in external repos directly.
     special_cases.update({
-        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'): {
-            "Name": "Brave Sync",
-            "URL": "https://github.com/brave/sync",
-            "License": "MPL-2.0",
-            "License File": "/brave/components/brave_sync/extension/brave-sync/LICENSE.txt",
-        },
-        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'): {
-            "Name": "Brave Sync",
-            "URL": "https://github.com/brave/sync",
-            "License": "MPL-2.0",
-            "License File": "/brave/components/brave_sync/extension/brave-sync-android/LICENSE.txt",
-        },
         os.path.join('brave', 'vendor', 'adblock_rust_ffi'): {
             "Name": "adblock-rust-ffi",
             "URL": "https://github.com/brave/adblock-rust-ffi",
@@ -146,8 +130,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     additional_list += [
         os.path.join('brave', 'components', 'brave_prochlo'),
         os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
-        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync'),
-        os.path.join('brave', 'components', 'brave_sync', 'extension', 'brave-sync-android'),
     ]
     additional_paths = tuple(additional_list)
 
