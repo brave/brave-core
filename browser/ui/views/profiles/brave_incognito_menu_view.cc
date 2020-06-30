@@ -56,7 +56,7 @@ int GetProfileMenuCloseButtonTextId(Profile* profile) {
 int GetWindowCount(Profile* profile) {
   return brave::IsTorProfile(profile)
              ? 0
-             : BrowserList::GetIncognitoSessionsActiveForProfile(profile);
+             : BrowserList::GetOffTheRecordBrowsersActiveForProfile(profile);
 }
 
 }  // namespace
