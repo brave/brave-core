@@ -21,19 +21,11 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 14px;
   line-height: 1.3;
   color: #4b4c5c;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 60%;
-  padding: 10px 0px;
+  flex: 1 1;
+  padding: 10px 5px 10px 0;
 `
 
 export const StyledContentWrapper = styled<{}, 'div'>('div')`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 40%;
+  flex: 1 1;
   text-align: right;
-
-  @media (max-width: 385px) {
-    flex-basis: 55%;
-  }
 `
