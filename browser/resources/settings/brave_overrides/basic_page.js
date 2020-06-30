@@ -7,6 +7,7 @@ import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.
 import {RegisterStyleOverride,RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {Router} from '../router.m.js'
 import {loadTimeData} from '../i18n_setup.js'
+import {pageVisibility} from './page_visibility.js'
 
 import '../getting_started_page/getting_started.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
@@ -15,6 +16,8 @@ import '../social_blocking_page/social_blocking_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
+
+const isGuest = loadTimeData.getBoolean('isGuest')
 
 export function getSectionElement (templateContent, sectionName) {
   const sectionEl = templateContent.querySelector(`template[if*='pageVisibility.${sectionName}']`) ||
@@ -43,33 +46,38 @@ RegisterPolymerTemplateModifications({
     if (!r.BASIC) {
       console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
     }
-    r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
-    // bring back people's /manageProfile (now in getStarted)
-    r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile');
+    if (pageVisibility.getStarted) {
+      r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
+      // bring back people's /manageProfile (now in getStarted)
+      r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile');
+    }
     r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
     r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
-    r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
-    r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
+    if (pageVisibility.braveSync) {
+      r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+      r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
+    }
     r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
     r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
-    if (!r.SITE_SETTINGS) {
+    if (r.SITE_SETTINGS) {
+      r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
+    } else if (!isGuest) {
       console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
     }
-    r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
     // Autofill route is moved to advanced,
     // otherwise its sections won't show up when opened.
-    if (!r.AUTOFILL || !r.ADVANCED) {
-      console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
-    } else {
+    if (r.AUTOFILL && r.ADVANCED) {
       r.AUTOFILL.parent = r.ADVANCED
+    } else if (!isGuest) {
+      console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
     }
     // Privacy route is moved to advanced.
-    if (!r.PRIVACY || !r.ADVANCED) {
-      console.error('[Brave Settings Overrides] Could not move privacy route to advanced route', r)
-    } else {
+    if (r.PRIVACY && r.ADVANCED) {
       r.PRIVACY.parent = r.ADVANCED
       r.CLEAR_BROWSER_DATA.parent = r.ADVANCED
+    } else if (!isGuest) {
+      console.error('[Brave Settings Overrides] Could not move privacy route to advanced route', r)
     }
     // Add 'Getting Started' section
     // Entire content is wrapped in another conditional template
