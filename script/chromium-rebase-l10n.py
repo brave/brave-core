@@ -60,7 +60,8 @@ def generate_overrides_and_replace_strings(source_string_path):
     (basename, ext) = filename.split('.')
     override_string_path = get_override_file_path(source_string_path)
     modified_messages = modified_xml_tree.xpath('//message')
-    if len(modified_messages) > 0 or ext == 'grd':
+    modified_parts = modified_xml_tree.xpath('//part')
+    if len(modified_messages) > 0 or len(modified_parts) > 0:
         write_xml_file_from_tree(override_string_path, modified_xml_tree)
 
 
