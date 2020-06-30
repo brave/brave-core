@@ -1,6 +1,6 @@
 from hashlib import md5
 from lib.config import get_env_var
-from lib.grd_string_replacements import generate_braveified_node
+from lib.grd_string_replacements import generate_braveified_node, get_override_file_path
 from xml.sax.saxutils import escape, unescape
 from collections import defaultdict
 import HTMLParser
@@ -702,7 +702,7 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
     chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
     assert(len(grd_strings) == len(chromium_grd_strings))
 
-    fp_map = {chromium_grd_strings[idx][2]:grd_strings[idx][2] for
+    fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
               (idx, grd_string) in enumerate(grd_strings)}
 
     xtb_file_paths = [os.path.join(
@@ -735,3 +735,40 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
                                                    encoding='UTF-8').strip())
         with open(xtb_file, mode='w') as f:
             f.write(transformed_content)
+
+
+def combine_override_xtb_into_original(source_string_path):
+    source_base_path = os.path.dirname(source_string_path)
+    override_path = get_override_file_path(source_string_path)
+    override_base_path = os.path.dirname(override_path)
+    xtb_files = get_xtb_files(source_string_path)
+    override_xtb_files = get_xtb_files(override_path)
+    assert len(xtb_files) == len(override_xtb_files)
+
+    for (idx, _) in enumerate(xtb_files):
+        (lang, xtb_path) = xtb_files[idx]
+        (override_lang, override_xtb_path) = override_xtb_files[idx]
+        assert lang == override_lang
+
+        xtb_tree = lxml.etree.parse(os.path.join(source_base_path, xtb_path))
+        override_xtb_tree = lxml.etree.parse(os.path.join(override_base_path, override_xtb_path))
+        translationbundle = xtb_tree.xpath('//translationbundle')[0]
+        override_translations = override_xtb_tree.xpath('//translation')
+
+        override_translation_fps = [t.attrib['id'] for t in override_translations]
+
+        # Remove translations that we have a matching FP for
+        for translation in xtb_tree.xpath('//translation'):
+            if translation.attrib['id'] in override_translation_fps:
+                translation.getparent().remove(translation)
+
+        # Append the override translations into the original translation bundle
+        for translation in override_translations:
+            translationbundle.append(translation)
+
+        xtb_content = ('<?xml version="1.0" ?>\n' +
+                       lxml.etree.tostring(xtb_tree, pretty_print=True,
+                                           xml_declaration=False,
+                                           encoding='UTF-8').strip())
+        with open(os.path.join(source_base_path, xtb_path), mode='w') as f:
+            f.write(xtb_content)

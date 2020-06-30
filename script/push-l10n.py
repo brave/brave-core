@@ -42,6 +42,11 @@ def main():
     if not should_use_transifex(source_string_path, filename):
         source_string_path = get_override_file_path(source_string_path)
         filename = os.path.basename(source_string_path).split('.')[0]
+        # This check is needed because some files that we process have no replacements needed
+        # so in that case we don't even put an override file in Transifex.
+        if not os.path.exists(source_string_path):
+            print'Skipping locally handled because not present: ', source_string_path, 'filename: ', filename
+            return
         print'Handled locally, sending only overrides to Transifex: ', source_string_path, 'filename: ', filename
         upload_source_files_to_transifex(source_string_path, filename)
         return
