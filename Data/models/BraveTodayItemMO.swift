@@ -20,6 +20,7 @@ public struct BraveTodayFeedItemBridge {
     let publisherID: String
     let publisherName: String
     let publisherLogo: String?
+    let urlHash: String
 }
 
 public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
@@ -35,6 +36,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     @NSManaged var publisherID: String
     @NSManaged var publisherName: String
     @NSManaged var publisherLogo: String?
+    @NSManaged var urlHash: String
     
     // Local properties
     // TODO: Add them
@@ -46,7 +48,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
                        domain: item.domain, imageURL: item.imageURL, title: item.title,
                        itemDescription: item.itemDescription, contentType: item.contentType,
                        publisherID: item.publisherID, publisherName: item.publisherName,
-                       publisherLogo: item.publisherLogo)
+                       publisherLogo: item.publisherLogo, urlHash: item.urlHash)
     }
     
     public class func insert(from list: [BraveTodayFeedItemBridge]) {
@@ -56,17 +58,80 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
                                domain: $0.domain, imageURL: $0.imageURL, title: $0.title,
                                itemDescription: $0.itemDescription, contentType: $0.contentType,
                                publisherID: $0.publisherID, publisherName: $0.publisherName,
-                               publisherLogo: $0.publisherLogo)
+                               publisherLogo: $0.publisherLogo, urlHash: $0.urlHash)
             }
         }
     }
     
-    public class func allItems() -> [BraveTodayFeedItemMO] {
-        all() ?? []
+    public class func allItems(limit: Int = 0, requiresImage: Bool,
+                               contentType: String? = nil,
+                               publisherID: String? = nil) -> [BraveTodayFeedItemMO] {
+        let publishTimeSort = NSSortDescriptor(key: #keyPath(publishTime), ascending: false)
+        
+        // No need for special query, returning all available items.
+        if !requiresImage && contentType == nil && publisherID == nil {
+            return all(sortDescriptors: [publishTimeSort], fetchLimit: limit) ?? []
+        }
+        
+        var requiresImagePredicate: NSPredicate?
+        var contentTypePredicate: NSPredicate?
+        var publisherIDPredicate: NSPredicate?
+        
+        if requiresImage {
+            let imageUrlKeyPath = #keyPath(BraveTodayFeedItemMO.imageURL)
+            requiresImagePredicate = NSPredicate(format: "\(imageUrlKeyPath) != nil")
+        }
+        
+        if let type = contentType {
+            let contentTypeKeyPath = #keyPath(BraveTodayFeedItemMO.contentType)
+            contentTypePredicate = NSPredicate(format: "\(contentTypeKeyPath) = %@", type)
+        }
+        
+        if let pubID = publisherID {
+            let publisherIDKeyPath = #keyPath(BraveTodayFeedItemMO.publisherID)
+            publisherIDPredicate = NSPredicate(format: "\(publisherIDKeyPath) = %@", pubID)
+        }
+        
+        let predicates = [requiresImagePredicate, contentTypePredicate, publisherIDPredicate].compactMap { $0 }
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
+        
+        return all(where: compoundPredicate, sortDescriptors: [publishTimeSort], fetchLimit: limit) ?? []
     }
     
-    public class func deleteAllItems() {
-        deleteAll()
+    public class func get(with url: String) -> BraveTodayFeedItemMO? {
+        let urlKeyPath = #keyPath(BraveTodayFeedItemMO.url)
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@", url)
+        return first(where: predicate)
+    }
+    
+    public class func updateFeedRecord(urlHash: String, session: String) {
+        // TODO: We may not store session id in the database.
+    }
+    
+    public class func updateFeedRecords(urlHashes: [String], session: String) {
+        // TODO: We may not store session id in the database.
+    }
+    
+    public class func markFeedRecordAsRead(urlHashe: String, read: Bool) {
+        
+    }
+    
+    public class func deleteAllItems(publisherId: String? = nil) {
+        var predicate: NSPredicate?
+        if let pubId = publisherId {
+            let publisherIDKeyPath = #keyPath(BraveTodayFeedItemMO.publisherID)
+            predicate = NSPredicate(format: "\(publisherIDKeyPath) == %@", pubId)
+        }
+        
+        deleteAll(predicate: predicate)
+    }
+    
+    public class func delete(with urlHash: String) {
+        let urlHashKeyPath = #keyPath(BraveTodayFeedItemMO.urlHash)
+        let predicate = NSPredicate(format: "\(urlHashKeyPath) == %@", urlHash)
+        let record = first(where: predicate)
+        
+        record?.delete()
     }
     
     // MARK: Internal implementations
@@ -74,7 +139,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     class func insertInternal(category: String, publishTime: Date, url: String?, domain: String?,
                               imageURL: String?, title: String, itemDescription: String, contentType: String,
                               publisherID: String, publisherName: String, publisherLogo: String?,
-                              context: WriteContext = .new(inMemory: false)) {
+                              urlHash: String, context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
             // TODO: Check if we have to pass entity or just context is enough
@@ -93,6 +158,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             item.publisherID = publisherID
             item.publisherName = publisherName
             item.publisherLogo = publisherLogo
+            item.urlHash = urlHash
         }
     }
 }
