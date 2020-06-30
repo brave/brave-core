@@ -228,13 +228,13 @@ void BraveReferralsService::OnReferralHeadersLoadComplete(
     return;
   }
 
-  base::Optional<base::Value> root =
-      base::JSONReader().ReadToValue(*response_body);
-  if (!root || !root->is_list()) {
+  base::JSONReader::ValueWithError root =
+      base::JSONReader::ReadAndReturnValueWithError(*response_body);
+  if (!root.value || !root.value->is_list()) {
     LOG(ERROR) << "Failed to parse referral headers response";
     return;
   }
-  pref_service_->Set(kReferralHeaders, root.value());
+  pref_service_->Set(kReferralHeaders, root.value.value());
 }
 
 void BraveReferralsService::OnReferralInitLoadComplete(
@@ -264,25 +264,25 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  base::Optional<base::Value> root =
-      base::JSONReader().ReadToValue(*response_body);
-  if (!root || !root->is_dict()) {
+  base::JSONReader::ValueWithError root =
+      base::JSONReader::ReadAndReturnValueWithError(*response_body);
+  if (!root.value || !root.value->is_dict()) {
     LOG(ERROR) << "Failed to parse referral initialization response";
     return;
   }
-  if (!root->FindKey("download_id")) {
+  if (!root.value->FindKey("download_id")) {
     LOG(ERROR)
         << "Failed to locate download_id in referral initialization response"
         << ", payload: " << *response_body;
     return;
   }
 
-  const base::Value* headers = root->FindKey("headers");
+  const base::Value* headers = root.value->FindKey("headers");
   if (headers) {
     pref_service_->Set(kReferralHeaders, *headers);
   }
 
-  const base::Value* download_id = root->FindKey("download_id");
+  const base::Value* download_id = root.value->FindKey("download_id");
   pref_service_->SetString(kReferralDownloadID, download_id->GetString());
 
   // We have initialized with the promo server. We can kill the retry timer now.
@@ -292,7 +292,7 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   if (!referral_initialized_callback_.is_null())
     referral_initialized_callback_.Run(download_id->GetString());
 
-  const base::Value* offer_page_url = root->FindKey("offer_page_url");
+  const base::Value* offer_page_url = root.value->FindKey("offer_page_url");
   if (offer_page_url) {
     Profile* last_used_profile = ProfileManager::GetLastUsedProfile();
     GURL gurl(offer_page_url->GetString());
@@ -335,13 +335,13 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
     return;
   }
 
-  base::Optional<base::Value> root =
-      base::JSONReader().ReadToValue(*response_body);
-  if (!root) {
+  base::JSONReader::ValueWithError root =
+      base::JSONReader::ReadAndReturnValueWithError(*response_body);
+  if (!root.value) {
     LOG(ERROR) << "Failed to parse referral finalization check response";
     return;
   }
-  const base::Value* finalized = root->FindKey("finalized");
+  const base::Value* finalized = root.value->FindKey("finalized");
   if (!finalized->GetBool()) {
     LOG(ERROR) << "Referral is not ready, please wait at least 30 days";
     return;
