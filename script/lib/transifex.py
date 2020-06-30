@@ -1,5 +1,6 @@
 from hashlib import md5
 from lib.config import get_env_var
+from lib.grd_string_replacements import generate_braveified_node
 from xml.sax.saxutils import escape, unescape
 from collections import defaultdict
 import HTMLParser
@@ -432,30 +433,6 @@ def check_for_chromium_upgrade_extra_langs(src_root, grd_file_path):
             list(x_chromium_extra_langs)))
 
 
-def check_for_chromium_missing_grd_strings(src_root, grd_file_path):
-    """Checks to make sure Brave GRD file vs the Chromium GRD has the same
-    amount of strings."""
-    chromium_grd_file_path = get_original_grd(src_root, grd_file_path)
-    if not chromium_grd_file_path:
-        return
-    grd_strings = get_grd_strings(grd_file_path)
-    chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
-    brave_strings = {string_name for (
-        string_name, message_value, string_fp, desc) in grd_strings}
-    chromium_strings = {string_name for (
-        string_name, message_value, string_fp, desc) in chromium_grd_strings}
-    x_brave_extra_strings = brave_strings - chromium_strings
-    assert len(x_brave_extra_strings) == 0, (
-        'Brave GRD %s has extra strings %s over Chromium GRD %s' % (
-            grd_file_path, chromium_grd_file_path,
-            list(x_brave_extra_strings)))
-    x_chromium_extra_strings = chromium_strings - brave_strings
-    assert len(x_chromium_extra_strings) == 0, (
-        'Chromium GRD %s has extra strings %s over Brave GRD %s' % (
-            chromium_grd_file_path, grd_file_path,
-            list(x_chromium_extra_strings)))
-
-
 def get_transifex_string_hash(string_name):
     """Obains transifex string hash for the passed string."""
     key = string_name.encode('utf-8')
@@ -529,74 +506,10 @@ def upload_missing_json_translations_to_transifex(source_string_path):
                                                     translation_value)
 
 
-def upload_missing_translations_to_transifex(source_string_path, lang_code,
-                                             filename, grd_strings,
-                                             chromium_grd_strings, xtb_strings,
-                                             chromium_xtb_strings):
-    """For each chromium translation that we don't know about, upload it."""
-    lang_code = lang_code.replace('-', '_')
-    lang_code = lang_code.replace('iw', 'he')
-    lang_code = lang_code.replace('sr_Latn', 'sr_BA@latin')
-    for idx, (string_name, string_value,
-              string_fp, desc) in enumerate(grd_strings):
-        string_fp = str(string_fp)
-        chromium_string_fp = str(chromium_grd_strings[idx][2])
-        if chromium_string_fp in chromium_xtb_strings and (
-                string_fp not in xtb_strings):
-            # print 'Uploading for locale %s for missing '
-            # 'string ID: %s' % (lang_code, string_name)
-            upload_missing_translation_to_transifex(
-                source_string_path, lang_code, filename, string_name,
-                chromium_xtb_strings[chromium_string_fp])
-
-
-def fix_missing_xtb_strings_from_chromium_xtb_strings(
-        src_root, grd_file_path):
-    """Checks to make sure Brave GRD file vs the Chromium GRD has the same
-    amount of strings.  If they do this checks that the XTB files that we
-    manage have all the equivalent strings as the Chromium XTB files."""
-    chromium_grd_file_path = get_original_grd(src_root, grd_file_path)
-    if not chromium_grd_file_path:
-        return
-
-    grd_base_path = os.path.dirname(grd_file_path)
-    chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
-
-    filename = os.path.basename(grd_file_path).split('.')[0]
-    grd_strings = get_grd_strings(grd_file_path)
-    chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
-
-    # Get the XTB files from each of the GRD files
-    xtb_files = get_xtb_files(grd_file_path)
-    chromium_xtb_files = get_xtb_files(chromium_grd_file_path)
-    xtb_file_paths = [os.path.join(
-        grd_base_path, path) for (lang, path) in xtb_files]
-    chromium_xtb_file_paths = [
-        os.path.join(chromium_grd_base_path, path) for
-        (lang, path) in chromium_xtb_files]
-
-    # langs is the same sized list as xtb_files but contains only the associated
-    # list of locales.
-    langs = [lang for (lang, path) in xtb_files]
-
-    for idx, xtb_file in enumerate(xtb_file_paths):
-        chromium_xtb_file = chromium_xtb_file_paths[idx]
-        lang_code = langs[idx]
-        xtb_strings = get_strings_dict_from_xtb_file(xtb_file)
-        chromium_xtb_strings = get_strings_dict_from_xtb_file(
-            chromium_xtb_file)
-        assert(len(grd_strings) == len(chromium_grd_strings))
-        upload_missing_translations_to_transifex(
-            grd_file_path, lang_code, filename, grd_strings,
-            chromium_grd_strings, xtb_strings, chromium_xtb_strings)
-
-
 def check_for_chromium_upgrade(src_root, grd_file_path):
     """Performs various checks and changes as needed for when Chromium source
     files change."""
     check_for_chromium_upgrade_extra_langs(src_root, grd_file_path)
-    check_for_chromium_missing_grd_strings(src_root, grd_file_path)
-    fix_missing_xtb_strings_from_chromium_xtb_strings(src_root, grd_file_path)
 
 
 def get_transifex_source_resource_strings(grd_file_path):
@@ -784,6 +697,14 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
     grd_base_path = os.path.dirname(grd_file_path)
     chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
 
+    # Update XTB FPs so it uses the branded source string
+    grd_strings = get_grd_strings(grd_file_path)
+    chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
+    assert(len(grd_strings) == len(chromium_grd_strings))
+
+    fp_map = {chromium_grd_strings[idx][2]:grd_strings[idx][2] for
+              (idx, grd_string) in enumerate(grd_strings)}
+
     xtb_file_paths = [os.path.join(
         grd_base_path, path) for (lang, path) in xtb_files]
     chromium_xtb_file_paths = [
@@ -797,8 +718,16 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
         xml_tree = lxml.etree.parse(chromium_xtb_file)
 
         for node in xml_tree.xpath('//translation'):
-            if node.text:
-                node.text = braveify(node.text)
+            pre_text_node = textify(node)
+            generate_braveified_node(node, False, True)
+            if pre_text_node != textify(node):
+                old_fp = node.attrib['id']
+                # It's possible for an xtb string to not be in our GRD
+                # This happens for exmaple with Chrome OS strings which
+                #  we don't process files for
+                # print 'old fp: ', old_fp
+                if old_fp in fp_map:
+                    node.attrib['id'] = fp_map.get(old_fp)
 
         transformed_content = ('<?xml version="1.0" ?>\n' +
                                lxml.etree.tostring(xml_tree, pretty_print=True,

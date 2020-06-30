@@ -76,7 +76,7 @@ def braveify_grd_text(text, is_main_text, branding_replacements_only):
     return text
 
 
-def generate_braveified_grd_node(elem, is_comment, branding_replacements_only):
+def generate_braveified_node(elem, is_comment, branding_replacements_only):
     """Replaces a node and attributes to Brave wording"""
     if elem.text:
         elem.text = braveify_grd_text(elem.text, not is_comment, branding_replacements_only)
@@ -89,7 +89,7 @@ def generate_braveified_grd_node(elem, is_comment, branding_replacements_only):
     if 'meaning' in elem.keys():
         elem.attrib['meaning'] = braveify_grd_text(elem.attrib['meaning'], False, branding_replacements_only)
     for child in elem:
-        generate_braveified_grd_node(child, is_comment, branding_replacements_only)
+        generate_braveified_node(child, is_comment, branding_replacements_only)
 
 
 def format_xml_style(xml_content):
@@ -115,9 +115,9 @@ def write_xml_file_from_tree(string_path, xml_tree):
 def update_braveified_grd_tree_override(source_xml_tree, branding_replacements_only):
     """Takes in a grd(p) tree and replaces all messages and comments with Brave wording"""
     for elem in source_xml_tree.xpath('//message'):
-        generate_braveified_grd_node(elem, False, branding_replacements_only)
+        generate_braveified_node(elem, False, branding_replacements_only)
     for elem in source_xml_tree.xpath('//comment()'):
-        generate_braveified_grd_node(elem, True, branding_replacements_only)
+        generate_braveified_node(elem, True, branding_replacements_only)
 
 
 def write_braveified_grd_override(source_string_path):
