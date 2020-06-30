@@ -689,8 +689,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             assert mDeviceName.equals(deviceToDelete.mName);
             deleteDeviceDialog(deviceToDelete, v);
         } else if (mShowCategoriesButton == v) {
-            SettingsLauncher.getInstance().launchSettingsPage(
-                    getContext(), BraveManageSyncSettings.class);
+            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
         } else if (mAddDeviceButton == v) {
             setNewChainLayout();
         }
