@@ -58,6 +58,9 @@ class BraveP3ALogStore : public metrics::LogStore {
   const std::string& staged_log_signature() const override;
   void StageNextLog() override;
   void DiscardStagedLog() override;
+  // Marks the staged log as sent, DiscardStagedLog() shall still be called if
+  // the staged log needs discarded.
+  void MarkStagedLogAsSent() override;
 
   // |PersistUnsentLogs| should not be used, since we persist everything
   // on the fly.
