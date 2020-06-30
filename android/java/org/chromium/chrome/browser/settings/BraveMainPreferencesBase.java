@@ -109,7 +109,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
             removePreferenceIfPresent(PREF_WELCOME_TOUR);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M 
             || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }

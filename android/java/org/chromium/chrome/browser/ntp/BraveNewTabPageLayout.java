@@ -71,21 +71,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
         if (!mNTPBackgroundImagesBridge.isSuperReferral()
                 || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
     @Override
     protected int getMaxTileRows() {
-        boolean isMoreTabs = false;
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if (chromeTabbedActivity != null) {
-            TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-            isMoreTabs = tabModel.getCount() >= SponsoredImageUtil.MAX_TABS ? true : false;
-        }
-
         if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-                && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
+                && NTPUtil.shouldEnableNTPFeature()) {
             return 1;
         } else {
             return 2;

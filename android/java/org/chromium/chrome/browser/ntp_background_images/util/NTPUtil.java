@@ -433,9 +433,8 @@ public class NTPUtil {
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M
-                || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs)) {
+    public static boolean shouldEnableNTPFeature() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return true;
         }
         return false;
