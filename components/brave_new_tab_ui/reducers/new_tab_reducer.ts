@@ -70,6 +70,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         state = storage.migrateStackWidgetSettings(state)
       }
       state = storage.addNewStackWidget(state)
+      state = storage.replaceStackWidgets(state)
 
       break
 
@@ -140,18 +141,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         break
       }
 
-      widgetStackOrder = widgetStackOrder.filter((curWidget: NewTab.StackWidget) => {
-        return curWidget !== widget
-      })
-
       if (!removedStackWidgets.includes(widget)) {
         removedStackWidgets.push(widget)
       }
 
       state = {
         ...state,
-        removedStackWidgets,
-        widgetStackOrder
+        removedStackWidgets
       }
       break
 

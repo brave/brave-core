@@ -106,10 +106,10 @@ describe('newTabReducer', () => {
         expect(assertion).toEqual(expectedState)
       })
 
-      it('removes widget and updates removed widgets', () => {
+      it('adds removed widget to removed widgets list', () => {
         const assertion = newTabReducer({
           ...storage.defaultState,
-          widgetStackOrder: ['binance', 'rewards']
+          removedStackWidgets: []
         }, {
           type: types.REMOVE_STACK_WIDGET,
           payload: {
@@ -118,26 +118,6 @@ describe('newTabReducer', () => {
         })
         const expectedState = {
           ...storage.defaultState,
-          widgetStackOrder: ['binance'],
-          removedStackWidgets: ['rewards']
-        }
-        expect(assertion).toEqual(expectedState)
-      })
-
-      it('removes widget and does not re-update removed widgets', () => {
-        const assertion = newTabReducer({
-          ...storage.defaultState,
-          widgetStackOrder: ['rewards', 'binance'],
-          removedStackWidgets: ['rewards']
-        }, {
-          type: types.REMOVE_STACK_WIDGET,
-          payload: {
-            widget: 'rewards'
-          }
-        })
-        const expectedState = {
-          ...storage.defaultState,
-          widgetStackOrder: ['binance'],
           removedStackWidgets: ['rewards']
         }
         expect(assertion).toEqual(expectedState)
