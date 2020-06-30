@@ -715,6 +715,7 @@ test("brave_browser_tests") {
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     "//third_party/blink/public/common",
+    "//ui/views",
   ]
 
   public_deps = [ ":browser_tests_runner" ]
