@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
-index c525e633813a7a4616ec770437d171faf22eb697..f346cb32deab24a1f4c15ce34cb8a9e47381fae4 100644
+index c525e633813a7a4616ec770437d171faf22eb697..17a6505450206f045e9b76fba3005e7da69a311d 100644
 --- a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
 +++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
 @@ -83,6 +83,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
  
    for (permissions::PermissionRequest* request : visible_requests_)
      AddPermissionRequestLine(request);
-+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
++  BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
  }
  
  PermissionPromptBubbleView::~PermissionPromptBubbleView() = default;
