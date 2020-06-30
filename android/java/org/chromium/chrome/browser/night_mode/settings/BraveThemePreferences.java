@@ -9,6 +9,7 @@ import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.UI_TH
 import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.UI_THEME_SETTING;
 
 import android.os.Bundle;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import androidx.preference.Preference;
 
@@ -34,8 +35,9 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
         Profile mProfile = Profile.getLastUsedProfile();
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         if (!NTPBackgroundImagesBridge.enableSponsoredImages()
-            || (mNTPBackgroundImagesBridge != null
-            && !mNTPBackgroundImagesBridge.isSuperReferral())) {
+                || (mNTPBackgroundImagesBridge != null
+                    && !mNTPBackgroundImagesBridge.isSuperReferral())
+                || Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             Preference superReferralPreference = getPreferenceScreen().findPreference(SUPER_REFERRAL);
             if (superReferralPreference != null) {
                 getPreferenceScreen().removePreference(superReferralPreference);
@@ -44,23 +46,23 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
 
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance();
         BraveRadioButtonGroupThemePreference radioButtonGroupThemePreference =
-                (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
+            (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
 
         int defaultThemePref = ThemeType.SYSTEM_DEFAULT;
         if (!BuildInfo.isAtLeastQ()) {
             defaultThemePref = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                    ? ThemeType.DARK
-                    : ThemeType.LIGHT;
+                               ? ThemeType.DARK
+                               : ThemeType.LIGHT;
         }
         radioButtonGroupThemePreference.initialize(
-                sharedPreferencesManager.readInt(UI_THEME_SETTING, defaultThemePref),
-                sharedPreferencesManager.readBoolean(UI_THEME_DARKEN_WEBSITES_ENABLED, false));
+            sharedPreferencesManager.readInt(UI_THEME_SETTING, defaultThemePref),
+            sharedPreferencesManager.readBoolean(UI_THEME_DARKEN_WEBSITES_ENABLED, false));
 
         radioButtonGroupThemePreference.setOnPreferenceChangeListener((preference, newValue) -> {
             if (ChromeFeatureList.isEnabled(
-                        ChromeFeatureList.DARKEN_WEBSITES_CHECKBOX_IN_THEMES_SETTING)) {
+                ChromeFeatureList.DARKEN_WEBSITES_CHECKBOX_IN_THEMES_SETTING)) {
                 sharedPreferencesManager.writeBoolean(UI_THEME_DARKEN_WEBSITES_ENABLED,
-                        radioButtonGroupThemePreference.isDarkenWebsitesEnabled());
+                radioButtonGroupThemePreference.isDarkenWebsitesEnabled());
             }
             int theme = (int) newValue;
             sharedPreferencesManager.writeInt(UI_THEME_SETTING, theme);

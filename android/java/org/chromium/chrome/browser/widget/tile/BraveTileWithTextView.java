@@ -20,26 +20,16 @@ import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 public class BraveTileWithTextView extends TileWithTextView {
-	public BraveTileWithTextView(Context context, AttributeSet attrs) {
+    public BraveTileWithTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     public void setTitle(String title, int titleLines) {
-
-    	super.setTitle(title, titleLines);
-
+        super.setTitle(title, titleLines);
         TextView mTitleView = findViewById(R.id.tile_view_title);
-
-        boolean isMoreTabs = false;
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if(chromeTabbedActivity != null) {
-            TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-            isMoreTabs = tabModel.getCount() >= SponsoredImageUtil.MAX_TABS ? true : false;
-        }
-
-        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-            && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
+        if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                && NTPUtil.shouldEnableNTPFeature()) {
             mTitleView.setTextColor(getResources().getColor(android.R.color.white));
         }
     }
