@@ -196,18 +196,18 @@ def parse_args():
            " in the parent dir)"
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help='Print debug statements')
+    parser.add_argument('-d', '--debug', help='Print debug statements', action='store_true')
     parser.add_argument('-f', '--file', help='Windows or Mac install file to upload to'
                         ' omaha/sparkle (cannot be combined with --github)')
-    parser.add_argument('-g', '--github', action='store_true', help='Download Win and Mac install files'
-                        ' from Github before uploading to Omaha (cannot be combined with --file)')
-    parser.add_argument('-p', '--preview', action='store_true', help='Preview channels for testing'
-                        ' omaha/sparkle uploads by QA before production release')
+    parser.add_argument('-p', '--preview', help='Preview channels for testing'
+                        ' omaha/sparkle uploads by QA before production release', action='store_true')
+    parser.add_argument('--full', help='Upload to "-full" channels', action='store_true')
     parser.add_argument('--platform', help='Platform(s) to upload to Omaha (separated by spaces)',
                         nargs='*', choices=['win32', 'win64', 'darwin'])
     parser.add_argument('--uploaded', help='Upload all the platform(s) that are already in the GitHub release',
                         action='store_true')
+    parser.add_argument('-g', '--github', help='Download Win and Mac install files'
+                        ' from Github before uploading to Omaha (cannot be combined with --file)', action='store_true')
     parser.add_argument('-t', '--tag', help='Version tag to download from Github')
     return parser.parse_args()
 
@@ -233,8 +233,7 @@ def main():
         exit("Error: --file and --github are mutually exclusive, only one allowed")
 
     if not os.environ.get('OMAHA_PASS') or not os.environ.get('OMAHA_USER'):
-        message = (
-            'Error: Please set the $OMAHA_USER, $OMAHA_PASS and $OMAHA_HOST environment variables')
+        message = ('Error: Please set the $OMAHA_USER, $OMAHA_PASS and $OMAHA_HOST environment variables')
         exit(message)
 
     if args.github:
@@ -278,6 +277,9 @@ def main():
 
         app_info['size'] = os.path.getsize(source_file)
 
+        channel = omaha_channel(app_info['platform'], app_info['arch'], app_info['preview'], app_info['full'])
+        channel_id = get_channel_id(channel, app_info['omahahost'], app_info['headers'], logging)
+
         if args.debug:
             for item in app_info:
                 if item in 'auth':
@@ -287,12 +289,8 @@ def main():
                         item, "{'Authorization': 'Basic NOTAREALPASSWORD'}"))
                 else:
                     logging.debug('{}: {}'.format(item, app_info[item]))
-            logging.debug("omaha_channel: {}".format(omaha_channel(app_info['platform'], app_info['arch'],
-                                                                   app_info['preview'])))
-            logging.debug("omaha_channel_id: {}".format(get_channel_id(omaha_channel(app_info['platform'],
-                                                                       app_info['arch'], app_info['preview']),
-                                                                       app_info['omahahost'], app_info['headers'],
-                                                                       logging)))
+            logging.debug("omaha_channel: {}".format(channel))
+            logging.debug("omaha_channel_id: {}".format(channel_id))
             logging.debug("URL: {}".format(app_info['version_post_url']))
             logging.debug("file_list: {}".format(file_list))
 
@@ -300,8 +298,7 @@ def main():
             files = {'file': f}
             params = {
                 'app': app_info['appguid'],
-                'channel': get_channel_id(omaha_channel(app_info['platform'], app_info['arch'], app_info['preview']),
-                                          app_info['omahahost'], app_info['headers'], logging),
+                'channel': channel_id,
                 'version': app_info['version'],
                 'release_notes': app_info['release_notes']
             }
