@@ -17,11 +17,6 @@
 #include "chrome/browser/first_run/first_run.h"
 #endif
 
-#if defined(OS_ANDROID)
-#include "components/feed/core/shared_prefs/pref_names.h"
-#include "components/prefs/pref_service.h"
-#endif
-
 BraveProfileImpl::BraveProfileImpl(
     const base::FilePath& path,
     Delegate* delegate,
@@ -65,12 +60,6 @@ BraveProfileImpl::BraveProfileImpl(
         base::BindOnce(&ProfileImpl::OnPrefsLoaded,
                        weak_ptr_factory_.GetWeakPtr(), create_mode, true));
   }
-
-#if defined(OS_ANDROID)
-  // Disable NTP suggestions
-  GetPrefs()->SetBoolean(feed::prefs::kEnableSnippets, false);
-  GetPrefs()->SetBoolean(feed::prefs::kArticlesListVisible, false);
-#endif
 }
 
 BraveProfileImpl::~BraveProfileImpl() {}
