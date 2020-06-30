@@ -29,6 +29,8 @@ std::string FriendlyDateAndTime(
 uint64_t MigrateTimestampToDoubleT(
     const uint64_t timestamp_in_seconds);
 
+std::string NowAsString();
+
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_TIME_UTIL_H_

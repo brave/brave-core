@@ -382,84 +382,17 @@ std::string BatAdsClientMojoBridge::LoadJsonSchema(
   return json;
 }
 
-void OnSaveBundleState(
-    const ads::ResultCallback& callback,
-    const int32_t result) {
-  callback(ToAdsResult(result));
+void OnRunDBTransaction(
+    const ads::RunDBTransactionCallback& callback,
+    ads::DBCommandResponsePtr response) {
+  callback(std::move(response));
 }
 
-void BatAdsClientMojoBridge::SaveBundleState(
-    std::unique_ptr<ads::BundleState> bundle_state,
-    ads::ResultCallback callback) {
-  if (!connected()) {
-    callback(ads::Result::FAILED);
-    return;
-  }
-
-  bat_ads_client_->SaveBundleState(bundle_state->ToJson(),
-      base::BindOnce(&OnSaveBundleState, std::move(callback)));
-}
-
-void OnGetCreativeAdNotifications(
-    const ads::GetCreativeAdNotificationsCallback& callback,
-    const int32_t result,
-    const std::vector<std::string>& categories,
-    const std::vector<std::string>& json_list) {
-  ads::CreativeAdNotificationList ads;
-
-  for (const auto& json : json_list) {
-    ads::CreativeAdNotificationInfo ad;
-    if (ad.FromJson(json) != ads::Result::SUCCESS) {
-      callback(ads::Result::FAILED, categories, {});
-      return;
-    }
-
-    ads.push_back(ad);
-  }
-
-  callback(ToAdsResult(result), categories, ads);
-}
-
-void BatAdsClientMojoBridge::GetCreativeAdNotifications(
-    const std::vector<std::string>& categories,
-    ads::GetCreativeAdNotificationsCallback callback) {
-  if (!connected()) {
-    callback(ads::Result::FAILED, categories, {});
-    return;
-  }
-
-  bat_ads_client_->GetCreativeAdNotifications(categories,
-      base::BindOnce(&OnGetCreativeAdNotifications, std::move(callback)));
-}
-
-void OnGetAdConversions(
-    const ads::GetAdConversionsCallback& callback,
-    const int32_t result,
-    const std::vector<std::string>& json_list) {
-  ads::AdConversionList ad_conversions;
-
-  for (const auto& json : json_list) {
-    ads::AdConversionInfo ad_conversion;
-    if (ad_conversion.FromJson(json) != ads::Result::SUCCESS) {
-      callback(ads::Result::FAILED, {});
-      return;
-    }
-
-    ad_conversions.push_back(ad_conversion);
-  }
-
-  callback(ToAdsResult(result), ad_conversions);
-}
-
-void BatAdsClientMojoBridge::GetAdConversions(
-    ads::GetAdConversionsCallback callback) {
-  if (!connected()) {
-    callback(ads::Result::FAILED, {});
-    return;
-  }
-
-  bat_ads_client_->GetAdConversions(
-      base::BindOnce(&OnGetAdConversions, std::move(callback)));
+void BatAdsClientMojoBridge::RunDBTransaction(
+    ads::DBTransactionPtr transaction,
+    ads::RunDBTransactionCallback callback) {
+  bat_ads_client_->RunDBTransaction(std::move(transaction),
+      base::BindOnce(&OnRunDBTransaction, std::move(callback)));
 }
 
 void BatAdsClientMojoBridge::Log(

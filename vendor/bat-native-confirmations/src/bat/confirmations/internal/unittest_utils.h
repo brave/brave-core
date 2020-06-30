@@ -6,6 +6,7 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_UNITTEST_UTILS_H_
 #define BAT_CONFIRMATIONS_INTERNAL_UNITTEST_UTILS_H_
 
+#include <memory>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -18,7 +19,7 @@ class ConfirmationsImpl;
 
 template<class T>
 void Initialize(
-    T object) {
+    const T& object) {
   object->Initialize(
       [](const bool success) {
     ASSERT_TRUE(success);
@@ -31,12 +32,12 @@ std::string GetPathForRequest(
     const std::string& url);
 
 void MockLoadState(
-    ConfirmationsClientMock* mock);
+    const std::unique_ptr<ConfirmationsClientMock>& mock);
 void MockSaveState(
-    ConfirmationsClientMock* mock);
+    const std::unique_ptr<ConfirmationsClientMock>& mock);
 
 void MockClientInfo(
-    ConfirmationsClientMock* mock,
+    const std::unique_ptr<ConfirmationsClientMock>& mock,
     const std::string& channel);
 
 }  // namespace confirmations

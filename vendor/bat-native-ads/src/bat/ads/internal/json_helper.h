@@ -6,48 +6,47 @@
 #ifndef BAT_ADS_INTERNAL_JSON_HELPER_H_
 #define BAT_ADS_INTERNAL_JSON_HELPER_H_
 
+#ifdef _MSC_VER
+// Resolve Windows build issue due to Windows globally defining GetObject which
+// causes RapidJson to fail
+#undef GetObject
+#endif
+
 #include <string>
 
 #include "bat/ads/result.h"
-
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
+#include "rapidjson/schema.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
-#include "rapidjson/schema.h"
 
 namespace ads {
 
 struct AdContent;
 struct AdHistory;
-struct CreativeAdNotificationInfo;
-struct AdConversionInfo;
+struct AdInfo;
+struct AdNotificationInfo;
 struct AdPreferences;
 struct AdsHistory;
-struct BundleState;
 struct CategoryContent;
 struct ClientInfo;
 struct ClientState;
 struct IssuersInfo;
-struct AdNotificationInfo;
-struct AdInfo;
 struct PurchaseIntentSignalHistory;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
 void SaveToJson(JsonWriter* writer, const AdContent& content);
 void SaveToJson(JsonWriter* writer, const AdHistory& history);
-void SaveToJson(JsonWriter* writer, const CreativeAdNotificationInfo& info);
-void SaveToJson(JsonWriter* writer, const AdConversionInfo& info);
+void SaveToJson(JsonWriter* writer, const AdInfo& info);
+void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info);
 void SaveToJson(JsonWriter* writer, const AdPreferences& prefs);
 void SaveToJson(JsonWriter* writer, const AdsHistory& history);
-void SaveToJson(JsonWriter* writer, const BundleState& state);
 void SaveToJson(JsonWriter* writer, const CategoryContent& content);
 void SaveToJson(JsonWriter* writer, const ClientInfo& info);
 void SaveToJson(JsonWriter* writer, const ClientState& state);
 void SaveToJson(JsonWriter* writer, const IssuersInfo& info);
-void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info);
-void SaveToJson(JsonWriter* writer, const AdInfo& info);
 void SaveToJson(JsonWriter* writer, const PurchaseIntentSignalHistory& info);
 
 template <typename T>

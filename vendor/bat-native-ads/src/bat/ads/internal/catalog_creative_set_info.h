@@ -9,10 +9,10 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/ad_conversion_info.h"
 #include "bat/ads/internal/catalog_segment_info.h"
 #include "bat/ads/internal/catalog_os_info.h"
 #include "bat/ads/internal/catalog_creative_ad_notification_info.h"
-#include "bat/ads/ad_conversion_info.h"
 
 namespace ads {
 

@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_CREATIVE_AD_INFO_H_
-#define BAT_ADS_CREATIVE_AD_INFO_H_
+#ifndef BAT_ADS_INTERNAL_CREATIVE_AD_INFO_H_
+#define BAT_ADS_INTERNAL_CREATIVE_AD_INFO_H_
+
+#include <stdint.h>
 
 #include <string>
 #include <vector>
@@ -20,8 +22,8 @@ struct CreativeAdInfo {
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
-  std::string start_at_timestamp;
-  std::string end_at_timestamp;
+  int64_t start_at_timestamp;
+  int64_t end_at_timestamp;
   unsigned int daily_cap = 0;
   std::string advertiser_id;
   unsigned int priority = 0;
@@ -37,4 +39,4 @@ using CreativeAdList = std::vector<CreativeAdInfo>;
 
 }  // namespace ads
 
-#endif  // BAT_ADS_CREATIVE_AD_INFO_H_
+#endif  // BAT_ADS_INTERNAL_CREATIVE_AD_INFO_H_

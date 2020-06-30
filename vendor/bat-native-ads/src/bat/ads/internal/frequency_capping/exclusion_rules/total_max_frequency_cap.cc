@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 
-#include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/creative_ad_info.h"
 
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"

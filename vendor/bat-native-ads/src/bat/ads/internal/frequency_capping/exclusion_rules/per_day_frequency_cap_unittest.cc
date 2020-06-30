@@ -9,14 +9,17 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_utils.h"
 #include "bat/ads/internal/unittest_utils.h"
 
@@ -40,7 +43,8 @@ const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
 class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
  protected:
   BatAdsPerDayFrequencyCapTest()
-      : ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
         ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
         locale_helper_mock_(std::make_unique<NiceMock<
             brave_l10n::LocaleHelperMock>>()),
@@ -62,18 +66,24 @@ class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    const base::FilePath path = temp_dir_.GetPath();
+
     ON_CALL(*ads_client_mock_, IsEnabled())
         .WillByDefault(Return(true));
 
     ON_CALL(*locale_helper_mock_, GetLocale())
         .WillByDefault(Return("en-US"));
 
-    MockLoad(ads_client_mock_.get());
-    MockLoadUserModelForLanguage(ads_client_mock_.get());
-    MockLoadJsonSchema(ads_client_mock_.get());
-    MockSave(ads_client_mock_.get());
+    MockLoad(ads_client_mock_);
+    MockLoadUserModelForLanguage(ads_client_mock_);
+    MockLoadJsonSchema(ads_client_mock_);
+    MockSave(ads_client_mock_);
 
-    Initialize(ads_.get());
+    database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
+    MockRunDBTransaction(ads_client_mock_, database_);
+
+    Initialize(ads_);
   }
 
   void TearDown() override {
@@ -85,10 +95,13 @@ class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
+  base::ScopedTempDir temp_dir_;
+
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PerDayFrequencyCap> frequency_cap_;
+  std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsPerDayFrequencyCapTest,
@@ -112,8 +125,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
-      0, 1);
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 1);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -129,10 +141,9 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
-      0, 1);
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 1);
 
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId,
       kSecondsPerDay, 1);
 
   // Act
@@ -149,9 +160,8 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
-      0, 1);
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 1);
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId,
       kSecondsPerDay - 1, 1);
 
   // Act
@@ -168,8 +178,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
-      0, 2);
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 2);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -189,7 +198,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = ads_per_day;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_->get_client(), kCreativeSetId,
+  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId,
       ad_interval, ads_per_day);
 
   // Act

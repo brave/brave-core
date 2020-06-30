@@ -10,6 +10,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/ad_history.h"
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_utils.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -64,7 +65,7 @@ TEST(BatAdsHistoryConfirmationFilterTest,
     ad6   // Ad 4
   };
 
-  EXPECT_TRUE(CompareDequeAsSets(expected_history, history));
+  EXPECT_TRUE(CompareAsSets(expected_history, history));
 }
 
 TEST(BatAdsHistoryConfirmationFilterTest,
@@ -112,7 +113,7 @@ TEST(BatAdsHistoryConfirmationFilterTest,
     ad6  // Ad 1 (View)
   };
 
-  EXPECT_TRUE(CompareDequeAsSets(expected_history, history));
+  EXPECT_TRUE(CompareAsSets(expected_history, history));
 }
 
 }  // namespace ads

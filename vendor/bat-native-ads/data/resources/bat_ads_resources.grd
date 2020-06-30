@@ -9,7 +9,6 @@
   <release seq="1">
     <includes>
       <include name="IDR_ADS_CATALOG_SCHEMA" file="catalog-schema.json" type="BINDATA" compress="gzip" />
-      <include name="IDR_ADS_BUNDLE_SCHEMA" file="bundle-schema.json" type="BINDATA" compress="gzip" />
       <include name="IDR_ADS_USER_MODEL_EN" file="user_models/languages/en/user_model.json" type="BINDATA" compress="gzip" />
     </includes>
   </release>

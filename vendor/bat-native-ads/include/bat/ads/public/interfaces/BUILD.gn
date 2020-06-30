@@ -3,6 +3,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("interfaces") {
   sources = [
     "ads.mojom",
+    "ads_database.mojom",
   ]
 
   public_deps = [

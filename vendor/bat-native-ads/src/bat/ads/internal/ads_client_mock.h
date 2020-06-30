@@ -100,10 +100,6 @@ class AdsClientMock : public AdsClient {
       const std::string& value,
       ResultCallback callback));
 
-  MOCK_METHOD2(SaveBundleState, void(
-      std::unique_ptr<BundleState> state,
-      ResultCallback callback));
-
   MOCK_METHOD2(Load, void(
       const std::string& name,
       LoadCallback callback));
@@ -115,12 +111,9 @@ class AdsClientMock : public AdsClient {
       const std::string& name,
       ResultCallback callback));
 
-  MOCK_METHOD2(GetCreativeAdNotifications, void(
-      const std::vector<std::string>& categories,
-      GetCreativeAdNotificationsCallback callback));
-
-  MOCK_METHOD1(GetAdConversions, void(
-      GetAdConversionsCallback callback));
+  MOCK_METHOD2(RunDBTransaction, void(
+      DBTransactionPtr,
+      RunDBTransactionCallback));
 
   MOCK_METHOD4(Log, void(
       const char* file,

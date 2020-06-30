@@ -8,13 +8,13 @@
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_history.h"
+#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_history.h"
-#include "bat/ads/internal/client.h"
 
 namespace ads {
 
 void GeneratePastCreativeSetHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& creative_set_id,
     const uint64_t time_offset_in_seconds,
     const int count) {
@@ -24,13 +24,13 @@ void GeneratePastCreativeSetHistoryFromNow(
   for (int i = 0; i < count; i++) {
     timestamp_in_seconds -= time_offset_in_seconds;
 
-    client->AppendTimestampToCreativeSetHistory(creative_set_id,
-        timestamp_in_seconds);
+    ads->get_client()->AppendTimestampToCreativeSetHistory(
+        creative_set_id, timestamp_in_seconds);
   }
 }
 
 void GeneratePastCampaignHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& campaign_id,
     const uint64_t time_offset_in_seconds,
     const int count) {
@@ -40,12 +40,13 @@ void GeneratePastCampaignHistoryFromNow(
   for (int i = 0; i < count; i++) {
     timestamp_in_seconds -= time_offset_in_seconds;
 
-    client->AppendTimestampToCampaignHistory(campaign_id, timestamp_in_seconds);
+    ads->get_client()->AppendTimestampToCampaignHistory(
+        campaign_id, timestamp_in_seconds);
   }
 }
 
 void GeneratePastAdsHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& creative_instance_id,
     const uint64_t time_offset_in_seconds,
     const int count) {
@@ -61,12 +62,12 @@ void GeneratePastAdsHistoryFromNow(
     now_in_seconds -= time_offset_in_seconds;
     history.timestamp_in_seconds = now_in_seconds;
 
-    client->AppendAdHistoryToAdsHistory(history);
+    ads->get_client()->AppendAdHistoryToAdsHistory(history);
   }
 }
 
 void GeneratePastAdConversionHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& creative_set_id,
     const uint64_t time_offset_in_seconds,
     const int count) {
@@ -76,8 +77,8 @@ void GeneratePastAdConversionHistoryFromNow(
   for (int i = 0; i < count; i++) {
     timestamp_in_seconds -= time_offset_in_seconds;
 
-    client->AppendTimestampToAdConversionHistory(creative_set_id,
-        timestamp_in_seconds);
+    ads->get_client()->AppendTimestampToAdConversionHistory(
+        creative_set_id, timestamp_in_seconds);
   }
 }
 

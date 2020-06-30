@@ -6,7 +6,7 @@
 #ifndef BAT_ADS_INTERNAL_SORTS_AD_CONVERSIONS_SORT_H_
 #define BAT_ADS_INTERNAL_SORTS_AD_CONVERSIONS_SORT_H_
 
-#include "bat/ads/ad_conversion_info.h"
+#include "bat/ads/internal/ad_conversion_info.h"
 
 namespace ads {
 

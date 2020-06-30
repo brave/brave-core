@@ -8,32 +8,33 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <string>
 
 namespace ads {
 
-class Client;
+class AdsImpl;
 
 void GeneratePastCreativeSetHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& creative_set_id,
     const uint64_t time_offset_in_seconds,
     const int count);
 
 void GeneratePastCampaignHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& campaign_id,
     const uint64_t time_offset_in_seconds,
     const int count);
 
 void GeneratePastAdsHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& creative_instance_id,
     const uint64_t time_offset_in_seconds,
     const int count);
 
 void GeneratePastAdConversionHistoryFromNow(
-    Client* client,
+    const std::unique_ptr<AdsImpl>& ads,
     const std::string& creative_set_id,
     const uint64_t time_offset_in_seconds,
     const int count);

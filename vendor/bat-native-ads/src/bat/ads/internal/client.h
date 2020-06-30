@@ -15,6 +15,7 @@
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client_state.h"
+#include "bat/ads/internal/creative_ad_notification_info.h"
 
 namespace ads {
 

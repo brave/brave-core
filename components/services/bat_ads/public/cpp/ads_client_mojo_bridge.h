@@ -138,14 +138,9 @@ class AdsClientMojoBridge
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const std::string& confirmation_type) override;
-  void SaveBundleState(
-      const std::string& bundle_state,
-      SaveBundleStateCallback callback) override;
-  void GetCreativeAdNotifications(
-      const std::vector<std::string>& categories,
-      GetCreativeAdNotificationsCallback callback) override;
-  void GetAdConversions(
-      GetAdConversionsCallback callback) override;
+  void RunDBTransaction(
+      ads::DBTransactionPtr transaction,
+      RunDBTransactionCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -177,33 +172,29 @@ class AdsClientMojoBridge
       CallbackHolder<LoadCallback>* holder,
       const ads::Result result,
       const std::string& value);
+
   static void OnSave(
       CallbackHolder<SaveCallback>* holder,
       const ads::Result result);
+
   static void OnReset(
       CallbackHolder<ResetCallback>* holder,
       const ads::Result result);
+
   static void OnLoadUserModelForLanguage(
       CallbackHolder<LoadUserModelForLanguageCallback>* holder,
       const ads::Result result,
       const std::string& value);
+
   static void OnURLRequest(
       CallbackHolder<URLRequestCallback>* holder,
       const int response_status_code,
       const std::string& content,
       const std::map<std::string, std::string>& headers);
-  static void OnSaveBundleState(
-      CallbackHolder<SaveBundleStateCallback>* holder,
-      const ads::Result result);
-  static void OnGetCreativeAdNotifications(
-      CallbackHolder<GetCreativeAdNotificationsCallback>* holder,
-      const ads::Result result,
-      const std::vector<std::string>& categories,
-      const ads::CreativeAdNotificationList& ads);
-  static void OnGetAdConversions(
-      CallbackHolder<GetAdConversionsCallback>* holder,
-      const ads::Result result,
-      const ads::AdConversionList& ad_conversions);
+
+  static void OnRunDBTransaction(
+      CallbackHolder<RunDBTransactionCallback>* holder,
+      ads::DBCommandResponsePtr response);
 
   ads::AdsClient* ads_client_;  // NOT OWNED
 };

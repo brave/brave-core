@@ -41,7 +41,7 @@ std::string GetPathForRequest(
 }
 
 void MockLoadState(
-    ConfirmationsClientMock* mock) {
+    const std::unique_ptr<ConfirmationsClientMock>& mock) {
   ON_CALL(*mock, LoadState(_, _))
       .WillByDefault(Invoke([](
           const std::string& name,
@@ -60,7 +60,7 @@ void MockLoadState(
 }
 
 void MockSaveState(
-    ConfirmationsClientMock* mock) {
+    const std::unique_ptr<ConfirmationsClientMock>& mock) {
   ON_CALL(*mock, SaveState(_, _, _))
       .WillByDefault(Invoke([](
           const std::string& name,
@@ -71,7 +71,7 @@ void MockSaveState(
 }
 
 void MockClientInfo(
-    ConfirmationsClientMock* mock,
+    const std::unique_ptr<ConfirmationsClientMock>& mock,
     const std::string& channel) {
   ON_CALL(*mock, GetClientInfo())
       .WillByDefault([channel]() {

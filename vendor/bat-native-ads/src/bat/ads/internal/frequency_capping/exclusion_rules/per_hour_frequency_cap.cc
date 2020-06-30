@@ -7,8 +7,8 @@
 
 #include "bat/ads/ad_history.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/creative_ad_info.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_utils.h"
 
 #include "base/logging.h"

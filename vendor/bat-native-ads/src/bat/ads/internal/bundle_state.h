@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/creative_ad_notification_info.h"
-#include "bat/ads/ad_conversion_info.h"
+#include "bat/ads/internal/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_conversion_info.h"
 
 namespace ads {
 
@@ -21,17 +21,11 @@ struct BundleState {
       const BundleState& state);
   ~BundleState();
 
-  std::string ToJson() const;
-  Result FromJson(
-      const std::string& json,
-      const std::string& json_schema,
-      std::string* error_description = nullptr);
-
   std::string catalog_id;
   uint64_t catalog_version = 0;
   uint64_t catalog_ping = 0;
   uint64_t catalog_last_updated_timestamp_in_seconds = 0;
-  CreativeAdNotificationMap creative_ad_notifications;
+  CreativeAdNotificationList creative_ad_notifications;
   AdConversionList ad_conversions;
 };
 
