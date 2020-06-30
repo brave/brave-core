@@ -85,8 +85,6 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
 
 void AdBlockService::OnResourcesFileDataReady(const std::string& resources) {
   g_brave_browser_process->ad_block_service()->AddResources(resources);
-  g_brave_browser_process->ad_block_regional_service_manager()->AddResources(
-      resources);
   g_brave_browser_process->ad_block_custom_filters_service()->AddResources(
       resources);
 }
