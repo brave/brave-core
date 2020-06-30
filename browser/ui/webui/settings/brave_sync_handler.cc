@@ -171,6 +171,12 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
+  auto* sync_service = GetSyncService();
+  if (!sync_service ||
+      !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
+    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
   base::Value callback_id_arg(callback_id->Clone());
 
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
@@ -206,14 +212,15 @@ syncer::LocalDeviceInfoProvider* BraveSyncHandler::GetLocalDeviceInfoProvider()
 void BraveSyncHandler::OnSelfDeleted(base::Value callback_id) {
   auto* sync_service = GetSyncService();
   if (sync_service) {
-    sync_service->GetUserSettings()->SetSyncRequested(false);
+    // This function will follow normal reset process and set SyncRequested to
+    // false
     sync_service->StopAndClear();
   }
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.Clear();
   // Sync prefs will be clear in ProfileSyncService::StopImpl
 
-  ResolveJavascriptCallback(callback_id, base::Value());
+  ResolveJavascriptCallback(callback_id, base::Value(true));
 }
 
 base::Value BraveSyncHandler::GetSyncDeviceList() {
