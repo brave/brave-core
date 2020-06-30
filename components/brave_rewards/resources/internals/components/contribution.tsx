@@ -43,6 +43,8 @@ const getProcessorString = (processor: number) => {
 
 const getContributionStepString = (step: number) => {
   switch (step) {
+    case -7:
+      return getLocale('contributionStepRetryCount')
     case -6:
       return getLocale('contributionStepAutoContributeOff')
     case -5:

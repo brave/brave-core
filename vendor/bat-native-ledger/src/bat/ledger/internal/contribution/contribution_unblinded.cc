@@ -574,6 +574,7 @@ void Unblinded::Retry(
           get_callback);
       return;
     }
+    case ledger::ContributionStep::STEP_RETRY_COUNT:
     case ledger::ContributionStep::STEP_REWARDS_OFF:
     case ledger::ContributionStep::STEP_AC_OFF:
     case ledger::ContributionStep::STEP_AC_TABLE_EMPTY:

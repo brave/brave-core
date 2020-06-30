@@ -55,6 +55,9 @@ ledger::ContributionStep ConvertResultIntoContributionStep(
     case ledger::Result::AC_OFF: {
       return ledger::ContributionStep::STEP_AC_OFF;
     }
+    case ledger::Result::TOO_MANY_RESULTS: {
+      return ledger::ContributionStep::STEP_RETRY_COUNT;
+    }
     default: {
       return ledger::ContributionStep::STEP_FAILED;
     }
@@ -284,7 +287,8 @@ void Contribution::ContributionCompleted(
 
   auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
       this,
-      _1);
+      _1,
+      contribution->contribution_id);
 
   ledger_->UpdateContributionInfoStepAndCount(
       contribution->contribution_id,
@@ -293,11 +297,20 @@ void Contribution::ContributionCompleted(
       save_callback);
 }
 
-void Contribution::ContributionCompletedSaved(const ledger::Result result) {
+void Contribution::ContributionCompletedSaved(
+    const ledger::Result result,
+    const std::string& contribution_id) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Contribution step and count failed");
-    return;
   }
+
+  auto callback = std::bind(&Contribution::OnMarkUnblindedTokensAsSpendable,
+      this,
+      _1,
+      contribution_id);
+  ledger_->MarkUnblindedTokensAsSpendable(
+      contribution_id,
+      callback);
 }
 
 void Contribution::ContributeUnverifiedPublishers() {
@@ -697,13 +710,9 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
 
   if (contribution->retry_count == 3) {
     BLOG(0, "Contribution failed after 3 retries");
-    auto callback = std::bind(&Contribution::OnMarkUnblindedTokensAsSpendable,
-        this,
-        _1,
-        braveledger_bind_util::FromContributionToString(contribution->Clone()));
-    ledger_->MarkUnblindedTokensAsSpendable(
-        contribution->contribution_id,
-        callback);
+    ledger_->ContributionCompleted(
+        ledger::Result::TOO_MANY_RESULTS,
+        std::move(contribution));
     return;
   }
 
@@ -721,24 +730,12 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
 
 void Contribution::OnMarkUnblindedTokensAsSpendable(
     const ledger::Result result,
-    const std::string& contribution_string) {
-  auto contribution = braveledger_bind_util::FromStringToContribution(
-      contribution_string);
-  if (!contribution) {
-    BLOG(0, "Contribution was not converted successfully");
-    return;
-  }
-
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Failed to mark unblinded tokens as unreserved for contribution "
-        << contribution->contribution_id);
-  }
-
-  // Even if we can't mark the tokens as unreserved, mark the
-  // contribution as completed
-  ledger_->ContributionCompleted(
-      ledger::Result::LEDGER_ERROR,
-      std::move(contribution));
+    const std::string& contribution_id) {
+  BLOG_IF(
+      1,
+      result != ledger::Result::LEDGER_OK,
+      "Failed to mark unblinded tokens as unreserved for contribution "
+          << contribution_id);
 }
 
 void Contribution::Retry(
