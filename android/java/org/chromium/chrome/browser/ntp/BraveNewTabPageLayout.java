@@ -204,7 +204,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+        if (sponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
             if (bgImageView != null) {
                 // We need to redraw image to fit parent properly
                 bgImageView.setImageResource(android.R.color.transparent);
@@ -266,7 +266,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if ((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
                     || NTPUtil.isReferralEnabled())
                 && sponsoredTab != null
-                && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+                && NTPUtil.shouldEnableNTPFeature()) {
             mAdsBlockedTextView.setTextColor(
                     getResources().getColor(android.R.color.white));
             mDataSavedTextView.setTextColor(
@@ -339,7 +339,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         TextView mCreditText = (TextView) findViewById(R.id.credit_text);
         if (ntpImage instanceof Wallpaper
                 && NTPUtil.isReferralEnabled()
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setBackgroundImage(ntpImage);
             mSuperReferralLogo.setVisibility(View.VISIBLE);
             mCreditText.setVisibility(View.GONE);
@@ -361,7 +361,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         } else if (BravePrefServiceBridge.getInstance().getBoolean(
                            BravePref.NTP_SHOW_BACKGROUND_IMAGE)
                 && sponsoredTab != null
-                && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+                && NTPUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
             if (ntpImage instanceof BackgroundImage) {
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
@@ -438,7 +438,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         sponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTabImpl()).getId()));
         if (mNTPBackgroundImagesBridge.isSuperReferral()
             && NTPBackgroundImagesBridge.enableSponsoredImages()
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
@@ -484,11 +484,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         public void onUpdated() {
             if (NTPUtil.isReferralEnabled()) {
                 checkAndShowNTPImage(true);
-                removeDefaultTopSites();
                 if (mNTPBackgroundImagesBridge.isSuperReferral()
                         && NTPBackgroundImagesBridge.enableSponsoredImages()
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    removeDefaultTopSites();
                     mNTPBackgroundImagesBridge.getTopSites();
+                }
             }
         }
     };
