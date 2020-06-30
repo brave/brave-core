@@ -1,0 +1,8 @@
+group("android") {
+  deps = [
+    "//brave/common",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//url",
+  ]
+}

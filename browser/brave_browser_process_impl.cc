@@ -43,7 +43,6 @@
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -99,19 +98,6 @@ void InitSystemRequestHandlerCallback() {
       before_system_request_callback = base::Bind(brave::OnBeforeSystemRequest);
   network::SystemRequestHandler::GetInstance()
       ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
-}
-
-PrefService* BraveGetPrefs() {
-  return ProfileManager::GetActiveUserProfile()
-      ->GetOriginalProfile()
-      ->GetPrefs();
-}
-
-void InitGetPrefsCallback() {
-  prefs::BravePrefService::GetPrefsCallback get_prefs_callback =
-      base::Bind(BraveGetPrefs);
-  prefs::BravePrefService::GetInstance()->RegisterGetPrefsCallback(
-      get_prefs_callback);
 }
 
 }  // namespace
@@ -175,8 +161,6 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 
   InitSystemRequestHandlerCallback();
-
-  InitGetPrefsCallback();
 }
 
 brave_component_updater::BraveComponent::Delegate*
