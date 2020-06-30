@@ -228,7 +228,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
-    language::kUseButtonTranslateBubbleUi.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
     translate::kTranslateUI.name,

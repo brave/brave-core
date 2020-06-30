@@ -68,7 +68,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kVideoPlaybackQuality,
       &features::kLookalikeUrlNavigationSuggestionsUI,
       &features::kTabHoverCards,
-      &language::kUseButtonTranslateBubbleUi,
   };
 
   for (const auto* feature : disabled_features)
