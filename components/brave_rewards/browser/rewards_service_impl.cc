@@ -3157,8 +3157,8 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
   profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_wallets);
 }
 
-void RewardsServiceImpl::GetExternalWallets(
-    ledger::GetExternalWalletsCallback callback) {
+std::map<std::string, ledger::ExternalWalletPtr>
+RewardsServiceImpl::GetExternalWallets() {
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
 
   auto* dict =
@@ -3202,7 +3202,7 @@ void RewardsServiceImpl::GetExternalWallets(
     wallets.insert(std::make_pair(it.first, std::move(wallet)));
   }
 
-  callback(std::move(wallets));
+  return wallets;
 }
 
 void RewardsServiceImpl::OnGetExternalWallet(

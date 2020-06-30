@@ -1114,9 +1114,9 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   bat_wallet_->FetchBalance(callback);
 }
 
-void LedgerImpl::GetExternalWallets(
-    ledger::GetExternalWalletsCallback callback) {
-  ledger_client_->GetExternalWallets(callback);
+std::map<std::string, ledger::ExternalWalletPtr>
+LedgerImpl::GetExternalWallets() {
+  return ledger_client_->GetExternalWallets();
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,

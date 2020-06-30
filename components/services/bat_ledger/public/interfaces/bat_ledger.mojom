@@ -228,6 +228,7 @@ interface BatLedgerClient {
   OnContributeUnverifiedPublishers(ledger.mojom.Result result, string publisher_key,
       string publisher_name);
 
+  [Sync]
   GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
 
   SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);

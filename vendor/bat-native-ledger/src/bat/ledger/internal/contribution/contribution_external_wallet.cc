@@ -35,21 +35,8 @@ void ContributionExternalWallet::Process(
     return;
   }
 
-  auto wallets_callback = std::bind(
-      &ContributionExternalWallet::OnExternalWallets,
-      this,
-      _1,
-      contribution_id,
-      callback);
+  auto wallets = ledger_->GetExternalWallets();
 
-  // Check if we have token
-  ledger_->GetExternalWallets(wallets_callback);
-}
-
-void ContributionExternalWallet::OnExternalWallets(
-    std::map<std::string, ledger::ExternalWalletPtr> wallets,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
   if (wallets.empty()) {
     BLOG(0, "No external wallets");
     callback(ledger::Result::LEDGER_ERROR);

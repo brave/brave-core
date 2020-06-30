@@ -75,22 +75,6 @@ class Wallet {
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
  private:
-  void OnGetExternalWallet(
-    const std::string& wallet_type,
-    ledger::ExternalWalletCallback callback,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
-  void OnExternalWalletAuthorization(
-    const std::string& wallet_type,
-    const std::map<std::string, std::string>& args,
-    ledger::ExternalWalletAuthorizationCallback callback,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
-  void OnDisconnectWallet(
-    const std::string& wallet_type,
-    ledger::ResultCallback callback,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
   void OnTransferAnonToExternalWallet(
     const ledger::UrlResponse& response,
     ledger::ResultCallback callback);
@@ -112,10 +96,6 @@ class Wallet {
       const std::string& anon_address,
       const std::string& new_address,
       const std::string& user_funds,
-      ledger::ResultCallback callback);
-
-  void OnDisconnectAllWallets(
-      std::map<std::string, ledger::ExternalWalletPtr> wallets,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

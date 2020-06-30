@@ -27,12 +27,6 @@ void OnLoadState(const ledger::OnLoadCallback& callback,
   callback(result, value);
 }
 
-void OnGetExternalWallets(
-    ledger::GetExternalWalletsCallback callback,
-    base::flat_map<std::string, ledger::ExternalWalletPtr> wallets) {
-  callback(base::FlatMapToMap(std::move(wallets)));
-}
-
 }  // namespace
 
 BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
@@ -399,16 +393,15 @@ void BatLedgerClientMojoBridge::OnContributeUnverifiedPublishers(
       publisher_name);
 }
 
-void BatLedgerClientMojoBridge::GetExternalWallets(
-    ledger::GetExternalWalletsCallback callback) {
+std::map<std::string, ledger::ExternalWalletPtr>
+BatLedgerClientMojoBridge::GetExternalWallets() {
+  base::flat_map<std::string, ledger::ExternalWalletPtr> wallets;
   if (!Connected()) {
-    std::map<std::string, ledger::ExternalWalletPtr> wallets;
-    callback(std::move(wallets));
-    return;
+    return {};
   }
 
-  bat_ledger_client_->GetExternalWallets(
-      base::BindOnce(&OnGetExternalWallets, std::move(callback)));
+  bat_ledger_client_->GetExternalWallets(&wallets);
+  return base::FlatMapToMap(std::move(wallets));
 }
 
 void BatLedgerClientMojoBridge::SaveExternalWallet(

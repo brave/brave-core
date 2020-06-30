@@ -101,7 +101,8 @@ class BatLedgerClientMojoBridge :
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
+  std::map<std::string, ledger::ExternalWalletPtr>
+  GetExternalWallets() override;
 
   void SaveExternalWallet(const std::string& wallet_type,
                            ledger::ExternalWalletPtr wallet) override;

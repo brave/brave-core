@@ -154,8 +154,8 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& publisher_key,
       const std::string& publisher_name) = 0;
 
-  virtual void GetExternalWallets(
-      GetExternalWalletsCallback callback) = 0;
+  virtual std::map<std::string, ledger::ExternalWalletPtr>
+  GetExternalWallets() = 0;
 
   virtual void SaveExternalWallet(const std::string& wallet_type,
                                   ledger::ExternalWalletPtr wallet) = 0;

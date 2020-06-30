@@ -383,7 +383,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
-  void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
+  std::map<std::string, ledger::ExternalWalletPtr> GetExternalWallets();
 
   void GetExternalWallet(const std::string& wallet_type,
                          ledger::ExternalWalletCallback callback) override;

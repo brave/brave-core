@@ -54,11 +54,6 @@ class Balance {
       ledger::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
-  void OnExternalWallets(
-      ledger::Balance info,
-      ledger::FetchBalanceCallback callback,
-      std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
   void OnUpholdFetchBalance(ledger::Balance info,
                             ledger::FetchBalanceCallback callback,
                             ledger::Result result,

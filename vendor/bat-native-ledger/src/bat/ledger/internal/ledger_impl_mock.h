@@ -325,7 +325,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 
-  MOCK_METHOD1(GetExternalWallets, void(ledger::GetExternalWalletsCallback));
+  MOCK_METHOD0(
+      GetExternalWallets,
+      std::map<std::string, ledger::ExternalWalletPtr>());
 
   MOCK_METHOD2(GetExternalWallet,
       void(const std::string&, ledger::ExternalWalletCallback));
