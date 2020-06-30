@@ -82,14 +82,8 @@ bool BraveIsAllowedThirdParty(
             ContentSettingsPattern::FromString(kTwitch),
             ContentSettingsPattern::FromString(kReddit)
           },
-            ContentSettingsPattern::FromString(kReddit),
-            ContentSettingsPattern::FromString(kTwitch)
-          },
             ContentSettingsPattern::FromString(kTwitch),
             ContentSettingsPattern::FromString(kDiscord)
-          },
-            ContentSettingsPattern::FromString(kDiscord),
-            ContentSettingsPattern::FromString(kTwitch)
           }
       });
 
