@@ -17,6 +17,7 @@ extern const char kRewardsUpholdSupport[];
 extern const char kP3ALearnMoreURL[];
 extern const char kP3ASettingsLink[];
 extern const char kImportDataHelpURL[];
+extern const char kSyncV1DeprecatedURL[];
 
 // This is introduced to replace |kDownloadChromeUrl| in
 // outdated_upgrade_bubble_view.cc"

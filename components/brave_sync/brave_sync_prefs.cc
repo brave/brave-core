@@ -48,6 +48,8 @@ const char kDuplicatedBookmarksRecovered[] =
     "brave_sync_duplicated_bookmarks_recovered";
 const char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
+const char kSyncDeprecationWarningNoticeDismissed[] =
+    "brave_sync.deprecation_warning_notice_dismissed";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
@@ -79,6 +81,8 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kSyncRecordsToResendMeta);
   registry->RegisterBooleanPref(kDuplicatedBookmarksRecovered, false);
   registry->RegisterIntegerPref(prefs::kDuplicatedBookmarksMigrateVersion, 0);
+  registry->RegisterBooleanPref(
+      prefs::kSyncDeprecationWarningNoticeDismissed, false);
 }
 
 std::string Prefs::GetSeed() const {
