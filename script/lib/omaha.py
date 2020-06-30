@@ -117,7 +117,7 @@ def get_app_info(appinfo, args):
         appinfo['short_version'] = chrome_major + '.' + get_upload_version()
         appinfo['version'] = str(adjusted_minor) + \
             '.' + version_values[2]
-    appinfo['release_notes'] = 'Brave Browser Changelog: {}'.format(changelog_url)
+    appinfo['release_notes'] = 'Release notes at <a href="{0}">{0}</a>'.format(changelog_url)
 
     return appinfo
 
