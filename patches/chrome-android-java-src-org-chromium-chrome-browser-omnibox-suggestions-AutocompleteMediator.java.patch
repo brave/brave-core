@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
+index 2d1a21433aaacb08d25091d8aa36aea1864ec234..a04b1256f845c979d15e71c30ce33d365e57c267 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
+@@ -221,7 +221,7 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener, StartStopWi
+         SuggestionHost host = this::createSuggestionViewDelegate;
+ 
+         mEditUrlProcessor =
+-                new EditUrlSuggestionProcessor(mContext, host, mDelegate, iconBridgeSupplier);
++                new org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor(mContext, host, mDelegate, iconBridgeSupplier);
+         registerSuggestionProcessor(new AnswerSuggestionProcessor(
+                 mContext, host, mUrlBarEditingTextProvider, imageFetcherSupplier));
+         registerSuggestionProcessor(
