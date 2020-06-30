@@ -1,11 +1,15 @@
 source_set("common") {
   sources = [
     "brave_shield_constants.h",
+    "brave_shield_utils.cc",
+    "brave_shield_utils.h",
     "features.cc",
     "features.h",
   ]
 
   deps = [
     "//base",
+    "//components/content_settings/core/common",
+    "//url",
   ]
 }

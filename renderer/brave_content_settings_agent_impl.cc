@@ -15,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -62,27 +63,6 @@ bool IsBraveShieldsDown(const blink::WebFrame* frame,
   }
 
   return setting == CONTENT_SETTING_BLOCK;
-}
-
-template <typename URL>
-ContentSetting GetBraveContentSettingFromRules(
-    const ContentSettingsForOneType& shield_rules,
-    const ContentSettingsForOneType& rules,
-    const blink::WebFrame* frame,
-    const URL& secondary_url) {
-  // if shields is down, allow everything
-  if (IsBraveShieldsDown(frame, secondary_url, shield_rules))
-    return CONTENT_SETTING_ALLOW;
-
-  const GURL& primary_url = GetOriginOrURL(frame);
-  const GURL& secondary_gurl = secondary_url;
-  for (const auto& rule : rules) {
-    if (rule.primary_pattern.Matches(primary_url) &&
-        rule.secondary_pattern.Matches(secondary_gurl)) {
-      return rule.GetContentSetting();
-    }
-  }
-  return CONTENT_SETTING_DEFAULT;
 }
 
 }  // namespace
@@ -198,36 +178,6 @@ void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
 
-ContentSetting BraveContentSettingsAgentImpl::GetFPContentSettingFromRules(
-    const ContentSettingsForOneType& rules,
-    const blink::WebFrame* frame,
-    const GURL& secondary_url) {
-
-  if (rules.size() == 0)
-    return CONTENT_SETTING_DEFAULT;
-
-  const GURL& primary_url = GetOriginOrURL(frame);
-
-  for (const auto& rule : rules) {
-    ContentSettingsPattern secondary_pattern = rule.secondary_pattern;
-    if (rule.secondary_pattern ==
-        ContentSettingsPattern::FromString("https://firstParty/*")) {
-      secondary_pattern = ContentSettingsPattern::FromString(
-          "[*.]" + GetOriginOrURL(frame).HostNoBrackets());
-    }
-
-    if (rule.primary_pattern.Matches(primary_url) &&
-        (secondary_pattern == ContentSettingsPattern::Wildcard() ||
-         secondary_pattern.Matches(secondary_url))) {
-      return rule.GetContentSetting();
-    }
-  }
-
-  // for cases which are third party resources and doesn't match any existing
-  // rules, block them by default
-  return CONTENT_SETTING_BLOCK;
-}
-
 bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
@@ -259,10 +209,15 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
-    setting = GetBraveContentSettingFromRules(
-        content_setting_rules_->brave_shields_rules,
-        content_setting_rules_->fingerprinting_rules, frame,
-        url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+    if (IsBraveShieldsDown(
+            frame,
+            url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL())) {
+      setting = CONTENT_SETTING_ALLOW;
+    } else {
+      setting = GetBraveFPContentSettingFromRules(
+          content_setting_rules_->fingerprinting_rules,
+          GetOriginOrURL(frame));
+    }
   }
 
   if (setting == CONTENT_SETTING_BLOCK) {
