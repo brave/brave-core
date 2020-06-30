@@ -126,6 +126,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         </StyledContent>
         <ControlWrapper text={getLocale('recoveryKeys')}>
           <TextArea
+            id={'backup-recovery-key'}
             value={backupKey}
             disabled={true}
           />
@@ -202,7 +203,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         </StyledContent>
         <StyledContent>
           {getLocale('rewardsBackupNoticeText2')}
-          <StyledLink onClick={onVerify}>
+          <StyledLink onClick={onVerify} id={'backup-verify-link'}>
             {getLocale('rewardsBackupNoticeText3')}
           </StyledLink>
         </StyledContent>
@@ -260,6 +261,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           }
         >
           <TextArea
+            id={'backup-recovery-key'}
             fieldError={!!errorShown}
             value={this.state.recoveryKey}
             onChange={this.setRecoveryKey}

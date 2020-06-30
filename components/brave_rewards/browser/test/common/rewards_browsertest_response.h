@@ -49,6 +49,8 @@ class RewardsBrowserTestResponse {
 
   void SetExternalBalance(const std::string& balance);
 
+  void SetUserFundsBalance(const bool user_funds);
+
  private:
   std::string registrar_vk_;
   std::string verification_;
@@ -65,6 +67,7 @@ class RewardsBrowserTestResponse {
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
+  std::string user_funds_balance_resp_;
 
   std::vector<Request> requests_;
   bool empty_promotion_key_ = false;
@@ -72,6 +75,7 @@ class RewardsBrowserTestResponse {
   ledger::SKUOrderPtr order_;
   bool verified_wallet_ = false;
   std::string external_balance_ = "0.0";
+  bool user_funds_balance_ = false;
 };
 
 }  // namespace rewards_browsertest
