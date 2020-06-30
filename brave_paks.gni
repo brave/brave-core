@@ -59,12 +59,12 @@ template("brave_extra_paks") {
                            ])
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
-      "$root_gen_dir/components/brave_components_resources.pak",
-      "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
     ]
 
     if (!is_android) {
       sources += [
+        "$root_gen_dir/components/brave_components_resources.pak",
+        "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
         "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
@@ -105,7 +105,7 @@ template("brave_extra_paks") {
       ]
     }
 
-    if (enable_brave_sync) {
+    if (enable_brave_sync && !is_android) {
       sources += [
         "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
       ]
@@ -115,7 +115,7 @@ template("brave_extra_paks") {
       ]
     }
 
-    if (enable_brave_webtorrent) {
+    if (enable_brave_webtorrent && !is_android) {
       sources += [
         "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak",
       ]
@@ -125,7 +125,7 @@ template("brave_extra_paks") {
       ]
     }
 
-    if (enable_extensions) {
+    if (enable_extensions && !is_android) {
       sources += [
         "$root_gen_dir/brave/browser/resources/extensions/brave_extensions_resources.pak",
         "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
@@ -139,7 +139,7 @@ template("brave_extra_paks") {
     }
 
     if (brave_rewards_enabled) {
-      if (enable_extensions) {
+      if (enable_extensions && !is_android) {
         sources += [
           "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak",
         ]
