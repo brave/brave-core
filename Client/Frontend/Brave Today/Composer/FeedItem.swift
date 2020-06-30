@@ -27,6 +27,7 @@ struct FeedItem: Equatable, Decodable {
     var publisherID: String
     var publisherName: String
     @URLString var publisherLogo: URL?
+    var urlHash: String
     
     enum CodingKeys: String, CodingKey {
         case category
@@ -40,5 +41,6 @@ struct FeedItem: Equatable, Decodable {
         case publisherID = "publisher_id"
         case publisherName = "publisher_name"
         case publisherLogo = "publisher_logo"
+        case urlHash = "url_hash"
     }
 }
