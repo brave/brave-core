@@ -5,8 +5,11 @@
 
 #include "brave/browser/importer/brave_external_process_importer_client.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
+#include "chrome/browser/service_sandbox_type.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/service_process_host.h"
 
@@ -38,12 +41,14 @@ void BraveExternalProcessImporterClient::Start() {
 
   AddRef();  // balanced in Cleanup.
 
+  auto options = content::ServiceProcessHost::Options()
+                     .WithDisplayName(IDS_UTILITY_PROCESS_PROFILE_IMPORTER_NAME)
+                     .Pass();
+  options.sandbox_type =
+      content::GetServiceSandboxType<chrome::mojom::ProfileImport>();
   content::ServiceProcessHost::Launch(
-      brave_profile_import_.BindNewPipeAndPassReceiver(),
-      content::ServiceProcessHost::Options()
-          .WithDisplayName(IDS_UTILITY_PROCESS_PROFILE_IMPORTER_NAME)
-          .WithSandboxType(service_manager::SandboxType::kNoSandbox)
-          .Pass());
+      brave_profile_import_.BindNewPipeAndPassReceiver(), std::move(options));
+
   brave_profile_import_.set_disconnect_handler(
       base::BindOnce(&ExternalProcessImporterClient::OnProcessCrashed, this));
 
