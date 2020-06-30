@@ -1,8 +1,16 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 75fc9d9d182627029021655deb240c72ea3e6bcf..199b106f8cd0bbda17534ebafedcb4624335d152 100644
+index 75fc9d9d182627029021655deb240c72ea3e6bcf..3c1abc9a2475956f4b115d484a3a0c78f0956ec3 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -2434,6 +2434,12 @@ jumbo_source_set("browser") {
+@@ -2026,6 +2026,7 @@ jumbo_source_set("browser") {
+     # resources on other platforms.
+     deps += [ "//content/browser/devtools:devtools_resources" ]
+   }
++  if (is_android) { deps -= [ "//content/browser/devtools:devtools_resources" ] }
+ 
+   if (enable_basic_printing) {
+     deps += [ "//printing" ]
+@@ -2434,6 +2435,12 @@ jumbo_source_set("browser") {
      defines += [ "APPCACHE_USE_SIMPLE_CACHE" ]
      libs += [ "jnigraphics" ]
    } else {
@@ -15,7 +23,7 @@ index 75fc9d9d182627029021655deb240c72ea3e6bcf..199b106f8cd0bbda17534ebafedcb462
      # Not Android.
      sources += [
        # The WebAuthn devtools protocol API is not supported in Android yet.
-@@ -2441,8 +2447,6 @@ jumbo_source_set("browser") {
+@@ -2441,8 +2448,6 @@ jumbo_source_set("browser") {
        "$target_gen_dir/devtools/protocol/web_authn.h",
  
        # Devtools frontend not included in Android
@@ -24,7 +32,7 @@ index 75fc9d9d182627029021655deb240c72ea3e6bcf..199b106f8cd0bbda17534ebafedcb462
        "devtools/protocol/webauthn_handler.cc",
        "devtools/protocol/webauthn_handler.h",
        "host_zoom_level_context.cc",
-@@ -2492,7 +2496,7 @@ jumbo_source_set("browser") {
+@@ -2492,7 +2497,7 @@ jumbo_source_set("browser") {
      ]
  
      deps += [ "//third_party/flac" ]
@@ -33,7 +41,7 @@ index 75fc9d9d182627029021655deb240c72ea3e6bcf..199b106f8cd0bbda17534ebafedcb462
  
    if (is_mac) {
      deps += [
-@@ -2580,12 +2584,16 @@ jumbo_source_set("browser") {
+@@ -2580,12 +2585,16 @@ jumbo_source_set("browser") {
      ]
    }
  
