@@ -10,17 +10,21 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_appearance_page/super_referral.m.js'
 
+const stringId = 'superReferralThemeName'
+
 RegisterPolymerTemplateModifications({
   'settings-appearance-page': (templateContent) => {
     // W/o super referral, we don't need to themes link option with themes sub
     // page.
-    if (!loadTimeloadTimeData.getString('superReferralThemeName') === '')
+    if (!loadTimeData.valueExists(stringId) ||
+        loadTimeData.getString(stringId) === '')
       return
 
     // Routes
     const r = Router.getInstance().routes_
     if (!r.APPEARANCE) {
       console.error('[Brave Settings Overrides] Routes: could not find APPEARANCE page')
+      return
     }
     r.THEMES = r.APPEARANCE.createChild('/themes');
     // Hide chromium's theme section. It's replaced with our themes page.

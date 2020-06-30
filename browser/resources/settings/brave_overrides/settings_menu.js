@@ -6,9 +6,13 @@
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {RegisterStyleOverride, RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {loadTimeData} from '../i18n_setup.js'
+import '../brave_icons.m.js'
 
-function createMenuElement (title, href, iconName) {
+function createMenuElement (title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
+  if (pageVisibilitySection) {
+    menuEl.setAttribute('hidden', `[[!pageVisibility.${pageVisibilitySection}]]`)
+  }
   menuEl.href = href
   menuEl.innerHTML = `
     <iron-icon icon="${iconName}"></iron-icon>
@@ -151,46 +155,66 @@ RegisterPolymerTemplateModifications({
     advancedToggle.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
-    const getStartedEl = createMenuElement(loadTimeData.getString('braveGetStartedTitle'), '/getStarted', 'brave_settings:get-started')
+    const getStartedEl = createMenuElement(
+      loadTimeData.getString('braveGetStartedTitle'),
+      '/getStarted',
+      'brave_settings:get-started',
+      'getStarted'
+    )
     peopleEl.insertAdjacentElement('afterend', getStartedEl)
-    // Remove People item
-    peopleEl.remove()
     // Move Appearance item
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
     // Add New Tab item
-    const newTabEl = createMenuElement(loadTimeData.getString('braveNewTab'), '/newTab', 'brave_settings:new-tab')
+    const newTabEl = createMenuElement(
+      loadTimeData.getString('braveNewTab'),
+      '/newTab',
+      'brave_settings:new-tab',
+      'newTab'
+    )
     appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Sync and Help Tips item
-    const helpTipsEl = createMenuElement(loadTimeData.getString('braveHelpTips'), '/braveHelpTips', 'brave_settings:help')
-    if (loadTimeData.getBoolean('isSyncDisabled')) {
-      newTabEl.insertAdjacentElement('afterend', helpTipsEl)
-    } else {
-      const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
-      newTabEl.insertAdjacentElement('afterend', syncEl)
-      syncEl.insertAdjacentElement('afterend', helpTipsEl)
-    }
+    const helpTipsEl = createMenuElement(
+      loadTimeData.getString('braveHelpTips'),
+      '/braveHelpTips',
+      'brave_settings:help',
+      'braveHelpTips',
+    )
+    const syncEl = createMenuElement(
+      loadTimeData.getString('braveSync'),
+      '/braveSync',
+      'brave_settings:sync',
+      'braveSync',
+    )
+    newTabEl.insertAdjacentElement('afterend', syncEl)
+    syncEl.insertAdjacentElement('afterend', helpTipsEl)
     // Add Shields item
-    const shieldsEl = createMenuElement(loadTimeData.getString('braveShieldsTitle'), '/shields',  'brave_settings:shields')
+    const shieldsEl = createMenuElement(
+      loadTimeData.getString('braveShieldsTitle'),
+      '/shields',
+      'brave_settings:shields',
+      'shields',
+    )
     helpTipsEl.insertAdjacentElement('afterend', shieldsEl)
     // Add Embed Blocking item
-    const embedEl = createMenuElement(loadTimeData.getString('socialBlocking'), '/socialBlocking', 'brave_settings:social-permissions')
+    const embedEl = createMenuElement(
+      loadTimeData.getString('socialBlocking'),
+      '/socialBlocking',
+      'brave_settings:social-permissions',
+      'socialBlocking',
+    )
     shieldsEl.insertAdjacentElement('afterend', embedEl)
     // Move search item
     const searchEl = getMenuElement(templateContent, '/search')
     embedEl.insertAdjacentElement('afterend', searchEl)
     // Add Extensions item
-    const extensionEl = createMenuElement(loadTimeData.getString('braveDefaultExtensions'), '/extensions', 'brave_settings:extensions')
+    const extensionEl = createMenuElement(
+      loadTimeData.getString('braveDefaultExtensions'),
+      '/extensions',
+      'brave_settings:extensions',
+      'extensions',
+    )
     searchEl.insertAdjacentElement('afterend', extensionEl)
-    // Remove default Browser
-    const defaultBrowserEl = getMenuElement(templateContent, '/defaultBrowser')
-    defaultBrowserEl.remove()
-    // Remove Startup
-    const startupEl = getMenuElement(templateContent, '/onStartup')
-    startupEl.remove()
-    // Remove Accessibility :-(
-    const a11yEl = getMenuElement(templateContent, '/accessibility')
-    a11yEl.remove()
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
@@ -201,6 +225,9 @@ RegisterPolymerTemplateModifications({
     // Move helptips to advanced
     const printingEl = getMenuElement(templateContent, '/printing')
     printingEl.insertAdjacentElement('afterend', helpTipsEl)
+    // Allow Accessibility to be removed :-(
+    const a11yEl = getMenuElement(templateContent, '/accessibility')
+    a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
     // Remove extensions link
     const extensionsLinkEl = templateContent.querySelector('#extensionsLink')
     if (!extensionsLinkEl) {
@@ -210,7 +237,7 @@ RegisterPolymerTemplateModifications({
     // Add version number to 'about' link
     const aboutEl = templateContent.querySelector('#about-menu')
     if (!aboutEl) {
-      console.error('[Brave Settings Overrides] Could not find about-menun element')
+      console.error('[Brave Settings Overrides] Could not find about-menu element')
     }
     const aboutTitleContent = aboutEl.innerHTML
     aboutEl.innerHTML = `
