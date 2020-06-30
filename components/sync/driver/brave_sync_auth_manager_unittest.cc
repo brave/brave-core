@@ -36,6 +36,10 @@ const char kAccessToken[] =
 const char kAccountId[] =
     "502042270C8145247ED70A18F87022A39886900AB36F2FFF655635DBE516765E";
 
+const char kAccountEmail[] =
+  "502042270C8145247ED70A18F87022A3 "
+  "9886900AB36F2FFF655635DBE516765E @brave.com";
+
 class BraveSyncAuthManagerTest : public testing::Test {
  protected:
   using AccountStateChangedCallback =
@@ -105,7 +109,7 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
             CoreAccountId::FromString(kAccountId));
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.email,
-            "sync@brave.com");
+            kAccountEmail);
 }
 
 TEST_F(BraveSyncAuthManagerTest, Reset) {
