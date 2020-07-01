@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
+#include "brave/browser/android/brave_shields_content_settings.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "chrome/browser/android/tab_android.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -23,10 +25,10 @@ content::WebContents* GetWebContents(int render_process_id,
                                      int render_frame_id,
                                      int frame_tree_node_id) {
   content::WebContents* web_contents =
-      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+    content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   if (!web_contents) {
     content::RenderFrameHost* rfh =
-        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
+      content::RenderFrameHost::FromID(render_process_id, render_frame_id);
     if (!rfh) {
       return nullptr;
     }
@@ -38,47 +40,47 @@ content::WebContents* GetWebContents(int render_process_id,
 }  // namespace
 
 PerfPredictorTabHelper::PerfPredictorTabHelper(
-    content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>(
-          NamedThirdPartyRegistryFactory::GetForBrowserContext(
-              web_contents->GetBrowserContext()))) {
+  content::WebContents* web_contents)
+  : WebContentsObserver(web_contents),
+    bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>(
+                           NamedThirdPartyRegistryFactory::GetForBrowserContext(
+                             web_contents->GetBrowserContext()))) {
   if (web_contents->GetBrowserContext()->IsOffTheRecord())
     return;
 
   bandwidth_tracker_ = std::make_unique<P3ABandwidthSavingsTracker>(
-      user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));
+                         user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));
 }
 
 PerfPredictorTabHelper::~PerfPredictorTabHelper() = default;
 
 void PerfPredictorTabHelper::OnPageLoadTimingUpdated(
-    const page_load_metrics::mojom::PageLoadTiming& timing) {
+  const page_load_metrics::mojom::PageLoadTiming& timing) {
   bandwidth_predictor_->OnPageLoadTimingUpdated(timing);
 }
 
 // static
 void PerfPredictorTabHelper::RegisterProfilePrefs(
-    PrefRegistrySimple* registry) {
+  PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kBandwidthSavedBytes, 0);
 }
 
 // static
 void PerfPredictorTabHelper::DispatchBlockedEvent(
-    const std::string& subresource,
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
+  const std::string& subresource,
+  int render_process_id,
+  int render_frame_id,
+  int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   content::WebContents* web_contents =
-      GetWebContents(render_process_id, render_frame_id, frame_tree_node_id);
+    GetWebContents(render_process_id, render_frame_id, frame_tree_node_id);
   if (!web_contents)
     return;
 
   PerfPredictorTabHelper* blocking_observer =
-      brave_perf_predictor::PerfPredictorTabHelper::FromWebContents(
-          web_contents);
+    brave_perf_predictor::PerfPredictorTabHelper::FromWebContents(
+      web_contents);
   if (blocking_observer) {
     blocking_observer->OnBlockedSubresource(subresource);
   }
@@ -87,7 +89,7 @@ void PerfPredictorTabHelper::DispatchBlockedEvent(
 void PerfPredictorTabHelper::RecordSavings() {
   if (web_contents()) {
     const uint64_t savings =
-        static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
+      static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
     bandwidth_predictor_->Reset();
     VLOG(3) << "Saving computed bw saving = " << savings;
     if (savings > 0) {
@@ -99,22 +101,31 @@ void PerfPredictorTabHelper::RecordSavings() {
       PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
       if (prefs)
         prefs->SetUint64(
-            prefs::kBandwidthSavedBytes,
-            prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
+          prefs::kBandwidthSavedBytes,
+          prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
 
-      if (bandwidth_tracker_)
+      if (bandwidth_tracker_) {
         bandwidth_tracker_->RecordSavings(savings);
+        int tabId = 0;
+        TabAndroid* tab = TabAndroid::FromWebContents(web_contents());
+        DCHECK(tab);
+        if (tab) {
+          tabId = tab->GetAndroidId();
+        }
+        // LOG(ERROR) << "NTP" << "Tab id : " << tabId;
+        chrome::android::BraveShieldsContentSettings::DispatchBlockedEvent(tabId, "data_saved", std::to_string(savings));
+      }
     }
   }
 }
 
 void PerfPredictorTabHelper::OnBlockedSubresource(
-    const std::string& subresource) {
+  const std::string& subresource) {
   bandwidth_predictor_->OnSubresourceBlocked(subresource);
 }
 
 void PerfPredictorTabHelper::DidStartNavigation(
-    content::NavigationHandle* handle) {
+  content::NavigationHandle* handle) {
   if (!handle || !handle->IsInMainFrame() || handle->IsDownload())
     return;
   // Gather prediction of the _previous_ navigation
@@ -123,7 +134,7 @@ void PerfPredictorTabHelper::DidStartNavigation(
 }
 
 void PerfPredictorTabHelper::DidFinishNavigation(
-    content::NavigationHandle* handle) {
+  content::NavigationHandle* handle) {
   if (!handle || !handle->IsInMainFrame() || !handle->HasCommitted() ||
       handle->IsDownload())
     return;
@@ -134,12 +145,12 @@ void PerfPredictorTabHelper::DidFinishNavigation(
 }
 
 void PerfPredictorTabHelper::ResourceLoadComplete(
-    content::RenderFrameHost* render_frame_host,
-    const content::GlobalRequestID& request_id,
-    const blink::mojom::ResourceLoadInfo& resource_load_info) {
+  content::RenderFrameHost* render_frame_host,
+  const content::GlobalRequestID& request_id,
+  const blink::mojom::ResourceLoadInfo& resource_load_info) {
   if (render_frame_host)
     bandwidth_predictor_->OnResourceLoadComplete(web_contents()->GetURL(),
-                                                 resource_load_info);
+        resource_load_info);
 }
 
 void PerfPredictorTabHelper::DidAttachInterstitialPage() {

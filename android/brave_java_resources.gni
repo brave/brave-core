@@ -71,6 +71,7 @@ brave_java_resources = [
   "java/res/drawable/ic_adsblocked.xml",
   "java/res/drawable/ic_datasaved.xml",
   "java/res/drawable/ic_timesaved.xml",
+  "java/res/drawable/ic_stats_icon.xml",
   "java/res/drawable-hdpi/check.png",
   "java/res/drawable-hdpi/btn_bookmark.png",
   "java/res/drawable-hdpi/arrow_forward.png",

@@ -183,8 +183,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
       @Override
       public void blockEvent(int tabId, String block_type, String subresource) {
-        mBraveShieldsHandler.addStat(tabId, block_type, subresource);
         Tab currentTab = getToolbarDataProvider().getTab();
+        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_DATA_SAVED)) {
+          tabId = currentTab.getId();
+        }
+        Log.e("NTP", "Id : "+tabId);
+        mBraveShieldsHandler.addStat(tabId, block_type, subresource);
         if (currentTab == null || currentTab.getId() != tabId) {
           return;
         }
@@ -302,10 +306,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       protected Void doInBackground() {
         try {
           int adsTrackersBlockedCount = mBraveShieldsHandler.getAdsTackersBlockedCount(tab.getId());
+          long dataSaved = mBraveShieldsHandler.getDataSaved(tab.getId());
           DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm", Locale.getDefault());
           String timestamp = df.format(Calendar.getInstance().getTime());
           URL urlObject = new URL(url);
-          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), timestamp, adsTrackersBlockedCount, 0, adsTrackersBlockedCount * MILLISECONDS_PER_ITEM);
+          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), timestamp, adsTrackersBlockedCount, dataSaved, adsTrackersBlockedCount * MILLISECONDS_PER_ITEM);
           mDatabaseHelper.insertStats(braveStatsTable);
         } catch (Exception e) {
           // Do nothing if url is invalid.
@@ -320,7 +325,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         if (isCancelled()) return;
 
         for (BraveStatsTable braveStatsTable : mDatabaseHelper.getAllStats()) {
-          Log.e("NTP", braveStatsTable.getUrl() + " : " + braveStatsTable.getAdsBlockedTrackersBlocked());
+          Log.e("NTP", braveStatsTable.getUrl() + " : data saved = " + braveStatsTable.getDataSaved() + " adsTrackersBlockedCount = "+ braveStatsTable.getAdsBlockedTrackersBlocked());
         }
       }
     } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
