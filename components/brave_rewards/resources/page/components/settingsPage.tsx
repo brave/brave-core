@@ -240,6 +240,18 @@ class SettingsPage extends React.Component<Props, State> {
       )
     }
 
+    if (ui.modalRedirect === 'batLimit') {
+      return (
+        <ModalRedirect
+          id={'redirect-modal-bat-limit'}
+          titleText={getLocale('redirectModalBatLimitTitle')}
+          errorText={{ __html: getLocale('redirectModalBatLimitText') }}
+          buttonText={getLocale('redirectModalClose')}
+          onClick={this.actions.hideRedirectModal}
+        />
+      )
+    }
+
     if (ui.modalRedirect === 'error') {
       return (
         <ModalRedirect

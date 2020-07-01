@@ -387,3 +387,32 @@ export const StyledLink = styled<{}, 'a'>('a')`
   display: inline-block;
   cursor: pointer;
 `
+
+export const LoginMessage = styled<{}, 'div'>('div')`
+  position: absolute;
+  background: ${palette.white};
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 6px;
+  width: 95%;
+  box-shadow: 0 0 12px 0 rgba(12, 13, 33, 0.44);
+  z-index: 5;
+`
+
+export const LoginMessageText = styled<{}, 'div'>('div')`
+  margin: 0;
+  padding: 15px;
+  line-height: 1.3;
+`
+
+export const LoginMessageButtons = styled<{}, 'div'>('div')`
+  display: flex;
+  margin: 0 0 15px;
+  justify-content: center;
+
+  > button {
+    margin: 0 5px;
+  }
+`

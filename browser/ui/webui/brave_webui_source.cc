@@ -411,6 +411,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },
         { "redirectModalClose", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE },
         { "redirectModalErrorWallet", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET },     // NOLINT
+        { "redirectModalBatLimitTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE },     // NOLINT
+        { "redirectModalBatLimitText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT },     // NOLINT
 
         { "click",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK },
         { "dismiss",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS },
@@ -510,6 +512,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "import", IDS_BRAVE_UI_IMPORT },
         { "includeInAuto", IDS_BRAVE_UI_INCLUDE_IN_AUTO },
         { "learnMore", IDS_BRAVE_UI_LEARN_MORE },
+        { "login", IDS_BRAVE_UI_LOGIN },
+        { "loginMessageTitle", IDS_BRAVE_UI_LOGIN_MESSAGE_TITLE },
+        { "loginMessageText", IDS_BRAVE_UI_LOGIN_MESSAGE_TEXT },
         { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
         { "manageWallet", IDS_BRAVE_UI_MANAGE_WALLET },
         { "markAsInappropriate", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE },
