@@ -109,7 +109,9 @@ class Contribution {
       const ledger::Result result,
       const uint64_t reconcile_stamp);
 
-  void ContributionCompletedSaved(const ledger::Result result);
+  void ContributionCompletedSaved(
+      const ledger::Result result,
+      const std::string& contribution_id);
 
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
 
@@ -173,7 +175,7 @@ class Contribution {
 
   void OnMarkUnblindedTokensAsSpendable(
       const ledger::Result result,
-      const std::string& contribution_string);
+      const std::string& contribution_id);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;

@@ -5,6 +5,7 @@
 module ledger.mojom;
 
 enum ContributionStep {
+  STEP_RETRY_COUNT = -7,
   STEP_AC_OFF = -6,
   STEP_REWARDS_OFF = -5,
   STEP_AC_TABLE_EMPTY = -4,
