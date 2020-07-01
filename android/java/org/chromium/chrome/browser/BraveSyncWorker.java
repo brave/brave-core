@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.chromium.base.Log;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
@@ -50,8 +51,8 @@ public class BraveSyncWorker {
         }
     }
 
-    public BraveSyncWorker(Context context) {
-        mContext = context;
+    public BraveSyncWorker() {
+        mContext = ContextUtils.getApplicationContext();
         Init();
         (new MigrationFromV1()).MigrateFromSyncV1();
     }

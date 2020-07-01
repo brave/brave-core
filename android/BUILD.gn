@@ -1,4 +1,5 @@
 import("//build/config/android/rules.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 
 declare_args() {
   brave_android_developer_options_code = ""
@@ -13,5 +14,8 @@ java_cpp_enum("brave_android_java_enums_srcjar") {
 java_cpp_template("brave_config_java") {
   package_path = "org/chromium/chrome/browser"
   sources = [ "//brave/build/android/java/templates/BraveConfig.template" ]
-  defines = [ "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"" ]
+  defines = [
+    "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"",
+    "BRAVE_ANDROID_SYNC_ENABLED=$enable_brave_sync",
+  ]
 }
