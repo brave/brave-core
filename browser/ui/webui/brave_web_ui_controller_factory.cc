@@ -11,7 +11,6 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -24,6 +23,7 @@
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #endif
@@ -90,9 +90,9 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
     return new BraveSettingsUI(web_ui, url.host());
-#endif  // !defined(OS_ANDROID)
   } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
+#endif  // !defined(OS_ANDROID)
   }
   return nullptr;
 }
