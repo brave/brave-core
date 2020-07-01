@@ -36,6 +36,7 @@ class AdBlockRegionalService : public AdBlockBaseService {
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
+  void OnResourcesFileDataReady(const std::string& resources);
 
  private:
   friend class ::AdBlockServiceTest;
@@ -49,6 +50,7 @@ class AdBlockRegionalService : public AdBlockBaseService {
   std::string uuid_;
   std::string title_;
 
+  base::WeakPtrFactory<AdBlockRegionalService> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalService);
 };
 

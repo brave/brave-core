@@ -18,7 +18,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
@@ -69,6 +71,21 @@ void AdBlockRegionalService::OnComponentReady(
       install_dir.AppendASCII(std::string("rs-") + uuid_)
           .AddExtension(FILE_PATH_LITERAL(".dat"));
   GetDATFileData(dat_file_path);
+  base::FilePath resources_file_path =
+      install_dir.AppendASCII(kAdBlockResourcesFilename);
+
+  base::PostTaskAndReplyWithResult(
+      GetTaskRunner().get(), FROM_HERE,
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                     resources_file_path),
+      base::BindOnce(&AdBlockRegionalService::OnResourcesFileDataReady,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void AdBlockRegionalService::OnResourcesFileDataReady(
+    const std::string& resources) {
+  g_brave_browser_process->ad_block_regional_service_manager()->AddResources(
+      resources);
 }
 
 // static
