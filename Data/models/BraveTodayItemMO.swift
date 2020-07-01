@@ -24,7 +24,7 @@ public struct BraveTodayFeedItemBridge {
 }
 
 public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
-    // What we get from the server
+    // Properties we get from server
     @NSManaged var category: String
     @NSManaged var publishTime: Date
     @NSManaged var url: String?
@@ -39,7 +39,8 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     @NSManaged var urlHash: String
     
     // Local properties
-    // TODO: Add them
+    @NSManaged var created: Date
+    @NSManaged var viewed: Bool
     
     // MARK: Public interface
     
@@ -52,6 +53,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     }
     
     public class func insert(from list: [BraveTodayFeedItemBridge]) {
+        // TODO: Use batch insert
         DataController.perform { context in
             list.forEach {
                 insertInternal(category: $0.category, publishTime: $0.publishTime, url: $0.url,
@@ -63,7 +65,9 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
         }
     }
     
-    public class func allItems(limit: Int = 0, requiresImage: Bool,
+    public class func allItems(except hashUrls: [String]? = nil,
+                               limit: Int = 0,
+                               requiresImage: Bool,
                                contentType: String? = nil,
                                publisherID: String? = nil) -> [BraveTodayFeedItemMO] {
         let publishTimeSort = NSSortDescriptor(key: #keyPath(publishTime), ascending: false)
@@ -73,9 +77,15 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             return all(sortDescriptors: [publishTimeSort], fetchLimit: limit) ?? []
         }
         
+        var viewedItemsPredicate: NSPredicate?
         var requiresImagePredicate: NSPredicate?
         var contentTypePredicate: NSPredicate?
         var publisherIDPredicate: NSPredicate?
+        
+        if let urlsToSkip = hashUrls {
+            let urlHashKeyPath = #keyPath(BraveTodayFeedItemMO.urlHash)
+            viewedItemsPredicate = NSPredicate(format: "NOT (\(urlHashKeyPath) IN %@)", urlsToSkip)
+        }
         
         if requiresImage {
             let imageUrlKeyPath = #keyPath(BraveTodayFeedItemMO.imageURL)
@@ -92,7 +102,8 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             publisherIDPredicate = NSPredicate(format: "\(publisherIDKeyPath) = %@", pubID)
         }
         
-        let predicates = [requiresImagePredicate, contentTypePredicate, publisherIDPredicate].compactMap { $0 }
+        let predicates = [requiresImagePredicate, contentTypePredicate,
+                          publisherIDPredicate, viewedItemsPredicate].compactMap { $0 }
         let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
         
         return all(where: compoundPredicate, sortDescriptors: [publishTimeSort], fetchLimit: limit) ?? []
@@ -142,10 +153,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
                               urlHash: String, context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
-            // TODO: Check if we have to pass entity or just context is enough
-            //BraveTodayFeedItemMO(entity:, insertInto:)
-            
-            let item = BraveTodayFeedItemMO(context: context)
+            let item = BraveTodayFeedItemMO(entity: entity(in: context), insertInto: context)
             
             item.category = category
             item.publishTime = publishTime
@@ -159,6 +167,11 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             item.publisherName = publisherName
             item.publisherLogo = publisherLogo
             item.urlHash = urlHash
+            item.created = Date()
         }
+    }
+    
+    private class func entity(in context: NSManagedObjectContext) -> NSEntityDescription {
+        NSEntityDescription.entity(forEntityName: "BraveTodayFeedItemMO", in: context)!
     }
 }
