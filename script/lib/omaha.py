@@ -108,6 +108,7 @@ def get_app_info(appinfo, args):
     appinfo['chrome_version'] = get_chrome_version()
     appinfo['platform_id'] = get_platform_id(appinfo['platform'])
     appinfo['preview'] = args.preview
+    appinfo['full'] = args.full
     if appinfo['platform'] in 'win32':
         # By default enable the win32 version on upload
         appinfo['is_enabled'] = True

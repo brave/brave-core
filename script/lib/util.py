@@ -251,49 +251,28 @@ def get_platform():
     return PLATFORM
 
 
-def omaha_channel(platform, arch, preview):
+def omaha_channel(platform, arch, preview, full=False):
     if platform == 'darwin':
         if preview:
             if release_channel() in ['nightly']:
-                return 'test-nite'
+                chan = 'test-nite'
             if release_channel() in ['beta']:
-                return 'test-beta'
+                chan = 'test-beta'
             elif release_channel() in ['dev']:
-                return 'test-dev'
+                chan = 'test-dev'
             elif release_channel() in ['release']:
-                return 'test'
+                chan = 'test'
         else:
-            return release_channel() if release_channel() not in 'release' else 'stable'
+            chan = 'stable' if release_channel() in ['release'] else release_channel()
     elif platform == 'win32':
-        if arch in 'ia32':
-            if preview:
-                arch = '86'
-            else:
-                arch = 'x86'
-        elif arch in 'x64':
-            if preview:
-                arch = '64'
-        if release_channel() in ['nightly']:
-            if preview:
-                chan = '{}-{}-test'.format(arch, release_channel()[0:2])
-            else:
-                chan = '{}-{}'.format(arch, release_channel()[0:2])
-            return chan
-        if release_channel() in ['beta']:
-            if preview:
-                chan = '{}-{}-test'.format(arch, release_channel()[0:2])
-            else:
-                chan = '{}-{}'.format(arch, release_channel()[0:2])
-            return chan
-        elif release_channel() in ['dev']:
-            if preview:
+        arch = ('86' if preview else 'x86') if (arch in ['ia32']) else ('64' if preview else 'x64')
+        if release_channel() in ['nightly', 'beta']:
+            chan = '{}-{}{}'.format(arch, release_channel()[0:2], '-test' if preview else '')
+        elif preview:
+            if release_channel() in ['dev']:
                 chan = '{}-dv-test'.format(arch)
-            else:
-                chan = '{}-{}'.format(arch, release_channel()[0:3])
-            return chan
-        elif release_channel() in ['release']:
-            if preview:
+            elif release_channel() in ['release']:
                 chan = '{}-r-test'.format(arch)
-            else:
-                chan = '{}-{}'.format(arch, release_channel()[0:3])
-            return chan
+        else:
+            chan = '{}-{}'.format(arch, release_channel()[0:3])
+    return (chan + '-full') if full else chan
