@@ -27,9 +27,10 @@
             <fetchIndexElement property="visits" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="BraveTodayFeedItemMO" representedClassName="BraveTodayFeedItemMO" syncable="YES">
+    <entity name="BraveTodayFeedItemMO" representedClassName=".BraveTodayFeedItemMO" syncable="YES">
         <attribute name="category" attributeType="String"/>
         <attribute name="contentType" attributeType="String"/>
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="domain" optional="YES" attributeType="String"/>
         <attribute name="imageURL" optional="YES" attributeType="String"/>
         <attribute name="itemDescription" attributeType="String"/>
@@ -40,6 +41,7 @@
         <attribute name="title" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
         <attribute name="urlHash" attributeType="String"/>
+        <attribute name="viewed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>
     <entity name="Device" representedClassName=".Device" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -105,7 +107,7 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="0" positionY="-450" width="155" height="285"/>
-        <element name="BraveTodayFeedItemMO" positionX="-270" positionY="-288" width="128" height="223"/>
+        <element name="BraveTodayFeedItemMO" positionX="-270" positionY="-288" width="128" height="253"/>
         <element name="Device" positionX="-252" positionY="-207" width="128" height="150"/>
         <element name="Domain" positionX="225" positionY="-321" width="128" height="240"/>
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="120"/>

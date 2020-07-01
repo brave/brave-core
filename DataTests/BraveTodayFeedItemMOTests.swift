@@ -15,7 +15,51 @@ class BraveTodayFeedItemMOTests: CoreDataTestCase {
     private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
         return NSEntityDescription.entity(forEntityName: String(describing: BraveTodayFeedItemMO.self), in: context)!
     }
-
     
+    func testSimpleInsert() {
+        XCTAssertEqual(BraveTodayFeedItemMO.all()!.count, 0)
+        createAndWait()
+        XCTAssertEqual(BraveTodayFeedItemMO.all()!.count, 1)
+    }
 
+    // MARK: - Helpers
+    
+    @discardableResult
+    private func createAndWait(category: String = "test",
+                               publishTimeString: String = "2020-07-01 23:59:59",
+                               url: String? = nil,
+                               domain: String? = nil,
+                               imageURL: String? = nil,
+                               title: String = "Brave title",
+                               itemDescription: String = "Description",
+                               contentType: String = "article",
+                               publisherID: String = "Brave Pub",
+                               publisherName: String = "Brave",
+                               publisherLogo: String? = nil,
+                               urlHash: String = UUID().uuidString) -> BraveTodayFeedItemMO {
+        
+        let publishTime = dateFrom(string: publishTimeString)
+        
+        backgroundSaveAndWaitForExpectation {
+            BraveTodayFeedItemMO
+                .insertInternal(category: category, publishTime: publishTime, url: url, domain: domain,
+                                imageURL: imageURL, title: title, itemDescription: itemDescription,
+                                contentType: contentType, publisherID: publisherID,
+                                publisherName: publisherName, publisherLogo: publisherLogo,
+                                urlHash: urlHash)
+            
+        }
+        
+        let sort = NSSortDescriptor(key: "created", ascending: false)
+        
+        return BraveTodayFeedItemMO.first(sortDescriptors: [sort])!
+    }
+    
+    private func dateFrom(string: String, format: String? = nil) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format ?? "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")!
+        
+        return dateFormatter.date(from: string)!
+    }
 }
