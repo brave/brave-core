@@ -1,6 +1,5 @@
 #include "third_party/libaddressinput/chromium/chrome_metadata_source.h"
 
-#include "base/message_loop/message_loop.h"
 #include "base/run_loop.h"
 #include "base/test/bind_test_util.h"
 #include "base/threading/thread_task_runner_handle.h"
@@ -39,7 +38,6 @@ class ChromeMetadataSourceTest : public testing::Test {
   }
 
  protected:
-  base::MessageLoop loop_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> test_shared_loader_factory_;
 };
