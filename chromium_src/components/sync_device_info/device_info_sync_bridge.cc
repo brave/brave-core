@@ -14,6 +14,7 @@ void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
   std::unique_ptr<WriteBatch> batch = store_->CreateWriteBatch();
   change_processor()->Delete(client_id, batch->GetMetadataChangeList());
   DeleteSpecifics(client_id, batch.get());
+  batch->GetMetadataChangeList()->ClearMetadata(client_id);
   CommitAndNotify(std::move(batch), /*should_notify=*/true);
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
