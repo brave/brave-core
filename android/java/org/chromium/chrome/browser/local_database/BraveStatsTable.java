@@ -33,10 +33,10 @@ public class BraveStatsTable {
     private String mDomain;
     private String mTimestamp;
     private int mAdsBlockedTrackersBlocked;
-    private int mDataSaved;
+    private long mDataSaved;
     private double mTimeSaved;
 
-    public BraveStatsTable(String url, String domain, String timestamp, int adsBlockedTrackerBlocked, int dataSaved, double timeSaved) {
+    public BraveStatsTable(String url, String domain, String timestamp, int adsBlockedTrackerBlocked, long dataSaved, double timeSaved) {
         mUrl = url;
         mDomain = domain;
         mTimestamp = timestamp;
@@ -61,7 +61,7 @@ public class BraveStatsTable {
         return mAdsBlockedTrackersBlocked;
     }
 
-    public int getDataSaved() {
+    public long getDataSaved() {
         return mDataSaved;
     }
 
