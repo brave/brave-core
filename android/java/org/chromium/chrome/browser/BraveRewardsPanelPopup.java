@@ -40,7 +40,6 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.widget.Toast;
 import android.view.MotionEvent;

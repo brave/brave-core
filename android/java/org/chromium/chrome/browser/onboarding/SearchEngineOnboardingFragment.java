@@ -19,7 +19,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchEngineEnum;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -32,12 +31,7 @@ import java.util.List;
 public class SearchEngineOnboardingFragment extends Fragment {
     private RadioGroup radioGroup;
 
-    private Button btnSkip;
-    private Button btnNext;
-
-    private OnViewPagerAction onViewPagerAction;
-
-    private boolean fromSettings;
+    private Button btnSave;
 
     private TemplateUrl selectedSearchEngine;
 
@@ -47,7 +41,7 @@ public class SearchEngineOnboardingFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_search_engine_onboarding, container, false);
 
@@ -64,44 +58,41 @@ public class SearchEngineOnboardingFragment extends Fragment {
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.get();
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
-                templateUrlService.getDefaultSearchEngineTemplateUrl();
+            templateUrlService.getDefaultSearchEngineTemplateUrl();
 
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
                     && OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName())
-                            != null) {
+                    != null) {
                 SearchEngineEnum searchEngineEnum =
-                        OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
+                    OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 
                 RadioButton rdBtn = new RadioButton(getActivity());
                 rdBtn.setId(searchEngineEnum.getId());
                 RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.MATCH_PARENT, dpToPx(getActivity(), 56));
+                    RadioGroup.LayoutParams.MATCH_PARENT, dpToPx(getActivity(), 56));
                 rdBtn.setLayoutParams(params);
                 rdBtn.setTextSize(18);
                 rdBtn.setButtonDrawable(null);
                 rdBtn.setPadding(dpToPx(getActivity(), 30), 0, 0, 0);
                 rdBtn.setTextColor(getResources().getColor(R.color.onboarding_text_color));
                 rdBtn.setBackgroundDrawable(
-                        getResources().getDrawable(R.drawable.radiobutton_background));
+                    getResources().getDrawable(R.drawable.radiobutton_background));
                 rdBtn.setText(templateUrl.getShortName());
                 rdBtn.setCompoundDrawablesWithIntrinsicBounds(
-                        getResources().getDrawable(searchEngineEnum.getIcon()), null, null, null);
+                    getResources().getDrawable(searchEngineEnum.getIcon()), null, null, null);
                 rdBtn.setCompoundDrawablePadding(dpToPx(getActivity(), 16));
-                if (fromSettings) {
-                    rdBtn.setClickable(false);
-                }
                 radioGroup.addView(rdBtn);
             }
         }
 
         if (defaultSearchEngineTemplateUrl != null
                 && OnboardingPrefManager.searchEngineMap.get(
-                           defaultSearchEngineTemplateUrl.getShortName())
-                        != null)
+                    defaultSearchEngineTemplateUrl.getShortName())
+                != null)
             radioGroup.check(OnboardingPrefManager.searchEngineMap
-                                     .get(defaultSearchEngineTemplateUrl.getShortName())
-                                     .getId());
+                             .get(defaultSearchEngineTemplateUrl.getShortName())
+                             .getId());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -112,45 +103,24 @@ public class SearchEngineOnboardingFragment extends Fragment {
         });
     }
 
-    public void setOnViewPagerAction(OnViewPagerAction onViewPagerAction) {
-        this.onViewPagerAction = onViewPagerAction;
-    }
-
-    public void setFromSettings(boolean fromSettings) {
-        this.fromSettings = fromSettings;
-    }
-
     private void initializeViews(View root) {
         radioGroup = root.findViewById(R.id.radio_group);
 
-        btnSkip = root.findViewById(R.id.btn_skip);
-        btnNext = root.findViewById(R.id.btn_next);
+        btnSave = root.findViewById(R.id.btn_save);
     }
 
     private void setActions() {
-        btnSkip.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assert onViewPagerAction != null;
-                if (onViewPagerAction != null) onViewPagerAction.onSkip();
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!fromSettings) {
-                    if (selectedSearchEngine == null) {
-                        selectedSearchEngine = TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
-                    }
-                    if (selectedSearchEngine != null) {
-                        BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, false);
-                        BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, true);
-                    }
+                if (selectedSearchEngine == null) {
+                    selectedSearchEngine = TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
                 }
-
-                assert onViewPagerAction != null;
-                if (onViewPagerAction != null) onViewPagerAction.onNext();
+                if (selectedSearchEngine != null) {
+                    BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, false);
+                    BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, true);
+                }
+                getActivity().finish();
             }
         });
     }

@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.shields;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.view.Menu;
 import android.view.View;
 import android.graphics.Typeface;
 import android.text.SpannableString;
@@ -17,38 +16,26 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import android.widget.PopupMenu;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.view.ContextThemeWrapper;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
-import android.graphics.drawable.Drawable;
-import android.view.MenuItem;
 import android.view.LayoutInflater;
-import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.os.Build;
-import android.view.ViewGroup;
 import android.view.Surface;
 import android.widget.TextView;
 import android.widget.Switch;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.ImageView;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.animation.AnimatorListenerAdapter;
-import android.view.animation.TranslateAnimation;
 import android.graphics.Bitmap;
 
 import org.chromium.base.SysUtils;
@@ -66,7 +53,6 @@ import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -194,7 +180,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mIconFetcher = new BraveRewardsHelper();
+        mPopupWindow = showPopupMenu(anchorView, false);
 
+        updateValues(mTabId);
+    }
+
+    public PopupWindow showPopupMenu(View anchorView, boolean isTooltip) {
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
@@ -239,9 +230,13 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         LayoutInflater inflater = (LayoutInflater) anchorView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
 
-        setUpViews();
+        if (! isTooltip) {
+            mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
+            setUpViews();
+        } else {
+            mPopupView = inflater.inflate(R.layout.brave_shields_tooltip_layout, null);
+        }
 
         //Specify the length and width through constants
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -251,32 +246,32 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         boolean focusable = true;
 
         //Create a window with our parameters
-        mPopupWindow = new PopupWindow(mPopupView, width, height, focusable);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, focusable);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mPopupWindow.setElevation(20);
+            popupWindow.setElevation(20);
         }
         // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
         //Set the location of the window on the screen
-        mPopupWindow.showAsDropDown(anchorView, 0, 0);
-        mPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
-        mPopupWindow.setAnimationStyle(R.style.OverflowMenuAnim);
+        popupWindow.showAsDropDown(anchorView, 0, 0);
+        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
+        popupWindow.setAnimationStyle(R.style.OverflowMenuAnim);
 
         // Turn off window animations for low end devices, and on Android M, which has built-in menu
         // animations.
         if (SysUtils.isLowEndDevice() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mPopupWindow.setAnimationStyle(0);
+            popupWindow.setAnimationStyle(0);
         }
 
         Rect bgPadding = new Rect();
-        mPopupWindow.getBackground().getPadding(bgPadding);
+        popupWindow.getBackground().getPadding(bgPadding);
 
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
                          + bgPadding.left + bgPadding.right;
 
-        mPopupWindow.setWidth(popupWidth);
+        popupWindow.setWidth(popupWidth);
 
-        updateValues(mTabId);
+        return popupWindow;
     }
 
     public void updateHost(String host) {

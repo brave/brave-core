@@ -35,7 +35,7 @@ public class BravePrivateTabTest {
 
     @Before
     public void setUp() throws Exception {
-        OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
+        OnboardingPrefManager.getInstance().setOnboardingShown(false);
         mActivityTestRule.startMainActivityOnBlankPage();
     }
 

@@ -101,8 +101,8 @@
                 android:background="@android:color/transparent"
                 android:clickable="true"
                 android:drawableEnd="@drawable/chevron_right"
+                android:drawablePadding="4dp"
                 android:focusable="true"
-                android:text="@string/turn_on"
                 android:textColor="@color/onboarding_orange" />
         </FrameLayout>
 

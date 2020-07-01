@@ -9,7 +9,6 @@ import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
-import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.BraveUphold;
 
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
@@ -43,7 +42,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
      * and redirected to ExternalNavigationHandler.
      */
     public @OverrideUrlLoadingResult int clobberCurrentTabWithFallbackUrl(
-            String browserFallbackUrl, ExternalNavigationParams params) {
+        String browserFallbackUrl, ExternalNavigationParams params) {
         assert false;
         return OverrideUrlLoadingResult.OVERRIDE_WITH_CLOBBERING_TAB;
     }

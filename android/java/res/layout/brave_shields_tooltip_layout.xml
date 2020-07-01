@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_layout"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:padding="24dp"
+	android:background="@drawable/shields_tooltip_background">
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20sp"
+		android:singleLine="true"
+		android:ellipsize="end"
+		android:fontFamily="sans-serif"
+		android:layout_marginBottom="8dp"
+		android:text="@string/nice"
+		android:textColor="@android:color/white"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="16sp"
+		android:fontFamily="sans-serif"
+		android:layout_marginBottom="16dp"
+		android:text="@string/you_just_blocked"
+		android:textColor="@android:color/white"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="16sp"
+		android:fontFamily="sans-serif"
+		android:text="@string/take_a_look"
+		android:textColor="@android:color/white"/>
+
+</LinearLayout>

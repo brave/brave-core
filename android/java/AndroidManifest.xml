@@ -28,6 +28,10 @@
     android:name="org.chromium.chrome.browser.onboarding.OnboardingActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:screenOrientation="sensorPortrait"/>
+<activity
+    android:name="org.chromium.chrome.browser.onboarding.SearchActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:screenOrientation="sensorPortrait"/>
 
 <service android:name="org.chromium.chrome.browser.onboarding.BraveRewardsService"
     android:exported="false">

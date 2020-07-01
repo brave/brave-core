@@ -5,25 +5,17 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import androidx.preference.Preference;
 import android.util.DisplayMetrics;
-import android.widget.TextView;
 import android.os.Build;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -33,11 +25,8 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.search_engines.TemplateUrl;
-import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
-import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.HashMap;
 
@@ -74,7 +63,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
 
         overrideChromiumPreferences();
-        initWelcomeTourPreference();
         initRateBrave();
     }
 
@@ -195,35 +183,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         // Replace fragment.
         findPreference(PREF_PRIVACY).setFragment(BravePrivacySettings.class.getName());
         findPreference(PREF_HOMEPAGE).setFragment(BraveHomepageSettings.class.getName());
-    }
-
-    private void initWelcomeTourPreference() {
-        findPreference(PREF_WELCOME_TOUR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                final Context context = preference.getContext();
-                final TextView titleTextView = new TextView (context);
-                titleTextView.setText(context.getResources().getString(R.string.welcome_tour_dialog_text));
-                int padding = dp2px(20);
-                titleTextView.setPadding(padding, padding, padding, padding);
-                titleTextView.setTextSize(18);
-                titleTextView.setTextColor(context.getResources().getColor(R.color.default_icon_color_tint_list));
-                titleTextView.setTypeface(null, Typeface.BOLD);
-
-                AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.Theme_Chromium_AlertDialog)
-                    .setView(titleTextView)
-                    .setPositiveButton(R.string.continue_button, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            OnboardingPrefManager.getInstance().showOnboarding(context, true);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create();
-                alertDialog.show();
-                return true;
-            }
-        });
     }
 
     private void initRateBrave() {
