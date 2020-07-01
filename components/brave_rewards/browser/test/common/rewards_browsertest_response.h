@@ -57,6 +57,8 @@ class RewardsBrowserTestResponse {
   std::string promotion_claim_;
   std::string creds_tokens_;
   std::string creds_tokens_prod_;
+  std::string creds_tokens_sku_;
+  std::string creds_tokens_sku_prod_;
   std::string captcha_;
   std::string balance_;
   std::string parameters_;

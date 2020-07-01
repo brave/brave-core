@@ -61,6 +61,14 @@ void RewardsBrowserTestResponse::LoadMocks() {
       &creds_tokens_prod_));
 
   ASSERT_TRUE(base::ReadFileToString(
+      path.AppendASCII("creds_tokens_sku_resp.json"),
+      &creds_tokens_sku_));
+
+  ASSERT_TRUE(base::ReadFileToString(
+      path.AppendASCII("creds_tokens_sku_prod_resp.json"),
+      &creds_tokens_sku_prod_));
+
+  ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("parameters_resp.json"),
       &parameters_));
 
@@ -246,9 +254,9 @@ void RewardsBrowserTestResponse::Get(
     if (url.find("credentials") != std::string::npos) {
       if (method == 0) {
         #if defined(OFFICIAL_BUILD)
-          *response = creds_tokens_prod_;
+          *response = creds_tokens_sku_prod_;
         #else
-          *response = creds_tokens_;
+          *response = creds_tokens_sku_;
         #endif
 
         return;
