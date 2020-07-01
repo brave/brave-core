@@ -33,7 +33,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveHelper;
-import org.chromium.chrome.browser.BraveSyncWorker;
+import org.chromium.chrome.browser.BraveSyncWorkerHolder;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
@@ -97,9 +97,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
-
-    // Sync worker
-    public BraveSyncWorker mBraveSyncWorker;
 
     @Override
     public void onResumeWithNative() {
@@ -215,7 +212,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         Context app = ContextUtils.getApplicationContext();
         if (null != app && (this instanceof ChromeTabbedActivity)) {
-            mBraveSyncWorker = new BraveSyncWorker(app);
+            // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
+            BraveSyncWorkerHolder.get();
         }
 
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {

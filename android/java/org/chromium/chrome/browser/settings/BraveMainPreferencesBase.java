@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.os.Build;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
@@ -143,6 +144,11 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
             findPreference(MainSettings.PREF_DEVELOPER).setOrder(++order);
         }
         findPreference(PREF_ABOUT_CHROME).setOrder(++order);
+
+        // If gn flag enable_brave_sync is false, hide Sync pref
+        if (BraveConfig.SYNC_ENABLED == false) {
+          removePreferenceIfPresent(PREF_SYNC);
+        }
     }
 
     private void removePreferenceIfPresent(String key) {

@@ -7,6 +7,7 @@ import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/safetynet/java_sources.gni")
 
 brave_java_sources = [
@@ -19,7 +20,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveLaunchIntentDispatcher.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsBalance.java",
-  "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsDonationSentActivity.java",
@@ -30,6 +30,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsSiteBannerActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsVerifyWalletActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorkerHolder.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java",
@@ -101,7 +102,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStandardSearchEnginePreference.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/ClosingAllTabsClosesBravePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveRewardsDebugPreferences.java",
@@ -111,7 +111,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveSiteSettingsPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
@@ -121,7 +120,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBrowsingModeBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveSearchAccelerator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
-"../../brave/android/java/org/chromium/chrome/browser/ui/brave_tricks/checkbox_to_switch/CheckBoxPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ui/brave_tricks/checkbox_to_switch/CheckBoxPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
@@ -149,4 +148,12 @@ if (brave_rewards_enabled || enable_brave_referrals) {
 
 if (brave_ads_enabled) {
   brave_java_sources += brave_ads_java_sources
+}
+
+if (enable_brave_sync) {
+  brave_java_sources += [
+    "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
+    "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
+    "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
+  ]
 }
