@@ -8,6 +8,8 @@
 
 #include "../../../../../../../third_party/blink/renderer/core/dom/document.h"
 
+#include <random>
+
 #include "base/callback.h"
 
 using blink::Document;
@@ -46,6 +48,7 @@ class CORE_EXPORT BraveSessionCache final
       blink::LocalFrame* frame,
       scoped_refptr<blink::StaticBitmapImage> image_bitmap);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
+  std::mt19937_64 MakePseudoRandomGenerator();
 
  private:
   bool farbling_enabled_;
