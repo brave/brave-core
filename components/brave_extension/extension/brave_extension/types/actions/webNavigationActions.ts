@@ -8,11 +8,11 @@ interface OnBeforeNavigateReturn {
   type: types.ON_BEFORE_NAVIGATION,
   tabId: number,
   url: string,
-  isMainFrame: boolean
+  frameId: number
 }
 
 export interface OnBeforeNavigate {
-  (tabId: number, url: string, isMainFrame: boolean): OnBeforeNavigateReturn
+  (tabId: number, url: string, frameId: number): OnBeforeNavigateReturn
 }
 
 interface OnCommittedReturn {

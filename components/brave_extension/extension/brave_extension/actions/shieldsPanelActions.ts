@@ -158,6 +158,16 @@ export const cosmeticFilterRuleExceptions: actions.CosmeticFilterRuleExceptions 
   }
 }
 
+export const cosmeticFilterResourcesReady: actions.CosmeticFilterResourcesReady = (tabId, frameId, hide1pContent, resources) => {
+  return {
+    type: types.COSMETIC_FILTER_RESOURCES_READY,
+    tabId,
+    frameId,
+    hide1pContent,
+    resources
+  }
+}
+
 export const contentScriptsLoaded: actions.ContentScriptsLoaded = (tabId: number, frameId: number, url: string) => {
   return {
     type: types.CONTENT_SCRIPTS_LOADED,

@@ -306,6 +306,7 @@ describe('braveShieldsPanelReducer', () => {
         })).toEqual({
           ...state,
           currentWindowId: -1,
+          adblockCosmeticFilterResources: {},
           windows: {}
         })
     })

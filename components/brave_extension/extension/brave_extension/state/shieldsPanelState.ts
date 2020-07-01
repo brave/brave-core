@@ -123,6 +123,18 @@ export const saveCosmeticFilterRuleExceptions: shieldState.SaveCosmeticFilterRul
   return { ...state, tabs }
 }
 
+export const updateAdblockCosmeticFilterResource: shieldState.UpdateAdblockCosmeticFilterResource = (state, key, resource) => {
+  const adblockCosmeticFilterResources: shieldState.AdblockCosmeticFilterResources = { ...state.adblockCosmeticFilterResources }
+  adblockCosmeticFilterResources[key] = resource
+  return { ...state, adblockCosmeticFilterResources }
+}
+
+export const resetAdblockCosmeticFilterResource: shieldState.ResetAdblockCosmeticFilterResource = (state, key) => {
+  const adblockCosmeticFilterResources: shieldState.AdblockCosmeticFilterResources = { ...state.adblockCosmeticFilterResources }
+  delete adblockCosmeticFilterResources[key]
+  return { ...state, adblockCosmeticFilterResources }
+}
+
 export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0 } }

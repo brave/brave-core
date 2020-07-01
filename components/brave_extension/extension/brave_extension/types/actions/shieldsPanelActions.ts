@@ -4,6 +4,7 @@
 
 import * as types from '../constants/shieldsPanelTypes'
 import { BlockTypes, BlockOptions, BlockFPOptions, BlockJSOptions, BlockCookiesOptions } from '../other/blockTypes'
+import { UrlCosmeticResourcesType } from '../adblock/adblockTypes'
 
 export interface ShieldDetails {
   id: number
@@ -208,6 +209,18 @@ export interface ContentScriptsLoaded {
   (tabId: number, frameId: number, url: string): ContentScriptsLoadedReturn
 }
 
+interface CosmeticFilterResourcesReadyReturn {
+  type: types.COSMETIC_FILTER_RESOURCES_READY,
+  tabId: number,
+  frameId: number,
+  hide1pContent: boolean,
+  resources: UrlCosmeticResourcesType | undefined,
+}
+
+export interface CosmeticFilterResourcesReady {
+  (tabId: number, frameId: number, hide1pContent: boolean, resources: UrlCosmeticResourcesType | undefined): CosmeticFilterResourcesReadyReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -228,4 +241,5 @@ export type shieldPanelActions =
   ShieldsReadyReturn |
   GenerateClassIdStylesheetReturn |
   CosmeticFilterRuleExceptionsReturn |
+  CosmeticFilterResourcesReadyReturn |
   ContentScriptsLoadedReturn

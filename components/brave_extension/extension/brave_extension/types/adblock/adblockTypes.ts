@@ -7,6 +7,15 @@ export type BlockOptions = 'allow' | 'block'
 export type BlockFPOptions = 'allow' | 'block' | 'block_third_party'
 export type BlockCookiesOptions = 'allow' | 'block' | 'block_third_party'
 
+export interface UrlCosmeticResourcesType {
+  exceptions: string[],
+  style_selectors: { selector: Array<string> },
+  hide_selectors: Array<string>,
+  force_hide_selectors: Array<string>
+  injected_script: string,
+  generichide: boolean,
+}
+
 export interface CosmeticFilteringState {
   ruleExceptions: Array<string>
 }

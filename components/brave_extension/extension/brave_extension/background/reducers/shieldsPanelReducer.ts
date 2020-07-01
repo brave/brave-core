@@ -38,7 +38,10 @@ import {
 import { reloadTab } from '../api/tabsAPI'
 import {
   injectClassIdStylesheet,
+  getAdblockCosmeticFiltersKey,
+  applyAdblockCosmeticFiltersWithResources,
   applyAdblockCosmeticFilters,
+  fetchAdblockCosmeticFilters,
   applyCSSCosmeticFilters
 } from '../api/cosmeticFilterAPI'
 
@@ -53,6 +56,7 @@ export default function shieldsPanelReducer (
     settingsData: storageAPI.initialSettingsData,
     tabs: {},
     windows: {},
+    adblockCosmeticFilterResources: {},
     currentWindowId: -1
   },
   action: Actions
@@ -382,39 +386,73 @@ export default function shieldsPanelReducer (
         console.error('Active tab not found')
         break
       }
-      let message: { type: string, scriptlet: string, hideOptions?: { hide1pContent: boolean, generichide: boolean } } = {
-        type: 'cosmeticFilteringBackgroundReady',
-        scriptlet: action.scriptlet,
-        hideOptions: undefined
-      }
       if (action.frameId === 0) {
         // Non-scriptlet cosmetic filters are only applied on the top-level frame
         state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
-        message.hideOptions = {
-          hide1pContent: tabData.firstPartyCosmeticFiltering,
-          generichide: action.generichide
-        }
       }
-      chrome.tabs.sendMessage(action.tabId, message, {
-        frameId: action.frameId
-      })
       break
     }
     case shieldsPanelTypes.CONTENT_SCRIPTS_LOADED: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
+      const key = getAdblockCosmeticFiltersKey(action.tabId, action.frameId)
+      const adblockCosmeticFilterResource = state.adblockCosmeticFilterResources[key]
+      // This can happen if this background script didn't get before-navigation event before content script is loaded.
+      // I can see this at browser launching.
+      if (!adblockCosmeticFilterResource) {
+        Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
+          .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
+            if (doCosmeticBlocking) {
+              applyAdblockCosmeticFilters(action.tabId, action.frameId, action.url, hide1pContent)
+            }
+          })
+          .catch(() => {
+            console.error('Could not apply cosmetic blocking')
+          })
+      } else if (adblockCosmeticFilterResource.status === 'resource-requested') {
+        // If data is not yet cached, that data will be delivered when we receive it.
+        // I didn't see this case during the test. Just for preparation.
+        state = shieldsPanelState.updateAdblockCosmeticFilterResource(state, key, { status: 'content-script-loaded', hide1pContent: adblockCosmeticFilterResource.hide1pContent })
+      } else if (adblockCosmeticFilterResource.status === 'resource-ready') {
+        // Apply and remove cached data after use.
+        if (adblockCosmeticFilterResource.urlResources) {
+          applyAdblockCosmeticFiltersWithResources(action.tabId, action.frameId, adblockCosmeticFilterResource.hide1pContent, adblockCosmeticFilterResource.urlResources)
+        }
+        state = shieldsPanelState.resetAdblockCosmeticFilterResource(state, key)
       }
+      break
+    }
+    case webNavigationTypes.ON_BEFORE_NAVIGATION: {
+      const key = getAdblockCosmeticFiltersKey(action.tabId, action.frameId)
+      state = shieldsPanelState.updateAdblockCosmeticFilterResource(state, key, { status: 'resource-requested', hide1pContent: false })
+
       Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
         .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
           if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, action.frameId, action.url, hide1pContent)
+            fetchAdblockCosmeticFilters(action.url, action.tabId, action.frameId, hide1pContent)
           }
         })
         .catch(() => {
           console.error('Could not apply cosmetic blocking')
         })
+      break
+    }
+    case shieldsPanelTypes.COSMETIC_FILTER_RESOURCES_READY: {
+      const key = getAdblockCosmeticFiltersKey(action.tabId, action.frameId)
+      if (!action.resources) {
+        state = shieldsPanelState.resetAdblockCosmeticFilterResource(state, key)
+        break
+      }
+
+      const adblockCosmeticFilterResource = state.adblockCosmeticFilterResources[key]
+      if (adblockCosmeticFilterResource.status === 'resource-requested') {
+        state = shieldsPanelState.updateAdblockCosmeticFilterResource(state, key, { status: 'resource-ready', hide1pContent: action.hide1pContent, urlResources: action.resources })
+      } else if (adblockCosmeticFilterResource.status === 'content-script-loaded') {
+        // If content scripts is loaded before background scripts gets data from browser process,
+        // Apply data right now. I didn't see this case at all. Just prepared.
+        if (action.resources) {
+          applyAdblockCosmeticFiltersWithResources(action.tabId, action.frameId, action.hide1pContent, action.resources)
+        }
+        state = shieldsPanelState.resetAdblockCosmeticFilterResource(state, key)
+      }
       break
     }
   }

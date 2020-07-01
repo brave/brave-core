@@ -7,8 +7,7 @@ import actions from '../actions/webNavigationActions'
 import settingsActions from '../actions/settingsActions'
 
 chrome.webNavigation.onBeforeNavigate.addListener(function ({ tabId, url, frameId }: chrome.webNavigation.WebNavigationParentedCallbackDetails) {
-  const isMainFrame: boolean = frameId === 0
-  actions.onBeforeNavigate(tabId, url, isMainFrame)
+  actions.onBeforeNavigate(tabId, url, frameId)
 })
 
 let shouldRequestSettingsData = true

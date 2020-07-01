@@ -10,12 +10,12 @@ describe('webNavigationActions', () => {
   it('onBeforeNavigate', () => {
     const tabId = 1
     const url = 'https://www.brave.com'
-    const isMainFrame = true
-    expect(actions.onBeforeNavigate(tabId, url, isMainFrame)).toEqual({
+    const frameId = 0
+    expect(actions.onBeforeNavigate(tabId, url, frameId)).toEqual({
       type: types.ON_BEFORE_NAVIGATION,
       url,
       tabId,
-      isMainFrame
+      frameId
     })
   })
   it('onCommitted', () => {

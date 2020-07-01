@@ -344,6 +344,7 @@ export const initialState = deepFreeze({
   dappDetection: {},
   runtime: {},
   shieldsPanel: {
+    adblockCosmeticFilterResources: {},
     currentWindowId: -1,
     tabs: {},
     windows: {},
