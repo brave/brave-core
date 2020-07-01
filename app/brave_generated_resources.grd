@@ -514,6 +514,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT" desc="The success state telling the user that a secret code was copied to the clipboard">
         Copied!
       </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_QR_ERROR" desc="The message to be displayed when there is an error generating a QR code of the sync password">
+        There was an error displaying the QR code, please refresh and try again.
+      </message>
       <message name="IDS_BRAVE_SYNC_SETUP_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">
         To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.
       </message>

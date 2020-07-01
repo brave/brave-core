@@ -57,6 +57,10 @@ Polymer({
       type: Boolean,
       value: false
     },
+    qrCodeImageUrl_: {
+      type: String,
+      value: null
+    },
   },
 
   observers: [
@@ -115,14 +119,11 @@ Polymer({
     if (!this.syncCode || this.codeType !== 'qr') {
       return
     }
-    const data = await this.syncBrowserProxy_.getQRCode(this.syncCode)
-    if (!data) {
-      console.error('getQRCode failed');
-      return;
+    try {
+      this.qrCodeImageUrl_ = await this.syncBrowserProxy_.getQRCode(this.syncCode)
+    } catch (e) {
+      console.error('getQRCode failed', e)
     }
-    const img = new Image();
-    img.src = data;
-    this.$$('#qrCode').appendChild(img);
   },
 
 });

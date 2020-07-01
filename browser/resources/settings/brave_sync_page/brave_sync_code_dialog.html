@@ -114,6 +114,30 @@
     color: var(--cr-secondary-text-color);
   }
 
+  .qr-viewer
+  {
+    padding-left: 50%;
+    background-image: url(chrome://settings/brave_sync_page/qr_scanning.svg);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 40%;
+    min-height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--cr-primary-text-color);
+  }
+
+  .qr-image
+  {
+    box-sizing: border-box;
+    border: solid 1px var(--line-color);
+    background: white;
+    padding: 30px;
+    width: 200px;
+    max-width: 100%;
+  }
+
   .sync-code-widget
   {
     margin: 0 20px;
@@ -186,10 +210,9 @@
       <span class="dialog-subtitle">$i18n{braveSyncChooseDeviceDesc}</span>
     </div>
     <div slot="body" class="devices">
-        <button class="device mobile" on-click="handleChooseMobile_">
+      <button class="device mobile" on-click="handleChooseMobile_">
         <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_mobile.svg" />
         <h2 class="device-title">$i18n{braveSyncChooseDeviceMobileTitle}</h2>
-        <h3 class="device-subtitle">(coming soon)</h3>
       </button>
       <button class="device computer" on-click="handleChooseComputer_">
         <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_computer.svg" />
@@ -213,7 +236,16 @@
         $i18n{braveSyncScanCodeDesc3}</span>
     </div>
     <div slot="body">
-      <div id="qrCode"></div>
+      <div class="qr-viewer">
+        <template is="dom-if" if="[[qrCodeImageUrl_]]">
+            <img class="qr-image" src="[[qrCodeImageUrl_]]">
+        </template>
+        <template is="dom-if" if="[[!qrCodeImageUrl_]]">
+          <p>
+            $i18n{braveSyncQRError}
+          </p>
+        </template>
+      </div>
     </div>
     <div slot="button-container" class="button-group">
       <button class="tertiary-button"
@@ -258,13 +290,11 @@
       </div>
     </div>
     <div slot="button-container" class="button-group">
-      <!-- TODO(petemill): button temporarily disabled
-        waiting on mobile feature completion
       <button class="tertiary-button"
         on-click="handleChooseMobile_"
       >
         $i18n{braveSyncViewCodeQRCodeButton}
-      </button> -->
+      </button>
       <cr-button class="action-button"
         on-click="handleDone_"
       >

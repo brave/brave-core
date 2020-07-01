@@ -13,6 +13,7 @@
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_JS" compress="false" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
       <structure name="IDR_SETTINGS_BRAVE_SYNC_START_ICON_SVG" file="brave_sync_page/start_icon.svg" type="chrome_html" preprocess="true" compress="false" />
+      <structure name="IDR_SETTINGS_BRAVE_SYNC_QR_SCANNING_SVG" file="brave_sync_page/qr_scanning.svg" type="chrome_html" preprocess="true" compress="false" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_DEVICE_MOBILE_SVG" file="brave_sync_page/device_mobile.svg" type="chrome_html" preprocess="true" compress="false" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_DEVICE_COMPUTER_SVG" file="brave_sync_page/device_computer.svg" type="chrome_html" preprocess="true" compress="false" />
     </structures>
