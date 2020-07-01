@@ -103,7 +103,6 @@ void ContributionExternalWallet::ContributionInfo(
           _1,
           contribution->contribution_id,
           publisher->total_amount,
-          wallet,
           contribution->type,
           single_publisher,
           callback);
@@ -128,7 +127,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     ledger::ServerPublisherInfoPtr info,
     const std::string& contribution_id,
     const double amount,
-    const ledger::ExternalWallet& wallet,
     const ledger::RewardsType type,
     const bool single_publisher,
     ledger::ResultCallback callback) {
@@ -169,7 +167,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
       contribution_id,
       std::move(info),
       amount,
-      ledger::ExternalWallet::New(wallet),
       uphold_callback);
 }
 

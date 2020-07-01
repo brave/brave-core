@@ -53,7 +53,6 @@ class ContributionExternalWallet {
       ledger::ServerPublisherInfoPtr info,
       const std::string& contribution_id,
       const double amount,
-      const ledger::ExternalWallet& wallet,
       const ledger::RewardsType type,
       const bool single_publisher,
       ledger::ResultCallback callback);

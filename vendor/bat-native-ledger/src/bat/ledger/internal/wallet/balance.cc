@@ -163,7 +163,7 @@ void Balance::ExternalWallets(
                                    _1,
                                    _2);
 
-  uphold_->FetchBalance(std::move(wallets), uphold_callback);
+  uphold_->FetchBalance(uphold_callback);
 }
 
 void Balance::OnUpholdFetchBalance(ledger::Balance info,

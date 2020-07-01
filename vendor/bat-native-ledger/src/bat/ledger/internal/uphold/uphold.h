@@ -49,47 +49,33 @@ class Uphold {
   void StartContribution(
       const std::string& contribution_id,
       ledger::ServerPublisherInfoPtr info,
-      double amount,
-      ledger::ExternalWalletPtr wallet,
+      const double amount,
       ledger::ResultCallback callback);
 
-  void FetchBalance(std::map<std::string, ledger::ExternalWalletPtr> wallets,
-                    FetchBalanceCallback callback);
+  void FetchBalance(FetchBalanceCallback callback);
 
   void TransferFunds(
       const double amount,
       const std::string& address,
-      ledger::ExternalWalletPtr wallet,
       ledger::TransactionCallback callback);
 
   void WalletAuthorization(
-    const std::map<std::string, std::string>& args,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets,
-    ledger::ExternalWalletAuthorizationCallback callback);
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback);
 
-  void TransferAnonToExternalWallet(
-      ledger::ExternalWalletPtr wallet,
-      ledger::ExternalWalletCallback callback);
+  void TransferAnonToExternalWallet(ledger::ExternalWalletCallback callback);
 
-  void GenerateExternalWallet(
-    std::map<std::string, ledger::ExternalWalletPtr> wallets,
-    ledger::ExternalWalletCallback callback);
+  void GenerateExternalWallet(ledger::ExternalWalletCallback callback);
 
-  void CreateCard(
-      ledger::ExternalWalletPtr wallet,
-      CreateCardCallback callback);
+  void CreateCard(CreateCardCallback callback);
 
   void DisconnectWallet();
 
-  void GetUser(
-    ledger::ExternalWalletPtr wallet,
-    GetUserCallback callback);
+  void GetUser(GetUserCallback callback);
 
-  void CreateAnonAddressIfNecessary(
-      ledger::ExternalWalletPtr wallet,
-      CreateAnonAddressCallback callback);
+  void CreateAnonAddressIfNecessary(CreateAnonAddressCallback callback);
 
-  void OnTimer(uint32_t timer_id);
+  void OnTimer(const uint32_t timer_id);
 
  private:
   void ContributionCompleted(
@@ -101,31 +87,21 @@ class Uphold {
       ledger::ResultCallback callback);
 
   void OnFetchBalance(
-    FetchBalanceCallback callback,
-    const ledger::UrlResponse& response);
+      const ledger::UrlResponse& response,
+      FetchBalanceCallback callback);
 
   void OnTransferAnonToExternalWalletCallback(
-    ledger::ExternalWalletCallback callback,
-    const ledger::ExternalWallet& wallet,
-    ledger::Result result);
-
-  void OnDisconectWallet(
-    ledger::Result result,
-    ledger::ExternalWalletPtr wallet);
+      const ledger::Result result,
+      ledger::ExternalWalletCallback callback);
 
   void SaveTransferFee(ledger::TransferFeePtr transfer_fee);
 
   void OnTransferFeeCompleted(
-    const ledger::Result result,
-    const std::string& transaction_id,
-    const ledger::TransferFee& transfer_fee);
+      const ledger::Result result,
+      const std::string& transaction_id,
+      const ledger::TransferFee& transfer_fee);
 
-  void TransferFee(
-    const ledger::Result result,
-    ledger::ExternalWalletPtr wallet,
-    const ledger::TransferFee& transfer_fee);
-
-  void TransferFeeOnTimer(const uint32_t timer_id);
+  void TransferFee(const ledger::TransferFee& transfer_fee);
 
   void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 

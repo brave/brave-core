@@ -343,10 +343,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(DisconnectWallet,
       void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD3(TransferAnonToExternalWallet,
-      void(ledger::ExternalWalletPtr,
-          ledger::ResultCallback,
-          const bool));
+  MOCK_METHOD2(TransferAnonToExternalWallet,
+      void(ledger::ResultCallback, const bool));
 
   MOCK_METHOD3(ShowNotification,
       void(const std::string&,

@@ -66,7 +66,6 @@ class Wallet {
       ledger::ResultCallback callback);
 
   void TransferAnonToExternalWallet(
-      ledger::ExternalWalletPtr wallet,
       const bool allow_zero_balance,
       ledger::ResultCallback callback);
 
@@ -82,7 +81,6 @@ class Wallet {
   void OnTransferAnonToExternalWalletBalance(
       ledger::Result result,
       ledger::BalancePtr properties,
-      const ledger::ExternalWallet& wallet,
       const bool allow_zero_balance,
       ledger::ResultCallback callback);
 

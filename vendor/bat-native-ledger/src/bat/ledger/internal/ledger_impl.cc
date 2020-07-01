@@ -1146,13 +1146,9 @@ void LedgerImpl::DisconnectWallet(
 }
 
 void LedgerImpl::TransferAnonToExternalWallet(
-    ledger::ExternalWalletPtr wallet,
     ledger::ResultCallback callback,
     const bool allow_zero_balance) {
-  bat_wallet_->TransferAnonToExternalWallet(
-    std::move(wallet),
-    allow_zero_balance,
-    callback);
+  bat_wallet_->TransferAnonToExternalWallet(allow_zero_balance, callback);
 }
 
 void LedgerImpl::ShowNotification(
@@ -1463,10 +1459,8 @@ void LedgerImpl::GetAllMonthlyReportIds(
   bat_report_->GetAllMonthlyIds(callback);
 }
 
-void LedgerImpl::TransferTokens(
-    ledger::ExternalWalletPtr wallet,
-    ledger::ResultCallback callback) {
-  bat_promotion_->TransferTokens(std::move(wallet), callback);
+void LedgerImpl::TransferTokens(ledger::ResultCallback callback) {
+  bat_promotion_->TransferTokens(callback);
 }
 
 void LedgerImpl::SaveCredsBatch(

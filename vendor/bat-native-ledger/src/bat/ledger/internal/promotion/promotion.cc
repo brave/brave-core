@@ -777,10 +777,8 @@ void Promotion::ErrorCredsStatusSaved(const ledger::Result result) {
   ledger_->GetAllPromotions(retry_callback);
 }
 
-void Promotion::TransferTokens(
-    ledger::ExternalWalletPtr wallet,
-    ledger::ResultCallback callback) {
-  transfer_->Start(std::move(wallet), callback);
+void Promotion::TransferTokens(ledger::ResultCallback callback) {
+  transfer_->Start(callback);
 }
 
 }  // namespace braveledger_promotion

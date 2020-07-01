@@ -6,7 +6,6 @@
 #ifndef BRAVELEDGER_UPHOLD_UPHOLD_WALLET_H_
 #define BRAVELEDGER_UPHOLD_UPHOLD_WALLET_H_
 
-#include <map>
 #include <string>
 
 #include "bat/ledger/ledger.h"
@@ -24,26 +23,22 @@ class UpholdWallet {
 
   ~UpholdWallet();
 
-  void Generate(
-    std::map<std::string, ledger::ExternalWalletPtr> wallets,
-    ledger::ExternalWalletCallback callback);
+  void Generate(ledger::ExternalWalletCallback callback);
 
  private:
   void OnGenerate(
-    const ledger::Result result,
-    const User& user,
-    const ledger::ExternalWallet& wallet,
-    ledger::ExternalWalletCallback callback);
+      const ledger::Result result,
+      const User& user,
+      ledger::ExternalWalletCallback callback);
 
   void OnCreateCard(
-    const ledger::ExternalWallet& wallet,
-    ledger::ExternalWalletCallback callback,
-    const ledger::Result result,
-    const std::string& address);
+      const ledger::Result result,
+      const std::string& address,
+      ledger::ExternalWalletCallback callback);
 
-  ledger::ExternalWalletPtr SetStatus(
-    const User& user,
-    ledger::ExternalWalletPtr wallet);
+  ledger::WalletStatus GetNewStatus(
+      const ledger::WalletStatus old_status,
+      const User& user);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED

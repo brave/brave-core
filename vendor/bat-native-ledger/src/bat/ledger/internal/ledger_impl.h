@@ -383,7 +383,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
-  std::map<std::string, ledger::ExternalWalletPtr> GetExternalWallets();
+  virtual std::map<std::string, ledger::ExternalWalletPtr> GetExternalWallets();
 
   void GetExternalWallet(const std::string& wallet_type,
                          ledger::ExternalWalletCallback callback) override;
@@ -401,7 +401,6 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ResultCallback callback) override;
 
   void TransferAnonToExternalWallet(
-      ledger::ExternalWalletPtr wallet,
       ledger::ResultCallback callback,
       const bool allow_zero_balance = false);
 
@@ -579,9 +578,7 @@ class LedgerImpl : public ledger::Ledger {
   void GetAllMonthlyReportIds(
       ledger::GetAllMonthlyReportIdsCallback callback) override;
 
-  void TransferTokens(
-      ledger::ExternalWalletPtr wallet,
-      ledger::ResultCallback callback);
+  void TransferTokens(ledger::ResultCallback callback);
 
   void SaveCredsBatch(
       ledger::CredsBatchPtr info,

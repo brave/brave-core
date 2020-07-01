@@ -6,7 +6,6 @@
 #ifndef BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
 #define BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
 
-#include <map>
 #include <string>
 
 #include "bat/ledger/ledger.h"
@@ -44,14 +43,12 @@ class UpholdUser {
 
   ~UpholdUser();
 
-  void Get(
-      ledger::ExternalWalletPtr wallet,
-      GetUserCallback callback);
+  void Get(GetUserCallback callback);
 
  private:
   void OnGet(
-      GetUserCallback callback,
-      const ledger::UrlResponse& response);
+      const ledger::UrlResponse& response,
+      GetUserCallback callback);
 
   UserStatus GetStatus(const std::string& status);
 

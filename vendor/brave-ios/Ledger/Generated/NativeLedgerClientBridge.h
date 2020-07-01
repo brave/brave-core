@@ -39,7 +39,7 @@
 - (void)setUint64State:(const std::string&)name value:(uint64_t)value;
 - (uint64_t)getUint64State:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
-- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
+- (std::map<std::string, ledger::ExternalWalletPtr>)getExternalWallets;
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
 - (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ResultCallback)callback;
 - (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;

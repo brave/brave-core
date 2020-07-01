@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <utility>
 
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -17,14 +18,14 @@ using std::placeholders::_3;
 
 namespace braveledger_uphold {
 
-  User::User() :
-    name(""),
-    member_at(""),
-    verified(false),
-    status(UserStatus::EMPTY),
-    bat_not_allowed(true) {}
+User::User() :
+  name(""),
+  member_at(""),
+  verified(false),
+  status(UserStatus::EMPTY),
+  bat_not_allowed(true) {}
 
-  User::~User() {}
+User::~User() = default;
 
 }  // namespace braveledger_uphold
 
@@ -33,12 +34,12 @@ namespace braveledger_uphold {
 UpholdUser::UpholdUser(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
-UpholdUser::~UpholdUser() {
-}
+UpholdUser::~UpholdUser() = default;
 
-void UpholdUser::Get(
-    ledger::ExternalWalletPtr wallet,
-    GetUserCallback callback) {
+void UpholdUser::Get(GetUserCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
+
   if (!wallet) {
     User user;
     BLOG(0, "Wallet is null");
@@ -51,8 +52,8 @@ void UpholdUser::Get(
 
   auto user_callback = std::bind(&UpholdUser::OnGet,
       this,
-      callback,
-      _1);
+      _1,
+      callback);
   ledger_->LoadURL(
       url,
       headers,
@@ -63,8 +64,8 @@ void UpholdUser::Get(
 }
 
 void UpholdUser::OnGet(
-    GetUserCallback callback,
-    const ledger::UrlResponse& response) {
+    const ledger::UrlResponse& response,
+    GetUserCallback callback) {
   User user;
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 

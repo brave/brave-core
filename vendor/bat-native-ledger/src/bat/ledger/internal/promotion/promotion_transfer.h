@@ -25,7 +25,7 @@ class PromotionTransfer {
   explicit PromotionTransfer(bat_ledger::LedgerImpl* ledger);
   ~PromotionTransfer();
 
-  void Start(ledger::ExternalWalletPtr wallet, ledger::ResultCallback callback);
+  void Start(ledger::ResultCallback callback);
 
  private:
   void OnAnonExternalWallet(

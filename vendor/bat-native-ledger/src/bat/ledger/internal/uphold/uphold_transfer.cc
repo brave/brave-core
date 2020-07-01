@@ -7,9 +7,9 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -23,26 +23,13 @@ UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
     uphold_(uphold) {
 }
 
-UpholdTransfer::~UpholdTransfer() {
-}
+UpholdTransfer::~UpholdTransfer() = default;
 
 void UpholdTransfer::Start(
     const Transaction& transaction,
-    ledger::ExternalWalletPtr wallet,
     ledger::TransactionCallback callback) {
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  CreateTransaction(transaction, std::move(wallet), callback);
-}
-
-void UpholdTransfer::CreateTransaction(
-    const Transaction& transaction,
-    ledger::ExternalWalletPtr wallet,
-    ledger::TransactionCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
@@ -56,20 +43,19 @@ void UpholdTransfer::CreateTransaction(
       wallet->address.c_str());
 
   const std::string payload = base::StringPrintf(
-      "{ "
-      "  \"denomination\": { \"amount\": %f, \"currency\": \"BAT\" }, "
-      "  \"destination\": \"%s\", "
-      "  \"message\": \"%s\" "
-      "}",
+      R"({
+        "denomination": { "amount": %f, "currency": "BAT" },
+        "destination": "%s",
+        "message": "%s"
+      })",
       transaction.amount,
       transaction.address.c_str(),
       transaction.message.c_str());
 
   auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
-                            this,
-                            _1,
-                            *wallet,
-                            callback);
+      this,
+      _1,
+      callback);
   ledger_->LoadURL(
       GetAPIUrl(path),
       headers,
@@ -81,7 +67,6 @@ void UpholdTransfer::CreateTransaction(
 
 void UpholdTransfer::OnCreateTransaction(
     const ledger::UrlResponse& response,
-    const ledger::ExternalWallet& wallet,
     ledger::TransactionCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
@@ -118,30 +103,37 @@ void UpholdTransfer::OnCreateTransaction(
     return;
   }
 
-  CommitTransaction(*id, wallet, callback);
+  CommitTransaction(*id, callback);
 }
 
 void UpholdTransfer::CommitTransaction(
     const std::string& transaction_id,
-    const ledger::ExternalWallet& wallet,
     ledger::TransactionCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   if (transaction_id.empty()) {
     BLOG(0, "Transaction id not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
-  auto headers = RequestAuthorization(wallet.token);
+  auto headers = RequestAuthorization(wallet->token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions/%s/commit",
-      wallet.address.c_str(),
+      wallet->address.c_str(),
       transaction_id.c_str());
 
   auto commit_callback = std::bind(&UpholdTransfer::OnCommitTransaction,
-                            this,
-                            _1,
-                            transaction_id,
-                            callback);
+      this,
+      _1,
+      transaction_id,
+      callback);
   ledger_->LoadURL(
       GetAPIUrl(path),
       headers,

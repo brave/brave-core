@@ -26,23 +26,15 @@ class UpholdTransfer {
 
   void Start(
       const Transaction& transaction,
-      ledger::ExternalWalletPtr wallet,
       ledger::TransactionCallback callback);
 
  private:
-  void CreateTransaction(
-      const Transaction& transaction,
-      ledger::ExternalWalletPtr wallet,
-      ledger::TransactionCallback callback);
-
   void OnCreateTransaction(
       const ledger::UrlResponse& response,
-      const ledger::ExternalWallet& wallet,
       ledger::TransactionCallback callback);
 
   void CommitTransaction(
       const std::string& transaction_id,
-      const ledger::ExternalWallet& wallet,
       ledger::TransactionCallback callback);
 
   void OnCommitTransaction(

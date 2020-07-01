@@ -22,6 +22,7 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
@@ -96,10 +97,8 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
 void Wallet::GetExternalWallet(
     const std::string& wallet_type,
     ledger::ExternalWalletCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
-
   if (wallet_type == ledger::kWalletUphold) {
-    uphold_->GenerateExternalWallet(std::move(wallets), callback);
+    uphold_->GenerateExternalWallet(callback);
     return;
   }
 
@@ -119,9 +118,7 @@ void Wallet::ExternalWalletAuthorization(
   }
 
   if (wallet_type == ledger::kWalletUphold) {
-    uphold_->WalletAuthorization(args,
-                                 std::move(wallets),
-                                 callback);
+    uphold_->WalletAuthorization(args, callback);
   }
 }
 
@@ -168,14 +165,12 @@ void Wallet::OnTransferAnonToExternalWallet(
 }
 
 void Wallet::TransferAnonToExternalWallet(
-    ledger::ExternalWalletPtr wallet,
     const bool allow_zero_balance,
     ledger::ResultCallback callback) {
   FetchBalance(std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
                this,
                _1,
                _2,
-               *wallet,
                allow_zero_balance,
                callback));
 }
@@ -183,7 +178,6 @@ void Wallet::TransferAnonToExternalWallet(
 void Wallet::OnTransferAnonToExternalWalletBalance(
     ledger::Result result,
     ledger::BalancePtr properties,
-    const ledger::ExternalWallet& wallet,
     const bool allow_zero_balance,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
@@ -198,6 +192,15 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
     return;
   }
 
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
+
+  if (!wallet_ptr) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
   const std::string anon_address =
       ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
 
@@ -206,7 +209,7 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
     OnTransferAnonToExternalWalletAddress(
         ledger::Result::ALREADY_EXISTS,
         anon_address,
-        wallet.address,
+        wallet_ptr->address,
         properties->user_funds,
         callback);
     return;
@@ -217,12 +220,11 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
           this,
           _1,
           _2,
-          wallet.address,
+          wallet_ptr->address,
           properties->user_funds,
           callback);
 
-  auto wallet_ptr = ledger::ExternalWallet::New(wallet);
-  uphold_->CreateAnonAddressIfNecessary(std::move(wallet_ptr), anon_callback);
+  uphold_->CreateAnonAddressIfNecessary(anon_callback);
 }
 
 std::string Wallet::GetClaimPayload(
