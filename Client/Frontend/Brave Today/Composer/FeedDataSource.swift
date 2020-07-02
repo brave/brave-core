@@ -52,11 +52,11 @@ class FeedDataSource {
             $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
             $0.timeZone = TimeZone(secondsFromGMT: 0)
         })
-        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
-            guard let self = self, let data = data else { return }
-            do {
-                let decodedSources = try decoder.decode([String: FeedSource].self, from: data)
-                self.sources = decodedSources
+//        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
+//            guard let self = self, let data = data else { return }
+//            do {
+//                let decodedSources = try decoder.decode([String: FeedSource].self, from: data)
+//                self.sources = decodedSources
                 self.session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
                     guard let self = self, let data = data else { return }
                     do {
@@ -71,11 +71,11 @@ class FeedDataSource {
                         completion()
                     }
                 }
-            } catch {
-                logger.error(error)
-                completion()
-            }
-        }
+//            } catch {
+//                logger.error(error)
+//                completion()
+//            }
+//        }
     }
     
     private func scored(feeds: [FeedItem]) -> [ScoredFeedItem] {
