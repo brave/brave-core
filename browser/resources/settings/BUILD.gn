@@ -90,17 +90,9 @@ group("web_modules") {
     "getting_started_page:web_modules",
     "social_blocking_page:web_modules",
     # local targets
-    ":brave_page_visibility",
     ":icons_module",
   ]
 }
-
-js_library("brave_page_visibility") {
-  deps = [
-    "//ui/webui/resources/js:load_time_data.m",
-  ]
-}
-
 
 polymer_modulizer("icons") {
   js_file = "brave_icons.m.js"
