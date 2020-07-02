@@ -17,7 +17,8 @@ bool BraveEphemeralProvider::SetWebsiteSetting(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     const ResourceIdentifier& resource_identifier,
-    std::unique_ptr<base::Value>&& in_value) {
+    std::unique_ptr<base::Value>&& in_value,
+    const ContentSettingConstraints& constraint) {
   // Prevent this handle shields configuration.
   if (content_type == ContentSettingsType::PLUGINS &&
       IsShieldsResourceID(resource_identifier)) {
@@ -29,7 +30,7 @@ bool BraveEphemeralProvider::SetWebsiteSetting(
 
   return EphemeralProvider::SetWebsiteSetting(
       primary_pattern, secondary_pattern, content_type, resource_identifier,
-      std::move(in_value));
+      std::move(in_value), constraint);
 }
 
 }  // namespace content_settings

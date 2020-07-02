@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
@@ -19,4 +19,4 @@
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
-</android.support.v7.preference.PreferenceScreen>
+</PreferenceScreen>

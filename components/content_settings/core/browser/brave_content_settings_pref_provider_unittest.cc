@@ -50,7 +50,7 @@ class ShieldsSetting {
       provider_->SetWebsiteSetting(
           pattern, SecondaryUrlToPattern(url_source.first),
           ContentSettingsType::PLUGINS, url_source.second,
-          ContentSettingToValue(setting));
+          ContentSettingToValue(setting), {});
     }
   }
 
@@ -134,7 +134,7 @@ class ShieldsScriptSetting : public ShieldsSetting {
                                ContentSetting setting) override {
     provider_->SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
                                  ContentSettingsType::JAVASCRIPT, "",
-                                 ContentSettingToValue(setting));
+                                 ContentSettingToValue(setting), {});
   }
 
  private:
@@ -169,9 +169,9 @@ class BravePrefProviderTest : public testing::Test {
 };
 
 TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
-  BravePrefProvider provider(testing_profile()->GetPrefs(),
-                             false /* incognito */,
-                             true /* store_last_modified */);
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
 
   ShieldsCookieSetting cookie_settings(&provider);
   ShieldsFingerprintingSetting fp_settings(&provider);
@@ -318,7 +318,8 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
 TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
   PrefService* prefs = testing_profile()->GetPrefs();
   BravePrefProvider provider(prefs, false /* incognito */,
-                             true /* store_last_modified */);
+                             true /* store_last_modified */,
+                             false /* restore_session */);
 
   // Should have migrated when constrcuted (with profile).
   EXPECT_EQ(2, prefs->GetInteger(kBraveShieldsSettingsVersion));

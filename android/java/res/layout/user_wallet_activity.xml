@@ -17,7 +17,7 @@
     android:fitsSystemWindows="true"
     android:backgroundTint="@color/user_wallet_background">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:minHeight="?attr/actionBarSize"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:textColor="@android:color/black"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_gravity="center"/>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_margin="12dp"

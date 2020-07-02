@@ -26,6 +26,6 @@ class ExternalProtocolHandlerTest : public testing::Test {
 
 TEST_F(ExternalProtocolHandlerTest, TestGetBlockStateMailto) {
   ExternalProtocolHandler::BlockState block_state =
-      ExternalProtocolHandler::GetBlockState("mailto", profile_.get());
+      ExternalProtocolHandler::GetBlockState("mailto", nullptr, profile_.get());
   EXPECT_EQ(ExternalProtocolHandler::UNKNOWN, block_state);
 }

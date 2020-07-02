@@ -2,69 +2,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-cr.define('settings', function() {
-  // use value defined in page_visibility.js in guest mode
-  if (loadTimeData.getBoolean('isGuest')) return;
+import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
 
-  // We need to specify values for every attribute in pageVisibility instead of
-  // only overriding specific attributes here because chromium does not
-  // explicitly define pageVisibility in page_visibility.js since polymer only
-  // notifies after a property is set.
-  // Use proxy objects here so we only need to write out the attributes we
-  // would like to hide.
+import * as PageVisibility from './page_visibility.js'
 
-  const appearanceHandler = {
-    get: function(obj, prop) {
-      return true;
-    }
-  };
-
-  const socialBlockingHandler = {
-    get: function(obj, prop) {
-      return true;
-    }
-  };
-
-  const privacyHandler = {
-    get: function(obj, prop) {
-      return true;
-    }
+function modifyPageVisibity () {
+  // Use chromium value defined in page_visibility.js in guest mode
+  // which hides most sections.
+  if (!loadTimeData.getBoolean('isGuest')) {
+    return
   }
 
-  const defaultHandler = {
-    get: function(obj, prop) {
-      return true
-    }
-  }
+  // Sections will only be hidden if the explicitly `=== false`.
+  // Therefore we only need to modify or add new items here if we want to
+  // hide them (always or conditionally).
 
-  const defaultSections = [
-    'extensions',
-    'getStarted',
-    'shields',
-  ]
+  const bravePageVisibility = PageVisibility.pageVisibility
 
-  const hiddenSections = [
-    'a11y',
-    'people',
-    'defaultBrowser'
-  ]
+  // add sections
+  bravePageVisibility.socialBlocking = true
+  bravePageVisibility.braveSync = !loadTimeData.getBoolean('isSyncDisabled')
 
-  const handler = {
-    get: function(obj, prop) {
-      if (prop === 'appearance') return new Proxy({}, appearanceHandler);
-      if (prop === 'socialBlocking') return new Proxy({}, socialBlockingHandler);
-      if (prop === 'braveSync') {
-        if (loadTimeData.getBoolean('isSyncDisabled'))
-          return false;
-        return true;
-      }
-      if (prop === 'privacy') return new Proxy({}, privacyHandler)
-      if (defaultSections.includes(prop)) return new Proxy({}, defaultHandler)
-      return hiddenSections.includes(prop) ? false : true;
-    }
-  };
+  // hide sections
+  bravePageVisibility.a11y = false
+  bravePageVisibility.people = false
+  bravePageVisibility.defaultBrowser = false
 
-  let proxy = new Proxy({}, handler);
+  PageVisibility.setPageVisibilityForTesting(bravePageVisibility)
+}
 
-  return { pageVisibility: proxy };
-});
+modifyPageVisibity()

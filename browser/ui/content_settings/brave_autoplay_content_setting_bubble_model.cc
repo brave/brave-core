@@ -65,8 +65,9 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   if (display_host.empty())
     display_host = base::ASCIIToUTF16(url.spec());
 
-  TabSpecificContentSettings* content_settings =
-      TabSpecificContentSettings::FromWebContents(web_contents());
+  content_settings::TabSpecificContentSettings* content_settings =
+      content_settings::TabSpecificContentSettings::FromWebContents(
+          web_contents());
   bool allowed = !content_settings->IsContentBlocked(content_type());
   DCHECK(!allowed || content_settings->IsContentAllowed(content_type()));
 

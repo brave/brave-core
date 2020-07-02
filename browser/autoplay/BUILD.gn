@@ -9,6 +9,7 @@ source_set("autoplay") {
   deps = [
     "//brave/components/brave_shields/browser",
     "//chrome/common",
+    "//components/content_settings/browser",
     "//components/content_settings/core/common",
     "//components/permissions",
     "//content/public/browser",

@@ -17,9 +17,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "build/build_config.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_features.h"
@@ -175,12 +173,6 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
 
 bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader() {
   return true;
-}
-
-scoped_refptr<base::SingleThreadTaskRunner>
-BraveSharedResourcesDataSource::TaskRunnerForRequestPath(
-    const std::string& path) {
-  return nullptr;
 }
 
 std::string

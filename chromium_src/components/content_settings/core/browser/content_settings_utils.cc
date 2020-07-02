@@ -16,6 +16,6 @@
                              brave_shields::kBraveShields,                    \
                              &(rules->brave_shields_rules));
 
-#include "../../../../../components/content_settings/core/browser/content_settings_utils.cc"  // NOLINT
+#include "../../../../../../components/content_settings/core/browser/content_settings_utils.cc"
 
 #undef BRAVE_BRAVE_GET_RENDER_CONTENT_SETTING_RULES

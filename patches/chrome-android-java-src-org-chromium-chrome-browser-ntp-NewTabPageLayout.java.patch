@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index 480e1d231b5e311270d529298a29145971af62cc..238eb0021d848943fd166794a9431fab9ffc3a20 100644
+index 36a8f1b16b9d27afe611df9632887504a7b91e55..1d225782d5b07f17474c84f4aa986391e878e6b7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -73,7 +73,7 @@ import org.chromium.ui.vr.VrModeObserver;
+@@ -61,7 +61,7 @@ import org.chromium.ui.vr.VrModeObserver;
   * Layout for the new tab page. This positions the page elements in the correct vertical positions.
   * There are no separate phone and tablet UIs; this layout adapts based on the available space.
   */
@@ -11,30 +11,3 @@ index 480e1d231b5e311270d529298a29145971af62cc..238eb0021d848943fd166794a9431fab
      private static final String TAG = "NewTabPageLayout";
      // Used to signify the cached resource value is unset.
      private static final int UNSET_RESOURCE_FLAG = -1;
-@@ -85,7 +85,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
- 
-     private LogoView mSearchProviderLogoView;
-     private SearchBoxContainerView mSearchBoxContainerView;
--    private ViewGroup mSiteSectionView;
-+    protected ViewGroup mSiteSectionView;
-     private SiteSectionViewHolder mSiteSectionViewHolder;
-     private ImageView mVoiceSearchButton;
-     private View mTileGridPlaceholder;
-@@ -430,7 +430,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
-                 1f);
-     }
- 
--    private void insertSiteSectionView() {
-+    protected void insertSiteSectionView() {
-         mSiteSectionView = SiteSection.inflateSiteSection(this);
-         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
-         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-@@ -795,7 +795,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
-         }
-     }
- 
--    private static int getMaxTileRows() {
-+    protected int getMaxTileRows() {
-         return 2;
-     }
- 

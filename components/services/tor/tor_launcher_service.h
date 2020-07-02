@@ -10,8 +10,8 @@
 #include <string>
 
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "mojo/public/cpp/bindings/binder_map.h"
 #include "mojo/public/cpp/bindings/unique_receiver_set.h"
-#include "services/service_manager/public/cpp/binder_map.h"
 #include "services/service_manager/public/cpp/service.h"
 #include "services/service_manager/public/cpp/service_binding.h"
 #include "services/service_manager/public/cpp/service_keepalive.h"
@@ -35,7 +35,7 @@ class TorLauncherService : public service_manager::Service {
  private:
   service_manager::ServiceBinding service_binding_;
   service_manager::ServiceKeepalive service_keepalive_;
-  service_manager::BinderMap binders_;
+  mojo::BinderMap binders_;
 
   class LauncherContext {
    public:

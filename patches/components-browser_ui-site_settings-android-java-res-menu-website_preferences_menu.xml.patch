@@ -1,0 +1,10 @@
+diff --git a/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml b/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
+index 6371709bb96312fe31a1f4e48eee546e4e8bd746..e1a88694bc1d273cc1975af4731c671aff3e2354 100644
+--- a/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
++++ b/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
+@@ -9,4 +9,5 @@
+           android:title="@string/search"
+           app:showAsAction="always"
+           app:actionViewClass="androidx.appcompat.widget.SearchView" />
++    <item android:id="@+id/close_menu_id" android:icon="@drawable/btn_close" android:title="@string/settings_exit" app:showAsAction="ifRoom" app:iconTint="@color/default_icon_color_tint_list" />
+ </menu>

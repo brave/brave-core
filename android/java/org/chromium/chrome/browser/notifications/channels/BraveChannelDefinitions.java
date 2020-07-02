@@ -10,7 +10,8 @@ package org.chromium.chrome.browser.notifications.channels;
 import android.app.NotificationManager;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.notifications.channels.ChannelDefinitions;
+import org.chromium.components.browser_ui.notifications.channels.ChannelDefinitions;
+import org.chromium.components.browser_ui.notifications.channels.ChannelDefinitions.PredefinedChannel;
 
 import java.util.Map;
 import java.util.Set;
@@ -24,15 +25,15 @@ public class BraveChannelDefinitions {
     public class ChannelGroupId { public static final String BRAVE_ADS = "com.brave.browser.ads"; }
 
     static protected void addBraveChannels(
-            Map<String, ChannelDefinitions.PredefinedChannel> map, Set<String> startup) {
+            Map<String, PredefinedChannel> map, Set<String> startup) {
         map.put(ChannelId.BRAVE_ADS,
-                new ChannelDefinitions.PredefinedChannel(ChannelId.BRAVE_ADS,
+                PredefinedChannel.create(ChannelId.BRAVE_ADS,
                         R.string.notification_category_brave_ads,
                         NotificationManager.IMPORTANCE_HIGH, ChannelGroupId.BRAVE_ADS));
         startup.add(ChannelId.BRAVE_ADS);
 
         map.put(ChannelId.BRAVE_ADS_BACKGROUND,
-                new ChannelDefinitions.PredefinedChannel(ChannelId.BRAVE_ADS_BACKGROUND,
+                PredefinedChannel.create(ChannelId.BRAVE_ADS_BACKGROUND,
                        R.string.notification_category_brave_ads_background,
                        NotificationManager.IMPORTANCE_LOW, ChannelGroupId.BRAVE_ADS));
         startup.add(ChannelId.BRAVE_ADS_BACKGROUND);

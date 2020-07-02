@@ -3,17 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
-import("//chrome/browser/resources/settings/settings.gni")
+import("../settings.gni")
 
 # ES Module conversion from HTML Imports code
 
-group("polymer3_elements") {
+group("web_modules") {
   public_deps = [
     ":brave_personalization_options_module",
-    ":brave_privacy_page_browser_proxy_module",
+    ":modules",
   ]
 }
 
@@ -22,12 +21,12 @@ polymer_modulizer("brave_personalization_options") {
   html_file = "brave_personalization_options.html"
   html_type = "dom-module"
   auto_imports = settings_auto_imports + [
-                   "chrome/browser/resources/settings/brave_privacy_page/brave_privacy_page_browser_proxy.html|BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl",
-                 ]
+    "brave/browser/resources/settings/brave_privacy_page/brave_privacy_page_browser_proxy.html|BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl",
+  ]
   namespace_rewrites = settings_namespace_rewrites
 }
 
-js_modulizer("brave_privacy_page_browser_proxy_module") {
+js_modulizer("modules") {
   input_files = [
     "brave_privacy_page_browser_proxy.js",
   ]

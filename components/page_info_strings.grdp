@@ -209,6 +209,14 @@
       </message>
     </if>
 
+    <!-- Certificate Info strings -->
+    <if expr="is_android">
+    <!-- Only used in the dialog shown after tapping "Details" in page info -->
+    <message name="IDS_PAGE_INFO_SECURE_IDENTITY_VERIFIED" desc="The text of the identity section when the page is secure and uses a valid certificate">
+      <ph name="BROWSER">$1<ex>Brave</ex></ph> verified that <ph name="ISSUER">$2<ex>VeriSign</ex></ph> issued this website's certificate.
+    </message>
+    </if>
+
     <!-- Cookies -->
     <if expr="not is_android">
       <message name="IDS_PAGE_INFO_COOKIES" desc="The label for the Cookies setting in the Page Information Window.">
@@ -297,6 +305,12 @@
     </message>
     <message name="IDS_PAGE_INFO_TYPE_AR" desc="The label used for the AR permission controls in the Page Info popup.">
       Augmented reality
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_CAMERA_PAN_TILT_ZOOM" desc="The label used for the Camera PTZ permission controls in the Page Info popup.">
+      Camera movement
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_WINDOW_PLACEMENT" desc="The label used for the Window Placement permission controls in the Page Info popup.">
+      Window placement
     </message>
     <!-- TODO(crbug.com/716303): A few permissions are missing here. -->
 

@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453ce772e0d 100644
+index 28b29dc2b048b29f177d3e82789a5def94df0213..bd735d5155c2652917af981e888619a3c3e9e1a2 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -29,6 +29,7 @@
- <link rel="import" href="../settings_shared_css.html">
- <link rel="import" href="../site_settings/constants.html">
- 
-+<link rel="import" href="personalization_options.html">
- <dom-module id="settings-privacy-page">
-   <template>
-     <style include="settings-shared">
-@@ -44,6 +45,7 @@
+@@ -11,6 +11,7 @@
      <settings-animated-pages id="pages" section="privacy"
          focus-config="[[focusConfig_]]">
        <div route-path="default">
@@ -18,23 +10,23 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
          <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]" restamp>
            <cr-link-row id="clearBrowsingData"
                class="hr"
-@@ -55,6 +57,7 @@
+@@ -22,6 +23,7 @@
                label="$i18n{siteSettings}"
                sub-label="$i18n{siteSettingsDescription}"
                on-click="onSiteSettingsTap_"></cr-link-row>
 +<if expr="_google_chrome">
            <cr-expand-button id="moreExpansion"
                alt="$i18n{privacyPageMore}"
-               class="settings-box"
-@@ -63,6 +66,7 @@
+               class="cr-row"
+@@ -30,6 +32,7 @@
            </cr-expand-button>
            <iron-collapse id="moreCollapse" opened="[[moreOpened_]]"
                class="iron-collapse-indented">
 +</if>
              <settings-toggle-button id="safeBrowsingToggle"
-                 class="settings-box first"
                  pref="{{prefs.safebrowsing.enabled}}"
-@@ -71,6 +75,7 @@
+                 label="$i18n{safeBrowsingEnableProtection}"
+@@ -37,6 +40,7 @@
                  on-settings-boolean-control-change=
                      "onSafeBrowsingToggleChange_">
              </settings-toggle-button>
@@ -42,7 +34,7 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
              <settings-passwords-leak-detection-toggle
                  id="passwordsLeakDetectionToggle"
                  prefs="{{prefs}}"
-@@ -84,6 +89,7 @@
+@@ -51,6 +55,7 @@
                  on-settings-boolean-control-change=
                      "onSafeBrowsingReportingToggleChange_">
              </settings-toggle-button>
@@ -50,7 +42,7 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
              <settings-do-not-track-toggle id="doNotTrack" prefs="{{prefs}}">
              </settings-do-not-track-toggle>
              <settings-toggle-button id="canMakePaymentToggle"
-@@ -120,7 +126,9 @@
+@@ -88,7 +93,9 @@
                  sub-label="$i18n{securityKeysDesc}"
                  on-click="onSecurityKeysTap_"></cr-link-row>
              </template>
@@ -60,7 +52,7 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
          </template>
          <template is="dom-if" if="[[privacySettingsRedesignEnabled_]]" restamp>
            <cr-link-row id="clearBrowsingData"
-@@ -213,6 +221,7 @@
+@@ -181,6 +188,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -68,7 +60,7 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -230,6 +239,7 @@
+@@ -198,6 +206,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -76,15 +68,15 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -272,6 +282,7 @@
+@@ -240,6 +249,7 @@
                sub-option-label="$i18n{deleteDataPostSession}"
                sub-option-mode="cookies-session-only">
            </category-default-setting>
 +<if expr="_google_chrome">
            <settings-toggle-button
                id="blockThirdPartyCookies"
-               pref="{{prefs.profile.block_third_party_cookies}}"
-@@ -281,6 +292,7 @@
+               class="hr"
+@@ -250,6 +260,7 @@
                    "onBlockThirdPartyCookiesToggleChange_"
                no-set-pref>
            </settings-toggle-button>
@@ -92,7 +84,7 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
            <cr-link-row id="site-data-trigger" class="hr"
                on-click="onSiteDataTap_" label="$i18n{siteSettingsCookieLink}">
            </cr-link-row>
-@@ -370,11 +382,13 @@
+@@ -339,11 +350,13 @@
          <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
              search-term="{{searchFilter_}}">
@@ -106,7 +98,7 @@ index 956a14ebe0462977504197a1bec7ba3362418f05..baaa473e57f8bc1690aba8bfe5a48453
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
                block-header="$i18n{siteSettingsBlock}"
-@@ -473,6 +487,19 @@
+@@ -443,6 +456,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>

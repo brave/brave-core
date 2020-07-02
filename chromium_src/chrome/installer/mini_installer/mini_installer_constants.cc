@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -29,8 +30,6 @@ const wchar_t kTempPrefix[] = L"CR_";
 // ap value suffix to force subsequent updates to use the full rather than
 // differential updater.
 const wchar_t kFullInstallerSuffix[] = L"-full";
-// ap value tag for a multi-install product.
-const wchar_t kMultiInstallTag[] = L"-multi";
 
 // The resource types that would be unpacked from the mini installer.
 // Uncompressed binary.

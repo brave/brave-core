@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
 #include "components/omnibox/browser/autocomplete_input.h"

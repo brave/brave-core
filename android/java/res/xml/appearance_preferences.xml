@@ -3,7 +3,7 @@
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
       android:key="hide_brave_rewards_icon"
@@ -22,4 +22,4 @@
         android:key="ui_theme"
         android:title="@string/theme_settings" />
 
-</android.support.v7.preference.PreferenceScreen>
+</PreferenceScreen>

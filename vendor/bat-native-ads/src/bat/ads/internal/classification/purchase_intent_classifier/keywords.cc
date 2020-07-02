@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include "base/strings/string_util.h"
 #include "url/gurl.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/keywords.h"

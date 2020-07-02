@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/settings.js b/chrome/browser/resources/settings/settings.js
+index bf8087a0229070d042576c4d0081b11f4097b11b..e6a2dd6b34aa1c86e90d38cc4dd1ccbe93953b62 100644
+--- a/chrome/browser/resources/settings/settings.js
++++ b/chrome/browser/resources/settings/settings.js
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import './brave_settings_overrides.js';
+ import './settings_ui/settings_ui.js';
+ 
+ export {AboutPageBrowserProxy, AboutPageBrowserProxyImpl, PromoteUpdaterStatus, UpdateStatus} from './about_page/about_page_browser_proxy.m.js';

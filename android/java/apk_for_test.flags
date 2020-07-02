@@ -34,3 +34,21 @@
 -keep class org.chromium.chrome.browser.homepage.HomepageManager {
     *** shouldCloseAppWithZeroTabs(...);
 }
+
+-keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
+    *** insertSiteSectionView(...);
+    *** getMaxRowsForMostVisitedTiles(...);
+    *** mSiteSectionView;
+}
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
+    *** mActivity;
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+}
+
+-keep class org.chromium.chrome.browser.ntp.NewTabPage {
+    *** mNewTabPageLayout;
+    *** mFeedSurfaceProvider;
+}

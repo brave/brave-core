@@ -17,7 +17,7 @@
 #endif
 
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
-#include "../../../../chrome/browser/prefs/browser_prefs.cc"  // NOLINT
+#include "../../../../../chrome/browser/prefs/browser_prefs.cc"
 #undef MigrateObsoleteProfilePrefs
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

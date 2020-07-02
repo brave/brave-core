@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #include "chrome/grit/chrome_unscaled_resources.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/test/browser_test.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/views/views_delegate.h"
 

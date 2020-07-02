@@ -25,6 +25,9 @@
 #include "net/base/completion_repeating_callback.h"
 #include "net/cookies/site_for_cookies.h"
 #include "net/http/http_util.h"
+#include "net/url_request/redirect_info.h"
+#include "net/url_request/redirect_util.h"
+#include "net/url_request/url_request.h"
 #include "services/network/public/cpp/features.h"
 #include "url/origin.h"
 
@@ -47,6 +50,32 @@ void OnWrite(std::unique_ptr<WriteData> write_data, MojoResult result) {
   status.encoded_body_length = write_data->data.size();
   status.decoded_body_length = write_data->data.size();
   write_data->client->OnComplete(status);
+}
+
+// Creates simulated net::RedirectInfo when an extension redirects a request,
+// behaving like a redirect response was actually returned by the remote server.
+net::RedirectInfo CreateRedirectInfo(
+    const network::ResourceRequest& original_request,
+    const GURL& new_url,
+    int response_code,
+    const base::Optional<std::string>& referrer_policy_header) {
+  // Workaround for a bug in Chromium (crbug.com/1097681).
+  // download_utils.cc do not set update_first_party_url_on_redirect to true
+  // for new ResourceRequests, but we can mitigate it by looking at
+  // |is_main_frame| which is true for navigations and downloads.
+  const bool update_first_party_url_on_redirect =
+      (original_request.update_first_party_url_on_redirect ||
+       original_request.is_main_frame);
+  return net::RedirectInfo::ComputeRedirectInfo(
+      original_request.method, original_request.url,
+      original_request.site_for_cookies,
+      update_first_party_url_on_redirect
+          ? net::URLRequest::UPDATE_FIRST_PARTY_URL_ON_REDIRECT
+          : net::URLRequest::NEVER_CHANGE_FIRST_PARTY_URL,
+      original_request.referrer_policy, original_request.referrer.spec(),
+      response_code, new_url, referrer_policy_header,
+      false /* insecure_scheme_was_upgraded */, false /* copy_fragment */,
+      false /* is_signed_exchange_fallback_redirect */);
 }
 
 }  // namespace
@@ -148,6 +177,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
 void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
+    const net::HttpRequestHeaders& modified_cors_exempt_headers,
     const base::Optional<GURL>& new_url) {
   if (new_url)
     request_.url = new_url.value();
@@ -162,6 +192,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
     auto params = std::make_unique<FollowRedirectParams>();
     params->removed_headers = removed_headers;
     params->modified_headers = modified_headers;
+    params->modified_cors_exempt_headers = modified_cors_exempt_headers;
     params->new_url = new_url;
     pending_follow_redirect_params_ = std::move(params);
   }
@@ -258,12 +289,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   constexpr int kInternalRedirectStatusCode = 307;
 
-  net::RedirectInfo redirect_info;
-  redirect_info.status_code = kInternalRedirectStatusCode;
-  redirect_info.new_method = request_.method;
-  redirect_info.new_url = redirect_url_;
-  redirect_info.new_site_for_cookies =
-      net::SiteForCookies::FromUrl(redirect_url_);
+  net::RedirectInfo redirect_info =
+      CreateRedirectInfo(request_, redirect_url_, kInternalRedirectStatusCode,
+                         base::nullopt /* referrer_policy_header */);
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();
@@ -459,6 +487,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
       target_loader_->FollowRedirect(
           pending_follow_redirect_params_->removed_headers,
           pending_follow_redirect_params_->modified_headers,
+          pending_follow_redirect_params_->modified_cors_exempt_headers,
           pending_follow_redirect_params_->new_url);
     }
 
@@ -492,11 +521,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     // request to the Network Service. Our client shouldn't know the difference.
     GURL new_url(redirect_location);
 
-    net::RedirectInfo redirect_info;
-    redirect_info.status_code = override_headers_->response_code();
-    redirect_info.new_method = request_.method;
-    redirect_info.new_url = new_url;
-    redirect_info.new_site_for_cookies = net::SiteForCookies::FromUrl(new_url);
+    net::RedirectInfo redirect_info = CreateRedirectInfo(
+         request_, new_url, override_headers_->response_code(),
+         net::RedirectUtil::GetReferrerPolicyHeader(override_headers_.get()));
 
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.
@@ -529,6 +556,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
   request_.site_for_cookies = redirect_info.new_site_for_cookies;
   request_.referrer = GURL(redirect_info.new_referrer);
   request_.referrer_policy = redirect_info.new_referrer_policy;
+
+  if (request_.trusted_params) {
+    request_.trusted_params->isolation_info =
+        request_.trusted_params->isolation_info.CreateForRedirect(
+            url::Origin::Create(redirect_info.new_url));
+  }
 
   // The request method can be changed to "GET". In this case we need to
   // reset the request body manually.

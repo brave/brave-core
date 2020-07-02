@@ -11,7 +11,12 @@
   friend void ReCalcAndSetPreferredColorScheme(); \
   static NativeTheme* BraveGetInstanceForNativeUi();
 
+#define GetSystemButtonPressedColor                                   \
+  GetSystemButtonPressedColor_ChromiumImpl(SkColor base_color) const; \
+  virtual SkColor GetSystemButtonPressedColor
+
 #include "../../../../ui/native_theme/native_theme.h"
+#undef GetSystemButtonPressedColor
 #undef BRAVE_UI_NATIVE_THEME_NATIVE_THEME_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_H_

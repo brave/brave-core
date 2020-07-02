@@ -23,8 +23,6 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -52,6 +50,9 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -688,8 +689,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             assert mDeviceName.equals(deviceToDelete.mName);
             deleteDeviceDialog(deviceToDelete, v);
         } else if (mShowCategoriesButton == v) {
-            SettingsLauncher.getInstance().launchSettingsPage(
-                    getContext(), BraveManageSyncSettings.class);
+            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
         } else if (mAddDeviceButton == v) {
             setNewChainLayout();
         }

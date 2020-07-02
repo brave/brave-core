@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
+#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 
@@ -14,7 +14,7 @@
                    .PerturbPixels(window->document()->GetFrame(), snapshot); \
   }
 
-#include "../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
+#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
 
 namespace {
 

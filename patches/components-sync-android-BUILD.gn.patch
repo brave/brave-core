@@ -1,5 +1,5 @@
 diff --git a/components/sync/android/BUILD.gn b/components/sync/android/BUILD.gn
-index fba93d0a3c69ddab8fa3d00b3edd804b535921a1..a382885bf8ee66eb947ba5810726751e2caa7c89 100644
+index 4575d881584549f4de1afd09d226002428149ca9..65a143eacd1f2b94eddf5b92cc110f1eeb25af07 100644
 --- a/components/sync/android/BUILD.gn
 +++ b/components/sync/android/BUILD.gn
 @@ -32,6 +32,7 @@ android_library("sync_java") {

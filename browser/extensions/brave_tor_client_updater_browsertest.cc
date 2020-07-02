@@ -13,6 +13,7 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
 using extensions::ExtensionBrowserTest;

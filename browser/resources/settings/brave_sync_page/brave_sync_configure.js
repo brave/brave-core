@@ -8,8 +8,20 @@
  * 'settings-brave-sync-configure' is the set of controls which fetches, displays
  * and updates the sync configuration.
  */
+
+import './brave_sync_code_dialog.js';
+
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
+import {WebUIListenerBehavior} from 'chrome://resources/js/web_ui_listener_behavior.m.js';
+
+import {Router} from '../router.m.js';
+import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+
 Polymer({
   is: 'settings-brave-sync-configure',
+
+  _template: html`{__html_template__}`,
 
   behaviors: [
     I18nBehavior,
@@ -19,7 +31,7 @@ Polymer({
   properties: {
     /**
      * The current sync status, supplied by parent element.
-     * @type {!settings.SyncStatus}
+     * @type {!SyncStatus}
      */
     syncStatus: Object,
     /**
@@ -42,12 +54,12 @@ Polymer({
     syncCodeDialogType_: String,
   },
 
-  /** @private {?settings.SyncBrowserProxy} */
+  /** @private {?SyncBrowserProxy} */
   browserProxy_: null,
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.BraveSyncBrowserProxy.getInstance();
+    this.browserProxy_ = BraveSyncBrowserProxy.getInstance();
   },
 
   attached: async function() {
@@ -61,7 +73,6 @@ Polymer({
   },
 
   handleDeviceInfo_: function(deviceList) {
-    console.log('got device list', deviceList)
     this.deviceList_ = deviceList
   },
 
@@ -84,7 +95,6 @@ Polymer({
   },
 
   onResetSyncChain_: async function() {
-    // TODO(petemill): translate message
     const messageText = this.i18n('braveSyncResetConfirmation')
     const shouldReset = confirm(messageText)
     if (!shouldReset) {
@@ -95,7 +105,7 @@ Polymer({
       // When this happens, setup process will be terminated.
       return;
     }
-    const router = settings.Router.getInstance();
+    const router = Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_SYNC);
   }
 });
