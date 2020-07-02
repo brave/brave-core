@@ -140,6 +140,8 @@ namespace brave_test_resp {
   std::string promotion_claim_;
   std::string creds_tokens_;
   std::string creds_tokens_prod_;
+  std::string creds_tokens_sku_;
+  std::string creds_tokens_sku_prod_;
   std::string captcha_;
   std::string balance_;
   std::string parameters_;
@@ -459,9 +461,9 @@ class BraveRewardsBrowserTest
       if (url.find("credentials") != std::string::npos) {
         if (method == 0) {
           #if defined(OFFICIAL_BUILD)
-            *response = brave_test_resp::creds_tokens_prod_;
+            *response = brave_test_resp::creds_tokens_sku_prod_;
           #else
-            *response = brave_test_resp::creds_tokens_;
+            *response = brave_test_resp::creds_tokens_sku_;
           #endif
 
           return;
@@ -698,6 +700,15 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("creds_tokens_prod_resp.json"),
                                &brave_test_resp::creds_tokens_prod_));
+
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("creds_tokens_sku_resp.json"),
+        &creds_tokens_sku_));
+
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("creds_tokens_sku_prod_resp.json"),
+        &creds_tokens_sku_prod_));
+
     ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("parameters_resp.json"),
                                &brave_test_resp::parameters_));
     ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("balance_resp.json"),

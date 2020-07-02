@@ -615,7 +615,7 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& promotion_id,
       ledger::ResultCallback callback);
 
-  void GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback);
+  void GetAllCredsBatches(ledger::GetCredsBatchListCallback callback);
 
   void GetPromotionList(
       const std::vector<std::string>& ids,
@@ -707,6 +707,10 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ResultCallback callback);
 
   void FetchParameters();
+
+  void GetCredsBatchesByTriggers(
+      const std::vector<std::string>& trigger_ids,
+      ledger::GetCredsBatchListCallback callback);
 
  private:
   void OnStateInitialized(

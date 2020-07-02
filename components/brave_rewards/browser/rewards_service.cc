@@ -93,6 +93,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kStateParametersTipChoices, "");
   registry->RegisterStringPref(prefs::kStateParametersMonthlyTipChoices, "");
   registry->RegisterBooleanPref(prefs::kStateFetchOldBalance, true);
+  registry->RegisterBooleanPref(prefs::kStateEmptyBalanceChecked, false);
 }
 
 }  // namespace brave_rewards
