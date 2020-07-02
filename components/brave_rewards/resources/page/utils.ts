@@ -39,7 +39,7 @@ export const generateContributionMonthly = (properties: Rewards.RewardsParameter
 }
 
 export const tipsListTotal = (list: Rewards.Publisher[]) => {
-  if (list.length === 0) {
+  if (!list || list.length === 0) {
     return 0.0
   }
 
