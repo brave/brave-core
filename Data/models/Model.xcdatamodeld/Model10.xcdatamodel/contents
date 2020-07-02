@@ -47,9 +47,9 @@
             <fetchIndexElement property="urlHash" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="BraveTodayFeedSourceMO" representedClassName="BraveTodayFeedSourceMO" syncable="YES" codeGenerationType="class">
-        <attribute name="enabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="publisherID" optional="YES" attributeType="String"/>
+    <entity name="BraveTodayFeedSourceMO" representedClassName=".BraveTodayFeedSourceMO" syncable="YES">
+        <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
         <attribute name="publisherLogo" optional="YES" attributeType="String"/>
         <relationship name="items" toMany="YES" deletionRule="Nullify" destinationEntity="BraveTodayFeedItemMO" inverseName="source" inverseEntity="BraveTodayFeedItemMO"/>
         <fetchIndex name="byPublisherID">
