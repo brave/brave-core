@@ -18,20 +18,6 @@ enum FeedCard {
     case numbered(_ feeds: [FeedItem], title: String)
 }
 
-//@propertyWrapper struct CompactMappedDecodableArray<T: Decodable>: Decodable {
-//    var wrappedValue: [T]
-//    init(from decoder: Decoder) throws {
-//        var container = try decoder.unkeyedContainer()
-//        var items: [T] = []
-//        while !container.isAtEnd {
-//            if let item = try? container.decode(T.self) {
-//                items.append(item)
-//            }
-//        }
-//        wrappedValue = items
-//    }
-//}
-
 @propertyWrapper struct FailableDecodable<T: Decodable>: Decodable {
     var wrappedValue: T?
     init(from decoder: Decoder) throws {
@@ -55,6 +41,7 @@ class FeedDataSource {
     
     private let session = NetworkManager()
     private var feeds: [ScoredFeedItem] = []
+    private var sources: [String: FeedSource] = [:]
     
     init() {
     }
@@ -65,17 +52,27 @@ class FeedDataSource {
             $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
             $0.timeZone = TimeZone(secondsFromGMT: 0)
         })
-        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
+        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
             guard let self = self, let data = data else { return }
             do {
-                let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem>].self, from: data).compactMap { $0.wrappedValue }
-                DispatchQueue.main.async {
-                    self.feeds = self.scored(feeds: decodedFeeds).sorted(by: <)
-                    self.generateCards()
-                    completion()
+                let decodedSources = try decoder.decode([String: FeedSource].self, from: data)
+                self.sources = decodedSources
+                self.session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
+                    guard let self = self, let data = data else { return }
+                    do {
+                        let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem>].self, from: data).compactMap { $0.wrappedValue }
+                        DispatchQueue.main.async {
+                            self.feeds = self.scored(feeds: decodedFeeds).sorted(by: <)
+                            self.generateCards()
+                            completion()
+                        }
+                    } catch {
+                        logger.error(error)
+                        completion()
+                    }
                 }
             } catch {
-                logger.error(String(describing: error))
+                logger.error(error)
                 completion()
             }
         }
@@ -117,8 +114,10 @@ class FeedDataSource {
         }
         if !deals.isEmpty {
             let items = deals.prefix(3).map(\.item)
-            cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
-            deals.removeFirst(3)
+            if !items.isEmpty {
+                cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+                deals.removeFirst(min(3, deals.count))
+            }
         }
         
         /**
@@ -165,8 +164,10 @@ class FeedDataSource {
             // - 1x affiliate deals card
             cards.append(.sponsor(sponsors.removeFirst().item))
             let items = deals.prefix(3).map(\.item)
-            cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
-            deals.removeFirst(3)
+            if !items.isEmpty {
+                cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+            }
+            deals.removeFirst(min(3, deals.count))
         }
         
         self.cards = cards

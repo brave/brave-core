@@ -303,9 +303,9 @@
 		27201F022458879700C19DD1 /* NewTabPageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27201F012458879700C19DD1 /* NewTabPageBackgroundView.swift */; };
 		27201F0424589B9800C19DD1 /* NewTabPageNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27201F0324589B9800C19DD1 /* NewTabPageNotifications.swift */; };
 		27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */; };
-		2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727369A24A65F650096DCB9 /* UIActionExtensions.swift */; };
 		2726636924944BFA0056CFE1 /* BraveTodayWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726636824944BFA0056CFE1 /* BraveTodayWelcomeView.swift */; };
 		2726637324981B600056CFE1 /* BraveTodaySectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */; };
+		2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727369A24A65F650096DCB9 /* UIActionExtensions.swift */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		27325A5724097DB900790DC6 /* LedgerInitializationFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */; };
 		27325A622410586D00790DC6 /* SKUPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A612410586D00790DC6 /* SKUPurchaseViewController.swift */; };
@@ -392,6 +392,7 @@
 		27B0C7B823D2555C00B9EA3D /* ExclusionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */; };
 		27B0C7BC23D604C500B9EA3D /* AutoContributeSupportedListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */; };
 		27B1E26D235E58190062E86F /* LocaleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1E26C235E58190062E86F /* LocaleExtensions.swift */; };
+		27B3DDD024AE83710006A7ED /* BraveTodaySourceMO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDCF24AE83710006A7ED /* BraveTodaySourceMO.swift */; };
 		27C405E3242559AE00347246 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; };
 		27C405E924255A2B00347246 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
 		27C461DE211B76500088A441 /* ShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461DD211B76500088A441 /* ShieldsView.swift */; };
@@ -1687,9 +1688,9 @@
 		27201EFD24539B5500C19DD1 /* NewTabPageBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageBackground.swift; sourceTree = "<group>"; };
 		27201F012458879700C19DD1 /* NewTabPageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageBackgroundView.swift; sourceTree = "<group>"; };
 		27201F0324589B9800C19DD1 /* NewTabPageNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageNotifications.swift; sourceTree = "<group>"; };
-		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
 		2726636824944BFA0056CFE1 /* BraveTodayWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodayWelcomeView.swift; sourceTree = "<group>"; };
 		2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodaySectionHeaderView.swift; sourceTree = "<group>"; };
+		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
 		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
 		27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerInitializationFailedView.swift; sourceTree = "<group>"; };
 		27325A612410586D00790DC6 /* SKUPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKUPurchaseViewController.swift; sourceTree = "<group>"; };
@@ -1766,6 +1767,7 @@
 		27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExclusionListCell.swift; sourceTree = "<group>"; };
 		27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContributeSupportedListController.swift; sourceTree = "<group>"; };
 		27B1E26C235E58190062E86F /* LocaleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtensions.swift; sourceTree = "<group>"; };
+		27B3DDCF24AE83710006A7ED /* BraveTodaySourceMO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodaySourceMO.swift; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
 		27D114D52358FCA400166534 /* SettingsRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowViews.swift; sourceTree = "<group>"; };
@@ -4420,6 +4422,7 @@
 				5D1DC54220AE004600905E5A /* TabMO.swift */,
 				5D1DC54620AE004600905E5A /* Bookmark.swift */,
 				0A977C98249B7EEA0004216A /* BraveTodayItemMO.swift */,
+				27B3DDCF24AE83710006A7ED /* BraveTodaySourceMO.swift */,
 				0AA029F7222E899400D6B535 /* Bookmark+Reorder.swift */,
 				0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */,
 				0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */,
@@ -6563,6 +6566,7 @@
 				0A771D35218C8FDC00336E0D /* Bookmark+Sync.swift in Sources */,
 				5D1DC57220AE005400905E5A /* JSInjector.swift in Sources */,
 				5D1DC55920AE004600905E5A /* Bookmark.swift in Sources */,
+				27B3DDD024AE83710006A7ED /* BraveTodaySourceMO.swift in Sources */,
 				5D1DC55B20AE004600905E5A /* Domain.swift in Sources */,
 				0A977C99249B7EEB0004216A /* BraveTodayItemMO.swift in Sources */,
 				0AF0411B2267C61100EBF982 /* ManagedObjectExtensions.swift in Sources */,
