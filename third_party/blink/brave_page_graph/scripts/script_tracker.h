@@ -56,7 +56,7 @@ class ScriptTracker {
   // Method used for step 2 above.
   void AddCodeFetchedFromUrl(const blink::ScriptSourceCode& code,
     const blink::KURL& url);
-  void AddExtensionCodeFetchedFromUrl(const SourceCodeHash code_hash,
+  void AddExtensionCodeFetchedFromUrl(const blink::ScriptSourceCode& code,
     const UrlHash url_hash);
 
   // Method used for step 3 above.

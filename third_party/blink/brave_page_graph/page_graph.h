@@ -181,7 +181,7 @@ friend NodeHTMLElement;
   void RegisterUrlForScriptSource(const blink::KURL& url,
     const blink::ScriptSourceCode& code);
   void RegisterUrlForExtensionScriptSource(const blink::WebString& url,
-    const blink::WebString& code);
+    const blink::ScriptSourceCode& code);
   void RegisterScriptCompilation(const blink::ScriptSourceCode& code,
     const ScriptId script_id, const ScriptType type);
   void RegisterScriptCompilationFromAttr(const blink::DOMNodeId node_id,

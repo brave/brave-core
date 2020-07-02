@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/screen.cc b/third_party/blink/renderer/core/frame/screen.cc
-index 835eb382387c35704fd60c876d8d3b1eb54f92a3..128869ebdee876446fce6236416cc4243e4c5285 100644
+index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c739814dbf 100644
 --- a/third_party/blink/renderer/core/frame/screen.cc
 +++ b/third_party/blink/renderer/core/frame/screen.cc
 @@ -36,6 +36,11 @@
@@ -146,7 +146,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..128869ebdee876446fce6236416cc424
  }
  
  unsigned Screen::pixelDepth() const {
-@@ -98,71 +161,153 @@ unsigned Screen::pixelDepth() const {
+@@ -98,71 +161,152 @@ unsigned Screen::pixelDepth() const {
  }
  
  int Screen::availLeft() const {
@@ -183,11 +183,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..128869ebdee876446fce6236416cc424
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
 +    if (page_graph != nullptr) {
-+      page_graph->RegisterWebAPICall("Screen.pixelDepth",
++      page_graph->RegisterWebAPICall("Screen.availLeft",
 +        std::vector<const String>());
 +
 +      const String page_graph_result(std::to_string(result).c_str());
-+      page_graph->RegisterWebAPIResult("Screen.pixelDepth", page_graph_result);
++      page_graph->RegisterWebAPIResult("Screen.availLeft", page_graph_result);
 +    }
    }
 -  return static_cast<int>(GetScreenInfo(*frame).available_rect.x);
@@ -206,7 +206,6 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..128869ebdee876446fce6236416cc424
 +  } else {
 +    LocalFrame* frame = GetFrame();
 +    if (frame) {
-+      return 0;
 +      Page* page = frame->GetPage();
 +      if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
 +        WebScreenInfo screen_info = GetScreenInfo(*frame);
