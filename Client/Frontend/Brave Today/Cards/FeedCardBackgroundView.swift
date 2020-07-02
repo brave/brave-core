@@ -15,6 +15,7 @@ class FeedCardBackgroundView: UIVisualEffectView {
             layer.cornerCurve = .continuous
         }
         clipsToBounds = true
+        isUserInteractionEnabled = false
     }
     @available(*, unavailable)
     required init(coder: NSCoder) {
@@ -30,9 +31,17 @@ class FeedCardBackgroundButton: SpringButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        highlightScale = 0.98
+        
         addSubview(backgroundView)
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        layer.cornerRadius = backgroundView.layer.cornerRadius
+        if #available(iOS 13.0, *) {
+            layer.cornerCurve = backgroundView.layer.cornerCurve
+        }
+        clipsToBounds = true
     }
 }

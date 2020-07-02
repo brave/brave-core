@@ -5,18 +5,28 @@
 
 import Foundation
 
+@propertyWrapper struct URLString: Equatable, Decodable {
+    var wrappedValue: URL?
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode(String.self)
+        wrappedValue = URL(string: value)
+    }
+}
+
 struct FeedItem: Equatable, Decodable {
     var category: String
     var publishTime: Date
-    var url: URL
+    @URLString var url: URL?
     var domain: String?
-    var imageURL: URL?
+    @URLString var imageURL: URL?
     var title: String
     var description: String
     var contentType: String
     var publisherID: String
     var publisherName: String
-    var publisherLogo: URL?
+    @URLString var publisherLogo: URL?
     
     enum CodingKeys: String, CodingKey {
         case category

@@ -6,16 +6,25 @@ import Foundation
 import Storage
 import BraveUI
 
+protocol FeedCardContent {
+    var view: UIView { get }
+    init()
+}
+
+extension FeedCardContent where Self: UIView {
+    var view: UIView { self }
+}
+
 /// Defines the basic feed card cell. A feed card can display 1 or more feed
 /// items. This cell is defined by the `View` type
-class FeedCardCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {
-    var view = View()
+class FeedCardCell<Content: FeedCardContent>: UICollectionViewCell, CollectionViewReusable {
+    var content = Content()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.addSubview(view)
-        view.snp.makeConstraints {
+        contentView.addSubview(content.view)
+        content.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -23,5 +32,16 @@ class FeedCardCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
+    }
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        // swiftlint:disable:next force_cast
+        let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+        attributes.size = systemLayoutSizeFitting(
+            UIView.layoutFittingCompressedSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        return attributes
     }
 }

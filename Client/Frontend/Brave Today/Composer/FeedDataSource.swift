@@ -12,9 +12,31 @@ private let logger = Logger.browserLogger
 
 enum FeedCard {
     case headline(_ feed: FeedItem)
-    case headlineGrid(_ feeds: [(FeedItem, FeedItem)])
+    case headlinePair(_ feeds: (FeedItem, FeedItem))
     case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
     case numbered(_ feeds: [FeedItem], title: String)
+}
+
+//@propertyWrapper struct CompactMappedDecodableArray<T: Decodable>: Decodable {
+//    var wrappedValue: [T]
+//    init(from decoder: Decoder) throws {
+//        var container = try decoder.unkeyedContainer()
+//        var items: [T] = []
+//        while !container.isAtEnd {
+//            if let item = try? container.decode(T.self) {
+//                items.append(item)
+//            }
+//        }
+//        wrappedValue = items
+//    }
+//}
+
+@propertyWrapper struct FailableDecodable<T: Decodable>: Decodable {
+    var wrappedValue: T?
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        wrappedValue = try? container.decode(T.self)
+    }
 }
 
 struct ScoredFeedItem: Equatable, Comparable {
@@ -39,18 +61,21 @@ class FeedDataSource {
     func load(_ completion: @escaping () -> Void) {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(DateFormatter().then {
-            $0.dateFormat = "yyyy-MM-dd hh:mm:ss"
+            $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            $0.timeZone = TimeZone(secondsFromGMT: 0)
         })
         session.dataRequest(with: URL(string: "https://nlbtest.rapidpacket.com/mvp_200.json")!) { [weak self] data, response, error in
             guard let self = self, let data = data else { return }
             do {
-                self.feeds = self.scored(feeds: try decoder.decode([FeedItem].self, from: data))
-                self.generateCards()
+                let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem>].self, from: data).compactMap { $0.wrappedValue }
                 DispatchQueue.main.async {
+                    self.feeds = self.scored(feeds: decodedFeeds)
+                    self.generateCards()
                     completion()
                 }
             } catch {
                 logger.error(String(describing: error))
+                completion()
             }
         }
     }
@@ -61,8 +86,9 @@ class FeedDataSource {
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
         return feeds.map {
-            var score = log(Double(Date().timeIntervalSince($0.publishTime)))
-            if let feedBaseDomain = $0.url.baseDomain, lastVisitedDomains.contains(feedBaseDomain) {
+            let timeSincePublished = Double($0.publishTime.timeIntervalSinceNow)
+            var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
+            if let feedBaseDomain = $0.url?.baseDomain, lastVisitedDomains.contains(feedBaseDomain) {
                 score -= 5
             }
             return ScoredFeedItem(score: score, item: $0)
@@ -107,6 +133,7 @@ class FeedDataSource {
              1x Vertical List Card (3x Items)
              Video Cards always Large, less than 3 per collection
          */
+        
         
         self.cards = cards
     }

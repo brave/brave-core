@@ -44,7 +44,13 @@ class FeedGroupView: UIView {
          numberOfFeeds: Int = 3,
          transformItems: (([UIView]) -> [UIView])? = nil) {
         feedViews = (0..<numberOfFeeds).map { _ in
-            FeedItemView(layout: feedLayout)
+            FeedItemView(layout: feedLayout).then {
+                $0.thumbnailImageView.layer.cornerRadius = 4
+                if #available(iOS 13.0, *) {
+                    $0.thumbnailImageView.layer.cornerCurve = .continuous
+                }
+                $0.isUserInteractionEnabled = false
+            }
         }
         buttons = feedViews.map {
             let button = SpringButton()
@@ -71,6 +77,7 @@ class FeedGroupView: UIView {
                 $0.axis = axis
                 if axis == .horizontal {
                     $0.distribution = .fillEqually
+                    $0.alignment = .top
                 }
                 let transform: ([UIView]) -> [UIView] = transformItems ?? { views in views }
                 let groupViews = transform(buttons)
@@ -103,22 +110,22 @@ class FeedGroupView: UIView {
 }
 
 /// A group of feed items placed horizontally in a card
-class HorizontalFeedGroupView: FeedGroupView {
-    init() {
-        super.init(axis: .horizontal, feedLayout: .horizontal)
+class HorizontalFeedGroupView: FeedGroupView, FeedCardContent {
+    required init() {
+        super.init(axis: .horizontal, feedLayout: .vertical)
     }
 }
 
 /// A group of feed items placed vertically in a card
-class VerticalFeedGroupView: FeedGroupView {
-    init() {
-        super.init(axis: .vertical, feedLayout: .vertical)
+class VerticalFeedGroupView: FeedGroupView, FeedCardContent {
+    required init() {
+        super.init(axis: .vertical, feedLayout: .horizontal)
     }
 }
 
 /// A group of feed items numbered and placed vertically in a card
-class NumberedFeedGroupView: FeedGroupView {
-    init() {
+class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
+    required init() {
         super.init(axis: .vertical, feedLayout: .verticalNoImage, transformItems: { views in
             // Turn the usual feed group item into a numbered item
             views.enumerated().map { view in

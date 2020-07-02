@@ -127,6 +127,9 @@ class NewTabPageViewController: UIViewController, Themeable {
             }),
             BraveTodaySectionProvider(dataSource: feedDataSource),
         ]
+
+        layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
+
         collectionView.delegate = self
         collectionView.dataSource = self
         applyTheme(Theme.of(tab))
@@ -486,6 +489,17 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         UIImpactFeedbackGenerator(style: .medium).bzzt()
         present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension NewTabPageViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !Preferences.BraveToday.isEnabled.value {
+            return
+        }
+        // Hide the buttons as BraveToday feeds appear
+        backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
     }
 }
 
