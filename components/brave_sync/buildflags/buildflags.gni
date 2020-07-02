@@ -4,5 +4,7 @@ import("//build/config/features.gni")
 declare_args() {
   enable_brave_sync =
     brave_channel == "development" ||
-    brave_channel == "nightly"
+    brave_channel == "nightly" ||
+    brave_channel == "dev" ||
+    brave_channel == "beta"
 }
