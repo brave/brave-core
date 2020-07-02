@@ -77,6 +77,10 @@ void RewardsBrowserTestResponse::LoadMocks() {
       &balance_));
 
   ASSERT_TRUE(base::ReadFileToString(
+      path.AppendASCII("user_funds_balance_resp.json"),
+      &user_funds_balance_resp_));
+
+  ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("uphold_auth_resp.json"),
       &uphold_auth_resp_));
 
@@ -123,7 +127,11 @@ void RewardsBrowserTestResponse::Get(
       "/wallet/",
       PREFIX_V2,
       ServerTypes::BALANCE)) {
-    *response = balance_;
+    if (user_funds_balance_) {
+      *response = user_funds_balance_resp_;
+    } else {
+      *response = balance_;
+    }
     return;
   }
 
@@ -299,6 +307,10 @@ void RewardsBrowserTestResponse::SetVerifiedWallet(const bool verified) {
 void RewardsBrowserTestResponse::SetExternalBalance(
     const std::string& balance) {
   external_balance_ = balance;
+}
+
+void RewardsBrowserTestResponse::SetUserFundsBalance(const bool user_funds) {
+  user_funds_balance_ = user_funds;
 }
 
 }  // namespace rewards_browsertest

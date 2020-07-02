@@ -1,0 +1,33 @@
+{
+  "altcurrency": "BAT",
+  "probi": "0",
+  "balance": "20.0000",
+  "cardBalance": "20.0",
+  "probi": "20000000000000000000",
+  "unconfirmed": "0.0000",
+  "parameters": {
+    "adFree": {
+      "currency": "BAT",
+      "fee": {
+        "BAT": 0
+      },
+      "choices": {
+        "BAT": [
+          10,
+          15,
+          20,
+          30,
+          50,
+          100
+        ]
+      },
+      "range": {
+        "BAT": [
+          10,
+          100
+        ]
+      },
+      "days": 30
+    }
+  }
+}

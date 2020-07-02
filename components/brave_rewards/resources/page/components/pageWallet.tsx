@@ -56,6 +56,11 @@ class PageWallet extends React.Component<Props, State> {
     return this.props.actions
   }
 
+  hasUserFunds () {
+    const { balance } = this.props.rewardsData
+    return balance && balance.wallets['anonymous'] > 0
+  }
+
   componentDidMount () {
     this.isBackupUrl()
     this.isVerifyUrl()
@@ -75,6 +80,10 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     this.actions.onModalBackupOpen()
+  }
+
+  showBackupNotice = () => {
+    return this.state.activeTabId === 0 && !this.hasUserFunds()
   }
 
   onModalBackupTabChange = () => {
@@ -793,12 +802,14 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
+              showBackupNotice={this.showBackupNotice()}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
               onCopy={this.onModalBackupOnCopy}
               onPrint={this.onModalBackupOnPrint}
               onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
+              onVerify={this.onVerifyClick.bind(this, true)}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
             : null

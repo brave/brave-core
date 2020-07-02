@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -34,6 +35,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   RewardsBrowserTest() {
     response_ = std::make_unique<RewardsBrowserTestResponse>();
     contribution_ = std::make_unique<RewardsBrowserTestContribution>();
+    promotion_ = std::make_unique<RewardsBrowserTestPromotion>();
   }
 
   void SetUpOnMainThread() override {
@@ -65,6 +67,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
 
     // Other
     contribution_->Initialize(browser(), rewards_service_);
+    promotion_->Initialize(browser(), rewards_service_);
   }
 
   void TearDown() override {
@@ -103,8 +106,9 @@ class RewardsBrowserTest : public InProcessBrowserTest {
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestContribution> contribution_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
+  std::unique_ptr<RewardsBrowserTestContribution> contribution_;
+  std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RenderWelcome) {
@@ -356,6 +360,53 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   rewards_service_->GetExternalWallet(
       "uphold", base::BindLambdaForTesting(test_callback));
   run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNotice) {
+  rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+
+  rewards_browsertest_util::WaitForElementToEqual(
+      contents(),
+      "[data-test-id='balance']",
+      "30.000 BAT");
+
+  // Click the settings button and wait for the backup modal to appear
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='settingsButton']");
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents(),
+      "#modal");
+
+  // Ensure that verify link exists
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents(),
+      "#backup-verify-link");
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
+  response_->SetUserFundsBalance(true);
+  rewards_browsertest_helper::EnableRewards(browser());
+
+  rewards_browsertest_util::WaitForElementToEqual(
+      contents(),
+      "[data-test-id='balance']",
+      "20.000 BAT");
+
+  // Click the settings button and wait for the backup modal to appear
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='settingsButton']");
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents(),
+      "#modal");
+
+  // Presence of recovery key textarea indicates notice isn't
+  // displayed
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents(),
+      "#backup-recovery-key");
 }
 
 }  // namespace rewards_browsertest
