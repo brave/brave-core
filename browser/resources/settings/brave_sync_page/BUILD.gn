@@ -13,10 +13,6 @@ group("web_modules") {
 
 html_to_js("templatize") {
   js_files = [
-    "brave_sync_code_dialog.js",
-    "brave_sync_configure.js",
     "brave_sync_page.js",
-    "brave_sync_subpage.js",
-    "brave_sync_setup.js",
   ]
 }

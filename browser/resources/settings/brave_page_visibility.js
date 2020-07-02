@@ -9,7 +9,7 @@ import * as PageVisibility from './page_visibility.js'
 function modifyPageVisibity () {
   // Use chromium value defined in page_visibility.js in guest mode
   // which hides most sections.
-  if (!loadTimeData.getBoolean('isGuest')) {
+  if (loadTimeData.getBoolean('isGuest')) {
     return
   }
 

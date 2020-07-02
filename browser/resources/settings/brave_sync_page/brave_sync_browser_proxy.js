@@ -5,7 +5,6 @@
 
 import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
 
-export class DefaultBraveSyncBrowserProxy {}
-export class DefaultBraveSyncBrowserProxyImpl {}
+export class BraveSyncBrowserProxy {}
 
-addSingletonGetter(DefaultBraveSyncBrowserProxyImpl);
+addSingletonGetter(BraveSyncBrowserProxy);
