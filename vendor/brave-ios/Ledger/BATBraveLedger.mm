@@ -1101,6 +1101,16 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
+- (void)allContributions:(void (^)(NSArray<BATContributionInfo *> *contributions))completion
+{
+  ledger->GetAllContributions(^(ledger::ContributionInfoList list) {
+    const auto convetedList = NSArrayFromVector(&list, ^BATContributionInfo *(const ledger::ContributionInfoPtr& info){
+      return [[BATContributionInfo alloc] initWithContributionInfo:*info];
+    });
+    completion(convetedList);
+  });
+}
+
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback
 {
   NSError *error;
