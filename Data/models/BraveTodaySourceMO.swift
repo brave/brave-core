@@ -4,13 +4,11 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import CoreData
 
-struct FeedSource: Decodable {
-    var enabled: Bool
-    @URLString var logo: URL?
-    
-    enum CodingKeys: String, CodingKey {
-        case enabled
-        case logo = "publisher_logo_padded"
-    }
+public final class BraveTodaySourceMO: NSManagedObject, CRUD {
+    @NSManaged var enabled: Bool
+    @NSManaged var publisherID: String
+    @NSManaged var publisherLogo: String?
+    @NSManaged var items: [BraveTodayFeedItemMO]
 }
