@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 2660078b0ed37bc3313e645f59e38cd306b1fdca..8bbe6cb50360f5cf43b07c6c762ed2a425a9785a 100644
+index 2660078b0ed37bc3313e645f59e38cd306b1fdca..bd52c9620f4a4cb5ab590668208ce87bd7a0ec33 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 @@ -260,6 +260,12 @@
@@ -15,10 +15,13 @@ index 2660078b0ed37bc3313e645f59e38cd306b1fdca..8bbe6cb50360f5cf43b07c6c762ed2a4
  namespace blink {
  
  static int g_frame_count = 0;
-@@ -883,6 +889,22 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
+@@ -883,11 +889,29 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
    CHECK_GT(world_id, DOMWrapperWorld::kMainWorldId);
    CHECK_LT(world_id, DOMWrapperWorld::kDOMWrapperWorldEmbedderWorldIdLimit);
  
++  const HeapVector<ScriptSourceCode> sources(
++      CreateSourcesVector(sources_in, num_sources));
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    Document* document = GetFrame()->GetDocument();
@@ -27,8 +30,8 @@ index 2660078b0ed37bc3313e645f59e38cd306b1fdca..8bbe6cb50360f5cf43b07c6c762ed2a4
 +      if (page_graph != nullptr) {
 +        for (unsigned i = 0; i < num_sources; i += 1) {
 +          const WebScriptSource source = sources_in[i];
-+          page_graph->RegisterUrlForExtensionScriptSource(source.url.GetString(),
-+            source.code);
++          page_graph->RegisterUrlForExtensionScriptSource(
++              sources_in[i].url.GetString(), sources[i]);
 +        }
 +      }
 +    }
@@ -38,3 +41,9 @@ index 2660078b0ed37bc3313e645f59e38cd306b1fdca..8bbe6cb50360f5cf43b07c6c762ed2a4
    scoped_refptr<DOMWrapperWorld> isolated_world =
        DOMWrapperWorld::EnsureIsolatedWorld(ToIsolate(GetFrame()), world_id);
    auto* executor = MakeGarbageCollected<PausableScriptExecutor>(
+-      GetFrame(), std::move(isolated_world),
+-      CreateSourcesVector(sources_in, num_sources), user_gesture, callback);
++      GetFrame(), std::move(isolated_world), sources, user_gesture, callback);
+   switch (option) {
+     case kAsynchronousBlockingOnload:
+       executor->RunAsync(PausableScriptExecutor::kOnloadBlocking);

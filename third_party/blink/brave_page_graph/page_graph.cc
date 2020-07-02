@@ -814,12 +814,11 @@ void PageGraph::RegisterUrlForScriptSource(const KURL& url,
 }
 
 void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
-    const blink::WebString& code) {
+    const ScriptSourceCode& code) {
   const String url_string(url.Latin1().c_str(), url.length());
-  const String code_string(code.Latin1().c_str(), code.length());
-  Log("RegisterUrlForExtensionScriptSource: url: "
+  Log("RegisterUrlForExtensionScriptSource) url: "
     + string(url_string.Utf8().data()));
-  script_tracker_.AddExtensionCodeFetchedFromUrl(code_string.Impl()->GetHash(),
+  script_tracker_.AddExtensionCodeFetchedFromUrl(code,
     url_string.Impl()->GetHash());
 }
 
@@ -827,7 +826,7 @@ void PageGraph::RegisterScriptCompilation(
     const ScriptSourceCode& code, const ScriptId script_id,
     const ScriptType type) {
   Log("RegisterScriptCompilation) script id: " + to_string(script_id));
-  Log("source: " + string(code.Source().ToString().Utf8().data()));
+  Log("code: " + string(code.Source().ToString().Utf8().data()));
 
   if (type == ScriptType::kScriptTypeModule) {
     script_tracker_.AddScriptId(script_id,
@@ -1049,6 +1048,123 @@ void PageGraph::RegisterStorageClear(const StorageLocation location) {
                                storage_node));
 }
 
+void PageGraph::RegisterWebAPICall(const WebAPI web_api,
+    const vector<const String>& arguments) {
+  RegisterWebAPICall(WebAPIToString(web_api), arguments);
+}
+
+void PageGraph::RegisterWebAPICall(const MethodName& method,
+    const vector<const String>& arguments) {
+  vector<const string> local_args;
+  stringstream buffer;
+  size_t args_length = arguments.size();
+  for (size_t i = 0; i < args_length; ++i) {
+    local_args.push_back(arguments[i].Utf8().data());
+    if (i != args_length - 1) {
+      buffer << local_args.at(i) << ", ";
+    } else {
+      buffer << local_args.at(i);
+    }
+  }
+  Log("RegisterWebAPICall) method: " + method + ", arguments: "
+    + buffer.str());
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  if (!IsA<NodeScript>(acting_node)) {
+    // Ignore internal usage.
+    return;
+  }
+
+  NodeJSWebAPI* webapi_node;
+  if (webapi_nodes_.count(method) == 0) {
+    webapi_node = new NodeJSWebAPI(this, method);
+    AddNode(webapi_node);
+    webapi_nodes_.emplace(method, webapi_node);
+  } else {
+    webapi_node = webapi_nodes_.at(method);
+  }
+
+  AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
+    webapi_node, local_args));
+}
+
+void PageGraph::RegisterWebAPIResult(const WebAPI web_api,
+    const String& result) {
+  RegisterWebAPIResult(WebAPIToString(web_api), result);
+}
+
+void PageGraph::RegisterWebAPIResult(const MethodName& method,
+    const String& result) {
+  const string local_result = result.Utf8().data();
+  Log("RegisterWebAPIResult) method: " + method + ", result: " + local_result);
+
+  NodeActor* const caller_node = GetCurrentActingNode();
+  if (!IsA<NodeScript>(caller_node)) {
+    // Ignore internal usage.
+    return;
+  }
+
+  LOG_ASSERT(webapi_nodes_.count(method) != 0);
+  NodeJSWebAPI* webapi_node = webapi_nodes_.at(method);
+
+  AddEdge(new EdgeJSResult(this, webapi_node,
+    static_cast<NodeScript*>(caller_node), local_result));
+}
+
+void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
+    const vector<const string>& arguments) {
+  vector<const string> local_args;
+  stringstream buffer;
+  const size_t args_length = arguments.size();
+  for (size_t i = 0; i < args_length; ++i) {
+    local_args.push_back(arguments[i]);
+    if (i != args_length - 1) {
+      buffer << local_args.at(i) << ", ";
+    } else {
+      buffer << local_args.at(i);
+    }
+  }
+  Log("RegisterJSBuiltInCall) built in: " + JSBuiltInToSting(built_in)
+    + ", arguments: " + buffer.str());
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  if (!IsA<NodeScript>(acting_node)) {
+    // Ignore internal usage.
+    return;
+  }
+
+  NodeJSBuiltIn* js_built_in_node;
+  if (builtin_js_nodes_.count(built_in) == 0) {
+    js_built_in_node = new NodeJSBuiltIn(this, built_in);
+    AddNode(js_built_in_node);
+    builtin_js_nodes_.emplace(built_in, js_built_in_node);
+  } else {
+    js_built_in_node = builtin_js_nodes_.at(built_in);
+  }
+
+  AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
+    js_built_in_node, local_args));
+}
+
+void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
+    const string& value) {
+  const string local_result(value);
+  Log("RegisterJSBuiltInResponse) built in: " + JSBuiltInToSting(built_in)
+    + ", result: " + local_result);
+
+  NodeActor* const caller_node = GetCurrentActingNode();
+  if (!IsA<NodeScript>(caller_node)) {
+    // Ignore internal usage.
+    return;
+  }
+
+  LOG_ASSERT(builtin_js_nodes_.count(built_in) != 0);
+  NodeJSBuiltIn* js_built_in_node = builtin_js_nodes_.at(built_in);
+
+  AddEdge(new EdgeJSResult(this, js_built_in_node,
+    static_cast<NodeScript*>(caller_node), local_result));
+}
+
 void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
                                       Array<WTF::String>& report) {
   const Node* node;
@@ -1101,111 +1217,6 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
       }
     }
   }
-}
-
-void PageGraph::RegisterWebAPICall(const WebAPI web_api,
-    const vector<const String>& arguments) {
-  RegisterWebAPICall(WebAPIToString(web_api), arguments);
-}
-
-void PageGraph::RegisterWebAPICall(const MethodName& method,
-    const vector<const String>& arguments) {
-  vector<const string> local_args;
-  stringstream buffer;
-  size_t args_length = arguments.size();
-  for (size_t i = 0; i < args_length; ++i) {
-    local_args.push_back(arguments[i].Utf8().data());
-    if (i != args_length - 1) {
-      buffer << local_args.at(i) << ", ";
-    } else {
-      buffer << local_args.at(i);
-    }
-  }
-  Log("RegisterWebAPICall) method: " + method + ", arguments: "
-    + buffer.str());
-
-  NodeActor* const acting_node = GetCurrentActingNode();
-  LOG_ASSERT(IsA<NodeScript>(acting_node));
-
-  NodeJSWebAPI* webapi_node;
-  if (webapi_nodes_.count(method) == 0) {
-    webapi_node = new NodeJSWebAPI(this, method);
-    AddNode(webapi_node);
-    webapi_nodes_.emplace(method, webapi_node);
-  } else {
-    webapi_node = webapi_nodes_.at(method);
-  }
-
-  AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
-    webapi_node, local_args));
-}
-
-void PageGraph::RegisterWebAPIResult(const WebAPI web_api,
-    const String& result) {
-  RegisterWebAPIResult(WebAPIToString(web_api), result);
-}
-
-void PageGraph::RegisterWebAPIResult(const MethodName& method,
-    const String& result) {
-  const string local_result = result.Utf8().data();
-  Log("RegisterWebAPIResult) method: " + method + ", result: " + local_result);
-
-  NodeActor* const caller_node = GetCurrentActingNode();
-  LOG_ASSERT(IsA<NodeScript>(caller_node));
-
-  LOG_ASSERT(webapi_nodes_.count(method) != 0);
-  NodeJSWebAPI* webapi_node = webapi_nodes_.at(method);
-
-  AddEdge(new EdgeJSResult(this, webapi_node,
-    static_cast<NodeScript*>(caller_node), local_result));
-}
-
-void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
-    const vector<const string>& arguments) {
-  vector<const string> local_args;
-  stringstream buffer;
-  const size_t args_length = arguments.size();
-  for (size_t i = 0; i < args_length; ++i) {
-    local_args.push_back(arguments[i]);
-    if (i != args_length - 1) {
-      buffer << local_args.at(i) << ", ";
-    } else {
-      buffer << local_args.at(i);
-    }
-  }
-  Log("RegisterJSBuiltInCall) built in: " + JSBuiltInToSting(built_in)
-    + ", arguments: " + buffer.str());
-
-  NodeActor* const acting_node = GetCurrentActingNode();
-  LOG_ASSERT(IsA<NodeScript>(acting_node));
-
-  NodeJSBuiltIn* js_built_in_node;
-  if (builtin_js_nodes_.count(built_in) == 0) {
-    js_built_in_node = new NodeJSBuiltIn(this, built_in);
-    AddNode(js_built_in_node);
-    builtin_js_nodes_.emplace(built_in, js_built_in_node);
-  } else {
-    js_built_in_node = builtin_js_nodes_.at(built_in);
-  }
-
-  AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
-    js_built_in_node, local_args));
-}
-
-void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
-    const string& value) {
-  const string local_result(value);
-  Log("RegisterJSBuiltInResponse) built in: " + JSBuiltInToSting(built_in)
-    + ", result: " + local_result);
-
-  NodeActor* const caller_node = GetCurrentActingNode();
-  LOG_ASSERT(IsA<NodeScript>(caller_node));
-
-  LOG_ASSERT(builtin_js_nodes_.count(built_in) != 0);
-  NodeJSBuiltIn* js_built_in_node = builtin_js_nodes_.at(built_in);
-
-  AddEdge(new EdgeJSResult(this, js_built_in_node,
-    static_cast<NodeScript*>(caller_node), local_result));
 }
 
 string PageGraph::ToGraphML() const {

@@ -139,7 +139,8 @@ void ScriptTracker::AddCodeFetchedFromUrl(
 }
 
 void ScriptTracker::AddExtensionCodeFetchedFromUrl(
-    const SourceCodeHash code_hash, const UrlHash url_hash) {
+    const ScriptSourceCode& code, const UrlHash url_hash) {
+  const SourceCodeHash code_hash(code.Source().ToString().Impl()->GetHash());
   extension_script_url_hash_to_source_hash_.emplace(url_hash, code_hash);
   extension_source_hash_to_script_url_hash_.emplace(code_hash, url_hash);
 }
