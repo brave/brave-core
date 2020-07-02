@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
+#include "mojo/public/cpp/bindings/generic_pending_receiver.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace bat_ledger {

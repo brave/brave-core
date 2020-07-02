@@ -119,7 +119,7 @@ void BraveBrowserMainParts::PostProfileInit() {
   if (profile()->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
-    command_line->AppendSwitch(switches::kDisableMediaSuspend);
+    command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
   }
 #endif
 }

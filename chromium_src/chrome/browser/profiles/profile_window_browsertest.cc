@@ -14,6 +14,7 @@
 #include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
 using BraveProfileWindowTest = InProcessBrowserTest;

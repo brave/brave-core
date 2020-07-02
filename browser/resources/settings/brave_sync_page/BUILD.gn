@@ -1,0 +1,22 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//tools/polymer/html_to_js.gni")
+
+group("web_modules") {
+  public_deps = [
+    ":templatize",
+  ]
+}
+
+html_to_js("templatize") {
+  js_files = [
+    "brave_sync_code_dialog.js",
+    "brave_sync_configure.js",
+    "brave_sync_page.js",
+    "brave_sync_subpage.js",
+    "brave_sync_setup.js",
+  ]
+}

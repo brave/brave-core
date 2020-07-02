@@ -10,62 +10,62 @@
   </outputs>
   <release seq="1">
     <structures>
-      <structure name="IDR_SETTINGS_BRAVE_SETTINGS_OVERRIDES_HTML" file="brave_settings_overrides.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_SETTINGS_OVERRIDES_JS" file="brave_settings_overrides.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_ICONS_HTML" file="brave_icons.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_HTML" file="default_brave_shields_page/default_brave_shields_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS" file="default_brave_shields_page/default_brave_shields_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_JS" file="default_brave_shields_page/default_brave_shields_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_HTML" file="default_brave_shields_page/default_brave_shields_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_BROWSER_PROXY_HTML" file="social_blocking_page/social_blocking_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_BROWSER_PROXY_JS" file="social_blocking_page/social_blocking_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_PAGE_JS" file="social_blocking_page/social_blocking_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_PAGE_HTML" file="social_blocking_page/social_blocking_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <!-- appearance -->
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_HTML" file="brave_appearance_page/brave_appearance_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS" file="brave_appearance_page/brave_appearance_browser_proxy.js" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BRAVE_THEME_HTML" file="brave_appearance_page/brave_theme.html" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_BRAVE_THEME_JS" file="brave_appearance_page/brave_theme.js" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_TOOLBAR_HTML" file="brave_appearance_page/toolbar.html" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_TOOLBAR_JS" file="brave_appearance_page/toolbar.js" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_SUPER_REFERRAL_HTML" file="brave_appearance_page/super_referral.html" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_APPEARANCE_SUPER_REFERRAL_JS" file="brave_appearance_page/super_referral.js" type="chrome_html" preprocess="true" />
-
-      <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="brave_page_visibility.js" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML" file="brave_privacy_page/brave_personalization_options.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS" file="brave_privacy_page/brave_personalization_options.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML" file="brave_privacy_page/brave_privacy_page_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_JS" file="brave_privacy_page/brave_privacy_page_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_ON_EXIT_PAGE_HTML" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_ON_EXIT_PAGE_JS" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_HTML" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_JS" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_HTML" file="brave_reset_page/brave_reset_profile_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_JS" file="brave_reset_page/brave_reset_profile_dialog_behavior.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SETTINGS_OVERRIDES_JS" compress="false" file="brave_settings_overrides.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_JS" compress="false" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_JS" file="brave_reset_page/brave_reset_profile_dialog_behavior.js" compress="false" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_HTML" file="brave_sync_page/brave_sync_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS" file="brave_sync_page/brave_sync_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_JS" file="brave_sync_page/brave_sync_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_HTML" file="brave_sync_page/brave_sync_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <!-- brave help and tips -->
-      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_HTML" file="brave_help_tips_page/brave_help_tips_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_JS" file="brave_help_tips_page/brave_help_tips_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_PAGE_JS" file="brave_help_tips_page/brave_help_tips_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_PAGE_HTML" file="brave_help_tips_page/brave_help_tips_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <!-- default extensions -->
-      <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_BROWSER_PROXY_HTML" file="brave_default_extensions_page/brave_default_extensions_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_BROWSER_PROXY_JS" file="brave_default_extensions_page/brave_default_extensions_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_JS" file="brave_default_extensions_page/brave_default_extensions_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_HTML" file="brave_default_extensions_page/brave_default_extensions_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-     <!-- brave new tab -->
-      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_BROWSER_PROXY_HTML" file="brave_new_tab_page/brave_new_tab_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_BROWSER_PROXY_JS" file="brave_new_tab_page/brave_new_tab_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_PAGE_JS" file="brave_new_tab_page/brave_new_tab_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_PAGE_HTML" file="brave_new_tab_page/brave_new_tab_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
     </structures>
     <includes>
+      <part file="settings_resources_generated.grdp" />
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />
-      <part file="settings_resources_v3.grdp" />
+      <include name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS"
+          file="brave_sync_page/brave_sync_browser_proxy.js"
+          compress="false"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS"
+          file="brave_page_visibility.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <!-- style overrides -->
+        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_JS"
+          file="style_overrides/index.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_BASIC_PAGE_JS"
+          file="style_overrides/settings_basic_page.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_MENU_JS"
+          file="style_overrides/settings_menu.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_PEOPLE_PAGE_JS"
+          file="style_overrides/settings_people_page.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_SECTION_JS"
+          file="style_overrides/settings_section.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_UI_JS"
+          file="style_overrides/settings_ui.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <!-- end style overrides -->
+        <!-- template overrides -->
+        <include name="IDR_SETTINGS_BRAVE_TEMPLATE_OVERRIDES_JS"
+          file="template_overrides/index.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <!-- end template overrides -->
     </includes>
   </release>
 </grit>

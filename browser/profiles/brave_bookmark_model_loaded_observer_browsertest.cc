@@ -10,6 +10,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/test/browser_test.h"
 
 using BraveBookmarkModelLoadedObserverBrowserTest = InProcessBrowserTest;
 

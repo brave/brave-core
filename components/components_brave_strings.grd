@@ -29,6 +29,7 @@
       <output filename="components_chromium_strings_pa.pak" type="data_package" lang="pa" />
       <output filename="components_chromium_strings_si.pak" type="data_package" lang="si" />
       <output filename="components_chromium_strings_sq.pak" type="data_package" lang="sq" />
+      <output filename="components_chromium_strings_sr-Latn.pak" type="data_package" lang="sr-Latn" />
       <output filename="components_chromium_strings_ur.pak" type="data_package" lang="ur" />
       <output filename="components_chromium_strings_uz.pak" type="data_package" lang="uz" />
       <output filename="components_chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
@@ -280,13 +281,6 @@
       <message name="IDS_PAGE_INFO_INTERNAL_PAGE" desc="Message to display in the page info bubble when the page you are on is a chrome:// page or about:something.">
         You're viewing a secure Brave page
       </message>
-
-      <if expr="is_android">
-      <!-- Only used in the dialog shown after tapping "Details" in page info -->
-      <message name="IDS_PAGE_INFO_SECURE_IDENTITY_VERIFIED" desc="The text of the identity section when the page is secure and uses a valid certificate">
-        Brave verified that <ph name="ISSUER">$1<ex>VeriSign</ex></ph> issued this website's certificate.
-      </message>
-      </if>
 
       <!-- Session Crash -->
       <message name="IDS_SESSION_CRASHED_VIEW_MESSAGE" desc="Message shown when the last session didn't exit cleanly.">

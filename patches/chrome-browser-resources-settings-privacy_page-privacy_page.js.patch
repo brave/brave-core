@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.js b/chrome/browser/resources/settings/privacy_page/privacy_page.js
+index 4c1db8cac68105d41c3b56b0af3819ae041f6d86..2fe761934e775d2a158ee5a67cd75ab2a77979eb 100644
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page.js
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page.js
+@@ -22,6 +22,7 @@ import '../prefs/prefs.m.js';
+ import '../settings_page/settings_animated_pages.m.js';
+ import '../settings_page/settings_subpage.m.js';
+ import '../settings_shared_css.m.js';
++import './personalization_options.m.js';
+ 
+ import {assert} from 'chrome://resources/js/assert.m.js';
+ import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.js';

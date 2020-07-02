@@ -1,24 +1,24 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 6c10820db6d90ceaa2f3e3191b8c79b9ad59d849..48cf68595c9cb235969c137715e4caba382b5b23 100644
+index e568edc001a19c7cb147fc255ff016f803f48edc..c8a1546e71e1c0ba9190a3142a63df858abd02d7 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -41,7 +41,9 @@ cr.define('settings', function() {
+@@ -41,7 +41,9 @@ function addPrivacyChildRoutes(r) {
  
-     // TODO(tommycli): Find a way to refactor these repetitive category
-     // routes.
+   // TODO(tommycli): Find a way to refactor these repetitive category
+   // routes.
 +      // <if expr="_google_chrome">
-     r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
+   r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
 +      // </if>
-     if (loadTimeData.getBoolean('enableWebXrContentSetting')) {
-       r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
+   if (loadTimeData.getBoolean('enableWebXrContentSetting')) {
+     r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
+   }
+@@ -188,7 +190,9 @@ function createBrowserSettingsRoutes() {
      }
-@@ -188,7 +190,9 @@ cr.define('settings', function() {
-       }
  
-       r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
+     r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
 +      // <if expr="_google_chrome">
-       r.CLOUD_PRINTERS = r.PRINTING.createChild('/cloudPrinters');
+     r.CLOUD_PRINTERS = r.PRINTING.createChild('/cloudPrinters');
 +      // </if>
  
-       r.ACCESSIBILITY = r.ADVANCED.createSection('/accessibility', 'a11y');
+     r.ACCESSIBILITY = r.ADVANCED.createSection('/accessibility', 'a11y');
  

@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/common/chrome_features.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/content_settings/browser/tab_specific_content_settings.h"
 #include "components/permissions/permission_request_id.h"
 #include "content/public/browser/browser_context.h"
 #include "third_party/blink/public/mojom/feature_policy/feature_policy.mojom.h"
@@ -28,9 +28,9 @@ void AutoplayPermissionContext::UpdateTabContext(
     const permissions::PermissionRequestID& id,
     const GURL& requesting_frame,
     bool allowed) {
-  TabSpecificContentSettings* content_settings =
-      TabSpecificContentSettings::GetForFrame(id.render_process_id(),
-                                              id.render_frame_id());
+  content_settings::TabSpecificContentSettings* content_settings =
+      content_settings::TabSpecificContentSettings::GetForFrame(
+          id.render_process_id(), id.render_frame_id());
   if (!content_settings)
     return;
 

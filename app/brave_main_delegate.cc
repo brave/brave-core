@@ -28,7 +28,9 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/embedder_support/switches.h"
 #include "components/feed/feed_feature_list.h"
+#include "components/language/core/common/language_experiments.h"
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/security_state/core/features.h"
@@ -181,6 +183,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
+    language::kUseButtonTranslateBubbleUi.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
     translate::kTranslateUI.name,

@@ -238,8 +238,8 @@ void BraveToolbarView::ShowBookmarkBubble(
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
   delegate.reset(new BookmarkBubbleSignInDelegate(browser()));
   views::Widget* bubble_widget = BookmarkBubbleView::ShowBubble(
-      anchor_view, bookmark_, gfx::Rect(), nullptr, observer,
-      std::move(delegate), browser_->profile(), url, already_bookmarked);
+      anchor_view, bookmark_, observer, std::move(delegate),
+      browser_->profile(), url, already_bookmarked);
 
   if (bubble_widget && bookmark_)
     bookmark_->OnBubbleWidgetCreated(bubble_widget);

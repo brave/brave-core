@@ -50,7 +50,7 @@ GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 
-#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"  // NOLINT
+#include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
 
 #undef SpellingOptionsSubMenuObserver
 

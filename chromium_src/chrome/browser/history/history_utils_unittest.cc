@@ -10,15 +10,6 @@
 #include "url/gurl.h"
 #include "extensions/buildflags/buildflags.h"
 
-namespace {
-// Refered IsLitePageRedirectPreviewDomain() to make sample lite page url.
-GURL GetSampleLitePageUrl() {
-  return net::AppendQueryParameter(
-      previews::params::GetLitePagePreviewsDomainURL(),
-      "u", "1234");
-}
-}  // namespace
-
 // This test covers all cases that upstream and our version of
 // CanAddURLToHistory().
 TEST(HistoryUtilsTest, VariousURLTest) {
@@ -33,7 +24,6 @@ TEST(HistoryUtilsTest, VariousURLTest) {
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-native://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-search://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-distiller://test")));
-  EXPECT_FALSE(CanAddURLToHistory(GetSampleLitePageUrl()));
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   EXPECT_FALSE(CanAddURLToHistory(
       GURL("chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html")));

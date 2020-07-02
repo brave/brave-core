@@ -11,25 +11,15 @@
 #include "ui/views/controls/focus_ring.h"
 #include "ui/views/style/typography.h"
 
-// Insert our own definition for `CreateXYZ`, and (in concert with the .cc)
-// move chromium's definition to `CreateXYZ_ChromiumImpl`
-#define CreateSecondaryUiButton CreateSecondaryUiButton_ChromiumImpl( \
-        ButtonListener* listener, \
-        const base::string16& text); \
-      static std::unique_ptr<LabelButton> CreateSecondaryUiButton
-#define CreateSecondaryUiBlueButton CreateSecondaryUiBlueButton_ChromiumImpl( \
-        ButtonListener* listener, \
-        const base::string16& text); \
-      static std::unique_ptr<LabelButton>  CreateSecondaryUiBlueButton
+// Insert our own definition for `Create`, and (in concert with the .cc)
+// move chromium's definition to `Create_ChromiumImpl`
 #define Create Create_ChromiumImpl( \
         ButtonListener* listener, \
         const base::string16& text, \
         int button_context = style::CONTEXT_BUTTON_MD); \
       static std::unique_ptr<MdTextButton> Create
 
-#include "../../../../../ui/views/controls/button/md_text_button.h"
-#undef CreateSecondaryUiButton
-#undef CreateSecondaryUiBlueButton
+#include "../../../../../../ui/views/controls/button/md_text_button.h"
 #undef Create
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_

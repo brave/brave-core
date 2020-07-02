@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index ad92de969ddde0682730356919fdc756abd57104..3f8a544fee3276cb4b5aa4661fb868199c83c76e 100644
+index d5cc62f0ac2db152fa42d21029a90a690f2ac98c..162b1713563ce6649d9a8497d8f6bb8953f94653 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
 @@ -27,6 +27,7 @@ class PrefService;

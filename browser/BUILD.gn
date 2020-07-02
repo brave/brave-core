@@ -159,6 +159,7 @@ source_set("browser_process") {
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
+    "//components/content_settings/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/core/browser",
     "//components/embedder_support",
@@ -386,6 +387,8 @@ source_set("browser_process") {
     sources += [
       "//chrome/browser/google/google_update_win.cc",
       "//chrome/browser/google/google_update_win.h",
+      "//chrome/browser/google/switches.cc",
+      "//chrome/browser/google/switches.h",
     ]
 
     deps += [

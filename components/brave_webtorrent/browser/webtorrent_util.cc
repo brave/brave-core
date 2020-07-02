@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/strings/string_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"

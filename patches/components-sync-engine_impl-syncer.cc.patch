@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/syncer.cc b/components/sync/engine_impl/syncer.cc
-index dd151d52a357a8e60672f71f50389fcb6293233d..8c1a4a81c38040ca02d6b0ec69c449ff61c1ae0a 100644
+index 262681ba185262d47e9a59cc1b9f75aaeef26759..3d4d4994e418f365def96344d72e60654cb353d3 100644
 --- a/components/sync/engine_impl/syncer.cc
 +++ b/components/sync/engine_impl/syncer.cc
-@@ -109,6 +109,7 @@ bool Syncer::DownloadAndApplyUpdates(ModelTypeSet* request_types,
+@@ -102,6 +102,7 @@ bool Syncer::DownloadAndApplyUpdates(ModelTypeSet* request_types,
        Difference(*request_types, requested_commit_only_types);
    GetUpdatesProcessor get_updates_processor(
        cycle->context()->model_type_registry()->update_handler_map(), delegate);

@@ -72,8 +72,9 @@ class BraveActionsContainer::EmptyExtensionsContainer
                     bool is_sticky,
                     const base::Closure& closure) override {}
 
-  bool ShowToolbarActionPopup(const std::string& action_id,
-                              bool grant_active_tab) override { return false; }
+  bool ShowToolbarActionPopupForAPICall(const std::string& action_id) override {
+    return false;
+  }
 
   void ShowToolbarActionBubble(
       std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
@@ -216,7 +217,8 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
     // Handle if we are in a continuing pressed state for this extension.
     if (is_rewards_pressed_ && id == brave_rewards_extension_id) {
       is_rewards_pressed_ = false;
-      actions_[id].view_controller_->ExecuteAction(true);
+      actions_[id].view_controller_->ExecuteAction(
+          true, ToolbarActionViewController::InvocationSource::kToolbarButton);
     }
   }
 }
@@ -431,8 +433,8 @@ void BraveActionsContainer::OnBraveActionShouldTrigger(
       actions_[extension_id].view_controller_
           ->ExecuteActionUI(*ui_relative_path);
     else
-      actions_[extension_id].view_controller_
-          ->ExecuteAction(true);
+      actions_[extension_id].view_controller_->ExecuteAction(
+          true, ToolbarActionViewController::InvocationSource::kApi);
   }
 }
 

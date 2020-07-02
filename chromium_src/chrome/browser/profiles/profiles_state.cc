@@ -7,7 +7,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "ui/gfx/text_elider.h"
 #define GetAvatarNameForProfile GetAvatarNameForProfile_ChromiumImpl
-#include "../../../../../../chrome/browser/profiles/profiles_state.cc"
+#include "../../../../../chrome/browser/profiles/profiles_state.cc"
 #undef GetAvatarNameForProfile
 
 namespace profiles {

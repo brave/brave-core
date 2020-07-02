@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
+index 9ca4772b70486dae09089e43a9ac3ca40a4e035f..033320a8498b9fdd5cdbac361c51abd772f24d79 100644
+--- a/third_party/blink/common/client_hints/client_hints.cc
++++ b/third_party/blink/common/client_hints/client_hints.cc
+@@ -127,6 +127,7 @@ base::Optional<std::vector<network::mojom::WebClientHintsType>> FilterAcceptCH(
+ }
+ 
+ bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {
++  BRAVE_CLIENT_HINTS_IS_CLIENT_HINT_SENT_BY_DEFAULT
+   return (type == network::mojom::WebClientHintsType::kUA ||
+           type == network::mojom::WebClientHintsType::kUAMobile);
+ }

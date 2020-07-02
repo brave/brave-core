@@ -1,0 +1,46 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
+index 2e8ba69ab6b6b838a9ca25393825d2988e6c3edf..e3651d20bcccc9caa54a8f44687410ac652a2b29 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
+@@ -45,7 +45,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+      * set of channels returned by {@link #getStartupChannelIds()} or {@link #getLegacyChannelIds()}
+      * changes.
+      */
+-    static final int CHANNELS_VERSION = 2;
++    static final int CHANNELS_VERSION = 3;
+ 
+     private static class LazyHolder {
+         private static ChromeChannelDefinitions sInstance = new ChromeChannelDefinitions();
+@@ -65,6 +65,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+      * more detailed instructions.
+      */
+     @StringDef({ChannelId.BROWSER, ChannelId.DOWNLOADS, ChannelId.INCOGNITO,
++            BraveChannelDefinitions.ChannelId.BRAVE_ADS, BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND,
+             ChannelId.MEDIA_PLAYBACK, ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS,
+             ChannelId.WEBAPP_ACTIONS, ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES,
+             ChannelId.COMPLETED_DOWNLOADS, ChannelId.PERMISSION_REQUESTS,
+@@ -93,7 +94,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+         String WEBRTC_CAM_AND_MIC = "webrtc_cam_and_mic";
+     }
+ 
+-    @StringDef({ChannelGroupId.GENERAL, ChannelGroupId.SITES})
++    @StringDef({BraveChannelDefinitions.ChannelGroupId.BRAVE_ADS, ChannelGroupId.GENERAL, ChannelGroupId.SITES})
+     @Retention(RetentionPolicy.SOURCE)
+     public @interface ChannelGroupId {
+         String SITES = "sites";
+@@ -122,6 +123,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+             Map<String, PredefinedChannel> map = new HashMap<>();
+             Set<String> startup = new HashSet<>();
+ 
++            BraveChannelDefinitions.addBraveChannels(map, startup);
+             map.put(ChannelId.BROWSER,
+                     PredefinedChannel.create(ChannelId.BROWSER,
+                             R.string.notification_category_browser,
+@@ -237,6 +239,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+         static final Map<String, PredefinedChannelGroup> MAP;
+         static {
+             Map<String, PredefinedChannelGroup> map = new HashMap<>();
++            BraveChannelDefinitions.addBraveChannelGroups(map);
+             map.put(ChannelGroupId.GENERAL,
+                     new PredefinedChannelGroup(
+                             ChannelGroupId.GENERAL, R.string.notification_category_group_general));

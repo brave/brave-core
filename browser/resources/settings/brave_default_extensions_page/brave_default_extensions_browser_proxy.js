@@ -2,9 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// clang-format off
+// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+// clang-format on
+
 cr.define('settings', function() {
   /** @interface */
-  class BraveDefaultExtensionsBrowserProxy {
+  /* #export */ class BraveDefaultExtensionsBrowserProxy {
     /**
      * @param {boolean} value name.
      */
@@ -22,7 +26,7 @@ cr.define('settings', function() {
   /**
    * @implements {settings.BraveDefaultExtensionsBrowserProxy}
    */
-  class BraveDefaultExtensionsBrowserProxyImpl {
+  /* #export */ class BraveDefaultExtensionsBrowserProxyImpl {
     /** @override */
     setWebTorrentEnabled(value) {
       chrome.send('setWebTorrentEnabled', [value]);
@@ -59,6 +63,7 @@ cr.define('settings', function() {
 
   cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl);
 
+  // #cr_define_end
   return {
     BraveDefaultExtensionsBrowserProxy,
     BraveDefaultExtensionsBrowserProxyImpl

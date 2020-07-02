@@ -1,10 +1,10 @@
 diff --git a/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java b/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
-index 485a42ddb1018af868612cb193023068ea10241b..941a37614078d9ac91bb6d1a616156525fdcd0e3 100644
+index 636e094cf029e74bdd2136c66cbb1dcd5e0c29fc..0f675301bf8ffcae10b96c2c19facb2e58d3e836 100644
 --- a/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
 +++ b/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
-@@ -131,6 +131,7 @@ class ByteCodeProcessor {
-             chain = new CustomResourcesClassAdapter(
-                     chain, reader.getClassName(), reader.getSuperName(), sFullClassPathClassLoader);
+@@ -113,6 +113,7 @@ class ByteCodeProcessor {
+         if (sShouldUseThreadAnnotations) {
+             chain = new ThreadAssertionClassAdapter(chain);
          }
 +        chain = org.brave.bytecode.BraveClassAdapter.createAdapter(chain);
          reader.accept(chain, 0);

@@ -14,7 +14,7 @@
     <includes>
       <include name="IDR_EXTENSIONS_BRAVE_ITEM_LIST_MORE_ITEMS_JS"
                file="${root_gen_dir}/brave/browser/resources/extensions/brave_item_list_more_items.js"
-               use_base_dir="false" type ="BINDATA" />
+               use_base_dir="false" compress="false" type ="BINDATA" />
       <include name="IDR_EXTENSIONS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />
     </includes>
   </release>

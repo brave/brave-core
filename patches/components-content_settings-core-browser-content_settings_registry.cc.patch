@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index 79711fe3e08b219ff88aa41bb738b9106569a2c4..0d1c6c3d76c5b7ed80ff7a1e33faf2e1fd5aca3e 100644
+index 3aa7c4054cf5a76f6426672316e1af077b7b462c..c057b961597b1df1e67cb621e9c9a960375c1a24 100644
 --- a/components/content_settings/core/browser/content_settings_registry.cc
 +++ b/components/content_settings/core/browser/content_settings_registry.cc
-@@ -605,6 +605,7 @@ void ContentSettingsRegistry::Init() {
-            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+@@ -590,6 +590,7 @@ void ContentSettingsRegistry::Init() {
+            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
             ContentSettingsInfo::PERSISTENT,
             ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 +  BRAVE_INIT

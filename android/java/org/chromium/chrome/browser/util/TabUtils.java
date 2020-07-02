@@ -50,13 +50,6 @@ public class TabUtils {
         popup.show(); // showing popup menu
     }
 
-    public static void openHomepage() {
-        ChromeActivity chromeActivity = getChromeActivity();
-        if (chromeActivity != null && chromeActivity.getToolbarManager() != null) {
-            chromeActivity.getToolbarManager().openHomepage();
-        }
-    }
-
     public static void openNewTab() {
         ChromeActivity chromeActivity = getChromeActivity();
         boolean isIncognito =

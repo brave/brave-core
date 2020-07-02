@@ -298,6 +298,11 @@ Additional details:
 <message name="IDS_POLICY_STATUS_MACHINE" desc="Title for the machine policy status box.">
     Machine policies
   </message>
+ <if expr="is_win">
+  <message name="IDS_POLICY_STATUS_UPDATER" desc="Title for the updater policy status box on windows.">
+    Brave Update
+  </message>
+ </if>
   <message name="IDS_POLICY_LABEL_ENTERPRISE_ENROLLMENT_DOMAIN" desc="Label for the enrollment domain in the device policy status box.">
     Enrollment domain:
   </message>
@@ -369,6 +374,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_LABEL_VALUE" desc="Label for the value row in the policy table.">
     Value
+  </message>
+  <message name="IDS_POLICY_LABEL_VERSION" desc="Label for the version in the policy status box.">
+    Version:
   </message>
   <message name="IDS_POLICY_LABEL_STATUS" desc="Label for the actual status in the policy status boxes.">
     Status:
@@ -541,6 +549,6 @@ Additional details:
     Application blocked by your administrator
   </message>
   <message name="IDS_CHROME_URLS_DISABLED_PAGE_MESSAGE" desc="A paragraph informing the user that the application is blocked.">
-    The application has been blocked by your administrator
+    This application has been blocked by your administrator
   </message>
 </grit-part>

@@ -6,7 +6,7 @@
 import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
-import("//chrome/browser/resources/settings/settings.gni")
+import("../settings.gni")
 
 js_type_check("closure_compile") {
   deps = [
@@ -88,7 +88,7 @@ js_library("brave_appearance_browser_proxy.m") {
 js_library("brave_theme.m") {
   deps = [
     ":brave_appearance_browser_proxy.m",
-    "//chrome/browser/resources/settings:route.m",
+    "//chrome/browser/resources/settings:route",
     "//chrome/browser/resources/settings:router.m",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:load_time_data.m",
@@ -105,7 +105,7 @@ js_library("brave_theme.m") {
 js_library("super_referral.m") {
   deps = [
     ":brave_appearance_browser_proxy.m",
-    "//chrome/browser/resources/settings:route.m",
+    "//chrome/browser/resources/settings:route",
     "//chrome/browser/resources/settings:router.m",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:i18n_behavior.m",
@@ -130,7 +130,7 @@ js_library("toolbar.m") {
 
 
 # make modules
-group("polymer3_elements") {
+group("web_modules") {
   public_deps = [
     ":brave_theme_module",
     ":super_referral_module",
@@ -143,10 +143,11 @@ polymer_modulizer("brave_theme") {
   js_file = "brave_theme.js"
   html_file = "brave_theme.html"
   html_type = "dom-module"
+  migrated_imports = settings_migrated_imports
   auto_imports = settings_auto_imports + [
                    "ui/webui/resources/html/assert.html|assert",
-                   "chrome/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
-                   "chrome/browser/resources/settings/appearance_page/brave_appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
+                   "brave/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
+                   "chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
                    "chrome/browser/resources/settings/route.html|routes",
                    "chrome/browser/resources/settings/router.html|Router",
                  ]
@@ -157,10 +158,11 @@ polymer_modulizer("super_referral") {
   js_file = "super_referral.js"
   html_file = "super_referral.html"
   html_type = "dom-module"
+  migrated_imports = settings_migrated_imports
   auto_imports = settings_auto_imports + [
                    "ui/webui/resources/html/assert.html|assert",
-                   "chrome/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
-                   "chrome/browser/resources/settings/appearance_page/brave_appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
+                   "brave/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
+                   "chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
                  ]
   namespace_rewrites = settings_namespace_rewrites
 }

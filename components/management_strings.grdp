@@ -118,6 +118,9 @@
     <message name="IDS_MANAGEMENT_REPORT_ANDROID_APPLICATIONS" desc="Message stating that administrators can see user's installed Android applications.">
       Which Google Play apps you have installed
     </message>
+    <message name="IDS_MANAGEMENT_REPORT_PROXY_SERVER" desc="Message stating that administrators can see user's traffic when connected to a proxy server.">
+      Websites you visit and the contents of not secure pages
+    </message>
   </if>
 
   <!-- Strings related to extension reporting section of the management page -->

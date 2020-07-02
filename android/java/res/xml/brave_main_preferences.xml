@@ -4,10 +4,10 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:orderingFromXml="false">
 
-    <android.support.v7.preference.PreferenceCategory
+    <PreferenceCategory
         android:key="search_engine_section"
         android:order="0"
         android:title="@string/prefs_section_search_engine"/>
@@ -21,11 +21,11 @@
         android:key="private_search_engine"
         android:order="2"
         android:title="@string/prefs_private_search_engine"/>
-    <android.support.v7.preference.Preference
+    <Preference
         android:key="welcome_tour"
         android:order="11"
         android:title="@string/prefs_welcome_tour"/>
-    <android.support.v7.preference.PreferenceCategory
+    <PreferenceCategory
         android:key="display_section"
         android:order="12"
         android:title="@string/prefs_section_display"/>
@@ -39,11 +39,11 @@
         android:key="backgroud_images"
         android:order="14"
         android:title="@string/prefs_new_tab_page"/>
-    <android.support.v7.preference.Preference
+    <Preference
         android:key="rate_brave"
         android:order="15"
         android:title="@string/prefs_rate_brave"/>
-    <android.support.v7.preference.PreferenceCategory
+    <PreferenceCategory
         android:key="controls_section"
         android:order="16"
         android:title="@string/prefs_section_controls"/>
@@ -72,4 +72,4 @@
         android:key="brave_sync_layout"
         android:order="20"
         android:title="@string/sync_category_title"/>
-</android.support.v7.preference.PreferenceScreen>
+</PreferenceScreen>

@@ -6,18 +6,18 @@
 package org.chromium.chrome.browser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,26 +44,25 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
-import org.chromium.components.embedder_support.util.UrlConstants;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
-import org.chromium.chrome.browser.rate.RateUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 import java.util.Calendar;
 
@@ -93,19 +92,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     // Sync worker
     public BraveSyncWorker mBraveSyncWorker;
 
+    public BraveActivity() {
+        // Disable key checker to avoid asserts on Brave keys in debug
+        SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
+    }
+
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
         nativeRestartStatsUpdater();
-    }
-
-    @Override
-    public void onStartWithNative() {
-        super.onStartWithNative();
-
-        // Disable NTP suggestions
-        PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_SECTION_ENABLED, false);
-        PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_LIST_VISIBLE, false);
     }
 
     @Override
@@ -369,7 +364,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
-        if (tab != null && tab.getUrl().equals(url)) {
+        if (tab != null && tab.getUrlString().equals(url)) {
             return tab;
         }
 

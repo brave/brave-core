@@ -5,13 +5,13 @@
 
 package org.chromium.chrome.browser;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 
-import org.chromium.chrome.R;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.R;
 
 @JNINamespace("chrome::android")
 public class BraveRelaunchUtils {

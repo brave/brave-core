@@ -25,6 +25,6 @@ bool IsAutoplayAllowedForElement(
   if (!IsAutoplayAllowedForElement(element_))                \
     return true;
 
-#include "../../../../../third_party/blink/renderer/core/html/media/autoplay_policy.cc"  // NOLINT
+#include "../../../../../../../../third_party/blink/renderer/core/html/media/autoplay_policy.cc"
 
 #undef BRAVE_AUTOPLAY_POLICY_IS_GESTURE_NEEDED_FOR_PLAYBACK
