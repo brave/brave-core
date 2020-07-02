@@ -33,6 +33,7 @@
       </select>
     </div>
     <settings-toggle-button id="p3aEnabled"
+        class="cr-row"
         pref=""
         checked="[[p3aEnabled_]]"
         label="$i18n{p3aEnableTitle}"
@@ -40,6 +41,7 @@
         on-settings-boolean-control-change="onP3AEnabledChange_">
     </settings-toggle-button>
     <settings-toggle-button id="pushMessagingEnabled"
+        class="cr-row"
         pref="{{prefs.brave.gcm.channel_status}}"
         label="$i18n{pushMessagingLabel}">
         <template is="dom-if" if="[[shouldShowRestart_(

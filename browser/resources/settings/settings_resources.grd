@@ -10,9 +10,7 @@
   </outputs>
   <release seq="1">
     <structures>
-      <structure name="IDR_SETTINGS_BRAVE_SETTINGS_OVERRIDES_JS" compress="false" file="brave_settings_overrides.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_JS" compress="false" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_RESET_PROFILE_DIALOG_BEHAVIOR_JS" file="brave_reset_page/brave_reset_profile_dialog_behavior.js" compress="false" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
     </structures>
     <includes>
@@ -22,50 +20,88 @@
           file="brave_sync_page/brave_sync_browser_proxy.js"
           compress="false"
           type="BINDATA" />
-      <include name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS"
-          file="brave_page_visibility.js"
+      <!-- overrides -->
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_ABOUT_PAGE_JS"
+          file="brave_overrides/about_page.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <!-- style overrides -->
-        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_JS"
-          file="style_overrides/index.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_APPEARANCE_PAGE_JS"
+          file="brave_overrides/appearance_page.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_BASIC_PAGE_JS"
-          file="style_overrides/settings_basic_page.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_BASIC_PAGE_JS"
+          file="brave_overrides/basic_page.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_MENU_JS"
-          file="style_overrides/settings_menu.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_CLEAR_BROWSING_DATA_DIALOG_JS"
+          file="brave_overrides/clear_browsing_data_dialog.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_PEOPLE_PAGE_JS"
-          file="style_overrides/settings_people_page.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_DEFAULT_BROWSER_PAGE_JS"
+          file="brave_overrides/default_browser_page.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_SECTION_JS"
-          file="style_overrides/settings_section.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_ICONS_JS"
+          file="brave_overrides/icons.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <include name="IDR_SETTINGS_BRAVE_STYLE_OVERRIDES_UI_JS"
-          file="style_overrides/settings_ui.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_IMPORT_DATA_DIALOG_JS"
+          file="brave_overrides/import_data_dialog.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <!-- end style overrides -->
-        <!-- template overrides -->
-        <include name="IDR_SETTINGS_BRAVE_TEMPLATE_OVERRIDES_JS"
-          file="template_overrides/index.js"
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_INDEX_JS"
+          file="brave_overrides/index.js"
           compress="false"
           preprocess="true"
           type="BINDATA" />
-        <!-- end template overrides -->
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_PAGE_VISIBILITY_JS"
+          file="brave_overrides/page_visibility.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_PAYMENTS_SECTION_JS"
+          file="brave_overrides/payments_section.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_PEOPLE_PAGE_JS"
+          file="brave_overrides/people_page.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_RESET_PROFILE_DIALOG_JS"
+          file="brave_overrides/reset_profile_dialog.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SETTINGS_MENU_JS"
+          file="brave_overrides/settings_menu.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SETTINGS_SECTION_JS"
+          file="brave_overrides/settings_section.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SETTINGS_UI_JS"
+          file="brave_overrides/settings_ui.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SITE_SETTINGS_PAGE_JS"
+          file="brave_overrides/site_settings_page.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
+        <!-- end overrides -->
     </includes>
   </release>
 </grit>
