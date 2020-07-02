@@ -9,9 +9,11 @@ import Foundation
 ///
 /// Handles correcting center-aligned single items in a flow layout while using
 /// automatic sizing cells
-class NewTabPageFlowLayout: UICollectionViewFlowLayout {
-    /// The section which should be providing a flexible amount of space
-    var flexibleSpaceSection: Int? {
+class NewTabPageFlowLayout: UICollectionViewFlowLayout {    
+    /// Brave Today section acts a little differently, as it is pushed to the bottom of the screen despite
+    /// there being space between, therefore additional space has to be given to the overall content size
+    /// when Brave Today is enabled
+    var braveTodaySection: Int? {
         didSet {
             invalidateLayout()
         }

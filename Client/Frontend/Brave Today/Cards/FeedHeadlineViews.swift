@@ -5,28 +5,59 @@
 
 import Foundation
 
-class HeadlineCardView: FeedCardBackgroundButton {
+class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
+    var tappedHeadline: (() -> Void)?
+    
     let feedView = FeedItemView(layout: .brandedHeadline).then {
         // Title label slightly different
         $0.titleLabel.font = .systemFont(ofSize: 18.0, weight: .semibold)
+        $0.isUserInteractionEnabled = false
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init() {
+        super.init(frame: .zero)
         
         addSubview(feedView)
         feedView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
+    }
+    
+    @objc private func tappedSelf() {
+        tappedHeadline?()
     }
 }
 
 class SmallHeadlineCardView: HeadlineCardView {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init() {
+        super.init()
         
         feedView.titleLabel.numberOfLines = 4
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+}
+
+class SmallHeadlinePairCardView: UIView, FeedCardContent {
+    
+    private let stackView = UIStackView().then {
+        $0.distribution = .equalSpacing
+    }
+    
+    let smallHeadelineCardViews: (left: SmallHeadlineCardView, right: SmallHeadlineCardView) = (SmallHeadlineCardView(), SmallHeadlineCardView())
+    
+    required init() {
+        super.init(frame: .zero)
+        
+        addSubview(stackView)
+        stackView.addArrangedSubview(smallHeadelineCardViews.left)
+        stackView.addArrangedSubview(smallHeadelineCardViews.right)
     }
     
     @available(*, unavailable)

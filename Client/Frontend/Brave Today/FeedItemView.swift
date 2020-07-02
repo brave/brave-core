@@ -16,15 +16,20 @@ class FeedItemView: UIView {
     init(layout: Layout) {
         self.layout = layout
         super.init(frame: .zero)
-        addSubview(view(for: .stack(layout.root)))
+        let contentView = view(for: .stack(layout.root))
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     /// The feed thumbnail image view. By default thumbnails aspect scale to
     /// fill the available space
     lazy var thumbnailImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
     /// The feed title label, defaults to 2 line maximum
-    lazy var titleLabel = UILabel().then {
+    var titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
         $0.appearanceTextColor = .white
         $0.numberOfLines = 2
@@ -59,7 +64,7 @@ class FeedItemView: UIView {
             thumbnailImageView.snp.remakeConstraints { maker in
                 switch imageLayout {
                 case .aspectRatio(let ratio):
-                    maker.height.equalTo(thumbnailImageView.snp.bottom).multipliedBy(1.0/ratio)
+                    maker.height.equalTo(thumbnailImageView.snp.width).multipliedBy(1.0/ratio)
                 case .fixedSize(let size):
                     maker.size.equalTo(size)
                 }
@@ -166,6 +171,7 @@ extension FeedItemView {
                 children: [
                     .thumbnail(.aspectRatio(1)),
                     .title(4),
+                    .customSpace(4),
                     .date
                 ]
             )
