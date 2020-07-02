@@ -36,7 +36,6 @@ extern const char kWidevineGvt1Prefix[];
 extern const char kWidevineGoogleDlPrefix[];
 
 extern const char kUserAgentHeader[];
-extern const char kBravePartnerHeader[];
 extern const char kBraveServicesKeyHeader[];
 
 extern const char kBittorrentMimeType[];

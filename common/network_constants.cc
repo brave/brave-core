@@ -49,7 +49,6 @@ const char kWidevineGoogleDlPrefix[] =
     "*://dl.google.com/*oimompecagnajdejgnnjijobebaeigek*";
 
 const char kUserAgentHeader[] = "User-Agent";
-const char kBravePartnerHeader[] = "X-Brave-Partner";
 const char kBraveServicesKeyHeader[] = "BraveServiceKey";
 
 const char kBittorrentMimeType[] = "application/x-bittorrent";
