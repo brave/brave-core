@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
 import androidx.preference.Preference;
