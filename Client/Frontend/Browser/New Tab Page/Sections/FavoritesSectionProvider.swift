@@ -30,7 +30,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         
         frc = Bookmark.frc(forFavorites: true, parentFolder: nil)
         super.init()
-        frc.fetchRequest.fetchLimit = 6
+        frc.fetchRequest.fetchLimit = 10
         frc.delegate = self
         
         do {
@@ -212,6 +212,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
 extension FavoritesSectionProvider: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        try? frc.performFetch()
         sectionDidChange?()
     }
 }
