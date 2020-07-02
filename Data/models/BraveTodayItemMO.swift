@@ -37,7 +37,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     @NSManaged var publisherName: String
     @NSManaged var publisherLogo: String?
     @NSManaged var urlHash: String
-    @NSManaged var source: BraveTodayFeedSourceMO?
+    @NSManaged var source: BraveTodaySourceMO?
     
     // Local properties
     @NSManaged var created: Date
