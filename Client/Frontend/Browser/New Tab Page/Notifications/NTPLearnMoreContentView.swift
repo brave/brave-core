@@ -134,12 +134,13 @@ extension NTPLearnMoreViewController {
                 .forEach(stackView.addArrangedSubview(_:))
         }
         
-        private let learnMoreButton = secondaryButton(title: nil).then {
-            $0.addTarget(self, action: #selector(learnMoreButtonAction), for: .touchDown)
+        private lazy var learnMoreButton = secondaryButton(title: nil).then {
+            $0.addTarget(self, action: #selector(learnMoreButtonAction), for: .touchUpInside)
         }
         
-        private let hideSponsoredImageButton = secondaryButton(title: Strings.NTP.hideSponsoredImages).then {
-          $0.addTarget(self, action: #selector(hideSponsoredImagesAction), for: .touchDown)
+        private lazy var hideSponsoredImageButton =
+            secondaryButton(title: Strings.NTP.hideSponsoredImages).then {
+          $0.addTarget(self, action: #selector(hideSponsoredImagesAction), for: .touchUpInside)
         }
         
         private let config: NTPNotificationLearnMoreViewConfig
