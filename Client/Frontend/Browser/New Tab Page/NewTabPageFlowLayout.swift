@@ -69,6 +69,16 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
                 }
             }
         }
+        
+        if let braveTodaySection = braveTodaySection, indexPath.section == braveTodaySection {
+            if indexPath.item == 0 {
+                let diff = collectionView.bounds.height - attribute.frame.minY
+                attribute.frame.origin.y += diff - 32
+            } else if let item = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
+                let diff = collectionView.bounds.height - item.frame.minY
+                attribute.frame.origin.y += diff - 32
+            }
+        }
 
         return attribute
     }
@@ -83,5 +93,31 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
             }
         }
         return attributes
+    }
+    
+    override var collectionViewContentSize: CGSize {
+        var size = super.collectionViewContentSize
+        guard let collectionView = collectionView else { return size }
+        if let braveTodaySection = braveTodaySection,
+            let item = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
+            let diff = collectionView.bounds.height - item.frame.minY
+            size.height += diff - 32
+        }
+        return size
+    }
+    
+    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let braveTodaySection = braveTodaySection,
+            let item = layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) else {
+                return proposedContentOffset
+        }
+        var offset = proposedContentOffset
+        let flicked = abs(velocity.y) > 0.3
+        if (offset.y > item.frame.minY / 2 && offset.y < item.frame.minY) || (flicked && velocity.y > 0 && offset.y < item.frame.minY) {
+            offset.y = item.frame.minY - 44 // FIXME: Use size of header + padding
+        } else if offset.y < item.frame.minY {
+            offset.y = 0
+        }
+        return offset
     }
 }
