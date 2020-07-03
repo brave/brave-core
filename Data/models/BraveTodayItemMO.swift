@@ -5,6 +5,9 @@
 
 import Foundation
 import CoreData
+import Shared
+
+private let log = Logger.browserLogger
 
 /// Bridge between `FeedItem` from Client target and Database model from `Data` target.
 /// TODO: Perhaps we can move `FeedItem` into `Data` framework
@@ -33,6 +36,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     @NSManaged var title: String
     @NSManaged var itemDescription: String
     @NSManaged var contentType: String
+    // TODO: Some publisher items will get moved to `BraveTodaySourceMO`
     @NSManaged var publisherID: String
     @NSManaged var publisherName: String
     @NSManaged var publisherLogo: String?
@@ -61,7 +65,8 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
                                domain: $0.domain, imageURL: $0.imageURL, title: $0.title,
                                itemDescription: $0.itemDescription, contentType: $0.contentType,
                                publisherID: $0.publisherID, publisherName: $0.publisherName,
-                               publisherLogo: $0.publisherLogo, urlHash: $0.urlHash)
+                               publisherLogo: $0.publisherLogo, urlHash: $0.urlHash,
+                               context: .existing(context))
             }
         }
     }
@@ -154,6 +159,15 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
                               urlHash: String, context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
+            let sourcePublisherIdKeyPath = #keyPath(BraveTodaySourceMO.publisherID)
+            let sourcePublisherIdPredicate =
+                NSPredicate(format: "\(sourcePublisherIdKeyPath) == %@", publisherID)
+            guard let source =
+                    BraveTodaySourceMO.first(where: sourcePublisherIdPredicate, context: context) else {
+                log.warning("Could not insert feed item, no publisher with id: \(publisherID) found.")
+                return
+            }
+            
             let item = BraveTodayFeedItemMO(entity: entity(in: context), insertInto: context)
             
             item.category = category
@@ -169,6 +183,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             item.publisherLogo = publisherLogo
             item.urlHash = urlHash
             item.created = Date()
+            item.source = source
         }
     }
     

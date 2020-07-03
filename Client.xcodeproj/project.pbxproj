@@ -143,6 +143,7 @@
 		0ACF621322FDC17800297576 /* Shared.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ACF621422FDC17800297576 /* BraveShared.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ACF621822FDC28B00297576 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604FA11C495268006EEEC3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0AD48EEF24AF6E6200938B3B /* BraveTodaySourceMOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD48EEE24AF6E6200938B3B /* BraveTodaySourceMOTests.swift */; };
 		0AD4FEEA223A9A5500E00C05 /* BundledJSProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEE9223A9A5500E00C05 /* BundledJSProtocol.swift */; };
 		0AD4FEEC223A9C1300E00C05 /* BrowserifiedJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEEB223A9C1300E00C05 /* BrowserifiedJS.swift */; };
 		0AD4FEEE223AA09D00E00C05 /* BrowserifyExposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEED223AA09D00E00C05 /* BrowserifyExposable.swift */; };
@@ -1516,6 +1517,7 @@
 		0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libYubiKit.a; path = ThirdParty/YubiKit/libYubiKit.a; sourceTree = "<group>"; };
 		0ACB38EA23571F5600DDC245 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0ACB3BF723571ED1000AC688 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Storage.strings; sourceTree = "<group>"; };
+		0AD48EEE24AF6E6200938B3B /* BraveTodaySourceMOTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodaySourceMOTests.swift; sourceTree = "<group>"; };
 		0AD4FEE9223A9A5500E00C05 /* BundledJSProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledJSProtocol.swift; sourceTree = "<group>"; };
 		0AD4FEEB223A9C1300E00C05 /* BrowserifiedJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserifiedJS.swift; sourceTree = "<group>"; };
 		0AD4FEED223AA09D00E00C05 /* BrowserifyExposable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserifyExposable.swift; sourceTree = "<group>"; };
@@ -4399,6 +4401,7 @@
 				0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */,
 				0AF3B4EA213D8E3200695962 /* BookmarkTests.swift */,
 				0AE9F00B249B9DE7007D22E5 /* BraveTodayFeedItemMOTests.swift */,
+				0AD48EEE24AF6E6200938B3B /* BraveTodaySourceMOTests.swift */,
 				0ABE4CBA2398143100699AD2 /* BookmarkRestorationTests.swift */,
 				0AF3B4E5213D8E3200695962 /* CoreDataTestCase.swift */,
 				0AF3B4E9213D8E3200695962 /* DataControllerTests.swift */,
@@ -6593,6 +6596,7 @@
 				0AF3B4EE213D8E3300695962 /* HistoryTests.swift in Sources */,
 				0AF3B4F1213D8E3300695962 /* DataControllerTests.swift in Sources */,
 				0AF3B4F2213D8E3300695962 /* BookmarkTests.swift in Sources */,
+				0AD48EEF24AF6E6200938B3B /* BraveTodaySourceMOTests.swift in Sources */,
 				0AF3B4F3213D8E3300695962 /* DeviceTests.swift in Sources */,
 				0AF3B4F4213D8E3300695962 /* TabMOTests.swift in Sources */,
 			);
