@@ -27,6 +27,26 @@ enum FeedCard {
     }
 }
 
+enum FeedSequenceElement {
+    /// Display a sponsored image with the content type of `product`
+    case sponsor
+    /// Displays a horizontal list of deals with the content type of `brave_offers`
+    case deals
+    /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
+    /// headlines
+    case headline(paired: Bool)
+    /// Displays a list of `article` typed items with the same category in a vertical list.
+    case categoryGroup
+    /// Displays a list of `article` typed items with the same source. It can optionally be displayed as a
+    /// numbered list
+    case brandedGroup(numbered: Bool = false)
+    /// Displays a list of `article` typed items that can have different categories and different sources.
+    case group
+    /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
+    /// until there is no more content available
+    indirect case repeating([FeedSequenceElement], times: Int = .max)
+}
+
 /// Powers Brave Today's feed.
 class FeedDataSource {
     private(set) var cards: [FeedCard] = []
@@ -103,76 +123,88 @@ class FeedDataSource {
         var deals = feeds.filter { $0.content.contentType == "brave_offers" }
         var sponsors = feeds.filter { $0.content.contentType == "product" }
         var articles = feeds.filter { $0.content.contentType == "article" }
-        var media = feeds.lazy.filter { $0.content.contentType == "image" }
         
-        if !sponsors.isEmpty {
-            cards.append(.sponsor(sponsors.removeFirst()))
-        }
-        if !articles.isEmpty {
-            cards.append(.headline(articles.removeFirst()))
-        }
-        if !deals.isEmpty {
-            let items = Array(deals.prefix(3))
-            if !items.isEmpty {
-                cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
-                deals.removeFirst(min(3, deals.count))
-            }
-        }
+        let rules: [FeedSequenceElement] = [
+            .sponsor,
+            .headline(paired: false),
+            .deals,
+            .repeating([
+                .repeating([.headline(paired: false)], times: 2),
+                .repeating([.headline(paired: true)], times: 2),
+                .categoryGroup,
+                .headline(paired: false),
+                .deals,
+                .headline(paired: false),
+                .headline(paired: true),
+                .brandedGroup(numbered: true),
+                .group,
+                .headline(paired: false),
+                .headline(paired: true),
+            ])
+        ]
         
-        /**
-         Then infinitely repeating collections of content:
-             17 Cards, 25 Content Items
-             Rank content from collection query (See Weighting model)
-             Distribute Large Image Cards across list for visual impact
-             Group Small Cards in pairs in rows
-             1x Vertical List Card from single source (3x Items), personalized or random
-             1x Vertical List Card from a category (3x Items), don’t repeat category
-             1x Deals Card (3x Items)
-             2x Sponsored Content Card
-             1x Large Image Card
-             1x Vertical List Card (3x Items)
-             Video Cards always Large, less than 3 per collection
-         */
-        
-        do {
-            // Cards 1 to 6: Latest items
-            // - 2x Large Headline
-            // - 2x Small Headline Pair
-            let items = articles.prefix(6)
-            cards.append(.headline(items[0]))
-            cards.append(.headline(items[1]))
-            cards.append(.headlinePair((items[2], items[3])))
-            cards.append(.headlinePair((items[4], items[5])))
-            articles.removeFirst(6)
-        }
-        
-        do {
-            // Card 7: Category of items
-            // - Vertical List card, 3 stories from multiple sources of same category
-            // - Don't repeat category until all have been used
-            if let category = articles.first?.content.category {
-                let items = Array(articles.lazy.filter({ $0.content.category == category }).prefix(3))
-                cards.append(.group(items, title: category, direction: .vertical, displayBrand: false))
-                articles.removeAll(where: { items.contains($0) })
-            }
-        }
-        
-        do {
-            // Card 8 and 9: Commercial
-            // - 1x sponsored card (large headline)
-            // - 1x affiliate deals card
-            if !sponsors.isEmpty {
-                cards.append(.sponsor(sponsors.removeFirst()))
-            }
-            if !deals.isEmpty {
+        func _cards(for element: FeedSequenceElement) -> [FeedCard]? {
+            switch element {
+            case .sponsor:
+                if sponsors.isEmpty { return nil }
+                return [.sponsor(sponsors.removeFirst())]
+            case .deals:
+                if deals.isEmpty { return nil }
                 let items = Array(deals.prefix(3))
-                if !items.isEmpty {
-                    cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+                deals.removeFirst(min(3, items.count))
+                return [.group(items, title: "Deals", direction: .horizontal, displayBrand: false)]
+            case .headline(let paired):
+                if articles.isEmpty { return nil }
+                if paired {
+                    if articles.count < 2 { return nil }
+                    let item1 = articles.removeFirst()
+                    let item2 = articles.removeFirst()
+                    return [.headlinePair((item1, item2))]
+                } else {
+                    let item = articles.removeFirst()
+                    return [.headline(item)]
                 }
-                deals.removeFirst(min(3, deals.count))
+            case .categoryGroup:
+                guard let category = articles.first?.content.category else { return nil }
+                let items = Array(articles.lazy.filter({ $0.content.category == category }).prefix(3))
+                articles.removeAll(where: { items.contains($0) })
+                return [.group(items, title: category, direction: .vertical, displayBrand: false)]
+            case .brandedGroup(let numbered):
+                if articles.isEmpty { return nil }
+                guard let source = articles.first?.source else { return nil }
+                let items = Array(articles.lazy.filter({ $0.source == source }).prefix(3))
+                articles.removeAll(where: { items.contains($0) })
+                if numbered {
+                    return [.numbered(items, title: items.first?.content.publisherName ?? "")]
+                } else {
+                    return [.group(items, title: "", direction: .vertical, displayBrand: true)]
+                }
+            case .group:
+                if articles.isEmpty { return nil }
+                let items = Array(articles.prefix(3))
+                articles.removeFirst(min(3, items.count))
+                return [.group(items, title: "", direction: .vertical, displayBrand: false)]
+            case .repeating(let elements, let times):
+                var index = 0
+                var cards: [FeedCard] = []
+                repeat {
+                    for element in elements {
+                        if let elementCards = _cards(for: element) {
+                            cards.append(contentsOf: elementCards)
+                        }
+                    }
+                    index += 1
+                } while !articles.isEmpty && index < times
+                return cards
             }
         }
         
-        self.cards = cards
+        var generatedCards: [FeedCard] = []
+        for rule in rules {
+            if let elementCards = _cards(for: rule) {
+                generatedCards.append(contentsOf: elementCards)
+            }
+        }
+        self.cards = generatedCards
     }
 }

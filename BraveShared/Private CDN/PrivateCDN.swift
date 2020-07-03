@@ -72,7 +72,7 @@ public class PrivateCDNImageCoder: NSObject, SDWebImageCoder {
         image
     }
     public func canEncode(to format: SDImageFormat) -> Bool {
-        SDWebImageCodersManager.sharedInstance().canEncode(to: format)
+        return false
     }
     public func encodedData(with image: UIImage?, format: SDImageFormat) -> Data? {
         SDWebImageCodersManager.sharedInstance().encodedData(with: image, format: format)
