@@ -72,7 +72,7 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
           &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
           base::Unretained(this)));
   // TODO(petemill): If anything outside this handler is responsible for causing
-  // restart-neccessary actions, then this should be moved to a generic handler
+  // restart-necessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
   web_ui()->RegisterMessageCallback(
       "getRestartNeeded",

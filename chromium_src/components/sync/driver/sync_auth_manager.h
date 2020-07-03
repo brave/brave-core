@@ -10,7 +10,7 @@ namespace syncer {
 class BraveSyncAuthManager;
 }  // namespace syncer
 
-// Header guard to prevent DetermineAccountToUse from getting overriden in it
+// Header guard to prevent DetermineAccountToUse from getting overridden in it
 #include "components/sync/driver/sync_auth_util.h"
 
 #define RequestAccessToken virtual RequestAccessToken

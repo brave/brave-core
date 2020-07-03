@@ -1740,7 +1740,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     /**
      *  Show the "promotion claim failed" error message.
-     *  Succesful claims are dismissed by a notification.
+     *  Successful claims are dismissed by a notification.
      */
     @Override
     public void OnClaimPromotion(int error_code) {

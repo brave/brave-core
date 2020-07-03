@@ -21,7 +21,7 @@ found in the LICENSE file.
   <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_PHYSICAL_FEATURES" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that physical features may be exposed.">
     your physical features, such as height
   </message>
-  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_FLOOR_PLAN" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that phyiscal features may be exposed.">
+  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_FLOOR_PLAN" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that physical features may be exposed.">
     the layout of your room
   </message>
   <message name="IDS_XR_CONSENT_DIALOG_BUTTON_ALLOW_AND_ENTER_VR" desc="Text on the button of a user consent dialog which allows a website to start a VR presentation">

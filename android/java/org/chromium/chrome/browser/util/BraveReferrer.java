@@ -107,7 +107,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     ReferrerDetails response = referrerClient.getInstallReferrer();
                     String referrer = response.getInstallReferrer();
                     Uri uri = Uri.parse("http://www.stub.co/?"+referrer);
-                    // Get and save user referal program code
+                    // Get and save user referral program code
                     String urpc = uri.getQueryParameter("urpc");
                     if (urpc != null && !urpc.isEmpty()) {
                         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,

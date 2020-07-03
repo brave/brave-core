@@ -371,10 +371,10 @@
     &lt;p&gt;To fix the error, open your device's clock. Make sure the time and date are correct.&lt;/p&gt;
   </message>
   <if expr="is_win">
-    <message name="IDS_CONNECTION_HELP_MITM_SOFTWARE_TITLE" desc="Title for MITM software section in chrome://connection-help. Matches the heading for the nineth section in https://support.google.com/chrome/answer/6098869">
+    <message name="IDS_CONNECTION_HELP_MITM_SOFTWARE_TITLE" desc="Title for MITM software section in chrome://connection-help. Matches the heading for the ninth section in https://support.google.com/chrome/answer/6098869">
     "Software on your computer is stopping Brave from safely connecting to the web" (Windows computers only)
   </message>
-    <message name="IDS_CONNECTION_HELP_MITM_SOFTWARE_DETAILS" desc="Details for MITM software section in chrome://connection-help. Matches the nineth section in https://support.google.com/chrome/answer/6098869">
+    <message name="IDS_CONNECTION_HELP_MITM_SOFTWARE_DETAILS" desc="Details for MITM software section in chrome://connection-help. Matches the ninth section in https://support.google.com/chrome/answer/6098869">
       &lt;p&gt;You'll see this error if you have Superfish software on your Windows computer.&lt;/p&gt;
       &lt;p&gt;Follow these steps to temporarily disable the software so you can get on the web. You'll need administrator privileges.&lt;/p&gt;
       &lt;ol&gt;

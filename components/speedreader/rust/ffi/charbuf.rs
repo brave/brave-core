@@ -1,7 +1,7 @@
 use super::*;
 
 // NOTE: we don't use CStr and CString as the transfer type because UTF8
-// strings comming from both sides can contain interior NULLs.
+// strings coming from both sides can contain interior NULLs.
 #[repr(C)]
 pub struct CharBuf {
     data: *const c_char,

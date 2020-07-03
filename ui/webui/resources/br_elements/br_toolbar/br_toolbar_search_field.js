@@ -152,7 +152,7 @@ Polymer({
     if (previous == undefined)
       return
 
-    // Prevent unneccessary re-enable when bluring from input to toggle
+    // Prevent unnecessary re-enable when bluring from input to toggle
     if (wasBlurring && !this.hasSearchText)
       return
 

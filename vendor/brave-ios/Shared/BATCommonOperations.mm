@@ -24,7 +24,7 @@
     _timers = [[NSMutableDictionary alloc] init];
     _runningTasks = [[NSMutableArray alloc] init];
 
-    // Setup the ads directory for persistant storage
+    // Setup the ads directory for persistent storage
     if (self.storagePath.length > 0) {
       if (![NSFileManager.defaultManager fileExistsAtPath:self.storagePath isDirectory:nil]) {
         [NSFileManager.defaultManager createDirectoryAtPath:self.storagePath

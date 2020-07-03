@@ -9,7 +9,7 @@
 #include "brave/browser/ui/brave_layout_constants.h"
 
 int GetLayoutConstant(LayoutConstant constant) {
-  // get brave overriden value
+  // get brave overridden value
   const base::Optional<int> braveOption = GetBraveLayoutConstant(constant);
   if (braveOption) {
     return braveOption.value();

@@ -6,7 +6,7 @@
 // Outputs a file containing all files that were used in
 // the compilation, to be used by the ninja build system.
 // This can be useful to know which files to monitor for changes
-// to cause a re-build only when neccessary.
+// to cause a re-build only when necessary.
 
 const path = require('path')
 const fs = require('fs')

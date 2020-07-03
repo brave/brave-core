@@ -108,7 +108,7 @@ impl TreeSink for FeaturisingTreeSink {
             .and_modify(|v| *v += 1)
             .or_insert(1);
 
-        // seaches for `<meta property="{og:},{fb:}..." />`
+        // searches for `<meta property="{og:},{fb:}..." />`
         if elem == "meta" {
             for a in attrs.clone() {
                 let attr = a.value.to_string();

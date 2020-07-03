@@ -113,7 +113,7 @@ void EmptyBalance::OnCreds(
     ledger::CredsBatchList list,
     bat_ledger::LedgerImpl* ledger) {
   if (list.empty()) {
-    BLOG(1, "Creds batch list is emtpy");
+    BLOG(1, "Creds batch list is empty");
     ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
     return;
   }
@@ -148,7 +148,7 @@ void EmptyBalance::OnCreds(
   }
 
   if (token_list.empty()) {
-    BLOG(1, "Unblinded token list is emtpy");
+    BLOG(1, "Unblinded token list is empty");
     ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
     return;
   }

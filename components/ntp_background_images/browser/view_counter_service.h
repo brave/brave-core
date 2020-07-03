@@ -44,7 +44,7 @@ class ViewCounterService : public KeyedService,
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  // Lets the counter know that a New Tab Page view has occured.
+  // Lets the counter know that a New Tab Page view has occurred.
   // This should always be called as it will evaluate whether the user has
   // opted-in or data is available.
   void RegisterPageView();

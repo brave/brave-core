@@ -31,7 +31,7 @@
         android:persistent="false"
         android:title="@string/clear_cache_title" />
 
-    <!-- TODO(samartnik): disabling option as it requires futher research
+    <!-- TODO(samartnik): disabling option as it requires further research
          At the moment causes issue https://github.com/brave/brave-browser/issues/8737 -->
     <!-- <org.chromium.chrome.browser.browsing_data.ClearBrowsingDataCheckBoxPreference
         android:key="clear_downloads_checkbox"

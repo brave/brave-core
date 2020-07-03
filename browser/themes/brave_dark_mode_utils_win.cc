@@ -26,7 +26,7 @@ void SetSystemDarkMode(BraveDarkModeType type) {
   // choose same as Windows option. Windows doesn't support per-application
   // theme mode. If users stick to dark or light, we should prevent it.
   // On macOS, this isn't needed because it supports per-application theme.
-  // So, if application set dark/light appearance explicitely, macOS respect it.
+  // So, if application set dark/light appearance explicitly, macOS respect it.
   ui::IgnoreSystemDarkModeChange(
       type != dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
   // Reset and follow os dark mode.

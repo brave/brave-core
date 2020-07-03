@@ -46,7 +46,7 @@ typedef void (^BATNetworkCompletionBlock)(int statusCode,
                 method:(const std::string&)method
               callback:(BATNetworkCompletionBlock)callback;
 
-#pragma mark - File Managment
+#pragma mark - File Management
 
 /// Save the contents to a file with the given name
 - (bool)saveContents:(const std::string&)contents name:(const std::string&)name;

@@ -217,7 +217,7 @@ bool BraveWalletService::LoadRootSeedInfo(std::vector<uint8_t> key,
 }
 
 // The return value is passed to chrome.braveWallet.getWalletSeed
-// via the second paramter callback function.
+// via the second parameter callback function.
 // The return value will not be the root seed, but instead a
 // deterministic hash of that seed with HKDF, so that we can use
 // other HKDF hashes with different info parameters for different purposes.
@@ -234,7 +234,7 @@ std::string BraveWalletService::GetWalletSeed(
 }
 
 // The return value is passed to chrome.braveWallet.getBitGoSeed
-// via the second paramter callback function.
+// via the second parameter callback function.
 // The return value will not be the root seed, but instead a
 // deterministic hash of that seed with HKDF, so that we can use
 // other HKDF hashes with different info parameters for different purposes.

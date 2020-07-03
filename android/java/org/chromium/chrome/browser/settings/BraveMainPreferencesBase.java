@@ -34,7 +34,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
 
-// This exculdes some settings in main settings screen.
+// This excludes some settings in main settings screen.
 public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";

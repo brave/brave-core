@@ -36,7 +36,7 @@ NS_SWIFT_NAME(LedgerObserver)
 /// 
 @property (nonatomic, copy, nullable) void (^finishedPromotionsAdded)(NSArray<BATPromotion *> *promotions);
 
-/// Eligable grants were added to the wallet
+/// Eligible grants were added to the wallet
 @property (nonatomic, copy, nullable) void (^promotionsAdded)(NSArray<BATPromotion *> *promotions);
 
 /// A grant was claimed

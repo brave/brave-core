@@ -36,7 +36,7 @@
   <message name="IDS_FLAGS_UI_DISABLED_FEATURE" translateable="false" desc="This is the 'Disabled' option, not the label for the menu.">
     Disabled
   </message>
-  <message name="IDS_FLAGS_UI_NO_RESULTS" translateable="false" desc="Message stating that there are no experiments matching the search criterias.">
+  <message name="IDS_FLAGS_UI_NO_RESULTS" translateable="false" desc="Message stating that there are no experiments matching the search criteria.">
     No matching experiments
   </message>
   <message name="IDS_FLAGS_UI_NOT_AVAILABLE_ON_PLATFORM" translateable="false" desc="Message stating that an experiment is not available for the current platform.">

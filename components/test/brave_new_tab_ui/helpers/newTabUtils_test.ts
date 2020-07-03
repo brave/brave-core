@@ -203,7 +203,7 @@ describe('new tab util files tests', () => {
       ]
       expect(newTabUtils.getGridSitesWhitelist(topSites)).toHaveLength(0)
     })
-    it('does not exclude an arbritary site from list', () => {
+    it('does not exclude an arbitrary site from list', () => {
       const topSites: chrome.topSites.MostVisitedURL[] = [
         { url: 'https://tmz.com', title: 'tmz' }
       ]

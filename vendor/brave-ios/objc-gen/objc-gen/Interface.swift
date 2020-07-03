@@ -13,7 +13,7 @@ struct Interface: Hashable, Comparable {
     let name: String
     /// The property decleration (This will be the @property string placed inside a @interface)
     let decleration: String
-    /// The assignment string (This will be the r-value string placed inside a @implementaion)
+    /// The assignment string (This will be the r-value string placed inside a @implementation)
     let assignmentString: String
   
     /// Convert a snake case property name into an Obj-C camcelCase'd one (i.e. "opening_balance_"

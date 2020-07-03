@@ -115,7 +115,7 @@ void BraveWidevineBundleManager::DownloadWidevineBundle(
           description:
             "Download widevine cdm pkg"
           trigger:
-            "When user accpets the use of widevine or update is started"
+            "When user accepts the use of widevine or update is started"
           data: "Widevine cdm library package"
           destination: GOOGLE_OWNED_SERVICE
         }

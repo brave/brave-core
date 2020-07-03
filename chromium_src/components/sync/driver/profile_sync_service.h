@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
 
 #include "components/prefs/pref_change_registrar.h"
-// Header guard to prevent Initialize from getting overriden in it
+// Header guard to prevent Initialize from getting overridden in it
 // ============================================================================
 #include "components/sync/base/sync_prefs.h"
 #include "components/sync/driver/sync_service_crypto.h"

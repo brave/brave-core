@@ -314,7 +314,7 @@ document.addEventListener('visibilitychange', function () {
 // Call the Twitter API to retrieve the user ID and then pass it
 // to our backend using an alternate profile page URL. This allows us
 // to pass the user ID to our backend without the need to make additional
-// API changes to accomodate a user ID.
+// API changes to accommodate a user ID.
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {

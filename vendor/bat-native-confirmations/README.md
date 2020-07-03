@@ -15,7 +15,7 @@ Use production Ads Server as defined by `PRODUCTION_SERVER` in
 ```
 
 Use staging Ads Server as defined by `STAGING_SERVER` in `static_values.h`.
-Default for non offical builds, i.e. Debug
+Default for non official builds, i.e. Debug
 
 ```
 --rewards=staging=true

@@ -145,7 +145,7 @@ Polymer({
   },
 
   initSlotFilledDetection: function() {
-    // Style the 'extra items' slot only if it containts
+    // Style the 'extra items' slot only if it contains
     // content.
     const toolbarExtraElement = this.$$('.toolbar-extra')
     if (!toolbarExtraElement) {

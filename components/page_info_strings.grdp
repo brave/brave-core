@@ -387,7 +387,7 @@
     <message name="IDS_PAGE_INFO_USB_DEVICE_SECONDARY_LABEL" desc="The label displayed underneath the device name to inform the user that the item refers to a USB device.">
       USB device
     </message>
-    <message name="IDS_PAGE_INFO_USB_DEVICE_ALLOWED_BY_POLICY_LABEL" desc="The label displayed underneath the device name to inform the user that the item listed is refering to a USB device explicitly allowed by the user's enterprise policy.">
+    <message name="IDS_PAGE_INFO_USB_DEVICE_ALLOWED_BY_POLICY_LABEL" desc="The label displayed underneath the device name to inform the user that the item listed is referring to a USB device explicitly allowed by the user's enterprise policy.">
       USB device allowed by your administrator
     </message>
     <message name="IDS_PAGE_INFO_DELETE_USB_DEVICE" desc="The tooltip displayed when hovering over the button that will remove permission to access a USB device that the user previously granted to the site.">

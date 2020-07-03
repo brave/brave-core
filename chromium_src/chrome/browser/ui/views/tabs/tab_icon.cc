@@ -7,7 +7,7 @@
 #include "url/gurl.h"
 
 namespace {
-// Forward delcare replacement function. The original file is patched to
+// Forward declare replacement function. The original file is patched to
 // call this replacement.
 bool BraveShouldThemifyFaviconForUrl(const GURL& url);
 }  // namespace

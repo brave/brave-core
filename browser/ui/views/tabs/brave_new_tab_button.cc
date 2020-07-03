@@ -22,7 +22,7 @@ namespace {
 const gfx::Size BraveNewTabButton::kButtonSize{20, 20};
 
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
-  // Overriden so that we use Brave's custom button size
+  // Overridden so that we use Brave's custom button size
   gfx::Size size = GetButtonSize();
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
@@ -32,7 +32,7 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
                                       float scale,
                                       bool extend_to_top) const {
-  // Overriden to use Brave's non-circular shape
+  // Overridden to use Brave's non-circular shape
   gfx::PointF scaled_origin(origin);
   scaled_origin.Scale(scale);
   const float radius = GetCornerRadius() * scale;
@@ -49,7 +49,7 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 }
 
 void BraveNewTabButton::PaintPlusIcon(gfx::Canvas* canvas) const {
-  // Overriden to fix chromium assumption that border radius
+  // Overridden to fix chromium assumption that border radius
   // will be 50% of width.
   gfx::ScopedCanvas scoped_canvas(canvas);
   // Offset that we want to use

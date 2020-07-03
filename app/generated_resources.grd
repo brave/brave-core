@@ -3722,7 +3722,7 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_FAVICON" desc="Permission string for access to favicons.">
           Read the icons of the websites you visit
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_GEOLOCATION" desc="Permisson string for access to geolocation.">
+        <message name="IDS_EXTENSION_PROMPT_WARNING_GEOLOCATION" desc="Permission string for access to geolocation.">
           Detect your physical location
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_HISTORY_READ" desc="Permission string for access to browsing history.">
@@ -3782,10 +3782,10 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN_SCREEN_STORAGE" desc="Permission string for access to login screen storage.">
           Store persistent data on the login screen and inject credentials into the session.
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_MANAGEMENT" desc="Permisson string for access to extension management.">
+        <message name="IDS_EXTENSION_PROMPT_WARNING_MANAGEMENT" desc="Permission string for access to extension management.">
           Manage your apps, extensions, and themes
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_MDNS" desc="Permisson string for access to list of mDNS services on a network.">
+        <message name="IDS_EXTENSION_PROMPT_WARNING_MDNS" desc="Permission string for access to list of mDNS services on a network.">
           Discover devices on your local network
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORK_STATE" desc="Permission string for network list access.">
@@ -9840,7 +9840,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
+    <!-- Web-modal dialog shown during Web Authentication API requests. -->
     <if expr="is_win or is_macosx or desktop_linux or chromeos">
       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>

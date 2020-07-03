@@ -236,7 +236,7 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingConstraints& constraints) {
   // Flash's setting shouldn't be reached here.
   // Its content type is plugin and id is empty string.
-  // One excpetion is default setting. It can be persisted.
+  // One exception is default setting. It can be persisted.
   if (content_type == ContentSettingsType::PLUGINS &&
       resource_identifier.empty()) {
     DCHECK(primary_pattern == ContentSettingsPattern::Wildcard() &&

@@ -38,7 +38,7 @@ class BraveWidevineBundleManager {
   void InstallWidevineBundle(DoneCallback done_callback, bool user_gesture);
 
   // Check consistency of library file, installed version and latest version
-  // and fix mismatches if needed. Also backgroud update is triggered if
+  // and fix mismatches if needed. Also background update is triggered if
   // installed version is outdated.
   void StartupCheck();
 

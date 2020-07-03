@@ -67,7 +67,7 @@ RegisterStyleOverride(
 const BraveClearSettingsMenuHighlightBehavior = {
   ready: function() {
     // Clear menu selection after scrolling away.
-    // Chromium's menu is not persistant, so does not have
+    // Chromium's menu is not persistent, so does not have
     // this issue.
     const container = this.$.container
     if (!container) {

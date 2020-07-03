@@ -18,7 +18,7 @@ std::string GetHashPrefixRaw(
     const std::string& publisher_key,
     size_t prefix_size);
 
-// Retuns a hash prefix as a hex string for the specified publisher key
+// Returns a hash prefix as a hex string for the specified publisher key
 std::string GetHashPrefixInHex(
     const std::string& publisher_key,
     size_t prefix_size);

@@ -14,7 +14,7 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 /// An interface into the ledger database
 ///
 /// This class mirrors brave-core's `publisher_info_database.h/cc` file. This file will actually
-/// likely be removed at a future date when database managment happens in the ledger library
+/// likely be removed at a future date when database management happens in the ledger library
 @interface BATLedgerDatabase : NSObject
 
 /// Generates a SQL migration transaction that will move all data in the users

@@ -9,7 +9,7 @@
 namespace {
 void BraveLaunchOption(base::CommandLine* cmd_line,
                        base::LaunchOptions *options) {
-  // tor::swtiches::kTorExecutablePath
+  // tor::switches::kTorExecutablePath
   if (cmd_line->HasSwitch("tor-executable-path"))
     options->start_hidden = true;
 }

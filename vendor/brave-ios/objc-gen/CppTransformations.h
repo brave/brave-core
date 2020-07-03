@@ -47,7 +47,7 @@ static std::map<const char *, SEL> numberGetterMap = {
 
 #pragma mark - Vectors
 
-/// Convert a vector storing primatives to an array of NSNumber's
+/// Convert a vector storing primitives to an array of NSNumber's
 template <typename T>
 NS_INLINE NSArray<NSNumber *> *NSArrayFromVector(std::vector<T> v) {
   const auto a = [NSMutableArray new];
@@ -69,7 +69,7 @@ NS_INLINE NSArray<NSNumber *> *NSArrayFromVector(std::vector<T> v) {
   return a;
 }
 
-/// Convert an NSArray storing NSNumber's to a std::vector storing primatives
+/// Convert an NSArray storing NSNumber's to a std::vector storing primitives
 template <typename T>
 NS_INLINE std::vector<T> VectorFromNSArray(NSArray<NSNumber *> *a) {
   std::vector<T> v;

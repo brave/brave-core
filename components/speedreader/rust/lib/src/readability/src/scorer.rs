@@ -87,7 +87,7 @@ pub fn get_link_density(handle: &Handle) -> f32 {
     link_length / text_length
 }
 
-// is candidate iif lenght of the text is larger than 20 words AND its tag is
+// is candidate iif length of the text is larger than 20 words AND its tag is
 // is `div`, `article`, `center`, `section` while not in containing nodes in
 // BLOCK_CHILD_TAGS
 pub fn is_candidate(handle: &Handle) -> bool {

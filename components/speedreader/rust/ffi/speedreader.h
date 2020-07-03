@@ -81,7 +81,7 @@ class SpeedReader {
   /// `Rewriter` instance.
   std::unique_ptr<Rewriter> MakeRewriter(const std::string& url);
 
-  /// Create a buffering `Rewriter` wih a specific `RewriterType`. Output will
+  /// Create a buffering `Rewriter` with a specific `RewriterType`. Output will
   /// be accumulated by the `Rewriter` instance. Using `RewriterUnknown` for
   /// `RewriterType` is equivalent to skipping the parameter.
   std::unique_ptr<Rewriter> MakeRewriter(const std::string& url,

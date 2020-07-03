@@ -344,7 +344,7 @@
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_REASON_PHISHED_AND_LEAKED" desc="Password compromise reason shown when a password was reused on a phishing site and found in a data breach.">
     Entered on deceptive site and found in data breach
   </message>
-  <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_SHOW" desc="Action menu item for a row which displays a compromised password. The password value, which is initialy obfuscated, will be show in plain text.">
+  <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_SHOW" desc="Action menu item for a row which displays a compromised password. The password value, which is initially obfuscated, will be show in plain text.">
     Show password
   </message>
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_HIDE" desc="Action menu item for a row which displays a compromised password. The password value, which is shown in plain text, will be hidden again.">
@@ -1237,7 +1237,7 @@
   <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
     Permissions and content settings
   </message>
-  <message name="IDS_SETTINGS_PERMISSIONS_DESCRIPTION" desc="Description of the controls available on the permisisons and site content settings page">
+  <message name="IDS_SETTINGS_PERMISSIONS_DESCRIPTION" desc="Description of the controls available on the permissions and site content settings page">
     Controls what information sites can use and show (location, camera, pop-ups, and more)
   </message>
   <message name="IDS_SETTINGS_SECURITY" desc="Name of the settings page which allows   users to manage security settings">
@@ -2656,10 +2656,10 @@
   </message>
 
   <!-- Security Keys -->
-  <message name="IDS_SETTINGS_SECURITY_KEYS_TITLE" desc="Headline in the Settings UI for the subpage handling security keys. Security keys are external physcial devices for user authentication and the translation should match that used in, for example, IDS_WEBAUTHN_USB_ACTIVATE_DESCRIPTION.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_TITLE" desc="Headline in the Settings UI for the subpage handling security keys. Security keys are external physical devices for user authentication and the translation should match that used in, for example, IDS_WEBAUTHN_USB_ACTIVATE_DESCRIPTION.">
     Manage security keys
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_DESC" desc="Description in the Settings UI for the subpage handling security keys. Security keys are external physcial devices for user authentication.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_DESC" desc="Description in the Settings UI for the subpage handling security keys. Security keys are external physical devices for user authentication.">
     Reset security keys and create PINs
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN" desc="A header that appears in the Settings subpage for security keys (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the heading for the section about settings them.">
@@ -2746,7 +2746,7 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_MISMATCH" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     The PINs you entered don’t match
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CONFIRM_PIN" desc="A label shown above a text box where the user is expected to reenter a new PIN for a security key. The text box is a duplicate of an immediately preceeding text box where the user has already entered this value. The user is asked to enter the same value twice in order to ensure that they entered it correctly. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CONFIRM_PIN" desc="A label shown above a text box where the user is expected to reenter a new PIN for a security key. The text box is a duplicate of an immediately preceding text box where the user has already entered this value. The user is asked to enter the same value twice in order to ensure that they entered it correctly. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     Confirm PIN
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_SUCCESS" desc="A message shown when the user has successfully set a PIN on a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">

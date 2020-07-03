@@ -1167,7 +1167,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
         https://policies.google.com/terms
       </message>
-      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
+      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS additional terms of service">
         Brave &amp; Chrome OS Additional Terms of Service
       </message>
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
@@ -1657,7 +1657,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_PASSWORD_GENERATION_DIALOG_CANCEL_BUTTON" desc="Text for the cancel button belonging to the modal dialog that displays a generated password. Can be used by the user to cancel the password generation flow.">
         Cancel
       </message>
-      <message name="IDS_PASSWORD_GENERATION_DIALOG_USE_PASSWORD_BUTTON" desc="Text for a button belonging to the modal dialog that displayes a generated password. Can be used by the user to accept the generated password.">
+      <message name="IDS_PASSWORD_GENERATION_DIALOG_USE_PASSWORD_BUTTON" desc="Text for a button belonging to the modal dialog that displays a generated password. Can be used by the user to accept the generated password.">
         Use password
       </message>
 
@@ -1886,7 +1886,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_FAILED_REASON_STORAGE_NOT_FOUND" desc="Message to explain that the download failed because no storage is found.">
         <ph name="FILE_NAME">%1$s<ex>http://abc.com/test.pdf</ex></ph> download failed because storage location is not reachable.
       </message>
-      <message name="IDS_DOWNLOAD_FAILED_REASON_UNKNOWN_ERROR" desc="Message to explain that the download failed because unkown error.">
+      <message name="IDS_DOWNLOAD_FAILED_REASON_UNKNOWN_ERROR" desc="Message to explain that the download failed because unknown error.">
         <ph name="FILE_NAME">%1$s<ex>http://abc.com/test.pdf</ex></ph> download failed due to an unknown error.
       </message>
       <message name="IDS_DOWNLOAD_STARTED" desc="Message to show when download has started [CHAR LIMIT=30]">
