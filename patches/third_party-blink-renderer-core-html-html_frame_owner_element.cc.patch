@@ -1,25 +1,24 @@
 diff --git a/third_party/blink/renderer/core/html/html_frame_owner_element.cc b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-index 9be37732a9c3ced03c3e11d9a4bb16d7ba672227..4bb26c844bdb085de5e93231fe9d9ef3e59f730b 100644
+index 9be37732a9c3ced03c3e11d9a4bb16d7ba672227..a8ce9cf42edafbcb8e76547350ce8552108d33e6 100644
 --- a/third_party/blink/renderer/core/html/html_frame_owner_element.cc
 +++ b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-@@ -55,6 +55,12 @@
+@@ -55,6 +55,11 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  namespace {
-@@ -371,6 +377,16 @@ void HTMLFrameOwnerElement::DispatchLoad() {
+@@ -371,6 +376,16 @@ void HTMLFrameOwnerElement::DispatchLoad() {
    DispatchScopedEvent(*Event::Create(event_type_names::kLoad));
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +void HTMLFrameOwnerElement::RegisterRemoteFrameCreated(const GURL& url) {
 +  ::brave_page_graph::PageGraph* const page_graph =
 +      GetDocument().GetPageGraph();
@@ -27,7 +26,7 @@ index 9be37732a9c3ced03c3e11d9a4bb16d7ba672227..4bb26c844bdb085de5e93231fe9d9ef3
 +    page_graph->RegisterRemoteFrameCreated(DOMNodeIds::IdForNode(this), url);
 +  }
 +}
-+#endif
++// #endif
 +
  Document* HTMLFrameOwnerElement::getSVGDocument(
      ExceptionState& exception_state) const {

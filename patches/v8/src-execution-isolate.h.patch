@@ -1,21 +1,20 @@
 diff --git a/src/execution/isolate.h b/src/execution/isolate.h
-index 037e6ea7f59d0b917dc766adab3a20a716d025ce..55fd00d9d949dc76f5b9ee716ba06427c7e1a81f 100644
+index 037e6ea7f59d0b917dc766adab3a20a716d025ce..babd0c70d4c0265af9da993dce05aae0e5892832 100644
 --- a/src/execution/isolate.h
 +++ b/src/execution/isolate.h
-@@ -36,6 +36,8 @@
+@@ -36,6 +36,7 @@
  #include "src/strings/unicode.h"
  #include "src/utils/allocation.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  #ifdef V8_INTL_SUPPORT
  #include "unicode/uversion.h"  // Define U_ICU_NAMESPACE.
  namespace U_ICU_NAMESPACE {
-@@ -1517,6 +1519,37 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+@@ -1517,6 +1518,37 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
  
    bool RequiresCodeRange() const;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetExecutingScriptId();
 +
 +  EvalScriptCompiledFunc GetEvalScriptCompiledFunc() const {
@@ -44,20 +43,20 @@ index 037e6ea7f59d0b917dc766adab3a20a716d025ce..55fd00d9d949dc76f5b9ee716ba06427
 +
 +  void ReportBuiltInCallAndResponse(const char* func_name,
 +    const std::vector<const std::string>& args, const std::string& result);
-+#endif
++// #endif
 +
   private:
    explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator);
    ~Isolate();
-@@ -1856,6 +1889,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+@@ -1856,6 +1888,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
    // in case of a crash.
    AddCrashKeyCallback add_crash_key_callback_ = nullptr;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  EvalScriptCompiledFunc eval_script_compiled_func_ = nullptr;
 +  BuiltInFuncCallFunc built_in_func_call_func_ = nullptr;
 +  BuiltInFuncResponseFunc built_in_func_response_func_ = nullptr;
-+#endif
++// #endif
 +
    // Delete new/delete operators to ensure that Isolate::New() and
    // Isolate::Delete() are used for Isolate creation and deletion.

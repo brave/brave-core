@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/location.cc b/third_party/blink/renderer/core/frame/location.cc
-index 63deafc4f52b9f591749e475250e7c06f862d488..766ab87a0aef9aea87c0ab8a52489849f55260ae 100644
+index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9cad3d2eb 100644
 --- a/third_party/blink/renderer/core/frame/location.cc
 +++ b/third_party/blink/renderer/core/frame/location.cc
 @@ -70,36 +70,69 @@ inline const KURL& Location::Url() const {
@@ -9,7 +9,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..766ab87a0aef9aea87c0ab8a52489849
 +void Location::PageGraphLogWebAPI(const brave_page_graph::WebAPI web_api,
 +                                  const String& value,
 +                                  bool is_set) const {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  if (dom_window_->IsLocalDOMWindow()) {
 +    brave_page_graph::PageGraph* page_graph =
 +        const_cast<Location*>(this)->GetDocument()->GetPageGraph();
@@ -20,7 +20,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..766ab87a0aef9aea87c0ab8a52489849
 +      page_graph->RegisterWebAPIResult(web_api, is_set ? g_null_atom : value);
 +    }
 +  }
-+#endif
++// #endif
 +}
 +
  String Location::href() const {
@@ -98,7 +98,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..766ab87a0aef9aea87c0ab8a52489849
 +    }
    }
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    base::ListValue things;
 +    for (uint32_t i = 0; i < origins->length(); ++i) {
@@ -111,7 +111,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..766ab87a0aef9aea87c0ab8a52489849
 +    PageGraphLogWebAPI(brave_page_graph::kWebAPILocationAncestorOrigins,
 +                       String::FromUTF8(output), false);
 +  }
-+#endif
++// #endif
 +
    return origins;
  }

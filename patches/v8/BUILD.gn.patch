@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index b2dde3f9d703126395bdf91fdc0b5b9ea752f60f..b21c1f5af85ccd475cf317a6a12f2d2dfa38ff29 100644
+index b2dde3f9d703126395bdf91fdc0b5b9ea752f60f..9840644fb45727dc2028663a1a02192eaaec80c2 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -768,12 +768,10 @@ config("toolchain") {
@@ -19,22 +19,3 @@ index b2dde3f9d703126395bdf91fdc0b5b9ea752f60f..b21c1f5af85ccd475cf317a6a12f2d2d
  
      if (v8_current_cpu == "x64" || v8_current_cpu == "arm64" ||
          v8_current_cpu == "mips64el") {
-@@ -2001,6 +1999,10 @@ v8_source_set("v8_compiler_opt") {
- 
-   sources = v8_compiler_sources
- 
-+  deps = [
-+    "//brave/third_party/blink/brave_page_graph",
-+  ]
-+
-   public_deps = [
-     ":generate_bytecode_builtins_list",
-     ":run_torque",
-@@ -3422,6 +3424,7 @@ v8_source_set("v8_base_without_compiler") {
-     ":v8_shared_internal_headers",
-     ":v8_version",
-     "src/inspector:inspector",
-+    "//brave/third_party/blink/brave_page_graph",
-   ]
- 
-   public_deps = [

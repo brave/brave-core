@@ -1,56 +1,55 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
-index 5e710b04a5be3a165030e4f1c2bff0880813e96e..62303a65a41d2076808aafc241fc5e9ae6af1f6c 100644
+index 5e710b04a5be3a165030e4f1c2bff0880813e96e..9ebe0a1496ec45c80ee533b38315ce8e42848922 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
-@@ -15,6 +15,11 @@
+@@ -15,6 +15,10 @@
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  #include "v8/include/v8.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  // <specdef label="IMSGF"
  // href="https://html.spec.whatwg.org/C/#internal-module-script-graph-fetching-procedure">
  
-@@ -169,7 +174,7 @@ void ModuleTreeLinker::AdvanceState(State new_state) {
+@@ -169,7 +173,7 @@ void ModuleTreeLinker::AdvanceState(State new_state) {
  // #fetch-a-module-worker-script-tree.
  void ModuleTreeLinker::FetchRoot(const KURL& original_url,
                                   const ScriptFetchOptions& options) {
 -#if DCHECK_IS_ON()
-+#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#if DCHECK_IS_ON() // || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
    original_url_ = original_url;
    root_is_inline_ = false;
  #endif
-@@ -181,7 +186,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+@@ -181,7 +185,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
  
    KURL url = original_url;
  
 -#if DCHECK_IS_ON()
-+#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#if DCHECK_IS_ON() // || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
    url_ = url;
  #endif
  
-@@ -239,7 +244,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
+@@ -239,7 +243,7 @@ void ModuleTreeLinker::FetchRoot(const KURL& original_url,
  // href="https://html.spec.whatwg.org/C/#fetch-an-inline-module-script-graph">
  void ModuleTreeLinker::FetchRootInline(ModuleScript* module_script) {
    DCHECK(module_script);
 -#if DCHECK_IS_ON()
-+#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#if DCHECK_IS_ON() // || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
    original_url_ = module_script->BaseURL();
    url_ = original_url_;
    root_is_inline_ = true;
-@@ -441,6 +446,12 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {
+@@ -441,6 +445,12 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {
    // fetching procedure should be performed in parallel to each other.
    // ...</spec>
    for (wtf_size_t i = 0; i < urls.size(); ++i) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    ::brave_page_graph::PageGraph* page_graph = modulator_->GetPageGraph();
 +    if (page_graph) {
 +      page_graph->RegisterModuleScriptForDescendant(module_script->SourceURL(), urls[i]);
 +    }
-+#endif
++// #endif
      // <spec step="8">... perform the internal module script graph fetching
      // procedure given url, fetch client settings object, destination, options,
      // module script's settings object, visited set, and module script's base

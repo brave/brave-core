@@ -2,19 +2,18 @@ diff --git a/third_party/blink/renderer/core/frame/screen.cc b/third_party/blink
 index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c739814dbf 100644
 --- a/third_party/blink/renderer/core/frame/screen.cc
 +++ b/third_party/blink/renderer/core/frame/screen.cc
-@@ -36,6 +36,11 @@
+@@ -36,6 +36,10 @@
  #include "third_party/blink/renderer/core/page/page.h"
  #include "third_party/blink/renderer/core/probe/core_probes.h"
- 
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
- 
+
  namespace {
-@@ -49,48 +54,106 @@ WebScreenInfo GetScreenInfo(LocalFrame& frame) {
+@@ -49,48 +53,106 @@ WebScreenInfo GetScreenInfo(LocalFrame& frame) {
  Screen::Screen(LocalFrame* frame) : ExecutionContextClient(frame) {}
  
  int Screen::height() const {
@@ -46,7 +45,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return static_cast<int>(
 -        lroundf(screen_info.rect.height * screen_info.device_scale_factor));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -59,11 +58,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +    }
    }
 -  return GetScreenInfo(*frame).rect.height;
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  int Screen::width() const {
 +  int result = 0;
 +
@@ -92,7 +91,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return static_cast<int>(
 -        lroundf(screen_info.rect.width * screen_info.device_scale_factor));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -105,11 +104,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +    }
    }
 -  return GetScreenInfo(*frame).rect.width;
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  unsigned Screen::colorDepth() const {
 +  unsigned result = 0;
 +
@@ -128,7 +127,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return 0;
 -  return static_cast<unsigned>(GetScreenInfo(*frame).depth);
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -140,15 +139,15 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +      page_graph->RegisterWebAPIResult("Screen.colorDepth", page_graph_result);
 +    }
 +  }
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  unsigned Screen::pixelDepth() const {
-@@ -98,71 +161,152 @@ unsigned Screen::pixelDepth() const {
+@@ -98,71 +160,153 @@ unsigned Screen::pixelDepth() const {
  }
- 
+
  int Screen::availLeft() const {
 +  int result = 0;
 +
@@ -178,7 +177,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return static_cast<int>(lroundf(screen_info.available_rect.x *
 -                                    screen_info.device_scale_factor));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -191,11 +190,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +    }
    }
 -  return static_cast<int>(GetScreenInfo(*frame).available_rect.x);
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  int Screen::availTop() const {
 +  int result = 0;
 +
@@ -225,7 +224,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return static_cast<int>(lroundf(screen_info.available_rect.y *
 -                                    screen_info.device_scale_factor));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -238,11 +237,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +    }
    }
 -  return static_cast<int>(GetScreenInfo(*frame).available_rect.y);
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  int Screen::availHeight() const {
 +  int result = 0;
 +
@@ -272,7 +271,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return static_cast<int>(lroundf(screen_info.available_rect.height *
 -                                    screen_info.device_scale_factor));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -286,11 +285,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +    }
    }
 -  return GetScreenInfo(*frame).available_rect.height;
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  int Screen::availWidth() const {
 +  int result = 0;
 +
@@ -320,7 +319,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 -    return static_cast<int>(lroundf(screen_info.available_rect.width *
 -                                    screen_info.device_scale_factor));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +      GetFrame()->GetDocument()->GetPageGraph();
@@ -333,9 +332,9 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +    }
    }
 -  return GetScreenInfo(*frame).available_rect.width;
-+#endif
++// #endif
 +
 +  return result;
  }
- 
+
  void Screen::Trace(Visitor* visitor) {

@@ -1,22 +1,21 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h
-index c4a664b1987501c47e6d051066d26c2dc5b2bc8a..733218b37258ef5a6216563849b05c7ffa2f880c 100644
+index c4a664b1987501c47e6d051066d26c2dc5b2bc8a..4112cf4ce6f1e69c0dfa0ecee5c41612530a6b7d 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h
-@@ -14,6 +14,8 @@
+@@ -14,6 +14,7 @@
  #include "third_party/blink/renderer/platform/weborigin/kurl_hash.h"
  #include "third_party/blink/renderer/platform/wtf/hash_set.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  
  class ModuleTreeLinkerRegistry;
-@@ -119,7 +121,7 @@ class CORE_EXPORT ModuleTreeLinker final : public SingleModuleClient {
+@@ -119,7 +120,7 @@ class CORE_EXPORT ModuleTreeLinker final : public SingleModuleClient {
  
    size_t num_incomplete_fetches_ = 0;
  
 -#if DCHECK_IS_ON()
-+#if DCHECK_IS_ON() || BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#if DCHECK_IS_ON() // || BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH))
    KURL original_url_;
    KURL url_;
    bool root_is_inline_;

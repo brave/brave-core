@@ -1,20 +1,19 @@
 diff --git a/third_party/blink/renderer/core/html/html_script_element.h b/third_party/blink/renderer/core/html/html_script_element.h
-index dc5f7fb99a6374933030659e8e8a17e8c9c9040f..c517fedf06464510ec496cf3d01d1fe77862c434 100644
+index dc5f7fb99a6374933030659e8e8a17e8c9c9040f..3869913037e21473776474958165e61b0d724307 100644
 --- a/third_party/blink/renderer/core/html/html_script_element.h
 +++ b/third_party/blink/renderer/core/html/html_script_element.h
-@@ -32,6 +32,11 @@
+@@ -32,6 +32,10 @@
  #include "third_party/blink/renderer/core/script/script_loader.h"
  #include "third_party/blink/renderer/platform/bindings/parkable_string.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  class StringOrTrustedScript;
-@@ -106,6 +111,7 @@ class CORE_EXPORT HTMLScriptElement final : public HTMLElement,
+@@ -106,6 +110,7 @@ class CORE_EXPORT HTMLScriptElement final : public HTMLElement,
                                 const String& script_content) override;
    void DispatchLoadEvent() override;
    void DispatchErrorEvent() override;

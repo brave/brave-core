@@ -1,25 +1,24 @@
 diff --git a/third_party/blink/public/web/web_local_frame_client.h b/third_party/blink/public/web/web_local_frame_client.h
-index d11faf48cf3cc2165598737a4624db7d1f224fcd..dc2f6f3ef8eca2d41b8d899e77e044a835d48c90 100644
+index d11faf48cf3cc2165598737a4624db7d1f224fcd..41d386bdb40dcd158b6c39e486e5f26317a65d74 100644
 --- a/third_party/blink/public/web/web_local_frame_client.h
 +++ b/third_party/blink/public/web/web_local_frame_client.h
-@@ -79,6 +79,8 @@
+@@ -79,6 +79,7 @@
  #include "ui/events/types/scroll_types.h"
  #include "v8/include/v8.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  namespace mojom {
  enum class WebFeature : int32_t;
-@@ -410,6 +412,12 @@ class BLINK_EXPORT WebLocalFrameClient {
+@@ -410,6 +411,12 @@ class BLINK_EXPORT WebLocalFrameClient {
    // WARNING: This method may be called very frequently.
    virtual void DidUpdateCurrentHistoryItem() {}
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  // Called to register a remote frame creation event for the FrameOwner of an
 +  // out-of-process frame.
 +  virtual void RegisterRemoteFrameCreated(const GURL& url) {}
-+#endif
++// #endif
 +
    // Returns the effective connection type when the frame was fetched.
    virtual WebEffectiveConnectionType GetEffectiveConnectionType() {

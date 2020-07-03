@@ -1,12 +1,11 @@
 diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
-index b8f4aa80447cf56d29de438a032096010709c2c5..0b2048a5b873bf6d5687f01d17727d535b3bff82 100644
+index b8f4aa80447cf56d29de438a032096010709c2c5..775c8e11746681d259bda1e49852d9703fa1fa7f 100644
 --- a/third_party/blink/renderer/core/loader/frame_loader.cc
 +++ b/third_party/blink/renderer/core/loader/frame_loader.cc
 @@ -128,6 +128,11 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
-+// #include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +// #include "third_party/blink/renderer/core/dom/document.h"
 +// #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
@@ -25,7 +24,7 @@ index b8f4aa80447cf56d29de438a032096010709c2c5..0b2048a5b873bf6d5687f01d17727d53
      probe::FrameRequestedNavigation(frame_, frame_, url,
                                      request.ClientRedirectReason());
    }
-@@ -797,6 +805,23 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
+@@ -797,6 +804,23 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
        origin_document ? origin_document->GetSecurityContext().AddressSpace()
                        : network::mojom::IPAddressSpace::kUnknown;
  

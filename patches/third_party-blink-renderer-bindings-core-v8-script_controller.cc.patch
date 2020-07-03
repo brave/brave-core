@@ -1,25 +1,24 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index aa5720bd81d5f714ce91484e0804220aa1d88e55..513ff13ee8d2c4bcb04b920b01ece81ff739211c 100644
+index aa5720bd81d5f714ce91484e0804220aa1d88e55..6f9a3f55f8a604dd6501f6e164753d4dddf799d7 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-@@ -71,6 +71,12 @@
+@@ -71,6 +71,11 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
  namespace blink {
  
  void ScriptController::Trace(Visitor* visitor) {
-@@ -130,6 +136,57 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -130,6 +135,57 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    {
 +      ScriptSourceLocationType script_location = source.SourceLocationType();
 +      if (script_location != ScriptSourceLocationType::kInspector) {
@@ -69,7 +68,7 @@ index aa5720bd81d5f714ce91484e0804220aa1d88e55..513ff13ee8d2c4bcb04b920b01ece81f
 +        }
 +      }
 +    }
-+#endif
++// #endif
      v8::MaybeLocal<v8::Value> maybe_result;
      maybe_result = V8ScriptRunner::RunCompiledScript(GetIsolate(), script,
                                                       GetFrame()->DomWindow());

@@ -1,29 +1,29 @@
 diff --git a/third_party/blink/renderer/core/style/style_fetched_image.cc b/third_party/blink/renderer/core/style/style_fetched_image.cc
-index fc358725ebc4812888e41ef188114cb4e9a8e74e..ea3663ede10a71bd0409693b00064f158384e42e 100644
+index fc358725ebc4812888e41ef188114cb4e9a8e74e..3f710d562a51c2dd446edd6035088cb96f195d13 100644
 --- a/third_party/blink/renderer/core/style/style_fetched_image.cc
 +++ b/third_party/blink/renderer/core/style/style_fetched_image.cc
-@@ -39,6 +39,16 @@
+@@ -39,6 +39,15 @@
  #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include <sstream>
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
 +#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  StyleFetchedImage::StyleFetchedImage(const Document& document,
-@@ -50,7 +60,21 @@ StyleFetchedImage::StyleFetchedImage(const Document& document,
+@@ -50,7 +59,21 @@ StyleFetchedImage::StyleFetchedImage(const Document& document,
    is_image_resource_ = true;
    is_lazyload_possibly_deferred_ = is_lazyload_possibly_deferred;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+-  image_ = ImageResourceContent::Fetch(params, document_->Fetcher());
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  image_ = ImageResourceContent::Fetch(params,
 +      document_->Fetcher(), &inspector_id_);
 +  {
@@ -35,19 +35,19 @@ index fc358725ebc4812888e41ef188114cb4e9a8e74e..ea3663ede10a71bd0409693b00064f15
 +          ::brave_page_graph::RequestType::kRequestTypeImage);
 +    }
 +  }
-+#else
-   image_ = ImageResourceContent::Fetch(params, document_->Fetcher());
-+#endif
++// #else
++//   image_ = ImageResourceContent::Fetch(params, document_->Fetcher());
++// #endif
    image_->AddObserver(this);
    // ResourceFetcher is not determined from StyleFetchedImage and it is
    // impossible to send a request for refetching.
-@@ -134,7 +158,26 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
+@@ -134,7 +157,26 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
    image_->RemoveObserver(observer);
  }
  
 -void StyleFetchedImage::ImageNotifyFinished(ImageResourceContent*) {
 +void StyleFetchedImage::ImageNotifyFinished(ImageResourceContent* resource) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    Document* mutable_document = (Document*)(document_.Get());
 +    ::brave_page_graph::PageGraph* page_graph =
@@ -65,7 +65,7 @@ index fc358725ebc4812888e41ef188114cb4e9a8e74e..ea3663ede10a71bd0409693b00064f15
 +      }
 +    }
 +  }
-+#endif
++// #endif
    if (image_ && image_->HasImage()) {
      Image& image = *image_->GetImage();
  

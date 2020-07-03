@@ -1,25 +1,24 @@
 diff --git a/third_party/blink/renderer/core/exported/web_document.cc b/third_party/blink/renderer/core/exported/web_document.cc
-index eeff125b12ba2922db0ffc59c104f8c9c76384db..d5db547d2062f5ffe60894ecfe37d94c018a3307 100644
+index eeff125b12ba2922db0ffc59c104f8c9c76384db..1047d7679fdfc254c65f8c1c51cdd5a1e5bc9a95 100644
 --- a/third_party/blink/renderer/core/exported/web_document.cc
 +++ b/third_party/blink/renderer/core/exported/web_document.cc
-@@ -67,6 +67,12 @@
+@@ -67,6 +67,11 @@
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  #include "third_party/blink/renderer/platform/wtf/casting.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace {
  
  static const blink::WebStyleSheetKey GenerateStyleSheetKey() {
-@@ -284,6 +290,26 @@ uint64_t WebDocument::GetVisualViewportScrollingElementIdForTesting() {
+@@ -284,6 +289,26 @@ uint64_t WebDocument::GetVisualViewportScrollingElementIdForTesting() {
        .GetStableId();
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +void WebDocument::RegisterResourceBlockAd(const GURL& url,
 +                                          const std::string& rule) {
 +  Document* doc = Unwrap<Document>();
@@ -37,7 +36,7 @@ index eeff125b12ba2922db0ffc59c104f8c9c76384db..d5db547d2062f5ffe60894ecfe37d94c
 +    page_graph->RegisterResourceBlockTracker(url, host);
 +  }
 +}
-+#endif
++// #endif
 +
  WebDocument::WebDocument(Document* elem) : WebNode(elem) {}
  

@@ -1,67 +1,66 @@
 diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
-index 595e59f55148c45b4f77e06fc9858acf23388b0c..17f892a908b958eaf3921f744465f1faa673121b 100644
+index 595e59f55148c45b4f77e06fc9858acf23388b0c..856cc47b862a9e039f6c510eaa3e52d2c1a55e8c 100644
 --- a/src/codegen/compiler.cc
 +++ b/src/codegen/compiler.cc
-@@ -51,6 +51,8 @@
+@@ -51,6 +51,7 @@
  #include "src/utils/ostreams.h"
  #include "src/zone/zone-list-inl.h"  // crbug.com/v8/8816
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace v8 {
  namespace internal {
  
-@@ -1683,6 +1685,9 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1683,6 +1684,9 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
    int source_length = source->length();
    isolate->counters()->total_eval_size()->Increment(source_length);
    isolate->counters()->total_compile_size()->Increment(source_length);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  const int parent_script_id = isolate->GetExecutingScriptId();
-+#endif
++// #endif
  
    // The cache lookup key needs to be aware of the separation between the
    // parameters and the body to prevent this valid invocation:
-@@ -1701,7 +1706,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1701,7 +1705,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
    }
    CompilationCache* compilation_cache = isolate->compilation_cache();
    InfoCellPair eval_result = compilation_cache->LookupEval(
 -      source, outer_info, context, language_mode, eval_scope_position);
 +      source, outer_info, context, language_mode, eval_scope_position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +      , parent_script_id
-+#endif
++// #endif
 +      );
    Handle<FeedbackCell> feedback_cell;
    if (eval_result.has_feedback_cell()) {
      feedback_cell = handle(eval_result.feedback_cell(), isolate);
-@@ -1776,7 +1785,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1776,7 +1784,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
          Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
                                                 isolate);
          compilation_cache->PutEval(source, outer_info, context, shared_info,
 -                                   new_feedback_cell, eval_scope_position);
 +                                   new_feedback_cell, eval_scope_position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                                   , parent_script_id
-+#endif
++// #endif
 +                                   );
        }
      }
    } else {
-@@ -1789,11 +1802,30 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1789,11 +1801,30 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
        Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
                                               isolate);
        compilation_cache->PutEval(source, outer_info, context, shared_info,
 -                                 new_feedback_cell, eval_scope_position);
 +                                 new_feedback_cell, eval_scope_position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                                 , parent_script_id
-+#endif
++// #endif
 +                                 );
      }
    }
    DCHECK(is_compiled_scope.is_compiled());
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    EvalScriptCompiledFunc eval_script_compiled_func =
 +        isolate->GetEvalScriptCompiledFunc();
@@ -74,72 +73,72 @@ index 595e59f55148c45b4f77e06fc9858acf23388b0c..17f892a908b958eaf3921f744465f1fa
 +      }
 +    }
 +  }
-+#endif
++// #endif
 +
    return result;
  }
  
-@@ -2222,7 +2254,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+@@ -2222,7 +2253,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
      maybe_result = compilation_cache->LookupScript(
          source, script_details.name_obj, script_details.line_offset,
          script_details.column_offset, origin_options, isolate->native_context(),
 -        language_mode);
 +        language_mode
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        , script_details.parent_script_id
-+#endif
++// #endif
 +        );
      if (!maybe_result.is_null()) {
        compile_timer.set_hit_isolate_cache();
      } else if (can_consume_code_cache) {
-@@ -2242,7 +2278,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+@@ -2242,7 +2277,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
          is_compiled_scope = inner_result->is_compiled_scope();
          DCHECK(is_compiled_scope.is_compiled());
          compilation_cache->PutScript(source, isolate->native_context(),
 -                                     language_mode, inner_result);
 +                                     language_mode, inner_result
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                                     , script_details.parent_script_id
-+#endif
++// #endif
 +                                     );
          Handle<Script> script(Script::cast(inner_result->script()), isolate);
          maybe_result = inner_result;
        } else {
-@@ -2277,7 +2317,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+@@ -2277,7 +2316,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
      if (extension == nullptr && maybe_result.ToHandle(&result)) {
        DCHECK(is_compiled_scope.is_compiled());
        compilation_cache->PutScript(source, isolate->native_context(),
 -                                   language_mode, result);
 +                                   language_mode, result
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                                   , script_details.parent_script_id
-+#endif
++// #endif
 +                                   );
      } else if (maybe_result.is_null() && natives != EXTENSION_CODE) {
        isolate->ReportPendingMessages();
      }
-@@ -2403,7 +2447,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+@@ -2403,7 +2446,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
      maybe_result = compilation_cache->LookupScript(
          source, script_details.name_obj, script_details.line_offset,
          script_details.column_offset, origin_options, isolate->native_context(),
 -        task->language_mode());
 +        task->language_mode()
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        , script_details.parent_script_id
-+#endif
++// #endif
 +        );
      if (!maybe_result.is_null()) {
        compile_timer.set_hit_isolate_cache();
      }
-@@ -2480,7 +2528,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+@@ -2480,7 +2527,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
        TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("v8.compile"),
                     "V8.StreamingFinalization.AddToCache");
        compilation_cache->PutScript(source, isolate->native_context(),
 -                                   task->language_mode(), result);
 +                                   task->language_mode(), result
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                                   , script_details.parent_script_id
-+#endif
++// #endif
 +                                   );
      }
    }

@@ -1,21 +1,20 @@
 diff --git a/content/browser/frame_host/render_frame_host_impl.cc b/content/browser/frame_host/render_frame_host_impl.cc
-index b1ea181a9088bce0422701ac7d3e118b999fec5b..a8f1dcdc31dda26388f66a90378aa74d0f277af9 100644
+index b1ea181a9088bce0422701ac7d3e118b999fec5b..98f310d502c8931225478552627f1f86f780dcd5 100644
 --- a/content/browser/frame_host/render_frame_host_impl.cc
 +++ b/content/browser/frame_host/render_frame_host_impl.cc
-@@ -228,6 +228,8 @@
+@@ -228,6 +228,7 @@
  #include "url/origin.h"
  #include "url/url_constants.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  #if defined(OS_ANDROID)
  #include "content/browser/android/content_url_loader_factory.h"
  #include "content/browser/android/java_interfaces_impl.h"
-@@ -1404,6 +1406,18 @@ void RenderFrameHostImpl::AddMessageToConsole(
+@@ -1404,6 +1405,18 @@ void RenderFrameHostImpl::AddMessageToConsole(
    AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +void RenderFrameHostImpl::RegisterResourceBlockAd(const GURL& url,
 +                                                  const std::string& rule) {
 +  Send(new FrameMsg_RegisterResourceBlockAd(routing_id_, url, rule));
@@ -25,27 +24,27 @@ index b1ea181a9088bce0422701ac7d3e118b999fec5b..a8f1dcdc31dda26388f66a90378aa74d
 +                                                       const std::string& host) {
 +  Send(new FrameMsg_RegisterResourceBlockTracker(routing_id_, url, host));
 +}
-+#endif
++// #endif
 +
  void RenderFrameHostImpl::ExecuteJavaScript(const base::string16& javascript,
                                              JavaScriptResultCallback callback) {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
-@@ -1565,6 +1579,10 @@ bool RenderFrameHostImpl::OnMessageReceived(const IPC::Message& msg) {
+@@ -1565,6 +1578,10 @@ bool RenderFrameHostImpl::OnMessageReceived(const IPC::Message& msg) {
                          OnDidChangeFrameOwnerProperties)
      IPC_MESSAGE_HANDLER(FrameHostMsg_DidStopLoading, OnDidStopLoading)
      IPC_MESSAGE_HANDLER(FrameHostMsg_SelectionChanged, OnSelectionChanged)
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    IPC_MESSAGE_HANDLER(FrameHostMsg_RegisterRemoteFrameCreated,
 +                        OnRegisterRemoteFrameCreated)
-+#endif
++// #endif
      IPC_MESSAGE_HANDLER(FrameHostMsg_FrameDidCallFocus, OnFrameDidCallFocus)
  #if BUILDFLAG(USE_EXTERNAL_POPUP_MENU)
      IPC_MESSAGE_HANDLER(FrameHostMsg_ShowPopup, OnShowPopup)
-@@ -3800,6 +3818,23 @@ void RenderFrameHostImpl::ForwardResourceTimingToParent(
+@@ -3800,6 +3817,23 @@ void RenderFrameHostImpl::ForwardResourceTimingToParent(
        std::move(timing));
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +void RenderFrameHostImpl::OnRegisterRemoteFrameCreated(const GURL& url) {
 +  // Only frames with an out-of-process parent frame should be sending this
 +  // message.
@@ -60,7 +59,7 @@ index b1ea181a9088bce0422701ac7d3e118b999fec5b..a8f1dcdc31dda26388f66a90378aa74d
 +  proxy->Send(new FrameMsg_RegisterRemoteFrameCreated(proxy->GetRoutingID(),
 +                                                      url));
 +}
-+#endif
++// #endif
 +
  RenderWidgetHostViewBase* RenderFrameHostImpl::GetViewForAccessibility() {
    return static_cast<RenderWidgetHostViewBase*>(

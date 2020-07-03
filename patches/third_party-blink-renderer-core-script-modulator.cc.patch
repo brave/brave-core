@@ -1,16 +1,15 @@
 diff --git a/third_party/blink/renderer/core/script/modulator.cc b/third_party/blink/renderer/core/script/modulator.cc
-index 2f48e3a2cef9915f077008c5a4009aae45cc0587..4ec963fa2528e5198c13ca6b056a37b2a929c9f7 100644
+index 2f48e3a2cef9915f077008c5a4009aae45cc0587..892dedee9d1dd78e88fd08b2f596f1f27126a801 100644
 --- a/third_party/blink/renderer/core/script/modulator.cc
 +++ b/third_party/blink/renderer/core/script/modulator.cc
-@@ -16,13 +16,19 @@
+@@ -16,13 +16,18 @@
  #include "third_party/blink/renderer/platform/bindings/script_state.h"
  #include "third_party/blink/renderer/platform/bindings/v8_per_context_data.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
@@ -23,7 +22,7 @@ index 2f48e3a2cef9915f077008c5a4009aae45cc0587..4ec963fa2528e5198c13ca6b056a37b2
    if (!script_state)
      return nullptr;
  
-@@ -36,7 +42,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+@@ -36,7 +41,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
      return modulator;
    ExecutionContext* execution_context = ExecutionContext::From(script_state);
    if (auto* window = DynamicTo<LocalDOMWindow>(execution_context)) {
@@ -32,7 +31,7 @@ index 2f48e3a2cef9915f077008c5a4009aae45cc0587..4ec963fa2528e5198c13ca6b056a37b2
      Modulator::SetModulator(script_state, modulator);
  
      // See comment in LocalDOMWindow::modulator_ for this workaround.
-@@ -44,7 +50,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+@@ -44,7 +49,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
      window->SetModulator(modulator);
    } else if (auto* worklet_scope =
                   DynamicTo<WorkletGlobalScope>(execution_context)) {
@@ -41,7 +40,7 @@ index 2f48e3a2cef9915f077008c5a4009aae45cc0587..4ec963fa2528e5198c13ca6b056a37b2
      Modulator::SetModulator(script_state, modulator);
  
      // See comment in WorkerOrWorkletGlobalScope::modulator_ for this
-@@ -52,7 +58,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+@@ -52,7 +57,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
      worklet_scope->SetModulator(modulator);
    } else if (auto* worker_scope =
                   DynamicTo<WorkerGlobalScope>(execution_context)) {

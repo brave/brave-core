@@ -1,20 +1,19 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_script_element.h b/third_party/blink/renderer/core/svg/svg_script_element.h
-index 91c98f76fb00ed4144f24c6e0d8e8abade49909f..4269b7eda98b8af722ebcb458ece06175f3faca0 100644
+index 91c98f76fb00ed4144f24c6e0d8e8abade49909f..63a9160eade218ce0b50b16e14ef44dca37ee3d8 100644
 --- a/third_party/blink/renderer/core/svg/svg_script_element.h
 +++ b/third_party/blink/renderer/core/svg/svg_script_element.h
-@@ -29,6 +29,11 @@
+@@ -29,6 +29,10 @@
  #include "third_party/blink/renderer/platform/bindings/parkable_string.h"
  #include "third_party/blink/renderer/platform/heap/handle.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  class ScriptLoader;
-@@ -97,6 +102,7 @@ class SVGScriptElement final : public SVGElement,
+@@ -97,6 +101,7 @@ class SVGScriptElement final : public SVGElement,
    ExecutionContext* GetExecutionContext() const override;
    void DispatchLoadEvent() override;
    void DispatchErrorEvent() override;

@@ -1,35 +1,34 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec7aa44a1d 100644
+index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb4dad8277 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
-@@ -71,6 +71,15 @@
+@@ -71,6 +71,14 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/html/html_script_element.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "third_party/blink/renderer/core/svg/svg_script_element.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  ScriptLoader::ScriptLoader(ScriptElementBase* element,
-@@ -110,6 +119,10 @@ void ScriptLoader::Trace(Visitor* visitor) {
+@@ -110,6 +118,10 @@ void ScriptLoader::Trace(Visitor* visitor) {
    visitor->Trace(pending_script_);
    visitor->Trace(prepared_pending_script_);
    visitor->Trace(resource_keep_alive_);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  visitor->Trace(script_elm_html_);
 +  visitor->Trace(script_elm_svg_);
-+#endif
++// #endif
    PendingScriptClient::Trace(visitor);
  }
  
-@@ -363,7 +376,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -363,7 +375,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
    // Accept import maps only if ImportMapsEnabled().
    if (is_import_map) {
      Modulator* modulator =
@@ -38,7 +37,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
      if (!modulator->ImportMapsEnabled()) {
        // Import maps should have been rejected in spec Step 7 above.
        // TODO(hiroshige): Returning here (i.e. after spec Step 11) is not spec
-@@ -501,7 +514,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -501,7 +513,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
    // error at the element, and return. [spec text]
    if (is_import_map) {
      Modulator* modulator =
@@ -47,7 +46,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
      if (!modulator->IsAcquiringImportMaps()) {
        element_document.AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
            mojom::ConsoleMessageSource::kJavaScript,
-@@ -601,10 +614,29 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -601,10 +613,29 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
        // Fetch an external module script graph given url, settings object, and
        // options.</spec>
        Modulator* modulator = Modulator::From(
@@ -56,7 +55,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
        FetchModuleScriptTree(url, fetch_client_settings_object_fetcher,
                              modulator, options);
      }
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    {
 +      ::brave_page_graph::PageGraph* page_graph = context_window
 +        ->GetFrame()->GetDocument()->GetPageGraph();
@@ -74,16 +73,16 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
 +        }
 +      }
 +    }
-+#endif
++// #endif
      // <spec step="24.6">When the chosen algorithm asynchronously completes, set
      // the script's script to the result. At that time, the script is ready.
      // ...</spec>
-@@ -682,6 +714,28 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -682,6 +713,28 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // <spec step="25.2.A.3">The script is ready.</spec>
          //
          // Implemented by ClassicPendingScript.
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          ::brave_page_graph::PageGraph* const page_graph = context_window
 +            ->GetFrame()->GetDocument()->GetPageGraph();
@@ -103,18 +102,18 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
 +            }
 +          }
 +        }
-+#endif
++// #endif
          break;
        }
  
-@@ -696,7 +750,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -696,7 +749,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // href="https://html.spec.whatwg.org/C/#fetch-an-inline-module-script-graph">
          const KURL& source_url = element_document.Url();
          Modulator* modulator = Modulator::From(
 -            ToScriptStateForMainWorld(context_window->GetFrame()));
 +            ToScriptStateForMainWorld(context_window->GetFrame()), context_window->GetFrame()->GetDocument()->GetPageGraph(), element_->GetDOMNodeId());
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          ::brave_page_graph::PageGraph* const page_graph = context_window
 +            ->GetFrame()->GetDocument()->GetPageGraph();
@@ -128,15 +127,15 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
 +            }
 +          }
 +        }
-+#endif
++// #endif
  
          // <spec label="fetch-an-inline-module-script-graph" step="1">Let script
          // be the result of creating a JavaScript module script using source
-@@ -1048,4 +1118,23 @@ String ScriptLoader::GetScriptText() const {
+@@ -1048,4 +1117,23 @@ String ScriptLoader::GetScriptText() const {
                                       element_->GetExecutionContext());
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +void ScriptLoader::SetSVGScriptElement(SVGScriptElement* const elm) {
 +  script_elm_svg_ = elm;
 +}
@@ -152,7 +151,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..ea371c05e8a00dc67bb4223a1c04ccec
 +HTMLScriptElement* ScriptLoader::GetHTMLScriptElement() const {
 +  return script_elm_html_;
 +}
-+#endif
++// #endif
 +
 +
  }  // namespace blink

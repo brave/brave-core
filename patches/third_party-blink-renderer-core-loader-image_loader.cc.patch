@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/image_loader.cc b/third_party/blink/renderer/core/loader/image_loader.cc
-index a5f02639f9bbf10221fb5a34e1580613764787aa..0b6bf4f4cb7762c3ebf5601c4e98a49c830794ac 100644
+index a5f02639f9bbf10221fb5a34e1580613764787aa..e718ced8628d5c2ddb6a4bfcd7d7476ba490b72c 100644
 --- a/third_party/blink/renderer/core/loader/image_loader.cc
 +++ b/third_party/blink/renderer/core/loader/image_loader.cc
 @@ -23,6 +23,7 @@
@@ -10,28 +10,27 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..0b6bf4f4cb7762c3ebf5601c4e98a49c
  #include <utility>
  
  #include "third_party/blink/public/common/features.h"
-@@ -69,6 +70,15 @@
+@@ -69,6 +70,14 @@
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
 +#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  namespace {
-@@ -572,7 +582,21 @@ void ImageLoader::DoUpdateFromElement(
+@@ -572,7 +581,21 @@ void ImageLoader::DoUpdateFromElement(
        }
      }
  
 -    new_image_content = ImageResourceContent::Fetch(params, document.Fetcher());
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    new_image_content = ImageResourceContent::Fetch(params, document.Fetcher(), &inspector_id_);
 +    {
 +      ::brave_page_graph::PageGraph* page_graph = element_->GetDocument().GetPageGraph();
@@ -42,18 +41,18 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..0b6bf4f4cb7762c3ebf5601c4e98a49c
 +          ::brave_page_graph::RequestType::kRequestTypeImage);
 +      }
 +    }
-+#else
-+    new_image_content =
-+        ImageResourceContent::Fetch(params, document.Fetcher());
-+#endif
++// #else
++//     new_image_content =
++//         ImageResourceContent::Fetch(params, document.Fetcher());
++// #endif
  
      // If this load is starting while navigating away, treat it as an auditing
      // keepalive request, and don't report its results back to the element.
-@@ -816,6 +840,25 @@ void ImageLoader::ImageNotifyFinished(ImageResourceContent* resource) {
+@@ -816,6 +839,25 @@ void ImageLoader::ImageNotifyFinished(ImageResourceContent* resource) {
    if (html_image_element)
      LazyImageHelper::RecordMetricsOnLoadFinished(html_image_element);
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    ::brave_page_graph::PageGraph* page_graph = element_->GetDocument()
 +        .GetPageGraph();
@@ -70,12 +69,12 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..0b6bf4f4cb7762c3ebf5601c4e98a49c
 +      }
 +    }
 +  }
-+#endif
++// #endif
 +
    if (resource->ErrorOccurred()) {
      pending_load_event_.Cancel();
  
-@@ -892,8 +935,9 @@ void ImageLoader::DispatchPendingLoadEvent(
+@@ -892,8 +934,9 @@ void ImageLoader::DispatchPendingLoadEvent(
    if (!image_content_)
      return;
    CHECK(image_complete_);
@@ -86,7 +85,7 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..0b6bf4f4cb7762c3ebf5601c4e98a49c
  
    // Checks Document's load event synchronously here for performance.
    // This is safe because DispatchPendingLoadEvent() is called asynchronously.
-@@ -902,8 +946,9 @@ void ImageLoader::DispatchPendingLoadEvent(
+@@ -902,8 +945,9 @@ void ImageLoader::DispatchPendingLoadEvent(
  
  void ImageLoader::DispatchPendingErrorEvent(
      std::unique_ptr<IncrementLoadEventDelayCount> count) {

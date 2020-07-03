@@ -1,25 +1,24 @@
 diff --git a/test/cctest/test-serialize.cc b/test/cctest/test-serialize.cc
-index 7ce8ef715296586d3cee84f6270e326d4b3748b9..ae6399b60d83ad7db8f47aab0ea3e6fe9692e4bf 100644
+index 7ce8ef715296586d3cee84f6270e326d4b3748b9..8f0468e54e2be85c1ceee64e3ab246e10eb3298b 100644
 --- a/test/cctest/test-serialize.cc
 +++ b/test/cctest/test-serialize.cc
-@@ -61,6 +61,8 @@
+@@ -61,6 +61,7 @@
  #include "test/cctest/heap/heap-utils.h"
  #include "test/cctest/setup-isolate-for-tests.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace v8 {
  namespace internal {
  
-@@ -1726,7 +1728,11 @@ TEST(CodeSerializerPromotedToCompilationCache) {
+@@ -1726,7 +1727,11 @@ TEST(CodeSerializerPromotedToCompilationCache) {
    MaybeHandle<SharedFunctionInfo> shared =
        isolate->compilation_cache()->LookupScript(
            src, src, 0, 0, v8::ScriptOriginOptions(), isolate->native_context(),
 -          LanguageMode::kSloppy);
 +          LanguageMode::kSloppy
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +          , 0
-+#endif
++// #endif
 +          );
  
    CHECK(*shared.ToHandleChecked() == *copy);

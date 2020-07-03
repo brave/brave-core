@@ -1,16 +1,15 @@
 diff --git a/third_party/blink/renderer/core/dom/comment.cc b/third_party/blink/renderer/core/dom/comment.cc
-index d7476d197b825f1a13d92a708b84db849f7aacec..80f0e03a27fa14d328153dddf39fc240dcdd96c0 100644
+index d7476d197b825f1a13d92a708b84db849f7aacec..ff630fe655bfc62e6684056deea4c6af41ff97d0 100644
 --- a/third_party/blink/renderer/core/dom/comment.cc
 +++ b/third_party/blink/renderer/core/dom/comment.cc
-@@ -23,13 +23,30 @@
+@@ -23,13 +23,29 @@
  
  #include "third_party/blink/renderer/core/dom/document.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
@@ -20,7 +19,7 @@ index d7476d197b825f1a13d92a708b84db849f7aacec..80f0e03a27fa14d328153dddf39fc240
 -Comment* Comment::Create(Document& document, const String& text) {
 -  return MakeGarbageCollected<Comment>(document, text);
 + Comment* Comment::Create(Document& document, const String& text) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  Comment* comment = MakeGarbageCollected<Comment>(document, text);
 +  {
 +    if (document.GetPageGraph() != nullptr) {
@@ -29,9 +28,9 @@ index d7476d197b825f1a13d92a708b84db849f7aacec..80f0e03a27fa14d328153dddf39fc240
 +    }
 +  }
 +  return comment;
-+#else
-+   return MakeGarbageCollected<Comment>(document, text);
-+#endif
++// #else
++//   return MakeGarbageCollected<Comment>(document, text);
++// #endif
  }
  
  String Comment::nodeName() const {

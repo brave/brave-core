@@ -1,55 +1,54 @@
 diff --git a/third_party/blink/renderer/core/loader/threadable_loader.cc b/third_party/blink/renderer/core/loader/threadable_loader.cc
-index 2eabb5f8cf76cd0401b4ec66238c427f4a79c3b1..3fbb760171319d9dfc3a530135a0d57e0eced493 100644
+index 2eabb5f8cf76cd0401b4ec66238c427f4a79c3b1..d9c103a53e30e2ba0a86d4f215950f553dfdefaf 100644
 --- a/third_party/blink/renderer/core/loader/threadable_loader.cc
 +++ b/third_party/blink/renderer/core/loader/threadable_loader.cc
-@@ -76,6 +76,7 @@
- #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
- #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
- 
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
- namespace blink {
- 
- namespace {
-@@ -1050,6 +1052,18 @@ void ThreadableLoader::LoadRequest(
+@@ -1050,16 +1051,29 @@ void ThreadableLoader::LoadRequest(
    if (request.GetRequestContext() == mojom::RequestContextType::VIDEO ||
        request.GetRequestContext() == mojom::RequestContextType::AUDIO) {
      DCHECK(async_);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+-    RawResource::FetchMedia(new_params, resource_fetcher_, this);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    raw_resource_ = RawResource::FetchMedia(new_params, resource_fetcher_, this);
-+  } else if (request.GetRequestContext() ==
-+             mojom::RequestContextType::MANIFEST) {
-+    DCHECK(async_);
-+    raw_resource_ = RawResource::FetchManifest(new_params, resource_fetcher_, this);
-+  } else if (async_) {
-+    raw_resource_ = RawResource::Fetch(new_params, resource_fetcher_, this);
-+  } else {
-+    raw_resource_ = RawResource::FetchSynchronously(new_params, resource_fetcher_, this);
-+  }
-+#else
-     RawResource::FetchMedia(new_params, resource_fetcher_, this);
    } else if (request.GetRequestContext() ==
               mojom::RequestContextType::MANIFEST) {
-@@ -1060,6 +1074,7 @@ void ThreadableLoader::LoadRequest(
+     DCHECK(async_);
+-    RawResource::FetchManifest(new_params, resource_fetcher_, this);
++    raw_resource_ = RawResource::FetchManifest(new_params, resource_fetcher_, this);
+   } else if (async_) {
+-    RawResource::Fetch(new_params, resource_fetcher_, this);
++    raw_resource_ = RawResource::Fetch(new_params, resource_fetcher_, this);
    } else {
-     RawResource::FetchSynchronously(new_params, resource_fetcher_, this);
+-    RawResource::FetchSynchronously(new_params, resource_fetcher_, this);
++    raw_resource_ = RawResource::FetchSynchronously(new_params, resource_fetcher_, this);
    }
-+#endif
++// #else
++//     RawResource::FetchMedia(new_params, resource_fetcher_, this);
++//   } else if (request.GetRequestContext() ==
++//              mojom::RequestContextType::MANIFEST) {
++//     DCHECK(async_);
++//     RawResource::FetchManifest(new_params, resource_fetcher_, this);
++//   } else if (async_) {
++//     RawResource::Fetch(new_params, resource_fetcher_, this);
++//   } else {
++//     RawResource::FetchSynchronously(new_params, resource_fetcher_, this);
++//   }
++// #endif
  }
  
  const SecurityOrigin* ThreadableLoader::GetSecurityOrigin() const {
-@@ -1073,7 +1088,15 @@ Document* ThreadableLoader::GetDocument() const {
+@@ -1073,7 +1087,15 @@ Document* ThreadableLoader::GetDocument() const {
    return window ? window->GetFrame() : nullptr;
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +RawResource* ThreadableLoader::GetRawResource() const {
 +  return raw_resource_;
 +}
-+#endif
++// #endif
  void ThreadableLoader::Trace(Visitor* visitor) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  visitor->Trace(raw_resource_);
-+#endif
++// #endif
    visitor->Trace(execution_context_);
    visitor->Trace(client_);
    visitor->Trace(resource_fetcher_);

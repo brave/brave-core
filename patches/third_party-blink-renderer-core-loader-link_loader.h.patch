@@ -1,14 +1,14 @@
 diff --git a/third_party/blink/renderer/core/loader/link_loader.h b/third_party/blink/renderer/core/loader/link_loader.h
-index 925ba7787c377192e28818192b586db0c67f4cf2..7592ba3ab30cb630ef5d12afdcb30b20b9b08006 100644
+index 925ba7787c377192e28818192b586db0c67f4cf2..2f076f868938d2c31160f4dc9c0ac67a7ce26576 100644
 --- a/third_party/blink/renderer/core/loader/link_loader.h
 +++ b/third_party/blink/renderer/core/loader/link_loader.h
 @@ -45,6 +45,9 @@ class LinkLoaderClient;
  class PrerenderHandle;
  class Resource;
  class ResourceClient;
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +class HTMLLinkElement;
-+#endif
++// #endif
  
  // The LinkLoader can load link rel types icon, dns-prefetch, prefetch, and
  // prerender.
@@ -16,9 +16,9 @@ index 925ba7787c377192e28818192b586db0c67f4cf2..7592ba3ab30cb630ef5d12afdcb30b20
  
    Resource* GetResourceForTesting();
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void SetHTMLLinkElementOwner(HTMLLinkElement* link_element);
-+#endif
++// #endif
 +
    void Trace(Visitor*) override;
  
@@ -28,9 +28,9 @@ index 925ba7787c377192e28818192b586db0c67f4cf2..7592ba3ab30cb630ef5d12afdcb30b20
  
    Member<PrerenderHandle> prerender_;
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  Member<HTMLLinkElement> link_element_;
-+#endif
++// #endif
  };
  
  }  // namespace blink

@@ -1,27 +1,26 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index 2c506ac3266d0386621100f77d1268fff21a1e46..98cd33c4c9e8eb1e659c285e10e45ff75a452c4e 100644
+index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dbae899c43b 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
-@@ -64,6 +64,14 @@
+@@ -64,6 +64,13 @@
  #include "third_party/blink/renderer/platform/wtf/threading.h"
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include <limits>
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  namespace {
  
-@@ -253,6 +261,18 @@ void EventTargetData::Trace(Visitor* visitor) {
+@@ -253,6 +260,18 @@ void EventTargetData::Trace(Visitor* visitor) {
    visitor->Trace(event_listener_map);
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +int EventTargetData::GetNextRegisteredEventListenerId() const {
 +  int next_registered_event_listener_id = last_registered_event_listener_id;
 +  if (next_registered_event_listener_id == std::numeric_limits<int>::max()) {
@@ -31,16 +30,16 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..98cd33c4c9e8eb1e659c285e10e45ff7
 +
 +  return next_registered_event_listener_id;
 +}
-+#endif
++// #endif
 +
  EventTarget::EventTarget() = default;
  
  EventTarget::~EventTarget() = default;
-@@ -493,6 +513,29 @@ bool EventTarget::addEventListener(const AtomicString& event_type,
+@@ -493,6 +512,29 @@ bool EventTarget::addEventListener(const AtomicString& event_type,
    return AddEventListenerInternal(event_type, listener, options);
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static int GetListenerScriptId(ExecutionContext* const execution_context,
 +                               EventListener* const listener,
 +                               EventTarget* const target) {
@@ -61,26 +60,26 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..98cd33c4c9e8eb1e659c285e10e45ff7
 +  }
 +  return 0;
 +}
-+#endif
++// #endif
 +
  bool EventTarget::AddEventListenerInternal(
      const AtomicString& event_type,
      EventListener* listener,
-@@ -524,9 +567,42 @@ bool EventTarget::AddEventListenerInternal(
+@@ -524,9 +566,42 @@ bool EventTarget::AddEventListenerInternal(
    }
  
    RegisteredEventListener registered_listener;
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    int next_registered_event_listener_id =
 +        EnsureEventTargetData().GetNextRegisteredEventListenerId();
 +    registered_listener.SetId(next_registered_event_listener_id);
 +  }
-+#endif
++// #endif
    bool added = EnsureEventTargetData().event_listener_map.Add(
        event_type, listener, options, &registered_listener);
    if (added) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    {
 +      int listener_id = registered_listener.Id();
 +      EnsureEventTargetData().last_registered_event_listener_id = listener_id;
@@ -104,16 +103,16 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..98cd33c4c9e8eb1e659c285e10e45ff7
 +        }
 +      }
 +    }
-+#endif
++// #endif
 +
      AddedEventListener(event_type, registered_listener);
      if (IsA<JSBasedEventListener>(listener) &&
          IsInstrumentedForAsyncStack(event_type)) {
-@@ -626,6 +702,31 @@ bool EventTarget::RemoveEventListenerInternal(
+@@ -626,6 +701,31 @@ bool EventTarget::RemoveEventListenerInternal(
                                      &registered_listener))
      return false;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    ExecutionContext* const execution_context(GetExecutionContext());
 +    if (execution_context) {
@@ -136,16 +135,16 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..98cd33c4c9e8eb1e659c285e10e45ff7
 +      }
 +    }
 +  }
-+#endif
++// #endif
 +
    // Notify firing events planning to invoke the listener at 'index' that
    // they have one less listener to invoke.
    if (d->firing_event_iterators) {
-@@ -683,6 +784,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
+@@ -683,6 +783,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
        probe::AsyncTaskScheduled(GetExecutionContext(), event_type,
                                  listener->async_task_id());
      }
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    {
 +      EventTargetData& event_target_data = EnsureEventTargetData();
 +
@@ -181,7 +180,7 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..98cd33c4c9e8eb1e659c285e10e45ff7
 +        }
 +      }
 +    }
-+#endif
++// #endif
      registered_listener->SetCallback(listener);
      return true;
    }

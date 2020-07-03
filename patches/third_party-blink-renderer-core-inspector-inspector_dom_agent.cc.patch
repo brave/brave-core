@@ -1,21 +1,20 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc b/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
-index ce49bb82a0043c6c7c768c6c151f1443d5c599c5..2fb32ec5bb8361ce2383e308bd6f0bc9d6a211db 100644
+index ce49bb82a0043c6c7c768c6c151f1443d5c599c5..b55b6d9759ab5565ef7141c0504b791bf661d389 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
-@@ -91,6 +91,8 @@
+@@ -91,6 +91,7 @@
  #include "third_party/blink/renderer/platform/graphics/color.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  
  using protocol::Maybe;
-@@ -2375,6 +2377,27 @@ Response InspectorDOMAgent::getFileInfo(const String& object_id, String* path) {
+@@ -2375,6 +2376,27 @@ Response InspectorDOMAgent::getFileInfo(const String& object_id, String* path) {
    return Response::Success();
  }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +Response InspectorDOMAgent::reportPageGraphInfo(
 +    int node_id,
 +    std::unique_ptr<protocol::Array<String>>* report) {
@@ -34,7 +33,7 @@ index ce49bb82a0043c6c7c768c6c151f1443d5c599c5..2fb32ec5bb8361ce2383e308bd6f0bc9
 +
 +  return Response::Success();
 +}
-+#endif
++// #endif
 +
  void InspectorDOMAgent::Trace(Visitor* visitor) {
    visitor->Trace(dom_listener_);

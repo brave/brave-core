@@ -1,21 +1,20 @@
 diff --git a/third_party/blink/renderer/core/script/modulator.h b/third_party/blink/renderer/core/script/modulator.h
-index 25985a349da27c7bcf360288e4830cc5c747b58d..a996a49abb0cb7d1b1c7afdab2f9b57f04f11b4d 100644
+index 25985a349da27c7bcf360288e4830cc5c747b58d..0cd3c48010a25690e4820b8ee8553f0fafa12e8c 100644
 --- a/third_party/blink/renderer/core/script/modulator.h
 +++ b/third_party/blink/renderer/core/script/modulator.h
-@@ -22,6 +22,12 @@
+@@ -22,6 +22,11 @@
  #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  class ModuleScript;
-@@ -100,7 +106,7 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
+@@ -100,7 +105,7 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
    USING_GARBAGE_COLLECTED_MIXIN(Modulator);
  
   public:
@@ -24,7 +23,7 @@ index 25985a349da27c7bcf360288e4830cc5c747b58d..a996a49abb0cb7d1b1c7afdab2f9b57f
    virtual ~Modulator();
  
    static void SetModulator(ScriptState*, Modulator*);
-@@ -171,6 +177,7 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
+@@ -171,6 +176,7 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
    virtual void ResolveDynamically(const String& specifier,
                                    const KURL&,
                                    const ReferrerScriptInfo&,
@@ -32,7 +31,7 @@ index 25985a349da27c7bcf360288e4830cc5c747b58d..a996a49abb0cb7d1b1c7afdab2f9b57f
                                    ScriptPromiseResolver*) = 0;
  
    virtual ScriptValue CreateTypeError(const String& message) const = 0;
-@@ -216,6 +223,10 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
+@@ -216,6 +222,10 @@ class CORE_EXPORT Modulator : public GarbageCollected<Modulator>,
    virtual ModuleScriptFetcher* CreateModuleScriptFetcher(
        ModuleScriptCustomFetchType,
        util::PassKey<ModuleScriptLoader> pass_key) = 0;

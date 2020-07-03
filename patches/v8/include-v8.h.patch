@@ -1,23 +1,22 @@
 diff --git a/include/v8.h b/include/v8.h
-index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..4b6a3e6e27cce9dd67641027e11415638e487c11 100644
+index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..916746b7a589b227836a4c83b1233ceba6cf073b 100644
 --- a/include/v8.h
 +++ b/include/v8.h
 @@ -28,6 +28,10 @@
  #include "v8-version.h"   // NOLINT(build/include_directory)
  #include "v8config.h"     // NOLINT(build/include_directory)
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include <string>
-+#endif
++// #endif
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -36,6 +41,17 @@
+@@ -36,6 +40,17 @@
   */
  namespace v8 {
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +typedef void (*EvalScriptCompiledFunc)(v8::Isolate& isolate,
 +    const int parent_script_id, const int script_id);
 +
@@ -26,103 +25,103 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..4b6a3e6e27cce9dd67641027e1141563
 +
 +typedef void (*BuiltInFuncResponseFunc)(v8::Isolate& isolate,
 +    const char* builtin_name, const std::string& value);
-+#endif
++// #endif
 +
  class AccessorSignature;
  class Array;
  class ArrayBuffer;
-@@ -1308,6 +1324,10 @@ class V8_EXPORT ScriptOrModule {
+@@ -1308,6 +1323,10 @@ class V8_EXPORT ScriptOrModule {
     * the ScriptOrigin.
     */
    Local<PrimitiveArray> GetHostDefinedOptions();
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetScriptId() const;
-+#endif
++// #endif
  };
  
  /**
-@@ -1541,6 +1561,10 @@ class V8_EXPORT Module : public Data {
+@@ -1541,6 +1560,10 @@ class V8_EXPORT Module : public Data {
     */
    Local<UnboundModuleScript> GetUnboundModuleScript();
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetModuleScriptId() const;
-+#endif
++// #endif
 +
    /*
     * Callback defined in the embedder.  This is responsible for setting
     * the module's exported values with calls to SetSyntheticModuleExport().
-@@ -1659,6 +1683,12 @@ class V8_EXPORT ScriptCompiler {
+@@ -1659,6 +1682,12 @@ class V8_EXPORT ScriptCompiler {
      // Source takes ownership of CachedData.
      V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
                       CachedData* cached_data = nullptr);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    V8_INLINE Source(Local<String> source_string,
 +                     Local<Integer> parent_script_id,
 +                     const ScriptOrigin& origin,
 +                     CachedData* cached_data = nullptr);
-+#endif
++// #endif
      V8_INLINE Source(Local<String> source_string,
                       CachedData* cached_data = nullptr);
      V8_INLINE ~Source();
-@@ -1686,6 +1716,9 @@ class V8_EXPORT ScriptCompiler {
+@@ -1686,6 +1715,9 @@ class V8_EXPORT ScriptCompiler {
      ScriptOriginOptions resource_options;
      Local<Value> source_map_url;
      Local<PrimitiveArray> host_defined_options;
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    Local<Integer> parent_script_id;
-+#endif
++// #endif
  
      // Cached data from previous compilation (if a kConsume*Cache flag is
      // set), or hold newly generated cache data (kProduce*Cache flags) are
-@@ -1872,7 +1905,11 @@ class V8_EXPORT ScriptCompiler {
+@@ -1872,7 +1904,11 @@ class V8_EXPORT ScriptCompiler {
     */
    static V8_WARN_UNUSED_RESULT MaybeLocal<Script> Compile(
        Local<Context> context, StreamedSource* source,
 -      Local<String> full_source_string, const ScriptOrigin& origin);
 +      Local<String> full_source_string, const ScriptOrigin& origin
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +      , int parent_script_id = 0
-+#endif
++// #endif
 +      );
  
    /**
     * Return a version tag for CachedData for the current V8 version & flags.
-@@ -4508,6 +4545,13 @@ class V8_EXPORT Function : public Object {
+@@ -4508,6 +4544,13 @@ class V8_EXPORT Function : public Object {
     */
    Local<Value> GetBoundFunction() const;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  /**
 +   * Unwrap any bindings to the innermost function, including nested bindings.
 +   */
 +  Local<Function> GetInnermostFunction() const;
-+#endif
++// #endif
 +
    ScriptOrigin GetScriptOrigin() const;
    V8_INLINE static Function* Cast(Value* obj);
    static const int kLineOffsetNotFound;
-@@ -9505,6 +9549,14 @@ class V8_EXPORT Isolate {
+@@ -9505,6 +9548,14 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetExecutingScriptId();
 +
 +  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
 +  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func);
 +  void SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func);
-+#endif
++// #endif
 +
   private:
    template <class K, class V, class Traits>
    friend class PersistentValueMapBase;
-@@ -11265,6 +11317,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
+@@ -11265,6 +11316,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
        host_defined_options(origin.HostDefinedOptions()),
        cached_data(data) {}
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +ScriptCompiler::Source::Source(Local<String> string,
 +                               Local<Integer> parent_script_id,
 +                               const ScriptOrigin& origin, CachedData* data)
@@ -135,7 +134,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..4b6a3e6e27cce9dd67641027e1141563
 +      host_defined_options(origin.HostDefinedOptions()),
 +      parent_script_id(parent_script_id),
 +      cached_data(data) {}
-+#endif
++// #endif
 +
  ScriptCompiler::Source::Source(Local<String> string,
                                 CachedData* data)

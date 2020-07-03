@@ -2,16 +2,14 @@ diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering
 index e916fc83dabca0a6006383ddb9c596a5109bec74..6cc85d42abfb0341504e4dd68136b0b6ac694c4f 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-@@ -73,6 +74,12 @@
+@@ -73,6 +74,10 @@
  #include "third_party/blink/renderer/platform/wtf/math_extras.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#include <sstream>
-+#endif
-+
++// #endif
  namespace blink {
  
  static const base::TimeDelta kTryRestoreContextInterval =
@@ -23,11 +21,11 @@ index e916fc83dabca0a6006383ddb9c596a5109bec74..6cc85d42abfb0341504e4dd68136b0b6
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
    const Font& font = AccessFont();
-@@ -815,6 +825,44 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -815,6 +824,44 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    else
      direction = ToTextDirection(GetState().GetDirection(), canvas());
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    TextMetrics* result = MakeGarbageCollected<TextMetrics>(font, direction,
 +        GetState().GetTextBaseline(), GetState().GetTextAlign(), text);
@@ -63,7 +61,7 @@ index e916fc83dabca0a6006383ddb9c596a5109bec74..6cc85d42abfb0341504e4dd68136b0b6
 +
 +    return result;
 +  }
-+#endif
++// #endif
 +
    return MakeGarbageCollected<TextMetrics>(font, direction,
                                             GetState().GetTextBaseline(),
