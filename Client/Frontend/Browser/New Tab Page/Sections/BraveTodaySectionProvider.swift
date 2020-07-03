@@ -79,18 +79,18 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         switch card {
         case .sponsor(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
-            cell.content.feedView.setupWithItem(item)
+            cell.content.feedView.setupWithItem(item, showingBrand: true)
             cell.content.actionHandler = handler(for: item)
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
-            cell.content.feedView.setupWithItem(item)
+            cell.content.feedView.setupWithItem(item, showingBrand: true)
             cell.content.actionHandler = handler(for: item)
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
-            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.0)
-            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.1)
+            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.0, showingBrand: true)
+            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.1, showingBrand: true)
             cell.content.actionHandler = handler(from: { $0 == 0 ? pair.0 : pair.1 })
             return cell
         case .group(let items, let title, let direction, let displayBrand):
@@ -112,7 +112,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             groupView.titleLabel.text = title
             groupView.titleLabel.isHidden = title.isEmpty
             zip(groupView.feedViews, items).forEach { (view, item) in
-                view.setupWithItem(item)
+                view.setupWithItem(item, showingBrand: false)
             }
             if displayBrand {
                 groupView.groupBrandImageView.sd_setImage(with: nil)
@@ -126,7 +126,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
             cell.content.titleLabel.text = title
             zip(cell.content.feedViews, items).forEach { (view, item) in
-                view.setupWithItem(item)
+                view.setupWithItem(item, showingBrand: false)
             }
             cell.content.actionHandler = handler(from: { items[$0] })
             return cell
@@ -135,14 +135,42 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
 }
 
 extension FeedItemView {
-    func setupWithItem(_ feedItem: FeedItem) {
+    func setupWithItem(_ feedItem: FeedItem, showingBrand: Bool) {
         titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
             dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())
         }
-        thumbnailImageView.sd_setImage(with: feedItem.content.imageURL)
-        if let logo = feedItem.source.logo {
-            brandImageView.sd_setImage(with: logo)
+        thumbnailImageView.sd_setImage(with: feedItem.content.imageURL, placeholderImage: nil, options: .avoidAutoSetImage, completed: { (image, _, cacheType, _) in
+            if cacheType == .none {
+                UIView.transition(
+                    with: self.thumbnailImageView,
+                    duration: 0.35,
+                    options: [.transitionCrossDissolve, .curveEaseInOut],
+                    animations: {
+                        self.thumbnailImageView.image = image
+                    }
+                )
+            } else {
+                self.thumbnailImageView.image = image
+            }
+        })
+        if showingBrand, let logo = feedItem.source.logo {
+            brandImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
+                if cacheType == .none {
+                    UIView.transition(
+                        with: self.thumbnailImageView,
+                        duration: 0.35,
+                        options: [.transitionCrossDissolve, .curveEaseInOut],
+                        animations: {
+                            self.thumbnailImageView.image = image
+                    }
+                    )
+                } else {
+                    self.thumbnailImageView.image = image
+                }
+            }
+        } else {
+            brandImageView.image = nil
         }
     }
 }

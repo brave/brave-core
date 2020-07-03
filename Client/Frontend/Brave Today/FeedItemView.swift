@@ -48,8 +48,18 @@ class FeedItemView: UIView {
     }
     /// A brand image (if applicable)
     lazy var brandImageView = UIImageView().then {
-        $0.contentMode = .left
+        $0.contentMode = .scaleAspectFit
+        $0.backgroundColor = .clear
+        $0.clipsToBounds = true
+    }
+    lazy var brandContainerView = UIView().then {
         $0.snp.makeConstraints {
+            $0.height.equalTo(20)
+        }
+        $0.addSubview(self.brandImageView)
+        self.brandImageView.snp.makeConstraints {
+            $0.leading.top.bottom.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
             $0.height.equalTo(20)
         }
     }
@@ -57,7 +67,7 @@ class FeedItemView: UIView {
     private func view(for component: Layout.Component) -> UIView {
         switch component {
         case .brandImage:
-            return brandImageView
+            return brandContainerView
         case .brandText:
             return brandLabelView
         case .date:

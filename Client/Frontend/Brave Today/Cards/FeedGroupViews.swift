@@ -146,6 +146,7 @@ class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
                             $0.text = "\(view.offset + 1)"
                             $0.font = .systemFont(ofSize: 16, weight: .bold)
                             $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.4)
+                            $0.setContentHuggingPriority(.required, for: .horizontal)
                         }),
                         .view(view.element)
                     )
