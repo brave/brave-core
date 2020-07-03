@@ -242,7 +242,8 @@ class Tab: NSObject {
                 isFingerprintingProtectionEnabled: Preferences.Shields.fingerprintingProtection.value,
                 isCookieBlockingEnabled: Preferences.Privacy.blockAllCookies.value,
                 isU2FEnabled: webView.hasOnlySecureContent,
-                isPaymentRequestEnabled: webView.hasOnlySecureContent)
+                isPaymentRequestEnabled: webView.hasOnlySecureContent,
+                isYoutubeAdblockEnabled: false)
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
     }
