@@ -1,26 +1,25 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 487efcdd8ba00164b2261addc0f649026a72514c..331f6560fd830e9b81234faf846eea91c2eefc12 100644
+index 487efcdd8ba00164b2261addc0f649026a72514c..71803a7dd92eb60176c3b6cdcb552eb9a2f81e6e 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -90,6 +90,12 @@
+@@ -90,6 +90,11 @@
  #include "ui/base/resource/scale_factor.h"
  #include "v8/include/v8.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#include <string>
-+#endif
++// #endif
 +
  namespace blink {
  
  namespace {
-@@ -256,6 +262,66 @@ CanvasRenderingContext* HTMLCanvasElement::GetCanvasRenderingContext(
+@@ -256,6 +261,66 @@ CanvasRenderingContext* HTMLCanvasElement::GetCanvasRenderingContext(
    auto* result = GetCanvasRenderingContextInternal(type, attributes);
    if (ContentsCcLayer() != old_contents_cc_layer)
      OnContentsCcLayerChanged();
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
 +    if (page_graph != nullptr) {
@@ -77,12 +76,12 @@ index 487efcdd8ba00164b2261addc0f649026a72514c..331f6560fd830e9b81234faf846eea91
 +      page_graph->RegisterWebAPIResult("HTMLCanvasElement.getContext", res);
 +    }
 +  }
-+#endif
++// #endif
 +
    return result;
  }
  
-@@ -889,6 +955,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -889,6 +954,7 @@ String HTMLCanvasElement::ToDataURLInternal(
    scoped_refptr<StaticBitmapImage> image_bitmap =
        Snapshot(source_buffer, kPreferNoAcceleration);
    if (image_bitmap) {
@@ -90,12 +89,12 @@ index 487efcdd8ba00164b2261addc0f649026a72514c..331f6560fd830e9b81234faf846eea91
      std::unique_ptr<ImageDataBuffer> data_buffer =
          ImageDataBuffer::Create(image_bitmap);
      if (!data_buffer)
-@@ -940,6 +1007,30 @@ String HTMLCanvasElement::toDataURL(const String& mime_type,
+@@ -940,6 +1006,30 @@ String HTMLCanvasElement::toDataURL(const String& mime_type,
      if (v8_value->IsNumber())
        quality = v8_value.As<v8::Number>()->Value();
    }
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    String result = ToDataURLInternal(mime_type, quality, kBackBuffer);
 +    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
@@ -116,16 +115,16 @@ index 487efcdd8ba00164b2261addc0f649026a72514c..331f6560fd830e9b81234faf846eea91
 +
 +    return result;
 +  }
-+#endif
++// #endif
 +
    return ToDataURLInternal(mime_type, quality, kBackBuffer);
  }
  
-@@ -986,6 +1077,19 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -986,6 +1076,19 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
          GetExecutionContext());
    }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
 +    if (page_graph != nullptr) {
@@ -136,7 +135,7 @@ index 487efcdd8ba00164b2261addc0f649026a72514c..331f6560fd830e9b81234faf846eea91
 +      page_graph->RegisterWebAPICall("HTMLCanvasElement.toBlob", args);
 +    }
 +  }
-+#endif
++// #endif
 +
    if (async_creator) {
      async_creator->ScheduleAsyncBlobCreation(quality);

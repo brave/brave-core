@@ -1,21 +1,20 @@
 diff --git a/third_party/blink/renderer/core/frame/location.h b/third_party/blink/renderer/core/frame/location.h
-index 64013637445944e07468f6a6aa326594704889e2..133d04c8a787fbf12d92e59983e9cf3137558d8c 100644
+index 64013637445944e07468f6a6aa326594704889e2..9ad7f72e593f60219ac38b96055c8bcd3a0d8762 100644
 --- a/third_party/blink/renderer/core/frame/location.h
 +++ b/third_party/blink/renderer/core/frame/location.h
-@@ -37,6 +37,12 @@
+@@ -37,6 +37,11 @@
  #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "base/json/json_string_value_serializer.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  class Document;
-@@ -116,6 +122,11 @@ class CORE_EXPORT Location final : public ScriptWrappable {
+@@ -116,6 +121,11 @@ class CORE_EXPORT Location final : public ScriptWrappable {
    const Member<DOMWindow> dom_window_;
  
    Member<FragmentDirective> fragment_directive_;

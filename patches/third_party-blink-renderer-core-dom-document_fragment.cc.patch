@@ -1,16 +1,15 @@
 diff --git a/third_party/blink/renderer/core/dom/document_fragment.cc b/third_party/blink/renderer/core/dom/document_fragment.cc
-index b32f0044c3287ff9c563d91ecf8b49689673d064..d7b5fa90db8a6df5a68a694d8de77408ee51790c 100644
+index b32f0044c3287ff9c563d91ecf8b49689673d064..df39c4b42b3ac5a7850b76646cad5a19e5e05180 100644
 --- a/third_party/blink/renderer/core/dom/document_fragment.cc
 +++ b/third_party/blink/renderer/core/dom/document_fragment.cc
-@@ -28,11 +28,29 @@
+@@ -28,11 +28,28 @@
  #include "third_party/blink/renderer/platform/bindings/runtime_call_stats.h"
  #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
@@ -18,7 +17,7 @@ index b32f0044c3287ff9c563d91ecf8b49689673d064..d7b5fa90db8a6df5a68a694d8de77408
                                     ConstructionType construction_type)
 -    : ContainerNode(document, construction_type) {}
 +    : ContainerNode(document, construction_type) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    if (document == nullptr) {
 +      return;
@@ -28,7 +27,7 @@ index b32f0044c3287ff9c563d91ecf8b49689673d064..d7b5fa90db8a6df5a68a694d8de77408
 +          DOMNodeIds::IdForNode(this), nodeName());
 +    }
 +  }
-+#endif
++// #endif
 +}
  
  DocumentFragment* DocumentFragment::Create(Document& document) {

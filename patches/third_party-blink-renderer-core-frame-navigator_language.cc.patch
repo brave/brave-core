@@ -1,34 +1,35 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_language.cc b/third_party/blink/renderer/core/frame/navigator_language.cc
-index 061e738dfb92d55e4ef03093e15215f26d4352cd..6873e0b7326e4c346324f2feba3591a73834dfb4 100644
+index 061e738dfb92d55e4ef03093e15215f26d4352cd..bc65a4a09d885f898c61a3d316deae10bf7f6b17 100644
 --- a/third_party/blink/renderer/core/frame/navigator_language.cc
 +++ b/third_party/blink/renderer/core/frame/navigator_language.cc
-@@ -9,6 +9,13 @@
+@@ -9,6 +9,12 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#include <sstream>
 +#include <string>
-+#endif
++// #endif
 +
  namespace blink {
  
  Vector<String> ParseAndSanitize(const String& accept_languages) {
-@@ -35,14 +42,76 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* execution_context)
+@@ -35,21 +41,84 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* execution_context)
      : execution_context_(execution_context) {}
  
  AtomicString NavigatorLanguage::language() {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  String result;
-+  if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
-+      (execution_context_ && execution_context_->IsSecureContext())) {
+   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
+       (execution_context_ && execution_context_->IsSecureContext())) {
+-    return AtomicString(languages().front());
 +    // We need to make sure we don't call languages(), since that would yield an
 +    // incorrect graph in the end
 +    EnsureUpdatedLanguage();
 +    result = languages_.front();
-+  }
+   }
+-  return AtomicString();
 +
 +  if (execution_context_) {
 +    brave_page_graph::PageGraph* page_graph =
@@ -41,17 +42,21 @@ index 061e738dfb92d55e4ef03093e15215f26d4352cd..6873e0b7326e4c346324f2feba3591a7
 +  }
 +
 +  return AtomicString(result);
-+#else
-   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
-       (execution_context_ && execution_context_->IsSecureContext())) {
-     return AtomicString(languages().front());
-   }
-   return AtomicString();
-+#endif
++// #else
++//   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
++//       (execution_context_ && execution_context_->IsSecureContext())) {
++//     return AtomicString(languages().front());
++//   }
++//   return AtomicString();
++// #endif
  }
  
  const Vector<String>& NavigatorLanguage::languages() {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+-  if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
+-      (execution_context_ && execution_context_->IsSecureContext())) {
+-    EnsureUpdatedLanguage();
+-    return languages_;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    const Vector<String>* result;
 +    if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
@@ -88,16 +93,18 @@ index 061e738dfb92d55e4ef03093e15215f26d4352cd..6873e0b7326e4c346324f2feba3591a7
 +    }
 +
 +    return *result;
-+  }
-+#else
-   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
-       (execution_context_ && execution_context_->IsSecureContext())) {
-     EnsureUpdatedLanguage();
-@@ -50,6 +119,7 @@ const Vector<String>& NavigatorLanguage::languages() {
    }
-   DEFINE_STATIC_LOCAL(const Vector<String>, empty_vector, {});
-   return empty_vector;
-+#endif
+-  DEFINE_STATIC_LOCAL(const Vector<String>, empty_vector, {});
+-  return empty_vector;
++// #else
++//   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
++//       (execution_context_ && execution_context_->IsSecureContext())) {
++//     EnsureUpdatedLanguage();
++//     return languages_;
++//   }
++//   DEFINE_STATIC_LOCAL(const Vector<String>, empty_vector, {});
++//   return empty_vector;
++// #endif
  }
  
  AtomicString NavigatorLanguage::SerializeLanguagesForClientHintHeader() {

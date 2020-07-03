@@ -1,26 +1,25 @@
 diff --git a/third_party/blink/renderer/core/exported/web_frame_test.cc b/third_party/blink/renderer/core/exported/web_frame_test.cc
-index 2fdbd4b3e2ac861929132553248c69108b74a9a4..34c4de64138e3277171a18629e17b11cafbe94b5 100644
+index 2fdbd4b3e2ac861929132553248c69108b74a9a4..70041b609d0a05f05568a963aa7f8ad0c742904d 100644
 --- a/third_party/blink/renderer/core/exported/web_frame_test.cc
 +++ b/third_party/blink/renderer/core/exported/web_frame_test.cc
-@@ -185,6 +185,8 @@
+@@ -185,6 +185,7 @@
  #include "ui/events/keycodes/dom/dom_key.h"
  #include "v8/include/v8.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  using blink::url_test_helpers::ToKURL;
  using blink::mojom::SelectionMenuBehavior;
  using blink::test::RunPendingTasks;
-@@ -12438,6 +12440,13 @@ TEST_F(WebFrameTest, NoLoadingCompletionCallbacksInDetach) {
+@@ -12438,6 +12439,13 @@ TEST_F(WebFrameTest, NoLoadingCompletionCallbacksInDetach) {
        EXPECT_TRUE(false) << "didFinishLoad() should not have been called.";
      }
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    void RegisterRemoteFrameCreated(const KURL& url) override {
 +      EXPECT_TRUE(false)
 +          << "RegisterRemoteFrameCreated() should not have been called.";
 +    }
-+#endif
++// #endif
 +
      bool DidCallFrameDetached() const { return did_call_frame_detached_; }
      bool DidCallDidStopLoading() const { return did_call_did_stop_loading_; }

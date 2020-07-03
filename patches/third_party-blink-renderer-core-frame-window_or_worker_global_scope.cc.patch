@@ -1,14 +1,14 @@
 diff --git a/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc b/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc
-index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4ea56d5c7 100644
+index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..2643bb916d232d927cd79ad58156e591fee7d5cc 100644
 --- a/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc
 +++ b/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc
 @@ -50,6 +50,10 @@
  #include "third_party/blink/renderer/platform/wtf/text/base64.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
@@ -17,11 +17,12 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
    }
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler, arguments);
+-  return DOMTimer::Install(execution_context, action,
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    int timeout_id = DOMTimer::Install(execution_context, action,
-+                           base::TimeDelta::FromMilliseconds(timeout), true);
+                            base::TimeDelta::FromMilliseconds(timeout), true);
 +    if (execution_context->IsDocument()) {
 +      ::brave_page_graph::PageGraph* page_graph =
 +        ::brave_page_graph::PageGraph::GetFromExecutionContext(*execution_context);
@@ -33,10 +34,10 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
 +    }
 +    return timeout_id;
 +  }
-+#else
-   return DOMTimer::Install(execution_context, action,
-                            base::TimeDelta::FromMilliseconds(timeout), true);
-+#endif
++// #else
++//   return DOMTimer::Install(execution_context, action,
++//                            base::TimeDelta::FromMilliseconds(timeout), true);
++// #endif
  }
  
  int WindowOrWorkerGlobalScope::setTimeout(ScriptState* script_state,
@@ -44,10 +45,11 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
    }
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+-  return DOMTimer::Install(execution_context, action,
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    int timeout_id = DOMTimer::Install(execution_context, action,
-+                           base::TimeDelta::FromMilliseconds(timeout), true);
+                            base::TimeDelta::FromMilliseconds(timeout), true);
 +    if (execution_context->IsDocument()) {
 +      ::brave_page_graph::PageGraph* page_graph =
 +        ::brave_page_graph::PageGraph::GetFromExecutionContext(*execution_context);
@@ -59,10 +61,10 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
 +    }
 +    return timeout_id;
 +  }
-+#else
-   return DOMTimer::Install(execution_context, action,
-                            base::TimeDelta::FromMilliseconds(timeout), true);
-+#endif
++// #else
++//   return DOMTimer::Install(execution_context, action,
++//                            base::TimeDelta::FromMilliseconds(timeout), true);
++// #endif
  }
  
  int WindowOrWorkerGlobalScope::setInterval(
@@ -70,10 +72,11 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
      return 0;
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler, arguments);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+-  return DOMTimer::Install(execution_context, action,
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    int interval_id = DOMTimer::Install(execution_context, action,
-+                           base::TimeDelta::FromMilliseconds(timeout), false);
+                            base::TimeDelta::FromMilliseconds(timeout), false);
 +    if (execution_context->IsDocument()) {
 +      ::brave_page_graph::PageGraph* page_graph =
 +        ::brave_page_graph::PageGraph::GetFromExecutionContext(*execution_context);
@@ -85,10 +88,10 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
 +    }
 +    return interval_id;
 +  }
-+#else
-   return DOMTimer::Install(execution_context, action,
-                            base::TimeDelta::FromMilliseconds(timeout), false);
-+#endif
++// #else
++//   return DOMTimer::Install(execution_context, action,
++//                            base::TimeDelta::FromMilliseconds(timeout), false);
++// #endif
  }
  
  int WindowOrWorkerGlobalScope::setInterval(ScriptState* script_state,
@@ -96,10 +99,11 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
      return 0;
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+-  return DOMTimer::Install(execution_context, action,
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    int interval_id = DOMTimer::Install(execution_context, action,
-+                           base::TimeDelta::FromMilliseconds(timeout), false);
+                            base::TimeDelta::FromMilliseconds(timeout), false);
 +    if (execution_context->IsDocument()) {
 +      ::brave_page_graph::PageGraph* page_graph =
 +        ::brave_page_graph::PageGraph::GetFromExecutionContext(*execution_context);
@@ -111,17 +115,17 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
 +    }
 +    return interval_id;
 +  }
-+#else
-   return DOMTimer::Install(execution_context, action,
-                            base::TimeDelta::FromMilliseconds(timeout), false);
-+#endif
++// #else
++//   return DOMTimer::Install(execution_context, action,
++//                            base::TimeDelta::FromMilliseconds(timeout), false);
++// #endif
  }
  
  void WindowOrWorkerGlobalScope::clearTimeout(EventTarget& event_target,
                                               int timeout_id) {
    if (ExecutionContext* context = event_target.GetExecutionContext())
      DOMTimer::RemoveByID(context, timeout_id);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    ExecutionContext* context = event_target.GetExecutionContext();
 +    if (context && context->IsDocument()) {
@@ -134,14 +138,14 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
 +      }
 +    }
 +  }
-+#endif
++// #endif
  }
  
  void WindowOrWorkerGlobalScope::clearInterval(EventTarget& event_target,
                                                int timeout_id) {
    if (ExecutionContext* context = event_target.GetExecutionContext())
      DOMTimer::RemoveByID(context, timeout_id);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    ExecutionContext* context = event_target.GetExecutionContext();
 +    if (context && context->IsDocument()) {
@@ -154,7 +158,7 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..d5b33961d902b35c25c66a0ac51173d4
 +      }
 +    }
 +  }
-+#endif
++// #endif
  }
  
  ScriptPromise WindowOrWorkerGlobalScope::createImageBitmap(

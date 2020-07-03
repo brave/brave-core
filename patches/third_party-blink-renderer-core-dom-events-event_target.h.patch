@@ -1,24 +1,23 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.h b/third_party/blink/renderer/core/dom/events/event_target.h
-index 0963aaaab0a58735148ff2ecbeee1b18f9162315..dd434adec3390be25a01d4c4916597f130acbf57 100644
+index 0963aaaab0a58735148ff2ecbeee1b18f9162315..859fcf04444feb6232bff321345d9464b6cbac22 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.h
 +++ b/third_party/blink/renderer/core/dom/events/event_target.h
-@@ -46,6 +46,8 @@
+@@ -46,6 +46,7 @@
  #include "third_party/blink/renderer/platform/wtf/allocator/allocator.h"
  #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  
  class AddEventListenerOptionsOrBoolean;
-@@ -86,6 +88,10 @@ class CORE_EXPORT EventTargetData final
+@@ -86,6 +87,10 @@ class CORE_EXPORT EventTargetData final
  
    EventListenerMap event_listener_map;
    std::unique_ptr<FiringEventIteratorVector> firing_event_iterators;
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int last_registered_event_listener_id;
 +  int GetNextRegisteredEventListenerId() const;
-+#endif
++// #endif
    DISALLOW_COPY_AND_ASSIGN(EventTargetData);
  };
  

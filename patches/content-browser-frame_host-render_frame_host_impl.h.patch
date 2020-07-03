@@ -1,36 +1,35 @@
 diff --git a/content/browser/frame_host/render_frame_host_impl.h b/content/browser/frame_host/render_frame_host_impl.h
-index 7ddd4d26f91fa55935cb075ee918c437a93ad4bc..8fa6666f625507bd6e27ce61ce7c84d71f055402 100644
+index 7ddd4d26f91fa55935cb075ee918c437a93ad4bc..7a32489d96ad5555c1d881a7ff1631af9046b177 100644
 --- a/content/browser/frame_host/render_frame_host_impl.h
 +++ b/content/browser/frame_host/render_frame_host_impl.h
-@@ -133,6 +133,8 @@
+@@ -133,6 +133,7 @@
  #include "ui/base/page_transition_types.h"
  #include "ui/gfx/geometry/rect.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  #if defined(OS_ANDROID)
  #include "services/device/public/mojom/nfc.mojom.h"
  #else
-@@ -287,6 +289,12 @@ class CONTENT_EXPORT RenderFrameHostImpl
+@@ -287,6 +288,12 @@ class CONTENT_EXPORT RenderFrameHostImpl
    void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
                             const std::string& message) override;
    void AddInspectorIssue(blink::mojom::InspectorIssueInfoPtr info);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void RegisterResourceBlockAd(const GURL& url,
 +                               const std::string& rule) override;
 +  void RegisterResourceBlockTracker(const GURL& url,
 +                                   const std::string& host) override;
-+#endif
++// #endif
    void ExecuteJavaScript(const base::string16& javascript,
                           JavaScriptResultCallback callback) override;
    void ExecuteJavaScriptInIsolatedWorld(const base::string16& javascript,
-@@ -1605,6 +1613,9 @@ class CONTENT_EXPORT RenderFrameHostImpl
+@@ -1605,6 +1612,9 @@ class CONTENT_EXPORT RenderFrameHostImpl
        const blink::mojom::FrameOwnerProperties& properties);
    void OnForwardResourceTimingToParent(
        const ResourceTimingInfo& resource_timing);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void OnRegisterRemoteFrameCreated(const GURL& url);
-+#endif
++// #endif
    void OnDidStopLoading();
    void OnSelectionChanged(const base::string16& text,
                            uint32_t offset,

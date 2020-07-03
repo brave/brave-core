@@ -1,25 +1,24 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/module_record.cc b/third_party/blink/renderer/bindings/core/v8/module_record.cc
-index f6389c8bcd9f1762c73cba217eabf5945d9e25be..494a94589af4587f972662060a999832c1259236 100644
+index f6389c8bcd9f1762c73cba217eabf5945d9e25be..ecf2e063270e31e6a972c1129461eee96de15c97 100644
 --- a/third_party/blink/renderer/bindings/core/v8/module_record.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/module_record.cc
-@@ -17,6 +17,12 @@
+@@ -17,6 +17,11 @@
  #include "third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"
  #include "third_party/blink/renderer/platform/weborigin/kurl.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  // static
-@@ -126,6 +132,23 @@ v8::Local<v8::Module> ModuleRecord::Compile(
+@@ -126,6 +131,23 @@ v8::Local<v8::Module> ModuleRecord::Compile(
    }
    DCHECK(!try_catch.HasCaught());
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
 +        brave_page_graph::PageGraph::GetFromIsolate(*isolate);
@@ -34,12 +33,12 @@ index f6389c8bcd9f1762c73cba217eabf5945d9e25be..494a94589af4587f972662060a999832
 +      }
 +    }
 +  }
-+#endif
++// #endif
 +
    if (out_produce_cache_data) {
      *out_produce_cache_data =
          MakeGarbageCollected<ModuleRecordProduceCacheData>(
-@@ -232,7 +255,7 @@ v8::MaybeLocal<v8::Module> ModuleRecord::ResolveModuleCallback(
+@@ -232,7 +254,7 @@ v8::MaybeLocal<v8::Module> ModuleRecord::ResolveModuleCallback(
      v8::Local<v8::String> specifier,
      v8::Local<v8::Module> referrer) {
    v8::Isolate* isolate = context->GetIsolate();

@@ -1,47 +1,46 @@
 diff --git a/src/codegen/compilation-cache.h b/src/codegen/compilation-cache.h
-index 04bea44a82b36ef917e930dc1ba9333a88ede68f..e2f81b8aa5b59d256ab60a540dcdd2880902566a 100644
+index 04bea44a82b36ef917e930dc1ba9333a88ede68f..e2b1deb56d2c955210caafab0bfcee7393b137a2 100644
 --- a/src/codegen/compilation-cache.h
 +++ b/src/codegen/compilation-cache.h
-@@ -8,6 +8,8 @@
+@@ -8,6 +8,7 @@
  #include "src/objects/compilation-cache.h"
  #include "src/utils/allocation.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace v8 {
  namespace internal {
  
-@@ -82,11 +84,19 @@ class CompilationCacheScript : public CompilationSubCache {
+@@ -82,11 +83,19 @@ class CompilationCacheScript : public CompilationSubCache {
                                           int line_offset, int column_offset,
                                           ScriptOriginOptions resource_options,
                                           Handle<Context> native_context,
 -                                         LanguageMode language_mode);
 +                                         LanguageMode language_mode
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                                         , int parent_script_id
-+#endif
++// #endif
 +                                         );
  
    void Put(Handle<String> source, Handle<Context> context,
             LanguageMode language_mode,
 -           Handle<SharedFunctionInfo> function_info);
 +           Handle<SharedFunctionInfo> function_info
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +           , int parent_script_id
-+#endif
++// #endif
 +           );
  
   private:
    bool HasOrigin(Handle<SharedFunctionInfo> function_info,
-@@ -116,12 +126,20 @@ class CompilationCacheEval : public CompilationSubCache {
+@@ -116,12 +125,20 @@ class CompilationCacheEval : public CompilationSubCache {
    InfoCellPair Lookup(Handle<String> source,
                        Handle<SharedFunctionInfo> outer_info,
                        Handle<Context> native_context,
 -                      LanguageMode language_mode, int position);
 +                      LanguageMode language_mode, int position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                      , int parent_script_id
-+#endif
++// #endif
 +                      );
  
    void Put(Handle<String> source, Handle<SharedFunctionInfo> outer_info,
@@ -49,48 +48,48 @@ index 04bea44a82b36ef917e930dc1ba9333a88ede68f..e2f81b8aa5b59d256ab60a540dcdd288
             Handle<Context> native_context, Handle<FeedbackCell> feedback_cell,
 -           int position);
 +           int position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +           , int parent_script_id
-+#endif
++// #endif
 +           );
  
   private:
    DISALLOW_IMPLICIT_CONSTRUCTORS(CompilationCacheEval);
-@@ -154,7 +172,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
+@@ -154,7 +171,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
    MaybeHandle<SharedFunctionInfo> LookupScript(
        Handle<String> source, MaybeHandle<Object> name, int line_offset,
        int column_offset, ScriptOriginOptions resource_options,
 -      Handle<Context> native_context, LanguageMode language_mode);
 +      Handle<Context> native_context, LanguageMode language_mode
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +      , int parent_script_id
-+#endif
++// #endif
 +      );
  
    // Finds the shared function info for a source string for eval in a
    // given context.  Returns an empty handle if the cache doesn't
-@@ -162,7 +184,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
+@@ -162,7 +183,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
    InfoCellPair LookupEval(Handle<String> source,
                            Handle<SharedFunctionInfo> outer_info,
                            Handle<Context> context, LanguageMode language_mode,
 -                          int position);
 +                          int position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                          , int parent_script_id
-+#endif
++// #endif
 +                          );
  
    // Returns the regexp data associated with the given regexp if it
    // is in cache, otherwise an empty handle.
-@@ -173,14 +199,22 @@ class V8_EXPORT_PRIVATE CompilationCache {
+@@ -173,14 +198,22 @@ class V8_EXPORT_PRIVATE CompilationCache {
    // info. This may overwrite an existing mapping.
    void PutScript(Handle<String> source, Handle<Context> native_context,
                   LanguageMode language_mode,
 -                 Handle<SharedFunctionInfo> function_info);
 +                 Handle<SharedFunctionInfo> function_info
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +                 , int parent_script_id
-+#endif
++// #endif
 +                 );
  
    // Associate the (source, context->closure()->shared(), kind) triple
@@ -100,9 +99,9 @@ index 04bea44a82b36ef917e930dc1ba9333a88ede68f..e2f81b8aa5b59d256ab60a540dcdd288
                 Handle<SharedFunctionInfo> function_info,
 -               Handle<FeedbackCell> feedback_cell, int position);
 +               Handle<FeedbackCell> feedback_cell, int position
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +               , int parent_script_id
-+#endif
++// #endif
 +               );
  
    // Associate the (source, flags) pair to the given regexp data.

@@ -1,27 +1,26 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_listener_map.cc b/third_party/blink/renderer/core/dom/events/event_listener_map.cc
-index 1d59550227aabb4940a1523bf2d31f76c2cdb779..62489cd4b4e8eea23a2a74e4e7f32ca11189ac2c 100644
+index 1d59550227aabb4940a1523bf2d31f76c2cdb779..b40c442d095ceac37ce09639e32b661808e79a30 100644
 --- a/third_party/blink/renderer/core/dom/events/event_listener_map.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_listener_map.cc
-@@ -44,6 +44,8 @@
+@@ -44,6 +44,7 @@
  #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
  #endif
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  
  #if DCHECK_IS_ON()
-@@ -116,7 +118,13 @@ static bool AddListenerToVector(EventListenerVector* vector,
+@@ -116,7 +117,13 @@ static bool AddListenerToVector(EventListenerVector* vector,
                                  EventListener* listener,
                                  const AddEventListenerOptionsResolved* options,
                                  RegisteredEventListener* registered_listener) {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int registered_listener_id = registered_listener->Id();
-+#endif
++// #endif
    *registered_listener = RegisteredEventListener(listener, options);
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  registered_listener->SetId(registered_listener_id);
-+#endif
++// #endif
  
    if (vector->Find(*registered_listener) != kNotFound)
      return false;  // Duplicate listener.

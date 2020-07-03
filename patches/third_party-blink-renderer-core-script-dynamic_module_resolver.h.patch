@@ -1,21 +1,20 @@
 diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.h b/third_party/blink/renderer/core/script/dynamic_module_resolver.h
-index e73c78d383bbea22321e4cc7eeb730ad136aef38..0ddc8043c93ae97d7f315485645a38deed36eb87 100644
+index e73c78d383bbea22321e4cc7eeb730ad136aef38..729027f3d939e6df50a68fed00141b6e3360e8ba 100644
 --- a/third_party/blink/renderer/core/script/dynamic_module_resolver.h
 +++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.h
-@@ -11,6 +11,12 @@
+@@ -11,6 +11,11 @@
  #include "third_party/blink/renderer/platform/weborigin/kurl.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  class Modulator;
-@@ -33,6 +39,8 @@ class CORE_EXPORT DynamicModuleResolver final
+@@ -33,6 +38,8 @@ class CORE_EXPORT DynamicModuleResolver final
    void ResolveDynamically(const String& specifier,
                            const KURL& referrer_resource_url,
                            const ReferrerScriptInfo& referrer_info,

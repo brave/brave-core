@@ -36,7 +36,6 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_message_macros.h"
 
-#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
@@ -231,7 +230,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
   {
     if (block_decision->IsAdBlockDecision() ||
         block_decision->IsTrackerBlockDecision()) {
@@ -263,7 +262,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       }
     }
   }
-#endif
+// #endif
 
   const char* block_type = block_decision->BlockType();
   delete block_decision;

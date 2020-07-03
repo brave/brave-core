@@ -1,23 +1,22 @@
 diff --git a/third_party/blink/renderer/core/html/html_frame_owner_element.h b/third_party/blink/renderer/core/html/html_frame_owner_element.h
-index 92cb4da9957dee45c9a44b7e9d4ec1d9cfe6abf2..d8d6cd44afdbdda028e80d8b3599150dce225d7e 100644
+index 92cb4da9957dee45c9a44b7e9d4ec1d9cfe6abf2..0e163c86bf3e360e38558eb5963bcc8218cd0b56 100644
 --- a/third_party/blink/renderer/core/html/html_frame_owner_element.h
 +++ b/third_party/blink/renderer/core/html/html_frame_owner_element.h
-@@ -37,6 +37,8 @@
+@@ -37,6 +37,7 @@
  #include "third_party/blink/renderer/platform/wtf/casting.h"
  #include "third_party/blink/renderer/platform/wtf/hash_counted_set.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  
  class ExceptionState;
-@@ -104,6 +106,9 @@ class CORE_EXPORT HTMLFrameOwnerElement : public HTMLElement,
+@@ -104,6 +105,9 @@ class CORE_EXPORT HTMLFrameOwnerElement : public HTMLElement,
    void ClearContentFrame() final;
    void AddResourceTiming(const ResourceTimingInfo&) final;
    void DispatchLoad() final;
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void RegisterRemoteFrameCreated(const GURL& url) final;
-+#endif
++// #endif
    const FramePolicy& GetFramePolicy() const final { return frame_policy_; }
    bool CanRenderFallbackContent() const override { return false; }
    void RenderFallbackContent(Frame*) override {}

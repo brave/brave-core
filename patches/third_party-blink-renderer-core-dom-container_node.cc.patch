@@ -1,26 +1,25 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index b946eea979a04f176d4b6f89658ad21be0ade4e9..30d4c0067466843c0a6f6f5d5acf492bd63dd26c 100644
+index b946eea979a04f176d4b6f89658ad21be0ade4e9..089811ae3dd645576ea5ea0d0c6299e4d9ad48e1 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
-@@ -63,6 +63,13 @@
+@@ -63,6 +63,12 @@
  #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
-+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/document.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
++// #endif
 +
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -943,6 +950,67 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -943,6 +949,67 @@ void ContainerNode::NotifyNodeInsertedInternal(
    EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
 +    if (page_graph != nullptr) {
@@ -79,16 +78,16 @@ index b946eea979a04f176d4b6f89658ad21be0ade4e9..30d4c0067466843c0a6f6f5d5acf492b
 +      }
 +    }
 +  }
-+#endif
++// #endif
 +
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-@@ -961,6 +1029,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -961,6 +1028,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
    ScriptForbiddenScope forbid_script;
    EventDispatchForbiddenScope assert_no_event_dispatch;
  
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  if (GetDocument().GetPageGraph() != nullptr) {
 +    const NodeType node_type = root.getNodeType();
 +    if (node_type == kElementNode || node_type == kDocumentTypeNode || node_type == kDocumentFragmentNode) {
@@ -99,7 +98,7 @@ index b946eea979a04f176d4b6f89658ad21be0ade4e9..30d4c0067466843c0a6f6f5d5acf492b
 +        DOMNodeIds::IdForNode(&root));
 +    }
 +  }
-+#endif
++// #endif
 +
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we skip notifying Text nodes and other leaf nodes
