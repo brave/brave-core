@@ -11,4 +11,35 @@ public final class BraveTodaySourceMO: NSManagedObject, CRUD {
     @NSManaged var publisherID: String
     @NSManaged var publisherLogo: String?
     @NSManaged var items: [BraveTodayFeedItemMO]
+    
+    public class func insert(publisherID: String, publisherLogo: String?) {
+        insertInternal(publisherID: publisherID, publisherLogo: publisherLogo)
+    }
+    
+    public class func insert(from list: [(publisherID: String, publisherLogo: String?)]) {
+        // TODO: Add batch inserts? There should not be that many publisher to be a performance problem.
+        
+        DataController.perform { context in
+            list.forEach {
+                insertInternal(publisherID: $0.publisherID, publisherLogo: $0.publisherLogo,
+                               context: .existing(context))
+            }
+        }
+    }
+    
+    class func insertInternal(enabled: Bool = true, publisherID: String, publisherLogo: String?,
+                              context: WriteContext = .new(inMemory: false)) {
+        
+        DataController.perform(context: context) { context in
+            let source = BraveTodaySourceMO(entity: entity(in: context), insertInto: context)
+            
+            source.enabled = enabled
+            source.publisherID = publisherID
+            source.publisherLogo = publisherLogo
+        }
+    }
+    
+    private class func entity(in context: NSManagedObjectContext) -> NSEntityDescription {
+        NSEntityDescription.entity(forEntityName: "BraveTodaySourceMO", in: context)!
+    }
 }
