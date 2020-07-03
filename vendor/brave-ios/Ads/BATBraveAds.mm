@@ -82,9 +82,6 @@ static NSString * const kAutomaticallyDetectedAdsSubdivisionTargetingCodePrefKey
       self.prefs = [[NSMutableDictionary alloc] init];
       self.numberOfAllowableAdsPerDay = kDefaultNumberOfAdsPerDay;
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
-      self.allowSubdivisionTargeting = false;
-      self.subdivisionTargetingCode = @"AUTO";
-      self.automaticallyDetectedSubdivisionTargetingCode = @"";
     }
 
     [self setupNetworkMonitoring];
@@ -250,7 +247,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (NSString *)subdivisionTargetingCode
 {
-  return (NSString *)self.prefs[kAdsSubdivisionTargetingCodePrefKey];
+  return (NSString *)self.prefs[kAdsSubdivisionTargetingCodePrefKey] ?: @"AUTO";
 }
 
 - (void)setSubdivisionTargetingCode:(NSString *)subdivisionTargetingCode
@@ -271,7 +268,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (NSString *)automaticallyDetectedSubdivisionTargetingCode
 {
-  return (NSString *)self.prefs[kAutomaticallyDetectedAdsSubdivisionTargetingCodePrefKey];
+  return (NSString *)self.prefs[kAutomaticallyDetectedAdsSubdivisionTargetingCodePrefKey] ?: @"";
 }
 
 - (void)setAutomaticallyDetectedSubdivisionTargetingCode:(NSString *)automaticallyDetectedSubdivisionTargetingCode
