@@ -227,12 +227,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void addOrEditBookmark(final Tab tabToBookmark) {
-        long tempBookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
+        BookmarkBridge bridge = (BookmarkBridge)mBookmarkBridgeSupplier.get();
+        if (bridge == null || !bridge.isEditBookmarksEnabled()) {
+            return;
+        }
+        long tempBookmarkId = bridge.getUserBookmarkIdForTab(tabToBookmark);
         final boolean bCreateBookmark = (BookmarkId.INVALID_ID == tempBookmarkId);
 
         super.addOrEditBookmark(tabToBookmark);
 
-        final long bookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
+        final long bookmarkId = bridge.getUserBookmarkIdForTab(tabToBookmark);
         final BookmarkModel bookmarkModel = new BookmarkModel();
 
         bookmarkModel.finishLoadingBookmarkModel(() -> {
