@@ -41,6 +41,12 @@ namespace brave {
 
 namespace {
 
+// Receiving this value will effectively prevent the metric from transmission
+// to the backend. For now we consider this as a hack for p2a metrics, which
+// should be refactored in better times.
+constexpr int32_t kSuspendedMetricValue = INT32_MIN;
+constexpr uint64_t kSuspendedMetricBucket = UINT64_MAX;
+
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
 constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
@@ -80,13 +86,18 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.P2A.Test",
 };
 
+bool IsSuspendedMetric(base::StringPiece metric_name,
+                       uint64_t value_or_bucket) {
+  return value_or_bucket == kSuspendedMetricBucket;
+}
+
 base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
   const auto delta = base::TimeDelta::FromSecondsD(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
   UMA_HISTOGRAM_EXACT_LINEAR(
       "Brave.P2A.Test",
-      delta > base::TimeDelta::FromSecondsD(5) ? 0 : 1,
+      kSuspendedMetricValue,
       1);
   return delta;
 }
@@ -120,8 +131,6 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
-  // first_run::IsChromeFirstRun() is not available on Android and also
-  // we don't have infobars on android.
 #if !defined(OS_ANDROID)
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
@@ -162,7 +171,7 @@ void BraveP3AService::Init(
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    log_store_->UpdateValue(entry.first.as_string(), entry.second);
+    HandleHistogramChange(entry.first.as_string(), entry.second);
   }
   histogram_values_ = {};
   // Do rotation if needed.
@@ -319,6 +328,18 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
   DCHECK(!samples->Iterator()->Done());
 
+  // Shortcut for the special values, see |kSuspendedMetricValue|
+  // description for details.
+  if (IsSuspendedMetric(histogram_name, sample)) {
+    base::PostTask(FROM_HERE, {content::BrowserThread::UI},
+                   base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
+                                  this,
+                                  histogram_name,
+                                  kSuspendedMetricValue,
+                                  kSuspendedMetricBucket));
+    return;
+  }
+
   // Note that we store only buckets, not actual values.
   size_t bucket = 0u;
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
@@ -353,10 +374,19 @@ void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
   VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
+    // Will handle it later when ready.
     histogram_values_[histogram_name] = bucket;
   } else {
-    log_store_->UpdateValue(histogram_name.as_string(), bucket);
+    HandleHistogramChange(histogram_name, bucket);
   }
+}
+
+void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
+                                            size_t bucket) {
+  if (IsSuspendedMetric(histogram_name, bucket)) {
+    log_store_->RemoveValueIfExists(histogram_name.as_string());
+  }
+  log_store_->UpdateValue(histogram_name.as_string(), bucket);
 }
 
 void BraveP3AService::OnLogUploadComplete(int response_code,

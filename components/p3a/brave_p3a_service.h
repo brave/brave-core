@@ -51,6 +51,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   std::string Serialize(base::StringPiece histogram_name,
                         uint64_t value) const override;
 
+  // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
 
  private:
@@ -71,6 +72,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   void OnHistogramChangedOnUI(base::StringPiece histogram_name,
                               base::HistogramBase::Sample sample,
                               size_t bucket);
+
+  // Updates or removes a metric from the log.
+  void HandleHistogramChange(base::StringPiece histogram_name, size_t bucket);
 
   void OnLogUploadComplete(int response_code, int error_code, bool was_https);
 

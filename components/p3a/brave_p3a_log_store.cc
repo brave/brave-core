@@ -64,6 +64,21 @@ void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
   update->SetPath({histogram_name, kLogSentKey}, base::Value(entry.sent));
 }
 
+void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
+  DCHECK(delegate_->IsActualMetric(histogram_name));
+  log_.erase(histogram_name);
+  unsent_entries_.erase(histogram_name);
+
+  // Update the persistent value.
+  DictionaryPrefUpdate update(local_state_, kPrefName);
+  update->RemovePath(histogram_name);
+
+  if (has_staged_log() && staged_entry_key_ == histogram_name) {
+    staged_entry_key_.clear();
+    staged_log_.clear();
+  }
+}
+
 void BraveP3ALogStore::ResetUploadStamps() {
   // Clear log entries flags.
   DictionaryPrefUpdate update(local_state_, kPrefName);
