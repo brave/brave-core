@@ -251,9 +251,9 @@ def get_platform():
     return PLATFORM
 
 
-def omaha_channel(platform, arch, preview, full=False):
+def omaha_channel(platform, arch, internal, full=False):
     if platform == 'darwin':
-        if preview:
+        if internal:
             if release_channel() in ['nightly']:
                 chan = 'test-nite'
             if release_channel() in ['beta']:
@@ -265,10 +265,10 @@ def omaha_channel(platform, arch, preview, full=False):
         else:
             chan = 'stable' if release_channel() in ['release'] else release_channel()
     elif platform == 'win32':
-        arch = ('86' if preview else 'x86') if (arch in ['ia32']) else ('64' if preview else 'x64')
+        arch = ('86' if internal else 'x86') if (arch in ['ia32']) else ('64' if internal else 'x64')
         if release_channel() in ['nightly', 'beta']:
-            chan = '{}-{}{}'.format(arch, release_channel()[0:2], '-test' if preview else '')
-        elif preview:
+            chan = '{}-{}{}'.format(arch, release_channel()[0:2], '-test' if internal else '')
+        elif internal:
             if release_channel() in ['dev']:
                 chan = '{}-dv-test'.format(arch)
             elif release_channel() in ['release']:
