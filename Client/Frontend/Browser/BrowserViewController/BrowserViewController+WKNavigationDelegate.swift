@@ -188,7 +188,14 @@ extension BrowserViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
+        
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        
+        if url.baseDomain == "youtube.com" {
+            let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
+            tabManager[webView]?.userScriptManager?.isYoutubeAdblockEnabled = domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
+        }
+        
         // This is the normal case, opening a http or https url, which we handle by loading them in this WKWebView. We
         // always allow this. Additionally, data URIs are also handled just like normal web pages.
 

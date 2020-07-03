@@ -709,6 +709,7 @@
 		5E46C37C234FB9A700ACA8C1 /* self-signed.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C37B234FB9A700ACA8C1 /* self-signed.cer */; };
 		5E4845C022DE381200372022 /* WindowRenderHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E4845BF22DE381200372022 /* WindowRenderHelper.js */; };
 		5E4845C222DE3DF800372022 /* WindowRenderHelperScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */; };
+		5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E078224A0E4D700B01720 /* YoutubeAdblock.js */; };
 		5E612A8C234B7FC1007D12B5 /* OnboardingAdsAvailableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C66232BE43100BDE662 /* OnboardingAdsAvailableController.swift */; };
 		5E612A8E234B7FC8007D12B5 /* OnboardingAdsAvailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */; };
 		5E612A8F234B7FCA007D12B5 /* OnboardingRewardsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */; };
@@ -2223,6 +2224,7 @@
 		5E46C37B234FB9A700ACA8C1 /* self-signed.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "self-signed.cer"; sourceTree = "<group>"; };
 		5E4845BF22DE381200372022 /* WindowRenderHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = WindowRenderHelper.js; sourceTree = "<group>"; };
 		5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowRenderHelperScript.swift; sourceTree = "<group>"; };
+		5E4E078224A0E4D700B01720 /* YoutubeAdblock.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = YoutubeAdblock.js; sourceTree = "<group>"; };
 		5E6683A823D61CF7005B3A6C /* NTPDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPDownloader.swift; sourceTree = "<group>"; };
 		5E77F9DC236BB68700E1649C /* AttestationDebugger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttestationDebugger.swift; sourceTree = "<group>"; };
 		5E856FE5235E08110094E113 /* Cryptography.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -4475,6 +4477,7 @@
 				5E4845BF22DE381200372022 /* WindowRenderHelper.js */,
 				5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */,
 				F9B23EE123F61173000EB3D8 /* PaymentRequest.js */,
+				5E4E078224A0E4D700B01720 /* YoutubeAdblock.js */,
 			);
 			path = UserScripts;
 			sourceTree = "<group>";
@@ -5872,6 +5875,7 @@
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				4422D55221BFFB7E00BF1855 /* make_unicode_casefold.py in Resources */,
+				5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
 				5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */,
 				F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */,
