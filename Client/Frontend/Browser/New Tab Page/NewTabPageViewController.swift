@@ -500,11 +500,12 @@ class NewTabPageViewController: UIViewController, Themeable {
 
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
+    var isBraveTodayVisible: Bool {
+        !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+            Preferences.BraveToday.isEnabled.value
+    }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let braveTodayVisible =
-            !PrivateBrowsingManager.shared.isPrivateBrowsing &&
-                Preferences.BraveToday.isEnabled.value
-        if braveTodayVisible {
+        if isBraveTodayVisible {
             // Hide the buttons as BraveToday feeds appear
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
         }
@@ -599,6 +600,7 @@ extension NewTabPageViewController {
             
             backgroundColor = .clear
             delaysContentTouches = false
+            decelerationRate = .fast
             alwaysBounceVertical = true
             showsHorizontalScrollIndicator = false
             // Needed for some reason, as its not setting safe area insets while in landscape
