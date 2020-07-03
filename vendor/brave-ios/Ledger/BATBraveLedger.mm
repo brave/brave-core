@@ -600,7 +600,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
-- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
+- (std::map<std::string, ledger::ExternalWalletPtr>)getExternalWallets
 {
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
   NSDictionary *externalWallets = self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
@@ -608,7 +608,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     const auto wallet = [[BATExternalWallet alloc] initWithDictionaryValue:externalWallets[walletTypeKey]];
     wallets.insert(std::make_pair(walletTypeKey.UTF8String, wallet.cppObjPtr));
   }
-  callback(std::move(wallets));
+  return wallets;
 }
 
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet

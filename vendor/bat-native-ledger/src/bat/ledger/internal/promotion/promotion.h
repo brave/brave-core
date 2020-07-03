@@ -47,9 +47,7 @@ class Promotion {
 
   void OnTimer(const uint32_t timer_id);
 
-  void TransferTokens(
-      ledger::ExternalWalletPtr wallet,
-      ledger::ResultCallback callback);
+  void TransferTokens(ledger::ResultCallback callback);
 
  private:
   void OnFetch(

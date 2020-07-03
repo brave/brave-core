@@ -27,18 +27,10 @@ PromotionTransfer::PromotionTransfer(bat_ledger::LedgerImpl* ledger) :
 
 PromotionTransfer::~PromotionTransfer() = default;
 
-void PromotionTransfer::Start(
-    ledger::ExternalWalletPtr wallet,
-    ledger::ResultCallback callback) {
+void PromotionTransfer::Start(ledger::ResultCallback callback) {
   // we only need to call old anon api once
   if (ledger_->GetBooleanState(ledger::kStateAnonTransferChecked)) {
     GetEligiblePromotion(callback);
-    return;
-  }
-
-  if (!wallet) {
-    BLOG(0, "Wallet is empty");
-    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -48,7 +40,6 @@ void PromotionTransfer::Start(
       callback);
 
   ledger_->TransferAnonToExternalWallet(
-      std::move(wallet),
       transfer_callback,
       true);
 }

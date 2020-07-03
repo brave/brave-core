@@ -148,33 +148,22 @@ void Balance::ExternalWallets(
     callback(ledger::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
-  auto tokens_callback = std::bind(&Balance::OnExternalWallets,
-                                   this,
-                                   *balance,
-                                   callback,
-                                   _1);
 
-  ledger_->GetExternalWallets(tokens_callback);
-}
+  auto wallets = ledger_->GetExternalWallets();
 
-void Balance::OnExternalWallets(
-    ledger::Balance info,
-    ledger::FetchBalanceCallback callback,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  if (wallets.size() == 0) {
-    ledger::BalancePtr info_ptr = ledger::Balance::New(info);
-    callback(ledger::Result::LEDGER_OK, std::move(info_ptr));
+  if (wallets.empty()) {
+    callback(ledger::Result::LEDGER_OK, std::move(balance));
     return;
   }
 
   auto uphold_callback = std::bind(&Balance::OnUpholdFetchBalance,
                                    this,
-                                   info,
+                                   *balance,
                                    callback,
                                    _1,
                                    _2);
 
-  uphold_->FetchBalance(std::move(wallets), uphold_callback);
+  uphold_->FetchBalance(uphold_callback);
 }
 
 void Balance::OnUpholdFetchBalance(ledger::Balance info,

@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -186,8 +187,9 @@ class ConfirmationsClientMock : public ConfirmationsClient {
   MOCK_CONST_METHOD1(GetUint64Option, uint64_t(
       const std::string& name));
 
-  MOCK_METHOD1(GetExternalWallets, void(
-      ledger::GetExternalWalletsCallback callback));
+  MOCK_METHOD0(
+      GetExternalWallets,
+      std::map<std::string, ledger::ExternalWalletPtr>());
 
   MOCK_METHOD2(SaveExternalWallet, void(
       const std::string& wallet_type,

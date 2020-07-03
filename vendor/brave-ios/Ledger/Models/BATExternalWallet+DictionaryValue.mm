@@ -17,6 +17,10 @@
     self.oneTimeString = dictionary[@"one_time_string"] ?: @"";
     self.userName = dictionary[@"user_name"] ?: @"";
     self.transferred = [dictionary[@"transferred"] boolValue];
+    self.verifyUrl = dictionary[@"verify_url"] ?: @"";
+    self.addUrl = dictionary[@"add_url"] ?: @"";
+    self.withdrawUrl = dictionary[@"withdraw_url"] ?: @"";
+    self.accountUrl = dictionary[@"account_url"] ?: @"";
   }
   return self;
 }
@@ -29,14 +33,18 @@
     @"status": @(self.status),
     @"one_time_string": self.oneTimeString,
     @"user_name": self.userName,
-    @"transferred": @(self.transferred)
+    @"transferred": @(self.transferred),
+    @"verify_url": self.verifyUrl,
+    @"add_url": self.addUrl,
+    @"withdraw_url": self.withdrawUrl,
+    @"account_url": self.accountUrl
   };
 }
 
 - (NSString *)description
 {
-  return [NSString stringWithFormat:@"%@: token: %@, address: %@, status: %ld, ots: %@, username: %@, transferred: %d",
-          [super description], self.token, self.address, self.status, self.oneTimeString, self.userName, self.transferred];
+  return [NSString stringWithFormat:@"%@: token: %@, address: %@, status: %ld, ots: %@, username: %@, transferred: %d, verifyUrl: %@, addUrl: %@, withdrawUrl: %@, accountUrl: %@",
+          [super description], self.token, self.address, self.status, self.oneTimeString, self.userName, self.transferred, self.verifyUrl, self.addUrl, self.withdrawUrl, self.accountUrl];
 }
 
 @end

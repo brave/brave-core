@@ -9,6 +9,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -20,12 +21,12 @@ using std::placeholders::_3;
 
 namespace braveledger_uphold {
 
-  UpdateCard::UpdateCard() :
-    label(""),
-    position(-1),
-    starred(false) {}
+UpdateCard::UpdateCard() :
+  label(""),
+  position(-1),
+  starred(false) {}
 
-  UpdateCard::~UpdateCard() {}
+UpdateCard::~UpdateCard() = default;
 
 }  // namespace braveledger_uphold
 
@@ -36,12 +37,11 @@ UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
     uphold_(uphold) {
 }
 
-UpholdCard::~UpholdCard() {
-}
+UpholdCard::~UpholdCard() = default;
 
-void UpholdCard::CreateIfNecessary(
-    ledger::ExternalWalletPtr wallet,
-    CreateCardCallback callback) {
+void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
@@ -50,10 +50,9 @@ void UpholdCard::CreateIfNecessary(
 
   auto headers = RequestAuthorization(wallet->token);
   auto check_callback = std::bind(&UpholdCard::OnCreateIfNecessary,
-                            this,
-                            _1,
-                            *wallet,
-                            callback);
+      this,
+      _1,
+      callback);
   ledger_->LoadURL(
       GetAPIUrl("/v0/me/cards?q=currency:BAT"),
       headers,
@@ -65,7 +64,6 @@ void UpholdCard::CreateIfNecessary(
 
 void UpholdCard::OnCreateIfNecessary(
     const ledger::UrlResponse& response,
-    const ledger::ExternalWallet& wallet,
     CreateCardCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
@@ -110,13 +108,13 @@ void UpholdCard::OnCreateIfNecessary(
     }
   }
 
-  auto wallet_ptr = ledger::ExternalWallet::New(wallet);
-  Create(std::move(wallet_ptr), callback);
+  Create(callback);
 }
 
 void UpholdCard::Create(
-    ledger::ExternalWalletPtr wallet,
     CreateCardCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
@@ -124,19 +122,18 @@ void UpholdCard::Create(
   }
 
   auto headers = RequestAuthorization(wallet->token);
-  const std::string payload =
-      base::StringPrintf(
-          "{ "
-          "  \"label\": \"%s\", "
-          "  \"currency\": \"BAT\" "
-          "}",
-          kCardName);
+  const std::string payload = base::StringPrintf(
+      R"({
+        "label": "%s",
+        "currency": "BAT"
+      })",
+      kCardName);
 
   auto create_callback = std::bind(&UpholdCard::OnCreate,
-                            this,
-                            _1,
-                            *wallet,
-                            callback);
+      this,
+      _1,
+      callback);
+
   ledger_->LoadURL(
       GetAPIUrl("/v0/me/cards"),
       headers,
@@ -148,7 +145,6 @@ void UpholdCard::Create(
 
 void UpholdCard::OnCreate(
     const ledger::UrlResponse& response,
-    const ledger::ExternalWallet& wallet,
     CreateCardCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
@@ -184,18 +180,25 @@ void UpholdCard::OnCreate(
     return;
   }
 
-  auto wallet_ptr = ledger::ExternalWallet::New(wallet);
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet_ptr = GetWallet(std::move(wallets));
+  if (!wallet_ptr) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
   wallet_ptr->address = *id;
+  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,
-                                  this,
-                                  _1,
-                                  wallet_ptr->address,
-                                  callback);
+      this,
+      _1,
+      wallet_ptr->address,
+      callback);
   UpdateCard card;
   card.starred = true;
   card.position = 1;
-  Update(std::move(wallet_ptr), card, update_callback);
+  Update(card, update_callback);
 }
 
 void UpholdCard::OnCreateUpdate(
@@ -212,9 +215,10 @@ void UpholdCard::OnCreateUpdate(
 }
 
 void UpholdCard::Update(
-    ledger::ExternalWalletPtr wallet,
     const UpdateCard& card,
     UpdateCardCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
@@ -241,9 +245,9 @@ void UpholdCard::Update(
 
   const auto url = GetAPIUrl((std::string)"/v0/me/cards/" + wallet->address);
   auto update_callback = std::bind(&UpholdCard::OnUpdate,
-                            this,
-                            _1,
-                            callback);
+      this,
+      _1,
+      callback);
 
   ledger_->LoadURL(
       url,
@@ -274,8 +278,9 @@ void UpholdCard::OnUpdate(
 }
 
 void UpholdCard::GetCardAddresses(
-    ledger::ExternalWalletPtr wallet,
     GetCardAddressesCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, {});
@@ -376,22 +381,19 @@ void UpholdCard::OnGetCardAddresses(
 }
 
 void UpholdCard::CreateAnonAddressIfNecessary(
-    ledger::ExternalWalletPtr wallet,
     CreateAnonAddressCallback callback) {
   auto address_callback = std::bind(&UpholdCard::OnCreateAnonAddressIfNecessary,
       this,
       _1,
       _2,
-      *wallet,
       callback);
 
-  GetCardAddresses(std::move(wallet), address_callback);
+  GetCardAddresses(address_callback);
 }
 
 void UpholdCard::OnCreateAnonAddressIfNecessary(
     ledger::Result result,
     std::map<std::string, std::string> addresses,
-    const ledger::ExternalWallet& wallet,
     CreateAnonAddressCallback callback) {
   if (result == ledger::Result::LEDGER_OK && addresses.size() > 0) {
     auto iter = addresses.find(kAnonID);
@@ -401,13 +403,12 @@ void UpholdCard::OnCreateAnonAddressIfNecessary(
     }
   }
 
-  auto wallet_ptr = ledger::ExternalWallet::New(wallet);
-  CreateAnonAddress(std::move(wallet_ptr), callback);
+  CreateAnonAddress(callback);
 }
 
-void UpholdCard::CreateAnonAddress(
-    ledger::ExternalWalletPtr wallet,
-    CreateAnonAddressCallback callback) {
+void UpholdCard::CreateAnonAddress(CreateAnonAddressCallback callback) {
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");
@@ -420,9 +421,9 @@ void UpholdCard::CreateAnonAddress(
       wallet->address.c_str());
 
   const std::string payload = base::StringPrintf(
-      "{ "
-      "  \"network\": \"%s\" "
-      "}",
+      R"({
+        "network": "%s"
+      })",
       kAnonID);
 
   auto anon_callback = std::bind(&UpholdCard::OnCreateAnonAddress,

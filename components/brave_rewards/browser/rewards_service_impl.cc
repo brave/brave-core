@@ -3151,14 +3151,18 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
   new_wallet.SetStringKey("one_time_string", wallet->one_time_string);
   new_wallet.SetStringKey("user_name", wallet->user_name);
   new_wallet.SetBoolKey("transferred", wallet->transferred);
+  new_wallet.SetStringKey("verify_url", wallet->verify_url);
+  new_wallet.SetStringKey("add_url", wallet->add_url);
+  new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
+  new_wallet.SetStringKey("account_url", wallet->account_url);
 
   new_wallets.SetKey(wallet_type, std::move(new_wallet));
 
   profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_wallets);
 }
 
-void RewardsServiceImpl::GetExternalWallets(
-    ledger::GetExternalWalletsCallback callback) {
+std::map<std::string, ledger::ExternalWalletPtr>
+RewardsServiceImpl::GetExternalWallets() {
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
 
   auto* dict =
@@ -3169,40 +3173,60 @@ void RewardsServiceImpl::GetExternalWallets(
 
     wallet->type = it.first;
 
-    auto* token = it.second.FindKey("token");
-    if (token && token->is_string()) {
-      wallet->token = token->GetString();
+    auto* token = it.second.FindStringKey("token");
+    if (token) {
+      wallet->token = *token;
     }
 
-    auto* address = it.second.FindKey("address");
-    if (address && address->is_string()) {
-      wallet->address = address->GetString();
+    auto* address = it.second.FindStringKey("address");
+    if (address) {
+      wallet->address = *address;
     }
 
-    auto* one_time_string = it.second.FindKey("one_time_string");
-    if (one_time_string && one_time_string->is_string()) {
-      wallet->one_time_string = one_time_string->GetString();
+    auto* one_time_string = it.second.FindStringKey("one_time_string");
+    if (one_time_string) {
+      wallet->one_time_string = *one_time_string;
     }
 
-    auto* status = it.second.FindKey("status");
-    if (status && status->is_int()) {
-      wallet->status = static_cast<ledger::WalletStatus>(status->GetInt());
+    auto status = it.second.FindIntKey("status");
+    if (status) {
+      wallet->status = static_cast<ledger::WalletStatus>(*status);
     }
 
-    auto* user_name = it.second.FindKey("user_name");
-    if (user_name && user_name->is_string()) {
-      wallet->user_name = user_name->GetString();
+    auto* user_name = it.second.FindStringKey("user_name");
+    if (user_name) {
+      wallet->user_name = *user_name;
     }
 
-    auto* transferred = it.second.FindKey("transferred");
-    if (transferred && transferred->is_bool()) {
-      wallet->transferred = transferred->GetBool();
+    auto transferred = it.second.FindBoolKey("transferred");
+    if (transferred) {
+      wallet->transferred = *transferred;
+    }
+
+    auto* verify_url = it.second.FindStringKey("verify_url");
+    if (verify_url) {
+      wallet->verify_url = *verify_url;
+    }
+
+    auto* add_url = it.second.FindStringKey("add_url");
+    if (add_url) {
+      wallet->add_url = *add_url;
+    }
+
+    auto* withdraw_url = it.second.FindStringKey("withdraw_url");
+    if (withdraw_url) {
+      wallet->withdraw_url = *withdraw_url;
+    }
+
+    auto* account_url = it.second.FindStringKey("account_url");
+    if (account_url) {
+      wallet->account_url = *account_url;
     }
 
     wallets.insert(std::make_pair(it.first, std::move(wallet)));
   }
 
-  callback(std::move(wallets));
+  return wallets;
 }
 
 void RewardsServiceImpl::OnGetExternalWallet(

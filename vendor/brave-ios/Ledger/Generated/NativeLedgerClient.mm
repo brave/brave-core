@@ -104,8 +104,8 @@ uint64_t NativeLedgerClient::GetUint64State(const std::string& name) const {
 void NativeLedgerClient::ClearState(const std::string& name) {
   [bridge_ clearState:name];
 }
-void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback callback) {
-  [bridge_ getExternalWallets:callback];
+std::map<std::string, ledger::ExternalWalletPtr> NativeLedgerClient::GetExternalWallets() {
+  return [bridge_ getExternalWallets];
 }
 void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
   [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];

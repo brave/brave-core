@@ -9,9 +9,9 @@
 #include <map>
 #include <string>
 
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -26,28 +26,23 @@ class UpholdAuthorization {
   ~UpholdAuthorization();
 
   void Authorize(
-    const std::map<std::string, std::string>& args,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets,
-    ledger::ExternalWalletAuthorizationCallback callback);
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback);
 
  private:
   void OnAuthorize(
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const ledger::ExternalWallet& wallet,
-    const ledger::UrlResponse& response);
+      const ledger::UrlResponse& response,
+      ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnGetUser(
-    const ledger::Result result,
-    const User& user,
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const ledger::ExternalWallet& wallet);
+      const ledger::Result result,
+      const User& user,
+      ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnCardCreate(
-    ledger::Result result,
-    const std::string& address,
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const ledger::ExternalWallet& wallet);
-
+      const ledger::Result result,
+      const std::string& address,
+      ledger::ExternalWalletAuthorizationCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED

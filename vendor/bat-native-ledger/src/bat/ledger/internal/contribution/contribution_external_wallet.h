@@ -37,11 +37,6 @@ class ContributionExternalWallet {
       ledger::ResultCallback callback);
 
  private:
-  void OnExternalWallets(
-      std::map<std::string, ledger::ExternalWalletPtr> wallets,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
-
   void ContributionInfo(
       ledger::ContributionInfoPtr contribution,
       const ledger::ExternalWallet& wallet,
@@ -58,7 +53,6 @@ class ContributionExternalWallet {
       ledger::ServerPublisherInfoPtr info,
       const std::string& contribution_id,
       const double amount,
-      const ledger::ExternalWallet& wallet,
       const ledger::RewardsType type,
       const bool single_publisher,
       ledger::ResultCallback callback);

@@ -567,7 +567,6 @@ void Contribution::TransferFunds(
     uphold_->TransferFunds(
         transaction.amount,
         destination,
-        std::move(wallet),
         callback);
     return;
   }

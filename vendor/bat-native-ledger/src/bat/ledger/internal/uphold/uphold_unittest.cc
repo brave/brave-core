@@ -42,13 +42,13 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   EXPECT_CALL(*mock_ledger_impl_, LoadURL(_, _, _, _, _, _)).Times(0);
 
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
-
   auto wallet = ledger::ExternalWallet::New();
   wallet->status = ledger::WalletStatus::CONNECTED;
   wallet->token = "token";
   wallet->address = "address";
-
   wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(wallet)));
+  EXPECT_CALL(*mock_ledger_impl_, GetExternalWallets())
+    .WillOnce(testing::Return(testing::ByMove(std::move(wallets))));
 
   FetchBalanceCallback callback =
       std::bind(
@@ -59,7 +59,7 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
           _1,
           _2);
 
-  uphold_->FetchBalance(std::move(wallets), callback);
+  uphold_->FetchBalance(callback);
 }
 
 }  // namespace braveledger_uphold

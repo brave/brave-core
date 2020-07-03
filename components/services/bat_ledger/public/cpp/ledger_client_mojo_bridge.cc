@@ -353,24 +353,10 @@ void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(
       publisher_name);
 }
 
-// static
-void LedgerClientMojoBridge::OnGetExternalWallets(
-    CallbackHolder<GetExternalWalletsCallback>* holder,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(base::MapToFlatMap(std::move(wallets)));
-  delete holder;
-}
-
 void LedgerClientMojoBridge::GetExternalWallets(
     GetExternalWalletsCallback callback) {
-  auto* holder = new CallbackHolder<GetExternalWalletsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetExternalWallets(
-      std::bind(LedgerClientMojoBridge::OnGetExternalWallets,
-                holder,
-                _1));
+  std::move(callback).Run(
+      base::MapToFlatMap(ledger_client_->GetExternalWallets()));
 }
 
 void LedgerClientMojoBridge::SaveExternalWallet(

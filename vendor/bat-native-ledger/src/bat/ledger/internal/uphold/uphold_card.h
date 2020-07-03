@@ -41,45 +41,35 @@ class UpholdCard {
 
   ~UpholdCard();
 
-  void CreateIfNecessary(
-    ledger::ExternalWalletPtr wallet,
-    CreateCardCallback callback);
+  void CreateIfNecessary(CreateCardCallback callback);
 
-  void CreateAnonAddressIfNecessary(
-      ledger::ExternalWalletPtr wallet,
-      CreateAnonAddressCallback callback);
+  void CreateAnonAddressIfNecessary(CreateAnonAddressCallback callback);
 
  private:
   void OnCreateIfNecessary(
-    const ledger::UrlResponse& response,
-    const ledger::ExternalWallet& wallet,
-    CreateCardCallback callback);
+      const ledger::UrlResponse& response,
+      CreateCardCallback callback);
 
-  void Create(
-    ledger::ExternalWalletPtr wallet,
-    CreateCardCallback callback);
+  void Create(CreateCardCallback callback);
 
   void OnCreate(
-    const ledger::UrlResponse& response,
-    const ledger::ExternalWallet& wallet,
-    CreateCardCallback callback);
+      const ledger::UrlResponse& response,
+      CreateCardCallback callback);
 
   void OnCreateUpdate(
-    const ledger::Result result,
-    const std::string& address,
-    CreateCardCallback callback);
+      const ledger::Result result,
+      const std::string& address,
+      CreateCardCallback callback);
 
   void Update(
-    ledger::ExternalWalletPtr wallet,
-    const UpdateCard& card,
-    UpdateCardCallback callback);
+      const UpdateCard& card,
+      UpdateCardCallback callback);
 
   void OnUpdate(
-    const ledger::UrlResponse& response,
-    UpdateCardCallback callback);
+      const ledger::UrlResponse& response,
+      UpdateCardCallback callback);
 
   void GetCardAddresses(
-      ledger::ExternalWalletPtr wallet,
       GetCardAddressesCallback callback);
 
   std::map<std::string, std::string> ParseGetCardAddressResponse(
@@ -91,17 +81,14 @@ class UpholdCard {
 
   void OnCreateAnonAddressGet(
       ledger::Result result,
-      std::map<std::string, std::string> addresses,
-      const ledger::ExternalWallet& wallet);
+      std::map<std::string, std::string> addresses);
 
   void OnCreateAnonAddressIfNecessary(
       ledger::Result result,
       std::map<std::string, std::string> addresses,
-      const ledger::ExternalWallet& wallet,
       CreateAnonAddressCallback callback);
 
   void CreateAnonAddress(
-      ledger::ExternalWalletPtr wallet,
       CreateAnonAddressCallback callback);
 
   void OnCreateAnonAddress(

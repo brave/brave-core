@@ -30,6 +30,10 @@ ledger::ExternalWalletPtr ResetWallet(ledger::ExternalWalletPtr wallet) {
   wallet->address = "";
   wallet->user_name = "";
   wallet->one_time_string = "";
+  wallet->verify_url = "";
+  wallet->add_url = "";
+  wallet->withdraw_url = "";
+  wallet->account_url = "";
 
   if (wallet->status != ledger::WalletStatus::NOT_CONNECTED) {
     if (wallet->status == ledger::WalletStatus::VERIFIED) {

@@ -140,8 +140,12 @@ std::vector<std::string> RequestAuthorization(
   const std::string secret = GetClientSecret();
 
   std::string user;
-  base::Base64Encode(base::StringPrintf("%s:%s", id.c_str(), secret.c_str()),
-                     &user);
+  base::Base64Encode(
+      base::StringPrintf(
+          "%s:%s",
+          id.c_str(),
+          secret.c_str()),
+      &user);
 
   headers.push_back("Authorization: Basic " + user);
 

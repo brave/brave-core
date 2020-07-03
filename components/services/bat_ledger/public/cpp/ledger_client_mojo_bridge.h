@@ -218,10 +218,6 @@ class LedgerClientMojoBridge :
       CallbackHolder<ResetStateCallback>* holder,
       ledger::Result result);
 
-  static void OnGetExternalWallets(
-    CallbackHolder<GetExternalWalletsCallback>* holder,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result);

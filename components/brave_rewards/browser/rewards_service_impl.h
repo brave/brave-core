@@ -275,8 +275,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  void GetExternalWallets(
-      ledger::GetExternalWalletsCallback callback) override;
+  std::map<std::string, ledger::ExternalWalletPtr>
+  GetExternalWallets() override;
 
   void GetExternalWallet(const std::string& wallet_type,
                          GetExternalWalletCallback callback) override;
