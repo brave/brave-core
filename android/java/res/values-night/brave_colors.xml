@@ -7,8 +7,8 @@
 
 <resources>
 
-    <color name="onboarding_text_color">@android:color/white</color>
-    <color name="onboarding_bg_color">#343A40</color>
+    <color name="onboarding_text_color">#F0F2FF</color>
+    <color name="onboarding_bg_color">#1E2029</color>
     <color name="onboarding_timer_color">#478AFF</color>
 
     <color name="onboarding_progress_start_color">#FA7250</color>
