@@ -94,4 +94,7 @@
     <color name="shield_option_text_color">#777777</color>
     <color name="shield_rounded_button_color">#C2C4CF</color>
     <color name="shield_thank_you_icon_color">#212529</color>
+
+    <color name="brave_stats_ads_color">#FB542B</color>
+    <color name="brave_stats_data_saved_color">#A0A5EB</color>
 </resources>
