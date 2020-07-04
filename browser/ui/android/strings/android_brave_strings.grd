@@ -1199,6 +1199,18 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy stats
       </message>
+      <message name="IDS_WEEK" desc="Tab title text">
+        Week
+      </message>
+      <message name="IDS_MONTH" desc="Tab title text">
+        Month
+      </message>
+      <message name="IDS_MONTHS_3" desc="Tab title text">
+        3 Months
+      </message>
+      <message name="IDS_BRAVE_STATS" desc="Brave stats title">
+        Brave Stats
+      </message>
     </messages>
   </release>
 </grit>

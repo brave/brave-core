@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="#FB542B"
+                    android:textColor="@color/brave_stats_ads_color"
                     android:textStyle="bold"
                     android:textSize="24sp" />
                 <TextView
@@ -77,7 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="#A0A5EB"
+                    android:textColor="@color/brave_stats_data_saved_color"
                     android:textStyle="bold"
                     android:textSize="24sp" />
                 <TextView
