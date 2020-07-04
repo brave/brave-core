@@ -929,6 +929,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BOOKMARKS_NO_ITEMS" desc="Text shown when the user has no bookmarks">
         For quick access, place your bookmarks here on the bookmarks bar.
       </message>
+      <message name="IDS_SETTINGS_RESET_REWARDS_DATA" desc="The label for opening rewards manage wallet dialog">
+        Reset Brave Rewards data...
+      </message>
     </messages>
   </release>
 </grit>
