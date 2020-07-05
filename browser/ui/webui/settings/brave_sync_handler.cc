@@ -24,9 +24,7 @@
 #include "content/public/browser/web_ui.h"
 #include "ui/base/webui/web_ui_util.h"
 
-BraveSyncHandler::BraveSyncHandler() : weak_ptr_factory_(this) {
-  qr_code_service_remote_ = qrcode_generator::LaunchQRCodeGeneratorService();
-}
+BraveSyncHandler::BraveSyncHandler() : weak_ptr_factory_(this) {}
 
 BraveSyncHandler::~BraveSyncHandler() {}
 
@@ -114,8 +112,14 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue* args) {
   // seed then we will have 64 bytes input data
   const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
 
+  base::Value callback_id_disconnect(callback_id->Clone());
   base::Value callback_id_arg(callback_id->Clone());
 
+  qr_code_service_remote_ = qrcode_generator::LaunchQRCodeGeneratorService();
+  qr_code_service_remote_.set_disconnect_handler(
+      base::BindOnce(&BraveSyncHandler::OnCodeGeneratorResponse,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback_id_disconnect), nullptr));
   qrcode_generator::mojom::QRCodeGeneratorService* generator =
       qr_code_service_remote_.get();
 
@@ -243,9 +247,9 @@ base::Value BraveSyncHandler::GetSyncDeviceList() {
 void BraveSyncHandler::OnCodeGeneratorResponse(
     base::Value callback_id,
     const qrcode_generator::mojom::GenerateQRCodeResponsePtr response) {
-  if (response->error_code !=
-      qrcode_generator::mojom::QRCodeGeneratorError::NONE) {
-    LOG(ERROR) << "QR code generated failure: " << response->error_code;
+  if (!response || response->error_code !=
+                       qrcode_generator::mojom::QRCodeGeneratorError::NONE) {
+    VLOG(1) << "QR code generator failure: " << response->error_code;
     ResolveJavascriptCallback(callback_id, base::Value(false));
     return;
   }
@@ -253,5 +257,6 @@ void BraveSyncHandler::OnCodeGeneratorResponse(
   const std::string data_url = webui::GetBitmapDataUrl(response->bitmap);
   VLOG(1) << "QR code data url: " << data_url;
 
+  qr_code_service_remote_.reset();
   ResolveJavascriptCallback(callback_id, base::Value(data_url));
 }
