@@ -90,6 +90,11 @@ const std::vector<TestTriplet> kTestSearchQueries = {
     "audi",
     kAudiSegments,
     1
+  },
+  {
+    "育毛剤 ランキング",
+    {"jp trial 4-search related word"},
+    1
   }
 };
 

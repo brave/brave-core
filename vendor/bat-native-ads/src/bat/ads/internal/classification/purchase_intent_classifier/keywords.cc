@@ -7,27 +7,52 @@
 #include <algorithm>
 #include <sstream>
 
-#include "base/strings/string_util.h"
-#include "url/gurl.h"
-#include "third_party/re2/src/re2/re2.h"
+#include "bat/ads/internal/classification/page_classifier/page_classifier_util.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/keywords.h"
+
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "third_party/re2/src/re2/re2.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace classification {
 
+const uint16_t kPurchaseIntentWordCountLimit = 1000;
+
 Keywords::Keywords() = default;
 Keywords::~Keywords() = default;
+
+std::string SanitizeInput(
+    const std::string& content) {
+  if (content.empty()) {
+    return "";
+  }
+
+  std::string stripped_content = content;
+
+  const std::string escaped_characters =
+      RE2::QuoteMeta("!\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~");
+
+  const std::string pattern = base::StringPrintf("[[:cntrl:]]|"
+      "\\\\(t|n|v|f|r)|[\\t\\n\\v\\f\\r]|\\\\x[[:xdigit:]][[:xdigit:]]|"
+          "[%s]", escaped_characters.c_str());
+
+  RE2::GlobalReplace(&stripped_content, pattern, " ");
+
+  return base::CollapseWhitespaceASCII(stripped_content, true);
+}
 
 PurchaseIntentSegmentList Keywords::GetSegments(
     const std::string& search_query) {
   PurchaseIntentSegmentList segment_list;
   auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
 
-  for (const auto& keyword : _automotive_segment_keywords) {
+  for (const auto& keyword : _segment_keywords) {
     auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
 
     // Intended behaviour relies on early return from list traversal and
-    // implicitely on the ordering of |_automotive_segment_keywords| to ensure
+    // implicitely on the ordering of |_segment_keywords| to ensure
     // specific segments are matched over general segments, e.g. "audi a6"
     // segments should be returned over "audi" segments if possible.
     if (Keywords::IsSubset(search_query_keyword_set, list_keyword_set)) {
@@ -74,22 +99,15 @@ bool Keywords::IsSubset(
 // Ads Purchase Intent keyword matching with std::sets
 std::vector<std::string> Keywords::TransformIntoSetOfWords(
     const std::string& text) {
-  std::string data = text;
-  // Remove every character that is not a word/whitespace/underscore character
-  RE2::GlobalReplace(&data, "[^\\w\\s]|_", "");
-  // Strip subsequent white space characters
-  RE2::GlobalReplace(&data, "\\s+", " ");
-
-  std::for_each(data.begin(), data.end(), [](char & c) {
-    c = base::ToLowerASCII(c);
-  });
-
-  std::stringstream sstream(data);
+  std::string lowercase_text = SanitizeInput(text);
+  std::transform(lowercase_text.begin(), lowercase_text.end(),
+      lowercase_text.begin(), ::tolower);
+  std::stringstream sstream(lowercase_text);
   std::vector<std::string> set_of_words;
   std::string word;
   uint16_t word_count = 0;
 
-  while (sstream >> word && word_count < _word_count_limit) {
+  while (sstream >> word && word_count < kPurchaseIntentWordCountLimit) {
     set_of_words.push_back(word);
     word_count++;
   }

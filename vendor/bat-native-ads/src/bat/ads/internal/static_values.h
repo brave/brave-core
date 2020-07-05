@@ -55,7 +55,9 @@ const int kExpiredAdConversionFrequency = 5 * base::Time::kSecondsPerMinute;
 const char kDefaultUserModelLanguage[] = "en";
 
 const uint16_t kPurchaseIntentSignalLevel = 1;
-const uint16_t kPurchaseIntentClassificationThreshold = 10;
+// This value indicates the total number of site and/or keyword matches for a
+// given segment needed, for it to be having an intent ad matched against it
+const uint16_t kPurchaseIntentClassificationThreshold = 1;
 const uint64_t kPurchaseIntentSignalDecayTimeWindow =
     base::Time::kSecondsPerHour * base::Time::kHoursPerDay * 7;
 const uint16_t kPurchaseIntentMaxSegments = 3;
