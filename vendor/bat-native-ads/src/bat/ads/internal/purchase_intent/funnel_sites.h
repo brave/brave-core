@@ -1808,10 +1808,442 @@ static const std::vector<FunnelSiteInfo> _automotive_funnel_sites = {
       _automotive_segments,
       "http://vwserviceandparts.com",
       1),
-  FunnelSiteInfo(
-      _cpg_segments,
+  FunnelSiteInfo({
+      "cpg purchase intent"},
       "https://www.lion.co.jp",
-      10)
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-related content of auto"},
+      "https://autoc-one.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-related content of auto"},
+      "https://motor-fan.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-related content of auto"},
+      "https://bestcarweb.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-related content of auto"},
+      "https://www.webcg.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-related content of auto"},
+      "https://www.autocar.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://www.carsensor.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://www.goo-net.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://221616.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://www.bigmotor.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://www.navikuru.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://www.e-rabbit.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://www.carseven.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-domain of competitors"},
+      "https://carnext.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 1-owned website"},
+      "https://www.applenet.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://next.rikunabi.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://www.r-agent.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://tenshoku.mynavi.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://employment.en-japan.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://www.bizreach.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://www.careertrek.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://type.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://www.linkedin.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://toranet.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-domain of competitors"},
+      "https://jp.indeed.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-related content of career"},
+      "https://tenshoku-antenna.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-related content of career"},
+      "https://career-theory.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-related content of career"},
+      "https://www.vorkers.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-related content of career"},
+      "https://en-hyouban.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-related content of career"},
+      "https://jobtalk.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-related content of career"},
+      "https://careerconnection.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 2-owned website"},
+      "https://doda.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-domain of competitors"},
+      "https://www.aiful.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-domain of competitors"},
+      "https://cyber.promise.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-domain of competitors"},
+      "http://lakealsa.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-domain of competitors"},
+      "https://www.mobit.ne.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-domain of competitors"},
+      "https://noloan.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://xn--lck0c6eya6bc0782dfsni4is2p5k1g0dn.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://www.cardloan-farm.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://lonlab.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://xn--nckgu1cyjxdq45wl5hik7bg7m.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "http://cashing-plan.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://a-cashing.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://pr.eloan.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://www.loandoor.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-related content of loan"},
+      "https://cashing-center.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 3-owned website"},
+      "https://www.acom.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.aderans.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.aderans-shop.jp/shop",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.artnature.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://ec.artnature.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.svenson.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.reve21.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.reve21shop.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.propia.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.propia-shopping.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.hi-belle.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.aplan-tgs.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.katurawith.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.katurawith.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://プロペシアの副作用.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.hama1-cl.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://united-clinic.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://フィナステリド通販.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://aga-answer.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.africanfashionint.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://brand.taisho.co.jp/riup",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://hageryman.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://choosestore.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.mycare.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://xn--100-qi4b4bwila6a2a35a.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.maro-men.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://bubka.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.kami-fusafusa.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://chapup.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://529270.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://ポリピュアexの効果.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://finjia.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.rigaos.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://hscare.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.clearhaircare.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.andgino.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.u-ma.co.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.mongoryu.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.lucido.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.agaskin.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://aga-c.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.gincli.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.hairmedical.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.menshealth-tokyo.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.sbc-aga.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.gincli-aga.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.hairsite.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://aga-in.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.tom-clinic.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.sbc-mens.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://www.ilandtower-cl.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://greenbuildingsbc.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://xn--u9jtfub9363e.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://choosestore.net",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://xn--z9j4exa1jy38pfkak63g7lr316b176a.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://xn--u9j926g9ub946be1v.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://ikumoukachou.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://fusafusaraifusutairu.blogspot.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://aga.doctoru.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "http://www.prestashopzine.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-domain of competitors"},
+      "https://ikumouzai-shampoo.com",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-owned website"},
+      "https://www.angfa-store.jp",
+      1),
+  FunnelSiteInfo({
+      "jp trial 4-owned website"},
+      "https://www.angfa.jp",
+      1),
 };
 
 class FunnelSites {

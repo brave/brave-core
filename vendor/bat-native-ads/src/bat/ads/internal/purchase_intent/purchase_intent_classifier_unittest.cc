@@ -76,6 +76,11 @@ std::vector<TestTriplets> kTestSearchQueries = {
       audi_a4_segments, 1},
 };
 
+const uint16_t kTestPurchaseIntentSignalLevel = 1;
+const uint16_t kTestPurchaseIntentClassificationThreshold = 10;
+const uint64_t kTestPurchaseIntentSignalDecayTimeWindow =
+    base::Time::kSecondsPerHour * base::Time::kHoursPerDay * 7;
+
 class AdsPurchaseIntentClassifierTest : public ::testing::Test {
  protected:
   std::unique_ptr<MockAdsClient> mock_ads_client_;
@@ -98,8 +103,9 @@ class AdsPurchaseIntentClassifierTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
     purchase_intent_classifier_ = std::make_unique<PurchaseIntentClassifier>(
-        kPurchaseIntentSignalLevel, kPurchaseIntentClassificationThreshold,
-            kPurchaseIntentSignalDecayTimeWindow);
+        kTestPurchaseIntentSignalLevel,
+            kTestPurchaseIntentClassificationThreshold,
+                kTestPurchaseIntentSignalDecayTimeWindow);
 
     auto now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
     auto days = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
